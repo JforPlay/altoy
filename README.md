@@ -1,0 +1,1 @@
+# azurlane_kr_data
