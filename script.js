@@ -1,24 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Get HTML elements
     const storyContainer = document.getElementById('story-container');
     const optionsContainer = document.getElementById('options-container');
     const storyHeader = document.getElementById('story-header');
+    const restartButton = document.getElementById('restart-button');
 
+    // Story state variables
     let allScripts = [];
     let currentScriptIndex = 0;
-    const actorIdToNameMap = {};
+    let actorIdToNameMap = {};
 
-    const startStory = (data) => {
-        allScripts = data.renqiaijier.scripts;
+    // --- New: Main Function to Initialize or Restart the Story ---
+    const initializeStory = () => {
+        // 1. Clear all dynamic content
+        storyHeader.innerHTML = '';
+        storyContainer.innerHTML = '';
+        optionsContainer.innerHTML = '';
+        
+        // 2. Reset state variables
+        currentScriptIndex = 0;
+        actorIdToNameMap = {};
+
+        // 3. Re-build the story from the beginning
         processHeader();
-        currentScriptIndex = 1;
+        currentScriptIndex = 1; 
         showNextLine();
     };
 
     const showNextLine = () => {
-        if (currentScriptIndex >= allScripts.length) {
-            return;
-        }
-
+        if (currentScriptIndex >= allScripts.length) return;
         const script = allScripts[currentScriptIndex];
 
         if (script.options) {
@@ -27,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (script.say) {
             displayBubble(script);
             currentScriptIndex++;
-            // MODIFICATION: Changed delay from 800ms to 400ms for faster pacing
             setTimeout(showNextLine, 400);
         } else {
             currentScriptIndex++;
@@ -35,16 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // MODIFICATION: Function now accepts 'chosenText' to display the choice
     const handleChoice = (chosenFlag, chosenText) => {
-        // --- New Feature: Display the selected option ---
         const choiceBubble = document.createElement('div');
         choiceBubble.classList.add('message-bubble', 'player');
         choiceBubble.innerHTML = `<p class="speaker-name">Commander</p><p>${chosenText}</p>`;
         storyContainer.appendChild(choiceBubble);
-        // --- End of New Feature ---
-
-        // Auto-scroll to the choice you made
         choiceBubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
         optionsContainer.innerHTML = '';
@@ -57,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
             currentScriptIndex++;
         }
         
-        // MODIFICATION: Changed delay from 800ms to 400ms
         setTimeout(showNextLine, 400);
     };
 
@@ -92,10 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const dialogueText = script.say.replace(/<size=\d+>|<\/size>/g, '');
         messageBubble.innerHTML += `<p>${dialogueText}</p>`;
-        
         storyContainer.appendChild(messageBubble);
-
-        // Auto-scroll to the new message
         messageBubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
     };
 
@@ -104,10 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = document.createElement('button');
             button.classList.add('choice-button');
             button.textContent = option.content;
-            // MODIFICATION: Pass the option's text content to handleChoice
             button.onclick = () => handleChoice(option.flag, option.content);
             optionsContainer.appendChild(button);
-            // Auto-scroll to show the options
             button.scrollIntoView({ behavior: 'smooth', block: 'end' });
         });
     };
@@ -124,9 +122,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // --- Fetch Data and Attach Event Listeners ---
     fetch('test.json')
         .then(response => response.json())
-        .then(startStory)
+        .then(data => {
+            allScripts = data.renqiaijier.scripts; // Store script data globally
+            initializeStory(); // Run the story for the first time
+            restartButton.addEventListener('click', initializeStory); // Attach restart logic
+        })
         .catch(error => {
             console.error('Error loading or parsing story file:', error);
             storyContainer.textContent = 'Failed to load story.';
