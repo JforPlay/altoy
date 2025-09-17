@@ -10,7 +10,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatRight = document.getElementById('chat-lines-right');
 
     let skinData = [];
-    let allCharacterOptions = []; // Store a copy of all options for filtering
+    let allCharacterData = []; // MODIFICATION: Stores character data {value, text} instead of DOM nodes
+
+    // --- New: Debounce function for performance ---
+    const debounce = (func, delay) => {
+        let timeoutId;
+        return (...args) => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                func.apply(this, args);
+            }, delay);
+        };
+    };
 
     // --- 1. Fetch and Process JSON Data ---
     fetch('subset_skin_data.json')
@@ -33,39 +44,50 @@ document.addEventListener('DOMContentLoaded', () => {
             characterSelect.innerHTML = '<option>Error loading data</option>';
         });
 
-    // --- 2. Populate the Character Dropdown ---
+    // --- 2. Populate and Store Character Data ---
     const populateCharacterSelect = () => {
         const characterNames = [...new Set(skinData.map(row => row['함순이 이름']))].filter(name => name);
-        characterSelect.innerHTML = '<option value="">-- Select a Character --</option>';
+        allCharacterData = []; // Clear previous data
         characterNames.sort().forEach(name => {
-            const option = document.createElement('option');
-            option.value = name;
-            option.textContent = name;
-            characterSelect.appendChild(option);
+            allCharacterData.push({ value: name, text: name });
         });
-        // Store a copy of the options for the search filter
-        allCharacterOptions = Array.from(characterSelect.options);
+        // Initially populate the dropdown with all characters
+        filterCharacters(true);
     };
 
-    // --- 3. Filter Character Dropdown based on Search Input ---
-    const filterCharacters = () => {
+    // --- 3. DEBUGGED: Filter logic is now more robust ---
+    const filterCharacters = (isInitialPopulation = false) => {
         const searchTerm = characterSearch.value.toLowerCase();
-        // Clear current options
-        characterSelect.innerHTML = '';
-        // Add back the options that match the search term
-        allCharacterOptions.forEach(option => {
-            const optionText = option.textContent.toLowerCase();
-            if (option.value === "" || optionText.includes(searchTerm)) {
-                characterSelect.appendChild(option.cloneNode(true));
+        const currentSelection = characterSelect.value;
+        characterSelect.innerHTML = ''; // Clear current options
+        
+        // Always add the placeholder option
+        const placeholder = document.createElement('option');
+        placeholder.value = "";
+        placeholder.textContent = "-- Select a Character --";
+        characterSelect.appendChild(placeholder);
+
+        // Rebuild the options list from the stored data array
+        allCharacterData.forEach(data => {
+            if (data.text.toLowerCase().includes(searchTerm)) {
+                const option = document.createElement('option');
+                option.value = data.value;
+                option.textContent = data.text;
+                characterSelect.appendChild(option);
             }
         });
+        
+        // If the previously selected item is still in the filtered list, keep it selected
+        if (!isInitialPopulation) {
+             characterSelect.value = currentSelection;
+        }
     };
-
-    // --- 4. Update Skin Dropdown When a Character is Selected ---
+    
+    // --- 4. Update Skin Dropdown ---
     const updateSkinSelect = () => {
-        // When a selection is made, sync the search box text
         if (characterSelect.value) {
             characterSearch.value = characterSelect.value;
+            filterCharacters(); // Re-filter to show only the selected item
         }
         
         const selectedCharacter = characterSelect.value;
@@ -88,9 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
 
-    // --- 5. Display Skin Details ---
+    // --- 5. Display Skin Details (Unchanged) ---
     const displaySkinDetails = () => {
-        // (This function remains unchanged)
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
             contentDisplay.classList.add('hidden');
@@ -127,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Attach event listeners
-    characterSearch.addEventListener('input', filterCharacters);
+    characterSearch.addEventListener('input', debounce(filterCharacters, 250)); // Debounced search
     characterSelect.addEventListener('change', updateSkinSelect);
     skinSelect.addEventListener('change', displaySkinDetails);
 });
