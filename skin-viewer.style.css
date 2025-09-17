@@ -24,6 +24,58 @@ h1, h2 {
 .nav-link:hover { color: #ffffff; }
 .nav-link.active { color: #ffffff; border-bottom-color: #7289da; }
 
+/* ... (after the .nav-link styles) ... */
+
+/* --- Header & Selectors --- */
+.controls-header { text-align: center; margin-bottom: 30px; }
+.selectors { display: flex; flex-flow: row wrap; justify-content: center; align-items: flex-start; gap: 20px; margin-top: 20px; }
+
+/* --- New Searchable Select Styles --- */
+.searchable-select {
+    display: flex;
+    flex-direction: column;
+}
+
+#character-search {
+    font-size: 1.1em;
+    padding: 10px;
+    border: 2px solid #2f3136;
+    background-color: #40444b;
+    color: #dcddde;
+    border-radius: 5px 5px 0 0; /* Rounded top corners */
+    width: 300px;
+    box-sizing: border-box; /* Ensures padding doesn't add to width */
+    border-bottom: 1px solid #2f3136;
+}
+#character-search:focus {
+    outline: none;
+    border-color: #7289da;
+}
+
+/* Modify existing select style */
+select {
+    font-size: 1.1em;
+    padding: 10px;
+    border: 2px solid #2f3136;
+    background-color: #40444b;
+    color: #dcddde;
+    min-width: 300px;
+    box-sizing: border-box;
+}
+
+/* Adjust character select to fit with search box */
+#character-select {
+    border-radius: 0 0 5px 5px; /* Rounded bottom corners */
+    border-top: none;
+    width: 300px;
+}
+
+select:disabled { opacity: 0.5; }
+/* --- End of New Styles --- */
+
+/* ... (rest of the file is unchanged) ... */
+
+
 /* --- Header & Selectors --- */
 .controls-header { text-align: center; margin-bottom: 30px; }
 .selectors { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }

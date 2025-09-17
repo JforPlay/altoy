@@ -16,9 +16,12 @@
         <header class="controls-header">
             <h1>Select a Character and Skin</h1>
             <div class="selectors">
-                <select id="character-select">
-                    <option>Loading characters...</option>
-                </select>
+                <div class="searchable-select">
+                    <input type="text" id="character-search" placeholder="Search for a character...">
+                    <select id="character-select">
+                        <option>Loading characters...</option>
+                    </select>
+                </div>
                 <select id="skin-select" disabled>
                     <option>Select a character first</option>
                 </select>
