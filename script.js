@@ -1,24 +1,41 @@
-// Wait until the HTML document is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Find the container element where the story will be displayed
     const storyContainer = document.getElementById('story-container');
-    
-    // This object will store actor IDs and their corresponding names
-    const actorIdToNameMap = {}; 
+    const storyHeader = document.getElementById('story-header'); // Get the new header element
+    const actorIdToNameMap = {};
 
-    // Fetch the JSON file containing the story data
     fetch('test.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
             }
-            return response.json(); // Parse the JSON data
+            return response.json();
         })
         .then(data => {
             const scripts = data.renqiaijier.scripts;
 
-            scripts.forEach(script => {
-                // We only process scripts that have a 'say' field
+            // --- New Header Logic ---
+            // Process the header from the very first script entry
+            if (scripts.length > 0 && scripts[0].sequence) {
+                const headerRawText = scripts[0].sequence[0][0];
+                const [title, subtitle] = headerRawText.split('\n\n'); // Split into title and subtitle
+
+                if (title) {
+                    const titleElement = document.createElement('h1');
+                    titleElement.textContent = title;
+                    storyHeader.appendChild(titleElement);
+                }
+                if (subtitle) {
+                    // Clean up the subtitle by removing size tags and the leading number
+                    const cleanedSubtitle = subtitle.replace(/<size=\d+>|<\/size>/g, '').replace(/^\d+\s*/, '');
+                    const subtitleElement = document.createElement('h2');
+                    subtitleElement.textContent = cleanedSubtitle;
+                    storyHeader.appendChild(subtitleElement);
+                }
+            }
+            
+            // --- Updated Dialogue Loop ---
+            // Loop through the rest of the scripts, skipping the first (header) entry
+            scripts.slice(1).forEach(script => {
                 if (!script.say) return;
 
                 const messageBubble = document.createElement('div');
@@ -27,34 +44,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 let speakerName = '';
                 let messageClass = '';
                 
-                // An actor ID can be in the 'actor' or 'portrait' field
                 const actorId = script.actor || script.portrait;
 
-                // If this line has an actorName and an ID, we save it for later
                 if (actorId && script.actorName) {
                     actorIdToNameMap[actorId] = script.actorName;
                 }
 
-                // Determine the speaker and assign the correct style
                 if (script.actor === 0) {
                     speakerName = 'Commander';
                     messageClass = 'player';
                 } else if (actorId && actorIdToNameMap[actorId]) {
-                    // This is a character whose name we've already saved
                     speakerName = actorIdToNameMap[actorId];
                     messageClass = 'character';
                 } else if (script.actorName) {
-                    // A character speaking for the first time
                     speakerName = script.actorName;
                     messageClass = 'character';
                 } else {
-                    // Narrative line
                     messageClass = 'narrator';
                 }
 
                 messageBubble.classList.add(messageClass);
 
-                // Add speaker name element if a speaker exists
                 if (speakerName) {
                     const speakerElement = document.createElement('p');
                     speakerElement.classList.add('speaker-name');
@@ -62,12 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     messageBubble.appendChild(speakerElement);
                 }
                 
-                // Add the dialogue text
                 const textElement = document.createElement('p');
                 textElement.textContent = script.say.replace(/<size=\d+>|<\/size>/g, '');
                 messageBubble.appendChild(textElement);
                 
-                // Add the completed message bubble to the story container
                 storyContainer.appendChild(messageBubble);
             });
         })
