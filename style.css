@@ -165,3 +165,25 @@ body {
     pointer-events: none;
     z-index: 99; /* Sits on top of content but below the restart button */
 }
+
+/* Add these new styles for character portraits */
+.character-line-wrapper {
+    display: flex;
+    align-items: flex-end; /* Aligns portrait and bubble along their bottom edge */
+    gap: 12px;
+    align-self: flex-start;
+    max-width: 80%;
+}
+
+.portrait {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    flex-shrink: 0; /* Prevents the image from shrinking */
+    background-color: #2f3136; /* Placeholder color while loading */
+}
+
+/* We remove max-width from the bubble when it's next to a portrait */
+.character-line-wrapper .message-bubble {
+    max-width: none;
+}
