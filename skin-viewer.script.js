@@ -3,11 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const characterSearch = document.getElementById('character-search');
     const characterSelect = document.getElementById('character-select');
     const skinSelect = document.getElementById('skin-select');
-    const contentDisplay = document.getElementById('content-display');
-    const skinImage = document.getElementById('skin-image');
-    const descriptionList = document.getElementById('description-list');
-    const chatLeft = document.getElementById('chat-lines-left');
-    const chatRight = document.getElementById('chat-lines-right');
+    const imageGallery = document.getElementById('image-gallery');
 
     let skinData = [];
     let allCharacterData = [];
@@ -22,17 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    fetch('data/subset_skin_data.json')
-        .then(response => {
-            if (!response.ok) {
-                // More specific error for network issues
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
+    fetch('subset_skin_data.json')
+        .then(response => response.json())
         .then(jsonData => {
             if (!jsonData || Object.keys(jsonData).length === 0) {
-                // More specific error for empty/invalid file
                 throw new Error('JSON data is empty or invalid.');
             }
             skinData = Object.values(jsonData);
@@ -49,12 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => {
             console.error('Error loading or parsing JSON:', error);
-            const loadingIndicator = document.getElementById('loading-indicator');
-            if (loadingIndicator) {
-                // Provide a more helpful error message to the user
-                loadingIndicator.textContent = 'Error: Could not load data. Please ensure "subset_skin_data.json" is in the same folder as the HTML file.';
-                loadingIndicator.classList.add('error');
-            }
+            characterSelect.innerHTML = '<option>Error: Could not load data.</option>';
         });
 
     const populateCharacterSelect = () => {
@@ -63,19 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
         characterNames.sort().forEach(name => {
             allCharacterData.push({ value: name, text: name });
         });
-        filterCharacters(); // Initial population
+        filterCharacters();
     };
     
     const filterCharacters = () => {
         const searchTerm = characterSearch.value.toLowerCase();
-        const currentSelection = characterSelect.value; // Remember what was selected
+        const currentSelection = characterSelect.value;
         characterSelect.innerHTML = '';
-        
         const placeholder = document.createElement('option');
         placeholder.value = "";
         placeholder.textContent = "-- Select a Character --";
         characterSelect.appendChild(placeholder);
-
         let isCurrentSelectionInList = false;
         allCharacterData.forEach(data => {
             if (data.text.toLowerCase().includes(searchTerm)) {
@@ -83,34 +65,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.value = data.value;
                 option.textContent = data.text;
                 characterSelect.appendChild(option);
-                if (data.value === currentSelection) {
-                    isCurrentSelectionInList = true;
-                }
+                if (data.value === currentSelection) isCurrentSelectionInList = true;
             }
         });
-        
-        // If the selected item still exists in the filtered list, keep it selected
-        if (isCurrentSelectionInList) {
-             characterSelect.value = currentSelection;
-        }
+        if (isCurrentSelectionInList) characterSelect.value = currentSelection;
     };
     
-    // --- DEBUGGED: Fixed the search/select interaction ---
     const updateSkinSelect = () => {
-        // When a selection is made from the dropdown, update the search box text
-        if (characterSelect.value) {
-            characterSearch.value = characterSelect.value;
-        }
-        
+        if (characterSelect.value) characterSearch.value = characterSelect.value;
         const selectedCharacter = characterSelect.value;
         skinSelect.innerHTML = '<option value="">-- Select a Skin --</option>';
-        contentDisplay.classList.add('hidden');
-
+        imageGallery.classList.add('hidden');
         if (!selectedCharacter) {
             skinSelect.disabled = true;
             return;
         }
-
         const characterSkins = skinData.filter(row => row['함순이 이름'] === selectedCharacter);
         characterSkins.forEach(skin => {
             const option = document.createElement('option');
@@ -122,40 +91,51 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
 
+    // --- MODIFIED: This function now builds the image gallery ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
-            contentDisplay.classList.add('hidden');
+            imageGallery.classList.add('hidden');
             return;
         }
         const skin = skinData.find(row => row['한글 함순이 + 스킨 이름'] === selectedSkinName);
         if (!skin) return;
-        skinImage.src = skin['이미지 주소1'] || '';
-        const descriptionKeys = ['획득 대사', '모항 대사', '터치 대사', '터치 대사2', '임무 대사', '임무 완료 대사', '위탁 완료 대사', '강화 성공 대사', '결혼 대사'];
-        descriptionList.innerHTML = '';
-        descriptionKeys.forEach(key => {
-            if (skin[key]) {
-                const item = document.createElement('div');
-                item.className = 'desc-item';
-                item.innerHTML = `<strong>${key.replace(' 대사', '')}:</strong> ${skin[key]}`;
-                descriptionList.appendChild(item);
-            }
+
+        // Clear previous gallery
+        imageGallery.innerHTML = '';
+
+        // Define image sources from the JSON
+        const mainImageSrc = skin['전체 일러'];
+        const thumbnailSources = [
+            skin['확대 일러'],
+            skin['깔끔한 일러'],
+            skin['sd 일러'],
+            skin['아이콘 일러'],
+            skin['쥬스타 아이콘 일러']
+        ].filter(src => src && src !== 'null'); // Filter out any empty image fields
+
+        // Create left panel for the main image
+        const leftPanel = document.createElement('div');
+        leftPanel.className = 'gallery-left-panel';
+        if (mainImageSrc && mainImageSrc !== 'null') {
+            const mainImage = document.createElement('img');
+            mainImage.src = mainImageSrc;
+            leftPanel.appendChild(mainImage);
+        }
+        
+        // Create right panel for thumbnails
+        const rightPanel = document.createElement('div');
+        rightPanel.className = 'gallery-right-panel';
+        thumbnailSources.forEach(src => {
+            const thumbImage = document.createElement('img');
+            thumbImage.src = src;
+            rightPanel.appendChild(thumbImage);
         });
-        chatLeft.innerHTML = '';
-        chatRight.innerHTML = '';
-        Object.keys(skin).forEach(key => {
-            if (skin[key] && key.endsWith('대사') && !descriptionKeys.includes(key)) {
-                const bubble = document.createElement('div');
-                bubble.className = 'chat-bubble';
-                bubble.textContent = skin[key];
-                if (key.includes('_ex')) {
-                    chatRight.appendChild(bubble);
-                } else {
-                    chatLeft.appendChild(bubble);
-                }
-            }
-        });
-        contentDisplay.classList.remove('hidden');
+
+        // Add panels to the gallery and make it visible
+        imageGallery.appendChild(leftPanel);
+        imageGallery.appendChild(rightPanel);
+        imageGallery.classList.remove('hidden');
     };
 
     // Attach event listeners
