@@ -62,7 +62,6 @@ select:disabled { opacity: 0.5; }
     gap: 10px;
 }
 
-/* Base styles for all thumbnails */
 .thumbnail-image {
     width: 100%;
     object-fit: cover;
@@ -70,13 +69,19 @@ select:disabled { opacity: 0.5; }
     background-color: #202225;
 }
 
-/* Specific flex values to control height distribution */
-.thumbnail-enlarged {
-    flex: 3 1 0%; /* Takes up the most space */
+/* Specific heights for large and tall thumbnails */
+.thumbnail-enlarged { flex: 3 1 0%; }
+.thumbnail-tall { flex: 2 1 0%; }
+
+/* New container for the small images */
+.small-thumbnails-container {
+    display: flex; /* This makes the images inside go side-by-side */
+    gap: 10px;
+    flex: 1 1 0%; /* The container itself takes up 1 part of the vertical space */
 }
-.thumbnail-tall {
-    flex: 2 1 0%; /* Takes up medium space */
-}
-.thumbnail-small {
-    flex: 1 1 0%; /* Takes up the least space */
+/* Styling for the small images inside their new container */
+.small-thumbnails-container .thumbnail-small {
+    flex: 1; /* Each small image shares the horizontal space equally */
+    height: 100%;
+    width: 0; /* Let flexbox calculate the width */
 }

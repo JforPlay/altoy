@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
 
-    // --- MODIFIED: This function now adds specific classes to thumbnails ---
+    // --- MODIFIED: This function now groups the small images ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
@@ -103,15 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         imageGallery.innerHTML = '';
 
         const mainImageSrc = skin['전체 일러'];
-        // Define thumbnails with their types for specific styling
-        const thumbnailData = [
-            { type: 'enlarged', src: skin['확대 일러'] },
-            { type: 'tall',     src: skin['깔끔한 일러'] },
-            { type: 'small',    src: skin['sd 일러'] },
-            { type: 'small',    src: skin['아이콘 일러'] },
-            { type: 'small',    src: skin['쥬스타 아이콘 일러'] }
-        ].filter(item => item.src && item.src !== 'null'); // Filter out empty image fields
-
+        
         const leftPanel = document.createElement('div');
         leftPanel.className = 'gallery-left-panel';
         if (mainImageSrc && mainImageSrc !== 'null') {
@@ -122,20 +114,44 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const rightPanel = document.createElement('div');
         rightPanel.className = 'gallery-right-panel';
-        thumbnailData.forEach(item => {
+
+        // Add the larger thumbnails first (if they exist)
+        const largeThumbnails = [
+            { type: 'enlarged', src: skin['확대 일러'] },
+            { type: 'tall',     src: skin['깔끔한 일러'] }
+        ].filter(item => item.src && item.src !== 'null');
+
+        largeThumbnails.forEach(item => {
             const thumbImage = document.createElement('img');
             thumbImage.src = item.src;
-            // Add the base class and the type-specific class
             thumbImage.classList.add('thumbnail-image', `thumbnail-${item.type}`);
             rightPanel.appendChild(thumbImage);
         });
+
+        // Group the three small thumbnails into their own container
+        const smallThumbnails = [
+            skin['sd 일러'],
+            skin['아이콘 일러'],
+            skin['쥬스타 아이콘 일러']
+        ].filter(src => src && src !== 'null');
+
+        if (smallThumbnails.length > 0) {
+            const smallContainer = document.createElement('div');
+            smallContainer.className = 'small-thumbnails-container';
+            smallThumbnails.forEach(src => {
+                const smallImage = document.createElement('img');
+                smallImage.src = src;
+                smallImage.classList.add('thumbnail-image', 'thumbnail-small');
+                smallContainer.appendChild(smallImage);
+            });
+            rightPanel.appendChild(smallContainer); // Add the container to the right panel
+        }
 
         imageGallery.appendChild(leftPanel);
         imageGallery.appendChild(rightPanel);
         imageGallery.classList.remove('hidden');
     };
 
-    // Attach event listeners
     characterSearch.addEventListener('input', debounce(filterCharacters, 250));
     characterSelect.addEventListener('change', updateSkinSelect);
     skinSelect.addEventListener('change', displaySkinDetails);
