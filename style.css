@@ -201,3 +201,14 @@ body {
     color: #f04747;
     font-weight: bold;
 }
+
+/* Add these new styles for the shake effect */
+@keyframes shake-vertical {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-10px); }
+  75% { transform: translateY(10px); }
+}
+
+.shake-effect {
+  animation: shake-vertical 0.2s 2; /* Runs the animation for 0.2s, 2 times */
+}
