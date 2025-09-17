@@ -71,38 +71,44 @@ select:disabled { opacity: 0.5; }
     flex: 1;
 }
 
+/* ... (keep all other styles the same) ... */
+
 .bottom-right-panel {
     flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* This is the key change from 'column' */
     gap: 15px;
-    min-height: 0; /* Allows this column to shrink */
+    min-height: 0;
 }
 
 .thumbnail-group {
+    flex: 1; /* The two groups will now share the horizontal space */
     display: flex;
+    flex-direction: column; /* The images inside each group will now stack vertically */
     gap: 15px;
-    min-height: 0; /* Allows the group to shrink */
+    min-height: 0;
 }
 
-/* Give the group with taller images more space */
+/* This rule is no longer needed with the new direction */
+/*
 .tall-group {
     flex: 2;
 }
-
-/* Give the group with smaller images less space */
 .small-group {
     flex: 1;
 }
+*/
 
 .thumbnail-group img {
     flex: 1;
-    width: 0;
-    height: 100%;
+    width: 100%; /* Images should take the full width of their new column */
+    height: 0; /* Let flexbox determine the height */
 }
 
 .tall-thumbnail {
+    /* The aspect-ratio property will be overridden by the flex properties,
+       so we can remove it or leave it as is. */
     aspect-ratio: 3 / 4;
-    width: auto;
-    height: 100%;
+    width: 100%;
+    height: auto;
 }
