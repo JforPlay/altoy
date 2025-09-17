@@ -56,3 +56,23 @@ body {
     align-self: center;
     max-width: 90%;
 }
+
+/* Add these new styles for the header */
+#story-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 0 20px;
+}
+
+#story-header h1 {
+    font-size: 2em;
+    color: #ffffff;
+    margin: 0;
+}
+
+#story-header h2 {
+    font-size: 1.2em;
+    color: #b9bbbe;
+    font-weight: normal;
+    margin: 8px 0 0 0;
+}
