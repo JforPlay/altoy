@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get HTML elements
     const characterSearch = document.getElementById('character-search');
     const characterSelect = document.getElementById('character-select');
-    // ... (rest of the variable declarations are unchanged)
     const skinSelect = document.getElementById('skin-select');
     const imageGallery = document.getElementById('image-gallery');
 
@@ -19,14 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    // --- MODIFIED: fetch now looks inside the 'data' folder ---
     fetch('data/subset_skin_data.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(jsonData => {
             if (!jsonData || Object.keys(jsonData).length === 0) {
                 throw new Error('JSON data is empty or invalid.');
@@ -97,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
 
+    // --- MODIFIED: This function now adds specific classes to thumbnails ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
@@ -109,13 +103,14 @@ document.addEventListener('DOMContentLoaded', () => {
         imageGallery.innerHTML = '';
 
         const mainImageSrc = skin['전체 일러'];
-        const thumbnailSources = [
-            skin['확대 일러'],
-            skin['깔끔한 일러'],
-            skin['sd 일러'],
-            skin['아이콘 일러'],
-            skin['쥬스타 아이콘 일러']
-        ].filter(src => src && src !== 'null');
+        // Define thumbnails with their types for specific styling
+        const thumbnailData = [
+            { type: 'enlarged', src: skin['확대 일러'] },
+            { type: 'tall',     src: skin['깔끔한 일러'] },
+            { type: 'small',    src: skin['sd 일러'] },
+            { type: 'small',    src: skin['아이콘 일러'] },
+            { type: 'small',    src: skin['쥬스타 아이콘 일러'] }
+        ].filter(item => item.src && item.src !== 'null'); // Filter out empty image fields
 
         const leftPanel = document.createElement('div');
         leftPanel.className = 'gallery-left-panel';
@@ -127,9 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const rightPanel = document.createElement('div');
         rightPanel.className = 'gallery-right-panel';
-        thumbnailSources.forEach(src => {
+        thumbnailData.forEach(item => {
             const thumbImage = document.createElement('img');
-            thumbImage.src = src;
+            thumbImage.src = item.src;
+            // Add the base class and the type-specific class
+            thumbImage.classList.add('thumbnail-image', `thumbnail-${item.type}`);
             rightPanel.appendChild(thumbImage);
         });
 

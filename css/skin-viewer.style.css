@@ -5,25 +5,21 @@ body {
     color: #dcddde;
     margin: 0;
 }
-
 .main-container {
     max-width: 1200px;
     margin: auto;
     padding: 20px;
 }
-
 h1 {
     color: #ffffff;
     border-bottom: 1px solid #4f545c;
     padding-bottom: 10px;
 }
-
 /* --- Navigation Bar --- */
 .top-nav { background-color: #2f3136; padding: 0 40px; display: flex; gap: 20px; border-bottom: 1px solid #40444b; }
 .nav-link { color: #b9bbbe; text-decoration: none; padding: 15px 10px; font-weight: bold; border-bottom: 3px solid transparent; transition: all 0.2s; }
 .nav-link:hover { color: #ffffff; }
 .nav-link.active { color: #ffffff; border-bottom-color: #7289da; }
-
 /* --- Header & Selectors --- */
 .controls-header { text-align: center; margin-bottom: 30px; }
 .selectors { display: flex; flex-flow: row wrap; justify-content: center; align-items: flex-start; gap: 20px; margin-top: 20px; }
@@ -34,12 +30,12 @@ select { font-size: 1.1em; padding: 10px; border: 2px solid #2f3136; background-
 #character-select { border-radius: 0 0 5px 5px; border-top: none; width: 300px; }
 select:disabled { opacity: 0.5; }
 
-/* --- New Image Gallery Styles --- */
+/* --- MODIFIED: Image Gallery Styles --- */
 .image-gallery {
     display: flex;
     gap: 15px;
     margin-top: 20px;
-    height: 70vh; /* Set a fixed height based on viewport */
+    height: 70vh;
     min-height: 500px;
     background-color: #2f3136;
     padding: 15px;
@@ -48,7 +44,7 @@ select:disabled { opacity: 0.5; }
 .image-gallery.hidden { display: none; }
 
 .gallery-left-panel {
-    flex: 3; /* Take up 3/4 of the space */
+    flex: 3;
     display: flex;
     background-color: #202225;
     border-radius: 5px;
@@ -56,19 +52,31 @@ select:disabled { opacity: 0.5; }
 .gallery-left-panel img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Show the whole image without stretching */
+    object-fit: contain;
 }
 
 .gallery-right-panel {
-    flex: 1; /* Take up 1/4 of the space */
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-.gallery-right-panel img {
+
+/* Base styles for all thumbnails */
+.thumbnail-image {
     width: 100%;
-    flex-grow: 1; /* Make all images share the space equally */
-    object-fit: cover; /* Crop to fill the space nicely */
+    object-fit: cover;
     border-radius: 5px;
     background-color: #202225;
+}
+
+/* Specific flex values to control height distribution */
+.thumbnail-enlarged {
+    flex: 3 1 0%; /* Takes up the most space */
+}
+.thumbnail-tall {
+    flex: 2 1 0%; /* Takes up medium space */
+}
+.thumbnail-small {
+    flex: 1 1 0%; /* Takes up the least space */
 }
