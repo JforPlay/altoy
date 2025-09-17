@@ -21,9 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('data/subset_skin_data.json')
         .then(response => response.json())
         .then(jsonData => {
-            if (!jsonData || Object.keys(jsonData).length === 0) {
-                throw new Error('JSON data is empty or invalid.');
-            }
+            if (!jsonData || Object.keys(jsonData).length === 0) throw new Error('JSON data is empty or invalid.');
             skinData = Object.values(jsonData);
             populateCharacterSelect();
             if (characterSelect.options.length > 1) {
@@ -34,8 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     displaySkinDetails();
                 }
             }
-        })
-        .catch(error => {
+        }).catch(error => {
             console.error('Error loading or parsing JSON:', error);
             characterSelect.innerHTML = '<option>Error: Could not load data.</option>';
         });
@@ -43,33 +40,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const populateCharacterSelect = () => {
         const characterNames = [...new Set(skinData.map(row => row['함순이 이름']))].filter(name => name);
         allCharacterData = [];
-        characterNames.sort().forEach(name => {
-            allCharacterData.push({ value: name, text: name });
-        });
+        characterNames.sort().forEach(name => allCharacterData.push({ value: name, text: name }));
         filterCharacters();
     };
-    
+
     const filterCharacters = () => {
         const searchTerm = characterSearch.value.toLowerCase();
         const currentSelection = characterSelect.value;
         characterSelect.innerHTML = '';
         const placeholder = document.createElement('option');
-        placeholder.value = "";
-        placeholder.textContent = "-- Select a Character --";
+        placeholder.value = ""; placeholder.textContent = "-- Select a Character --";
         characterSelect.appendChild(placeholder);
         let isCurrentSelectionInList = false;
         allCharacterData.forEach(data => {
             if (data.text.toLowerCase().includes(searchTerm)) {
                 const option = document.createElement('option');
-                option.value = data.value;
-                option.textContent = data.text;
+                option.value = data.value; option.textContent = data.text;
                 characterSelect.appendChild(option);
                 if (data.value === currentSelection) isCurrentSelectionInList = true;
             }
         });
         if (isCurrentSelectionInList) characterSelect.value = currentSelection;
     };
-    
+
     const updateSkinSelect = () => {
         if (characterSelect.value) characterSearch.value = characterSelect.value;
         const selectedCharacter = characterSelect.value;
@@ -83,14 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
         characterSkins.forEach(skin => {
             const option = document.createElement('option');
             const skinName = skin['한글 함순이 + 스킨 이름'];
-            option.value = skinName;
-            option.textContent = skinName;
+            option.value = skinName; option.textContent = skinName;
             skinSelect.appendChild(option);
         });
         skinSelect.disabled = false;
     };
 
-    // --- MODIFIED: This function now groups the small images ---
+    // --- MODIFIED: This function now builds the new complex gallery layout ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
@@ -100,58 +92,65 @@ document.addEventListener('DOMContentLoaded', () => {
         const skin = skinData.find(row => row['한글 함순이 + 스킨 이름'] === selectedSkinName);
         if (!skin) return;
 
-        imageGallery.innerHTML = '';
+        imageGallery.innerHTML = ''; // Clear previous content
 
-        const mainImageSrc = skin['전체 일러'];
-        
-        const leftPanel = document.createElement('div');
-        leftPanel.className = 'gallery-left-panel';
-        if (mainImageSrc && mainImageSrc !== 'null') {
-            const mainImage = document.createElement('img');
-            mainImage.src = mainImageSrc;
-            leftPanel.appendChild(mainImage);
+        // Create and append top banner image
+        const topBannerSrc = skin['전체 일러'];
+        if (topBannerSrc && topBannerSrc !== 'null') {
+            const topBannerImg = document.createElement('img');
+            topBannerImg.className = 'gallery-top-banner';
+            topBannerImg.src = topBannerSrc;
+            imageGallery.appendChild(topBannerImg);
         }
+
+        // Create container for the bottom row
+        const bottomPanel = document.createElement('div');
+        bottomPanel.className = 'gallery-bottom-panel';
+
+        // Create and append left column image
+        const bottomLeftPanel = document.createElement('div');
+        bottomLeftPanel.className = 'bottom-left-panel';
+        const secondaryLargeSrc = skin['확대 일러'];
+        if (secondaryLargeSrc && secondaryLargeSrc !== 'null') {
+            const secondaryImg = document.createElement('img');
+            secondaryImg.src = secondaryLargeSrc;
+            bottomLeftPanel.appendChild(secondaryImg);
+        }
+        bottomPanel.appendChild(bottomLeftPanel);
         
-        const rightPanel = document.createElement('div');
-        rightPanel.className = 'gallery-right-panel';
+        // Create right column and its content
+        const bottomRightPanel = document.createElement('div');
+        bottomRightPanel.className = 'bottom-right-panel';
 
-        // Add the larger thumbnails first (if they exist)
-        const largeThumbnails = [
-            { type: 'enlarged', src: skin['확대 일러'] },
-            { type: 'tall',     src: skin['깔끔한 일러'] }
-        ].filter(item => item.src && item.src !== 'null');
-
-        largeThumbnails.forEach(item => {
-            const thumbImage = document.createElement('img');
-            thumbImage.src = item.src;
-            thumbImage.classList.add('thumbnail-image', `thumbnail-${item.type}`);
-            rightPanel.appendChild(thumbImage);
+        // Group 1: Tall thumbnails
+        const tallGroup = document.createElement('div');
+        tallGroup.className = 'thumbnail-group';
+        const tallSources = [skin['깔끔한 일러'], skin['sd 일러']].filter(src => src && src !== 'null');
+        tallSources.forEach(src => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.className = 'tall-thumbnail';
+            tallGroup.appendChild(img);
         });
+        if(tallGroup.children.length > 0) bottomRightPanel.appendChild(tallGroup);
 
-        // Group the three small thumbnails into their own container
-        const smallThumbnails = [
-            skin['sd 일러'],
-            skin['아이콘 일러'],
-            skin['쥬스타 아이콘 일러']
-        ].filter(src => src && src !== 'null');
+        // Group 2: Small thumbnails
+        const smallGroup = document.createElement('div');
+        smallGroup.className = 'thumbnail-group';
+        const smallSources = [skin['아이콘 일러'], skin['쥬스타 아이콘 일러']].filter(src => src && src !== 'null');
+        smallSources.forEach(src => {
+            const img = document.createElement('img');
+            img.src = src;
+            smallGroup.appendChild(img);
+        });
+        if(smallGroup.children.length > 0) bottomRightPanel.appendChild(smallGroup);
 
-        if (smallThumbnails.length > 0) {
-            const smallContainer = document.createElement('div');
-            smallContainer.className = 'small-thumbnails-container';
-            smallThumbnails.forEach(src => {
-                const smallImage = document.createElement('img');
-                smallImage.src = src;
-                smallImage.classList.add('thumbnail-image', 'thumbnail-small');
-                smallContainer.appendChild(smallImage);
-            });
-            rightPanel.appendChild(smallContainer); // Add the container to the right panel
-        }
-
-        imageGallery.appendChild(leftPanel);
-        imageGallery.appendChild(rightPanel);
+        bottomPanel.appendChild(bottomRightPanel);
+        imageGallery.appendChild(bottomPanel);
         imageGallery.classList.remove('hidden');
     };
 
+    // Attach event listeners
     characterSearch.addEventListener('input', debounce(filterCharacters, 250));
     characterSelect.addEventListener('change', updateSkinSelect);
     skinSelect.addEventListener('change', displaySkinDetails);

@@ -30,58 +30,67 @@ select { font-size: 1.1em; padding: 10px; border: 2px solid #2f3136; background-
 #character-select { border-radius: 0 0 5px 5px; border-top: none; width: 300px; }
 select:disabled { opacity: 0.5; }
 
-/* --- MODIFIED: Image Gallery Styles --- */
+/* --- New Image Gallery Styles --- */
 .image-gallery {
     display: flex;
+    flex-direction: column;
     gap: 15px;
     margin-top: 20px;
-    height: 70vh;
-    min-height: 500px;
     background-color: #2f3136;
     padding: 15px;
     border-radius: 8px;
 }
 .image-gallery.hidden { display: none; }
-
-.gallery-left-panel {
-    flex: 3;
-    display: flex;
+.image-gallery img {
     background-color: #202225;
     border-radius: 5px;
 }
-.gallery-left-panel img {
+
+.gallery-top-banner {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: center 25%; /* Focus on the top part of the image */
+}
+
+.gallery-bottom-panel {
+    display: flex;
+    gap: 15px;
+    height: 350px;
+}
+
+.bottom-left-panel {
+    flex: 1.5; /* Give this a bit more space */
+}
+.bottom-left-panel img {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
-.gallery-right-panel {
+.bottom-right-panel {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.thumbnail-image {
-    width: 100%;
-    object-fit: cover;
-    border-radius: 5px;
-    background-color: #202225;
-}
-
-/* Specific heights for large and tall thumbnails */
-.thumbnail-enlarged { flex: 3 1 0%; }
-.thumbnail-tall { flex: 2 1 0%; }
-
-/* New container for the small images */
-.small-thumbnails-container {
-    display: flex; /* This makes the images inside go side-by-side */
+.thumbnail-group {
+    flex: 1;
+    display: flex;
     gap: 10px;
-    flex: 1 1 0%; /* The container itself takes up 1 part of the vertical space */
 }
-/* Styling for the small images inside their new container */
-.small-thumbnails-container .thumbnail-small {
-    flex: 1; /* Each small image shares the horizontal space equally */
+.thumbnail-group img {
+    flex: 1;
+    width: 0; /* Let flex-basis calculate width */
     height: 100%;
-    width: 0; /* Let flexbox calculate the width */
+    object-fit: cover;
+}
+
+/* Enforce 3:4 aspect ratio for these specific images */
+.tall-thumbnail {
+    aspect-ratio: 3 / 4;
+    width: auto; /* Let aspect-ratio determine width */
+    height: 100%;
+    object-fit: cover;
 }
