@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- URLs for external data ---
+    // URLs for external data
     const STORY_URL = 'test.json';
     const SHIPGIRL_DATA_URL = 'shipgirl_data.json';
 
-    // --- Get HTML elements ---
+    // Get HTML elements
     const storyContainer = document.getElementById('story-container');
     const optionsContainer = document.getElementById('options-container');
     const storyHeader = document.getElementById('story-header');
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const vfxOverlay = document.getElementById('vfx-overlay');
     const flashOverlay = document.getElementById('flash-overlay');
 
-    // --- Story state and data maps ---
+    // Story state and data maps
     let allScripts = [];
     let currentScriptIndex = 0;
     let shipgirlData = {};
@@ -36,10 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (script.effects) processEffects(script.effects);
 
             if (script.options) {
-                displayBubble(script);
+                const bubbleElement = displayBubble(script);
+                if (script.action) handleAction(script.action, bubbleElement);
                 displayOptions(script.options);
             } else if (script.say) {
-                displayBubble(script);
+                const bubbleElement = displayBubble(script);
+                if (script.action) handleAction(script.action, bubbleElement);
                 currentScriptIndex++;
                 setTimeout(showNextLine, 400);
             } else {
@@ -56,12 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- MODIFIED: displayBubble now displays text instantly ---
+    // --- MODIFIED: displayBubble now returns the created element ---
     const displayBubble = (script) => {
         const actorId = script.actor || script.portrait;
-        let speakerName = '';
-        let messageClass = '';
-        let iconUrl = '';
+        let speakerName = '', messageClass = '', iconUrl = '';
+        let topLevelElement; // This will be the element we return
 
         if (script.actor === 0) {
             speakerName = 'Commander';
@@ -95,47 +96,36 @@ document.addEventListener('DOMContentLoaded', () => {
             wrapper.appendChild(messageBubble);
             storyContainer.appendChild(wrapper);
             wrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            topLevelElement = wrapper; // The wrapper is the target for effects
         } else {
             storyContainer.appendChild(messageBubble);
             messageBubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            topLevelElement = messageBubble; // The bubble is the target
         }
+        return topLevelElement; // Return the element so we can apply actions to it
     };
-
-    const handleChoice = (chosenFlag, chosenText) => {
-        const choiceBubble = document.createElement('div');
-        choiceBubble.classList.add('message-bubble', 'player');
-        choiceBubble.innerHTML = `<p class="speaker-name">Commander</p><p>${chosenText}</p>`;
-        storyContainer.appendChild(choiceBubble);
-        choiceBubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        optionsContainer.innerHTML = '';
-        currentScriptIndex++;
-        while (currentScriptIndex < allScripts.length && allScripts[currentScriptIndex].optionFlag) {
-            if (allScripts[currentScriptIndex].optionFlag === chosenFlag) displayBubble(allScripts[currentScriptIndex]);
-            currentScriptIndex++;
-        }
-        setTimeout(showNextLine, 400);
+    
+    // --- New Function to Handle Actions like Shake ---
+    const handleAction = (actions, targetElement) => {
+        actions.forEach(action => {
+            if (action.type === 'shake' && targetElement) {
+                targetElement.classList.add('shake-effect');
+                // Remove the class after the animation finishes so it can be re-triggered
+                setTimeout(() => {
+                    targetElement.classList.remove('shake-effect');
+                }, 400); // Must match the total duration of the CSS animation
+            }
+        });
     };
-
-    const handleFlash = (flashData, onCompleteCallback) => {
-        const { delay = 0, dur, black, alpha } = flashData;
-        const [startAlpha, endAlpha] = alpha;
-        flashOverlay.style.backgroundColor = black ? 'black' : 'white';
-        flashOverlay.style.transition = 'none';
-        flashOverlay.style.opacity = startAlpha;
-        setTimeout(() => {
-            flashOverlay.style.transition = `opacity ${dur}s ease-in-out`;
-            flashOverlay.style.opacity = endAlpha;
-        }, delay * 1000);
-        setTimeout(onCompleteCallback, (delay + dur) * 1000);
-    };
-
+    
+    // All other functions remain the same...
+    const handleChoice = (chosenFlag, chosenText) => { const choiceBubble = document.createElement('div'); choiceBubble.classList.add('message-bubble', 'player'); choiceBubble.innerHTML = `<p class="speaker-name">Commander</p><p>${chosenText}</p>`; storyContainer.appendChild(choiceBubble); choiceBubble.scrollIntoView({ behavior: 'smooth', block: 'end' }); optionsContainer.innerHTML = ''; currentScriptIndex++; while (currentScriptIndex < allScripts.length && allScripts[currentScriptIndex].optionFlag) { const bubbleElement = displayBubble(allScripts[currentScriptIndex]); if (allScripts[currentScriptIndex].action) handleAction(allScripts[currentScriptIndex].action, bubbleElement); currentScriptIndex++; } setTimeout(showNextLine, 400); };
+    const handleFlash = (flashData, onCompleteCallback) => { const { delay = 0, dur, black, alpha } = flashData; const [startAlpha, endAlpha] = alpha; flashOverlay.style.backgroundColor = black ? 'black' : 'white'; flashOverlay.style.transition = 'none'; flashOverlay.style.opacity = startAlpha; setTimeout(() => { flashOverlay.style.transition = `opacity ${dur}s ease-in-out`; flashOverlay.style.opacity = endAlpha; }, delay * 1000); setTimeout(onCompleteCallback, (delay + dur) * 1000); };
     const processEffects = (effects) => { effects.forEach(effect => { if (effect.name === 'juqing_xiayu') vfxOverlay.classList.toggle('rain-effect', effect.active); }); };
-
     const displayOptions = (options) => { options.forEach(option => { const button = document.createElement('button'); button.classList.add('choice-button'); button.textContent = option.content; button.onclick = () => handleChoice(option.flag, option.content); optionsContainer.appendChild(button); button.scrollIntoView({ behavior: 'smooth', block: 'end' }); }); };
-
     const processHeader = () => { if (allScripts.length > 0 && allScripts[0].sequence) { const headerRawText = allScripts[0].sequence[0][0]; const [title, subtitle] = headerRawText.split('\n\n'); if (title) storyHeader.innerHTML += `<h1>${title}</h1>`; if (subtitle) { const cleanedSubtitle = subtitle.replace(/<size=\d+>|<\/size>/g, '').replace(/^\d+\s*/, ''); storyHeader.innerHTML += `<h2>${cleanedSubtitle}</h2>`; } } };
 
-    // --- Fetch all data sources at once before starting ---
+    // Fetch all data sources at once before starting
     Promise.all([
         fetch(STORY_URL).then(res => res.json()),
         fetch(SHIPGIRL_DATA_URL).then(res => res.json())
