@@ -10,9 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatRight = document.getElementById('chat-lines-right');
 
     let skinData = [];
-    let allCharacterData = []; // MODIFICATION: Stores character data {value, text} instead of DOM nodes
+    let allCharacterData = [];
 
-    // --- New: Debounce function for performance ---
     const debounce = (func, delay) => {
         let timeoutId;
         return (...args) => {
@@ -23,10 +22,19 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    // --- 1. Fetch and Process JSON Data ---
-    fetch('subset_skin_data.json')
-        .then(response => response.json())
+    fetch('data/subset_skin_data.json')
+        .then(response => {
+            if (!response.ok) {
+                // More specific error for network issues
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(jsonData => {
+            if (!jsonData || Object.keys(jsonData).length === 0) {
+                // More specific error for empty/invalid file
+                throw new Error('JSON data is empty or invalid.');
+            }
             skinData = Object.values(jsonData);
             populateCharacterSelect();
             // Load first character by default
@@ -40,54 +48,58 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
         .catch(error => {
-            console.error('Error fetching or parsing JSON:', error);
-            characterSelect.innerHTML = '<option>Error loading data</option>';
+            console.error('Error loading or parsing JSON:', error);
+            const loadingIndicator = document.getElementById('loading-indicator');
+            if (loadingIndicator) {
+                // Provide a more helpful error message to the user
+                loadingIndicator.textContent = 'Error: Could not load data. Please ensure "subset_skin_data.json" is in the same folder as the HTML file.';
+                loadingIndicator.classList.add('error');
+            }
         });
 
-    // --- 2. Populate and Store Character Data ---
     const populateCharacterSelect = () => {
         const characterNames = [...new Set(skinData.map(row => row['함순이 이름']))].filter(name => name);
-        allCharacterData = []; // Clear previous data
+        allCharacterData = [];
         characterNames.sort().forEach(name => {
             allCharacterData.push({ value: name, text: name });
         });
-        // Initially populate the dropdown with all characters
-        filterCharacters(true);
+        filterCharacters(); // Initial population
     };
-
-    // --- 3. DEBUGGED: Filter logic is now more robust ---
-    const filterCharacters = (isInitialPopulation = false) => {
+    
+    const filterCharacters = () => {
         const searchTerm = characterSearch.value.toLowerCase();
-        const currentSelection = characterSelect.value;
-        characterSelect.innerHTML = ''; // Clear current options
+        const currentSelection = characterSelect.value; // Remember what was selected
+        characterSelect.innerHTML = '';
         
-        // Always add the placeholder option
         const placeholder = document.createElement('option');
         placeholder.value = "";
         placeholder.textContent = "-- Select a Character --";
         characterSelect.appendChild(placeholder);
 
-        // Rebuild the options list from the stored data array
+        let isCurrentSelectionInList = false;
         allCharacterData.forEach(data => {
             if (data.text.toLowerCase().includes(searchTerm)) {
                 const option = document.createElement('option');
                 option.value = data.value;
                 option.textContent = data.text;
                 characterSelect.appendChild(option);
+                if (data.value === currentSelection) {
+                    isCurrentSelectionInList = true;
+                }
             }
         });
         
-        // If the previously selected item is still in the filtered list, keep it selected
-        if (!isInitialPopulation) {
+        // If the selected item still exists in the filtered list, keep it selected
+        if (isCurrentSelectionInList) {
              characterSelect.value = currentSelection;
         }
     };
     
-    // --- 4. Update Skin Dropdown ---
+    // --- DEBUGGED: Fixed the search/select interaction ---
     const updateSkinSelect = () => {
+        // When a selection is made from the dropdown, update the search box text
         if (characterSelect.value) {
             characterSearch.value = characterSelect.value;
-            filterCharacters(); // Re-filter to show only the selected item
         }
         
         const selectedCharacter = characterSelect.value;
@@ -110,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
 
-    // --- 5. Display Skin Details (Unchanged) ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
@@ -148,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Attach event listeners
-    characterSearch.addEventListener('input', debounce(filterCharacters, 250)); // Debounced search
+    characterSearch.addEventListener('input', debounce(filterCharacters, 250));
     characterSelect.addEventListener('change', updateSkinSelect);
     skinSelect.addEventListener('change', displaySkinDetails);
 });
