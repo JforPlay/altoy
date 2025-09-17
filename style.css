@@ -124,3 +124,44 @@ body {
 .restart-button:hover {
     background-color: #d84040;
 }
+
+/* Add these new styles for visual effects */
+#vfx-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allows clicks to pass through */
+    z-index: -1; /* Sits behind the content */
+}
+
+/* A simple CSS-only rain effect */
+.rain-effect {
+    background-image: 
+        linear-gradient(0deg, transparent 50%, rgba(255, 255, 255, 0.2) 100%);
+    background-size: 3px 20px;
+    animation: rain-animation 0.35s linear infinite;
+}
+
+@keyframes rain-animation {
+    from {
+        background-position: 0% 0%;
+    }
+    to {
+        background-position: 15% 100%;
+    }
+}
+
+/* Add these new styles for the flash effect */
+#flash-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000; /* Default to black */
+    opacity: 0;
+    pointer-events: none;
+    z-index: 99; /* Sits on top of content but below the restart button */
+}
