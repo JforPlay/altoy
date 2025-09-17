@@ -56,14 +56,14 @@ select:disabled { opacity: 0.5; }
 
 .gallery-top-banner {
     width: 100%;
-    flex: 1.5; /* Give the top banner a bit more vertical space */
+    flex: 2; /* Give the top banner a bit more vertical space */
     min-height: 0; /* Allows the banner to shrink if needed */
 }
 
 .gallery-bottom-panel {
     display: flex;
     gap: 20px;
-    flex: 2; /* Give the bottom panel more vertical space */
+    flex: 1.5; /* Give the bottom panel more vertical space */
     min-height: 0; /* Allows the panel to shrink */
 }
 
