@@ -103,3 +103,24 @@ body {
 .choice-button:hover {
     background-color: #4752c4;
 }
+
+/* Add these new styles for the restart button */
+.restart-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100; /* Ensures it stays on top of other content */
+    background-color: #f04747;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 0.9em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.restart-button:hover {
+    background-color: #d84040;
+}
