@@ -187,3 +187,17 @@ body {
 .character-line-wrapper .message-bubble {
     max-width: none;
 }
+
+/* Add these new styles for the loading indicator */
+.loading-message {
+    text-align: center;
+    padding-top: 50px;
+    font-size: 1.2em;
+    color: #b9bbbe;
+    font-style: italic;
+}
+
+.loading-message.error {
+    color: #f04747;
+    font-weight: bold;
+}
