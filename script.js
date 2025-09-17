@@ -1,56 +1,55 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Get HTML elements
     const storyContainer = document.getElementById('story-container');
     const optionsContainer = document.getElementById('options-container');
     const storyHeader = document.getElementById('story-header');
 
-    // Story state variables
     let allScripts = [];
     let currentScriptIndex = 0;
     const actorIdToNameMap = {};
 
-    // --- Main Function to Start the Story ---
     const startStory = (data) => {
         allScripts = data.renqiaijier.scripts;
         processHeader();
-        currentScriptIndex = 1; // Start from the script after the header
+        currentScriptIndex = 1;
         showNextLine();
     };
 
-    // --- Process the Story Step-by-Step ---
     const showNextLine = () => {
-        // Check if the story is over
         if (currentScriptIndex >= allScripts.length) {
-            console.log("End of story.");
             return;
         }
 
         const script = allScripts[currentScriptIndex];
 
         if (script.options) {
-            // If the script has choices, display them and wait for user input
             displayBubble(script);
             displayOptions(script.options);
         } else if (script.say) {
-            // If it's a regular dialogue line, display it
             displayBubble(script);
             currentScriptIndex++;
-            // Show the next line after a short delay
-            setTimeout(showNextLine, 800);
+            // MODIFICATION: Changed delay from 800ms to 400ms for faster pacing
+            setTimeout(showNextLine, 400);
         } else {
-            // Skip non-dialogue entries and continue
             currentScriptIndex++;
             showNextLine();
         }
     };
     
-    // --- Handle User's Choice ---
-    const handleChoice = (chosenFlag) => {
-        // Remove the choice buttons from the screen
-        optionsContainer.innerHTML = '';
-        currentScriptIndex++; // Move index past the options block
+    // MODIFICATION: Function now accepts 'chosenText' to display the choice
+    const handleChoice = (chosenFlag, chosenText) => {
+        // --- New Feature: Display the selected option ---
+        const choiceBubble = document.createElement('div');
+        choiceBubble.classList.add('message-bubble', 'player');
+        choiceBubble.innerHTML = `<p class="speaker-name">Commander</p><p>${chosenText}</p>`;
+        storyContainer.appendChild(choiceBubble);
+        // --- End of New Feature ---
 
-        // Find and show all script lines that match the chosen flag
+        // Auto-scroll to the choice you made
+        choiceBubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+        optionsContainer.innerHTML = '';
+        currentScriptIndex++;
+
         while (currentScriptIndex < allScripts.length && allScripts[currentScriptIndex].optionFlag) {
             if (allScripts[currentScriptIndex].optionFlag === chosenFlag) {
                 displayBubble(allScripts[currentScriptIndex]);
@@ -58,15 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
             currentScriptIndex++;
         }
         
-        // Continue the main story flow
-        setTimeout(showNextLine, 800);
+        // MODIFICATION: Changed delay from 800ms to 400ms
+        setTimeout(showNextLine, 400);
     };
 
-    // --- Helper Functions ---
     const displayBubble = (script) => {
         const messageBubble = document.createElement('div');
         messageBubble.classList.add('message-bubble');
-
+        
         let speakerName = '';
         let messageClass = '';
         const actorId = script.actor || script.portrait;
@@ -89,17 +87,16 @@ document.addEventListener('DOMContentLoaded', () => {
         messageBubble.classList.add(messageClass);
 
         if (speakerName) {
-            const speakerElement = document.createElement('p');
-            speakerElement.classList.add('speaker-name');
-            speakerElement.textContent = speakerName;
-            messageBubble.appendChild(speakerElement);
+            messageBubble.innerHTML += `<p class="speaker-name">${speakerName}</p>`;
         }
         
-        const textElement = document.createElement('p');
-        textElement.textContent = script.say.replace(/<size=\d+>|<\/size>/g, '');
-        messageBubble.appendChild(textElement);
+        const dialogueText = script.say.replace(/<size=\d+>|<\/size>/g, '');
+        messageBubble.innerHTML += `<p>${dialogueText}</p>`;
         
         storyContainer.appendChild(messageBubble);
+
+        // Auto-scroll to the new message
+        messageBubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
     };
 
     const displayOptions = (options) => {
@@ -107,8 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = document.createElement('button');
             button.classList.add('choice-button');
             button.textContent = option.content;
-            button.onclick = () => handleChoice(option.flag);
+            // MODIFICATION: Pass the option's text content to handleChoice
+            button.onclick = () => handleChoice(option.flag, option.content);
             optionsContainer.appendChild(button);
+            // Auto-scroll to show the options
+            button.scrollIntoView({ behavior: 'smooth', block: 'end' });
         });
     };
 
@@ -124,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- Fetch Data and Start ---
     fetch('test.json')
         .then(response => response.json())
         .then(startStory)
