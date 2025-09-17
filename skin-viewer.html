@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Viewer</title>
+    <link rel="stylesheet" href="skin-viewer.style.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="index.html" class="nav-link">Story Viewer</a>
+        <a href="skin-viewer.html" class="nav-link active">Skin Viewer</a>
+    </nav>
+
+    <div class="main-container">
+        <header class="controls-header">
+            <h1>Select a Character and Skin</h1>
+            <div class="selectors">
+                <select id="character-select">
+                    <option>Loading characters...</option>
+                </select>
+                <select id="skin-select" disabled>
+                    <option>Select a character first</option>
+                </select>
+            </div>
+        </header>
+
+        <div id="content-display" class="content-display hidden">
+            <div class="left-panel">
+                <img id="skin-image" src="" alt="Character Skin Image">
+                <h2>Descriptions</h2>
+                <div id="description-list" class="description-list"></div>
+            </div>
+            <div class="right-panel">
+                <h2>Voice Lines</h2>
+                <div class="chat-container">
+                    <div id="chat-lines-left" class="chat-column"></div>
+                    <div id="chat-lines-right" class="chat-column"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="skin-viewer.script.js"></script>
+</body>
+</html>

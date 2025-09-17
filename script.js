@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // URLs for external data
-    const STORY_URL = 'test.json';
-    const SHIPGIRL_DATA_URL = 'shipgirl_data.json';
+    const STORY_URL = 'data/test.json';
+    const SHIPGIRL_DATA_URL = 'data/shipgirl_data.json';
 
     // Get HTML elements
     const storyContainer = document.getElementById('story-container');
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let topLevelElement;
 
         if (script.actor === 0) {
-            speakerName = 'Commander';
+            speakerName = '지휘관';
             messageClass = 'player';
         } else if (actorId && shipgirlData[actorId]) {
             const character = shipgirlData[actorId];
@@ -159,10 +159,10 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeStory();
         restartButton.addEventListener('click', initializeStory);
     }).catch(error => {
-        console.error('Error loading story data:', error);
+        console.error('에러 404:', error);
         const loadingIndicator = document.getElementById('loading-indicator');
         if (loadingIndicator) {
-            loadingIndicator.textContent = 'Failed to load story data. Please try again later.';
+            loadingIndicator.textContent = '스토리 정보를 불러오는데 실패했어요. 나중에 다시 시도해주세요.';
             loadingIndicator.classList.add('error');
         }
     });

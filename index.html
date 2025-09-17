@@ -7,16 +7,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="vfx-overlay"></div>
-    <div id="flash-overlay"></div>
+    <nav class="top-nav">
+        <a href="index.html" class="nav-link active">Story Viewer</a>
+        <a href="skin-viewer.html" class="nav-link">Skin Viewer</a>
+    </nav>
 
     <button id="restart-button" class="restart-button">Restart Story</button>
 
     <header id="story-header"></header>
+
     <div class="story-container" id="story-container">
         <p id="loading-indicator" class="loading-message">Loading story...</p>
     </div>
+
     <div class="options-container" id="options-container"></div>
+    <div id="vfx-overlay"></div>
+    <div id="flash-overlay"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
