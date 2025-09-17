@@ -4,24 +4,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const optionsContainer = document.getElementById('options-container');
     const storyHeader = document.getElementById('story-header');
     const restartButton = document.getElementById('restart-button');
+    const vfxOverlay = document.getElementById('vfx-overlay');
+    const flashOverlay = document.getElementById('flash-overlay'); // Get the new flash overlay
 
     // Story state variables
     let allScripts = [];
     let currentScriptIndex = 0;
     let actorIdToNameMap = {};
 
-    // --- New: Main Function to Initialize or Restart the Story ---
     const initializeStory = () => {
-        // 1. Clear all dynamic content
         storyHeader.innerHTML = '';
         storyContainer.innerHTML = '';
         optionsContainer.innerHTML = '';
-        
-        // 2. Reset state variables
+        vfxOverlay.className = '';
+        flashOverlay.style.opacity = 0; // Ensure flash is reset
+
         currentScriptIndex = 0;
         actorIdToNameMap = {};
 
-        // 3. Re-build the story from the beginning
         processHeader();
         currentScriptIndex = 1; 
         showNextLine();
@@ -31,19 +31,63 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentScriptIndex >= allScripts.length) return;
         const script = allScripts[currentScriptIndex];
 
-        if (script.options) {
-            displayBubble(script);
-            displayOptions(script.options);
-        } else if (script.say) {
-            displayBubble(script);
-            currentScriptIndex++;
-            setTimeout(showNextLine, 400);
+        // This function will run after any flash effect is complete
+        const continueAfterEffect = () => {
+            if (script.effects) {
+                processEffects(script.effects);
+            }
+
+            if (script.options) {
+                displayBubble(script);
+                displayOptions(script.options);
+            } else if (script.say) {
+                displayBubble(script);
+                currentScriptIndex++;
+                setTimeout(showNextLine, 400);
+            } else {
+                currentScriptIndex++;
+                showNextLine();
+            }
+        };
+        
+        // Check for flash effects and handle their timing
+        const flashData = script.flashin || script.flashout;
+        if (flashData) {
+            handleFlash(flashData, continueAfterEffect);
         } else {
-            currentScriptIndex++;
-            showNextLine();
+            continueAfterEffect(); // No flash, just continue
         }
     };
     
+    // --- New Function to Handle Flashes ---
+    const handleFlash = (flashData, onCompleteCallback) => {
+        const { delay = 0, dur, black, alpha } = flashData;
+        const [startAlpha, endAlpha] = alpha;
+
+        // Set initial state of the flash
+        flashOverlay.style.backgroundColor = black ? 'black' : 'white';
+        flashOverlay.style.transition = 'none';
+        flashOverlay.style.opacity = startAlpha;
+
+        // Use a timeout to apply the transition after the initial state is set
+        setTimeout(() => {
+            flashOverlay.style.transition = `opacity ${dur}s ease-in-out`;
+            flashOverlay.style.opacity = endAlpha;
+        }, delay * 1000);
+
+        // Call the callback function after the flash animation is complete
+        setTimeout(onCompleteCallback, (delay + dur) * 1000);
+    };
+
+    // All other functions (processEffects, handleChoice, etc.) remain the same...
+    const processEffects = (effects) => {
+        effects.forEach(effect => {
+            if (effect.name === 'juqing_xiayu') {
+                vfxOverlay.classList.toggle('rain-effect', effect.active);
+            }
+        });
+    };
+
     const handleChoice = (chosenFlag, chosenText) => {
         const choiceBubble = document.createElement('div');
         choiceBubble.classList.add('message-bubble', 'player');
@@ -122,13 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- Fetch Data and Attach Event Listeners ---
     fetch('test.json')
         .then(response => response.json())
         .then(data => {
-            allScripts = data.renqiaijier.scripts; // Store script data globally
-            initializeStory(); // Run the story for the first time
-            restartButton.addEventListener('click', initializeStory); // Attach restart logic
+            allScripts = data.renqiaijier.scripts;
+            initializeStory();
+            restartButton.addEventListener('click', initializeStory);
         })
         .catch(error => {
             console.error('Error loading or parsing story file:', error);
