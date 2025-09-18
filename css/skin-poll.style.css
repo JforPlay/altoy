@@ -41,6 +41,7 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
 .rating-area.voted .star-rating input:checked ~ label { color: #03a9f4; }
 .poll-results { margin-top: 8px; font-size: 0.8em; color: #b9bbbe; text-align: center; }
 
+
 /* --- Responsive Styles for Mobile --- */
 @media (max-width: 768px) {
     html {

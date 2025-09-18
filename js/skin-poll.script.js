@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         appId: "1:282702723033:web:a97b60cb7138bdbbbacbc8"
     };
 
+
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const factionSelect = document.getElementById('faction-select');
     const tagSelect = document.getElementById('tag-select');
 
+    // --- State Variables ---
     let allSkins = [];
     let allCharacterNamesData = [];
     let allSkinNamesData = [];
@@ -35,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(jsonData => {
             allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] })).filter(skin => skin['깔끔한 일러']);
+            
             populateInitialFilters();
             tagSelect.value = 'L2D';
             applyFilters();
@@ -49,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         rebuildDropdown(characterNameSelect, allCharacterNamesData);
         rebuildDropdown(skinNameSelect, allSkinNamesData.map(s => ({ value: s.skinName, text: s.skinName })));
-        
+
         rarityCheckboxes.querySelectorAll('input').forEach(checkbox => {
             checkbox.addEventListener('change', applyFilters);
         });
@@ -174,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     characterNameSearch.addEventListener('input', debounce(() => {
         rebuildDropdown(characterNameSelect, allCharacterNamesData.filter(char => char.text.toLowerCase().includes(characterNameSearch.value.toLowerCase())));
     }, 250));
+
     skinNameSearch.addEventListener('input', debounce(() => {
         const selectedChar = characterNameSelect.value;
         const searchTerm = skinNameSearch.value.toLowerCase();
