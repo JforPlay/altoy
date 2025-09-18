@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                              <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label>
                              <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
                         </div>
-                        <div class="poll-results" id="results-${skinId}">Loading results...</div>
+                        <div class="poll-results" id="results-${skinId}">평점을 불러오는 중 입니다...</div>
                     </div>
                 </div>
             `;
