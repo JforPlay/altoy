@@ -10,9 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         appId: "1:282702723033:web:a97b60cb7138bdbbbacbc8"
     };
 
-
     // Initialize Firebase and Firestore
-    // Check if Firebase is already initialized to avoid errors
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
@@ -20,60 +18,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Get HTML elements ---
     const pollContainer = document.getElementById('poll-container');
-    const skinTypeSelect = document.getElementById('skin-type-select');
-    const rarityCheckboxes = document.getElementById('rarity-checkboxes');
-    const factionSelect = document.getElementById('faction-select');
-    // New searchable dropdown elements
     const characterNameSearch = document.getElementById('character-name-search');
     const characterNameSelect = document.getElementById('character-name-select');
     const skinNameSearch = document.getElementById('skin-name-search');
     const skinNameSelect = document.getElementById('skin-name-select');
+    const skinTypeSelect = document.getElementById('skin-type-select');
+    const rarityCheckboxes = document.getElementById('rarity-checkboxes');
+    const factionSelect = document.getElementById('faction-select');
 
     let allSkins = [];
-    let allCharacterNames = []; // To store master list of character names
-    let allSkinNames = []; // To store master list of skin names
+    let allCharacterNames = [];
+    let allSkinNamesData = [];
 
     const debounce = (func, delay) => { let timeoutId; return (...args) => { clearTimeout(timeoutId); timeoutId = setTimeout(() => { func.apply(this, args); }, delay); }; };
 
-    // Fetch local skin data
     fetch('data/subset_skin_data.json')
         .then(response => response.json())
         .then(jsonData => {
             allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] }))
                 .filter(skin => skin['깔끔한 일러'] && skin['스킨 태그'] && skin['스킨 태그'].includes('L2D'));
             
-            populateNameFilters();
-            renderPollList(allSkins);
+            populateInitialFilters();
+            applyFilters();
         });
 
-    const populateNameFilters = () => {
+    const populateInitialFilters = () => {
         allCharacterNames = [...new Set(allSkins.map(s => s['함순이 이름']))].sort();
-        allSkinNames = allSkins.map(s => s['한글 함순이 + 스킨 이름']).sort();
+        allSkinNamesData = allSkins.map(s => ({ 
+            charName: s['함순이 이름'], 
+            skinName: s['한글 함순이 + 스킨 이름'] 
+        })).sort((a, b) => a.skinName.localeCompare(b.skinName));
 
         allCharacterNames.forEach(name => {
             const option = document.createElement('option');
             option.value = name; option.textContent = name;
             characterNameSelect.appendChild(option);
         });
-        allSkinNames.forEach(name => {
-            const option = document.createElement('option');
-            option.value = name; option.textContent = name;
-            skinNameSelect.appendChild(option);
+        updateSkinNameFilter();
+    };
+
+    const updateSkinNameFilter = () => {
+        const selectedCharacter = characterNameSelect.value;
+        const currentSearchTerm = skinNameSearch.value.toLowerCase();
+        skinNameSelect.innerHTML = '<option value="all">전체</option>';
+        let skinsForDropdown = allSkinNamesData;
+        if (selectedCharacter !== 'all') {
+            skinsForDropdown = allSkinNamesData.filter(s => s.charName === selectedCharacter);
+        }
+        skinsForDropdown.forEach(skin => {
+            if (skin.skinName.toLowerCase().includes(currentSearchTerm)) {
+                const option = document.createElement('option');
+                option.value = skin.skinName; option.textContent = skin.skinName;
+                skinNameSelect.appendChild(option);
+            }
         });
     };
 
-    const filterDropdown = (input, select, masterList) => {
-        const searchTerm = input.value.toLowerCase();
-        const currentSelection = select.value;
-        select.innerHTML = '<option value="all">전체</option>'; // Start with "All"
-        masterList.forEach(name => {
+    const filterCharacterNameDropdown = () => {
+        const searchTerm = characterNameSearch.value.toLowerCase();
+        characterNameSelect.innerHTML = '<option value="all">전체</option>';
+        allCharacterNames.forEach(name => {
             if (name.toLowerCase().includes(searchTerm)) {
                 const option = document.createElement('option');
                 option.value = name; option.textContent = name;
-                select.appendChild(option);
+                characterNameSelect.appendChild(option);
             }
         });
-        select.value = currentSelection; // Try to keep previous selection
     };
 
     const renderPollList = (skinsToRender) => {
@@ -100,9 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label>
                             <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
                         </div>
-                        <div class="poll-results" id="results-${skinId}">
-                            결과 불러오는 중...
-                        </div>
+                        <div class="poll-results" id="results-${skinId}">Loading results...</div>
                     </div>
                 </div>
             `;
@@ -124,35 +132,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedType !== 'all') { if (selectedType === '기본') { filteredSkins = filteredSkins.filter(skin => !skin['스킨 타입 - 한글']); } else { filteredSkins = filteredSkins.filter(skin => skin['스킨 타입 - 한글'] === selectedType); } }
         if (selectedFaction !== 'all') { filteredSkins = filteredSkins.filter(skin => skin['진영'] === selectedFaction); }
         if (selectedRarities.length > 0) { filteredSkins = filteredSkins.filter(skin => selectedRarities.includes(skin['레어도'])); }
+        
         renderPollList(filteredSkins);
     };
 
-
-    // --- Firebase Logic ---
     const submitVote = (skinId, rating, skinName, characterName) => {
-        if (localStorage.getItem(`voted_${skinId}`) === 'true') {
-            console.log("해당 스킨에 이미 투표하셨습니다.");
-            return;
-        }
+        if (localStorage.getItem(`voted_${skinId}`) === 'true') return;
 
         const pollRef = db.collection('skin_polls').doc(String(skinId));
-
         return db.runTransaction(transaction => {
             return transaction.get(pollRef).then(doc => {
                 let newTotalVotes = 1;
                 let newTotalScore = rating;
-
                 if (doc.exists) {
                     newTotalVotes = doc.data().total_votes + 1;
                     newTotalScore = doc.data().total_score + rating;
                 }
-                
-                transaction.set(pollRef, { 
-                    total_votes: newTotalVotes, 
-                    total_score: newTotalScore,
-                    skin_name: skinName,
-                    character_name: characterName
-                });
+                transaction.set(pollRef, { total_votes: newTotalVotes, total_score: newTotalScore, skin_name: skinName, character_name: characterName });
             });
         }).then(() => {
             localStorage.setItem(`voted_${skinId}`, 'true');
@@ -162,15 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 ratingArea.querySelectorAll('input').forEach(input => input.disabled = true);
             }
             fetchAndDisplayResults(skinId);
-        }).catch(error => {
-            console.error("Firebase transaction failed: ", error);
-        });
+        }).catch(error => { console.error("Firebase transaction failed: ", error); });
     };
 
     const fetchAndDisplayResults = (skinId) => {
         const resultsEl = document.getElementById(`results-${skinId}`);
         if (!resultsEl) return;
-
         const pollRef = db.collection('skin_polls').doc(String(skinId));
         pollRef.get().then(doc => {
             if (doc.exists) {
@@ -178,19 +171,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.total_votes > 0) {
                     const average = (data.total_score / data.total_votes).toFixed(2);
                     resultsEl.textContent = `평균 점수: ${average} / 5 (${data.total_votes} 표)`;
-                } else {
-                     resultsEl.textContent = "아직 투표가 없습니다.";
-                }
-            } else {
-                resultsEl.textContent = "아직 투표가 없습니다.";
-            }
+                } else { resultsEl.textContent = "아직 투표가 없습니다."; }
+            } else { resultsEl.textContent = "아직 투표가 없습니다."; }
         }).catch(error => {
             console.error("Error fetching poll results:", error);
             resultsEl.textContent = "결과를 불러올 수 없습니다.";
         });
     };
 
-    // Event listener for voting
+    // Event Listeners
     pollContainer.addEventListener('change', (event) => {
         if (event.target.matches('.star-rating input[type="radio"]')) {
             const starRatingDiv = event.target.closest('.star-rating');
@@ -202,9 +191,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Attach event listeners to filters
-    [characterNameSelect, skinNameSelect, skinTypeSelect, factionSelect].forEach(el => el.addEventListener('change', applyFilters));
+    characterNameSelect.addEventListener('change', () => {
+        skinNameSearch.value = '';
+        updateSkinNameFilter();
+        skinNameSelect.value = 'all';
+        applyFilters();
+    });
+    [skinNameSelect, skinTypeSelect, factionSelect].forEach(el => el.addEventListener('change', applyFilters));
     rarityCheckboxes.querySelectorAll('input').forEach(cb => cb.addEventListener('change', applyFilters));
     characterNameSearch.addEventListener('input', debounce(() => filterDropdown(characterNameSearch, characterNameSelect, allCharacterNames), 250));
-    skinNameSearch.addEventListener('input', debounce(() => filterDropdown(skinNameSearch, skinNameSelect, allSkinNames), 250));
+    skinNameSearch.addEventListener('input', debounce(updateSkinNameFilter, 250));
 });
