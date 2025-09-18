@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(jsonData => {
             allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] }));
             populateInitialFilters();
+            tagSelect.value = 'L2D';
             applyFilters();
         });
 
