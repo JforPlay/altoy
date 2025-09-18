@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const skinTypeSelect = document.getElementById('skin-type-select');
     const rarityCheckboxes = document.getElementById('rarity-checkboxes');
     const factionSelect = document.getElementById('faction-select');
-    const tagSelect = document.getElementById('tag-select');
+    // const tagSelect = document.getElementById('tag-select'); // REMOVED
 
     // State Variables
     let allSkins = [];
@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(jsonData => {
             allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] }));
             populateInitialFilters();
-            tagSelect.value = 'L2D'; // Set default filter
             applyFilters();
         }).catch(error => {
              console.error("Failed to load or process data:", error);
@@ -36,11 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const populateInitialFilters = () => {
         allCharacterNamesData = [...new Set(allSkins.map(s => s['함순이 이름']))].filter(Boolean).sort().map(name => ({ value: name, text: name }));
-        allSkinNamesData = allSkins.map(s => ({
-            charName: s['함순이 이름'],
-            skinName: s['한글 함순이 + 스킨 이름']
+        allSkinNamesData = allSkins.map(s => ({ 
+            charName: s['함순이 이름'], 
+            skinName: s['한글 함순이 + 스킨 이름'] 
         })).sort((a, b) => a.skinName.localeCompare(b.skinName));
-
+        
         rebuildDropdown(characterNameSelect, allCharacterNamesData);
         rebuildDropdown(skinNameSelect, allSkinNamesData.map(s => ({ value: s.skinName, text: s.skinName })));
 
@@ -69,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             selectElement.value = 'all';
         }
     };
-
+    
     const renderPollList = (skinsToRender) => {
         pollContainer.innerHTML = '';
         skinsToRender.forEach(skin => {
@@ -105,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedSkinName = skinNameSelect.value;
         const selectedType = skinTypeSelect.value;
         const selectedFaction = factionSelect.value;
-        const selectedTag = tagSelect.value;
+        // const selectedTag = tagSelect.value; // REMOVED
         const selectedRarities = [...rarityCheckboxes.querySelectorAll('input:checked')].map(cb => cb.value);
         let filteredSkins = allSkins;
 
@@ -113,15 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedSkinName !== 'all') { filteredSkins = filteredSkins.filter(skin => skin['한글 함순이 + 스킨 이름'] === selectedSkinName); }
         if (selectedType !== 'all') { if (selectedType === '기본') { filteredSkins = filteredSkins.filter(skin => !skin['스킨 타입 - 한글']); } else { filteredSkins = filteredSkins.filter(skin => skin['스킨 타입 - 한글'] === selectedType); } }
         if (selectedFaction !== 'all') { filteredSkins = filteredSkins.filter(skin => skin['진영'] === selectedFaction); }
-        if (selectedTag !== 'all') { filteredSkins = filteredSkins.filter(skin => skin['스킨 태그'] && skin['스킨 태그'].includes(selectedTag));}
+        // if (selectedTag !== 'all') { filteredSkins = filteredSkins.filter(skin => skin['스킨 태그'] && skin['스킨 태그'].includes(selectedTag));} // REMOVED
         if (selectedRarities.length > 0) { filteredSkins = filteredSkins.filter(skin => selectedRarities.includes(skin['레어도'])); }
         
         renderPollList(filteredSkins);
     };
     
-    // --- Event Listeners ---
-    characterNameSearch.addEventListener('input', debounce(() => {
-        const searchTerm = characterNameSearch.value.toLowerCase();
+    // Event Listeners
+    characterSearch.addEventListener('input', debounce(() => {
+        const searchTerm = characterSearch.value.toLowerCase();
         const filteredData = allCharacterNamesData.filter(char => char.text.toLowerCase().includes(searchTerm));
         rebuildDropdown(characterNameSelect, filteredData);
     }, 250));
@@ -145,5 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
         applyFilters();
     });
     
-    [skinNameSelect, skinTypeSelect, factionSelect, tagSelect].forEach(el => el.addEventListener('change', applyFilters));
+    // REMOVED tagSelect from this list
+    [skinNameSelect, skinTypeSelect, factionSelect].forEach(el => el.addEventListener('change', applyFilters));
 });
