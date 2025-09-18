@@ -1,23 +1,23 @@
-/* --- Global & Nav Styles (same as other pages) --- */
+/* --- Global & Nav Styles --- */
 body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margin: 0; }
-.main-container { max-width: 1200px; margin: auto; padding: 20px; }
+.main-container { max-width: 1400px; margin: auto; padding: 20px; }
 .top-nav { background-color: #2f3136; padding: 0 40px; display: flex; gap: 20px; border-bottom: 1px solid #40444b; }
 .nav-link { color: #b9bbbe; text-decoration: none; padding: 15px 10px; font-weight: bold; border-bottom: 3px solid transparent; transition: all 0.2s; }
 .nav-link:hover { color: #ffffff; }
 .nav-link.active { color: #ffffff; border-bottom-color: #7289da; }
 .page-header { text-align: center; }
 
-/* --- Filter Styles (copied from skin-list) --- */
-.filter-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; padding: 20px; background-color: #2f3136; border-radius: 8px; margin-bottom: 30px; }
+/* --- Filter Styles --- */
+.filter-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; background-color: #2f3136; border-radius: 8px; margin-bottom: 30px; }
 .filter-group { display: flex; flex-direction: column; gap: 10px; }
 .filter-group label { font-weight: bold; color: #ffffff; }
-.filter-group select, .checkbox-group { font-size: 1em; padding: 8px; border-radius: 5px; border: 2px solid #2f3136; background-color: #40444b; color: #dcddde; }
-.checkbox-group { display: flex; gap: 15px; padding: 8px 12px; }
+.filter-group select { font-size: 1em; padding: 8px; border-radius: 5px; border: 2px solid #2f3136; background-color: #40444b; color: #dcddde; }
+.checkbox-group { display: flex; align-items: center; gap: 15px; background-color: #40444b; padding: 8px 12px; border-radius: 5px; height: 100%; box-sizing: border-box;}
 .checkbox-group label { display: flex; align-items: center; gap: 5px; font-weight: normal; cursor: pointer; }
 
 /* --- Poll Container --- */
 .poll-container {
-    column-count: 2; /* Creates two columns */
+    column-count: 4; /* Changed to four columns */
     column-gap: 20px;
 }
 .poll-box {
@@ -25,7 +25,7 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
     border-radius: 8px;
     overflow: hidden;
     margin-bottom: 20px;
-    break-inside: avoid; /* Prevents boxes from breaking across columns */
+    break-inside: avoid;
     border: 1px solid #40444b;
 }
 .poll-image {
@@ -34,53 +34,23 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
     object-fit: contain;
     background-color: #202225;
 }
-.poll-info {
-    padding: 15px;
-}
-.poll-info h3 {
-    margin: 0 0 10px 0;
-    color: #ffffff;
-    font-size: 1.2em;
-}
+.poll-info { padding: 15px; }
+.poll-info h3 { margin: 0 0 5px 0; color: #ffffff; font-size: 1.1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.poll-info .character-name { font-size: 0.9em; color: #b9bbbe; margin-bottom: 10px; }
+.info-line { font-size: 0.8em; color: #8e9297; }
 
 /* Star Rating Styles */
-.rating-area {
-    margin-top: 15px;
-    border-top: 1px solid #40444b;
-    padding-top: 15px;
-}
-.star-rating {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: center;
-}
+.rating-area { margin-top: 15px; border-top: 1px solid #40444b; padding-top: 15px; }
+.star-rating { display: flex; flex-direction: row-reverse; justify-content: center; }
 .star-rating input { display: none; }
-.star-rating label {
-    font-size: 2em;
-    color: #444;
-    cursor: pointer;
-    transition: color 0.2s;
-}
+.star-rating label { font-size: 1.8em; color: #444; cursor: pointer; transition: color 0.2s; }
 .star-rating:not(:hover) input:checked ~ label,
-.star-rating:hover input:hover ~ label {
-    color: #ffc107;
-}
-.rating-area.voted .star-rating label {
-    cursor: not-allowed;
-    color: #444;
-}
-.rating-area.voted .star-rating input:checked ~ label {
-    color: #03a9f4; /* Blue color for a vote already cast */
-}
-.poll-results {
-    margin-top: 10px;
-    font-size: 0.9em;
-    color: #b9bbbe;
-    text-align: center;
-}
+.star-rating:hover input:hover ~ label { color: #ffc107; }
+.rating-area.voted .star-rating label { cursor: not-allowed; color: #444; }
+.rating-area.voted .star-rating input:checked ~ label { color: #03a9f4; }
+.poll-results { margin-top: 10px; font-size: 0.9em; color: #b9bbbe; text-align: center; }
 
-@media (max-width: 768px) {
-    .poll-container {
-        column-count: 1; /* Switch to a single column on mobile */
-    }
-}
+/* Responsive Adjustments */
+@media (max-width: 1200px) { .poll-container { column-count: 3; } }
+@media (max-width: 900px) { .poll-container { column-count: 2; } }
+@media (max-width: 600px) { .poll-container { column-count: 1; } }
