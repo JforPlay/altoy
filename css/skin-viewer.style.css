@@ -67,22 +67,48 @@ select:disabled { opacity: 0.5; }
 .special-dialogue-panel { background-color: #2f3136; padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; }
 .special-dialogue-panel h2 { margin-top: 0; font-size: 1.5em; }
 .special-dialogue-panel p { line-height: 1.6; color: #dcddde; white-space: pre-line; }
-.voice-line-table { width: 100%; border-collapse: collapse; background-color: #2f3136; border-radius: 8px; overflow: hidden; }
-.voice-line-table th, .voice-line-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #40444b; }
-.voice-line-table thead th { background-color: #202225; font-size: 1.5em; color: #ffffff; text-align: center; }
-.voice-line-table tbody tr:nth-child(even) { background-color: #36393f; }
-.voice-line-table tbody tr:last-child td { border-bottom: none; }
-.voice-line-table td:first-child { font-weight: bold; color: #b9bbbe; width: 20%; }
-.voice-line-table td:last-child { line-height: 1.5; white-space: pre-line; }
+
+/* --- Voice Line Table Styles --- */
+.voice-line-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #2f3136;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 30px; /* Added margin for spacing */
+}
+.voice-line-table th, .voice-line-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #40444b;
+}
+.voice-line-table thead th {
+    background-color: #202225;
+    font-size: 1.5em;
+    color: #ffffff;
+    text-align: center;
+}
+.voice-line-table tbody tr:nth-child(even) {
+    background-color: #36393f;
+}
+.voice-line-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.voice-line-table td:first-child {
+    font-weight: bold;
+    color: #b9bbbe;
+    width: 20%;
+}
+.voice-line-table td:last-child {
+    line-height: 1.5;
+    white-space: pre-line;
+}
 
 /* --- Responsive Styles for Mobile --- */
 @media (max-width: 768px) {
-    /* MODIFIED: Only the main panel stacks, the inner group remains a row */
-    .descriptions-panel {
-        flex-direction: column;
-    }
+    .descriptions-panel { flex-direction: column; }
     .voice-line-table {
         display: block;
-        overflow-x: auto; /* Allow table to be scrolled horizontally on small screens */
+        overflow-x: auto;
     }
 }
