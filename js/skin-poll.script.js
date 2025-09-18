@@ -4,11 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
         apiKey: "AIzaSyCmtsfkzlISZDd0totgv3MIrpT9kvLvKLk",
         authDomain: "azurlane-skin-vote.firebaseapp.com",
         projectId: "azurlane-skin-vote",
-        storageBucket: "azurlane-skin-vote.firebasestorage.app",
+        storageBucket: "azurlane-skin-vote.appspot.com",
         messagingSenderId: "282702723033",
         appId: "1:282702723033:web:a97b60cb7138bdbbbacbc8"
     };
-
 
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
@@ -33,16 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('data/subset_skin_data.json')
         .then(response => response.json())
         .then(jsonData => {
-            allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] })).filter(skin => skin['깔끔한 일러']);
-            
+            allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] }));
             populateInitialFilters();
-            tagSelect.value = 'L2D';
             applyFilters();
         });
 
     const populateInitialFilters = () => {
-        allCharacterNamesData = [...new Set(allSkins.map(s => s['함순이 이름']))].filter(Boolean).sort().map(name => ({ value: name, text: name }))
+        allCharacterNamesData = [...new Set(allSkins.map(s => s['함순이 이름']))].filter(Boolean).sort().map(name => ({ value: name, text: name }));
         rebuildDropdown(characterNameSelect, allCharacterNamesData);
+        
         rarityCheckboxes.querySelectorAll('input').forEach(checkbox => {
             checkbox.addEventListener('change', applyFilters);
         });
@@ -63,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             selectElement.value = 'all';
         }
     };
-    
+
     const renderPollList = (skinsToRender) => {
         pollContainer.innerHTML = '';
         skinsToRender.forEach(skin => {
@@ -76,9 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="poll-info">
                     <div class="character-name">${skin['함순이 이름']}</div>
                     <h3>${skin['한글 함순이 + 스킨 이름']}</h3>
-                    <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
-                    <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
-                    <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
                     <div class="rating-area ${hasVoted ? 'voted' : ''}">
                         <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin['한글 함순이 + 스킨 이름']}" data-character-name="${skin['함순이 이름']}">
                              <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
@@ -87,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
                              <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label>
                              <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
                         </div>
-                        <div class="poll-results" id="results-${skinId}">평점을 불러오는 중 입니다...</div>
+                        <div class="poll-results" id="results-${skinId}">Loading results...</div>
                     </div>
                 </div>
             `;
@@ -133,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ratingArea.querySelectorAll('input').forEach(input => input.disabled = true);
             }
             fetchAndDisplayResults(skinId);
-        });
+        }).catch(error => { console.error("Firebase transaction failed: ", error); });
     };
 
     const fetchAndDisplayResults = (skinId) => {
@@ -166,13 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
         rebuildDropdown(characterNameSelect, allCharacterNamesData.filter(char => char.text.toLowerCase().includes(characterNameSearch.value.toLowerCase())));
     }, 250));
 
+    // --- THIS IS THE FIX ---
+    // The call to applyFilters() was missing from this event listener.
     characterNameSelect.addEventListener('change', () => {
-        skinNameSearch.value = '';
-        const selectedChar = characterNameSelect.value;
-        let filteredSkins = (selectedChar === 'all') ? allSkinNamesData : allSkinNamesData.filter(skin => skin.charName === selectedChar);
-        rebuildDropdown(skinNameSelect, filteredSkins.map(s => ({ value: s.skinName, text: s.skinName })));
         applyFilters();
     });
     
-    [factionSelect, tagSelect].forEach(el => el.addEventListener('change', applyFilters));
+    [skinTypeSelect, factionSelect, tagSelect].forEach(el => el.addEventListener('change', applyFilters));
 });
