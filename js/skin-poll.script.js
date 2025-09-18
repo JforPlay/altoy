@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Firebase Setup ---
+    // PASTE YOUR FIREBASE CONFIG OBJECT HERE
     const firebaseConfig = {
         apiKey: "AIzaSyCmtsfkzlISZDd0totgv3MIrpT9kvLvKLk",
         authDomain: "azurlane-skin-vote.firebaseapp.com",
@@ -7,14 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
         messagingSenderId: "282702723033",
         appId: "1:282702723033:web:a97b60cb7138bdbbbacbc8"
     };
-            
-    
+
+
     // Initialize Firebase and Firestore
-    firebase.initializeApp(firebaseConfig);
+    // Check if Firebase is already initialized to avoid errors
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.firestore();
-    
-    
-    // Get HTML elements
+
+    // --- Get HTML elements ---
     const pollContainer = document.getElementById('poll-container');
     const skinTypeSelect = document.getElementById('skin-type-select');
     const rarityCheckboxes = document.getElementById('rarity-checkboxes');
@@ -22,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let allSkins = [];
 
-    // Fetch and process the data
+    // Fetch local skin data
     fetch('data/subset_skin_data.json')
         .then(response => response.json())
         .then(jsonData => {
@@ -44,11 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="poll-info">
                     <div class="character-name">${skin['함순이 이름']}</div>
                     <h3>${skin['한글 함순이 + 스킨 이름']}</h3>
-                    <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
-                    <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
-                    <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
                     <div class="rating-area ${hasVoted ? 'voted' : ''}">
-                        <div class="star-rating" data-skin-id="${skinId}">
+                        <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin['한글 함순이 + 스킨 이름']}" data-character-name="${skin['함순이 이름']}">
                             <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
                             <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${hasVoted ? 'disabled' : ''}><label for="star4-${skinId}">★</label>
                             <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${hasVoted ? 'disabled' : ''}><label for="star3-${skinId}">★</label>
@@ -56,13 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
                         </div>
                         <div class="poll-results" id="results-${skinId}">
-                            결과 불러오는 중...
+                            Loading results...
                         </div>
                     </div>
                 </div>
             `;
             pollContainer.appendChild(pollBox);
-            fetchAndDisplayResults(skinId); // Fetch live results from Firebase
+            fetchAndDisplayResults(skinId);
         });
     };
 
@@ -98,17 +99,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 transaction.set(pollRef, { 
                     total_votes: newTotalVotes, 
                     total_score: newTotalScore,
-                    skin_name: skinName // Also store the name for easy viewing in Firebase
+                    skin_name: skinName,
+                    character_name: characterName
                 });
             });
         }).then(() => {
-            localStorage.setItem(`voted_${skinId}`, 'true'); // Prevent duplicate votes
+            localStorage.setItem(`voted_${skinId}`, 'true');
             const ratingArea = document.querySelector(`.star-rating[data-skin-id="${skinId}"]`).closest('.rating-area');
             if (ratingArea) {
                 ratingArea.classList.add('voted');
                 ratingArea.querySelectorAll('input').forEach(input => input.disabled = true);
             }
-            fetchAndDisplayResults(skinId); // Update results immediately
+            fetchAndDisplayResults(skinId);
         }).catch(error => {
             console.error("Firebase transaction failed: ", error);
         });
@@ -122,11 +124,18 @@ document.addEventListener('DOMContentLoaded', () => {
         pollRef.get().then(doc => {
             if (doc.exists) {
                 const data = doc.data();
-                const average = (data.total_score / data.total_votes).toFixed(2);
-                resultsEl.textContent = `평균 점수: ${average} / 5 (${data.total_votes} 표)`;
+                if (data.total_votes > 0) {
+                    const average = (data.total_score / data.total_votes).toFixed(2);
+                    resultsEl.textContent = `평균 점수: ${average} / 5 (${data.total_votes} 표)`;
+                } else {
+                     resultsEl.textContent = "아직 투표가 없습니다.";
+                }
             } else {
                 resultsEl.textContent = "아직 투표가 없습니다.";
             }
+        }).catch(error => {
+            console.error("Error fetching poll results:", error);
+            resultsEl.textContent = "결과를 불러올 수 없습니다.";
         });
     };
 
@@ -136,11 +145,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const starRatingDiv = event.target.closest('.star-rating');
             const skinId = starRatingDiv.dataset.skinId;
             const skinName = starRatingDiv.dataset.skinName;
+            const characterName = starRatingDiv.dataset.characterName;
             const rating = parseInt(event.target.value, 10);
-            submitVote(skinId, rating, skinName);
+            submitVote(skinId, rating, skinName, characterName);
         }
     });
 
+    // Attach event listeners to filters
     [skinTypeSelect, factionSelect].forEach(el => el.addEventListener('change', applyFilters));
     rarityCheckboxes.querySelectorAll('input').forEach(cb => cb.addEventListener('change', applyFilters));
 });
