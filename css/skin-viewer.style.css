@@ -30,7 +30,7 @@ select { font-size: 1.1em; padding: 10px; border: 2px solid #2f3136; background-
 #character-select { border-radius: 0 0 5px 5px; border-top: none; width: 300px; }
 select:disabled { opacity: 0.5; }
 
-/* --- MODIFIED: Image Gallery Styles --- */
+/* --- Image Gallery Styles --- */
 .image-gallery {
     display: flex;
     flex-direction: column;
@@ -50,32 +50,30 @@ select:disabled { opacity: 0.5; }
     max-width: 100%;
     max-height: 100%;
 }
-
 .gallery-top-banner {
     width: 100%;
-    flex: 1.5; /* Gave bottom panel more height */
+    flex: 1.5;
     min-height: 0;
 }
-
 .gallery-bottom-panel {
     display: flex;
     gap: 20px;
-    flex: 2; /* Gave bottom panel more height */
+    flex: 2;
     min-height: 0;
+    align-items: stretch; /* Explicitly align items to have the same height */
 }
 
+/* MODIFIED: Using flex-basis for more reliable sizing */
 .bottom-left-panel {
-    width: 60%;
-    flex-shrink: 0;
+    flex: 0 0 60%; /* Do not grow, do not shrink, base width is 60% */
 }
 .bottom-left-panel img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Changed back to 'contain' as requested */
+    object-fit: contain;
 }
-
 .bottom-right-panel {
-    flex-grow: 1;
+    flex: 1 1 auto; /* Grow and shrink to fill remaining space */
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -88,7 +86,7 @@ select:disabled { opacity: 0.5; }
     min-height: 0;
 }
 .tall-group {
-    flex: 2.5; /* Gave this group more height */
+    flex: 2.5;
 }
 .small-group {
     flex: 1;
@@ -96,7 +94,6 @@ select:disabled { opacity: 0.5; }
 .thumbnail-group img {
     flex: 1;
     width: 0;
-    /* Removed height: 100% to allow aspect-ratio to work correctly */
 }
 .tall-thumbnail {
     aspect-ratio: 3 / 4;
