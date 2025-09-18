@@ -81,8 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         skinSelect.disabled = false;
     };
-
-    // --- MODIFIED: This function now builds the new complex gallery layout ---
+    
+    // --- MODIFIED: Added JS logic to guarantee equal panel heights ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
@@ -92,9 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const skin = skinData.find(row => row['한글 함순이 + 스킨 이름'] === selectedSkinName);
         if (!skin) return;
 
-        imageGallery.innerHTML = ''; // Clear previous content
+        imageGallery.innerHTML = '';
 
-        // Create and append top banner image
         const topBannerSrc = skin['전체 일러'];
         if (topBannerSrc && topBannerSrc !== 'null') {
             const topBannerImg = document.createElement('img');
@@ -103,11 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
             imageGallery.appendChild(topBannerImg);
         }
 
-        // Create container for the bottom row
         const bottomPanel = document.createElement('div');
         bottomPanel.className = 'gallery-bottom-panel';
 
-        // Create and append left column image
         const bottomLeftPanel = document.createElement('div');
         bottomLeftPanel.className = 'bottom-left-panel';
         const secondaryLargeSrc = skin['확대 일러'];
@@ -118,13 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         bottomPanel.appendChild(bottomLeftPanel);
         
-        // Create right column and its content
         const bottomRightPanel = document.createElement('div');
         bottomRightPanel.className = 'bottom-right-panel';
 
-        // Group 1: Tall thumbnails
         const tallGroup = document.createElement('div');
-        tallGroup.className = 'thumbnail-group';
+        tallGroup.className = 'thumbnail-group tall-group';
         const tallSources = [skin['깔끔한 일러'], skin['sd 일러']].filter(src => src && src !== 'null');
         tallSources.forEach(src => {
             const img = document.createElement('img');
@@ -134,9 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if(tallGroup.children.length > 0) bottomRightPanel.appendChild(tallGroup);
 
-        // Group 2: Small thumbnails
         const smallGroup = document.createElement('div');
-        smallGroup.className = 'thumbnail-group';
+        smallGroup.className = 'thumbnail-group small-group';
         const smallSources = [skin['아이콘 일러'], skin['쥬스타 아이콘 일러']].filter(src => src && src !== 'null');
         smallSources.forEach(src => {
             const img = document.createElement('img');
@@ -147,10 +141,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         bottomPanel.appendChild(bottomRightPanel);
         imageGallery.appendChild(bottomPanel);
+        
+        // --- This new block guarantees the heights will match ---
+        setTimeout(() => {
+            if (bottomLeftPanel && bottomRightPanel) {
+                const rightPanelHeight = bottomRightPanel.offsetHeight;
+                bottomLeftPanel.style.height = `${rightPanelHeight}px`;
+            }
+        }, 0);
+
         imageGallery.classList.remove('hidden');
     };
 
-    // Attach event listeners
     characterSearch.addEventListener('input', debounce(filterCharacters, 250));
     characterSelect.addEventListener('change', updateSkinSelect);
     skinSelect.addEventListener('change', displaySkinDetails);
