@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const skinTypeSelect = document.getElementById('skin-type-select');
     const rarityCheckboxes = document.getElementById('rarity-checkboxes');
     const skinListContainer = document.getElementById('skin-list-container');
-    const factionSelect = document.getElementById('faction-select'); // New element
-    const tagSelect = document.getElementById('tag-select'); // New element
+    const factionSelect = document.getElementById('faction-select');
+    const tagSelect = document.getElementById('tag-select');
 
     let allSkins = [];
 
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // --- MODIFIED: applyFilters now handles all filters ---
+    // --- MODIFIED: applyFilters now handles the special case for "기본" ---
     const applyFilters = () => {
         const selectedType = skinTypeSelect.value;
         const selectedFaction = factionSelect.value;
@@ -54,7 +54,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 1. Filter by skin type
         if (selectedType !== 'all') {
-            filteredSkins = filteredSkins.filter(skin => skin['스킨 타입 - 한글'] === selectedType);
+            if (selectedType === '기본') {
+                // Special case: "기본" skins have an empty string for their type in the data
+                filteredSkins = filteredSkins.filter(skin => skin['스킨 타입 - 한글'] === '');
+            } else {
+                // Standard filter for all other types
+                filteredSkins = filteredSkins.filter(skin => skin['스킨 타입 - 한글'] === selectedType);
+            }
         }
 
         // 2. Filter by faction
