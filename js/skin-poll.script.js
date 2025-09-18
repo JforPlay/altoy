@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(jsonData => {
             allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] })).filter(skin => skin['깔끔한 일러']);
             populateInitialFilters();
+            tagSelect.value = 'L2D'; // Set default filter
             applyFilters();
         });
 
