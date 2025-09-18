@@ -82,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
     
-    // --- MODIFIED: Added JS logic to guarantee equal panel heights ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
@@ -134,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const smallSources = [skin['아이콘 일러'], skin['쥬스타 아이콘 일러']].filter(src => src && src !== 'null');
         smallSources.forEach(src => {
             const img = document.createElement('img');
-            img.src = src;
+img.src = src;
             smallGroup.appendChild(img);
         });
         if(smallGroup.children.length > 0) bottomRightPanel.appendChild(smallGroup);
@@ -142,14 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
         bottomPanel.appendChild(bottomRightPanel);
         imageGallery.appendChild(bottomPanel);
         
-        // --- This new block guarantees the heights will match ---
-        setTimeout(() => {
-            if (bottomLeftPanel && bottomRightPanel) {
-                const rightPanelHeight = bottomRightPanel.offsetHeight;
-                bottomLeftPanel.style.height = `${rightPanelHeight}px`;
-            }
-        }, 0);
-
+        // MODIFICATION: Removed the JavaScript height-matching logic
+        
         imageGallery.classList.remove('hidden');
     };
 
