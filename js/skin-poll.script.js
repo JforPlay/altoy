@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             populateInitialFilters();
             tagSelect.value = 'L2D';
             applyFilters();
-            renderPollList(allSkins);
+            renderPollList(filteredSkins);
         });
 
     const populateInitialFilters = () => {
