@@ -30,19 +30,90 @@
         <div class="filter-container">
             <div class="filter-group">
                 <label for="skin-type-select">스킨 타입</label>
-                <select id="skin-type-select"></select>
+                <select id="skin-type-select">
+                    <option value="all">전체</option>
+                    <option>크리스마스</option>
+                    <option>정월</option>
+                    <option>이스트 글림 스타일</option>
+                    <option>학교</option>
+                    <option>수영복</option>
+                    <option>파티</option>
+                    <option>할로윈</option>
+                    <option>사복</option>
+                    <option>여름 축제</option>
+                    <option>Live</option>
+                    <option>특수 훈련</option>
+                    <option>스포츠</option>
+                    <option>극속광열</option>
+                    <option>병원</option>
+                    <option>카니발</option>
+                    <option>메이드 타임</option>
+                    <option>블러드 문</option>
+                    <option>동화 속 세계</option>
+                    <option>홈웨어</option>
+                    <option>댄스</option>
+                    <option>온천 타임</option>
+                    <option>오피스 타임</option>
+                    <option>이세계 모험</option>
+                    <option>웨스턴</option>
+                    <option>이집트 스타일</option>
+                    <option>기본</option>
+                    <option>개조</option>
+                    <option>서약</option>
+                    <option>기타</option>
+                </select>
             </div>
             <div class="filter-group">
                 <label for="faction-select">진영</label>
-                <select id="faction-select"></select>
+                <select id="faction-select">
+                    <option value="all">전체</option>
+                    <option>UNIV</option>
+                    <option>USS</option>
+                    <option>HMS</option>
+                    <option>IJN</option>
+                    <option>KMS</option>
+                    <option>ROC</option>
+                    <option>RN</option>
+                    <option>SN</option>
+                    <option>FFNF (FF, iris libre)</option>
+                    <option>MNF</option>
+                    <option>FFNF (FR, iris orthodoxy)</option>
+                    <option>MOT</option>
+                    <option>META</option>
+                    <option>UNIV (bulin)</option>
+                    <option>LINK (collab)</option>
+                    <option>HDN (neptune)</option>
+                    <option>BILI</option>
+                    <option>UM (utawarerumono)</option>
+                    <option>AI (kizuna)</option>
+                    <option>HOLO</option>
+                    <option>DOA</option>
+                    <option>IMAS</option>
+                    <option>SSSS</option>
+                    <option>RYZA</option>
+                    <option>SENRAN</option>
+                </select>
             </div>
             <div class="filter-group">
                 <label for="tag-select">스킨 태그</label>
-                <select id="tag-select"></select>
+                <select id="tag-select">
+                    <option value="all">전체</option>
+                    <option>듀얼</option>
+                    <option>L2D+</option>
+                    <option>L2D</option>
+                    <option>쁘띠모션</option>
+                    <option>X</option>
+                </select>
             </div>
             <div class="filter-group">
                 <label>레어도</label>
-                <div id="rarity-checkboxes" class="checkbox-group"></div>
+                <div id="rarity-checkboxes" class="checkbox-group">
+                    <label><input type="checkbox" value="UR" checked> UR</label>
+                    <label><input type="checkbox" value="SSR" checked> SSR</label>
+                    <label><input type="checkbox" value="SR" checked> SR</label>
+                    <label><input type="checkbox" value="R" checked> R</label>
+                    <label><input type="checkbox" value="N" checked> N</label>
+                </div>
             </div>
             <div class="filter-group">
                 <div class="checkbox-group" style="padding: 13px 12px;">
@@ -54,7 +125,8 @@
             </div>
         </div>
 
-        <div id="skin-list-container" class="skin-list-container"></div>
+        <div id="skin-list-container" class="skin-list-container">
+        </div>
     </div>
 
     <script src="js/skin-list.script.js"></script>
