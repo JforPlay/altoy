@@ -26,12 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const rarityCheckboxes = document.getElementById('rarity-checkboxes');
     const factionSelect = document.getElementById('faction-select');
 
+    // --- State Variables ---
     let allSkins = [];
     let allCharacterNames = [];
     let allSkinNamesData = [];
 
+    // --- Helper Functions ---
     const debounce = (func, delay) => { let timeoutId; return (...args) => { clearTimeout(timeoutId); timeoutId = setTimeout(() => { func.apply(this, args); }, delay); }; };
 
+    // --- Data Loading ---
     fetch('data/subset_skin_data.json')
         .then(response => response.json())
         .then(jsonData => {
@@ -42,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             applyFilters();
         });
 
+    // --- Filter Population and Logic ---
     const populateInitialFilters = () => {
         allCharacterNames = [...new Set(allSkins.map(s => s['함순이 이름']))].sort();
         allSkinNamesData = allSkins.map(s => ({ 
@@ -49,41 +53,46 @@ document.addEventListener('DOMContentLoaded', () => {
             skinName: s['한글 함순이 + 스킨 이름'] 
         })).sort((a, b) => a.skinName.localeCompare(b.skinName));
 
-        allCharacterNames.forEach(name => {
-            const option = document.createElement('option');
-            option.value = name; option.textContent = name;
-            characterNameSelect.appendChild(option);
-        });
-        updateSkinNameFilter();
+        filterCharacterNameDropdown(); // Initial population
+        updateSkinNameFilter(); // Initial population
     };
 
     const updateSkinNameFilter = () => {
         const selectedCharacter = characterNameSelect.value;
         const currentSearchTerm = skinNameSearch.value.toLowerCase();
+        
+        const previousSelection = skinNameSelect.value;
         skinNameSelect.innerHTML = '<option value="all">전체</option>';
+        
         let skinsForDropdown = allSkinNamesData;
         if (selectedCharacter !== 'all') {
             skinsForDropdown = allSkinNamesData.filter(s => s.charName === selectedCharacter);
         }
+
         skinsForDropdown.forEach(skin => {
             if (skin.skinName.toLowerCase().includes(currentSearchTerm)) {
                 const option = document.createElement('option');
-                option.value = skin.skinName; option.textContent = skin.skinName;
+                option.value = skin.skinName; 
+                option.textContent = skin.skinName;
                 skinNameSelect.appendChild(option);
             }
         });
+        skinNameSelect.value = previousSelection;
     };
 
     const filterCharacterNameDropdown = () => {
         const searchTerm = characterNameSearch.value.toLowerCase();
+        const previousSelection = characterNameSelect.value;
         characterNameSelect.innerHTML = '<option value="all">전체</option>';
         allCharacterNames.forEach(name => {
             if (name.toLowerCase().includes(searchTerm)) {
                 const option = document.createElement('option');
-                option.value = name; option.textContent = name;
+                option.value = name; 
+                option.textContent = name;
                 characterNameSelect.appendChild(option);
             }
         });
+        characterNameSelect.value = previousSelection;
     };
 
     const renderPollList = (skinsToRender) => {
@@ -99,9 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="poll-info">
                     <div class="character-name">${skin['함순이 이름']}</div>
                     <h3>${skin['한글 함순이 + 스킨 이름']}</h3>
-                    <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
-                    <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
-                    <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
                     <div class="rating-area ${hasVoted ? 'voted' : ''}">
                         <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin['한글 함순이 + 스킨 이름']}" data-character-name="${skin['함순이 이름']}">
                             <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
@@ -193,12 +199,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     characterNameSelect.addEventListener('change', () => {
         skinNameSearch.value = '';
-        updateSkinNameFilter();
         skinNameSelect.value = 'all';
+        updateSkinNameFilter();
         applyFilters();
     });
+    
     [skinNameSelect, skinTypeSelect, factionSelect].forEach(el => el.addEventListener('change', applyFilters));
     rarityCheckboxes.querySelectorAll('input').forEach(cb => cb.addEventListener('change', applyFilters));
-    characterNameSearch.addEventListener('input', debounce(() => filterDropdown(characterNameSearch, characterNameSelect, allCharacterNames), 250));
+    characterNameSearch.addEventListener('input', debounce(filterCharacterNameDropdown, 250));
     skinNameSearch.addEventListener('input', debounce(updateSkinNameFilter, 250));
 });
