@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const skinSelect = document.getElementById('skin-select');
     const skinInfoBox = document.getElementById('skin-info-box');
     const imageGallery = document.getElementById('image-gallery');
-    const textContentArea = document.getElementById('text-content-area'); // New element
+    const textContentArea = document.getElementById('text-content-area');
 
     let skinData = [];
     let allCharacterData = [];
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.innerHTML = '<option value="">-- Select a Skin --</option>';
         imageGallery.classList.add('hidden');
         skinInfoBox.classList.add('hidden');
-        textContentArea.classList.add('hidden'); // Hide text area
+        textContentArea.classList.add('hidden');
         if (!selectedCharacter) {
             skinSelect.disabled = true;
             return;
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
     
-    // --- MODIFIED: This function now builds all content sections ---
+    // --- MODIFIED: This function now builds the new text section ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
@@ -122,38 +122,36 @@ document.addEventListener('DOMContentLoaded', () => {
         imageGallery.appendChild(bottomPanel);
         imageGallery.classList.remove('hidden');
 
-        // --- Build Text Content Area (Descriptions & Chats) ---
+        // --- Build Text Content Area ---
         textContentArea.innerHTML = '';
         let textContentHtml = '';
 
-        // Descriptions
+        // Descriptions Row 1
         let descriptionsHtml = '';
-        if (skin['설명']) {
-            descriptionsHtml += `<div class="description-item"><h2>설명</h2><p>${skin['설명']}</p></div>`;
-        }
-        if (skin['자기소개']) {
-            descriptionsHtml += `<div class="description-item"><h2>자기소개</h2><p>${skin['자기소개']}</p></div>`;
-        }
-        if (descriptionsHtml) {
-            textContentHtml += `<div class="descriptions-panel">${descriptionsHtml}</div>`;
-        }
+        if (skin['설명']) { descriptionsHtml += `<div class="description-item"><h2>설명</h2><p>${skin['설명']}</p></div>`; }
+        if (skin['자기소개']) { descriptionsHtml += `<div class="description-item"><h2>자기소개</h2><p>${skin['자기소개']}</p></div>`; }
+        if (descriptionsHtml) { textContentHtml += `<div class="descriptions-panel">${descriptionsHtml}</div>`; }
 
+        // Descriptions Row 2 (Special Dialogue)
+        if (skin['함대 특수대사'] && skin['함대 특수대사'] !== 'null') {
+            // Replace newline characters with <br> tags for HTML rendering
+            const formattedText = skin['함대 특수대사'].replace(/\\n/g, '<br>');
+            textContentHtml += `<div class="special-dialogue-panel">
+                <h2>해당 함순이의 유대 특수대사</h2>
+                <p>${formattedText}</p>
+            </div>`;
+        }
+        
         // Voice Lines
-        const chatLinesLeft = [];
-        const chatLinesRight = [];
-        const descriptionKeys = ['설명', '자기소개', '획득 대사', '모항 대사', '터치 대사', '터치 대사2', '임무 대사', '임무 완료 대사', '위탁 완료 대사', '강화 성공 대사', '결혼 대사'];
-
+        const chatLinesLeft = [], chatLinesRight = [];
+        const nonChatKeys = ['설명', '자기소개', '함대 특수대사', '획득 대사', '모항 대사', '터치 대사', '터치 대사2', '임무 대사', '임무 완료 대사', '위탁 완료 대사', '강화 성공 대사', '결혼 대사'];
         Object.keys(skin).forEach(key => {
-            if (skin[key] && key.endsWith('대사') && !descriptionKeys.includes(key)) {
+            if (skin[key] && key.endsWith('대사') && !nonChatKeys.includes(key)) {
                 const bubble = `<div class="chat-bubble">${skin[key]}</div>`;
-                if (key.includes('_ex')) {
-                    chatLinesRight.push(bubble);
-                } else {
-                    chatLinesLeft.push(bubble);
-                }
+                if (key.includes('_ex')) { chatLinesRight.push(bubble); } 
+                else { chatLinesLeft.push(bubble); }
             }
         });
-
         if (chatLinesLeft.length > 0 || chatLinesRight.length > 0) {
             textContentHtml += `<h2>대사</h2><div class="chat-container">
                 <div class="chat-column">${chatLinesLeft.join('')}</div>

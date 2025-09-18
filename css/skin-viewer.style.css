@@ -55,61 +55,37 @@ select:disabled { opacity: 0.5; }
 .tall-thumbnail { aspect-ratio: 3 / 4; }
 .dummy-image-box { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #202225; border-radius: 5px; color: #72767d; font-style: italic; text-align: center; padding: 20px; box-sizing: border-box; }
 
-/* --- New Text Content Styles --- */
-.text-content-area {
-    margin-top: 30px;
-}
-.text-content-area.hidden {
-    display: none;
-}
-.descriptions-panel {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
-}
-.description-item {
-    flex: 1;
+/* --- Text Content Styles --- */
+.text-content-area { margin-top: 30px; }
+.text-content-area.hidden { display: none; }
+.descriptions-panel { display: flex; gap: 20px; margin-bottom: 30px; }
+.description-item { flex: 1; background-color: #2f3136; padding: 15px 20px; border-radius: 8px; }
+.description-item h2 { margin-top: 0; font-size: 1.5em; }
+.chat-container { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.chat-column { display: flex; flex-direction: column; gap: 10px; }
+.chat-bubble { padding: 10px 15px; border-radius: 8px; line-height: 1.4; }
+.chat-column:nth-child(1) .chat-bubble { background-color: #40444b; align-self: flex-start; }
+.chat-column:nth-child(2) .chat-bubble { background-color: #7289da; color: #ffffff; align-self: flex-end; }
+
+/* New styles for the special dialogue panel */
+.special-dialogue-panel {
     background-color: #2f3136;
     padding: 15px 20px;
     border-radius: 8px;
+    margin-bottom: 30px;
 }
-.description-item h2 {
+.special-dialogue-panel h2 {
     margin-top: 0;
     font-size: 1.5em;
 }
-.chat-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-}
-.chat-column {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-.chat-bubble {
-    padding: 10px 15px;
-    border-radius: 8px;
-    line-height: 1.4;
-}
-.chat-column:nth-child(1) .chat-bubble { /* Left column */
-    background-color: #40444b;
-    align-self: flex-start;
-}
-.chat-column:nth-child(2) .chat-bubble { /* Right column */
-    background-color: #7289da;
-    color: #ffffff;
-    align-self: flex-end;
+.special-dialogue-panel p {
+    line-height: 1.6;
+    color: #dcddde;
+    white-space: pre-line; /* This respects line breaks */
 }
 
 /* --- Responsive Styles for Mobile --- */
 @media (max-width: 768px) {
-    /* Stack description panels on mobile */
-    .descriptions-panel {
-        flex-direction: column;
-    }
-    /* Make chat a single column on mobile */
-    .chat-container {
-        grid-template-columns: 1fr;
-    }
+    .descriptions-panel { flex-direction: column; }
+    .chat-container { grid-template-columns: 1fr; }
 }
