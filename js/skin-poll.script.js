@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
         messagingSenderId: "282702723033",
         appId: "1:282702723033:web:a97b60cb7138bdbbbacbc8"
     };
-            // Initialize Firebase and Firestore
+
+    // Initialize Firebase and Firestore
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
@@ -89,15 +90,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const cascadeSkinFilter = () => {
         const selectedChar = characterNameSelect.value;
         const skinSearchTerm = skinNameSearch.value.toLowerCase();
-        const relevantSkins = (selectedChar === 'all') 
-            ? allSkins 
-            : allSkins.filter(s => s['함순이 이름'] === selectedChar);
-        const relevantSkinNames = new Set(relevantSkins.map(s => s['한글 함순이 + 스킨 이름']));
-
+        
         allSkinNameOptions.forEach(option => {
-            if (option.value === 'all') return;
-            const matchesCharacter = relevantSkinNames.has(option.value);
+            if (option.value === 'all') {
+                option.style.display = '';
+                return;
+            };
+            
+            const skinData = allSkins.find(s => s['한글 함순이 + 스킨 이름'] === option.value);
+            const matchesCharacter = (selectedChar === 'all' || (skinData && skinData['함순이 이름'] === selectedChar));
             const matchesSearch = option.textContent.toLowerCase().includes(skinSearchTerm);
+
             option.style.display = (matchesCharacter && matchesSearch) ? '' : 'none';
         });
     };
@@ -151,12 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const submitVote = (skinId, rating, skinName, characterName) => {
         if (localStorage.getItem(`voted_${skinId}`) === 'true') return;
-
         const pollRef = db.collection('skin_polls').doc(String(skinId));
         return db.runTransaction(transaction => {
             return transaction.get(pollRef).then(doc => {
-                let newTotalVotes = 1;
-                let newTotalScore = rating;
+                let newTotalVotes = 1; let newTotalScore = rating;
                 if (doc.exists) {
                     newTotalVotes = doc.data().total_votes + 1;
                     newTotalScore = doc.data().total_score + rating;
@@ -216,6 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
     characterNameSearch.addEventListener('input', debounce(() => filterDropdownOptions(characterNameSearch, allCharacterNameOptions), 250));
     skinNameSearch.addEventListener('input', debounce(() => {
         cascadeSkinFilter();
-        // We don't call applyFilters here, let the user confirm with a selection
+        // Don't apply main filter while typing, let user select from the filtered list
     }, 250));
 });
