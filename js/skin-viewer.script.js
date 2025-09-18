@@ -17,12 +17,34 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!jsonData || Object.keys(jsonData).length === 0) throw new Error('JSON data is empty or invalid.');
             skinData = Object.values(jsonData);
             populateCharacterSelect();
-            if (characterSelect.options.length > 1) {
-                characterSelect.selectedIndex = 1;
+
+            // --- MODIFIED: Logic to load "앵커리지" by default ---
+            const defaultCharacterName = "앵커리지";
+            // The base skin name is often the same as the character name
+            const defaultSkinName = "앵커리지"; 
+
+            // Check if the default character exists in our data
+            if (allCharacterData.some(char => char.value === defaultCharacterName)) {
+                // Set the first dropdown to the default character
+                characterSelect.value = defaultCharacterName;
+                
+                // Trigger the function to populate the second dropdown
                 updateSkinSelect();
-                if (skinSelect.options.length > 1) {
-                    skinSelect.selectedIndex = 1;
-                    displaySkinDetails();
+
+                // Set the second dropdown to the default skin
+                skinSelect.value = defaultSkinName;
+
+                // Trigger the function to display all the details
+                displaySkinDetails();
+            } else {
+                // Fallback to the original "first character" logic if the default isn't found
+                if (characterSelect.options.length > 1) {
+                    characterSelect.selectedIndex = 1;
+                    updateSkinSelect();
+                    if (skinSelect.options.length > 1) {
+                        skinSelect.selectedIndex = 1;
+                        displaySkinDetails();
+                    }
                 }
             }
         }).catch(error => {
@@ -86,29 +108,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const skin = skinData.find(row => row['한글 함순이 + 스킨 이름'] === selectedSkinName);
         if (!skin) return;
 
-        // --- Build and Display Info Box ---
         skinInfoBox.innerHTML = '';
         let infoHtml = '';
-        // MODIFICATION: Replaced SVG with an <img> tag pointing to your file
         const gemIconHtml = `<img src="assets/60px-Ruby.png" class="gem-icon" alt="Gem">`;
-
-        if (skin['재화'] && skin['재화'] !== 'null') {
-            infoHtml += `<div class="info-item">${gemIconHtml}<span class="info-value">${skin['재화']}</span></div>`;
-        }
-        if (skin['기간'] && skin['기간'] !== 'null') {
-            infoHtml += `<div class="info-item"><strong class="info-label">상시여부:</strong><span class="info-value">${skin['기간']}</span></div>`;
-        }
-        if (skin['스킨 타입 - 한글'] && skin['스킨 타입 - 한글'] !== 'null') {
-            infoHtml += `<div class="info-item"><strong class="info-label">스킨타입:</strong><span class="info-value">${skin['스킨 타입 - 한글']}</span></div>`;
-        }
-        if (skin['스킨 태그'] && skin['스킨 태그'] !== 'null') {
-            infoHtml += `<div class="info-item"><strong class="info-label">스킨태그:</strong><span class="info-value">${skin['스킨 태그']}</span></div>`;
-        }
-        
+        if (skin['재화'] && skin['재화'] !== 'null') { infoHtml += `<div class="info-item">${gemIconHtml}<span class="info-value">${skin['재화']}</span></div>`; }
+        if (skin['기간'] && skin['기간'] !== 'null') { infoHtml += `<div class="info-item"><strong class="info-label">상시여부:</strong><span class="info-value">${skin['기간']}</span></div>`; }
+        if (skin['스킨 타입 - 한글'] && skin['스킨 타입 - 한글'] !== 'null') { infoHtml += `<div class="info-item"><strong class="info-label">스킨타입:</strong><span class="info-value">${skin['스킨 타입 - 한글']}</span></div>`; }
+        if (skin['스킨 태그'] && skin['스킨 태그'] !== 'null') { infoHtml += `<div class="info-item"><strong class="info-label">스킨태그:</strong><span class="info-value">${skin['스킨 태그']}</span></div>`; }
         skinInfoBox.innerHTML = infoHtml;
         if (infoHtml) skinInfoBox.classList.remove('hidden');
 
-        // --- Build and Display Image Gallery ---
         imageGallery.innerHTML = '';
         const topBannerSrc = skin['전체 일러'];
         if (topBannerSrc && topBannerSrc !== 'null') { const topBannerImg = document.createElement('img'); topBannerImg.className = 'gallery-top-banner'; topBannerImg.src = topBannerSrc; imageGallery.appendChild(topBannerImg); }
