@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             populateInitialFilters();
             tagSelect.value = 'L2D';
             applyFilters();
+            renderPollList(filteredSkins);
         });
 
     const populateInitialFilters = () => {
@@ -70,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const pollBox = document.createElement('div');
             pollBox.className = 'poll-box';
             const hasVoted = localStorage.getItem(`voted_${skinId}`) === 'true';
+
             pollBox.innerHTML = `
                 <img src="${skin['깔끔한 일러'] || ''}" class="poll-image" loading="lazy">
                 <div class="poll-info">
