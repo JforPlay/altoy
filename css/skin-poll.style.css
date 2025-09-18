@@ -7,18 +7,44 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
 .nav-link.active { color: #ffffff; border-bottom-color: #7289da; }
 .page-header { text-align: center; }
 
+/* --- New Flavor Text Box Style --- */
+.flavor-text-box {
+    background-color: #2f3136;
+    border: 1px solid #4f545c;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px auto 0 auto;
+    max-width: 600px;
+    text-align: center;
+}
+.flavor-text-box p {
+    margin: 0;
+    line-height: 1.6;
+    font-size: 0.9em;
+    color: #b9bbbe;
+}
+.flavor-text-box strong {
+    color: #ffffff;
+    font-size: 1.1em;
+    display: block;
+    margin-bottom: 8px;
+}
+.flavor-text-box .warning-text {
+    color: #ffcc00; /* A noticeable yellow warning color */
+    font-weight: bold;
+}
+
 /* --- Filter Styles --- */
-.filter-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; background-color: #2f3136; border-radius: 8px; margin-bottom: 30px; }
+.filter-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; background-color: #2f3136; border-radius: 8px; margin-top: 20px; margin-bottom: 30px; }
 .filter-group { display: flex; flex-direction: column; gap: 10px; }
 .filter-group label { font-weight: bold; color: #ffffff; }
 .filter-group select { font-size: 1em; padding: 8px; border-radius: 5px; border: 2px solid #2f3136; background-color: #40444b; color: #dcddde; }
 .checkbox-group { display: flex; align-items: center; gap: 15px; background-color: #40444b; padding: 8px 12px; border-radius: 5px; height: 100%; box-sizing: border-box;}
 .checkbox-group label { display: flex; align-items: center; gap: 5px; font-weight: normal; cursor: pointer; }
 
-/* --- MODIFIED: Poll Container --- */
+/* --- Poll Container --- */
 .poll-container {
     display: grid;
-    /* This creates a responsive grid with 4 columns on large screens */
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
 }
