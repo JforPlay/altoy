@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skin Poll</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
     <link rel="stylesheet" href="css/skin-poll.style.css">
 </head>
 <body>
@@ -18,68 +17,21 @@
     <div class="main-container">
         <header class="page-header">
             <h1>L2D 스킨 선호도 평가</h1>
-            
             <div class="flavor-text-box">
                 <p>
-                    <strong>초간단 설명서</strong>
+                    <strong>초간단 설명서</strong><br>
                     라투디 스킨들의 선호도 평가를 할 수 있습니다.<br>
                     <span class="warning-text">주의) 누르면 바로 평가가 되며, 재투표는 안되니 신중하게 눌러주세요</span>
                 </p>
             </div>
         </header>
 
-        <div class="filter-container">
-            <div class="filter-group">
-                <label for="character-name-select">함순이 이름</label>
-                <select id="character-name-select">
-                    </select>
-            </div>
-            <div class="filter-group">
-                <label for="skin-name-select">스킨 이름</label>
-                <select id="skin-name-select">
-                    </select>
-            </div>
-            <div class="filter-group">
-                <label for="skin-type-select">스킨 타입</label>
-                <select id="skin-type-select">
-                    <option value="All">All</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="faction-select">진영</label>
-                <select id="faction-select">
-                    <option value="All">All</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="skin-tag-select">스킨 태그</label>
-                <select id="skin-tag-select">
-                    <option value="All">All</option>
-                    <option>L2D+</option>
-                    <option>L2D</option>
-                    <option>쁘띠모션</option>
-                    <option>X</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>레어도</label>
-                <div id="rarity-checkboxes" class="checkbox-group">
-                    <label><input type="checkbox" value="UR" checked><span>UR</span></label>
-                    <label><input type="checkbox" value="SSR" checked><span>SSR</span></label>
-                    <label><input type="checkbox" value="SR" checked><span>SR</span></label>
-                    <label><input type="checkbox" value="R" checked><span>R</span></label>
-                    <label><input type="checkbox" value="N" checked><span>N</span></label>
-                </div>
-            </div>
-        </div>
-
         <div id="poll-container" class="poll-container">
-        </div>
+            </div>
     </div>
     
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="js/skin-poll.script.js"></script>
 </body>
 </html>
