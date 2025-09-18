@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Firebase Setup ---
-    // PASTE YOUR FIREBASE CONFIG OBJECT HERE
     const firebaseConfig = {
         apiKey: "AIzaSyCmtsfkzlISZDd0totgv3MIrpT9kvLvKLk",
         authDomain: "azurlane-skin-vote.firebaseapp.com",
@@ -12,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Initialize Firebase and Firestore
-    // Check if Firebase is already initialized to avoid errors
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
@@ -23,6 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const skinTypeSelect = document.getElementById('skin-type-select');
     const rarityCheckboxes = document.getElementById('rarity-checkboxes');
     const factionSelect = document.getElementById('faction-select');
+    const skinTagSelect = document.getElementById('skin-tag-select');
+    const characterNameSelect = document.getElementById('character-name-select');
+    const skinNameSelect = document.getElementById('skin-name-select');
     
     let allSkins = [];
 
@@ -30,104 +31,123 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('data/subset_skin_data.json')
         .then(response => response.json())
         .then(jsonData => {
-            allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] }))
-                .filter(skin => skin['깔끔한 일러'] && skin['스킨 태그'] && skin['스킨 태그'].includes('L2D'));
-            renderPollList(allSkins);
+            allSkins = jsonData;
+            populateDropdowns(allSkins);
+            displaySkins(allSkins);
+        })
+        .catch(error => console.error('Error loading skin data:', error));
+
+    const populateDropdowns = (skins) => {
+        const skinTypes = [...new Set(skins.map(skin => skin['스킨 타입']))];
+        skinTypes.sort();
+        skinTypes.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type;
+            option.textContent = type;
+            skinTypeSelect.appendChild(option);
         });
 
-    const renderPollList = (skinsToRender) => {
-        pollContainer.innerHTML = '';
-        skinsToRender.forEach(skin => {
-            const skinId = skin.id;
-            const pollBox = document.createElement('div');
-            pollBox.className = 'poll-box';
-            const hasVoted = localStorage.getItem(`voted_${skinId}`) === 'true';
+        const characterNames = [...new Set(skins.map(skin => skin['함순이 이름']))];
+        characterNames.sort();
+        characterNames.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            characterNameSelect.appendChild(option);
+        });
 
-            pollBox.innerHTML = `
-                <img src="${skin['깔끔한 일러']}" class="poll-image" loading="lazy">
+        const skinNames = [...new Set(skins.map(skin => skin['한글 함순이 + 스킨 이름']))];
+        skinNames.sort();
+        skinNames.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            skinNameSelect.appendChild(option);
+        });
+    };
+
+    const displaySkins = (skins) => {
+        pollContainer.innerHTML = ''; // Clear existing content
+        skins.forEach(skin => {
+            const pollItem = document.createElement('div');
+            pollItem.className = 'poll-item';
+            pollItem.innerHTML = `
+                <img src="${skin['전체 일러']}" alt="${skin['한글 함순이 + 스킨 이름']}" loading="lazy">
                 <div class="poll-info">
-                    <div class="character-name">${skin['함순이 이름']}</div>
                     <h3>${skin['한글 함순이 + 스킨 이름']}</h3>
-                    <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
-                    <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
-                    <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
-                    <div class="rating-area ${hasVoted ? 'voted' : ''}">
-                        <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin['한글 함순이 + 스킨 이름']}" data-character-name="${skin['함순이 이름']}">
-                            <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
-                            <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${hasVoted ? 'disabled' : ''}><label for="star4-${skinId}">★</label>
-                            <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${hasVoted ? 'disabled' : ''}><label for="star3-${skinId}">★</label>
-                            <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label>
-                            <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
+                    <p class="character-name">${skin['함순이 이름']}</p>
+                    <p class="info-line">Type: ${skin['스킨 타입']} | Rarity: ${skin['레어도']} | Faction: ${skin['진영']}</p>
+                    <div class="rating-area">
+                         <div class="star-rating" data-skin-id="${skin['클뜯 id']}" data-skin-name="${skin['한글 함순이 + 스킨 이름']}" data-character-name="${skin['함순이 이름']}">
+                            <input type="radio" id="5-stars-${skin['클뜯 id']}" name="rating-${skin['클뜯 id']}" value="5" /><label for="5-stars-${skin['클뜯 id']}">&#9733;</label>
+                            <input type="radio" id="4-stars-${skin['클뜯 id']}" name="rating-${skin['클뜯 id']}" value="4" /><label for="4-stars-${skin['클뜯 id']}">&#9733;</label>
+                            <input type="radio" id="3-stars-${skin['클뜯 id']}" name="rating-${skin['클뜯 id']}" value="3" /><label for="3-stars-${skin['클뜯 id']}">&#9733;</label>
+                            <input type="radio" id="2-stars-${skin['클뜯 id']}" name="rating-${skin['클뜯 id']}" value="2" /><label for="2-stars-${skin['클뜯 id']}">&#9733;</label>
+                            <input type="radio" id="1-star-${skin['클뜯 id']}" name="rating-${skin['클뜯 id']}" value="1" /><label for="1-star-${skin['클뜯 id']}">&#9733;</label>
                         </div>
-                        <div class="poll-results" id="results-${skinId}">
-                            결과 불러오는 중...
-                        </div>
+                        <p class="poll-results" id="results-${skin['클뜯 id']}">Loading results...</p>
                     </div>
                 </div>
             `;
-            pollContainer.appendChild(pollBox);
-            fetchAndDisplayResults(skinId);
+            pollContainer.appendChild(pollItem);
+            fetchPollResults(skin['클뜯 id']);
         });
     };
 
     const applyFilters = () => {
-        const selectedType = skinTypeSelect.value;
+        const selectedSkinType = skinTypeSelect.value;
+        const selectedRarities = [...rarityCheckboxes.querySelectorAll('input:checked')].map(el => el.value);
         const selectedFaction = factionSelect.value;
-        const selectedRarities = [...rarityCheckboxes.querySelectorAll('input:checked')].map(cb => cb.value);
-        let filteredSkins = allSkins;
+        const selectedSkinTag = skinTagSelect.value;
+        const selectedCharacterName = characterNameSelect.value;
+        const selectedSkinName = skinNameSelect.value;
 
-        if (selectedType !== 'all') { if (selectedType === '기본') { filteredSkins = filteredSkins.filter(skin => !skin['스킨 타입 - 한글']); } else { filteredSkins = filteredSkins.filter(skin => skin['스킨 타입 - 한글'] === selectedType); } }
-        if (selectedFaction !== 'all') { filteredSkins = filteredSkins.filter(skin => skin['진영'] === selectedFaction); }
-        if (selectedRarities.length > 0) { filteredSkins = filteredSkins.filter(skin => selectedRarities.includes(skin['레어도'])); }
-        renderPollList(filteredSkins);
+        const filteredSkins = allSkins.filter(skin => {
+            const skinTypeMatch = selectedSkinType === 'All' || skin['스킨 타입'] === selectedSkinType;
+            const rarityMatch = selectedRarities.length === 0 || selectedRarities.includes(skin['레어도']);
+            const factionMatch = selectedFaction === 'All' || skin['진영'] === selectedFaction;
+            const skinTagMatch = selectedSkinTag === 'All' || skin['스킨 태그'] === selectedSkinTag;
+            const characterNameMatch = selectedCharacterName === 'All' || skin['함순이 이름'] === selectedCharacterName;
+            const skinNameMatch = selectedSkinName === 'All' || skin['한글 함순이 + 스킨 이름'] === selectedSkinName;
+            return skinTypeMatch && rarityMatch && factionMatch && skinTagMatch && characterNameMatch && skinNameMatch;
+        });
+
+        displaySkins(filteredSkins);
     };
 
-
-    // --- Firebase Logic ---
     const submitVote = (skinId, rating, skinName, characterName) => {
-        if (localStorage.getItem(`voted_${skinId}`) === 'true') {
-            console.log("해당 스킨에 이미 투표하셨습니다.");
-            return;
-        }
-
-        const pollRef = db.collection('skin_polls').doc(String(skinId));
-
-        return db.runTransaction(transaction => {
-            return transaction.get(pollRef).then(doc => {
-                let newTotalVotes = 1;
-                let newTotalScore = rating;
-
-                if (doc.exists) {
-                    newTotalVotes = doc.data().total_votes + 1;
-                    newTotalScore = doc.data().total_score + rating;
+        const skinRef = db.collection('skins-poll').doc(skinId.toString());
+        db.runTransaction((transaction) => {
+            return transaction.get(skinRef).then((skinDoc) => {
+                if (!skinDoc.exists) {
+                    transaction.set(skinRef, { 
+                        total_score: rating, 
+                        total_votes: 1,
+                        skin_name: skinName,
+                        character_name: characterName
+                    });
+                } else {
+                    const newTotalScore = skinDoc.data().total_score + rating;
+                    const newTotalVotes = skinDoc.data().total_votes + 1;
+                    transaction.update(skinRef, { 
+                        total_score: newTotalScore, 
+                        total_votes: newTotalVotes 
+                    });
                 }
-                
-                transaction.set(pollRef, { 
-                    total_votes: newTotalVotes, 
-                    total_score: newTotalScore,
-                    skin_name: skinName,
-                    character_name: characterName
-                });
             });
         }).then(() => {
-            localStorage.setItem(`voted_${skinId}`, 'true');
-            const ratingArea = document.querySelector(`.star-rating[data-skin-id="${skinId}"]`).closest('.rating-area');
-            if (ratingArea) {
-                ratingArea.classList.add('voted');
-                ratingArea.querySelectorAll('input').forEach(input => input.disabled = true);
-            }
-            fetchAndDisplayResults(skinId);
-        }).catch(error => {
-            console.error("Firebase transaction failed: ", error);
+            console.log("Vote successfully submitted!");
+            fetchPollResults(skinId); // Re-fetch to show updated results
+        }).catch((error) => {
+            console.error("Transaction failed: ", error);
         });
     };
-
-    const fetchAndDisplayResults = (skinId) => {
+    
+    const fetchPollResults = (skinId) => {
         const resultsEl = document.getElementById(`results-${skinId}`);
         if (!resultsEl) return;
-
-        const pollRef = db.collection('skin_polls').doc(String(skinId));
-        pollRef.get().then(doc => {
+    
+        db.collection('skins-poll').doc(skinId.toString()).get().then(doc => {
             if (doc.exists) {
                 const data = doc.data();
                 if (data.total_votes > 0) {
@@ -158,6 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Attach event listeners to filters
-    [skinTypeSelect, factionSelect].forEach(el => el.addEventListener('change', applyFilters));
-    rarityCheckboxes.querySelectorAll('input').forEach(cb => cb.addEventListener('change', applyFilters));
+    [skinTypeSelect, factionSelect, skinTagSelect, characterNameSelect, skinNameSelect].forEach(el => el.addEventListener('change', applyFilters));
+    rarityCheckboxes.addEventListener('change', applyFilters);
 });

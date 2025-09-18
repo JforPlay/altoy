@@ -31,15 +31,36 @@
             <div class="filter-group">
                 <label for="skin-type-select">스킨 타입</label>
                 <select id="skin-type-select">
-                    <option value="all">전체</option>
-                    <option>크리스마스</option><option>정월</option><option>이스트 글림 스타일</option><option>학교</option><option>수영복</option><option>파티</option><option>할로윈</option><option>사복</option><option>여름 축제</option><option>Live</option><option>특수 훈련</option><option>스포츠</option><option>극속광열</option><option>병원</option><option>카니발</option><option>메이드 타임</option><option>블러드 문</option><option>동화 속 세계</option><option>홈웨어</option><option>댄스</option><option>온천 타임</option><option>오피스 타임</option><option>이세계 모험</option><option>웨스턴</option><option>이집트 스타일</option><option>기본</option><option>개조</option><option>서약</option><option>기타</option>
+                    <option value="All">All</option>
                 </select>
             </div>
             <div class="filter-group">
                 <label for="faction-select">진영</label>
                 <select id="faction-select">
-                    <option value="all">전체</option>
-                    <option>UNIV</option><option>USS</option><option>HMS</option><option>IJN</option><option>KMS</option><option>ROC</option><option>RN</option><option>SN</option><option>FFNF (FF, iris libre)</option><option>MNF</option><option>FFNF (FR, iris orthodoxy)</option><option>MOT</option><option>META</option><option>UNIV (bulin)</option><option>LINK (collab)</option><option>HDN (neptune)</option><option>BILI</option><option>UM (utawarerumono)</option><option>AI (kizuna)</option><option>HOLO</option><option>DOA</option><option>IMAS</option><option>SSSS</option><option>RYZA</option><option>SENRAN</option>
+                    <option value="All">All</option>
+                    <option>USS</option><option>KMS</option><option>IJN</option><option>HMS</option><option>ROC</option><option>RN</option><option>SN</option><option>FFNF (FF, iris libre)</option><option>MNF</option><option>FFNF (FR, iris orthodoxy)</option><option>MOT</option><option>META</option><option>UNIV (bulin)</option><option>LINK (collab)</option><option>HDN (neptune)</option><option>BILI</option><option>UM (utawarerumono)</option><option>AI (kizuna)</option><option>HOLO</option><option>DOA</option><option>IMAS</option><option>SSSS</option><option>RYZA</option><option>SENRAN</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="skin-tag-select">스킨 태그</label>
+                <select id="skin-tag-select">
+                    <option value="All">All</option>
+                    <option>L2D+</option>
+                    <option>L2D</option>
+                    <option>쁘띠모션</option>
+                    <option>X</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="character-name-select">함순이 이름</label>
+                <select id="character-name-select">
+                    <option value="All">All</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="skin-name-select">한글 함순이 + 스킨 이름</label>
+                <select id="skin-name-select">
+                    <option value="All">All</option>
                 </select>
             </div>
             <div class="filter-group">
@@ -58,9 +79,8 @@
         </div>
     </div>
     
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="js/skin-poll.script.js"></script>
 </body>
 </html>
