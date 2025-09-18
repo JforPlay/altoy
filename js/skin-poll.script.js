@@ -81,12 +81,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Firebase Logic ---
-    const submitVote = (skinId, rating, skinName) => {
-        if (localStorage.getItem(`voted_${skinId}`) === 'true') return;
+    const submitVote = (skinId, rating, skinName, characterName) => {
+        if (localStorage.getItem(`voted_${skinId}`) === 'true') {
+            console.log("You have already voted for this skin.");
+            return;
+        }
 
         const pollRef = db.collection('skin_polls').doc(String(skinId));
 
-        db.runTransaction(transaction => {
+        return db.runTransaction(transaction => {
             return transaction.get(pollRef).then(doc => {
                 let newTotalVotes = 1;
                 let newTotalScore = rating;
