@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
     
-    // --- MODIFIED: This function now builds the new text section ---
+    // --- MODIFIED: This function now builds the new text sections ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const skin = skinData.find(row => row['한글 함순이 + 스킨 이름'] === selectedSkinName);
         if (!skin) return;
 
-        // --- Build Info Box ---
+        // Build Info Box (unchanged)
         skinInfoBox.innerHTML = '';
         let infoHtml = '';
         const gemIconHtml = `<img src="assets/60px-Ruby.png" class="gem-icon" alt="Gem">`;
@@ -99,9 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
         skinInfoBox.innerHTML = infoHtml;
         if (infoHtml) skinInfoBox.classList.remove('hidden');
 
-        // --- Build Image Gallery ---
+        // Build Image Gallery (unchanged)
         imageGallery.innerHTML = '';
-        // ... (image gallery logic is unchanged) ...
         const topBannerSrc = skin['전체 일러'];
         if (topBannerSrc && topBannerSrc !== 'null') { const topBannerImg = document.createElement('img'); topBannerImg.className = 'gallery-top-banner'; topBannerImg.src = topBannerSrc; imageGallery.appendChild(topBannerImg); }
         const bottomPanel = document.createElement('div'); bottomPanel.className = 'gallery-bottom-panel';
@@ -126,20 +125,19 @@ document.addEventListener('DOMContentLoaded', () => {
         textContentArea.innerHTML = '';
         let textContentHtml = '';
 
-        // Descriptions Row 1
+        // Descriptions Row 1 (with new nested group)
         let descriptionsHtml = '';
-        if (skin['설명']) { descriptionsHtml += `<div class="description-item"><h2>설명</h2><p>${skin['설명']}</p></div>`; }
+        let leftGroupHtml = '';
+        if (skin['설명']) { leftGroupHtml += `<div class="description-item"><h2>설명</h2><p>${skin['설명']}</p></div>`; }
+        if (skin['드랍 설명']) { leftGroupHtml += `<div class="description-item"><h2>드랍 설명</h2><p>${skin['드랍 설명']}</p></div>`; }
+        if (leftGroupHtml) { descriptionsHtml += `<div class="description-group">${leftGroupHtml}</div>`; }
         if (skin['자기소개']) { descriptionsHtml += `<div class="description-item"><h2>자기소개</h2><p>${skin['자기소개']}</p></div>`; }
         if (descriptionsHtml) { textContentHtml += `<div class="descriptions-panel">${descriptionsHtml}</div>`; }
 
         // Descriptions Row 2 (Special Dialogue)
         if (skin['함대 특수대사'] && skin['함대 특수대사'] !== 'null') {
-            // Replace newline characters with <br> tags for HTML rendering
             const formattedText = skin['함대 특수대사'].replace(/\\n/g, '<br>');
-            textContentHtml += `<div class="special-dialogue-panel">
-                <h2>해당 함순이의 유대 특수대사</h2>
-                <p>${formattedText}</p>
-            </div>`;
+            textContentHtml += `<div class="special-dialogue-panel"><h2>해당 함순이의 유대 특수대사</h2><p>${formattedText}</p></div>`;
         }
         
         // Voice Lines
