@@ -9,8 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
         appId: "1:282702723033:web:a97b60cb7138bdbbbacbc8"
     };
 
-
-    // Initialize Firebase and Firestore
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
@@ -26,48 +24,77 @@ document.addEventListener('DOMContentLoaded', () => {
     const skinNameSelect = document.getElementById('skin-name-select');
     
     let allSkins = [];
+    let characterNameChoices, skinNameChoices, skinTypeChoices, factionChoices, skinTagChoices;
+
+    const defaultChoicesConfig = {
+        searchEnabled: true,
+        removeItemButton: false,
+        itemSelectText: '',
+    };
 
     // Fetch local skin data
     fetch('data/subset_skin_data.json')
         .then(response => response.json())
         .then(jsonData => {
             allSkins = jsonData;
-            populateDropdowns(allSkins);
+            initializeFilters(allSkins);
             displaySkins(allSkins);
         })
         .catch(error => console.error('Error loading skin data:', error));
+    
+    const initializeFilters = (skins) => {
+        // --- Populate and Initialize Choices.js for each dropdown ---
 
-    const populateDropdowns = (skins) => {
-        const skinTypes = [...new Set(skins.map(skin => skin['스킨 타입 - 한글']))];
-        skinTypes.sort();
-        skinTypes.forEach(type => {
-            const option = document.createElement('option');
-            option.value = type;
-            option.textContent = type;
-            skinTypeSelect.appendChild(option);
-        });
+        // Character Name
+        const characterNames = [{ value: 'All', label: 'All' }, ...[...new Set(skins.map(skin => skin['함순이 이름']))].sort().map(name => ({ value: name, label: name }))];
+        characterNameChoices = new Choices(characterNameSelect, { ...defaultChoicesConfig, placeholder: true });
+        characterNameChoices.setChoices(characterNames, 'value', 'label', true);
 
-        const characterNames = [...new Set(skins.map(skin => skin['함순이 이름']))];
-        characterNames.sort();
-        characterNames.forEach(name => {
-            const option = document.createElement('option');
-            option.value = name;
-            option.textContent = name;
-            characterNameSelect.appendChild(option);
-        });
+        // Skin Name
+        const skinNames = [{ value: 'All', label: 'All' }, ...[...new Set(skins.map(skin => skin['한글 함순이 + 스킨 이름']))].sort().map(name => ({ value: name, label: name }))];
+        skinNameChoices = new Choices(skinNameSelect, { ...defaultChoicesConfig, placeholder: true });
+        skinNameChoices.setChoices(skinNames, 'value', 'label', true);
+        
+        // Skin Type
+        const skinTypes = [{ value: 'All', label: 'All' }, ...[...new Set(skins.map(skin => skin['스킨 타입 - 한글']))].sort().map(type => ({ value: type, label: type }))];
+        skinTypeChoices = new Choices(skinTypeSelect, { ...defaultChoicesConfig, searchEnabled: false });
+        skinTypeChoices.setChoices(skinTypes, 'value', 'label', true);
 
-        const skinNames = [...new Set(skins.map(skin => skin['한글 함순이 + 스킨 이름']))];
-        skinNames.sort();
-        skinNames.forEach(name => {
-            const option = document.createElement('option');
-            option.value = name;
-            option.textContent = name;
-            skinNameSelect.appendChild(option);
-        });
+        // Faction
+        const factions = [{ value: 'All', label: 'All' }, ...[...new Set(skins.map(skin => skin['진영']))].sort().map(fac => ({ value: fac, label: fac }))];
+        factionChoices = new Choices(factionSelect, { ...defaultChoicesConfig, searchEnabled: false });
+        factionChoices.setChoices(factions, 'value', 'label', true);
+
+        // Skin Tag
+        skinTagChoices = new Choices(skinTagSelect, { ...defaultChoicesConfig, searchEnabled: false });
+
+        // --- Add Event Listeners ---
+        characterNameSelect.addEventListener('change', handleCharacterChange);
+        [skinNameSelect, skinTypeSelect, factionSelect, skinTagSelect].forEach(el => el.addEventListener('change', applyFilters));
+        rarityCheckboxes.addEventListener('change', applyFilters);
+    };
+
+    const handleCharacterChange = () => {
+        const selectedCharacter = characterNameChoices.getValue(true);
+        
+        // Update the skin name dropdown based on the selected character
+        let relevantSkins = [];
+        if (selectedCharacter === 'All' || !selectedCharacter) {
+            relevantSkins = allSkins; // Show all skins if 'All' is selected
+        } else {
+            relevantSkins = allSkins.filter(skin => skin['함순이 이름'] === selectedCharacter);
+        }
+        
+        const skinNameOptions = [{ value: 'All', label: 'All' }, ...[...new Set(relevantSkins.map(skin => skin['한글 함순이 + 스킨 이름']))].sort().map(name => ({ value: name, label: name }))];
+        
+        skinNameChoices.clearStore();
+        skinNameChoices.setChoices(skinNameOptions, 'value', 'label', true);
+
+        applyFilters(); // Apply all filters after updating the dropdown
     };
 
     const displaySkins = (skins) => {
-        pollContainer.innerHTML = ''; // Clear existing content
+        pollContainer.innerHTML = '';
         skins.forEach(skin => {
             const pollItem = document.createElement('div');
             pollItem.className = 'poll-item';
@@ -95,58 +122,50 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const applyFilters = () => {
-        const selectedSkinType = skinTypeSelect.value;
+        const selectedCharacterName = characterNameChoices.getValue(true);
+        const selectedSkinName = skinNameChoices.getValue(true);
+        const selectedSkinType = skinTypeChoices.getValue(true);
+        const selectedFaction = factionChoices.getValue(true);
+        const selectedSkinTag = skinTagChoices.getValue(true);
         const selectedRarities = [...rarityCheckboxes.querySelectorAll('input:checked')].map(el => el.value);
-        const selectedFaction = factionSelect.value;
-        const selectedSkinTag = skinTagSelect.value;
-        const selectedCharacterName = characterNameSelect.value;
-        const selectedSkinName = skinNameSelect.value;
 
         const filteredSkins = allSkins.filter(skin => {
-            const skinTypeMatch = selectedSkinType === 'All' || skin['스킨 타입 - 한글'] === selectedSkinType;
+            const characterNameMatch = selectedCharacterName === 'All' || !selectedCharacterName || skin['함순이 이름'] === selectedCharacterName;
+            const skinNameMatch = selectedSkinName === 'All' || !selectedSkinName || skin['한글 함순이 + 스킨 이름'] === selectedSkinName;
+            const skinTypeMatch = selectedSkinType === 'All' || !selectedSkinType || skin['스킨 타입 - 한글'] === selectedSkinType;
+            const factionMatch = selectedFaction === 'All' || !selectedFaction || skin['진영'] === selectedFaction;
+            const skinTagMatch = selectedSkinTag === 'All' || !selectedSkinTag || skin['스킨 태그'] === selectedSkinTag;
             const rarityMatch = selectedRarities.length === 0 || selectedRarities.includes(skin['레어도']);
-            const factionMatch = selectedFaction === 'All' || skin['진영'] === selectedFaction;
-            const skinTagMatch = selectedSkinTag === 'All' || skin['스킨 태그'] === selectedSkinTag;
-            const characterNameMatch = selectedCharacterName === 'All' || skin['함순이 이름'] === selectedCharacterName;
-            const skinNameMatch = selectedSkinName === 'All' || skin['한글 함순이 + 스킨 이름'] === selectedSkinName;
-            return skinTypeMatch && rarityMatch && factionMatch && skinTagMatch && characterNameMatch && skinNameMatch;
+            
+            return characterNameMatch && skinNameMatch && skinTypeMatch && rarityMatch && factionMatch && skinTagMatch;
         });
 
         displaySkins(filteredSkins);
     };
+
+    // --- Firebase and Voting Functions (No changes needed here) ---
 
     const submitVote = (skinId, rating, skinName, characterName) => {
         const skinRef = db.collection('skins-poll').doc(skinId.toString());
         db.runTransaction((transaction) => {
             return transaction.get(skinRef).then((skinDoc) => {
                 if (!skinDoc.exists) {
-                    transaction.set(skinRef, { 
-                        total_score: rating, 
-                        total_votes: 1,
-                        skin_name: skinName,
-                        character_name: characterName
-                    });
+                    transaction.set(skinRef, { total_score: rating, total_votes: 1, skin_name: skinName, character_name: characterName });
                 } else {
                     const newTotalScore = skinDoc.data().total_score + rating;
                     const newTotalVotes = skinDoc.data().total_votes + 1;
-                    transaction.update(skinRef, { 
-                        total_score: newTotalScore, 
-                        total_votes: newTotalVotes 
-                    });
+                    transaction.update(skinRef, { total_score: newTotalScore, total_votes: newTotalVotes });
                 }
             });
         }).then(() => {
             console.log("Vote successfully submitted!");
-            fetchPollResults(skinId); // Re-fetch to show updated results
-        }).catch((error) => {
-            console.error("Transaction failed: ", error);
-        });
+            fetchPollResults(skinId);
+        }).catch((error) => console.error("Transaction failed: ", error));
     };
     
     const fetchPollResults = (skinId) => {
         const resultsEl = document.getElementById(`results-${skinId}`);
         if (!resultsEl) return;
-    
         db.collection('skins-poll').doc(skinId.toString()).get().then(doc => {
             if (doc.exists) {
                 const data = doc.data();
@@ -165,7 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Event listener for voting
     pollContainer.addEventListener('change', (event) => {
         if (event.target.matches('.star-rating input[type="radio"]')) {
             const starRatingDiv = event.target.closest('.star-rating');
@@ -176,8 +194,4 @@ document.addEventListener('DOMContentLoaded', () => {
             submitVote(skinId, rating, skinName, characterName);
         }
     });
-
-    // Attach event listeners to filters
-    [skinTypeSelect, factionSelect, skinTagSelect, characterNameSelect, skinNameSelect].forEach(el => el.addEventListener('change', applyFilters));
-    rarityCheckboxes.addEventListener('change', applyFilters);
 });
