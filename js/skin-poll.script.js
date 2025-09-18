@@ -19,8 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const pollContainer = document.getElementById('poll-container');
     const characterNameSearch = document.getElementById('character-name-search');
     const characterNameSelect = document.getElementById('character-name-select');
-    const skinNameSearch = document.getElementById('skin-name-search');
-    const skinNameSelect = document.getElementById('skin-name-select');
     const skinTypeSelect = document.getElementById('skin-type-select');
     const rarityCheckboxes = document.getElementById('rarity-checkboxes');
     const factionSelect = document.getElementById('faction-select');
@@ -45,13 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const populateInitialFilters = () => {
         allCharacterNamesData = [...new Set(allSkins.map(s => s['함순이 이름']))].filter(Boolean).sort().map(name => ({ value: name, text: name }));
-        allSkinNamesData = allSkins.map(s => ({ 
-            charName: s['함순이 이름'], 
-            skinName: s['한글 함순이 + 스킨 이름'] 
-        })).sort((a, b) => a.skinName.localeCompare(b.skinName));
         
         rebuildDropdown(characterNameSelect, allCharacterNamesData);
-        rebuildDropdown(skinNameSelect, allSkinNamesData.map(s => ({ value: s.skinName, text: s.skinName })));
 
         rarityCheckboxes.querySelectorAll('input').forEach(checkbox => {
             checkbox.addEventListener('change', applyFilters);
@@ -178,17 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
         rebuildDropdown(characterNameSelect, allCharacterNamesData.filter(char => char.text.toLowerCase().includes(characterNameSearch.value.toLowerCase())));
     }, 250));
 
-    skinNameSearch.addEventListener('input', debounce(() => {
-        const selectedChar = characterNameSelect.value;
-        const searchTerm = skinNameSearch.value.toLowerCase();
-        let filteredData = allSkinNamesData;
-        if (selectedChar !== 'all') {
-            filteredData = allSkinNamesData.filter(skin => skin.charName === selectedChar);
-        }
-        filteredData = filteredData.filter(skin => skin.skinName.toLowerCase().includes(searchTerm));
-        rebuildDropdown(skinNameSelect, filteredData.map(s => ({ value: s.skinName, text: s.skinName })));
-    }, 250));
-
     characterNameSelect.addEventListener('change', () => {
         skinNameSearch.value = '';
         const selectedChar = characterNameSelect.value;
@@ -197,5 +179,5 @@ document.addEventListener('DOMContentLoaded', () => {
         applyFilters();
     });
     
-    [skinNameSelect, skinTypeSelect, factionSelect, tagSelect].forEach(el => el.addEventListener('change', applyFilters));
+    [factionSelect, tagSelect].forEach(el => el.addEventListener('change', applyFilters));
 });
