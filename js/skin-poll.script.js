@@ -39,10 +39,18 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(jsonData => {
             allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] }))
-                .filter(skin => skin['깔끔한 일러'] && skin['스킨 태그'] && skin['스킨 태그'].includes('L2D'));
+                .filter(skin => skin['스킨 태그'] && skin['스킨 태그'].includes('L2D'));
             
+            if (allSkins.length === 0) {
+                pollContainer.innerHTML = `<p style="text-align: center;">No L2D skins found in the data file.</p>`;
+                return;
+            }
+
             populateInitialFilters();
             applyFilters();
+        }).catch(error => {
+             console.error("Failed to load or process data:", error);
+             pollContainer.innerHTML = `<p style="color: #f04747; text-align: center;">Error loading data. Please check console.</p>`;
         });
 
     // --- Filter Population and Logic ---
@@ -90,17 +98,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const cascadeSkinFilter = () => {
         const selectedChar = characterNameSelect.value;
         const skinSearchTerm = skinNameSearch.value.toLowerCase();
-        
-        allSkinNameOptions.forEach(option => {
-            if (option.value === 'all') {
-                option.style.display = '';
-                return;
-            };
-            
-            const skinData = allSkins.find(s => s['한글 함순이 + 스킨 이름'] === option.value);
-            const matchesCharacter = (selectedChar === 'all' || (skinData && skinData['함순이 이름'] === selectedChar));
-            const matchesSearch = option.textContent.toLowerCase().includes(skinSearchTerm);
+        const relevantSkins = (selectedChar === 'all') 
+            ? allSkins 
+            : allSkins.filter(s => s['함순이 이름'] === selectedChar);
+        const relevantSkinNames = new Set(relevantSkins.map(s => s['한글 함순이 + 스킨 이름']));
 
+        allSkinNameOptions.forEach(option => {
+            if (option.value === 'all') { option.style.display = ''; return; }
+            const matchesCharacter = relevantSkinNames.has(option.value);
+            const matchesSearch = option.textContent.toLowerCase().includes(skinSearchTerm);
             option.style.display = (matchesCharacter && matchesSearch) ? '' : 'none';
         });
     };
@@ -114,17 +120,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const hasVoted = localStorage.getItem(`voted_${skinId}`) === 'true';
 
             pollBox.innerHTML = `
-                <img src="${skin['깔끔한 일러']}" class="poll-image" loading="lazy">
+                <img src="${skin['깔끔한 일러'] || ''}" class="poll-image" loading="lazy">
                 <div class="poll-info">
                     <div class="character-name">${skin['함순이 이름']}</div>
                     <h3>${skin['한글 함순이 + 스킨 이름']}</h3>
                     <div class="rating-area ${hasVoted ? 'voted' : ''}">
                         <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin['한글 함순이 + 스킨 이름']}" data-character-name="${skin['함순이 이름']}">
-                            <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
-                            <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${hasVoted ? 'disabled' : ''}><label for="star4-${skinId}">★</label>
-                            <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${hasVoted ? 'disabled' : ''}><label for="star3-${skinId}">★</label>
-                            <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label>
-                            <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
+                             <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
+                             <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${hasVoted ? 'disabled' : ''}><label for="star4-${skinId}">★</label>
+                             <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${hasVoted ? 'disabled' : ''}><label for="star3-${skinId}">★</label>
+                             <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label>
+                             <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
                         </div>
                         <div class="poll-results" id="results-${skinId}">Loading results...</div>
                     </div>
@@ -152,12 +158,15 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPollList(filteredSkins);
     };
 
+    // --- Firebase Functions ---
     const submitVote = (skinId, rating, skinName, characterName) => {
         if (localStorage.getItem(`voted_${skinId}`) === 'true') return;
+
         const pollRef = db.collection('skin_polls').doc(String(skinId));
         return db.runTransaction(transaction => {
             return transaction.get(pollRef).then(doc => {
-                let newTotalVotes = 1; let newTotalScore = rating;
+                let newTotalVotes = 1;
+                let newTotalScore = rating;
                 if (doc.exists) {
                     newTotalVotes = doc.data().total_votes + 1;
                     newTotalScore = doc.data().total_score + rating;
@@ -217,6 +226,5 @@ document.addEventListener('DOMContentLoaded', () => {
     characterNameSearch.addEventListener('input', debounce(() => filterDropdownOptions(characterNameSearch, allCharacterNameOptions), 250));
     skinNameSearch.addEventListener('input', debounce(() => {
         cascadeSkinFilter();
-        // Don't apply main filter while typing, let user select from the filtered list
     }, 250));
 });
