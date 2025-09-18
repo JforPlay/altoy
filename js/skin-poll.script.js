@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
         apiKey: "AIzaSyCmtsfkzlISZDd0totgv3MIrpT9kvLvKLk",
         authDomain: "azurlane-skin-vote.firebaseapp.com",
         projectId: "azurlane-skin-vote",
-        storageBucket: "azurlane-skin-vote.appspot.com",
+        storageBucket: "azurlane-skin-vote.firebasestorage.app",
         messagingSenderId: "282702723033",
         appId: "1:282702723033:web:a97b60cb7138bdbbbacbc8"
     };
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             populateInitialFilters();
             tagSelect.value = 'L2D';
             applyFilters();
-            renderPollList(filteredSkins);
+            renderPollList(allSkins);
         });
 
     const populateInitialFilters = () => {
