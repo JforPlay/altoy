@@ -46,27 +46,42 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Populate and Initialize Choices.js for each dropdown ---
 
         // Character Name
-        const characterNames = [{ value: 'All', label: 'All' }, ...[...new Set(skins.map(skin => skin['함순이 이름']))].sort().map(name => ({ value: name, label: name }))];
+        const characterNames = [{ value: '전체', label: '전체' }, ...[...new Set(skins.map(skin => skin['함순이 이름']))].sort().map(name => ({ value: name, label: name }))];
         characterNameChoices = new Choices(characterNameSelect, { ...defaultChoicesConfig, placeholder: true });
         characterNameChoices.setChoices(characterNames, 'value', 'label', true);
 
         // Skin Name
-        const skinNames = [{ value: 'All', label: 'All' }, ...[...new Set(skins.map(skin => skin['한글 함순이 + 스킨 이름']))].sort().map(name => ({ value: name, label: name }))];
+        const skinNames = [{ value: '전체', label: '전체' }, ...[...new Set(skins.map(skin => skin['한글 함순이 + 스킨 이름']))].sort().map(name => ({ value: name, label: name }))];
         skinNameChoices = new Choices(skinNameSelect, { ...defaultChoicesConfig, placeholder: true });
         skinNameChoices.setChoices(skinNames, 'value', 'label', true);
         
-        // Skin Type
-        const skinTypes = [{ value: 'All', label: 'All' }, ...[...new Set(skins.map(skin => skin['스킨 타입 - 한글']))].sort().map(type => ({ value: type, label: type }))];
+        // Skin Type (with custom order)
+        const customSkinTypeOrder = [
+            "전체", "크리스마스", "정월", "이스트 글림 스타일", "학교", "수영복", "파티", "할로윈", "사복", "여름 축제", 
+            "Live", "특수 훈련", "스포츠", "극속광열", "병원", "카니발", "메이드 타임", "블러드 문", "동화 속 세계", "홈웨어",
+            "댄스", "온천 타임", "오피스 타임", "이세계 모험", "웨스턴", "이집트 스타일", "기본", "개조", "서약", "기타"
+        ];
+        const skinTypes = customSkinTypeOrder.map(type => ({ value: type, label: type }));
         skinTypeChoices = new Choices(skinTypeSelect, { ...defaultChoicesConfig, searchEnabled: false });
         skinTypeChoices.setChoices(skinTypes, 'value', 'label', true);
 
+
         // Faction
-        const factions = [{ value: 'All', label: 'All' }, ...[...new Set(skins.map(skin => skin['진영']))].sort().map(fac => ({ value: fac, label: fac }))];
+        const factions = [{ value: '전체', label: '전체' }, ...[...new Set(skins.map(skin => skin['진영']))].sort().map(fac => ({ value: fac, label: fac }))];
         factionChoices = new Choices(factionSelect, { ...defaultChoicesConfig, searchEnabled: false });
         factionChoices.setChoices(factions, 'value', 'label', true);
 
         // Skin Tag
         skinTagChoices = new Choices(skinTagSelect, { ...defaultChoicesConfig, searchEnabled: false });
+        // Set 'All' value to '전체' for consistency
+        skinTagChoices.setChoices([
+            { value: '전체', label: '전체' },
+            { value: 'L2D+', label: 'L2D+' },
+            { value: 'L2D', label: 'L2D' },
+            { value: '쁘띠모션', label: '쁘띠모션' },
+            { value: 'X', label: 'X' },
+        ], 'value', 'label', true);
+
 
         // --- Add Event Listeners ---
         characterNameSelect.addEventListener('change', handleCharacterChange);
@@ -77,20 +92,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleCharacterChange = () => {
         const selectedCharacter = characterNameChoices.getValue(true);
         
-        // Update the skin name dropdown based on the selected character
         let relevantSkins = [];
-        if (selectedCharacter === 'All' || !selectedCharacter) {
-            relevantSkins = allSkins; // Show all skins if 'All' is selected
+        if (selectedCharacter === '전체' || !selectedCharacter) {
+            relevantSkins = allSkins;
         } else {
             relevantSkins = allSkins.filter(skin => skin['함순이 이름'] === selectedCharacter);
         }
         
-        const skinNameOptions = [{ value: 'All', label: 'All' }, ...[...new Set(relevantSkins.map(skin => skin['한글 함순이 + 스킨 이름']))].sort().map(name => ({ value: name, label: name }))];
+        const skinNameOptions = [{ value: '전체', label: '전체' }, ...[...new Set(relevantSkins.map(skin => skin['한글 함순이 + 스킨 이름']))].sort().map(name => ({ value: name, label: name }))];
         
         skinNameChoices.clearStore();
         skinNameChoices.setChoices(skinNameOptions, 'value', 'label', true);
 
-        applyFilters(); // Apply all filters after updating the dropdown
+        applyFilters();
     };
 
     const displaySkins = (skins) => {
@@ -130,11 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedRarities = [...rarityCheckboxes.querySelectorAll('input:checked')].map(el => el.value);
 
         const filteredSkins = allSkins.filter(skin => {
-            const characterNameMatch = selectedCharacterName === 'All' || !selectedCharacterName || skin['함순이 이름'] === selectedCharacterName;
-            const skinNameMatch = selectedSkinName === 'All' || !selectedSkinName || skin['한글 함순이 + 스킨 이름'] === selectedSkinName;
-            const skinTypeMatch = selectedSkinType === 'All' || !selectedSkinType || skin['스킨 타입 - 한글'] === selectedSkinType;
-            const factionMatch = selectedFaction === 'All' || !selectedFaction || skin['진영'] === selectedFaction;
-            const skinTagMatch = selectedSkinTag === 'All' || !selectedSkinTag || skin['스킨 태그'] === selectedSkinTag;
+            const characterNameMatch = selectedCharacterName === '전체' || !selectedCharacterName || skin['함순이 이름'] === selectedCharacterName;
+            const skinNameMatch = selectedSkinName === '전체' || !selectedSkinName || skin['한글 함순이 + 스킨 이름'] === selectedSkinName;
+            const skinTypeMatch = selectedSkinType === '전체' || !selectedSkinType || skin['스킨 타입 - 한글'] === selectedSkinType;
+            const factionMatch = selectedFaction === '전체' || !selectedFaction || skin['진영'] === selectedFaction;
+            const skinTagMatch = selectedSkinTag === '전체' || !selectedSkinTag || skin['스킨 태그'] === selectedSkinTag;
             const rarityMatch = selectedRarities.length === 0 || selectedRarities.includes(skin['레어도']);
             
             return characterNameMatch && skinNameMatch && skinTypeMatch && rarityMatch && factionMatch && skinTagMatch;
