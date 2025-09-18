@@ -30,7 +30,7 @@ body {
     color: #dcddde;
     margin: 0;
     padding: 20px;
-    padding-top: 80px; /* Add padding to prevent content from going under the nav bar */
+    padding-top: 80px;
 }
 .story-container {
     max-width: 800px;
@@ -133,7 +133,7 @@ body {
 /* --- Responsive Styles for Mobile --- */
 @media (max-width: 768px) {
     html {
-        font-size: 14px; /* Reduces base font size, scaling down rem/em units */
+        font-size: 12px; /* Reduced from 14px */
     }
     body {
         padding-top: 60px;
