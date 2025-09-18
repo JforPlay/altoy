@@ -14,15 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const db = firebase.firestore();
 
-    // --- Get HTML elements ---
+    // Get HTML elements
     const pollContainer = document.getElementById('poll-container');
+    
+    let allSkins = [];
 
-    // --- Data Loading ---
     fetch('data/subset_skin_data.json')
         .then(response => response.json())
         .then(jsonData => {
-            const allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] }))
-                .filter(skin => skin['깔끔한 일러'] && skin['스킨 태그'] && skin['스킨 태그'].includes('L2D'));
+            // MODIFIED: This now loads all skins that have an image, not just L2D
+            allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] }))
+                .filter(skin => skin['깔끔한 일러']);
             
             renderPollList(allSkins);
         }).catch(error => {
@@ -56,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             pollContainer.appendChild(pollBox);
-            fetchAndDisplayResults(skinId);
+            fetchAndDisplayResults(skinId); // Uncomment when Firebase is active
         });
     };
 
