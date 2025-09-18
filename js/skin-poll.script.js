@@ -111,17 +111,31 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPollList(filteredSkins);
     };
 
+    // --- Firebase Logic ---
     const submitVote = (skinId, rating, skinName, characterName) => {
-        if (localStorage.getItem(`voted_${skinId}`) === 'true') return;
+        if (localStorage.getItem(`voted_${skinId}`) === 'true') {
+            console.log("해당 스킨에 이미 투표하셨습니다.");
+            return;
+        }
+
         const pollRef = db.collection('skin_polls').doc(String(skinId));
+
         return db.runTransaction(transaction => {
             return transaction.get(pollRef).then(doc => {
-                let newTotalVotes = 1; let newTotalScore = rating;
+                let newTotalVotes = 1;
+                let newTotalScore = rating;
+
                 if (doc.exists) {
                     newTotalVotes = doc.data().total_votes + 1;
                     newTotalScore = doc.data().total_score + rating;
                 }
-                transaction.set(pollRef, { total_votes: newTotalVotes, total_score: newTotalScore, skin_name: skinName, character_name: characterName });
+                
+                transaction.set(pollRef, { 
+                    total_votes: newTotalVotes, 
+                    total_score: newTotalScore,
+                    skin_name: skinName,
+                    character_name: characterName
+                });
             });
         }).then(() => {
             localStorage.setItem(`voted_${skinId}`, 'true');
@@ -131,12 +145,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 ratingArea.querySelectorAll('input').forEach(input => input.disabled = true);
             }
             fetchAndDisplayResults(skinId);
-        }).catch(error => { console.error("Firebase transaction failed: ", error); });
+        }).catch(error => {
+            console.error("Firebase transaction failed: ", error);
+        });
     };
 
     const fetchAndDisplayResults = (skinId) => {
         const resultsEl = document.getElementById(`results-${skinId}`);
         if (!resultsEl) return;
+
         const pollRef = db.collection('skin_polls').doc(String(skinId));
         pollRef.get().then(doc => {
             if (doc.exists) {
@@ -144,11 +161,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.total_votes > 0) {
                     const average = (data.total_score / data.total_votes).toFixed(2);
                     resultsEl.textContent = `평균 점수: ${average} / 5 (${data.total_votes} 표)`;
-                } else { resultsEl.textContent = "아직 투표가 없습니다."; }
-            } else { resultsEl.textContent = "아직 투표가 없습니다."; }
+                } else {
+                     resultsEl.textContent = "아직 투표가 없습니다.";
+                }
+            } else {
+                resultsEl.textContent = "아직 투표가 없습니다.";
+            }
+        }).catch(error => {
+            console.error("Error fetching poll results:", error);
+            resultsEl.textContent = "결과를 불러올 수 없습니다.";
         });
     };
-    
+
     pollContainer.addEventListener('change', (event) => {
         if (event.target.matches('.star-rating input[type="radio"]')) {
             const starRatingDiv = event.target.closest('.star-rating');
