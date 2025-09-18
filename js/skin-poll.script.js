@@ -73,19 +73,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const hasVoted = localStorage.getItem(`voted_${skinId}`) === 'true';
 
             pollBox.innerHTML = `
-                <img src="${skin['깔끔한 일러'] || ''}" class="poll-image" loading="lazy">
+                <img src="${skin['깔끔한 일러']}" class="poll-image" loading="lazy">
                 <div class="poll-info">
                     <div class="character-name">${skin['함순이 이름']}</div>
                     <h3>${skin['한글 함순이 + 스킨 이름']}</h3>
+                    <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
+                    <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
+                    <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
                     <div class="rating-area ${hasVoted ? 'voted' : ''}">
                         <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin['한글 함순이 + 스킨 이름']}" data-character-name="${skin['함순이 이름']}">
-                             <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
-                             <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${hasVoted ? 'disabled' : ''}><label for="star4-${skinId}">★</label>
-                             <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${hasVoted ? 'disabled' : ''}><label for="star3-${skinId}">★</label>
-                             <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label>
-                             <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
+                            <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
+                            <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${hasVoted ? 'disabled' : ''}><label for="star4-${skinId}">★</label>
+                            <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${hasVoted ? 'disabled' : ''}><label for="star3-${skinId}">★</label>
+                            <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label>
+                            <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
                         </div>
-                        <div class="poll-results" id="results-${skinId}">Loading results...</div>
+                        <div class="poll-results" id="results-${skinId}">
+                            결과 불러오는 중...
+                        </div>
                     </div>
                 </div>
             `;
