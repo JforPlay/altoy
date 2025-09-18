@@ -5,16 +5,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const skinListContainer = document.getElementById('skin-list-container');
     const factionSelect = document.getElementById('faction-select');
     const tagSelect = document.getElementById('tag-select');
+    const exDialogueCheckbox = document.getElementById('ex-dialogue-checkbox'); // New element
 
     let allSkins = [];
+    let exChatStatusData = {}; // To store the new status data
 
-    // Fetch and process the data
-    fetch('data/subset_skin_data.json')
-        .then(response => response.json())
-        .then(jsonData => {
-            allSkins = Object.values(jsonData).filter(skin => skin['깔끔한 일러']);
-            renderSkinList(allSkins);
-        });
+    // Fetch all necessary data files
+    Promise.all([
+        fetch('data/subset_skin_data.json').then(res => res.json()),
+        fetch('data/ex_chat_status.json').then(res => res.json())
+    ]).then(([skinJson, exChatJson]) => {
+        allSkins = Object.values(skinJson).filter(skin => skin['깔끔한 일러']);
+        exChatStatusData = exChatJson;
+        renderSkinList(allSkins);
+    }).catch(error => {
+        console.error("Failed to load data:", error);
+        skinListContainer.innerHTML = `<p style="color: #f04747; text-align: center;">Error loading data. Please check the data files and console for errors.</p>`;
+    });
 
     // Function to render the list of skin boxes
     const renderSkinList = (skinsToRender) => {
@@ -43,37 +50,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // --- MODIFIED: applyFilters now handles the special case for "기본" ---
+    // --- MODIFIED: applyFilters now handles all five filters ---
     const applyFilters = () => {
         const selectedType = skinTypeSelect.value;
         const selectedFaction = factionSelect.value;
         const selectedTag = tagSelect.value;
         const selectedRarities = [...rarityCheckboxes.querySelectorAll('input:checked')].map(cb => cb.value);
+        const showOnlyEx = exDialogueCheckbox.checked;
 
         let filteredSkins = allSkins;
 
-        // 1. Filter by skin type
+        // 1. Filter by EX dialogue status
+        if (showOnlyEx) {
+            filteredSkins = filteredSkins.filter(skin => {
+                const characterName = skin['함순이 이름'];
+                return exChatStatusData[characterName] === 1;
+            });
+        }
+
+        // 2. Filter by skin type
         if (selectedType !== 'all') {
             if (selectedType === '기본') {
-                // Special case: "기본" skins have an empty string for their type in the data
-                filteredSkins = filteredSkins.filter(skin => skin['스킨 타입 - 한글'] === '');
+                filteredSkins = filteredSkins.filter(skin => !skin['스킨 타입 - 한글']);
             } else {
-                // Standard filter for all other types
                 filteredSkins = filteredSkins.filter(skin => skin['스킨 타입 - 한글'] === selectedType);
             }
         }
 
-        // 2. Filter by faction
+        // 3. Filter by faction
         if (selectedFaction !== 'all') {
             filteredSkins = filteredSkins.filter(skin => skin['진영'] === selectedFaction);
         }
 
-        // 3. Filter by skin tag (contains)
+        // 4. Filter by skin tag (contains)
         if (selectedTag !== 'all') {
             filteredSkins = filteredSkins.filter(skin => skin['스킨 태그'] && skin['스킨 태그'].includes(selectedTag));
         }
 
-        // 4. Filter by rarity
+        // 5. Filter by rarity
         if (selectedRarities.length > 0) {
             filteredSkins = filteredSkins.filter(skin => selectedRarities.includes(skin['레어도']));
         }
@@ -85,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     skinTypeSelect.addEventListener('change', applyFilters);
     factionSelect.addEventListener('change', applyFilters);
     tagSelect.addEventListener('change', applyFilters);
+    exDialogueCheckbox.addEventListener('change', applyFilters);
     rarityCheckboxes.querySelectorAll('input').forEach(checkbox => {
         checkbox.addEventListener('change', applyFilters);
     });
