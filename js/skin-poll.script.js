@@ -4,23 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const skinTypeSelect = document.getElementById('skin-type-select');
     const rarityCheckboxes = document.getElementById('rarity-checkboxes');
     const factionSelect = document.getElementById('faction-select');
-    const tagSelect = document.getElementById('tag-select');
-    const exDialogueCheckbox = document.getElementById('ex-dialogue-checkbox');
-
+    
     let allSkins = [];
-    let exChatStatusData = {};
 
-    Promise.all([
-        fetch('data/subset_skin_data.json').then(res => res.json()),
-        fetch('data/ex_chat_status.json').then(res => res.json())
-    ]).then(([skinJson, exChatJson]) => {
-        allSkins = Object.keys(skinJson).map(key => ({ id: key, ...skinJson[key] }))
-            .filter(skin => skin['깔끔한 일러'] && skin['스킨 태그'] && skin['스킨 태그'].includes('L2D'));
-        exChatStatusData = exChatJson;
-        renderPollList(allSkins);
-    }).catch(error => {
-        console.error("Failed to load data:", error);
-    });
+    // Fetch and process the data
+    fetch('data/subset_skin_data.json')
+        .then(response => response.json())
+        .then(jsonData => {
+            allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] }))
+                .filter(skin => skin['깔끔한 일러'] && skin['스킨 태그'] && skin['스킨 태그'].includes('L2D'));
+            renderPollList(allSkins);
+        });
 
     const renderPollList = (skinsToRender) => {
         pollContainer.innerHTML = '';
@@ -57,19 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const applyFilters = () => {
         const selectedType = skinTypeSelect.value;
         const selectedFaction = factionSelect.value;
-        const selectedTag = tagSelect.value;
         const selectedRarities = [...rarityCheckboxes.querySelectorAll('input:checked')].map(cb => cb.value);
-        const showOnlyEx = exDialogueCheckbox.checked;
         let filteredSkins = allSkins;
 
-        if (showOnlyEx) { filteredSkins = filteredSkins.filter(skin => exChatStatusData[skin['함순이 이름']] === 1); }
         if (selectedType !== 'all') { if (selectedType === '기본') { filteredSkins = filteredSkins.filter(skin => !skin['스킨 타입 - 한글']); } else { filteredSkins = filteredSkins.filter(skin => skin['스킨 타입 - 한글'] === selectedType); } }
         if (selectedFaction !== 'all') { filteredSkins = filteredSkins.filter(skin => skin['진영'] === selectedFaction); }
-        if (selectedTag !== 'all') { filteredSkins = filteredSkins.filter(skin => skin['스킨 태그'] && skin['스킨 태그'].includes(selectedTag)); }
         if (selectedRarities.length > 0) { filteredSkins = filteredSkins.filter(skin => selectedRarities.includes(skin['레어도'])); }
         renderPollList(filteredSkins);
     };
 
-    [skinTypeSelect, factionSelect, tagSelect, exDialogueCheckbox].forEach(el => el.addEventListener('change', applyFilters));
+    [skinTypeSelect, factionSelect].forEach(el => el.addEventListener('change', applyFilters));
     rarityCheckboxes.querySelectorAll('input').forEach(cb => cb.addEventListener('change', applyFilters));
 });

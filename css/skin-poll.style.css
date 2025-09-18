@@ -15,17 +15,17 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
 .checkbox-group { display: flex; align-items: center; gap: 15px; background-color: #40444b; padding: 8px 12px; border-radius: 5px; height: 100%; box-sizing: border-box;}
 .checkbox-group label { display: flex; align-items: center; gap: 5px; font-weight: normal; cursor: pointer; }
 
-/* --- Poll Container --- */
+/* --- MODIFIED: Poll Container --- */
 .poll-container {
-    column-count: 4; /* Changed to four columns */
-    column-gap: 20px;
+    display: grid;
+    /* This creates a responsive grid with 4 columns on large screens */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
 }
 .poll-box {
     background-color: #2f3136;
     border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 20px;
-    break-inside: avoid;
     border: 1px solid #40444b;
 }
 .poll-image {
@@ -49,8 +49,3 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
 .rating-area.voted .star-rating label { cursor: not-allowed; color: #444; }
 .rating-area.voted .star-rating input:checked ~ label { color: #03a9f4; }
 .poll-results { margin-top: 10px; font-size: 0.9em; color: #b9bbbe; text-align: center; }
-
-/* Responsive Adjustments */
-@media (max-width: 1200px) { .poll-container { column-count: 3; } }
-@media (max-width: 900px) { .poll-container { column-count: 2; } }
-@media (max-width: 600px) { .poll-container { column-count: 1; } }
