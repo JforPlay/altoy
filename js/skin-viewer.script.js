@@ -3,20 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const characterSearch = document.getElementById('character-search');
     const characterSelect = document.getElementById('character-select');
     const skinSelect = document.getElementById('skin-select');
+    const skinInfoBox = document.getElementById('skin-info-box'); // New element
     const imageGallery = document.getElementById('image-gallery');
 
     let skinData = [];
     let allCharacterData = [];
 
-    const debounce = (func, delay) => {
-        let timeoutId;
-        return (...args) => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
-                func.apply(this, args);
-            }, delay);
-        };
-    };
+    const debounce = (func, delay) => { let timeoutId; return (...args) => { clearTimeout(timeoutId); timeoutId = setTimeout(() => { func.apply(this, args); }, delay); }; };
 
     fetch('data/subset_skin_data.json')
         .then(response => response.json())
@@ -68,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedCharacter = characterSelect.value;
         skinSelect.innerHTML = '<option value="">-- Select a Skin --</option>';
         imageGallery.classList.add('hidden');
+        skinInfoBox.classList.add('hidden'); // Hide info box when changing character
         if (!selectedCharacter) {
             skinSelect.disabled = true;
             return;
@@ -82,73 +76,59 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
     
-    // --- MODIFIED: Added placeholder logic ---
+    // --- MODIFIED: This function now builds the info box and the gallery ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
             imageGallery.classList.add('hidden');
+            skinInfoBox.classList.add('hidden');
             return;
         }
         const skin = skinData.find(row => row['한글 함순이 + 스킨 이름'] === selectedSkinName);
         if (!skin) return;
 
+        // --- Build and Display Info Box ---
+        skinInfoBox.innerHTML = ''; // Clear previous info
+        let infoHtml = '';
+        const gemSVG = `<svg class="gem-icon" viewBox="0 0 512 512" fill="#f44336" xmlns="http://www.w3.org/2000/svg"><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512z"/></svg>`;
+
+        if (skin['재화'] && skin['재화'] !== 'null') {
+            infoHtml += `<div class="info-item">${gemSVG}<span class="info-value">${skin['재화']}</span></div>`;
+        }
+        if (skin['기간'] && skin['기간'] !== 'null') {
+            infoHtml += `<div class="info-item"><strong class="info-label">상시여부:</strong><span class="info-value">${skin['기간']}</span></div>`;
+        }
+        if (skin['스킨 타입 - 한글'] && skin['스킨 타입 - 한글'] !== 'null') {
+            infoHtml += `<div class="info-item"><strong class="info-label">스킨타입:</strong><span class="info-value">${skin['스킨 타입 - 한글']}</span></div>`;
+        }
+        if (skin['스킨 태그'] && skin['스킨 태그'] !== 'null') {
+            infoHtml += `<div class="info-item"><strong class="info-label">스킨태그:</strong><span class="info-value">${skin['스킨 태그']}</span></div>`;
+        }
+        
+        skinInfoBox.innerHTML = infoHtml;
+        if(infoHtml) skinInfoBox.classList.remove('hidden');
+
+        // --- Build and Display Image Gallery ---
         imageGallery.innerHTML = '';
-
+        // ... (rest of the image gallery logic is unchanged) ...
         const topBannerSrc = skin['전체 일러'];
-        if (topBannerSrc && topBannerSrc !== 'null') {
-            const topBannerImg = document.createElement('img');
-            topBannerImg.className = 'gallery-top-banner';
-            topBannerImg.src = topBannerSrc;
-            imageGallery.appendChild(topBannerImg);
-        }
-
-        const bottomPanel = document.createElement('div');
-        bottomPanel.className = 'gallery-bottom-panel';
-
-        const bottomLeftPanel = document.createElement('div');
-        bottomLeftPanel.className = 'bottom-left-panel';
+        if (topBannerSrc && topBannerSrc !== 'null') { const topBannerImg = document.createElement('img'); topBannerImg.className = 'gallery-top-banner'; topBannerImg.src = topBannerSrc; imageGallery.appendChild(topBannerImg); }
+        const bottomPanel = document.createElement('div'); bottomPanel.className = 'gallery-bottom-panel';
+        const bottomLeftPanel = document.createElement('div'); bottomLeftPanel.className = 'bottom-left-panel';
         const secondaryLargeSrc = skin['확대 일러'];
-        
-        if (secondaryLargeSrc && secondaryLargeSrc !== 'null') {
-            const secondaryImg = document.createElement('img');
-            secondaryImg.src = secondaryLargeSrc;
-            bottomLeftPanel.appendChild(secondaryImg);
-        } else {
-            // This is the new part: create the dummy box
-            const dummyBox = document.createElement('div');
-            dummyBox.className = 'dummy-image-box';
-            dummyBox.textContent = '이 스킨은 확대 일러가 없어요 지휘관님';
-            bottomLeftPanel.appendChild(dummyBox);
-        }
+        if (secondaryLargeSrc && secondaryLargeSrc !== 'null') { const secondaryImg = document.createElement('img'); secondaryImg.src = secondaryLargeSrc; bottomLeftPanel.appendChild(secondaryImg); } else { const dummyBox = document.createElement('div'); dummyBox.className = 'dummy-image-box'; dummyBox.textContent = '이 스킨은 확대 일러가 없어요 지휘관님'; bottomLeftPanel.appendChild(dummyBox); }
         bottomPanel.appendChild(bottomLeftPanel);
-        
-        const bottomRightPanel = document.createElement('div');
-        bottomRightPanel.className = 'bottom-right-panel';
-
-        const tallGroup = document.createElement('div');
-        tallGroup.className = 'thumbnail-group tall-group';
+        const bottomRightPanel = document.createElement('div'); bottomRightPanel.className = 'bottom-right-panel';
+        const tallGroup = document.createElement('div'); tallGroup.className = 'thumbnail-group tall-group';
         const tallSources = [skin['깔끔한 일러'], skin['sd 일러']].filter(src => src && src !== 'null');
-        tallSources.forEach(src => {
-            const img = document.createElement('img');
-            img.src = src;
-            img.className = 'tall-thumbnail';
-            tallGroup.appendChild(img);
-        });
+        tallSources.forEach(src => { const img = document.createElement('img'); img.src = src; img.className = 'tall-thumbnail'; tallGroup.appendChild(img); });
         if(tallGroup.children.length > 0) bottomRightPanel.appendChild(tallGroup);
-
-        const smallGroup = document.createElement('div');
-        smallGroup.className = 'thumbnail-group small-group';
+        const smallGroup = document.createElement('div'); smallGroup.className = 'thumbnail-group small-group';
         const smallSources = [skin['아이콘 일러'], skin['쥬스타 아이콘 일러']].filter(src => src && src !== 'null');
-        smallSources.forEach(src => {
-            const img = document.createElement('img');
-            img.src = src;
-            smallGroup.appendChild(img);
-        });
+        smallSources.forEach(src => { const img = document.createElement('img'); img.src = src; smallGroup.appendChild(img); });
         if(smallGroup.children.length > 0) bottomRightPanel.appendChild(smallGroup);
-
         bottomPanel.appendChild(bottomRightPanel);
         imageGallery.appendChild(bottomPanel);
-        
         imageGallery.classList.remove('hidden');
     };
 
