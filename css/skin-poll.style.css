@@ -21,10 +21,9 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
 .checkbox-group { display: flex; align-items: center; gap: 15px; background-color: #40444b; padding: 8px 12px; border-radius: 5px; height: 100%; box-sizing: border-box;}
 .checkbox-group label { display: flex; align-items: center; gap: 5px; font-weight: normal; cursor: pointer; }
 
-/* --- MODIFIED: Poll Container --- */
+/* --- Poll Container --- */
 .poll-container {
     display: grid;
-    /* Reduced min-width to make boxes smaller (210px is 70% of 300px) */
     grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
     gap: 20px;
 }
@@ -33,6 +32,8 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid #40444b;
+    display: flex; /* Added flex to ensure child fills height */
+    flex-direction: column;
 }
 .poll-image {
     width: 100%;
@@ -40,13 +41,36 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
     object-fit: contain;
     background-color: #202225;
 }
-.poll-info { padding: 12px; }
-.poll-info h3 { margin: 0 0 4px 0; color: #ffffff; font-size: 1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.poll-info .character-name { font-size: 0.8em; color: #b9bbbe; margin-bottom: 8px; }
-.info-line { font-size: 0.75em; color: #8e9297; }
+.poll-info {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Make this section fill the available vertical space */
+}
+.poll-info h3 {
+    margin: 0 0 4px 0;
+    color: #ffffff;
+    font-size: 1em;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.poll-info .character-name {
+    font-size: 0.8em;
+    color: #b9bbbe;
+    margin-bottom: 8px;
+}
+.info-line {
+    font-size: 0.75em;
+    color: #8e9297;
+}
 
 /* Star Rating Styles */
-.rating-area { margin-top: 10px; border-top: 1px solid #40444b; padding-top: 10px; }
+.rating-area {
+    margin-top: auto; /* THIS IS THE KEY FIX: Pushes the rating to the bottom */
+    border-top: 1px solid #40444b;
+    padding-top: 10px;
+}
 .star-rating { display: flex; flex-direction: row-reverse; justify-content: center; }
 .star-rating input { display: none; }
 .star-rating label { font-size: 1.6em; color: #444; cursor: pointer; transition: color 0.2s; }
@@ -59,6 +83,6 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
 /* --- Responsive Styles for Mobile --- */
 @media (max-width: 768px) {
     html {
-        font-size: 12px; /* Added mobile font size reduction */
+        font-size: 12px;
     }
 }
