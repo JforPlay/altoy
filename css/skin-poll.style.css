@@ -5,13 +5,21 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
 .nav-link { color: #b9bbbe; text-decoration: none; padding: 15px 10px; font-weight: bold; border-bottom: 3px solid transparent; transition: all 0.2s; }
 .nav-link:hover { color: #ffffff; }
 .nav-link.active { color: #ffffff; border-bottom-color: #7289da; }
-.page-header { text-align: center; margin-bottom: 30px; }
+.page-header { text-align: center; }
 
 /* --- Flavor Text Box Style --- */
 .flavor-text-box { background-color: #2f3136; border: 1px solid #4f545c; border-radius: 8px; padding: 15px; margin: 20px auto 0 auto; max-width: 600px; text-align: center; }
 .flavor-text-box p { margin: 0; line-height: 1.6; font-size: 0.9em; color: #b9bbbe; }
 .flavor-text-box strong { color: #ffffff; font-size: 1.1em; display: block; margin-bottom: 8px; }
 .flavor-text-box .warning-text { color: #ffcc00; font-weight: bold; }
+
+/* --- Filter Styles --- */
+.filter-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; background-color: #2f3136; border-radius: 8px; margin-top: 20px; margin-bottom: 30px; }
+.filter-group { display: flex; flex-direction: column; gap: 10px; }
+.filter-group label { font-weight: bold; color: #ffffff; }
+.filter-group select { font-size: 1em; padding: 8px; border-radius: 5px; border: 2px solid #2f3136; background-color: #40444b; color: #dcddde; }
+.checkbox-group { display: flex; align-items: center; gap: 15px; background-color: #40444b; padding: 8px 12px; border-radius: 5px; height: 100%; box-sizing: border-box;}
+.checkbox-group label { display: flex; align-items: center; gap: 5px; font-weight: normal; cursor: pointer; }
 
 /* --- Poll Container --- */
 .poll-container {
@@ -24,7 +32,7 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid #40444b;
-    display: flex;
+    display: flex; /* Added flex to ensure child fills height */
     flex-direction: column;
 }
 .poll-image {
@@ -37,13 +45,32 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
     padding: 12px;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    flex-grow: 1; /* Make this section fill the available vertical space */
 }
-.poll-info h3 { margin: 0 0 4px 0; color: #ffffff; font-size: 1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.poll-info .character-name { font-size: 0.8em; color: #b9bbbe; margin-bottom: 8px; }
+.poll-info h3 {
+    margin: 0 0 4px 0;
+    color: #ffffff;
+    font-size: 1em;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.poll-info .character-name {
+    font-size: 0.8em;
+    color: #b9bbbe;
+    margin-bottom: 8px;
+}
+.info-line {
+    font-size: 0.75em;
+    color: #8e9297;
+}
 
 /* Star Rating Styles */
-.rating-area { margin-top: auto; border-top: 1px solid #40444b; padding-top: 10px; }
+.rating-area {
+    margin-top: auto; /* THIS IS THE KEY FIX: Pushes the rating to the bottom */
+    border-top: 1px solid #40444b;
+    padding-top: 10px;
+}
 .star-rating { display: flex; flex-direction: row-reverse; justify-content: center; }
 .star-rating input { display: none; }
 .star-rating label { font-size: 1.6em; color: #444; cursor: pointer; transition: color 0.2s; }

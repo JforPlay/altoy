@@ -17,21 +17,50 @@
     <div class="main-container">
         <header class="page-header">
             <h1>L2D 스킨 선호도 평가</h1>
+            
             <div class="flavor-text-box">
                 <p>
-                    <strong>초간단 설명서</strong><br>
+                    <strong>초간단 설명서</strong>
                     라투디 스킨들의 선호도 평가를 할 수 있습니다.<br>
                     <span class="warning-text">주의) 누르면 바로 평가가 되며, 재투표는 안되니 신중하게 눌러주세요</span>
                 </p>
             </div>
         </header>
 
-        <div id="poll-container" class="poll-container">
+        <div class="filter-container">
+            <div class="filter-group">
+                <label for="skin-type-select">스킨 타입</label>
+                <select id="skin-type-select">
+                    <option value="all">전체</option>
+                    <option>크리스마스</option><option>정월</option><option>이스트 글림 스타일</option><option>학교</option><option>수영복</option><option>파티</option><option>할로윈</option><option>사복</option><option>여름 축제</option><option>Live</option><option>특수 훈련</option><option>스포츠</option><option>극속광열</option><option>병원</option><option>카니발</option><option>메이드 타임</option><option>블러드 문</option><option>동화 속 세계</option><option>홈웨어</option><option>댄스</option><option>온천 타임</option><option>오피스 타임</option><option>이세계 모험</option><option>웨스턴</option><option>이집트 스타일</option><option>기본</option><option>개조</option><option>서약</option><option>기타</option>
+                </select>
             </div>
+            <div class="filter-group">
+                <label for="faction-select">진영</label>
+                <select id="faction-select">
+                    <option value="all">전체</option>
+                    <option>UNIV</option><option>USS</option><option>HMS</option><option>IJN</option><option>KMS</option><option>ROC</option><option>RN</option><option>SN</option><option>FFNF (FF, iris libre)</option><option>MNF</option><option>FFNF (FR, iris orthodoxy)</option><option>MOT</option><option>META</option><option>UNIV (bulin)</option><option>LINK (collab)</option><option>HDN (neptune)</option><option>BILI</option><option>UM (utawarerumono)</option><option>AI (kizuna)</option><option>HOLO</option><option>DOA</option><option>IMAS</option><option>SSSS</option><option>RYZA</option><option>SENRAN</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>레어도</label>
+                <div id="rarity-checkboxes" class="checkbox-group">
+                    <label><input type="checkbox" value="UR" checked> UR</label>
+                    <label><input type="checkbox" value="SSR" checked> SSR</label>
+                    <label><input type="checkbox" value="SR" checked> SR</label>
+                    <label><input type="checkbox" value="R" checked> R</label>
+                    <label><input type="checkbox" value="N" checked> N</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="poll-container" class="poll-container">
+        </div>
     </div>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
     <script src="js/skin-poll.script.js"></script>
 </body>
 </html>
