@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const skinTypeSelect = document.getElementById('skin-type-select');
     const rarityCheckboxes = document.getElementById('rarity-checkboxes');
     const skinListContainer = document.getElementById('skin-list-container');
+    const factionSelect = document.getElementById('faction-select'); // New element
+    const tagSelect = document.getElementById('tag-select'); // New element
 
     let allSkins = [];
 
@@ -10,20 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('data/subset_skin_data.json')
         .then(response => response.json())
         .then(jsonData => {
-            // Convert object to array and filter out items without a main image
             allSkins = Object.values(jsonData).filter(skin => skin['깔끔한 일러']);
-            renderSkinList(allSkins); // Initial render
+            renderSkinList(allSkins);
         });
 
     // Function to render the list of skin boxes
     const renderSkinList = (skinsToRender) => {
-        skinListContainer.innerHTML = ''; // Clear previous results
+        skinListContainer.innerHTML = '';
         const gemIconHtml = `<img src="assets/60px-Ruby.png" class="gem-icon" alt="Gem">`;
 
         skinsToRender.forEach(skin => {
             const skinBox = document.createElement('div');
             skinBox.className = 'skin-box';
-
             let costHtml = skin['재화'] ? `${gemIconHtml} ${skin['재화']}` : 'N/A';
 
             skinBox.innerHTML = `
@@ -43,9 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Function to apply all active filters
+    // --- MODIFIED: applyFilters now handles all filters ---
     const applyFilters = () => {
         const selectedType = skinTypeSelect.value;
+        const selectedFaction = factionSelect.value;
+        const selectedTag = tagSelect.value;
         const selectedRarities = [...rarityCheckboxes.querySelectorAll('input:checked')].map(cb => cb.value);
 
         let filteredSkins = allSkins;
@@ -55,7 +57,17 @@ document.addEventListener('DOMContentLoaded', () => {
             filteredSkins = filteredSkins.filter(skin => skin['스킨 타입 - 한글'] === selectedType);
         }
 
-        // 2. Filter by rarity
+        // 2. Filter by faction
+        if (selectedFaction !== 'all') {
+            filteredSkins = filteredSkins.filter(skin => skin['진영'] === selectedFaction);
+        }
+
+        // 3. Filter by skin tag (contains)
+        if (selectedTag !== 'all') {
+            filteredSkins = filteredSkins.filter(skin => skin['스킨 태그'] && skin['스킨 태그'].includes(selectedTag));
+        }
+
+        // 4. Filter by rarity
         if (selectedRarities.length > 0) {
             filteredSkins = filteredSkins.filter(skin => selectedRarities.includes(skin['레어도']));
         }
@@ -65,6 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Attach event listeners to all filter controls
     skinTypeSelect.addEventListener('change', applyFilters);
+    factionSelect.addEventListener('change', applyFilters);
+    tagSelect.addEventListener('change', applyFilters);
     rarityCheckboxes.querySelectorAll('input').forEach(checkbox => {
         checkbox.addEventListener('change', applyFilters);
     });

@@ -64,9 +64,9 @@ label {
 /* --- MODIFIED: Skin List Grid --- */
 .skin-list-container {
     display: grid;
-    /* Reduced the minimum width to fit more items per row */
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
+    /* Reduced the minimum width to ~60% of the previous size */
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px; /* Slightly reduced gap */
 }
 .skin-box {
     background-color: #2f3136;
@@ -78,40 +78,39 @@ label {
 }
 .skin-image-wrapper {
     width: 100%;
-    /* Removed fixed height and added aspect-ratio */
     aspect-ratio: 3 / 4;
     background-color: #202225;
 }
 .skin-image {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Changed to contain to show the full tall image */
+    object-fit: contain;
 }
 .skin-info {
-    padding: 12px; /* Reduced padding for a more compact look */
+    padding: 10px; /* Reduced padding */
     display: flex;
     flex-direction: column;
-    gap: 6px; /* Reduced gap between text lines */
+    gap: 5px; /* Reduced gap */
     flex-grow: 1;
 }
 .skin-info h3 {
     margin: 0;
     color: #ffffff;
-    font-size: 1em; /* Reduced font size */
-    white-space: nowrap; /* Prevent long names from wrapping */
+    font-size: 0.9em; /* Reduced font size */
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 .info-line {
-    font-size: 0.85em; /* Reduced font size */
+    font-size: 0.75em; /* Reduced font size */
     color: #b9bbbe;
 }
 .info-line strong {
     color: #8e9297;
 }
 .gem-icon {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     vertical-align: middle;
     margin-right: 4px;
 }
