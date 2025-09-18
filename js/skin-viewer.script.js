@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const skinInfoBox = document.getElementById('skin-info-box');
     const imageGallery = document.getElementById('image-gallery');
     const textContentArea = document.getElementById('text-content-area');
+    const voiceLineTableArea = document.getElementById('voice-line-table-area'); // New element
 
     let skinData = [];
     let allCharacterData = [];
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         imageGallery.classList.add('hidden');
         skinInfoBox.classList.add('hidden');
         textContentArea.classList.add('hidden');
+        voiceLineTableArea.classList.add('hidden'); // Hide table area
         if (!selectedCharacter) {
             skinSelect.disabled = true;
             return;
@@ -76,13 +78,14 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
     
-    // --- MODIFIED: This function now builds the new text sections ---
+    // --- MODIFIED: This function now builds the new table ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
             imageGallery.classList.add('hidden');
             skinInfoBox.classList.add('hidden');
             textContentArea.classList.add('hidden');
+            voiceLineTableArea.classList.add('hidden');
             return;
         }
         const skin = skinData.find(row => row['한글 함순이 + 스킨 이름'] === selectedSkinName);
@@ -121,11 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
         imageGallery.appendChild(bottomPanel);
         imageGallery.classList.remove('hidden');
 
-        // --- Build Text Content Area ---
+        // Build Text Content Area (unchanged)
         textContentArea.innerHTML = '';
         let textContentHtml = '';
-
-        // Descriptions Row 1 (with new nested group)
         let descriptionsHtml = '';
         let leftGroupHtml = '';
         if (skin['설명']) { leftGroupHtml += `<div class="description-item"><h2>설명</h2><p>${skin['설명']}</p></div>`; }
@@ -133,32 +134,33 @@ document.addEventListener('DOMContentLoaded', () => {
         if (leftGroupHtml) { descriptionsHtml += `<div class="description-group">${leftGroupHtml}</div>`; }
         if (skin['자기소개']) { descriptionsHtml += `<div class="description-item"><h2>자기소개</h2><p>${skin['자기소개']}</p></div>`; }
         if (descriptionsHtml) { textContentHtml += `<div class="descriptions-panel">${descriptionsHtml}</div>`; }
-
-        // Descriptions Row 2 (Special Dialogue)
-        if (skin['함대 특수대사'] && skin['함대 특수대사'] !== 'null') {
-            const formattedText = skin['함대 특수대사'].replace(/\\n/g, '<br>');
-            textContentHtml += `<div class="special-dialogue-panel"><h2>해당 함순이의 유대 특수대사</h2><p>${formattedText}</p></div>`;
-        }
-        
-        // Voice Lines
-        const chatLinesLeft = [], chatLinesRight = [];
-        const nonChatKeys = ['설명', '자기소개', '함대 특수대사', '획득 대사', '모항 대사', '터치 대사', '터치 대사2', '임무 대사', '임무 완료 대사', '위탁 완료 대사', '강화 성공 대사', '결혼 대사'];
-        Object.keys(skin).forEach(key => {
-            if (skin[key] && key.endsWith('대사') && !nonChatKeys.includes(key)) {
-                const bubble = `<div class="chat-bubble">${skin[key]}</div>`;
-                if (key.includes('_ex')) { chatLinesRight.push(bubble); } 
-                else { chatLinesLeft.push(bubble); }
-            }
-        });
-        if (chatLinesLeft.length > 0 || chatLinesRight.length > 0) {
-            textContentHtml += `<h2>대사</h2><div class="chat-container">
-                <div class="chat-column">${chatLinesLeft.join('')}</div>
-                <div class="chat-column">${chatLinesRight.join('')}</div>
-            </div>`;
-        }
-
+        if (skin['함대 특수대사'] && skin['함대 특수대사'] !== 'null') { const formattedText = skin['함대 특수대사'].replace(/\\n/g, '<br>'); textContentHtml += `<div class="special-dialogue-panel"><h2>해당 함순이의 유대 특수대사</h2><p>${formattedText}</p></div>`; }
         textContentArea.innerHTML = textContentHtml;
         if (textContentHtml) textContentArea.classList.remove('hidden');
+
+        // --- Build Voice Line Table ---
+        voiceLineTableArea.innerHTML = '';
+        const tableFields = ["전투개시", "상세확인", "의뢰 완료", "실망", "낯섦", "호감", "기쁨", "사랑", "터치3", "모항귀환", "hp 경고", "로그인", "실패", "우편", "메인1~5", "임무", "임무완료", "서약", "스킬", "터치1", "터치2", "입수시", "강화성공", "vote", "승리"];
+        let tableBodyHtml = '';
+        tableFields.forEach(field => {
+            if (skin[field]) { // Only create a row if the field has a value
+                let value = skin[field];
+                // Handle line breaks for specific fields
+                if (field === "메인1~5" || field === "함대 특수대사") {
+                    value = value.replace(/\\n/g, '\n');
+                }
+                tableBodyHtml += `<tr><td>${field}</td><td>${value}</td></tr>`;
+            }
+        });
+
+        if (tableBodyHtml) {
+            const fullTableHtml = `<table class="voice-line-table">
+                <thead><tr><th colspan="2">선택한 함순이의 대사 모음</th></tr></thead>
+                <tbody>${tableBodyHtml}</tbody>
+            </table>`;
+            voiceLineTableArea.innerHTML = fullTableHtml;
+            voiceLineTableArea.classList.remove('hidden');
+        }
     };
 
     characterSearch.addEventListener('input', debounce(filterCharacters, 250));
