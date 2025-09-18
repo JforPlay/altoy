@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
     
-    // --- FINAL VERSION: This function now builds all content sections correctly ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
@@ -91,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const skin = skinData.find(row => row['한글 함순이 + 스킨 이름'] === selectedSkinName);
         if (!skin) return;
 
-        // Build Info Box, Image Gallery
+        // Build Info Box & Image Gallery (This part is correct and unchanged)
         skinInfoBox.innerHTML = ''; let infoHtml = ''; const gemIconHtml = `<img src="assets/60px-Ruby.png" class="gem-icon" alt="Gem">`; if (skin['재화'] && skin['재화'] !== 'null') { infoHtml += `<div class="info-item">${gemIconHtml}<span class="info-value">${skin['재화']}</span></div>`; } if (skin['기간'] && skin['기간'] !== 'null') { infoHtml += `<div class="info-item"><strong class="info-label">상시여부:</strong><span class="info-value">${skin['기간']}</span></div>`; } if (skin['스킨 타입 - 한글'] && skin['스킨 타입 - 한글'] !== 'null') { infoHtml += `<div class="info-item"><strong class="info-label">스킨타입:</strong><span class="info-value">${skin['스킨 타입 - 한글']}</span></div>`; } if (skin['스킨 태그'] && skin['스킨 태그'] !== 'null') { infoHtml += `<div class="info-item"><strong class="info-label">스킨태그:</strong><span class="info-value">${skin['스킨 태그']}</span></div>`; } skinInfoBox.innerHTML = infoHtml; if (infoHtml) skinInfoBox.classList.remove('hidden');
         imageGallery.innerHTML = ''; const topBannerSrc = skin['전체 일러']; if (topBannerSrc && topBannerSrc !== 'null') { const topBannerImg = document.createElement('img'); topBannerImg.className = 'gallery-top-banner'; topBannerImg.src = topBannerSrc; imageGallery.appendChild(topBannerImg); } const bottomPanel = document.createElement('div'); bottomPanel.className = 'gallery-bottom-panel'; const bottomLeftPanel = document.createElement('div'); bottomLeftPanel.className = 'bottom-left-panel'; const secondaryLargeSrc = skin['확대 일러']; if (secondaryLargeSrc && secondaryLargeSrc !== 'null') { const secondaryImg = document.createElement('img'); secondaryImg.src = secondaryLargeSrc; bottomLeftPanel.appendChild(secondaryImg); } else { const dummyBox = document.createElement('div'); dummyBox.className = 'dummy-image-box'; dummyBox.textContent = '이 스킨은 확대 일러가 없어요 지휘관님'; bottomLeftPanel.appendChild(dummyBox); } bottomPanel.appendChild(bottomLeftPanel); const bottomRightPanel = document.createElement('div'); bottomRightPanel.className = 'bottom-right-panel'; const tallGroup = document.createElement('div'); tallGroup.className = 'thumbnail-group tall-group'; const tallSources = [skin['깔끔한 일러'], skin['sd 일러']].filter(src => src && src !== 'null'); tallSources.forEach(src => { const img = document.createElement('img'); img.src = src; img.className = 'tall-thumbnail'; tallGroup.appendChild(img); }); if(tallGroup.children.length > 0) bottomRightPanel.appendChild(tallGroup); const smallGroup = document.createElement('div'); smallGroup.className = 'thumbnail-group small-group'; const smallSources = [skin['아이콘 일러'], skin['쥬스타 아이콘 일러']].filter(src => src && src !== 'null'); smallSources.forEach(src => { const img = document.createElement('img'); img.src = src; smallGroup.appendChild(img); }); if(smallGroup.children.length > 0) bottomRightPanel.appendChild(smallGroup); bottomPanel.appendChild(bottomRightPanel); imageGallery.appendChild(bottomPanel); imageGallery.classList.remove('hidden');
 
@@ -125,10 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const oathTableFields = ["전투개시_ex", "상세확인_ex", "의뢰 완료_ex", "사랑_ex", "터치3_ex", "모항귀환_ex", "hp 경고_ex", "로그인_ex", "실패_ex", "우편_ex", "메인1~5_ex", "임무_ex", "임무완료_ex", "스킬_ex", "터치1_ex", "터치2_ex", "입수시_ex", "강화성공_ex", "승리_ex"];
         let oathTableBodyHtml = '';
         oathTableFields.forEach(field => {
-            if (skin[field] && skin[field] !== '""') { // Check for value and non-empty string
+            if (skin[field] && skin[field] !== '""') {
                 let value = skin[field].replace(/\"/g, '');
                 value = value.replace(/\\n/g, '\n');
-                // Keep the _ex in the label
                 oathTableBodyHtml += `<tr><td>${field}</td><td>${value}</td></tr>`;
             }
         });

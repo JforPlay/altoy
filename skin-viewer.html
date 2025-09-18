@@ -16,22 +16,36 @@
     <div class="main-container">
         <header class="controls-header">
             <h1>벽람 스킨 + 대사 도감</h1>
-
             <div class="flavor-text-box">
                 <p>
                     <strong>초간단 설명서</strong><br>
                     1. 함순이를 고르고, 2. 스킨을 고르면 해당 스킨의 대사를 전부 볼 수 있습니다.<br>
-                    <span class="warning-text">주의! 서약 대사는 원본스킨(스킨 선택에서 함순이 이름 선택)일때만 표시됩니다.</span>
+                    <span class="warning-text">주의) 서약 대사는 원본스킨(스킨 선택에서 함순이 이름 선택)일때만 표시됩니다.</span>
                 </p>
             </div>
-        </header>
-
-        <div class="filter-container">
+            <div class="selectors">
+                <div class="selector-wrapper">
+                    <label for="character-search">1. 함순이 선택</label>
+                    <div class="searchable-select">
+                        <input type="text" id="character-search" placeholder="Search for a character...">
+                        <select id="character-select">
+                            <option>Loading characters...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="selector-wrapper">
+                    <label for="skin-select">2. 스킨 선택</label>
+                    <select id="skin-select" disabled>
+                        <option>Select a character first</option>
+                    </select>
+                </div>
             </div>
+        </header>
 
         <div id="skin-info-box" class="skin-info-box hidden"></div>
         <div id="image-gallery" class="image-gallery hidden"></div>
         <div id="text-content-area" class="text-content-area hidden"></div>
+        
         <div id="oath-table-area" class="text-content-area hidden"></div>
     </div>
 
