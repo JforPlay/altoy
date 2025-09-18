@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const characterSearch = document.getElementById('character-search');
     const characterSelect = document.getElementById('character-select');
     const skinSelect = document.getElementById('skin-select');
-    const skinInfoBox = document.getElementById('skin-info-box'); // New element
+    const skinInfoBox = document.getElementById('skin-info-box');
     const imageGallery = document.getElementById('image-gallery');
 
     let skinData = [];
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedCharacter = characterSelect.value;
         skinSelect.innerHTML = '<option value="">-- Select a Skin --</option>';
         imageGallery.classList.add('hidden');
-        skinInfoBox.classList.add('hidden'); // Hide info box when changing character
+        skinInfoBox.classList.add('hidden');
         if (!selectedCharacter) {
             skinSelect.disabled = true;
             return;
@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
     
-    // --- MODIFIED: This function now builds the info box and the gallery ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
@@ -88,12 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!skin) return;
 
         // --- Build and Display Info Box ---
-        skinInfoBox.innerHTML = ''; // Clear previous info
+        skinInfoBox.innerHTML = '';
         let infoHtml = '';
-        const gemSVG = `<svg class="gem-icon" viewBox="0 0 512 512" fill="#f44336" xmlns="http://www.w3.org/2000/svg"><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512z"/></svg>`;
+        // MODIFICATION: Replaced SVG with an <img> tag pointing to your file
+        const gemIconHtml = `<img src="assets/60px-Ruby.png" class="gem-icon" alt="Gem">`;
 
         if (skin['재화'] && skin['재화'] !== 'null') {
-            infoHtml += `<div class="info-item">${gemSVG}<span class="info-value">${skin['재화']}</span></div>`;
+            infoHtml += `<div class="info-item">${gemIconHtml}<span class="info-value">${skin['재화']}</span></div>`;
         }
         if (skin['기간'] && skin['기간'] !== 'null') {
             infoHtml += `<div class="info-item"><strong class="info-label">상시여부:</strong><span class="info-value">${skin['기간']}</span></div>`;
@@ -106,11 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         skinInfoBox.innerHTML = infoHtml;
-        if(infoHtml) skinInfoBox.classList.remove('hidden');
+        if (infoHtml) skinInfoBox.classList.remove('hidden');
 
         // --- Build and Display Image Gallery ---
         imageGallery.innerHTML = '';
-        // ... (rest of the image gallery logic is unchanged) ...
         const topBannerSrc = skin['전체 일러'];
         if (topBannerSrc && topBannerSrc !== 'null') { const topBannerImg = document.createElement('img'); topBannerImg.className = 'gallery-top-banner'; topBannerImg.src = topBannerSrc; imageGallery.appendChild(topBannerImg); }
         const bottomPanel = document.createElement('div'); bottomPanel.className = 'gallery-bottom-panel';
