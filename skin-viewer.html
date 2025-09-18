@@ -8,23 +8,29 @@
 </head>
 <body>
     <nav class="top-nav">
-        <a href="index.html" class="nav-link">Story Viewer</a>
-        <a href="skin-viewer.html" class="nav-link active">Skin Viewer</a>
+        <a href="index.html" class="nav-link">스토리 보기</a>
+        <a href="skin-viewer.html" class="nav-link active">스킨+대사 보기</a>
     </nav>
 
     <div class="main-container">
         <header class="controls-header">
-            <h1>Select a Character and Skin</h1>
+            <h1>벽람 스킨 + 대사 도감</h1>
             <div class="selectors">
-                <div class="searchable-select">
-                    <input type="text" id="character-search" placeholder="Search for a character...">
-                    <select id="character-select">
-                        <option>Loading characters...</option>
+                <div class="selector-wrapper">
+                    <label for="character-search">1. 함순이 선택</label>
+                    <div class="searchable-select">
+                        <input type="text" id="character-search" placeholder="Search for a character...">
+                        <select id="character-select">
+                            <option>Loading characters...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="selector-wrapper">
+                    <label for="skin-select">2. 스킨 선택</label>
+                    <select id="skin-select" disabled>
+                        <option>Select a character first</option>
                     </select>
                 </div>
-                <select id="skin-select" disabled>
-                    <option>Select a character first</option>
-                </select>
             </div>
         </header>
 
