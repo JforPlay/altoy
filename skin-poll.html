@@ -22,12 +22,33 @@
                 <p>
                     <strong>초간단 설명서</strong>
                     라투디 스킨들의 선호도 평가를 할 수 있습니다.<br>
+                    아래 각각의 필터링으로 원하는 함순이들만 골라볼 수 있습니다.
                     <span class="warning-text">주의) 누르면 바로 평가가 되며, 재투표는 안되니 신중하게 눌러주세요</span>
                 </p>
             </div>
         </header>
 
         <div class="filter-container">
+            <div class="filter-group">
+                <label for="character-name-search">함순이 이름</label>
+                <div class="searchable-select">
+                    <input type="text" id="character-name-search" placeholder="이름으로 검색...">
+                    <select id="character-name-select">
+                        <option value="all">전체</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label for="skin-name-search">스킨 이름</label>
+                <div class="searchable-select">
+                    <input type="text" id="skin-name-search" placeholder="스킨명으로 검색...">
+                    <select id="skin-name-select">
+                        <option value="all">전체</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="filter-group">
                 <label for="skin-type-select">스킨 타입</label>
                 <select id="skin-type-select">
@@ -38,7 +59,7 @@
             <div class="filter-group">
                 <label for="faction-select">진영</label>
                 <select id="faction-select">
-                    <option value="all">전체</option>
+                     <option value="all">전체</option>
                     <option>UNIV</option><option>USS</option><option>HMS</option><option>IJN</option><option>KMS</option><option>ROC</option><option>RN</option><option>SN</option><option>FFNF (FF, iris libre)</option><option>MNF</option><option>FFNF (FR, iris orthodoxy)</option><option>MOT</option><option>META</option><option>UNIV (bulin)</option><option>LINK (collab)</option><option>HDN (neptune)</option><option>BILI</option><option>UM (utawarerumono)</option><option>AI (kizuna)</option><option>HOLO</option><option>DOA</option><option>IMAS</option><option>SSSS</option><option>RYZA</option><option>SENRAN</option>
                 </select>
             </div>
@@ -54,13 +75,9 @@
             </div>
         </div>
 
-        <div id="poll-container" class="poll-container">
-        </div>
+        <div id="poll-container" class="poll-container"></div>
     </div>
     
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
     <script src="js/skin-poll.script.js"></script>
 </body>
 </html>

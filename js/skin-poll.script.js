@@ -23,8 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const skinTypeSelect = document.getElementById('skin-type-select');
     const rarityCheckboxes = document.getElementById('rarity-checkboxes');
     const factionSelect = document.getElementById('faction-select');
-    
+    // New searchable dropdown elements
+    const characterNameSearch = document.getElementById('character-name-search');
+    const characterNameSelect = document.getElementById('character-name-select');
+    const skinNameSearch = document.getElementById('skin-name-search');
+    const skinNameSelect = document.getElementById('skin-name-select');
+
     let allSkins = [];
+    let allCharacterNames = []; // To store master list of character names
+    let allSkinNames = []; // To store master list of skin names
+
+    const debounce = (func, delay) => { let timeoutId; return (...args) => { clearTimeout(timeoutId); timeoutId = setTimeout(() => { func.apply(this, args); }, delay); }; };
 
     // Fetch local skin data
     fetch('data/subset_skin_data.json')
@@ -32,8 +41,40 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(jsonData => {
             allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] }))
                 .filter(skin => skin['깔끔한 일러'] && skin['스킨 태그'] && skin['스킨 태그'].includes('L2D'));
+            
+            populateNameFilters();
             renderPollList(allSkins);
         });
+
+    const populateNameFilters = () => {
+        allCharacterNames = [...new Set(allSkins.map(s => s['함순이 이름']))].sort();
+        allSkinNames = allSkins.map(s => s['한글 함순이 + 스킨 이름']).sort();
+
+        allCharacterNames.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name; option.textContent = name;
+            characterNameSelect.appendChild(option);
+        });
+        allSkinNames.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name; option.textContent = name;
+            skinNameSelect.appendChild(option);
+        });
+    };
+
+    const filterDropdown = (input, select, masterList) => {
+        const searchTerm = input.value.toLowerCase();
+        const currentSelection = select.value;
+        select.innerHTML = '<option value="all">전체</option>'; // Start with "All"
+        masterList.forEach(name => {
+            if (name.toLowerCase().includes(searchTerm)) {
+                const option = document.createElement('option');
+                option.value = name; option.textContent = name;
+                select.appendChild(option);
+            }
+        });
+        select.value = currentSelection; // Try to keep previous selection
+    };
 
     const renderPollList = (skinsToRender) => {
         pollContainer.innerHTML = '';
@@ -71,11 +112,15 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const applyFilters = () => {
+        const selectedCharName = characterNameSelect.value;
+        const selectedSkinName = skinNameSelect.value;
         const selectedType = skinTypeSelect.value;
         const selectedFaction = factionSelect.value;
         const selectedRarities = [...rarityCheckboxes.querySelectorAll('input:checked')].map(cb => cb.value);
         let filteredSkins = allSkins;
 
+        if (selectedCharName !== 'all') { filteredSkins = filteredSkins.filter(skin => skin['함순이 이름'] === selectedCharName); }
+        if (selectedSkinName !== 'all') { filteredSkins = filteredSkins.filter(skin => skin['한글 함순이 + 스킨 이름'] === selectedSkinName); }
         if (selectedType !== 'all') { if (selectedType === '기본') { filteredSkins = filteredSkins.filter(skin => !skin['스킨 타입 - 한글']); } else { filteredSkins = filteredSkins.filter(skin => skin['스킨 타입 - 한글'] === selectedType); } }
         if (selectedFaction !== 'all') { filteredSkins = filteredSkins.filter(skin => skin['진영'] === selectedFaction); }
         if (selectedRarities.length > 0) { filteredSkins = filteredSkins.filter(skin => selectedRarities.includes(skin['레어도'])); }
@@ -158,6 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Attach event listeners to filters
-    [skinTypeSelect, factionSelect].forEach(el => el.addEventListener('change', applyFilters));
+    [characterNameSelect, skinNameSelect, skinTypeSelect, factionSelect].forEach(el => el.addEventListener('change', applyFilters));
     rarityCheckboxes.querySelectorAll('input').forEach(cb => cb.addEventListener('change', applyFilters));
+    characterNameSearch.addEventListener('input', debounce(() => filterDropdown(characterNameSearch, characterNameSelect, allCharacterNames), 250));
+    skinNameSearch.addEventListener('input', debounce(() => filterDropdown(skinNameSearch, skinNameSelect, allSkinNames), 250));
 });
