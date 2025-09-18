@@ -39,7 +39,6 @@ select:disabled { opacity: 0.5; }
     background-color: #2f3136;
     padding: 20px;
     border-radius: 8px;
-    /* Set an overall height for the container */
     height: 80vh;
     min-height: 600px;
 }
@@ -47,68 +46,60 @@ select:disabled { opacity: 0.5; }
 .image-gallery img {
     background-color: #202225;
     border-radius: 5px;
-    /* This is the key change to prevent images being cut off */
     object-fit: contain;
-    /* Prevents flex items from overflowing their containers */
     max-width: 100%;
     max-height: 100%;
 }
 
 .gallery-top-banner {
     width: 100%;
-    flex: 2; /* Give the top banner a bit more vertical space */
-    min-height: 0; /* Allows the banner to shrink if needed */
+    flex: 2; /* Changed to 2 as requested */
+    min-height: 0;
 }
 
 .gallery-bottom-panel {
     display: flex;
     gap: 20px;
-    flex: 1.5; /* Give the bottom panel more vertical space */
-    min-height: 0; /* Allows the panel to shrink */
+    flex: 1.5; /* Changed to 1.5 as requested */
+    min-height: 0;
 }
 
 .bottom-left-panel {
     flex: 1;
 }
 
-/* ... (keep all other styles the same) ... */
-
 .bottom-right-panel {
     flex: 1;
     display: flex;
-    flex-direction: row; /* This is the key change from 'column' */
+    flex-direction: column;
     gap: 15px;
     min-height: 0;
 }
 
 .thumbnail-group {
-    flex: 1; /* The two groups will now share the horizontal space */
     display: flex;
-    flex-direction: column; /* The images inside each group will now stack vertically */
     gap: 15px;
     min-height: 0;
 }
 
-/* This rule is no longer needed with the new direction */
-/*
+/* Give the group with taller images more vertical space */
 .tall-group {
     flex: 2;
 }
+
+/* Give the group with smaller images less vertical space */
 .small-group {
     flex: 1;
 }
-*/
 
 .thumbnail-group img {
     flex: 1;
-    width: 100%; /* Images should take the full width of their new column */
-    height: 0; /* Let flexbox determine the height */
+    width: 0;
+    height: 100%;
 }
 
 .tall-thumbnail {
-    /* The aspect-ratio property will be overridden by the flex properties,
-       so we can remove it or leave it as is. */
     aspect-ratio: 3 / 4;
-    width: 100%;
-    height: auto;
+    width: auto;
+    height: 100%;
 }
