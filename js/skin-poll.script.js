@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(jsonData => {
             allSkins = Object.keys(jsonData).map(key => ({ id: key, ...jsonData[key] })).filter(skin => skin['깔끔한 일러']);
-            
             populateInitialFilters();
             tagSelect.value = 'L2D';
             applyFilters();
@@ -52,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rebuildDropdown(characterNameSelect, allCharacterNamesData);
         rebuildDropdown(skinNameSelect, allSkinNamesData.map(s => ({ value: s.skinName, text: s.skinName })));
 
+        // This event listener is added here to ensure it's ready
         rarityCheckboxes.querySelectorAll('input').forEach(checkbox => {
             checkbox.addEventListener('change', applyFilters);
         });
@@ -161,8 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resultsEl.textContent = "결과를 불러올 수 없습니다.";
         });
     };
-
-    // --- Event Listeners ---
+    
     pollContainer.addEventListener('change', (event) => {
         if (event.target.matches('.star-rating input[type="radio"]')) {
             const starRatingDiv = event.target.closest('.star-rating');
@@ -180,8 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 250));
 
     skinNameSearch.addEventListener('input', debounce(() => {
-        const searchTerm = skinNameSearch.value.toLowerCase();
         const selectedChar = characterNameSelect.value;
+        const searchTerm = skinNameSearch.value.toLowerCase();
         let filteredData = allSkinNamesData;
         if (selectedChar !== 'all') {
             filteredData = allSkinNamesData.filter(skin => skin.charName === selectedChar);
