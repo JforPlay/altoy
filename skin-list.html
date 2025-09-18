@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin List</title>
+    <link rel="stylesheet" href="css/skin-list.style.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="index.html" class="nav-link">스토리 보기</a>
+        <a href="skin-viewer.html" class="nav-link">스킨+대사 보기</a>
+        <a href="skin-list.html" class="nav-link active">스킨 목록</a>
+    </nav>
+
+    <div class="main-container">
+        <header class="page-header">
+            <h1>스킨 목록 필터</h1>
+        </header>
+
+        <div class="filter-container">
+            <div class="filter-group">
+                <label for="skin-type-select">스킨 타입</label>
+                <select id="skin-type-select">
+                    <option value="all">전체</option>
+                    <option>크리스마스</option>
+                    <option>정월</option>
+                    <option>이스트 글림 스타일</option>
+                    <option>학교</option>
+                    <option>수영복</option>
+                    <option>파티</option>
+                    <option>할로윈</option>
+                    <option>사복</option>
+                    <option>여름 축제</option>
+                    <option>Live</option>
+                    <option>특수 훈련</option>
+                    <option>스포츠</option>
+                    <option>극속광열</option>
+                    <option>병원</option>
+                    <option>카니발</option>
+                    <option>메이드 타임</option>
+                    <option>블러드 문</option>
+                    <option>동화 속 세계</option>
+                    <option>홈웨어</option>
+                    <option>댄스</option>
+                    <option>온천 타임</option>
+                    <option>오피스 타임</option>
+                    <option>이세계 모험</option>
+                    <option>웨스턴</option>
+                    <option>이집트 스타일</option>
+                    <option>개조</option>
+                    <option>서약</option>
+                    <option>기타</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>레어도</label>
+                <div id="rarity-checkboxes" class="checkbox-group">
+                    <label><input type="checkbox" value="UR" checked> UR</label>
+                    <label><input type="checkbox" value="SSR" checked> SSR</label>
+                    <label><input type="checkbox" value="SR" checked> SR</label>
+                    <label><input type="checkbox" value="R" checked> R</label>
+                    <label><input type="checkbox" value="N" checked> N</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="skin-list-container" class="skin-list-container">
+            </div>
+    </div>
+
+    <script src="js/skin-list.script.js"></script>
+</body>
+</html>
