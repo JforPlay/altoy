@@ -130,18 +130,20 @@ body {
     background-color: #d84040;
 }
 
-/* --- ADD THIS BLOCK AT THE END FOR THE MOBILE FIX --- */
+/* --- Responsive Styles for Mobile --- */
 @media (max-width: 768px) {
+    html {
+        font-size: 14px; /* Reduces base font size, scaling down rem/em units */
+    }
     body {
-        padding-top: 60px; /* Adjust body padding for new button position */
+        padding-top: 60px;
     }
     .restart-button {
-        top: 70px; /* Move the button down, below the nav bar */
+        top: 70px;
         padding: 8px 12px;
         font-size: 0.8em;
     }
     .top-nav {
-        /* Make the nav bar fixed so it stays at the top when scrolling */
         position: fixed;
         top: 0;
         left: 0;
