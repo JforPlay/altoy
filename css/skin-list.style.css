@@ -26,8 +26,6 @@ label {
 .flavor-text-box { background-color: #2f3136; border: 1px solid #4f545c; border-radius: 8px; padding: 15px; margin: 20px auto 0 auto; max-width: 600px; text-align: center; }
 .flavor-text-box p { margin: 0; line-height: 1.6; font-size: 0.9em; color: #b9bbbe; }
 .flavor-text-box strong { color: #ffffff; font-size: 1.1em; display: block; margin-bottom: 8px; }
-
-/* MODIFIED: Filter container styles */
 .filter-container {
     display: flex;
     flex-wrap: wrap;
@@ -38,7 +36,7 @@ label {
     border-radius: 8px;
     margin-top: 20px;
     margin-bottom: 30px;
-    align-items: stretch; /* This forces all filter groups in a row to the same height */
+    align-items: stretch;
 }
 .filter-group {
     display: flex;
@@ -52,7 +50,7 @@ label {
     border: 2px solid #2f3136;
     background-color: #40444b;
     color: #dcddde;
-    flex-grow: 1; /* This makes the controls fill the available space in the group */
+    flex-grow: 1;
     display: flex;
     align-items: center;
 }
@@ -120,4 +118,11 @@ label {
     height: 12px;
     vertical-align: middle;
     margin-right: 4px;
+}
+
+/* --- Responsive Styles for Mobile --- */
+@media (max-width: 768px) {
+    html {
+        font-size: 12px; /* Reduces base font size */
+    }
 }
