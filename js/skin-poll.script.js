@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let allSkins = [];
 
+    // Fetch and process the data
     fetch('data/subset_skin_data.json')
         .then(response => response.json())
         .then(jsonData => {
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="poll-info">
                     <div class="character-name">${skin['함순이 이름']}</div>
                     <h3>${skin['한글 함순이 + 스킨 이름']}</h3>
-                    <div class="info-line"><strong>카테고리:</strong> ${skin['스킨 카테고리'] || '없음'}</div>
+                    <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
                     <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
                     <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
                     <div class="rating-area ${hasVoted ? 'voted' : ''}">
