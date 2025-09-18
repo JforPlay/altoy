@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- State Variables ---
     let allSkins = [];
     let allCharacterNamesData = [];
-    let allSkinNamesData = [];
 
     const debounce = (func, delay) => { let timeoutId; return (...args) => { clearTimeout(timeoutId); timeoutId = setTimeout(() => { func.apply(this, args); }, delay); }; };
 
@@ -42,10 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     const populateInitialFilters = () => {
-        allCharacterNamesData = [...new Set(allSkins.map(s => s['함순이 이름']))].filter(Boolean).sort().map(name => ({ value: name, text: name }));
-        
+        allCharacterNamesData = [...new Set(allSkins.map(s => s['함순이 이름']))].filter(Boolean).sort().map(name => ({ value: name, text: name }))
         rebuildDropdown(characterNameSelect, allCharacterNamesData);
-
         rarityCheckboxes.querySelectorAll('input').forEach(checkbox => {
             checkbox.addEventListener('change', applyFilters);
         });
@@ -101,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const applyFilters = () => {
         const selectedCharName = characterNameSelect.value;
-        const selectedSkinName = skinNameSelect.value;
         const selectedType = skinTypeSelect.value;
         const selectedFaction = factionSelect.value;
         const selectedTag = tagSelect.value;
