@@ -1,4 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const firebaseConfig = {
+        apiKey: "AIzaSyCmtsfkzlISZDd0totgv3MIrpT9kvLvKLk",
+        authDomain: "azurlane-skin-vote.firebaseapp.com",
+        projectId: "azurlane-skin-vote",
+        storageBucket: "azurlane-skin-vote.firebasestorage.app",
+        messagingSenderId: "282702723033",
+        appId: "1:282702723033:web:a97b60cb7138bdbbbacbc8"
+    };
+            
+    
+    // Initialize Firebase and Firestore
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    
+    
     // Get HTML elements
     const pollContainer = document.getElementById('poll-container');
     const skinTypeSelect = document.getElementById('skin-type-select');
@@ -41,12 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
                         </div>
                         <div class="poll-results" id="results-${skinId}">
-                            Connect to Firebase to see results.
+                            결과 불러오는 중...
                         </div>
                     </div>
                 </div>
             `;
             pollContainer.appendChild(pollBox);
+            fetchAndDisplayResults(skinId); // Fetch live results from Firebase
         });
     };
 
@@ -61,6 +77,69 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedRarities.length > 0) { filteredSkins = filteredSkins.filter(skin => selectedRarities.includes(skin['레어도'])); }
         renderPollList(filteredSkins);
     };
+
+
+    // --- Firebase Logic ---
+    const submitVote = (skinId, rating, skinName) => {
+        if (localStorage.getItem(`voted_${skinId}`) === 'true') return;
+
+        const pollRef = db.collection('skin_polls').doc(String(skinId));
+
+        db.runTransaction(transaction => {
+            return transaction.get(pollRef).then(doc => {
+                let newTotalVotes = 1;
+                let newTotalScore = rating;
+
+                if (doc.exists) {
+                    newTotalVotes = doc.data().total_votes + 1;
+                    newTotalScore = doc.data().total_score + rating;
+                }
+                
+                transaction.set(pollRef, { 
+                    total_votes: newTotalVotes, 
+                    total_score: newTotalScore,
+                    skin_name: skinName // Also store the name for easy viewing in Firebase
+                });
+            });
+        }).then(() => {
+            localStorage.setItem(`voted_${skinId}`, 'true'); // Prevent duplicate votes
+            const ratingArea = document.querySelector(`.star-rating[data-skin-id="${skinId}"]`).closest('.rating-area');
+            if (ratingArea) {
+                ratingArea.classList.add('voted');
+                ratingArea.querySelectorAll('input').forEach(input => input.disabled = true);
+            }
+            fetchAndDisplayResults(skinId); // Update results immediately
+        }).catch(error => {
+            console.error("Firebase transaction failed: ", error);
+        });
+    };
+
+    const fetchAndDisplayResults = (skinId) => {
+        const resultsEl = document.getElementById(`results-${skinId}`);
+        if (!resultsEl) return;
+
+        const pollRef = db.collection('skin_polls').doc(String(skinId));
+        pollRef.get().then(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                const average = (data.total_score / data.total_votes).toFixed(2);
+                resultsEl.textContent = `평균 점수: ${average} / 5 (${data.total_votes} 표)`;
+            } else {
+                resultsEl.textContent = "아직 투표가 없습니다.";
+            }
+        });
+    };
+
+    // Event listener for voting
+    pollContainer.addEventListener('change', (event) => {
+        if (event.target.matches('.star-rating input[type="radio"]')) {
+            const starRatingDiv = event.target.closest('.star-rating');
+            const skinId = starRatingDiv.dataset.skinId;
+            const skinName = starRatingDiv.dataset.skinName;
+            const rating = parseInt(event.target.value, 10);
+            submitVote(skinId, rating, skinName);
+        }
+    });
 
     [skinTypeSelect, factionSelect].forEach(el => el.addEventListener('change', applyFilters));
     rarityCheckboxes.querySelectorAll('input').forEach(cb => cb.addEventListener('change', applyFilters));
