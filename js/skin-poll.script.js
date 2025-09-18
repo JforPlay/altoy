@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error loading skin data:', error));
 
     const populateDropdowns = (skins) => {
-        const skinTypes = [...new Set(skins.map(skin => skin['스킨 타입']))];
+        const skinTypes = [...new Set(skins.map(skin => skin['스킨 타입 - 한글']))];
         skinTypes.sort();
         skinTypes.forEach(type => {
             const option = document.createElement('option');
@@ -72,11 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const pollItem = document.createElement('div');
             pollItem.className = 'poll-item';
             pollItem.innerHTML = `
-                <img src="${skin['전체 일러']}" alt="${skin['한글 함순이 + 스킨 이름']}" loading="lazy">
+                <img src="${skin['깔끔한 일러']}" alt="${skin['한글 함순이 + 스킨 이름']}" loading="lazy">
                 <div class="poll-info">
                     <h3>${skin['한글 함순이 + 스킨 이름']}</h3>
                     <p class="character-name">${skin['함순이 이름']}</p>
-                    <p class="info-line">Type: ${skin['스킨 타입']} | Rarity: ${skin['레어도']} | Faction: ${skin['진영']}</p>
+                    <p class="info-line">타입: ${skin['스킨 타입 - 한글']} | 레어: ${skin['레어도']} | 진영: ${skin['진영']}</p>
                     <div class="rating-area">
                          <div class="star-rating" data-skin-id="${skin['클뜯 id']}" data-skin-name="${skin['한글 함순이 + 스킨 이름']}" data-character-name="${skin['함순이 이름']}">
                             <input type="radio" id="5-stars-${skin['클뜯 id']}" name="rating-${skin['클뜯 id']}" value="5" /><label for="5-stars-${skin['클뜯 id']}">&#9733;</label>
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedSkinName = skinNameSelect.value;
 
         const filteredSkins = allSkins.filter(skin => {
-            const skinTypeMatch = selectedSkinType === 'All' || skin['스킨 타입'] === selectedSkinType;
+            const skinTypeMatch = selectedSkinType === 'All' || skin['스킨 타입 - 한글'] === selectedSkinType;
             const rarityMatch = selectedRarities.length === 0 || selectedRarities.includes(skin['레어도']);
             const factionMatch = selectedFaction === 'All' || skin['진영'] === selectedFaction;
             const skinTagMatch = selectedSkinTag === 'All' || skin['스킨 태그'] === selectedSkinTag;
