@@ -5,14 +5,38 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
 .nav-link { 
     color: #b9bbbe; text-decoration: none; padding: 15px 10px; font-weight: bold; 
     border-bottom: 3px solid transparent; transition: all 0.2s;
-    white-space: nowrap; /* Fix for nav bar wrapping */
+    white-space: nowrap;
 }
 .nav-link:hover { color: #ffffff; }
 .nav-link.active { color: #ffffff; border-bottom-color: #7289da; }
 .page-header { text-align: center; }
 
+/* --- Flavor Text Box Style --- */
+.flavor-text-box {
+    background-color: #2f3136;
+    border: 1px solid #4f545c;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px auto 20px auto; /* Added bottom margin */
+    max-width: 600px;
+    text-align: center;
+}
+.flavor-text-box p { margin: 0; line-height: 1.6; font-size: 0.9em; color: #b9bbbe; }
+.flavor-text-box strong { color: #ffffff; font-size: 1.1em; display: block; margin-bottom: 8px; }
+.flavor-text-box .warning-text { color: #ffcc00; font-weight: bold; }
+
 /* --- Filter Styles --- */
-.filter-container { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 20px; padding: 20px; background-color: #2f3136; border-radius: 8px; margin-bottom: 30px; }
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start; /* Changed from flex-end to align filters to the top */
+    gap: 20px;
+    padding: 20px;
+    background-color: #2f3136;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
 .filter-group { display: flex; flex-direction: column; gap: 10px; }
 .filter-group label { font-weight: bold; color: #ffffff; }
 .filter-group select { font-size: 1em; padding: 8px; border-radius: 5px; border: 2px solid #2f3136; background-color: #40444b; color: #dcddde; }
@@ -41,34 +65,6 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
 .rating-area.voted .star-rating input:checked ~ label { color: #03a9f4; }
 .poll-results { margin-top: 8px; font-size: 0.8em; color: #b9bbbe; text-align: center; }
 
-/* --- New Flavor Text Box Style --- */
-.flavor-text-box {
-    background-color: #2f3136;
-    border: 1px solid #4f545c;
-    border-radius: 8px;
-    padding: 15px;
-    margin: 20px auto 0 auto;
-    max-width: 600px;
-    text-align: center;
-}
-.flavor-text-box p {
-    margin: 0;
-    line-height: 1.6;
-    font-size: 0.9em;
-    color: #b9bbbe;
-}
-.flavor-text-box strong {
-    color: #ffffff;
-    font-size: 1.1em;
-    display: block;
-    margin-bottom: 8px;
-}
-
-/* New style for the warning text */
-.flavor-text-box .warning-text {
-    color: #ffcc00; /* A noticeable yellow warning color */
-    font-weight: bold;
-}
 
 /* --- Responsive Styles for Mobile --- */
 @media (max-width: 768px) {
