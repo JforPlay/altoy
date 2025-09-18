@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const factionSelect = document.getElementById('faction-select');
     const tagSelect = document.getElementById('tag-select');
 
-    // --- State Variables ---
     let allSkins = [];
     let allCharacterNamesData = [];
     let allSkinNamesData = [];
@@ -50,8 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         rebuildDropdown(characterNameSelect, allCharacterNamesData);
         rebuildDropdown(skinNameSelect, allSkinNamesData.map(s => ({ value: s.skinName, text: s.skinName })));
-
-        // This event listener is added here to ensure it's ready
+        
         rarityCheckboxes.querySelectorAll('input').forEach(checkbox => {
             checkbox.addEventListener('change', applyFilters);
         });
@@ -85,6 +83,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="poll-info">
                     <div class="character-name">${skin['함순이 이름']}</div>
                     <h3>${skin['한글 함순이 + 스킨 이름']}</h3>
+                    <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
+                    <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
+                    <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
                     <div class="rating-area ${hasVoted ? 'voted' : ''}">
                         <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin['한글 함순이 + 스킨 이름']}" data-character-name="${skin['함순이 이름']}">
                              <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
@@ -141,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ratingArea.querySelectorAll('input').forEach(input => input.disabled = true);
             }
             fetchAndDisplayResults(skinId);
-        }).catch(error => { console.error("Firebase transaction failed: ", error); });
+        });
     };
 
     const fetchAndDisplayResults = (skinId) => {
@@ -156,9 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     resultsEl.textContent = `평균 점수: ${average} / 5 (${data.total_votes} 표)`;
                 } else { resultsEl.textContent = "아직 투표가 없습니다."; }
             } else { resultsEl.textContent = "아직 투표가 없습니다."; }
-        }).catch(error => {
-            console.error("Error fetching poll results:", error);
-            resultsEl.textContent = "결과를 불러올 수 없습니다.";
         });
     };
     
@@ -174,10 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     characterNameSearch.addEventListener('input', debounce(() => {
-        const searchTerm = characterNameSearch.value.toLowerCase();
-        rebuildDropdown(characterNameSelect, allCharacterNamesData.filter(char => char.text.toLowerCase().includes(searchTerm)));
+        rebuildDropdown(characterNameSelect, allCharacterNamesData.filter(char => char.text.toLowerCase().includes(characterNameSearch.value.toLowerCase())));
     }, 250));
-
     skinNameSearch.addEventListener('input', debounce(() => {
         const selectedChar = characterNameSelect.value;
         const searchTerm = skinNameSearch.value.toLowerCase();
