@@ -30,7 +30,7 @@ select { font-size: 1.1em; padding: 10px; border: 2px solid #2f3136; background-
 #character-select { border-radius: 0 0 5px 5px; border-top: none; width: 300px; }
 select:disabled { opacity: 0.5; }
 
-/* --- MODIFIED: Image Gallery Styles --- */
+/* --- Image Gallery Styles --- */
 .image-gallery {
     display: flex;
     flex-direction: column;
@@ -55,16 +55,15 @@ select:disabled { opacity: 0.5; }
     flex: 1.5;
     min-height: 0;
 }
-
 .gallery-bottom-panel {
-    display: flex; /* Using Flexbox */
-    align-items: stretch; /* This forces children to have equal height */
+    display: flex;
+    align-items: stretch;
     gap: 20px;
     flex: 2;
     min-height: 0;
 }
 .bottom-left-panel {
-    flex: 3; /* 3 parts of the width (60%) */
+    flex: 3;
 }
 .bottom-left-panel img {
     width: 100%;
@@ -72,13 +71,12 @@ select:disabled { opacity: 0.5; }
     object-fit: contain;
 }
 .bottom-right-panel {
-    flex: 2; /* 2 parts of the width (40%) */
+    flex: 2;
     display: flex;
     flex-direction: column;
     gap: 15px;
     min-height: 0;
 }
-
 .thumbnail-group {
     display: flex;
     gap: 15px;
@@ -96,4 +94,18 @@ select:disabled { opacity: 0.5; }
 }
 .tall-thumbnail {
     aspect-ratio: 3 / 4;
+}
+
+/* --- ADD THIS ENTIRE BLOCK AT THE END --- */
+/* Responsive Styles for Mobile */
+@media (max-width: 768px) {
+    .image-gallery {
+        height: auto; /* Let height be determined by content */
+        min-height: unset;
+    }
+
+    .gallery-bottom-panel {
+        flex-direction: column; /* Stack the two columns vertically */
+        height: auto;
+    }
 }
