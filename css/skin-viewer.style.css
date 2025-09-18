@@ -55,17 +55,18 @@ select:disabled { opacity: 0.5; }
     flex: 1.5;
     min-height: 0;
 }
+
+/* MODIFIED: Switched to CSS Grid for robust alignment */
 .gallery-bottom-panel {
-    display: flex;
+    display: grid;
+    grid-template-columns: 3fr 2fr; /* Creates a 60% / 40% split that accounts for the gap */
     gap: 20px;
     flex: 2;
     min-height: 0;
-    align-items: stretch; /* Explicitly align items to have the same height */
 }
-
-/* MODIFIED: Using flex-basis for more reliable sizing */
-.bottom-left-panel {
-    flex: 0 0 60%; /* Do not grow, do not shrink, base width is 60% */
+.bottom-left-panel, .bottom-right-panel {
+    /* Remove old flex/width properties as Grid now controls sizing */
+    min-height: 0; /* Prevents content from overflowing its container */
 }
 .bottom-left-panel img {
     width: 100%;
@@ -73,13 +74,10 @@ select:disabled { opacity: 0.5; }
     object-fit: contain;
 }
 .bottom-right-panel {
-    flex: 1 1 auto; /* Grow and shrink to fill remaining space */
     display: flex;
     flex-direction: column;
     gap: 15px;
-    min-height: 0;
 }
-
 .thumbnail-group {
     display: flex;
     gap: 15px;
