@@ -1,7 +1,8 @@
-// FINAL VERSION with Firebase Integration
+// FINAL VERSION with Firebase Integration and Bug Fixes
 document.addEventListener('DOMContentLoaded', () => {
     // --- Firebase Setup ---
     // PASTE YOUR FIREBASE CONFIG OBJECT HERE
+    // Example:
     const firebaseConfig = {
         apiKey: "AIzaSyCmtsfkzlISZDd0totgv3MIrpT9kvLvKLk",
         authDomain: "azurlane-skin-vote.firebaseapp.com",
@@ -9,41 +10,72 @@ document.addEventListener('DOMContentLoaded', () => {
         storageBucket: "azurlane-skin-vote.firebasestorage.app",
         messagingSenderId: "282702723033",
         appId: "1:282702723033:web:a97b60cb7138bdbbbacbc8"
-        };
+    };
 
-    // Initialize Firebase
+    // Uncomment the lines below and paste your config above when ready
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
     // --- Get HTML elements ---
     const pollContainer = document.getElementById('poll-container');
+    // Note: The filter elements are not used in this version but are kept for future use.
+
     let allSkins = [];
 
     fetch('data/subset_skin_data.json')
         .then(response => response.json())
         .then(jsonData => {
-            allSkins = Object.values(jsonData).filter(skin => skin['깔끔한 일러'] && skin['스킨 태그'] && skin['스킨 태그'].includes('L2D'));
+            // --- THIS IS THE FIX ---
+            // Convert the JSON object to an array, making sure to keep the unique ID for each skin.
+            allSkins = Object.keys(jsonData).map(key => {
+                return {
+                    id: key, // The key (e.g., "10600010") is the unique ID
+                    ...jsonData[key]
+                };
+            }).filter(skin => {
+                // Pre-filter the list to only include skins with an L2D tag and an image
+                return skin['깔끔한 일러'] && skin['스킨 태그'] && skin['스킨 태그'].includes('L2D');
+            });
+            
             renderPollList(allSkins);
         });
 
     const renderPollList = (skinsToRender) => {
         pollContainer.innerHTML = '';
         skinsToRender.forEach(skin => {
-            const skinId = skin['스킨 ID'];
+            const skinId = skin.id; // Use the 'id' property we added
             const pollBox = document.createElement('div');
             pollBox.className = 'poll-box';
             const hasVoted = localStorage.getItem(`voted_${skinId}`) === 'true';
 
-            pollBox.innerHTML = `...`; // Same as Part 1 JS
+            pollBox.innerHTML = `
+                <img src="${skin['깔끔한 일러']}" class="poll-image" loading="lazy">
+                <div class="poll-info">
+                    <h3>${skin['한글 함순이 + 스킨 이름']}</h3>
+                    <div class="rating-area ${hasVoted ? 'voted' : ''}">
+                        <div class="star-rating" data-skin-id="${skinId}">
+                            <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
+                            <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${hasVoted ? 'disabled' : ''}><label for="star4-${skinId}">★</label>
+                            <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${hasVoted ? 'disabled' : ''}><label for="star3-${skinId}">★</label>
+                            <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label>
+                            <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
+                        </div>
+                        <div class="poll-results" id="results-${skinId}">
+                            Connect to Firebase to see results.
+                        </div>
+                    </div>
+                </div>
+            `;
             pollContainer.appendChild(pollBox);
 
-            // Fetch and display poll results for this skin
-            updatePollResults(skinId);
+            // Fetch and display poll results for this skin (will work after Firebase is connected)
+            // updatePollResults(skinId);
         });
     };
 
-    // --- Firebase Logic ---
+    // --- Firebase Logic (uncomment and use after setup) ---
     const submitVote = (skinId, rating) => {
+        if (!window.db) { console.error("Firebase not initialized"); return; }
         if (localStorage.getItem(`voted_${skinId}`) === 'true') {
             console.log("You have already voted for this skin.");
             return;
@@ -65,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }).then(() => {
             console.log("Vote submitted successfully!");
             localStorage.setItem(`voted_${skinId}`, 'true');
-            // Disable voting UI and update results
             const ratingArea = document.querySelector(`.star-rating[data-skin-id="${skinId}"]`).closest('.rating-area');
             if (ratingArea) {
                 ratingArea.classList.add('voted');
@@ -78,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const updatePollResults = (skinId) => {
+        if (!window.db) { console.error("Firebase not initialized"); return; }
         const resultsEl = document.getElementById(`results-${skinId}`);
         const pollRef = db.collection('skin_polls').doc(String(skinId));
 
@@ -92,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Add a single event listener to the container for efficiency
     pollContainer.addEventListener('click', (event) => {
         if (event.target.matches('.star-rating input[type="radio"]')) {
             const skinId = event.target.closest('.star-rating').dataset.skinId;
@@ -100,4 +131,5 @@ document.addEventListener('DOMContentLoaded', () => {
             submitVote(skinId, rating);
         }
     });
+
 });
