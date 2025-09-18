@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
     
+    // --- MODIFIED: Added placeholder logic ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
@@ -107,10 +108,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const bottomLeftPanel = document.createElement('div');
         bottomLeftPanel.className = 'bottom-left-panel';
         const secondaryLargeSrc = skin['확대 일러'];
+        
         if (secondaryLargeSrc && secondaryLargeSrc !== 'null') {
             const secondaryImg = document.createElement('img');
             secondaryImg.src = secondaryLargeSrc;
             bottomLeftPanel.appendChild(secondaryImg);
+        } else {
+            // This is the new part: create the dummy box
+            const dummyBox = document.createElement('div');
+            dummyBox.className = 'dummy-image-box';
+            dummyBox.textContent = '이 스킨은 확대 일러가 없어요 지휘관님';
+            bottomLeftPanel.appendChild(dummyBox);
         }
         bottomPanel.appendChild(bottomLeftPanel);
         
@@ -133,15 +141,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const smallSources = [skin['아이콘 일러'], skin['쥬스타 아이콘 일러']].filter(src => src && src !== 'null');
         smallSources.forEach(src => {
             const img = document.createElement('img');
-img.src = src;
+            img.src = src;
             smallGroup.appendChild(img);
         });
         if(smallGroup.children.length > 0) bottomRightPanel.appendChild(smallGroup);
 
         bottomPanel.appendChild(bottomRightPanel);
         imageGallery.appendChild(bottomPanel);
-        
-        // MODIFICATION: Removed the JavaScript height-matching logic
         
         imageGallery.classList.remove('hidden');
     };
