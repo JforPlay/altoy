@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Display the user's own choice as a message bubble
         const choiceBubble = document.createElement('div');
         choiceBubble.classList.add('message-bubble', 'player');
-        choiceBubble.innerHTML = `<p class="speaker-name">Commander</p><p>${chosenText}</p>`;
+        choiceBubble.innerHTML = `<p class="speaker-name">지휘관</p><p>${chosenText}</p>`;
         storyContainer.appendChild(choiceBubble);
         choiceBubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
@@ -72,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Loop through the following script blocks
         while (currentScriptIndex < allScripts.length && allScripts[currentScriptIndex].optionFlag) {
-            // *** THE FIX IS HERE ***
             // This 'if' statement ensures we only process blocks that match the chosen flag.
             if (allScripts[currentScriptIndex].optionFlag === chosenFlag) {
                 const script = allScripts[currentScriptIndex];

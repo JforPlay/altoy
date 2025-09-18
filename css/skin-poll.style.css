@@ -7,32 +7,11 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
 .nav-link.active { color: #ffffff; border-bottom-color: #7289da; }
 .page-header { text-align: center; }
 
-/* --- New Flavor Text Box Style --- */
-.flavor-text-box {
-    background-color: #2f3136;
-    border: 1px solid #4f545c;
-    border-radius: 8px;
-    padding: 15px;
-    margin: 20px auto 0 auto;
-    max-width: 600px;
-    text-align: center;
-}
-.flavor-text-box p {
-    margin: 0;
-    line-height: 1.6;
-    font-size: 0.9em;
-    color: #b9bbbe;
-}
-.flavor-text-box strong {
-    color: #ffffff;
-    font-size: 1.1em;
-    display: block;
-    margin-bottom: 8px;
-}
-.flavor-text-box .warning-text {
-    color: #ffcc00; /* A noticeable yellow warning color */
-    font-weight: bold;
-}
+/* --- Flavor Text Box Style --- */
+.flavor-text-box { background-color: #2f3136; border: 1px solid #4f545c; border-radius: 8px; padding: 15px; margin: 20px auto 0 auto; max-width: 600px; text-align: center; }
+.flavor-text-box p { margin: 0; line-height: 1.6; font-size: 0.9em; color: #b9bbbe; }
+.flavor-text-box strong { color: #ffffff; font-size: 1.1em; display: block; margin-bottom: 8px; }
+.flavor-text-box .warning-text { color: #ffcc00; font-weight: bold; }
 
 /* --- Filter Styles --- */
 .filter-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; background-color: #2f3136; border-radius: 8px; margin-top: 20px; margin-bottom: 30px; }
@@ -42,10 +21,11 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
 .checkbox-group { display: flex; align-items: center; gap: 15px; background-color: #40444b; padding: 8px 12px; border-radius: 5px; height: 100%; box-sizing: border-box;}
 .checkbox-group label { display: flex; align-items: center; gap: 5px; font-weight: normal; cursor: pointer; }
 
-/* --- Poll Container --- */
+/* --- MODIFIED: Poll Container --- */
 .poll-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    /* Reduced min-width to make boxes smaller (210px is 70% of 300px) */
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
     gap: 20px;
 }
 .poll-box {
@@ -60,18 +40,25 @@ body { background-color: #36393f; font-family: sans-serif; color: #dcddde; margi
     object-fit: contain;
     background-color: #202225;
 }
-.poll-info { padding: 15px; }
-.poll-info h3 { margin: 0 0 5px 0; color: #ffffff; font-size: 1.1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.poll-info .character-name { font-size: 0.9em; color: #b9bbbe; margin-bottom: 10px; }
-.info-line { font-size: 0.8em; color: #8e9297; }
+.poll-info { padding: 12px; }
+.poll-info h3 { margin: 0 0 4px 0; color: #ffffff; font-size: 1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.poll-info .character-name { font-size: 0.8em; color: #b9bbbe; margin-bottom: 8px; }
+.info-line { font-size: 0.75em; color: #8e9297; }
 
 /* Star Rating Styles */
-.rating-area { margin-top: 15px; border-top: 1px solid #40444b; padding-top: 15px; }
+.rating-area { margin-top: 10px; border-top: 1px solid #40444b; padding-top: 10px; }
 .star-rating { display: flex; flex-direction: row-reverse; justify-content: center; }
 .star-rating input { display: none; }
-.star-rating label { font-size: 1.8em; color: #444; cursor: pointer; transition: color 0.2s; }
+.star-rating label { font-size: 1.6em; color: #444; cursor: pointer; transition: color 0.2s; }
 .star-rating:not(:hover) input:checked ~ label,
 .star-rating:hover input:hover ~ label { color: #ffc107; }
 .rating-area.voted .star-rating label { cursor: not-allowed; color: #444; }
 .rating-area.voted .star-rating input:checked ~ label { color: #03a9f4; }
-.poll-results { margin-top: 10px; font-size: 0.9em; color: #b9bbbe; text-align: center; }
+.poll-results { margin-top: 8px; font-size: 0.8em; color: #b9bbbe; text-align: center; }
+
+/* --- Responsive Styles for Mobile --- */
+@media (max-width: 768px) {
+    html {
+        font-size: 12px; /* Added mobile font size reduction */
+    }
+}

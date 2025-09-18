@@ -48,6 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="poll-info">
                     <div class="character-name">${skin['함순이 이름']}</div>
                     <h3>${skin['한글 함순이 + 스킨 이름']}</h3>
+                    <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
+                    <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
+                    <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
                     <div class="rating-area ${hasVoted ? 'voted' : ''}">
                         <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin['한글 함순이 + 스킨 이름']}" data-character-name="${skin['함순이 이름']}">
                             <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
@@ -57,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
                         </div>
                         <div class="poll-results" id="results-${skinId}">
-                            Loading results...
+                            결과 불러오는 중...
                         </div>
                     </div>
                 </div>
@@ -83,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Firebase Logic ---
     const submitVote = (skinId, rating, skinName, characterName) => {
         if (localStorage.getItem(`voted_${skinId}`) === 'true') {
-            console.log("You have already voted for this skin.");
+            console.log("해당 스킨에 이미 투표하셨습니다.");
             return;
         }
 

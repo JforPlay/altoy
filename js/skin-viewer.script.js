@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentSelection = characterSelect.value;
         characterSelect.innerHTML = '';
         const placeholder = document.createElement('option');
-        placeholder.value = ""; placeholder.textContent = "-- Select a Character --";
+        placeholder.value = ""; placeholder.textContent = "-- 함순이를 선택해주세요 --";
         characterSelect.appendChild(placeholder);
         let isCurrentSelectionInList = false;
         allCharacterData.forEach(data => {
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateSkinSelect = () => {
         if (characterSelect.value) characterSearch.value = characterSelect.value;
         const selectedCharacter = characterSelect.value;
-        skinSelect.innerHTML = '<option value="">-- Select a Skin --</option>';
+        skinSelect.innerHTML = '<option value="">-- 해당 함순이의 스킨 선택 --</option>';
         imageGallery.classList.add('hidden');
         skinInfoBox.classList.add('hidden');
         textContentArea.classList.add('hidden');
