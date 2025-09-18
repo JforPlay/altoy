@@ -3,8 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const characterSearch = document.getElementById('character-search');
     const characterSelect = document.getElementById('character-select');
     const skinSelect = document.getElementById('skin-select');
-    const skinInfoBox = document.getElementById('skin-info-box'); // New element
+    const skinInfoBox = document.getElementById('skin-info-box');
     const imageGallery = document.getElementById('image-gallery');
+    const textContentArea = document.getElementById('text-content-area'); // New element
 
     let skinData = [];
     let allCharacterData = [];
@@ -18,12 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
             skinData = Object.values(jsonData);
             populateCharacterSelect();
             if (characterSelect.options.length > 1) {
-                characterSelect.selectedIndex = 1;
+                characterSelect.value = "앵커리지";
                 updateSkinSelect();
-                if (skinSelect.options.length > 1) {
-                    skinSelect.selectedIndex = 1;
-                    displaySkinDetails();
-                }
+                skinSelect.value = "앵커리지";
+                displaySkinDetails();
             }
         }).catch(error => {
             console.error('Error loading or parsing JSON:', error);
@@ -61,7 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedCharacter = characterSelect.value;
         skinSelect.innerHTML = '<option value="">-- Select a Skin --</option>';
         imageGallery.classList.add('hidden');
-        skinInfoBox.classList.add('hidden'); // Hide info box when changing character
+        skinInfoBox.classList.add('hidden');
+        textContentArea.classList.add('hidden'); // Hide text area
         if (!selectedCharacter) {
             skinSelect.disabled = true;
             return;
@@ -76,41 +76,32 @@ document.addEventListener('DOMContentLoaded', () => {
         skinSelect.disabled = false;
     };
     
-    // --- MODIFIED: This function now builds the info box and the gallery ---
+    // --- MODIFIED: This function now builds all content sections ---
     const displaySkinDetails = () => {
         const selectedSkinName = skinSelect.value;
         if (!selectedSkinName) {
             imageGallery.classList.add('hidden');
             skinInfoBox.classList.add('hidden');
+            textContentArea.classList.add('hidden');
             return;
         }
         const skin = skinData.find(row => row['한글 함순이 + 스킨 이름'] === selectedSkinName);
         if (!skin) return;
 
-        // --- Build and Display Info Box ---
-        skinInfoBox.innerHTML = ''; // Clear previous info
+        // --- Build Info Box ---
+        skinInfoBox.innerHTML = '';
         let infoHtml = '';
-        const gemSVG = `<svg class="gem-icon" viewBox="0 0 512 512" fill="#f44336" xmlns="http://www.w3.org/2000/svg"><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512z"/></svg>`;
-
-        if (skin['재화'] && skin['재화'] !== 'null') {
-            infoHtml += `<div class="info-item">${gemSVG}<span class="info-value">${skin['재화']}</span></div>`;
-        }
-        if (skin['기간'] && skin['기간'] !== 'null') {
-            infoHtml += `<div class="info-item"><strong class="info-label">상시여부:</strong><span class="info-value">${skin['기간']}</span></div>`;
-        }
-        if (skin['스킨 타입 - 한글'] && skin['스킨 타입 - 한글'] !== 'null') {
-            infoHtml += `<div class="info-item"><strong class="info-label">스킨타입:</strong><span class="info-value">${skin['스킨 타입 - 한글']}</span></div>`;
-        }
-        if (skin['스킨 태그'] && skin['스킨 태그'] !== 'null') {
-            infoHtml += `<div class="info-item"><strong class="info-label">스킨태그:</strong><span class="info-value">${skin['스킨 태그']}</span></div>`;
-        }
-        
+        const gemIconHtml = `<img src="assets/60px-Ruby.png" class="gem-icon" alt="Gem">`;
+        if (skin['재화'] && skin['재화'] !== 'null') { infoHtml += `<div class="info-item">${gemIconHtml}<span class="info-value">${skin['재화']}</span></div>`; }
+        if (skin['기간'] && skin['기간'] !== 'null') { infoHtml += `<div class="info-item"><strong class="info-label">상시여부:</strong><span class="info-value">${skin['기간']}</span></div>`; }
+        if (skin['스킨 타입 - 한글'] && skin['스킨 타입 - 한글'] !== 'null') { infoHtml += `<div class="info-item"><strong class="info-label">스킨타입:</strong><span class="info-value">${skin['스킨 타입 - 한글']}</span></div>`; }
+        if (skin['스킨 태그'] && skin['스킨 태그'] !== 'null') { infoHtml += `<div class="info-item"><strong class="info-label">스킨태그:</strong><span class="info-value">${skin['스킨 태그']}</span></div>`; }
         skinInfoBox.innerHTML = infoHtml;
-        if(infoHtml) skinInfoBox.classList.remove('hidden');
+        if (infoHtml) skinInfoBox.classList.remove('hidden');
 
-        // --- Build and Display Image Gallery ---
+        // --- Build Image Gallery ---
         imageGallery.innerHTML = '';
-        // ... (rest of the image gallery logic is unchanged) ...
+        // ... (image gallery logic is unchanged) ...
         const topBannerSrc = skin['전체 일러'];
         if (topBannerSrc && topBannerSrc !== 'null') { const topBannerImg = document.createElement('img'); topBannerImg.className = 'gallery-top-banner'; topBannerImg.src = topBannerSrc; imageGallery.appendChild(topBannerImg); }
         const bottomPanel = document.createElement('div'); bottomPanel.className = 'gallery-bottom-panel';
@@ -130,6 +121,48 @@ document.addEventListener('DOMContentLoaded', () => {
         bottomPanel.appendChild(bottomRightPanel);
         imageGallery.appendChild(bottomPanel);
         imageGallery.classList.remove('hidden');
+
+        // --- Build Text Content Area (Descriptions & Chats) ---
+        textContentArea.innerHTML = '';
+        let textContentHtml = '';
+
+        // Descriptions
+        let descriptionsHtml = '';
+        if (skin['설명']) {
+            descriptionsHtml += `<div class="description-item"><h2>설명</h2><p>${skin['설명']}</p></div>`;
+        }
+        if (skin['자기소개']) {
+            descriptionsHtml += `<div class="description-item"><h2>자기소개</h2><p>${skin['자기소개']}</p></div>`;
+        }
+        if (descriptionsHtml) {
+            textContentHtml += `<div class="descriptions-panel">${descriptionsHtml}</div>`;
+        }
+
+        // Voice Lines
+        const chatLinesLeft = [];
+        const chatLinesRight = [];
+        const descriptionKeys = ['설명', '자기소개', '획득 대사', '모항 대사', '터치 대사', '터치 대사2', '임무 대사', '임무 완료 대사', '위탁 완료 대사', '강화 성공 대사', '결혼 대사'];
+
+        Object.keys(skin).forEach(key => {
+            if (skin[key] && key.endsWith('대사') && !descriptionKeys.includes(key)) {
+                const bubble = `<div class="chat-bubble">${skin[key]}</div>`;
+                if (key.includes('_ex')) {
+                    chatLinesRight.push(bubble);
+                } else {
+                    chatLinesLeft.push(bubble);
+                }
+            }
+        });
+
+        if (chatLinesLeft.length > 0 || chatLinesRight.length > 0) {
+            textContentHtml += `<h2>대사</h2><div class="chat-container">
+                <div class="chat-column">${chatLinesLeft.join('')}</div>
+                <div class="chat-column">${chatLinesRight.join('')}</div>
+            </div>`;
+        }
+
+        textContentArea.innerHTML = textContentHtml;
+        if (textContentHtml) textContentArea.classList.remove('hidden');
     };
 
     characterSearch.addEventListener('input', debounce(filterCharacters, 250));
