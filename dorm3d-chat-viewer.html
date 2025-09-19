@@ -3,43 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D숙소 채팅 뷰어</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="dorm3d-chat-viewer.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>3D숙소 쥬톡모음</title>
+    <!-- Link to the external stylesheet -->
+    <link rel="stylesheet" href="dorm3d-chat-viewer.style.css">
 </head>
-<body class="bg-[#36393f] text-[#dcddde] font-sans overflow-hidden h-screen font-[Inter,sans-serif]">
+<body>
 
-    <div class="flex h-full">
-        <aside class="w-72 bg-[#2f3136] flex flex-col h-full flex-shrink-0">
-            <header class="p-4 shadow-md h-16 flex-shrink-0 border-b border-black/20">
-                <h1 class="text-xl font-bold text-white">함순이 선택</h1>
-            </header>
-            <nav id="character-list" class="flex-grow overflow-y-auto p-2 space-y-1"></nav>
+    <div class="chat-app-container">
+        <!-- Sidebar for character selection -->
+        <aside class="character-sidebar">
+            <h2>함순이</h2>
+            <div id="character-list" class="character-list">
+                <!-- Character circles will be dynamically inserted here -->
+            </div>
         </aside>
 
-        <main class="flex-grow flex flex-col h-full bg-[#36393f]">
-            <header id="chat-header" class="p-4 shadow-md bg-[#36393f] border-b border-black/20 h-16 flex-shrink-0 flex items-center justify-between">
-                <div id="chat-info-container" class="flex-grow min-w-0">
-                    <h2 id="chat-title" class="text-lg font-semibold text-white truncate">시작하려면 함순이를 선택하세요</h2>
-                    <p id="chat-unlock" class="text-xs text-gray-400"></p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div id="topic-selector-container" class="ml-4"></div>
+        <!-- Main chat viewing area -->
+        <main class="chat-viewer">
+            <header id="chat-header" class="chat-header" style="display: none;">
+                <img id="chat-header-icon" class="chat-header-icon" src="" alt="Character Icon">
+                <div class="chat-header-info">
+                    <h1 id="chat-header-name" class="chat-header-name"></h1>
+                    <div class="story-filter-container">
+                        <label for="story-select">주제:</label>
+                        <select id="story-select"></select>
+                    </div>
                 </div>
             </header>
-
-            <div id="chat-content" class="flex-grow p-4 overflow-y-auto space-y-4">
-                 <div class="flex justify-center items-center h-full">
-                    <p class="text-gray-400 text-center">왼쪽 목록에서 함순이를 선택하여 대화를 확인하세요.</p>
-                 </div>
+            <div id="chat-content" class="chat-content">
+                <div id="initial-message">함순이를 선택하여 대화를 시작하세요.</div>
             </div>
-
-            <footer id="options-container" class="p-4 flex flex-col items-end space-y-2 border-t border-black/20">
-            </footer>
+            <!-- Container for interactive choice buttons -->
+            <div id="options-container" class="options-container">
+                <!-- Choice buttons will be dynamically inserted here -->
+            </div>
         </main>
     </div>
 
-    <script src="dorm3d-chat-viewer.js"></script>
+    <!-- Link to the external JavaScript file -->
+    <script src="dorm3d-chat-viewer.script.js" defer></script>
 </body>
 </html>
