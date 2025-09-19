@@ -56,8 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   // --- Core Functions ---
-
-  // UPDATED: This function is now synchronous for an instant display.
   const applyFilters = () => {
     let filteredSkins = allSkins;
 
@@ -80,15 +78,11 @@ document.addEventListener("DOMContentLoaded", () => {
     
     filteredSkins = filteredSkins.filter(s => selectedRarities.includes(s["레어도"]));
     filteredSkins.sort((a, b) => (a.id || "").localeCompare(b.id || ""));
-
-    // Step 1: Render the UI shells immediately.
-    renderPollList(filteredSkins);
     
-    // Step 2: Start the data fetch in the background (fire-and-forget).
+    renderPollList(filteredSkins);
     fetchScoresInBackground(filteredSkins.map(s => s.id));
   };
 
-  // UPDATED: This function now only renders the UI and does not fetch data itself.
   const renderPollList = (skinsToRender) => {
     pollContainer.innerHTML = "";
     skinsToRender.forEach((skin) => {
@@ -96,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const skinId = skin.id;
       const pollBox = document.createElement("div");
       pollBox.className = "poll-box";
-      pollBox.id = `poll-box-${skinId}`; // Add an ID to the box itself for later reference
+      pollBox.id = `poll-box-${skinId}`;
       const hasVoted = localStorage.getItem(`voted_${skinId}`) === "true";
       pollBox.innerHTML = `
         <img src="${skin["깔끔한 일러"]}" class="poll-image" loading="lazy">
@@ -121,13 +115,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // NEW/UPDATED: This function runs in the background to fetch and display scores.
   const fetchScoresInBackground = async (skinIds) => {
     if (!skinIds || skinIds.length === 0) return;
     const pollRef = db.collection("skin_polls");
     const foundIds = new Set();
 
-    // Process in batches of 10 to respect the Firebase query limit
+    // --- THIS IS THE CORRECTED LINE ---
     for (let i = 0; i < skinIds.length; i += 10) {
         const chunk = skinIds.slice(i, i + 10);
         if (chunk.length === 0) continue;
@@ -148,7 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         } catch (error) {
             console.error("A batch of poll results failed to load:", error);
-            // Mark the failed chunk with an error
             chunk.forEach(skinId => {
                 const resultsEl = document.getElementById(`results-${skinId}`);
                 if (resultsEl) resultsEl.textContent = "결과 로딩 실패";
@@ -156,7 +148,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // After all batches are attempted, clean up any remaining "Loading..." messages
     skinIds.forEach(skinId => {
         if (!foundIds.has(skinId)) {
             const resultsEl = document.getElementById(`results-${skinId}`);
@@ -207,7 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((error) => { console.error("Firebase vote submission failed: ", error); });
   };
   
-  // --- PASTE OF UNCHANGED FUNCTIONS FOR COMPLETENESS ---
   const rebuildDropdown = (selectElement, optionsData) => {
     const currentVal = selectElement.value;
     selectElement.innerHTML = '<option value="all">전체</option>';
@@ -219,11 +209,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     selectElement.value = optionsData.some((d) => d.value === currentVal) ? currentVal : "all";
   };
+  
   const populateInitialFilters = () => {
     allCharacterNamesData = [...new Set(allSkins.map((s) => s["함순이 이름"]))].filter(Boolean).sort().map((name) => ({ value: name, text: name }));
     rebuildDropdown(characterNameSelect, allCharacterNamesData);
     rarityCheckboxes.querySelectorAll("input").forEach((checkbox) => { checkbox.addEventListener("change", applyFilters); });
   };
+  
   const fetchAllPollData = async () => {
     const pollRef = db.collection("skin_polls");
     const allPollData = {};
@@ -233,6 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) { console.error("Error fetching all poll data:", error); }
     return allPollData;
   };
+  
   const populateLeaderboard = (allPollData) => {
     if (!allSkins.length || !Object.keys(allPollData).length) return;
     const MIN_VOTES = 5;
@@ -268,6 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         </div>`).join('');
   };
+  
   const resetFilters = () => {
     characterNameSearch.value = "";
     characterNameSelect.value = "all";
@@ -279,13 +273,15 @@ document.addEventListener("DOMContentLoaded", () => {
     rebuildDropdown(characterNameSelect, allCharacterNamesData);
     applyFilters();
   };
-
+  
   // --- Event Listeners ---
   leaderboardToggleBtn.addEventListener('click', () => {
     leaderboardContent.classList.toggle('visible');
     leaderboardToggleBtn.textContent = leaderboardContent.classList.contains('visible') ? '🔼 리더보드 숨기기' : '🏆 Top 10 스킨 보기';
   });
+  
   resetFiltersBtn.addEventListener('click', resetFilters);
+  
   pollContainer.addEventListener("change", (event) => {
     if (event.target.matches('.star-rating input[type="radio"]')) {
       const starRatingDiv = event.target.closest(".star-rating");
@@ -296,9 +292,11 @@ document.addEventListener("DOMContentLoaded", () => {
       submitVote(skinId, rating, skinName, characterName);
     }
   });
+
   characterNameSearch.addEventListener("input", debounce(() => {
     rebuildDropdown(characterNameSelect, allCharacterNamesData.filter((char) => char.text.toLowerCase().includes(characterNameSearch.value.toLowerCase())));
   }, 250));
+  
   [characterNameSelect, skinTypeSelect, factionSelect, tagSelect, sortSelect].forEach((el) => {
     el.addEventListener("change", applyFilters);
   });
