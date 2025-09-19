@@ -28,6 +28,12 @@
             </div>
         </header>
 
+        <section class="leaderboard-section">
+            <button id="leaderboard-toggle-btn" class="leaderboard-toggle">🏆 Top 10 스킨 보기</button>
+            <div id="leaderboard-content" class="leaderboard-content">
+                </div>
+        </section>
+
         <div class="filter-container">
             <div class="filter-group">
                 <label for="character-name-search">함순이 이름</label>
@@ -72,6 +78,14 @@
                     <label><input type="checkbox" value="R" checked> R</label>
                     <label><input type="checkbox" value="N" checked> N</label>
                 </div>
+            </div>
+             <div class="filter-group">
+                <label for="sort-select">정렬 순서</label>
+                <select id="sort-select">
+                    <option value="default">기본 (이름순)</option>
+                    <option value="score_desc">평균 점수 높은 순</option>
+                    <option value="votes_desc">투표 많은 순</option>
+                </select>
             </div>
         </div>
 
