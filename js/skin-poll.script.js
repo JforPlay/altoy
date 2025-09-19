@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let allSkins = [];
   let allCharacterNamesData = [];
 
+  // --- Helper Functions ---
   const debounce = (func, delay) => {
     let timeoutId;
     return (...args) => {
@@ -43,17 +44,16 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((jsonData) => {
       allSkins = Object.keys(jsonData).map((key) => ({ id: key, ...jsonData[key] }));
       
-      // Disable advanced sorting temporarily to ensure stability
       sortSelect.value = 'default';
       sortSelect.querySelector('option[value="score_desc"]').disabled = true;
       sortSelect.querySelector('option[value="votes_desc"]').disabled = true;
 
       populateInitialFilters();
-      applyFilters(); // Initial render
-      fetchAllPollData().then(populateLeaderboard); // Leaderboard still works
+      applyFilters();
+      fetchAllPollData().then(populateLeaderboard);
     });
 
-  // --- NEW, SIMPLIFIED applyFilters ---
+  // --- Core Functions (Defined Once) ---
   const applyFilters = () => {
     const selectedCharName = characterNameSelect.value;
     const selectedType = skinTypeSelect.value;
@@ -74,16 +74,12 @@ document.addEventListener("DOMContentLoaded", () => {
       else { filteredSkins = filteredSkins.filter(s => s["스킨 태그"] && s["스킨 태그"].includes(selectedTag)); }
     }
     
-    // This simplified filter logic is now robust.
     filteredSkins = filteredSkins.filter(s => selectedRarities.includes(s["레어도"]));
-
-    // Default sort by name
     filteredSkins.sort((a, b) => (a["한글 함순이 + 스킨 이름"] || "").localeCompare(b["한글 함순이 + 스킨 이름"] || ""));
 
     renderPollList(filteredSkins);
   };
 
-  // --- NEW, SIMPLIFIED renderPollList ---
   const renderPollList = (skinsToRender) => {
     pollContainer.innerHTML = "";
     const skinIdsToFetch = [];
@@ -104,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="info-line"><strong>레어도:</strong> ${skin["레어도"] || "없음"}</div>
             <div class="rating-area ${hasVoted ? "voted" : ""}">
                 <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin["한글 함순이 + 스킨 이름"]}" data-character-name="${skin["함순이 이름"]}">
-                    <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? "disabled" : ""}><label for="star5-${skinId}">★</label>
+                     <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${hasVoted ? "disabled" : ""}><label for="star5-${skinId}">★</label>
                      <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${hasVoted ? "disabled" : ""}><label for="star4-${skinId}">★</label>
                      <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${hasVoted ? "disabled" : ""}><label for="star3-${skinId}">★</label>
                      <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${hasVoted ? "disabled" : ""}><label for="star2-${skinId}">★</label>
@@ -121,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // This function fetches results for the visible skins and updates the page.
   const fetchAllResultsAndDisplay = async (skinIds) => {
     const pollRef = db.collection("skin_polls");
     const promises = [];
@@ -160,20 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // --- Other functions (Leaderboard, voting, etc.) remain largely the same ---
-  // Leaderboard logic, populateInitialFilters, rebuildDropdown, submitVote, etc. would follow here.
-  // Pasting them all for a complete, working file.
-
-  const fetchAllPollData = async () => { /* ... same as before ... */ };
-  const populateLeaderboard = (allPollData) => { /* ... same as before ... */ };
-  leaderboardToggleBtn.addEventListener('click', () => { /* ... same as before ... */ });
-  const populateInitialFilters = () => { /* ... same as before ... */ };
-  const rebuildDropdown = (selectElement, optionsData) => { /* ... same as before ... */ };
-  const submitVote = (skinId, rating, skinName, characterName) => { /* ... same as before ... */ };
-  const fetchAndDisplayResults = (skinId) => { /* ... same as before ... */ };
-  const resetFilters = () => { /* ... same as before ... */ };
-
-  // --- PASTE OF UNCHANGED FUNCTIONS FOR COMPLETENESS ---
   const fetchAndDisplayResults = (skinId) => {
     const resultsEl = document.getElementById(`results-${skinId}`);
     if (!resultsEl) return;
@@ -190,7 +171,8 @@ document.addEventListener("DOMContentLoaded", () => {
       resultsEl.textContent = "결과를 불러올 수 없습니다.";
     });
   };
-   const submitVote = (skinId, rating, skinName, characterName) => {
+
+  const submitVote = (skinId, rating, skinName, characterName) => {
     if (localStorage.getItem(`voted_${skinId}`) === "true") { return; }
     const pollRef = db.collection("skin_polls").doc(String(skinId));
     return db.runTransaction((transaction) => {
@@ -212,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fetchAndDisplayResults(skinId);
     }).catch((error) => console.error("Firebase transaction failed: ", error));
   };
+  
   const rebuildDropdown = (selectElement, optionsData) => {
     const currentVal = selectElement.value;
     selectElement.innerHTML = '<option value="all">전체</option>';
@@ -223,11 +206,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     selectElement.value = optionsData.some((d) => d.value === currentVal) ? currentVal : "all";
   };
+  
   const populateInitialFilters = () => {
     allCharacterNamesData = [...new Set(allSkins.map((s) => s["함순이 이름"]))].filter(Boolean).sort().map((name) => ({ value: name, text: name }));
     rebuildDropdown(characterNameSelect, allCharacterNamesData);
     rarityCheckboxes.querySelectorAll("input").forEach((checkbox) => { checkbox.addEventListener("change", applyFilters); });
   };
+  
   const fetchAllPollData = async () => {
     const pollRef = db.collection("skin_polls");
     const allPollData = {};
@@ -237,6 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) { console.error("Error fetching all poll data:", error); }
     return allPollData;
   };
+  
   const populateLeaderboard = (allPollData) => {
     if (!allSkins.length || !Object.keys(allPollData).length) return;
     const MIN_VOTES = 5;
@@ -272,6 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         </div>`).join('');
   };
+  
   const resetFilters = () => {
     characterNameSearch.value = "";
     characterNameSelect.value = "all";
@@ -284,12 +271,14 @@ document.addEventListener("DOMContentLoaded", () => {
     applyFilters();
   };
   
-  // --- EVENT LISTENERS ---
+  // --- Event Listeners ---
   leaderboardToggleBtn.addEventListener('click', () => {
     leaderboardContent.classList.toggle('visible');
     leaderboardToggleBtn.textContent = leaderboardContent.classList.contains('visible') ? '🔼 리더보드 숨기기' : '🏆 Top 10 스킨 보기';
   });
+  
   resetFiltersBtn.addEventListener('click', resetFilters);
+  
   pollContainer.addEventListener("change", (event) => {
     if (event.target.matches('.star-rating input[type="radio"]')) {
       const starRatingDiv = event.target.closest(".star-rating");
@@ -300,9 +289,11 @@ document.addEventListener("DOMContentLoaded", () => {
       submitVote(skinId, rating, skinName, characterName);
     }
   });
+
   characterNameSearch.addEventListener("input", debounce(() => {
     rebuildDropdown(characterNameSelect, allCharacterNamesData.filter((char) => char.text.toLowerCase().includes(characterNameSearch.value.toLowerCase())));
   }, 250));
+  
   [characterNameSelect, skinTypeSelect, factionSelect, tagSelect, sortSelect].forEach((el) => {
     el.addEventListener("change", applyFilters);
   });
