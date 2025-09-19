@@ -124,27 +124,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // --- FIX: This function is now more robust ---
-  const fetchAllResultsAndDisplay = async (skinIds) => {
+   const fetchAllResultsAndDisplay = async (skinIds) => {
     if (!skinIds || skinIds.length === 0) return;
     
     const pollRef = db.collection("skin_polls");
-    const promises = [];
-    const queriedIds = new Set();
+    const batches = [];
 
+    // Create batches of IDs and the corresponding query promises
     for (let i = 0; i < skinIds.length; i += 30) {
         const chunk = skinIds.slice(i, i + 30);
         if (chunk.length > 0) {
-            promises.push(pollRef.where(firebase.firestore.FieldPath.documentId(), 'in', chunk).get());
+            batches.push({
+                ids: chunk,
+                query: pollRef.where(firebase.firestore.FieldPath.documentId(), 'in', chunk).get()
+            });
         }
     }
 
-    try {
-        const snapshots = await Promise.all(promises);
-        snapshots.forEach(snapshot => {
+    const foundIds = new Set();
+
+    // Process each batch one by one for progressive loading and error isolation
+    for (const batch of batches) {
+        try {
+            const snapshot = await batch.query; // Wait for the current batch to finish
             snapshot.forEach(doc => {
                 const skinId = doc.id;
-                queriedIds.add(skinId);
+                foundIds.add(skinId);
                 const resultsEl = document.getElementById(`results-${skinId}`);
                 if (resultsEl) {
                     const data = doc.data();
@@ -153,23 +158,26 @@ document.addEventListener("DOMContentLoaded", () => {
                         : "아직 투표가 없습니다.";
                 }
             });
-        });
-
-        // Final check for any skins that had no entry in the database
-        skinIds.forEach(skinId => {
-            if (!queriedIds.has(skinId)) {
+        } catch (error) {
+            console.error("A batch of poll results failed to load:", error);
+            // If a batch fails, mark its skins with an error message
+            batch.ids.forEach(skinId => {
                 const resultsEl = document.getElementById(`results-${skinId}`);
-                if (resultsEl) { resultsEl.textContent = "아직 투표가 없습니다."; }
-            }
-        });
-    } catch (error) {
-        console.error("Error fetching batch poll results:", error);
-        // If the entire fetch fails, update all visible skins with an error message.
-        skinIds.forEach(skinId => {
-            const resultsEl = document.getElementById(`results-${skinId}`);
-            if(resultsEl) resultsEl.textContent = "결과 로딩 실패";
-        });
+                if (resultsEl) resultsEl.textContent = "결과 로딩 실패";
+            });
+        }
     }
+
+    // After all batches are attempted, update any remaining skins that had no vote data
+    skinIds.forEach(skinId => {
+        if (!foundIds.has(skinId)) {
+            const resultsEl = document.getElementById(`results-${skinId}`);
+            // Only update if it's still in the initial "loading" state
+            if (resultsEl && resultsEl.textContent === '결과 불러오는 중...') {
+                 resultsEl.textContent = "아직 투표가 없습니다.";
+            }
+        }
+    });
   };
 
   const fetchAndDisplayResults = (skinId) => {
