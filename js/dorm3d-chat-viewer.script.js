@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // URL for the main data file
-    const DATA_URL = 'data/processed_dorm3d_data.json';
+    const DATA_URL = 'data/processed_dormd3d_data.json';
 
     // Get HTML elements
     const characterGrid = document.getElementById('character-selector-grid');
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const storyData = allData[selectedCharacterName][storyId];
         currentStoryScripts = storyData.scripts;
-        unlockDescText.textContent = `"${storyData.unlock_desc}"`;
+        unlockDescText.innerHTML = `<strong>해금 조건 :</strong> "${storyData.unlock_desc}"`;
         
         initializeStory();
     }

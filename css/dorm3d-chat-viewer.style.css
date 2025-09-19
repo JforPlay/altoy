@@ -36,13 +36,27 @@ h1, h2 {
     width: 100%;
 }
 
-/* --- Character Selection Grid --- */
+/* --- Character Selection (Box Added) --- */
+#character-selection-section {
+    background-color: #2f3136;
+    border: 1px solid #40444b;
+    padding: 20px 25px 30px 25px;
+    border-radius: 10px;
+    margin: 0 auto 30px auto;
+    max-width: 900px;
+    box-sizing: border-box;
+}
+
+#character-selection-section h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
 .character-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 20px;
-    max-width: 900px;
-    margin: 20px auto;
+    margin: 20px auto 0 auto;
 }
 
 .character-card {
@@ -62,7 +76,7 @@ h1, h2 {
 
 .character-card.selected {
     border-color: #5865f2;
-    box-shadow: 0 0 15px rgba(88, 101, 242, 0.5);
+    background-color: #40444b;
 }
 
 .character-card img {
@@ -86,7 +100,7 @@ h1, h2 {
     margin: 0;
 }
 
-/* --- Story Controls (Layout Fixed) --- */
+/* --- Story Controls --- */
 .story-controls {
     max-width: 800px;
     margin: 0 auto 20px auto;
@@ -119,6 +133,7 @@ h1, h2 {
     border-radius: 8px;
     padding: 15px;
     text-align: center;
+    min-height: 24px;
 }
 
 .flavor-text-box p {
@@ -126,6 +141,14 @@ h1, h2 {
     line-height: 1.6;
     font-style: italic;
     color: #b9bbbe;
+}
+
+/* Style for the new label */
+.flavor-text-box strong {
+    font-weight: bold;
+    color: #ffffff;
+    margin-right: 8px;
+    font-style: normal;
 }
 
 .restart-button {
@@ -138,7 +161,7 @@ h1, h2 {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s;
-    height: 48px; /* Match height of dropdown */
+    height: 48px;
 }
 
 .restart-button:hover {
@@ -155,7 +178,6 @@ h1, h2 {
     gap: 15px;
 }
 
-/* NEW: Wrapper for portrait and bubble */
 .character-line-wrapper {
     display: flex;
     align-items: flex-end;
@@ -167,7 +189,6 @@ h1, h2 {
     animation: bubble-fade-in 0.4s forwards;
 }
 
-/* NEW: Portrait image style */
 .character-line-wrapper .portrait {
     width: 45px;
     height: 45px;
@@ -182,7 +203,6 @@ h1, h2 {
     max-width: 75%;
     line-height: 1.4;
 }
-/* Apply fade-in to non-character bubbles directly */
 .player, .narrator {
     opacity: 0;
     transform: translateY(20px);
@@ -238,6 +258,6 @@ h1, h2 {
 /* --- Responsive Styles --- */
 @media (max-width: 768px) {
     body { padding: 10px; }
-    .story-controls { grid-template-columns: 1fr; } /* Stack controls on mobile */
+    .story-controls { grid-template-columns: 1fr; }
     .restart-button { width: 100%; }
 }
