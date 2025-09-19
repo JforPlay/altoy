@@ -114,6 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const populateInitialFilters = () => {
         allCharacterNamesData = [...new Set(allSkins.map((s) => s["함순이 이름"]))]
             .filter(Boolean).sort().map((name) => ({ value: name, text: name }));
+        
         rebuildDropdown(characterNameSelect, allCharacterNamesData);
         rarityCheckboxes.querySelectorAll("input").forEach((checkbox) => {
             checkbox.addEventListener("change", applyFilters);
@@ -143,13 +144,13 @@ document.addEventListener("DOMContentLoaded", () => {
         let filteredSkins = allSkins;
 
         // Apply text and dropdown filters first
-        if (selectedCharName !== "all") { filteredSkins = filteredSkins.filter(s => s["함순이 이름"] === selectedCharName); }
-        if (selectedType !== "all") {
+        if (selectedCharName !== "전체") { filteredSkins = filteredSkins.filter(s => s["함순이 이름"] === selectedCharName); }
+        if (selectedType !== "전체") {
             if (selectedType === "기본") { filteredSkins = filteredSkins.filter(s => !s["스킨 타입 - 한글"]); }
             else { filteredSkins = filteredSkins.filter(s => s["스킨 타입 - 한글"] === selectedType); }
         }
-        if (selectedFaction !== "all") { filteredSkins = filteredSkins.filter(s => s["진영"] === selectedFaction); }
-        if (selectedTag !== "all") {
+        if (selectedFaction !== "전체") { filteredSkins = filteredSkins.filter(s => s["진영"] === selectedFaction); }
+        if (selectedTag !== "전체") {
             if (selectedTag === "X") { filteredSkins = filteredSkins.filter(s => !s["스킨 태그"]); }
             else { filteredSkins = filteredSkins.filter(s => s["스킨 태그"]?.includes(selectedTag)); }
         }
