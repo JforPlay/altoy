@@ -5,37 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dorm 3D Chat Viewer</title>
     <link rel="stylesheet" href="dorm3d-chat-viewer.style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header class="main-header">
+        <h1>벽람항로 기숙사 3D 채팅 뷰어</h1>
+        <p>캐릭터와 스토리를 선택해 대화를 확인하세요.</p>
+    </header>
 
-    <div class="container">
-        <header>
-            <h1>벽람항로 기숙사 3D 채팅 뷰어</h1>
-            <p>캐릭터를 선택하여 대화를 확인하세요.</p>
-        </header>
-
-        <main>
+    <main class="content-container">
+        <section id="character-selection-section">
             <h2>캐릭터 선택</h2>
-            <div id="character-selector" class="character-grid">
-                <!-- Character cards will be dynamically inserted here -->
+            <div id="character-selector-grid" class="character-grid">
+                 <p class="loading-message">Loading characters...</p>
             </div>
+        </section>
 
-            <div id="chat-selection-area" class="hidden">
-                <hr>
-                <h2>대화 선택</h2>
-                <div class="selection-controls">
-                     <select id="chat-dropdown"></select>
-                     <p id="unlock-desc"></p>
+        <section id="story-display-section" class="hidden">
+            <div class="story-controls">
+                <select id="story-dropdown"></select>
+                <div id="flavor-text-box" class="flavor-text-box">
+                    <p id="unlock-desc-text"></p>
                 </div>
-                <div id="chat-display">
-                    <!-- Chat messages will be displayed here -->
-                </div>
+                <button id="restart-button" class="restart-button">다시 재생하기</button>
             </div>
-        </main>
-    </div>
+            <div class="story-container" id="story-container"></div>
+            <div class="options-container" id="options-container"></div>
+        </section>
+    </main>
 
     <script src="dorm3d-chat-viewer.script.js"></script>
 </body>

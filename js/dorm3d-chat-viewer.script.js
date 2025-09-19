@@ -1,133 +1,224 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const characterSelector = document.getElementById('character-selector');
-    const chatSelectionArea = document.getElementById('chat-selection-area');
-    const chatDropdown = document.getElementById('chat-dropdown');
-    const unlockDesc = document.getElementById('unlock-desc');
-    const chatDisplay = document.getElementById('chat-display');
+    // URL for the main data file
+    const DATA_URL = 'data/processed_dorm3d_data.json';
 
-    let chatData = {};
-    let selectedCharacter = null;
+    // Get HTML elements
+    const characterGrid = document.getElementById('character-selector-grid');
+    const storyDisplaySection = document.getElementById('story-display-section');
+    const storyDropdown = document.getElementById('story-dropdown');
+    const unlockDescText = document.getElementById('unlock-desc-text');
+    const storyContainer = document.getElementById('story-container');
+    const optionsContainer = document.getElementById('options-container');
+    const restartButton = document.getElementById('restart-button');
 
-    // Fetch the chat data from the JSON file
-    fetch('data/processed_dorm3d_data.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+    // Data and state variables
+    let allData = {};
+    let selectedCharacterName = null;
+    let currentStoryScripts = [];
+    let currentScriptIndex = 0;
+
+    /**
+     * Fetches the main data and populates the character selector.
+     */
+    fetch(DATA_URL)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! Status: ${res.status}`);
             }
-            return response.json();
+            return res.json();
         })
         .then(data => {
-            chatData = data;
-            loadCharacters();
+            allData = data;
+            populateCharacterSelector();
         })
         .catch(error => {
-            console.error("Error fetching or parsing chat data:", error);
-            characterSelector.innerHTML = '<p>Error loading character data. Please check the console and ensure the JSON file is in the same directory.</p>';
+            console.error('Error fetching story data:', error);
+            characterGrid.innerHTML = '<p class="loading-message error">스토리 정보를 불러오는데 실패했어요.</p>';
         });
 
     /**
-     * Populates the character selection grid.
+     * Creates and displays character cards in the grid.
      */
-    function loadCharacters() {
-        characterSelector.innerHTML = ''; // Clear existing content
-        for (const characterName in chatData) {
-            const character = chatData[characterName];
-            // Get the first chat to extract shared info like icon, kr_name, etc.
-            const firstChatId = Object.keys(character)[0];
-            if (!firstChatId) continue; // Skip if character has no chats
-            
-            const chatInfo = character[firstChatId];
+    function populateCharacterSelector() {
+        characterGrid.innerHTML = ''; // Clear loading message
+        for (const characterName in allData) {
+            const characterData = allData[characterName];
+            const firstStoryId = Object.keys(characterData)[0];
+            if (!firstStoryId) continue; // Skip if character has no stories
 
+            const firstStory = characterData[firstStoryId];
             const card = document.createElement('div');
             card.className = 'character-card';
-            card.dataset.character = characterName;
-
+            card.dataset.characterName = characterName;
             card.innerHTML = `
-                <img src="${chatInfo.icon}" alt="${chatInfo.kr_name} icon">
-                <p class="char-name">${chatInfo.kr_name}</p>
-                <p class="ship-name">${chatInfo.ship_name}</p>
+                <img src="${firstStory.icon}" alt="${firstStory.kr_name}">
+                <p class="char-name">${firstStory.kr_name}</p>
+                <p class="ship-name">${firstStory.ship_name}</p>
             `;
-
-            card.addEventListener('click', handleCharacterClick);
-            characterSelector.appendChild(card);
+            card.addEventListener('click', () => handleCharacterClick(characterName));
+            characterGrid.appendChild(card);
         }
     }
 
     /**
-     * Handles clicking on a character card.
-     * @param {Event} event - The click event.
+     * Handles clicking a character card.
+     * @param {string} characterName - The name of the selected character.
      */
-    function handleCharacterClick(event) {
-        const selectedCard = event.currentTarget;
-        selectedCharacter = selectedCard.dataset.character;
+    function handleCharacterClick(characterName) {
+        selectedCharacterName = characterName;
 
-        // Update selected visual state
+        // Update visual selection
         document.querySelectorAll('.character-card').forEach(card => {
-            card.classList.remove('selected');
+            card.classList.toggle('selected', card.dataset.characterName === characterName);
         });
-        selectedCard.classList.add('selected');
 
-        // Show chat area and populate dropdown
-        chatSelectionArea.classList.remove('hidden');
-        populateChatDropdown(chatData[selectedCharacter]);
+        storyDisplaySection.classList.remove('hidden');
+        populateStoryDropdown(allData[characterName]);
     }
 
     /**
-     * Populates the chat dropdown for the selected character.
-     * @param {object} characterChats - The chat data for one character.
+     * Populates the story dropdown menu for the selected character.
+     * @param {object} characterStories - The collection of stories for the character.
      */
-    function populateChatDropdown(characterChats) {
-        chatDropdown.innerHTML = '';
-        for (const chatId in characterChats) {
-            const chat = characterChats[chatId];
+    function populateStoryDropdown(characterStories) {
+        storyDropdown.innerHTML = '';
+        for (const storyId in characterStories) {
+            const story = characterStories[storyId];
             const option = document.createElement('option');
-            option.value = chatId;
-            option.textContent = chat.name;
-            chatDropdown.appendChild(option);
+            option.value = storyId;
+            option.textContent = story.name;
+            storyDropdown.appendChild(option);
         }
-        // Automatically load the first chat
-        if (chatDropdown.options.length > 0) {
-            chatDropdown.value = chatDropdown.options[0].value;
-            handleChatChange();
-        }
-        chatDropdown.removeEventListener('change', handleChatChange); // Prevent multiple listeners
-        chatDropdown.addEventListener('change', handleChatChange);
+        // Load the first story by default
+        loadSelectedStory();
     }
     
     /**
-     * Handles changing the selected chat in the dropdown.
+     * Loads the story selected in the dropdown.
      */
-    function handleChatChange() {
-        const selectedChatId = chatDropdown.value;
-        if (!selectedCharacter || !selectedChatId) return;
+    function loadSelectedStory() {
+        const storyId = storyDropdown.value;
+        if (!selectedCharacterName || !storyId) return;
 
-        const chat = chatData[selectedCharacter][selectedChatId];
-        unlockDesc.textContent = `"${chat.unlock_desc}"`;
-        displayChat(chat.scripts);
+        const storyData = allData[selectedCharacterName][storyId];
+        currentStoryScripts = storyData.scripts;
+        unlockDescText.textContent = `"${storyData.unlock_desc}"`;
+        
+        initializeStory();
     }
 
     /**
-     * Displays the chat messages for a selected story.
-     * @param {Array} scripts - An array of script objects for the chat.
+     * Clears the display and starts showing the current story.
      */
-    function displayChat(scripts) {
-        chatDisplay.innerHTML = '';
-        scripts.forEach(script => {
-            // We only display dialogue messages (type 1)
-            if (script.type === 1 && script.param) {
-                const bubble = document.createElement('div');
-                bubble.className = 'chat-bubble';
-                // ship_group 0 is the player (commander)
-                if (script.ship_group === 0) {
-                    bubble.classList.add('player-message');
-                } else {
-                    bubble.classList.add('character-message');
-                }
-                bubble.textContent = script.param;
-                chatDisplay.appendChild(bubble);
-            }
-        });
-        // Scroll to the top of the chat
-        chatDisplay.scrollTop = 0;
+    const initializeStory = () => {
+        storyContainer.innerHTML = '';
+        optionsContainer.innerHTML = '';
+        currentScriptIndex = 0;
+        showNextLineAfterDelay();
+    };
+
+    /**
+     * Main story progression function.
+     */
+    const showNextLine = () => {
+        if (currentScriptIndex >= currentStoryScripts.length) return;
+        const script = currentStoryScripts[currentScriptIndex];
+
+        // Skip non-dialogue or empty lines automatically
+        if (script.type !== 1 || !script.param) {
+            currentScriptIndex++;
+            showNextLine();
+            return;
+        }
+
+        displayBubble(script);
+
+        // If there are options, wait for user input. Otherwise, proceed.
+        if (script.option && script.option.length > 0 && Array.isArray(script.option[0])) {
+             // The format in this JSON is [[flag, content]]
+            const options = script.option.map(opt => ({ flag: opt[0], content: opt[1] }));
+            displayOptions(options);
+        } else {
+            currentScriptIndex++;
+            showNextLineAfterDelay();
+        }
+    };
+    
+    const showNextLineAfterDelay = (delay = 400) => {
+        setTimeout(showNextLine, delay);
     }
+
+    /**
+     * Displays a single dialogue bubble.
+     * @param {object} script - The script object for the current line.
+     */
+    const displayBubble = (script) => {
+        let speakerName = '', messageClass = '';
+        const firstStory = allData[selectedCharacterName][storyDropdown.value];
+
+        if (script.ship_group === 0) {
+            speakerName = '지휘관';
+            messageClass = 'player';
+        } else if (script.ship_group === firstStory.ship_group) {
+            speakerName = firstStory.kr_name;
+            messageClass = 'character';
+        } else {
+            messageClass = 'narrator'; // Fallback for narrator/system text
+        }
+        
+        const messageBubble = document.createElement('div');
+        messageBubble.classList.add('message-bubble', messageClass);
+
+        if (speakerName) {
+            messageBubble.innerHTML += `<p class="speaker-name">${speakerName}</p>`;
+        }
+        messageBubble.innerHTML += `<p>${script.param}</p>`;
+
+        storyContainer.appendChild(messageBubble);
+        messageBubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    };
+
+    /**
+     * Displays choice buttons for the player.
+     * @param {Array} options - An array of option objects.
+     */
+    const displayOptions = (options) => {
+        optionsContainer.innerHTML = '';
+        options.forEach(option => {
+            const button = document.createElement('button');
+            button.classList.add('choice-button');
+            button.textContent = option.content;
+            button.onclick = () => handleChoice(option.flag, option.content);
+            optionsContainer.appendChild(button);
+        });
+        optionsContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    };
+    
+    /**
+     * Handles the player's choice.
+     * @param {number} chosenFlag - The flag associated with the chosen option.
+     * @param {string} chosenText - The text of the chosen option.
+     */
+    const handleChoice = (chosenFlag, chosenText) => {
+        // Display the user's choice as a bubble
+        const choiceBubble = { ship_group: 0, param: chosenText };
+        displayBubble(choiceBubble);
+        
+        optionsContainer.innerHTML = '';
+        currentScriptIndex++; // Move past the line that contained the options
+
+        // Find the next line that matches the chosen flag
+        while (currentScriptIndex < currentStoryScripts.length) {
+            if (currentStoryScripts[currentScriptIndex].flag === chosenFlag) {
+                break; // Found the start of the chosen path
+            }
+            currentScriptIndex++;
+        }
+
+        showNextLineAfterDelay();
+    };
+
+    // Event listeners for controls
+    storyDropdown.addEventListener('change', loadSelectedStory);
+    restartButton.addEventListener('click', initializeStory);
 });
