@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azur Lane Ins-Chat Viewer</title>
+    <link rel="stylesheet" href="css/ins-chat-viewer.style.css">
+</head>
+<body>
+    <header class="main-header">
+        <h1>벽람항로 인스 쥬톡 뷰어</h1>
+    </header>
+
+    <main class="content-container">
+        <section id="character-selection-section">
+            <h3>1. 캐릭터/그룹 선택</h3>
+            <div id="character-selector-grid" class="character-grid">
+                 <p class="loading-message">캐릭터 정보 불러오는 중...</p>
+            </div>
+        </section>
+
+        <section id="story-display-section" class="hidden">
+            <div class="story-controls">
+                <div class="story-controls-left">
+                    <div class="story-select-wrapper">
+                        <label for="story-dropdown" class="story-select-label">2. 스토리 선택 :</label>
+                        <select id="story-dropdown"></select>
+                    </div>
+                    <div id="flavor-text-box" class="flavor-text-box">
+                        <p id="unlock-desc-text"></p>
+                    </div>
+                </div>
+                <button id="restart-button" class="restart-button">다시 재생하기</button>
+            </div>
+            <div class="story-container" id="story-container"></div>
+            <div class="options-container" id="options-container"></div>
+        </section>
+    </main>
+
+    <script src="js/ins-chat-viewer.script.js"></script>
+</body>
+</html>
