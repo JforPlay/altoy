@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const populateInitialFilters = () => {
         allCharacterNamesData = [...new Set(allSkins.map((s) => s["함순이 이름"]))]
             .filter(Boolean).sort().map((name) => ({ value: name, text: name }));
-        
+
         rebuildDropdown(characterNameSelect, allCharacterNamesData);
         rarityCheckboxes.querySelectorAll("input").forEach((checkbox) => {
             checkbox.addEventListener("change", applyFilters);
@@ -134,57 +134,84 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const applyFilters = async () => {
-        const selectedCharName = characterNameSelect.value;
-        const selectedType = skinTypeSelect.value;
-        const selectedFaction = factionSelect.value;
-        const selectedTag = tagSelect.value;
-        const selectedRarities = [...rarityCheckboxes.querySelectorAll("input:checked")].map(cb => cb.value);
-        const sortBy = sortSelect.value;
+        try {
+            // 1. Get all current filter values
+            const selectedCharName = characterNameSelect.value;
+            const selectedType = skinTypeSelect.value;
+            const selectedFaction = factionSelect.value;
+            const selectedTag = tagSelect.value;
+            const selectedRarities = [...rarityCheckboxes.querySelectorAll("input:checked")].map(cb => cb.value);
+            const sortBy = sortSelect.value;
 
-        let filteredSkins = allSkins;
+            // 2. Start with the master list of all skins
+            let skinsToFilter = allSkins;
 
-        // Apply text and dropdown filters first
-        if (selectedCharName !== "전체") { filteredSkins = filteredSkins.filter(s => s["함순이 이름"] === selectedCharName); }
-        if (selectedType !== "전체") {
-            if (selectedType === "기본") { filteredSkins = filteredSkins.filter(s => !s["스킨 타입 - 한글"]); }
-            else { filteredSkins = filteredSkins.filter(s => s["스킨 타입 - 한글"] === selectedType); }
+            // 3. Apply each filter sequentially and safely
+            if (selectedCharName !== "all") {
+                skinsToFilter = skinsToFilter.filter(s => s["함순이 이름"] === selectedCharName);
+            }
+            if (selectedType !== "all") {
+                if (selectedType === "기본") {
+                    skinsToFilter = skinsToFilter.filter(s => !s["스킨 타입 - 한글"]);
+                } else {
+                    skinsToFilter = skinsToFilter.filter(s => s["스킨 타입 - 한글"] === selectedType);
+                }
+            }
+            if (selectedFaction !== "all") {
+                skinsToFilter = skinsToFilter.filter(s => s["진영"] === selectedFaction);
+            }
+            if (selectedTag !== "all") {
+                if (selectedTag === "X") {
+                    skinsToFilter = skinsToFilter.filter(s => !s["스킨 태그"]);
+                } else {
+                    // Defensive check to ensure the '스킨 태그' property exists before filtering
+                    skinsToFilter = skinsToFilter.filter(s => s["스킨 태그"] && s["스킨 태그"].includes(selectedTag));
+                }
+            }
+
+            // --- THE CRITICAL BUG FIX ---
+            // This logic now correctly handles the rarity filter in all cases.
+            const totalRarityOptions = rarityCheckboxes.querySelectorAll("input[type='checkbox']").length;
+            if (selectedRarities.length < totalRarityOptions) {
+                skinsToFilter = skinsToFilter.filter(s => s["레어도"] && selectedRarities.includes(s["레어도"]));
+            }
+
+            // 4. If filtering results in an empty list, render it now and stop.
+            if (skinsToFilter.length === 0) {
+                renderPollList([]);
+                return;
+            }
+
+            // 5. Fetch poll data only for the skins that passed the filters
+            const pollData = await fetchPollDataForSkins(skinsToFilter.map(s => s.id));
+
+            // 6. Merge the poll data into the skin objects
+            let skinsWithData = skinsToFilter.map(skin => {
+                const data = pollData[skin.id];
+                return {
+                    ...skin,
+                    total_votes: data?.total_votes || 0,
+                    average_score: (data && data.total_votes > 0) ? (data.total_score / data.total_votes) : 0,
+                };
+            });
+
+            // 7. Sort the final list
+            const defaultSort = (a, b) => (a["한글 함순이 + 스킨 이름"] || "").localeCompare(b["한글 함순이 + 스킨 이름"] || "");
+            if (sortBy === 'score_desc') {
+                skinsWithData.sort((a, b) => { const scoreDiff = b.average_score - a.average_score; return scoreDiff !== 0 ? scoreDiff : defaultSort(a, b); });
+            } else if (sortBy === 'votes_desc') {
+                skinsWithData.sort((a, b) => { const voteDiff = b.total_votes - a.total_votes; return voteDiff !== 0 ? voteDiff : defaultSort(a, b); });
+            } else {
+                skinsWithData.sort(defaultSort);
+            }
+
+            // 8. Render the final list to the page
+            renderPollList(skinsWithData);
+
+        } catch (error) {
+            console.error("A critical error occurred in applyFilters:", error);
+            pollContainer.innerHTML = `<p>오류가 발생했습니다. 잠시 후 다시 시도해주세요.</p>`;
         }
-        if (selectedFaction !== "전체") { filteredSkins = filteredSkins.filter(s => s["진영"] === selectedFaction); }
-        if (selectedTag !== "전체") {
-            if (selectedTag === "X") { filteredSkins = filteredSkins.filter(s => !s["스킨 태그"]); }
-            else { filteredSkins = filteredSkins.filter(s => s["스킨 태그"]?.includes(selectedTag)); }
-        }
-
-        // --- BUG FIX ---
-        // The previous logic for the rarity filter was causing the entire list to disappear.
-        // This new logic correctly handles all cases.
-        const allRaritiesCount = rarityCheckboxes.querySelectorAll("input[type='checkbox']").length;
-
-        // Only apply the rarity filter if the user has de-selected at least one rarity.
-        // If all boxes are checked (the default), this filter is skipped, ensuring all skins are shown.
-        if (selectedRarities.length < allRaritiesCount) {
-            filteredSkins = filteredSkins.filter(s => selectedRarities.includes(s["레어도"]));
-        }
-        // If no boxes are checked, selectedRarities.length is 0, the filter runs, and correctly returns an empty list.
-
-        // Fetch poll data for the correctly filtered skins
-        const pollData = await fetchPollDataForSkins(filteredSkins.map(s => s.id));
-        let skinsWithData = filteredSkins.map(skin => {
-            const data = pollData[skin.id];
-            return { ...skin, total_votes: data?.total_votes || 0, average_score: (data && data.total_votes > 0) ? (data.total_score / data.total_votes) : 0, };
-        });
-
-        // Apply sorting (this part was already correct)
-        const defaultSort = (a, b) => (a["한글 함순이 + 스킨 이름"] || "").localeCompare(b["한글 함순이 + 스킨 이름"] || "");
-        if (sortBy === 'score_desc') {
-            skinsWithData.sort((a, b) => { const scoreDiff = b.average_score - a.average_score; return scoreDiff !== 0 ? scoreDiff : defaultSort(a, b); });
-        } else if (sortBy === 'votes_desc') {
-            skinsWithData.sort((a, b) => { const voteDiff = b.total_votes - a.total_votes; return voteDiff !== 0 ? voteDiff : defaultSort(a, b); });
-        } else {
-            skinsWithData.sort(defaultSort);
-        }
-
-        renderPollList(skinsWithData);
     };
 
     const fetchPollDataForSkins = async (skinIds) => {
