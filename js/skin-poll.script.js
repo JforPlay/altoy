@@ -42,7 +42,10 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch("data/subset_skin_data.json")
     .then((response) => response.json())
     .then((jsonData) => {
-      allSkins = Object.keys(jsonData).map((key) => ({ id: key, ...jsonData[key] }));
+      // This line now creates the skin list AND filters out entries with missing names
+      allSkins = Object.keys(jsonData)
+        .map((key) => ({ id: key, ...jsonData[key] }))
+        .filter(skin => skin["한글 함순이 + 스킨 이름"] && skin["함순이 이름"]);
       
       sortSelect.value = 'default';
       sortSelect.querySelector('option[value="score_desc"]').disabled = true;
