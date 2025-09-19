@@ -12,11 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch all necessary data files
     Promise.all([
-        fetch('data/subset_skin_data.json').then(res => res.json()),
-        fetch('data/ex_chat_status.json').then(res => res.json())
-    ]).then(([skinJson, exChatJson]) => {
+        fetch('data/subset_skin_data.json').then(res => res.json())
+        // fetch('data/ex_chat_status.json').then(res => res.json())
+    ]).then(([skinJson]) => {
+    // ]).then(([skinJson, exChatJson]) => {
         allSkins = Object.values(skinJson).filter(skin => skin['깔끔한 일러']);
-        exChatStatusData = exChatJson;
+        // exChatStatusData = exChatJson;
         renderSkinList(allSkins);
     }).catch(error => {
         console.error("Failed to load data:", error);
@@ -63,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Filter by EX dialogue status
         if (showOnlyEx) {
             filteredSkins = filteredSkins.filter(skin => {
-                const characterName = skin['함순이 이름'];
-                return exChatStatusData[characterName] === 1;
+                // const characterName = skin['함순이 이름'];
+                return skin['ex_chat_status'] === 1;
             });
         }
 
