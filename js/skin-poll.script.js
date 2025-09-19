@@ -207,12 +207,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((error) => { console.error("Firebase vote submission failed: ", error); });
   };
   
-  const rebuildDropdown = (selectElement, optionsData) => { /* ... same as before ... */ };
-  const populateInitialFilters = () => { /* ... same as before ... */ };
-  const fetchAllPollData = async () => { /* ... same as before ... */ };
-  const populateLeaderboard = (allPollData) => { /* ... same as before ... */ };
-  const resetFilters = () => { /* ... same as before ... */ };
-  
   // --- PASTE OF UNCHANGED FUNCTIONS FOR COMPLETENESS ---
   const rebuildDropdown = (selectElement, optionsData) => {
     const currentVal = selectElement.value;
