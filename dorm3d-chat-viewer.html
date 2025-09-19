@@ -3,36 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Viewer</title>
-    <link rel="stylesheet" href="dorm3d-chat-viewer.style.css">
+    <title>Dorm3D Chat Viewer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="dorm3d-chat-viewer.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <nav class="top-nav">
-        <a href="skin-poll.html" class="nav-link">라투디 선호도조사</a>
-        <a href="dorm3d-chat-viewer.html" class="nav-link active">캐릭터 챗 보기</a>
-    </nav>
+<body class="bg-[#36393f] text-[#dcddde] font-sans overflow-hidden h-screen font-[Inter,sans-serif]">
 
-    <div class="main-container">
-        <header class="page-header">
-            <h1>캐릭터 챗 보기</h1>
-        </header>
+    <div class="flex h-full">
+        <aside class="w-72 bg-[#2f3136] flex flex-col h-full flex-shrink-0">
+            <header class="p-4 shadow-md h-16 flex-shrink-0 border-b border-black/20">
+                <h1 class="text-xl font-bold text-white">Character Chats</h1>
+            </header>
+            <nav id="character-list" class="flex-grow overflow-y-auto p-2 space-y-1"></nav>
+        </aside>
 
-        <div id="character-selector" class="character-selector">
+        <main class="flex-grow flex flex-col h-full bg-[#36393f]">
+            <header id="chat-header" class="p-4 shadow-md bg-[#36393f] border-b border-black/20 h-16 flex-shrink-0 flex items-center justify-between">
+                <div id="chat-info-container" class="flex-grow min-w-0">
+                    <h2 id="chat-title" class="text-lg font-semibold text-white truncate">Select a character to begin</h2>
+                    <p id="chat-unlock" class="text-xs text-gray-400"></p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div id="topic-selector-container" class="ml-4"></div>
+                </div>
+            </header>
+
+            <div id="chat-content" class="flex-grow p-4 overflow-y-auto space-y-4">
+                 <div class="flex justify-center items-center h-full">
+                    <p class="text-gray-400 text-center">Select a character from the list on the left to view their conversations.</p>
+                 </div>
             </div>
 
-        <div id="chat-interface" class="chat-interface hidden">
-            <div class="chat-controls">
-                <select id="chat-group-select"></select>
-            </div>
-            <div id="flavor-text-box" class="flavor-text-box"></div>
-            <div id="chat-display-container" class="chat-display-container">
-                <div id="chat-display" class="chat-display">
-                    </div>
-            </div>
-        </div>
-
+            <footer id="options-container" class="p-4 flex flex-col items-end space-y-2 border-t border-black/20">
+            </footer>
+        </main>
     </div>
-    
-    <script src="dorm3d-chat-viewer.script.js"></script>
+
+    <script src="dorm3d-chat-viewer.js"></script>
 </body>
 </html>
