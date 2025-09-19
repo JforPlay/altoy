@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let filteredSkins = allSkins;
 
+        // Apply text and dropdown filters first
         if (selectedCharName !== "all") { filteredSkins = filteredSkins.filter(s => s["함순이 이름"] === selectedCharName); }
         if (selectedType !== "all") {
             if (selectedType === "기본") { filteredSkins = filteredSkins.filter(s => !s["스킨 타입 - 한글"]); }
@@ -153,16 +154,26 @@ document.addEventListener("DOMContentLoaded", () => {
             else { filteredSkins = filteredSkins.filter(s => s["스킨 태그"]?.includes(selectedTag)); }
         }
 
-        // --- FIX: Rarity filter is now always applied based on checked boxes. ---
-        // If no boxes are checked, the list will correctly become empty.
-        filteredSkins = filteredSkins.filter(s => selectedRarities.includes(s["레어도"]));
+        // --- BUG FIX ---
+        // The previous logic for the rarity filter was causing the entire list to disappear.
+        // This new logic correctly handles all cases.
+        const allRaritiesCount = rarityCheckboxes.querySelectorAll("input[type='checkbox']").length;
 
+        // Only apply the rarity filter if the user has de-selected at least one rarity.
+        // If all boxes are checked (the default), this filter is skipped, ensuring all skins are shown.
+        if (selectedRarities.length < allRaritiesCount) {
+            filteredSkins = filteredSkins.filter(s => selectedRarities.includes(s["레어도"]));
+        }
+        // If no boxes are checked, selectedRarities.length is 0, the filter runs, and correctly returns an empty list.
+
+        // Fetch poll data for the correctly filtered skins
         const pollData = await fetchPollDataForSkins(filteredSkins.map(s => s.id));
         let skinsWithData = filteredSkins.map(skin => {
             const data = pollData[skin.id];
             return { ...skin, total_votes: data?.total_votes || 0, average_score: (data && data.total_votes > 0) ? (data.total_score / data.total_votes) : 0, };
         });
 
+        // Apply sorting (this part was already correct)
         const defaultSort = (a, b) => (a["한글 함순이 + 스킨 이름"] || "").localeCompare(b["한글 함순이 + 스킨 이름"] || "");
         if (sortBy === 'score_desc') {
             skinsWithData.sort((a, b) => { const scoreDiff = b.average_score - a.average_score; return scoreDiff !== 0 ? scoreDiff : defaultSort(a, b); });
