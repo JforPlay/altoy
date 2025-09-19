@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const DATA_URL = 'data/processed_ins_chat_data.json';
+    const DATA_URL = 'processed_ins_chat_data.json';
 
     const characterGrid = document.getElementById('character-selector-grid');
     const storyDisplaySection = document.getElementById('story-display-section');
@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const restartButton = document.getElementById('restart-button');
 
     let allData = {};
-    // REMOVED: shipGroupToCharacterMap is no longer needed.
     let selectedCharacterName = null;
     let currentStoryScripts = [];
     let currentScriptIndex = 0;
@@ -19,15 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.ok ? res.json() : Promise.reject(res.status))
         .then(data => {
             allData = data;
-            // REMOVED: The call to buildShipGroupMap() is no longer necessary.
             populateCharacterSelector();
         })
         .catch(error => {
             console.error('Error fetching story data:', error);
             characterGrid.innerHTML = '<p class="loading-message error">스토리 정보를 불러오는데 실패했어요.</p>';
         });
-
-    // REMOVED: The buildShipGroupMap() function is now redundant.
 
     function populateCharacterSelector() {
         characterGrid.innerHTML = '';
@@ -77,13 +73,25 @@ document.addEventListener('DOMContentLoaded', () => {
         loadSelectedStory();
     }
     
+    /**
+     * MODIFIED: Now checks for trigger_type 2 to display affinity requirements.
+     */
     function loadSelectedStory() {
         const storyId = storyDropdown.value;
         if (!selectedCharacterName || !storyId) return;
 
         const storyData = allData[selectedCharacterName][storyId];
         currentStoryScripts = storyData.scripts;
-        unlockDescText.innerHTML = `<strong>해금 조건 :</strong> "${storyData.unlock_desc}"`;
+        
+        // Build the flavor text string conditionally
+        let flavorHTML = `<strong>해금 조건 :</strong> "${storyData.unlock_desc}"`;
+
+        // If the trigger_type is 2 (affinity), add the required level
+        if (storyData.trigger_type === 2 && storyData.trigger_param) {
+            flavorHTML += `<br><strong>요구 호감도 :</strong> ${storyData.trigger_param}`;
+        }
+        
+        unlockDescText.innerHTML = flavorHTML;
         
         initializeStory();
     }
@@ -143,10 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(showNextLine, delay);
     }
 
-    /**
-     * MODIFIED: Displays a dialogue bubble using kr_name and icon directly from the script object.
-     * This simplifies the logic for both individual and group chats.
-     */
     const displayBubble = (script) => {
         let speakerName = script.kr_name || '';
         let speakerIcon = script.icon || '';
@@ -155,10 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (script.ship_group === 0) {
             messageClass = 'player';
         } else if (speakerName && speakerIcon) {
-            // This now correctly handles any character with a name and icon, including all speakers in group chats.
             messageClass = 'character';
         } else {
-            // Fallback for narrator or system-like dialogue
             messageClass = 'narrator';
         }
         
@@ -213,7 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
             storyContainer.appendChild(wrapper);
             wrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
         } else {
-            // Stickers from characters now also get the character-line-wrapper for alignment
             const wrapper = document.createElement('div');
             wrapper.className = 'character-line-wrapper';
 
@@ -258,7 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     const handleChoice = (chosenFlag, chosenText) => {
-        // Player choice bubbles don't have kr_name/icon in the JSON, so we create a minimal script object.
         displayBubble({ ship_group: 0, param: chosenText });
         optionsContainer.innerHTML = '';
         
