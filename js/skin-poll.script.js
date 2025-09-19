@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let allCharacterNamesData = [];
   let allPollDataCache = {};
   let currentlyDisplayedSkins = [];
-  // let currentRequestId = 0;
+  let currentRequestId = 0;
   let isSorting = false;
   let pendingVote = null;
 
@@ -124,11 +124,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="vote-widget">
                     <span class="vote-label">투표:</span>
                     <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin["한글 함순이 + 스킨 이름"]}" data-character-name="${skin["함순이 이름"]}">
-                        <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${votedRating === '5' ? 'checked' : ''}><label for="star5-${skinId}">★</label>
-                        <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${votedRating === '4' ? 'checked' : ''}><label for="star4-${skinId}">★</label>
-                        <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${votedRating === '3' ? 'checked' : ''}><label for="star3-${skinId}">★</label>
-                        <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${votedRating === '2' ? 'checked' : ''}><label for="star2-${skinId}">★</label>
-                        <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${votedRating === '1' ? 'checked' : ''}><label for="star1-${skinId}">★</label>
+                        <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${votedRating === '5' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
+                        <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${votedRating === '4' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star4-${skinId}">★</label>
+                        <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${votedRating === '3' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star3-${skinId}">★</label>
+                        <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${votedRating === '2' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label>
+                        <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${votedRating === '1' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
                     </div>
                 </div>
                 <div class="confirm-vote-message" id="confirm-msg-${skinId}">다시 클릭하여 확정</div>
@@ -138,79 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
       pollContainer.appendChild(pollBox);
       updateScoreDisplay(skinId, { total_votes: skin.total_votes, total_score: skin.average_score * skin.total_votes });
     });
-  };
-
-  const reSortView = () => {
-    if (isSorting) return;
-    isSorting = true;
-    const sortBy = sortSelect.value;
-    const defaultSort = (a, b) => (a["클뜯 id"] || 0) - (b["클뜯 id"] || 0);
-
-    if (sortBy === 'score_desc') {
-        currentlyDisplayedSkins.sort((a, b) => {
-            const scoreDiff = b.average_score - a.average_score;
-            return scoreDiff !== 0 ? scoreDiff : defaultSort(a, b);
-        });
-    } else if (sortBy === 'votes_desc') {
-        currentlyDisplayedSkins.sort((a, b) => {
-            const voteDiff = b.total_votes - a.total_votes;
-            return voteDiff !== 0 ? voteDiff : defaultSort(a, b);
-        });
-    } else {
-        currentlyDisplayedSkins.sort(defaultSort);
-    }
-
-    const initialPositions = new Map();
-    Array.from(pollContainer.children).forEach(box => {
-        initialPositions.set(box.id, box.getBoundingClientRect());
-    });
-    
-    // The renderPollList call now correctly re-draws everything in the sorted order.
-    renderPollList(currentlyDisplayedSkins);
-
-    Array.from(pollContainer.children).forEach(box => {
-        const oldPos = initialPositions.get(box.id);
-        if (!oldPos) return;
-        const newPos = box.getBoundingClientRect();
-        const deltaX = oldPos.left - newPos.left;
-        const deltaY = oldPos.top - newPos.top;
-
-        if (deltaX === 0 && deltaY === 0) return;
-
-        requestAnimationFrame(() => {
-            box.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-            box.style.transition = 'transform 0s';
-            requestAnimationFrame(() => {
-                box.style.transform = '';
-                box.style.transition = 'transform 0.5s ease-in-out';
-            });
-        });
-    });
-    
-    setTimeout(() => { isSorting = false; }, 500);
-  };
-  
-  const updateScoreDisplay = (skinId, data) => {
-    const resultsEl = document.getElementById(`results-${skinId}`);
-    if (!resultsEl) return;
-    resultsEl.innerHTML = `
-        <div class="score-bar-visual">★★★★★
-            <div class="score-bar-foreground" style="width: 0%;">★★★★★</div>
-        </div>
-        <div class="score-bar-text"></div>`;
-
-    const foregroundEl = resultsEl.querySelector('.score-bar-foreground');
-    const textEl = resultsEl.querySelector('.score-bar-text');
-
-    if (data && data.total_votes > 0) {
-        const average = data.total_score / data.total_votes;
-        const percentage = (average / 5) * 100;
-        foregroundEl.style.width = `${percentage}%`;
-        textEl.innerHTML = `평균: <strong>${average.toFixed(2)}</strong> (${data.total_votes}표)`;
-    } else {
-        foregroundEl.style.width = '0%';
-        textEl.textContent = '투표 없음';
-    }
   };
 
   const submitVote = (skinId, rating, skinName, characterName) => {
@@ -232,17 +159,16 @@ document.addEventListener("DOMContentLoaded", () => {
             ratingArea.classList.remove('pending-vote');
             ratingArea.classList.add("voted");
             ratingArea.classList.add("voted-animation");
+            ratingArea.querySelectorAll('input').forEach(input => input.disabled = true);
             setTimeout(() => { ratingArea.classList.remove("voted-animation"); }, 300);
         }
         
-        // After voting, update the local cache and the display
         const pollRef = db.collection("skin_polls").doc(String(skinId));
         pollRef.get().then(doc => {
             if(doc.exists) {
                 const voteData = doc.data();
                 allPollDataCache[skinId] = voteData;
                 updateScoreDisplay(skinId, voteData);
-                // Also update the data in the main array for future sorting
                 const skinInArray = currentlyDisplayedSkins.find(s => s.id === skinId);
                 if (skinInArray) {
                     skinInArray.total_votes = voteData.total_votes;
@@ -254,6 +180,83 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((error) => { console.error("Firebase vote submission failed: ", error); });
   };
   
+
+  // --- Final, complete, unchanged functions ---
+  const reSortView = () => {
+    if (isSorting) return;
+    isSorting = true;
+    const sortBy = sortSelect.value;
+    const defaultSort = (a, b) => (a["클뜯 id"] || 0) - (b["클뜯 id"] || 0);
+    if (sortBy === 'score_desc') {
+        currentlyDisplayedSkins.sort((a, b) => {
+            const scoreDiff = b.average_score - a.average_score;
+            return scoreDiff !== 0 ? scoreDiff : defaultSort(a, b);
+        });
+    } else if (sortBy === 'votes_desc') {
+        currentlyDisplayedSkins.sort((a, b) => {
+            const voteDiff = b.total_votes - a.total_votes;
+            return voteDiff !== 0 ? voteDiff : defaultSort(a, b);
+        });
+    } else {
+        currentlyDisplayedSkins.sort(defaultSort);
+    }
+    const initialPositions = new Map();
+    Array.from(pollContainer.children).forEach(box => {
+        initialPositions.set(box.id, box.getBoundingClientRect());
+    });
+    renderPollList(currentlyDisplayedSkins);
+    Array.from(pollContainer.children).forEach(box => {
+        const oldPos = initialPositions.get(box.id);
+        if (!oldPos) return;
+        const newPos = box.getBoundingClientRect();
+        const deltaX = oldPos.left - newPos.left;
+        const deltaY = oldPos.top - newPos.top;
+        if (deltaX === 0 && deltaY === 0) return;
+        requestAnimationFrame(() => {
+            box.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+            box.style.transition = 'transform 0s';
+            requestAnimationFrame(() => {
+                box.style.transform = '';
+                box.style.transition = 'transform 0.5s ease-in-out';
+            });
+        });
+    });
+    setTimeout(() => { isSorting = false; }, 500);
+  };
+
+  const updateScoreDisplay = (skinId, data) => {
+    const resultsEl = document.getElementById(`results-${skinId}`);
+    if (!resultsEl) return;
+    resultsEl.innerHTML = `
+        <div class="score-bar-visual">★★★★★
+            <div class="score-bar-foreground" style="width: 0%;">★★★★★</div>
+        </div>
+        <div class="score-bar-text"></div>`;
+    const foregroundEl = resultsEl.querySelector('.score-bar-foreground');
+    const textEl = resultsEl.querySelector('.score-bar-text');
+    if (data && data.total_votes > 0) {
+        const average = data.total_score / data.total_votes;
+        const percentage = (average / 5) * 100;
+        foregroundEl.style.width = `${percentage}%`;
+        textEl.innerHTML = `평균: <strong>${average.toFixed(2)}</strong> (${data.total_votes}표)`;
+    } else {
+        foregroundEl.style.width = '0%';
+        textEl.textContent = '투표 없음';
+    }
+  };
+
+  const rebuildDropdown = (selectElement, optionsData) => {
+    const currentVal = selectElement.value;
+    selectElement.innerHTML = '<option value="all">전체</option>';
+    optionsData.forEach((data) => {
+      const option = document.createElement("option");
+      option.value = data.value;
+      option.textContent = data.text;
+      selectElement.appendChild(option);
+    });
+    selectElement.value = optionsData.some((d) => d.value === currentVal) ? currentVal : "all";
+  };
+
   const populateInitialFilters = () => {
     allCharacterNamesData = [...new Set(allSkins.map((s) => s["함순이 이름"]))].filter(Boolean).sort().map((name) => ({ value: name, text: name }));
     rebuildDropdown(characterNameSelect, allCharacterNamesData);
@@ -263,7 +266,6 @@ document.addEventListener("DOMContentLoaded", () => {
     sortSelect.addEventListener('change', reSortView);
   };
 
-  // --- Final, complete, unchanged functions ---
   const fetchAllPollData = async () => {
     const pollRef = db.collection("skin_polls");
     const allPollData = {};
@@ -273,7 +275,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) { console.error("Error fetching all poll data:", error); }
     return allPollData;
   };
-
 
   const populateLeaderboard = (allPollData) => {
     if (!allSkins.length || !Object.keys(allPollData).length) return;
@@ -311,7 +312,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>`).join('');
   };
 
-
   const resetFilters = () => {
     characterNameSearch.value = "";
     characterNameSelect.value = "all";
@@ -323,7 +323,6 @@ document.addEventListener("DOMContentLoaded", () => {
     rebuildDropdown(characterNameSelect, allCharacterNamesData);
     applyFilters();
   };
-
 
   const clearPendingVote = () => {
       if (pendingVote) {
@@ -339,19 +338,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   };
 
-
-  const rebuildDropdown = (selectElement, optionsData) => {
-    const currentVal = selectElement.value;
-    selectElement.innerHTML = '<option value="all">전체</option>';
-    optionsData.forEach((data) => {
-      const option = document.createElement("option");
-      option.value = data.value;
-      option.textContent = data.text;
-      selectElement.appendChild(option);
-    });
-    selectElement.value = optionsData.some((d) => d.value === currentVal) ? currentVal : "all";
-  };
-  
   // --- Event Listeners ---
   pollContainer.addEventListener("click", (event) => {
     const starLabel = event.target.closest('.star-rating label');
