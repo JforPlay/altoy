@@ -11,7 +11,7 @@ h1, h3 { color: #ffffff; text-align: center; }
 .main-header h1 { margin-bottom: 5px; }
 .hidden { display: none; }
 
-/* --- Character Selection (MODIFIED FOR COMPACTNESS) --- */
+/* --- Character Selection --- */
 #character-selection-section {
     background-color: #2f3136;
     border: 1px solid #40444b;
@@ -23,7 +23,6 @@ h1, h3 { color: #ffffff; text-align: center; }
 }
 #character-selection-section h3 { margin-top: 0; margin-bottom: 25px; text-align: left;}
 
-/* MODIFIED: Reduced minmax value and gap for a more compact grid */
 .character-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -32,12 +31,12 @@ h1, h3 { color: #ffffff; text-align: center; }
 .loading-message { text-align: center; color: #b9bbbe; }
 .loading-message.error { color: #f04747; }
 
-/* MODIFIED: Reduced padding and font sizes for smaller cards */
 .character-card { background-color: #2f3136; border: 2px solid #40444b; border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease; }
 .character-card:hover { transform: translateY(-5px); border-color: #7289da; }
 .character-card.selected { border-color: #5865f2; background-color: #40444b; }
 .character-card img { width: 60px; height: 60px; border-radius: 50%; margin-bottom: 8px; background-color: #40444b; object-fit: cover; }
-.character-card .char-name { font-weight: bold; font-size: 1em; color: #ffffff; margin: 0 0 4px 0; }
+/* MODIFIED: Reduced character name font size */
+.character-card .char-name { font-weight: bold; font-size: 0.9em; color: #ffffff; margin: 0 0 4px 0; }
 .character-card .ship-name { font-size: 0.8em; color: #b9bbbe; margin: 0; }
 
 
@@ -53,8 +52,23 @@ h1, h3 { color: #ffffff; text-align: center; }
 .restart-button { background-color: #f04747; color: #ffffff; border: none; border-radius: 5px; padding: 12px 18px; font-size: 0.9em; font-weight: bold; cursor: pointer; transition: background-color 0.2s; height: 48px; }
 .restart-button:hover { background-color: #d84040; }
 
-/* --- Story Display --- */
-.story-container { max-width: 800px; margin: auto; display: flex; flex-direction: column; gap: 15px; padding: 20px 10px; background-color: #2f3136; border-radius: 8px; min-height: 50vh;}
+/* --- Story Display (MODIFIED FOR DYNAMIC SIZING) --- */
+/* MODIFIED: The parent section is now styled as the main container. */
+#story-display-section {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px 10px;
+    background-color: #2f3136;
+    border-radius: 8px;
+}
+
+/* MODIFIED: Removed background, padding, and min-height to allow for dynamic sizing. */
+.story-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
 .character-line-wrapper { display: flex; align-items: flex-end; gap: 10px; max-width: 80%; align-self: flex-start; opacity: 0; transform: translateY(20px); animation: bubble-fade-in 0.4s forwards; }
 .character-line-wrapper .portrait { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #4f545c; flex-shrink: 0; object-fit: cover; }
 .message-bubble { padding: 12px 15px; border-radius: 8px; max-width: 100%; line-height: 1.4; box-sizing: border-box; }
@@ -65,11 +79,12 @@ h1, h3 { color: #ffffff; text-align: center; }
 .character { background-color: #40444b; }
 .player { background-color: #7289da; align-self: flex-end; max-width: 75%; }
 .narrator { background-color: transparent; font-style: italic; color: #a3a6aa; text-align: center; align-self: center; max-width: 90%; }
-.options-container { max-width: 800px; margin: 20px auto; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+/* MODIFIED: Reduced top margin to bring options closer to the dialogue. */
+.options-container { margin: 15px 0 0 0; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
 .choice-button { background-color: #5865f2; color: #ffffff; border: none; border-radius: 5px; padding: 12px 18px; font-size: 1em; cursor: pointer; text-align: right; transition: background-color 0.2s; max-width: 80%; }
 .choice-button:hover { background-color: #4752c4; }
 
-/* --- NEW: Special Message Types --- */
+/* --- Special Message Types --- */
 .sticker-container { align-self: flex-start; max-width: 150px; }
 .player .sticker-container { align-self: flex-end; }
 .sticker-image { width: 100%; height: auto; display: block; }
