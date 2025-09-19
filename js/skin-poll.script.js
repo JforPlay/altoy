@@ -155,13 +155,24 @@ document.addEventListener("DOMContentLoaded", () => {
         const sortBy = sortSelect.value;
 
         let filteredSkins = allSkins;
+
         if (selectedCharName !== "all") { filteredSkins = filteredSkins.filter(s => s["함순이 이름"] === selectedCharName); }
         if (selectedType !== "all") {
             if (selectedType === "기본") { filteredSkins = filteredSkins.filter(s => !s["스킨 타입 - 한글"]); }
             else { filteredSkins = filteredSkins.filter(s => s["스킨 타입 - 한글"] === selectedType); }
         }
         if (selectedFaction !== "all") { filteredSkins = filteredSkins.filter(s => s["진영"] === selectedFaction); }
-        if (selectedTag !== "all") { filteredSkins = filteredSkins.filter(s => s["스킨 태그"]?.includes(selectedTag)); }
+
+        // --- FIX FOR FILTERING ---
+        // Correctly handles the "X" tag to mean "no tag"
+        if (selectedTag !== "all") {
+            if (selectedTag === "X") {
+                filteredSkins = filteredSkins.filter(s => !s["스킨 태그"]); // Checks for null, undefined, or empty string
+            } else {
+                filteredSkins = filteredSkins.filter(s => s["스킨 태그"]?.includes(selectedTag));
+            }
+        }
+
         if (selectedRarities.length > 0) { filteredSkins = filteredSkins.filter(s => selectedRarities.includes(s["레어도"])); }
 
         const pollData = await fetchPollDataForSkins(filteredSkins.map(s => s.id));
@@ -174,9 +185,23 @@ document.addEventListener("DOMContentLoaded", () => {
             };
         });
 
-        if (sortBy === 'score_desc') { skinsWithData.sort((a, b) => b.average_score - a.average_score); }
-        else if (sortBy === 'votes_desc') { skinsWithData.sort((a, b) => b.total_votes - a.total_votes); }
-        else { skinsWithData.sort((a, b) => (a["한글 함순이 + 스킨 이름"] || "").localeCompare(b["한글 함순이 + 스킨 이름"] || "")); }
+        // --- FIX FOR SORTING ---
+        // Adds a secondary, alphabetical sort to ensure a consistent order when scores or votes are tied.
+        const defaultSort = (a, b) => (a["한글 함순이 + 스킨 이름"] || "").localeCompare(b["한글 함순이 + 스킨 이름"] || "");
+
+        if (sortBy === 'score_desc') {
+            skinsWithData.sort((a, b) => {
+                const scoreDiff = b.average_score - a.average_score;
+                return scoreDiff !== 0 ? scoreDiff : defaultSort(a, b); // Tie-breaker
+            });
+        } else if (sortBy === 'votes_desc') {
+            skinsWithData.sort((a, b) => {
+                const voteDiff = b.total_votes - a.total_votes;
+                return voteDiff !== 0 ? voteDiff : defaultSort(a, b); // Tie-breaker
+            });
+        } else {
+            skinsWithData.sort(defaultSort);
+        }
 
         renderPollList(skinsWithData);
     };
