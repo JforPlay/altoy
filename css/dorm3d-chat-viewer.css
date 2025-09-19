@@ -141,7 +141,7 @@ h1, h2 {
 }
 
 
-/* --- Story Display (Copied from original style.css) --- */
+/* --- Story Display --- */
 .story-container {
     max-width: 800px;
     margin: auto;
@@ -226,6 +226,19 @@ h1, h2 {
 .choice-button:hover {
     background-color: #4752c4;
 }
+
+/* --- Special Effects --- */
+.shake-effect {
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
 
 /* --- Responsive Styles --- */
 @media (max-width: 768px) {

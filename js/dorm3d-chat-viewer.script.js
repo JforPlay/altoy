@@ -21,12 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Fetches the main data and populates the character selector.
      */
     fetch(DATA_URL)
-        .then(res => {
-            if (!res.ok) {
-                throw new Error(`HTTP error! Status: ${res.status}`);
-            }
-            return res.json();
-        })
+        .then(res => res.ok ? res.json() : Promise.reject(res.status))
         .then(data => {
             allData = data;
             populateCharacterSelector();
@@ -44,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const characterName in allData) {
             const characterData = allData[characterName];
             const firstStoryId = Object.keys(characterData)[0];
-            if (!firstStoryId) continue; // Skip if character has no stories
+            if (!firstStoryId) continue;
 
             const firstStory = characterData[firstStoryId];
             const card = document.createElement('div');
@@ -62,23 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Handles clicking a character card.
-     * @param {string} characterName - The name of the selected character.
      */
     function handleCharacterClick(characterName) {
         selectedCharacterName = characterName;
-
-        // Update visual selection
         document.querySelectorAll('.character-card').forEach(card => {
             card.classList.toggle('selected', card.dataset.characterName === characterName);
         });
-
         storyDisplaySection.classList.remove('hidden');
         populateStoryDropdown(allData[characterName]);
     }
 
     /**
-     * Populates the story dropdown menu for the selected character.
-     * @param {object} characterStories - The collection of stories for the character.
+     * Populates the story dropdown menu.
      */
     function populateStoryDropdown(characterStories) {
         storyDropdown.innerHTML = '';
@@ -89,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
             option.textContent = story.name;
             storyDropdown.appendChild(option);
         }
-        // Load the first story by default
         loadSelectedStory();
     }
     
@@ -108,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Clears the display and starts showing the current story.
+     * Clears the display and starts the current story.
      */
     const initializeStory = () => {
         storyContainer.innerHTML = '';
@@ -118,29 +107,40 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
-     * Main story progression function.
+     * Main story progression engine.
      */
     const showNextLine = () => {
         if (currentScriptIndex >= currentStoryScripts.length) return;
         const script = currentStoryScripts[currentScriptIndex];
 
-        // Skip non-dialogue or empty lines automatically
-        if (script.type !== 1 || !script.param) {
-            currentScriptIndex++;
-            showNextLine();
-            return;
+        let processed = false;
+        switch (script.type) {
+            case 1: // Dialogue
+                if (script.param) {
+                    const bubble = displayBubble(script);
+                    // Check for options attached to this dialogue line
+                    if (script.option && script.option.length > 0 && Array.isArray(script.option[0])) {
+                        const options = script.option.map(opt => ({ flag: opt[0], content: opt[1] }));
+                        displayOptions(options);
+                    } else {
+                        currentScriptIndex++;
+                        showNextLineAfterDelay();
+                    }
+                    processed = true;
+                }
+                break;
+            case 4: // Special Event
+                handleSpecialEvent(script);
+                currentScriptIndex++;
+                showNextLineAfterDelay(100); // Shorter delay after an effect
+                processed = true;
+                break;
         }
 
-        displayBubble(script);
-
-        // If there are options, wait for user input. Otherwise, proceed.
-        if (script.option && script.option.length > 0 && Array.isArray(script.option[0])) {
-             // The format in this JSON is [[flag, content]]
-            const options = script.option.map(opt => ({ flag: opt[0], content: opt[1] }));
-            displayOptions(options);
-        } else {
+        // If the script type was not handled, skip to the next one
+        if (!processed) {
             currentScriptIndex++;
-            showNextLineAfterDelay();
+            showNextLine();
         }
     };
     
@@ -150,20 +150,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Displays a single dialogue bubble.
-     * @param {object} script - The script object for the current line.
      */
     const displayBubble = (script) => {
         let speakerName = '', messageClass = '';
-        const firstStory = allData[selectedCharacterName][storyDropdown.value];
+        const currentStoryInfo = allData[selectedCharacterName][storyDropdown.value];
 
         if (script.ship_group === 0) {
             speakerName = '지휘관';
             messageClass = 'player';
-        } else if (script.ship_group === firstStory.ship_group) {
-            speakerName = firstStory.kr_name;
+        } else if (script.ship_group === currentStoryInfo.ship_group) {
+            speakerName = currentStoryInfo.kr_name;
             messageClass = 'character';
         } else {
-            messageClass = 'narrator'; // Fallback for narrator/system text
+            messageClass = 'narrator';
         }
         
         const messageBubble = document.createElement('div');
@@ -176,11 +175,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         storyContainer.appendChild(messageBubble);
         messageBubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        return messageBubble; // Return the element for effects
     };
 
     /**
+     * Handles type 4 events from the script.
+     */
+    function handleSpecialEvent(script) {
+        console.log(`Special Event Triggered: Type ${script.type}, Param: ${script.param}`);
+        const lastBubble = storyContainer.lastElementChild;
+        if (lastBubble) {
+            // Apply a generic shake effect for now
+            lastBubble.classList.add('shake-effect');
+            setTimeout(() => lastBubble.classList.remove('shake-effect'), 500);
+        }
+    }
+
+    /**
      * Displays choice buttons for the player.
-     * @param {Array} options - An array of option objects.
      */
     const displayOptions = (options) => {
         optionsContainer.innerHTML = '';
@@ -195,23 +207,25 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     /**
-     * Handles the player's choice.
-     * @param {number} chosenFlag - The flag associated with the chosen option.
-     * @param {string} chosenText - The text of the chosen option.
+     * Handles the player's choice and finds the next script block.
      */
     const handleChoice = (chosenFlag, chosenText) => {
-        // Display the user's choice as a bubble
-        const choiceBubble = { ship_group: 0, param: chosenText };
-        displayBubble(choiceBubble);
-        
+        displayBubble({ ship_group: 0, param: chosenText });
         optionsContainer.innerHTML = '';
-        currentScriptIndex++; // Move past the line that contained the options
-
-        // Find the next line that matches the chosen flag
-        while (currentScriptIndex < currentStoryScripts.length) {
-            if (currentStoryScripts[currentScriptIndex].flag === chosenFlag) {
-                break; // Found the start of the chosen path
+        
+        // Find the index of the very next line that has the matching flag
+        let foundIndex = -1;
+        for (let i = currentScriptIndex + 1; i < currentStoryScripts.length; i++) {
+            if (currentStoryScripts[i].flag === chosenFlag) {
+                foundIndex = i;
+                break;
             }
+        }
+
+        if (foundIndex !== -1) {
+            currentScriptIndex = foundIndex;
+        } else {
+            // If no matching flag is found, just continue from the next line
             currentScriptIndex++;
         }
 
