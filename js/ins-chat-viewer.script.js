@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const DATA_URL = 'processed_ins_chat_data.json';
+    const DATA_URL = 'data/processed_ins_chat_data.json';
 
     const characterGrid = document.getElementById('character-selector-grid');
     const storyDisplaySection = document.getElementById('story-display-section');
