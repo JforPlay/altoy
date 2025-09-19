@@ -56,30 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
             fetchAllPollData().then(populateLeaderboard);
         });
 
-    // --- Core Functions ---
-    const applyFilters = () => {
-        currentRequestId++;
-        let filteredSkins = allSkins;
-        const selectedCharName = characterNameSelect.value;
-        const selectedType = skinTypeSelect.value;
-        const selectedFaction = factionSelect.value;
-        const selectedTag = tagSelect.value;
-        const selectedRarities = [...rarityCheckboxes.querySelectorAll("input:checked")].map(cb => cb.value);
-        if (selectedCharName !== "all") { filteredSkins = filteredSkins.filter(s => s["함순이 이름"] === selectedCharName); }
-        if (selectedType !== "all") {
-            if (selectedType === "기본") { filteredSkins = filteredSkins.filter(s => !s["스킨 타입 - 한글"]); }
-            else { filteredSkins = filteredSkins.filter(s => s["스킨 타입 - 한글"] === selectedType); }
-        }
-        if (selectedFaction !== "all") { filteredSkins = filteredSkins.filter(s => s["진영"] === selectedFaction); }
-        if (selectedTag !== "all") {
-            if (selectedTag === "X") { filteredSkins = filteredSkins.filter(s => !s["스킨 태그"]); }
-            else { filteredSkins = filteredSkins.filter(s => s["스킨 태그"] && s["스킨 태그"].includes(selectedTag)); }
-        }
-        filteredSkins = filteredSkins.filter(s => selectedRarities.includes(s["레어도"]));
-        filteredSkins.sort((a, b) => (a["클뜯 id"] || 0) - (b["클뜯 id"] || 0));
-        renderPollList(filteredSkins);
-        fetchScoresAndSort(filteredSkins, currentRequestId);
-    };
 
     const renderPollList = (skinsToRender) => {
         pollContainer.innerHTML = "";
@@ -113,39 +89,19 @@ document.addEventListener("DOMContentLoaded", () => {
                      <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${votedRating === '1' ? 'checked' : ''}><label for="star1-${skinId}">★</label>
                 </div>
                 <div class="confirm-vote-message" id="confirm-msg-${skinId}">다시 클릭하여 확정</div>
-                <div class="poll-results" id="results-${skinId}">결과 불러오는 중...</div>
+                <div class="poll-results" id="results-${skinId}">
+                    <div class="score-bar-visual">
+                        <div class="score-bar-background">★★★★★</div>
+                        <div class="score-bar-foreground" style="width: 0%;">★★★★★</div>
+                    </div>
+                    <div class="score-bar-text">--</div>
+                </div>
             </div>
         </div>`;
             pollContainer.appendChild(pollBox);
         });
     };
 
-    const submitVote = (skinId, rating, skinName, characterName) => {
-        if (localStorage.getItem(`voted_${skinId}`) === "true") { return; }
-        const pollRef = db.collection("skin_polls").doc(String(skinId));
-        const increment = firebase.firestore.FieldValue.increment(1);
-        const ratingIncrement = firebase.firestore.FieldValue.increment(rating);
-        pollRef.set({
-            total_votes: increment,
-            total_score: ratingIncrement,
-            skin_name: skinName,
-            character_name: characterName
-        }, { merge: true })
-            .then(() => {
-                localStorage.setItem(`voted_${skinId}`, "true");
-                localStorage.setItem(`rating_${skinId}`, rating); // Store the specific rating
-                const ratingArea = document.querySelector(`.rating-area[data-skin-id-area="${skinId}"]`);
-                if (ratingArea) {
-                    ratingArea.classList.remove('pending-vote');
-                    ratingArea.classList.add("voted");
-                }
-                fetchAndDisplayResults(skinId);
-            })
-            .catch((error) => { console.error("Firebase vote submission failed: ", error); });
-    };
-
-
-    // --- PASTE OF UNCHANGED FUNCTIONS FOR COMPLETENESS ---
     const fetchScoresAndSort = async (skins, requestId) => {
         const skinIds = skins.map(s => s.id);
         if (!skinIds || skinIds.length === 0) {
@@ -154,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const pollRef = db.collection("skin_polls");
         const pollDataMap = {};
-        const foundIds = new Set();
+
         for (let i = 0; i < skinIds.length; i += 10) {
             if (requestId !== currentRequestId) { return; }
             const chunk = skinIds.slice(i, i + 10);
@@ -164,33 +120,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 const snapshot = await query.get();
                 if (requestId !== currentRequestId) { return; }
                 snapshot.forEach(doc => {
-                    const skinId = doc.id;
-                    foundIds.add(skinId);
-                    pollDataMap[skinId] = doc.data();
-                    const resultsEl = document.getElementById(`results-${skinId}`);
-                    if (resultsEl) {
-                        const data = doc.data();
-                        resultsEl.textContent = (data.total_votes > 0)
-                            ? `평균 점수: ${(data.total_score / data.total_votes).toFixed(2)} / 5 (${data.total_votes} 표)`
-                            : "아직 투표가 없습니다.";
-                    }
+                    pollDataMap[doc.id] = doc.data();
+                    updateScoreDisplay(doc.id, doc.data());
                 });
-            } catch (error) {
-                console.error("A batch of poll results failed to load:", error);
-                chunk.forEach(skinId => {
-                    const resultsEl = document.getElementById(`results-${skinId}`);
-                    if (resultsEl) resultsEl.textContent = "결과 로딩 실패";
-                });
-            }
+            } catch (error) { /* ... */ }
         }
+
         skinIds.forEach(skinId => {
-            if (!foundIds.has(skinId)) {
-                const resultsEl = document.getElementById(`results-${skinId}`);
-                if (resultsEl && resultsEl.textContent === '결과 불러오는 중...') {
-                    resultsEl.textContent = "아직 투표가 없습니다.";
-                }
+            if (!pollDataMap[skinId]) {
+                updateScoreDisplay(skinId, null);
             }
         });
+
         if (requestId !== currentRequestId) { return; }
         currentlyDisplayedSkins = skins.map(skin => {
             const data = pollDataMap[skin.id];
@@ -201,6 +142,67 @@ document.addEventListener("DOMContentLoaded", () => {
             };
         });
         reSortView();
+    };
+
+    // NEW HELPER FUNCTION to update the score display
+    const updateScoreDisplay = (skinId, data) => {
+        const resultsEl = document.getElementById(`results-${skinId}`);
+        if (!resultsEl) return;
+
+        const foregroundEl = resultsEl.querySelector('.score-bar-foreground');
+        const textEl = resultsEl.querySelector('.score-bar-text');
+
+        if (!foregroundEl || !textEl) return;
+
+        if (data && data.total_votes > 0) {
+            const average = data.total_score / data.total_votes;
+            const percentage = (average / 5) * 100;
+            foregroundEl.style.width = `${percentage}%`;
+            textEl.textContent = average.toFixed(2);
+        } else {
+            foregroundEl.style.width = '0%';
+            textEl.textContent = 'N/A';
+        }
+    };
+
+    const fetchAndDisplayResults = (skinId) => {
+        const pollRef = db.collection("skin_polls").doc(String(skinId));
+        pollRef.get().then((doc) => {
+            if (doc.exists) {
+                updateScoreDisplay(skinId, doc.data());
+            } else {
+                updateScoreDisplay(skinId, null);
+            }
+        }).catch((error) => {
+            console.error("Error fetching poll results:", error);
+            const resultsEl = document.getElementById(`results-${skinId}`);
+            if (resultsEl) resultsEl.querySelector('.score-bar-text').textContent = 'Error';
+        });
+    };
+
+    // --- PASTE OF UNCHANGED FUNCTIONS FOR COMPLETENESS ---
+    const applyFilters = () => {
+        currentRequestId++;
+        let filteredSkins = allSkins;
+        const selectedCharName = characterNameSelect.value;
+        const selectedType = skinTypeSelect.value;
+        const selectedFaction = factionSelect.value;
+        const selectedTag = tagSelect.value;
+        const selectedRarities = [...rarityCheckboxes.querySelectorAll("input:checked")].map(cb => cb.value);
+        if (selectedCharName !== "all") { filteredSkins = filteredSkins.filter(s => s["함순이 이름"] === selectedCharName); }
+        if (selectedType !== "all") {
+            if (selectedType === "기본") { filteredSkins = filteredSkins.filter(s => !s["스킨 타입 - 한글"]); }
+            else { filteredSkins = filteredSkins.filter(s => s["스킨 타입 - 한글"] === selectedType); }
+        }
+        if (selectedFaction !== "all") { filteredSkins = filteredSkins.filter(s => s["진영"] === selectedFaction); }
+        if (selectedTag !== "all") {
+            if (selectedTag === "X") { filteredSkins = filteredSkins.filter(s => !s["스킨 태그"]); }
+            else { filteredSkins = filteredSkins.filter(s => s["스킨 태그"] && s["스킨 태그"].includes(selectedTag)); }
+        }
+        filteredSkins = filteredSkins.filter(s => selectedRarities.includes(s["레어도"]));
+        filteredSkins.sort((a, b) => (a["클뜯 id"] || 0) - (b["클뜯 id"] || 0));
+        renderPollList(filteredSkins);
+        fetchScoresAndSort(filteredSkins, currentRequestId);
     };
 
 
@@ -253,21 +255,34 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
 
-    const fetchAndDisplayResults = (skinId) => {
-        const resultsEl = document.getElementById(`results-${skinId}`);
-        if (!resultsEl) return;
+    const submitVote = (skinId, rating, skinName, characterName) => {
+        if (localStorage.getItem(`voted_${skinId}`) === "true") { return; }
         const pollRef = db.collection("skin_polls").doc(String(skinId));
-        pollRef.get().then((doc) => {
-            if (doc.exists) {
-                const data = doc.data();
-                resultsEl.textContent = (data.total_votes > 0)
-                    ? `평균 점수: ${(data.total_score / data.total_votes).toFixed(2)} / 5 (${data.total_votes} 표)`
-                    : "아직 투표가 없습니다.";
-            } else { resultsEl.textContent = "아직 투표가 없습니다."; }
-        }).catch((error) => {
-            console.error("Error fetching poll results:", error);
-            resultsEl.textContent = "결과를 불러올 수 없습니다.";
-        });
+        const increment = firebase.firestore.FieldValue.increment(1);
+        const ratingIncrement = firebase.firestore.FieldValue.increment(rating);
+        pollRef.set({
+            total_votes: increment,
+            total_score: ratingIncrement,
+            skin_name: skinName,
+            character_name: characterName
+        }, { merge: true })
+            .then(() => {
+                localStorage.setItem(`voted_${skinId}`, "true");
+                localStorage.setItem(`rating_${skinId}`, rating);
+                const ratingArea = document.querySelector(`.rating-area[data-skin-id-area="${skinId}"]`);
+                if (ratingArea) {
+                    ratingArea.classList.remove('pending-vote');
+                    ratingArea.classList.add("voted");
+                    // Add the animation class
+                    ratingArea.classList.add("voted-animation");
+                    // Remove it after the animation is done
+                    setTimeout(() => {
+                        ratingArea.classList.remove("voted-animation");
+                    }, 300);
+                }
+                fetchAndDisplayResults(skinId);
+            })
+            .catch((error) => { console.error("Firebase vote submission failed: ", error); });
     };
 
 
@@ -353,8 +368,6 @@ document.addEventListener("DOMContentLoaded", () => {
         rebuildDropdown(characterNameSelect, allCharacterNamesData);
         applyFilters();
     };
-
-
     const clearPendingVote = () => {
         if (pendingVote) {
             const ratingArea = document.querySelector(`.rating-area[data-skin-id-area="${pendingVote.skinId}"]`);
@@ -392,13 +405,11 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById(`star${rating}-${skinId}`).checked = true;
         }
     });
-
     document.addEventListener('click', (event) => {
         if (pendingVote && !event.target.closest(`.rating-area[data-skin-id-area="${pendingVote.skinId}"]`)) {
             clearPendingVote();
         }
     });
-
     leaderboardToggleBtn.addEventListener('click', () => {
         leaderboardContent.classList.toggle('visible');
         leaderboardToggleBtn.textContent = leaderboardContent.classList.contains('visible') ? '🔼 리더보드 숨기기' : '🏆 Top 10 스킨 보기';
