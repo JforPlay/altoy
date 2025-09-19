@@ -117,8 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         switch (script.type) {
             case 1: // Dialogue
                 if (script.param) {
-                    const bubble = displayBubble(script);
-                    // Check for options attached to this dialogue line
+                    displayBubble(script);
                     if (script.option && script.option.length > 0 && Array.isArray(script.option[0])) {
                         const options = script.option.map(opt => ({ flag: opt[0], content: opt[1] }));
                         displayOptions(options);
@@ -132,12 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
             case 4: // Special Event
                 handleSpecialEvent(script);
                 currentScriptIndex++;
-                showNextLineAfterDelay(100); // Shorter delay after an effect
+                showNextLineAfterDelay(100);
                 processed = true;
                 break;
         }
-
-        // If the script type was not handled, skip to the next one
         if (!processed) {
             currentScriptIndex++;
             showNextLine();
@@ -149,12 +146,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Displays a single dialogue bubble.
+     * Displays a single dialogue bubble, now with portraits.
      */
     const displayBubble = (script) => {
-        let speakerName = '', messageClass = '';
         const currentStoryInfo = allData[selectedCharacterName][storyDropdown.value];
-
+        let speakerName = '', messageClass = '';
+        
         if (script.ship_group === 0) {
             speakerName = '지휘관';
             messageClass = 'player';
@@ -173,10 +170,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         messageBubble.innerHTML += `<p>${script.param}</p>`;
 
-        storyContainer.appendChild(messageBubble);
-        messageBubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        return messageBubble; // Return the element for effects
+        let topLevelElement = messageBubble;
+        if (messageClass === 'character') {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'character-line-wrapper';
+
+            const portrait = document.createElement('img');
+            portrait.className = 'portrait';
+            portrait.src = currentStoryInfo.icon;
+            portrait.alt = speakerName;
+
+            wrapper.appendChild(portrait);
+            wrapper.appendChild(messageBubble);
+            storyContainer.appendChild(wrapper);
+            topLevelElement = wrapper;
+        } else {
+            storyContainer.appendChild(messageBubble);
+        }
+        
+        topLevelElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        return topLevelElement;
     };
+
 
     /**
      * Handles type 4 events from the script.
@@ -185,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`Special Event Triggered: Type ${script.type}, Param: ${script.param}`);
         const lastBubble = storyContainer.lastElementChild;
         if (lastBubble) {
-            // Apply a generic shake effect for now
             lastBubble.classList.add('shake-effect');
             setTimeout(() => lastBubble.classList.remove('shake-effect'), 500);
         }
@@ -213,7 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
         displayBubble({ ship_group: 0, param: chosenText });
         optionsContainer.innerHTML = '';
         
-        // Find the index of the very next line that has the matching flag
         let foundIndex = -1;
         for (let i = currentScriptIndex + 1; i < currentStoryScripts.length; i++) {
             if (currentStoryScripts[i].flag === chosenFlag) {
@@ -225,7 +238,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (foundIndex !== -1) {
             currentScriptIndex = foundIndex;
         } else {
-            // If no matching flag is found, just continue from the next line
             currentScriptIndex++;
         }
 
