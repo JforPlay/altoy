@@ -292,7 +292,7 @@ body {
     font-weight: bold;
     color: #b9bbbe;
     position: relative; /* Allows fine-tuning of position */
-    top: 2px;          /* Nudges the text down by 2 pixels */
+    top: 3px;          /* Nudges the text down by 2 pixels */
 }
 
 .star-rating {
