@@ -288,9 +288,11 @@ body {
 }
 
 .vote-label {
-  font-size: 1em;
-  font-weight: bold;
-  color: #b9bbbe;
+    font-size: 1em;
+    font-weight: bold;
+    color: #b9bbbe;
+    position: relative; /* Allows fine-tuning of position */
+    top: 2px;          /* Nudges the text down by 2 pixels */
 }
 
 .star-rating {
