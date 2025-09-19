@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- CONSTANTS & CONFIG ---
-    const DATA_URL = 'processed_dorm3d_data.json';
+    const DATA_URL = 'data/processed_dorm3d_data.json';
 
     // --- STATE MANAGEMENT ---
     let dormData = {};
