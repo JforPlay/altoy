@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let allCharacterNamesData = [];
   let allPollDataCache = {};
   let currentlyDisplayedSkins = [];
-  let currentRequestId = 0;
+  // let currentRequestId = 0;
   let isSorting = false;
   let pendingVote = null;
 
@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
           allPollDataCache = pollData;
           populateLeaderboard(allPollDataCache);
           tagSelect.value = 'L2D';
+          skinTypeSelect.value = '카니발';
           applyFilters();
       });
     });
