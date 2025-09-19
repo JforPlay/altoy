@@ -29,13 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => {
             console.error('채팅 데이터를 불러오는 데 실패했습니다:', error);
-            initialMessage.textContent = '채팅 데이터를 불러오지 못했습니다. 콘솔을 확인해주세요.';
+            initialMessage.textContent = '채팅 데이터를 불러오지 못했습니다. Live Server를 사용하고 있는지 확인해주세요.';
         });
 
     // Main function to initialize the app after data is loaded
     function initializeApp(data) {
         populateCharacterList(data);
-        storySelect.addEventListener('change', (e) => startStory(e.target.value));
+        storySelect.addEventListener('change', () => startStory(storySelect.value));
     }
 
     // 1. Populate Character List in the sidebar
@@ -60,12 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function selectCharacter(charName) {
         currentCharacter = charName;
         
-        // Highlight active character
         document.querySelectorAll('.character-selector').forEach(el => {
             el.classList.toggle('active', el.dataset.characterName === charName);
         });
         
-        // Show chat UI
         initialMessage.style.display = 'none';
         chatHeader.style.display = 'flex';
 
@@ -73,11 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const firstStoryKey = Object.keys(characterStories)[0];
         const firstStoryData = characterStories[firstStoryKey];
 
-        // Update header
         chatHeaderIcon.src = firstStoryData.icon;
         chatHeaderName.textContent = charName;
 
-        // Populate story dropdown
         storySelect.innerHTML = '';
         for (const storyKey in characterStories) {
             const storyData = characterStories[storyKey];
@@ -87,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
             storySelect.appendChild(option);
         }
 
-        // Start the first story automatically
         startStory(storySelect.value);
     }
 
@@ -98,90 +93,88 @@ document.addEventListener('DOMContentLoaded', () => {
         chatContent.innerHTML = '';
         optionsContainer.innerHTML = '';
         
-        // Find the first script entry (usually flag 0)
-        const startIndex = currentScripts.findIndex(script => script.flag === 0);
-        processScripts(startIndex !== -1 ? startIndex : 0);
+        // Start processing the story from the very first line
+        processScripts(0);
     }
 
     // 4. Process scripts sequentially from a given index
     function processScripts(startIndex) {
-        let currentIndex = startIndex;
-        
-        while (currentIndex < currentScripts.length) {
-            const script = currentScripts[currentIndex];
+        if (startIndex >= currentScripts.length) return;
 
-            // Ignore control-code type scripts
-            if (script.type === 4) {
-                currentIndex++;
-                continue;
-            }
+        const script = currentScripts[startIndex];
+        const isPlayer = script.ship_group === 0;
 
-            // Check if the script belongs to the current conversation branch
-            const previousScript = currentIndex > 0 ? currentScripts[currentIndex - 1] : null;
-            if (previousScript && previousScript.flag !== script.flag && script.flag !== 0) {
-                 // This logic might need adjustment if flags are not sequential
-            }
-            
-            // Create and show the message bubble
-            const isPlayer = script.ship_group === 0;
-            const speakerName = isPlayer ? '지휘관' : currentCharacter;
-            const characterIcon = chatData[currentCharacter][currentStoryKey].icon;
-            const speakerIcon = isPlayer ? commanderIcon : characterIcon;
-            createBubble(speakerName, script.param, speakerIcon, isPlayer);
+        // Create and show the message bubble, unless it's a player choice that is handled by selectOption
+        if (!isPlayer) {
+             const speakerName = currentCharacter;
+             const characterIcon = chatData[currentCharacter][currentStoryKey].icon;
+             createBubble(speakerName, script.param, characterIcon, false);
+        }
+       
+        // If the character presents options, show buttons and stop
+        if (!isPlayer && Array.isArray(script.option) && script.option.length > 0) {
+            createOptionButtons(script.option, startIndex);
+            return; 
+        }
 
-            // If the character presents options, stop processing and show buttons
-            if (!isPlayer && Array.isArray(script.option) && script.option.length > 0) {
-                createOptionButtons(script.option);
-                return; // Stop the loop and wait for user input
-            }
-            
-            currentIndex++;
+        // If it's a simple line, move to the next one
+        const nextIndex = findNextSequentialIndex(startIndex, script.flag);
+        if (nextIndex !== -1) {
+            // Use a small delay for a more natural chat flow
+            setTimeout(() => processScripts(nextIndex), 200);
         }
     }
 
-    // 5. Create interactive choice buttons for the player
-    function createOptionButtons(options) {
-        optionsContainer.innerHTML = ''; // Clear previous options
+    // 5. Create interactive choice buttons
+    function createOptionButtons(options, scriptIndex) {
+        optionsContainer.innerHTML = '';
         options.forEach(optionData => {
             const [flag, text] = optionData;
             const button = document.createElement('button');
             button.className = 'choice-button';
             button.textContent = text;
-            button.addEventListener('click', () => selectOption(flag, text));
+            button.addEventListener('click', () => selectOption(flag, text, scriptIndex));
             optionsContainer.appendChild(button);
         });
         scrollToBottom();
     }
 
     // 6. Handle player's choice selection
-    function selectOption(flag, text) {
-        // Display the chosen option as a player bubble
+    function selectOption(flag, text, previousScriptIndex) {
         createBubble('지휘관', text, commanderIcon, true);
-        optionsContainer.innerHTML = ''; // Remove buttons after selection
+        optionsContainer.innerHTML = '';
 
-        // Find the next script entry that matches the chosen flag
-        const nextIndex = currentScripts.findIndex(script => script.flag === flag);
+        const nextIndex = currentScripts.findIndex((script, index) => index > previousScriptIndex && script.flag === flag);
         if (nextIndex !== -1) {
-            processScripts(nextIndex);
+            setTimeout(() => processScripts(nextIndex), 400);
         }
     }
+    
+    // Find the next logical script index in a non-branching conversation
+    function findNextSequentialIndex(currentIndex, currentFlag) {
+        const nextScript = currentScripts[currentIndex + 1];
+        if (nextScript && nextScript.flag === currentFlag) {
+            return currentIndex + 1;
+        }
+        return -1; // End of this branch
+    }
 
-    // Helper function to create and append a message bubble
+    // Helper function to create a message bubble
     function createBubble(name, text, icon, isPlayer) {
-        const bubble = document.createElement('div');
-        bubble.className = `message-bubble ${isPlayer ? 'player' : 'character'}`;
-        bubble.innerHTML = `
+         if (typeof text !== 'string' || !text.trim()) return; // Don't show empty bubbles
+         const bubble = document.createElement('div');
+         bubble.className = `message-bubble ${isPlayer ? 'player' : 'character'}`;
+         bubble.innerHTML = `
             <img src="${icon}" alt="Speaker Icon" class="message-icon">
             <div class="bubble-content">
                 <div class="speaker-name">${name.trim()}</div>
                 <p>${text}</p>
             </div>
-        `;
-        chatContent.appendChild(bubble);
-        scrollToBottom();
+         `;
+         chatContent.appendChild(bubble);
+         scrollToBottom();
     }
     
-    // Helper function to keep the chat scrolled to the latest message
     function scrollToBottom() {
         chatContent.scrollTop = chatContent.scrollHeight;
     }
