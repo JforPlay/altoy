@@ -12,19 +12,19 @@ h1, h2 { color: #ffffff; text-align: center; }
 .main-header p { color: #b9bbbe; text-align: center; margin: 0; }
 .hidden { display: none; }
 
-/* --- Character Selection (Width Matched) --- */
+/* --- Character Selection (Box Added) --- */
 #character-selection-section {
     background-color: #2f3136;
     border: 1px solid #40444b;
     padding: 20px 25px 30px 25px;
     border-radius: 10px;
     margin: 0 auto 30px auto;
-    max-width: 800px; /* MODIFIED: Was 900px */
+    max-width: 800px;
     box-sizing: border-box;
 }
 #character-selection-section h2 { margin-top: 0; margin-bottom: 25px; }
 
-/* Class-based grid states for loading/error */
+/* MODIFIED: Reverted to grid layout for loading/error/loaded states */
 .character-grid.loading, .character-grid.error {
     display: flex;
     flex-direction: column;
@@ -33,7 +33,11 @@ h1, h2 { color: #ffffff; text-align: center; }
     min-height: 150px;
     gap: 15px;
 }
-.character-grid.loaded { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 20px; }
+.character-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 20px;
+}
 .loading-message { text-align: center; color: #b9bbbe; }
 .loading-message.error { color: #f04747; }
 
@@ -62,19 +66,8 @@ h1, h2 { color: #ffffff; text-align: center; }
 /* --- Story Controls --- */
 .story-controls { max-width: 800px; margin: 0 auto 20px auto; display: grid; grid-template-columns: 1fr auto; gap: 15px; align-items: start; }
 .story-controls-left { display: flex; flex-direction: column; gap: 15px; }
-
-/* NEW: Styles for story select label and wrapper */
-.story-select-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.story-select-label {
-    font-weight: bold;
-    color: #ffffff;
-    flex-shrink: 0; /* Prevents the label from shrinking */
-}
-
+.story-select-wrapper { display: flex; align-items: center; gap: 10px; }
+.story-select-label { font-weight: bold; color: #ffffff; flex-shrink: 0; }
 #story-dropdown { width: 100%; padding: 12px; border-radius: 5px; border: 1px solid #2f3136; background-color: #40444b; color: #dcddde; font-size: 1em; cursor: pointer; }
 .flavor-text-box { background-color: #2f3136; border: 1px solid #4f545c; border-radius: 8px; padding: 15px; text-align: center; min-height: 24px; }
 .flavor-text-box p { margin: 0; line-height: 1.6; font-style: italic; color: #b9bbbe; }
