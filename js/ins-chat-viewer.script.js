@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const restartButton = document.getElementById('restart-button');
 
     let allData = {};
-    let shipGroupToCharacterMap = {};
+    // REMOVED: shipGroupToCharacterMap is no longer needed.
     let selectedCharacterName = null;
     let currentStoryScripts = [];
     let currentScriptIndex = 0;
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.ok ? res.json() : Promise.reject(res.status))
         .then(data => {
             allData = data;
-            buildShipGroupMap();
+            // REMOVED: The call to buildShipGroupMap() is no longer necessary.
             populateCharacterSelector();
         })
         .catch(error => {
@@ -27,24 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
             characterGrid.innerHTML = '<p class="loading-message error">스토리 정보를 불러오는데 실패했어요.</p>';
         });
 
-    /**
-     * Creates a map for quick lookup of character info by ship_group ID.
-     * This is essential for handling group chats efficiently.
-     */
-    function buildShipGroupMap() {
-        for (const characterName in allData) {
-            const stories = allData[characterName];
-            const firstStoryId = Object.keys(stories)[0];
-            if (firstStoryId && stories[firstStoryId].ship_group) {
-                const charInfo = stories[firstStoryId];
-                shipGroupToCharacterMap[charInfo.ship_group] = {
-                    kr_name: charInfo.kr_name,
-                    icon: charInfo.icon
-                };
-            }
-        }
-    }
-    
+    // REMOVED: The buildShipGroupMap() function is now redundant.
+
     function populateCharacterSelector() {
         characterGrid.innerHTML = '';
         for (const characterName in allData) {
@@ -57,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'character-card';
             card.dataset.characterName = characterName;
             
-            // Handle group chats that might not have a specific icon
             const iconSrc = firstStory.icon || 'https://via.placeholder.com/80';
             const shipName = firstStory.ship_name || '';
 
@@ -112,9 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showNextLineAfterDelay(100);
     };
 
-    /**
-     * Main story progression engine with support for new script types.
-     */
     const showNextLine = () => {
         if (currentScriptIndex >= currentStoryScripts.length) return;
         const script = currentStoryScripts[currentScriptIndex];
@@ -164,42 +144,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Displays a dialogue bubble, now with group chat support.
+     * MODIFIED: Displays a dialogue bubble using kr_name and icon directly from the script object.
+     * This simplifies the logic for both individual and group chats.
      */
     const displayBubble = (script) => {
-        const currentStoryInfo = allData[selectedCharacterName][storyDropdown.value];
-        const isGroupChat = currentStoryInfo.ship_name === "그룹 채팅방";
+        let speakerName = script.kr_name || '';
+        let speakerIcon = script.icon || '';
+        let messageClass = '';
         
-        let speakerInfo = { name: '', icon: '', messageClass: 'narrator' };
-
         if (script.ship_group === 0) {
-            speakerInfo = { name: '지휘관', icon: '', messageClass: 'player' };
-        } else if (shipGroupToCharacterMap[script.ship_group]) {
-            const speakerData = shipGroupToCharacterMap[script.ship_group];
-            speakerInfo = {
-                name: speakerData.kr_name,
-                icon: speakerData.icon,
-                messageClass: isGroupChat || script.ship_group === currentStoryInfo.ship_group ? 'character' : 'narrator'
-            };
+            messageClass = 'player';
+        } else if (speakerName && speakerIcon) {
+            // This now correctly handles any character with a name and icon, including all speakers in group chats.
+            messageClass = 'character';
+        } else {
+            // Fallback for narrator or system-like dialogue
+            messageClass = 'narrator';
         }
         
         const messageBubble = document.createElement('div');
-        messageBubble.classList.add('message-bubble', speakerInfo.messageClass);
+        messageBubble.classList.add('message-bubble', messageClass);
 
-        if (speakerInfo.name && speakerInfo.messageClass !== 'player') {
-            messageBubble.innerHTML += `<p class="speaker-name">${speakerInfo.name}</p>`;
+        if (messageClass === 'character') {
+             messageBubble.innerHTML += `<p class="speaker-name">${speakerName}</p>`;
         }
         messageBubble.innerHTML += `<p>${script.param}</p>`;
 
         let topLevelElement = messageBubble;
-        if (speakerInfo.messageClass === 'character' && speakerInfo.icon) {
+        if (messageClass === 'character') {
             const wrapper = document.createElement('div');
             wrapper.className = 'character-line-wrapper';
             
             const portrait = document.createElement('img');
             portrait.className = 'portrait';
-            portrait.src = speakerInfo.icon;
-            portrait.alt = speakerInfo.name;
+            portrait.src = speakerIcon;
+            portrait.alt = speakerName;
 
             wrapper.appendChild(portrait);
             wrapper.appendChild(messageBubble);
@@ -212,12 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
         topLevelElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
     };
 
-    /**
-     * Displays a sticker/emoji from type 4 events.
-     */
     function displaySticker(script) {
         const isPlayer = script.ship_group === 0;
-        // NOTE: The sticker URL is an assumption based on common game asset patterns.
         const stickerUrl = `https://raw.githubusercontent.com/AzurLaneTools/AzurLaneMytools/main/page/azur-lane/data/sticker/${script.param}.png`;
 
         const container = document.createElement('div');
@@ -238,14 +213,22 @@ document.addEventListener('DOMContentLoaded', () => {
             storyContainer.appendChild(wrapper);
             wrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
         } else {
-            storyContainer.appendChild(container);
-            container.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            // Stickers from characters now also get the character-line-wrapper for alignment
+            const wrapper = document.createElement('div');
+            wrapper.className = 'character-line-wrapper';
+
+            const portrait = document.createElement('img');
+            portrait.className = 'portrait';
+            portrait.src = script.icon; 
+            portrait.alt = script.kr_name;
+            
+            wrapper.appendChild(portrait);
+            wrapper.appendChild(container);
+            storyContainer.appendChild(wrapper);
+            wrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
     }
 
-    /**
-     * Displays a system message from type 5 events.
-     */
     function displaySystemMessage(script) {
         const message = document.createElement('div');
         message.className = 'system-message';
@@ -254,9 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
         message.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
 
-     /**
-     * Displays a red envelope from type 3 events.
-     */
     function displayRedEnvelope(script) {
         const envelope = document.createElement('div');
         envelope.className = 'red-envelope-bubble';
@@ -278,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     const handleChoice = (chosenFlag, chosenText) => {
+        // Player choice bubbles don't have kr_name/icon in the JSON, so we create a minimal script object.
         displayBubble({ ship_group: 0, param: chosenText });
         optionsContainer.innerHTML = '';
         
