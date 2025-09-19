@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Viewer</title>
+    <link rel="stylesheet" href="chat-viewer.style.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="skin-poll.html" class="nav-link">라투디 선호도조사</a>
+        <a href="chat-viewer.html" class="nav-link active">캐릭터 챗 보기</a>
+    </nav>
+
+    <div class="main-container">
+        <header class="page-header">
+            <h1>캐릭터 챗 보기</h1>
+        </header>
+
+        <div id="character-selector" class="character-selector">
+            </div>
+
+        <div id="chat-interface" class="chat-interface hidden">
+            <div class="chat-controls">
+                <select id="chat-group-select"></select>
+            </div>
+            <div id="flavor-text-box" class="flavor-text-box"></div>
+            <div id="chat-display-container" class="chat-display-container">
+                <div id="chat-display" class="chat-display">
+                    </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <script src="dorm3d-chat-viewer.script.js"></script>
+</body>
+</html>
