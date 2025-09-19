@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let allCharacterNamesData = [];
     let currentlyDisplayedSkins = [];
     let currentRequestId = 0;
+    let isSorting = false; // Prevents spamming the sort button
 
     // --- Helper Functions ---
     const debounce = (func, delay) => {
@@ -49,6 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 .filter(skin => skin["한글 함순이 + 스킨 이름"] && skin["함순이 이름"]);
 
             populateInitialFilters();
+
+            tagSelect.value = 'L2D';
+
             applyFilters();
             fetchAllPollData().then(populateLeaderboard);
         });
@@ -120,7 +124,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const fetchScoresAndSort = async (skins, requestId) => {
         const skinIds = skins.map(s => s.id);
-        if (!skinIds || skinIds.length === 0) return;
+        if (!skinIds || skinIds.length === 0) {
+            currentlyDisplayedSkins = [...skins];
+            return;
+        }
 
         const pollRef = db.collection("skin_polls");
         const pollDataMap = {};
@@ -164,6 +171,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
+        if (requestId !== currentRequestId) { return; }
+
         currentlyDisplayedSkins = skins.map(skin => {
             const data = pollDataMap[skin.id];
             return {
@@ -176,7 +185,10 @@ document.addEventListener("DOMContentLoaded", () => {
         reSortView();
     };
 
-    const reSortView = () => {
+    const reSortView = async () => {
+        if (isSorting) return;
+        isSorting = true;
+
         const sortBy = sortSelect.value;
         const defaultSort = (a, b) => (a["클뜯 id"] || 0) - (b["클뜯 id"] || 0);
 
@@ -195,17 +207,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const allPollBoxes = Array.from(pollContainer.children);
-        allPollBoxes.forEach(box => box.classList.add('sorting'));
 
-        setTimeout(() => {
-            currentlyDisplayedSkins.forEach(skin => {
-                const pollBox = document.getElementById(`poll-box-${skin.id}`);
-                if (pollBox) {
-                    pollContainer.appendChild(pollBox);
-                }
-            });
-            allPollBoxes.forEach(box => box.classList.remove('sorting'));
-        }, 200);
+        allPollBoxes.forEach((box, index) => {
+            setTimeout(() => box.classList.add('sorting'), index * 20);
+        });
+
+        const totalDelay = allPollBoxes.length * 20 + 300;
+        await new Promise(res => setTimeout(res, totalDelay));
+
+        currentlyDisplayedSkins.forEach(skin => {
+            const pollBox = document.getElementById(`poll-box-${skin.id}`);
+            if (pollBox) {
+                pollContainer.appendChild(pollBox);
+            }
+        });
+
+        allPollBoxes.forEach((box, index) => {
+            setTimeout(() => box.classList.remove('sorting'), index * 20);
+        });
+
+        setTimeout(() => { isSorting = false; }, totalDelay);
     };
 
     // --- PASTE OF UNCHANGED FUNCTIONS FOR COMPLETENESS ---
