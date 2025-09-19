@@ -185,10 +185,18 @@ document.addEventListener("DOMContentLoaded", () => {
         reSortView();
     };
 
-    const reSortView = async () => {
+    const reSortView = () => {
         if (isSorting) return;
         isSorting = true;
 
+        const allPollBoxes = Array.from(pollContainer.children);
+        const initialPositions = new Map();
+        allPollBoxes.forEach(box => {
+            // Record the starting position of each skin
+            initialPositions.set(box.id, box.getBoundingClientRect());
+        });
+
+        // Sort the underlying data array
         const sortBy = sortSelect.value;
         const defaultSort = (a, b) => (a["클뜯 id"] || 0) - (b["클뜯 id"] || 0);
 
@@ -206,15 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
             currentlyDisplayedSkins.sort(defaultSort);
         }
 
-        const allPollBoxes = Array.from(pollContainer.children);
-
-        allPollBoxes.forEach((box, index) => {
-            setTimeout(() => box.classList.add('sorting'), index * 20);
-        });
-
-        const totalDelay = allPollBoxes.length * 20 + 300;
-        await new Promise(res => setTimeout(res, totalDelay));
-
+        // Move the DOM elements to their new final order
         currentlyDisplayedSkins.forEach(skin => {
             const pollBox = document.getElementById(`poll-box-${skin.id}`);
             if (pollBox) {
@@ -222,11 +222,33 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        allPollBoxes.forEach((box, index) => {
-            setTimeout(() => box.classList.remove('sorting'), index * 20);
+        // Animate the transition from the old position to the new one
+        allPollBoxes.forEach(box => {
+            const oldPos = initialPositions.get(box.id);
+            const newPos = box.getBoundingClientRect();
+
+            if (!oldPos) return;
+
+            const deltaX = oldPos.left - newPos.left;
+            const deltaY = oldPos.top - newPos.top;
+
+            if (deltaX === 0 && deltaY === 0) return;
+
+            requestAnimationFrame(() => {
+                box.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+                box.style.transition = 'transform 0s';
+
+                requestAnimationFrame(() => {
+                    box.style.transform = '';
+                    box.style.transition = 'transform 0.5s ease-in-out';
+                });
+            });
         });
 
-        setTimeout(() => { isSorting = false; }, totalDelay);
+        // Prevent spamming the sort button during the animation
+        setTimeout(() => {
+            isSorting = false;
+        }, 500);
     };
 
     // --- PASTE OF UNCHANGED FUNCTIONS FOR COMPLETENESS ---
