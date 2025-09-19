@@ -127,9 +127,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const pollRef = db.collection("skin_polls");
     const foundIds = new Set();
 
-    // Process in batches sequentially to be kind to the network and browser
-    for (let i = 0; i < skinIds.length; i += 30) {
-        const chunk = skinIds.slice(i, i + 30);
+    // Process in batches of 10 to respect the Firebase query limit
+    for (let i = 0; i < skinIds.length; i += 10) {
+        const chunk = skinIds.slice(i, i + 10);
         if (chunk.length === 0) continue;
 
         try {
