@@ -1,217 +1,188 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-    // --- CONSTANTS & CONFIG ---
-    const DATA_URL = 'data/processed_dorm3d_data.json';
-
-    // --- STATE MANAGEMENT ---
-    let dormData = {};
-    let groupedData = {};
+    // Get references to DOM elements
+    const characterList = document.getElementById('character-list');
+    const chatHeader = document.getElementById('chat-header');
+    const chatHeaderIcon = document.getElementById('chat-header-icon');
+    const chatHeaderName = document.getElementById('chat-header-name');
+    const storySelect = document.getElementById('story-select');
+    const chatContent = document.getElementById('chat-content');
+    const initialMessage = document.getElementById('initial-message');
+    const optionsContainer = document.getElementById('options-container');
+    
+    // Global state variables
+    let chatData = null; 
+    let currentCharacter = null;
+    let currentStoryKey = null;
     let currentScripts = [];
-    let currentScriptIndex = 0;
-    let currentFlag = 0;
-    let currentCharacterInfo = {};
-    let activeCharacterName = null;
 
-    // --- DOM ELEMENTS ---
-    const characterListEl = document.getElementById('character-list');
-    const chatContentEl = document.getElementById('chat-content');
-    const optionsContainerEl = document.getElementById('options-container');
-    const chatTitleEl = document.getElementById('chat-title');
-    const chatUnlockEl = document.getElementById('chat-unlock');
-    const topicSelectorContainerEl = document.getElementById('topic-selector-container');
+    const commanderIcon = 'https://i.imgur.com/b25S6Sj.png';
 
-    // --- INITIALIZATION ---
-    async function init() {
-        try {
-            const response = await fetch(DATA_URL);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            dormData = await response.json();
-            processAndGroupData();
-            populateCharacterList();
-        } catch (error) {
-            console.error("Failed to load and initialize chat data:", error);
-            chatContentEl.innerHTML = `<div class="flex justify-center items-center h-full"><p class="text-red-400 text-center">채팅 데이터를 불러오는 데 실패했습니다. 콘솔을 확인하고 'processed_dorm3d_data.json' 파일에 접근 가능한지 확인해주세요.</p></div>`;
-        }
-    }
-
-    // --- DATA PROCESSING ---
-    function processAndGroupData() {
-        // This function processes a flat JSON object where each key is a chat ID.
-        for (const chatId in dormData) {
-            const chat = dormData[chatId];
-            const charName = chat.kr_name;
-            if (!groupedData[charName]) {
-                groupedData[charName] = {
-                    icon: chat.icon,
-                    chats: []
-                };
-            }
-            groupedData[charName].chats.push({
-                id: chat.id,
-                name: chat.name
-            });
-        }
-    }
-
-    // --- UI POPULATION & RENDERING ---
-    function populateCharacterList() {
-        characterListEl.innerHTML = '';
-        const fragment = document.createDocumentFragment();
-        const sortedCharNames = Object.keys(groupedData).sort((a, b) => a.localeCompare(b));
-        
-        for (const charName of sortedCharNames) {
-            const charData = groupedData[charName];
-            const button = document.createElement('button');
-            button.className = 'w-full flex items-center p-2 space-x-3 rounded-md hover:bg-[#40444b] transition-colors duration-200 focus:outline-none';
-            button.dataset.charName = charName;
-            button.innerHTML = `
-                <img src="${charData.icon}" alt="${charName}" class="w-10 h-10 rounded-full flex-shrink-0 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/40x40/2f3136/dcddde?text=?';">
-                <span class="font-medium text-white truncate">${charName}</span>
-            `;
-            button.addEventListener('click', handleCharacterSelect);
-            fragment.appendChild(button);
-        }
-        characterListEl.appendChild(fragment);
-    }
-
-    function populateTopicSelector(charName) {
-        const charData = groupedData[charName];
-        if (!charData || charData.chats.length === 0) {
-            topicSelectorContainerEl.innerHTML = '';
-            return;
-        }
-
-        const select = document.createElement('select');
-        select.className = 'bg-[#2f3136] border border-black/20 text-white text-sm rounded-md focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2';
-        select.addEventListener('change', handleTopicChange);
-
-        charData.chats.forEach(chat => {
-            const option = document.createElement('option');
-            option.value = chat.id;
-            option.textContent = chat.name;
-            select.appendChild(option);
+    // Fetch chat data from the JSON file
+    fetch('data/processed_dorm3d_data.json')
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            chatData = data;
+            initializeApp(chatData);
+        })
+        .catch(error => {
+            console.error('채팅 데이터를 불러오는 데 실패했습니다:', error);
+            initialMessage.textContent = '채팅 데이터를 불러오지 못했습니다. 콘솔을 확인해주세요.';
         });
 
-        topicSelectorContainerEl.innerHTML = '';
-        topicSelectorContainerEl.appendChild(select);
-        displayChat(charData.chats[0].id);
+    // Main function to initialize the app after data is loaded
+    function initializeApp(data) {
+        populateCharacterList(data);
+        storySelect.addEventListener('change', (e) => startStory(e.target.value));
     }
 
-    function displayChat(chatId) {
-        activeChatId = chatId;
-        const chatData = dormData[chatId];
-        if (!chatData) return;
+    // 1. Populate Character List in the sidebar
+    function populateCharacterList(data) {
+        for (const charName in data) {
+            const firstStoryKey = Object.keys(data[charName])[0];
+            const firstStoryData = data[charName][firstStoryKey];
 
-        currentScripts = chatData.scripts;
-        currentCharacterInfo = { name: chatData.kr_name, icon: chatData.icon };
-        currentScriptIndex = 0;
-        currentFlag = 0;
-
-        chatContentEl.innerHTML = '';
-        optionsContainerEl.innerHTML = '';
-        chatTitleEl.textContent = chatData.name;
-        chatUnlockEl.textContent = chatData.unlock_desc;
-
-        renderChat();
+            const selectorDiv = document.createElement('div');
+            selectorDiv.className = 'character-selector';
+            selectorDiv.dataset.characterName = charName;
+            selectorDiv.innerHTML = `
+                <img src="${firstStoryData.icon}" alt="${charName}" class="character-icon">
+                <span class="character-name-label">${charName.trim()}</span>
+            `;
+            selectorDiv.addEventListener('click', () => selectCharacter(charName));
+            characterList.appendChild(selectorDiv);
+        }
     }
-    
-    function renderChat() {
-        optionsContainerEl.innerHTML = '';
-        while (currentScriptIndex < currentScripts.length) {
-            const script = currentScripts[currentScriptIndex];
 
-            if (script.flag === currentFlag) {
-                if (script.type === 1 && script.param) {
-                    createBubble(script);
-                }
-                if (script.option && Array.isArray(script.option) && script.option.length > 0) {
-                    displayOptions(script.option);
-                    currentScriptIndex++;
-                    return; 
-                }
+    // 2. Handle Character Selection
+    function selectCharacter(charName) {
+        currentCharacter = charName;
+        
+        // Highlight active character
+        document.querySelectorAll('.character-selector').forEach(el => {
+            el.classList.toggle('active', el.dataset.characterName === charName);
+        });
+        
+        // Show chat UI
+        initialMessage.style.display = 'none';
+        chatHeader.style.display = 'flex';
+
+        const characterStories = chatData[charName];
+        const firstStoryKey = Object.keys(characterStories)[0];
+        const firstStoryData = characterStories[firstStoryKey];
+
+        // Update header
+        chatHeaderIcon.src = firstStoryData.icon;
+        chatHeaderName.textContent = charName;
+
+        // Populate story dropdown
+        storySelect.innerHTML = '';
+        for (const storyKey in characterStories) {
+            const storyData = characterStories[storyKey];
+            const option = document.createElement('option');
+            option.value = storyKey;
+            option.textContent = storyData.unlock_desc;
+            storySelect.appendChild(option);
+        }
+
+        // Start the first story automatically
+        startStory(storySelect.value);
+    }
+
+    // 3. Start a new story, resetting the chat
+    function startStory(storyKey) {
+        currentStoryKey = storyKey;
+        currentScripts = chatData[currentCharacter][currentStoryKey].scripts;
+        chatContent.innerHTML = '';
+        optionsContainer.innerHTML = '';
+        
+        // Find the first script entry (usually flag 0)
+        const startIndex = currentScripts.findIndex(script => script.flag === 0);
+        processScripts(startIndex !== -1 ? startIndex : 0);
+    }
+
+    // 4. Process scripts sequentially from a given index
+    function processScripts(startIndex) {
+        let currentIndex = startIndex;
+        
+        while (currentIndex < currentScripts.length) {
+            const script = currentScripts[currentIndex];
+
+            // Ignore control-code type scripts
+            if (script.type === 4) {
+                currentIndex++;
+                continue;
             }
-            currentScriptIndex++;
+
+            // Check if the script belongs to the current conversation branch
+            const previousScript = currentIndex > 0 ? currentScripts[currentIndex - 1] : null;
+            if (previousScript && previousScript.flag !== script.flag && script.flag !== 0) {
+                 // This logic might need adjustment if flags are not sequential
+            }
+            
+            // Create and show the message bubble
+            const isPlayer = script.ship_group === 0;
+            const speakerName = isPlayer ? '지휘관' : currentCharacter;
+            const characterIcon = chatData[currentCharacter][currentStoryKey].icon;
+            const speakerIcon = isPlayer ? commanderIcon : characterIcon;
+            createBubble(speakerName, script.param, speakerIcon, isPlayer);
+
+            // If the character presents options, stop processing and show buttons
+            if (!isPlayer && Array.isArray(script.option) && script.option.length > 0) {
+                createOptionButtons(script.option);
+                return; // Stop the loop and wait for user input
+            }
+            
+            currentIndex++;
         }
     }
 
-    function createBubble(script) {
-        const isPlayer = script.ship_group === 0;
-
-        const wrapper = document.createElement('div');
-        const bubble = document.createElement('div');
-        const nameEl = document.createElement('p');
-        const textEl = document.createElement('p');
-
-        wrapper.className = `flex items-start gap-3 message-bubble ${isPlayer ? 'justify-end' : 'justify-start'}`;
-        bubble.className = `p-3 rounded-lg max-w-xs md:max-w-md ${isPlayer ? 'bg-[#7289da] text-white' : 'bg-[#40444b]'}`;
-        nameEl.className = 'font-bold mb-1';
-        textEl.className = 'break-words';
-
-        nameEl.textContent = isPlayer ? '지휘관' : currentCharacterInfo.name;
-        textEl.textContent = script.param;
-
-        bubble.appendChild(nameEl);
-        bubble.appendChild(textEl);
-
-        if (isPlayer) {
-            wrapper.appendChild(bubble);
-        } else {
-            const icon = document.createElement('img');
-            icon.src = currentCharacterInfo.icon;
-            icon.alt = currentCharacterInfo.name;
-            icon.className = 'w-10 h-10 rounded-full flex-shrink-0 object-cover';
-            icon.onerror = () => { icon.src = 'https://placehold.co/40x40/2f3136/dcddde?text=?'; };
-            wrapper.appendChild(icon);
-            wrapper.appendChild(bubble);
-        }
-
-        chatContentEl.appendChild(wrapper);
-        chatContentEl.scrollTop = chatContentEl.scrollHeight;
-    }
-
-    function displayOptions(options) {
-        optionsContainerEl.innerHTML = '';
-        const fragment = document.createDocumentFragment();
+    // 5. Create interactive choice buttons for the player
+    function createOptionButtons(options) {
+        optionsContainer.innerHTML = ''; // Clear previous options
         options.forEach(optionData => {
             const [flag, text] = optionData;
             const button = document.createElement('button');
-            button.className = 'bg-[#5865f2] hover:bg-[#4752c4] text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 self-end max-w-xs md:max-w-md text-right';
+            button.className = 'choice-button';
             button.textContent = text;
-            button.onclick = () => handleChoice(flag, text);
-            fragment.appendChild(button);
+            button.addEventListener('click', () => selectOption(flag, text));
+            optionsContainer.appendChild(button);
         });
-        optionsContainerEl.appendChild(fragment);
+        scrollToBottom();
     }
 
-    // --- EVENT HANDLERS & ACTIONS ---
-    function handleCharacterSelect(event) {
-        const button = event.currentTarget;
-        const charName = button.dataset.charName;
+    // 6. Handle player's choice selection
+    function selectOption(flag, text) {
+        // Display the chosen option as a player bubble
+        createBubble('지휘관', text, commanderIcon, true);
+        optionsContainer.innerHTML = ''; // Remove buttons after selection
 
-        if (activeCharacterName === charName) return;
-        activeCharacterName = charName;
+        // Find the next script entry that matches the chosen flag
+        const nextIndex = currentScripts.findIndex(script => script.flag === flag);
+        if (nextIndex !== -1) {
+            processScripts(nextIndex);
+        }
+    }
 
-        document.querySelectorAll('#character-list button').forEach(btn => {
-            btn.classList.remove('bg-[#4f545c]', 'font-semibold');
-        });
-        button.classList.add('bg-[#4f545c]', 'font-semibold');
-
-        populateTopicSelector(charName);
+    // Helper function to create and append a message bubble
+    function createBubble(name, text, icon, isPlayer) {
+        const bubble = document.createElement('div');
+        bubble.className = `message-bubble ${isPlayer ? 'player' : 'character'}`;
+        bubble.innerHTML = `
+            <img src="${icon}" alt="Speaker Icon" class="message-icon">
+            <div class="bubble-content">
+                <div class="speaker-name">${name.trim()}</div>
+                <p>${text}</p>
+            </div>
+        `;
+        chatContent.appendChild(bubble);
+        scrollToBottom();
     }
     
-    function handleTopicChange(event) {
-        displayChat(event.target.value);
+    // Helper function to keep the chat scrolled to the latest message
+    function scrollToBottom() {
+        chatContent.scrollTop = chatContent.scrollHeight;
     }
-    
-    function handleChoice(flag, text) {
-        createBubble({ ship_group: 0, param: text });
-        optionsContainerEl.innerHTML = '';
-        currentFlag = flag;
-        renderChat();
-    }
-
-    // --- START THE APP ---
-    init();
 });
