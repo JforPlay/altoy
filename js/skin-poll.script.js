@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fetchAllPollData().then(populateLeaderboard);
     });
 
-  // --- Core Functions (Defined Once) ---
+  // --- Core Functions ---
   const applyFilters = () => {
     const selectedCharName = characterNameSelect.value;
     const selectedType = skinTypeSelect.value;
@@ -75,7 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     filteredSkins = filteredSkins.filter(s => selectedRarities.includes(s["레어도"]));
-    filteredSkins.sort((a, b) => (a["한글 함순이 + 스킨 이름"] || "").localeCompare(b["한글 함순이 + 스킨 이름"] || ""));
+    
+    // --- CHANGE: Default sort is now by skin ID ---
+    filteredSkins.sort((a, b) => (a.id || "").localeCompare(b.id || ""));
 
     renderPollList(filteredSkins);
   };
@@ -85,7 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const skinIdsToFetch = [];
 
     skinsToRender.forEach((skin) => {
+      if (!skin || !skin.id) return; // Guard against bad data
       skinIdsToFetch.push(skin.id);
+      
       const skinId = skin.id;
       const pollBox = document.createElement("div");
       pollBox.className = "poll-box";
@@ -93,8 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
       pollBox.innerHTML = `
         <img src="${skin["깔끔한 일러"]}" class="poll-image" loading="lazy">
         <div class="poll-info">
-            <div class="character-name">${skin["함순이 이름"]}</div>
-            <h3>${skin["한글 함순이 + 스킨 이름"]}</h3>
+            <div class="character-name">${skin["함순이 이름"] || 'Unknown'}</div>
+            <h3>${skin["한글 함순이 + 스킨 이름"] || 'Unknown Skin'}</h3>
             <div class="info-line"><strong>타입:</strong> ${skin["스킨 타입 - 한글"] || "기본"}</div>
             <div class="info-line"><strong>태그:</strong> ${skin["스킨 태그"] || "없음"}</div>
             <div class="info-line"><strong>레어도:</strong> ${skin["레어도"] || "없음"}</div>
@@ -117,14 +121,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // --- FIX: This function is now more robust ---
   const fetchAllResultsAndDisplay = async (skinIds) => {
+    if (!skinIds || skinIds.length === 0) return;
+    
     const pollRef = db.collection("skin_polls");
     const promises = [];
     const queriedIds = new Set();
+
     for (let i = 0; i < skinIds.length; i += 30) {
         const chunk = skinIds.slice(i, i + 30);
-        promises.push(pollRef.where(firebase.firestore.FieldPath.documentId(), 'in', chunk).get());
+        if (chunk.length > 0) {
+            promises.push(pollRef.where(firebase.firestore.FieldPath.documentId(), 'in', chunk).get());
+        }
     }
+
     try {
         const snapshots = await Promise.all(promises);
         snapshots.forEach(snapshot => {
@@ -140,6 +151,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         });
+
+        // Final check for any skins that had no entry in the database
         skinIds.forEach(skinId => {
             if (!queriedIds.has(skinId)) {
                 const resultsEl = document.getElementById(`results-${skinId}`);
@@ -147,10 +160,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     } catch (error) {
-        console.error("Error fetching batch results:", error);
+        console.error("Error fetching batch poll results:", error);
+        // If the entire fetch fails, update all visible skins with an error message.
         skinIds.forEach(skinId => {
             const resultsEl = document.getElementById(`results-${skinId}`);
-            if(resultsEl) resultsEl.textContent = "결과를 불러올 수 없습니다.";
+            if(resultsEl) resultsEl.textContent = "결과 로딩 실패";
         });
     }
   };
@@ -249,8 +263,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="leaderboard-rank">#${index + 1}</div>
             <img src="${skin.imageUrl}" class="leaderboard-image" loading="lazy">
             <div class="leaderboard-details">
-                <div class="skin-name">${skin.name}</div>
-                <div class="char-name">${skin.charName}</div>
+                <div class="skin-name">${skin.name || 'Unknown Skin'}</div>
+                <div class="char-name">${skin.charName || 'Unknown'}</div>
             </div>
             <div class="leaderboard-score">
                 <div class="avg-score">★ ${skin.average_score.toFixed(2)}</div>
