@@ -1,39 +1,42 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>캐릭터 채팅 뷰어</title>
+    <title>Dorm 3D Chat Viewer</title>
     <link rel="stylesheet" href="dorm3d-chat-viewer.style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="chat-app-container">
-        <aside class="character-sidebar">
-            <h2>캐릭터</h2>
-            <div id="character-list" class="character-list">
-                </div>
-        </aside>
+    <div class="container">
+        <header>
+            <h1>벽람항로 기숙사 3D 채팅 뷰어</h1>
+            <p>캐릭터를 선택하여 대화를 확인하세요.</p>
+        </header>
 
-        <main class="chat-viewer">
-            <header id="chat-header" class="chat-header" style="display: none;">
-                <img id="chat-header-icon" class="chat-header-icon" src="" alt="Character Icon">
-                <div class="chat-header-info">
-                    <h1 id="chat-header-name" class="chat-header-name"></h1>
-                    <div class="story-filter-container">
-                        <label for="story-select">주제:</label>
-                        <select id="story-select"></select>
-                    </div>
-                </div>
-            </header>
-            <div id="chat-content" class="chat-content">
-                <div id="initial-message">캐릭터를 선택하여 대화를 시작하세요.</div>
+        <main>
+            <h2>캐릭터 선택</h2>
+            <div id="character-selector" class="character-grid">
+                <!-- Character cards will be dynamically inserted here -->
             </div>
-            <div id="options-container" class="options-container">
+
+            <div id="chat-selection-area" class="hidden">
+                <hr>
+                <h2>대화 선택</h2>
+                <div class="selection-controls">
+                     <select id="chat-dropdown"></select>
+                     <p id="unlock-desc"></p>
                 </div>
+                <div id="chat-display">
+                    <!-- Chat messages will be displayed here -->
+                </div>
+            </div>
         </main>
     </div>
 
-    <script src="dorm3d-chat-viewer.script.js" defer></script>
+    <script src="dorm3d-chat-viewer.script.js"></script>
 </body>
 </html>
