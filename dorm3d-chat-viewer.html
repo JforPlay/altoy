@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dorm3D Chat Viewer</title>
+    <title>3D숙소 채팅 뷰어</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="dorm3d-chat-viewer.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
     <div class="flex h-full">
         <aside class="w-72 bg-[#2f3136] flex flex-col h-full flex-shrink-0">
             <header class="p-4 shadow-md h-16 flex-shrink-0 border-b border-black/20">
-                <h1 class="text-xl font-bold text-white">Character Chats</h1>
+                <h1 class="text-xl font-bold text-white">함순이 선택</h1>
             </header>
             <nav id="character-list" class="flex-grow overflow-y-auto p-2 space-y-1"></nav>
         </aside>
@@ -21,7 +21,7 @@
         <main class="flex-grow flex flex-col h-full bg-[#36393f]">
             <header id="chat-header" class="p-4 shadow-md bg-[#36393f] border-b border-black/20 h-16 flex-shrink-0 flex items-center justify-between">
                 <div id="chat-info-container" class="flex-grow min-w-0">
-                    <h2 id="chat-title" class="text-lg font-semibold text-white truncate">Select a character to begin</h2>
+                    <h2 id="chat-title" class="text-lg font-semibold text-white truncate">시작하려면 함순이를 선택하세요</h2>
                     <p id="chat-unlock" class="text-xs text-gray-400"></p>
                 </div>
                 <div class="flex items-center gap-4">
@@ -31,7 +31,7 @@
 
             <div id="chat-content" class="flex-grow p-4 overflow-y-auto space-y-4">
                  <div class="flex justify-center items-center h-full">
-                    <p class="text-gray-400 text-center">Select a character from the list on the left to view their conversations.</p>
+                    <p class="text-gray-400 text-center">왼쪽 목록에서 함순이를 선택하여 대화를 확인하세요.</p>
                  </div>
             </div>
 

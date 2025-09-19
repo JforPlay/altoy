@@ -32,32 +32,26 @@ document.addEventListener('DOMContentLoaded', () => {
             populateCharacterList();
         } catch (error) {
             console.error("Failed to load and initialize chat data:", error);
-            chatContentEl.innerHTML = `<div class="flex justify-center items-center h-full"><p class="text-red-400 text-center">Failed to load chat data. Please check the console and ensure 'processed_dorm3d_data.json' is accessible.</p></div>`;
+            chatContentEl.innerHTML = `<div class="flex justify-center items-center h-full"><p class="text-red-400 text-center">채팅 데이터를 불러오는 데 실패했습니다. 콘솔을 확인하고 'processed_dorm3d_data.json' 파일에 접근 가능한지 확인해주세요.</p></div>`;
         }
     }
 
     // --- DATA PROCESSING ---
     function processAndGroupData() {
-        // The fetched dormData is already grouped by character name.
-        // We need to transform it into the structure the UI functions expect.
-        for (const charName in dormData) {
-            const characterChats = dormData[charName];
-            let icon = '';
-            const chats = [];
-
-            for(const chatId in characterChats){
-                const chatData = characterChats[chatId];
-                if(!icon) icon = chatData.icon; // Grab the icon from the first chat entry
-                chats.push({
-                    id: chatData.id,
-                    name: chatData.name
-                });
+        // This function processes a flat JSON object where each key is a chat ID.
+        for (const chatId in dormData) {
+            const chat = dormData[chatId];
+            const charName = chat.kr_name;
+            if (!groupedData[charName]) {
+                groupedData[charName] = {
+                    icon: chat.icon,
+                    chats: []
+                };
             }
-
-            groupedData[charName] = {
-                icon: icon,
-                chats: chats
-            };
+            groupedData[charName].chats.push({
+                id: chat.id,
+                name: chat.name
+            });
         }
     }
 
@@ -65,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function populateCharacterList() {
         characterListEl.innerHTML = '';
         const fragment = document.createDocumentFragment();
-        // Sort character names alphabetically
         const sortedCharNames = Object.keys(groupedData).sort((a, b) => a.localeCompare(b));
         
         for (const charName of sortedCharNames) {
@@ -108,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayChat(chatId) {
         activeChatId = chatId;
-        const chatData = dormData[activeCharacterName]?.[chatId];
+        const chatData = dormData[chatId];
         if (!chatData) return;
 
         currentScripts = chatData.scripts;
@@ -125,14 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function renderChat() {
-        optionsContainerEl.innerHTML = ''; // Clear previous options
-        let hasRendered = false;
-
+        optionsContainerEl.innerHTML = '';
         while (currentScriptIndex < currentScripts.length) {
             const script = currentScripts[currentScriptIndex];
 
             if (script.flag === currentFlag) {
-                 hasRendered = true;
                 if (script.type === 1 && script.param) {
                     createBubble(script);
                 }
@@ -145,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
             currentScriptIndex++;
         }
     }
-
 
     function createBubble(script) {
         const isPlayer = script.ship_group === 0;
@@ -160,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nameEl.className = 'font-bold mb-1';
         textEl.className = 'break-words';
 
-        nameEl.textContent = isPlayer ? 'Commander' : currentCharacterInfo.name;
+        nameEl.textContent = isPlayer ? '지휘관' : currentCharacterInfo.name;
         textEl.textContent = script.param;
 
         bubble.appendChild(nameEl);
@@ -223,4 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderChat();
     }
 
+    // --- START THE APP ---
+    init();
 });
