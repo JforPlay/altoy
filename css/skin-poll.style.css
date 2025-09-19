@@ -190,6 +190,18 @@ body {
     flex-direction: column;
 }
 
+.poll-box.sorting {
+    opacity: 0;
+}
+
+.loading-indicator, .no-results {
+    color: #b9bbbe;
+    text-align: center;
+    grid-column: 1 / -1; /* Make it span all columns */
+    font-size: 1.2em;
+    padding: 40px;
+}
+
 .poll-image {
     width: 100%;
     aspect-ratio: 3 / 4;
