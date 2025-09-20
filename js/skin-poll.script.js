@@ -155,21 +155,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const skinDocRef = db.collection("skin_polls").doc(String(skinId));
     const statsDocRef = db.collection("stats").doc("total_votes_counter");
 
-    // This transaction will now correctly read the data, calculate the new totals, and then write them back safely.
+    // This corrected transaction reads all data first, then performs all writes.
     db.runTransaction(transaction => {
-      // First, read both the skin's document and the total stats document.
       return Promise.all([transaction.get(skinDocRef), transaction.get(statsDocRef)])
         .then(([skinDoc, statsDoc]) => {
 
-          // Calculate the new values for the specific skin.
+          // Calculate the new values for the specific skin
           const newTotalVotes = (skinDoc.data()?.total_votes || 0) + 1;
           const newTotalScore = (skinDoc.data()?.total_score || 0) + rating;
           const newAverageScore = newTotalScore / newTotalVotes;
 
-          // Calculate the new value for the site-wide vote counter.
+          // Calculate the new value for the site-wide vote counter
           const newTotalCount = (statsDoc.data()?.count || 0) + 1;
 
-          // Now, perform all the writes with the calculated values.
+          // Perform all writes with the correctly calculated values
           transaction.set(skinDocRef, {
             total_votes: newTotalVotes,
             total_score: newTotalScore,
@@ -183,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }, { merge: true });
         });
     }).then(() => {
-      // This is the success handling part, which remains the same.
+      // --- Success Handling ---
       localStorage.setItem(`voted_${skinId}`, "true");
       localStorage.setItem(`rating_${skinId}`, rating);
 
