@@ -106,28 +106,25 @@ body {
   }
 }
 
-/* 2. Set the initial state for elements we want to animate */
+/* 2. Set the initial state and apply animation to elements */
 .welcome-banner,
 .link-column h2,
 .link-card {
   opacity: 0; /* Start hidden */
-  animation: fadeInUp 0.5s ease-out forwards; /* Apply the animation */
+  animation: fadeInUp 0.5s ease-out forwards;
 }
 
-/* 3. Add a staggered delay to make the cards appear one by one */
+/* 3. Add a staggered delay to all cards */
+/* Column 1 */
 .link-column:nth-of-type(1) .link-card:nth-of-type(1) { animation-delay: 0.2s; }
 .link-column:nth-of-type(1) .link-card:nth-of-type(2) { animation-delay: 0.3s; }
 .link-column:nth-of-type(1) .link-card:nth-of-type(3) { animation-delay: 0.4s; }
 
+/* Column 2 */
 .link-column:nth-of-type(2) h2 { animation-delay: 0.5s; }
-.link-column:nth-of-type(2) .link-card { animation-delay: 0.6s; }
-.link-column:nth-of-type(2) .card-row { animation-delay: 0.7s; } /* Animate the row container */
-
-/* We need to apply the animation to the row, not the cards inside it */
-.card-row .link-card {
-    opacity: 1; /* Reset opacity for cards inside the animated row */
-    animation: none; /* Remove individual animation from these cards */
-}
+.link-column:nth-of-type(2) > .link-card { animation-delay: 0.6s; } /* Target the first full-width card */
+.card-row .link-card:nth-child(1) { animation-delay: 0.7s; } /* First side-by-side card */
+.card-row .link-card:nth-child(2) { animation-delay: 0.8s; } /* Second side-by-side card */
 
 /* Make it responsive: one column on smaller screens */
 @media (max-width: 768px) {
