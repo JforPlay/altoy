@@ -294,7 +294,7 @@ header {
 /* Image Preview Style */
 #image-preview {
     display: none;
-    position: absolute;
+    position: fixed; /* --- MODIFIED: Changed from absolute to fixed --- */
     width: 250px;
     height: 250px;
     object-fit: cover;
@@ -305,7 +305,7 @@ header {
     z-index: 100;
 }
 
-/* --- Mobile Responsive Styles --- */
+/* Mobile Responsive Styles */
 @media (max-width: 800px) {
     body {
         padding: 10px;

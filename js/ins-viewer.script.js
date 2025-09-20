@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let shipgirlDataMap = {};
     const placeholderIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
 
-    // --- NEW: Create Image Preview Element ---
+    // Create Image Preview Element
     const imagePreview = document.createElement('img');
     imagePreview.id = 'image-preview';
     document.body.appendChild(imagePreview);
@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- NEW: Event Listeners for Image Preview ---
+    // Event Listeners for Image Preview
     galleryView.addEventListener('mouseover', (event) => {
         if (event.target.tagName === 'IMG') {
             imagePreview.src = event.target.src;
@@ -300,9 +300,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- MODIFIED: Smarter Mousemove Logic ---
     galleryView.addEventListener('mousemove', (event) => {
-        // Position the preview slightly to the right and below the cursor
-        imagePreview.style.left = event.pageX + 15 + 'px';
-        imagePreview.style.top = event.pageY + 15 + 'px';
+        const preview = imagePreview;
+        if (preview.style.display !== 'block') return;
+
+        const offsetX = 20;
+        const offsetY = 20;
+        
+        let newX = event.clientX + offsetX;
+        let newY = event.clientY + offsetY;
+
+        // If preview would go off the right edge, flip it to the left of the cursor
+        if (newX + preview.offsetWidth > window.innerWidth) {
+            newX = event.clientX - preview.offsetWidth - offsetX;
+        }
+
+        // If preview would go off the bottom edge, flip it to the top of the cursor
+        if (newY + preview.offsetHeight > window.innerHeight) {
+            newY = event.clientY - preview.offsetHeight - offsetY;
+        }
+
+        preview.style.left = newX + 'px';
+        preview.style.top = newY + 'px';
     });
 });
