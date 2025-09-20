@@ -13,7 +13,7 @@ header {
     color: #333;
 }
 
-/* --- NEW: Filter Styles --- */
+/* Filter Styles */
 .filters-container {
     max-width: 1400px;
     margin: 0 auto 20px auto;
@@ -49,7 +49,7 @@ header {
     padding: 8px 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    box-sizing: border-box;
 }
 
 .dropdown-content {
@@ -165,12 +165,34 @@ header {
     border-bottom: 1px solid #efefef;
 }
 
+/* --- NEW: Icon Styles --- */
+.author-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+}
+
+.comment-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 8px;
+    object-fit: cover;
+}
+
 .post-author {
-    font-weight: 600;
+    display: flex;
+    align-items: center;
     font-size: 1.1em;
 }
 
-.post-author span {
+.author-korean-name {
+    font-weight: 600;
+}
+
+.author-username {
     display: block;
     font-weight: 400;
     color: #65676b;
@@ -208,6 +230,7 @@ header {
     display: flex;
     margin-bottom: 10px;
     font-size: 14px;
+    align-items: flex-start;
 }
 
 .comment.reply {
@@ -215,15 +238,20 @@ header {
 }
 
 .comment-author {
+    display: flex;
+    align-items: center;
     font-weight: 600;
     margin-right: 8px;
     color: #050505;
+    flex-shrink: 0;
 }
 
 .comment-text {
     color: #1c1e21;
+    line-height: 1.4;
 }
 
+/* Commander Reply Section Styles */
 .commander-reply-section {
     padding: 15px 25px;
     border-top: 1px solid #dddfe2;

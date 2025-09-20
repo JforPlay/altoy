@@ -10,40 +10,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Data storage
     let postsData = {};
+    let shipgirlDataMap = {};
     let nameCodeMap = {};
+    const placeholderIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
+    const nameCodeUrl = 'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/name_code.json'
 
     // --- Data Fetching ---
-    const postsDataUrl = 'data/processed_ins_data.json';
-    const nameCodeUrl = 'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/name_code.json';
-
     Promise.all([
-        fetch(postsDataUrl).then(res => res.json()),
+        fetch('data/processed_ins_data.json').then(res => res.json()),
+        fetch('data/shipgirl_group_data.json').then(res => res.json()),
         fetch(nameCodeUrl).then(res => res.json())
     ])
-    .then(([posts, names]) => {
+    .then(([posts, shipgirlData, nameCodeData]) => {
         postsData = posts;
-        nameCodeMap = names.all;
-        
-        // --- Initialization ---
+        shipgirlDataMap = shipgirlData;
+        nameCodeMap = nameCodeData.all;
+
         initializeFilters();
-        populateGallery(); // Initial population with all posts
+        populateGallery();
         
         const firstPostId = Object.keys(postsData)[0];
-        if (firstPostId) {
-            displayPost(firstPostId);
-            highlightSelectedThumbnail(firstPostId);
+        if (postsData[firstPostId]) {
+            displayPost(postsData[firstPostId].id);
+            highlightSelectedThumbnail(postsData[firstPostId].id);
         }
     })
     .catch(error => {
         console.error('Error fetching data:', error);
-        galleryView.innerHTML = `<p>Error loading data.</p>`;
+        galleryView.innerHTML = `<p>Error loading data. Make sure all .json files are present.</p>`;
     });
+
+    // --- Helper Functions ---
+    function getShipgirlData(id) {
+        if (shipgirlDataMap[id]) {
+            return {
+                name: shipgirlDataMap[id].name.trim(),
+                icon: shipgirlDataMap[id].icon
+            };
+        }
+        if (typeof id === 'string' && id.startsWith('Unknown')) {
+             return { name: id, icon: placeholderIcon };
+        }
+        return { name: `Unknown ID: ${id}`, icon: placeholderIcon };
+    }
+    
+    function replaceNameCodes(text) {
+        if (!text || typeof text !== 'string') return text;
+        return text.replace(/\{namecode:(\d+)\}/g, (match, code) => nameCodeMap[code] || match);
+    }
 
     // --- Filter Logic ---
     function initializeFilters() {
         const allPosts = Object.values(postsData);
-        const allAuthors = [...new Set(allPosts.map(p => p.korean_name))].sort();
-        const allMentioned = [...new Set(allPosts.flatMap(p => p.shipgirl_names || []))].sort();
+        // Map IDs to names for the filter lists
+        const allAuthors = [...new Set(allPosts.map(p => getShipgirlData(p.ship_group).name))].sort();
+        const allMentioned = [...new Set(allPosts.flatMap(p => (p.shipgirl_names || []).map(id => getShipgirlData(id).name)))].sort();
 
         populateDropdown(authorDropdown, allAuthors, (author) => {
             authorSearchInput.value = author;
@@ -93,9 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupDropdownToggle(input, dropdown) {
         input.addEventListener('focus', () => dropdown.style.display = 'block');
         input.addEventListener('blur', () => {
-            setTimeout(() => {
-                dropdown.style.display = 'none';
-            }, 150);
+            setTimeout(() => dropdown.style.display = 'none', 150);
         });
     }
     
@@ -105,10 +124,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let filteredPosts = Object.values(postsData);
 
         if (filters.author) {
-            filteredPosts = filteredPosts.filter(p => p.korean_name === filters.author);
+            filteredPosts = filteredPosts.filter(p => getShipgirlData(p.ship_group).name === filters.author);
         }
         if (filters.mentioned) {
-            filteredPosts = filteredPosts.filter(p => p.shipgirl_names && p.shipgirl_names.includes(filters.mentioned));
+            filteredPosts = filteredPosts.filter(p => {
+                const mentionedNames = (p.shipgirl_names || []).map(id => getShipgirlData(id).name);
+                return mentionedNames.includes(filters.mentioned);
+            });
         }
 
         if (filteredPosts.length === 0) {
@@ -119,9 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         filteredPosts.forEach(post => {
              if (post.picture_persist && post.picture_persist.trim() !== '') {
+                const authorData = getShipgirlData(post.ship_group);
                 const img = document.createElement('img');
                 img.src = post.picture_persist;
-                img.alt = `Post by ${post.korean_name}`;
+                img.alt = `Post by ${authorData.name}`;
                 img.dataset.postId = post.id;
                 galleryView.appendChild(img);
             }
@@ -132,11 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
             displayPost(firstPostId);
             highlightSelectedThumbnail(firstPostId);
         }
-    }
-    
-    function replaceNameCodes(text) {
-        if (!text || typeof text !== 'string') return text;
-        return text.replace(/\{namecode:(\d+)\}/g, (match, code) => nameCodeMap[code] || match);
     }
     
     function displayPost(postId) {
@@ -151,16 +169,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const postContent = document.createElement('div');
         postContent.className = 'post-content';
 
+        // Post Header with Icon
+        const authorData = getShipgirlData(post.ship_group);
         const header = document.createElement('div');
         header.className = 'post-header';
         const authorInfo = document.createElement('div');
         authorInfo.className = 'post-author';
-        authorInfo.innerHTML = `${post.korean_name}<span>${post.name}</span>`;
+        authorInfo.innerHTML = `
+            <img src="${authorData.icon}" class="author-icon" alt="${authorData.name}">
+            <div>
+                <span class="author-korean-name">${authorData.name}</span>
+                <span class="author-username">${post.name}</span>
+            </div>`;
         header.appendChild(authorInfo);
         
         const image = document.createElement('img');
         image.src = post.picture_persist;
-        image.alt = `Post image by ${post.korean_name}`;
+        image.alt = `Post image by ${authorData.name}`;
         image.className = 'post-image';
 
         const message = document.createElement('p');
@@ -182,25 +207,20 @@ document.addEventListener('DOMContentLoaded', () => {
             let isFirstInThread = true;
             for (const commentId in post[groupKey]) {
                 const commentData = post[groupKey][commentId];
-                const originalAuthor = Object.keys(commentData)[0];
-                const originalText = commentData[originalAuthor];
-
-                // --- FIX IS HERE ---
-                // Process the author name in case it's a namecode
-                let processedAuthor = originalAuthor;
-                const match = originalAuthor.match(/\{namecode:(\d+)\}/);
-                if (match && match[1]) {
-                    const code = match[1];
-                    processedAuthor = nameCodeMap[code] || originalAuthor; // Replace if found
-                }
-                
-                // Process the comment text for namecodes
-                const processedText = replaceNameCodes(originalText); 
+                const authorId = Object.keys(commentData)[0];
+                const author = getShipgirlData(authorId);
+                const originalText = commentData[authorId];
+                const processedText = replaceNameCodes(originalText);
 
                 const commentDiv = document.createElement('div');
                 commentDiv.className = 'comment';
                 if (!isFirstInThread) commentDiv.classList.add('reply');
-                commentDiv.innerHTML = `<div class="comment-author">${processedAuthor}:</div><div class="comment-text">${processedText}</div>`;
+                commentDiv.innerHTML = `
+                    <div class="comment-author">
+                        <img src="${author.icon}" class="comment-icon" alt="${author.name}">
+                        <span>${author.name}:</span>
+                    </div>
+                    <div class="comment-text">${processedText}</div>`;
                 threadContainer.appendChild(commentDiv);
                 isFirstInThread = false;
             }
@@ -230,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const createReplyHandler = (optionText, replyText) => {
                 return () => {
                     const processedReply = replaceNameCodes(replyText);
-                    replyContainer.innerHTML = `<strong>You:</strong> ${optionText}<br><strong>${post.korean_name}:</strong> ${processedReply}`;
+                    replyContainer.innerHTML = `<strong>You:</strong> ${optionText}<br><strong>${authorData.name}:</strong> ${processedReply}`;
                     optionsContainer.style.display = 'none';
                     commanderReplySection.appendChild(replyContainer);
                 };
@@ -250,7 +270,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         postDisplayContainer.appendChild(postContent);
-        postDisplayContainer.appendChild(commanderReplySection);
+        if (commanderReplySection.hasChildNodes()) {
+            postDisplayContainer.appendChild(commanderReplySection);
+        }
     }
     
     function highlightSelectedThumbnail(postId) {
