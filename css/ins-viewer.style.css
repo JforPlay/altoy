@@ -305,7 +305,7 @@ header {
     z-index: 100;
 }
 
-/* --- NEW: Mobile Responsive Styles --- */
+/* --- Mobile Responsive Styles --- */
 @media (max-width: 800px) {
     body {
         padding: 10px;
@@ -315,18 +315,23 @@ header {
         flex-direction: column;
     }
 
-    #post-display-wrapper {
-        height: auto;
-        max-height: 70vh; /* Allow scrolling but don't take up the whole screen */
-    }
-
+    /* Reset desktop constraints */
+    #post-display-wrapper,
     .gallery-container {
-        height: 250px; /* A fixed, reasonable height for the gallery on mobile */
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        min-width: 0;
+        height: auto;
+        max-height: none;
     }
 
-    .gallery-container img {
-        height: 80px;
+    /* Disable internal scrolling on post content for mobile */
+    .post-content {
+        overflow-y: visible;
+        flex-grow: initial;
+    }
+
+    /* Set a reasonable max-height for the gallery on mobile */
+    .gallery-container {
+        max-height: 300px; 
     }
 
     /* Hide the hover preview on mobile devices */
