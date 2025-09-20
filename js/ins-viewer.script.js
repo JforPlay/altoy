@@ -1,20 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const galleryView = document.getElementById('gallery-view');
-    const postDisplay = document.getElementById('post-display');
+    const postDisplayContainer = document.getElementById('post-display');
     let postsData = {};
 
-    // Fetch the JSON data from the local file
     fetch('data/processed_ins_data.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             postsData = data;
             populateGallery();
-            // Display the first post by default
             const firstPostId = Object.keys(postsData)[0];
             if (firstPostId) {
                 displayPost(firstPostId);
@@ -23,11 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => {
             console.error('Error fetching data:', error);
-            galleryView.innerHTML = '<p>Error loading posts. Make sure processed_ins_data.json is in the same folder.</p>';
+            galleryView.innerHTML = '<p>Error loading posts.</p>';
         });
 
     function populateGallery() {
-        galleryView.innerHTML = ''; // Clear any existing content
+        galleryView.innerHTML = '';
         for (const postId in postsData) {
             const post = postsData[postId];
             if (post.picture_persist && post.picture_persist.trim() !== '') {
@@ -44,48 +37,42 @@ document.addEventListener('DOMContentLoaded', () => {
         const post = postsData[postId];
         if (!post) return;
 
-        postDisplay.innerHTML = ''; // Clear previous post content
+        postDisplayContainer.innerHTML = ''; // Clear previous content
 
-        // 1. Post Header
+        const postContent = document.createElement('div');
+        postContent.className = 'post-content';
+
         const header = document.createElement('div');
         header.className = 'post-header';
-        
         const authorInfo = document.createElement('div');
         authorInfo.className = 'post-author';
         authorInfo.innerHTML = `${post.korean_name}<span>${post.name}</span>`;
         header.appendChild(authorInfo);
         
-        // 2. Post Image
         const image = document.createElement('img');
         image.src = post.picture_persist;
         image.alt = `Post image by ${post.korean_name}`;
         image.className = 'post-image';
 
-        // 3. Post Message
         const message = document.createElement('p');
         message.className = 'post-message';
         message.textContent = post.message;
 
-        // 4. Comments Section
         const commentsSection = document.createElement('div');
         commentsSection.className = 'comments-section';
-        commentsSection.innerHTML = '<h3>Comments</h3>';
         
-        // Process all reply groups dynamically
         let hasComments = false;
         for (let i = 1; ; i++) {
             const groupKey = `reply_group${i}`;
-            if (!post[groupKey]) break; // Stop if no more reply groups
-            
+            if (!post[groupKey]) break;
             hasComments = true;
+            
             const threadContainer = document.createElement('div');
             threadContainer.className = 'comment-thread';
             
-            const comments = post[groupKey];
             let isFirstInThread = true;
-
-            for (const commentId in comments) {
-                const commentData = comments[commentId];
+            for (const commentId in post[groupKey]) {
+                const commentData = post[groupKey][commentId];
                 const author = Object.keys(commentData)[0];
                 const text = commentData[author];
 
@@ -94,36 +81,70 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!isFirstInThread) {
                     commentDiv.classList.add('reply');
                 }
-                
-                commentDiv.innerHTML = `<div class="comment-author">${author}</div><div class="comment-text">${text}</div>`;
+                commentDiv.innerHTML = `<div class="comment-author">${author}:</div><div class="comment-text">${text}</div>`;
                 threadContainer.appendChild(commentDiv);
-                
                 isFirstInThread = false;
             }
             commentsSection.appendChild(threadContainer);
         }
-
-        // Append all parts to the display area
-        postDisplay.appendChild(header);
-        postDisplay.appendChild(image);
-        postDisplay.appendChild(message);
-        if (hasComments) {
-            postDisplay.appendChild(commentsSection);
+        
+        if(hasComments) {
+            const commentsHeader = document.createElement('h3');
+            commentsHeader.textContent = 'Comments';
+            commentsSection.prepend(commentsHeader);
         }
+
+        postContent.appendChild(header);
+        postContent.appendChild(image);
+        postContent.appendChild(message);
+        postContent.appendChild(commentsSection);
+        
+        // --- NEW: Commander Reply Section ---
+        const commanderReplySection = document.createElement('footer');
+        commanderReplySection.className = 'commander-reply-section';
+
+        if (post.op_option1 && post.op_option1 !== "Translation Source Missing") {
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'commander-options';
+
+            const replyContainer = document.createElement('div');
+            replyContainer.className = 'shipgirl-reply';
+
+            // Option 1 Button
+            const button1 = document.createElement('button');
+            button1.textContent = post.op_option1;
+            button1.addEventListener('click', () => {
+                replyContainer.innerHTML = `<strong>You:</strong> ${post.op_option1}<br><strong>${post.korean_name}:</strong> ${post.op_reply1}`;
+                optionsContainer.style.display = 'none'; // Hide buttons after choice
+                commanderReplySection.appendChild(replyContainer);
+            });
+            optionsContainer.appendChild(button1);
+            
+            // Option 2 Button
+            const button2 = document.createElement('button');
+            button2.textContent = post.op_option2;
+            button2.addEventListener('click', () => {
+                replyContainer.innerHTML = `<strong>You:</strong> ${post.op_option2}<br><strong>${post.korean_name}:</strong> ${post.op_reply2}`;
+                optionsContainer.style.display = 'none'; // Hide buttons after choice
+                commanderReplySection.appendChild(replyContainer);
+            });
+            optionsContainer.appendChild(button2);
+            
+            commanderReplySection.appendChild(optionsContainer);
+        }
+        
+        postDisplayContainer.appendChild(postContent);
+        postDisplayContainer.appendChild(commanderReplySection);
     }
     
     function highlightSelectedThumbnail(postId) {
-        // Remove 'selected' class from all other images
         galleryView.querySelectorAll('img').forEach(img => img.classList.remove('selected'));
-
-        // Add 'selected' class to the clicked image
         const selectedImg = galleryView.querySelector(`img[data-post-id="${postId}"]`);
         if (selectedImg) {
             selectedImg.classList.add('selected');
         }
     }
 
-    // Use Event Delegation for handling clicks on gallery images
     galleryView.addEventListener('click', (event) => {
         if (event.target.tagName === 'IMG') {
             const postId = event.target.dataset.postId;

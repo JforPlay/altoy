@@ -56,16 +56,26 @@ header {
 }
 
 /* Post Display Styles */
-.post-display-container {
+#post-display-wrapper {
     flex: 2;
     min-width: 400px;
+    height: calc(100vh - 100px);
+}
+
+.post-display-container {
     background-color: #ffffff;
     border: 1px solid #dddfe2;
     border-radius: 8px;
-    padding: 25px;
-    height: calc(100vh - 100px);
-    overflow-y: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-content {
+    padding: 25px;
+    overflow-y: auto;
+    flex-grow: 1;
 }
 
 .post-header {
@@ -97,7 +107,7 @@ header {
 .post-message {
     margin-bottom: 25px;
     line-height: 1.5;
-    white-space: pre-wrap; /* Respects newlines in the message */
+    white-space: pre-wrap;
 }
 
 .comments-section h3 {
@@ -122,7 +132,7 @@ header {
 }
 
 .comment.reply {
-    margin-left: 25px; /* Indent replies */
+    margin-left: 25px;
 }
 
 .comment-author {
@@ -133,4 +143,43 @@ header {
 
 .comment-text {
     color: #1c1e21;
+}
+
+/* Commander Reply Section Styles */
+.commander-reply-section {
+    padding: 15px 25px;
+    border-top: 1px solid #dddfe2;
+    background-color: #f7f7f7;
+}
+
+.commander-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.commander-options button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #e4e6eb;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: left;
+    transition: background-color 0.2s;
+}
+
+.commander-options button:hover {
+    background-color: #d8dadf;
+}
+
+.shipgirl-reply {
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #e7f3ff;
+    border: 1px solid #cce0f8;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    line-height: 1.5;
 }
