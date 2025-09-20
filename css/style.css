@@ -145,11 +145,9 @@ body {
     padding-top: 2rem;
     border-top: 1px solid #333;
 }
-
 .stats-header {
     margin-bottom: 2rem;
 }
-
 .stats-header .flavor-text-box {
     text-align: center;
     background-color: transparent;
@@ -157,13 +155,11 @@ body {
     padding: 0;
     margin-bottom: 1rem;
 }
-
 .stats-header .flavor-text-box h3 {
     margin: 0;
     font-size: 1.2em;
     color: #b9bbbe;
 }
-
 .stats-header .total-votes-box {
     background-color: #1e1e1e;
     border: 1px solid #333;
@@ -171,38 +167,32 @@ body {
     padding: 1.5rem;
     text-align: center;
 }
-
 .stats-header .total-votes-box h2 {
     margin: 0 0 0.5rem 0;
     font-size: 1.5em;
     color: #ffffff;
 }
-
 .stats-header .total-votes-box span {
     font-size: 2.5em;
     font-weight: bold;
     color: #ffffff;
 }
-
 .stats-leaderboards {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
 }
-
 .stats-column h2 {
     color: #ffffff;
     border-bottom: 2px solid #333;
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
 }
-
 .leaderboard-list-home {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
 .leaderboard-item-home {
     display: grid;
     grid-template-columns: 30px 40px 1fr auto;
@@ -211,11 +201,9 @@ body {
     padding: 0.75rem;
     border-radius: 6px;
 }
-
 .leaderboard-item-home:nth-child(odd) {
     background-color: #1e1e1e;
 }
-
 .leaderboard-icon {
     width: 40px;
     height: 40px;
@@ -227,18 +215,15 @@ body {
     border-radius: 4px;
     background-color: #2f3136;
 }
-
 .leaderboard-item-home .rank {
     font-weight: bold;
     color: #b9bbbe;
 }
-
 .leaderboard-item-home .name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .leaderboard-item-home .score {
     font-weight: bold;
     color: #ffc107;
@@ -248,7 +233,6 @@ body {
     text-align: center;
     padding: 1rem;
 }
-
 
 /* --- Responsive adjustments --- */
 @media (max-width: 768px) {
