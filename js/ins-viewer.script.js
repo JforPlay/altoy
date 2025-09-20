@@ -216,13 +216,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const commentDiv = document.createElement('div');
                 commentDiv.className = 'comment';
                 if (!isFirstInThread) commentDiv.classList.add('reply');
+                
+                // --- FIX IS HERE --- 
+                // Changed the structure to put the text in a <span> for proper inline-flex alignment.
                 commentDiv.innerHTML = `
                     <div class="comment-author">
                         <img src="${author.icon}" class="comment-icon" alt="${author.name}">
                         <span>${author.name}</span>
                         <span class="comment-username">${author.username}:</span>
                     </div>
-                    <div class="comment-text">${text}</div>`;
+                    <span class="comment-text">${text}</span>`;
                 threadContainer.appendChild(commentDiv);
                 isFirstInThread = false;
             }
