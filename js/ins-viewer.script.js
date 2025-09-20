@@ -11,33 +11,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // Data storage
     let postsData = {};
     let shipgirlDataMap = {};
-    let nameCodeMap = {};
     const placeholderIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
-    const nameCodeUrl = 'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/name_code.json'
+
 
     // --- Data Fetching ---
     Promise.all([
         fetch('data/processed_ins_data.json').then(res => res.json()),
-        fetch('data/shipgirl_group_data.json').then(res => res.json()),
-        fetch(nameCodeUrl).then(res => res.json())
+        fetch('data/shipgirl_group_data.json').then(res => res.json())
     ])
-    .then(([posts, shipgirlData, nameCodeData]) => {
+    .then(([posts, shipgirlData]) => {
         postsData = posts;
         shipgirlDataMap = shipgirlData;
-        nameCodeMap = nameCodeData.all;
 
         initializeFilters();
         populateGallery();
         
-        const firstPostId = Object.keys(postsData)[0];
-        if (postsData[firstPostId]) {
-            displayPost(postsData[firstPostId].id);
-            highlightSelectedThumbnail(postsData[firstPostId].id);
+        const firstPostKey = Object.keys(postsData)[0];
+        if (postsData[firstPostKey]) {
+            displayPost(postsData[firstPostKey].id);
+            highlightSelectedThumbnail(postsData[firstPostKey].id);
         }
     })
     .catch(error => {
         console.error('Error fetching data:', error);
-        galleryView.innerHTML = `<p>Error loading data. Make sure all .json files are present.</p>`;
+        galleryView.innerHTML = `<p>데이터를 불러오는 데 실패했습니다. 모든 .json 파일이 있는지 확인해주세요.</p>`;
     });
 
     // --- Helper Functions ---
@@ -53,18 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return { name: `Unknown ID: ${id}`, icon: placeholderIcon };
     }
-    
-    function replaceNameCodes(text) {
-        if (!text || typeof text !== 'string') return text;
-        return text.replace(/\{namecode:(\d+)\}/g, (match, code) => nameCodeMap[code] || match);
-    }
 
     // --- Filter Logic ---
     function initializeFilters() {
         const allPosts = Object.values(postsData);
-        // Map IDs to names for the filter lists
-        const allAuthors = [...new Set(allPosts.map(p => getShipgirlData(p.ship_group).name))].sort();
-        const allMentioned = [...new Set(allPosts.flatMap(p => (p.shipgirl_names || []).map(id => getShipgirlData(id).name)))].sort();
+        const allAuthors = [...new Set(allPosts.map(p => getShipgirlData(p.ship_group).name).filter(Boolean))].sort();
+        const allMentioned = [...new Set(allPosts.flatMap(p => (p.shipgirl_names || []).map(id => getShipgirlData(id).name).filter(Boolean)))].sort();
 
         populateDropdown(authorDropdown, allAuthors, (author) => {
             authorSearchInput.value = author;
@@ -114,32 +105,34 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupDropdownToggle(input, dropdown) {
         input.addEventListener('focus', () => dropdown.style.display = 'block');
         input.addEventListener('blur', () => {
-            setTimeout(() => dropdown.style.display = 'none', 150);
+            setTimeout(() => {
+                dropdown.style.display = 'none';
+            }, 150);
         });
     }
     
     // --- Gallery and Post Display ---
     function populateGallery(filters = {}) {
         galleryView.innerHTML = '';
-        let filteredPosts = Object.values(postsData);
+        let postEntries = Object.entries(postsData);
 
         if (filters.author) {
-            filteredPosts = filteredPosts.filter(p => getShipgirlData(p.ship_group).name === filters.author);
+            postEntries = postEntries.filter(([key, post]) => getShipgirlData(post.ship_group).name === filters.author);
         }
         if (filters.mentioned) {
-            filteredPosts = filteredPosts.filter(p => {
-                const mentionedNames = (p.shipgirl_names || []).map(id => getShipgirlData(id).name);
+            postEntries = postEntries.filter(([key, post]) => {
+                const mentionedNames = (post.shipgirl_names || []).map(id => getShipgirlData(id).name);
                 return mentionedNames.includes(filters.mentioned);
             });
         }
 
-        if (filteredPosts.length === 0) {
-            galleryView.innerHTML = '<p>No posts match the filter.</p>';
+        if (postEntries.length === 0) {
+            galleryView.innerHTML = '<p>필터와 일치하는 게시물이 없습니다.</p>';
             postDisplayContainer.innerHTML = '';
             return;
         }
 
-        filteredPosts.forEach(post => {
+        postEntries.forEach(([key, post]) => {
              if (post.picture_persist && post.picture_persist.trim() !== '') {
                 const authorData = getShipgirlData(post.ship_group);
                 const img = document.createElement('img');
@@ -150,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const firstPostId = filteredPosts[0]?.id;
+        const firstPostId = postEntries[0]?.[1]?.id;
          if (firstPostId) {
             displayPost(firstPostId);
             highlightSelectedThumbnail(firstPostId);
@@ -158,18 +151,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function displayPost(postId) {
-        const post = Object.values(postsData).find(p => p.id == postId);
+        const post = postsData[postId];
+
         if (!post) {
-            postDisplayContainer.innerHTML = '<p>Post not found.</p>';
+            postDisplayContainer.innerHTML = `<p>게시물 ID '${postId}'를 찾을 수 없습니다.</p>`;
             return;
         }
 
         postDisplayContainer.innerHTML = '';
-
         const postContent = document.createElement('div');
         postContent.className = 'post-content';
-
-        // Post Header with Icon
         const authorData = getShipgirlData(post.ship_group);
         const header = document.createElement('div');
         header.className = 'post-header';
@@ -190,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const message = document.createElement('p');
         message.className = 'post-message';
-        message.textContent = replaceNameCodes(post.message);
+        message.textContent = post.message;
 
         const commentsSection = document.createElement('div');
         commentsSection.className = 'comments-section';
@@ -209,8 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const commentData = post[groupKey][commentId];
                 const authorId = Object.keys(commentData)[0];
                 const author = getShipgirlData(authorId);
-                const originalText = commentData[authorId];
-                const processedText = replaceNameCodes(originalText);
+                const text = commentData[authorId];
 
                 const commentDiv = document.createElement('div');
                 commentDiv.className = 'comment';
@@ -220,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="${author.icon}" class="comment-icon" alt="${author.name}">
                         <span>${author.name}:</span>
                     </div>
-                    <div class="comment-text">${processedText}</div>`;
+                    <div class="comment-text">${text}</div>`;
                 threadContainer.appendChild(commentDiv);
                 isFirstInThread = false;
             }
@@ -229,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if(hasComments) {
             const commentsHeader = document.createElement('h3');
-            commentsHeader.textContent = 'Comments';
+            commentsHeader.textContent = '댓글';
             commentsSection.prepend(commentsHeader);
         }
 
@@ -249,8 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const createReplyHandler = (optionText, replyText) => {
                 return () => {
-                    const processedReply = replaceNameCodes(replyText);
-                    replyContainer.innerHTML = `<strong>You:</strong> ${optionText}<br><strong>${authorData.name}:</strong> ${processedReply}`;
+                    replyContainer.innerHTML = `<strong>지휘관:</strong> ${optionText}<br><strong>${authorData.name}:</strong> ${replyText}`;
                     optionsContainer.style.display = 'none';
                     commanderReplySection.appendChild(replyContainer);
                 };
