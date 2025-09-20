@@ -93,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupDropdownToggle(input, dropdown) {
         input.addEventListener('focus', () => dropdown.style.display = 'block');
         input.addEventListener('blur', () => {
-            // Delay hiding so a click event can register
             setTimeout(() => {
                 dropdown.style.display = 'none';
             }, 150);
@@ -114,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (filteredPosts.length === 0) {
             galleryView.innerHTML = '<p>No posts match the filter.</p>';
-            postDisplayContainer.innerHTML = ''; // Clear display if no results
+            postDisplayContainer.innerHTML = '';
             return;
         }
 
@@ -123,12 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const img = document.createElement('img');
                 img.src = post.picture_persist;
                 img.alt = `Post by ${post.korean_name}`;
-                img.dataset.postId = post.id; // Use post.id for consistency
+                img.dataset.postId = post.id;
                 galleryView.appendChild(img);
             }
         });
 
-        // Automatically display the first post from the filtered list
         const firstPostId = filteredPosts[0]?.id;
          if (firstPostId) {
             displayPost(firstPostId);
@@ -136,16 +134,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // The rest of the functions (displayPost, replaceNameCodes, highlightSelectedThumbnail) remain largely the same...
-    // [The following functions are unchanged from the previous version, but included for completeness]
-    
     function replaceNameCodes(text) {
         if (!text || typeof text !== 'string') return text;
         return text.replace(/\{namecode:(\d+)\}/g, (match, code) => nameCodeMap[code] || match);
     }
     
     function displayPost(postId) {
-        // Find the post by its ID, not its key in the main object
         const post = Object.values(postsData).find(p => p.id == postId);
         if (!post) {
             postDisplayContainer.innerHTML = '<p>Post not found.</p>';
@@ -188,13 +182,25 @@ document.addEventListener('DOMContentLoaded', () => {
             let isFirstInThread = true;
             for (const commentId in post[groupKey]) {
                 const commentData = post[groupKey][commentId];
-                const author = Object.keys(commentData)[0];
-                const processedText = replaceNameCodes(commentData[author]);
+                const originalAuthor = Object.keys(commentData)[0];
+                const originalText = commentData[originalAuthor];
+
+                // --- FIX IS HERE ---
+                // Process the author name in case it's a namecode
+                let processedAuthor = originalAuthor;
+                const match = originalAuthor.match(/\{namecode:(\d+)\}/);
+                if (match && match[1]) {
+                    const code = match[1];
+                    processedAuthor = nameCodeMap[code] || originalAuthor; // Replace if found
+                }
+                
+                // Process the comment text for namecodes
+                const processedText = replaceNameCodes(originalText); 
 
                 const commentDiv = document.createElement('div');
                 commentDiv.className = 'comment';
                 if (!isFirstInThread) commentDiv.classList.add('reply');
-                commentDiv.innerHTML = `<div class="comment-author">${author}:</div><div class="comment-text">${processedText}</div>`;
+                commentDiv.innerHTML = `<div class="comment-author">${processedAuthor}:</div><div class="comment-text">${processedText}</div>`;
                 threadContainer.appendChild(commentDiv);
                 isFirstInThread = false;
             }
