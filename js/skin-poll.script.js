@@ -147,42 +147,45 @@ document.addEventListener("DOMContentLoaded", () => {
   const renderPollList = (skinsToRender) => { pollContainer.innerHTML = ""; if (skinsToRender.length === 0) { pollContainer.innerHTML = `<div class="no-results">표시할 스킨이 없습니다.</div>`; return; } skinsToRender.forEach((skin) => { const skinId = skin.id; const pollBox = document.createElement("div"); pollBox.className = "poll-box"; pollBox.id = `poll-box-${skinId}`; const hasVoted = localStorage.getItem(`voted_${skinId}`) === "true"; const votedRating = hasVoted ? localStorage.getItem(`rating_${skinId}`) : null; pollBox.innerHTML = ` <img src="${skin["깔끔한 일러"]}" class="poll-image" loading="lazy"> <div class="poll-info"> <div class="character-name">${skin["함순이 이름"]}</div> <h3>${skin["한글 함순이 + 스킨 이름"]}</h3> <div class="info-line"><strong>타입:</strong> ${skin["스킨 타입 - 한글"] || "기본"}</div> <div class="info-line"><strong>태그:</strong> ${skin["스킨 태그"] || "없음"}</div> <div class="info-line"><strong>레어도:</strong> ${skin["레어도"] || "없음"}</div> <div class="rating-area ${hasVoted ? "voted" : ""}" data-skin-id-area="${skinId}"> <div class="vote-widget"> <span class="vote-label">투표:</span> <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin["한글 함순이 + 스킨 이름"]}" data-character-name="${skin["함순이 이름"]}"> <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${votedRating === '5' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label> <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${votedRating === '4' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star4-${skinId}">★</label> <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${votedRating === '3' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star3-${skinId}">★</label> <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${votedRating === '2' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label> <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${votedRating === '1' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label> </div> </div> <div class="confirm-vote-message" id="confirm-msg-${skinId}">다시 클릭하여 확정</div> <div class="poll-results" id="results-${skinId}"></div> </div> </div>`; pollContainer.appendChild(pollBox); updateScoreDisplay(skinId, { total_votes: skin.total_votes, total_score: skin.average_score * skin.total_votes }); }); };
   // REPLACE the old submitVote function in js/skin-poll.script.js with this one
 
-  const submitVote = (skinId, rating, skinName, characterName) => {
+  const submitVote = async (skinId, rating, skinName, characterName) => {
     if (localStorage.getItem(`voted_${skinId}`) === "true") {
-      return;
+      return; // Exit if already voted
     }
 
     const skinDocRef = db.collection("skin_polls").doc(String(skinId));
     const statsDocRef = db.collection("stats").doc("total_votes_counter");
 
-    // This corrected transaction reads all data first, then performs all writes.
-    db.runTransaction(transaction => {
-      return Promise.all([transaction.get(skinDocRef), transaction.get(statsDocRef)])
-        .then(([skinDoc, statsDoc]) => {
+    try {
+      await db.runTransaction(async (transaction) => {
+        // 1. Read all data from Firestore first
+        const skinDoc = await transaction.get(skinDocRef);
+        const statsDoc = await transaction.get(statsDocRef);
 
-          // Calculate the new values for the specific skin
-          const newTotalVotes = (skinDoc.data()?.total_votes || 0) + 1;
-          const newTotalScore = (skinDoc.data()?.total_score || 0) + rating;
-          const newAverageScore = newTotalScore / newTotalVotes;
+        // 2. Calculate new values
+        const currentTotalVotes = skinDoc.data()?.total_votes || 0;
+        const currentTotalScore = skinDoc.data()?.total_score || 0;
+        const siteTotalVotes = statsDoc.data()?.count || 0;
 
-          // Calculate the new value for the site-wide vote counter
-          const newTotalCount = (statsDoc.data()?.count || 0) + 1;
+        const newTotalVotes = currentTotalVotes + 1;
+        const newTotalScore = currentTotalScore + rating;
+        const newAverageScore = newTotalScore / newTotalVotes;
+        const newTotalCount = siteTotalVotes + 1;
 
-          // Perform all writes with the correctly calculated values
-          transaction.set(skinDocRef, {
-            total_votes: newTotalVotes,
-            total_score: newTotalScore,
-            average_score: newAverageScore,
-            skin_name: skinName,
-            character_name: characterName
-          }, { merge: true });
+        // 3. Perform all writes to Firestore
+        transaction.set(skinDocRef, {
+          total_votes: newTotalVotes,
+          total_score: newTotalScore,
+          average_score: newAverageScore,
+          skin_name: skinName,
+          character_name: characterName
+        }, { merge: true });
 
-          transaction.set(statsDocRef, {
-            count: newTotalCount
-          }, { merge: true });
-        });
-    }).then(() => {
-      // --- Success Handling ---
+        transaction.set(statsDocRef, {
+          count: newTotalCount
+        }, { merge: true });
+      });
+
+      // --- Success Handling (runs only if the transaction above succeeds) ---
       localStorage.setItem(`voted_${skinId}`, "true");
       localStorage.setItem(`rating_${skinId}`, rating);
 
@@ -194,9 +197,9 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => ratingArea.classList.remove("voted-animation"), 300);
       }
 
-      skinDocRef.get().then(doc => {
-        if (doc.exists) {
-          const voteData = doc.data();
+      const updatedDoc = await skinDocRef.get();
+      if (updatedDoc.exists) {
+          const voteData = updatedDoc.data();
           allPollDataCache[skinId] = voteData;
           updateScoreDisplay(skinId, voteData);
           const skinInArray = currentlyDisplayedSkins.find(s => s.id === skinId);
@@ -204,11 +207,20 @@ document.addEventListener("DOMContentLoaded", () => {
             skinInArray.total_votes = voteData.total_votes;
             skinInArray.average_score = voteData.average_score;
           }
-        }
-      });
-    }).catch(error => {
+      }
+
+    } catch (error) {
       console.error("Firebase transaction failed: ", error);
-    });
+      // Optional: Alert the user that the vote failed
+      alert("투표를 저장하는 데 실패했습니다. 잠시 후 다시 시도해 주세요.");
+      // Optional: Reset the UI from the pending state
+      const ratingArea = document.querySelector(`.rating-area[data-skin-id-area="${skinId}"]`);
+      if (ratingArea) {
+          ratingArea.classList.remove('pending-vote');
+          const checkedRadio = ratingArea.querySelector(`input[name="rating-${skinId}"]:checked`);
+          if (checkedRadio) checkedRadio.checked = false;
+      }
+    }
   };
 
   // --- Unchanged Functions ---
