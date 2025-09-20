@@ -217,8 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 commentDiv.className = 'comment';
                 if (!isFirstInThread) commentDiv.classList.add('reply');
                 
-                // --- FIX IS HERE --- 
-                // Changed the structure to put the text in a <span> for proper inline-flex alignment.
                 commentDiv.innerHTML = `
                     <div class="comment-author">
                         <img src="${author.icon}" class="comment-icon" alt="${author.name}">
@@ -245,30 +243,37 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const commanderReplySection = document.createElement('footer');
         commanderReplySection.className = 'commander-reply-section';
-
+        
+        // --- MODIFIED: Commander Reply Logic ---
         if (post.op_option1 && post.op_option1 !== "Translation Source Missing") {
             const optionsContainer = document.createElement('div');
             optionsContainer.className = 'commander-options';
             const replyContainer = document.createElement('div');
             replyContainer.className = 'shipgirl-reply';
 
-            const createReplyHandler = (optionText, replyText) => {
+            // New handler that accepts the specific replier's ID
+            const createReplyHandler = (optionText, replyText, replierId) => {
                 return () => {
-                    replyContainer.innerHTML = `<strong>지휘관:</strong> ${optionText}<br><strong>${authorData.name}:</strong> ${replyText}`;
+                    const replierData = getShipgirlData(replierId); // Look up the correct replier
+                    replyContainer.innerHTML = `<strong>지휘관:</strong> ${optionText}<br><strong>${replierData.name}:</strong> ${replyText}`;
                     optionsContainer.style.display = 'none';
                     commanderReplySection.appendChild(replyContainer);
                 };
             };
 
+            // Option 1 button (always created if section exists)
             const button1 = document.createElement('button');
             button1.textContent = post.op_option1;
-            button1.addEventListener('click', createReplyHandler(post.op_option1, post.op_reply1));
+            button1.addEventListener('click', createReplyHandler(post.op_option1, post.op_reply1, post.reply1_shipgirl));
             optionsContainer.appendChild(button1);
             
-            const button2 = document.createElement('button');
-            button2.textContent = post.op_option2;
-            button2.addEventListener('click', createReplyHandler(post.op_option2, post.op_reply2));
-            optionsContainer.appendChild(button2);
+            // Option 2 button (only created if it's not a missing translation)
+            if (post.op_option2 && post.op_option2 !== "Translation Source Missing") {
+                const button2 = document.createElement('button');
+                button2.textContent = post.op_option2;
+                button2.addEventListener('click', createReplyHandler(post.op_option2, post.op_reply2, post.reply2_shipgirl));
+                optionsContainer.appendChild(button2);
+            }
             
             commanderReplySection.appendChild(optionsContainer);
         }
@@ -296,7 +301,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Event Listeners for Image Preview
     galleryView.addEventListener('mouseover', (event) => {
         if (event.target.tagName === 'IMG') {
             imagePreview.src = event.target.src;
