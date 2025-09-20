@@ -1321,7 +1321,7 @@
     },
     "30184": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301840/icon.png",
-        "name": "{namecode:27}"
+        "name": "스즈츠키"
     },
     "30185": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301850/icon.png",
@@ -1477,7 +1477,7 @@
     },
     "30314": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303140/icon.png",
-        "name": "{namecode:69}"
+        "name": "초카이"
     },
     "30317": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303170/icon.png",
@@ -1485,7 +1485,7 @@
     },
     "30318": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303180/icon.png",
-        "name": "{namecode:60}"
+        "name": "쿠마노"
     },
     "30319": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303190/icon.png",
@@ -1569,7 +1569,7 @@
     },
     "30512": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305120/icon.png",
-        "name": "{namecode:80}"
+        "name": "키이"
     },
     "30513": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305130/icon.png",
@@ -1585,7 +1585,7 @@
     },
     "30601": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306010/icon.png",
-        "name": "{namecode:85}"
+        "name": "히요"
     },
     "30602": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306020/icon.png",
@@ -1613,11 +1613,11 @@
     },
     "30608": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306080/icon.png",
-        "name": "{namecode:103}"
+        "name": "치토세"
     },
     "30609": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306090/icon.png",
-        "name": "{namecode:104}"
+        "name": "치요다"
     },
     "30701": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307010/icon.png",
@@ -1649,7 +1649,7 @@
     },
     "30708": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307080/icon.png",
-        "name": "{namecode:182}"
+        "name": "시나노 "
     },
     "30709": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307090/icon.png",
@@ -1721,7 +1721,7 @@
     },
     "31901": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/319010/icon.png",
-        "name": "{namecode:188}"
+        "name": "카시노"
     },
     "39901": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399010/icon.png",
@@ -1821,7 +1821,7 @@
     },
     "40143": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401430/icon.png",
-        "name": "{namecode:537}"
+        "name": "Z43"
     },
     "40146": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401460/icon.png",
@@ -1829,7 +1829,7 @@
     },
     "40147": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401470/icon.png",
-        "name": "{namecode:494}"
+        "name": "Z47"
     },
     "40152": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401520/icon.png",
@@ -2069,7 +2069,7 @@
     },
     "40813": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408130/icon.png",
-        "name": "{namecode:536}"
+        "name": "U-31"
     },
     "40814": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408140/icon.png",
