@@ -80,20 +80,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const applyFiltersFromURL = () => {
     const params = new URLSearchParams(window.location.search);
 
-    characterNameSearch.value = params.get('character') || '';
-    skinTypeSelect.value = params.get('type') || 'all';
-    factionSelect.value = params.get('faction') || 'all';
-    tagSelect.value = params.get('tag') || 'all';
-    sortSelect.value = params.get('sort') || 'default';
+    // Check if the URL is clean (has no filter parameters)
+    if (params.toString() === '') {
+      // If no parameters, set your desired default filters
+      skinTypeSelect.value = '수영복';
+      tagSelect.value = 'L2D';
+      // All other filters will use their default HTML values (e.g., all rarities checked)
+    } else {
+      // If parameters exist, load the filter state from the URL
+      characterNameSearch.value = params.get('character') || '';
+      skinTypeSelect.value = params.get('type') || 'all';
+      factionSelect.value = params.get('faction') || 'all';
+      tagSelect.value = params.get('tag') || 'all';
+      sortSelect.value = params.get('sort') || 'default';
 
-    const raritiesParam = params.get('rarities');
-    if (raritiesParam) {
-      const activeRarities = raritiesParam.split(',');
-      rarityCheckboxes.querySelectorAll('input').forEach(cb => {
-        cb.checked = activeRarities.includes(cb.value);
-      });
+      const raritiesParam = params.get('rarities');
+      if (raritiesParam) {
+        const activeRarities = raritiesParam.split(',');
+        rarityCheckboxes.querySelectorAll('input').forEach(cb => {
+          cb.checked = activeRarities.includes(cb.value);
+        });
+      }
     }
 
+    // Finally, apply the filters based on the current state of the dropdowns and checkboxes
     applyFilters();
   };
 
@@ -199,14 +209,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const updatedDoc = await skinDocRef.get();
       if (updatedDoc.exists) {
-          const voteData = updatedDoc.data();
-          allPollDataCache[skinId] = voteData;
-          updateScoreDisplay(skinId, voteData);
-          const skinInArray = currentlyDisplayedSkins.find(s => s.id === skinId);
-          if (skinInArray) {
-            skinInArray.total_votes = voteData.total_votes;
-            skinInArray.average_score = voteData.average_score;
-          }
+        const voteData = updatedDoc.data();
+        allPollDataCache[skinId] = voteData;
+        updateScoreDisplay(skinId, voteData);
+        const skinInArray = currentlyDisplayedSkins.find(s => s.id === skinId);
+        if (skinInArray) {
+          skinInArray.total_votes = voteData.total_votes;
+          skinInArray.average_score = voteData.average_score;
+        }
       }
 
     } catch (error) {
@@ -216,9 +226,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // Optional: Reset the UI from the pending state
       const ratingArea = document.querySelector(`.rating-area[data-skin-id-area="${skinId}"]`);
       if (ratingArea) {
-          ratingArea.classList.remove('pending-vote');
-          const checkedRadio = ratingArea.querySelector(`input[name="rating-${skinId}"]:checked`);
-          if (checkedRadio) checkedRadio.checked = false;
+        ratingArea.classList.remove('pending-vote');
+        const checkedRadio = ratingArea.querySelector(`input[name="rating-${skinId}"]:checked`);
+        if (checkedRadio) checkedRadio.checked = false;
       }
     }
   };
