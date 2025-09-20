@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const today = new Date();
             currentDateEl.textContent = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
         }
-        
+
         try {
             const [skinDataResponse, top10Snapshot, mostVotedSnapshot, totalVotesDoc] = await Promise.all([
                 fetch('data/shipgirl_data.json').then(res => res.json()),
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 db.collection("skin_polls").orderBy("total_votes", "desc").limit(10).get(),
                 db.collection("stats").doc("total_votes_counter").get()
             ]);
-            
+
             const skinIconMap = new Map();
             for (const id in skinDataResponse) {
                 const skin = skinDataResponse[id];
@@ -53,30 +53,37 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // 4. Helper rendering functions
-    const renderLeaderboard = (container, snapshot, iconMap, type) => {
+    const renderLeaderboard = (container, skins, iconMap, type) => {
         if (!container) return;
-        if (snapshot.empty) {
+        if (!skins || skins.length === 0) {
             container.innerHTML = '<li>데이터가 없습니다.</li>';
             return;
         }
 
-        let rank = 1;
-        container.innerHTML = snapshot.docs.map(doc => {
-            const skin = doc.data();
+        // Helper to get the display for the rank
+        const getRankDisplay = (rank) => {
+            if (rank === 1) return '<span class="rank rank-1">🏆</span>';
+            if (rank === 2) return '<span class="rank rank-2">🥈</span>';
+            if (rank === 3) return '<span class="rank rank-3">🥉</span>';
+            return `<span class="rank">#${rank}</span>`;
+        };
+
+        container.innerHTML = skins.map((skin, index) => {
+            const rank = index + 1;
             const skinName = skin.skin_name || 'Unknown Skin';
             const iconUrl = iconMap.get(skinName.trim());
-            const displayValue = type === 'score' 
-                ? `★ ${(skin.average_score || 0).toFixed(2)}` 
+            const displayValue = type === 'score'
+                ? `★ ${(skin.average_score || 0).toFixed(2)}`
                 : `${(skin.total_votes || 0).toLocaleString()} 표`;
 
             return `
-                <li class="leaderboard-item-home">
-                    <span class="rank">#${rank++}</span>
-                    ${iconUrl ? `<img src="${iconUrl}" class="leaderboard-icon" alt="${skinName}" loading="lazy">` : '<div class="leaderboard-icon-placeholder"></div>'}
-                    <span class="name">${skinName}</span>
-                    <span class="score">${displayValue}</span>
-                </li>
-            `;
+            <li class="leaderboard-item-home">
+                ${getRankDisplay(rank)}
+                ${iconUrl ? `<img src="${iconUrl}" class="leaderboard-icon" alt="${skinName}" loading="lazy">` : '<div class="leaderboard-icon-placeholder"></div>'}
+                <span class="name">${skinName}</span>
+                <span class="score">${displayValue}</span>
+            </li>
+        `;
         }).join('');
     };
 

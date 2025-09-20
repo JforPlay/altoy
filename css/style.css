@@ -139,6 +139,29 @@ body {
 .card-row .link-card:nth-child(2) { animation-delay: 0.8s; } /* Second side-by-side card */
 
 
+/* --- Leaderboard Flair Styles --- */
+
+.leaderboard-item-home .rank {
+    font-size: 1.3em; /* Make rank icons/text slightly larger */
+    width: 35px;      /* Give them a consistent width */
+    text-align: center;
+}
+
+.rank-1 {
+    color: #FFD700; /* Gold */
+    text-shadow: 0 0 6px rgba(255, 215, 0, 0.7);
+}
+
+.rank-2 {
+    color: #C0C0C0; /* Silver */
+    text-shadow: 0 0 6px rgba(192, 192, 192, 0.7);
+}
+
+.rank-3 {
+    color: #CD7F32; /* Bronze */
+    text-shadow: 0 0 6px rgba(205, 127, 50, 0.7);
+}
+
 /* --- Homepage Stats Section --- */
 .homepage-stats {
     margin-top: 3rem;
@@ -153,30 +176,47 @@ body {
     background-color: #1e1e1e;
     border: 1px solid #333;
     border-radius: 8px;
-    padding: 1rem 2rem;
+    padding: 1.25rem 2rem;
     margin-bottom: 2rem;
 }
 
-.header-info h3, .header-total h3 {
+.header-flavor-text h3 {
     margin: 0;
-    font-size: 1.2em;
+    font-size: 1.5em;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.header-aggregate {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+}
+
+.total-votes-display {
+    text-align: right;
+}
+
+.total-votes-display h3 {
+    margin: 0 0 4px 0;
+    font-size: 1em;
     color: #b9bbbe;
     font-weight: normal;
 }
 
-.header-info p, .header-total p {
+.total-votes-display p {
     margin: 0;
-    font-size: 1.5em;
+    font-size: 2em;
     font-weight: bold;
     color: #ffffff;
+    line-height: 1;
 }
 
-.header-info {
-    text-align: left;
-}
-
-.header-total {
-    text-align: right;
+.date-display p {
+    margin: 0;
+    font-size: 1em;
+    color: #8e9297;
+    font-weight: normal;
 }
 
 .stats-leaderboards {
