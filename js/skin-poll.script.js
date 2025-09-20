@@ -117,16 +117,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
       setupDropdown(characterNameSearch, characterDropdownContent, () => allCharacterNames, handleCharacterSelect);
 
-      pollContainer.innerHTML = `<div class="loading-indicator">스킨 데이터 로딩 중...</div>`;
+      // REPLACE the old loading text with this function call
+      displaySkeletonLoader();
 
       fetchAllPollData().then(pollData => {
         allPollDataCache = pollData;
         populateLeaderboard(allPollDataCache);
-
-        // NEW: Apply filters from URL on initial load
         applyFiltersFromURL();
       });
     });
+
+  const displaySkeletonLoader = (count = 18) => {
+    pollContainer.innerHTML = ''; // Clear any previous content
+    for (let i = 0; i < count; i++) {
+      const skeletonBox = document.createElement("div");
+      skeletonBox.className = "skeleton-card";
+      skeletonBox.innerHTML = `
+            <div class="skeleton-image skeleton-element"></div>
+            <div class="skeleton-info">
+                <div class="skeleton-line skeleton-element"></div>
+                <div class="skeleton-line short skeleton-element"></div>
+            </div>
+        `;
+      pollContainer.appendChild(skeletonBox);
+    }
+  };
 
   // --- Core Functions ---
   const applyFilters = () => {

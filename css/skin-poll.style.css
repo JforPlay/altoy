@@ -153,6 +153,46 @@ body {
 .score-bar-text strong { font-size: 1.1em; color: #ffffff; font-weight: bold; }
 .loading-indicator, .no-results { color: #b9bbbe; text-align: center; grid-column: 1 / -1; font-size: 1.2em; padding: 40px; }
 
+/* --- Skeleton Loader Styles --- */
+.skeleton-card {
+    background-color: #2f3136;
+    border-radius: 8px;
+    border: 1px solid #40444b;
+    display: flex;
+    flex-direction: column;
+}
+
+.skeleton-element {
+    background: linear-gradient(90deg, #40444b 25%, #4f545c 50%, #40444b 75%);
+    background-size: 200% 100%;
+    border-radius: 4px;
+    animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.skeleton-card .skeleton-image {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: 8px 8px 0 0;
+}
+
+.skeleton-card .skeleton-info {
+    padding: 12px;
+}
+
+.skeleton-card .skeleton-line {
+    height: 1em;
+    margin-bottom: 8px;
+}
+
+.skeleton-card .skeleton-line.short {
+    width: 60%;
+}
+
 /* --- Responsive Styles for Mobile --- */
 @media (max-width: 768px) {
   html {
