@@ -13,6 +13,85 @@ header {
     color: #333;
 }
 
+/* --- NEW: Filter Styles --- */
+.filters-container {
+    max-width: 1400px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.filter-wrapper label {
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #606770;
+}
+
+.dropdown-container {
+    position: relative;
+}
+
+.dropdown-container input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+#clear-filters-btn {
+    padding: 8px 15px;
+    background-color: #e4e6eb;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+#clear-filters-btn:hover {
+    background-color: #d8dadf;
+}
+
+/* Main Layout */
 .main-container {
     display: flex;
     flex-wrap: wrap;
@@ -28,7 +107,7 @@ header {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 10px;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 185px);
     overflow-y: auto;
     background-color: #ffffff;
     border: 1px solid #dddfe2;
@@ -59,7 +138,7 @@ header {
 #post-display-wrapper {
     flex: 2;
     min-width: 400px;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 185px);
 }
 
 .post-display-container {
@@ -145,7 +224,6 @@ header {
     color: #1c1e21;
 }
 
-/* Commander Reply Section Styles */
 .commander-reply-section {
     padding: 15px 25px;
     border-top: 1px solid #dddfe2;

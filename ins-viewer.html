@@ -10,6 +10,25 @@
     <header>
         <h1>Azur Lane Juustagram Viewer</h1>
     </header>
+
+    <div class="filters-container">
+        <div class="filter-wrapper">
+            <label for="author-search">Filter by Author:</label>
+            <div class="dropdown-container">
+                <input type="text" id="author-search" placeholder="Search for author...">
+                <div class="dropdown-content" id="author-dropdown"></div>
+            </div>
+        </div>
+        <div class="filter-wrapper">
+            <label for="mentioned-search">Filter by Mentioned Shipgirl:</label>
+            <div class="dropdown-container">
+                <input type="text" id="mentioned-search" placeholder="Search for shipgirl...">
+                <div class="dropdown-content" id="mentioned-dropdown"></div>
+            </div>
+        </div>
+        <button id="clear-filters-btn">Clear Filters</button>
+    </div>
+
     <div class="main-container">
         <div id="post-display-wrapper">
             <div id="post-display" class="post-display-container">
