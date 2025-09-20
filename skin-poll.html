@@ -9,7 +9,6 @@
 </head>
 <body>
     <div id="navbar-placeholder"></div>
-
     <div class="main-container">
         <header class="page-header">
             <h1>벽챈 스킨 선호도 평가</h1>
@@ -33,11 +32,9 @@
         <div class="filter-container">
             <div class="filter-group">
                 <label for="character-name-search">함순이 이름</label>
-                <div class="searchable-select">
-                    <input type="text" id="character-name-search" placeholder="이름으로 검색...">
-                    <select id="character-name-select">
-                        <option value="all">전체</option>
-                    </select>
+                <div class="dropdown-container">
+                    <input type="text" id="character-name-search" placeholder="이름으로 검색..." autocomplete="off">
+                    <div id="character-dropdown-content" class="dropdown-content"></div>
                 </div>
             </div>
             <div class="filter-group">
