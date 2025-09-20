@@ -138,6 +138,72 @@ body {
 .card-row .link-card:nth-child(1) { animation-delay: 0.7s; } /* First side-by-side card */
 .card-row .link-card:nth-child(2) { animation-delay: 0.8s; } /* Second side-by-side card */
 
+
+/* --- Homepage Stats Section --- */
+
+.homepage-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Changed to three equal columns */
+    gap: 2rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #333;
+}
+
+.stats-column h2 {
+    color: #ffffff;
+    border-bottom: 2px solid #333;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+.leaderboard-list-home {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.leaderboard-item-home {
+    display: grid;
+    grid-template-columns: 30px 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+.leaderboard-item-home:nth-child(odd) {
+    background-color: #1e1e1e;
+}
+.leaderboard-item-home .rank {
+    font-weight: bold;
+    color: #b9bbbe;
+}
+.leaderboard-item-home .name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.leaderboard-item-home .score {
+    font-weight: bold;
+    color: #ffc107;
+}
+.total-votes-box {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    font-size: 3em;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* --- Responsive adjustments for the new 3-column layout --- */
+@media (max-width: 992px) {
+    .homepage-stats {
+        grid-template-columns: 1fr; /* Stack to one column on tablets and phones */
+    }
+}
+
 /* Make it responsive: one column on smaller screens */
 @media (max-width: 768px) {
     .link-grid {

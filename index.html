@@ -61,9 +61,38 @@
 
         </div>
     </main>
+
+
+    <section class="homepage-stats">
+        <div class="stats-column">
+            <h2>🏆 Top 10 스킨</h2>
+            <ol id="homepage-leaderboard" class="leaderboard-list-home">
+                <li>로딩 중...</li>
+            </ol>
+        </div>
+
+        <div class="stats-column">
+            <h2>🗳️ 최다 투표 스킨</h2>
+            <ol id="homepage-most-voted" class="leaderboard-list-home">
+                <li>로딩 중...</li>
+            </ol>
+        </div>
+
+        <div class="stats-column">
+            <h2>📈 총 투표 수</h2>
+            <div class="total-votes-box">
+                <span id="homepage-total-votes">...</span>
+            </div>
+        </div>
+    </section>
+
     <div id="footer-placeholder"></div>
-    <!-- <script src="script.js"></script> -->
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="js/nav.script.js"></script>
+    <script src="js/homepage-stats.js"></script>
+
 </body>
 
 </html>
