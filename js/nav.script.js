@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Fetch and insert the navigation bar
     fetch('nav.html')
         .then(response => {
             if (!response.ok) {
@@ -9,7 +8,17 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             document.getElementById('navbar-placeholder').innerHTML = data;
-            // Now that the navigation is loaded, initialize the dropdown logic
+
+            // ---- START: NEW CODE FOR PAGE-SPECIFIC STYLING ----
+            const currentPage = window.location.pathname.split("/").pop();
+            if (currentPage === 'ins-viewer.html') {
+                const navbar = document.querySelector('.navbar');
+                if (navbar) {
+                    navbar.classList.add('navbar-light');
+                }
+            }
+            // ---- END: NEW CODE ----
+
             initializeDropdowns();
         })
         .catch(error => {
@@ -19,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeDropdowns() {
+    // ... (The rest of your initializeDropdowns function remains exactly the same) ...
     const dropdowns = document.querySelectorAll('.dropdown');
 
     dropdowns.forEach(dropdown => {
@@ -26,22 +36,14 @@ function initializeDropdowns() {
         const menu = dropdown.querySelector('.dropdown-menu');
 
         link.addEventListener('click', function(event) {
-            // Prevent default link behavior
             event.preventDefault();
             event.stopPropagation();
-            
-            // Check if this menu is already open
             const isVisible = menu.style.display === 'block';
-            
-            // Close all other dropdowns
             document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
-            
-            // Toggle the current menu
             menu.style.display = isVisible ? 'none' : 'block';
         });
     });
 
-    // Close dropdowns if clicking anywhere else on the window
     window.addEventListener('click', function(event) {
         if (!event.target.closest('.dropdown')) {
             document.querySelectorAll('.dropdown-menu').forEach(menu => {

@@ -74,3 +74,40 @@
 .dropdown-menu li a:hover {
     background-color: #555;
 }
+
+/* ---------------------------------- */
+/* -- Light Theme for ins-viewer.html -- */
+/* ---------------------------------- */
+
+/* Light background for the navbar */
+.navbar.navbar-light {
+    background-color: #f8f9fa; /* A light grey/white color */
+    border-bottom: 1px solid #dee2e6; /* A subtle bottom border */
+}
+
+/* Dark text for links on the light navbar */
+.navbar.navbar-light .nav-logo,
+.navbar.navbar-light .nav-links {
+    color: #343a40; /* A dark grey for text */
+}
+
+/* Hover effect for links on the light navbar */
+.navbar.navbar-light .nav-links:hover {
+    background-color: #e9ecef; /* A slightly darker grey for hover */
+}
+
+/* Light background for the dropdown menu */
+.navbar.navbar-light .dropdown-menu {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+/* Dark text for dropdown items */
+.navbar.navbar-light .dropdown-menu li a {
+    color: #343a40;
+}
+
+/* Hover effect for dropdown items */
+.navbar.navbar-light .dropdown-menu li a:hover {
+    background-color: #e9ecef;
+}
