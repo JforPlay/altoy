@@ -78,6 +78,57 @@ body {
     font-size: 1.1em; /* Makes the icon slightly larger than the text */
 }
 
+/* --- Side-by-Side Card Styles --- */
+
+.card-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Creates two equal columns */
+    gap: 1rem; /* Adjust the space between the two cards */
+}
+
+/* Optional: Adjust padding and center text for the smaller cards */
+.card-row .link-card {
+    padding: 1.25rem;
+    text-align: center;
+}
+
+/* --- Entrance Animation --- */
+
+/* 1. Define the animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 2. Set the initial state for elements we want to animate */
+.welcome-banner,
+.link-column h2,
+.link-card {
+  opacity: 0; /* Start hidden */
+  animation: fadeInUp 0.5s ease-out forwards; /* Apply the animation */
+}
+
+/* 3. Add a staggered delay to make the cards appear one by one */
+.link-column:nth-of-type(1) .link-card:nth-of-type(1) { animation-delay: 0.2s; }
+.link-column:nth-of-type(1) .link-card:nth-of-type(2) { animation-delay: 0.3s; }
+.link-column:nth-of-type(1) .link-card:nth-of-type(3) { animation-delay: 0.4s; }
+
+.link-column:nth-of-type(2) h2 { animation-delay: 0.5s; }
+.link-column:nth-of-type(2) .link-card { animation-delay: 0.6s; }
+.link-column:nth-of-type(2) .card-row { animation-delay: 0.7s; } /* Animate the row container */
+
+/* We need to apply the animation to the row, not the cards inside it */
+.card-row .link-card {
+    opacity: 1; /* Reset opacity for cards inside the animated row */
+    animation: none; /* Remove individual animation from these cards */
+}
+
 /* Make it responsive: one column on smaller screens */
 @media (max-width: 768px) {
     .link-grid {
