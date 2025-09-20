@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Data storage
     let postsData = {};
     let shipgirlDataMap = {};
+    let shipgroupTemplateMap = {};
     const placeholderIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
 
-    // Create Image Preview Element
     const imagePreview = document.createElement('img');
     imagePreview.id = 'image-preview';
     document.body.appendChild(imagePreview);
@@ -22,11 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Data Fetching ---
     Promise.all([
         fetch('data/processed_ins_data.json').then(res => res.json()),
-        fetch('data/shipgirl_group_data.json').then(res => res.json())
+        fetch('data/shipgirl_group_data.json').then(res => res.json()),
+        fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/CN/ShareCfg/activity_ins_ship_group_template.json').then(res => res.json())
     ])
-    .then(([posts, shipgirlData]) => {
+    .then(([posts, shipgirlData, templateData]) => {
         postsData = posts;
         shipgirlDataMap = shipgirlData;
+        shipgroupTemplateMap = templateData;
 
         initializeFilters();
         populateGallery();
@@ -44,16 +46,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Helper Functions ---
     function getShipgirlData(id) {
-        if (shipgirlDataMap[id]) {
+        const shipData = shipgirlDataMap[id];
+        const templateData = shipgroupTemplateMap[id];
+        
+        if (shipData) {
             return {
-                name: shipgirlDataMap[id].name.trim(),
-                icon: shipgirlDataMap[id].icon
+                name: shipData.name.trim(),
+                icon: shipData.icon,
+                username: templateData ? `@${templateData.name}` : ''
             };
         }
         if (typeof id === 'string' && id.startsWith('Unknown')) {
-             return { name: id, icon: placeholderIcon };
+             return { name: id, icon: placeholderIcon, username: '' };
         }
-        return { name: `Unknown ID: ${id}`, icon: placeholderIcon };
+        return { name: `Unknown ID: ${id}`, icon: placeholderIcon, username: '' };
     }
 
     // --- Filter Logic ---
@@ -213,7 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 commentDiv.innerHTML = `
                     <div class="comment-author">
                         <img src="${author.icon}" class="comment-icon" alt="${author.name}">
-                        <span>${author.name}:</span>
+                        <span>${author.name}</span>
+                        <span class="comment-username">${author.username}:</span>
                     </div>
                     <div class="comment-text">${text}</div>`;
                 threadContainer.appendChild(commentDiv);
@@ -300,7 +307,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- MODIFIED: Smarter Mousemove Logic ---
     galleryView.addEventListener('mousemove', (event) => {
         const preview = imagePreview;
         if (preview.style.display !== 'block') return;
@@ -311,12 +317,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let newX = event.clientX + offsetX;
         let newY = event.clientY + offsetY;
 
-        // If preview would go off the right edge, flip it to the left of the cursor
         if (newX + preview.offsetWidth > window.innerWidth) {
             newX = event.clientX - preview.offsetWidth - offsetX;
         }
 
-        // If preview would go off the bottom edge, flip it to the top of the cursor
         if (newY + preview.offsetHeight > window.innerHeight) {
             newY = event.clientY - preview.offsetHeight - offsetY;
         }

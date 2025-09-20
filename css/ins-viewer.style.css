@@ -245,6 +245,14 @@ header {
     margin-right: 8px;
     color: #050505;
     flex-shrink: 0;
+    flex-wrap: wrap; /* Allows username to wrap if needed */
+}
+
+/* --- NEW: Username Style --- */
+.comment-username {
+    font-weight: 400;
+    color: #65676b;
+    margin-left: 6px;
 }
 
 .comment-text {
@@ -294,7 +302,7 @@ header {
 /* Image Preview Style */
 #image-preview {
     display: none;
-    position: fixed; /* --- MODIFIED: Changed from absolute to fixed --- */
+    position: fixed;
     width: 250px;
     height: 250px;
     object-fit: cover;
