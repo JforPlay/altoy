@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const DATA_URL = 'data/processed_ins_chat_data.json';
+    // ADDED: URL for the ship group ID data
+    const SHIP_GROUP_ID_URL = 'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/CN/ShareCfg/activity_ins_ship_group_template.json';
 
     const characterGrid = document.getElementById('character-selector-grid');
     const storyDisplaySection = document.getElementById('story-display-section');
@@ -10,20 +12,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const restartButton = document.getElementById('restart-button');
 
     let allData = {};
+    // ADDED: Variable to store the ship group ID data
+    let shipGroupIdData = {};
     let selectedCharacterName = null;
     let currentStoryScripts = [];
     let currentScriptIndex = 0;
 
-    fetch(DATA_URL)
-        .then(res => res.ok ? res.json() : Promise.reject(res.status))
-        .then(data => {
-            allData = data;
-            populateCharacterSelector();
-        })
-        .catch(error => {
-            console.error('Error fetching story data:', error);
-            characterGrid.innerHTML = '<p class="loading-message error">스토리 정보를 불러오는데 실패했어요.</p>';
-        });
+    // MODIFIED: Use Promise.all to fetch both data sources before populating the UI
+    Promise.all([
+        fetch(DATA_URL).then(res => res.ok ? res.json() : Promise.reject(`Failed to load main data: ${res.status}`)),
+        fetch(SHIP_GROUP_ID_URL).then(res => res.ok ? res.json() : Promise.reject(`Failed to load ID data: ${res.status}`))
+    ]).then(([mainData, idData]) => {
+        allData = mainData;
+        shipGroupIdData = idData;
+        populateCharacterSelector();
+    }).catch(error => {
+        console.error('Error fetching story data:', error);
+        characterGrid.innerHTML = '<p class="loading-message error">스토리 정보를 불러오는데 실패했어요.</p>';
+    });
+    
+    const GROUP_CHAT_ICONS = {
+        "이글 유니온 채팅방": 'assets/uss.png',
+        "공용 채팅방": 'assets/common.png',
+        "템페스타 채팅방": 'assets/mot.png',
+        "노스 유니온 채팅방": 'assets/sn.png',
+        "이스트 글림 채팅방": 'assets/roc.png',
+        "사르데냐 엠파이어 채팅방": 'assets/rn.png',
+        "메탈 블러드 채팅방": 'assets/kms.png',
+        "아이리스 채팅방": 'assets/ff.png',
+        "사쿠라 엠파이어 채팅방": 'assets/ijn.png',
+        "로열 네이비 채팅방": 'assets/hms.png'
+    };
 
     function populateCharacterSelector() {
         characterGrid.innerHTML = '';
@@ -37,7 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'character-card';
             card.dataset.characterName = characterName;
             
-            const iconSrc = firstStory.icon || 'https://via.placeholder.com/80';
+            let iconSrc = firstStory.icon;
+            if (!iconSrc && GROUP_CHAT_ICONS[firstStory.kr_name]) {
+                iconSrc = GROUP_CHAT_ICONS[firstStory.kr_name];
+            } else if (!iconSrc) {
+                iconSrc = 'https://via.placeholder.com/80';
+            }
+            
             const shipName = firstStory.ship_name || '';
 
             card.innerHTML = `
@@ -73,9 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadSelectedStory();
     }
     
-    /**
-     * MODIFIED: Now checks for trigger_type 2 to display affinity requirements.
-     */
     function loadSelectedStory() {
         const storyId = storyDropdown.value;
         if (!selectedCharacterName || !storyId) return;
@@ -83,10 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const storyData = allData[selectedCharacterName][storyId];
         currentStoryScripts = storyData.scripts;
         
-        // Build the flavor text string conditionally
         let flavorHTML = `<strong>해금 조건 :</strong> "${storyData.unlock_desc}"`;
 
-        // If the trigger_type is 2 (affinity), add the required level
         if (storyData.trigger_type === 2 && storyData.trigger_param) {
             flavorHTML += `<br><strong>요구 호감도 :</strong> ${storyData.trigger_param}`;
         }
@@ -151,6 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(showNextLine, delay);
     }
 
+    /**
+     * MODIFIED: Now appends the user ID (@username) after the speaker's name.
+     */
     const displayBubble = (script) => {
         let speakerName = script.kr_name || '';
         let speakerIcon = script.icon || '';
@@ -168,7 +191,13 @@ document.addEventListener('DOMContentLoaded', () => {
         messageBubble.classList.add('message-bubble', messageClass);
 
         if (messageClass === 'character') {
-             messageBubble.innerHTML += `<p class="speaker-name">${speakerName}</p>`;
+             // Look up the ship_group ID in the new data
+             const idEntry = shipGroupIdData[script.ship_group];
+             let displayName = speakerName;
+             if (idEntry && idEntry.name) {
+                 displayName += ` <span class="speaker-id">@${idEntry.name}</span>`;
+             }
+             messageBubble.innerHTML += `<p class="speaker-name">${displayName}</p>`;
         }
         messageBubble.innerHTML += `<p>${script.param}</p>`;
 
