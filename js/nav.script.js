@@ -19,7 +19,6 @@ function loadNavbar() {
             
             // Initialize navbar features
             initializeDropdowns();
-            highlightActiveGroup();
         })
         .catch(error => console.error('Error loading the navigation bar:', error));
 }
@@ -40,37 +39,4 @@ function initializeDropdowns() {
     window.addEventListener('click', () => {
         document.querySelectorAll('.dropdown-menu').forEach(menu => menu.style.display = 'none');
     });
-}
-
-function highlightActiveGroup() {
-    const pageGroupMap = {
-        'index.html': 'Story Viewers',
-        'skin-list.html': 'Skin',
-        'skin-poll.html': 'Skin',
-        'skin-viewer.html': 'Skin',
-        'dorm3d-chat-viewer.html': 'Chat Viewers',
-        'ins-chat-viewer.html': 'Chat Viewers',
-        'ins-viewer.html': 'Chat Viewers'
-    };
-
-    const currentPage = window.location.pathname.split("/").pop() || 'index.html';
-    const activeGroup = pageGroupMap[currentPage];
-
-    if (activeGroup) {
-        let linkToActivate;
-        if (activeGroup === 'Story Viewers') {
-            linkToActivate = document.querySelector('.nav-logo');
-        } else {
-            const navLinks = document.querySelectorAll('.nav-links');
-            navLinks.forEach(link => {
-                if (link.textContent.trim() === activeGroup) {
-                    linkToActivate = link;
-                }
-            });
-        }
-        
-        if (linkToActivate) {
-            linkToActivate.classList.add('active-group');
-        }
-    }
 }

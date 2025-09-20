@@ -75,37 +75,27 @@
     background-color: #555;
 }
 
-/* Light Theme specifically for ins-viewer.html */
+/* UPDATED Light Theme for ins-viewer.html */
 .navbar.navbar-light {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
+    background-color: #ffffff; /* Changed to pure white */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08); /* Added a soft shadow for separation */
+    border-bottom: none; /* Removed the 1px border */
 }
 .navbar.navbar-light .nav-logo,
 .navbar.navbar-light .nav-links {
     color: #343a40;
 }
 .navbar.navbar-light .nav-links:hover {
-    background-color: #e9ecef;
+    background-color: #f1f1f1; /* Slightly adjusted hover color */
 }
 .navbar.navbar-light .dropdown-menu {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border: 1px solid #f1f1f1;
 }
 .navbar.navbar-light .dropdown-menu li a {
     color: #343a40;
 }
 .navbar.navbar-light .dropdown-menu li a:hover {
-    background-color: #e9ecef;
-}
-
-/* Style for the Active Navigation Group */
-.nav-logo.active-group,
-.nav-links.active-group {
-    background-color: #555; /* Dark theme active color */
-    border-radius: 5px;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-}
-.navbar-light .nav-logo.active-group,
-.navbar-light .nav-links.active-group {
-    background-color: #e9ecef; /* Light theme active color */
+    background-color: #f1f1f1;
 }
