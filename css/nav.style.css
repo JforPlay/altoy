@@ -1,157 +1,113 @@
-/* 1. Define Color Palettes using CSS Variables */
-:root {
-  --bg-color: #ffffff; /* Page background */
-  --text-color: #212529; /* Main text color */
-  --nav-bg: #f8f9fa; /* Navbar background */
-  --nav-text: #343a40; /* Navbar text */
-  --nav-hover: #e9ecef; /* Navbar hover background */
-  --border-color: #dee2e6; /* A subtle border */
-}
-
-body.dark-mode {
-  --bg-color: #212529;
-  --text-color: #f8f9fa;
-  --nav-bg: #333;
-  --nav-text: #fff;
-  --nav-hover: #555;
-  --border-color: #444;
-}
-
-/* 2. Apply Variables to Your Styles */
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-family: sans-serif;
-  transition: background-color 0.3s, color 0.3s;
-}
-
 /* General Navbar Styling */
 .navbar {
-  background-color: var(--nav-bg);
-  padding: 1rem;
-  border-bottom: 1px solid var(--border-color);
-  transition: background-color 0.3s;
+    background-color: #333;
+    padding: 1rem;
+    font-family: sans-serif;
 }
 
 .nav-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.nav-logo, .nav-links {
-  color: var(--nav-text);
-  text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .nav-logo {
-  font-size: 1.5rem;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
 }
 
 .nav-menu {
-  list-style: none;
-  display: flex;
-  margin: 0;
-  padding: 0;
-  align-items: center; /* Vertically align menu items */
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-item {
-  margin-left: 2rem;
+    margin-left: 2rem;
 }
 
 .nav-links {
-  padding: 0.5rem 1rem;
-  display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: block;
 }
 
 .nav-links:hover {
-  background-color: var(--nav-hover);
-  border-radius: 5px;
+    background-color: #555;
+    border-radius: 5px;
 }
 
 /* Dropdown Menu Styling */
 .dropdown {
-  position: relative;
+    position: relative;
 }
 
 .dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: var(--nav-bg);
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  border-radius: 5px;
-  border: 1px solid var(--border-color);
-  min-width: 200px;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #333;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+    min-width: 200px;
 }
 
 .dropdown:hover .dropdown-menu {
-  display: block;
+    display: block;
 }
 
 .dropdown-menu li a {
-  color: var(--nav-text);
-  padding: 0.75rem 1.5rem;
-  display: block;
-  text-decoration: none;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    display: block;
+    text-decoration: none;
 }
 
 .dropdown-menu li a:hover {
-  background-color: var(--nav-hover);
+    background-color: #555;
 }
 
-/* 3. Styles for the Toggle Switch */
-.theme-switch-wrapper {
-  display: flex;
-  align-items: center;
-  margin-left: 2rem;
+/* ---------------------------------- */
+/* -- Light Theme for ins-viewer.html -- */
+/* ---------------------------------- */
+
+/* Light background for the navbar */
+.navbar.navbar-light {
+    background-color: #f8f9fa; /* A light grey/white color */
+    border-bottom: 1px solid #dee2e6; /* A subtle bottom border */
 }
 
-.theme-switch {
-  display: inline-block;
-  height: 24px;
-  position: relative;
-  width: 48px;
+/* Dark text for links on the light navbar */
+.navbar.navbar-light .nav-logo,
+.navbar.navbar-light .nav-links {
+    color: #343a40; /* A dark grey for text */
 }
 
-.theme-switch input {
-  display: none;
+/* Hover effect for links on the light navbar */
+.navbar.navbar-light .nav-links:hover {
+    background-color: #e9ecef; /* A slightly darker grey for hover */
 }
 
-.slider {
-  background-color: #ccc;
-  bottom: 0;
-  cursor: pointer;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  transition: .4s;
-  border-radius: 24px;
+/* Light background for the dropdown menu */
+.navbar.navbar-light .dropdown-menu {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
 }
 
-.slider:before {
-  background-color: #fff;
-  bottom: 4px;
-  content: "";
-  height: 16px;
-  left: 4px;
-  position: absolute;
-  transition: .4s;
-  width: 16px;
-  border-radius: 50%;
+/* Dark text for dropdown items */
+.navbar.navbar-light .dropdown-menu li a {
+    color: #343a40;
 }
 
-input:checked + .slider {
-  background-color: #555;
-}
-
-input:checked + .slider:before {
-  transform: translateX(24px);
+/* Hover effect for dropdown items */
+.navbar.navbar-light .dropdown-menu li a:hover {
+    background-color: #e9ecef;
 }
