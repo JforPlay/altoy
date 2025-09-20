@@ -291,7 +291,7 @@ header {
     line-height: 1.5;
 }
 
-/* --- NEW: Image Preview Style --- */
+/* Image Preview Style */
 #image-preview {
     display: none;
     position: absolute;
@@ -301,6 +301,36 @@ header {
     border: 3px solid white;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    pointer-events: none; /* Allows mouse events to pass through to elements below */
+    pointer-events: none;
     z-index: 100;
+}
+
+/* --- NEW: Mobile Responsive Styles --- */
+@media (max-width: 800px) {
+    body {
+        padding: 10px;
+    }
+
+    .main-container {
+        flex-direction: column;
+    }
+
+    #post-display-wrapper {
+        height: auto;
+        max-height: 70vh; /* Allow scrolling but don't take up the whole screen */
+    }
+
+    .gallery-container {
+        height: 250px; /* A fixed, reasonable height for the gallery on mobile */
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+
+    .gallery-container img {
+        height: 80px;
+    }
+
+    /* Hide the hover preview on mobile devices */
+    #image-preview {
+        display: none !important;
+    }
 }
