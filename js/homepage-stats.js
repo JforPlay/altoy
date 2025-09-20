@@ -23,26 +23,35 @@ document.addEventListener("DOMContentLoaded", () => {
             const today = new Date();
             currentDateEl.textContent = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
         }
-
+        
         try {
-            const [skinDataResponse, top10Snapshot, mostVotedSnapshot, totalVotesDoc] = await Promise.all([
+            const [skinIconData, pollSnapshot] = await Promise.all([
                 fetch('data/shipgirl_data.json').then(res => res.json()),
-                db.collection("skin_polls").orderBy("average_score", "desc").limit(10).get(),
-                db.collection("skin_polls").orderBy("total_votes", "desc").limit(10).get(),
-                db.collection("stats").doc("total_votes_counter").get()
+                db.collection("skin_polls").get()
             ]);
-
+            
             const skinIconMap = new Map();
-            for (const id in skinDataResponse) {
-                const skin = skinDataResponse[id];
+            for (const id in skinIconData) {
+                const skin = skinIconData[id];
                 if (skin && skin.name) {
                     skinIconMap.set(skin.name.trim(), skin.icon);
                 }
             }
 
-            renderLeaderboard(leaderboardContainer, top10Snapshot, skinIconMap, 'score');
-            renderLeaderboard(mostVotedContainer, mostVotedSnapshot, skinIconMap, 'votes');
-            renderTotalVotes(totalVotesEl, totalVotesDoc);
+            let grandTotalVotes = 0;
+            const allPolls = pollSnapshot.docs.map(doc => {
+                const data = doc.data();
+                grandTotalVotes += (data.total_votes || 0);
+                const average_score = (data.total_votes > 0) ? (data.total_score / data.total_votes) : 0;
+                return { ...data, average_score };
+            });
+
+            const top10ByScore = [...allPolls].sort((a, b) => b.average_score - a.average_score).slice(0, 10);
+            const top10ByVotes = [...allPolls].sort((a, b) => (b.total_votes || 0) - (a.total_votes || 0)).slice(0, 10);
+
+            renderLeaderboard(leaderboardContainer, top10ByScore, skinIconMap, 'score');
+            renderLeaderboard(mostVotedContainer, top10ByVotes, skinIconMap, 'votes');
+            totalVotesEl.textContent = grandTotalVotes.toLocaleString();
 
         } catch (error) {
             console.error("Error initializing homepage stats:", error);
@@ -52,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // 4. Helper rendering functions
+    // 4. THIS IS THE CORRECTED RENDER FUNCTION
     const renderLeaderboard = (container, skins, iconMap, type) => {
         if (!container) return;
         if (!skins || skins.length === 0) {
@@ -60,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Helper to get the display for the rank
         const getRankDisplay = (rank) => {
             if (rank === 1) return '<span class="rank rank-1">🏆</span>';
             if (rank === 2) return '<span class="rank rank-2">🥈</span>';
@@ -72,28 +80,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const rank = index + 1;
             const skinName = skin.skin_name || 'Unknown Skin';
             const iconUrl = iconMap.get(skinName.trim());
-            const displayValue = type === 'score'
-                ? `★ ${(skin.average_score || 0).toFixed(2)}`
+            const displayValue = type === 'score' 
+                ? `★ ${(skin.average_score || 0).toFixed(2)}` 
                 : `${(skin.total_votes || 0).toLocaleString()} 표`;
 
             return `
-            <li class="leaderboard-item-home">
-                ${getRankDisplay(rank)}
-                ${iconUrl ? `<img src="${iconUrl}" class="leaderboard-icon" alt="${skinName}" loading="lazy">` : '<div class="leaderboard-icon-placeholder"></div>'}
-                <span class="name">${skinName}</span>
-                <span class="score">${displayValue}</span>
-            </li>
-        `;
+                <li class="leaderboard-item-home">
+                    ${getRankDisplay(rank)}
+                    ${iconUrl ? `<img src="${iconUrl}" class="leaderboard-icon" alt="${skinName}" loading="lazy">` : '<div class="leaderboard-icon-placeholder"></div>'}
+                    <span class="name">${skinName}</span>
+                    <span class="score">${displayValue}</span>
+                </li>
+            `;
         }).join('');
-    };
-
-    const renderTotalVotes = (element, doc) => {
-        if (!element) return;
-        if (doc.exists) {
-            element.textContent = (doc.data().count || 0).toLocaleString();
-        } else {
-            element.textContent = '0';
-        }
     };
 
     // 5. Run the main function

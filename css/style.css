@@ -1,8 +1,8 @@
-/* --- Dark Home Page Styles --- */
-
+/* --- Global & Layout Styles --- */
 body {
     background-color: #121212;
     color: #e0e0e0;
+    font-family: sans-serif; /* A single font-family for consistency */
 }
 
 .home-container {
@@ -25,6 +25,7 @@ body {
     color: #ffffff;
 }
 
+/* --- Link Card Styles --- */
 .link-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -59,6 +60,13 @@ body {
     margin-top: 0;
     margin-bottom: 0.5rem;
     color: #ffffff;
+    display: flex;
+    align-items: center; /* Vertically aligns icon and text */
+}
+
+.link-card h3 i {
+    margin-right: 0.75rem; /* Space between icon and text */
+    font-size: 1.1em;
 }
 
 .link-card p {
@@ -66,100 +74,15 @@ body {
     color: #a0a0a0;
 }
 
-/* --- Icon Alignment Styles --- */
-
-.link-card h3 {
-    display: flex;
-    align-items: center; /* Vertically aligns the icon and text */
-}
-
-.link-card h3 i {
-    margin-right: 0.75rem; /* Adds space between the icon and the text */
-    font-size: 1.1em; /* Makes the icon slightly larger than the text */
-}
-
-/* --- Side-by-Side Card Styles --- */
-
 .card-row {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Creates two equal columns */
-    gap: 1rem; /* Adjust the space between the two cards */
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
 }
 
-/* Optional: Adjust padding and center text for the smaller cards */
 .card-row .link-card {
     padding: 1.25rem;
     text-align: center;
-}
-
-/* --- Footer Styles --- */
-
-.site-footer {
-    background-color: #1e1e1e; /* Matches the dark theme card color */
-    color: #a0a0a0;
-    text-align: center;
-    padding: 2rem 0;
-    margin-top: 3rem; /* Adds space between page content and the footer */
-    border-top: 1px solid #333;
-}
-
-
-/* --- Entrance Animation --- */
-
-/* 1. Define the animation keyframes */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 2. Set the initial state and apply animation to elements */
-.welcome-banner,
-.link-column h2,
-.link-card {
-  opacity: 0; /* Start hidden */
-  animation: fadeInUp 0.5s ease-out forwards;
-}
-
-/* 3. Add a staggered delay to all cards */
-/* Column 1 */
-.link-column:nth-of-type(1) .link-card:nth-of-type(1) { animation-delay: 0.2s; }
-.link-column:nth-of-type(1) .link-card:nth-of-type(2) { animation-delay: 0.3s; }
-.link-column:nth-of-type(1) .link-card:nth-of-type(3) { animation-delay: 0.4s; }
-
-/* Column 2 */
-.link-column:nth-of-type(2) h2 { animation-delay: 0.5s; }
-.link-column:nth-of-type(2) > .link-card { animation-delay: 0.6s; } /* Target the first full-width card */
-.card-row .link-card:nth-child(1) { animation-delay: 0.7s; } /* First side-by-side card */
-.card-row .link-card:nth-child(2) { animation-delay: 0.8s; } /* Second side-by-side card */
-
-
-/* --- Leaderboard Flair Styles --- */
-
-.leaderboard-item-home .rank {
-    font-size: 1.3em; /* Make rank icons/text slightly larger */
-    width: 35px;      /* Give them a consistent width */
-    text-align: center;
-}
-
-.rank-1 {
-    color: #FFD700; /* Gold */
-    text-shadow: 0 0 6px rgba(255, 215, 0, 0.7);
-}
-
-.rank-2 {
-    color: #C0C0C0; /* Silver */
-    text-shadow: 0 0 6px rgba(192, 192, 192, 0.7);
-}
-
-.rank-3 {
-    color: #CD7F32; /* Bronze */
-    text-shadow: 0 0 6px rgba(205, 127, 50, 0.7);
 }
 
 /* --- Homepage Stats Section --- */
@@ -225,68 +148,104 @@ body {
     gap: 2rem;
 }
 
-.stats-column h2 {
-    color: #ffffff;
-    border-bottom: 2px solid #333;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
-}
 .leaderboard-list-home {
     list-style: none;
     padding: 0;
     margin: 0;
 }
+
 .leaderboard-item-home {
     display: grid;
-    grid-template-columns: 30px 40px 1fr auto;
+    grid-template-columns: 35px 40px 1fr auto;
     align-items: center;
     gap: 1rem;
     padding: 0.75rem;
     border-radius: 6px;
 }
+
 .leaderboard-item-home:nth-child(odd) {
     background-color: #1e1e1e;
 }
+
 .leaderboard-icon {
     width: 40px;
     height: 40px;
     border-radius: 4px;
 }
+
 .leaderboard-icon-placeholder {
     width: 40px;
     height: 40px;
     border-radius: 4px;
     background-color: #2f3136;
 }
+
 .leaderboard-item-home .rank {
+    font-size: 1.3em;
     font-weight: bold;
     color: #b9bbbe;
+    text-align: center;
 }
+
+.rank-1 { color: #FFD700; text-shadow: 0 0 6px rgba(255, 215, 0, 0.7); }
+.rank-2 { color: #C0C0C0; text-shadow: 0 0 6px rgba(192, 192, 192, 0.7); }
+.rank-3 { color: #CD7F32; text-shadow: 0 0 6px rgba(205, 127, 50, 0.7); }
+
 .leaderboard-item-home .name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .leaderboard-item-home .score {
     font-weight: bold;
     color: #ffc107;
 }
+
 .loading-placeholder {
     color: #8e9297;
     text-align: center;
     padding: 1rem;
 }
 
-/* --- Responsive adjustments --- */
-@media (max-width: 768px) {
-    .stats-leaderboards {
-        grid-template-columns: 1fr;
-    }
+/* --- Footer Styles --- */
+.site-footer {
+    background-color: #1e1e1e;
+    color: #a0a0a0;
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 3rem;
+    border-top: 1px solid #333;
 }
 
-/* Make it responsive: one column on smaller screens */
+/* --- Entrance Animation --- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.welcome-banner,
+.link-column h2,
+.link-card {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Staggered Delay */
+.link-column:nth-of-type(1) .link-card:nth-of-type(1) { animation-delay: 0.2s; }
+.link-column:nth-of-type(1) .link-card:nth-of-type(2) { animation-delay: 0.3s; }
+.link-column:nth-of-type(1) .link-card:nth-of-type(3) { animation-delay: 0.4s; }
+.link-column:nth-of-type(2) h2 { animation-delay: 0.5s; }
+.link-column:nth-of-type(2) > .link-card { animation-delay: 0.6s; }
+.card-row .link-card:nth-child(1) { animation-delay: 0.7s; }
+.card-row .link-card:nth-child(2) { animation-delay: 0.8s; }
+
+/* --- Responsive Styles --- */
 @media (max-width: 768px) {
     .link-grid {
+        grid-template-columns: 1fr;
+    }
+    .stats-leaderboards {
         grid-template-columns: 1fr;
     }
 }
