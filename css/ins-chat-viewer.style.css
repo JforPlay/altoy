@@ -73,12 +73,12 @@ h1, h3 { color: #ffffff; text-align: center; }
 @keyframes bubble-fade-in { to { opacity: 1; transform: translateY(0); } }
 .message-bubble p { margin: 0; word-break: break-word; }
 .speaker-name { font-weight: bold; margin-bottom: 5px; color: #ffffff; }
-/* MODIFIED: Adjusted speaker ID style to be dimmer and smaller */
+/* MODIFIED: Reduced left margin to bring the ID closer to the name */
 .speaker-id {
-    color: #a3a6aa; /* Dimmer grey color */
-    font-size: 0.8em; /* Smaller font size */
-    font-weight: normal; /* Explicitly not bold */
-    margin-left: 8px;
+    color: #a3a6aa;
+    font-size: 0.8em;
+    font-weight: normal;
+    margin-left: 4px; /* Reduced from 8px */
 }
 .character { background-color: #40444b; }
 .player { background-color: #7289da; align-self: flex-end; max-width: 75%; }
