@@ -217,13 +217,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 commentDiv.className = 'comment';
                 if (!isFirstInThread) commentDiv.classList.add('reply');
                 
+                // --- MODIFIED: Restructured for better alignment ---
                 commentDiv.innerHTML = `
-                    <div class="comment-author">
-                        <img src="${author.icon}" class="comment-icon" alt="${author.name}">
-                        <span>${author.name}</span>
+                    <img src="${author.icon}" class="comment-icon" alt="${author.name}">
+                    <div class="comment-body">
+                        <span class="comment-author-name">${author.name}</span>
                         <span class="comment-username">${author.username}:</span>
-                    </div>
-                    <span class="comment-text">${text}</span>`;
+                        <span class="comment-text">${text}</span>
+                    </div>`;
                 threadContainer.appendChild(commentDiv);
                 isFirstInThread = false;
             }
@@ -244,30 +245,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const commanderReplySection = document.createElement('footer');
         commanderReplySection.className = 'commander-reply-section';
         
-        // --- MODIFIED: Commander Reply Logic ---
         if (post.op_option1 && post.op_option1 !== "Translation Source Missing") {
             const optionsContainer = document.createElement('div');
             optionsContainer.className = 'commander-options';
             const replyContainer = document.createElement('div');
             replyContainer.className = 'shipgirl-reply';
 
-            // New handler that accepts the specific replier's ID
             const createReplyHandler = (optionText, replyText, replierId) => {
                 return () => {
-                    const replierData = getShipgirlData(replierId); // Look up the correct replier
+                    const replierData = getShipgirlData(replierId);
                     replyContainer.innerHTML = `<strong>지휘관:</strong> ${optionText}<br><strong>${replierData.name}:</strong> ${replyText}`;
                     optionsContainer.style.display = 'none';
                     commanderReplySection.appendChild(replyContainer);
                 };
             };
 
-            // Option 1 button (always created if section exists)
             const button1 = document.createElement('button');
             button1.textContent = post.op_option1;
             button1.addEventListener('click', createReplyHandler(post.op_option1, post.op_reply1, post.reply1_shipgirl));
             optionsContainer.appendChild(button1);
             
-            // Option 2 button (only created if it's not a missing translation)
             if (post.op_option2 && post.op_option2 !== "Translation Source Missing") {
                 const button2 = document.createElement('button');
                 button2.textContent = post.op_option2;
