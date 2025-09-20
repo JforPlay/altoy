@@ -92,6 +92,18 @@ body {
     text-align: center;
 }
 
+/* --- Footer Styles --- */
+
+.site-footer {
+    background-color: #1e1e1e; /* Matches the dark theme card color */
+    color: #a0a0a0;
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 3rem; /* Adds space between page content and the footer */
+    border-top: 1px solid #333;
+}
+
+
 /* --- Entrance Animation --- */
 
 /* 1. Define the animation keyframes */

@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     loadNavbar();
+    loadFooter();
 });
 
 function loadNavbar() {
@@ -39,4 +40,19 @@ function initializeDropdowns() {
     window.addEventListener('click', () => {
         document.querySelectorAll('.dropdown-menu').forEach(menu => menu.style.display = 'none');
     });
+}
+
+// Added footer
+function loadFooter() {
+    fetch('footer.html')
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+        })
+        .then(data => {
+            document.getElementById('footer-placeholder').innerHTML = data;
+            // Automatically set the current year
+            document.getElementById('copyright-year').textContent = new Date().getFullYear();
+        })
+        .catch(error => console.error('Error loading the footer:', error));
 }
