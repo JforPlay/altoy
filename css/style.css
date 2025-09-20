@@ -145,43 +145,46 @@ body {
     padding-top: 2rem;
     border-top: 1px solid #333;
 }
-.stats-header {
-    margin-bottom: 2rem;
-}
-.stats-header .flavor-text-box {
-    text-align: center;
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    margin-bottom: 1rem;
-}
-.stats-header .flavor-text-box h3 {
-    margin: 0;
-    font-size: 1.2em;
-    color: #b9bbbe;
-}
-.stats-header .total-votes-box {
+
+.stats-header-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: #1e1e1e;
     border: 1px solid #333;
     border-radius: 8px;
-    padding: 1.5rem;
-    text-align: center;
+    padding: 1rem 2rem;
+    margin-bottom: 2rem;
 }
-.stats-header .total-votes-box h2 {
-    margin: 0 0 0.5rem 0;
+
+.header-info h3, .header-total h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #b9bbbe;
+    font-weight: normal;
+}
+
+.header-info p, .header-total p {
+    margin: 0;
     font-size: 1.5em;
-    color: #ffffff;
-}
-.stats-header .total-votes-box span {
-    font-size: 2.5em;
     font-weight: bold;
     color: #ffffff;
 }
+
+.header-info {
+    text-align: left;
+}
+
+.header-total {
+    text-align: right;
+}
+
 .stats-leaderboards {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
 }
+
 .stats-column h2 {
     color: #ffffff;
     border-bottom: 2px solid #333;
