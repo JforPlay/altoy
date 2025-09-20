@@ -1,4 +1,9 @@
-/* --- Home Page Styles --- */
+/* --- Dark Home Page Styles --- */
+
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+}
 
 .home-container {
     max-width: 1200px;
@@ -7,7 +12,8 @@
 }
 
 .welcome-banner {
-    background-color: #f8f9fa;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
     padding: 2rem;
     border-radius: 8px;
     margin-bottom: 2rem;
@@ -16,51 +22,53 @@
 
 .welcome-banner h1 {
     margin-top: 0;
-    color: #343a40;
+    color: #ffffff;
 }
 
 .link-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal columns */
-    gap: 2rem; /* Space between columns */
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
 }
 
 .link-column h2 {
-    border-bottom: 2px solid #e9ecef;
+    color: #ffffff;
+    border-bottom: 2px solid #333;
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
 }
 
 .link-card {
     display: block;
-    background-color: #ffffff;
-    border: 1px solid #e9ecef;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
     border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 1rem;
     text-decoration: none;
-    color: #212529;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    color: #e0e0e0;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .link-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background-color: #2a2a2a;
 }
 
 .link-card h3 {
     margin-top: 0;
     margin-bottom: 0.5rem;
+    color: #ffffff;
 }
 
 .link-card p {
     margin-bottom: 0;
-    color: #6c757d;
+    color: #a0a0a0;
 }
 
 /* Make it responsive: one column on smaller screens */
 @media (max-width: 768px) {
     .link-grid {
-        grid-template-columns: 1fr; /* Stack to one column */
+        grid-template-columns: 1fr;
     }
 }
