@@ -35,7 +35,6 @@ h1, h3 { color: #ffffff; text-align: center; }
 .character-card:hover { transform: translateY(-5px); border-color: #7289da; }
 .character-card.selected { border-color: #5865f2; background-color: #40444b; }
 .character-card img { width: 60px; height: 60px; border-radius: 50%; margin-bottom: 8px; background-color: #40444b; object-fit: cover; }
-/* MODIFIED: Reduced character name font size */
 .character-card .char-name { font-weight: bold; font-size: 0.9em; color: #ffffff; margin: 0 0 4px 0; }
 .character-card .ship-name { font-size: 0.8em; color: #b9bbbe; margin: 0; }
 
@@ -52,8 +51,7 @@ h1, h3 { color: #ffffff; text-align: center; }
 .restart-button { background-color: #f04747; color: #ffffff; border: none; border-radius: 5px; padding: 12px 18px; font-size: 0.9em; font-weight: bold; cursor: pointer; transition: background-color 0.2s; height: 48px; }
 .restart-button:hover { background-color: #d84040; }
 
-/* --- Story Display (MODIFIED FOR DYNAMIC SIZING) --- */
-/* MODIFIED: The parent section is now styled as the main container. */
+/* --- Story Display --- */
 #story-display-section {
     max-width: 800px;
     margin: auto;
@@ -62,7 +60,6 @@ h1, h3 { color: #ffffff; text-align: center; }
     border-radius: 8px;
 }
 
-/* MODIFIED: Removed background, padding, and min-height to allow for dynamic sizing. */
 .story-container {
     display: flex;
     flex-direction: column;
@@ -76,10 +73,16 @@ h1, h3 { color: #ffffff; text-align: center; }
 @keyframes bubble-fade-in { to { opacity: 1; transform: translateY(0); } }
 .message-bubble p { margin: 0; word-break: break-word; }
 .speaker-name { font-weight: bold; margin-bottom: 5px; color: #ffffff; }
+/* MODIFIED: Adjusted speaker ID style to be dimmer and smaller */
+.speaker-id {
+    color: #a3a6aa; /* Dimmer grey color */
+    font-size: 0.8em; /* Smaller font size */
+    font-weight: normal; /* Explicitly not bold */
+    margin-left: 8px;
+}
 .character { background-color: #40444b; }
 .player { background-color: #7289da; align-self: flex-end; max-width: 75%; }
 .narrator { background-color: transparent; font-style: italic; color: #a3a6aa; text-align: center; align-self: center; max-width: 90%; }
-/* MODIFIED: Reduced top margin to bring options closer to the dialogue. */
 .options-container { margin: 15px 0 0 0; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
 .choice-button { background-color: #5865f2; color: #ffffff; border: none; border-radius: 5px; padding: 12px 18px; font-size: 1em; cursor: pointer; text-align: right; transition: background-color 0.2s; max-width: 80%; }
 .choice-button:hover { background-color: #4752c4; }
