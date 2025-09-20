@@ -66,6 +66,18 @@ body {
     color: #a0a0a0;
 }
 
+/* --- Icon Alignment Styles --- */
+
+.link-card h3 {
+    display: flex;
+    align-items: center; /* Vertically aligns the icon and text */
+}
+
+.link-card h3 i {
+    margin-right: 0.75rem; /* Adds space between the icon and the text */
+    font-size: 1.1em; /* Makes the icon slightly larger than the text */
+}
+
 /* Make it responsive: one column on smaller screens */
 @media (max-width: 768px) {
     .link-grid {
