@@ -153,38 +153,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const skinDocRef = db.collection("skin_polls").doc(String(skinId));
-    const statsDocRef = db.collection("stats").doc("total_votes_counter"); // Document for the grand total
-    const increment = firebase.firestore.FieldValue.increment(1);
-    const ratingIncrement = firebase.firestore.FieldValue.increment(rating);
+    const statsDocRef = db.collection("stats").doc("total_votes_counter");
 
-    // Use a transaction to safely update both the skin and the total counter
+    // This transaction will now correctly read the data, calculate the new totals, and then write them back safely.
     db.runTransaction(transaction => {
-      return transaction.get(skinDocRef).then(skinDoc => {
-        // Calculate new totals for the specific skin
-        const newTotalVotes = (skinDoc.data()?.total_votes || 0) + 1;
-        const newTotalScore = (skinDoc.data()?.total_score || 0) + rating;
-        const newAverageScore = newTotalScore / newTotalVotes; // Calculate the new average
+      // First, read both the skin's document and the total stats document.
+      return Promise.all([transaction.get(skinDocRef), transaction.get(statsDocRef)])
+        .then(([skinDoc, statsDoc]) => {
 
-        // Update the skin document with the new average score
-        transaction.set(skinDocRef, {
-          total_votes: increment,
-          total_score: ratingIncrement,
-          average_score: newAverageScore, // <-- STORE THE AVERAGE SCORE
-          skin_name: skinName,
-          character_name: characterName
-        }, { merge: true });
+          // Calculate the new values for the specific skin.
+          const newTotalVotes = (skinDoc.data()?.total_votes || 0) + 1;
+          const newTotalScore = (skinDoc.data()?.total_score || 0) + rating;
+          const newAverageScore = newTotalScore / newTotalVotes;
 
-        // Also, increment the site-wide total vote counter
-        transaction.set(statsDocRef, {
-          count: increment
-        }, { merge: true });
-      });
+          // Calculate the new value for the site-wide vote counter.
+          const newTotalCount = (statsDoc.data()?.count || 0) + 1;
+
+          // Now, perform all the writes with the calculated values.
+          transaction.set(skinDocRef, {
+            total_votes: newTotalVotes,
+            total_score: newTotalScore,
+            average_score: newAverageScore,
+            skin_name: skinName,
+            character_name: characterName
+          }, { merge: true });
+
+          transaction.set(statsDocRef, {
+            count: newTotalCount
+          }, { merge: true });
+        });
     }).then(() => {
-      // --- This is the success handling part from your old function, slightly modified ---
+      // This is the success handling part, which remains the same.
       localStorage.setItem(`voted_${skinId}`, "true");
       localStorage.setItem(`rating_${skinId}`, rating);
 
-      // Update the UI immediately
       const ratingArea = document.querySelector(`.rating-area[data-skin-id-area="${skinId}"]`);
       if (ratingArea) {
         ratingArea.classList.remove('pending-vote');
@@ -193,7 +195,6 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => ratingArea.classList.remove("voted-animation"), 300);
       }
 
-      // Fetch the final, updated data to refresh the score display
       skinDocRef.get().then(doc => {
         if (doc.exists) {
           const voteData = doc.data();
