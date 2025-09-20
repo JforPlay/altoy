@@ -25,6 +25,7 @@ header {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* --- FIX IS HERE --- */
 }
 
 .filter-wrapper {
@@ -114,6 +115,7 @@ header {
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    align-content: start;
 }
 
 .gallery-container img {
@@ -165,7 +167,6 @@ header {
     border-bottom: 1px solid #efefef;
 }
 
-/* --- NEW: Icon Styles --- */
 .author-icon {
     width: 40px;
     height: 40px;

@@ -1,38 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azur Lane Instagram Viewer</title>
+    <title>벽람항로 쥬스타그램 뷰어</title>
     <link rel="stylesheet" href="css/ins-viewer.style.css">
 </head>
 <body>
     <header>
-        <h1>Azur Lane Juustagram Viewer</h1>
+        <h1>벽람항로 쥬스타그램 뷰어</h1>
     </header>
 
     <div class="filters-container">
         <div class="filter-wrapper">
-            <label for="author-search">Filter by Author:</label>
+            <label for="author-search">작성자 필터:</label>
             <div class="dropdown-container">
-                <input type="text" id="author-search" placeholder="Search for author...">
+                <input type="text" id="author-search" placeholder="작성자 검색...">
                 <div class="dropdown-content" id="author-dropdown"></div>
             </div>
         </div>
         <div class="filter-wrapper">
-            <label for="mentioned-search">Filter by Mentioned Shipgirl:</label>
+            <label for="mentioned-search">언급된 함순이 필터:</label>
             <div class="dropdown-container">
-                <input type="text" id="mentioned-search" placeholder="Search for shipgirl...">
+                <input type="text" id="mentioned-search" placeholder="함순이 검색...">
                 <div class="dropdown-content" id="mentioned-dropdown"></div>
             </div>
         </div>
-        <button id="clear-filters-btn">Clear Filters</button>
+        <button id="clear-filters-btn">필터 초기화</button>
     </div>
 
     <div class="main-container">
         <div id="post-display-wrapper">
             <div id="post-display" class="post-display-container">
-                <p>Select an image from the gallery to view the post.</p>
+                <p>갤러리에서 이미지를 선택하여 게시물을 확인하세요.</p>
             </div>
         </div>
         <div id="gallery-view" class="gallery-container">
