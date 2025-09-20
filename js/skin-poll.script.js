@@ -278,7 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const populateLeaderboard = (allPollData) => {
     if (!allSkins.length || !Object.keys(allPollData).length) return;
-    const MIN_VOTES = 5;
+    const MIN_VOTES = 10;
     const rankedSkins = Object.keys(allPollData).map(skinId => {
         const poll = allPollData[skinId];
         const skinInfo = allSkins.find(s => s.id === skinId);
