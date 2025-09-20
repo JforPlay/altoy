@@ -1,0 +1,3226 @@
+{
+    "10000": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/100000/icon.png",
+        "name": "범용형 부린"
+    },
+    "10001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/100010/icon.png",
+        "name": "시제형 부린 MKⅡ"
+    },
+    "10002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/100020/icon.png",
+        "name": "특장형 부린 MKIII"
+    },
+    "10102": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101020/icon.png",
+        "name": "듀이 "
+    },
+    "10103": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101030/icon.png",
+        "name": "캐신"
+    },
+    "10104": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101040/icon.png",
+        "name": "다운즈"
+    },
+    "10105": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101050/icon.png",
+        "name": "그리들리"
+    },
+    "10106": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101060/icon.png",
+        "name": "크레이븐"
+    },
+    "10107": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101070/icon.png",
+        "name": "맥콜"
+    },
+    "10108": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101080/icon.png",
+        "name": "모리"
+    },
+    "10109": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101090/icon.png",
+        "name": "플레처"
+    },
+    "10111": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101110/icon.png",
+        "name": "찰스 오스본"
+    },
+    "10112": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101120/icon.png",
+        "name": "대처"
+    },
+    "10113": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101130/icon.png",
+        "name": "얼릭"
+    },
+    "10114": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101140/icon.png",
+        "name": "푸트"
+    },
+    "10115": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101150/icon.png",
+        "name": "스펜스"
+    },
+    "10116": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101160/icon.png",
+        "name": "벤슨"
+    },
+    "10117": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101170/icon.png",
+        "name": "라피"
+    },
+    "10124": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101240/icon.png",
+        "name": "심즈"
+    },
+    "10125": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101250/icon.png",
+        "name": "허먼"
+    },
+    "10126": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101260/icon.png",
+        "name": "엘드릿지"
+    },
+    "10127": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101270/icon.png",
+        "name": "베일리"
+    },
+    "10129": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101290/icon.png",
+        "name": "래드포드"
+    },
+    "10130": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101300/icon.png",
+        "name": "젠킨스"
+    },
+    "10131": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101310/icon.png",
+        "name": "니콜라스"
+    },
+    "10133": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101330/icon.png",
+        "name": "부시"
+    },
+    "10134": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101340/icon.png",
+        "name": "헤이즐우드"
+    },
+    "10135": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101350/icon.png",
+        "name": "배시 "
+    },
+    "10136": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101360/icon.png",
+        "name": "하비"
+    },
+    "10137": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101370/icon.png",
+        "name": "커크"
+    },
+    "10138": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101380/icon.png",
+        "name": "킴벌리 "
+    },
+    "10139": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101390/icon.png",
+        "name": "멀라니 "
+    },
+    "10140": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101400/icon.png",
+        "name": "아일윈 "
+    },
+    "10141": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101410/icon.png",
+        "name": "스탠리 "
+    },
+    "10142": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101420/icon.png",
+        "name": "스몰리"
+    },
+    "10143": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101430/icon.png",
+        "name": "할시 파웰"
+    },
+    "10144": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101440/icon.png",
+        "name": "쿠퍼 "
+    },
+    "10145": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101450/icon.png",
+        "name": "알렌 M. 섬너"
+    },
+    "10146": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101460/icon.png",
+        "name": "스테판 포터"
+    },
+    "10147": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101470/icon.png",
+        "name": "모리슨"
+    },
+    "10148": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101480/icon.png",
+        "name": "잉그레이엄"
+    },
+    "10149": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101490/icon.png",
+        "name": "브리스톨"
+    },
+    "10150": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101500/icon.png",
+        "name": "허먼Ⅱ"
+    },
+    "10151": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101510/icon.png",
+        "name": "라피Ⅱ"
+    },
+    "10152": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101520/icon.png",
+        "name": "벨"
+    },
+    "10153": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101530/icon.png",
+        "name": "밀러"
+    },
+    "10201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102010/icon.png",
+        "name": "오마하"
+    },
+    "10202": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102020/icon.png",
+        "name": "롤리"
+    },
+    "10203": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102030/icon.png",
+        "name": "브루클린"
+    },
+    "10204": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102040/icon.png",
+        "name": "피닉스"
+    },
+    "10205": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102050/icon.png",
+        "name": "헬레나"
+    },
+    "10206": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102060/icon.png",
+        "name": "애틀란타"
+    },
+    "10207": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102070/icon.png",
+        "name": "쥬노"
+    },
+    "10208": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102080/icon.png",
+        "name": "샌디에이고"
+    },
+    "10209": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102090/icon.png",
+        "name": "클리블랜드"
+    },
+    "10210": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102100/icon.png",
+        "name": "컬럼비아"
+    },
+    "10211": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102110/icon.png",
+        "name": "리치몬드"
+    },
+    "10212": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102120/icon.png",
+        "name": "호놀룰루"
+    },
+    "10213": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102130/icon.png",
+        "name": "세인트루이스"
+    },
+    "10214": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102143/icon.png",
+        "name": "몬트필리어 "
+    },
+    "10215": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102150/icon.png",
+        "name": "덴버 "
+    },
+    "10216": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102160/icon.png",
+        "name": "멤피스"
+    },
+    "10218": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102180/icon.png",
+        "name": "콩코드 "
+    },
+    "10219": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102190/icon.png",
+        "name": "꼬마 헬레나 "
+    },
+    "10220": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102200/icon.png",
+        "name": "꼬마 클리블랜드 "
+    },
+    "10221": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102210/icon.png",
+        "name": "꼬마 샌디에이고 "
+    },
+    "10222": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102220/icon.png",
+        "name": "산후안 "
+    },
+    "10223": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102230/icon.png",
+        "name": "버밍햄 "
+    },
+    "10224": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102240/icon.png",
+        "name": "클리블랜드(μ장비)"
+    },
+    "10225": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102250/icon.png",
+        "name": "빌럭시"
+    },
+    "10226": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102260/icon.png",
+        "name": "리노 "
+    },
+    "10227": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102270/icon.png",
+        "name": "마블헤드 "
+    },
+    "10229": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102290/icon.png",
+        "name": "보이시"
+    },
+    "10231": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102310/icon.png",
+        "name": "휴스턴Ⅱ"
+    },
+    "10232": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102320/icon.png",
+        "name": "보이시(μ장비)"
+    },
+    "10233": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102330/icon.png",
+        "name": "파고"
+    },
+    "10234": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102340/icon.png",
+        "name": "산타페"
+    },
+    "10301": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103010/icon.png",
+        "name": "펜사콜라"
+    },
+    "10302": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103020/icon.png",
+        "name": "솔트레이크시티"
+    },
+    "10303": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103030/icon.png",
+        "name": "노샘프턴"
+    },
+    "10304": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103040/icon.png",
+        "name": "시카고"
+    },
+    "10305": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103050/icon.png",
+        "name": "휴스턴"
+    },
+    "10306": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103060/icon.png",
+        "name": "포틀랜드"
+    },
+    "10307": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103070/icon.png",
+        "name": "인디애나폴리스"
+    },
+    "10308": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103080/icon.png",
+        "name": "아스토리아"
+    },
+    "10309": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103090/icon.png",
+        "name": "퀸시"
+    },
+    "10310": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103100/icon.png",
+        "name": "빈센스"
+    },
+    "10311": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103110/icon.png",
+        "name": "위치타"
+    },
+    "10312": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103120/icon.png",
+        "name": "뉴올리언스"
+    },
+    "10313": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103130/icon.png",
+        "name": "미니애폴리스"
+    },
+    "10314": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103140/icon.png",
+        "name": "샌프란시스코"
+    },
+    "10316": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103160/icon.png",
+        "name": "볼티모어 "
+    },
+    "10324": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103240/icon.png",
+        "name": "브레머튼"
+    },
+    "10325": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103250/icon.png",
+        "name": "볼티모어(μ장비)"
+    },
+    "10326": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103260/icon.png",
+        "name": "노샘프턴Ⅱ"
+    },
+    "10327": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103270/icon.png",
+        "name": "루이빌"
+    },
+    "10328": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103280/icon.png",
+        "name": "피츠버그"
+    },
+    "10329": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103290/icon.png",
+        "name": "꼬마 앵커리지"
+    },
+    "10401": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/104010/icon.png",
+        "name": "컨스텔레이션"
+    },
+    "10501": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105010/icon.png",
+        "name": "네바다"
+    },
+    "10502": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105020/icon.png",
+        "name": "오클라호마"
+    },
+    "10503": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105030/icon.png",
+        "name": "펜실베이니아"
+    },
+    "10504": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105040/icon.png",
+        "name": "애리조나"
+    },
+    "10507": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105070/icon.png",
+        "name": "테네시"
+    },
+    "10508": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105080/icon.png",
+        "name": "캘리포니아"
+    },
+    "10509": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105090/icon.png",
+        "name": "콜로라도"
+    },
+    "10510": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105100/icon.png",
+        "name": "메릴랜드"
+    },
+    "10511": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105110/icon.png",
+        "name": "웨스트버지니아"
+    },
+    "10512": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105120/icon.png",
+        "name": "노스캐롤라이나"
+    },
+    "10513": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105130/icon.png",
+        "name": "워싱턴"
+    },
+    "10514": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105140/icon.png",
+        "name": "사우스다코타"
+    },
+    "10515": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105150/icon.png",
+        "name": "인디애나"
+    },
+    "10517": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105170/icon.png",
+        "name": "뉴저지"
+    },
+    "10519": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105190/icon.png",
+        "name": "매사추세츠 "
+    },
+    "10520": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105200/icon.png",
+        "name": "앨라배마 "
+    },
+    "10601": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/106010/icon.png",
+        "name": "롱 아일랜드"
+    },
+    "10602": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/106020/icon.png",
+        "name": "보그"
+    },
+    "10655": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/106550/icon.png",
+        "name": "카사블랑카 "
+    },
+    "10701": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107010/icon.png",
+        "name": "랭글리"
+    },
+    "10702": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107020/icon.png",
+        "name": "렉싱턴"
+    },
+    "10703": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107030/icon.png",
+        "name": "새러토가"
+    },
+    "10704": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107040/icon.png",
+        "name": "레인저"
+    },
+    "10705": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107050/icon.png",
+        "name": "요크타운"
+    },
+    "10706": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107060/icon.png",
+        "name": "엔터프라이즈"
+    },
+    "10707": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107070/icon.png",
+        "name": "호넷"
+    },
+    "10708": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107080/icon.png",
+        "name": "와스프"
+    },
+    "10709": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107090/icon.png",
+        "name": "에식스"
+    },
+    "10710": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107100/icon.png",
+        "name": "요크타운Ⅱ"
+    },
+    "10711": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107110/icon.png",
+        "name": "인트레피드 "
+    },
+    "10712": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107120/icon.png",
+        "name": "호넷Ⅱ"
+    },
+    "10713": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107130/icon.png",
+        "name": "프랭클린"
+    },
+    "10714": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107140/icon.png",
+        "name": "타이콘데로가"
+    },
+    "10717": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107170/icon.png",
+        "name": "벙커힐 "
+    },
+    "10722": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107220/icon.png",
+        "name": "인디펜던스 "
+    },
+    "10723": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107230/icon.png",
+        "name": "프린스턴"
+    },
+    "10727": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107270/icon.png",
+        "name": "랭글리Ⅱ"
+    },
+    "10729": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107290/icon.png",
+        "name": "바탄 "
+    },
+    "10730": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107300/icon.png",
+        "name": "샌 재신토"
+    },
+    "10738": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107380/icon.png",
+        "name": "샹그릴라 "
+    },
+    "10799": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107990/icon.png",
+        "name": "꼬마 엔터프라이즈"
+    },
+    "10801": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108010/icon.png",
+        "name": "데이스"
+    },
+    "10802": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108020/icon.png",
+        "name": "알바코어"
+    },
+    "10803": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108030/icon.png",
+        "name": "카발라 "
+    },
+    "10804": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108040/icon.png",
+        "name": "블루길 "
+    },
+    "10805": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108050/icon.png",
+        "name": "알바코어(μ장비)"
+    },
+    "10806": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108060/icon.png",
+        "name": "아처피시"
+    },
+    "10807": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108070/icon.png",
+        "name": "노틸러스"
+    },
+    "10808": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108080/icon.png",
+        "name": "플래셔"
+    },
+    "10809": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108090/icon.png",
+        "name": "헤링"
+    },
+    "11201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/112010/icon.png",
+        "name": "베스탈"
+    },
+    "11802": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/118020/icon.png",
+        "name": "괌"
+    },
+    "19901": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199010/icon.png",
+        "name": "시애틀 "
+    },
+    "19902": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199020/icon.png",
+        "name": "조지아 "
+    },
+    "19903": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199030/icon.png",
+        "name": "앵커리지"
+    },
+    "19904": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199040/icon.png",
+        "name": "키어사지"
+    },
+    "19905": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199050/icon.png",
+        "name": "할포드"
+    },
+    "19906": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199060/icon.png",
+        "name": "캔자스"
+    },
+    "20101": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201010/icon.png",
+        "name": "아마존"
+    },
+    "20102": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201020/icon.png",
+        "name": "아카스타"
+    },
+    "20103": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201030/icon.png",
+        "name": "아덴트"
+    },
+    "20106": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201060/icon.png",
+        "name": "비글"
+    },
+    "20107": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201070/icon.png",
+        "name": "불독"
+    },
+    "20108": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201080/icon.png",
+        "name": "코멧"
+    },
+    "20109": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201090/icon.png",
+        "name": "크레센트"
+    },
+    "20110": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201100/icon.png",
+        "name": "시그넷"
+    },
+    "20111": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201110/icon.png",
+        "name": "폭스하운드"
+    },
+    "20112": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201120/icon.png",
+        "name": "포춘"
+    },
+    "20113": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201130/icon.png",
+        "name": "그렌빌 "
+    },
+    "20114": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201140/icon.png",
+        "name": "글로우웜"
+    },
+    "20116": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201160/icon.png",
+        "name": "하디 "
+    },
+    "20120": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201200/icon.png",
+        "name": "헌터 "
+    },
+    "20121": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201210/icon.png",
+        "name": "재블린"
+    },
+    "20122": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201220/icon.png",
+        "name": "주노"
+    },
+    "20123": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201230/icon.png",
+        "name": "뱀파이어"
+    },
+    "20124": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201240/icon.png",
+        "name": "주피터 "
+    },
+    "20125": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201250/icon.png",
+        "name": "저지"
+    },
+    "20126": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201260/icon.png",
+        "name": "매치리스"
+    },
+    "20127": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201270/icon.png",
+        "name": "머스킷티어"
+    },
+    "20129": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201290/icon.png",
+        "name": "에코 "
+    },
+    "20132": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201320/icon.png",
+        "name": "에스키모 "
+    },
+    "20133": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201330/icon.png",
+        "name": "이카로스 "
+    },
+    "20134": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201340/icon.png",
+        "name": "저비스"
+    },
+    "20135": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201350/icon.png",
+        "name": "재너스"
+    },
+    "20136": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201360/icon.png",
+        "name": "히어로"
+    },
+    "20137": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201370/icon.png",
+        "name": "누비안"
+    },
+    "20138": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201380/icon.png",
+        "name": "트라팔가"
+    },
+    "20139": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201390/icon.png",
+        "name": "갤런트"
+    },
+    "20201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202010/icon.png",
+        "name": "리엔더"
+    },
+    "20202": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202020/icon.png",
+        "name": "아킬레스"
+    },
+    "20203": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202030/icon.png",
+        "name": "에이잭스"
+    },
+    "20204": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202040/icon.png",
+        "name": "다이도"
+    },
+    "20207": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202070/icon.png",
+        "name": "사우스햄튼 "
+    },
+    "20208": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202080/icon.png",
+        "name": "셰필드"
+    },
+    "20209": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202090/icon.png",
+        "name": "맨체스터"
+    },
+    "20210": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202100/icon.png",
+        "name": "글로스터"
+    },
+    "20211": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202110/icon.png",
+        "name": "에든버러"
+    },
+    "20212": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202120/icon.png",
+        "name": "벨파스트"
+    },
+    "20213": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202130/icon.png",
+        "name": "아레투사"
+    },
+    "20214": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202140/icon.png",
+        "name": "갈라테아"
+    },
+    "20215": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202150/icon.png",
+        "name": "오로라 "
+    },
+    "20216": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202160/icon.png",
+        "name": "피지"
+    },
+    "20217": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202170/icon.png",
+        "name": "자메이카"
+    },
+    "20218": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202180/icon.png",
+        "name": "꼬마 벨파스트"
+    },
+    "20219": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202190/icon.png",
+        "name": "뉴캐슬"
+    },
+    "20220": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202200/icon.png",
+        "name": "시리우스 "
+    },
+    "20221": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202210/icon.png",
+        "name": "퀴라소 "
+    },
+    "20222": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202220/icon.png",
+        "name": "컬루 "
+    },
+    "20223": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202230/icon.png",
+        "name": "스위프트슈어"
+    },
+    "20224": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202240/icon.png",
+        "name": "블랙 프린스"
+    },
+    "20225": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202250/icon.png",
+        "name": "셰필드(μ장비)"
+    },
+    "20226": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202260/icon.png",
+        "name": "글래스고 "
+    },
+    "20227": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202270/icon.png",
+        "name": "허마이오니 "
+    },
+    "20228": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202280/icon.png",
+        "name": "다이도(μ장비)"
+    },
+    "20229": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202290/icon.png",
+        "name": "페넬로피"
+    },
+    "20230": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202300/icon.png",
+        "name": "카리브디스"
+    },
+    "20231": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202310/icon.png",
+        "name": "벨로나"
+    },
+    "20232": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202320/icon.png",
+        "name": "엔터프라이즈"
+    },
+    "20233": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202330/icon.png",
+        "name": "스킬라"
+    },
+    "20234": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202340/icon.png",
+        "name": "리버풀"
+    },
+    "20235": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202350/icon.png",
+        "name": "클레오파트라"
+    },
+    "20236": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202360/icon.png",
+        "name": "트리니다드"
+    },
+    "20301": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203010/icon.png",
+        "name": "런던"
+    },
+    "20302": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203020/icon.png",
+        "name": "슈롭셔"
+    },
+    "20303": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203030/icon.png",
+        "name": "켄트"
+    },
+    "20304": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203040/icon.png",
+        "name": "서포크"
+    },
+    "20305": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203050/icon.png",
+        "name": "노포크"
+    },
+    "20306": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203060/icon.png",
+        "name": "도셋셔"
+    },
+    "20307": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203070/icon.png",
+        "name": "요크"
+    },
+    "20308": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203080/icon.png",
+        "name": "엑세터"
+    },
+    "20309": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203090/icon.png",
+        "name": "서식스 "
+    },
+    "20310": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203100/icon.png",
+        "name": "꼬마 체셔"
+    },
+    "20313": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203130/icon.png",
+        "name": "데본셔"
+    },
+    "20401": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/204010/icon.png",
+        "name": "리나운"
+    },
+    "20402": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/204020/icon.png",
+        "name": "리펄스"
+    },
+    "20403": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/204030/icon.png",
+        "name": "후드"
+    },
+    "20404": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/204040/icon.png",
+        "name": "꼬마 리나운 "
+    },
+    "20501": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205010/icon.png",
+        "name": "퀸 엘리자베스"
+    },
+    "20502": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205020/icon.png",
+        "name": "워스파이트"
+    },
+    "20503": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205030/icon.png",
+        "name": "넬슨"
+    },
+    "20504": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205040/icon.png",
+        "name": "로드니"
+    },
+    "20505": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205050/icon.png",
+        "name": "킹 조지 5세 "
+    },
+    "20506": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205060/icon.png",
+        "name": "프린스 오브 웨일즈"
+    },
+    "20507": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205070/icon.png",
+        "name": "듀크 오브 요크"
+    },
+    "20509": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205090/icon.png",
+        "name": "하우"
+    },
+    "20510": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205100/icon.png",
+        "name": "밸리언트 "
+    },
+    "20511": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205110/icon.png",
+        "name": "리벤지"
+    },
+    "20513": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205130/icon.png",
+        "name": "뱅가드"
+    },
+    "20514": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205140/icon.png",
+        "name": "로열 오크"
+    },
+    "20516": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png",
+        "name": "라이온급 전함 - 라이온"
+    },
+    "20601": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206010/icon.png",
+        "name": "허미즈"
+    },
+    "20602": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206020/icon.png",
+        "name": "아거스"
+    },
+    "20603": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206030/icon.png",
+        "name": "유니콘"
+    },
+    "20604": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206040/icon.png",
+        "name": "센토"
+    },
+    "20605": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206050/icon.png",
+        "name": "체이서 "
+    },
+    "20606": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206060/icon.png",
+        "name": "퍼시어스 "
+    },
+    "20607": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206070/icon.png",
+        "name": "알비온"
+    },
+    "20608": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206080/icon.png",
+        "name": "테세우스"
+    },
+    "20701": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207010/icon.png",
+        "name": "이글 "
+    },
+    "20702": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207020/icon.png",
+        "name": "아크 로열"
+    },
+    "20703": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207030/icon.png",
+        "name": "일러스트리어스"
+    },
+    "20704": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207040/icon.png",
+        "name": "빅토리어스"
+    },
+    "20705": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207050/icon.png",
+        "name": "포미더블 "
+    },
+    "20706": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207060/icon.png",
+        "name": "글로리어스"
+    },
+    "20707": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207070/icon.png",
+        "name": "임플래커블"
+    },
+    "20709": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207090/icon.png",
+        "name": "꼬마 일러스트리어스 "
+    },
+    "20711": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207110/icon.png",
+        "name": "일러스트리어스(μ장비)"
+    },
+    "20712": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207120/icon.png",
+        "name": "인도미터블"
+    },
+    "20713": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207130/icon.png",
+        "name": "꼬마 포미더블"
+    },
+    "20714": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207140/icon.png",
+        "name": "포미더블(μ장비)"
+    },
+    "21301": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/213010/icon.png",
+        "name": "에레버스"
+    },
+    "21302": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/213020/icon.png",
+        "name": "테러"
+    },
+    "21304": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/213040/icon.png",
+        "name": "애버크롬비 "
+    },
+    "29901": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299010/icon.png",
+        "name": "넵튠"
+    },
+    "29902": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299020/icon.png",
+        "name": "모나크"
+    },
+    "29903": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299030/icon.png",
+        "name": "체셔 "
+    },
+    "29904": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299040/icon.png",
+        "name": "드레이크 "
+    },
+    "29905": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299050/icon.png",
+        "name": "플리머스"
+    },
+    "30101": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301010/icon.png",
+        "name": "후부키"
+    },
+    "30102": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301020/icon.png",
+        "name": "시라유키"
+    },
+    "30104": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301040/icon.png",
+        "name": "미유키"
+    },
+    "30105": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301050/icon.png",
+        "name": "아야나미"
+    },
+    "30109": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301090/icon.png",
+        "name": "아카츠키"
+    },
+    "30110": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301100/icon.png",
+        "name": "히비키 "
+    },
+    "30111": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301110/icon.png",
+        "name": "이카즈치"
+    },
+    "30112": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301120/icon.png",
+        "name": "이나즈마"
+    },
+    "30113": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301130/icon.png",
+        "name": "시라츠유"
+    },
+    "30114": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301140/icon.png",
+        "name": "유다치"
+    },
+    "30115": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301150/icon.png",
+        "name": "시구레"
+    },
+    "30116": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301160/icon.png",
+        "name": "유키카제 "
+    },
+    "30117": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301170/icon.png",
+        "name": "카게로"
+    },
+    "30118": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301180/icon.png",
+        "name": "시라누이"
+    },
+    "30120": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301200/icon.png",
+        "name": "노와키"
+    },
+    "30121": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301210/icon.png",
+        "name": "하츠하루 "
+    },
+    "30123": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301230/icon.png",
+        "name": "와카바"
+    },
+    "30124": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301240/icon.png",
+        "name": "하츠시모"
+    },
+    "30125": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301250/icon.png",
+        "name": "아리아케"
+    },
+    "30126": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301260/icon.png",
+        "name": "유구레"
+    },
+    "30127": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301270/icon.png",
+        "name": "쿠로시오"
+    },
+    "30128": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301280/icon.png",
+        "name": "오야시오"
+    },
+    "30129": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301290/icon.png",
+        "name": "시마카제"
+    },
+    "30130": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301300/icon.png",
+        "name": "카미카제"
+    },
+    "30131": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301310/icon.png",
+        "name": "마츠카제 "
+    },
+    "30132": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301320/icon.png",
+        "name": "무츠키"
+    },
+    "30133": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301330/icon.png",
+        "name": "키사라기"
+    },
+    "30135": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301350/icon.png",
+        "name": "우즈키"
+    },
+    "30137": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301370/icon.png",
+        "name": "미나즈키"
+    },
+    "30138": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301380/icon.png",
+        "name": "후미즈키 "
+    },
+    "30139": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301390/icon.png",
+        "name": "나가츠키 "
+    },
+    "30141": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301410/icon.png",
+        "name": "미카즈키"
+    },
+    "30147": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301470/icon.png",
+        "name": "우미카제"
+    },
+    "30148": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301480/icon.png",
+        "name": "야마카제"
+    },
+    "30149": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301490/icon.png",
+        "name": "카와카제 "
+    },
+    "30154": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301540/icon.png",
+        "name": "키요나미 "
+    },
+    "30156": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301560/icon.png",
+        "name": "니이즈키"
+    },
+    "30157": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301570/icon.png",
+        "name": "하루츠키 "
+    },
+    "30158": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301580/icon.png",
+        "name": "요이즈키 "
+    },
+    "30159": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301590/icon.png",
+        "name": "우라카제 "
+    },
+    "30160": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301600/icon.png",
+        "name": "이소카제 "
+    },
+    "30161": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301610/icon.png",
+        "name": "하마카제"
+    },
+    "30162": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301620/icon.png",
+        "name": "타니카제"
+    },
+    "30163": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301630/icon.png",
+        "name": "아사시오 "
+    },
+    "30164": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301640/icon.png",
+        "name": "오오시오 "
+    },
+    "30165": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301650/icon.png",
+        "name": "미치시오"
+    },
+    "30166": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301660/icon.png",
+        "name": "아라시오 "
+    },
+    "30172": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301720/icon.png",
+        "name": "우라나미"
+    },
+    "30179": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301790/icon.png",
+        "name": "하타카제 "
+    },
+    "30180": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301800/icon.png",
+        "name": "마키나미 "
+    },
+    "30181": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301810/icon.png",
+        "name": "카스미 "
+    },
+    "30182": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301820/icon.png",
+        "name": "하나즈키 "
+    },
+    "30183": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301830/icon.png",
+        "name": "나가나미 "
+    },
+    "30184": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301840/icon.png",
+        "name": "{namecode:27}"
+    },
+    "30185": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301850/icon.png",
+        "name": "오이테"
+    },
+    "30186": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301860/icon.png",
+        "name": "카자구모"
+    },
+    "30188": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301880/icon.png",
+        "name": "와카츠키"
+    },
+    "30189": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301890/icon.png",
+        "name": "하츠즈키"
+    },
+    "30190": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301900/icon.png",
+        "name": "아사나기"
+    },
+    "30191": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301910/icon.png",
+        "name": "스즈나미"
+    },
+    "30192": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301920/icon.png",
+        "name": "스즈나미"
+    },
+    "30201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302010/icon.png",
+        "name": "유바리"
+    },
+    "30204": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302040/icon.png",
+        "name": "나가라"
+    },
+    "30205": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302050/icon.png",
+        "name": "이스즈"
+    },
+    "30206": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302060/icon.png",
+        "name": "나토리"
+    },
+    "30207": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302070/icon.png",
+        "name": "유라"
+    },
+    "30208": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302080/icon.png",
+        "name": "키누"
+    },
+    "30209": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302090/icon.png",
+        "name": "아부쿠마"
+    },
+    "30210": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302100/icon.png",
+        "name": "모가미 "
+    },
+    "30211": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302110/icon.png",
+        "name": "미쿠마 "
+    },
+    "30212": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302120/icon.png",
+        "name": "센다이"
+    },
+    "30213": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302130/icon.png",
+        "name": "진츠"
+    },
+    "30214": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302140/icon.png",
+        "name": "나카 "
+    },
+    "30220": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302200/icon.png",
+        "name": "아가노"
+    },
+    "30221": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302210/icon.png",
+        "name": "노시로 "
+    },
+    "30223": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302230/icon.png",
+        "name": "사카와"
+    },
+    "30224": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302240/icon.png",
+        "name": "노시로(μ장비)"
+    },
+    "30225": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png",
+        "name": "와타라세"
+    },
+    "30226": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302260/icon.png",
+        "name": "아야세"
+    },
+    "30227": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302270/icon.png",
+        "name": "아야세"
+    },
+    "30301": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303010/icon.png",
+        "name": "후루타카"
+    },
+    "30302": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303020/icon.png",
+        "name": "카코"
+    },
+    "30303": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303030/icon.png",
+        "name": "아오바"
+    },
+    "30304": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303040/icon.png",
+        "name": "키누가사"
+    },
+    "30306": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303060/icon.png",
+        "name": "치쿠마"
+    },
+    "30307": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303070/icon.png",
+        "name": "묘코"
+    },
+    "30308": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303080/icon.png",
+        "name": "나치"
+    },
+    "30309": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303090/icon.png",
+        "name": "아시가라 "
+    },
+    "30310": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303100/icon.png",
+        "name": "하구로"
+    },
+    "30311": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303110/icon.png",
+        "name": "타카오"
+    },
+    "30312": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303120/icon.png",
+        "name": "아타고"
+    },
+    "30313": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303130/icon.png",
+        "name": "마야"
+    },
+    "30314": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303140/icon.png",
+        "name": "{namecode:69}"
+    },
+    "30317": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303170/icon.png",
+        "name": "스즈야"
+    },
+    "30318": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303180/icon.png",
+        "name": "{namecode:60}"
+    },
+    "30319": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303190/icon.png",
+        "name": "운젠"
+    },
+    "30320": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303200/icon.png",
+        "name": "운젠"
+    },
+    "30401": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304010/icon.png",
+        "name": "콘고 "
+    },
+    "30402": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304020/icon.png",
+        "name": "히에이"
+    },
+    "30403": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304030/icon.png",
+        "name": "하루나 "
+    },
+    "30404": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304040/icon.png",
+        "name": "키리시마"
+    },
+    "30405": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304050/icon.png",
+        "name": "아마기 "
+    },
+    "30406": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304060/icon.png",
+        "name": "꼬마 히에이 "
+    },
+    "30407": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304070/icon.png",
+        "name": "꼬마 아마기"
+    },
+    "30408": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304080/icon.png",
+        "name": "콘고(μ장비)"
+    },
+    "30501": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305010/icon.png",
+        "name": "후소"
+    },
+    "30502": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305020/icon.png",
+        "name": "야마시로"
+    },
+    "30503": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305030/icon.png",
+        "name": "이세"
+    },
+    "30504": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305040/icon.png",
+        "name": "휴가"
+    },
+    "30505": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305050/icon.png",
+        "name": "나가토 "
+    },
+    "30506": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305060/icon.png",
+        "name": "무츠 "
+    },
+    "30507": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305070/icon.png",
+        "name": "카가 "
+    },
+    "30508": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305080/icon.png",
+        "name": "토사 "
+    },
+    "30510": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305100/icon.png",
+        "name": "무사시"
+    },
+    "30511": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305110/icon.png",
+        "name": "미카사"
+    },
+    "30512": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305120/icon.png",
+        "name": "{namecode:80}"
+    },
+    "30513": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305130/icon.png",
+        "name": "오와리"
+    },
+    "30514": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305140/icon.png",
+        "name": "스루가 "
+    },
+    "30516": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305160/icon.png",
+        "name": "스루가 "
+    },
+    "30601": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306010/icon.png",
+        "name": "{namecode:85}"
+    },
+    "30602": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306020/icon.png",
+        "name": "준요 "
+    },
+    "30603": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306030/icon.png",
+        "name": "호쇼"
+    },
+    "30604": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306040/icon.png",
+        "name": "즈이호"
+    },
+    "30605": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306050/icon.png",
+        "name": "쇼호"
+    },
+    "30606": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306060/icon.png",
+        "name": "류조 "
+    },
+    "30607": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306070/icon.png",
+        "name": "류호 "
+    },
+    "30608": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306080/icon.png",
+        "name": "{namecode:103}"
+    },
+    "30609": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306090/icon.png",
+        "name": "{namecode:104}"
+    },
+    "30701": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307010/icon.png",
+        "name": "아카기"
+    },
+    "30702": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307020/icon.png",
+        "name": "카가"
+    },
+    "30703": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307030/icon.png",
+        "name": "소류"
+    },
+    "30704": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307040/icon.png",
+        "name": "히류"
+    },
+    "30705": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307050/icon.png",
+        "name": "쇼카쿠"
+    },
+    "30706": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307060/icon.png",
+        "name": "즈이카쿠"
+    },
+    "30707": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307070/icon.png",
+        "name": "다이호"
+    },
+    "30708": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307080/icon.png",
+        "name": "{namecode:182}"
+    },
+    "30709": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307090/icon.png",
+        "name": "꼬마 아카기 "
+    },
+    "30710": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307100/icon.png",
+        "name": "아카기(μ장비)"
+    },
+    "30711": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307110/icon.png",
+        "name": "다이호(μ장비)"
+    },
+    "30712": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307120/icon.png",
+        "name": "카츠라기"
+    },
+    "30713": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307130/icon.png",
+        "name": "꼬마 다이호"
+    },
+    "30714": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307140/icon.png",
+        "name": "꼬마 시나노"
+    },
+    "30715": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307150/icon.png",
+        "name": "아마기(항공모함)"
+    },
+    "30716": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307160/icon.png",
+        "name": "아마기(항공모함)"
+    },
+    "30801": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308010/icon.png",
+        "name": "이19"
+    },
+    "30802": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308020/icon.png",
+        "name": "이26"
+    },
+    "30803": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308030/icon.png",
+        "name": "이58"
+    },
+    "30804": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308040/icon.png",
+        "name": "이25 "
+    },
+    "30805": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308050/icon.png",
+        "name": "이56 "
+    },
+    "30806": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308060/icon.png",
+        "name": "이168 "
+    },
+    "31201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/312010/icon.png",
+        "name": "아카시"
+    },
+    "31701": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317010/icon.png",
+        "name": "이13"
+    },
+    "31702": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317020/icon.png",
+        "name": "이13"
+    },
+    "31901": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/319010/icon.png",
+        "name": "{namecode:188}"
+    },
+    "39901": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399010/icon.png",
+        "name": "이부키"
+    },
+    "39902": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399020/icon.png",
+        "name": "이즈모"
+    },
+    "39903": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399030/icon.png",
+        "name": "키타카제 "
+    },
+    "39904": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399040/icon.png",
+        "name": "아즈마 "
+    },
+    "39905": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399050/icon.png",
+        "name": "하쿠류"
+    },
+    "39906": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399060/icon.png",
+        "name": "시만토"
+    },
+    "39907": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399070/icon.png",
+        "name": "다이센"
+    },
+    "40101": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401010/icon.png",
+        "name": "Z1"
+    },
+    "40102": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401020/icon.png",
+        "name": "Z2"
+    },
+    "40109": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401090/icon.png",
+        "name": "Z9"
+    },
+    "40111": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401110/icon.png",
+        "name": "Z11"
+    },
+    "40113": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401130/icon.png",
+        "name": "Z13"
+    },
+    "40116": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401160/icon.png",
+        "name": "Z16"
+    },
+    "40118": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401180/icon.png",
+        "name": "Z18"
+    },
+    "40119": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401190/icon.png",
+        "name": "Z19"
+    },
+    "40120": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401200/icon.png",
+        "name": "Z20"
+    },
+    "40121": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401210/icon.png",
+        "name": "Z21"
+    },
+    "40123": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401230/icon.png",
+        "name": "Z23"
+    },
+    "40124": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401240/icon.png",
+        "name": "Z24"
+    },
+    "40125": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401250/icon.png",
+        "name": "Z25"
+    },
+    "40126": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401260/icon.png",
+        "name": "Z26"
+    },
+    "40128": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401280/icon.png",
+        "name": "Z28"
+    },
+    "40135": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401350/icon.png",
+        "name": "Z35"
+    },
+    "40136": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401360/icon.png",
+        "name": "Z36"
+    },
+    "40143": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401430/icon.png",
+        "name": "{namecode:537}"
+    },
+    "40146": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401460/icon.png",
+        "name": "Z46"
+    },
+    "40147": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401470/icon.png",
+        "name": "{namecode:494}"
+    },
+    "40152": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401520/icon.png",
+        "name": "Z52"
+    },
+    "40199": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401990/icon.png",
+        "name": "오토 폰 알벤슬레벤"
+    },
+    "40201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402010/icon.png",
+        "name": "쾨니히스베르크"
+    },
+    "40202": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402020/icon.png",
+        "name": "카를스루에"
+    },
+    "40203": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402030/icon.png",
+        "name": "쾰른"
+    },
+    "40204": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402040/icon.png",
+        "name": "라이프치히"
+    },
+    "40205": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402050/icon.png",
+        "name": "뉘른베르크"
+    },
+    "40206": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402060/icon.png",
+        "name": "마그데부르크"
+    },
+    "40207": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402070/icon.png",
+        "name": "엠덴"
+    },
+    "40208": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402080/icon.png",
+        "name": "엘빙"
+    },
+    "40210": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402100/icon.png",
+        "name": "레겐스부르크"
+    },
+    "40211": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402110/icon.png",
+        "name": "뒤스부르크"
+    },
+    "40301": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403010/icon.png",
+        "name": "아드미럴 히퍼"
+    },
+    "40302": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403023/icon.png",
+        "name": "블뤼허"
+    },
+    "40303": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403030/icon.png",
+        "name": "프린츠 오이겐"
+    },
+    "40304": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403040/icon.png",
+        "name": "도이칠란트"
+    },
+    "40305": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403050/icon.png",
+        "name": "아드미랄 그라프 슈피"
+    },
+    "40307": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403070/icon.png",
+        "name": "아드미랄 히퍼(μ장비)"
+    },
+    "40308": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403080/icon.png",
+        "name": "론(μ장비)"
+    },
+    "40309": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403090/icon.png",
+        "name": "프린츠 하인리히"
+    },
+    "40310": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403100/icon.png",
+        "name": "프린츠 아달베르트"
+    },
+    "40311": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403110/icon.png",
+        "name": "요르크"
+    },
+    "40312": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403120/icon.png",
+        "name": "꼬마 프린츠 오이겐"
+    },
+    "40313": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403130/icon.png",
+        "name": "꼬마 슈피"
+    },
+    "40314": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403140/icon.png",
+        "name": "프리드리히 카를"
+    },
+    "40315": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403150/icon.png",
+        "name": "프린츠 오이겐(μ장비)"
+    },
+    "40316": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403160/icon.png",
+        "name": "꼬마 에기르"
+    },
+    "40401": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404010/icon.png",
+        "name": "샤른호르스트"
+    },
+    "40402": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404020/icon.png",
+        "name": "그나이제나우"
+    },
+    "40403": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404030/icon.png",
+        "name": "자이틀리츠"
+    },
+    "40404": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404040/icon.png",
+        "name": "뤼초"
+    },
+    "40405": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404050/icon.png",
+        "name": "브륀힐드"
+    },
+    "40406": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404060/icon.png",
+        "name": "알비트"
+    },
+    "40407": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404070/icon.png",
+        "name": "아드미랄 젠커"
+    },
+    "40501": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405010/icon.png",
+        "name": "비스마르크 "
+    },
+    "40502": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405020/icon.png",
+        "name": "티르피츠"
+    },
+    "40503": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405030/icon.png",
+        "name": "울리히 폰 후텐"
+    },
+    "40504": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405040/icon.png",
+        "name": "튀링겐"
+    },
+    "40505": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405050/icon.png",
+        "name": "비스마르크 Zwei"
+    },
+    "40506": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405060/icon.png",
+        "name": "꼬마 프리드리히"
+    },
+    "40601": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/406010/icon.png",
+        "name": "베저"
+    },
+    "40602": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/406020/icon.png",
+        "name": "엘베"
+    },
+    "40603": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/406030/icon.png",
+        "name": "야드"
+    },
+    "40701": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/407010/icon.png",
+        "name": "그라프 체펠린"
+    },
+    "40702": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/407020/icon.png",
+        "name": "꼬마 그라프 체펠린 "
+    },
+    "40703": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/407030/icon.png",
+        "name": "페터 슈트라서"
+    },
+    "40704": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/407040/icon.png",
+        "name": "프리츠 루메이"
+    },
+    "40801": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408010/icon.png",
+        "name": "U-81"
+    },
+    "40802": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408020/icon.png",
+        "name": "U-47"
+    },
+    "40803": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408030/icon.png",
+        "name": "U-557"
+    },
+    "40804": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408040/icon.png",
+        "name": "U-556"
+    },
+    "40805": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408050/icon.png",
+        "name": "U-73"
+    },
+    "40806": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408060/icon.png",
+        "name": "U-101"
+    },
+    "40807": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408070/icon.png",
+        "name": "U-522"
+    },
+    "40808": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408080/icon.png",
+        "name": "U-110"
+    },
+    "40809": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408090/icon.png",
+        "name": "U-96"
+    },
+    "40810": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408100/icon.png",
+        "name": "U-37"
+    },
+    "40811": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408110/icon.png",
+        "name": "U-410"
+    },
+    "40812": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408120/icon.png",
+        "name": "U-1206"
+    },
+    "40813": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408130/icon.png",
+        "name": "{namecode:536}"
+    },
+    "40814": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408140/icon.png",
+        "name": "U-552"
+    },
+    "49901": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499010/icon.png",
+        "name": "론"
+    },
+    "49902": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499020/icon.png",
+        "name": "프리드리히 데어 그로세 "
+    },
+    "49903": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499030/icon.png",
+        "name": "마인츠 "
+    },
+    "49904": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499040/icon.png",
+        "name": "오딘 "
+    },
+    "49905": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499050/icon.png",
+        "name": "에기르"
+    },
+    "49906": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499060/icon.png",
+        "name": "아우구스트 폰 파르제팔"
+    },
+    "49907": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499070/icon.png",
+        "name": "프린츠 루프레히트"
+    },
+    "49908": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499080/icon.png",
+        "name": "펠릭스 슐츠"
+    },
+    "49909": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499090/icon.png",
+        "name": "힌덴부르크"
+    },
+    "49910": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499100/icon.png",
+        "name": "메클렌부르크"
+    },
+    "50101": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501010/icon.png",
+        "name": "안샨 "
+    },
+    "50102": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501020/icon.png",
+        "name": "푸슌 "
+    },
+    "50103": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501030/icon.png",
+        "name": "창춘 "
+    },
+    "50104": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501040/icon.png",
+        "name": "타이위안 "
+    },
+    "50105": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501050/icon.png",
+        "name": "롱우"
+    },
+    "50106": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501060/icon.png",
+        "name": "후번"
+    },
+    "50107": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501070/icon.png",
+        "name": "페이윈"
+    },
+    "50108": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501080/icon.png",
+        "name": "창펑"
+    },
+    "50109": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501090/icon.png",
+        "name": "푸보"
+    },
+    "50201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502010/icon.png",
+        "name": "얏센 "
+    },
+    "50202": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502020/icon.png",
+        "name": "닝하이"
+    },
+    "50203": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502030/icon.png",
+        "name": "핑하이"
+    },
+    "50204": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502040/icon.png",
+        "name": "잉 루이"
+    },
+    "50205": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502050/icon.png",
+        "name": "차오 호"
+    },
+    "50207": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502070/icon.png",
+        "name": "하이티엔"
+    },
+    "50208": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502080/icon.png",
+        "name": "하이치"
+    },
+    "50209": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502090/icon.png",
+        "name": "지안"
+    },
+    "50210": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502100/icon.png",
+        "name": "하이롱"
+    },
+    "50301": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503010/icon.png",
+        "name": "지엔우"
+    },
+    "50401": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/504010/icon.png",
+        "name": "환창"
+    },
+    "50601": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/506010/icon.png",
+        "name": "젠하이"
+    },
+    "50602": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/506020/icon.png",
+        "name": "화지아"
+    },
+    "51901": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/519010/icon.png",
+        "name": "딩안"
+    },
+    "59901": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/599010/icon.png",
+        "name": "하얼빈"
+    },
+    "60102": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601020/icon.png",
+        "name": "카라비니에레 "
+    },
+    "60103": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601030/icon.png",
+        "name": "빈첸초 조베르티"
+    },
+    "60104": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601040/icon.png",
+        "name": "마에스트라레"
+    },
+    "60105": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601050/icon.png",
+        "name": "리베치오"
+    },
+    "60106": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601060/icon.png",
+        "name": "니콜로소 다 레코"
+    },
+    "60107": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601070/icon.png",
+        "name": "폼페오 마뇨"
+    },
+    "60108": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601080/icon.png",
+        "name": "알프레도 오리아니"
+    },
+    "60109": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601090/icon.png",
+        "name": "에마누엘레 페사노"
+    },
+    "60110": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601100/icon.png",
+        "name": "아틸리오 레골로"
+    },
+    "60111": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601110/icon.png",
+        "name": "조수에 카르두치"
+    },
+    "60201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602010/icon.png",
+        "name": "두카 델리 아브루치"
+    },
+    "60202": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602020/icon.png",
+        "name": "주세페 가리발디"
+    },
+    "60203": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602030/icon.png",
+        "name": "바르톨로메오 콜레오니"
+    },
+    "60301": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603010/icon.png",
+        "name": "트렌토 "
+    },
+    "60302": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603020/icon.png",
+        "name": "차라 "
+    },
+    "60303": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603030/icon.png",
+        "name": "폴라"
+    },
+    "60304": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603040/icon.png",
+        "name": "트리에스테"
+    },
+    "60305": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603050/icon.png",
+        "name": "볼차노"
+    },
+    "60306": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603060/icon.png",
+        "name": "고리치아"
+    },
+    "60501": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605010/icon.png",
+        "name": "비토리오 베네토"
+    },
+    "60502": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605020/icon.png",
+        "name": "리토리오 "
+    },
+    "60503": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605030/icon.png",
+        "name": "로마"
+    },
+    "60505": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605050/icon.png",
+        "name": "콘테 디 카보우르 "
+    },
+    "60506": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605060/icon.png",
+        "name": "줄리오 체사레 "
+    },
+    "60507": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605070/icon.png",
+        "name": "안드레아 도리아"
+    },
+    "60508": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605080/icon.png",
+        "name": "라파엘로"
+    },
+    "60701": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/607010/icon.png",
+        "name": "아퀼라"
+    },
+    "60702": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/607020/icon.png",
+        "name": "임페로"
+    },
+    "60801": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/608010/icon.png",
+        "name": "토리첼리"
+    },
+    "60802": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/608020/icon.png",
+        "name": "레오나르도 다 빈치"
+    },
+    "60803": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/608030/icon.png",
+        "name": "마조레 바라카"
+    },
+    "69901": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/699010/icon.png",
+        "name": "마르코 폴로"
+    },
+    "69902": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/699020/icon.png",
+        "name": "나폴리"
+    },
+    "69903": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/699030/icon.png",
+        "name": "비토리오 쿠니베르티"
+    },
+    "70102": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701020/icon.png",
+        "name": "그로즈니 "
+    },
+    "70103": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701030/icon.png",
+        "name": "민스크 "
+    },
+    "70104": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701040/icon.png",
+        "name": "타슈켄트 "
+    },
+    "70105": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701050/icon.png",
+        "name": "타슈켄트(μ장비)"
+    },
+    "70106": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701060/icon.png",
+        "name": "스트례미텔니"
+    },
+    "70107": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701070/icon.png",
+        "name": "그리먀시"
+    },
+    "70108": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701080/icon.png",
+        "name": "그롬키"
+    },
+    "70109": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701090/icon.png",
+        "name": "소브라지텔니"
+    },
+    "70110": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701100/icon.png",
+        "name": "키예프"
+    },
+    "70111": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701110/icon.png",
+        "name": "오그네보이"
+    },
+    "70112": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701120/icon.png",
+        "name": "스비레피"
+    },
+    "70201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702010/icon.png",
+        "name": "아브로라 "
+    },
+    "70202": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702025/icon.png",
+        "name": "파먀티 메르쿠리야 "
+    },
+    "70203": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702030/icon.png",
+        "name": "차파예프 "
+    },
+    "70204": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702040/icon.png",
+        "name": "키로프"
+    },
+    "70205": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702050/icon.png",
+        "name": "쿠이비셰프"
+    },
+    "70206": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702060/icon.png",
+        "name": "무르만스크"
+    },
+    "70207": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702070/icon.png",
+        "name": "보로실로프"
+    },
+    "70208": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702080/icon.png",
+        "name": "올레그"
+    },
+    "70301": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703010/icon.png",
+        "name": "탈린"
+    },
+    "70302": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703020/icon.png",
+        "name": "쿠르스크"
+    },
+    "70501": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705010/icon.png",
+        "name": "강구트 "
+    },
+    "70502": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705020/icon.png",
+        "name": "소비에츠키 소유즈"
+    },
+    "70504": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705040/icon.png",
+        "name": "소비에츠카야 벨로루시아"
+    },
+    "70505": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705050/icon.png",
+        "name": "소비에츠카야 러시아 "
+    },
+    "70506": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705060/icon.png",
+        "name": "아르한겔스크"
+    },
+    "70507": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705070/icon.png",
+        "name": "세바스토폴"
+    },
+    "70508": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705080/icon.png",
+        "name": "폴타바"
+    },
+    "70509": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705090/icon.png",
+        "name": "카잔"
+    },
+    "70701": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/707010/icon.png",
+        "name": "볼가"
+    },
+    "71801": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/718010/icon.png",
+        "name": "크론시타트"
+    },
+    "79901": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/799010/icon.png",
+        "name": "치칼로프"
+    },
+    "79902": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/799020/icon.png",
+        "name": "아드미랄 나히모프"
+    },
+    "79903": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/799030/icon.png",
+        "name": "드미트리 돈스코이"
+    },
+    "80101": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801010/icon.png",
+        "name": "르 트리옹팡 "
+    },
+    "80102": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801020/icon.png",
+        "name": "포르뱅 "
+    },
+    "80103": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801030/icon.png",
+        "name": "르 테메레르"
+    },
+    "80104": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801040/icon.png",
+        "name": "로피니아트르 "
+    },
+    "80105": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801050/icon.png",
+        "name": "르 아르디"
+    },
+    "80107": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801070/icon.png",
+        "name": "르 테리블"
+    },
+    "80108": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801080/icon.png",
+        "name": "마이예 브레제"
+    },
+    "80109": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801090/icon.png",
+        "name": "르 테메레르(μ장비)"
+    },
+    "80201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802010/icon.png",
+        "name": "에밀 베르탱 "
+    },
+    "80202": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802020/icon.png",
+        "name": "잔 다르크 "
+    },
+    "80203": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802030/icon.png",
+        "name": "기샹"
+    },
+    "80204": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802040/icon.png",
+        "name": "뒤게 트루앵"
+    },
+    "80301": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/803010/icon.png",
+        "name": "쉬프랑"
+    },
+    "80302": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/803020/icon.png",
+        "name": "브렌누스"
+    },
+    "80303": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/803030/icon.png",
+        "name": "뒤켄"
+    },
+    "80401": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/804010/icon.png",
+        "name": "마세나"
+    },
+    "80501": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/805010/icon.png",
+        "name": "리슐리외 "
+    },
+    "80502": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/805020/icon.png",
+        "name": "리옹"
+    },
+    "80503": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/805030/icon.png",
+        "name": "알자스"
+    },
+    "80601": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/806010/icon.png",
+        "name": "부아 벨루"
+    },
+    "80701": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/807010/icon.png",
+        "name": "베아른 "
+    },
+    "80702": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/807020/icon.png",
+        "name": "팽르베"
+    },
+    "80801": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/808010/icon.png",
+        "name": "쉬르쿠프 "
+    },
+    "89901": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/899010/icon.png",
+        "name": "생 루이"
+    },
+    "89902": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/899020/icon.png",
+        "name": "샹파뉴 "
+    },
+    "89903": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/899030/icon.png",
+        "name": "브레스트"
+    },
+    "89904": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/899040/icon.png",
+        "name": "바야르"
+    },
+    "90101": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901010/icon.png",
+        "name": "르 마르스 "
+    },
+    "90102": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901020/icon.png",
+        "name": "타르투 "
+    },
+    "90103": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901030/icon.png",
+        "name": "보클랭 "
+    },
+    "90104": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901040/icon.png",
+        "name": "케르생"
+    },
+    "90105": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901050/icon.png",
+        "name": "플뢰레"
+    },
+    "90106": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901060/icon.png",
+        "name": "에페"
+    },
+    "90107": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901070/icon.png",
+        "name": "모가도르"
+    },
+    "90111": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901110/icon.png",
+        "name": "르 말랭 "
+    },
+    "90112": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901120/icon.png",
+        "name": "르 말랭(μ장비)"
+    },
+    "90113": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901130/icon.png",
+        "name": "랭동타블"
+    },
+    "90114": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901140/icon.png",
+        "name": "로데슈"
+    },
+    "90201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/902010/icon.png",
+        "name": "라 갈리소니에르 "
+    },
+    "90202": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/902020/icon.png",
+        "name": "마르세예즈"
+    },
+    "90301": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/903010/icon.png",
+        "name": "포슈"
+    },
+    "90302": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/903020/icon.png",
+        "name": "알제리 "
+    },
+    "90303": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/903030/icon.png",
+        "name": "듀플렉스"
+    },
+    "90401": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/904010/icon.png",
+        "name": "됭케르크 "
+    },
+    "90402": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/904020/icon.png",
+        "name": "스트라스부르"
+    },
+    "90501": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/905010/icon.png",
+        "name": "장 바르 "
+    },
+    "90502": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/905020/icon.png",
+        "name": "클레망소"
+    },
+    "90503": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/905030/icon.png",
+        "name": "가스코뉴(μ장비)"
+    },
+    "90701": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/907010/icon.png",
+        "name": "조프르"
+    },
+    "99901": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/999010/icon.png",
+        "name": "가스코뉴 "
+    },
+    "99902": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/999020/icon.png",
+        "name": "플랑드르"
+    },
+    "110101": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/1101010/icon.png",
+        "name": "에버트센"
+    },
+    "110201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/1102010/icon.png",
+        "name": "드 제번 프로빈시엔"
+    },
+    "119901": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/1199010/icon.png",
+        "name": "하우덴 리우"
+    },
+    "960001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600010/icon.png",
+        "name": "로열 포춘"
+    },
+    "960002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600020/icon.png",
+        "name": "상 마르티뉴"
+    },
+    "960003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600030/icon.png",
+        "name": "골든 하인드"
+    },
+    "960004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600040/icon.png",
+        "name": "메리 셀러스트"
+    },
+    "960005": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600050/icon.png",
+        "name": "위다"
+    },
+    "960006": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600060/icon.png",
+        "name": "어드벤처 갤리"
+    },
+    "960007": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600070/icon.png",
+        "name": "건스웨이"
+    },
+    "960008": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600080/icon.png",
+        "name": "팬시"
+    },
+    "960009": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600090/icon.png",
+        "name": "아미티"
+    },
+    "960010": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600100/icon.png",
+        "name": "포츠머스 어드벤처"
+    },
+    "960011": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600110/icon.png",
+        "name": "돌핀"
+    },
+    "970101": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701010/icon.png",
+        "name": "헌터·META"
+    },
+    "970102": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701020/icon.png",
+        "name": "포춘·META"
+    },
+    "970103": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701030/icon.png",
+        "name": "하타카제·META"
+    },
+    "970104": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701040/icon.png",
+        "name": "킴벌리·META"
+    },
+    "970105": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701050/icon.png",
+        "name": "뱀파이어·META"
+    },
+    "970106": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701060/icon.png",
+        "name": "카스미·META"
+    },
+    "970107": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701070/icon.png",
+        "name": "그렌빌·META"
+    },
+    "970108": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701080/icon.png",
+        "name": "카와카제·META"
+    },
+    "970109": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701090/icon.png",
+        "name": "유다치·META"
+    },
+    "970201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702010/icon.png",
+        "name": "헬레나·META"
+    },
+    "970202": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702020/icon.png",
+        "name": "멤피스·META"
+    },
+    "970203": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702030/icon.png",
+        "name": "셰필드·META"
+    },
+    "970204": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702040/icon.png",
+        "name": "라 갈리소니에르·META"
+    },
+    "970205": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702050/icon.png",
+        "name": "진츠·META"
+    },
+    "970206": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702060/icon.png",
+        "name": "키로프·META"
+    },
+    "970207": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702070/icon.png",
+        "name": "파먀티 메르쿠리야·META"
+    },
+    "970301": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9703010/icon.png",
+        "name": "트렌토·META"
+    },
+    "970302": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9703020/icon.png",
+        "name": "알제리·META"
+    },
+    "970303": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9703030/icon.png",
+        "name": "포슈·META"
+    },
+    "970304": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9703040/icon.png",
+        "name": "위치타·META"
+    },
+    "970305": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9703050/icon.png",
+        "name": "아드미랄 히퍼·META"
+    },
+    "970306": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9703060/icon.png",
+        "name": "볼차노·META"
+    },
+    "970401": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9704010/icon.png",
+        "name": "그나이제나우·META"
+    },
+    "970402": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9704020/icon.png",
+        "name": "샤른호르스트·META"
+    },
+    "970403": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9704030/icon.png",
+        "name": "리펄스·META"
+    },
+    "970404": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9704040/icon.png",
+        "name": "리나운·META"
+    },
+    "970405": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9704050/icon.png",
+        "name": "히에이·META"
+    },
+    "970406": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9704060/icon.png",
+        "name": "됭케르크·META"
+    },
+    "970501": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705010/icon.png",
+        "name": "후소·META"
+    },
+    "970502": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705020/icon.png",
+        "name": "야마시로·META"
+    },
+    "970503": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705030/icon.png",
+        "name": "애리조나·META"
+    },
+    "970504": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705040/icon.png",
+        "name": "퀸 엘리자베스·META"
+    },
+    "970505": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705050/icon.png",
+        "name": "로드니·META"
+    },
+    "970506": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705060/icon.png",
+        "name": "나가토·META"
+    },
+    "970507": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705070/icon.png",
+        "name": "줄리오 체사레·META"
+    },
+    "970508": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705080/icon.png",
+        "name": "안드레아 도리아·META"
+    },
+    "970509": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705090/icon.png",
+        "name": "네바다·META"
+    },
+    "970601": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9706010/icon.png",
+        "name": "히요·META"
+    },
+    "970602": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9706020/icon.png",
+        "name": "준요·META"
+    },
+    "970603": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9706030/icon.png",
+        "name": "프린스턴·META"
+    },
+    "970604": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9706040/icon.png",
+        "name": "호쇼·META"
+    },
+    "970701": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9707010/icon.png",
+        "name": "히류·META"
+    },
+    "970702": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9707020/icon.png",
+        "name": "아크 로열·META"
+    },
+    "970703": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9707030/icon.png",
+        "name": "소류·META"
+    },
+    "970704": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9707040/icon.png",
+        "name": "베아른·META"
+    },
+    "970705": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9707050/icon.png",
+        "name": "다이호·META"
+    },
+    "970706": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9707060/icon.png",
+        "name": "호넷·META"
+    },
+    "970707": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9707070/icon.png",
+        "name": "글로리어스·META"
+    },
+    "970801": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9708010/icon.png",
+        "name": "U-556·META"
+    },
+    "971201": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9712010/icon.png",
+        "name": "베스탈·META"
+    },
+    "971301": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9713010/icon.png",
+        "name": "에레버스·META"
+    },
+    "1010001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10100010/icon.png",
+        "name": "넵튠"
+    },
+    "1010002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10100020/icon.png",
+        "name": "느와르"
+    },
+    "1010003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10100030/icon.png",
+        "name": "블랑"
+    },
+    "1010004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10100040/icon.png",
+        "name": "벨"
+    },
+    "1010005": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10100050/icon.png",
+        "name": "퍼플 하트"
+    },
+    "1010006": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10100060/icon.png",
+        "name": "블랙 하트"
+    },
+    "1010007": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10100070/icon.png",
+        "name": "화이트 하트"
+    },
+    "1010008": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10100080/icon.png",
+        "name": "그린 하트"
+    },
+    "1040001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10400010/icon.png",
+        "name": "키즈나 아이 "
+    },
+    "1040002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10400020/icon.png",
+        "name": "키즈나 아이·Elegant"
+    },
+    "1040003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10400030/icon.png",
+        "name": "키즈나 아이·Anniversary"
+    },
+    "1040004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10400040/icon.png",
+        "name": "키즈나 아이·SuperGamer"
+    },
+    "1050001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10500010/icon.png",
+        "name": "시라카미 후부키"
+    },
+    "1050002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10500020/icon.png",
+        "name": "토키노 소라"
+    },
+    "1050003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10500030/icon.png",
+        "name": "미나토 아쿠아"
+    },
+    "1050004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10500040/icon.png",
+        "name": "나츠이로 마츠리"
+    },
+    "1050005": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10500050/icon.png",
+        "name": "나키리 아야메"
+    },
+    "1050006": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10500060/icon.png",
+        "name": "무라사키 시온"
+    },
+    "1050007": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10500070/icon.png",
+        "name": "오오카미 미오"
+    },
+    "1060001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600010/icon.png",
+        "name": "마리 로즈"
+    },
+    "1060002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600020/icon.png",
+        "name": "호노카"
+    },
+    "1060003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600030/icon.png",
+        "name": "카스미"
+    },
+    "1060004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600040/icon.png",
+        "name": "미사키"
+    },
+    "1060005": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600050/icon.png",
+        "name": "나기사"
+    },
+    "1060006": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600060/icon.png",
+        "name": "뇨텐구"
+    },
+    "1060007": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600070/icon.png",
+        "name": "모니카"
+    },
+    "1060008": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600080/icon.png",
+        "name": "루나"
+    },
+    "1060009": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600090/icon.png",
+        "name": "타마키"
+    },
+    "1070001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10700010/icon.png",
+        "name": "아마미 하루카"
+    },
+    "1070002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10700020/icon.png",
+        "name": "키사라기 치하야"
+    },
+    "1070003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10700030/icon.png",
+        "name": "미나세 이오리"
+    },
+    "1070004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10700040/icon.png",
+        "name": "미우라 아즈사"
+    },
+    "1070005": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10700050/icon.png",
+        "name": "아키즈키 리츠코"
+    },
+    "1070006": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10700060/icon.png",
+        "name": "후타미 아미"
+    },
+    "1070007": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10700070/icon.png",
+        "name": "후타미 마미"
+    },
+    "1080001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10800010/icon.png",
+        "name": "타카라다 릿카"
+    },
+    "1080002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10800020/icon.png",
+        "name": "신죠 아카네"
+    },
+    "1080003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10800030/icon.png",
+        "name": "핫스"
+    },
+    "1080004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10800040/icon.png",
+        "name": "나미코"
+    },
+    "1080005": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10800050/icon.png",
+        "name": "미나미 유메"
+    },
+    "1080006": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10800060/icon.png",
+        "name": "아스카가와 치세"
+    },
+    "1080007": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10800070/icon.png",
+        "name": "무지나"
+    },
+    "1080008": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10800080/icon.png",
+        "name": "2대"
+    },
+    "1080009": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10800090/icon.png",
+        "name": "공주"
+    },
+    "1090001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10900010/icon.png",
+        "name": "라이잘린 스타우트"
+    },
+    "1090002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10900020/icon.png",
+        "name": "클라우디아 발렌츠"
+    },
+    "1090003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10900030/icon.png",
+        "name": "파트리샤 아벨하임"
+    },
+    "1090004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10900040/icon.png",
+        "name": "릴라 디자이어스"
+    },
+    "1090005": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10900050/icon.png",
+        "name": "세리 글로스"
+    },
+    "1090006": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10900060/icon.png",
+        "name": "칼라 이데아스"
+    },
+    "1100001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11000010/icon.png",
+        "name": "아스카"
+    },
+    "1100002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11000020/icon.png",
+        "name": "이카루가"
+    },
+    "1100003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11000030/icon.png",
+        "name": "호무라"
+    },
+    "1100004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11000040/icon.png",
+        "name": "유미"
+    },
+    "1100005": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11000050/icon.png",
+        "name": "후부키"
+    },
+    "1100006": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11000060/icon.png",
+        "name": "무라사키"
+    },
+    "1100007": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11000070/icon.png",
+        "name": "유우야키"
+    },
+    "1110001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11100010/icon.png",
+        "name": "라라 사타린 데빌룩"
+    },
+    "1110002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11100020/icon.png",
+        "name": "나나 아스타 데빌룩"
+    },
+    "1110003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11100030/icon.png",
+        "name": "모모 베리아 데빌룩"
+    },
+    "1110004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11100040/icon.png",
+        "name": "금빛 어둠"
+    },
+    "1110005": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11100050/icon.png",
+        "name": "사이렌지 하루나"
+    },
+    "1110006": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11100060/icon.png",
+        "name": "코테가와 유이"
+    },
+    "1120001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11200010/icon.png",
+        "name": "BLACK★ROCK SHOOTER"
+    },
+    "1120002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11200020/icon.png",
+        "name": "DEAD MASTER"
+    },
+    "1130001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11300010/icon.png",
+        "name": "유미아 리스펠트"
+    },
+    "1130002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11300020/icon.png",
+        "name": "아일라 폰 뒤러"
+    },
+    "1130003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11300030/icon.png",
+        "name": "니나 프리드"
+    },
+    "1130004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11300040/icon.png",
+        "name": "레이냐"
+    }
+}
