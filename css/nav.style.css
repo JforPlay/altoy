@@ -75,39 +75,37 @@
     background-color: #555;
 }
 
-/* ---------------------------------- */
-/* -- Light Theme for ins-viewer.html -- */
-/* ---------------------------------- */
-
-/* Light background for the navbar */
+/* Light Theme specifically for ins-viewer.html */
 .navbar.navbar-light {
-    background-color: #f8f9fa; /* A light grey/white color */
-    border-bottom: 1px solid #dee2e6; /* A subtle bottom border */
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
 }
-
-/* Dark text for links on the light navbar */
 .navbar.navbar-light .nav-logo,
 .navbar.navbar-light .nav-links {
-    color: #343a40; /* A dark grey for text */
+    color: #343a40;
 }
-
-/* Hover effect for links on the light navbar */
 .navbar.navbar-light .nav-links:hover {
-    background-color: #e9ecef; /* A slightly darker grey for hover */
+    background-color: #e9ecef;
 }
-
-/* Light background for the dropdown menu */
 .navbar.navbar-light .dropdown-menu {
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
 }
-
-/* Dark text for dropdown items */
 .navbar.navbar-light .dropdown-menu li a {
     color: #343a40;
 }
-
-/* Hover effect for dropdown items */
 .navbar.navbar-light .dropdown-menu li a:hover {
     background-color: #e9ecef;
+}
+
+/* Style for the Active Navigation Group */
+.nav-logo.active-group,
+.nav-links.active-group {
+    background-color: #555; /* Dark theme active color */
+    border-radius: 5px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+.navbar-light .nav-logo.active-group,
+.navbar-light .nav-links.active-group {
+    background-color: #e9ecef; /* Light theme active color */
 }
