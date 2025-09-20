@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Data Fetching ---
     Promise.all([
-        fetch('processed_ins_data.json').then(res => res.json()),
-        fetch('shipgirl_group_data.json').then(res => res.json())
+        fetch('data/processed_ins_data.json').then(res => res.json()),
+        fetch('data/shipgirl_group_data.json').then(res => res.json())
     ])
     .then(([posts, shipgirlData]) => {
         postsData = posts;
