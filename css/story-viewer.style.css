@@ -1,0 +1,154 @@
+/* --- Global Styles --- */
+/* --- Body and Main Styles --- */
+body {
+    background-color: #36393f;
+    font-family: sans-serif;
+    color: #dcddde;
+    margin: 0;
+    padding: 20px;
+    padding-top: 80px;
+}
+.story-container {
+    max-width: 800px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.message-bubble {
+    padding: 12px 15px;
+    border-radius: 8px;
+    max-width: 75%;
+    line-height: 1.4;
+}
+.message-bubble p {
+    margin: 0;
+}
+.speaker-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+.character {
+    background-color: #40444b;
+    align-self: flex-start;
+}
+.player {
+    background-color: #7289da;
+    align-self: flex-end;
+}
+.player .speaker-name {
+    color: #ffffff;
+}
+.narrator {
+    background-color: transparent;
+    font-style: italic;
+    color: #a3a6aa;
+    text-align: center;
+    align-self: center;
+    max-width: 90%;
+}
+#story-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 0 20px;
+}
+#story-header h1 {
+    font-size: 2em;
+    color: #ffffff;
+    margin: 0;
+}
+#story-header h2 {
+    font-size: 1.2em;
+    color: #b9bbbe;
+    font-weight: normal;
+    margin: 8px 0 0 0;
+}
+
+/* New Flavor Text Box Style */
+.flavor-text-box {
+    background-color: #2f3136;
+    border: 1px solid #4f545c;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 0 auto 20px auto;
+    max-width: 600px;
+    text-align: center;
+}
+.flavor-text-box p {
+    margin: 0;
+    line-height: 1.6;
+    font-size: 0.9em;
+    color: #b9bbbe;
+}
+.flavor-text-box strong {
+    color: #ffffff;
+    font-size: 1.1em;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.options-container {
+    max-width: 800px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+.choice-button {
+    background-color: #5865f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 18px;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: right;
+    transition: background-color 0.2s;
+    max-width: 80%;
+}
+.choice-button:hover {
+    background-color: #4752c4;
+}
+.restart-button {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 100;
+    background-color: #f04747;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 0.9em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.restart-button:hover {
+    background-color: #d84040;
+}
+
+/* --- Responsive Styles for Mobile --- */
+@media (max-width: 768px) {
+    html {
+        font-size: 12px;
+    }
+    body {
+        padding-top: 60px;
+    }
+    .restart-button {
+        top: 70px;
+        padding: 8px 12px;
+        font-size: 0.8em;
+    }
+    .top-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 90;
+        margin-bottom: 0;
+    }
+}

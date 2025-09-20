@@ -3,32 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Story Viewer</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>메인</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/nav.style.css">
 </head>
 <body>
+
     <div id="navbar-placeholder"></div>
 
-    <button id="restart-button" class="restart-button">다시 재생하기</button>
+    <main class="home-container">
+        
+        <header class="welcome-banner">
+            <h1>벽람 각종 스킨/대사 도감에 오신것을 환영합니다</h1>
+            <p>장난감으로 계속해서 기능을 추가 중이고 상단의 네비게이션 바를 통해 구경할 수 있습니다</p>
+        </header>
 
-    <header id="story-header">
-        <div class="flavor-text-box">
-            <p>
-                <strong>스토리 설명서</strong>
-                [뭐 넣을지 고민중]
-            </p>
+        <div class="link-grid">
+            
+            <div class="link-column">
+                <h2>예시1</h2>
+                <a href="skin-list.html" class="link-card">
+                    <h3>스킨 목록 페이지</h3>
+                    <p>필터링을 통해 원하는 스킨을 묶음으로 찾아볼 수 있습니다</p>
+                </a>
+                <a href="skin-poll.html" class="link-card">
+                    <h3>벽챈 선호도 투표</h3>
+                    <p>다른 벽붕이들이 투표한 스킨 선호도도 확인하고 직접 투표에도 참여해보세요</p>
+                </a>
+                <a href="ins-viewer.html" class="link-card">
+                    <h3>쥬스타그램 뷰어</h3>
+                    <p>인게임 쥬스타그램 게시물들을 간단한 검색기능과 함께 구경할 수 있습니다</p>
+                </a>
+            </div>
+
+            <div class="link-column">
+                <h2>외부 링크</h2>
+                <a href="https://github.com/" target="_blank" class="link-card">
+                    <h3>원본 소스코드 보러가기</h3>
+                    <p>지금은 깃헙으로 임시 링크, 나중에 수정 예정</p>
+                </a>
+                <a href="https://arca.live/b/azurlane" class="link-card">
+                    <h3>벽챈 바로가기</h3>
+                    <!-- <p>Discover other projects I've worked on.</p> -->
+                </a>
+                <a href="https://arca.live/b/manjuugame" class="link-card">
+                    <h3>맍챈 바로가기</h3>
+                    <!-- <p>Get in touch with me via email or social media.</p> -->
+                </a>
+            </div>
+
         </div>
-    </header>
-
-    <div class="story-container" id="story-container">
-        <p id="loading-indicator" class="loading-message">Loading story...</p>
-    </div>
-
-    <div class="options-container" id="options-container"></div>
-    <div id="vfx-overlay"></div>
-    <div id="flash-overlay"></div>
-
-    <script src="js/script.js"></script>
+    </main>
+    
+    <!-- <script src="script.js"></script> -->
     <script src="js/nav.script.js"></script>
+</body>
 </html>
