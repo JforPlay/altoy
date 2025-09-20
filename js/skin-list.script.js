@@ -5,23 +5,76 @@ document.addEventListener('DOMContentLoaded', () => {
     const skinListContainer = document.getElementById('skin-list-container');
     const factionSelect = document.getElementById('faction-select');
     const tagSelect = document.getElementById('tag-select');
-    const exDialogueCheckbox = document.getElementById('ex-dialogue-checkbox'); // New element
+    const exDialogueCheckbox = document.getElementById('ex-dialogue-checkbox');
 
     let allSkins = [];
-    let exChatStatusData = {}; // To store the new status data
+
+    // --- NEW: URL State Management Functions ---
+
+    /**
+     * Reads the current state of all filters and updates the browser URL.
+     */
+    const updateURLWithFilters = () => {
+        const params = new URLSearchParams();
+
+        // Add select values if they are not the default 'all'
+        if (skinTypeSelect.value !== 'all') params.set('type', skinTypeSelect.value);
+        if (factionSelect.value !== 'all') params.set('faction', factionSelect.value);
+        if (tagSelect.value !== 'all') params.set('tag', tagSelect.value);
+
+        // Add ex-dialogue status only if the box is checked
+        if (exDialogueCheckbox.checked) params.set('ex', 'true');
+
+        // Handle rarities - only add if not all 5 are selected
+        const selectedRarities = [...rarityCheckboxes.querySelectorAll("input:checked")].map(cb => cb.value);
+        if (selectedRarities.length < 5) {
+            params.set('rarities', selectedRarities.join(','));
+        }
+
+        // Use pushState to update the URL without reloading the page
+        const newUrl = `${window.location.pathname}?${params.toString()}`;
+        history.pushState({}, '', newUrl);
+    };
+
+    /**
+     * Reads filter parameters from the URL and applies them to the page controls.
+     */
+    const applyFiltersFromURL = () => {
+        const params = new URLSearchParams(window.location.search);
+
+        skinTypeSelect.value = params.get('type') || 'all';
+        factionSelect.value = params.get('faction') || 'all';
+        tagSelect.value = params.get('tag') || 'all';
+        exDialogueCheckbox.checked = params.get('ex') === 'true';
+
+        const raritiesParam = params.get('rarities');
+        if (raritiesParam) {
+            const activeRarities = raritiesParam.split(',');
+            rarityCheckboxes.querySelectorAll('input').forEach(cb => {
+                cb.checked = activeRarities.includes(cb.value);
+            });
+        }
+
+        // After setting controls, apply the filters to the list
+        applyFilters();
+    };
+
 
     // Fetch all necessary data files
     Promise.all([
         fetch('data/subset_skin_data.json').then(res => res.json())
     ]).then(([skinJson]) => {
         allSkins = Object.values(skinJson).filter(skin => skin['깔끔한 일러']);
-        renderSkinList(allSkins);
+        
+        // MODIFIED: Apply filters from URL on load instead of rendering all skins
+        applyFiltersFromURL();
+
     }).catch(error => {
         console.error("Failed to load data:", error);
         skinListContainer.innerHTML = `<p style="color: #f04747; text-align: center;">Error loading data. Please check the data files and console for errors.</p>`;
     });
 
-    // Function to render the list of skin boxes
+    // Function to render the list of skin boxes (unchanged)
     const renderSkinList = (skinsToRender) => {
         skinListContainer.innerHTML = '';
         const gemIconHtml = `<img src="assets/60px-Ruby.png" class="gem-icon" alt="Gem">`;
@@ -48,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // --- MODIFIED: applyFilters now handles all five filters ---
+    // MODIFIED: applyFilters now calls updateURLWithFilters at the end
     const applyFilters = () => {
         const selectedType = skinTypeSelect.value;
         const selectedFaction = factionSelect.value;
@@ -58,12 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let filteredSkins = allSkins;
 
-        // 1. Filter by EX dialogue status
         if (showOnlyEx) {
             filteredSkins = filteredSkins.filter(skin => skin['ex_chat_status'] === 1);
         }
-
-        // 2. Filter by skin type
         if (selectedType !== 'all') {
             if (selectedType === '기본') {
                 filteredSkins = filteredSkins.filter(skin => !skin['스킨 타입 - 한글']);
@@ -71,26 +121,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 filteredSkins = filteredSkins.filter(skin => skin['스킨 타입 - 한글'] === selectedType);
             }
         }
-
-        // 3. Filter by faction
         if (selectedFaction !== 'all') {
             filteredSkins = filteredSkins.filter(skin => skin['진영'] === selectedFaction);
         }
-
-        // 4. Filter by skin tag (contains)
         if (selectedTag !== 'all') {
-            filteredSkins = filteredSkins.filter(skin => skin['스킨 태그'] && skin['스킨 태그'].includes(selectedTag));
+             if (selectedTag === "X") { filteredSkins = filteredSkins.filter(s => !s["스킨 태그"]); }
+             else { filteredSkins = filteredSkins.filter(s => s["스킨 태그"] && s["스킨 태그"].includes(selectedTag)); }
         }
-
-        // 5. Filter by rarity
         if (selectedRarities.length > 0) {
             filteredSkins = filteredSkins.filter(skin => selectedRarities.includes(skin['레어도']));
         }
 
         renderSkinList(filteredSkins);
+        
+        // This is the key addition that syncs the URL to the filters.
+        updateURLWithFilters();
     };
 
-    // Attach event listeners to all filter controls
+    // Attach event listeners to all filter controls (unchanged)
     skinTypeSelect.addEventListener('change', applyFilters);
     factionSelect.addEventListener('change', applyFilters);
     tagSelect.addEventListener('change', applyFilters);
@@ -98,4 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     rarityCheckboxes.querySelectorAll('input').forEach(checkbox => {
         checkbox.addEventListener('change', applyFilters);
     });
+
+    // NEW: Add event listener for browser back/forward buttons
+    window.addEventListener('popstate', applyFiltersFromURL);
 });
