@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skin Viewer</title>
     <link rel="stylesheet" href="css/skin-viewer.style.css">
+    <link rel="stylesheet" href="css/nav.style.css">
 </head>
 <body>
     <div class="main-container">
@@ -23,7 +24,7 @@
                 <div class="selector-wrapper">
                     <label for="character-search-input">1. 함순이 선택</label>
                     <div class="dropdown-container">
-                        <input type="text" id="character-search-input" placeholder="Search for a character..." autocomplete="off">
+                        <input type="text" id="character-search-input" placeholder="함순이를 검색/선택해주세요..." autocomplete="off">
                         <div class="dropdown-content" id="character-dropdown-content"></div>
                     </div>
                 </div>
@@ -31,7 +32,7 @@
                 <div class="selector-wrapper">
                     <label for="skin-search-input">2. 스킨 선택</label>
                     <div class="dropdown-container">
-                        <input type="text" id="skin-search-input" placeholder="Select a character first..." autocomplete="off" disabled>
+                        <input type="text" id="skin-search-input" placeholder="함순이를 먼저 선택해주세요..." autocomplete="off" disabled>
                         <div class="dropdown-content" id="skin-dropdown-content"></div>
                     </div>
                 </div>
@@ -45,5 +46,6 @@
     </div>
 
     <script src="js/skin-viewer.script.js"></script>
+    <script src="js/nav.script.js"></script>
 </body>
 </html>

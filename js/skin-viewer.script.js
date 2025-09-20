@@ -16,12 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let allCharacterNames = [];
     let currentCharacterSkins = [];
 
-    /**
-     * A utility function to delay execution.
-     * @param {function} func - The function to call.
-     * @param {number} delay - The delay in milliseconds.
-     * @returns {function} A debounced version of the function.
-     */
     const debounce = (func, delay) => {
         let timeoutId;
         return (...args) => {
@@ -40,13 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
             skinData = Object.values(jsonData);
             allCharacterNames = [...new Set(skinData.map(row => row['함순이 이름']))].filter(name => name).sort();
             
-            // CORRECTED: Setup interactive behavior AFTER data is loaded.
             setupDropdown(characterSearchInput, characterDropdownContent, () => allCharacterNames, handleCharacterSelect);
             setupDropdown(skinSearchInput, skinDropdownContent, () => currentCharacterSkins, handleSkinSelect);
             
-            // Set an initial state for demonstration
             characterSearchInput.value = "앵커리지";
-            handleCharacterSelect("앵커리지", false); // Select character without clearing skin input
+            handleCharacterSelect("앵커리지", false);
             skinSearchInput.value = "앵커리지";
             displaySkinDetails();
             
@@ -60,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const populateDropdown = (dropdownEl, items, onSelectCallback) => {
         dropdownEl.innerHTML = '';
         if (items.length === 0) {
-            dropdownEl.innerHTML = `<div class="no-results">검색 결과가 없습니다</div>`;
+            dropdownEl.innerHTML = `<div class="no-results">No matches found</div>`;
             return;
         }
         items.forEach(item => {
@@ -73,20 +65,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     
-    // MODIFIED: This function now accepts a function to get the source array dynamically.
-    // This is crucial for the skin dropdown, whose content changes.
     const setupDropdown = (inputEl, dropdownEl, getSourceArray, onSelectCallback) => {
+        // MODIFIED: The core logic for filtering is now updated
         const handleFilter = () => {
             const sourceArray = getSourceArray();
             const searchTerm = inputEl.value.toLowerCase();
-            const filteredItems = sourceArray.filter(item => item.toLowerCase().includes(searchTerm));
-            populateDropdown(dropdownEl, filteredItems, onSelectCallback);
+            
+            // Check if the current input exactly matches an item in the source array
+            const isExactMatch = sourceArray.some(item => item.toLowerCase() === searchTerm);
+
+            if (isExactMatch) {
+                // If there's an exact match, show the full list for easy re-selection
+                populateDropdown(dropdownEl, sourceArray, onSelectCallback);
+            } else {
+                // Otherwise, show the normally filtered list
+                const filteredItems = sourceArray.filter(item => item.toLowerCase().includes(searchTerm));
+                populateDropdown(dropdownEl, filteredItems, onSelectCallback);
+            }
         };
 
         inputEl.addEventListener('keyup', debounce(handleFilter, 200));
 
         inputEl.addEventListener('focus', () => {
-            handleFilter(); // Show list immediately on focus
+            handleFilter();
             dropdownEl.style.display = 'block';
         });
 
@@ -105,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
             skinSearchInput.value = '';
         }
         skinSearchInput.disabled = false;
-        skinSearchInput.placeholder = '스킨을 검색/선택해주세요...';
+        skinSearchInput.placeholder = 'Search for a skin...';
         
         currentCharacterSkins = skinData
             .filter(row => row['함순이 이름'] === characterName)
@@ -129,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
         oathTableArea.classList.add('hidden');
     }
 
-    // This function remains unchanged
     const displaySkinDetails = () => {
         const selectedSkinName = skinSearchInput.value;
         if (!selectedSkinName) {
