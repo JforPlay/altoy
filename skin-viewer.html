@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skin Viewer</title>
     <link rel="stylesheet" href="css/skin-viewer.style.css">
-    <link rel="stylesheet" href="css/nav.style.css">
 </head>
 <body>
-    <div id="navbar-placeholder"></div>
-
     <div class="main-container">
         <header class="controls-header">
             <h1>벽람 스킨 + 대사 도감</h1>
@@ -22,20 +19,21 @@
                 </p>
             </div>
             <div class="selectors">
+                <!-- Character Dropdown -->
                 <div class="selector-wrapper">
-                    <label for="character-search">1. 함순이 선택</label>
-                    <div class="searchable-select">
-                        <input type="text" id="character-search" placeholder="Search for a character...">
-                        <select id="character-select">
-                            <option>함순이들 정보 불러오는중...</option>
-                        </select>
+                    <label for="character-search-input">1. 함순이 선택</label>
+                    <div class="dropdown-container">
+                        <input type="text" id="character-search-input" placeholder="Search for a character..." autocomplete="off">
+                        <div class="dropdown-content" id="character-dropdown-content"></div>
                     </div>
                 </div>
+                <!-- Skin Dropdown -->
                 <div class="selector-wrapper">
-                    <label for="skin-select">2. 스킨 선택</label>
-                    <select id="skin-select" disabled>
-                        <option>함순이를 먼저 선택해주세요</option>
-                    </select>
+                    <label for="skin-search-input">2. 스킨 선택</label>
+                    <div class="dropdown-container">
+                        <input type="text" id="skin-search-input" placeholder="Select a character first..." autocomplete="off" disabled>
+                        <div class="dropdown-content" id="skin-dropdown-content"></div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -43,11 +41,9 @@
         <div id="skin-info-box" class="skin-info-box hidden"></div>
         <div id="image-gallery" class="image-gallery hidden"></div>
         <div id="text-content-area" class="text-content-area hidden"></div>
-        
         <div id="oath-table-area" class="text-content-area hidden"></div>
     </div>
 
     <script src="js/skin-viewer.script.js"></script>
-    <script src="js/nav.script.js"></script>
 </body>
 </html>

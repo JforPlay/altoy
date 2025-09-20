@@ -1,28 +1,4 @@
-/* --- Navigation Bar --- */
-.top-nav {
-    background-color: #2f3136;
-    padding: 0 40px;
-    display: flex;
-    gap: 20px;
-    border-bottom: 1px solid #40444b;
-    margin-bottom: 20px;
-}
-.nav-link {
-    color: #b9bbbe;
-    text-decoration: none;
-    padding: 15px 10px;
-    font-weight: bold;
-    border-bottom: 3px solid transparent;
-    transition: all 0.2s;
-}
-.nav-link:hover {
-    color: #ffffff;
-}
-.nav-link.active {
-    color: #ffffff;
-    border-bottom-color: #7289da;
-}
-
+/* --- Global Styles --- */
 /* --- Body and Main Styles --- */
 body {
     background-color: #36393f;
