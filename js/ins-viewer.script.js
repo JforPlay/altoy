@@ -13,11 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let shipgirlDataMap = {};
     const placeholderIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
 
+    // --- NEW: Create Image Preview Element ---
+    const imagePreview = document.createElement('img');
+    imagePreview.id = 'image-preview';
+    document.body.appendChild(imagePreview);
+
 
     // --- Data Fetching ---
     Promise.all([
-        fetch('data/processed_ins_data.json').then(res => res.json()),
-        fetch('data/shipgirl_group_data.json').then(res => res.json())
+        fetch('processed_ins_data.json').then(res => res.json()),
+        fetch('shipgirl_group_data.json').then(res => res.json())
     ])
     .then(([posts, shipgirlData]) => {
         postsData = posts;
@@ -272,11 +277,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Event Listeners ---
     galleryView.addEventListener('click', (event) => {
         if (event.target.tagName === 'IMG') {
             const postId = event.target.dataset.postId;
             displayPost(postId);
             highlightSelectedThumbnail(postId);
         }
+    });
+
+    // --- NEW: Event Listeners for Image Preview ---
+    galleryView.addEventListener('mouseover', (event) => {
+        if (event.target.tagName === 'IMG') {
+            imagePreview.src = event.target.src;
+            imagePreview.style.display = 'block';
+        }
+    });
+
+    galleryView.addEventListener('mouseout', (event) => {
+        if (event.target.tagName === 'IMG') {
+            imagePreview.style.display = 'none';
+        }
+    });
+
+    galleryView.addEventListener('mousemove', (event) => {
+        // Position the preview slightly to the right and below the cursor
+        imagePreview.style.left = event.pageX + 15 + 'px';
+        imagePreview.style.top = event.pageY + 15 + 'px';
     });
 });

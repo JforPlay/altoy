@@ -25,7 +25,7 @@ header {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box; /* --- FIX IS HERE --- */
+    box-sizing: border-box;
 }
 
 .filter-wrapper {
@@ -289,4 +289,18 @@ header {
     border-radius: 6px;
     white-space: pre-wrap;
     line-height: 1.5;
+}
+
+/* --- NEW: Image Preview Style --- */
+#image-preview {
+    display: none;
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border: 3px solid white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    pointer-events: none; /* Allows mouse events to pass through to elements below */
+    z-index: 100;
 }
