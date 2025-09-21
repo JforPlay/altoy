@@ -38,8 +38,8 @@ header h1 {
     padding: 10px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 10px; /* Horizontal space */
-    row-gap: 20px;    /* ✨ Increased vertical space to prevent overlap */
+    column-gap: 10px;
+    row-gap: 40px;    /* ✨ Substantially increased vertical space */
     overflow-y: auto;
     align-content: start;
 }
