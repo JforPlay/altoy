@@ -39,9 +39,9 @@ header h1 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 10px;
-    row-gap: 40px;    /* ✨ Substantially increased vertical space */
+    row-gap: 40px;
     overflow-y: auto;
-    align-content: start;
+    /* The 'align-content' property that caused the issue has been removed. */
 }
 
 .gallery-item {
@@ -68,7 +68,7 @@ header h1 {
 }
 
 .gallery-item:hover {
-    transform: translateY(-5px);
+    /* The 'transform' property has been removed to prevent any overlap. */
     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     z-index: 10;
 }
