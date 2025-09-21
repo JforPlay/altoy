@@ -39,9 +39,9 @@ header h1 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 10px;
-    row-gap: 40px;
+    /* row-gap: 40px; */ /* ✨ Removed this property */
     overflow-y: auto;
-    align-content: start; /* ✨ Fix: Aligns grid items to the top to enable scrolling */
+    align-content: start;
 }
 
 .gallery-item {
@@ -54,6 +54,7 @@ header h1 {
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 3px solid transparent;
+    margin-bottom: 40px; /* ✨ Added this to create consistent vertical spacing */
 }
 
 .gallery-item::before {
@@ -289,6 +290,7 @@ header h1 {
         height: 130px;
         flex-shrink: 0;
         margin-left: 10px;
+        margin-bottom: 0; /* ✨ Reset margin for mobile horizontal layout */
     }
     
     .gallery-item:last-child {
