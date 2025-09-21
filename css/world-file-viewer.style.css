@@ -1,4 +1,7 @@
 /* Basic Reset and Body Styles */
+*, *::before, *::after {
+    box-sizing: border-box; /* ✨ Best practice: Standardizes how element sizes are calculated */
+}
 body, html {
     margin: 0;
     padding: 0;
@@ -36,11 +39,11 @@ header h1 {
     width: 330px;
     flex-shrink: 0;
     background-color: #2c3e50;
-    padding: 10px;
+    padding: 10px 10px 40px; /* ✨ Fix: Increased bottom padding to 40px to prevent the last item from being cut off */
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 10px;
-    row-gap: 10px; /* ✨ Fix: Changed from 40px to 10px to match the column-gap */
+    row-gap: 10px;
     overflow-y: auto;
     align-content: start;
 }
@@ -282,7 +285,7 @@ header h1 {
         overflow-x: auto;
         overflow-y: hidden;
         align-items: center;
-        padding: 10px 0;
+        padding: 10px;
     }
 
     .gallery-item {
