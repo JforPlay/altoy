@@ -1,0 +1,115 @@
+/* Basic Reset and Body Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    height: 100%;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+/* Main Layout Container */
+#main-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+/* Left-side Gallery Styles */
+#gallery-container {
+    width: 320px;
+    flex-shrink: 0;
+    background-color: #2c3e50;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    overflow-y: auto;
+    align-content: start;
+}
+
+.gallery-item {
+    aspect-ratio: 1 / 1;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: 3px solid transparent;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.gallery-item.active {
+    border-color: #3498db;
+    box-shadow: 0 0 10px #3498db;
+}
+
+.gallery-item-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 8px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Right-side Content Styles */
+#content-container {
+    flex-grow: 1;
+    padding: 20px 40px;
+    overflow-y: auto;
+    background-color: #ffffff;
+}
+
+.placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #aaa;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.content-paragraph {
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.content-paragraph:last-child {
+    border-bottom: none;
+}
+
+.content-paragraph h2 {
+    font-size: 1.8em;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.content-paragraph h3 {
+    font-size: 1.1em;
+    color: #7f8c8d;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.content-paragraph p {
+    font-size: 1em;
+    line-height: 1.7;
+}
