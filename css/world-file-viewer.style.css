@@ -37,8 +37,8 @@ header h1 {
     background-color: #2c3e50;
     padding: 10px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* ✨ Changed to 3 columns to make items smaller */
-    gap: 10px; /* This provides both horizontal and vertical margins */
+    grid-template-columns: repeat(2, 1fr); /* ✨ Changed back to 2 columns */
+    gap: 10px;
     overflow-y: auto;
     align-content: start;
 }
@@ -91,7 +91,7 @@ header h1 {
     color: white;
     padding: 8px;
     text-align: center;
-    font-size: 12px; /* Slightly smaller font for smaller items */
+    font-size: 14px; /* ✨ Reverted font size */
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
