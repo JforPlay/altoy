@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Main Execution ---
-    fetch('processed_world_collection_data.json')
+    fetch('data/processed_world_collection_data.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -99,8 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error('Error loading world data:', error);
             contentContainer.innerHTML = `<div class="placeholder" style="color: red;">
-                <strong>Error:</strong> Could not load the story data file.<br>
-                Please ensure 'processed_world_collection_data.json' is in the same folder as the HTML file and that the server is running correctly.
+                <strong>Error:</strong> 스토리 파일을 불러올 수 없습니다..<br>
             </div>`;
         });
 });
