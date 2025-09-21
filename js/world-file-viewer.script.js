@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {object} data - The parsed JSON data containing the story worlds.
      */
     function initialize(data) {
-        galleryContainer.innerHTML = ''; // Clear any existing gallery items
+        galleryContainer.innerHTML = ''; 
 
         for (const key in data) {
             const itemData = data[key];
@@ -29,6 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 galleryItem.classList.add('active');
 
                 displayContent(itemData.child);
+
+                // ✨ Auto-scroll on mobile devices
+                if (window.innerWidth <= 768) {
+                    contentContainer.scrollIntoView({ behavior: 'smooth' });
+                }
             });
 
             galleryContainer.appendChild(galleryItem);
@@ -40,8 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {Array<object>} childData - The list of paragraphs for the selected story.
      */
     function displayContent(childData) {
-        contentContainer.querySelector('.placeholder')?.remove(); // Remove placeholder on first click
-        // Clear previous content if any
+        contentContainer.querySelector('.placeholder')?.remove();
+        
         const paragraphs = contentContainer.querySelectorAll('.content-paragraph');
         paragraphs.forEach(p => p.remove());
 
@@ -70,16 +75,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * ✨ Sets up the theme switcher logic.
+     * Sets up the theme switcher logic.
      */
     function setupThemeSwitcher() {
         const themeToggle = document.getElementById('theme-toggle');
         
         themeToggle.addEventListener('change', () => {
-            if (themeToggle.checked) {
-                contentContainer.classList.add('dark-mode');
-            } else {
-                contentContainer.classList.remove('dark-mode');
+            contentContainer.classList.toggle('dark-mode', themeToggle.checked);
+        });
+    }
+
+    /**
+     * ✨ Sets up the font size control logic.
+     */
+    function setupFontControls() {
+        const fontIncreaseBtn = document.getElementById('font-increase');
+        const fontDecreaseBtn = document.getElementById('font-decrease');
+        
+        let currentFontSize = 16; // Base font size in pixels
+        const step = 1;
+        const minSize = 12;
+        const maxSize = 22;
+
+        const updateFontSize = () => {
+            // We apply the font size to the container, and paragraphs with `em` units will scale.
+            contentContainer.style.fontSize = `${currentFontSize}px`;
+        };
+
+        // Set initial font size
+        updateFontSize();
+
+        fontIncreaseBtn.addEventListener('click', () => {
+            if (currentFontSize < maxSize) {
+                currentFontSize += step;
+                updateFontSize();
+            }
+        });
+
+        fontDecreaseBtn.addEventListener('click', () => {
+            if (currentFontSize > minSize) {
+                currentFontSize -= step;
+                updateFontSize();
             }
         });
     }
@@ -93,13 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            initialize(data); // Initialize the gallery
-            setupThemeSwitcher(); // Setup the theme toggle switch
+            initialize(data);
+            setupThemeSwitcher();
+            setupFontControls(); // Initialize the new font controls
         })
         .catch(error => {
             console.error('Error loading world data:', error);
             contentContainer.innerHTML = `<div class="placeholder" style="color: red;">
-                <strong>Error:</strong> 스토리 파일을 불러올 수 없습니다..<br>
+                <strong>Error:</strong> 스토리 데이터 파일을 불러올 수 없습니다..<br>
             </div>`;
         });
 });
