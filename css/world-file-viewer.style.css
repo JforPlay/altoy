@@ -6,7 +6,7 @@ body, html {
     height: 100%;
     background-color: #f0f2f5;
     color: #333;
-    overflow: hidden; /* Keeps the main page from scrolling */
+    overflow: hidden; 
 }
 
 /* Header Styles */
@@ -33,21 +33,20 @@ header h1 {
 
 /* Left-side Gallery Styles */
 #gallery-container {
-    width: 320px;
+    width: 330px;
     flex-shrink: 0;
     background-color: #2c3e50;
     padding: 10px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 10px;
-    row-gap: 40px;
+    row-gap: 10px; /* ✨ Fix: Changed from 40px to 10px to match the column-gap */
     overflow-y: auto;
     align-content: start;
 }
 
 .gallery-item {
-    /* aspect-ratio: 1 / 1; */ /* ✨ Removed this property */
-    height: 145px; /* ✨ Fix: Explicitly sets item height to match its width, allowing row-gap to work correctly. */
+    height: 145px;
     background-size: cover;
     background-position: center;
     border-radius: 8px;
@@ -288,7 +287,7 @@ header h1 {
 
     .gallery-item {
         width: 130px;
-        height: 130px; /* This was already set for mobile, so it remains correct. */
+        height: 130px;
         flex-shrink: 0;
         margin-left: 10px;
     }
