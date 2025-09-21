@@ -37,8 +37,8 @@ header h1 {
     background-color: #2c3e50;
     padding: 10px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(3, 1fr); /* ✨ Changed to 3 columns to make items smaller */
+    gap: 10px; /* This provides both horizontal and vertical margins */
     overflow-y: auto;
     align-content: start;
 }
@@ -66,7 +66,6 @@ header h1 {
     transition: background-color 0.3s ease;
 }
 
-/* ✨ MODIFIED: Changed scale to a vertical lift to prevent overlap */
 .gallery-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
@@ -92,7 +91,7 @@ header h1 {
     color: white;
     padding: 8px;
     text-align: center;
-    font-size: 14px;
+    font-size: 12px; /* Slightly smaller font for smaller items */
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
@@ -101,7 +100,6 @@ header h1 {
     transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-/* ✨ MODIFIED: Removed the text slide-up as the whole item now lifts */
 .gallery-item:hover .gallery-item-name {
     background-color: rgba(0, 0, 0, 0.9);
 }
