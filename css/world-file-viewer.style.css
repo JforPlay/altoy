@@ -15,8 +15,6 @@ header {
     padding: 10px 20px;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    position: relative; /* ✨ Fix: Establish stacking context */
-    z-index: 10;        /* ✨ Fix: Ensure header is on top of other elements */
 }
 
 header h1 {
@@ -30,8 +28,6 @@ header h1 {
     display: flex;
     height: calc(100vh - 57px); 
     width: 100%;
-    position: relative; /* ✨ Fix: Establish stacking context */
-    z-index: 5;         /* ✨ Fix: Ensure main content is on top */
 }
 
 /* Left-side Gallery Styles */
@@ -45,7 +41,7 @@ header h1 {
     column-gap: 10px;
     row-gap: 40px;
     overflow-y: auto;
-    align-content: start; /* Fix: Aligns grid items to the top to enable scrolling */
+    align-content: start; /* ✨ Fix: Aligns grid items to the top to enable scrolling */
 }
 
 .gallery-item {
