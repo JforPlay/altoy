@@ -1,19 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World File Viewer</title>
+    <title>벽람항로 대작전 파일 문서 뷰어</title>
     <link rel="stylesheet" href="css/world-file-viewer.style.css">
 </head>
 <body>
+    <header>
+        <h1>벽람항로 대작전 파일 문서 뷰어</h1>
+    </header>
+
     <div id="main-container">
         <aside id="gallery-container">
             </aside>
         <main id="content-container">
-            <div class="placeholder">Select an item from the left to view its story.</div>
+            <div id="theme-switcher">
+                <input type="checkbox" id="theme-toggle">
+                <label for="theme-toggle" class="toggle-label">
+                    <span class="icon-sun">☀️</span>
+                    <span class="icon-moon">🌙</span>
+                </label>
+            </div>
+            <div class="placeholder">왼쪽에서 항목을 선택하여 이야기를 확인하세요.</div>
         </main>
     </div>
+    
     <script src="js/world-file-viewer.script.js"></script>
 </body>
 </html>

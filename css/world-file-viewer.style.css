@@ -8,10 +8,26 @@ body, html {
     color: #333;
 }
 
+/* Header Styles */
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5em;
+    font-weight: 300;
+}
+
 /* Main Layout Container */
 #main-container {
     display: flex;
-    height: 100vh;
+    /* Calculate height to account for the header */
+    height: calc(100vh - 57px); 
     width: 100%;
 }
 
@@ -36,15 +52,32 @@ body, html {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 3px solid transparent;
+}
+
+/* ✨ New hover overlay effect */
+.gallery-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 0.3s ease;
 }
 
 .gallery-item:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    z-index: 10; /* This line brings the hovered item to the front */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    z-index: 10;
 }
+
+.gallery-item:hover::before {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
 
 .gallery-item.active {
     border-color: #3498db;
@@ -65,7 +98,16 @@ body, html {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transform: translateY(0);
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
+
+/* ✨ New text slide-up effect */
+.gallery-item:hover .gallery-item-name {
+    transform: translateY(-10px);
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
 
 /* Right-side Content Styles */
 #content-container {
@@ -73,6 +115,8 @@ body, html {
     padding: 20px 40px;
     overflow-y: auto;
     background-color: #ffffff;
+    position: relative; /* Needed for positioning the theme switcher */
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .placeholder {
@@ -89,6 +133,7 @@ body, html {
     margin-bottom: 40px;
     padding-bottom: 20px;
     border-bottom: 1px solid #e0e0e0;
+    transition: border-bottom-color 0.3s;
 }
 
 .content-paragraph:last-child {
@@ -99,6 +144,7 @@ body, html {
     font-size: 1.8em;
     color: #2c3e50;
     margin-bottom: 5px;
+    transition: color 0.3s;
 }
 
 .content-paragraph h3 {
@@ -108,9 +154,73 @@ body, html {
     margin-bottom: 15px;
     font-style: italic;
     font-weight: normal;
+    transition: color 0.3s;
 }
 
 .content-paragraph p {
     font-size: 1em;
     line-height: 1.7;
+}
+
+/* ✨ Dark Mode and Theme Switcher Styles */
+#theme-switcher {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+}
+
+#theme-toggle {
+    display: none;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 60px;
+    height: 30px;
+    background: #2c3e50;
+    border-radius: 100px;
+    position: relative;
+    transition: background-color .2s;
+}
+
+.toggle-label span {
+    font-size: 16px;
+    margin: 0 5px;
+}
+
+.toggle-label::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    transition: 0.2s;
+    background: #fff;
+}
+
+#theme-toggle:checked + .toggle-label::after {
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
+}
+
+#content-container.dark-mode {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#content-container.dark-mode .content-paragraph {
+    border-bottom-color: #444;
+}
+
+#content-container.dark-mode h2 {
+    color: #58a6ff;
+}
+
+#content-container.dark-mode h3 {
+    color: #8b949e;
 }
