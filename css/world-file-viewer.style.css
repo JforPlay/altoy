@@ -66,9 +66,10 @@ header h1 {
     transition: background-color 0.3s ease;
 }
 
+/* ✨ MODIFIED: Changed scale to a vertical lift to prevent overlap */
 .gallery-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     z-index: 10;
 }
 
@@ -100,8 +101,8 @@ header h1 {
     transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
+/* ✨ MODIFIED: Removed the text slide-up as the whole item now lifts */
 .gallery-item:hover .gallery-item-name {
-    transform: translateY(-10px);
     background-color: rgba(0, 0, 0, 0.9);
 }
 
@@ -159,7 +160,7 @@ header h1 {
     line-height: 1.7;
 }
 
-/* ✨ Top Controls Container */
+/* Top Controls Container */
 .top-controls {
     position: absolute;
     top: 20px;
@@ -171,7 +172,7 @@ header h1 {
 }
 
 
-/* ✨ Font Size Controls */
+/* Font Size Controls */
 #font-controls button {
     width: 30px;
     height: 30px;
@@ -192,7 +193,7 @@ header h1 {
 
 /* Dark Mode and Theme Switcher Styles */
 #theme-switcher {
-    position: relative; /* Changed from absolute */
+    position: relative;
 }
 
 #theme-toggle {
