@@ -43,6 +43,7 @@ body, html {
 .gallery-item:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    z-index: 10; /* This line brings the hovered item to the front */
 }
 
 .gallery-item.active {
