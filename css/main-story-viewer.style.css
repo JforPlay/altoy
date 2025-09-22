@@ -202,12 +202,12 @@ body {
   padding: 1rem;
   display: flex;
   align-items: center;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
   color: white;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
   z-index: 999; /* ADDED: Set a high z-index here as well */
   justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
 }
+
 .story-header .back-button {
   color: white;
   background-color: rgba(0, 0, 0, 0.3);
@@ -519,4 +519,50 @@ body {
   #event-selection-view .viewer-header .theme-toggle {
     order: 4; /* Place it last */
   }
+}
+
+/* --- Light Theme Visibility Fixes --- */
+
+/* By default (in light mode), use the theme's main text color */
+#info-screen-text {
+    color: var(--text-color);
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.7); /* Light shadow for dark text */
+}
+
+.story-header {
+    color: var(--text-color);
+}
+
+/* Make header buttons visible in light mode */
+.story-header .back-button,
+.story-header #view-script-btn {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+.story-header .back-button:hover,
+.story-header #view-script-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+/* When dark mode is active, override to white for high contrast */
+body.dark-mode #info-screen-text {
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+body.dark-mode .story-header {
+    color: #ffffff;
+}
+
+body.dark-mode .story-header .back-button,
+body.dark-mode .story-header #view-script-btn {
+    background-color: rgba(0,0,0,0.3);
+    color: #ffffff;
+    border: none;
+}
+body.dark-mode .story-header .back-button:hover,
+body.dark-mode .story-header #view-script-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
