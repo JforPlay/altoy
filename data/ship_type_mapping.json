@@ -91,17 +91,17 @@
     },
     "22": {
         "ship_type": 22,
-        "type_name": "범선",
+        "type_name": "범선-잠수",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/22.png"
     },
     "23": {
         "ship_type": 23,
-        "type_name": "범선",
+        "type_name": "범선-전열",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/23.png"
     },
     "24": {
         "ship_type": 24,
-        "type_name": "범선",
+        "type_name": "범선-후열",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/24.png"
     }
 }
