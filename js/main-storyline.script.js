@@ -1,20 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     function setResponsiveFontSize() {
-        const baseWidth = 1920; // The width the original px values were designed for
-        const minWidth = 1024; // A minimum width to stop scaling down further
-        const maxWidth = 2560; // A maximum width to stop scaling up
+        const baseWidth = 1920;
+        const minWidth = 1024;
+        const maxWidth = 2560;
         
         let windowWidth = window.innerWidth;
         if (windowWidth < minWidth) windowWidth = minWidth;
         if (windowWidth > maxWidth) windowWidth = maxWidth;
 
         const scaleFactor = windowWidth / baseWidth;
-        const baseFontSize = 16; // This is our baseline for 1rem = 16px
+        const baseFontSize = 16;
 
         document.documentElement.style.fontSize = `${baseFontSize * scaleFactor}px`;
     }
 
-    // Call it once on load and add a listener for window resize
     setResponsiveFontSize();
     window.addEventListener('resize', setResponsiveFontSize);
 
@@ -24,8 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     const indicator = document.getElementById('timeline-indicator');
     const progressBarContainer = document.getElementById('progress-bar-container');
-
-    // Modal elements
+    const filterButton = document.getElementById('filter-button');
+    const filterPanel = document.getElementById('filter-panel');
+    
     const modal = document.getElementById('details-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalDescription = document.getElementById('modal-description');
@@ -34,20 +34,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalBgm = document.getElementById('modal-bgm');
     const closeButton = document.querySelector('.close-button');
 
-    // Faction names localized to Korean
     const factionMap = {
-        2: "이글 유니온", 3: "사쿠라 엠파이어", 4: "메탈 블러드", 
-        7: "노스 유니온", 10: "아이리스 리브레"
+        1: "이글 유니온",
+        2: "로열 네이비",
+        3: "사쿠라 엠파이어",
+        4: "메탈 블러드",
+        5: "이스트 글림",
+        6: "사르데냐 엠파이어",
+        7: "노스 유니온",
+        8: "아이리스 리브레",
+        9: "비시아 성좌",
+        10: "아이리스 연합",
+        96: "템페스타",
+        97: "META"
     };
 
     let allData = {};
 
     fetch('data/processed_storyline_data.json')
-        .then(response => response.json())
+        .then(response => {
+             if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             allData = data;
             renderTimeline(Object.values(allData));
-            // Call setupChapters after a short delay to ensure DOM is fully rendered
+            populateFilters(Object.values(allData));
+            setupFilterListeners();
             setTimeout(() => setupChapters(Object.values(allData)), 100);
         })
         .catch(error => {
@@ -145,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             marker.onclick = () => {
                 const remSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-                const offset = 3.125 * remSize; // Equivalent to 50px at 16px base
+                const offset = 3.125 * remSize;
                 timelineWrapper.scrollTo({
                     left: data.offsetLeft - offset,
                     behavior: 'smooth'
@@ -155,14 +170,122 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function populateFilters(items) {
+        const uniqueNations = new Map();
+        items.forEach(item => {
+            if(item.shipnation) {
+                const nations = item.shipnation;
+                nations.forEach(nationId => {
+                    if (!uniqueNations.has(nationId) && factionMap[nationId]) {
+                        uniqueNations.set(nationId, factionMap[nationId]);
+                    }
+                });
+            }
+        });
+
+        let filterHtml = `
+            <div class="filter-option">
+                <input type="checkbox" id="nation-all" value="all" checked>
+                <label for="nation-all">전체</label>
+            </div>`;
+
+        const sortedNations = [...uniqueNations.entries()].sort((a, b) => a[0] - b[0]);
+
+        sortedNations.forEach(([id, name]) => {
+            filterHtml += `
+                <div class="filter-option">
+                    <input type="checkbox" id="nation-${id}" value="${id}">
+                    <label for="nation-${id}">${name}</label>
+                </div>`;
+        });
+
+        filterPanel.innerHTML = filterHtml;
+    }
+
+    function setupFilterListeners() {
+        filterButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isHidden = filterPanel.classList.toggle('hidden');
+            
+            // **FIX RE-APPLIED**: Disable dragging when the filter panel is open
+            if (!isHidden) {
+                timelineWrapper.style.pointerEvents = 'none';
+                timelineWrapper.style.cursor = 'default';
+            } else {
+                timelineWrapper.style.pointerEvents = 'auto';
+                timelineWrapper.style.cursor = 'grab';
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!filterPanel.contains(e.target) && !filterButton.contains(e.target)) {
+                if (!filterPanel.classList.contains('hidden')) {
+                    filterPanel.classList.add('hidden');
+                    // **FIX RE-APPLIED**: Re-enable dragging when the panel is closed
+                    timelineWrapper.style.pointerEvents = 'auto';
+                    timelineWrapper.style.cursor = 'grab';
+                }
+            }
+        });
+
+        filterPanel.addEventListener('change', (e) => {
+            const allCheckbox = document.getElementById('nation-all');
+            const otherCheckboxes = [...filterPanel.querySelectorAll('input[type="checkbox"]')]
+                                      .filter(cb => cb.id !== 'nation-all');
+
+            if (e.target.id === 'nation-all') {
+                if (allCheckbox.checked) {
+                    otherCheckboxes.forEach(cb => cb.checked = false);
+                }
+            } else {
+                if (otherCheckboxes.some(cb => cb.checked)) {
+                    allCheckbox.checked = false;
+                }
+            }
+            
+            const allCheckboxes = [...filterPanel.querySelectorAll('input[type="checkbox"]')];
+            if (allCheckboxes.every(cb => !cb.checked)) {
+                allCheckbox.checked = true;
+            }
+
+            applyFilter();
+        });
+    }
+
+    function applyFilter() {
+        const allCheckbox = document.getElementById('nation-all');
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        
+        if (allCheckbox.checked) {
+            timelineItems.forEach(item => {
+                item.classList.remove('dimmed', 'highlighted');
+            });
+            return;
+        }
+
+        const selectedNationIds = [...filterPanel.querySelectorAll('input:checked')].map(cb => cb.value);
+
+        timelineItems.forEach(item => {
+            const itemNationIds = JSON.parse(item.dataset.shipnation || '[]');
+            const isMatch = itemNationIds.some(id => selectedNationIds.includes(String(id)));
+
+            if (isMatch) {
+                item.classList.add('highlighted');
+                item.classList.remove('dimmed');
+            } else {
+                item.classList.add('dimmed');
+                item.classList.remove('highlighted');
+            }
+        });
+    }
+
     function drawLines(visibleItemIds) {
         canvas.width = timelineContainer.scrollWidth;
         canvas.height = timelineContainer.scrollHeight;
         
-        // **CHANGE**: Updated line colors for the new light theme
-        ctx.strokeStyle = '#a3b1c6'; // Mid-tone gray-blue line
+        ctx.strokeStyle = '#a3b1c6';
         ctx.lineWidth = 2;
-        ctx.shadowColor = 'rgba(163, 177, 198, 0.7)'; // Lighter shadow
+        ctx.shadowColor = 'rgba(163, 177, 198, 0.7)';
         ctx.shadowBlur = 5;
 
         visibleItemIds.forEach(itemId => {
@@ -194,7 +317,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Modal Logic
     timelineContainer.addEventListener('click', (event) => {
         const item = event.target.closest('.timeline-item');
         if (!item) return;
@@ -249,6 +371,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let startX, startY;
     let scrollLeft, scrollTop;
     timelineWrapper.addEventListener('mousedown', (e) => {
+      if (timelineWrapper.style.pointerEvents === 'none') return;
+      if (e.target.closest('.timeline-item')) {
+          return;
+      }
+      
       isDown = true;
       timelineWrapper.classList.add('active');
       startX = e.pageX - timelineWrapper.offsetLeft;
