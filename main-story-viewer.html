@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Viewer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main-story-viewer.style.css">
+</head>
+<body>
+    <div id="error-container" class="error-container hidden"></div>
+
+    <div id="event-selection-view">
+        <header class="viewer-header">
+            <a href="main-storyline.html" class="nav-button">스토리 타임라인</a>
+            <h1 class="header-title">벽람항로 메인스토리 뷰어</h1>
+            <div class="search-container">
+                <input type="text" id="search-bar" placeholder="이벤트 이름으로 검색...">
+            </div>
+            <button class="nav-button theme-toggle">
+                <span class="theme-icon-sun">☀️</span>
+                <span class="theme-icon-moon hidden">🌙</span>
+            </button>
+        </header>
+        <main id="event-grid" class="story-grid-container"></main>
+    </div>
+
+    <div id="memory-selection-view" class="hidden">
+        <header class="viewer-header">
+            <a id="back-to-event-selection" href="#" class="nav-button">&#x2190; Back to Events</a>
+            <h1 id="memory-view-title" class="header-title"></h1>
+            <button class="nav-button theme-toggle">
+                <span class="theme-icon-sun">☀️</span>
+                <span class="theme-icon-moon hidden">🌙</span>
+            </button>
+        </header>
+        <main id="memory-grid" class="story-grid-container"></main>
+    </div>
+
+    <div id="story-viewer-view" class="hidden">
+        <div id="viewer-container" class="viewer-container">
+            <div class="story-background"></div>
+            <header id="story-header" class="story-header">
+                <a id="back-to-memory-selection" href="#" class="nav-button back-button">&#x2190;</a>
+                <h2 id="story-title"></h2>
+            </header>
+            <div id="dialogue-box" class="dialogue-box">
+                <div id="actor-portrait" class="actor-portrait"></div>
+                <div class="dialogue-content">
+                    <p id="actor-name" class="actor-name"></p>
+                    <p id="dialogue-text" class="dialogue-text"></p>
+                </div>
+                <div id="next-page-indicator" class="next-page-indicator">▼</div>
+            </div>
+            <div id="options-box" class="options-box"></div>
+            <div class="story-nav-arrows">
+                <button id="prev-line-btn" class="story-nav-btn">&#x2190; Back</button>
+                <button id="next-line-btn" class="story-nav-btn">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main-story-viewer.script.js" defer></script>
+</body>
+</html>

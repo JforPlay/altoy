@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const baseWidth = 1920;
         const minWidth = 1024;
         const maxWidth = 2560;
-        
+
         let windowWidth = window.innerWidth;
         if (windowWidth < minWidth) windowWidth = minWidth;
         if (windowWidth > maxWidth) windowWidth = maxWidth;
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBarContainer = document.getElementById('progress-bar-container');
     const filterButton = document.getElementById('filter-button');
     const filterPanel = document.getElementById('filter-panel');
-    
+
     const modal = document.getElementById('details-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalDescription = document.getElementById('modal-description');
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetch('data/processed_storyline_data.json')
         .then(response => {
-             if (!response.ok) {
+            if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.json();
@@ -75,13 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
         timelineContainer.appendChild(canvas);
 
         if (items.length === 0) return;
-        
+
         const maxCol = Math.max(...items.map(item => item.column)) + 1;
         const maxRow = Math.max(...items.map(item => item.row)) + 2;
 
-        timelineContainer.style.gridTemplateColumns = `repeat(${maxCol}, 11.25rem)`;
+        // CHANGE: Grid column width increased to match the new card width
+        timelineContainer.style.gridTemplateColumns = `repeat(${maxCol}, 13.5rem)`;
         timelineContainer.style.gridTemplateRows = `repeat(${maxRow}, auto)`;
-        
+
         items.forEach(itemData => {
             const itemElement = createTimelineItem(itemData);
             timelineContainer.appendChild(itemElement);
@@ -89,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         requestAnimationFrame(() => drawLines(items.map(item => item.id)));
     }
-    
+
     function createTimelineItem(itemData) {
         const itemElement = document.createElement('div');
         itemElement.className = 'timeline-item';
@@ -97,12 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let gridRowValue;
         if (itemData.row === -1) {
-            gridRowValue = 1; 
+            gridRowValue = 1;
         } else {
             gridRowValue = itemData.row + 2;
         }
         itemElement.style.gridRow = gridRowValue;
-        
+
         const keysToStore = ['id', 'name', 'description', 'summary', 'shipnation', 'bgm', 'link_event', 'chapter'];
         keysToStore.forEach(key => {
             if (itemData[key] !== undefined) {
@@ -116,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const name = document.createElement('div');
         name.className = 'item-name';
         name.textContent = itemData.name;
-        
+
         itemElement.appendChild(icon);
         itemElement.appendChild(name);
         return itemElement;
@@ -131,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const chaptersData = [];
         const uniqueChapters = [...new Set(items.map(item => item.chapter))].sort((a, b) => a - b);
-        
+
         uniqueChapters.forEach(chapter => {
             const firstItemOfChapter = items.find(item => item.chapter === chapter);
             const domElement = document.querySelector(`.timeline-item[data-id='${firstItemOfChapter.id}']`);
@@ -154,10 +155,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const marker = document.createElement('div');
             marker.className = 'chapter-marker';
             marker.textContent = data.text;
-            
+
             const percentage = (data.offsetLeft / timelineScrollWidth) * 100;
             marker.style.left = `${percentage}%`;
-            
+
             marker.onclick = () => {
                 const remSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
                 const offset = 3.125 * remSize;
@@ -173,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function populateFilters(items) {
         const uniqueNations = new Map();
         items.forEach(item => {
-            if(item.shipnation) {
+            if (item.shipnation) {
                 const nations = item.shipnation;
                 nations.forEach(nationId => {
                     if (!uniqueNations.has(nationId) && factionMap[nationId]) {
@@ -206,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
         filterButton.addEventListener('click', (e) => {
             e.stopPropagation();
             const isHidden = filterPanel.classList.toggle('hidden');
-            
+
             // **FIX RE-APPLIED**: Disable dragging when the filter panel is open
             if (!isHidden) {
                 timelineWrapper.style.pointerEvents = 'none';
@@ -231,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         filterPanel.addEventListener('change', (e) => {
             const allCheckbox = document.getElementById('nation-all');
             const otherCheckboxes = [...filterPanel.querySelectorAll('input[type="checkbox"]')]
-                                      .filter(cb => cb.id !== 'nation-all');
+                .filter(cb => cb.id !== 'nation-all');
 
             if (e.target.id === 'nation-all') {
                 if (allCheckbox.checked) {
@@ -242,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     allCheckbox.checked = false;
                 }
             }
-            
+
             const allCheckboxes = [...filterPanel.querySelectorAll('input[type="checkbox"]')];
             if (allCheckboxes.every(cb => !cb.checked)) {
                 allCheckbox.checked = true;
@@ -255,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function applyFilter() {
         const allCheckbox = document.getElementById('nation-all');
         const timelineItems = document.querySelectorAll('.timeline-item');
-        
+
         if (allCheckbox.checked) {
             timelineItems.forEach(item => {
                 item.classList.remove('dimmed', 'highlighted');
@@ -282,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function drawLines(visibleItemIds) {
         canvas.width = timelineContainer.scrollWidth;
         canvas.height = timelineContainer.scrollHeight;
-        
+
         ctx.strokeStyle = '#a3b1c6';
         ctx.lineWidth = 2;
         ctx.shadowColor = 'rgba(163, 177, 198, 0.7)';
@@ -297,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const startX = startNode.offsetLeft + startNode.offsetWidth / 2;
             const startY = startNode.offsetTop + startNode.offsetHeight / 2;
-            
+
             const linkedEvents = Array.isArray(itemData.link_event) ? itemData.link_event : [itemData.link_event];
 
             linkedEvents.forEach(targetId => {
@@ -321,14 +322,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const item = event.target.closest('.timeline-item');
         if (!item) return;
 
-        const { name, description, summary, shipnation, bgm } = item.dataset;
-        
+        // The 'id' is now correctly destructured from item.dataset
+        const { id, name, description, summary, shipnation, bgm } = item.dataset;
+
         modalTitle.textContent = name;
         modalDescription.textContent = description;
         modalSummary.textContent = summary || "No summary available.";
-        
+
         const nations = JSON.parse(shipnation).map(id => factionMap[id] || `Faction ${id}`).join(', ');
         modalShipNation.textContent = nations;
+
+        const modalFooter = document.querySelector('#details-modal .modal-footer');
+        const oldBtn = document.getElementById('view-story-btn');
+        if (oldBtn) oldBtn.remove();
+
+        const storyButton = document.createElement('button');
+        storyButton.id = 'view-story-btn';
+        storyButton.textContent = '스토리 목록 보기'; // Updated Text
+        storyButton.className = 'chapter-button';
+        storyButton.style.marginTop = '1rem';
+        storyButton.onclick = () => {
+            // This now correctly links to the Tier 2 memory selection page
+            window.location.href = `main-story-viewer.html?eventId=${id}`;
+        };
+        modalFooter.prepend(storyButton);
 
         if (bgm && bgm.trim() !== "") {
             modalBgm.src = `https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/${bgm}.ogg`;
@@ -337,10 +354,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             modalBgm.src = "";
         }
-        
+
         modal.style.display = 'block';
     });
-    
+
     const closeModal = () => {
         modal.style.display = 'none';
         if (modalBgm.src) {
@@ -364,44 +381,44 @@ document.addEventListener('DOMContentLoaded', () => {
         const indicatorMaxPos = progressBarContainer.clientWidth;
         indicator.style.transform = `translateX(${scrollPercentage * indicatorMaxPos}px) translateY(-50%)`;
     }
-    
+
     timelineWrapper.addEventListener('scroll', () => requestAnimationFrame(updateIndicator));
 
     let isDown = false;
     let startX, startY;
     let scrollLeft, scrollTop;
     timelineWrapper.addEventListener('mousedown', (e) => {
-      if (timelineWrapper.style.pointerEvents === 'none') return;
-      if (e.target.closest('.timeline-item')) {
-          return;
-      }
-      
-      isDown = true;
-      timelineWrapper.classList.add('active');
-      startX = e.pageX - timelineWrapper.offsetLeft;
-      startY = e.pageY - timelineWrapper.offsetTop;
-      scrollLeft = timelineWrapper.scrollLeft;
-      scrollTop = timelineWrapper.scrollTop;
+        if (timelineWrapper.style.pointerEvents === 'none') return;
+        if (e.target.closest('.timeline-item')) {
+            return;
+        }
+
+        isDown = true;
+        timelineWrapper.classList.add('active');
+        startX = e.pageX - timelineWrapper.offsetLeft;
+        startY = e.pageY - timelineWrapper.offsetTop;
+        scrollLeft = timelineWrapper.scrollLeft;
+        scrollTop = timelineWrapper.scrollTop;
     });
     timelineWrapper.addEventListener('mouseleave', () => {
-      isDown = false;
-      timelineWrapper.classList.remove('active');
+        isDown = false;
+        timelineWrapper.classList.remove('active');
     });
     timelineWrapper.addEventListener('mouseup', () => {
-      isDown = false;
-      timelineWrapper.classList.remove('active');
+        isDown = false;
+        timelineWrapper.classList.remove('active');
     });
     timelineWrapper.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      
-      const x = e.pageX - timelineWrapper.offsetLeft;
-      const walkX = (x - startX) * 2;
-      timelineWrapper.scrollLeft = scrollLeft - walkX;
-      
-      const y = e.pageY - timelineWrapper.offsetTop;
-      const walkY = (y - startY) * 2; 
-      timelineWrapper.scrollTop = scrollTop - walkY;
+        if (!isDown) return;
+        e.preventDefault();
+
+        const x = e.pageX - timelineWrapper.offsetLeft;
+        const walkX = (x - startX) * 2;
+        timelineWrapper.scrollLeft = scrollLeft - walkX;
+
+        const y = e.pageY - timelineWrapper.offsetTop;
+        const walkY = (y - startY) * 2;
+        timelineWrapper.scrollTop = scrollTop - walkY;
     });
 
     const originalResizeHandler = () => {
