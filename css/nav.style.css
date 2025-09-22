@@ -1,109 +1,110 @@
 /* General Navbar Styling */
 .navbar {
-    position: relative; /* Required for z-index to work */
-    z-index: 1000;      /* A high number to keep it on top */
-    background-color: #333;
-    padding: 1rem;
-    font-family: sans-serif;
-}
-
-.navbar {
-    background-color: #333;
-    padding: 1rem;
-    font-family: sans-serif;
+  /* UPDATED: Make the navbar sticky */
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* A high number to keep it on top */
+  background-color: #333;
+  padding: 1rem;
+  font-family: sans-serif;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .nav-logo {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.5rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.5rem;
 }
 
 .nav-menu {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-item {
-    margin-left: 2rem;
+  margin-left: 2rem;
 }
 
 .nav-links {
-    color: #fff;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: block;
 }
 
 .nav-links:hover {
-    background-color: #555;
-    border-radius: 5px;
+  background-color: #555;
+  border-radius: 5px;
 }
 
 /* Dropdown Menu Styling */
 .dropdown {
-    position: relative;
+  position: relative;
 }
 
 .dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #333;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border-radius: 5px;
-    min-width: 200px;
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #333;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 5px;
+  min-width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .dropdown:hover .dropdown-menu {
-    display: block;
+  display: block;
 }
 
 .dropdown-menu li a {
-    color: #fff;
-    padding: 0.75rem 1.5rem;
-    display: block;
-    text-decoration: none;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  display: block;
+  text-decoration: none;
 }
 
 .dropdown-menu li a:hover {
-    background-color: #555;
+  background-color: #555;
 }
 
-/* UPDATED Light Theme for ins-viewer.html */
+/* Light Theme */
 .navbar.navbar-light {
-    background-color: #ffffff; /* Changed to pure white */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08); /* Added a soft shadow for separation */
-    border-bottom: none; /* Removed the 1px border */
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
+
 .navbar.navbar-light .nav-logo,
 .navbar.navbar-light .nav-links {
-    color: #343a40;
+  color: #333;
 }
+
 .navbar.navbar-light .nav-links:hover {
-    background-color: #f1f1f1; /* Slightly adjusted hover color */
+  background-color: #f2f2f2;
 }
+
 .navbar.navbar-light .dropdown-menu {
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    border: 1px solid #f1f1f1;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
 }
+
 .navbar.navbar-light .dropdown-menu li a {
-    color: #343a40;
+  color: #333;
 }
+
 .navbar.navbar-light .dropdown-menu li a:hover {
-    background-color: #f1f1f1;
+  background-color: #f2f2f2;
 }

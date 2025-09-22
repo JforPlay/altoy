@@ -34,6 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Dark Mode ---
     const applyTheme = (theme) => {
         document.body.classList.toggle('dark-mode', theme === 'dark');
+
+        // --- ADD THIS BLOCK ---
+        // Also apply a theme class to the main navbar if it exists
+        const mainNavbar = document.querySelector('#navbar-placeholder .navbar');
+        if (mainNavbar) {
+            if (theme === 'dark') {
+                mainNavbar.classList.remove('navbar-light'); // Assuming default is dark
+            } else {
+                mainNavbar.classList.add('navbar-light');
+            }
+        }
+
         themeToggles.forEach(toggle => {
             toggle.querySelector('.theme-icon-sun')?.classList.toggle('hidden', theme === 'dark');
             toggle.querySelector('.theme-icon-moon')?.classList.toggle('hidden', theme !== 'dark');
@@ -73,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             storylineData = await storyResponse.json();
             shipgirlData = await shipgirlResponse.json();
-            
+
             for (const id in shipgirlData) shipgirlNameMap[shipgirlData[id].name] = id;
 
             populateEventGrid();
@@ -84,21 +96,26 @@ document.addEventListener('DOMContentLoaded', () => {
             showError('Failed to load story data. Please refresh the page.');
         }
     }
-    
-    // UPDATED: Now only checks for 'eventid'
+
     function handleUrlParameters() {
         const urlParams = new URLSearchParams(window.location.search);
-        const eventId = urlParams.get('eventId');
+        const eventId = urlParams.get('eventId') || urlParams.get('eventid') || urlParams.get('event_id');
         const storyId = urlParams.get('story');
-        
-        if (eventId && storylineData[eventId]) {
-            selectEvent(eventId, false); // Go to event screen without updating URL
-            if (storyId) {
-                const eventData = storylineData[eventId];
-                const memoryData = eventData?.memory_id?.find(mem => mem.id == storyId);
-                if (memoryData) {
-                    startStory(memoryData, false); // Start story without updating URL
+
+        if (eventId) {
+            if (storylineData[eventId]) {
+                selectEvent(eventId, false);
+                if (storyId) {
+                    const eventData = storylineData[eventId];
+                    const memoryData = eventData?.memory_id?.find(mem => mem.id == storyId);
+                    if (memoryData) {
+                        startStory(memoryData, false);
+                    } else {
+                        showError(`Story with ID '${storyId}' not found in this event.`);
+                    }
                 }
+            } else {
+                showError(`Event with ID '${eventId}' not found.`);
             }
         }
     }
@@ -141,20 +158,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 memoryGrid.appendChild(card);
             });
         }
-        
+
         if (updateUrl) {
             const urlParams = new URLSearchParams();
-            urlParams.set('eventId', currentEventId);
-            window.history.pushState({eventId: currentEventId}, '', `?${urlParams.toString()}`);
+            urlParams.set('eventid', currentEventId);
+            window.history.pushState({ eventId: currentEventId }, '', `?${urlParams.toString()}`);
         }
-        
+
         switchView(memorySelectionView);
     }
-    
+
     function returnToMemorySelection() {
         const urlParams = new URLSearchParams();
-        urlParams.set('eventId', currentEventId);
-        window.history.pushState({eventId: currentEventId}, '', `?${urlParams.toString()}`);
+        urlParams.set('eventid', currentEventId);
+        window.history.pushState({ eventId: currentEventId }, '', `?${urlParams.toString()}`);
         switchView(memorySelectionView);
     }
 
@@ -166,13 +183,17 @@ document.addEventListener('DOMContentLoaded', () => {
         currentStoryScript = memory.story.scripts;
         scriptIndex = 0;
         lastActorId = null;
-        storyTitle.textContent = storylineData[currentEventId]?.name || 'Story';
-        
+
+        // UPDATED: Combine event and memory titles for the header
+        const eventName = storylineData[currentEventId]?.name || 'Event';
+        const memoryTitleText = memory.title || 'Chapter';
+        storyTitle.textContent = `${eventName} - ${memoryTitleText}`;
+
         if (updateUrl) {
             const urlParams = new URLSearchParams();
-            urlParams.set('eventId', currentEventId);
+            urlParams.set('eventid', currentEventId);
             urlParams.set('story', memory.id);
-            window.history.pushState({eventId: currentEventId, storyId: memory.id}, '', `?${urlParams.toString()}`);
+            window.history.pushState({ eventId: currentEventId, storyId: memory.id }, '', `?${urlParams.toString()}`);
         }
 
         renderScriptLine();
@@ -188,13 +209,13 @@ document.addEventListener('DOMContentLoaded', () => {
         scriptIndex++;
         renderScriptLine();
     }
-    
+
     function goBackStory() {
         if (scriptIndex <= 0) return;
         scriptIndex--;
         renderScriptLine();
     }
-    
+
     function getActorInfo(line) {
         let actorId = null;
         if (typeof line.actor === 'number') actorId = line.actor;
@@ -240,19 +261,31 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             lastActorId = actorInfo.id;
         }
-        
+
         if (scriptIndex >= currentStoryScript.length - 1) {
             nextLineBtn.textContent = 'Return to Chapter Selection';
         } else {
             nextLineBtn.textContent = 'Next →';
         }
-        
+
         prevLineBtn.disabled = (scriptIndex <= 0);
         nextPageIndicator.classList.toggle('hidden', scriptIndex >= currentStoryScript.length - 1);
     }
-    
+
     function handleEffect(effects) {
-        // This function remains the same
+        if (!effects) return;
+        effects.forEach(effect => {
+            if (effect.type === "shake") {
+                viewerContainer.classList.add('shake');
+                setTimeout(() => viewerContainer.classList.remove('shake'), effect.duration * 1000 || 500);
+            }
+            if (effect.type === "flash") {
+                const flashEl = document.createElement('div');
+                flashEl.className = 'flash';
+                document.body.appendChild(flashEl);
+                setTimeout(() => document.body.removeChild(flashEl), 300);
+            }
+        });
     }
 
     // --- Event Listeners ---
@@ -269,4 +302,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Initial Load ---
     applyTheme(localStorage.getItem('theme') || 'light');
     init();
+
+    function initializeStickyHeaderLogic() {
+        // This function runs after the main navbar is loaded
+        const viewerHeaders = document.querySelectorAll('.viewer-header');
+
+        viewerHeaders.forEach(header => {
+            // The grid container is the next element after the header
+            const contentGrid = header.nextElementSibling;
+            if (!contentGrid || !contentGrid.classList.contains('story-grid-container')) return;
+
+            // Calculate the point where the header should stick
+            const stickyPoint = header.offsetTop;
+            const headerHeight = header.offsetHeight;
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > stickyPoint) {
+                    // Stick the header
+                    if (!header.classList.contains('viewer-header-stuck')) {
+                        header.classList.add('viewer-header-stuck');
+                        contentGrid.style.paddingTop = `${headerHeight}px`;
+                    }
+                } else {
+                    // Unstick the header
+                    if (header.classList.contains('viewer-header-stuck')) {
+                        header.classList.remove('viewer-header-stuck');
+                        contentGrid.style.paddingTop = '0';
+                    }
+                }
+            });
+        });
+    }
 });

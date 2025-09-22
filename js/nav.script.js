@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     loadNavbar();
     loadFooter();
 });
@@ -8,7 +8,13 @@ function loadNavbar() {
         .then(response => response.text())
         .then(data => {
             document.getElementById('navbar-placeholder').innerHTML = data;
-            
+            const navbar = document.querySelector('.navbar');
+
+            if (navbar) {
+                const navbarHeight = navbar.offsetHeight;
+                document.documentElement.style.setProperty('--navbar-height', `${navbarHeight}px`);
+            }
+
             // Apply special navbar theme if on the right page
             const currentPage = window.location.pathname.split("/").pop();
             if (currentPage === 'ins-viewer.html') {
@@ -17,9 +23,14 @@ function loadNavbar() {
                     navbar.classList.add('navbar-light');
                 }
             }
-            
+
             // Initialize navbar features
             initializeDropdowns();
+
+            // Call the sticky header logic from the other script if it exists
+            if (typeof initializeStickyHeaderLogic === 'function') {
+                initializeStickyHeaderLogic();
+            }
         })
         .catch(error => console.error('Error loading the navigation bar:', error));
 }
@@ -28,7 +39,7 @@ function initializeDropdowns() {
     const dropdowns = document.querySelectorAll('.dropdown');
     dropdowns.forEach(dropdown => {
         const link = dropdown.querySelector('.nav-links');
-        link.addEventListener('click', function(event) {
+        link.addEventListener('click', function (event) {
             event.preventDefault();
             event.stopPropagation();
             const menu = dropdown.querySelector('.dropdown-menu');
