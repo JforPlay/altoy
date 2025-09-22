@@ -85,10 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // UPDATED: Handles new URL parameters: event_id and story
+    // UPDATED: Now only checks for 'eventid'
     function handleUrlParameters() {
         const urlParams = new URLSearchParams(window.location.search);
-        const eventId = urlParams.get('event_id');
+        const eventId = urlParams.get('eventId');
         const storyId = urlParams.get('story');
         
         if (eventId && storylineData[eventId]) {
@@ -137,7 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
         memoryGrid.innerHTML = '';
         if (eventData.memory_id && Array.isArray(eventData.memory_id)) {
             eventData.memory_id.forEach(memory => {
-                // UPDATED: Pass the entire memory object to startStory
                 const card = createCard(memory.title, memory.condition, memory.icon, () => startStory(memory));
                 memoryGrid.appendChild(card);
             });
@@ -145,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (updateUrl) {
             const urlParams = new URLSearchParams();
-            urlParams.set('eventid', currentEventId);
+            urlParams.set('eventId', currentEventId);
             window.history.pushState({eventId: currentEventId}, '', `?${urlParams.toString()}`);
         }
         
@@ -154,12 +153,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function returnToMemorySelection() {
         const urlParams = new URLSearchParams();
-        urlParams.set('event_id', currentEventId);
+        urlParams.set('eventId', currentEventId);
         window.history.pushState({eventId: currentEventId}, '', `?${urlParams.toString()}`);
         switchView(memorySelectionView);
     }
 
-    // UPDATED: Accepts the full memory object now
     function startStory(memory, updateUrl = true) {
         if (!memory?.story?.scripts) {
             showError("This story is not available.");
@@ -172,8 +170,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (updateUrl) {
             const urlParams = new URLSearchParams();
-            urlParams.set('event_id', currentEventId);
-            urlParams.set('story', memory.id); // Use memory.id for the story parameter
+            urlParams.set('eventId', currentEventId);
+            urlParams.set('story', memory.id);
             window.history.pushState({eventId: currentEventId, storyId: memory.id}, '', `?${urlParams.toString()}`);
         }
 
