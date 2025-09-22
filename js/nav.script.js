@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
+
+    const iconFontId = 'google-material-icons';
+    if (!document.getElementById(iconFontId)) {
+        const link = document.createElement('link');
+        link.id = iconFontId;
+        link.rel = 'stylesheet';
+        link.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+        document.head.appendChild(link);
+    }
+    // -
     loadNavbar();
     loadFooter();
 });
@@ -8,6 +18,15 @@ function loadNavbar() {
         .then(response => response.text())
         .then(data => {
             document.getElementById('navbar-placeholder').innerHTML = data;
+
+            const menuIcon = document.querySelector('.menu-icon');
+            const navMenu = document.querySelector('.nav-menu');
+            if (menuIcon && navMenu) {
+                menuIcon.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                });
+            }
+
             const navbar = document.querySelector('.navbar');
 
             if (navbar) {
@@ -26,11 +45,6 @@ function loadNavbar() {
 
             // Initialize navbar features
             initializeDropdowns();
-
-            // Call the sticky header logic from the other script if it exists
-            if (typeof initializeStickyHeaderLogic === 'function') {
-                initializeStickyHeaderLogic();
-            }
         })
         .catch(error => console.error('Error loading the navigation bar:', error));
 }
@@ -67,3 +81,18 @@ function loadFooter() {
         })
         .catch(error => console.error('Error loading the footer:', error));
 }
+
+// --- Add this entire block for dynamic resizing ---
+let resizeTimer;
+window.addEventListener('resize', () => {
+    // Clear the timeout to avoid running the function too often
+    clearTimeout(resizeTimer);
+    // Set a timeout to run the function once the resize is "finished"
+    resizeTimer = setTimeout(() => {
+        const navbar = document.querySelector('#navbar-placeholder .navbar');
+        if (navbar) {
+            const navbarHeight = navbar.offsetHeight;
+            document.documentElement.style.setProperty('--navbar-height', `${navbarHeight}px`);
+        }
+    }, 100); // 100ms delay
+});

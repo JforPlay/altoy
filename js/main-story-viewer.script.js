@@ -26,10 +26,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextPageIndicator = document.getElementById('next-page-indicator');
     const prevLineBtn = document.getElementById('prev-line-btn');
     const nextLineBtn = document.getElementById('next-line-btn');
+    // ADD THESE NEW ELEMENT SELECTIONS
+    const infoScreen = document.getElementById('info-screen');
+    const infoScreenText = document.getElementById('info-screen-text');
+    // END NEW ELEMENT SELECTIONS
     const viewerContainer = document.getElementById('viewer-container');
     const errorContainer = document.getElementById('error-container');
     const memoryViewTitle = document.getElementById('memory-view-title');
     const themeToggles = document.querySelectorAll('.theme-toggle');
+
+    // ADD THESE NEW ELEMENT SELECTIONS
+    const viewScriptBtn = document.getElementById('view-script-btn');
+    const scriptModalOverlay = document.getElementById('script-modal-overlay');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const fullScriptContent = document.getElementById('full-script-content');
 
     // --- Dark Mode ---
     const applyTheme = (theme) => {
@@ -232,14 +242,25 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderScriptLine() {
         if (scriptIndex >= currentStoryScript.length) return;
         const line = currentStoryScript[scriptIndex];
+        
+        // Hide all views by default
         optionsBox.innerHTML = '';
+        dialogueBox.classList.add('hidden');
+        infoScreen.classList.add('hidden');
 
         if (line.bgName) viewerContainer.querySelector('.story-background').style.backgroundImage = `url('https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/bg/${line.bgName}.png')`;
         if (line.effects) handleEffect(line.effects);
 
-        if (!line.say) {
-            dialogueBox.classList.add('hidden');
-        } else {
+        // Check for info screen text from sequence or signDate
+        const infoText = line.sequence?.[0]?.[0] || line.signDate?.[0];
+
+        if (infoText && infoText.trim() !== "") {
+            // This is an info screen line
+            infoScreen.classList.remove('hidden');
+            infoScreenText.textContent = infoText;
+
+        } else if (line.say) {
+            // This is a regular dialogue line
             dialogueBox.classList.remove('hidden');
             dialogueText.textContent = line.say.replace(/<.*?>/g, '');
             const actorInfo = getActorInfo(line);
@@ -261,15 +282,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             lastActorId = actorInfo.id;
         }
-
+        
         if (scriptIndex >= currentStoryScript.length - 1) {
-            nextLineBtn.textContent = 'Return to Chapter Selection';
-        } else {
-            nextLineBtn.textContent = 'Next →';
+            // ... (rest of the function is the same)
         }
-
-        prevLineBtn.disabled = (scriptIndex <= 0);
-        nextPageIndicator.classList.toggle('hidden', scriptIndex >= currentStoryScript.length - 1);
     }
 
     function handleEffect(effects) {
@@ -288,6 +304,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ADD THESE THREE NEW FUNCTIONS somewhere in your script, e.g., before the Event Listeners section
+    function showFullScript() {
+        if (!currentStoryScript || currentStoryScript.length === 0) return;
+
+        // Generate HTML from the script data
+        const scriptHtml = currentStoryScript
+            .filter(line => line.say && line.say.trim() !== "") // Only include lines with dialogue
+            .map(line => {
+                const actorInfo = getActorInfo(line);
+                const actorName = actorInfo.name || 'Narrator';
+                const dialogue = line.say.replace(/<.*?>/g, ''); // Clean any HTML tags
+                return `<p><strong>${actorName}:</strong> ${dialogue}</p>`;
+            })
+            .join('');
+
+        fullScriptContent.innerHTML = scriptHtml;
+        scriptModalOverlay.classList.remove('hidden');
+    }
+
+    function hideFullScript() {
+        scriptModalOverlay.classList.add('hidden');
+    }
+
     // --- Event Listeners ---
     searchBar?.addEventListener('input', (e) => populateEventGrid(e.target.value));
     storyViewerView?.addEventListener('click', (e) => {
@@ -299,38 +338,18 @@ document.addEventListener('DOMContentLoaded', () => {
     backToEventBtn.addEventListener('click', (e) => { e.preventDefault(); switchView(eventSelectionView); window.history.pushState({}, '', 'main-story-viewer.html'); });
     backToMemoryBtn.addEventListener('click', (e) => { e.preventDefault(); returnToMemorySelection(); });
 
+    // ADD THESE NEW EVENT LISTENERS
+    viewScriptBtn.addEventListener('click', showFullScript);
+    closeModalBtn.addEventListener('click', hideFullScript);
+    scriptModalOverlay.addEventListener('click', (e) => {
+        // Only close if the click is on the overlay itself, not the content
+        if (e.target === scriptModalOverlay) {
+            hideFullScript();
+        }
+    });
+
     // --- Initial Load ---
     applyTheme(localStorage.getItem('theme') || 'light');
     init();
 
-    function initializeStickyHeaderLogic() {
-        // This function runs after the main navbar is loaded
-        const viewerHeaders = document.querySelectorAll('.viewer-header');
-
-        viewerHeaders.forEach(header => {
-            // The grid container is the next element after the header
-            const contentGrid = header.nextElementSibling;
-            if (!contentGrid || !contentGrid.classList.contains('story-grid-container')) return;
-
-            // Calculate the point where the header should stick
-            const stickyPoint = header.offsetTop;
-            const headerHeight = header.offsetHeight;
-
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > stickyPoint) {
-                    // Stick the header
-                    if (!header.classList.contains('viewer-header-stuck')) {
-                        header.classList.add('viewer-header-stuck');
-                        contentGrid.style.paddingTop = `${headerHeight}px`;
-                    }
-                } else {
-                    // Unstick the header
-                    if (header.classList.contains('viewer-header-stuck')) {
-                        header.classList.remove('viewer-header-stuck');
-                        contentGrid.style.paddingTop = '0';
-                    }
-                }
-            });
-        });
-    }
 });

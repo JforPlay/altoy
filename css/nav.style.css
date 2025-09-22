@@ -22,6 +22,27 @@
   color: #fff;
   text-decoration: none;
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75em; /* Space between portrait and icon */
+  transition: transform 0.2s ease-in-out;
+}
+
+/* ADD THIS RULE for the hover effect */
+.nav-logo:hover {
+    transform: scale(1.1); /* Makes the logo slightly larger on hover */
+}
+
+/* ADD THIS RULE to increase the icon size */
+.nav-logo .material-icons {
+    font-size: 1.8rem; /* Increased from the default size */
+}
+
+.nav-portrait {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%; /* Makes the image circular */
+  object-fit: cover; /* Ensures the image fills the circle */
 }
 
 .nav-menu {
@@ -107,4 +128,52 @@
 
 .navbar.navbar-light .dropdown-menu li a:hover {
   background-color: #f2f2f2;
+}
+
+/* --- Hamburger Menu Styles --- */
+.menu-icon {
+  display: none; /* Hidden by default on desktop */
+  cursor: pointer;
+  color: #fff; /* Or var(--text-color) if you want it to change with theme */
+}
+
+/* --- Responsive Styles for Mobile --- */
+@media screen and (max-width: 768px) {
+  .nav-container {
+    /* Allow items to wrap and position the icon */
+    flex-wrap: wrap;
+  }
+
+  .menu-icon {
+    display: block; /* Show the icon on mobile */
+  }
+
+  .nav-menu {
+    /* Instead of display: none */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+
+    width: 100%;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .nav-menu.active {
+    /* Instead of display: flex */
+    max-height: 500px; /* A height larger than the menu will ever be */
+  }
+
+  .nav-item {
+    margin: 1rem 0;
+    width: 100%;
+  }
+
+  .dropdown-menu {
+    position: static; /* Make dropdowns appear inline */
+    display: none; /* Keep them hidden until clicked */
+    background-color: #444; /* Slightly different color for sub-menu */
+    box-shadow: none;
+    width: 100%;
+  }
 }

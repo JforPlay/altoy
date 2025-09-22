@@ -49,7 +49,24 @@
             <header id="story-header" class="story-header">
                 <a id="back-to-memory-selection" href="#" class="nav-button back-button">&#x2190;</a>
                 <h2 id="story-title"></h2>
+                <button id="view-script-btn" class="nav-button" title="View Full Script">
+                    <span class="material-icons">menu_book</span>
+                    전체 대사보기
+                </button>
             </header>
+
+            <div id="script-modal-overlay" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-modal-btn" class="close-modal-btn" title="Close">
+                <span class="material-icons">close</span>
+            </button>
+            <div id="full-script-content" class="full-script-content">
+                </div>
+        </div>
+    </div>
+            <div id="info-screen" class="info-screen hidden">
+                <p id="info-screen-text"></p>
+            </div>
             <div id="dialogue-box" class="dialogue-box">
                 <div id="actor-portrait" class="actor-portrait"></div>
                 <div class="dialogue-content">
