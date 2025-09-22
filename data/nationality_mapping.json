@@ -1,0 +1,170 @@
+{
+    "0": {
+        "id": 0,
+        "code": "UNIV",
+        "name": "Universal",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/0.png"
+    },
+    "1": {
+        "id": 1,
+        "code": "USS",
+        "name": "이글 유니온",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/1.png"
+    },
+    "2": {
+        "id": 2,
+        "code": "HMS",
+        "name": "로열 네이비",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/2.png"
+    },
+    "3": {
+        "id": 3,
+        "code": "IJN",
+        "name": "사쿠라 엠파이어",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/3.png"
+    },
+    "4": {
+        "id": 4,
+        "code": "KMS",
+        "name": "메탈 블러드",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/4.png"
+    },
+    "5": {
+        "id": 5,
+        "code": "ROC",
+        "name": "이스트 글림",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/5.png"
+    },
+    "6": {
+        "id": 6,
+        "code": "RN",
+        "name": "사르데냐",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/6.png"
+    },
+    "7": {
+        "id": 7,
+        "code": "SN",
+        "name": "노스 유니온",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/7.png"
+    },
+    "8": {
+        "id": 8,
+        "code": "FFNF",
+        "name": "아이리스 리브레",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/8.png"
+    },
+    "9": {
+        "id": 9,
+        "code": "MNF",
+        "name": "비시아 성좌",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/9.png"
+    },
+    "10": {
+        "id": 10,
+        "code": "FR",
+        "name": "아이리스 연합",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/8.png"
+    },
+    "96": {
+        "id": 96,
+        "code": "MOT",
+        "name": "템페스타",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/96.png"
+    },
+    "97": {
+        "id": 97,
+        "code": "META",
+        "name": "META",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/97.png"
+    },
+    "98": {
+        "id": 98,
+        "code": "BULIN",
+        "name": "Universal",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/0.png",
+        "prefix": [
+            "UNIV"
+        ]
+    },
+    "100": {
+        "id": 100,
+        "code": "LINK",
+        "name": "Collab",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "101": {
+        "id": 101,
+        "code": "NP",
+        "name": "Neptunia",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": [
+            "HDN"
+        ]
+    },
+    "102": {
+        "id": 102,
+        "code": "BILI",
+        "name": "Bilibili",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": [
+            "BILI"
+        ]
+    },
+    "103": {
+        "id": 103,
+        "code": "UM",
+        "name": "Utawarerumono",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "104": {
+        "id": 104,
+        "code": "AI",
+        "name": "Kizuna AI",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "105": {
+        "id": 105,
+        "code": "HOLO",
+        "name": "Hololive",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "106": {
+        "id": 106,
+        "code": "DOA",
+        "name": "Venus Vacation",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "107": {
+        "id": 107,
+        "code": "IMAS",
+        "name": "The Idolmaster",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "108": {
+        "id": 108,
+        "code": "SSSS",
+        "name": "SSSS",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "109": {
+        "id": 109,
+        "code": "RYZA",
+        "name": "Atelier Ryza",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "110": {
+        "id": 110,
+        "code": "SENRAN",
+        "name": "Senran Kagura",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    }
+}

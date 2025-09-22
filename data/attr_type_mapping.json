@@ -1,0 +1,74 @@
+{
+    "1": {
+        "condition": "내구",
+        "id": 1,
+        "name": "durability",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/stats/Health_big.png"
+    },
+    "2": {
+        "condition": "포격",
+        "id": 2,
+        "name": "cannon",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/stats/Firepower_big.png"
+    },
+    "3": {
+        "condition": "뇌장",
+        "id": 3,
+        "name": "torpedo",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/stats/Torpedo_big.png"
+    },
+    "4": {
+        "condition": "대공",
+        "id": 4,
+        "name": "antiaircraft",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/stats/AntiAir_big_big.png"
+    },
+    "5": {
+        "condition": "항공",
+        "id": 5,
+        "name": "air",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/stats/Aviation_big.png"
+    },
+    "6": {
+        "condition": "장전",
+        "id": 6,
+        "name": "reload",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/stats/Reload_big.png"
+    },
+    "7": {
+        "condition": "장갑",
+        "id": 7,
+        "name": "armor",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/stats/armor_big.png"
+    },
+    "8": {
+        "condition": "명중",
+        "id": 8,
+        "name": "hit",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/stats/Hit_big.png"
+    },
+    "9": {
+        "condition": "기동",
+        "id": 9,
+        "name": "dodge",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/stats/Evasion_big.png"
+    },
+    "10": {
+        "condition": "사속",
+        "id": 10,
+        "name": "speed",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/stats/Reload_big.png"
+    },
+    "11": {
+        "condition": "행운",
+        "id": 11,
+        "name": "luck",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/stats/Luck_big.png"
+    },
+    "12": {
+        "condition": "대잠",
+        "id": 12,
+        "name": "antisub",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/stats/ASW_big.png"
+    }
+}

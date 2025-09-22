@@ -1,0 +1,107 @@
+{
+    "1": {
+        "ship_type": 1,
+        "type_name": "구축",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/1.png"
+    },
+    "2": {
+        "ship_type": 2,
+        "type_name": "경순",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/2.png"
+    },
+    "3": {
+        "ship_type": 3,
+        "type_name": "중순",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/3.png"
+    },
+    "4": {
+        "ship_type": 4,
+        "type_name": "순전",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/4.png"
+    },
+    "5": {
+        "ship_type": 5,
+        "type_name": "전함",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/5.png"
+    },
+    "6": {
+        "ship_type": 6,
+        "type_name": "경항모",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/6.png"
+    },
+    "7": {
+        "ship_type": 7,
+        "type_name": "항모",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/7.png"
+    },
+    "8": {
+        "ship_type": 8,
+        "type_name": "잠수",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/8.png"
+    },
+    "9": {
+        "ship_type": 9,
+        "type_name": "항순",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/9.png"
+    },
+    "10": {
+        "ship_type": 10,
+        "type_name": "항전",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/10.png"
+    },
+    "11": {
+        "ship_type": 11,
+        "type_name": "뇌순",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/11.png"
+    },
+    "12": {
+        "ship_type": 12,
+        "type_name": "공작",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/12.png"
+    },
+    "13": {
+        "ship_type": 13,
+        "type_name": "모니터",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/13.png"
+    },
+    "17": {
+        "ship_type": 17,
+        "type_name": "잠모 ",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/17.png"
+    },
+    "18": {
+        "ship_type": 18,
+        "type_name": "대형순",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/18.png"
+    },
+    "19": {
+        "ship_type": 19,
+        "type_name": "운송함",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/19.png"
+    },
+    "20": {
+        "ship_type": 20,
+        "type_name": "미구-전열",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/20.png"
+    },
+    "21": {
+        "ship_type": 21,
+        "type_name": "미구-후열",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/21.png"
+    },
+    "22": {
+        "ship_type": 22,
+        "type_name": "범선",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/22.png"
+    },
+    "23": {
+        "ship_type": 23,
+        "type_name": "범선",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/23.png"
+    },
+    "24": {
+        "ship_type": 24,
+        "type_name": "범선",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/24.png"
+    }
+}
