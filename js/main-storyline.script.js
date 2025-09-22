@@ -159,9 +159,10 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = timelineContainer.scrollWidth;
         canvas.height = timelineContainer.scrollHeight;
         
-        ctx.strokeStyle = '#9a8c98';
+        // **CHANGE**: Updated line colors for the new light theme
+        ctx.strokeStyle = '#a3b1c6'; // Mid-tone gray-blue line
         ctx.lineWidth = 2;
-        ctx.shadowColor = '#c9ada7';
+        ctx.shadowColor = 'rgba(163, 177, 198, 0.7)'; // Lighter shadow
         ctx.shadowBlur = 5;
 
         visibleItemIds.forEach(itemId => {
