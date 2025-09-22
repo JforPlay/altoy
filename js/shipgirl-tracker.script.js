@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchContainer = document.createElement('div');
         searchContainer.className = 'search-container';
         searchContainer.innerHTML = `
-            <label for="search-bar" class="filter-group-label">함선 검색</label>
+            <label for="search-bar" class="filter-group-label">함순이 검색</label>
             <div class="dropdown-container">
                 <input type="text" id="search-bar" placeholder="이름으로 검색..." autocomplete="off">
                 <div class="dropdown-content" id="search-dropdown"></div>
@@ -273,9 +273,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const dropdownContainer = document.createElement('div');
         dropdownContainer.className = 'dropdown-controls-container';
         const dropdownFilters = [
-            { id: 'progress-filter', label: '진행도', options: { all: '전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' } },
-            { id: 'get-attr-filter', label: '획득 보너스 스탯', data: attrTypeData },
-            { id: 'level-attr-filter', label: '레벨 보너스 스탯', data: attrTypeData }
+            { id: 'progress-filter', label: '체크된 함순이들로 필터링  ', options: { all: '전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' } },
+            { id: 'get-attr-filter', label: '입수 스탯으로 필터링  ', data: attrTypeData },
+            { id: 'level-attr-filter', label: '120렙 스탯으로 필터링  ', data: attrTypeData }
         ];
         dropdownFilters.forEach(f => {
             const group = document.createElement('div');
@@ -307,9 +307,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const bulkCheckWrapper = document.createElement('div');
         bulkCheckWrapper.className = 'filter-controls-wrapper';
         const bulkCheckActions = [
-            { label: '표시된 함선 모두 입수', type: 'get', state: true },
-            { label: '표시된 함선 모두 120렙', type: 'level', state: true },
-            { label: '표시된 함선 모두 풀돌', type: 'upgrade', state: true },
+            { label: '표시된 함순이 모두 입수체크', type: 'get', state: true },
+            { label: '표시된 함순이 모두 120렙체크', type: 'level', state: true },
+            { label: '표시된 함순이 모두 풀돌체크', type: 'upgrade', state: true },
         ];
         bulkCheckActions.forEach(action => {
             const btn = document.createElement('button');
@@ -531,8 +531,20 @@ document.addEventListener('DOMContentLoaded', () => {
     async function initialize() {
         try {
             await fetchData();
+            const mainElement = document.querySelector('main');
             const container = document.getElementById('ship-list-container');
             const filterBar = document.getElementById('filter-bar');
+
+            // Create and insert the toggle button for mobile
+            const toggleButton = document.createElement('button');
+            toggleButton.id = 'filter-toggle-btn';
+            toggleButton.innerHTML = '필터 <span class="chevron">▼</span>';
+            mainElement.insertBefore(toggleButton, filterBar);
+
+            toggleButton.addEventListener('click', () => {
+                filterBar.classList.toggle('filters-expanded');
+                toggleButton.classList.toggle('active');
+            });
 
             populateFilters();
             
