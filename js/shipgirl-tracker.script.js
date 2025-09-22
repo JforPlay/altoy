@@ -531,11 +531,32 @@ document.addEventListener('DOMContentLoaded', () => {
     async function initialize() {
         try {
             await fetchData();
+            const header = document.querySelector('header');
+            const scoreArea = document.getElementById('score-display-area');
             const mainElement = document.querySelector('main');
             const container = document.getElementById('ship-list-container');
             const filterBar = document.getElementById('filter-bar');
 
-            // Create and insert the toggle button for mobile
+            const scoreToggleButton = document.createElement('button');
+            scoreToggleButton.id = 'score-toggle-btn';
+            scoreToggleButton.innerHTML = '점수판 보기 <span class="chevron">▼</span>';
+            scoreToggleButton.classList.add('collapsed'); // Set default state
+            scoreArea.classList.add('collapsed'); // Set default state
+            header.appendChild(scoreToggleButton);
+
+            scoreToggleButton.addEventListener('click', () => {
+                scoreArea.classList.toggle('collapsed');
+                const isCollapsed = scoreToggleButton.classList.toggle('collapsed');
+                const chevron = scoreToggleButton.querySelector('.chevron');
+                if (isCollapsed) {
+                    scoreToggleButton.childNodes[0].nodeValue = '점수현황판 보기 ';
+                    chevron.innerHTML = '▼';
+                } else {
+                    scoreToggleButton.childNodes[0].nodeValue = '점수현황판 숨기기 ';
+                    chevron.innerHTML = '▲';
+                }
+            });
+
             const toggleButton = document.createElement('button');
             toggleButton.id = 'filter-toggle-btn';
             toggleButton.innerHTML = '필터 <span class="chevron">▼</span>';

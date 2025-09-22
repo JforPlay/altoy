@@ -23,6 +23,39 @@ h1 {
     margin: 0 0 1rem 0;
 }
 
+/* --- Score Toggle Button --- */
+#score-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 220px;
+    margin: 0 auto;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ecf0f1;
+    background-color: #34495e;
+    border: 1px solid #7f8c8d;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#score-toggle-btn:hover {
+    background-color: #4a6572;
+}
+
+#score-toggle-btn .chevron {
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+#score-toggle-btn.collapsed .chevron {
+    transform: rotate(-90deg);
+}
+
+
 /* --- Score Display Styles --- */
 #score-display-area {
     display: flex;
@@ -30,8 +63,20 @@ h1 {
     justify-content: center;
     gap: 20px;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 1rem auto 0 auto;
+    overflow: hidden;
+    max-height: 2000px; /* A large value to not clip content */
+    opacity: 1;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, margin-top 0.5s ease-in-out, gap 0.5s ease-in-out;
 }
+
+#score-display-area.collapsed {
+    max-height: 0;
+    opacity: 0;
+    gap: 0;
+    margin-top: 0;
+}
+
 
 .score-table-wrapper {
     background-color: #34495e;
@@ -231,6 +276,7 @@ h1 {
 }
 .bulk-check-btn:hover { background-color: #7d3c98; }
 
+
 /* --- Main Container for Cards --- */
 #ship-list-container {
     display: flex;
@@ -239,6 +285,8 @@ h1 {
     padding: 20px;
     justify-content: center;
 }
+
+/* ... existing card styles ... */
 
 /* --- Individual Card Styling --- */
 .ship-card {
