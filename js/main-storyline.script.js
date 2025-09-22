@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const storyButton = document.createElement('button');
         storyButton.id = 'view-story-btn';
-        storyButton.textContent = '스토리 목록 보기'; // Updated Text
+        storyButton.textContent = '해당 스토리 보러가기'; // Updated Text
         storyButton.className = 'chapter-button';
         storyButton.style.marginTop = '1rem';
         storyButton.onclick = () => {
