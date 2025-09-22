@@ -137,7 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 fleetTech[nationId] += parseInt(data.ptGet, 10);
                 if (data.addGetAttr) {
                     data.addGetShiptype.split(',').forEach(type => {
-                        statTech[data.addGetAttr][type] = (statTech[data.addGetAttr][type] || 0) + parseInt(data.addGetValue, 10);
+                        if (!statTech[data.addGetAttr][type]) statTech[data.addGetAttr][type] = { get: 0, level: 0 };
+                        statTech[data.addGetAttr][type].get += parseInt(data.addGetValue, 10);
                     });
                 }
             }
@@ -145,7 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 fleetTech[nationId] += parseInt(data.ptLevel, 10);
                 if (data.addLevelAttr) {
                     data.addLevelShiptype.split(',').forEach(type => {
-                        statTech[data.addLevelAttr][type] = (statTech[data.addLevelAttr][type] || 0) + parseInt(data.addLevelValue, 10);
+                        if (!statTech[data.addLevelAttr][type]) statTech[data.addLevelAttr][type] = { get: 0, level: 0 };
+                        statTech[data.addLevelAttr][type].level += parseInt(data.addLevelValue, 10);
                     });
                 }
             }
@@ -158,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function renderFleetTechTable(scores) {
         const container = document.getElementById('fleet-tech-container');
-        let tableHTML = `<div class="score-table-wrapper"><h2>함대 기술 점수</h2><table class="score-table"><tr><th>진영</th><th>점수</th></tr>`;
+        let tableHTML = `<div class="score-table-wrapper"><h2>진영 점수</h2><table class="score-table"><tr><th>진영</th><th>점수</th></tr>`;
         Object.keys(scores).forEach(id => {
             if (nationalityData[id] && scores[id] > 0) {
                 tableHTML += `<tr><td class="header-col">${nationalityData[id].name}</td><td>${scores[id]}</td></tr>`;
@@ -171,21 +173,30 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderStatTechTable(scores) {
         const container = document.getElementById('stat-tech-container');
         const headers = new Set();
-        Object.values(scores).forEach(ts => Object.keys(ts).forEach(tid => headers.add(tid)));
+        Object.values(scores).forEach(attrScores => Object.keys(attrScores).forEach(typeId => headers.add(typeId)));
+        
         if (headers.size === 0) {
-            container.innerHTML = ''; return;
+            container.innerHTML = ''; 
+            return;
         }
+
         const sortedHeaders = Array.from(headers).sort((a, b) => a - b);
-        let tableHTML = `<div class="score-table-wrapper"><h2>성능 강화 점수</h2><table class="score-table"><tr><th>속성</th>${sortedHeaders.map(id => `<th>${shipTypeData[id]?.type_name || `Type ${id}`}</th>`).join('')}</tr>`;
-        Object.keys(scores).forEach(attrId => {
+        let tableHTML = `<div class="score-table-wrapper"><h2>함대 기술점수 (획득/120렙)</h2><table class="score-table"><tr><th>속성</th>${sortedHeaders.map(id => `<th>${shipTypeData[id]?.type_name || `Type ${id}`}</th>`).join('')}</tr>`;
+        
+        for (const attrId in scores) {
             if (Object.keys(scores[attrId]).length > 0) {
                 tableHTML += `<tr><td class="header-col">${attrTypeData[attrId]?.condition || `스탯 ${attrId}`}</td>`;
                 sortedHeaders.forEach(typeId => {
-                    tableHTML += `<td>+${scores[attrId][typeId] || 0}</td>`;
+                    const cellScores = scores[attrId][typeId] || { get: 0, level: 0 };
+                    if (cellScores.get > 0 || cellScores.level > 0) {
+                        tableHTML += `<td>+${cellScores.get} / +${cellScores.level}</td>`;
+                    } else {
+                        tableHTML += `<td>0</td>`;
+                    }
                 });
                 tableHTML += `</tr>`;
             }
-        });
+        }
         tableHTML += `</table></div>`;
         container.innerHTML = tableHTML;
     }
@@ -262,9 +273,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const dropdownContainer = document.createElement('div');
         dropdownContainer.className = 'dropdown-controls-container';
         const dropdownFilters = [
-            { id: 'progress-filter', label: '체크된 상태로 필터링  ', options: { all: '전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' } },
-            { id: 'get-attr-filter', label: '입수 스탯으로 필터링  ', data: attrTypeData },
-            { id: 'level-attr-filter', label: '120렙 스탯으로 필터링  ', data: attrTypeData }
+            { id: 'progress-filter', label: '진행도', options: { all: '전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' } },
+            { id: 'get-attr-filter', label: '획득 보너스 스탯', data: attrTypeData },
+            { id: 'level-attr-filter', label: '레벨 보너스 스탯', data: attrTypeData }
         ];
         dropdownFilters.forEach(f => {
             const group = document.createElement('div');
@@ -296,9 +307,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const bulkCheckWrapper = document.createElement('div');
         bulkCheckWrapper.className = 'filter-controls-wrapper';
         const bulkCheckActions = [
-            { label: '표시된 함선 모두 입수 체크', type: 'get', state: true },
-            { label: '표시된 함선 모두 120렙 체크', type: 'level', state: true },
-            { label: '표시된 함선 모두 풀돌 체크', type: 'upgrade', state: true },
+            { label: '표시된 함선 모두 입수', type: 'get', state: true },
+            { label: '표시된 함선 모두 120렙', type: 'level', state: true },
+            { label: '표시된 함선 모두 풀돌', type: 'upgrade', state: true },
         ];
         bulkCheckActions.forEach(action => {
             const btn = document.createElement('button');
@@ -499,7 +510,6 @@ document.addEventListener('DOMContentLoaded', () => {
         applyFilters();
     }
 
-    // New helper functions for the custom search dropdown
     function filterSearchDropdown(input, dropdown) {
         const filter = input.value.toUpperCase();
         const items = dropdown.getElementsByTagName('a');
