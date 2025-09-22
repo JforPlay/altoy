@@ -4,16 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Storyline Timeline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main-storyline.style.css">
 </head>
 <body>
-    <h1>Event Timeline</h1>
-    <div class="timeline-wrapper">
-        <div id="timeline-container">
-            <canvas id="timeline-canvas"></canvas>
+    <div class="main-container">
+        <header class="timeline-header">
+            <button class="nav-button back-button">&#x2190;</button>
+            <h1>MEMORIES</h1>
+            <button class="nav-button home-button">&#x2302;</button>
+        </header>
+
+        <div class="timeline-wrapper">
+            <div id="timeline-container">
+                <canvas id="timeline-canvas"></canvas>
+            </div>
         </div>
+
+        <footer id="chapter-navigation" class="chapter-nav">
+            <!-- Chapters will be dynamically inserted here -->
+        </footer>
     </div>
 
+
+    <!-- Modal for displaying item details -->
     <div id="details-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>

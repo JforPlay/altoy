@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const timelineContainer = document.getElementById('timeline-container');
     const canvas = document.getElementById('timeline-canvas');
     const ctx = canvas.getContext('2d');
+    const chapterNav = document.getElementById('chapter-navigation');
 
     // Modal elements
     const modal = document.getElementById('details-modal');
@@ -12,100 +13,120 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalBgm = document.getElementById('modal-bgm');
     const closeButton = document.querySelector('.close-button');
 
-    // Faction ID to Name mapping
     const factionMap = {
-        2: "Eagle Union",
-        3: "Sakura Empire",
-        4: "Iron Blood",
-        7: "Northern Parliament",
-        10: "Iris Libre"
+        2: "Eagle Union", 3: "Sakura Empire", 4: "Iron Blood", 
+        7: "Northern Parliament", 10: "Iris Libre"
     };
 
-    // Fetch and process data from the 'data' folder
+    let allData = {};
+
     fetch('data/processed_storyline_data.json')
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             return response.json();
         })
         .then(data => {
-            const items = Object.values(data);
-
-            if (items.length === 0) return;
-
-            // Determine grid size
-            const maxCol = Math.max(...items.map(item => item.column)) + 1;
-            const maxRow = Math.max(...items.map(item => item.row)) + 1;
-
-            timelineContainer.style.gridTemplateColumns = `repeat(${maxCol}, 120px)`;
-            timelineContainer.style.gridTemplateRows = `repeat(${maxRow}, auto)`;
-
-            // Create and place items
-            items.forEach(itemData => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'timeline-item';
-                itemElement.style.gridColumn = itemData.column + 1;
-                itemElement.style.gridRow = itemData.row + 1;
-
-                // Store data for the modal
-                itemElement.dataset.id = itemData.id;
-                itemElement.dataset.name = itemData.name;
-                itemElement.dataset.description = itemData.description;
-                itemElement.dataset.summary = itemData.summary || "No summary available.";
-                itemElement.dataset.shipnation = JSON.stringify(itemData.shipnation);
-                itemElement.dataset.bgm = itemData.bgm;
-
-                // Create icon and name elements
-                const icon = document.createElement('div');
-                icon.className = 'item-icon'; // CSS will style this as a white box
-
-                const name = document.createElement('div');
-                name.className = 'item-name';
-                name.textContent = itemData.name;
-
-                itemElement.appendChild(icon);
-                itemElement.appendChild(name);
-
-                timelineContainer.appendChild(itemElement);
-            });
-
-            // Wait for elements to be rendered to draw lines
-            setTimeout(() => drawLines(data), 100);
+            allData = data;
+            renderTimeline(Object.values(allData));
+            setupChapters(Object.values(allData));
         })
         .catch(error => {
             console.error("Failed to load timeline data:", error);
-            timelineContainer.innerHTML = `<p style="color: red;">Error loading data. Please check the file path and JSON format.</p>`;
+            timelineContainer.innerHTML = `<p style="color: red; padding: 20px;">Error loading data. Please check the file path ('data/processed_storyline_data.json') and ensure the JSON format is correct.</p>`;
         });
 
-    function drawLines(data) {
-        // Resize canvas to fit the grid
+    function renderTimeline(items) {
+        timelineContainer.innerHTML = ''; // Clear previous items
+        timelineContainer.appendChild(canvas); // Re-add canvas
+
+        if (items.length === 0) return;
+        
+        const maxCol = Math.max(...items.map(item => item.column)) + 1;
+        const maxRow = Math.max(...items.map(item => item.row)) + 1;
+
+        timelineContainer.style.gridTemplateColumns = `repeat(${maxCol}, 180px)`;
+        timelineContainer.style.gridTemplateRows = `repeat(${maxRow}, auto)`;
+        
+        items.forEach(itemData => {
+            const itemElement = createTimelineItem(itemData);
+            timelineContainer.appendChild(itemElement);
+        });
+
+        // Use requestAnimationFrame for smoother rendering
+        requestAnimationFrame(() => drawLines(items.map(item => item.id)));
+    }
+    
+    function createTimelineItem(itemData) {
+        const itemElement = document.createElement('div');
+        itemElement.className = 'timeline-item';
+        itemElement.style.gridColumn = itemData.column;
+        itemElement.style.gridRow = itemData.row + 1;
+        
+        Object.keys(itemData).forEach(key => {
+             itemElement.dataset[key] = typeof itemData[key] === 'object' ? JSON.stringify(itemData[key]) : itemData[key];
+        });
+
+        const icon = document.createElement('div');
+        icon.className = 'item-icon';
+        
+        const name = document.createElement('div');
+        name.className = 'item-name';
+        name.textContent = itemData.name;
+        
+        itemElement.appendChild(icon);
+        itemElement.appendChild(name);
+        return itemElement;
+    }
+
+    function setupChapters(items) {
+        const chapters = [...new Set(items.map(item => item.chapter))].sort((a, b) => a - b);
+        chapters.unshift('All'); // Add an 'All' button
+
+        chapterNav.innerHTML = ''; // Clear existing buttons
+        chapters.forEach(chapter => {
+            const button = document.createElement('button');
+            button.className = 'chapter-button';
+            button.textContent = chapter === 'All' ? 'All Chapters' : `Chapter ${chapter}`;
+            button.onclick = () => {
+                const filteredItems = chapter === 'All' 
+                    ? Object.values(allData) 
+                    : Object.values(allData).filter(item => item.chapter === chapter);
+                renderTimeline(filteredItems);
+            };
+            chapterNav.appendChild(button);
+        });
+    }
+
+    function drawLines(visibleItemIds) {
+        const containerRect = timelineContainer.getBoundingClientRect();
         canvas.width = timelineContainer.scrollWidth;
-        canvas.height = timelineContainer.scrollHeight;
+        canvas.height = containerRect.height;
+        
+        ctx.strokeStyle = '#9a8c98';
+        ctx.lineWidth = 2;
+        ctx.shadowColor = '#c9ada7';
+        ctx.shadowBlur = 5;
 
-        ctx.strokeStyle = '#95a5a6';
-        ctx.lineWidth = 3;
+        visibleItemIds.forEach(itemId => {
+            const itemData = allData[itemId];
+            if (!itemData || !itemData.link_event || String(itemData.link_event).length === 0) return;
 
-        Object.values(data).forEach(itemData => {
-            if (!itemData.link_event || String(itemData.link_event).length === 0) return;
-
-            const startNode = document.querySelector(`.timeline-item[data-id='${itemData.id}']`);
+            const startNode = document.querySelector(`.timeline-item[data-id='${itemId}']`);
             if (!startNode) return;
 
-            // Use position relative to the container itself
             const startX = startNode.offsetLeft + startNode.offsetWidth / 2;
             const startY = startNode.offsetTop + startNode.offsetHeight / 2;
             
             const linkedEvents = Array.isArray(itemData.link_event) ? itemData.link_event : [itemData.link_event];
 
             linkedEvents.forEach(targetId => {
+                if (!visibleItemIds.includes(targetId)) return; // Only draw lines to visible items
                 const endNode = document.querySelector(`.timeline-item[data-id='${targetId}']`);
                 if (!endNode) return;
 
                 const endX = endNode.offsetLeft + endNode.offsetWidth / 2;
                 const endY = endNode.offsetTop + endNode.offsetHeight / 2;
 
-                // Draw line
                 ctx.beginPath();
                 ctx.moveTo(startX, startY);
                 ctx.lineTo(endX, endY);
@@ -114,17 +135,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Modal logic
+    // Modal Logic
     timelineContainer.addEventListener('click', (event) => {
         const item = event.target.closest('.timeline-item');
         if (!item) return;
 
         const { name, description, summary, shipnation, bgm } = item.dataset;
-
+        
         modalTitle.textContent = name;
         modalDescription.textContent = description;
-        modalSummary.textContent = summary;
-
+        modalSummary.textContent = summary || "No summary available.";
+        
         const nations = JSON.parse(shipnation).map(id => factionMap[id] || `Faction ${id}`).join(', ');
         modalShipNation.textContent = nations;
 
@@ -134,20 +155,25 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             modalBgm.src = "";
         }
-
+        
         modal.style.display = 'block';
     });
-
+    
     const closeModal = () => {
         modal.style.display = 'none';
-        modalBgm.pause();
-        modalBgm.currentTime = 0;
+        if (modalBgm.src) {
+            modalBgm.pause();
+            modalBgm.currentTime = 0;
+        }
     };
 
     closeButton.addEventListener('click', closeModal);
     window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            closeModal();
-        }
+        if (event.target === modal) closeModal();
+    });
+
+    // Redraw lines on window resize to ensure they stay connected
+    window.addEventListener('resize', () => {
+        renderTimeline(Object.values(allData));
     });
 });
