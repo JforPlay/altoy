@@ -21,23 +21,25 @@
             </div>
         </div>
 
-        <footer id="chapter-navigation" class="chapter-nav">
-            <!-- Chapters will be dynamically inserted here -->
+        <footer class="chapter-nav">
+            <div id="progress-bar-container">
+                <div id="progress-bar"></div>
+                <div id="chapter-markers"></div>
+                <div id="timeline-indicator"></div>
+            </div>
         </footer>
     </div>
 
-
-    <!-- Modal for displaying item details -->
     <div id="details-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h2 id="modal-title"></h2>
             <div id="modal-body">
-                <h3>Description</h3>
+                <h3>설명</h3>
                 <p id="modal-description"></p>
-                <h3>Summary</h3>
+                <h3>요약</h3>
                 <p id="modal-summary"></p>
-                <h3>Ship Factions</h3>
+                <h3>소속 진영</h3>
                 <p id="modal-shipnation"></p>
             </div>
             <div class="modal-footer">
