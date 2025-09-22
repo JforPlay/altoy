@@ -303,13 +303,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const bulkCheckContainer = document.createElement('div');
         bulkCheckContainer.className = 'bulk-check-controls';
-        bulkCheckContainer.innerHTML = `<div class="filter-group-label">일괄 체크</div>`;
+        bulkCheckContainer.innerHTML = `<div class="filter-group-label">일괄 체크 --> 주의) 체크를 전부 날리려면 쿠키/사이트 데이터 제거</div>`;
         const bulkCheckWrapper = document.createElement('div');
         bulkCheckWrapper.className = 'filter-controls-wrapper';
         const bulkCheckActions = [
-            { label: '표시된 함순이 모두 입수체크', type: 'get', state: true },
-            { label: '표시된 함순이 모두 120렙체크', type: 'level', state: true },
-            { label: '표시된 함순이 모두 풀돌체크', type: 'upgrade', state: true },
+            { label: '목록에 보이는 함순이 모두 입수 체크', type: 'get', state: true },
+            { label: '목록에 보이는 함순이 모두 120렙 체크', type: 'level', state: true },
+            { label: '목록에 보이는 함순이 모두 풀돌 체크', type: 'upgrade', state: true },
         ];
         bulkCheckActions.forEach(action => {
             const btn = document.createElement('button');
