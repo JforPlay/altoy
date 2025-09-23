@@ -76,15 +76,6 @@ body {
   transition: box-shadow 0.3s ease-in-out;
 }
 
-/* ADD THIS NEW CLASS for the stuck state */
-.viewer-header-stuck {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  box-shadow: 0 4px 8px var(--shadow-color);
-}
-
 .header-title {
   font-size: 1.5rem;
   font-weight: 700;
@@ -225,7 +216,6 @@ body {
   padding: 1rem;
   display: flex;
   align-items: center;
-  /* color: white; <-- This is handled by a later rule, so it can be removed for clarity */
   justify-content: space-between;
   border-bottom: 1px solid var(--border-color);
   background-color: var(--bg-color); /* Use the solid background theme color */
@@ -233,10 +223,6 @@ body {
   z-index: 10;
 }
 
-.story-header .back-button {
-  color: white;
-  background-color: rgba(0, 0, 0, 0.3);
-}
 #story-title {
   margin-left: 1rem;
   font-size: 1.5rem;
@@ -257,8 +243,8 @@ body {
   align-items: center;
   z-index: 10;
   margin-top: auto;
-  margin-left: auto;   /* Add this */
-  margin-right: auto;  /* Add this */
+  margin-left: auto;
+  margin-right: auto;
 }
 .info-screen {
   position: absolute;
@@ -310,9 +296,6 @@ body {
 .dialogue-text {
   font-size: 1.1rem;
 }
-.dialogue-box {
-  margin-top: auto; /* This pushes the dialogue box to the bottom */
-}
 .next-page-indicator {
   position: absolute;
   bottom: 1rem;
@@ -336,8 +319,8 @@ body {
   margin-bottom: 2rem;
   width: 90%;
   max-width: 600px;
-  margin-left: auto;   /* Add this */
-  margin-right: auto;  /* Add this */
+  margin-left: auto;
+  margin-right: auto;
 }
 .option-button {
   background-color: var(--card-bg);
@@ -472,16 +455,6 @@ body {
   gap: 0.5em;
 }
 @media (max-width: 600px) {
-  .nav-logo {
-    font-size: 1.2rem;
-  }
-  .nav-item {
-    margin-left: 0.5rem;
-  }
-  .nav-links {
-    font-size: 0.9rem;
-    padding: 0.5rem;
-  }
   .story-header {
     flex-wrap: wrap;
     justify-content: center;

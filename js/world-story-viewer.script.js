@@ -357,12 +357,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         renderScriptLine();
     }
-
+    
+    /** Making sure that the actor name handling is done properly **/
     function getActorInfo(line) {
-        let actorInfo = { id: null, name: '', icon: null };
+        let actorInfo = { id: null, name: 'Narrator', icon: null };
         let iconId = null;
-        if (typeof line.actor === 'number') iconId = line.actor;
-        else if (typeof line.actor === 'string') iconId = shipgirlNameMap[line.actor] || null;
+
+        if (typeof line.actor === 'number') {
+            iconId = line.actor;
+        } else if (typeof line.actor === 'string') {
+            iconId = shipgirlNameMap[line.actor] || null;
+        }
+
         if (iconId !== null) {
             const character = shipgirlData[iconId];
             if (character) {
@@ -371,17 +377,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 actorInfo.name = character.name;
             }
         }
-        if (line.actorName) actorInfo.name = line.actorName;
+
+        // Explicit actorName from data overrides everything else
+        if (line.actorName) {
+            actorInfo.name = line.actorName;
+        }
+
+        // Special handling for dialogue lines with no actor specified
         if (line.say && !line.actor && !line.actorName) {
-            const isNarrator = (line.say.includes('·') && line.say.length < 40) || line.say.includes('————');
-            actorInfo.name = isNarrator ? '' : '지휘관';
-            actorInfo.id = 0;
+            const isNarratorLine = (line.say.includes('·') && line.say.length < 40) || line.say.includes('————');
+            if (isNarratorLine) {
+                actorInfo.name = 'Narrator';
+                actorInfo.id = -1; // Special ID for narrator
+            } else {
+                actorInfo.name = '지휘관'; // Commander
+                actorInfo.id = 0; // Special ID for commander
+            }
             actorInfo.icon = null;
         }
-        if (!actorInfo.name && typeof line.actor === 'string') actorInfo.name = line.actor;
-        if (['통신기', '분석기', '모두들'].includes(actorInfo.name) || actorInfo.name?.includes('?')) actorInfo.icon = null;
+
+        // Fallback for when actor is a string but not found in shipgirl map
+        if (!actorInfo.name && typeof line.actor === 'string') {
+            actorInfo.name = line.actor;
+        }
+
+        // Final check to remove icon for specific non-character speakers
+        if (['통신기', '분석기', '모두들'].includes(actorInfo.name) || actorInfo.name?.includes('?')) {
+            actorInfo.icon = null;
+        }
+
         return actorInfo;
     }
+
 
     function updateBackground() {
         const backgroundElement = viewerContainer.querySelector('.story-background');
@@ -420,7 +447,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nextIndex !== -1) { scriptIndex = nextIndex; renderScriptLine(); }
         else { advanceStory(); }
     }
-
+    
+    /** UPDATED FUNCTION **/
     function renderScriptLine() {
         if (scriptIndex >= currentStoryScript.length) return;
         const line = currentStoryScript[scriptIndex];
@@ -433,7 +461,6 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (line.bgm) { handleBgm(line.bgm); }
         const infoText = line.sequence?.[0]?.[0] || line.signDate?.[0];
 
-        const isDisplayable = isLineDisplayable(line);
         const hasOptions = line.options && line.options.length > 0;
         const isAtEnd = scriptIndex >= currentStoryScript.length - 1;
 
@@ -443,14 +470,23 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (line.say) {
             dialogueBox.classList.remove('hidden');
             const actorInfo = getActorInfo(line);
+            
+            // If subActors are present, create a combined name string
             let displayedName = actorInfo.name;
             if (line.subActors) {
                 const subActorNames = line.subActors.map(sub => getActorInfo({ actor: sub.actor }).name);
                 displayedName = subActorNames.join(' & ');
             }
+
+            // For the main dialogue box, Narrator name should be hidden
+            if (displayedName === 'Narrator') {
+                displayedName = '';
+            }
+
             actorName.textContent = displayedName;
             dialogueBox.classList.toggle('no-actor', !displayedName);
             dialogueText.textContent = line.say.replace(/<.*?>/g, '');
+
             if (actorInfo.id !== lastActorId) {
                 actorPortrait.innerHTML = '';
                 actorPortrait.classList.toggle('actor-shadow', !!line.actorShadow);
@@ -471,8 +507,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         prevLineBtn.disabled = (scriptIndex <= 0);
-        
-        // This is the primary fix: the button should only be hidden for options or at the very end
         nextLineBtn.classList.toggle('hidden', hasOptions || isAtEnd);
         
         if (!isAtEnd && !hasOptions) nextLineBtn.textContent = '다음 →';
@@ -507,17 +541,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /** UPDATED FUNCTION **/
     function showFullScript() {
         if (!currentStoryScript || currentStoryScript.length === 0) return;
         const scriptHtml = currentStoryScript
             .filter(line => line.say && line.say.trim() !== "")
             .map(line => {
                 const actorInfo = getActorInfo(line);
-                let actorNameText = actorInfo.name || 'Narrator';
-                if (line.say && !line.actor && !line.actorName) {
-                    const isNarrator = (line.say.includes('·') && line.say.length < 40) || line.say.includes('————');
-                    actorNameText = isNarrator ? 'Narrator' : '지휘관';
-                }
+                const actorNameText = actorInfo.name; // This is now the single source of truth
                 const dialogue = line.say.replace(/<.*?>/g, '');
                 return `<p><strong>${actorNameText}:</strong> ${dialogue}</p>`;
             })
