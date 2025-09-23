@@ -153,3 +153,14 @@ main {
     to {opacity: 1;}
 }
 
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999; /* Ensures it stays on top of other content */
+    text-align: center;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 2px solid #ddd;
+}
