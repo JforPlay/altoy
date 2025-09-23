@@ -359,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (bgm && bgm.trim() !== "") {
             modalBgm.src = `https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/${bgm}.ogg`;
-            modalBgm.volume = 0.2;
+            modalBgm.volume = 0.01;
             modalBgm.play().catch(e => console.error("Audio playback error:", e));
         } else {
             modalBgm.src = "";

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>벽람 스토리뷰어</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Noto+Sans+KR:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/world-story-viewer.style.css">
+    <link rel="stylesheet" href="css/nav.style.css">
+</head>
+
+<body>
+    <div id="navbar-placeholder"></div>
+    <div id="error-container" class="error-container hidden"></div>
+
+    <div id="event-selection-view">
+        <header class="viewer-header">
+            <a href="main-storyline.html" class="nav-button">스토리 타임라인</a>
+            <h1 class="header-title">벽람항로 메인스토리 뷰어</h1>
+            <div class="search-container">
+                <input type="text" id="search-bar" placeholder="이벤트 이름으로 검색...">
+            </div>
+            <button class="nav-button theme-toggle">
+                <span class="theme-icon-sun">☀️</span>
+                <span class="theme-icon-moon hidden">🌙</span>
+            </button>
+        </header>
+        <main id="event-grid" class="story-grid-container"></main>
+    </div>
+
+    <div id="memory-selection-view" class="hidden">
+        <header class="viewer-header">
+            <a id="back-to-event-selection" href="#" class="nav-button">&#x2190; 메인스토리로 돌아가기</a>
+            <h1 id="memory-view-title" class="header-title"></h1>
+            <button class="nav-button theme-toggle">
+                <span class="theme-icon-sun">☀️</span>
+                <span class="theme-icon-moon hidden">🌙</span>
+            </button>
+        </header>
+        <main id="memory-grid" class="story-grid-container"></main>
+    </div>
+
+    <div id="story-viewer-view" class="hidden">
+        <div id="viewer-container" class="viewer-container">
+            <div class="story-background"></div>
+            <header id="story-header" class="story-header">
+                <a id="back-to-memory-selection" href="#" class="nav-button back-button">&#x2190;</a>
+                <h2 id="story-title"></h2>
+                <button id="view-script-btn" class="nav-button" title="View Full Script">
+                    <span class="material-icons">menu_book</span>
+                    전체 대사보기
+                </button>
+            </header>
+
+            <div id="script-modal-overlay" class="modal-overlay hidden">
+                <div class="modal-content">
+                    <button id="close-modal-btn" class="close-modal-btn" title="Close">
+                        <span class="material-icons">close</span>
+                    </button>
+                    <div id="full-script-content" class="full-script-content">
+                    </div>
+                </div>
+            </div>
+            <div id="info-screen" class="info-screen hidden">
+                <p id="info-screen-text"></p>
+            </div>
+            <div id="dialogue-box" class="dialogue-box">
+                <div id="actor-portrait" class="actor-portrait"></div>
+                <div class="dialogue-content">
+                    <p id="actor-name" class="actor-name"></p>
+                    <p id="dialogue-text" class="dialogue-text"></p>
+                </div>
+                <div id="next-page-indicator" class="next-page-indicator">▼</div>
+            </div>
+            <div id="options-box" class="options-box"></div>
+            
+            <!-- New Bottom Bar Container -->
+            <div class="bottom-bar-container">
+                <div id="audio-player-container" class="audio-player-container hidden">
+                    <button id="play-pause-btn" class="audio-btn">
+                        <span class="material-icons">play_arrow</span>
+                    </button>
+                    <div class="volume-control">
+                        <button id="mute-btn" class="audio-btn">
+                            <span class="material-icons">volume_up</span>
+                        </button>
+                        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.1">
+                    </div>
+                </div>
+
+                <div class="story-nav-arrows">
+                    <button id="prev-line-btn" class="story-nav-btn">&#x2190; 이전</button>
+                    <button id="next-line-btn" class="story-nav-btn">다음 →</button>
+                    <button id="next-story-btn" class="story-nav-btn hidden">다음 스토리 보기 →</button>
+                    <button id="return-btn" class="story-nav-btn hidden">돌아가기</button>
+                </div>
+                
+                <!-- This spacer ensures the nav buttons stay centered -->
+                <div class="bottom-bar-spacer"></div>
+            </div>
+        </div>
+
+        <script src="js/world-story-viewer.script.js" defer></script>
+        <script src="js/nav.script.js"></script>
+</body>
+
+</html>
