@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const BASE_URL = "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/";
     const BGM_URL_PREFIX = "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/";
+    // const SFX_URL_PREFIX = "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/";
 
     // =========================================================================
     // DOM ELEMENTS
@@ -48,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fullScriptContent = document.getElementById('full-script-content');
     const infoScreen = document.getElementById('info-screen');
     const infoScreenText = document.getElementById('info-screen-text');
+    const fadeOverlay = document.getElementById('fade-overlay');
 
     // Audio Player Elements
     const audioPlayerContainer = document.getElementById('audio-player-container');
@@ -56,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const volumeSlider = document.getElementById('volume-slider');
     const audio = new Audio();
     audio.loop = true;
-    audio.volume = 0.1;
+    audio.volume = 0.01;
 
     // =========================================================================
     // CORE LOGIC
@@ -88,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             view.classList.toggle('hidden', view !== viewToShow);
         });
         if (viewToShow !== storyViewerView) {
+            window.scrollTo(0, 0);
             audio.pause();
             if (audioPlayerContainer) audioPlayerContainer.classList.add('hidden');
         }
@@ -162,17 +165,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /** Creates a generic card element for the grids. */
-    function createCard(title, subtitle, icon, pathPrefix, onClick) {
+    function createCard(title, subtitle, icon, pathPrefix, onClick, id = null) {
         const card = document.createElement('div');
         card.className = 'grid-card';
-        const imageUrl = icon.startsWith('http') ? icon : `${pathPrefix}${icon}.png`;
+        if (id) {
+            card.dataset.id = id; // Add a data-id attribute
+        }
+
+        let imageUrl = '';
+        if (icon) {
+            imageUrl = icon.startsWith('http') ? icon : `${pathPrefix}${icon}.png`;
+        }
+
         card.innerHTML = `
-            <div class="card-thumbnail" style="background-image: url('${imageUrl}')"></div>
-            <div class="card-content">
-                <h3 class="card-title">${title}</h3>
-                <p class="card-subtitle">${subtitle}</p>
-            </div>
-        `;
+        <div class="card-thumbnail" style="background-image: url('${imageUrl}')"></div>
+        <div class="card-content">
+            <h3 class="card-title">${title}</h3>
+            <p class="card-subtitle">${subtitle}</p>
+        </div>
+    `;
         card.addEventListener('click', onClick);
         return card;
     }
@@ -191,7 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     memory.condition,
                     memory.icon,
                     `${BASE_URL}memoryicon/`,
-                    () => startStory(memory)
+                    () => startStory(memory),
+                    memory.id
                 );
                 memoryGrid.appendChild(card);
             });
@@ -211,7 +223,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams();
         urlParams.set('eventid', currentEventId);
         window.history.pushState({ eventId: currentEventId }, '', `?${urlParams.toString()}`);
+
         switchView(memorySelectionView);
+
+        // Remove any previously highlighted card
+        const previouslyHighlighted = memoryGrid.querySelector('.highlighted-card');
+        if (previouslyHighlighted) {
+            previouslyHighlighted.classList.remove('highlighted-card');
+        }
+
+        // If a "next memory" was identified, find its card and highlight it
+        if (nextMemory && nextMemory.id) {
+            const nextCard = memoryGrid.querySelector(`.grid-card[data-id='${nextMemory.id}']`);
+            if (nextCard) {
+                nextCard.classList.add('highlighted-card');
+                // Scroll the new card into the middle of the screen
+                nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
     }
 
     // =========================================================================
@@ -224,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showError("This story is not available.");
             return;
         }
+        fadeOverlay.classList.remove('visible');
         currentStoryScript = memory.story.scripts;
         currentMemoryId = memory.id;
         scriptIndex = 0;
@@ -285,7 +315,16 @@ document.addEventListener('DOMContentLoaded', () => {
             infoScreenText.textContent = infoText;
         } else if (line.say) {
             dialogueBox.classList.remove('hidden');
-            dialogueText.textContent = line.say.replace(/<.*?>/g, '');
+            // --- START of CHANGE ---
+            // Convert color tags (e.g., <color=#ff0000>...</color>) into styled <span> elements
+            const formattedDialogue = line.say.replace(
+                /<color=(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})>(.*?)<\/color>/gi,
+                '<span style="color: $1;">$2</span>'
+            );
+            // Use innerHTML to render the styled text, stripping any other potential tags
+            dialogueText.innerHTML = formattedDialogue.replace(/<\/?[^>]+(>|$)/g, (match) => {
+                return (match.startsWith('<span') || match.startsWith('</span')) ? match : '';
+            });
             const actorInfo = getActorInfo(line);
             if (actorInfo.id !== lastActorId) {
                 actorName.textContent = actorInfo.name;
@@ -303,28 +342,60 @@ document.addEventListener('DOMContentLoaded', () => {
         nextStoryBtn.classList.toggle('hidden', !(isAtEnd && nextMemory));
         nextPageIndicator.classList.toggle('hidden', isAtEnd);
     }
-    
+
     // =========================================================================
     // HELPER FUNCTIONS
     // =========================================================================
 
     /** Retrieves actor information based on the script line. */
     function getActorInfo(line) {
-        let actorId = null;
-        if (typeof line.actor === 'number') actorId = line.actor;
-        else if (typeof line.actor === 'string') actorId = shipgirlNameMap[line.actor] || null;
-        else if (line.actorName && !isNaN(parseInt(line.actorName, 10))) actorId = parseInt(line.actorName, 10);
+        // Handle the Commander as a special case first
+        if (line.actor === 0 || line.portrait === 'zhihuiguan') {
+            return { id: 0, name: '지휘관', icon: null };
+        }
 
-        if (actorId === 0 || line.portrait === 'zhihuiguan') return { id: 0, name: '지휘관', icon: null };
-        const character = shipgirlData[actorId];
-        if (character) return { id: actorId, name: character.name, icon: character.icon };
-        if (line.actorName && isNaN(parseInt(line.actorName, 10))) return { id: line.actorName, name: line.actorName, icon: null };
-        return { id: 'unknown', name: '', icon: null };
+        // Determine the initial actor ID from the 'actor' field
+        let actorId = null;
+        if (typeof line.actor === 'number') {
+            actorId = line.actor;
+        } else if (typeof line.actor === 'string') {
+            actorId = shipgirlNameMap[line.actor] || null;
+        }
+
+        const initialCharacter = shipgirlData[actorId];
+
+        // Set default values based on the initial character
+        let displayName = initialCharacter ? initialCharacter.name : '';
+        let displayIcon = initialCharacter ? initialCharacter.icon : null;
+        let displayId = initialCharacter ? actorId : 'unknown';
+
+        // Check if 'actorName' exists to override name and/or icon
+        if (line.actorName) {
+            const actorNameId = parseInt(line.actorName, 10);
+
+            // Check if actorName is a valid ID for a known shipgirl
+            if (!isNaN(actorNameId) && shipgirlData[actorNameId]) {
+                const overrideCharacter = shipgirlData[actorNameId];
+                // If yes, override BOTH the name and the icon
+                displayName = overrideCharacter.name;
+                displayIcon = overrideCharacter.icon;
+            } else {
+                // Otherwise, use it as a literal string name and keep the initial icon
+                displayName = line.actorName;
+            }
+
+            if (displayId === 'unknown') {
+                displayId = line.actorName;
+            }
+        }
+
+        return { id: displayId, name: displayName, icon: displayIcon };
     }
+
 
     /** Updates the story background based on the current script position. */
     function updateBackground() {
-        const backgroundElement = viewerContainer.querySelector('.story-background');
+        const backgroundElement = storyViewerView.querySelector('.story-background');
         let backgroundImageUrl = null;
         let isBlackBackground = false;
 
@@ -349,15 +420,36 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleEffect(effects) {
         if (!effects) return;
         effects.forEach(effect => {
-            if (effect.type === "shake") {
-                viewerContainer.classList.add('shake');
-                setTimeout(() => viewerContainer.classList.remove('shake'), effect.duration * 1000 || 500);
-            }
-            if (effect.type === "flash") {
-                const flashEl = document.createElement('div');
-                flashEl.className = 'flash';
-                document.body.appendChild(flashEl);
-                setTimeout(() => document.body.removeChild(flashEl), 300);
+            // Use a default duration of 0.5 seconds if none is provided
+            const duration = (effect.duration || 0.5) * 1000;
+
+            switch (effect.type) {
+                case "shake":
+                    viewerContainer.classList.add('shake');
+                    setTimeout(() => viewerContainer.classList.remove('shake'), duration);
+                    break;
+                case "flash":
+                    const flashEl = document.createElement('div');
+                    flashEl.className = 'flash';
+                    document.body.appendChild(flashEl);
+                    setTimeout(() => document.body.removeChild(flashEl), 300); // Flash is usually brief
+                    break;
+                case "fadeout":
+                    fadeOverlay.style.transitionDuration = `${duration / 1000}s`;
+                    fadeOverlay.classList.add('visible');
+                    break;
+                case "fadein":
+                    fadeOverlay.style.transitionDuration = `${duration / 1000}s`;
+                    fadeOverlay.classList.remove('visible');
+                    break;
+                case "se": // Sound Effect
+                    if (effect.audio) {
+                        const sfx = new Audio(`${SFX_URL_PREFIX}${effect.audio}.ogg`);
+                        // Use the same volume as the BGM for consistency
+                        sfx.volume = audio.volume;
+                        sfx.play().catch(e => console.warn("SFX playback failed.", e));
+                    }
+                    break;
             }
         });
     }
@@ -388,7 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateAudioPlayerUI();
     }
-    
+
     // =========================================================================
     // MODAL LOGIC
     // =========================================================================
@@ -419,7 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // EVENT LISTENERS
     // =========================================================================
     searchBar?.addEventListener('input', (e) => populateEventGrid(e.target.value));
-    
+
     storyViewerView?.addEventListener('click', (e) => {
         if (e.target.closest('.option-button, .nav-button, .story-nav-btn, .audio-player-container')) return;
         if (scriptIndex < currentStoryScript.length - 1) {
@@ -433,7 +525,7 @@ document.addEventListener('DOMContentLoaded', () => {
     returnBtn.addEventListener('click', (e) => { e.stopPropagation(); returnToMemorySelection(); });
     backToEventBtn.addEventListener('click', (e) => { e.preventDefault(); switchView(eventSelectionView); window.history.pushState({}, '', 'main-story-viewer.html'); });
     backToMemoryBtn.addEventListener('click', (e) => { e.preventDefault(); returnToMemorySelection(); });
-    
+
     // Modal Listeners
     viewScriptBtn.addEventListener('click', showFullScript);
     closeModalBtn.addEventListener('click', hideFullScript);

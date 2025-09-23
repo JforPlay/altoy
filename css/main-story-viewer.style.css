@@ -140,11 +140,34 @@ body {
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  position: relative; /* <-- Add this line */
 }
 
 .grid-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px var(--shadow-color);
+}
+
+.grid-card.highlighted-card {
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 6px 25px color-mix(in srgb, var(--accent-color) 50%, transparent);
+  transform: translateY(-5px) scale(1.02);
+}
+
+.grid-card.highlighted-card::after {
+  content: '다음 회차보기';
+  position: absolute;
+  top: 1rem;
+  right: -2.2rem;
+  background-color: var(--accent-color);
+  color: #ffffff;
+  padding: 0.2rem 2.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+  transform: rotate(45deg);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
 }
 
 .card-thumbnail {
@@ -171,41 +194,63 @@ body {
 }
 
 /* --- Story Viewer Styles --- */
-.viewer-container {
+/* This is now the main fixed container for the entire view */
+#story-viewer-view {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  padding-top: var(--navbar-height, 56px); /* Space for main navbar */
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
-.story-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  z-index: -1;
-  transition: background-image 0.5s ease-in-out;
+/* This container now uses Flexbox to manage its direct children */
+.viewer-container {
+    position: absolute;
+    top: var(--navbar-height, 56px);
+    left: 0;
+    width: 100%;
+    height: calc(100% - var(--navbar-height, 56px));
+    display: flex;
+    flex-direction: column;
 }
 
+/* The header is now a simple flex item that takes its natural height */
 .story-header {
-  position: absolute;
-  top: var(--navbar-height, 56px); /* Position below main navbar */
-  left: 0;
-  width: 100%;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  z-index: 10;
-  justify-content: space-between;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+    flex-shrink: 0; /* Prevents the header from shrinking */
+    position: relative; /* Changed from absolute */
+}
+
+/* New wrapper for the main content area */
+.story-main-content {
+    position: relative; /* Establishes a positioning context for the background */
+    flex-grow: 1; /* Makes this div fill all remaining vertical space */
+    height: 100%; /* Ensures children with height: 100% work correctly */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* The background now fills its parent (story-main-content) */
+.story-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover; /* Fills the area, cropping is OK */
+    background-position: center;
+    z-index: -1;
+    transition: background-image 0.5s ease-in-out;
 }
 
 #story-title {
@@ -375,6 +420,25 @@ body {
 @keyframes flash-anim {
   from { opacity: 1; }
   to { opacity: 0; }
+}
+
+/* Screen fade effect overlay */
+.fade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  z-index: 9998; /* High z-index, but below flash */
+  opacity: 0;
+  pointer-events: none; /* Allows clicks when invisible */
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-overlay.visible {
+  opacity: 1;
+  pointer-events: auto; /* Blocks clicks when visible */
 }
 
 /* --- Script Modal Styles --- */
