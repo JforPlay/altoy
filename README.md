@@ -1,4 +1,4 @@
-# Azur Lane KR Toy (altoy)
+# Azur Lane KR Toy (ALtoy)
 - This repo is the source to build the github pages to view story/skin text in kr.
 - https://jforplay.github.io/toy_under_construction/
 
