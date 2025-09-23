@@ -219,6 +219,19 @@ body {
   text-align: center;
 }
 
+#story-viewer-view {
+    /* These properties control the background image display */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    
+    /* This adds a smooth fade when the background changes */
+    transition: background-image 0.4s ease-in-out;
+    
+    /* Ensure the viewer takes at least the full screen height */
+    min-height: 100vh;
+}
+
 .dialogue-box {
   background-color: var(--dialogue-bg);
   backdrop-filter: blur(5px);
@@ -565,4 +578,75 @@ body.dark-mode .story-header #view-script-btn {
 body.dark-mode .story-header .back-button:hover,
 body.dark-mode .story-header #view-script-btn:hover {
     background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* --- Memory Selection Grid Styles (Add these new rules) --- */
+
+/* This creates a responsive grid for the memory cards */
+#memory-grid {
+  display: grid;
+  /* Adjust minmax to change the size of the cards */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* This styles the individual memory card */
+.memory-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px var(--shadow-color);
+  overflow: hidden; /* Very important for keeping the image contained */
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.memory-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px var(--shadow-color);
+}
+
+/* This controls the memory icon image size and fit */
+.memory-icon {
+  width: 100%;
+  height: 220px; /* Gives a consistent height to the image area */
+  object-fit: cover; /* Ensures the image covers the area without stretching */
+  border-bottom: 1px solid var(--border-color);
+  background-color: #e0e0e0; /* A light grey background for missing images */
+}
+
+/* This styles the text container below the image */
+.memory-title-container {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Ensures the container fills the card */
+  justify-content: space-between;
+}
+
+.memory-title {
+  font-weight: 700;
+  font-size: 1.1em;
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.memory-condition {
+  font-size: 0.9em;
+  color: var(--subtitle-color);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Also, ensure the header title is styled correctly */
+#memory-selection-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--text-color);
+    text-align: center;
+    padding: 20px 0;
 }

@@ -114,6 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const icon = document.createElement('div');
         icon.className = 'item-icon';
+        if (itemData.icon) {
+            icon.style.backgroundImage = `url('img/memorystoryline/${itemData.icon}.png')`;
+            icon.style.backgroundSize = 'cover';
+            icon.style.backgroundPosition = 'center';
+            icon.style.backgroundColor = 'transparent'; // Remove placeholder color if image exists
+        }
         const name = document.createElement('div');
         name.className = 'item-name';
         name.textContent = itemData.name;
@@ -129,6 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const timelineScrollWidth = timelineContainer.scrollWidth;
         if (timelineScrollWidth <= 0) return;
+
+        items.sort((a, b) => a.id - b.id);
 
         const chaptersData = [];
         const uniqueChapters = [...new Set(items.map(item => item.chapter))].sort((a, b) => a - b);
@@ -160,10 +168,12 @@ document.addEventListener('DOMContentLoaded', () => {
             marker.style.left = `${percentage}%`;
 
             marker.onclick = () => {
-                const remSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-                const offset = 3.125 * remSize;
+                // Calculate the precise scroll position that will align the indicator with this marker.
+                const scrollableWidth = timelineWrapper.scrollWidth - timelineWrapper.clientWidth;
+                const targetScrollLeft = (data.offsetLeft / timelineScrollWidth) * scrollableWidth;
+
                 timelineWrapper.scrollTo({
-                    left: data.offsetLeft - offset,
+                    left: targetScrollLeft,
                     behavior: 'smooth'
                 });
             };
@@ -284,10 +294,10 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = timelineContainer.scrollWidth;
         canvas.height = timelineContainer.scrollHeight;
 
-        ctx.strokeStyle = '#a3b1c6';
-        ctx.lineWidth = 2;
-        ctx.shadowColor = 'rgba(163, 177, 198, 0.7)';
-        ctx.shadowBlur = 5;
+        ctx.strokeStyle = '#5c677d';       // Darker line color
+        ctx.lineWidth = 3;                 // Thicker line
+        ctx.shadowColor = 'rgba(92, 103, 125, 0.7)'; // Darker shadow
+        ctx.shadowBlur = 7;                // More pronounced glow
 
         visibleItemIds.forEach(itemId => {
             const itemData = allData[itemId];
