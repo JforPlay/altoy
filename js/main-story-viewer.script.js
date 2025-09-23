@@ -12,10 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastActorId = null;
     let nextMemory = null;
     let currentBgm = null;
+    let currentStoryDefaultBgUrl = null
 
     const BASE_URL = "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/";
     const BGM_URL_PREFIX = "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/";
-    // const SFX_URL_PREFIX = "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/";
 
     // =========================================================================
     // DOM ELEMENTS
@@ -50,6 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const infoScreen = document.getElementById('info-screen');
     const infoScreenText = document.getElementById('info-screen-text');
     const fadeOverlay = document.getElementById('fade-overlay');
+
+    // warning for bgm
+    const softPopup = document.getElementById('soft-popup');
+    let popupTimeout; // To manage the popup's lifecycle
 
     // Audio Player Elements
     const audioPlayerContainer = document.getElementById('audio-player-container');
@@ -216,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         switchView(memorySelectionView);
+        showSoftPopup("스토리 재생시 브금자동재생에 주의하세요.");
     }
 
     /** Returns from the story viewer to the memory selection grid. */
@@ -254,6 +259,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         fadeOverlay.classList.remove('visible');
+        // Construct the full URL for the default background from the 'mask' property
+        if (memory.mask) {
+            currentStoryDefaultBgUrl = `${BASE_URL}${memory.mask}.png`;
+        } else {
+            currentStoryDefaultBgUrl = null;
+        }
         currentStoryScript = memory.story.scripts;
         currentMemoryId = memory.id;
         scriptIndex = 0;
@@ -263,6 +274,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const event = storylineData[currentEventId];
         const index = event.memory_id.findIndex(mem => mem.id == memory.id);
         nextMemory = (index >= 0 && index < event.memory_id.length - 1) ? event.memory_id[index + 1] : null;
+
+        // --- START: Lightweight Image Preloader ---
+        const imagesToPreload = new Set(); // Using a Set prevents duplicate downloads
+        if (currentStoryDefaultBgUrl) {
+            imagesToPreload.add(currentStoryDefaultBgUrl);
+        }
+        // Find the first background defined in the script to preload it too
+        const firstBgLine = currentStoryScript.find(line => line.bgName);
+        if (firstBgLine) {
+            imagesToPreload.add(`${BASE_URL}bg/${firstBgLine.bgName}.png`);
+        }
+        // Start downloading the images in the background
+        imagesToPreload.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+        // --- END: Lightweight Image Preloader ---
 
         const eventName = storylineData[currentEventId]?.name || 'Event';
         storyTitle.textContent = `${eventName} - ${memory.title || 'Chapter'}`;
@@ -398,15 +426,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const backgroundElement = storyViewerView.querySelector('.story-background');
         let backgroundImageUrl = null;
         let isBlackBackground = false;
+        let bgFoundInScript = false;
 
+        // Loop backwards from the current line to find the most recent background directive
         for (let i = scriptIndex; i >= 0; i--) {
             const line = currentStoryScript[i];
             if (line) {
-                if (line.blackBg === true) { isBlackBackground = true; break; }
-                if (line.bgName) { backgroundImageUrl = `url('${BASE_URL}bg/${line.bgName}.png')`; break; }
+                if (line.blackBg === true) {
+                    isBlackBackground = true;
+                    bgFoundInScript = true;
+                    break;
+                }
+                if (line.bgName) {
+                    backgroundImageUrl = `url('${BASE_URL}bg/${line.bgName}.png')`;
+                    bgFoundInScript = true;
+                    break;
+                }
             }
         }
 
+        // If no background was found in the script, use the story's default background URL
+        if (!bgFoundInScript && currentStoryDefaultBgUrl) {
+            backgroundImageUrl = `url('${currentStoryDefaultBgUrl}')`;
+        }
+
+        // Apply the determined background
         if (isBlackBackground) {
             backgroundElement.style.backgroundColor = 'black';
             backgroundElement.style.backgroundImage = 'none';
@@ -414,6 +458,28 @@ document.addEventListener('DOMContentLoaded', () => {
             backgroundElement.style.backgroundColor = 'transparent';
             backgroundElement.style.backgroundImage = backgroundImageUrl || 'none';
         }
+    }
+
+    /** Displays and automatically hides the soft popup notification. */
+    function showSoftPopup(message, duration = 3000) {
+        if (!softPopup) return;
+
+        clearTimeout(popupTimeout); // Prevent overlapping popups
+        softPopup.textContent = message;
+        softPopup.classList.remove('hidden');
+
+        // A tiny delay ensures the CSS transition plays correctly
+        setTimeout(() => {
+            softPopup.classList.add('show');
+        }, 10);
+
+        // Set a timer to automatically fade out and hide the popup
+        popupTimeout = setTimeout(() => {
+            softPopup.classList.remove('show');
+            setTimeout(() => {
+                softPopup.classList.add('hidden');
+            }, 500); // This duration should match the CSS transition time
+        }, duration);
     }
 
     /** Handles special effects like screen shakes and flashes. */
@@ -444,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 case "se": // Sound Effect
                     if (effect.audio) {
-                        const sfx = new Audio(`${SFX_URL_PREFIX}${effect.audio}.ogg`);
+                        const sfx = new Audio(`${BGM_URL_PREFIX}${effect.audio}.ogg`);
                         // Use the same volume as the BGM for consistency
                         sfx.volume = audio.volume;
                         sfx.play().catch(e => console.warn("SFX playback failed.", e));

@@ -247,10 +247,12 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-size: cover; /* Fills the area, cropping is OK */
+    background-size: cover;
     background-position: center;
     z-index: -1;
-    transition: background-image 0.5s ease-in-out;
+    /* Replace 'filter' with 'opacity' for a faint, washed-out effect */
+    transition: background-image 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    opacity: 0.8; /* Makes the image 60% transparent. Adjust as needed. */
 }
 
 #story-title {
@@ -630,6 +632,30 @@ body:not(.dark-mode) .story-header #view-script-btn:hover {
 .bottom-bar-container .bottom-bar-spacer {
   grid-column: 3 / 4;
 }
+
+/* --- Soft Popup Styles --- */
+.soft-popup {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px); /* Start slightly lower for a subtle lift effect */
+  background-color: rgba(28, 28, 28, 0.9);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px; /* Pill shape */
+  z-index: 2000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  pointer-events: none; /* Prevents it from blocking mouse clicks */
+}
+
+.soft-popup.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 600px) {
