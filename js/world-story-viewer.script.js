@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const summaryData = storylineSummaryData[eventId];
             const summaryCard = createCard(
                 `${summaryData.title} 줄거리`,
-                "이 챕터의 전체적인 줄거리와 핵심 정보를 확인합니다.",
+                "하나즈키가 작성한 이 챕터의 전체적인 줄거리와 핵심 정보를 확인합니다.",
                 'assets/hanazuki.png',
                 null,
                 () => showSummaryModal(eventId)
