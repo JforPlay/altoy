@@ -185,9 +185,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function createCard(title, subtitle, icon, pathPrefix, onClick) {
+    /** MODIFIED FUNCTION **/
+    function createCard(title, subtitle, icon, pathPrefix, onClick, id = null) {
         const card = document.createElement('div');
         card.className = 'grid-card';
+        if (id) {
+            card.dataset.id = id; // Add data-id for querying
+        }
         let thumbnailHtml = '';
         if (icon) {
             let imageUrl = '';
@@ -233,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         summaryModalOverlay.classList.add('hidden');
     }
 
+    /** MODIFIED FUNCTION **/
     function selectEvent(eventId, updateUrl = true) {
         currentEventId = eventId;
         const eventData = storylineData[eventId];
@@ -247,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'assets/hanazuki.png',
                 null,
                 () => showSummaryModal(eventId)
+                // No ID needed for summary card
             );
             memoryGrid.appendChild(summaryCard);
         }
@@ -258,7 +264,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     memory.condition,
                     memory.icon,
                     `${BASE_URL}memoryicon/`,
-                    () => startStory(memory)
+                    () => startStory(memory),
+                    memory.id // Pass the memory ID here
                 );
                 memoryGrid.appendChild(card);
             });
@@ -273,11 +280,28 @@ document.addEventListener('DOMContentLoaded', () => {
         switchView(memorySelectionView);
     }
 
+    /** MODIFIED FUNCTION **/
     function returnToMemorySelection() {
         const urlParams = new URLSearchParams();
         urlParams.set('eventid', currentEventId);
         window.history.pushState({ eventId: currentEventId }, '', `?${urlParams.toString()}`);
         switchView(memorySelectionView);
+
+        // Remove any previously highlighted card
+        const previouslyHighlighted = memoryGrid.querySelector('.highlighted-card');
+        if (previouslyHighlighted) {
+            previouslyHighlighted.classList.remove('highlighted-card');
+        }
+
+        // If a "next memory" was identified, find its card and highlight it
+        if (nextMemory && nextMemory.id) {
+            const nextCard = memoryGrid.querySelector(`.grid-card[data-id='${nextMemory.id}']`);
+            if (nextCard) {
+                nextCard.classList.add('highlighted-card');
+                // Scroll the new card into the middle of the screen
+                nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
     }
 
     function startStory(memory, updateUrl = true) {
