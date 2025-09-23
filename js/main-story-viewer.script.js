@@ -4,11 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let shipgirlData = {};
     let shipgirlNameMap = {};
     let currentEventId = null;
-    let currentMemoryId = null;
+    let currentMemoryId = null; 
     let currentStoryScript = [];
     let scriptIndex = 0;
     let lastActorId = null;
     let nextMemory = null;
+
+    // --- Constants ---
+    const BASE_URL = "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/";
 
     // --- DOM Elements ---
     const eventSelectionView = document.getElementById('event-selection-view');
@@ -28,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextPageIndicator = document.getElementById('next-page-indicator');
     const prevLineBtn = document.getElementById('prev-line-btn');
     const nextLineBtn = document.getElementById('next-line-btn');
+    const nextStoryBtn = document.getElementById('next-story-btn');
+    const returnBtn = document.getElementById('return-btn');
     const viewerContainer = document.getElementById('viewer-container');
     const errorContainer = document.getElementById('error-container');
     const memoryViewTitle = document.getElementById('memory-view-title');
@@ -38,9 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const fullScriptContent = document.getElementById('full-script-content');
     const infoScreen = document.getElementById('info-screen');
     const infoScreenText = document.getElementById('info-screen-text');
-    const nextStoryBtn = document.getElementById('next-story-btn');
-    const returnBtn = document.getElementById('return-btn');
-
 
     // --- Dark Mode ---
     const applyTheme = (theme) => {
@@ -92,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             storylineData = await storyResponse.json();
             shipgirlData = await shipgirlResponse.json();
-
+            
             for (const id in shipgirlData) shipgirlNameMap[shipgirlData[id].name] = id;
 
             populateEventGrid();
@@ -103,12 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
             showError('Failed to load story data. Please refresh the page.');
         }
     }
-
+    
     function handleUrlParameters() {
         const urlParams = new URLSearchParams(window.location.search);
         const eventId = urlParams.get('eventId') || urlParams.get('eventid') || urlParams.get('event_id');
         const storyId = urlParams.get('story');
-
+        
         if (eventId) {
             if (storylineData[eventId]) {
                 selectEvent(eventId, false);
@@ -134,8 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
             .filter(event => event.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
         filteredEvents.forEach(event => {
-            // MODIFIED: Corrected the image path for event cards
-            const card = createCard(event.name, event.description, event.icon, 'img/memorystoryline/', () => selectEvent(event.id));
+            const card = createCard(
+                event.name,
+                event.description,
+                event.icon,
+                `${BASE_URL}memorystoryline/`,
+                () => selectEvent(event.id)
+            );
             eventGrid.appendChild(card);
         });
     }
@@ -143,8 +150,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function createCard(title, subtitle, icon, pathPrefix, onClick) {
         const card = document.createElement('div');
         card.className = 'grid-card';
+
+        const imageUrl = icon.startsWith('http') ? icon : `${pathPrefix}${icon}.png`;
+
         card.innerHTML = `
-            <div class="card-thumbnail" style="background-image: url('${pathPrefix}${icon}.png')"></div>
+            <div class="card-thumbnail" style="background-image: url('${imageUrl}')"></div>
             <div class="card-content">
                 <h3 class="card-title">${title}</h3>
                 <p class="card-subtitle">${subtitle}</p>
@@ -162,25 +172,30 @@ document.addEventListener('DOMContentLoaded', () => {
         memoryGrid.innerHTML = '';
         if (eventData.memory_id && Array.isArray(eventData.memory_id)) {
             eventData.memory_id.forEach(memory => {
-                // MODIFIED: Corrected the image path for memory cards
-                const card = createCard(memory.title, memory.condition, memory.icon, 'img/memoryicon/', () => startStory(memory));
+                const card = createCard(
+                    memory.title,
+                    memory.condition,
+                    memory.icon,
+                    `${BASE_URL}memoryicon/`,
+                    () => startStory(memory)
+                );
                 memoryGrid.appendChild(card);
             });
         }
-
+        
         if (updateUrl) {
             const urlParams = new URLSearchParams();
             urlParams.set('eventid', currentEventId);
-            window.history.pushState({ eventId: currentEventId }, '', `?${urlParams.toString()}`);
+            window.history.pushState({eventId: currentEventId}, '', `?${urlParams.toString()}`);
         }
-
+        
         switchView(memorySelectionView);
     }
-
+    
     function returnToMemorySelection() {
         const urlParams = new URLSearchParams();
         urlParams.set('eventid', currentEventId);
-        window.history.pushState({ eventId: currentEventId }, '', `?${urlParams.toString()}`);
+        window.history.pushState({eventId: currentEventId}, '', `?${urlParams.toString()}`);
         switchView(memorySelectionView);
     }
 
@@ -194,20 +209,20 @@ document.addEventListener('DOMContentLoaded', () => {
         scriptIndex = 0;
         lastActorId = null;
 
-        // Find the next memory
+        // find next memory
         const event = storylineData[currentEventId];
         const index = event.memory_id.findIndex(mem => mem.id == memory.id);
         nextMemory = (index >= 0 && index < event.memory_id.length - 1) ? event.memory_id[index + 1] : null;
-
+        
         const eventName = storylineData[currentEventId]?.name || 'Event';
         const memoryTitleText = memory.title || 'Chapter';
         storyTitle.textContent = `${eventName} - ${memoryTitleText}`;
-
+        
         if (updateUrl) {
             const urlParams = new URLSearchParams();
             urlParams.set('eventid', currentEventId);
             urlParams.set('story', memory.id);
-            window.history.pushState({ eventId: currentEventId, storyId: memory.id }, '', `?${urlParams.toString()}`);
+            window.history.pushState({eventId: currentEventId, storyId: memory.id}, '', `?${urlParams.toString()}`);
         }
 
         renderScriptLine();
@@ -217,19 +232,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Story Viewer Logic ---
     function advanceStory() {
         if (scriptIndex >= currentStoryScript.length - 1) {
-            returnToMemorySelection();
             return;
         }
         scriptIndex++;
         renderScriptLine();
     }
-
+    
     function goBackStory() {
         if (scriptIndex <= 0) return;
         scriptIndex--;
         renderScriptLine();
     }
-
+    
     function getActorInfo(line) {
         let actorId = null;
         if (typeof line.actor === 'number') actorId = line.actor;
@@ -242,71 +256,60 @@ document.addEventListener('DOMContentLoaded', () => {
         if (line.actorName && isNaN(parseInt(line.actorName, 10))) return { id: line.actorName, name: line.actorName, icon: null };
         return { id: 'unknown', name: '', icon: null };
     }
-
+    
     function updateBackground() {
-        // Find the target element for the background
         const backgroundElement = viewerContainer.querySelector('.story-background');
-        if (!backgroundElement) return; // Exit if the element isn't found
+        if (!backgroundElement) return;
 
         let backgroundImageUrl = null;
         let isBlackBackground = false;
 
-        // 1. Scan backwards from the current script line to find the last instruction for background
         for (let i = scriptIndex; i >= 0; i--) {
             const line = currentStoryScript[i];
             if (line) {
-                // Check for a black background command. This takes priority.
                 if (line.blackBg === true) {
                     isBlackBackground = true;
-                    break; // Found the most recent instruction, stop searching
+                    break;
                 }
-                // Check for a specific background image name
                 if (line.bgName) {
-                    backgroundImageUrl = `url('img/bg/${line.bgName}.png')`;
-                    break; // Found the most recent instruction, stop searching
+                    backgroundImageUrl = `url('${BASE_URL}bg/${line.bgName}.png')`;
+                    break;
                 }
             }
         }
 
-        // 2. Apply the black background if it was found
         if (isBlackBackground) {
             backgroundElement.style.backgroundColor = 'black';
-            backgroundElement.style.backgroundImage = 'none'; // Clear any existing image
-            return; // We're done
+            backgroundElement.style.backgroundImage = 'none';
+            return;
         }
-
-        // If not a black background, ensure background color is cleared
+        
         backgroundElement.style.backgroundColor = 'transparent';
 
-        // 3. Apply the specific background image if one was found in the script
         if (backgroundImageUrl) {
             backgroundElement.style.backgroundImage = backgroundImageUrl;
-            return; // We're done
+            return;
         }
 
-        // 4. If no instruction was found in the script, fall back to the memory's default 'mask'
         const event = storylineData[currentEventId];
         const memory = event?.memory_id.find(mem => mem.id == currentMemoryId);
         if (memory && memory.mask) {
-            // The path is constructed as img/{mask value}.png as per the request
-            const defaultBgUrl = `url('img/${memory.mask}.png')`;
+            const defaultBgUrl = `url('${BASE_URL}${memory.mask}.png')`;
             backgroundElement.style.backgroundImage = defaultBgUrl;
         } else {
-            // 5. Final fallback if no default mask is available either
             backgroundElement.style.backgroundImage = 'none';
         }
     }
 
-
     function renderScriptLine() {
         if (scriptIndex >= currentStoryScript.length) return;
         const line = currentStoryScript[scriptIndex];
-
+        
         optionsBox.innerHTML = '';
         dialogueBox.classList.add('hidden');
         infoScreen.classList.add('hidden');
 
-        updateBackground();
+        updateBackground(); 
 
         if (line.effects) handleEffect(line.effects);
 
@@ -338,36 +341,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             lastActorId = actorInfo.id;
         }
-
+        
         if (scriptIndex >= currentStoryScript.length - 1) {
-            // Hide the "Next" button
             nextLineBtn.classList.add('hidden');
-
-            // Show "Return to Chapter Selection" always
             returnBtn.classList.remove('hidden');
-
-            // Show "Next Story" only if available
             if (nextMemory) {
                 nextStoryBtn.classList.remove('hidden');
             } else {
                 nextStoryBtn.classList.add('hidden');
             }
         } else {
-            // Normal progression
-            nextLineBtn.textContent = '다음 →';
+            nextLineBtn.textContent = 'Next →';
             nextLineBtn.classList.remove('hidden');
             nextStoryBtn.classList.add('hidden');
             returnBtn.classList.add('hidden');
         }
-
+        
         prevLineBtn.disabled = (scriptIndex <= 0);
         nextPageIndicator.classList.toggle('hidden', scriptIndex >= currentStoryScript.length - 1);
     }
-
+    
     function handleEffect(effects) {
         if (!effects) return;
         effects.forEach(effect => {
-            if (effect.type === "shake") {
+             if (effect.type === "shake") {
                 viewerContainer.classList.add('shake');
                 setTimeout(() => viewerContainer.classList.remove('shake'), effect.duration * 1000 || 500);
             }
@@ -404,22 +401,15 @@ document.addEventListener('DOMContentLoaded', () => {
     searchBar?.addEventListener('input', (e) => populateEventGrid(e.target.value));
     storyViewerView?.addEventListener('click', (e) => {
         if (e.target.closest('.option-button, .nav-button, .story-nav-btn')) return;
-        // Disable click progression at last line
         if (scriptIndex < currentStoryScript.length - 1) {
             advanceStory();
         }
     });
-    nextStoryBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (nextMemory) startStory(nextMemory);
-    });
     prevLineBtn.addEventListener('click', (e) => { e.stopPropagation(); goBackStory(); });
     nextLineBtn.addEventListener('click', (e) => { e.stopPropagation(); advanceStory(); });
+    nextStoryBtn.addEventListener('click', (e) => { e.stopPropagation(); if (nextMemory) startStory(nextMemory); });
+    returnBtn.addEventListener('click', (e) => { e.stopPropagation(); returnToMemorySelection(); });
     backToEventBtn.addEventListener('click', (e) => { e.preventDefault(); switchView(eventSelectionView); window.history.pushState({}, '', 'main-story-viewer.html'); });
-    returnBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        returnToMemorySelection();
-    });
     backToMemoryBtn.addEventListener('click', (e) => { e.preventDefault(); returnToMemorySelection(); });
     viewScriptBtn.addEventListener('click', showFullScript);
     closeModalBtn.addEventListener('click', hideFullScript);
