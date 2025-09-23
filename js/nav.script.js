@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-
     const iconFontId = 'google-material-icons';
     if (!document.getElementById(iconFontId)) {
         const link = document.createElement('link');
@@ -8,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         link.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
         document.head.appendChild(link);
     }
-    // -
+    // Corrected to call both functions at the same level
     loadNavbar();
     loadFooter();
 });

@@ -1,0 +1,140 @@
+/* Basic Reset and Light Theme */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+}
+
+h1 {
+    color: #555;
+    margin: 0;
+}
+
+main {
+    padding-top: var(--navbar-height, 80px); /* Add a fallback value like 80px */
+}
+
+/* Gallery Container */
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+/* Image Styling */
+.gallery-item {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+    border-radius: 8px;
+    display: flex; /* For centering loading spinner */
+    justify-content: center;
+    align-items: center;
+    min-height: 200px; /* Ensure space for spinner */
+    position: relative; /* For spinner positioning */
+}
+
+.gallery-item:hover {
+    transform: scale(1.03);
+    cursor: pointer; /* Indicate clickable */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: opacity 0.5s ease-in-out; /* Smooth fade in */
+    opacity: 0; /* Initially hidden for lazy load fade-in */
+}
+
+.gallery-item img.loaded {
+    opacity: 1; /* Fully visible once loaded */
+}
+
+/* Loading Spinner */
+.loader {
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    position: absolute; /* Position over the image container */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* Ensure it's above the img before it loads */
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Hide loader when image is loaded */
+.gallery-item.loaded .loader {
+    display: none;
+}
+
+/* Lightbox Styles */
+.lightbox {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    padding-top: 50px; /* Location of the box (top) */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+.lightbox-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90vh; /* Max height of viewport */
+    object-fit: contain; /* Ensure the image fits without cropping */
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Add a fade-in effect for the lightbox */
+.lightbox.fade-in {
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
