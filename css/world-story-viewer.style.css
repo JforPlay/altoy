@@ -692,12 +692,12 @@ body.dark-mode .story-header #view-script-btn:hover {
 
 .bottom-bar-container .audio-player-container {
   grid-column: 1 / 2; /* Explicitly assign to the first column */
-  justify-self: start; 
+  justify-self: start;
 }
 
 .bottom-bar-container .story-nav-arrows {
   grid-column: 2 / 3; /* Explicitly assign to the center column */
-  justify-self: center; 
+  justify-self: center;
 }
 
 .bottom-bar-container .bottom-bar-spacer {
@@ -727,7 +727,7 @@ body.dark-mode .story-header #view-script-btn:hover {
   .story-header {
     padding: 0.5rem 0.75rem;
   }
-  
+
   #story-title {
     font-size: 1.1rem;
     margin-left: 0.5rem;
@@ -756,7 +756,7 @@ body.dark-mode .story-header #view-script-btn:hover {
   /* Hide the spacer element used on desktop */
   .bottom-bar-spacer {
     display: none;
- 
+
   }
 }
 

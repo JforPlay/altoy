@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const volumeSlider = document.getElementById('volume-slider');
     const audio = new Audio();
     audio.loop = true;
-    audio.volume = 0.1;
+    audio.volume = 0.01;
 
     // --- Dark Mode ---
     const applyTheme = (theme) => {
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (audioPlayerContainer) audioPlayerContainer.classList.add('hidden');
         }
     };
-    
+
     // --- Audio Logic ---
     function updateAudioPlayerUI() {
         if (!playPauseBtn || !muteBtn || !volumeSlider) return;
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateAudioPlayerUI();
     }
-    
+
     // --- Data Loading ---
     async function init() {
         try {
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             storylineData = await storyResponse.json();
             storylineSummaryData = await summaryResponse.json();
             shipgirlData = await shipgirlResponse.json();
-            
+
             for (const id in shipgirlData) shipgirlNameMap[shipgirlData[id].name] = id;
 
             populateEventGrid();
@@ -142,12 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
             showError('Failed to load story data. Please refresh the page.');
         }
     }
-    
+
     function handleUrlParameters() {
         const urlParams = new URLSearchParams(window.location.search);
         const eventId = urlParams.get('eventId') || urlParams.get('eventid') || urlParams.get('event_id');
         const storyId = urlParams.get('story');
-        
+
         if (eventId && storylineData[eventId]) {
             selectEvent(eventId, false);
             if (storyId) {
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } else if (eventId) {
-             showError(`Event with ID '${eventId}' not found.`);
+            showError(`Event with ID '${eventId}' not found.`);
         }
     }
 
@@ -177,9 +177,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = createCard(
                 event.name,
                 `Chapter: ${event.name.replace(/[^0-9]/g, '')}`,
-                null, 
                 null,
-                () => selectEvent(key) 
+                null,
+                () => selectEvent(key)
             );
             eventGrid.appendChild(card);
         });
@@ -218,8 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let keycharHtml = '';
         if (data.keychar && Array.isArray(data.keychar)) {
             keycharHtml = `<h3>${data.keychar[0]}</h3><ul>` +
-                          data.keychar.slice(1).map(item => `<li>${item}</li>`).join('') +
-                          `</ul>`;
+                data.keychar.slice(1).map(item => `<li>${item}</li>`).join('') +
+                `</ul>`;
         }
         summaryModalContent.innerHTML = `
             <h2>${data.title}</h2>
@@ -250,11 +250,11 @@ document.addEventListener('DOMContentLoaded', () => {
             );
             memoryGrid.appendChild(summaryCard);
         }
-        
+
         if (eventData.child && Array.isArray(eventData.child)) {
             eventData.child.forEach(memory => {
                 const card = createCard(
-                    memory.name, 
+                    memory.name,
                     memory.condition,
                     memory.icon,
                     `${BASE_URL}memoryicon/`,
@@ -263,20 +263,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 memoryGrid.appendChild(card);
             });
         }
-        
+
         if (updateUrl) {
             const urlParams = new URLSearchParams();
             urlParams.set('eventid', currentEventId);
-            window.history.pushState({eventId: currentEventId}, '', `?${urlParams.toString()}`);
+            window.history.pushState({ eventId: currentEventId }, '', `?${urlParams.toString()}`);
         }
-        
+
         switchView(memorySelectionView);
     }
-    
+
     function returnToMemorySelection() {
         const urlParams = new URLSearchParams();
         urlParams.set('eventid', currentEventId);
-        window.history.pushState({eventId: currentEventId}, '', `?${urlParams.toString()}`);
+        window.history.pushState({ eventId: currentEventId }, '', `?${urlParams.toString()}`);
         switchView(memorySelectionView);
     }
 
@@ -300,27 +300,64 @@ document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams();
             urlParams.set('eventid', currentEventId);
             urlParams.set('story', memory.id);
-            window.history.pushState({eventId: currentEventId, storyId: memory.id}, '', `?${urlParams.toString()}`);
+            window.history.pushState({ eventId: currentEventId, storyId: memory.id }, '', `?${urlParams.toString()}`);
         }
         switchView(storyViewerView);
-        renderScriptLine();
+        // On starting a story, jump to the first displayable line
+        if (!isLineDisplayable(currentStoryScript[0]) && currentStoryScript.length > 1) {
+            advanceStory();
+        } else {
+            renderScriptLine();
+        }
     }
 
     // --- Story Viewer Logic ---
+    function isLineDisplayable(line) {
+        if (!line) return false;
+        return line.say ||
+            (line.sequence && line.sequence[0] && line.sequence[0][0]) ||
+            (line.signDate && line.signDate[0]) ||
+            (line.options && line.options.length > 0);
+    }
+
     function advanceStory() {
-        if (scriptIndex < currentStoryScript.length - 1) {
-            scriptIndex++;
-            renderScriptLine();
+        if (scriptIndex >= currentStoryScript.length - 1) return;
+
+        let nextDisplayableIndex = -1;
+        for (let i = scriptIndex + 1; i < currentStoryScript.length; i++) {
+            if (isLineDisplayable(currentStoryScript[i])) {
+                nextDisplayableIndex = i;
+                break;
+            }
         }
+
+        if (nextDisplayableIndex !== -1) {
+            scriptIndex = nextDisplayableIndex;
+        } else {
+            scriptIndex = currentStoryScript.length - 1;
+        }
+        renderScriptLine();
     }
-    
+
     function goBackStory() {
-        if (scriptIndex > 0) {
-            scriptIndex--;
-            renderScriptLine();
+        if (scriptIndex <= 0) return;
+
+        let prevDisplayableIndex = -1;
+        for (let i = scriptIndex - 1; i >= 0; i--) {
+            if (isLineDisplayable(currentStoryScript[i])) {
+                prevDisplayableIndex = i;
+                break;
+            }
         }
+
+        if (prevDisplayableIndex !== -1) {
+            scriptIndex = prevDisplayableIndex;
+        } else {
+            scriptIndex = 0;
+        }
+        renderScriptLine();
     }
-    
+
     function getActorInfo(line) {
         let actorInfo = { id: null, name: '', icon: null };
         let iconId = null;
@@ -345,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (['통신기', '분석기', '모두들'].includes(actorInfo.name) || actorInfo.name?.includes('?')) actorInfo.icon = null;
         return actorInfo;
     }
-    
+
     function updateBackground() {
         const backgroundElement = viewerContainer.querySelector('.story-background');
         if (!backgroundElement) return;
@@ -374,27 +411,32 @@ document.addEventListener('DOMContentLoaded', () => {
             backgroundElement.style.backgroundImage = 'none';
         }
     }
-    
+
     function handleOptionSelect(chosenFlag) {
         let nextIndex = -1;
         for (let i = scriptIndex + 1; i < currentStoryScript.length; i++) {
             if (currentStoryScript[i].optionFlag === chosenFlag) { nextIndex = i; break; }
         }
-        if (nextIndex !== -1) { scriptIndex = nextIndex; renderScriptLine(); } 
+        if (nextIndex !== -1) { scriptIndex = nextIndex; renderScriptLine(); }
         else { advanceStory(); }
     }
-    
+
     function renderScriptLine() {
         if (scriptIndex >= currentStoryScript.length) return;
         const line = currentStoryScript[scriptIndex];
         optionsBox.innerHTML = '';
         dialogueBox.classList.add('hidden');
         infoScreen.classList.add('hidden');
-        updateBackground(); 
+        updateBackground();
         if (line.effects) handleEffect(line.effects);
-        if (line.stopbgm) { handleBgm(null); } 
+        if (line.stopbgm) { handleBgm(null); }
         else if (line.bgm) { handleBgm(line.bgm); }
         const infoText = line.sequence?.[0]?.[0] || line.signDate?.[0];
+
+        const isDisplayable = isLineDisplayable(line);
+        const hasOptions = line.options && line.options.length > 0;
+        const isAtEnd = scriptIndex >= currentStoryScript.length - 1;
+
         if (infoText && infoText.trim() !== "") {
             infoScreen.classList.remove('hidden');
             infoScreenText.textContent = infoText;
@@ -427,13 +469,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             lastActorId = actorInfo.id;
         }
-        const isAtEnd = scriptIndex >= currentStoryScript.length - 1;
-        const hasOptions = line.options && line.options.length > 0;
+
         prevLineBtn.disabled = (scriptIndex <= 0);
-        nextLineBtn.classList.toggle('hidden', isAtEnd || hasOptions);
+        
+        // This is the primary fix: the button should only be hidden for options or at the very end
+        nextLineBtn.classList.toggle('hidden', hasOptions || isAtEnd);
+        
         if (!isAtEnd && !hasOptions) nextLineBtn.textContent = '다음 →';
         returnBtn.classList.toggle('hidden', !isAtEnd);
         nextStoryBtn.classList.toggle('hidden', !(isAtEnd && nextMemory));
+        
         if (hasOptions) {
             line.options.forEach(opt => {
                 const button = document.createElement('button');
@@ -445,11 +490,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         nextPageIndicator.classList.toggle('hidden', isAtEnd || hasOptions);
     }
-    
+
     function handleEffect(effects) {
         if (!effects) return;
         effects.forEach(effect => {
-             if (effect.type === "shake") {
+            if (effect.type === "shake") {
                 viewerContainer.classList.add('shake');
                 setTimeout(() => viewerContainer.classList.remove('shake'), effect.duration * 1000 || 500);
             }
@@ -489,7 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchBar?.addEventListener('input', (e) => populateEventGrid(e.target.value));
     storyViewerView?.addEventListener('click', (e) => {
         if (e.target.closest('.option-button, .nav-button, .story-nav-btn, .audio-player-container')) return;
-        if (optionsBox.children.length > 0) return; 
+        if (optionsBox.children.length > 0) return;
         if (scriptIndex < currentStoryScript.length - 1) advanceStory();
     });
     prevLineBtn.addEventListener('click', (e) => { e.stopPropagation(); goBackStory(); });
