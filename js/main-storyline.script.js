@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const icon = document.createElement('div');
         icon.className = 'item-icon';
         if (itemData.icon) {
-            icon.style.backgroundImage = `url('img/memorystoryline/${itemData.icon}.png')`;
+            icon.style.backgroundImage = `url('https://raw.githubusercontent.com/JforPlay/data_for_toy/main/memorystoryline/${itemData.icon}.png')`;
             icon.style.backgroundSize = 'cover';
             icon.style.backgroundPosition = 'center';
             icon.style.backgroundColor = 'transparent'; // Remove placeholder color if image exists
