@@ -74,9 +74,15 @@ function loadFooter() {
             return response.text();
         })
         .then(data => {
-            document.getElementById('footer-placeholder').innerHTML = data;
-            // Automatically set the current year
-            document.getElementById('copyright-year').textContent = new Date().getFullYear();
+            const footerPlaceholder = document.getElementById('footer-placeholder');
+            if (footerPlaceholder) { // Check if the element exists
+                footerPlaceholder.innerHTML = data;
+                // Automatically set the current year
+                const copyrightYear = document.getElementById('copyright-year');
+                if (copyrightYear) {
+                  copyrightYear.textContent = new Date().getFullYear();
+                }
+            }
         })
         .catch(error => console.error('Error loading the footer:', error));
 }

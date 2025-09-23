@@ -8,6 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Noto+Sans+KR:wght@300;400;700&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/world-story-viewer.style.css">
     <link rel="stylesheet" href="css/nav.style.css">
 </head>
@@ -55,15 +56,6 @@
                 </button>
             </header>
 
-            <div id="script-modal-overlay" class="modal-overlay hidden">
-                <div class="modal-content">
-                    <button id="close-modal-btn" class="close-modal-btn" title="Close">
-                        <span class="material-icons">close</span>
-                    </button>
-                    <div id="full-script-content" class="full-script-content">
-                    </div>
-                </div>
-            </div>
             <div id="info-screen" class="info-screen hidden">
                 <p id="info-screen-text"></p>
             </div>
@@ -76,8 +68,7 @@
                 <div id="next-page-indicator" class="next-page-indicator">▼</div>
             </div>
             <div id="options-box" class="options-box"></div>
-            
-            <!-- New Bottom Bar Container -->
+
             <div class="bottom-bar-container">
                 <div id="audio-player-container" class="audio-player-container hidden">
                     <button id="play-pause-btn" class="audio-btn">
@@ -97,14 +88,34 @@
                     <button id="next-story-btn" class="story-nav-btn hidden">다음 스토리 보기 →</button>
                     <button id="return-btn" class="story-nav-btn hidden">돌아가기</button>
                 </div>
-                
-                <!-- This spacer ensures the nav buttons stay centered -->
+
                 <div class="bottom-bar-spacer"></div>
             </div>
         </div>
+    </div>
 
-        <script src="js/world-story-viewer.script.js" defer></script>
-        <script src="js/nav.script.js"></script>
+    <div id="script-modal-overlay" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-modal-btn" class="close-modal-btn" title="Close">
+                <span class="material-icons">close</span>
+            </button>
+            <div id="full-script-content" class="full-script-content">
+            </div>
+        </div>
+    </div>
+
+    <div id="summary-modal-overlay" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-summary-modal-btn" class="close-modal-btn" title="Close">
+                <span class="material-icons">close</span>
+            </button>
+            <div id="summary-modal-content">
+            </div>
+        </div>
+    </div>
+
+    <script src="js/world-story-viewer.script.js" defer></script>
+    <script src="js/nav.script.js"></script>
 </body>
 
 </html>

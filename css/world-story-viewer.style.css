@@ -179,6 +179,7 @@ body {
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  word-break: keep-all; /* Add this line to prevent awkward breaks in Korean text */
 }
 .card-subtitle {
   font-size: 0.9rem;
@@ -755,5 +756,44 @@ body.dark-mode .story-header #view-script-btn:hover {
   /* Hide the spacer element used on desktop */
   .bottom-bar-spacer {
     display: none;
+ 
   }
+}
+
+/* --- Summary Modal Styles --- */
+#summary-modal-content {
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+#summary-modal-content h2 {
+  font-size: 1.8rem;
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+#summary-modal-content h3 {
+  font-size: 1.4rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+#summary-modal-content p {
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+#summary-modal-content ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#summary-modal-content li {
+  background-color: var(--bg-color);
+  border-left: 4px solid var(--accent-color);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
 }
