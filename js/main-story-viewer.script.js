@@ -1,19 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- State Variables ---
+    // =========================================================================
+    // STATE & CONSTANTS
+    // =========================================================================
     let storylineData = {};
     let shipgirlData = {};
     let shipgirlNameMap = {};
     let currentEventId = null;
-    let currentMemoryId = null; 
+    let currentMemoryId = null;
     let currentStoryScript = [];
     let scriptIndex = 0;
     let lastActorId = null;
     let nextMemory = null;
+    let currentBgm = null;
 
-    // --- Constants ---
     const BASE_URL = "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/";
+    const BGM_URL_PREFIX = "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/";
 
-    // --- DOM Elements ---
+    // =========================================================================
+    // DOM ELEMENTS
+    // =========================================================================
     const eventSelectionView = document.getElementById('event-selection-view');
     const memorySelectionView = document.getElementById('memory-selection-view');
     const storyViewerView = document.getElementById('story-viewer-view');
@@ -44,16 +49,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const infoScreen = document.getElementById('info-screen');
     const infoScreenText = document.getElementById('info-screen-text');
 
-    // --- Dark Mode ---
+    // Audio Player Elements
+    const audioPlayerContainer = document.getElementById('audio-player-container');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const muteBtn = document.getElementById('mute-btn');
+    const volumeSlider = document.getElementById('volume-slider');
+    const audio = new Audio();
+    audio.loop = true;
+    audio.volume = 0.1;
+
+    // =========================================================================
+    // CORE LOGIC
+    // =========================================================================
+
+    /** Applies light or dark theme to the document. */
     const applyTheme = (theme) => {
         document.body.classList.toggle('dark-mode', theme === 'dark');
         const mainNavbar = document.querySelector('#navbar-placeholder .navbar');
         if (mainNavbar) {
-            if (theme === 'dark') {
-                mainNavbar.classList.remove('navbar-light');
-            } else {
-                mainNavbar.classList.add('navbar-light');
-            }
+            mainNavbar.classList.toggle('navbar-light', theme !== 'dark');
         }
         themeToggles.forEach(toggle => {
             toggle.querySelector('.theme-icon-sun')?.classList.toggle('hidden', theme === 'dark');
@@ -61,28 +75,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    themeToggles.forEach(toggle => {
-        toggle.addEventListener('click', () => {
-            const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
-            localStorage.setItem('theme', newTheme);
-            applyTheme(newTheme);
-        });
-    });
-
-    // --- Utility Functions ---
+    /** Displays an error message for 5 seconds. */
     const showError = (message) => {
         errorContainer.textContent = message;
         errorContainer.classList.remove('hidden');
         setTimeout(() => errorContainer.classList.add('hidden'), 5000);
     };
 
+    /** Switches between the main application views. */
     const switchView = (viewToShow) => {
         [eventSelectionView, memorySelectionView, storyViewerView].forEach(view => {
             view.classList.toggle('hidden', view !== viewToShow);
         });
+        if (viewToShow !== storyViewerView) {
+            audio.pause();
+            if (audioPlayerContainer) audioPlayerContainer.classList.add('hidden');
+        }
     };
 
-    // --- Data Loading ---
+    /** Main data loading and initialization function. */
     async function init() {
         try {
             const [storyResponse, shipgirlResponse] = await Promise.all([
@@ -94,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             storylineData = await storyResponse.json();
             shipgirlData = await shipgirlResponse.json();
-            
+
             for (const id in shipgirlData) shipgirlNameMap[shipgirlData[id].name] = id;
 
             populateEventGrid();
@@ -105,31 +116,34 @@ document.addEventListener('DOMContentLoaded', () => {
             showError('Failed to load story data. Please refresh the page.');
         }
     }
-    
+
+    /** Reads URL parameters to deep-link into a story. */
     function handleUrlParameters() {
         const urlParams = new URLSearchParams(window.location.search);
         const eventId = urlParams.get('eventId') || urlParams.get('eventid') || urlParams.get('event_id');
         const storyId = urlParams.get('story');
-        
-        if (eventId) {
-            if (storylineData[eventId]) {
-                selectEvent(eventId, false);
-                if (storyId) {
-                    const eventData = storylineData[eventId];
-                    const memoryData = eventData?.memory_id?.find(mem => mem.id == storyId);
-                    if (memoryData) {
-                        startStory(memoryData, false);
-                    } else {
-                        showError(`Story with ID '${storyId}' not found in this event.`);
-                    }
+
+        if (eventId && storylineData[eventId]) {
+            selectEvent(eventId, false);
+            if (storyId) {
+                const eventData = storylineData[eventId];
+                const memoryData = eventData?.memory_id?.find(mem => mem.id == storyId);
+                if (memoryData) {
+                    startStory(memoryData, false);
+                } else {
+                    showError(`Story with ID '${storyId}' not found in this event.`);
                 }
-            } else {
-                showError(`Event with ID '${eventId}' not found.`);
             }
+        } else if (eventId) {
+            showError(`Event with ID '${eventId}' not found.`);
         }
     }
 
-    // --- UI Population ---
+    // =========================================================================
+    // UI POPULATION & NAVIGATION
+    // =========================================================================
+
+    /** Populates the event selection grid, optionally filtering by a search term. */
     function populateEventGrid(searchTerm = '') {
         eventGrid.innerHTML = '';
         const filteredEvents = Object.values(storylineData)
@@ -147,12 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /** Creates a generic card element for the grids. */
     function createCard(title, subtitle, icon, pathPrefix, onClick) {
         const card = document.createElement('div');
         card.className = 'grid-card';
-
         const imageUrl = icon.startsWith('http') ? icon : `${pathPrefix}${icon}.png`;
-
         card.innerHTML = `
             <div class="card-thumbnail" style="background-image: url('${imageUrl}')"></div>
             <div class="card-content">
@@ -164,12 +177,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     }
 
-    // --- View Navigation ---
+    /** Handles selecting an event and showing the memory grid. */
     function selectEvent(eventId, updateUrl = true) {
         currentEventId = eventId;
         const eventData = storylineData[eventId];
         memoryViewTitle.textContent = eventData.name;
         memoryGrid.innerHTML = '';
+
         if (eventData.memory_id && Array.isArray(eventData.memory_id)) {
             eventData.memory_id.forEach(memory => {
                 const card = createCard(
@@ -182,23 +196,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 memoryGrid.appendChild(card);
             });
         }
-        
+
         if (updateUrl) {
             const urlParams = new URLSearchParams();
             urlParams.set('eventid', currentEventId);
-            window.history.pushState({eventId: currentEventId}, '', `?${urlParams.toString()}`);
+            window.history.pushState({ eventId: currentEventId }, '', `?${urlParams.toString()}`);
         }
-        
-        switchView(memorySelectionView);
-    }
-    
-    function returnToMemorySelection() {
-        const urlParams = new URLSearchParams();
-        urlParams.set('eventid', currentEventId);
-        window.history.pushState({eventId: currentEventId}, '', `?${urlParams.toString()}`);
+
         switchView(memorySelectionView);
     }
 
+    /** Returns from the story viewer to the memory selection grid. */
+    function returnToMemorySelection() {
+        const urlParams = new URLSearchParams();
+        urlParams.set('eventid', currentEventId);
+        window.history.pushState({ eventId: currentEventId }, '', `?${urlParams.toString()}`);
+        switchView(memorySelectionView);
+    }
+
+    // =========================================================================
+    // STORY VIEWER LOGIC
+    // =========================================================================
+
+    /** Initializes and starts a story view session. */
     function startStory(memory, updateUrl = true) {
         if (!memory?.story?.scripts) {
             showError("This story is not available.");
@@ -208,42 +228,87 @@ document.addEventListener('DOMContentLoaded', () => {
         currentMemoryId = memory.id;
         scriptIndex = 0;
         lastActorId = null;
+        currentBgm = null;
 
-        // find next memory
         const event = storylineData[currentEventId];
         const index = event.memory_id.findIndex(mem => mem.id == memory.id);
         nextMemory = (index >= 0 && index < event.memory_id.length - 1) ? event.memory_id[index + 1] : null;
-        
+
         const eventName = storylineData[currentEventId]?.name || 'Event';
-        const memoryTitleText = memory.title || 'Chapter';
-        storyTitle.textContent = `${eventName} - ${memoryTitleText}`;
-        
+        storyTitle.textContent = `${eventName} - ${memory.title || 'Chapter'}`;
+
         if (updateUrl) {
             const urlParams = new URLSearchParams();
             urlParams.set('eventid', currentEventId);
             urlParams.set('story', memory.id);
-            window.history.pushState({eventId: currentEventId, storyId: memory.id}, '', `?${urlParams.toString()}`);
+            window.history.pushState({ eventId: currentEventId, storyId: memory.id }, '', `?${urlParams.toString()}`);
         }
 
         renderScriptLine();
         switchView(storyViewerView);
     }
 
-    // --- Story Viewer Logic ---
+    /** Advances to the next line in the story script. */
     function advanceStory() {
-        if (scriptIndex >= currentStoryScript.length - 1) {
-            return;
+        if (scriptIndex < currentStoryScript.length - 1) {
+            scriptIndex++;
+            renderScriptLine();
         }
-        scriptIndex++;
-        renderScriptLine();
     }
-    
+
+    /** Goes back to the previous line in the story script. */
     function goBackStory() {
-        if (scriptIndex <= 0) return;
-        scriptIndex--;
-        renderScriptLine();
+        if (scriptIndex > 0) {
+            scriptIndex--;
+            renderScriptLine();
+        }
+    }
+
+    /** Renders the current line of the story script to the UI. */
+    function renderScriptLine() {
+        if (scriptIndex >= currentStoryScript.length) return;
+        const line = currentStoryScript[scriptIndex];
+
+        optionsBox.innerHTML = '';
+        dialogueBox.classList.add('hidden');
+        infoScreen.classList.add('hidden');
+
+        updateBackground();
+        if (line.effects) handleEffect(line.effects);
+        if (line.stopbgm) { handleBgm(null); }
+        else if (line.bgm) { handleBgm(line.bgm); }
+
+        const infoText = line.sequence?.[0]?.[0] || line.signDate?.[0];
+
+        if (infoText && infoText.trim() !== "") {
+            infoScreen.classList.remove('hidden');
+            infoScreenText.textContent = infoText;
+        } else if (line.say) {
+            dialogueBox.classList.remove('hidden');
+            dialogueText.textContent = line.say.replace(/<.*?>/g, '');
+            const actorInfo = getActorInfo(line);
+            if (actorInfo.id !== lastActorId) {
+                actorName.textContent = actorInfo.name;
+                actorPortrait.innerHTML = actorInfo.icon ? `<img src="${actorInfo.icon}" alt="${actorInfo.name}">` : '';
+                actorPortrait.classList.toggle('hidden', !actorInfo.icon);
+            }
+            lastActorId = actorInfo.id;
+        }
+
+        // Update navigation buttons
+        const isAtEnd = scriptIndex >= currentStoryScript.length - 1;
+        prevLineBtn.disabled = (scriptIndex <= 0);
+        nextLineBtn.classList.toggle('hidden', isAtEnd);
+        returnBtn.classList.toggle('hidden', !isAtEnd);
+        nextStoryBtn.classList.toggle('hidden', !(isAtEnd && nextMemory));
+        nextPageIndicator.classList.toggle('hidden', isAtEnd);
     }
     
+    // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+
+    /** Retrieves actor information based on the script line. */
     function getActorInfo(line) {
         let actorId = null;
         if (typeof line.actor === 'number') actorId = line.actor;
@@ -256,115 +321,35 @@ document.addEventListener('DOMContentLoaded', () => {
         if (line.actorName && isNaN(parseInt(line.actorName, 10))) return { id: line.actorName, name: line.actorName, icon: null };
         return { id: 'unknown', name: '', icon: null };
     }
-    
+
+    /** Updates the story background based on the current script position. */
     function updateBackground() {
         const backgroundElement = viewerContainer.querySelector('.story-background');
-        if (!backgroundElement) return;
-
         let backgroundImageUrl = null;
         let isBlackBackground = false;
 
         for (let i = scriptIndex; i >= 0; i--) {
             const line = currentStoryScript[i];
             if (line) {
-                if (line.blackBg === true) {
-                    isBlackBackground = true;
-                    break;
-                }
-                if (line.bgName) {
-                    backgroundImageUrl = `url('${BASE_URL}bg/${line.bgName}.png')`;
-                    break;
-                }
+                if (line.blackBg === true) { isBlackBackground = true; break; }
+                if (line.bgName) { backgroundImageUrl = `url('${BASE_URL}bg/${line.bgName}.png')`; break; }
             }
         }
 
         if (isBlackBackground) {
             backgroundElement.style.backgroundColor = 'black';
             backgroundElement.style.backgroundImage = 'none';
-            return;
-        }
-        
-        backgroundElement.style.backgroundColor = 'transparent';
-
-        if (backgroundImageUrl) {
-            backgroundElement.style.backgroundImage = backgroundImageUrl;
-            return;
-        }
-
-        const event = storylineData[currentEventId];
-        const memory = event?.memory_id.find(mem => mem.id == currentMemoryId);
-        if (memory && memory.mask) {
-            const defaultBgUrl = `url('${BASE_URL}${memory.mask}.png')`;
-            backgroundElement.style.backgroundImage = defaultBgUrl;
         } else {
-            backgroundElement.style.backgroundImage = 'none';
+            backgroundElement.style.backgroundColor = 'transparent';
+            backgroundElement.style.backgroundImage = backgroundImageUrl || 'none';
         }
     }
 
-    function renderScriptLine() {
-        if (scriptIndex >= currentStoryScript.length) return;
-        const line = currentStoryScript[scriptIndex];
-        
-        optionsBox.innerHTML = '';
-        dialogueBox.classList.add('hidden');
-        infoScreen.classList.add('hidden');
-
-        updateBackground(); 
-
-        if (line.effects) handleEffect(line.effects);
-
-        const infoText = line.sequence?.[0]?.[0] || line.signDate?.[0];
-
-        if (infoText && infoText.trim() !== "") {
-            infoScreen.classList.remove('hidden');
-            infoScreenText.textContent = infoText;
-
-        } else if (line.say) {
-            dialogueBox.classList.remove('hidden');
-            dialogueText.textContent = line.say.replace(/<.*?>/g, '');
-            const actorInfo = getActorInfo(line);
-            if (actorInfo.id !== lastActorId) {
-                actorName.textContent = actorInfo.name;
-                actorPortrait.innerHTML = '';
-                if (actorInfo.icon) {
-                    actorPortrait.classList.remove('hidden');
-                    const img = document.createElement('img');
-                    img.src = actorInfo.icon;
-                    img.alt = actorInfo.name;
-                    img.onload = () => actorPortrait.style.opacity = 1;
-                    img.onerror = () => actorPortrait.classList.add('hidden');
-                    actorPortrait.style.opacity = 0;
-                    actorPortrait.appendChild(img);
-                } else {
-                    actorPortrait.classList.add('hidden');
-                }
-            }
-            lastActorId = actorInfo.id;
-        }
-        
-        if (scriptIndex >= currentStoryScript.length - 1) {
-            nextLineBtn.classList.add('hidden');
-            returnBtn.classList.remove('hidden');
-            if (nextMemory) {
-                nextStoryBtn.classList.remove('hidden');
-            } else {
-                nextStoryBtn.classList.add('hidden');
-            }
-        } else {
-            nextLineBtn.textContent = 'Next →';
-            nextLineBtn.classList.remove('hidden');
-            nextStoryBtn.classList.add('hidden');
-            returnBtn.classList.add('hidden');
-        }
-        
-        prevLineBtn.disabled = (scriptIndex <= 0);
-        nextPageIndicator.classList.toggle('hidden', scriptIndex >= currentStoryScript.length - 1);
-    }
-    
+    /** Handles special effects like screen shakes and flashes. */
     function handleEffect(effects) {
         if (!effects) return;
         effects.forEach(effect => {
-             if (effect.type === "shake") {
+            if (effect.type === "shake") {
                 viewerContainer.classList.add('shake');
                 setTimeout(() => viewerContainer.classList.remove('shake'), effect.duration * 1000 || 500);
             }
@@ -377,6 +362,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // =========================================================================
+    // AUDIO LOGIC
+    // =========================================================================
+
+    /** Updates the audio player UI based on the audio object's state. */
+    function updateAudioPlayerUI() {
+        if (!playPauseBtn || !muteBtn || !volumeSlider) return;
+        playPauseBtn.querySelector('.material-icons').textContent = audio.paused ? 'play_arrow' : 'pause';
+        muteBtn.querySelector('.material-icons').textContent = audio.muted || audio.volume === 0 ? 'volume_off' : 'volume_up';
+        volumeSlider.value = audio.muted ? 0 : audio.volume;
+    }
+
+    /** Handles starting, stopping, or changing the background music. */
+    function handleBgm(bgmName) {
+        if (bgmName && bgmName !== currentBgm) {
+            currentBgm = bgmName;
+            audio.src = `${BGM_URL_PREFIX}${bgmName}.ogg`;
+            audio.play().catch(e => console.warn("Audio playback failed.", e));
+            audioPlayerContainer?.classList.remove('hidden');
+        } else if (!bgmName && currentBgm) {
+            currentBgm = null;
+            audio.pause();
+            audioPlayerContainer?.classList.add('hidden');
+        }
+        updateAudioPlayerUI();
+    }
+    
+    // =========================================================================
+    // MODAL LOGIC
+    // =========================================================================
+
+    /** Generates and displays the full story script in a modal. */
     function showFullScript() {
         if (!currentStoryScript || currentStoryScript.length === 0) return;
         const scriptHtml = currentStoryScript
@@ -393,33 +410,47 @@ document.addEventListener('DOMContentLoaded', () => {
         scriptModalOverlay.classList.remove('hidden');
     }
 
+    /** Hides the full script modal. */
     function hideFullScript() {
         scriptModalOverlay.classList.add('hidden');
     }
 
-    // --- Event Listeners ---
+    // =========================================================================
+    // EVENT LISTENERS
+    // =========================================================================
     searchBar?.addEventListener('input', (e) => populateEventGrid(e.target.value));
+    
     storyViewerView?.addEventListener('click', (e) => {
-        if (e.target.closest('.option-button, .nav-button, .story-nav-btn')) return;
+        if (e.target.closest('.option-button, .nav-button, .story-nav-btn, .audio-player-container')) return;
         if (scriptIndex < currentStoryScript.length - 1) {
             advanceStory();
         }
     });
+
     prevLineBtn.addEventListener('click', (e) => { e.stopPropagation(); goBackStory(); });
     nextLineBtn.addEventListener('click', (e) => { e.stopPropagation(); advanceStory(); });
     nextStoryBtn.addEventListener('click', (e) => { e.stopPropagation(); if (nextMemory) startStory(nextMemory); });
     returnBtn.addEventListener('click', (e) => { e.stopPropagation(); returnToMemorySelection(); });
     backToEventBtn.addEventListener('click', (e) => { e.preventDefault(); switchView(eventSelectionView); window.history.pushState({}, '', 'main-story-viewer.html'); });
     backToMemoryBtn.addEventListener('click', (e) => { e.preventDefault(); returnToMemorySelection(); });
+    
+    // Modal Listeners
     viewScriptBtn.addEventListener('click', showFullScript);
     closeModalBtn.addEventListener('click', hideFullScript);
     scriptModalOverlay.addEventListener('click', (e) => {
-        if (e.target === scriptModalOverlay) {
-            hideFullScript();
-        }
+        if (e.target === scriptModalOverlay) hideFullScript();
     });
 
-    // --- Initial Load ---
+    // Audio Player Listeners
+    playPauseBtn.addEventListener('click', (e) => { e.stopPropagation(); audio.paused ? audio.play().catch(console.warn) : audio.pause(); });
+    muteBtn.addEventListener('click', (e) => { e.stopPropagation(); audio.muted = !audio.muted; updateAudioPlayerUI(); });
+    volumeSlider.addEventListener('input', (e) => { e.stopPropagation(); audio.volume = e.target.value; audio.muted = e.target.value == 0; updateAudioPlayerUI(); });
+    audio.addEventListener('play', updateAudioPlayerUI);
+    audio.addEventListener('pause', updateAudioPlayerUI);
+
+    // =========================================================================
+    // INITIALIZATION
+    // =========================================================================
     applyTheme(localStorage.getItem('theme') || 'light');
     init();
 });

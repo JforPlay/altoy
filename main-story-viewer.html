@@ -56,14 +56,14 @@
             </header>
 
             <div id="script-modal-overlay" class="modal-overlay hidden">
-        <div class="modal-content">
-            <button id="close-modal-btn" class="close-modal-btn" title="Close">
-                <span class="material-icons">close</span>
-            </button>
-            <div id="full-script-content" class="full-script-content">
+                <div class="modal-content">
+                    <button id="close-modal-btn" class="close-modal-btn" title="Close">
+                        <span class="material-icons">close</span>
+                    </button>
+                    <div id="full-script-content" class="full-script-content">
+                    </div>
                 </div>
-        </div>
-    </div>
+            </div>
             <div id="info-screen" class="info-screen hidden">
                 <p id="info-screen-text"></p>
             </div>
@@ -76,11 +76,27 @@
                 <div id="next-page-indicator" class="next-page-indicator">▼</div>
             </div>
             <div id="options-box" class="options-box"></div>
-            <div class="story-nav-arrows">
-                <button id="prev-line-btn" class="story-nav-btn">&#x2190; 이전</button>
-                <button id="next-line-btn" class="story-nav-btn">다음 →</button>
-                <button id="next-story-btn" class="story-nav-btn hidden">다음 스토리 보기 →</button>
-                <button id="return-btn" class="story-nav-btn hidden">돌아가기</button>
+            <div class="bottom-bar-container">
+                <div id="audio-player-container" class="audio-player-container hidden">
+                    <button id="play-pause-btn" class="audio-btn">
+                        <span class="material-icons">play_arrow</span>
+                    </button>
+                    <div class="volume-control">
+                        <button id="mute-btn" class="audio-btn">
+                            <span class="material-icons">volume_up</span>
+                        </button>
+                        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.1">
+                    </div>
+                </div>
+
+                <div class="story-nav-arrows">
+                    <button id="prev-line-btn" class="story-nav-btn">&#x2190; 이전</button>
+                    <button id="next-line-btn" class="story-nav-btn">다음 →</button>
+                    <button id="next-story-btn" class="story-nav-btn hidden">다음 스토리 보기 →</button>
+                    <button id="return-btn" class="story-nav-btn hidden">돌아가기</button>
+                </div>
+
+                <div class="bottom-bar-spacer"></div>
             </div>
         </div>
     </div>
