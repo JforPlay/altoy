@@ -690,15 +690,17 @@ body.dark-mode .story-header #view-script-btn:hover {
 }
 
 .bottom-bar-container .audio-player-container {
-  justify-self: start; /* Align player to the left */
+  grid-column: 1 / 2; /* Explicitly assign to the first column */
+  justify-self: start; 
 }
 
 .bottom-bar-container .story-nav-arrows {
-  justify-self: center; /* Align buttons to the center */
+  grid-column: 2 / 3; /* Explicitly assign to the center column */
+  justify-self: center; 
 }
 
-/* The spacer is empty and just takes up space on the right */
 .bottom-bar-container .bottom-bar-spacer {
+  grid-column: 3 / 4; /* Explicitly assign to the third column */
   justify-self: end;
 }
 
