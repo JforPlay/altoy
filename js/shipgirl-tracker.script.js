@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error("Error loading data files:", error);
             const container = document.getElementById('ship-list-container');
-            if(container) container.innerHTML = `<p style="color: red; text-align: center;">데이터 파일을 불러오는 데 실패했습니다. 파일 경로와 JSON 형식을 확인하세요.</p>`;
+            if (container) container.innerHTML = `<p style="color: red; text-align: center;">데이터 파일을 불러오는 데 실패했습니다. 파일 경로와 JSON 형식을 확인하세요.</p>`;
             throw error;
         }
     }
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const nationInfo = nationalityData[ship.nationality];
         const primaryTypeInfo = shipTypeData[ship.type];
         const rarityClass = ship.rarity ? `rarity-${ship.rarity}` : '';
-        
+
         let descriptionHTML = '';
         if (ship.description && ship.description.length > 0) {
             const listItems = ship.description.map(desc => `<li>• ${desc}</li>`).join('');
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (ship.pt_get !== undefined) trackerItems.push(createTrackerItemHTML('입수 시', ship.pt_get, 'get'));
         if (ship.pt_level !== undefined) trackerItems.push(createTrackerItemHTML('120 달성시', ship.pt_level, 'level'));
         if (ship.pt_upgrage !== undefined) trackerItems.push(createTrackerItemHTML('풀돌 시', ship.pt_upgrage, 'upgrade'));
-        if(trackerItems.length > 0) {
+        if (trackerItems.length > 0) {
             trackerHTML = `<div class="tracker-section">${trackerItems.join('')}</div>`;
         }
 
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    
+
     function calculateAndDisplayScores() {
         const fleetTech = {};
         const statTech = {};
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderFleetTechTable(fleetTech);
         renderStatTechTable(statTech);
     }
-    
+
     function renderFleetTechTable(scores) {
         const container = document.getElementById('fleet-tech-container');
         let tableHTML = `<div class="score-table-wrapper"><h2>진영 점수</h2><table class="score-table"><tr><th>진영</th><th>점수</th></tr>`;
@@ -174,15 +174,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById('stat-tech-container');
         const headers = new Set();
         Object.values(scores).forEach(attrScores => Object.keys(attrScores).forEach(typeId => headers.add(typeId)));
-        
+
         if (headers.size === 0) {
-            container.innerHTML = ''; 
+            container.innerHTML = '';
             return;
         }
 
         const sortedHeaders = Array.from(headers).sort((a, b) => a - b);
         let tableHTML = `<div class="score-table-wrapper"><h2>함대 기술점수 (획득/120렙)</h2><table class="score-table"><tr><th>속성</th>${sortedHeaders.map(id => `<th>${shipTypeData[id]?.type_name || `Type ${id}`}</th>`).join('')}</tr>`;
-        
+
         for (const attrId in scores) {
             if (Object.keys(scores[attrId]).length > 0) {
                 tableHTML += `<tr><td class="header-col">${attrTypeData[attrId]?.condition || `스탯 ${attrId}`}</td>`;
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             searchDropdown.appendChild(a);
         });
-        
+
         const rarities = [...new Set(Object.values(fullShipData).map(ship => ship.rarity).filter(Boolean))];
         const rarityOrder = ['N', 'R', 'SR', 'SSR', 'UR'];
         rarities.sort((a, b) => rarityOrder.indexOf(a) - rarityOrder.indexOf(b));
@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allItem.className = 'checkbox-filter-item';
             allItem.innerHTML = `<input type="checkbox" id="${allId}" value="all" data-filter-type="all" checked><label for="${allId}">전체</label>`;
             wrapper.appendChild(allItem);
-            
+
             const items = Array.isArray(f.data) ? f.data : Object.values(f.data);
 
             items.sort(f.sort).forEach(item => {
@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
             group.appendChild(wrapper);
             filterBar.appendChild(group);
         });
-        
+
         const dropdownContainer = document.createElement('div');
         dropdownContainer.className = 'dropdown-controls-container';
         const dropdownFilters = [
@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dropdownContainer.appendChild(group);
         });
         filterBar.appendChild(dropdownContainer);
-        
+
         const actionContainer = document.createElement('div');
         actionContainer.className = 'action-controls-container';
 
@@ -315,7 +315,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const btn = document.createElement('button');
             btn.textContent = action.label;
             btn.className = 'bulk-check-btn';
-            btn.onclick = () => bulkCheck(action.type, action.state);
+            // This onclick function now calls the modal first
+            btn.onclick = () => {
+                const message = `주의)) '${action.label}' 작업을 실행하시겠습니까? 되돌리기 쉽지 않아요.`;
+                showConfirmationModal(message, () => bulkCheck(action.type, action.state));
+            };
             bulkCheckWrapper.appendChild(btn);
         });
         bulkCheckContainer.appendChild(bulkCheckWrapper);
@@ -328,11 +332,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const importButton = document.createElement('button');
         importButton.id = 'import-progress-btn';
         importButton.textContent = '가져오기';
-        
+
         const resetButton = document.createElement('button');
         resetButton.id = 'reset-filters-btn';
         resetButton.textContent = '필터 초기화';
-        
+
         actionContainer.appendChild(exportButton);
         actionContainer.appendChild(importButton);
         actionContainer.appendChild(resetButton);
@@ -351,6 +355,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         calculateAndDisplayScores();
         autoSaveProgress();
+    }
+
+    function showConfirmationModal(message, onConfirm) {
+        const modal = document.getElementById('confirmation-modal');
+        if (!modal) return;
+
+        const modalText = document.getElementById('modal-text');
+        const confirmBtn = document.getElementById('modal-confirm-btn');
+        const cancelBtn = document.getElementById('modal-cancel-btn');
+
+        modalText.textContent = message;
+
+        // Use .cloneNode to clear previous event listeners from the confirm button
+        const newConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+
+        const closeModal = () => {
+            modal.classList.remove('visible');
+            // Hide with display:none after transition for better performance
+            setTimeout(() => {
+                if (!modal.classList.contains('visible')) {
+                    modal.style.display = 'none';
+                }
+            }, 300); // This should match the CSS transition duration
+        };
+
+        // Attach new event listeners
+        newConfirmBtn.addEventListener('click', () => {
+            onConfirm();
+            closeModal();
+        });
+
+        cancelBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            // Close if clicked on the overlay background
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Show the modal
+        modal.style.display = 'flex';
+        // Use a tiny timeout to allow the display property to apply before adding the class for the transition
+        setTimeout(() => modal.classList.add('visible'), 10);
     }
 
     function autoSaveProgress() {
@@ -379,9 +427,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const getCheckbox = card.querySelector('[data-type="get"]');
                 const levelCheckbox = card.querySelector('[data-type="level"]');
                 const upgradeCheckbox = card.querySelector('[data-type="upgrade"]');
-                if(getCheckbox) getCheckbox.checked = get;
-                if(levelCheckbox) levelCheckbox.checked = level;
-                if(upgradeCheckbox) upgradeCheckbox.checked = upgrade;
+                if (getCheckbox) getCheckbox.checked = get;
+                if (levelCheckbox) levelCheckbox.checked = level;
+                if (upgradeCheckbox) upgradeCheckbox.checked = upgrade;
             }
         }
         calculateAndDisplayScores();
@@ -410,7 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         const dataStr = JSON.stringify(progress, null, 2);
-        const dataBlob = new Blob([dataStr], {type: "application/json"});
+        const dataBlob = new Blob([dataStr], { type: "application/json" });
         const url = URL.createObjectURL(dataBlob);
         const link = document.createElement('a');
         link.download = 'shipgirl_progress.json';
@@ -418,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
         link.click();
         URL.revokeObjectURL(url);
     }
-    
+
     function importProgress() {
         const input = document.createElement('input');
         input.type = 'file';
@@ -460,7 +508,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allToggle.checked = true;
         }
     }
-    
+
     function applyFilters() {
         const searchQuery = document.getElementById('search-bar').value.toLowerCase();
         const progressFilter = document.getElementById('progress-filter').value;
@@ -469,14 +517,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const checkedNations = Array.from(document.querySelectorAll('#nationality-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value);
         const checkedTypes = Array.from(document.querySelectorAll('#type-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value);
         const checkedRarities = Array.from(document.querySelectorAll('#rarity-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value);
-        
+
         const isNationFilterActive = checkedNations.length > 0;
         const isTypeFilterActive = checkedTypes.length > 0;
         const isRarityFilterActive = checkedRarities.length > 0;
 
         document.querySelectorAll('.ship-card').forEach(card => {
             const data = card.dataset;
-            
+
             const getChecked = card.querySelector('[data-type="get"]')?.checked;
             const levelChecked = card.querySelector('[data-type="level"]')?.checked;
             const upgradeChecked = card.querySelector('[data-type="upgrade"]')?.checked;
@@ -500,7 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         calculateAndDisplayScores();
     }
-    
+
     function resetFilters() {
         document.getElementById('search-bar').value = '';
         document.querySelectorAll('#filter-bar input[type="checkbox"]').forEach(cb => {
@@ -568,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             populateFilters();
-            
+
             const fragment = document.createDocumentFragment();
             for (const shipId in fullShipData) {
                 fragment.appendChild(createShipCard(fullShipData[shipId], shipId));

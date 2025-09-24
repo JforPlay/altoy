@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/nav.style.css">
 </head>
 <body>
-    <div id="navbar-placeholder"></div>
+    <div id="nav-placeholder"></div>
     <header>
         <h1>벽람항로 기술/진영점수 계산기</h1>
         <div id="score-display-area">
@@ -20,6 +20,18 @@
         <div id="filter-bar"></div>
         <div id="ship-list-container"></div>
     </main>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" style="display: none;">
+        <div class="modal-content">
+            <p id="modal-text">Are you sure?</p>
+            <div class="modal-actions">
+                <button id="modal-confirm-btn">당장 진행시켜</button>
+                <button id="modal-cancel-btn">잘못 눌렀어요</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/shipgirl-tracker.script.js"></script>
     <script src="js/nav.script.js"></script>
 </body>

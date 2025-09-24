@@ -286,8 +286,6 @@ h1 {
     justify-content: center;
 }
 
-/* ... existing card styles ... */
-
 /* --- Individual Card Styling --- */
 .ship-card {
     background-color: white;
@@ -427,6 +425,89 @@ h1 {
 .tracker-item input[type="checkbox"] {
     cursor: pointer;
 }
+
+/* --- Confirmation Modal Styles --- */
+#confirmation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s 0.3s;
+}
+
+#confirmation-modal.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+#confirmation-modal.visible .modal-content {
+    transform: scale(1);
+}
+
+.modal-content p {
+    margin: 0 0 20px 0;
+    font-size: 1.1rem;
+    color: #333;
+    line-height: 1.4;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.modal-actions button {
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.modal-actions button:active {
+    transform: scale(0.98);
+}
+
+#modal-confirm-btn {
+    background-color: #27ae60;
+    color: white;
+}
+#modal-confirm-btn:hover {
+    background-color: #229954;
+}
+
+#modal-cancel-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+#modal-cancel-btn:hover {
+    background-color: #c0392b;
+}
+
 
 /* --- Responsive Styles --- */
 @media (max-width: 768px) {
