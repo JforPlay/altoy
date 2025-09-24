@@ -142,71 +142,7 @@ body {
     font-weight: normal;
 }
 
-.stats-leaderboards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-}
-
-.leaderboard-list-home {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.leaderboard-item-home {
-    display: grid;
-    grid-template-columns: 35px 40px 1fr auto;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.75rem;
-    border-radius: 6px;
-}
-
-.leaderboard-item-home:nth-child(odd) {
-    background-color: #1e1e1e;
-}
-
-.leaderboard-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 4px;
-}
-
-.leaderboard-icon-placeholder {
-    width: 40px;
-    height: 40px;
-    border-radius: 4px;
-    background-color: #2f3136;
-}
-
-.leaderboard-item-home .rank {
-    font-size: 1.3em;
-    font-weight: bold;
-    color: #b9bbbe;
-    text-align: center;
-}
-
-.rank-1 { color: #FFD700; text-shadow: 0 0 6px rgba(255, 215, 0, 0.7); }
-.rank-2 { color: #C0C0C0; text-shadow: 0 0 6px rgba(192, 192, 192, 0.7); }
-.rank-3 { color: #CD7F32; text-shadow: 0 0 6px rgba(205, 127, 50, 0.7); }
-
-.leaderboard-item-home .name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.leaderboard-item-home .score {
-    font-weight: bold;
-    color: #ffc107;
-}
-
-.loading-placeholder {
-    color: #8e9297;
-    text-align: center;
-    padding: 1rem;
-}
+/* LEADERBOARD STYLES HAVE BEEN REMOVED */
 
 /* --- Footer Styles --- */
 .site-footer {
@@ -245,7 +181,5 @@ body {
     .link-grid {
         grid-template-columns: 1fr;
     }
-    .stats-leaderboards {
-        grid-template-columns: 1fr;
-    }
+    /* Removed .stats-leaderboards rule */
 }
