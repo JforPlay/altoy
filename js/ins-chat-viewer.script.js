@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const sticker = document.createElement('img');
         sticker.src = stickerUrl;
         sticker.className = 'sticker-image';
-        sticker.alt = 'Sticker';
+        sticker.alt = '움짤은 아직 안돼요..';
         
         container.appendChild(sticker);
 
