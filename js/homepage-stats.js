@@ -13,29 +13,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. Get required HTML elements
     const totalVotesEl = document.getElementById('homepage-total-votes');
-    const currentDateEl = document.getElementById('current-date');
+    const statsTitleEl = document.getElementById('stats-title-with-date');
 
     // 3. Main function to initialize stats
     const initializeHomepageStats = async () => {
-        // Display the current date
-        if (currentDateEl) {
+        // Create the new title string with the current date
+        if (statsTitleEl) {
             const today = new Date();
-            currentDateEl.textContent = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            const dateString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            statsTitleEl.textContent = `재미로 보는 현재 (${dateString}) 까지의 총 스킨투표 수`;
         }
         
         try {
-            // Fetch all documents from the skin_polls collection
             const pollSnapshot = await db.collection("skin_polls").get();
             
-            // Calculate only the grand total of votes
             let grandTotalVotes = 0;
             pollSnapshot.forEach(doc => {
                 grandTotalVotes += (doc.data().total_votes || 0);
             });
 
-            // Update the total votes element
             if (totalVotesEl) {
-                totalVotesEl.textContent = grandTotalVotes.toLocaleString();
+                totalVotesEl.textContent = grandTotalVotes.toLocaleString() + ' 표';
             }
 
         } catch (error) {

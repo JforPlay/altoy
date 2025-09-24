@@ -2,7 +2,7 @@
 body {
     background-color: #121212;
     color: #e0e0e0;
-    font-family: sans-serif; /* A single font-family for consistency */
+    font-family: sans-serif;
 }
 
 .home-container {
@@ -61,11 +61,11 @@ body {
     margin-bottom: 0.5rem;
     color: #ffffff;
     display: flex;
-    align-items: center; /* Vertically aligns icon and text */
+    align-items: center;
 }
 
 .link-card h3 i {
-    margin-right: 0.75rem; /* Space between icon and text */
+    margin-right: 0.75rem;
     font-size: 1.1em;
 }
 
@@ -110,39 +110,17 @@ body {
     font-weight: bold;
 }
 
-.header-aggregate {
-    display: flex;
-    align-items: baseline;
-    gap: 1.5rem;
-}
-
 .total-votes-display {
     text-align: right;
 }
 
-.total-votes-display h3 {
-    margin: 0 0 4px 0;
-    font-size: 1em;
-    color: #b9bbbe;
-    font-weight: normal;
-}
-
 .total-votes-display p {
     margin: 0;
-    font-size: 2em;
+    font-size: 1.7em;
     font-weight: bold;
     color: #ffffff;
     line-height: 1;
 }
-
-.date-display p {
-    margin: 0;
-    font-size: 1em;
-    color: #8e9297;
-    font-weight: normal;
-}
-
-/* LEADERBOARD STYLES HAVE BEEN REMOVED */
 
 /* --- Footer Styles --- */
 .site-footer {
@@ -181,5 +159,4 @@ body {
     .link-grid {
         grid-template-columns: 1fr;
     }
-    /* Removed .stats-leaderboards rule */
 }
