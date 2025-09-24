@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displaySticker(script) {
         const isPlayer = script.ship_group === 0;
-        const stickerUrl = `https://raw.githubusercontent.com/AzurLaneTools/AzurLaneMytools/main/page/azur-lane/data/sticker/${script.param}.png`;
+        const stickerUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/emoji/${script.param}.png`;
 
         const container = document.createElement('div');
         container.className = 'sticker-container';
