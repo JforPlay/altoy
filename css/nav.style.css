@@ -30,12 +30,12 @@
 
 /* ADD THIS RULE for the hover effect */
 .nav-logo:hover {
-    transform: scale(1.1); /* Makes the logo slightly larger on hover */
+  transform: scale(1.1); /* Makes the logo slightly larger on hover */
 }
 
 /* ADD THIS RULE to increase the icon size */
 .nav-logo .material-icons {
-    font-size: 1.8rem; /* Increased from the default size */
+  font-size: 1.8rem; /* Increased from the default size */
 }
 
 .nav-portrait {
@@ -171,6 +171,10 @@
   .nav-item {
     margin: 1rem 0;
     width: 100%;
+  }
+
+  .nav-item.dropdown.active .dropdown-menu {
+    display: block; /* Shows the dropdown when its parent has the 'active' class */
   }
 
   .dropdown-menu {

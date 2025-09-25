@@ -99,13 +99,28 @@ function loadFooter() {
 }
 
 function setupDropdownToggles() {
-    // Select only the top-level links that are meant to open dropdowns
-    const dropdownToggles = document.querySelectorAll('.nav-item.dropdown > .nav-links');
+    const dropdowns = document.querySelectorAll('.nav-item.dropdown');
 
-    dropdownToggles.forEach(toggle => {
-        toggle.addEventListener('click', function (event) {
-            // Prevent the link from navigating to href="#"
+    dropdowns.forEach(dropdown => {
+        const toggleLink = dropdown.querySelector('.nav-links');
+
+        toggleLink.addEventListener('click', function(event) {
+            // This prevents the page from jumping to the top from the href="#"
             event.preventDefault();
+
+            // This mobile-only logic toggles the dropdown on tap
+            if (window.innerWidth <= 768) {
+                // Check if the current dropdown is already open
+                const wasActive = dropdown.classList.contains('active');
+
+                // First, close all dropdowns to ensure only one is open at a time
+                document.querySelectorAll('.nav-item.dropdown').forEach(d => d.classList.remove('active'));
+
+                // If the clicked dropdown wasn't already open, open it
+                if (!wasActive) {
+                    dropdown.classList.add('active');
+                }
+            }
         });
     });
 }
