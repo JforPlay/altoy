@@ -407,6 +407,10 @@
         "name": "Sleeping Bunny",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101471/icon.png"
     },
+    "101472": {
+        "name": "하이테크? 인술?",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101472/icon.png"
+    },
     "101480": {
         "name": "잉그레이엄",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101480/icon.png"
@@ -442,6 +446,10 @@
     "101511": {
         "name": "꾸벅꾸벅 바쁜 날",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101511/icon.png"
+    },
+    "101512": {
+        "name": "兔兔城主的巡游间隙",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101512/icon.png"
     },
     "101520": {
         "name": "벨",
@@ -1647,6 +1655,10 @@
         "name": "차밍 스테이지",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/118021/icon.png"
     },
+    "118022": {
+        "name": "女忍者的危险综艺秀",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/118022/icon.png"
+    },
     "131170": {
         "name": "치킨랩, 그리고 졸음…",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/131170/icon.png"
@@ -2691,6 +2703,10 @@
         "name": "Under Pleasure",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205022/icon.png"
     },
+    "205023": {
+        "name": "西瓜两断",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205023/icon.png"
+    },
     "205029": {
         "name": "워스파이트·改 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205029/icon.png"
@@ -3399,6 +3415,10 @@
         "name": "눈 녹고 불꽃 피는 밤",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301132/icon.png"
     },
+    "301139": {
+        "name": "시라츠유·改",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301139/icon.png"
+    },
     "301140": {
         "name": "유다치",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301140/icon.png"
@@ -3715,6 +3735,10 @@
         "name": "간주 모노크롬 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301491/icon.png"
     },
+    "301492": {
+        "name": "忠心的守护灵狐",
+        "icon": null
+    },
     "301498": {
         "name": "무구한 하얀 여우",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301498/icon.png"
@@ -4011,6 +4035,14 @@
         "name": "눈 요정의 파티 코디",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301911/icon.png"
     },
+    "301920": {
+        "name": "{namecode:307}",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301920/icon.png"
+    },
+    "301921": {
+        "name": "닌자 타에카제의 급강하 수련!",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301921/icon.png"
+    },
     "302010": {
         "name": "유바리",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302010/icon.png"
@@ -4231,6 +4263,14 @@
         "name": "흰토끼의 환복 시간",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302261/icon.png"
     },
+    "302270": {
+        "name": "{namecode:306}",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302270/icon.png"
+    },
+    "302271": {
+        "name": "무녀의 명상 수련",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302271/icon.png"
+    },
     "303010": {
         "name": "후루타카",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303010/icon.png"
@@ -4398,6 +4438,18 @@
     "303191": {
         "name": "푸른 바다의 물놀이",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303191/icon.png"
+    },
+    "303192": {
+        "name": "万船集怀",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303192/icon.png"
+    },
+    "303200": {
+        "name": "{namecode:305}",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303200/icon.png"
+    },
+    "303201": {
+        "name": "요괴의 밤에 피어나",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303201/icon.png"
     },
     "304010": {
         "name": "콘고 ",
@@ -4699,6 +4751,14 @@
         "name": "\"달갑지 않은\" 성야제",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305143/icon.png"
     },
+    "305160": {
+        "name": "{namecode:304}",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305160/icon.png"
+    },
+    "305161": {
+        "name": "탈출 실패…?",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305161/icon.png"
+    },
     "306010": {
         "name": "{namecode:85}",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306010/icon.png"
@@ -4991,6 +5051,14 @@
         "name": "옥좌 위에 핀 꽃",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307151/icon.png"
     },
+    "307160": {
+        "name": "{namecode:302}",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307160/icon.png"
+    },
+    "307161": {
+        "name": "흐드러지게 피어나는 닌자의 여흥",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307161/icon.png"
+    },
     "308010": {
         "name": "이19",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308010/icon.png"
@@ -5078,6 +5146,18 @@
     "317010": {
         "name": "이13",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317010/icon.png"
+    },
+    "317020": {
+        "name": "{namecode:303}",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317020/icon.png"
+    },
+    "317021": {
+        "name": "화려한 붉은 실의 춤사위",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317021/icon.png"
+    },
+    "317022": {
+        "name": "화려한 붉은 실의 춤사위",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317022/icon.png"
     },
     "319010": {
         "name": "{namecode:188}",
@@ -6791,6 +6871,10 @@
         "name": "아이캐치 트레저",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603052/icon.png"
     },
+    "603053": {
+        "name": "独属二人的灯火夜",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603053/icon.png"
+    },
     "603060": {
         "name": "고리치아",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603060/icon.png"
@@ -7187,6 +7271,10 @@
         "name": "예스 마이 레이디",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703012/icon.png"
     },
+    "703013": {
+        "name": "情满月圆",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703013/icon.png"
+    },
     "703020": {
         "name": "쿠르스크",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703020/icon.png"
@@ -7218,6 +7306,14 @@
     "705021": {
         "name": "폴 스카이 에이전트",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705021/icon.png"
+    },
+    "705022": {
+        "name": "와이어드 인터로게이트",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705022/icon.png"
+    },
+    "705023": {
+        "name": "와이어드 인터로게이트",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705023/icon.png"
     },
     "705040": {
         "name": "소비에츠카야 벨로루시아",
@@ -7471,6 +7567,10 @@
         "name": "연주자의 칼끝",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/803021/icon.png"
     },
+    "803022": {
+        "name": "演奏者的夜想曲",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/803022/icon.png"
+    },
     "803030": {
         "name": "뒤켄",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/803030/icon.png"
@@ -7514,6 +7614,10 @@
     "805031": {
         "name": "과열된 한여름의 비적",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/805031/icon.png"
+    },
+    "805032": {
+        "name": "圣宵之鬼的微醺",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/805032/icon.png"
     },
     "806010": {
         "name": "부아 벨루",
@@ -8979,6 +9083,38 @@
         "name": "레이냐",
         "icon": null
     },
+    "900520": {
+        "name": "？？？?",
+        "icon": null
+    },
+    "900521": {
+        "name": "알자스",
+        "icon": null
+    },
+    "900522": {
+        "name": "브렌누스",
+        "icon": null
+    },
+    "900523": {
+        "name": "괌",
+        "icon": null
+    },
+    "900524": {
+        "name": "가스코뉴",
+        "icon": null
+    },
+    "900525": {
+        "name": "라피Ⅱ",
+        "icon": null
+    },
+    "900526": {
+        "name": "워스파이트",
+        "icon": null
+    },
+    "900527": {
+        "name": "{namecode:294}",
+        "icon": null
+    },
     "901010": {
         "name": "르 마르스 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901010/icon.png"
@@ -9235,6 +9371,10 @@
         "name": "여름 환경 대응 쉘",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/999011/icon.png"
     },
+    "999012": {
+        "name": "旅情机巧",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/999012/icon.png"
+    },
     "999020": {
         "name": "플랑드르",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/999020/icon.png"
@@ -9386,6 +9526,14 @@
     "9701080": {
         "name": "카와카제·META",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701080/icon.png"
+    },
+    "9701090": {
+        "name": "유다치·META",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701090/icon.png"
+    },
+    "9701100": {
+        "name": "杜威·META",
+        "icon": null
     },
     "9702010": {
         "name": "헬레나·META",
