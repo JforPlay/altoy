@@ -589,7 +589,7 @@ document.addEventListener('DOMContentLoaded', () => {
     nextLineBtn.addEventListener('click', (e) => { e.stopPropagation(); advanceStory(); });
     nextStoryBtn.addEventListener('click', (e) => { e.stopPropagation(); if (nextMemory) startStory(nextMemory); });
     returnBtn.addEventListener('click', (e) => { e.stopPropagation(); returnToMemorySelection(); });
-    backToEventBtn.addEventListener('click', (e) => { e.preventDefault(); switchView(eventSelectionView); window.history.pushState({}, '', 'main-story-viewer.html'); });
+    backToEventBtn.addEventListener('click', (e) => { e.preventDefault(); switchView(eventSelectionView); window.history.pushState({}, '', window.location.pathname); });
     backToMemoryBtn.addEventListener('click', (e) => { e.preventDefault(); returnToMemorySelection(); });
 
     // Modal Listeners
