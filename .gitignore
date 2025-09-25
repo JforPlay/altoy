@@ -1,5 +1,6 @@
 .vscode/
 .DS_Store/
-_site/*
+_site/
 .jekyll-cache/
 _config.yml
+scripts/
