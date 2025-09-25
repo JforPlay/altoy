@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <base href="/altoy/">
     <meta charset="UTF-8">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="css/ins-viewer.style.css">
     <link rel="stylesheet" href="css/nav.style.css">
 </head>
+
 <body>
     <div id="navbar-placeholder"></div>
     <header>
@@ -30,6 +32,10 @@
             </div>
         </div>
         <button id="clear-filters-btn">필터 초기화</button>
+        <button class="theme-toggle">
+            <span class="theme-icon-sun">☀️</span>
+            <span class="theme-icon-moon hidden">🌙</span>
+        </button>
     </div>
 
     <div class="main-container">
@@ -39,9 +45,10 @@
             </div>
         </div>
         <div id="gallery-view" class="gallery-container">
-            </div>
+        </div>
     </div>
     <script src="js/ins-viewer.script.js"></script>
     <script src="js/nav.script.js"></script>
 </body>
+
 </html>
