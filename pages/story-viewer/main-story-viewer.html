@@ -9,8 +9,10 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Noto+Sans+KR:wght@300;400;700&display=swap"
         rel="stylesheet">
+
     <link rel="stylesheet" href="css/story-viewer.style.css">
     <link rel="stylesheet" href="css/nav.style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 
 <body>
@@ -78,7 +80,7 @@
                     <span id="bgm-name" class="bgm-name"></span>
                     <div class="volume-control">
                         <button id="mute-btn" class="audio-btn"><span class="material-icons">volume_up</span></button>
-                        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.1">
+                        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.01">
                     </div>
                 </div>
                 <div class="story-nav-arrows">
@@ -100,6 +102,8 @@
         </div>
     </div>
 
+    <!-- The new common script MUST be included BEFORE the page-specific script -->
+    <script src="js/story-viewer-common.js" defer></script>
     <script src="js/main-story-viewer.script.js" defer></script>
     <script src="js/nav.script.js"></script>
 </body>
