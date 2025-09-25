@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (updateUrl) {
             const urlParams = new URLSearchParams();
             urlParams.set('eventid', currentEventId);
-            window.history.pushState({ eventId: currentEventId }, '', `?${urlParams.toString()}`);
+            window.history.pushState({ eventId: currentEventId }, '', `${window.location.pathname}?${urlParams.toString()}`);
         }
 
         switchView(memorySelectionView);
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function returnToMemorySelection() {
         const urlParams = new URLSearchParams();
         urlParams.set('eventid', currentEventId);
-        window.history.pushState({ eventId: currentEventId }, '', `?${urlParams.toString()}`);
+        window.history.pushState({ eventId: currentEventId }, '', `${window.location.pathname}?${urlParams.toString()}`);
 
         switchView(memorySelectionView);
 
@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams();
             urlParams.set('eventid', currentEventId);
             urlParams.set('story', memory.id);
-            window.history.pushState({ eventId: currentEventId, storyId: memory.id }, '', `?${urlParams.toString()}`);
+            window.history.pushState({ eventId: currentEventId, storyId: memory.id }, '', `${window.location.pathname}?${urlParams.toString()}`);
         }
 
         renderScriptLine();

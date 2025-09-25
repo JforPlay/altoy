@@ -354,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
         storyButton.style.marginTop = '1rem';
         storyButton.onclick = () => {
             // This now correctly links to the Tier 2 memory selection page
-            window.location.href = `/pages/story-viewer/main-story-viewer.html?eventId=${id}`;
+            window.location.href = `pages/story-viewer/main-story-viewer.html?eventId=${id}`;
         };
         modalFooter.prepend(storyButton);
 
