@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentStoryDefaultBgUrl: null, // Only used by main viewer
         audio: new Audio(),
 
+        COMMANDER_ICON_PATH: 'assets/icon/commander.png',
         BASE_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/",
         BGM_URL_PREFIX: "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/",
 
@@ -103,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }));
 
             const jsonDataArray = await Promise.all(fetchPromises);
-            
+
             // Allow the config to process the loaded data
             this.config.processLoadedData(this, jsonDataArray);
 
@@ -117,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // =========================================================================
         setupEventListeners() {
             const el = this.elements;
-            
+
             // --- Listeners for Static Page Elements ---
             el.searchBar?.addEventListener('input', (e) => this.populateEventGrid(e.target.value));
             el.backToEventBtn?.addEventListener('click', (e) => {
@@ -154,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.audio.addEventListener('play', () => this.updateAudioPlayerUI());
             this.audio.addEventListener('pause', () => this.updateAudioPlayerUI());
         },
-        
+
         // =========================================================================
         // URL & VIEW MANAGEMENT
         // =========================================================================
@@ -170,11 +171,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (eventId) url.searchParams.set('eventid', eventId);
             if (storyId) url.searchParams.set('story', storyId);
-            
+
             // Use pathname and search to keep the full path
             history.pushState({ eventId, storyId }, '', url.pathname + url.search);
         },
-        
+
         handleUrlParameters() {
             const urlParams = new URLSearchParams(window.location.search);
             const eventId = urlParams.get('eventId') || urlParams.get('eventid');
@@ -195,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.showError(`Event with ID '${eventId}' not found.`);
             }
         },
-        
+
         switchView(viewToShow) {
             [this.elements.eventSelectionView, this.elements.memorySelectionView, this.elements.storyViewerView].forEach(view => {
                 if (view) view.classList.toggle('hidden', view !== viewToShow);
@@ -217,8 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             filteredEvents.forEach(([key, event]) => {
                 // This new line robustly finds the ID whether it's the key or a property inside the object.
-                const eventId = event.id || key; 
-                
+                const eventId = event.id || key;
+
                 const card = this.createCard(
                     event.name,
                     event.description || `Chapter: ${event.name.replace(/[^0-9]/g, '')}`,
@@ -237,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let thumbnailHtml = '';
             if (icon) {
-                 let imageUrl = icon.startsWith('http') || icon.startsWith('data:image') || icon.includes('assets/')
+                let imageUrl = icon.startsWith('http') || icon.startsWith('data:image') || icon.includes('assets/')
                     ? icon
                     : `${pathPrefix}${icon}.png`;
                 thumbnailHtml = `<div class="card-thumbnail" style="background-image: url('${imageUrl}')"></div>`;
@@ -306,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         },
-        
+
         // =========================================================================
         // STORY PLAYER LOGIC
         // =========================================================================
@@ -325,9 +326,9 @@ document.addEventListener('DOMContentLoaded', () => {
             this.lastActorId = null;
             this.currentBgm = null;
             this.currentStoryDefaultBgUrl = null;
-            
+
             if (this.config.viewerType === 'main' && memory.mask) {
-                 this.currentStoryDefaultBgUrl = `${this.BASE_URL}${memory.mask}.png`;
+                this.currentStoryDefaultBgUrl = `${this.BASE_URL}${memory.mask}.png`;
             }
 
             const event = this.storylineData[this.currentEventId];
@@ -341,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (updateUrl) {
                 this.updateUrl(this.currentEventId, memory.id);
             }
-            
+
             // Preload key images
             const imagesToPreload = new Set();
             if (this.currentStoryDefaultBgUrl) imagesToPreload.add(this.currentStoryDefaultBgUrl);
@@ -352,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.renderScriptLine();
             this.switchView(this.elements.storyViewerView);
         },
-        
+
         isLineDisplayable(line) {
             if (!line) return false;
             return line.say || (line.sequence && line.sequence[0] && line.sequence[0][0]) || (line.signDate && line.signDate[0]) || (line.options && line.options.length > 0);
@@ -363,12 +364,12 @@ document.addEventListener('DOMContentLoaded', () => {
             let nextIndex = this.scriptIndex + 1;
             // For world viewer, skip non-displayable lines
             if (this.config.viewerType === 'world') {
-                 for (let i = this.scriptIndex + 1; i < this.currentStoryScript.length; i++) {
+                for (let i = this.scriptIndex + 1; i < this.currentStoryScript.length; i++) {
                     if (this.isLineDisplayable(this.currentStoryScript[i])) {
                         nextIndex = i;
                         break;
                     }
-                     if (i === this.currentStoryScript.length - 1) nextIndex = i; // last line
+                    if (i === this.currentStoryScript.length - 1) nextIndex = i; // last line
                 }
             }
             this.scriptIndex = nextIndex;
@@ -413,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.infoScreenText.textContent = infoText;
             } else if (line.say) {
                 el.dialogueBox.classList.remove('hidden');
-                
+
                 // Handle text formatting based on viewer type
                 if (this.config.viewerType === 'main') {
                     const formattedDialogue = line.say.replace(/<color=(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})>(.*?)<\/color>/gi, '<span style="color: $1;">$2</span>');
@@ -423,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const actorInfo = this.getActorInfo(line);
-                
+
                 let displayedName = actorInfo.name;
                 if (this.config.viewerType === 'world' && actorInfo.name === 'Narrator') {
                     displayedName = '';
@@ -445,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
             el.returnBtn.classList.toggle('hidden', !isAtEnd);
             el.nextStoryBtn.classList.toggle('hidden', !(isAtEnd && this.nextMemory));
             el.nextPageIndicator.classList.toggle('hidden', isAtEnd || hasOptions);
-            
+
             if (hasOptions) {
                 line.options.forEach(opt => {
                     const button = document.createElement('button');
@@ -456,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         },
-        
+
         handleOptionSelect(chosenFlag) {
             let nextIndex = -1;
             for (let i = this.scriptIndex + 1; i < this.currentStoryScript.length; i++) {
@@ -473,7 +474,6 @@ document.addEventListener('DOMContentLoaded', () => {
             let actorInfo = { id: null, name: '', icon: null };
 
             // --- Step 1: Establish base actor from `line.actor` ---
-            // This gives us a starting point if the actor is a known shipgirl
             let baseActorId = null;
             if (typeof line.actor === 'number') {
                 baseActorId = line.actor;
@@ -486,32 +486,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 actorInfo = { id: baseActorId, name: char.name, icon: char.icon };
             }
 
-            // --- Step 2: Handle `line.actorName`, which can be an ID, a namecode, or a literal name ---
+            // --- Step 2: Handle `line.actorName` overrides ---
             if (line.actorName) {
                 const actorNameId = parseInt(line.actorName, 10);
-
-                // Case A: `actorName` is a number that maps to a known shipgirl. Override everything.
                 if (!isNaN(actorNameId) && this.shipgirlData[actorNameId]) {
                     const overrideChar = this.shipgirlData[actorNameId];
                     actorInfo.name = overrideChar.name;
                     actorInfo.icon = overrideChar.icon;
-                // Case B: `actorName` is a literal string. It becomes the name.
                 } else {
                     actorInfo.name = line.actorName;
                 }
             }
 
-            // --- Step 3: Handle special cases where no actor is defined ---
+            // --- Step 3: Handle special cases (Commander, Narrator) ---
             if (line.actor === 0 || line.portrait === 'zhihuiguan') {
-                actorInfo = { id: 0, name: '지휘관', icon: null };
+                actorInfo = { id: 0, name: '지휘관', icon: this.COMMANDER_ICON_PATH };
             } else if (this.config.viewerType === 'world' && line.say && !line.actor && !line.actorName) {
                 actorInfo.name = (line.say.includes('·') || line.say.includes('————')) ? 'Narrator' : '지휘관';
+                if (actorInfo.name === '지휘관') {
+                    actorInfo.icon = this.COMMANDER_ICON_PATH;
+                }
             } else if (actorInfo.name === '') {
-                // If after all that the name is still empty, it's the Narrator.
                 actorInfo.name = 'Narrator';
             }
 
-            // --- Step 4: Translate namecode as the final name-processing step ---
+            // --- Step 4: Translate namecode ---
             const nameCodeMatch = String(actorInfo.name).match(/{namecode:(\d+)}/);
             if (nameCodeMatch && this.nameCodeData) {
                 const code = nameCodeMatch[1];
@@ -521,13 +520,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // --- Step 5: Clean up names that are just raw IDs ---
-            // This directly fixes the "304050" bug.
             if (!isNaN(parseInt(actorInfo.name, 10)) && String(actorInfo.name).indexOf('{') === -1) {
                 actorInfo.name = 'Narrator';
             }
 
-            // --- Step 6: Final icon cleanup for non-character speakers ---
-            if (actorInfo.name === 'Narrator' || actorInfo.name === '지휘관') {
+            // --- Step 6: Final icon cleanup for all non-character speakers ---
+            const nonCharacterNames = ['Narrator', '통신기', '분석기', '모두들'];
+            if (nonCharacterNames.includes(actorInfo.name) || actorInfo.name?.includes('?')) {
                 actorInfo.icon = null;
             }
 
@@ -575,13 +574,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         setTimeout(() => document.body.removeChild(flashEl), 300);
                         break;
                     case "fadeout":
-                        if(this.elements.fadeOverlay) {
+                        if (this.elements.fadeOverlay) {
                             this.elements.fadeOverlay.style.transitionDuration = `${duration / 1000}s`;
                             this.elements.fadeOverlay.classList.add('visible');
                         }
                         break;
                     case "fadein":
-                         if(this.elements.fadeOverlay) {
+                        if (this.elements.fadeOverlay) {
                             this.elements.fadeOverlay.style.transitionDuration = `${duration / 1000}s`;
                             this.elements.fadeOverlay.classList.remove('visible');
                         }
@@ -613,7 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (this.elements.bgmNameSpan) this.elements.bgmNameSpan.textContent = bgmName || '';
             this.updateAudioPlayerUI();
         },
-        
+
         updateAudioPlayerUI() {
             const el = this.elements;
             if (!el.playPauseBtn || !el.muteBtn || !el.volumeSlider) return;
@@ -640,7 +639,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => popup.classList.add('hidden'), 500);
             }, duration);
         },
-        
+
         // =========================================================================
         // MODALS
         // =========================================================================
@@ -669,6 +668,6 @@ document.addEventListener('DOMContentLoaded', () => {
             this.elements.summaryModalOverlay.classList.remove('hidden');
         },
         hideSummaryModal() { this.elements.summaryModalOverlay.classList.add('hidden'); },
-        
+
     };
 });
