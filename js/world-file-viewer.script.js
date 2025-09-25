@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const itemData = data[key];
             const galleryItem = document.createElement('div');
             galleryItem.className = 'gallery-item';
-            galleryItem.style.backgroundImage = `url('assets/${itemData.id_2}.png')`;
+            galleryItem.style.backgroundImage = `url('/assets/img/${itemData.id_2}.png')`;
 
             const itemName = document.createElement('div');
             itemName.className = 'gallery-item-name';
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Main Execution ---
-    fetch('data/processed_world_collection_data.json')
+    fetch('/data/processed_world_collection_data.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

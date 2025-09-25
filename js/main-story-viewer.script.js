@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let shipgirlData = {};
     let shipgirlNameMap = {};
     let currentEventId = null;
-    let currentMemoryId = null;
     let currentStoryScript = [];
     let scriptIndex = 0;
     let lastActorId = null;
@@ -104,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function init() {
         try {
             const [storyResponse, shipgirlResponse] = await Promise.all([
-                fetch('data/processed_storyline_data.json'),
-                fetch('data/shipgirl_data.json')
+                fetch('/data/processed_storyline_data.json'),
+                fetch('/data/shipgirl_data.json')
             ]);
 
             if (!storyResponse.ok || !shipgirlResponse.ok) throw new Error('Network response was not ok.');
@@ -266,7 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
             currentStoryDefaultBgUrl = null;
         }
         currentStoryScript = memory.story.scripts;
-        currentMemoryId = memory.id;
         scriptIndex = 0;
         lastActorId = null;
         currentBgm = null;
@@ -275,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const index = event.memory_id.findIndex(mem => mem.id == memory.id);
         nextMemory = (index >= 0 && index < event.memory_id.length - 1) ? event.memory_id[index + 1] : null;
 
-        // --- START: Lightweight Image Preloader ---
+        // Lightweight Image Preloader
         const imagesToPreload = new Set(); // Using a Set prevents duplicate downloads
         if (currentStoryDefaultBgUrl) {
             imagesToPreload.add(currentStoryDefaultBgUrl);
@@ -290,7 +288,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const img = new Image();
             img.src = src;
         });
-        // --- END: Lightweight Image Preloader ---
 
         const eventName = storylineData[currentEventId]?.name || 'Event';
         storyTitle.textContent = `${eventName} - ${memory.title || 'Chapter'}`;
@@ -583,6 +580,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (scriptIndex < currentStoryScript.length - 1) {
             advanceStory();
         }
+    });
+
+    themeToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            // Determine the new theme
+            const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+            // Apply and save the theme
+            applyTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
     });
 
     prevLineBtn.addEventListener('click', (e) => { e.stopPropagation(); goBackStory(); });

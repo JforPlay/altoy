@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch all necessary data files
     Promise.all([
-        fetch('data/subset_skin_data.json').then(res => res.json())
+        fetch('/data/subset_skin_data.json').then(res => res.json())
     ]).then(([skinJson]) => {
         allSkins = Object.values(skinJson).filter(skin => skin['깔끔한 일러']);
         
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to render the list of skin boxes (unchanged)
     const renderSkinList = (skinsToRender) => {
         skinListContainer.innerHTML = '';
-        const gemIconHtml = `<img src="assets/60px-Ruby.png" class="gem-icon" alt="Gem">`;
+        const gemIconHtml = `<img src="/assets/icon/60px-Ruby.png" class="gem-icon" alt="Gem">`;
 
         skinsToRender.forEach(skin => {
             const skinBox = document.createElement('div');

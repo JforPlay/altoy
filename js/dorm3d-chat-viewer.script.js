@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // URL for the main data file
-    const DATA_URL = 'data/processed_dorm3d_data.json';
+    const DATA_URL = '/data/processed_dorm3d_data.json';
 
     // Get HTML elements
     const characterGrid = document.getElementById('character-selector-grid');
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    const showNextLineAfterDelay = (delay = 400) => {
+    const showNextLineAfterDelay = (delay = 1300) => {
         setTimeout(showNextLine, delay);
     }
 
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const lastBubble = storyContainer.lastElementChild;
         if (lastBubble) {
             lastBubble.classList.add('shake-effect');
-            setTimeout(() => lastBubble.classList.remove('shake-effect'), 500);
+            setTimeout(() => lastBubble.classList.remove('shake-effect'), 700);
         }
     }
 

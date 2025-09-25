@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Constants ---
-    const STORY_DATA_URL = 'data/hof_kr.json';
-    const SHIPGIRL_DATA_URL = 'data/shipgirl_data.json';
+    const STORY_DATA_URL = '/data/hof_kr.json';
+    const SHIPGIRL_DATA_URL = '/data/shipgirl_data.json';
     const BASE_URL = "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/";
     const BGM_URL_PREFIX = "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/";
 
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             currentScriptIndex++;
             if (line.say) {
-                setTimeout(showNextLine, 300);
+                setTimeout(showNextLine, 1700);
             } else {
                 showNextLine();
             }
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        setTimeout(showNextLine, 300);
+        setTimeout(showNextLine, 1700);
     }
 
     function displayBubble(line) {

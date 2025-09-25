@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let allData = {};
 
-    fetch('data/processed_storyline_data.json')
+    fetch('/data/processed_storyline_data.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             const isHidden = filterPanel.classList.toggle('hidden');
 
-            // **FIX RE-APPLIED**: Disable dragging when the filter panel is open
+            // Disable dragging when the filter panel is open
             if (!isHidden) {
                 timelineWrapper.style.pointerEvents = 'none';
                 timelineWrapper.style.cursor = 'default';
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!filterPanel.contains(e.target) && !filterButton.contains(e.target)) {
                 if (!filterPanel.classList.contains('hidden')) {
                     filterPanel.classList.add('hidden');
-                    // **FIX RE-APPLIED**: Re-enable dragging when the panel is closed
+                    // Re-enable dragging when the panel is closed
                     timelineWrapper.style.pointerEvents = 'auto';
                     timelineWrapper.style.cursor = 'grab';
                 }
@@ -290,14 +290,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // draw lines between linked events
     function drawLines(visibleItemIds) {
         canvas.width = timelineContainer.scrollWidth;
         canvas.height = timelineContainer.scrollHeight;
 
-        ctx.strokeStyle = '#5c677d';       // Darker line color
-        ctx.lineWidth = 3;                 // Thicker line
-        ctx.shadowColor = 'rgba(92, 103, 125, 0.7)'; // Darker shadow
-        ctx.shadowBlur = 7;                // More pronounced glow
+        ctx.strokeStyle = '#5c677d';
+        ctx.lineWidth = 3;
+        ctx.shadowColor = 'rgba(92, 103, 125, 0.7)';
+        ctx.shadowBlur = 7;
 
         visibleItemIds.forEach(itemId => {
             const itemData = allData[itemId];
