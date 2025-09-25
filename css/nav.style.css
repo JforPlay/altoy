@@ -130,6 +130,10 @@
   background-color: #f2f2f2;
 }
 
+.navbar.navbar-light .menu-icon {
+  color: #333; /* Sets the icon to a dark color */
+}
+
 /* --- Hamburger Menu Styles --- */
 .menu-icon {
   display: none; /* Hidden by default on desktop */
