@@ -442,7 +442,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const hasOptions = line.options && line.options.length > 0;
             const isAtEnd = this.scriptIndex >= this.currentStoryScript.length - 1;
             el.prevLineBtn.disabled = (this.scriptIndex <= 0);
-            el.nextLineBtn.classList.toggle('hidden', isAtEnd || hasOptions);
+
+            // Determine if this is the last *displayable* line
+            const nextDisplayableExists = this.currentStoryScript.slice(this.scriptIndex + 1)
+                .some(line => this.isLineDisplayable(line));
+            el.nextLineBtn.classList.toggle('hidden', hasOptions || !nextDisplayableExists);
+            
             el.returnBtn.classList.toggle('hidden', !isAtEnd);
             el.nextStoryBtn.classList.toggle('hidden', !(isAtEnd && this.nextMemory));
             el.nextPageIndicator.classList.toggle('hidden', isAtEnd || hasOptions);
