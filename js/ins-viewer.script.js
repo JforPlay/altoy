@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Data Fetching ---
     Promise.all([
-        fetch('/data/processed_ins_data.json').then(res => res.json()),
-        fetch('/data/shipgirl_group_data.json').then(res => res.json()),
+        fetch('data/processed_ins_data.json').then(res => res.json()),
+        fetch('data/shipgirl_group_data.json').then(res => res.json()),
         fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/CN/ShareCfg/activity_ins_ship_group_template.json').then(res => res.json())
     ])
     .then(([posts, shipgirlData, templateData]) => {

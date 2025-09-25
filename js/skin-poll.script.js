@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // --- Main Data Fetching and Initialization ---
-  fetch("/data/subset_skin_data.json")
+  fetch("data/subset_skin_data.json")
     .then((response) => response.json())
     .then((jsonData) => {
       allSkins = Object.keys(jsonData).map((key) => ({ id: key, ...jsonData[key] })).filter(skin => skin["한글 함순이 + 스킨 이름"] && skin["함순이 이름"]);

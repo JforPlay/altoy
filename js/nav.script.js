@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function loadNavbar() {
-    fetch('/pages/layouts/nav.html')
+    fetch('pages/layouts/nav.html')
         .then(response => response.text())
         .then(data => {
             document.getElementById('navbar-placeholder').innerHTML = data;
@@ -68,7 +68,7 @@ function initializeDropdowns() {
 
 // Added footer
 function loadFooter() {
-    fetch('/pages/layouts/footer.html')
+    fetch('pages/layouts/footer.html')
         .then(response => {
             if (!response.ok) throw new Error('Network response was not ok');
             return response.text();

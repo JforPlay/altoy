@@ -103,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function init() {
         try {
             const [storyResponse, shipgirlResponse] = await Promise.all([
-                fetch('/data/processed_storyline_data.json'),
-                fetch('/data/shipgirl_data.json')
+                fetch('data/processed_storyline_data.json'),
+                fetch('data/shipgirl_data.json')
             ]);
 
             if (!storyResponse.ok || !shipgirlResponse.ok) throw new Error('Network response was not ok.');

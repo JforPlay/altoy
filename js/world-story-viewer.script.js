@@ -121,9 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
     async function init() {
         try {
             const [storyResponse, summaryResponse, shipgirlResponse] = await Promise.all([
-                fetch('/data/processed_world_storyline.json'),
-                fetch('/data/world_storyline_summary.json'),
-                fetch('/data/shipgirl_data.json')
+                fetch('data/processed_world_storyline.json'),
+                fetch('data/world_storyline_summary.json'),
+                fetch('data/shipgirl_data.json')
             ]);
 
             if (!storyResponse.ok || !summaryResponse.ok || !shipgirlResponse.ok) throw new Error('Network response was not ok.');
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const summaryCard = createCard(
                 `${summaryData.title} 줄거리`,
                 "하나즈키가 작성한 이 챕터의 전체적인 줄거리와 핵심 정보를 확인합니다.",
-                '/assets/img/hanazuki.png',
+                'assets/img/hanazuki.png',
                 null,
                 () => showSummaryModal(eventId)
                 // No ID needed for summary card

@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let allData = {};
 
-    fetch('/data/processed_storyline_data.json')
+    fetch('data/processed_storyline_data.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
