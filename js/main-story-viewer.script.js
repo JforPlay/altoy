@@ -67,19 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // CORE LOGIC
     // =========================================================================
 
-    /** Applies light or dark theme to the document. */
-    const applyTheme = (theme) => {
-        document.body.classList.toggle('dark-mode', theme === 'dark');
-        const mainNavbar = document.querySelector('#navbar-placeholder .navbar');
-        if (mainNavbar) {
-            mainNavbar.classList.toggle('navbar-light', theme !== 'dark');
-        }
-        themeToggles.forEach(toggle => {
-            toggle.querySelector('.theme-icon-sun')?.classList.toggle('hidden', theme === 'dark');
-            toggle.querySelector('.theme-icon-moon')?.classList.toggle('hidden', theme !== 'dark');
-        });
-    };
-
     /** Displays an error message for 5 seconds. */
     const showError = (message) => {
         errorContainer.textContent = message;
@@ -536,6 +523,17 @@ document.addEventListener('DOMContentLoaded', () => {
             audio.src = `${BGM_URL_PREFIX}${bgmName}.ogg`;
             audio.play().catch(e => console.warn("Audio playback failed.", e));
             audioPlayerContainer?.classList.remove('hidden');
+
+            // Update Media Session with the raw filename
+            if ('mediaSession' in navigator) {
+                const eventName = storylineData[currentEventId]?.name || 'Azur Lane';
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: bgmName, // Displays the raw filename
+                    artist: 'Azur Lane OST',
+                    album: eventName,
+                });
+            }
+
         } else if (!bgmName && currentBgm) {
             currentBgm = null;
             audio.pause();
@@ -543,7 +541,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateAudioPlayerUI();
     }
-
     // =========================================================================
     // MODAL LOGIC
     // =========================================================================
@@ -582,16 +579,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    themeToggles.forEach(toggle => {
-        toggle.addEventListener('click', () => {
-            // Determine the new theme
-            const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
-            // Apply and save the theme
-            applyTheme(newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
-    });
-
     prevLineBtn.addEventListener('click', (e) => { e.stopPropagation(); goBackStory(); });
     nextLineBtn.addEventListener('click', (e) => { e.stopPropagation(); advanceStory(); });
     nextStoryBtn.addEventListener('click', (e) => { e.stopPropagation(); if (nextMemory) startStory(nextMemory); });
@@ -616,6 +603,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     // INITIALIZATION
     // =========================================================================
-    applyTheme(localStorage.getItem('theme') || 'light');
     init();
 });

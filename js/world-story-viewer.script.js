@@ -103,20 +103,31 @@ document.addEventListener('DOMContentLoaded', () => {
         volumeSlider.value = audio.muted ? 0 : audio.volume;
     }
 
+    /** Handles starting, stopping, or changing the background music. */
     function handleBgm(bgmName) {
         if (bgmName && bgmName !== currentBgm) {
             currentBgm = bgmName;
             audio.src = `${BGM_URL_PREFIX}${bgmName}.ogg`;
             audio.play().catch(e => console.warn("Audio playback failed.", e));
-            if (audioPlayerContainer) audioPlayerContainer.classList.remove('hidden');
-        } else if (!bgmName) {
+            audioPlayerContainer?.classList.remove('hidden');
+
+            // Update Media Session with the raw filename
+            if ('mediaSession' in navigator) {
+                const eventName = storylineData[currentEventId]?.name || 'Azur Lane';
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: bgmName, // Displays the raw filename
+                    artist: 'Azur Lane OST',
+                    album: eventName,
+                });
+            }
+
+        } else if (!bgmName && currentBgm) {
             currentBgm = null;
             audio.pause();
-            if (audioPlayerContainer) audioPlayerContainer.classList.add('hidden');
+            audioPlayerContainer?.classList.add('hidden');
         }
         updateAudioPlayerUI();
     }
-
     // --- Data Loading ---
     async function init() {
         try {
@@ -381,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         renderScriptLine();
     }
-    
+
     /** Making sure that the actor name handling is done properly **/
     function getActorInfo(line) {
         let actorInfo = { id: null, name: 'Narrator', icon: null };
@@ -471,7 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nextIndex !== -1) { scriptIndex = nextIndex; renderScriptLine(); }
         else { advanceStory(); }
     }
-    
+
     /** UPDATED FUNCTION **/
     function renderScriptLine() {
         if (scriptIndex >= currentStoryScript.length) return;
@@ -494,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (line.say) {
             dialogueBox.classList.remove('hidden');
             const actorInfo = getActorInfo(line);
-            
+
             // If subActors are present, create a combined name string
             let displayedName = actorInfo.name;
             if (line.subActors) {
@@ -532,11 +543,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         prevLineBtn.disabled = (scriptIndex <= 0);
         nextLineBtn.classList.toggle('hidden', hasOptions || isAtEnd);
-        
+
         if (!isAtEnd && !hasOptions) nextLineBtn.textContent = '다음 →';
         returnBtn.classList.toggle('hidden', !isAtEnd);
         nextStoryBtn.classList.toggle('hidden', !(isAtEnd && nextMemory));
-        
+
         if (hasOptions) {
             line.options.forEach(opt => {
                 const button = document.createElement('button');
