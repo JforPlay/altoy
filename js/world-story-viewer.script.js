@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playPauseBtn = document.getElementById('play-pause-btn');
     const muteBtn = document.getElementById('mute-btn');
     const volumeSlider = document.getElementById('volume-slider');
+    const bgmNameSpan = document.getElementById('bgm-name');
     const audio = new Audio();
     audio.loop = true;
     audio.volume = 0.01;
@@ -105,29 +106,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /** Handles starting, stopping, or changing the background music. */
     function handleBgm(bgmName) {
+        // 1. Handle Visibility: This part runs every time.
+        // If a BGM name is provided, the player is shown. Otherwise, it's hidden.
+        if (bgmName) {
+            audioPlayerContainer?.classList.remove('hidden');
+        } else {
+            audioPlayerContainer?.classList.add('hidden');
+        }
+
+        // 2. Handle Audio Source: This part only runs when the track changes.
+        // This is efficient and prevents reloading the same song.
         if (bgmName && bgmName !== currentBgm) {
             currentBgm = bgmName;
             audio.src = `${BGM_URL_PREFIX}${bgmName}.ogg`;
             audio.play().catch(e => console.warn("Audio playback failed.", e));
-            audioPlayerContainer?.classList.remove('hidden');
-
-            // Update Media Session with the raw filename
-            if ('mediaSession' in navigator) {
-                const eventName = storylineData[currentEventId]?.name || 'Azur Lane';
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: bgmName, // Displays the raw filename
-                    artist: 'Azur Lane OST',
-                    album: eventName,
-                });
-            }
-
         } else if (!bgmName && currentBgm) {
+            // This stops the music when handleBgm(null) is called.
             currentBgm = null;
             audio.pause();
-            audioPlayerContainer?.classList.add('hidden');
+        }
+
+        // 3. Update UI Text: This keeps the displayed name in sync.
+        if (bgmNameSpan) {
+            bgmNameSpan.textContent = bgmName || ''; // Sets the track name or clears it.
         }
         updateAudioPlayerUI();
     }
+
+
     // --- Data Loading ---
     async function init() {
         try {

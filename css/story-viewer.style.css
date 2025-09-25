@@ -239,6 +239,7 @@ body {
   box-shadow: 0 2px 4px var(--shadow-color);
   z-index: 10;
   color: var(--text-color);
+  margin-bottom: auto;
 }
 
 #story-title {
@@ -280,7 +281,7 @@ body.dark-mode .story-header {
   backdrop-filter: blur(5px);
   width: 90%;
   max-width: 800px;
-  margin: auto auto 1rem auto;
+  margin: 0 auto 1rem auto;
   border-radius: 0.75rem;
   padding: 1.5rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -365,7 +366,7 @@ body.dark-mode .story-header {
   align-items: center;
   width: 100%;
   padding: 0 1.5rem;
-  margin-top: 1rem;
+  /* margin-top: auto; */
   margin-bottom: 1rem;
 }
 
@@ -408,6 +409,26 @@ body.dark-mode .story-header {
   font-size: 1.5rem;
   line-height: 1;
   border: none;
+}
+
+/* Add this new class for the BGM name */
+.bgm-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 50px; /* Give it some base width */
+  flex-grow: 1;   /* Allow it to take up available space */
+  text-align: center;
+  margin: 0 0.5rem;
+}
+
+/* Add this missing style for the volume control container */
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Adds a little space between mute button and slider */
 }
 
 .audio-player-container {
@@ -497,6 +518,39 @@ body.dark-mode .story-header {
   flex-direction: column;
   position: relative;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+#summary-modal-content h2 {
+  font-size: 1.8rem;
+  color: var(--accent-color);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+#summary-modal-content h3 {
+  font-size: 1.4rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-color);
+}
+
+#summary-modal-content p {
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+#summary-modal-content ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#summary-modal-content li {
+  background-color: var(--bg-color);
+  border-left: 4px solid var(--accent-color);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
 }
 
 .close-modal-btn {
