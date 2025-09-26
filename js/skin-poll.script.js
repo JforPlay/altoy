@@ -1,15 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
   // --- Firebase Setup (unchanged) ---
-  const firebaseConfig = {
-    apiKey: "AIzaSyCmtsfkzlISZDd0totgv3MIrpT9kvLvKLk",
-    authDomain: "azurlane-skin-vote.firebaseapp.com",
-    projectId: "azurlane-skin-vote",
-    storageBucket: "azurlane-skin-vote.firebasestorage.app",
-    messagingSenderId: "282702723033",
-    appId: "1:282702723033:web:a97b60cb7138bdbbbacbc8",
-  };
-  if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-  const db = firebase.firestore();
+  // const firebaseConfig = {
+  //   apiKey: "AIzaSyCmtsfkzlISZDd0totgv3MIrpT9kvLvKLk",
+  //   authDomain: "azurlane-skin-vote.firebaseapp.com",
+  //   projectId: "azurlane-skin-vote",
+  //   storageBucket: "azurlane-skin-vote.firebasestorage.app",
+  //   messagingSenderId: "282702723033",
+  //   appId: "1:282702723033:web:a97b60cb7138bdbbbacbc8",
+  // };
+  // if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+  // const db = firebase.firestore();
 
   // --- Get HTML elements (unchanged) ---
   const pollContainer = document.getElementById("poll-container");
