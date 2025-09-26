@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <base href="/altoy/">
     <meta charset="UTF-8">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="css/skin-list.style.css">
     <link rel="stylesheet" href="css/nav.style.css">
 </head>
+
 <body>
     <div id="navbar-placeholder"></div>
 
@@ -25,6 +27,11 @@
                 </p>
             </div>
         </header>
+
+        <div class="search-container">
+            <label for="search-input" class="search-label">함순이 이름검색 </label>
+            <input type="text" id="search-input" placeholder="함순이 이름을 검색/선택해주세요...">
+        </div>
 
         <div class="filter-container">
             <div class="filter-group">
@@ -56,12 +63,46 @@
                     <option>이세계 모험</option>
                     <option>웨스턴</option>
                     <option>이집트 스타일</option>
+                    <option>닌자의 성</option>
                     <option>기본</option>
                     <option>개조</option>
                     <option>서약</option>
                     <option>기타</option>
                 </select>
             </div>
+
+            <div class="filter-group">
+                <label for="tag-select">스킨 태그</label>
+                <select id="tag-select">
+                    <option value="all">전체</option>
+                    <option>듀얼</option>
+                    <option>L2D+</option>
+                    <option>L2D</option>
+                    <option>쁘띠모션</option>
+                    <option>X</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="period-select">판매 기간</label>
+                <select id="period-select">
+                    <option value="all">전체</option>
+                    <option value="한정">한정</option>
+                    <option value="상시">상시</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>레어도</label>
+                <div id="rarity-checkboxes" class="checkbox-group">
+                    <label><input type="checkbox" value="UR" checked> UR</label>
+                    <label><input type="checkbox" value="SSR" checked> SSR</label>
+                    <label><input type="checkbox" value="SR" checked> SR</label>
+                    <label><input type="checkbox" value="R" checked> R</label>
+                    <label><input type="checkbox" value="N" checked> N</label>
+                </div>
+            </div>
+
             <div class="filter-group">
                 <label for="faction-select">진영</label>
                 <select id="faction-select">
@@ -93,27 +134,7 @@
                     <option>SENRAN</option>
                 </select>
             </div>
-            <div class="filter-group">
-                <label for="tag-select">스킨 태그</label>
-                <select id="tag-select">
-                    <option value="all">전체</option>
-                    <option>듀얼</option>
-                    <option>L2D+</option>
-                    <option>L2D</option>
-                    <option>쁘띠모션</option>
-                    <option>X</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>레어도</label>
-                <div id="rarity-checkboxes" class="checkbox-group">
-                    <label><input type="checkbox" value="UR" checked> UR</label>
-                    <label><input type="checkbox" value="SSR" checked> SSR</label>
-                    <label><input type="checkbox" value="SR" checked> SR</label>
-                    <label><input type="checkbox" value="R" checked> R</label>
-                    <label><input type="checkbox" value="N" checked> N</label>
-                </div>
-            </div>
+
             <div class="filter-group">
                 <label>ex 대사 있는 함순이만 보기</label>
                 <div class="checkbox-group">
@@ -125,11 +146,29 @@
             </div>
         </div>
 
-        <div id="skin-list-container" class="skin-list-container">
+        <div class="skin-section" id="new-skins-section">
+            <h2>신상/복각 스킨들 (New)</h2>
+            <div id="new-skins-container" class="skin-list-container"></div>
+        </div>
+
+        <div class="skin-section" id="limited-skins-section">
+            <h2>한정 스킨 (Limited)</h2>
+            <div id="limited-skins-container" class="skin-list-container"></div>
+        </div>
+
+        <div class="skin-section" id="permanent-skins-section">
+            <h2>상시 스킨 (Permanent)</h2>
+            <div id="permanent-skins-container" class="skin-list-container"></div>
+        </div>
+
+        <div class="skin-section" id="other-skins-section">
+            <h2>기타 스킨 - 콜라보 / 배포한정 / 상설화 (Other)</h2>
+            <div id="other-skins-container" class="skin-list-container"></div>
         </div>
     </div>
 
     <script src="js/skin-list.script.js"></script>
     <script src="js/nav.script.js"></script>
 </body>
+
 </html>

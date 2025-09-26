@@ -114,6 +114,126 @@ label {
     margin-right: 4px;
 }
 
+/* --- Skin Sections --- */
+.skin-section {
+    margin-bottom: 40px;
+}
+
+.skin-section h2 {
+    color: #ffffff;
+    border-bottom: 2px solid #4f545c;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+/* --- NEW Badge for Skin Cards --- */
+.skin-image-wrapper {
+    position: relative; /* This is necessary for positioning the badge inside */
+}
+
+.new-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #43b581; /* A modern green color */
+    color: #ffffff;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.7em;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    /* Prevents the user from accidentally selecting the badge text */
+    user-select: none; 
+}
+
+/* --- Search Bar --- */
+.search-container {
+    margin-top: 30px; /* Added */
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.search-label {
+    display: block;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: left;
+    /* Align with the search input */
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 5px; /* Small padding for alignment */
+}
+
+#search-input {
+    padding: 10px 15px;
+    font-size: 1.1em;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 5px;
+    border: 2px solid #2f3136;
+    background-color: #40444b;
+    color: #dcddde;
+    box-sizing: border-box;
+}
+
+#search-input::placeholder {
+    color: #8e9297;
+}
+
+/* --- NEW: Autocomplete Dropdown Styles --- */
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid #2f3136;
+    border-top: none;
+    z-index: 99;
+    /* Position the dropdown right below the input field */
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 400px;
+    background-color: #40444b;
+    max-height: 200px;
+    overflow-y: auto;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #2f3136;
+    text-align: left;
+}
+.autocomplete-items div:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-items div:hover {
+    background-color: #5865f2;
+}
+
+#search-input {
+    padding: 10px 15px;
+    font-size: 1.1em;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 5px;
+    border: 2px solid #2f3136;
+    background-color: #40444b;
+    color: #dcddde;
+    box-sizing: border-box; /* Ensures padding doesn't affect the final width */
+}
+
+#search-input::placeholder {
+    color: #8e9297;
+}
+
 /* --- Responsive Styles for Mobile --- */
 @media (max-width: 768px) {
     html {
