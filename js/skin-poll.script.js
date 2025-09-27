@@ -168,85 +168,85 @@ document.addEventListener("DOMContentLoaded", () => {
     updateURLWithFilters();
   };
 
-  // (renderPollList and submitVote functions are unchanged)
-  const renderPollList = (skinsToRender) => { pollContainer.innerHTML = ""; if (skinsToRender.length === 0) { pollContainer.innerHTML = `<div class="no-results">표시할 스킨이 없습니다.</div>`; return; } skinsToRender.forEach((skin) => { const skinId = skin.id; const pollBox = document.createElement("div"); pollBox.className = "poll-box"; pollBox.id = `poll-box-${skinId}`; const hasVoted = localStorage.getItem(`voted_${skinId}`) === "true"; const votedRating = hasVoted ? localStorage.getItem(`rating_${skinId}`) : null; pollBox.innerHTML = ` <img src="${skin["깔끔한 일러"]}" class="poll-image" loading="lazy"> <div class="poll-info"> <div class="character-name">${skin["함순이 이름"]}</div> <h3>${skin["한글 함순이 + 스킨 이름"]}</h3> <div class="info-line"><strong>타입:</strong> ${skin["스킨 타입 - 한글"] || "기본"}</div> <div class="info-line"><strong>태그:</strong> ${skin["스킨 태그"] || "없음"}</div> <div class="info-line"><strong>레어도:</strong> ${skin["레어도"] || "없음"}</div> <div class="rating-area ${hasVoted ? "voted" : ""}" data-skin-id-area="${skinId}"> <div class="vote-widget"> <span class="vote-label">투표:</span> <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin["한글 함순이 + 스킨 이름"]}" data-character-name="${skin["함순이 이름"]}"> <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${votedRating === '5' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label> <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${votedRating === '4' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star4-${skinId}">★</label> <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${votedRating === '3' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star3-${skinId}">★</label> <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${votedRating === '2' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label> <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${votedRating === '1' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label> </div> </div> <div class="confirm-vote-message" id="confirm-msg-${skinId}">다시 클릭하여 확정</div> <div class="poll-results" id="results-${skinId}"></div> </div> </div>`; pollContainer.appendChild(pollBox); updateScoreDisplay(skinId, { total_votes: skin.total_votes, total_score: skin.average_score * skin.total_votes }); }); };
-  // REPLACE the old submitVote function in js/skin-poll.script.js with this one
+  // // (renderPollList and submitVote functions are unchanged)
+  // const renderPollList = (skinsToRender) => { pollContainer.innerHTML = ""; if (skinsToRender.length === 0) { pollContainer.innerHTML = `<div class="no-results">표시할 스킨이 없습니다.</div>`; return; } skinsToRender.forEach((skin) => { const skinId = skin.id; const pollBox = document.createElement("div"); pollBox.className = "poll-box"; pollBox.id = `poll-box-${skinId}`; const hasVoted = localStorage.getItem(`voted_${skinId}`) === "true"; const votedRating = hasVoted ? localStorage.getItem(`rating_${skinId}`) : null; pollBox.innerHTML = ` <img src="${skin["깔끔한 일러"]}" class="poll-image" loading="lazy"> <div class="poll-info"> <div class="character-name">${skin["함순이 이름"]}</div> <h3>${skin["한글 함순이 + 스킨 이름"]}</h3> <div class="info-line"><strong>타입:</strong> ${skin["스킨 타입 - 한글"] || "기본"}</div> <div class="info-line"><strong>태그:</strong> ${skin["스킨 태그"] || "없음"}</div> <div class="info-line"><strong>레어도:</strong> ${skin["레어도"] || "없음"}</div> <div class="rating-area ${hasVoted ? "voted" : ""}" data-skin-id-area="${skinId}"> <div class="vote-widget"> <span class="vote-label">투표:</span> <div class="star-rating" data-skin-id="${skinId}" data-skin-name="${skin["한글 함순이 + 스킨 이름"]}" data-character-name="${skin["함순이 이름"]}"> <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${votedRating === '5' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label> <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${votedRating === '4' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star4-${skinId}">★</label> <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${votedRating === '3' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star3-${skinId}">★</label> <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${votedRating === '2' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label> <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${votedRating === '1' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label> </div> </div> <div class="confirm-vote-message" id="confirm-msg-${skinId}">다시 클릭하여 확정</div> <div class="poll-results" id="results-${skinId}"></div> </div> </div>`; pollContainer.appendChild(pollBox); updateScoreDisplay(skinId, { total_votes: skin.total_votes, total_score: skin.average_score * skin.total_votes }); }); };
+  // // REPLACE the old submitVote function in js/skin-poll.script.js with this one
 
-  const submitVote = async (skinId, rating, skinName, characterName) => {
-    if (localStorage.getItem(`voted_${skinId}`) === "true") {
-      return; // Exit if already voted
-    }
+  // const submitVote = async (skinId, rating, skinName, characterName) => {
+  //   if (localStorage.getItem(`voted_${skinId}`) === "true") {
+  //     return; // Exit if already voted
+  //   }
 
-    const skinDocRef = db.collection("skin_polls").doc(String(skinId));
-    const statsDocRef = db.collection("stats").doc("total_votes_counter");
+  //   const skinDocRef = db.collection("skin_polls").doc(String(skinId));
+  //   const statsDocRef = db.collection("stats").doc("total_votes_counter");
 
-    try {
-      await db.runTransaction(async (transaction) => {
-        // 1. Read all data from Firestore first
-        const skinDoc = await transaction.get(skinDocRef);
-        const statsDoc = await transaction.get(statsDocRef);
+  //   try {
+  //     await db.runTransaction(async (transaction) => {
+  //       // 1. Read all data from Firestore first
+  //       const skinDoc = await transaction.get(skinDocRef);
+  //       const statsDoc = await transaction.get(statsDocRef);
 
-        // 2. Calculate new values
-        const currentTotalVotes = skinDoc.data()?.total_votes || 0;
-        const currentTotalScore = skinDoc.data()?.total_score || 0;
-        const siteTotalVotes = statsDoc.data()?.count || 0;
+  //       // 2. Calculate new values
+  //       const currentTotalVotes = skinDoc.data()?.total_votes || 0;
+  //       const currentTotalScore = skinDoc.data()?.total_score || 0;
+  //       const siteTotalVotes = statsDoc.data()?.count || 0;
 
-        const newTotalVotes = currentTotalVotes + 1;
-        const newTotalScore = currentTotalScore + rating;
-        const newAverageScore = newTotalScore / newTotalVotes;
-        const newTotalCount = siteTotalVotes + 1;
+  //       const newTotalVotes = currentTotalVotes + 1;
+  //       const newTotalScore = currentTotalScore + rating;
+  //       const newAverageScore = newTotalScore / newTotalVotes;
+  //       const newTotalCount = siteTotalVotes + 1;
 
-        // 3. Perform all writes to Firestore
-        transaction.set(skinDocRef, {
-          total_votes: newTotalVotes,
-          total_score: newTotalScore,
-          average_score: newAverageScore,
-          skin_name: skinName,
-          character_name: characterName
-        }, { merge: true });
+  //       // 3. Perform all writes to Firestore
+  //       transaction.set(skinDocRef, {
+  //         total_votes: newTotalVotes,
+  //         total_score: newTotalScore,
+  //         average_score: newAverageScore,
+  //         skin_name: skinName,
+  //         character_name: characterName
+  //       }, { merge: true });
 
-        transaction.set(statsDocRef, {
-          count: newTotalCount
-        }, { merge: true });
-      });
+  //       transaction.set(statsDocRef, {
+  //         count: newTotalCount
+  //       }, { merge: true });
+  //     });
 
-      // --- Success Handling (runs only if the transaction above succeeds) ---
-      localStorage.setItem(`voted_${skinId}`, "true");
-      localStorage.setItem(`rating_${skinId}`, rating);
+  //     // --- Success Handling (runs only if the transaction above succeeds) ---
+  //     localStorage.setItem(`voted_${skinId}`, "true");
+  //     localStorage.setItem(`rating_${skinId}`, rating);
 
-      const ratingArea = document.querySelector(`.rating-area[data-skin-id-area="${skinId}"]`);
-      if (ratingArea) {
-        ratingArea.classList.remove('pending-vote');
-        ratingArea.classList.add("voted", "voted-animation");
-        ratingArea.querySelectorAll('input').forEach(input => input.disabled = true);
-        setTimeout(() => ratingArea.classList.remove("voted-animation"), 300);
-      }
+  //     const ratingArea = document.querySelector(`.rating-area[data-skin-id-area="${skinId}"]`);
+  //     if (ratingArea) {
+  //       ratingArea.classList.remove('pending-vote');
+  //       ratingArea.classList.add("voted", "voted-animation");
+  //       ratingArea.querySelectorAll('input').forEach(input => input.disabled = true);
+  //       setTimeout(() => ratingArea.classList.remove("voted-animation"), 300);
+  //     }
 
-      const updatedDoc = await skinDocRef.get();
-      if (updatedDoc.exists) {
-        const voteData = updatedDoc.data();
-        allPollDataCache[skinId] = voteData;
-        updateScoreDisplay(skinId, voteData);
-        const skinInArray = currentlyDisplayedSkins.find(s => s.id === skinId);
-        if (skinInArray) {
-          skinInArray.total_votes = voteData.total_votes;
-          skinInArray.average_score = voteData.average_score;
-        }
-      }
+  //     const updatedDoc = await skinDocRef.get();
+  //     if (updatedDoc.exists) {
+  //       const voteData = updatedDoc.data();
+  //       allPollDataCache[skinId] = voteData;
+  //       updateScoreDisplay(skinId, voteData);
+  //       const skinInArray = currentlyDisplayedSkins.find(s => s.id === skinId);
+  //       if (skinInArray) {
+  //         skinInArray.total_votes = voteData.total_votes;
+  //         skinInArray.average_score = voteData.average_score;
+  //       }
+  //     }
 
-    } catch (error) {
-      console.error("Firebase transaction failed: ", error);
-      // Optional: Alert the user that the vote failed
-      alert("투표를 저장하는 데 실패했습니다. 잠시 후 다시 시도해 주세요.");
-      // Optional: Reset the UI from the pending state
-      const ratingArea = document.querySelector(`.rating-area[data-skin-id-area="${skinId}"]`);
-      if (ratingArea) {
-        ratingArea.classList.remove('pending-vote');
-        const checkedRadio = ratingArea.querySelector(`input[name="rating-${skinId}"]:checked`);
-        if (checkedRadio) checkedRadio.checked = false;
-      }
-    }
-  };
+  //   } catch (error) {
+  //     console.error("Firebase transaction failed: ", error);
+  //     // Optional: Alert the user that the vote failed
+  //     alert("투표를 저장하는 데 실패했습니다. 잠시 후 다시 시도해 주세요.");
+  //     // Optional: Reset the UI from the pending state
+  //     const ratingArea = document.querySelector(`.rating-area[data-skin-id-area="${skinId}"]`);
+  //     if (ratingArea) {
+  //       ratingArea.classList.remove('pending-vote');
+  //       const checkedRadio = ratingArea.querySelector(`input[name="rating-${skinId}"]:checked`);
+  //       if (checkedRadio) checkedRadio.checked = false;
+  //     }
+  //   }
+  // };
 
   // --- Unchanged Functions ---
   const reSortView = () => { if (isSorting) return; isSorting = true; const sortBy = sortSelect.value; const defaultSort = (a, b) => (a["클뜯 id"] || 0) - (b["클뜯 id"] || 0); if (sortBy === 'score_desc') { currentlyDisplayedSkins.sort((a, b) => { const scoreDiff = b.average_score - a.average_score; return scoreDiff !== 0 ? scoreDiff : defaultSort(a, b); }); } else if (sortBy === 'votes_desc') { currentlyDisplayedSkins.sort((a, b) => { const voteDiff = b.total_votes - a.total_votes; return voteDiff !== 0 ? voteDiff : defaultSort(a, b); }); } else { currentlyDisplayedSkins.sort(defaultSort); } const initialPositions = new Map(); Array.from(pollContainer.children).forEach(box => { initialPositions.set(box.id, box.getBoundingClientRect()); }); renderPollList(currentlyDisplayedSkins); Array.from(pollContainer.children).forEach(box => { const oldPos = initialPositions.get(box.id); if (!oldPos) return; const newPos = box.getBoundingClientRect(); const deltaX = oldPos.left - newPos.left; const deltaY = oldPos.top - newPos.top; if (deltaX === 0 && deltaY === 0) return; requestAnimationFrame(() => { box.style.transform = `translate(${deltaX}px, ${deltaY}px)`; box.style.transition = 'transform 0s'; requestAnimationFrame(() => { box.style.transform = ''; box.style.transition = 'transform 0.5s ease-in-out'; }); }); }); setTimeout(() => { isSorting = false; }, 500); };
