@@ -448,7 +448,7 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101511/icon.png"
     },
     "101512": {
-        "name": "兔兔城主的巡游间隙",
+        "name": "토끼토끼성 성주의 순찰 휴식",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101512/icon.png"
     },
     "101520": {
@@ -1656,7 +1656,7 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/118021/icon.png"
     },
     "118022": {
-        "name": "女忍者的危险综艺秀",
+        "name": "닌자 데인저 버라이어티",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/118022/icon.png"
     },
     "131170": {
@@ -2704,7 +2704,7 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205022/icon.png"
     },
     "205023": {
-        "name": "西瓜两断",
+        "name": "올드 레이디의 수박 자르기",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205023/icon.png"
     },
     "205029": {
@@ -3736,8 +3736,8 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301491/icon.png"
     },
     "301492": {
-        "name": "忠心的守护灵狐",
-        "icon": null
+        "name": "충직한 수호령 여우",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301492/icon.png"
     },
     "301498": {
         "name": "무구한 하얀 여우",
@@ -4440,7 +4440,7 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303191/icon.png"
     },
     "303192": {
-        "name": "万船集怀",
+        "name": "만선집회",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303192/icon.png"
     },
     "303200": {
@@ -6872,7 +6872,7 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603052/icon.png"
     },
     "603053": {
-        "name": "独属二人的灯火夜",
+        "name": "둘만의 특별한 밤",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603053/icon.png"
     },
     "603060": {
@@ -7272,7 +7272,7 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703012/icon.png"
     },
     "703013": {
-        "name": "情满月圆",
+        "name": "정으로 가득한 달밤",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703013/icon.png"
     },
     "703020": {
@@ -7568,7 +7568,7 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/803021/icon.png"
     },
     "803022": {
-        "name": "演奏者的夜想曲",
+        "name": "연주자의 야상곡",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/803022/icon.png"
     },
     "803030": {
@@ -7616,7 +7616,7 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/805031/icon.png"
     },
     "805032": {
-        "name": "圣宵之鬼的微醺",
+        "name": "성스러운 밤의 만취한 오니",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/805032/icon.png"
     },
     "806010": {
@@ -9372,7 +9372,7 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/999011/icon.png"
     },
     "999012": {
-        "name": "旅情机巧",
+        "name": "여행하는 인형",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/999012/icon.png"
     },
     "999020": {
@@ -9532,8 +9532,8 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701090/icon.png"
     },
     "9701100": {
-        "name": "杜威·META",
-        "icon": null
+        "name": "듀이·META",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701100/icon.png"
     },
     "9702010": {
         "name": "헬레나·META",

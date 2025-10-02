@@ -9,8 +9,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "건스웨이",
-            "ship_name": "Ganj-i-sawai",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600070/icon.png",
+            "ship_name": "Ganj-i-sawai",
             "scripts": [
                 {
                     "flag": 0,
@@ -378,8 +378,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "건스웨이",
-            "ship_name": "Ganj-i-sawai",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600070/icon.png",
+            "ship_name": "Ganj-i-sawai",
             "scripts": [
                 {
                     "flag": 0,
@@ -600,8 +600,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "건스웨이",
-            "ship_name": "Ganj-i-sawai",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600070/icon.png",
+            "ship_name": "Ganj-i-sawai",
             "scripts": [
                 {
                     "flag": 0,
@@ -1012,8 +1012,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "팬시",
-            "ship_name": "Fancy",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600080/icon.png",
+            "ship_name": "Fancy",
             "scripts": [
                 {
                     "flag": 0,
@@ -1264,8 +1264,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "팬시",
-            "ship_name": "Fancy",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600080/icon.png",
+            "ship_name": "Fancy",
             "scripts": [
                 {
                     "flag": 0,
@@ -1592,8 +1592,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "팬시",
-            "ship_name": "Fancy",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600080/icon.png",
+            "ship_name": "Fancy",
             "scripts": [
                 {
                     "flag": 0,
@@ -1837,8 +1837,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "아미티",
-            "ship_name": "Amity",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600090/icon.png",
+            "ship_name": "Amity",
             "scripts": [
                 {
                     "flag": 0,
@@ -2379,8 +2379,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "아미티",
-            "ship_name": "Amity",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600090/icon.png",
+            "ship_name": "Amity",
             "scripts": [
                 {
                     "flag": 0,
@@ -2675,8 +2675,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "아미티",
-            "ship_name": "Amity",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600090/icon.png",
+            "ship_name": "Amity",
             "scripts": [
                 {
                     "flag": 0,
@@ -2989,8 +2989,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "포츠머스 어드벤처",
-            "ship_name": "Portsmouth Adventure",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600100/icon.png",
+            "ship_name": "Portsmouth Adventure",
             "scripts": [
                 {
                     "flag": 0,
@@ -3261,8 +3261,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "포츠머스 어드벤처",
-            "ship_name": "Portsmouth Adventure",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600100/icon.png",
+            "ship_name": "Portsmouth Adventure",
             "scripts": [
                 {
                     "flag": 0,
@@ -3548,8 +3548,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "포츠머스 어드벤처",
-            "ship_name": "Portsmouth Adventure",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600100/icon.png",
+            "ship_name": "Portsmouth Adventure",
             "scripts": [
                 {
                     "flag": 0,
@@ -3862,8 +3862,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "돌핀",
-            "ship_name": "Dolphin",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600110/icon.png",
+            "ship_name": "Dolphin",
             "scripts": [
                 {
                     "flag": 0,
@@ -4282,8 +4282,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "돌핀",
-            "ship_name": "Dolphin",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600110/icon.png",
+            "ship_name": "Dolphin",
             "scripts": [
                 {
                     "flag": 0,
@@ -4544,8 +4544,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "돌핀",
-            "ship_name": "Dolphin",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600110/icon.png",
+            "ship_name": "Dolphin",
             "scripts": [
                 {
                     "flag": 0,
@@ -4966,8 +4966,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "위다",
-            "ship_name": "Whydah",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600050/icon.png",
+            "ship_name": "Whydah",
             "scripts": [
                 {
                     "flag": 0,
@@ -5559,8 +5559,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "위다",
-            "ship_name": "Whydah",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600050/icon.png",
+            "ship_name": "Whydah",
             "scripts": [
                 {
                     "flag": 0,
@@ -6089,8 +6089,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "위다",
-            "ship_name": "Whydah",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600050/icon.png",
+            "ship_name": "Whydah",
             "scripts": [
                 {
                     "flag": 0,
@@ -13344,8 +13344,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "하우",
-            "ship_name": "Howe_Cookies",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205090/icon.png",
+            "ship_name": "Howe_Cookies",
             "scripts": [
                 {
                     "flag": 0,
@@ -13798,8 +13798,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "하우",
-            "ship_name": "Howe_Cookies",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205090/icon.png",
+            "ship_name": "Howe_Cookies",
             "scripts": [
                 {
                     "flag": 0,
@@ -14189,8 +14189,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "하우",
-            "ship_name": "Howe_Cookies",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205090/icon.png",
+            "ship_name": "Howe_Cookies",
             "scripts": [
                 {
                     "flag": 0,
@@ -14564,8 +14564,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "울리히 폰 후텐",
-            "ship_name": "U.V.Hutten",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405030/icon.png",
+            "ship_name": "U.V.Hutten",
             "scripts": [
                 {
                     "flag": 0,
@@ -14946,8 +14946,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "울리히 폰 후텐",
-            "ship_name": "U.V.Hutten",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405030/icon.png",
+            "ship_name": "U.V.Hutten",
             "scripts": [
                 {
                     "flag": 0,
@@ -15349,8 +15349,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "울리히 폰 후텐",
-            "ship_name": "U.V.Hutten",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405030/icon.png",
+            "ship_name": "U.V.Hutten",
             "scripts": [
                 {
                     "flag": 0,
@@ -15682,8 +15682,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "아우구스트 폰 파르제팔",
-            "ship_name": "August.V.Parseval",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499060/icon.png",
+            "ship_name": "August.V.Parseval",
             "scripts": [
                 {
                     "flag": 0,
@@ -15964,8 +15964,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "아우구스트 폰 파르제팔",
-            "ship_name": "August.V.Parseval",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499060/icon.png",
+            "ship_name": "August.V.Parseval",
             "scripts": [
                 {
                     "flag": 0,
@@ -16339,8 +16339,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "아우구스트 폰 파르제팔",
-            "ship_name": "August.V.Parseval",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499060/icon.png",
+            "ship_name": "August.V.Parseval",
             "scripts": [
                 {
                     "flag": 0,
@@ -16643,8 +16643,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "뤼초",
-            "ship_name": "Lützow ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404040/icon.png",
+            "ship_name": "Lützow ",
             "scripts": [
                 {
                     "flag": 0,
@@ -16927,8 +16927,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "뤼초",
-            "ship_name": "Lützow ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404040/icon.png",
+            "ship_name": "Lützow ",
             "scripts": [
                 {
                     "flag": 0,
@@ -17309,8 +17309,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "뤼초",
-            "ship_name": "Lützow ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404040/icon.png",
+            "ship_name": "Lützow ",
             "scripts": [
                 {
                     "flag": 0,
@@ -17690,8 +17690,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "프리츠 루메이",
-            "ship_name": "Fritz Rumey",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/407040/icon.png",
+            "ship_name": "Fritz Rumey",
             "scripts": [
                 {
                     "flag": 0,
@@ -18138,8 +18138,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "프리츠 루메이",
-            "ship_name": "Fritz Rumey",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/407040/icon.png",
+            "ship_name": "Fritz Rumey",
             "scripts": [
                 {
                     "flag": 0,
@@ -18445,8 +18445,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "프리츠 루메이",
-            "ship_name": "Fritz Rumey",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/407040/icon.png",
+            "ship_name": "Fritz Rumey",
             "scripts": [
                 {
                     "flag": 0,
@@ -18751,8 +18751,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "Z52",
-            "ship_name": "Blitz-Z52",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401520/icon.png",
+            "ship_name": "Blitz-Z52",
             "scripts": [
                 {
                     "flag": 0,
@@ -19034,8 +19034,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "Z52",
-            "ship_name": "Blitz-Z52",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401520/icon.png",
+            "ship_name": "Blitz-Z52",
             "scripts": [
                 {
                     "flag": 0,
@@ -19402,8 +19402,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "Z52",
-            "ship_name": "Blitz-Z52",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401520/icon.png",
+            "ship_name": "Blitz-Z52",
             "scripts": [
                 {
                     "flag": 0,
@@ -19827,8 +19827,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "뒤스부르크",
-            "ship_name": "Duisburg",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402110/icon.png",
+            "ship_name": "Duisburg",
             "scripts": [
                 {
                     "flag": 0,
@@ -20136,8 +20136,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "뒤스부르크",
-            "ship_name": "Duisburg",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402110/icon.png",
+            "ship_name": "Duisburg",
             "scripts": [
                 {
                     "flag": 0,
@@ -20415,8 +20415,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "뒤스부르크",
-            "ship_name": "Duisburg",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402110/icon.png",
+            "ship_name": "Duisburg",
             "scripts": [
                 {
                     "flag": 0,
@@ -20771,8 +20771,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "Z9",
-            "ship_name": "Wolke9",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401090/icon.png",
+            "ship_name": "Wolke9",
             "scripts": [
                 {
                     "flag": 0,
@@ -21163,8 +21163,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "Z9",
-            "ship_name": "Wolke9",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401090/icon.png",
+            "ship_name": "Wolke9",
             "scripts": [
                 {
                     "flag": 0,
@@ -21552,8 +21552,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "Z9",
-            "ship_name": "Wolke9",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401090/icon.png",
+            "ship_name": "Wolke9",
             "scripts": [
                 {
                     "flag": 0,
@@ -22028,8 +22028,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "Z11",
-            "ship_name": "Z11_Spielefan",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401110/icon.png",
+            "ship_name": "Z11_Spielefan",
             "scripts": [
                 {
                     "flag": 0,
@@ -22470,8 +22470,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "Z11",
-            "ship_name": "Z11_Spielefan",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401110/icon.png",
+            "ship_name": "Z11_Spielefan",
             "scripts": [
                 {
                     "flag": 0,
@@ -22868,8 +22868,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "Z11",
-            "ship_name": "Z11_Spielefan",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401110/icon.png",
+            "ship_name": "Z11_Spielefan",
             "scripts": [
                 {
                     "flag": 0,
@@ -23268,8 +23268,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "롱우",
-            "ship_name": "Lung Wu",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501050/icon.png",
+            "ship_name": "Lung Wu",
             "scripts": [
                 {
                     "flag": 0,
@@ -23601,8 +23601,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "롱우",
-            "ship_name": "Lung Wu",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501050/icon.png",
+            "ship_name": "Lung Wu",
             "scripts": [
                 {
                     "flag": 0,
@@ -23924,8 +23924,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "롱우",
-            "ship_name": "Lung Wu",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501050/icon.png",
+            "ship_name": "Lung Wu",
             "scripts": [
                 {
                     "flag": 0,
@@ -24359,8 +24359,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "지엔우",
-            "ship_name": "Chien Wu",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503010/icon.png",
+            "ship_name": "Chien Wu",
             "scripts": [
                 {
                     "flag": 0,
@@ -24702,8 +24702,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "지엔우",
-            "ship_name": "Chien Wu",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503010/icon.png",
+            "ship_name": "Chien Wu",
             "scripts": [
                 {
                     "flag": 0,
@@ -25038,8 +25038,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "지엔우",
-            "ship_name": "Chien Wu",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503010/icon.png",
+            "ship_name": "Chien Wu",
             "scripts": [
                 {
                     "flag": 0,
@@ -25378,8 +25378,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "하이롱",
-            "ship_name": "Hai Yung",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502100/icon.png",
+            "ship_name": "Hai Yung",
             "scripts": [
                 {
                     "flag": 0,
@@ -25692,8 +25692,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "하이롱",
-            "ship_name": "Hai Yung",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502100/icon.png",
+            "ship_name": "Hai Yung",
             "scripts": [
                 {
                     "flag": 0,
@@ -26035,8 +26035,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "하이롱",
-            "ship_name": "Hai Yung",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502100/icon.png",
+            "ship_name": "Hai Yung",
             "scripts": [
                 {
                     "flag": 0,
@@ -26460,8 +26460,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "푸보",
-            "ship_name": "Fu Po",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501090/icon.png",
+            "ship_name": "Fu Po",
             "scripts": [
                 {
                     "flag": 0,
@@ -26779,8 +26779,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "푸보",
-            "ship_name": "Fu Po",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501090/icon.png",
+            "ship_name": "Fu Po",
             "scripts": [
                 {
                     "flag": 0,
@@ -27208,8 +27208,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "푸보",
-            "ship_name": "Fu Po",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501090/icon.png",
+            "ship_name": "Fu Po",
             "scripts": [
                 {
                     "flag": 0,
@@ -27602,8 +27602,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "창펑",
-            "ship_name": "Chang Feng",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501080/icon.png",
+            "ship_name": "Chang Feng",
             "scripts": [
                 {
                     "flag": 0,
@@ -27910,8 +27910,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "창펑",
-            "ship_name": "Chang Feng",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501080/icon.png",
+            "ship_name": "Chang Feng",
             "scripts": [
                 {
                     "flag": 0,
@@ -28267,8 +28267,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "창펑",
-            "ship_name": "Chang Feng",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501080/icon.png",
+            "ship_name": "Chang Feng",
             "scripts": [
                 {
                     "flag": 0,
@@ -28625,8 +28625,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "지안",
-            "ship_name": "Chi An",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502090/icon.png",
+            "ship_name": "Chi An",
             "scripts": [
                 {
                     "flag": 0,
@@ -28969,8 +28969,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "지안",
-            "ship_name": "Chi An",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502090/icon.png",
+            "ship_name": "Chi An",
             "scripts": [
                 {
                     "flag": 0,
@@ -29347,8 +29347,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "지안",
-            "ship_name": "Chi An",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502090/icon.png",
+            "ship_name": "Chi An",
             "scripts": [
                 {
                     "flag": 0,
@@ -29623,8 +29623,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "라파엘로",
-            "ship_name": "Raffaello",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605080/icon.png",
+            "ship_name": "Raffaello",
             "scripts": [
                 {
                     "flag": 0,
@@ -30170,8 +30170,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "라파엘로",
-            "ship_name": "Raffaello",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605080/icon.png",
+            "ship_name": "Raffaello",
             "scripts": [
                 {
                     "flag": 0,
@@ -30507,8 +30507,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "라파엘로",
-            "ship_name": "Raffaello",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605080/icon.png",
+            "ship_name": "Raffaello",
             "scripts": [
                 {
                     "flag": 0,
@@ -30807,8 +30807,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "마조레 바라카",
-            "ship_name": "Maggiore Baracca",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/608030/icon.png",
+            "ship_name": "Maggiore Baracca",
             "scripts": [
                 {
                     "flag": 0,
@@ -31354,8 +31354,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "마조레 바라카",
-            "ship_name": "Maggiore Baracca",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/608030/icon.png",
+            "ship_name": "Maggiore Baracca",
             "scripts": [
                 {
                     "flag": 0,
@@ -31768,8 +31768,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "마조레 바라카",
-            "ship_name": "Maggiore Baracca",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/608030/icon.png",
+            "ship_name": "Maggiore Baracca",
             "scripts": [
                 {
                     "flag": 0,
@@ -32193,8 +32193,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "조수에 카르두치",
-            "ship_name": "Giosuè Carducci",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601110/icon.png",
+            "ship_name": "Giosuè Carducci",
             "scripts": [
                 {
                     "flag": 0,
@@ -32575,8 +32575,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "조수에 카르두치",
-            "ship_name": "Giosuè Carducci",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601110/icon.png",
+            "ship_name": "Giosuè Carducci",
             "scripts": [
                 {
                     "flag": 0,
@@ -32943,8 +32943,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "조수에 카르두치",
-            "ship_name": "Giosuè Carducci",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601110/icon.png",
+            "ship_name": "Giosuè Carducci",
             "scripts": [
                 {
                     "flag": 0,
@@ -33534,8 +33534,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "바르톨로메오 콜레오니",
-            "ship_name": "Bartolomeo Colleoni",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602030/icon.png",
+            "ship_name": "Bartolomeo Colleoni",
             "scripts": [
                 {
                     "flag": 0,
@@ -33967,8 +33967,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "바르톨로메오 콜레오니",
-            "ship_name": "Bartolomeo Colleoni",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602030/icon.png",
+            "ship_name": "Bartolomeo Colleoni",
             "scripts": [
                 {
                     "flag": 0,
@@ -34329,8 +34329,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "바르톨로메오 콜레오니",
-            "ship_name": "Bartolomeo Colleoni",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602030/icon.png",
+            "ship_name": "Bartolomeo Colleoni",
             "scripts": [
                 {
                     "flag": 0,
@@ -34779,8 +34779,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "모가도르",
-            "ship_name": "Mogador",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901070/icon.png",
+            "ship_name": "Mogador",
             "scripts": [
                 {
                     "flag": 0,
@@ -35187,8 +35187,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "모가도르",
-            "ship_name": "Mogador",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901070/icon.png",
+            "ship_name": "Mogador",
             "scripts": [
                 {
                     "flag": 0,
@@ -35536,8 +35536,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "모가도르",
-            "ship_name": "Mogador",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901070/icon.png",
+            "ship_name": "Mogador",
             "scripts": [
                 {
                     "flag": 0,
@@ -35920,8 +35920,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "프랭클린",
-            "ship_name": "Franklin",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107130/icon.png",
+            "ship_name": "Franklin",
             "scripts": [
                 {
                     "flag": 0,
@@ -36164,8 +36164,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "프랭클린",
-            "ship_name": "Franklin",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107130/icon.png",
+            "ship_name": "Franklin",
             "scripts": [
                 {
                     "flag": 0,
@@ -36562,8 +36562,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "프랭클린",
-            "ship_name": "Franklin",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107130/icon.png",
+            "ship_name": "Franklin",
             "scripts": [
                 {
                     "flag": 0,
@@ -36893,8 +36893,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "밀러",
-            "ship_name": "Miller",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101530/icon.png",
+            "ship_name": "Miller",
             "scripts": [
                 {
                     "flag": 0,
@@ -37117,8 +37117,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "밀러",
-            "ship_name": "Miller",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101530/icon.png",
+            "ship_name": "Miller",
             "scripts": [
                 {
                     "flag": 0,
@@ -37611,8 +37611,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "밀러",
-            "ship_name": "Miller",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101530/icon.png",
+            "ship_name": "Miller",
             "scripts": [
                 {
                     "flag": 0,
@@ -37932,8 +37932,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "산타페",
-            "ship_name": "Santa Fe",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102340/icon.png",
+            "ship_name": "Santa Fe",
             "scripts": [
                 {
                     "flag": 0,
@@ -38294,8 +38294,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "산타페",
-            "ship_name": "Santa Fe",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102340/icon.png",
+            "ship_name": "Santa Fe",
             "scripts": [
                 {
                     "flag": 0,
@@ -38592,8 +38592,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "산타페",
-            "ship_name": "Santa Fe",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102340/icon.png",
+            "ship_name": "Santa Fe",
             "scripts": [
                 {
                     "flag": 0,
@@ -39060,8 +39060,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "차파예프 ",
-            "ship_name": "Chapaev",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702030/icon.png",
+            "ship_name": "Chapaev",
             "scripts": [
                 {
                     "flag": 0,
@@ -39453,8 +39453,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "차파예프 ",
-            "ship_name": "Chapaev",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702030/icon.png",
+            "ship_name": "Chapaev",
             "scripts": [
                 {
                     "flag": 0,
@@ -39906,8 +39906,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "차파예프 ",
-            "ship_name": "Chapaev",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702030/icon.png",
+            "ship_name": "Chapaev",
             "scripts": [
                 {
                     "flag": 0,
@@ -40406,8 +40406,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "드 제번 프로빈시엔",
-            "ship_name": "De Zeven Provinciën",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/1102010/icon.png",
+            "ship_name": "De Zeven Provinciën",
             "scripts": [
                 {
                     "flag": 0,
@@ -40733,8 +40733,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "드 제번 프로빈시엔",
-            "ship_name": "De Zeven Provinciën",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/1102010/icon.png",
+            "ship_name": "De Zeven Provinciën",
             "scripts": [
                 {
                     "flag": 0,
@@ -41207,8 +41207,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "드 제번 프로빈시엔",
-            "ship_name": "De Zeven Provinciën",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/1102010/icon.png",
+            "ship_name": "De Zeven Provinciën",
             "scripts": [
                 {
                     "flag": 0,
@@ -41622,8 +41622,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "에버트센",
-            "ship_name": "Evertsen",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/1101010/icon.png",
+            "ship_name": "Evertsen",
             "scripts": [
                 {
                     "flag": 0,
@@ -41886,8 +41886,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "에버트센",
-            "ship_name": "Evertsen",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/1101010/icon.png",
+            "ship_name": "Evertsen",
             "scripts": [
                 {
                     "flag": 0,
@@ -42173,8 +42173,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "에버트센",
-            "ship_name": "Evertsen",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/1101010/icon.png",
+            "ship_name": "Evertsen",
             "scripts": [
                 {
                     "flag": 0,
@@ -42553,8 +42553,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "카잔",
-            "ship_name": "Kazan ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705090/icon.png",
+            "ship_name": "Kazan ",
             "scripts": [
                 {
                     "flag": 0,
@@ -42781,8 +42781,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "카잔",
-            "ship_name": "Kazan ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705090/icon.png",
+            "ship_name": "Kazan ",
             "scripts": [
                 {
                     "flag": 0,
@@ -43025,8 +43025,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "카잔",
-            "ship_name": "Kazan ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705090/icon.png",
+            "ship_name": "Kazan ",
             "scripts": [
                 {
                     "flag": 0,
@@ -43361,8 +43361,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "올레그",
-            "ship_name": "Oleg",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702080/icon.png",
+            "ship_name": "Oleg",
             "scripts": [
                 {
                     "flag": 0,
@@ -43713,8 +43713,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "올레그",
-            "ship_name": "Oleg",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702080/icon.png",
+            "ship_name": "Oleg",
             "scripts": [
                 {
                     "flag": 0,
@@ -44016,8 +44016,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "올레그",
-            "ship_name": "Oleg",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702080/icon.png",
+            "ship_name": "Oleg",
             "scripts": [
                 {
                     "flag": 0,
@@ -44499,8 +44499,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "인도미터블",
-            "ship_name": "Indomitable",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207120/icon.png",
+            "ship_name": "Indomitable",
             "scripts": [
                 {
                     "flag": 0,
@@ -44922,8 +44922,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "인도미터블",
-            "ship_name": "Indomitable",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207120/icon.png",
+            "ship_name": "Indomitable",
             "scripts": [
                 {
                     "flag": 0,
@@ -45325,8 +45325,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "인도미터블",
-            "ship_name": "Indomitable",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207120/icon.png",
+            "ship_name": "Indomitable",
             "scripts": [
                 {
                     "flag": 0,
@@ -45725,8 +45725,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "라이온급 전함 - 라이온",
-            "ship_name": "Lion",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png",
+            "ship_name": "Lion",
             "scripts": [
                 {
                     "flag": 0,
@@ -46003,8 +46003,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "라이온급 전함 - 라이온",
-            "ship_name": "Lion",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png",
+            "ship_name": "Lion",
             "scripts": [
                 {
                     "flag": 0,
@@ -46362,8 +46362,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "라이온급 전함 - 라이온",
-            "ship_name": "Lion",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png",
+            "ship_name": "Lion",
             "scripts": [
                 {
                     "flag": 0,
@@ -46743,8 +46743,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "트라팔가",
-            "ship_name": "Trafalgar",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201380/icon.png",
+            "ship_name": "Trafalgar",
             "scripts": [
                 {
                     "flag": 0,
@@ -47072,8 +47072,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "트라팔가",
-            "ship_name": "Trafalgar",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201380/icon.png",
+            "ship_name": "Trafalgar",
             "scripts": [
                 {
                     "flag": 0,
@@ -47426,8 +47426,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "트라팔가",
-            "ship_name": "Trafalgar",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201380/icon.png",
+            "ship_name": "Trafalgar",
             "scripts": [
                 {
                     "flag": 0,
@@ -47807,8 +47807,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "클레오파트라",
-            "ship_name": "Cleopatra",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202350/icon.png",
+            "ship_name": "Cleopatra",
             "scripts": [
                 {
                     "flag": 0,
@@ -48116,8 +48116,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "클레오파트라",
-            "ship_name": "Cleopatra",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202350/icon.png",
+            "ship_name": "Cleopatra",
             "scripts": [
                 {
                     "flag": 0,
@@ -48380,8 +48380,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "클레오파트라",
-            "ship_name": "Cleopatra",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202350/icon.png",
+            "ship_name": "Cleopatra",
             "scripts": [
                 {
                     "flag": 0,
@@ -48751,8 +48751,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "갤런트",
-            "ship_name": "Gallant",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201390/icon.png",
+            "ship_name": "Gallant",
             "scripts": [
                 {
                     "flag": 0,
@@ -49100,8 +49100,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "갤런트",
-            "ship_name": "Gallant",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201390/icon.png",
+            "ship_name": "Gallant",
             "scripts": [
                 {
                     "flag": 0,
@@ -49424,8 +49424,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "갤런트",
-            "ship_name": "Gallant",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201390/icon.png",
+            "ship_name": "Gallant",
             "scripts": [
                 {
                     "flag": 0,
@@ -49885,8 +49885,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "트리니다드",
-            "ship_name": "Trinidad",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202360/icon.png",
+            "ship_name": "Trinidad",
             "scripts": [
                 {
                     "flag": 0,
@@ -50223,8 +50223,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "트리니다드",
-            "ship_name": "Trinidad",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202360/icon.png",
+            "ship_name": "Trinidad",
             "scripts": [
                 {
                     "flag": 0,
@@ -50562,8 +50562,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "트리니다드",
-            "ship_name": "Trinidad",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202360/icon.png",
+            "ship_name": "Trinidad",
             "scripts": [
                 {
                     "flag": 0,
@@ -50873,8 +50873,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "아드미랄 젠커",
-            "ship_name": "Admiral Zenker",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404070/icon.png",
+            "ship_name": "Admiral Zenker",
             "scripts": [
                 {
                     "flag": 0,
@@ -51157,8 +51157,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "아드미랄 젠커",
-            "ship_name": "Admiral Zenker",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404070/icon.png",
+            "ship_name": "Admiral Zenker",
             "scripts": [
                 {
                     "flag": 0,
@@ -51406,8 +51406,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "아드미랄 젠커",
-            "ship_name": "Admiral Zenker",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404070/icon.png",
+            "ship_name": "Admiral Zenker",
             "scripts": [
                 {
                     "flag": 0,
@@ -51787,8 +51787,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "U-552",
-            "ship_name": "U.B.552",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408140/icon.png",
+            "ship_name": "U.B.552",
             "scripts": [
                 {
                     "flag": 0,
@@ -52046,8 +52046,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "U-552",
-            "ship_name": "U.B.552",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408140/icon.png",
+            "ship_name": "U.B.552",
             "scripts": [
                 {
                     "flag": 0,
@@ -52400,8 +52400,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "U-552",
-            "ship_name": "U.B.552",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408140/icon.png",
+            "ship_name": "U.B.552",
             "scripts": [
                 {
                     "flag": 0,
@@ -52726,8 +52726,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "Z13",
-            "ship_name": "AAAZielplanerin13",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401130/icon.png",
+            "ship_name": "AAAZielplanerin13",
             "scripts": [
                 {
                     "flag": 0,
@@ -53065,8 +53065,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "Z13",
-            "ship_name": "AAAZielplanerin13",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401130/icon.png",
+            "ship_name": "AAAZielplanerin13",
             "scripts": [
                 {
                     "flag": 0,
@@ -53452,8 +53452,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "Z13",
-            "ship_name": "AAAZielplanerin13",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401130/icon.png",
+            "ship_name": "AAAZielplanerin13",
             "scripts": [
                 {
                     "flag": 0,
@@ -53869,8 +53869,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "됭케르크 ",
-            "ship_name": "gateaumistress",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/904010/icon.png",
+            "ship_name": "gateaumistress",
             "scripts": [
                 {
                     "flag": 0,
@@ -54272,8 +54272,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "됭케르크 ",
-            "ship_name": "gateaumistress",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/904010/icon.png",
+            "ship_name": "gateaumistress",
             "scripts": [
                 {
                     "flag": 0,
@@ -54720,8 +54720,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "됭케르크 ",
-            "ship_name": "gateaumistress",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/904010/icon.png",
+            "ship_name": "gateaumistress",
             "scripts": [
                 {
                     "flag": 0,
@@ -55254,8 +55254,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "플뢰레",
-            "ship_name": "Fleuret",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901050/icon.png",
+            "ship_name": "Fleuret",
             "scripts": [
                 {
                     "flag": 0,
@@ -55586,8 +55586,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "플뢰레",
-            "ship_name": "Fleuret",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901050/icon.png",
+            "ship_name": "Fleuret",
             "scripts": [
                 {
                     "flag": 0,
@@ -55940,8 +55940,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "플뢰레",
-            "ship_name": "Fleuret",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901050/icon.png",
+            "ship_name": "Fleuret",
             "scripts": [
                 {
                     "flag": 0,
@@ -56276,8 +56276,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "마세나",
-            "ship_name": "Masséna",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/804010/icon.png",
+            "ship_name": "Masséna",
             "scripts": [
                 {
                     "flag": 0,
@@ -56495,8 +56495,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "마세나",
-            "ship_name": "Masséna",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/804010/icon.png",
+            "ship_name": "Masséna",
             "scripts": [
                 {
                     "flag": 0,
@@ -56833,8 +56833,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "마세나",
-            "ship_name": "Masséna",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/804010/icon.png",
+            "ship_name": "Masséna",
             "scripts": [
                 {
                     "flag": 0,
@@ -57114,8 +57114,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "부아 벨루",
-            "ship_name": "Bois Belleau",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/806010/icon.png",
+            "ship_name": "Bois Belleau",
             "scripts": [
                 {
                     "flag": 0,
@@ -57483,8 +57483,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "부아 벨루",
-            "ship_name": "Bois Belleau",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/806010/icon.png",
+            "ship_name": "Bois Belleau",
             "scripts": [
                 {
                     "flag": 0,
@@ -57841,8 +57841,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "부아 벨루",
-            "ship_name": "Bois Belleau",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/806010/icon.png",
+            "ship_name": "Bois Belleau",
             "scripts": [
                 {
                     "flag": 0,
@@ -58160,8 +58160,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "르 아르디",
-            "ship_name": "Le hardi",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801050/icon.png",
+            "ship_name": "Le hardi",
             "scripts": [
                 {
                     "flag": 0,
@@ -58414,8 +58414,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "르 아르디",
-            "ship_name": "Le hardi",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801050/icon.png",
+            "ship_name": "Le hardi",
             "scripts": [
                 {
                     "flag": 0,
@@ -58808,8 +58808,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "르 아르디",
-            "ship_name": "Le hardi",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801050/icon.png",
+            "ship_name": "Le hardi",
             "scripts": [
                 {
                     "flag": 0,
@@ -59194,8 +59194,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "뒤켄",
-            "ship_name": "Duquesne ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/803030/icon.png",
+            "ship_name": "Duquesne ",
             "scripts": [
                 {
                     "flag": 0,
@@ -59487,8 +59487,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "뒤켄",
-            "ship_name": "Duquesne ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/803030/icon.png",
+            "ship_name": "Duquesne ",
             "scripts": [
                 {
                     "flag": 0,
@@ -59771,8 +59771,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "뒤켄",
-            "ship_name": "Duquesne ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/803030/icon.png",
+            "ship_name": "Duquesne ",
             "scripts": [
                 {
                     "flag": 0,
@@ -60087,8 +60087,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "뒤게 트루앵",
-            "ship_name": "Duguay-Trouin ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802040/icon.png",
+            "ship_name": "Duguay-Trouin ",
             "scripts": [
                 {
                     "flag": 0,
@@ -60395,8 +60395,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "뒤게 트루앵",
-            "ship_name": "Duguay-Trouin ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802040/icon.png",
+            "ship_name": "Duguay-Trouin ",
             "scripts": [
                 {
                     "flag": 0,
@@ -60649,8 +60649,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "뒤게 트루앵",
-            "ship_name": "Duguay-Trouin ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802040/icon.png",
+            "ship_name": "Duguay-Trouin ",
             "scripts": [
                 {
                     "flag": 0,
@@ -60945,8 +60945,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "에식스",
-            "ship_name": "EssexG1",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107090/icon.png",
+            "ship_name": "EssexG1",
             "scripts": [
                 {
                     "flag": 0,
@@ -61199,8 +61199,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "에식스",
-            "ship_name": "EssexG1",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107090/icon.png",
+            "ship_name": "EssexG1",
             "scripts": [
                 {
                     "flag": 0,
@@ -61473,8 +61473,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "에식스",
-            "ship_name": "EssexG1",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107090/icon.png",
+            "ship_name": "EssexG1",
             "scripts": [
                 {
                     "flag": 0,
@@ -61744,8 +61744,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "하쿠호",
-            "ship_name": "Hakuhō ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307160/icon.png",
+            "ship_name": "Hakuhō ",
             "scripts": [
                 {
                     "flag": 0,
@@ -62023,8 +62023,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "하쿠호",
-            "ship_name": "Hakuhō ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307160/icon.png",
+            "ship_name": "Hakuhō ",
             "scripts": [
                 {
                     "flag": 0,
@@ -62331,8 +62331,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "하쿠호",
-            "ship_name": "Hakuhō ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307160/icon.png",
+            "ship_name": "Hakuhō ",
             "scripts": [
                 {
                     "flag": 0,
@@ -62582,8 +62582,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "이404",
-            "ship_name": "I404 ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317020/icon.png",
+            "ship_name": "I404 ",
             "scripts": [
                 {
                     "flag": 0,
@@ -62861,8 +62861,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "이404",
-            "ship_name": "I404 ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317020/icon.png",
+            "ship_name": "I404 ",
             "scripts": [
                 {
                     "flag": 0,
@@ -63185,8 +63185,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "이404",
-            "ship_name": "I404 ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317020/icon.png",
+            "ship_name": "I404 ",
             "scripts": [
                 {
                     "flag": 0,
@@ -63416,8 +63416,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "오미",
-            "ship_name": "Omi",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305160/icon.png",
+            "ship_name": "Omi",
             "scripts": [
                 {
                     "flag": 0,
@@ -63748,8 +63748,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "오미",
-            "ship_name": "Omi",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305160/icon.png",
+            "ship_name": "Omi",
             "scripts": [
                 {
                     "flag": 0,
@@ -64061,8 +64061,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "오미",
-            "ship_name": "Omi",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305160/icon.png",
+            "ship_name": "Omi",
             "scripts": [
                 {
                     "flag": 0,
@@ -64367,8 +64367,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "아사마",
-            "ship_name": "Asama ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303200/icon.png",
+            "ship_name": "Asama ",
             "scripts": [
                 {
                     "flag": 0,
@@ -64641,8 +64641,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "아사마",
-            "ship_name": "Asama ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303200/icon.png",
+            "ship_name": "Asama ",
             "scripts": [
                 {
                     "flag": 0,
@@ -64910,8 +64910,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "아사마",
-            "ship_name": "Asama ",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303200/icon.png",
+            "ship_name": "Asama ",
             "scripts": [
                 {
                     "flag": 0,
@@ -65206,8 +65206,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "미나세",
-            "ship_name": "Minase",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302270/icon.png",
+            "ship_name": "Minase",
             "scripts": [
                 {
                     "flag": 0,
@@ -65469,8 +65469,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "미나세",
-            "ship_name": "Minase",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302270/icon.png",
+            "ship_name": "Minase",
             "scripts": [
                 {
                     "flag": 0,
@@ -65783,8 +65783,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "미나세",
-            "ship_name": "Minase",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302270/icon.png",
+            "ship_name": "Minase",
             "scripts": [
                 {
                     "flag": 0,
@@ -66049,8 +66049,8 @@
             "trigger_type": 1,
             "trigger_param": "",
             "kr_name": "타에카제",
-            "ship_name": "Taekaze",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301920/icon.png",
+            "ship_name": "Taekaze",
             "scripts": [
                 {
                     "flag": 0,
@@ -66341,8 +66341,8 @@
             "trigger_type": 2,
             "trigger_param": "100",
             "kr_name": "타에카제",
-            "ship_name": "Taekaze",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301920/icon.png",
+            "ship_name": "Taekaze",
             "scripts": [
                 {
                     "flag": 0,
@@ -66600,8 +66600,8 @@
             "trigger_type": 2,
             "trigger_param": "150",
             "kr_name": "타에카제",
-            "ship_name": "Taekaze",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301920/icon.png",
+            "ship_name": "Taekaze",
             "scripts": [
                 {
                     "flag": 0,
@@ -66807,6 +66807,730 @@
                     "type": 4,
                     "kr_name": "타에카제",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301920/icon.png"
+                }
+            ]
+        }
+    },
+    "와타라세": {
+        "183": {
+            "id": 183,
+            "type": null,
+            "unlock_desc": "캐릭터 획득",
+            "ship_group": 30225,
+            "name": "수선 도와주기",
+            "trigger_type": 1,
+            "trigger_param": "",
+            "kr_name": "와타라세",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png",
+            "ship_name": "Watarase",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 5861,
+                    "option": [
+                        [
+                            1,
+                            "무슨 일이라도 있어?"
+                        ]
+                    ],
+                    "param": "지휘관님, 집무실에 걸려 있던 상의 말인데, 제가 잠깐 맡아뒀어요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5862,
+                    "option": "",
+                    "param": "무슨 일이라도 있어?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 5863,
+                    "option": "",
+                    "param": "그냥, 올이 약간 풀려 있길래, 살짝 수선해 드리고 싶어졌거든요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5864,
+                    "option": "",
+                    "param": "이번에는 내구성이 뛰어난 특별한 실로 보강해 드릴 테니, 더 오래 입으실 수 있을 거예요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5865,
+                    "option": "",
+                    "param": "색상도 원래 원단과 최대한 비슷한 걸 골라서, 보기 싫지는 않을 거고요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5866,
+                    "option": [
+                        [
+                            2,
+                            "그런 부분까지 신경을 써주다니……"
+                        ]
+                    ],
+                    "param": "바로 돌려드릴 테니 일정에 지장도 없으실 거예요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5867,
+                    "option": "",
+                    "param": "그런 부분까지 신경을 써주다니……",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 5868,
+                    "option": "",
+                    "param": "후후, 아무래도 제가 잘 아는 분야니까요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5869,
+                    "option": "",
+                    "param": "아, 안감도 통기성이 좋은 소재로 교체해 뒀어요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5870,
+                    "option": "",
+                    "param": "푹푹 찌는 날에도 조금은 쾌적하게 생활하실 수 있을 거예요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5871,
+                    "option": "",
+                    "param": "단추도 다시 단단하게 달아뒀으니, 채울 때 걸리지도 않을 거고요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5872,
+                    "option": [
+                        [
+                            3,
+                            "그것까지 본 거야?"
+                        ]
+                    ],
+                    "param": "그리고…… 집무실 책상 위에 있던 만년필에 잉크가 새고 있길래 고쳐뒀어요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5873,
+                    "option": "",
+                    "param": "그것까지 본 거야?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 5874,
+                    "option": "",
+                    "param": "어제 서류를 건넬 때, 지휘관님 손끝에 검은 얼룩이 묻어 있더라고요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5875,
+                    "option": "",
+                    "param": "음…… 수선한 부분도 만져보시면 원래 것처럼 부드러울 거예요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5876,
+                    "option": "",
+                    "param": "입다가 불편하시면 언제든 말씀하세요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5877,
+                    "option": "",
+                    "param": "옷은 제2의 피부나 마찬가지니까요. 무엇보다 편안함이 제일 중요하죠.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5878,
+                    "option": "",
+                    "param": "그럼, 집무실에서 잠깐만 기다려 주세요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5879,
+                    "option": "",
+                    "param": "곧바로 가져다드릴게요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                }
+            ]
+        },
+        "184": {
+            "id": 184,
+            "type": null,
+            "unlock_desc": "호감도 사랑 달성",
+            "ship_group": 30225,
+            "name": "무사의 감",
+            "trigger_type": 2,
+            "trigger_param": "100",
+            "kr_name": "와타라세",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png",
+            "ship_name": "Watarase",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 5880,
+                    "option": [
+                        [
+                            1,
+                            "어떻게 알아?"
+                        ]
+                    ],
+                    "param": "지휘관님, 오늘은 큰비가 내릴 것 같아요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5881,
+                    "option": "",
+                    "param": "어떻게 알아?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 5882,
+                    "option": "",
+                    "param": "그건 무가 출신으로서의 직감…… 후후, 농담이에요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5883,
+                    "option": "",
+                    "param": "방금 훈련하다가 갈매기들이 낮게 나는 걸 봤거든요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5884,
+                    "option": "",
+                    "param": "특별히 만든 우산을 준비해서 집무실 입구 우산꽂이에 뒀어요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5885,
+                    "option": "",
+                    "param": "손잡이 부분은 제 무기와 같은 미끄럼 방지 소재로 만들었고요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5886,
+                    "option": "",
+                    "param": "우산 색깔은 그날 지휘관님과 함께 썼던 그 우산과 같은 색으로 골랐어요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5887,
+                    "option": [
+                        [
+                            2,
+                            "맞아, 대단하네"
+                        ]
+                    ],
+                    "param": "그게 지휘관님이 좋아하는 색… 맞죠?",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5888,
+                    "option": "",
+                    "param": "맞아, 대단하네!",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 5889,
+                    "option": "",
+                    "param": "얼마 전 비 오던 날, 지휘관님이 제 우산을 계속 바라보고 계셨잖아요……",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5890,
+                    "option": "",
+                    "param": "아, 우산꽂이 밑에는 일회용 신발 커버도 준비해 뒀어요. 신발 위에 바로 덧씌우기만 하면 돼요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5891,
+                    "option": "",
+                    "param": "그리고… 돌아오다가 알게 된 건데, 동쪽 복도 지붕이 조금 망가져서, 물이 샐 수도 있겠더라고요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5892,
+                    "option": "",
+                    "param": "그러니까 외출하실 때는 서쪽 복도를 이용하시는 편이 좋겠어요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5893,
+                    "option": "",
+                    "param": "그리고 휴게실에 마른 담요와 따뜻한 차도 준비해 뒀어요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5894,
+                    "option": "",
+                    "param": "밖에서 돌아오실 때 쓰세요. 젖은 몸을 닦고, 조금이라도 온기를 느끼셨으면 해요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5895,
+                    "option": "",
+                    "param": "그리고… 너무 늦지 않게 돌아와 주세요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5896,
+                    "option": [
+                        [
+                            3,
+                            "……그건 또 어떻게 알아?"
+                        ]
+                    ],
+                    "param": "비가 분명 더 거세질 테니까요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5897,
+                    "option": "",
+                    "param": "……그건 또 어떻게 알아?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 5898,
+                    "option": "",
+                    "param": "우후후…… 글쎄요……",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5899,
+                    "option": "",
+                    "param": "그것도 무가 출신으로서의 직감……일지도 모르겠네요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                }
+            ]
+        },
+        "185": {
+            "id": 185,
+            "type": null,
+            "unlock_desc": "서약 완료",
+            "ship_group": 30225,
+            "name": "서로 하는 일",
+            "trigger_type": 2,
+            "trigger_param": "150",
+            "kr_name": "와타라세",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png",
+            "ship_name": "Watarase",
+            "scripts": [
+                {
+                    "flag": 0,
+                    "id": 5900,
+                    "option": [
+                        [
+                            1,
+                            "와타라세도 아직 쉬러 안 갔어?"
+                        ]
+                    ],
+                    "param": "지휘관님, 집무실 불이 아직 켜져 있는 걸 봤어요. 또 이렇게 늦게까지 일하고 계시는군요…",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5901,
+                    "option": "",
+                    "param": "와타라세도 아직 쉬러 안 갔어?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 1,
+                    "id": 5902,
+                    "option": "",
+                    "param": "네, 방금 훈련하고 나오던 길이었어요. 아래 복도를 지나다가… 불빛이 보이길래요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5903,
+                    "option": "",
+                    "param": "아무리 날카로운 칼도 정기적으로 갈아주지 않으면 무뎌지잖아요? 사람도 마찬가지예요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5904,
+                    "option": "",
+                    "param": "노력도 중요하지만, 적절한 휴식이 있어야 그 예리함을 유지할 수 있는 법이죠.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5905,
+                    "option": "",
+                    "param": "물론, 일을 다 마쳐야 쉬실 수 있는 분이라는 건 알아요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5906,
+                    "option": "",
+                    "param": "그래서 지휘관님을 위해 소화가 잘되는 야식을 준비했어요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5907,
+                    "option": "",
+                    "param": "집무실 문 앞 선반 위에 두었답니다.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5908,
+                    "option": "",
+                    "param": "따뜻한 야채죽이에요. 너무 뜨겁지 않게 드시기 좋은 온도로 맞췄어요. 좋아하시는 반찬도 곁들였고요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 1,
+                    "id": 5909,
+                    "option": [
+                        [
+                            2,
+                            "고마워, 바로 「처리」할게"
+                        ]
+                    ],
+                    "param": "식기 전에 바로 「처리」해주세요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5910,
+                    "option": "",
+                    "param": "고마워, 바로 「처리」할게",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 5911,
+                    "option": "",
+                    "param": "와타라세도 얼른 가서 쉬어.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 2,
+                    "id": 5912,
+                    "option": "",
+                    "param": "후후, 모시는 분의 건강을 지키는 건, 무가 사람으로서 당연한 거죠. 게다가……",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5913,
+                    "option": "",
+                    "param": "지휘관님이 일을 하시는 동안, 제게도 할 일이 있거든요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 2,
+                    "id": 5914,
+                    "option": [
+                        [
+                            3,
+                            "혹시……"
+                        ]
+                    ],
+                    "param": "234",
+                    "ship_group": 30225,
+                    "type": 4,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5915,
+                    "option": "",
+                    "param": "혹시…… 옷 만들고 있어?",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
+                },
+                {
+                    "flag": 3,
+                    "id": 5916,
+                    "option": "",
+                    "param": "역시 지휘관님, 바로 맞추시네요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5917,
+                    "option": "",
+                    "param": "어떻게 완성될지 기대해 주세요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5918,
+                    "option": "",
+                    "param": "참, 지휘관님을 위해 놓고 있던 자수도 이제 마무리 단계예요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5919,
+                    "option": "",
+                    "param": "그것도… 조금 기대감을 남겨둘게요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5920,
+                    "option": "",
+                    "param": "지휘관님께서 그걸 손에 쥐고 어떤 표정을 지으실지… 너무 궁금해서 참을 수가 없네요.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5921,
+                    "option": "",
+                    "param": "그럼, 서로 얼른 일을 마치고 푹 쉬도록 하죠.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 3,
+                    "id": 5922,
+                    "option": [
+                        [
+                            4,
+                            "잘 자"
+                        ]
+                    ],
+                    "param": "조금 이르지만, 안녕히 주무시길.",
+                    "ship_group": 30225,
+                    "type": 1,
+                    "kr_name": "와타라세",
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302250/icon.png"
+                },
+                {
+                    "flag": 4,
+                    "id": 5923,
+                    "option": "",
+                    "param": "잘 자.",
+                    "ship_group": 0,
+                    "type": 1,
+                    "kr_name": "지휘관",
+                    "icon": null
                 }
             ]
         }
