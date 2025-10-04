@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Get HTML elements (unchanged)
+    // Get HTML elements
     const characterSearchInput = document.getElementById('character-search-input');
     const characterDropdownContent = document.getElementById('character-dropdown-content');
     const skinSearchInput = document.getElementById('skin-search-input');
@@ -9,69 +9,122 @@ document.addEventListener('DOMContentLoaded', () => {
     const textContentArea = document.getElementById('text-content-area');
     const oathTableArea = document.getElementById('oath-table-area');
 
-    // Data storage (unchanged)
+    // Info Pop-up & Clear Button elements
+    const infoButton = document.getElementById('info-button');
+    const infoPopup = document.getElementById('info-popup');
+    const closePopupBtn = infoPopup.querySelector('.close-popup-btn');
+    const clearFiltersBtn = document.getElementById('clear-filters-btn');
+
+    // Data storage & state
     let skinData = [];
     let allCharacterNames = [];
     let currentCharacterSkins = [];
+    window.currentAudio = null;
+    window.currentPlayButton = null;
 
-    // Helper and Dropdown Functions (unchanged)
+    // Fuzzy Search Instances
+    let characterFuse, skinFuse;
+    const fuseOptions = {
+        includeScore: true,
+        includeMatches: true,
+        threshold: 0.4,
+        keys: ['name']
+    };
+
+    // Custom Sorting Function
+    const getCategory = (str) => {
+        if (!str) return 4;
+        if (/^[가-힣]/.test(str)) return 1; // Korean
+        if (/^[a-zA-Z]/.test(str)) return 2; // English
+        if (/^[0-9]/.test(str)) return 3; // Numeric
+        return 4; // Other
+    };
+
+    const customSort = (a, b) => {
+        const categoryA = getCategory(a);
+        const categoryB = getCategory(b);
+        if (categoryA !== categoryB) {
+            return categoryA - categoryB;
+        }
+        return a.localeCompare(b, 'ko');
+    };
+
+    // Helper and Dropdown Functions
     const debounce = (func, delay) => { let timeoutId; return (...args) => { clearTimeout(timeoutId); timeoutId = setTimeout(() => { func.apply(this, args); }, delay); }; };
-    const populateDropdown = (dropdownEl, items, onSelectCallback) => { dropdownEl.innerHTML = ''; if (items.length === 0) { dropdownEl.innerHTML = `<div class="no-results">검색 결과가 없습니다</div>`; return; } items.forEach(item => { const a = document.createElement('a'); a.textContent = item; a.addEventListener('click', () => { onSelectCallback(item); }); dropdownEl.appendChild(a); }); };
-    const setupDropdown = (inputEl, dropdownEl, getSourceArray, onSelectCallback) => { const handleFilter = () => { const sourceArray = getSourceArray(); const searchTerm = inputEl.value.toLowerCase(); const isExactMatch = sourceArray.some(item => item.toLowerCase() === searchTerm); if (isExactMatch) { populateDropdown(dropdownEl, sourceArray, onSelectCallback); } else { const filteredItems = sourceArray.filter(item => item.toLowerCase().includes(searchTerm)); populateDropdown(dropdownEl, filteredItems, onSelectCallback); } }; inputEl.addEventListener('keyup', debounce(handleFilter, 200)); inputEl.addEventListener('focus', () => { handleFilter(); dropdownEl.style.display = 'block'; }); inputEl.addEventListener('blur', () => { setTimeout(() => { dropdownEl.style.display = 'none'; }, 200); }); };
-
-    // --- NEW: URL State Management Functions ---
-
-    /**
-     * Reads the current selections and updates the browser URL.
-     */
-    const updateURLWithFilters = () => {
-        const params = new URLSearchParams();
-        if (characterSearchInput.value) {
-            params.set('character', characterSearchInput.value);
+    
+    const populateDropdown = (dropdownEl, results, onSelectCallback) => {
+        dropdownEl.innerHTML = '';
+        if (results.length === 0) {
+            dropdownEl.innerHTML = `<div class="no-results">검색 결과가 없습니다</div>`;
+            return;
         }
-        if (skinSearchInput.value) {
-            params.set('skin', skinSearchInput.value);
-        }
-        const newUrl = `${window.location.pathname}?${params.toString()}`;
-        // Use replaceState to avoid cluttering history for every minor change
-        history.replaceState({ path: newUrl }, '', newUrl);
-    };
 
-    /**
-     * Reads filter parameters from the URL and applies them to the page.
-     */
-    const applyFiltersFromURL = () => {
-        const params = new URLSearchParams(window.location.search);
-        const character = params.get('character');
-        const skin = params.get('skin');
+        results.forEach(result => {
+            const item = result.item;
+            const matches = result.matches;
+            const a = document.createElement('a');
 
-        if (character) {
-            // Check if the character from the URL is valid
-            if (allCharacterNames.includes(character)) {
-                handleCharacterSelect(character, false); // Select without clearing the next input
-                if (skin) {
-                    // Check if the skin belongs to the character
-                    if (currentCharacterSkins.includes(skin)) {
-                        handleSkinSelect(skin);
-                    }
-                }
+            if (matches && matches.length > 0 && matches[0].indices) {
+                let highlightedName = '';
+                let lastIndex = 0;
+                matches[0].indices.forEach(([start, end]) => {
+                    highlightedName += item.name.substring(lastIndex, start);
+                    highlightedName += `<mark>${item.name.substring(start, end + 1)}</mark>`;
+                    lastIndex = end + 1;
+                });
+                highlightedName += item.name.substring(lastIndex);
+                a.innerHTML = highlightedName;
+            } else {
+                a.textContent = item.name;
             }
-        }
+            
+            a.addEventListener('click', () => { onSelectCallback(item.name); });
+            dropdownEl.appendChild(a);
+        });
     };
 
-    // --- Main Data Fetching and Initialization ---
-    fetch('data/subset_skin_data.json')
+    const setupDropdown = (inputEl, dropdownEl, getFuseInstance, onSelectCallback) => {
+        const handleFilter = () => {
+            const fuse = getFuseInstance();
+            if (!fuse) return;
+
+            const searchTerm = inputEl.value;
+            if (searchTerm.trim() === '') {
+                const allItems = fuse.getIndex().docs.map(doc => ({ item: doc, matches: [] }));
+                populateDropdown(dropdownEl, allItems, onSelectCallback);
+            } else {
+                const results = fuse.search(searchTerm);
+                populateDropdown(dropdownEl, results, onSelectCallback);
+            }
+        };
+
+        inputEl.addEventListener('keyup', debounce(handleFilter, 200));
+        inputEl.addEventListener('focus', () => {
+            handleFilter();
+            dropdownEl.style.display = 'block';
+        });
+        inputEl.addEventListener('blur', () => { setTimeout(() => { dropdownEl.style.display = 'none'; }, 200); });
+    };
+
+    // URL State Management Functions
+    const updateURLWithFilters = () => { const params = new URLSearchParams(); if (characterSearchInput.value) { params.set('character', characterSearchInput.value); } if (skinSearchInput.value) { params.set('skin', skinSearchInput.value); } const newUrl = `${window.location.pathname}?${params.toString()}`; history.replaceState({ path: newUrl }, '', newUrl); };
+    const applyFiltersFromURL = () => { const params = new URLSearchParams(window.location.search); const character = params.get('character'); const skin = params.get('skin'); if (character) { if (allCharacterNames.includes(character)) { handleCharacterSelect(character, false); if (skin) { if (currentCharacterSkins.includes(skin)) { handleSkinSelect(skin); } } } } };
+
+    // Main Data Fetching and Initialization
+    fetch('data/skin_voiceline_data.json')
         .then(response => response.json())
         .then(jsonData => {
             if (!jsonData || Object.keys(jsonData).length === 0) throw new Error('JSON data is empty or invalid.');
             skinData = Object.values(jsonData);
-            allCharacterNames = [...new Set(skinData.map(row => row['함순이 이름']))].filter(name => name).sort();
             
-            // Setup dropdowns
-            setupDropdown(characterSearchInput, characterDropdownContent, () => allCharacterNames, handleCharacterSelect);
-            setupDropdown(skinSearchInput, skinDropdownContent, () => currentCharacterSkins, handleSkinSelect);
+            allCharacterNames = [...new Set(skinData.map(row => row['함순이 이름']))].filter(name => name).sort(customSort);
             
-            // NEW: Apply filters from URL on load instead of a hardcoded default
+            const characterDataForFuse = allCharacterNames.map(name => ({ name }));
+            characterFuse = new Fuse(characterDataForFuse, fuseOptions);
+
+            setupDropdown(characterSearchInput, characterDropdownContent, () => characterFuse, handleCharacterSelect);
+            setupDropdown(skinSearchInput, skinDropdownContent, () => skinFuse, handleSkinSelect);
+            
             applyFiltersFromURL();
             
         }).catch(error => {
@@ -79,8 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             characterSearchInput.placeholder = 'Error: Could not load data.';
         });
 
-    // --- Event Handlers and Core Logic ---
-
+    // Event Handlers and Core Logic
     function handleCharacterSelect(characterName, clearSkin = true) {
         characterSearchInput.value = characterName;
         characterDropdownContent.style.display = 'none';
@@ -94,30 +146,209 @@ document.addEventListener('DOMContentLoaded', () => {
         currentCharacterSkins = skinData
             .filter(row => row['함순이 이름'] === characterName)
             .map(skin => skin['한글 함순이 + 스킨 이름']);
+
+        const skinDataForFuse = currentCharacterSkins.map(name => ({ name }));
+        skinFuse = new Fuse(skinDataForFuse, fuseOptions);
             
         if (clearSkin) {
             clearSkinDetails();
         }
-        updateURLWithFilters(); // Update URL with selected character
+        updateURLWithFilters();
     }
 
     function handleSkinSelect(skinName) {
         skinSearchInput.value = skinName;
         skinDropdownContent.style.display = 'none';
         displaySkinDetails();
-        updateURLWithFilters(); // Update URL with selected skin
+        updateURLWithFilters();
     }
+    
+    const stopCurrentAudio = () => {
+        if (window.currentAudio) {
+            window.currentAudio.pause();
+            window.currentAudio = null;
+        }
+        if (window.currentPlayButton) {
+            window.currentPlayButton.textContent = '▶';
+            window.currentPlayButton.classList.remove('playing');
+            window.currentPlayButton = null;
+        }
+    };
+
+    const handlePlayClick = (event) => {
+        const button = event.target;
+        if (!button.matches('.play-voice-btn')) return;
+
+        const src = button.getAttribute('data-src');
+        if (!src) return;
+
+        if (button === window.currentPlayButton) {
+            stopCurrentAudio();
+        } else {
+            stopCurrentAudio();
+            window.currentPlayButton = button;
+            window.currentAudio = new Audio(src);
+            window.currentAudio.play().catch(e => console.error("Error playing audio:", e));
+            button.textContent = '■';
+            button.classList.add('playing');
+            window.currentAudio.addEventListener('ended', stopCurrentAudio);
+        }
+    };
 
     function clearSkinDetails() {
         skinInfoBox.classList.add('hidden');
         imageGallery.classList.add('hidden');
         textContentArea.classList.add('hidden');
         oathTableArea.classList.add('hidden');
+        stopCurrentAudio();
     }
 
-    // Unchanged display function
-    const displaySkinDetails = () => { const selectedSkinName = skinSearchInput.value; if (!selectedSkinName) { clearSkinDetails(); return; } const skin = skinData.find(row => row['한글 함순이 + 스킨 이름'] === selectedSkinName); if (!skin) return; skinInfoBox.innerHTML = ''; let infoHtml = ''; const gemIconHtml = `<img src="assets/icon/60px-Ruby.png" class="gem-icon" alt="Gem">`; if (skin['재화'] && skin['재화'] !== 'null') { infoHtml += `<div class="info-item">${gemIconHtml}<span class="info-value">${skin['재화']}</span></div>`; } if (skin['기간'] && skin['기간'] !== 'null') { infoHtml += `<div class="info-item"><strong class="info-label">상시여부:</strong><span class="info-value">${skin['기간']}</span></div>`; } if (skin['스킨 타입 - 한글'] && skin['스킨 타입 - 한글'] !== 'null') { infoHtml += `<div class="info-item"><strong class="info-label">스킨타입:</strong><span class="info-value">${skin['스킨 타입 - 한글']}</span></div>`; } if (skin['스킨 태그'] && skin['스킨 태그'] !== 'null') { infoHtml += `<div class="info-item"><strong class="info-label">스킨태그:</strong><span class="info-value">${skin['스킨 태그']}</span></div>`; } skinInfoBox.innerHTML = infoHtml; if (infoHtml) skinInfoBox.classList.remove('hidden'); imageGallery.innerHTML = ''; const topBannerSrc = skin['전체 일러']; if (topBannerSrc && topBannerSrc !== 'null') { const topBannerImg = document.createElement('img'); topBannerImg.className = 'gallery-top-banner'; topBannerImg.src = topBannerSrc; imageGallery.appendChild(topBannerImg); } const bottomPanel = document.createElement('div'); bottomPanel.className = 'gallery-bottom-panel'; const bottomLeftPanel = document.createElement('div'); bottomLeftPanel.className = 'bottom-left-panel'; const secondaryLargeSrc = skin['확대 일러']; if (secondaryLargeSrc && secondaryLargeSrc !== 'null') { const secondaryImg = document.createElement('img'); secondaryImg.src = secondaryLargeSrc; bottomLeftPanel.appendChild(secondaryImg); } else { const dummyBox = document.createElement('div'); dummyBox.className = 'dummy-image-box'; dummyBox.textContent = '이 스킨은 확대 일러가 없어요 지휘관님'; bottomLeftPanel.appendChild(dummyBox); } bottomPanel.appendChild(bottomLeftPanel); const bottomRightPanel = document.createElement('div'); bottomRightPanel.className = 'bottom-right-panel'; const tallGroup = document.createElement('div'); tallGroup.className = 'thumbnail-group tall-group'; const tallSources = [skin['깔끔한 일러'], skin['sd 일러']].filter(src => src && src !== 'null'); tallSources.forEach(src => { const img = document.createElement('img'); img.src = src; img.className = 'tall-thumbnail'; tallGroup.appendChild(img); }); if(tallGroup.children.length > 0) bottomRightPanel.appendChild(tallGroup); const smallGroup = document.createElement('div'); smallGroup.className = 'thumbnail-group small-group'; const smallSources = [skin['아이콘 일러'], skin['쥬스타 아이콘 일러']].filter(src => src && src !== 'null'); smallSources.forEach(src => { const img = document.createElement('img'); img.src = src; smallGroup.appendChild(img); }); if(smallGroup.children.length > 0) bottomRightPanel.appendChild(smallGroup); bottomPanel.appendChild(bottomRightPanel); imageGallery.appendChild(bottomPanel); imageGallery.classList.remove('hidden'); textContentArea.innerHTML = ''; let textContentHtml = ''; let descriptionsHtml = ''; let leftGroupHtml = ''; if (skin['설명']) { leftGroupHtml += `<div class="description-item"><h2>설명</h2><p>${skin['설명']}</p></div>`; } if (skin['드랍 설명']) { leftGroupHtml += `<div class="description-item"><h2>드랍 설명</h2><p>${skin['드랍 설명']}</p></div>`; } if (leftGroupHtml) { descriptionsHtml += `<div class="description-group">${leftGroupHtml}</div>`; } if (skin['자기소개']) { descriptionsHtml += `<div class="description-item"><h2>자기소개</h2><p>${skin['자기소개']}</p></div>`; } if (descriptionsHtml) { textContentHtml += `<div class="descriptions-panel">${descriptionsHtml}</div>`; } const firstTableFields = ["전투개시", "상세확인", "의뢰 완료", "실망", "낯섦", "호감", "기쁨", "사랑", "터치3", "모항귀환", "hp 경고", "로그인", "실패", "우편", "메인1~5", "임무", "임무완료", "서약", "스킬", "터치1", "터치2", "입수시", "강화성공", "vote", "승리"]; let firstTableBodyHtml = ''; firstTableFields.forEach(field => { if (skin[field]) { let value = skin[field].replace(/\"/g, ''); if (field === "메인1~5") { value = value.replace(/\\n/g, '\n'); } firstTableBodyHtml += `<tr><td>${field}</td><td>${value}</td></tr>`; } }); if (firstTableBodyHtml) { textContentHtml += `<table class="voice-line-table"><thead><tr><th colspan="2">선택한 함순이의 대사 모음</th></tr></thead><tbody>${firstTableBodyHtml}</tbody></table>`; } textContentArea.innerHTML = textContentHtml; if (textContentHtml) textContentArea.classList.remove('hidden'); oathTableArea.innerHTML = ''; const oathTableFields = ["전투개시_ex", "상세확인_ex", "의뢰 완료_ex", "사랑_ex", "터치3_ex", "모항귀환_ex", "hp 경고_ex", "로그인_ex", "실패_ex", "우편_ex", "메인1~5_ex", "임무_ex", "임무완료_ex", "스킬_ex", "터치1_ex", "터치2_ex", "입수시_ex", "강화성공_ex", "승리_ex"]; let oathTableBodyHtml = ''; oathTableFields.forEach(field => { if (skin[field] && skin[field] !== '""') { let value = skin[field].replace(/\"/g, ''); value = value.replace(/\\n/g, '\n'); oathTableBodyHtml += `<tr><td>${field}</td><td>${value}</td></tr>`; } }); if (oathTableBodyHtml) { const fullOathTableHtml = `<table class="voice-line-table"><thead><tr><th colspan="2">선택한 함순이의 서약대사 모음</th></tr></thead><tbody>${oathTableBodyHtml}</tbody></table>`; oathTableArea.innerHTML = fullOathTableHtml; oathTableArea.classList.remove('hidden'); } };
+    const displaySkinDetails = () => {
+        // ... (This entire function is unchanged from the previous version)
+        const selectedSkinName = skinSearchInput.value;
+        if (!selectedSkinName) {
+            clearSkinDetails();
+            return;
+        }
+        const skin = skinData.find(row => row['한글 함순이 + 스킨 이름'] === selectedSkinName);
+        if (!skin) return;
+        skinInfoBox.innerHTML = '';
+        let infoHtml = '';
+        const gemIconHtml = `<img src="assets/icon/60px-Ruby.png" class="gem-icon" alt="Gem">`;
+        if (skin['재화']) infoHtml += `<div class="info-item">${gemIconHtml}<span class="info-value">${skin['재화']}</span></div>`;
+        if (skin['기간']) infoHtml += `<div class="info-item"><strong class="info-label">상시여부:</strong><span class="info-value">${skin['기간']}</span></div>`;
+        if (skin['스킨 타입 - 한글']) infoHtml += `<div class="info-item"><strong class="info-label">스킨타입:</strong><span class="info-value">${skin['스킨 타입 - 한글']}</span></div>`;
+        if (skin['스킨 태그']) infoHtml += `<div class="info-item"><strong class="info-label">스킨태그:</strong><span class="info-value">${skin['스킨 태그']}</span></div>`;
+        skinInfoBox.innerHTML = infoHtml;
+        infoHtml ? skinInfoBox.classList.remove('hidden') : skinInfoBox.classList.add('hidden');
+        imageGallery.innerHTML = '';
+        let galleryHtml = '';
+        if (skin['전체 일러']) galleryHtml += `<img class="gallery-top-banner" src="${skin['전체 일러']}">`;
+        let bottomPanelHtml = '';
+        let bottomLeftHtml = '<div class="bottom-left-panel">';
+        if (skin['확대 일러']) {
+            bottomLeftHtml += `<img src="${skin['확대 일러']}">`;
+        } else {
+            bottomLeftHtml += `<div class="dummy-image-box">이 스킨은 확대 일러가 없어요 지휘관님</div>`;
+        }
+        bottomLeftHtml += '</div>';
+        let bottomRightHtml = '<div class="bottom-right-panel">';
+        const tallSources = [skin['깔끔한 일러'], skin['sd 일러']].filter(Boolean);
+        if (tallSources.length > 0) {
+            bottomRightHtml += '<div class="thumbnail-group tall-group">';
+            tallSources.forEach(src => { bottomRightHtml += `<img src="${src}" class="tall-thumbnail">`; });
+            bottomRightHtml += '</div>';
+        }
+        const smallSources = [skin['아이콘 일러'], skin['쥬스타 아이콘 일러']].filter(Boolean);
+        if (smallSources.length > 0) {
+            bottomRightHtml += '<div class="thumbnail-group small-group">';
+            smallSources.forEach(src => { bottomRightHtml += `<img src="${src}">`; });
+            bottomRightHtml += '</div>';
+        }
+        bottomRightHtml += '</div>';
+        if (skin['확대 일러'] || tallSources.length > 0 || smallSources.length > 0) {
+            bottomPanelHtml = `<div class="gallery-bottom-panel">${bottomLeftHtml}${bottomRightHtml}</div>`;
+        }
+        imageGallery.innerHTML = galleryHtml + bottomPanelHtml;
+        (galleryHtml + bottomPanelHtml) ? imageGallery.classList.remove('hidden') : imageGallery.classList.add('hidden');
+        textContentArea.innerHTML = '';
+        oathTableArea.innerHTML = '';
+        let textContentHtml = '';
+        let descriptionsHtml = '';
+        if (skin['설명'] || (skin['드랍 설명'] && skin['드랍 설명'].voiceline)) {
+            descriptionsHtml += `<div class="description-group">`;
+            if(skin['설명']) descriptionsHtml += `<div class="description-item"><h2>설명</h2><p>${skin['설명']}</p></div>`;
+            if(skin['드랍 설명'] && skin['드랍 설명'].voiceline) descriptionsHtml += `<div class="description-item"><h2>드랍 설명</h2><p>${skin['드랍 설명'].voiceline}</p></div>`;
+            descriptionsHtml += `</div>`;
+        }
+        if (skin['자기소개'] && skin['자기소개'].voiceline) {
+            const intro = skin['자기소개'];
+            const playButton = intro.voicelink ? `<button class="play-voice-btn" data-src="${intro.voicelink}">▶</button>` : '';
+            descriptionsHtml += `<div class="description-item self-intro"><h2>자기소개</h2><p>${intro.voiceline}${playButton}</p></div>`;
+        }
+        if (descriptionsHtml) textContentHtml += `<div class="descriptions-panel">${descriptionsHtml}</div>`;
+        const nonVoiceKeys = new Set(['함순이 이름', '한글 함순이 + 스킨 이름', '영문 함순이 + 스킨 이름', '스킨 타입', '전체 일러', '확대 일러', 'sd 일러', '아이콘 일러', '쥬스타 아이콘 일러', '깔끔한 일러', '설명', '자기소개', '클뜯 id', '클뜯 함순이 id', '드랍 설명', '스킨 타입 - 한글', '상점 id', '상점 카테고리 id', '스킨 태그', '입수 영상', '재화', '기간', '진영', '레어도', 'ex_chat_status']);
+        let normalTableBodyHtml = '';
+        let oathTableBodyHtml = '';
+        if (skin['함대 특수대사'] && Array.isArray(skin['함대 특수대사'])) {
+            skin['함대 특수대사'].forEach(line => {
+                if (line && line.voiceline) {
+                    const playButton = line.voicelink ? `<button class="play-voice-btn" data-src="${line.voicelink}">▶</button>` : `<button class="play-voice-btn" disabled>▶</button>`;
+                    normalTableBodyHtml += `<tr><td>함대 특수대사</td><td><div>${line.voiceline}${playButton}</div></td></tr>`;
+                }
+            });
+        }
+        const priorityOrder = ["입수시", "상세확인", "실망", "낯섦", "호감", "기쁨", "사랑", "서약"];
+        const lastItem = "hp 경고";
+        const normalVoiceKeys = [];
+        const oathVoiceKeys = [];
+        for (const key of Object.keys(skin)) {
+            const value = skin[key];
+            if (!value || nonVoiceKeys.has(key) || key === '함대 특수대사' || typeof value !== 'object' || !value.hasOwnProperty('voiceline')) continue;
+            if (key.endsWith('_ex')) oathVoiceKeys.push(key);
+            else normalVoiceKeys.push(key);
+        }
+        oathVoiceKeys.sort();
+        const priorityKeysInOrder = priorityOrder.filter(key => normalVoiceKeys.includes(key));
+        const restKeysSorted = normalVoiceKeys
+            .filter(key => !priorityOrder.includes(key) && key !== lastItem)
+            .sort();
+        let finalNormalKeys = [...priorityKeysInOrder, ...restKeysSorted];
+        if (normalVoiceKeys.includes(lastItem)) {
+            finalNormalKeys.push(lastItem);
+        }
+        const createRow = (key, displayName) => {
+            const value = skin[key];
+            const playButton = value.voicelink ? `<button class="play-voice-btn" data-src="${value.voicelink}">▶</button>` : `<button class="play-voice-btn" disabled>▶</button>`;
+            return `<tr><td>${displayName}</td><td><div>${value.voiceline}${playButton}</div></td></tr>`;
+        };
+        finalNormalKeys.forEach(key => normalTableBodyHtml += createRow(key, key));
+        oathVoiceKeys.forEach(key => oathTableBodyHtml += createRow(key, key.replace('_ex', ' EX')));
+        if (normalTableBodyHtml) {
+            textContentHtml += `<table class="voice-line-table"><thead><tr><th colspan="2">선택한 함순이의 대사 모음</th></tr></thead><tbody>${normalTableBodyHtml}</tbody></table>`;
+        }
+        textContentArea.innerHTML = textContentHtml;
+        if (oathTableBodyHtml && skin['ex_chat_status'] === 1) {
+            const fullOathTableHtml = `<table class="voice-line-table"><thead><tr><th colspan="2">선택한 함순이의 서약대사 모음</th></tr></thead><tbody>${oathTableBodyHtml}</tbody></table>`;
+            oathTableArea.innerHTML = fullOathTableHtml;
+            oathTableArea.classList.remove('hidden');
+        } else {
+            oathTableArea.classList.add('hidden');
+        }
+        textContentHtml ? textContentArea.classList.remove('hidden') : textContentArea.classList.add('hidden');
+        textContentArea.addEventListener('click', handlePlayClick);
+        oathTableArea.addEventListener('click', handlePlayClick);
+    };
 
-    // NEW: Listen for back/forward navigation
     window.addEventListener('popstate', applyFiltersFromURL);
+
+    // --- NEW: Event Listeners for Pop-up and Clear Button ---
+
+    // Pop-up functionality
+    infoButton.addEventListener('click', () => {
+        infoPopup.classList.add('visible');
+        document.body.classList.add('no-scroll');
+    });
+
+    const closeInfoPopup = () => {
+        infoPopup.classList.remove('visible');
+        document.body.classList.remove('no-scroll');
+    };
+
+    closePopupBtn.addEventListener('click', closeInfoPopup);
+    infoPopup.addEventListener('click', (event) => {
+        if (event.target === infoPopup) {
+            closeInfoPopup();
+        }
+    });
+
+    // Clear filters functionality
+    clearFiltersBtn.addEventListener('click', () => {
+        characterSearchInput.value = '';
+        skinSearchInput.value = '';
+        skinSearchInput.placeholder = '함순이를 먼저 선택해주세요...';
+        skinSearchInput.disabled = true;
+        clearSkinDetails();
+        updateURLWithFilters();
+    });
 });
