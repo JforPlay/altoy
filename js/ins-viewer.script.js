@@ -33,11 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeFilters();
         populateGallery();
         
-        const firstPostKey = Object.keys(postsData)[0];
-        if (postsData[firstPostKey]) {
-            displayPost(postsData[firstPostKey].id);
-            highlightSelectedThumbnail(postsData[firstPostKey].id);
-        }
     })
     .catch(error => {
         console.error('Error fetching data:', error);
@@ -126,6 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function populateGallery(filters = {}) {
         galleryView.innerHTML = '';
         let postEntries = Object.entries(postsData);
+
+        postEntries.reverse(); 
 
         if (filters.author) {
             postEntries = postEntries.filter(([key, post]) => getShipgirlData(post.ship_group).name === filters.author);

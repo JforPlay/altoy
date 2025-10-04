@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const sortButton = document.getElementById('sort-button');
     const imageBaseUrl = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/mangapic/';
     let imageFiles = [];
-    let isAscending = true;
+    let isAscending = false;
 
     // Lightbox elements
     const lightbox = document.getElementById('lightbox');
@@ -127,5 +127,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Initial setup
     generateImageFiles();
+
+    imageFiles.sort((a, b) => parseInt(b) - parseInt(a)); // Sort descending initially
+    sortButton.textContent = '기간정렬 : 최신부터'; // Update button text
+    
     renderGallery();
 });
