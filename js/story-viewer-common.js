@@ -476,6 +476,28 @@ document.addEventListener('DOMContentLoaded', () => {
         // HELPERS (VISUAL & AUDIO)
         // =========================================================================
         getActorInfo(line) {
+            const isKorean = (text) => /[\uAC00-\uD7AF]/.test(text || '');
+
+            // --- REQUIREMENT 1: No actor or actorName ---
+            // Handles narration lines that should have no speaker info displayed.
+            // `line.actor == null` checks for both undefined and null.
+            if (line.actor == null && !line.actorName) {
+                // Return an object that results in an empty name and no portrait.
+                // A distinct ID forces the renderer to clear any previous character's info.
+                return { id: 'no-actor', name: '', icon: null };
+            }
+
+            // --- REQUIREMENT 2: Only actorName, and it's Korean ---
+            // Handles characters who are named but don't have a standard actor entry.
+            if (line.actor == null && line.actorName && isKorean(line.actorName)) {
+                // Return the specified name with an empty portrait.
+                // Using the name as the ID ensures the UI updates if the speaker changes.
+                return { id: line.actorName, name: line.actorName, icon: null };
+            }
+
+
+            // --- ORIGINAL LOGIC FOR ALL OTHER CASES ---
+            // This existing code will now only run for lines that don't match the special cases above.
             let actorInfo = { id: null, name: '', icon: null };
 
             // --- Step 1: Establish base actor from `line.actor` ---
