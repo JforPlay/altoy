@@ -5,6 +5,10 @@ body {
     color: #dcddde;
     margin: 0;
 }
+body.no-scroll {
+    overflow: hidden;
+}
+
 .main-container {
     max-width: 1400px;
     margin: auto;
@@ -15,11 +19,77 @@ label {
     color: #ffffff;
 }
 
-/* --- Header & Filters --- */
+/* --- Header & Pop-up --- */
 .page-header { text-align: center; }
-.flavor-text-box { background-color: #2f3136; border: 1px solid #4f545c; border-radius: 8px; padding: 15px; margin: 20px auto 0 auto; max-width: 600px; text-align: center; }
-.flavor-text-box p { margin: 0; line-height: 1.6; font-size: 0.9em; color: #b9bbbe; }
-.flavor-text-box strong { color: #ffffff; font-size: 1.1em; display: block; margin-bottom: 8px; }
+.page-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    /* Changed to 1px to match the skin-viewer page */
+    border-bottom: 1px solid #4f545c;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+#info-button {
+    font-size: 0.7em;
+    color: #7289da;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+#info-button:hover {
+    color: #a3b8f7;
+}
+#info-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+#info-popup.visible {
+    opacity: 1;
+    visibility: visible;
+}
+.info-popup-content {
+    background-color: #2f3136;
+    border: 1px solid #4f545c;
+    border-radius: 8px;
+    padding: 25px 30px;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.5);
+    text-align: center;
+}
+.close-popup-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 2em;
+    color: #b9bbbe;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+.close-popup-btn:hover {
+    color: #ffffff;
+}
+.info-popup-content p { margin: 0; line-height: 1.6; font-size: 1.0em; color: #b9bbbe; }
+.info-popup-content strong { color: #ffffff; font-size: 1.2em; display: block; margin-bottom: 10px; }
+
+
+/* --- Filters --- */
 .filter-container {
     display: flex;
     flex-wrap: wrap;
@@ -67,6 +137,11 @@ label {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 15px;
 }
+.skin-box-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+}
 .skin-box {
     background-color: #2f3136;
     border-radius: 8px;
@@ -74,11 +149,17 @@ label {
     display: flex;
     flex-direction: column;
     border: 1px solid #40444b;
+    width: 100%;
+    transition: border-color 0.2s ease;
+}
+.skin-box-link:hover .skin-box {
+    border-color: #7289da;
 }
 .skin-image-wrapper {
     width: 100%;
     aspect-ratio: 3 / 4;
     background-color: #202225;
+    position: relative;
 }
 .skin-image {
     width: 100%;
@@ -113,12 +194,26 @@ label {
     vertical-align: middle;
     margin-right: 4px;
 }
+.new-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #43b581;
+    color: #ffffff;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.7em;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    user-select: none; 
+}
+
 
 /* --- Skin Sections --- */
 .skin-section {
     margin-bottom: 40px;
 }
-
 .skin-section h2 {
     color: #ffffff;
     border-bottom: 2px solid #4f545c;
@@ -127,83 +222,58 @@ label {
     font-size: 1.5em;
 }
 
-/* --- NEW Badge for Skin Cards --- */
-.skin-image-wrapper {
-    position: relative; /* This is necessary for positioning the badge inside */
-}
-
-.new-badge {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background-color: #43b581; /* A modern green color */
-    color: #ffffff;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 0.7em;
-    font-weight: bold;
-    text-transform: uppercase;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    /* Prevents the user from accidentally selecting the badge text */
-    user-select: none; 
-}
-
-/* --- Search Bar --- */
+/* --- Search Bar & Autocomplete --- */
 .search-container {
-    margin-top: 30px; /* Added */
-    margin-bottom: 30px;
-    text-align: center;
+    margin: 30px auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.search-input-group {
+    max-width: 400px;
+    flex-grow: 1;
+}
+.autocomplete-wrapper {
     position: relative;
 }
-
 .search-label {
     display: block;
     font-weight: bold;
     color: #ffffff;
     margin-bottom: 10px;
     text-align: left;
-    /* Align with the search input */
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 5px; /* Small padding for alignment */
+    padding-left: 5px;
 }
-
 #search-input {
     padding: 10px 15px;
     font-size: 1.1em;
     width: 100%;
-    max-width: 400px;
     border-radius: 5px;
     border: 2px solid #2f3136;
     background-color: #40444b;
     color: #dcddde;
     box-sizing: border-box;
+    height: 48px;
 }
-
 #search-input::placeholder {
     color: #8e9297;
 }
-
-/* --- NEW: Autocomplete Dropdown Styles --- */
 .autocomplete-items {
     position: absolute;
     border: 1px solid #2f3136;
     border-top: none;
     z-index: 99;
-    /* Position the dropdown right below the input field */
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 400px;
+    left: 0;
+    right: 0;
     background-color: #40444b;
     max-height: 200px;
     overflow-y: auto;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
-
 .autocomplete-items div {
     padding: 10px;
     cursor: pointer;
@@ -213,30 +283,39 @@ label {
 .autocomplete-items div:last-child {
     border-bottom: none;
 }
-
 .autocomplete-items div:hover {
     background-color: #5865f2;
 }
-
-#search-input {
-    padding: 10px 15px;
-    font-size: 1.1em;
-    width: 100%;
-    max-width: 400px;
-    border-radius: 5px;
-    border: 2px solid #2f3136;
-    background-color: #40444b;
+.autocomplete-items div mark {
+    background-color: #5865f2;
+    color: #ffffff;
+    padding: 1px 0;
+    border-radius: 2px;
+}
+.clear-btn {
+    background-color: #4f545c;
     color: #dcddde;
-    box-sizing: border-box; /* Ensures padding doesn't affect the final width */
+    border: 1px solid #2f3136;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    height: 48px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+.clear-btn:hover {
+    background-color: #5c6067;
+}
+.clear-btn i {
+    margin-right: 5px;
 }
 
-#search-input::placeholder {
-    color: #8e9297;
-}
 
-/* --- Responsive Styles for Mobile --- */
+/* --- Responsive Styles --- */
 @media (max-width: 768px) {
     html {
-        font-size: 12px; /* Reduces base font size */
+        font-size: 12px;
     }
 }
