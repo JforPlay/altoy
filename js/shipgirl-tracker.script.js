@@ -205,6 +205,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const filterBar = document.getElementById('filter-bar');
         filterBar.innerHTML = '';
 
+        const topFiltersWrapper = document.createElement('div');
+        topFiltersWrapper.className = 'top-filters-wrapper';
+        filterBar.appendChild(topFiltersWrapper);
+
         const searchContainer = document.createElement('div');
         searchContainer.className = 'search-container';
         searchContainer.innerHTML = `
@@ -214,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="dropdown-content" id="search-dropdown"></div>
             </div>
         `;
-        filterBar.appendChild(searchContainer);
+        topFiltersWrapper.appendChild(searchContainer);
 
         const searchDropdown = document.getElementById('search-dropdown');
         const allShipNames = Object.values(fullShipData).map(ship => ship.name).filter(Boolean).sort((a, b) => a.localeCompare(b));
@@ -229,65 +233,32 @@ document.addEventListener('DOMContentLoaded', () => {
             searchDropdown.appendChild(a);
         });
 
-        const rarities = [...new Set(Object.values(fullShipData).map(ship => ship.rarity).filter(Boolean))];
-        const rarityOrder = ['N', 'R', 'SR', 'SSR', 'UR'];
-        rarities.sort((a, b) => rarityOrder.indexOf(a) - rarityOrder.indexOf(b));
-        const rarityFilterData = rarities.map(r => ({ val: r, name: r }));
-
-        const checkboxFilters = [
-            { id: 'nationality-filter', label: '진영', data: nationalityData, val: 'id', name: 'name', icon: 'image', sort: (a, b) => a.id - b.id },
-            { id: 'type-filter', label: '함종', data: shipTypeData, val: 'ship_type', name: 'type_name', icon: 'icon', sort: (a, b) => (a.type_name || '').localeCompare(b.type_name || '') },
-            { id: 'rarity-filter', label: '등급', data: rarityFilterData, val: 'val', name: 'name', icon: null, sort: (a, b) => rarityOrder.indexOf(a.name) - rarityOrder.indexOf(b.name) }
-        ];
-
-        checkboxFilters.forEach(f => {
-            const group = document.createElement('div');
-            group.id = f.id;
-            group.className = 'filter-group';
-            group.innerHTML = `<div class="filter-group-label">${f.label}</div>`;
-            const wrapper = document.createElement('div');
-            wrapper.className = 'filter-controls-wrapper';
-            const allId = `${f.id}-all`;
-            const allItem = document.createElement('div');
-            allItem.className = 'checkbox-filter-item';
-            allItem.innerHTML = `<input type="checkbox" id="${allId}" value="all" data-filter-type="all" checked><label for="${allId}">전체</label>`;
-            wrapper.appendChild(allItem);
-
-            const items = Array.isArray(f.data) ? f.data : Object.values(f.data);
-
-            items.sort(f.sort).forEach(item => {
-                if (!item[f.val] || !item[f.name]) return;
-                const uniqueId = `${f.id}-${item[f.val]}`;
-                const checkboxItem = document.createElement('div');
-                checkboxItem.className = 'checkbox-filter-item';
-                const iconHTML = f.icon ? `<img src="${item[f.icon]}" class="filter-icon">` : '';
-                const rarityClass = f.id === 'rarity-filter' ? `rarity-text rarity-${item[f.name]}` : '';
-
-                checkboxItem.innerHTML = `<input type="checkbox" id="${uniqueId}" value="${item[f.val]}" data-filter-type="individual"><label for="${uniqueId}" class="${rarityClass}">${iconHTML} ${item[f.name]}</label>`;
-                wrapper.appendChild(checkboxItem);
-            });
-            group.appendChild(wrapper);
-            filterBar.appendChild(group);
-        });
-
+        const dropdownGroupWrapper = document.createElement('div');
+        dropdownGroupWrapper.className = 'dropdown-group-wrapper';
+        dropdownGroupWrapper.innerHTML = `<label class="filter-group-label">보기 옵션</label>`;
         const dropdownContainer = document.createElement('div');
         dropdownContainer.className = 'dropdown-controls-container';
         const dropdownFilters = [
-            { id: 'progress-filter', label: '체크된 함순이들로 필터링  ', options: { all: '전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' } },
-            { id: 'get-attr-filter', label: '입수 스탯으로 필터링  ', data: attrTypeData },
-            { id: 'level-attr-filter', label: '120렙 스탯으로 필터링  ', data: attrTypeData }
+            { id: 'progress-filter', label: '체크된 함순이들로 필터링', options: { all: '체크여부 - 전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' }, description: '체크박스 상태에 따라 함순이를 필터링합니다.' },
+            { id: 'get-attr-filter', label: '입수 스탯으로 필터링', data: attrTypeData, allOptionText: '입수스탯 - 전체', description: '함순이 입수 시 제공하는 함대 기술 스탯으로 필터링합니다.' },
+            { id: 'level-attr-filter', label: '120렙 스탯으로 필터링', data: attrTypeData, allOptionText: '120스탯 - 전체', description: '함순이 120레벨 달성 시 제공하는 함대 기술 스탯으로 필터링합니다.' }
         ];
         dropdownFilters.forEach(f => {
             const group = document.createElement('div');
             group.className = 'dropdown-filter-group';
-            group.innerHTML = `<label for="${f.id}" class="filter-group-label">${f.label}</label>`;
+            if (f.description) {
+                group.setAttribute('data-tooltip', f.description);
+            }
+            group.innerHTML = `<label for="${f.id}" class="filter-group-label sr-only">${f.label}</label>`;
             const select = document.createElement('select');
             select.id = f.id;
+            select.setAttribute('aria-label', f.label);
             let optionsHTML = '';
             if (f.options) {
                 optionsHTML = Object.entries(f.options).map(([val, text]) => `<option value="${val}">${text}</option>`).join('');
             } else {
-                optionsHTML = '<option value="all">전체</option>';
+                const allText = f.allOptionText || '전체';
+                optionsHTML = `<option value="all">${allText}</option>`;
                 for (const attrId in f.data) {
                     optionsHTML += `<option value="${f.data[attrId].id}">${f.data[attrId].condition}</option>`;
                 }
@@ -296,49 +267,133 @@ document.addEventListener('DOMContentLoaded', () => {
             group.appendChild(select);
             dropdownContainer.appendChild(group);
         });
-        filterBar.appendChild(dropdownContainer);
+        dropdownGroupWrapper.appendChild(dropdownContainer);
+        topFiltersWrapper.appendChild(dropdownGroupWrapper);
+
+        const rarities = [...new Set(Object.values(fullShipData).map(ship => ship.rarity).filter(Boolean))];
+        const rarityOrder = ['N', 'R', 'SR', 'SSR', 'UR'];
+        rarities.sort((a, b) => rarityOrder.indexOf(a) - rarityOrder.indexOf(b));
+        const rarityFilterData = rarities.map(r => ({ val: r, name: r }));
+
+        const checkboxFilters = [
+            { id: 'nationality-filter', label: '진영 필터링 (펼치기/접기)', data: nationalityData, val: 'id', name: 'name', icon: 'image', sort: (a, b) => a.id - b.id },
+            { id: 'type-filter', label: '함종 필터링 (펼치기/접기)', data: shipTypeData, val: 'ship_type', name: 'type_name', icon: 'icon', sort: (a, b) => (a.type_name || '').localeCompare(b.type_name || '') },
+            { id: 'rarity-filter', label: '등급', data: rarityFilterData, val: 'val', name: 'name', icon: null, sort: (a, b) => rarityOrder.indexOf(a.name) - rarityOrder.indexOf(b.name) }
+        ];
+
+        checkboxFilters.forEach(f => {
+            const group = document.createElement('div');
+            group.id = f.id;
+            group.className = 'filter-group';
+
+            const isCollapsible = f.id === 'nationality-filter' || f.id === 'type-filter';
+            if (isCollapsible) {
+                group.innerHTML = `<button class="filter-group-toggle collapsed">${f.label} <span class="chevron">▼</span></button>`;
+            } else {
+                group.innerHTML = `<div class="filter-group-label">${f.label}</div>`;
+            }
+            
+            const wrapper = document.createElement('div');
+            wrapper.className = 'filter-controls-wrapper';
+            if (isCollapsible) {
+                wrapper.classList.add('collapsible-content', 'collapsed');
+            }
+
+            if (f.id === 'type-filter') {
+                const allId = `${f.id}-all`;
+                const allItem = document.createElement('div');
+                allItem.className = 'checkbox-filter-item';
+                allItem.innerHTML = `<input type="checkbox" id="${allId}" value="all" data-filter-type="all" checked><label for="${allId}">전체</label>`;
+                wrapper.appendChild(allItem);
+
+                const groupedTypes = { '전열': [], '후열': [], '잠수': [] };
+                Object.values(f.data).forEach(item => {
+                    if (groupedTypes[item.position]) {
+                        groupedTypes[item.position].push(item);
+                    }
+                });
+
+                const positionOrder = ['전열', '후열', '잠수'];
+                positionOrder.forEach(position => {
+                    const items = groupedTypes[position];
+                    if (items.length === 0) return;
+                    items.sort(f.sort);
+                    const positionGroupWrapper = document.createElement('div');
+                    positionGroupWrapper.className = 'filter-position-group';
+                    if (position === '전열' || position === '후열') {
+                        const groupAllId = `${f.id}-${position}-all`;
+                        const groupAllItem = document.createElement('div');
+                        groupAllItem.className = 'checkbox-filter-item';
+                        groupAllItem.innerHTML = `<input type="checkbox" id="${groupAllId}" data-filter-type="group-all" data-group-target="${position}"><label for="${groupAllId}">${position} 전체</label>`;
+                        positionGroupWrapper.appendChild(groupAllItem);
+                    }
+                    items.forEach(item => {
+                        if (item.type_name === '뇌순' || item.type_name === '항순') return;
+                        const uniqueId = `${f.id}-${item[f.val]}`;
+                        const checkboxItem = document.createElement('div');
+                        checkboxItem.className = 'checkbox-filter-item';
+                        const iconHTML = f.icon ? `<img src="${item[f.icon]}" class="filter-icon">` : '';
+                        checkboxItem.innerHTML = `<input type="checkbox" id="${uniqueId}" value="${item[f.val]}" data-filter-type="individual" data-position="${position}"><label for="${uniqueId}">${iconHTML} ${item[f.name]}</label>`;
+                        positionGroupWrapper.appendChild(checkboxItem);
+                    });
+                    wrapper.appendChild(positionGroupWrapper);
+                });
+            } else {
+                const allId = `${f.id}-all`;
+                const allItem = document.createElement('div');
+                allItem.className = 'checkbox-filter-item';
+                allItem.innerHTML = `<input type="checkbox" id="${allId}" value="all" data-filter-type="all" checked><label for="${allId}">전체</label>`;
+                wrapper.appendChild(allItem);
+                const items = Array.isArray(f.data) ? f.data : Object.values(f.data);
+                items.sort(f.sort).forEach(item => {
+                    if (!item[f.val] || !item[f.name]) return;
+                    const uniqueId = `${f.id}-${item[f.val]}`;
+                    const checkboxItem = document.createElement('div');
+                    checkboxItem.className = 'checkbox-filter-item';
+                    const iconHTML = f.icon ? `<img src="${item[f.icon]}" class="filter-icon">` : '';
+                    const rarityClass = f.id === 'rarity-filter' ? `rarity-text rarity-${item[f.name]}` : '';
+                    checkboxItem.innerHTML = `<input type="checkbox" id="${uniqueId}" value="${item[f.val]}" data-filter-type="individual"><label for="${uniqueId}" class="${rarityClass}">${iconHTML} ${item[f.name]}</label>`;
+                    wrapper.appendChild(checkboxItem);
+                });
+            }
+            group.appendChild(wrapper);
+            filterBar.appendChild(group);
+        });
 
         const actionContainer = document.createElement('div');
         actionContainer.className = 'action-controls-container';
 
         const bulkCheckContainer = document.createElement('div');
         bulkCheckContainer.className = 'bulk-check-controls';
-        bulkCheckContainer.innerHTML = `<div class="filter-group-label">일괄 체크 --> 주의) 체크를 전부 날리려면 쿠키/사이트 데이터 제거</div>`;
+        bulkCheckContainer.innerHTML = `<div class="filter-group-label">일괄 체크 --> 주의) 목록에 보이는 모든 함순이들에게 적용</div>`;
         const bulkCheckWrapper = document.createElement('div');
         bulkCheckWrapper.className = 'filter-controls-wrapper';
         const bulkCheckActions = [
-            { label: '목록에 보이는 함순이 모두 입수 체크', type: 'get', state: true },
-            { label: '목록에 보이는 함순이 모두 120렙 체크', type: 'level', state: true },
-            { label: '목록에 보이는 함순이 모두 풀돌 체크', type: 'upgrade', state: true },
+            { label: '모두 입수 체크', type: 'get', state: true },
+            { label: '모두 120렙 체크', type: 'level', state: true },
+            { label: '모두 풀돌 체크', type: 'upgrade', state: true },
+            { label: '모두 체크 해제', type: 'all', state: false }
         ];
         bulkCheckActions.forEach(action => {
             const btn = document.createElement('button');
             btn.textContent = action.label;
             btn.className = 'bulk-check-btn';
-            // This onclick function now calls the modal first
+            if (action.state === false) {
+                btn.classList.add('bulk-deselect-btn');
+            }
             btn.onclick = () => {
-                const message = `주의)) '${action.label}' 작업을 실행하시겠습니까? 되돌리기 쉽지 않아요.`;
+                const message = `주의)) '${action.label}' 작업을 실행하시겠습니까? 필터링 적용된 목록의 함순이들에게 일괄적용됩니다.`;
                 showConfirmationModal(message, () => bulkCheck(action.type, action.state));
             };
             bulkCheckWrapper.appendChild(btn);
         });
         bulkCheckContainer.appendChild(bulkCheckWrapper);
         actionContainer.appendChild(bulkCheckContainer);
-
-        const exportButton = document.createElement('button');
-        exportButton.id = 'export-progress-btn';
-        exportButton.textContent = '내보내기';
-
-        const importButton = document.createElement('button');
-        importButton.id = 'import-progress-btn';
-        importButton.textContent = '가져오기';
-
+        
         const resetButton = document.createElement('button');
         resetButton.id = 'reset-filters-btn';
         resetButton.textContent = '필터 초기화';
 
-        actionContainer.appendChild(exportButton);
-        actionContainer.appendChild(importButton);
         actionContainer.appendChild(resetButton);
         filterBar.appendChild(actionContainer);
     }
@@ -346,10 +401,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function bulkCheck(type, shouldBeChecked) {
         document.querySelectorAll('.ship-card').forEach(card => {
             if (card.style.display !== 'none') {
-                const checkbox = card.querySelector(`[data-type="${type}"]`);
-                if (checkbox && checkbox.checked !== shouldBeChecked) {
-                    checkbox.checked = shouldBeChecked;
-                    handleCheckboxLogic(checkbox);
+                if (type === 'all') {
+                    card.querySelectorAll('.tracker-checkbox').forEach(checkbox => {
+                        checkbox.checked = shouldBeChecked;
+                    });
+                } else {
+                    const checkbox = card.querySelector(`[data-type="${type}"]`);
+                    if (checkbox && checkbox.checked !== shouldBeChecked) {
+                        checkbox.checked = shouldBeChecked;
+                        handleCheckboxLogic(checkbox);
+                    }
                 }
             }
         });
@@ -360,44 +421,31 @@ document.addEventListener('DOMContentLoaded', () => {
     function showConfirmationModal(message, onConfirm) {
         const modal = document.getElementById('confirmation-modal');
         if (!modal) return;
-
         const modalText = document.getElementById('modal-text');
         const confirmBtn = document.getElementById('modal-confirm-btn');
         const cancelBtn = document.getElementById('modal-cancel-btn');
-
         modalText.textContent = message;
-
-        // Use .cloneNode to clear previous event listeners from the confirm button
         const newConfirmBtn = confirmBtn.cloneNode(true);
         confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
-
         const closeModal = () => {
             modal.classList.remove('visible');
-            // Hide with display:none after transition for better performance
             setTimeout(() => {
                 if (!modal.classList.contains('visible')) {
                     modal.style.display = 'none';
                 }
-            }, 300); // This should match the CSS transition duration
+            }, 300);
         };
-
-        // Attach new event listeners
         newConfirmBtn.addEventListener('click', () => {
             onConfirm();
             closeModal();
         });
-
         cancelBtn.addEventListener('click', closeModal);
         modal.addEventListener('click', (e) => {
-            // Close if clicked on the overlay background
             if (e.target === modal) {
                 closeModal();
             }
         });
-
-        // Show the modal
         modal.style.display = 'flex';
-        // Use a tiny timeout to allow the display property to apply before adding the class for the transition
         setTimeout(() => modal.classList.add('visible'), 10);
     }
 
@@ -446,54 +494,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function exportProgress() {
-        const progress = {};
-        document.querySelectorAll('.ship-card').forEach(card => {
-            let state = 0;
-            if (card.querySelector('[data-type="get"]')?.checked) state |= 1;
-            if (card.querySelector('[data-type="level"]')?.checked) state |= 2;
-            if (card.querySelector('[data-type="upgrade"]')?.checked) state |= 4;
-            if (state > 0) {
-                progress[card.dataset.shipId] = state;
-            }
-        });
-        const dataStr = JSON.stringify(progress, null, 2);
-        const dataBlob = new Blob([dataStr], { type: "application/json" });
-        const url = URL.createObjectURL(dataBlob);
-        const link = document.createElement('a');
-        link.download = 'shipgirl_progress.json';
-        link.href = url;
-        link.click();
-        URL.revokeObjectURL(url);
-    }
-
-    function importProgress() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json,application/json';
-        input.onchange = e => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = event => {
-                try {
-                    const progress = JSON.parse(event.target.result);
-                    applyProgress(progress);
-                    autoSaveProgress();
-                    alert('파일을 성공적으로 불러왔습니다.');
-                } catch (err) {
-                    alert('오류: 잘못된 파일 형식입니다.');
-                    console.error("Error parsing imported file:", err);
+    function handleShipTypeFilterLogic(checkbox, group) {
+        const allToggle = group.querySelector('[data-filter-type="all"]');
+        if (checkbox === allToggle && checkbox.checked) {
+            group.querySelectorAll('[data-filter-type="group-all"], [data-filter-type="individual"]').forEach(cb => cb.checked = false);
+            return;
+        }
+        if (checkbox.dataset.filterType === 'group-all') {
+            const targetGroup = checkbox.dataset.groupTarget;
+            group.querySelectorAll(`[data-position="${targetGroup}"]`).forEach(cb => cb.checked = checkbox.checked);
+        }
+        if (checkbox.dataset.filterType === 'individual') {
+            const position = checkbox.dataset.position;
+            const groupAllToggle = group.querySelector(`[data-group-target="${position}"]`);
+            if (groupAllToggle) {
+                if (!checkbox.checked) {
+                    groupAllToggle.checked = false;
+                } else {
+                    const individuals = Array.from(group.querySelectorAll(`[data-position="${position}"]`));
+                    groupAllToggle.checked = individuals.every(cb => cb.checked);
                 }
-            };
-            reader.readAsText(file);
-        };
-        input.click();
+            }
+        }
+        const anyIndividualChecked = group.querySelector('[data-filter-type="individual"]:checked');
+        if (anyIndividualChecked) {
+            allToggle.checked = false;
+        } else {
+            allToggle.checked = true;
+            group.querySelectorAll('[data-filter-type="group-all"]').forEach(cb => cb.checked = false);
+        }
     }
 
     function handleFilterCheckboxLogic(changedCheckbox) {
         const group = changedCheckbox.closest('.filter-group');
         if (!group) return;
+        if (group.id === 'type-filter') {
+            handleShipTypeFilterLogic(changedCheckbox, group);
+            return;
+        }
         const allToggle = group.querySelector('[data-filter-type="all"]');
         if (changedCheckbox === allToggle) {
             if (allToggle.checked) {
@@ -517,14 +555,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const checkedNations = Array.from(document.querySelectorAll('#nationality-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value);
         const checkedTypes = Array.from(document.querySelectorAll('#type-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value);
         const checkedRarities = Array.from(document.querySelectorAll('#rarity-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value);
-
         const isNationFilterActive = checkedNations.length > 0;
         const isTypeFilterActive = checkedTypes.length > 0;
         const isRarityFilterActive = checkedRarities.length > 0;
-
         document.querySelectorAll('.ship-card').forEach(card => {
             const data = card.dataset;
-
             const getChecked = card.querySelector('[data-type="get"]')?.checked;
             const levelChecked = card.querySelector('[data-type="level"]')?.checked;
             const upgradeChecked = card.querySelector('[data-type="upgrade"]')?.checked;
@@ -535,17 +570,14 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (progressFilter === 'unchecked') {
                 progressMatch = !isAnyChecked;
             }
-
             const searchMatch = !searchQuery || (data.name && data.name.toLowerCase().includes(searchQuery));
             const natMatch = !isNationFilterActive || checkedNations.includes(data.nationality);
             const typeMatch = !isTypeFilterActive || (data.type && checkedTypes.includes(data.type));
             const rarityMatch = !isRarityFilterActive || (data.rarity && checkedRarities.includes(data.rarity));
             const getAttrMatch = getAttrFilter === 'all' || data.addGetAttr === getAttrFilter;
             const levelAttrMatch = levelAttrFilter === 'all' || data.addLevelAttr === levelAttrFilter;
-
             card.style.display = (searchMatch && natMatch && typeMatch && rarityMatch && progressMatch && getAttrMatch && levelAttrMatch) ? 'flex' : 'none';
         });
-
         calculateAndDisplayScores();
     }
 
@@ -554,6 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('#filter-bar input[type="checkbox"]').forEach(cb => {
             cb.checked = cb.dataset.filterType === 'all';
         });
+        document.querySelectorAll('#filter-bar [data-filter-type="group-all"]').forEach(cb => cb.checked = false);
         document.querySelectorAll('#filter-bar select').forEach(s => s.selectedIndex = 0);
         applyFilters();
     }
@@ -588,8 +621,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const scoreToggleButton = document.createElement('button');
             scoreToggleButton.id = 'score-toggle-btn';
             scoreToggleButton.innerHTML = '점수판 보기 <span class="chevron">▼</span>';
-            scoreToggleButton.classList.add('collapsed'); // Set default state
-            scoreArea.classList.add('collapsed'); // Set default state
+            scoreToggleButton.classList.add('collapsed');
+            scoreArea.classList.add('collapsed');
             header.appendChild(scoreToggleButton);
 
             scoreToggleButton.addEventListener('click', () => {
@@ -609,7 +642,6 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleButton.id = 'filter-toggle-btn';
             toggleButton.innerHTML = '필터 <span class="chevron">▼</span>';
             mainElement.insertBefore(toggleButton, filterBar);
-
             toggleButton.addEventListener('click', () => {
                 filterBar.classList.toggle('filters-expanded');
                 toggleButton.classList.toggle('active');
@@ -632,8 +664,16 @@ document.addEventListener('DOMContentLoaded', () => {
             setupDropdownToggle(searchInput, searchDropdown);
 
             document.getElementById('reset-filters-btn').addEventListener('click', resetFilters);
-            document.getElementById('import-progress-btn').addEventListener('click', importProgress);
-            document.getElementById('export-progress-btn').addEventListener('click', exportProgress);
+            
+            filterBar.addEventListener('click', (e) => {
+                const toggle = e.target.closest('.filter-group-toggle');
+                if (toggle) {
+                    const group = toggle.closest('.filter-group');
+                    const content = group.querySelector('.collapsible-content');
+                    toggle.classList.toggle('collapsed');
+                    content.classList.toggle('collapsed');
+                }
+            });
 
             filterBar.addEventListener('change', (e) => {
                 const target = e.target;
