@@ -8,6 +8,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     margin: 0;
     display: flex;
+    flex-direction: column; /* Add this line */
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -381,4 +382,31 @@ body {
     .now-playing-label {
         font-size: 10px;
     }
+}
+/*
+ * This targets the navbar ONLY on the BGM player page by leveraging
+ * the unique body styling as a parent.
+*/
+
+body {
+    /* Add some padding to prevent content from touching screen edges */
+    padding-top: 24px;
+}
+
+.navbar {
+    /* 1. Override sticky behavior to make it static */
+    position: static;
+    top: auto;
+    z-index: auto;
+
+    /* 2. Sizing and spacing for the floating effect */
+    width: 100%;
+    max-width: 1400px; /* Match the BGM player's max-width */
+    margin-bottom: 24px; /* Add space between navbar and player */
+    
+    /* 3. Appearance to match the BGM Player */
+    background: rgba(30, 30, 40, 0.95); /* Match player background */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Match player border */
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); /* Match player shadow */
+    border-radius: 24px; /* Match player's rounded corners */
 }

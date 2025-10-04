@@ -185,3 +185,23 @@
     width: 100%;
   }
 }
+
+/* Add down-arrow triangle to dropdown links */
+.nav-item.dropdown > .nav-links::after {
+    content: ''; /* Required to display the pseudo-element */
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 0.5em; /* Space between text and triangle */
+    vertical-align: middle;
+
+    /* Creates the triangle shape */
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #fff; /* This creates the down-facing triangle */
+}
+
+/* Change triangle color for the light theme */
+.navbar.navbar-light .nav-item.dropdown > .nav-links::after {
+    border-top-color: #333; /* Dark color for light background */
+}

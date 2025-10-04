@@ -162,7 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayAlbumDetails(albumId) {
         const album = albumsData[albumId];
         if (!album) return;
-        albumNameEl.textContent = album.album_name;
 
         const tracks = album.tracks || [];
         trackListEl.innerHTML = '';
@@ -179,16 +178,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="track-name">${track.name}</span>
                 <span class="track-time">${timeStr}</span>
             `;
-            trackItem.addEventListener('click', () => playTrack(track.music_link, track.name, trackItem));
+            trackItem.addEventListener('click', () => playTrack(track.music_link, track.name, album.album_name, trackItem));
             trackListEl.appendChild(trackItem);
         });
     }
 
-    function playTrack(musicUrl, trackName, trackElement) {
+    function playTrack(musicUrl, trackName, albumName, trackElement) {
         if (musicUrl) {
             audioEl.src = musicUrl;
             audioEl.play();
             nowPlayingTrackEl.textContent = trackName;
+            albumNameEl.textContent = albumName;
             
             // Highlight active track
             document.querySelectorAll('#track-list li').forEach(li => li.classList.remove('playing'));

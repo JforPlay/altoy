@@ -4,10 +4,12 @@
     <base href="/altoy/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BGM Player</title>
+    <title>브금 재생기</title>
     <link rel="stylesheet" href="css/bgm-player.css">
+    <link rel="stylesheet" href="css/nav.style.css">
 </head>
 <body>
+    <div id="navbar-placeholder"></div>
     <div class="bgm-player">
         <div class="album-carousel-container">
             <button class="nav-btn prev-btn" id="prev-btn" aria-label="Previous Album">
@@ -29,7 +31,7 @@
                 </div>
                 <div class="audio-player">
                     <div class="now-playing">
-                        <h3 class="album-title" id="album-name">Select an Album</h3>
+                        <h3 class="album-title" id="album-name">재생할 앨범을 선택해주세요</h3>
                         <span class="now-playing-label">Now Playing</span>
                         <p id="now-playing-track">—</p>
                     </div>
@@ -38,6 +40,8 @@
             </div>
         </div>
     </div>
+    <script src="js/nav.script.js"></script>
     <script src="js/bgm-player.js"></script>
+    
 </body>
 </html>
