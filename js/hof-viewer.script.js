@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const optionsContainer = document.getElementById('options-container');
     const storyCharacterTitle = document.getElementById('story-character-title');
     const backToGalleryBtn = document.getElementById('back-to-gallery-btn');
-    const themeToggles = document.querySelectorAll('.theme-toggle');
     const storyBackground = document.getElementById('story-background');
     const audioPlayerContainer = document.getElementById('audio-player-container');
     const playPauseBtn = document.getElementById('play-pause-btn');
@@ -27,11 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentScripts = [];
     let currentScriptIndex = 0;
     let currentBgm = null;
+    let nextLineTimeoutId = null; // Add this line
 
     // --- Core Functions ---
     async function init() {
         try {
-            // NEW: Ensure background is clear on initial load
+            // Ensure background is clear on initial load
             storyBackground.style.backgroundImage = 'none';
             storyBackground.style.backgroundColor = 'transparent';
 
@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
             shipgirlData = shipgirls;
             populateGallery();
             setupEventListeners();
-            applyTheme(localStorage.getItem('theme') || 'light');
         } catch (error) {
             console.error("Failed to load initial data:", error);
             galleryContainer.innerHTML = `<p>스토리 데이터를 불러오는 데 실패했습니다.</p>`;
@@ -57,6 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
         galleryView.classList.toggle('hidden', viewToShow !== galleryView);
         storyView.classList.toggle('hidden', viewToShow !== storyView);
         if (viewToShow === galleryView) {
+            clearTimeout(nextLineTimeoutId);
+
             storyBackground.style.backgroundImage = 'none';
             storyBackground.style.backgroundColor = 'transparent';
             handleBgm(null);
@@ -83,16 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
             audioPlayerContainer?.classList.add('hidden');
         }
         updateAudioPlayerUI();
-    }
-
-    // --- Theme Management ---
-    function applyTheme(theme) {
-        document.body.classList.toggle('dark-mode', theme === 'dark');
-        themeToggles.forEach(toggle => {
-            toggle.querySelector('.theme-icon-sun')?.classList.toggle('hidden', theme === 'dark');
-            toggle.querySelector('.theme-icon-moon')?.classList.toggle('hidden', theme !== 'dark');
-        });
-        localStorage.setItem('theme', theme);
     }
 
     // --- Gallery Logic ---
@@ -128,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     grid.appendChild(card);
                 }
             });
-            
+
             groupWrapper.appendChild(grid);
             galleryContainer.appendChild(groupWrapper);
         }
@@ -151,9 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (firstLine && firstLine.sequence && firstLine.sequence[0]) {
             const rawTitle = firstLine.sequence[0][0];
             const [mainTitle, rawSubTitle] = rawTitle.replace(/<.*?>/g, '').split('\n\n');
-            
+
             const subTitle = rawSubTitle ? rawSubTitle.replace(/^\d+\s*/, '') : '';
-            
+
             const titleCard = document.createElement('div');
             titleCard.className = 'story-title-display';
             titleCard.innerHTML = `
@@ -174,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateBackground();
         const line = currentScripts[currentScriptIndex];
-        
+
         if (line.stopbgm) { handleBgm(null); }
         else if (line.bgm) { handleBgm(line.bgm); }
 
@@ -186,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             currentScriptIndex++;
             if (line.say) {
-                setTimeout(showNextLine, 1700);
+                nextLineTimeoutId = setTimeout(showNextLine, 1700);
             } else {
                 showNextLine();
             }
@@ -199,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentScriptIndex++;
 
         let nextIndex = currentScripts.findIndex((line, index) => index >= currentScriptIndex && line.optionFlag === chosenFlag);
-        
+
         if (nextIndex !== -1) {
             currentScriptIndex = nextIndex;
         } else {
@@ -207,16 +198,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentScriptIndex++;
             }
         }
-        
-        setTimeout(showNextLine, 1700);
+
+        nextLineTimeoutId = setTimeout(showNextLine, 1700);
     }
 
     function displayBubble(line) {
         const bubble = document.createElement('div');
         bubble.classList.add('message-bubble');
-    
+
         const actorId = line.actor || line.portrait;
-    
+
         if (line.actor === 0) {
             bubble.classList.add('player');
             bubble.innerHTML = `<p class="speaker-name">지휘관</p><p class="dialogue-text">${line.say}</p>`;
@@ -243,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bubble.classList.add('narrator');
             bubble.innerHTML = `<p>${line.say.replace(/<.*?>/g, '')}</p>`;
         }
-    
+
         storyContainer.appendChild(bubble);
         bubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
@@ -289,12 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setupEventListeners() {
         backToGalleryBtn.addEventListener('click', () => switchView(galleryView));
-        themeToggles.forEach(toggle => {
-            toggle.addEventListener('click', () => {
-                const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
-                applyTheme(newTheme);
-            });
-        });
         playPauseBtn.addEventListener('click', () => audio.paused ? audio.play() : audio.pause());
         muteBtn.addEventListener('click', () => { audio.muted = !audio.muted; updateAudioPlayerUI(); });
         volumeSlider.addEventListener('input', (e) => { audio.volume = e.target.value; audio.muted = e.target.value == 0; updateAudioPlayerUI(); });
