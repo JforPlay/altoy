@@ -5,6 +5,10 @@ body {
   color: #dcddde;
   margin: 0;
 }
+body.no-scroll {
+  overflow: hidden;
+}
+
 .main-container {
   max-width: 1400px;
   margin: auto;
@@ -14,11 +18,88 @@ body {
   text-align: center;
 }
 
-/* --- Flavor Text Box Style --- */
-.flavor-text-box { background-color: #2f3136; border: 1px solid #4f545c; border-radius: 8px; padding: 15px; margin: 20px auto; max-width: 600px; text-align: center; }
-.flavor-text-box p { margin: 0; line-height: 1.6; font-size: 0.9em; color: #b9bbbe; }
-.flavor-text-box strong { color: #ffffff; font-size: 1.1em; display: block; margin-bottom: 8px; }
-.flavor-text-box .warning-text { color: #ffcc00; font-weight: bold; }
+/* --- NEW: Page Title & Info Button Styles --- */
+.page-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+#info-button {
+  font-size: 0.7em;
+  color: #7289da;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+#info-button:hover {
+  color: #a3b8f7;
+}
+
+/* --- NEW: Info Pop-up Styles --- */
+#info-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+#info-popup.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.info-popup-content {
+  background-color: #2f3136;
+  border: 1px solid #4f545c;
+  border-radius: 8px;
+  padding: 25px 30px;
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.5);
+  text-align: center;
+}
+.close-popup-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 2em;
+  color: #b9bbbe;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+.close-popup-btn:hover {
+  color: #ffffff;
+}
+.info-popup-content p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 1.0em;
+  color: #b9bbbe;
+}
+.info-popup-content strong {
+  color: #ffffff;
+  font-size: 1.2em;
+  display: block;
+  margin-bottom: 10px;
+}
+.info-popup-content .warning-text {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+/* --- REMOVED: Old Flavor Text Box (no longer needed) --- */
 
 /* --- Leaderboard Styles --- */
 .leaderboard-section { max-width: 800px; margin: 0 auto 30px auto; }
@@ -66,54 +147,54 @@ body {
   color: #dcddde;
 }
 
-/* --- New Reusable Dropdown Styles --- */
+/* --- UPDATED: Reusable Dropdown Styles --- */
 .dropdown-container {
-    position: relative;
-    width: 200px; /* Adjust width as needed */
+  position: relative;
+  width: 200px;
 }
 .dropdown-container input {
-    font-size: 1em;
-    padding: 8px;
-    border-radius: 5px;
-    border: 2px solid #2f3136;
-    background-color: #40444b;
-    color: #dcddde;
-    width: 100%;
-    box-sizing: border-box;
+  font-size: 1em;
+  padding: 8px;
+  border-radius: 5px;
+  border: 2px solid #2f3136;
+  background-color: #40444b;
+  color: #dcddde;
+  width: 100%;
+  box-sizing: border-box;
 }
 .dropdown-container input:focus {
-    outline: none;
-    border-color: #7289da;
+  outline: none;
+  border-color: #7289da;
 }
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #40444b;
-    width: 100%;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 10; /* Ensure it appears above other elements */
-    max-height: 250px;
-    overflow-y: auto;
-    border: 1px solid #2f3136;
-    border-radius: 5px;
-    margin-top: 4px;
+  display: none;
+  position: absolute;
+  background-color: #40444b;
+  width: 100%;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 10;
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #2f3136;
+  border-radius: 5px;
+  margin-top: 4px;
 }
 .dropdown-content a {
-    color: #dcddde;
-    padding: 10px 12px;
-    text-decoration: none;
-    display: block;
-    cursor: pointer;
+  color: #dcddde;
+  padding: 10px 12px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
 }
 .dropdown-content a:hover {
-    background-color: #7289da;
-    color: #ffffff;
+  background-color: #7289da;
+  color: #ffffff;
 }
 .dropdown-content .no-results {
-    color: #8e9297;
-    padding: 10px 12px;
-    font-style: italic;
-    text-align: center;
+  color: #8e9297;
+  padding: 10px 12px;
+  font-style: italic;
+  text-align: center;
 }
 
 .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; background-color: #40444b; padding: 8px 12px; border-radius: 5px; height: 100%; box-sizing: border-box; }

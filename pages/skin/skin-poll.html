@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <base href="/altoy/">
     <meta charset="UTF-8">
@@ -7,29 +8,36 @@
     <title>스킨 투표하기</title>
     <link rel="stylesheet" href="css/skin-poll.style.css">
     <link rel="stylesheet" href="css/nav.style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
     <div id="navbar-placeholder"></div>
     <div class="main-container">
         <header class="page-header">
-            <h1>벽챈 스킨 선호도 평가</h1>
-            <div class="flavor-text-box">
-                <p>
-                    <strong>초간단 설명서</strong>
-                    많은 트래픽을 보면서 여러가지 문제/개선점들을 찾아서 서버를 일시적으로 닫았습니다<br>
-                    <span class="warning-text">서버가 닫힌동안은 페이지 확인 및 투표/점수확인이 불가능합니다, 죄송합니다</span>
-                    <!-- 모든 함순이 스킨들의 선호도 평가를 할 수 있습니다.<br>
-                    투표가 완료된 스킨들은 별이 파란색으로 표시됩니다.<br>
-                    함순이 이름 드랍다운 윗칸에 일부를 적으면 드랍다운에 검색된 함순이들이 뜹니다.<br>
-                    <span class="warning-text">주의) 한번 투표를 확정하면 재투표는 안되니 신중하게 눌러주세요.</span> -->
-                </p>
+            <h1>벽챈 스킨 선호도 평가
+                <i id="info-button" class="fas fa-info-circle"></i>
+            </h1>
+            <div id="info-popup">
+                <div class="info-popup-content">
+                    <button class="close-popup-btn">&times;</button>
+                    <p>
+                        <strong>초간단 설명서</strong>
+                        <!-- 많은 트래픽을 보면서 여러가지 문제/개선점들을 찾아서 서버를 일시적으로 닫았습니다<br>
+                    <span class="warning-text">서버가 닫힌동안은 페이지 확인 및 투표/점수확인이 불가능합니다, 죄송합니다</span> -->
+                        모든 함순이 스킨들의 선호도 평가를 할 수 있습니다.<br>
+                        투표가 완료된 스킨들은 별이 파란색으로 표시됩니다.<br>
+                        함순이 이름 드랍다운 윗칸에 일부를 적으면 드랍다운에 검색된 함순이들이 뜹니다.<br>
+                        <span class="warning-text">주의) 한번 투표를 확정하면 재투표는 안되니 신중하게 눌러주세요.</span>
+                    </p>
+                </div>
             </div>
         </header>
 
         <section class="leaderboard-section">
             <button id="leaderboard-toggle-btn" class="leaderboard-toggle">🏆 Top 10 스킨 보기</button>
             <div id="leaderboard-content" class="leaderboard-content">
-                </div>
+            </div>
         </section>
 
         <div class="filter-container">
@@ -44,14 +52,67 @@
                 <label for="skin-type-select">스킨 타입</label>
                 <select id="skin-type-select">
                     <option value="all">전체</option>
-                    <option>기본</option><option>개조</option><option>서약</option><option>기타</option><option>크리스마스</option><option>정월</option><option>이스트 글림 스타일</option><option>학교</option><option>수영복</option><option>파티</option><option>할로윈</option><option>사복</option><option>여름 축제</option><option>Live</option><option>특수 훈련</option><option>스포츠</option><option>극속광열</option><option>병원</option><option>카니발</option><option>메이드 타임</option><option>블러드 문</option><option>동화 속 세계</option><option>홈웨어</option><option>댄스</option><option>온천 타임</option><option>오피스 타임</option><option>이세계 모험</option><option>웨스턴</option><option>이집트 스타일</option>
+                    <option>기본</option>
+                    <option>개조</option>
+                    <option>서약</option>
+                    <option>기타</option>
+                    <option>크리스마스</option>
+                    <option>정월</option>
+                    <option>이스트 글림 스타일</option>
+                    <option>학교</option>
+                    <option>수영복</option>
+                    <option>파티</option>
+                    <option>할로윈</option>
+                    <option>사복</option>
+                    <option>여름 축제</option>
+                    <option>Live</option>
+                    <option>특수 훈련</option>
+                    <option>스포츠</option>
+                    <option>극속광열</option>
+                    <option>병원</option>
+                    <option>카니발</option>
+                    <option>메이드 타임</option>
+                    <option>블러드 문</option>
+                    <option>동화 속 세계</option>
+                    <option>홈웨어</option>
+                    <option>댄스</option>
+                    <option>온천 타임</option>
+                    <option>오피스 타임</option>
+                    <option>이세계 모험</option>
+                    <option>웨스턴</option>
+                    <option>이집트 스타일</option>
+                    <option>닌자의 성</option>
                 </select>
             </div>
             <div class="filter-group">
                 <label for="faction-select">진영</label>
                 <select id="faction-select">
                     <option value="all">전체</option>
-                    <option>UNIV</option><option>USS</option><option>HMS</option><option>IJN</option><option>KMS</option><option>ROC</option><option>RN</option><option>SN</option><option>FFNF (FF, iris libre)</option><option>MNF</option><option>FFNF (FR, iris orthodoxy)</option><option>MOT</option><option>META</option><option>UNIV (bulin)</option><option>LINK (collab)</option><option>HDN (neptune)</option><option>BILI</option><option>UM (utawarerumono)</option><option>AI (kizuna)</option><option>HOLO</option><option>DOA</option><option>IMAS</option><option>SSSS</option><option>RYZA</option><option>SENRAN</option>
+                    <option>UNIV</option>
+                    <option>USS</option>
+                    <option>HMS</option>
+                    <option>IJN</option>
+                    <option>KMS</option>
+                    <option>ROC</option>
+                    <option>RN</option>
+                    <option>SN</option>
+                    <option>FFNF (FF, iris libre)</option>
+                    <option>MNF</option>
+                    <option>FFNF (FR, iris orthodoxy)</option>
+                    <option>MOT</option>
+                    <option>META</option>
+                    <option>UNIV (bulin)</option>
+                    <option>LINK (collab)</option>
+                    <option>HDN (neptune)</option>
+                    <option>BILI</option>
+                    <option>UM (utawarerumono)</option>
+                    <option>AI (kizuna)</option>
+                    <option>HOLO</option>
+                    <option>DOA</option>
+                    <option>IMAS</option>
+                    <option>SSSS</option>
+                    <option>RYZA</option>
+                    <option>SENRAN</option>
                 </select>
             </div>
             <div class="filter-group">
@@ -75,7 +136,7 @@
                     <label><input type="checkbox" value="N" checked> N</label>
                 </div>
             </div>
-             <div class="filter-group">
+            <div class="filter-group">
                 <label for="sort-select">정렬 순서</label>
                 <select id="sort-select">
                     <option value="default">기본 (ID순)</option>
@@ -90,10 +151,12 @@
 
         <div id="poll-container" class="poll-container"></div>
     </div>
-    
-    <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> -->
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="js/skin-poll.script.js"></script>
     <script src="js/nav.script.js"></script>
 </body>
+
 </html>
