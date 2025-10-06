@@ -24,9 +24,23 @@ const showNotification = (message, type = "info") => {
   }, 3000);
 };
 
+// Add animation styles
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from { transform: translateX(400px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  @keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(400px); opacity: 0; }
+  }
+`;
+document.head.appendChild(style);
+
 document.addEventListener("DOMContentLoaded", async () => {
-  const CACHE_VERSION = "v2.2-optimized"; // NEW VERSION
-  const CACHE_DURATION_MS = 1000 * 60 * 60 * 1; // 1 hour cache
+  const CACHE_VERSION = "v2.3-realtime";
+  const CACHE_DURATION_MS = 1000 * 60 * 60; // 1 hour cache
 
   // --- Firebase Setup ---
   const firebaseConfig = {
@@ -77,6 +91,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const popupCharName = document.getElementById('popup-char-name');
   const closeImagePopupBtn = document.querySelector('.close-image-popup-btn');
 
+  // Data age indicator
+  const dataAgeIndicator = document.getElementById('data-age-indicator');
+
   // --- State Variables ---
   let allSkins = [];
   let allCharacterNames = [];
@@ -90,7 +107,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   let cachedLeaderboard = [];
   let userVotesCache = new Set();
 
-  // Image Popup Functions ---
+  // Refresh cooldown state
+  let refreshCooldownTimer = null;
+  let lastRefreshTime = 0;
+  const REFRESH_COOLDOWN_MS = 60000; // 60 seconds
+
+  // --- Image Popup Functions ---
   const openImagePopup = (fullImageUrl, skinName, charName) => {
     popupFullImage.src = fullImageUrl;
     popupSkinName.textContent = skinName;
@@ -102,66 +124,56 @@ document.addEventListener("DOMContentLoaded", async () => {
   const closeImagePopup = () => {
     imagePopup.classList.remove('visible');
     document.body.classList.remove('no-scroll');
-    // Clear image after animation
     setTimeout(() => {
       popupFullImage.src = '';
     }, 300);
   };
-  // --- NEW: Cache Management Functions ---
 
-  /**
-   * Saves poll data to localStorage with timestamp
-   */
+  // --- Cache Management Functions ---
+
   const savePollDataToCache = (pollData) => {
     try {
-      localStorage.setItem('poll_data_cache', JSON.stringify({
+      localStorage.setItem(`${CACHE_VERSION}_pollDataCache`, JSON.stringify({
         data: pollData,
         timestamp: Date.now(),
         version: CACHE_VERSION
       }));
+      localStorage.setItem(`${CACHE_VERSION}_pollDataTimestamp`, String(Date.now()));
       console.log(`💾 Saved ${Object.keys(pollData).length} poll entries to cache`);
     } catch (e) {
       console.warn("Cache save failed:", e);
     }
   };
 
-  /**
-   * Loads poll data from localStorage if valid
-   */
   const loadPollDataFromCache = () => {
     try {
-      const cached = localStorage.getItem('poll_data_cache');
-      if (!cached) return null;
+      const cached = localStorage.getItem(`${CACHE_VERSION}_pollDataCache`);
+      if (!cached) return { data: null, timestamp: null };
 
       const { data, timestamp, version } = JSON.parse(cached);
 
-      // Check version
       if (version !== CACHE_VERSION) {
         console.log("🔄 Cache version mismatch, invalidating...");
-        return null;
+        return { data: null, timestamp: null };
       }
 
-      // Check age
       const age = Date.now() - timestamp;
       if (age > CACHE_DURATION_MS) {
         console.log("⏰ Cache expired (age: " + Math.round(age / 1000 / 60) + " minutes)");
-        return null;
+        return { data: null, timestamp };
       }
 
       console.log(`✅ Loaded ${Object.keys(data).length} poll entries from cache (age: ${Math.round(age / 1000)}s)`);
-      return data;
+      return { data, timestamp };
     } catch (e) {
       console.warn("Cache load failed:", e);
-      return null;
+      return { data: null, timestamp: null };
     }
   };
 
-  /**
-   * Saves leaderboard to localStorage
-   */
   const saveLeaderboardToCache = (leaderboard, totalVotes) => {
     try {
-      localStorage.setItem('leaderboard_cache', JSON.stringify({
+      localStorage.setItem(`${CACHE_VERSION}_leaderboardCache`, JSON.stringify({
         leaderboard,
         totalVotes,
         timestamp: Date.now(),
@@ -172,12 +184,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  /**
-   * Loads leaderboard from localStorage
-   */
   const loadLeaderboardFromCache = () => {
     try {
-      const cached = localStorage.getItem('leaderboard_cache');
+      const cached = localStorage.getItem(`${CACHE_VERSION}_leaderboardCache`);
       if (!cached) return null;
 
       const { leaderboard, totalVotes, timestamp, version } = JSON.parse(cached);
@@ -194,12 +203,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  /**
-   * Saves user votes to localStorage
-   */
   const saveUserVotesToCache = (votesSet) => {
     try {
-      localStorage.setItem('user_votes_cache', JSON.stringify({
+      localStorage.setItem(`${CACHE_VERSION}_userVotesCache`, JSON.stringify({
         votes: Array.from(votesSet),
         timestamp: Date.now(),
         userId: currentUserId,
@@ -210,12 +216,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  /**
-   * Loads user votes from localStorage
-   */
   const loadUserVotesFromCache = () => {
     try {
-      const cached = localStorage.getItem('user_votes_cache');
+      const cached = localStorage.getItem(`${CACHE_VERSION}_userVotesCache`);
       if (!cached) return null;
 
       const { votes, timestamp, userId, version } = JSON.parse(cached);
@@ -237,13 +240,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (currentVersion !== CACHE_VERSION) {
     console.log("🔄 Cache version updated. Clearing old data...");
 
-    // Clear old caches
-    ['poll_data_cache', 'leaderboard_cache', 'user_votes_cache'].forEach(key => {
-      localStorage.removeItem(key);
-    });
-
     Object.keys(localStorage).forEach(key => {
-      if (key.startsWith("voted_") || key.startsWith("rating_")) {
+      if (key.includes('pollDataCache') || 
+          key.includes('leaderboardCache') || 
+          key.includes('userVotesCache') ||
+          key.includes('pollDataTimestamp') ||
+          key.startsWith("voted_") || 
+          key.startsWith("rating_")) {
         localStorage.removeItem(key);
       }
     });
@@ -251,6 +254,176 @@ document.addEventListener("DOMContentLoaded", async () => {
     localStorage.setItem("cache_version", CACHE_VERSION);
     showNotification("데이터가 업데이트되었습니다.", "info");
   }
+
+  // --- Data Age Indicator ---
+  const updateDataAgeIndicator = () => {
+    if (!dataAgeIndicator) return;
+
+    const cacheTimestamp = localStorage.getItem(`${CACHE_VERSION}_pollDataTimestamp`);
+    if (!cacheTimestamp) {
+      dataAgeIndicator.innerHTML = `<i class="fas fa-circle" style="color: #27ae60;"></i> 실시간 동기화 중`;
+      return;
+    }
+
+    const cacheAge = Date.now() - parseInt(cacheTimestamp);
+    const ageMinutes = Math.floor(cacheAge / 60000);
+
+    if (ageMinutes < 2) {
+      dataAgeIndicator.innerHTML = `<i class="fas fa-circle" style="color: #27ae60;"></i> 실시간 동기화 중`;
+    } else if (ageMinutes < 30) {
+      dataAgeIndicator.innerHTML = `<i class="fas fa-clock" style="color: #f39c12;"></i> 데이터: ${ageMinutes}분 전`;
+    } else {
+      dataAgeIndicator.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: #e74c3c;"></i> 데이터: ${ageMinutes}분 전`;
+    }
+  };
+
+  // --- Real-Time Sync Functions ---
+  const handleRealtimeUpdate = (snapshot) => {
+    let updatedCount = 0;
+
+    snapshot.docChanges().forEach(change => {
+      const clientId = change.doc.id;
+      const data = change.doc.data();
+
+      if (change.type === "added" || change.type === "modified") {
+        allPollDataCache[clientId] = data;
+        updateScoreDisplay(clientId, data);
+        updatedCount++;
+      }
+    });
+
+    if (updatedCount > 0) {
+      console.log(`📡 Real-time update: ${updatedCount} skins updated`);
+
+      const newLeaderboard = recalculateLeaderboard();
+      populateLeaderboard(newLeaderboard);
+
+      savePollDataToCache(allPollDataCache);
+      updateDataAgeIndicator();
+    }
+  };
+
+  const setupSmartVoteSync = () => {
+    let isTabActive = !document.hidden;
+    let realtimeUnsubscribe = null;
+
+    const startRealtimeSync = () => {
+      if (realtimeUnsubscribe) return;
+
+      console.log("🔴 Starting real-time sync...");
+      realtimeUnsubscribe = db.collection("skin_polls").onSnapshot(
+        handleRealtimeUpdate,
+        (error) => {
+          console.error("❌ Real-time listener error:", error);
+          showNotification("실시간 동기화 오류. 페이지를 새로고침하세요.", "error");
+        }
+      );
+    };
+
+    const stopRealtimeSync = () => {
+      if (!realtimeUnsubscribe) return;
+
+      console.log("⏸️ Pausing real-time sync (tab inactive)");
+      realtimeUnsubscribe();
+      realtimeUnsubscribe = null;
+    };
+
+    document.addEventListener('visibilitychange', () => {
+      isTabActive = !document.hidden;
+
+      if (isTabActive) {
+        startRealtimeSync();
+        console.log("👁️ Tab is now visible");
+      } else {
+        stopRealtimeSync();
+        console.log("👁️‍🗨️ Tab is now hidden");
+      }
+    });
+
+    if (isTabActive) {
+      startRealtimeSync();
+    }
+
+    window.addEventListener('beforeunload', () => {
+      if (realtimeUnsubscribe) {
+        realtimeUnsubscribe();
+      }
+    });
+  };
+
+  // --- Refresh Button with Cooldown ---
+  const startRefreshCooldown = () => {
+    const btn = document.getElementById('refresh-data-btn');
+    if (!btn) return;
+
+    let secondsLeft = Math.ceil(REFRESH_COOLDOWN_MS / 1000);
+    btn.disabled = true;
+
+    const updateButtonText = () => {
+      if (secondsLeft > 0) {
+        btn.innerHTML = `<i class="fas fa-clock"></i> ${secondsLeft}초`;
+      } else {
+        clearInterval(refreshCooldownTimer);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sync-alt"></i>새로고침';
+      }
+    };
+
+    updateButtonText();
+    refreshCooldownTimer = setInterval(() => {
+      secondsLeft--;
+      updateButtonText();
+    }, 1000);
+  };
+
+  const refreshVoteData = async () => {
+    const now = Date.now();
+    const timeSinceLastRefresh = now - lastRefreshTime;
+
+    if (timeSinceLastRefresh < REFRESH_COOLDOWN_MS) {
+      const remainingSeconds = Math.ceil((REFRESH_COOLDOWN_MS - timeSinceLastRefresh) / 1000);
+      showNotification(`⏳ ${remainingSeconds}초 후에 다시 시도하세요`, "error");
+      return;
+    }
+
+    const btn = document.getElementById('refresh-data-btn');
+    if (btn) {
+      btn.classList.add('loading');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-sync-alt"></i> 업데이트 중...';
+    }
+
+    showNotification("투표 데이터 업데이트 중...", "info");
+
+    try {
+      lastRefreshTime = now;
+
+      await fetchAllPollData();
+      applyFilters();
+
+      const newLeaderboard = recalculateLeaderboard();
+      populateLeaderboard(newLeaderboard);
+      updateDataAgeIndicator();
+
+      showNotification("✅ 최신 데이터로 업데이트되었습니다!", "success");
+
+      if (btn) {
+        btn.classList.remove('loading');
+        startRefreshCooldown();
+      }
+
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+      showNotification("데이터 새로고침 실패", "error");
+
+      lastRefreshTime = 0;
+      if (btn) {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sync-alt"></i> 새로고침';
+      }
+    }
+  };
 
   // --- Helper Functions ---
   const debounce = (func, delay) => {
@@ -279,8 +452,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const handleFilter = () => {
       const sourceArray = getSourceArray();
       const searchTerm = inputEl.value.toLowerCase();
-
-      // REMOVED: Exact match check - now always filters
       const filteredItems = sourceArray.filter(item => item.toLowerCase().includes(searchTerm));
       populateDropdown(dropdownEl, filteredItems, onSelectCallback);
     };
@@ -339,17 +510,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     applyFilters();
   };
 
-  // --- OPTIMIZED: Firestore Functions ---
+  // --- Firestore Functions ---
 
-  /**
-   * NEW: Fetches only user's votes (much smaller query)
-   */
   const fetchUserVotes = async (userId) => {
-    // Try cache first
     const cachedVotes = loadUserVotesFromCache();
     if (cachedVotes) return cachedVotes;
 
-    // Fetch from Firestore
     const userVotesRef = db.collection("user_votes").where("userId", "==", userId);
     const votedClientIds = new Set();
 
@@ -362,7 +528,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (data.clientId) votedClientIds.add(data.clientId);
       });
 
-      // Save to cache
       saveUserVotesToCache(votedClientIds);
     } catch (error) {
       console.error("Error fetching user votes:", error);
@@ -371,15 +536,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     return votedClientIds;
   };
 
-  /**
-   * OPTIMIZED: Fetches leaderboard with caching
-   */
   const fetchLeaderboardAndStats = async () => {
-    // Try cache first
     const cached = loadLeaderboardFromCache();
     if (cached) return cached;
 
-    // Fetch from Firestore
     const leaderboardRef = db.collection("metadata").doc("leaderboard");
     try {
       const doc = await leaderboardRef.get();
@@ -397,18 +557,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  /**
-   * OPTIMIZED: Only fetches poll data that's not in cache
-   */
   const fetchAllPollData = async () => {
-    // Try cache first
     const cachedData = loadPollDataFromCache();
-    if (cachedData) {
+    if (cachedData.data) {
       console.log(`✅ Using cached poll data (0 reads saved!)`);
-      return cachedData;
+      return cachedData.data;
     }
 
-    // Full fetch on first load or cache miss
     console.log(`📥 Fetching all poll data from Firestore...`);
     const pollRef = db.collection("skin_polls");
     const allPollData = {};
@@ -421,7 +576,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         allPollData[doc.id] = doc.data();
       });
 
-      // Save to cache
       savePollDataToCache(allPollData);
     } catch (error) {
       console.error("Error fetching poll data:", error);
@@ -430,28 +584,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     return allPollData;
   };
 
-  /**
-   * OPTIMIZED: Fetches only a single skin's vote data
-   */
-  const fetchSingleSkinData = async (clientId) => {
-    const skinDocRef = db.collection("skin_polls").doc(clientId);
-    try {
-      const doc = await skinDocRef.get();
-      console.log(`📥 Fetched single skin data for ${clientId} (1 read)`);
-
-      if (doc.exists) {
-        return doc.data();
-      }
-      return null;
-    } catch (error) {
-      console.error(`Error fetching skin ${clientId}:`, error);
-      return null;
-    }
-  };
-
-  /**
-   * Updates leaderboard in Firestore
-   */
   const updateLeaderboardInFirestore = async (newLeaderboard, newTotalVotes) => {
     const leaderboardRef = db.collection("metadata").doc("leaderboard");
     try {
@@ -462,18 +594,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
       console.log("✅ Leaderboard updated in Firestore (1 write)");
 
-      // Update cache
       saveLeaderboardToCache(newLeaderboard, newTotalVotes);
     } catch (error) {
       console.error("Error updating leaderboard:", error);
     }
   };
 
-  /**
-   * Recalculates leaderboard locally
-   */
-  const recalculateLeaderboard = () => {
+  const recalculateLeaderboard = (votedClientId = null) => {
     const MIN_VOTES = 10;
+
+    if (votedClientId) {
+      const votedSkinData = allPollDataCache[votedClientId];
+      const currentTop10Ids = new Set(cachedLeaderboard.map(s => s.id));
+
+      if (votedSkinData && votedSkinData.total_votes < MIN_VOTES && !currentTop10Ids.has(votedClientId)) {
+        console.log(`⏭️ Skipping leaderboard recalculation (skin has ${votedSkinData.total_votes} votes)`);
+        return cachedLeaderboard;
+      }
+    }
+
     const rankedSkins = Object.keys(allPollDataCache).map(clientId => {
       const poll = allPollDataCache[clientId];
       const skinInfo = clientIdToSkinMap[clientId];
@@ -495,16 +634,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     const top10 = rankedSkins.slice(0, 10);
-    cachedLeaderboard = top10;
+    const leaderboardChanged = JSON.stringify(top10.map(s => s.id)) !== JSON.stringify(cachedLeaderboard.map(s => s.id));
 
-    updateLeaderboardInFirestore(top10, cachedTotalVotes);
+    if (leaderboardChanged) {
+      console.log("🔄 Leaderboard changed, updating Firestore...");
+      cachedLeaderboard = top10;
+      const leaderboardTotalVotes = rankedSkins.reduce((sum, skin) => sum + skin.total_votes, 0);
+      updateLeaderboardInFirestore(top10, leaderboardTotalVotes);
+    } else {
+      console.log("✅ Leaderboard unchanged, skipping Firestore write");
+      cachedLeaderboard = top10;
+    }
+
     return top10;
   };
 
   // --- Main Initialization ---
   fetch("data/skin_voiceline_data.json")
     .then((response) => response.json())
-    .then((jsonData) => {
+    .then(async (jsonData) => {
       allSkins = Object.keys(jsonData).map((key) => ({ id: key, ...jsonData[key] }))
         .filter(skin => skin["한글 함순이 + 스킨 이름"] && skin["함순이 이름"] && skin["클뜯 id"]);
 
@@ -518,22 +666,41 @@ document.addEventListener("DOMContentLoaded", async () => {
       setupDropdown(characterNameSearch, characterDropdownContent, () => allCharacterNames, handleCharacterSelect);
       displaySkeletonLoader();
 
-      // OPTIMIZED: Parallel fetch with caching
-      Promise.all([
+      // Load from cache first
+      const cached = loadPollDataFromCache();
+      if (cached.data && Object.keys(cached.data).length > 0) {
+        console.log("✅ Loaded cached poll data");
+        allPollDataCache = cached.data;
+      } else {
+        console.log("📥 No cache found, fetching initial data...");
+        await fetchAllPollData().then(data => {
+          allPollDataCache = data;
+        });
+      }
+
+      // Start smart real-time sync
+      setupSmartVoteSync();
+
+      // Update data age indicator
+      updateDataAgeIndicator();
+      setInterval(updateDataAgeIndicator, 60000);
+
+      // Fetch additional data
+      const [leaderboardData, userVotes] = await Promise.all([
         fetchLeaderboardAndStats(),
-        fetchAllPollData(),
         fetchUserVotes(currentUserId)
-      ]).then(([leaderboardData, pollData, userVotes]) => {
-        allPollDataCache = pollData;
-        cachedLeaderboard = leaderboardData.leaderboard || [];
-        cachedTotalVotes = leaderboardData.totalVotes || 0;
-        userVotesCache = userVotes;
+      ]);
 
-        console.log(`📊 Total reads this session: ~${Object.keys(pollData).length > 0 ? Object.keys(pollData).length + userVotes.size + 1 : '3 (all from cache!)'}`);
+      cachedTotalVotes = leaderboardData.totalVotes || 0;
+      cachedLeaderboard = leaderboardData.leaderboard || [];
+      userVotesCache = userVotes;
 
-        populateLeaderboard(cachedLeaderboard);
-        applyFiltersFromURL();
-      });
+      populateLeaderboard(cachedLeaderboard);
+      applyFiltersFromURL();
+    })
+    .catch((error) => {
+      console.error("Error loading skin data:", error);
+      showNotification("스킨 데이터 로드 실패", "error");
     });
 
   const displaySkeletonLoader = (count = 18) => {
@@ -554,30 +721,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // --- Core Functions ---
   const applyFilters = () => {
-    let filteredSkins = allSkins;
     const selectedCharName = characterNameSearch.value;
     const selectedType = skinTypeSelect.value;
     const selectedFaction = factionSelect.value;
     const selectedTag = tagSelect.value;
     const selectedRarities = [...rarityCheckboxes.querySelectorAll("input:checked")].map(cb => cb.value);
 
-    if (selectedCharName) filteredSkins = filteredSkins.filter(s => s["함순이 이름"] === selectedCharName);
-    if (selectedType !== "all") {
-      if (selectedType === "기본") {
-        filteredSkins = filteredSkins.filter(s => !s["스킨 타입 - 한글"]);
-      } else {
-        filteredSkins = filteredSkins.filter(s => s["스킨 타입 - 한글"] === selectedType);
+    const filteredSkins = allSkins.filter(skin => {
+      if (selectedCharName && skin["함순이 이름"] !== selectedCharName) return false;
+      if (selectedType !== "all") {
+        if (selectedType === "기본" && skin["스킨 타입 - 한글"]) return false;
+        if (selectedType !== "기본" && skin["스킨 타입 - 한글"] !== selectedType) return false;
       }
-    }
-    if (selectedFaction !== "all") filteredSkins = filteredSkins.filter(s => s["진영"] === selectedFaction);
-    if (selectedTag !== "all") {
-      if (selectedTag === "X") {
-        filteredSkins = filteredSkins.filter(s => !s["스킨 태그"]);
-      } else {
-        filteredSkins = filteredSkins.filter(s => s["스킨 태그"] && s["스킨 태그"].includes(selectedTag));
+      if (selectedFaction !== "all" && skin["진영"] !== selectedFaction) return false;
+      if (selectedTag !== "all") {
+        if (selectedTag === "X" && skin["스킨 태그"]) return false;
+        if (selectedTag !== "X" && (!skin["스킨 태그"] || !skin["스킨 태그"].includes(selectedTag))) return false;
       }
-    }
-    filteredSkins = filteredSkins.filter(s => selectedRarities.includes(s["레어도"]));
+      if (!selectedRarities.includes(skin["레어도"])) return false;
+      return true;
+    });
 
     currentlyDisplayedSkins = filteredSkins.map(skin => {
       const clientId = String(skin["클뜯 id"]);
@@ -612,7 +775,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const hasVoted = hasVotedLocal || hasVotedFirestore;
       const votedRating = hasVoted ? localStorage.getItem(`rating_${clientId}`) : null;
 
-      // NEW: Add data attributes for full image
       pollBox.innerHTML = ` 
         <img src="${skin["깔끔한 일러"]}" 
              class="poll-image" 
@@ -651,9 +813,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   };
 
-  /**
-   * OPTIMIZED: Vote submission with cache updates
-   */
   const submitVote = async (clientId, rating, skinName, characterName, displaySkinId) => {
     const userId = currentUserId;
 
@@ -694,11 +853,16 @@ document.addEventListener("DOMContentLoaded", async () => {
           total_votes: newTotalVotes,
           total_score: newTotalScore,
           average_score: newAverageScore,
-          skin_name: skinName,
-          character_name: characterName,
-          client_id: clientId,
           last_updated: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
+
+        if (currentTotalVotes === 0) {
+          transaction.update(skinDocRef, {
+            skin_name: skinName,
+            character_name: characterName,
+            client_id: clientId
+          });
+        }
 
         transaction.set(statsDocRef, {
           count: newTotalCount,
@@ -718,9 +882,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log("✅ Vote saved (3 writes)");
 
       localStorage.setItem(`voted_${clientId}`, "true");
-      localStorage.setItem(`rating_${clientId}`, rating);
+      localStorage.setItem(`rating_${clientId}`, String(rating));
       userVotesCache.add(clientId);
-      saveUserVotesToCache(userVotesCache); // Update cache
+      saveUserVotesToCache(userVotesCache);
 
       const ratingArea = document.querySelector(`.rating-area[data-client-id="${clientId}"]`);
       if (ratingArea) {
@@ -730,7 +894,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         setTimeout(() => ratingArea.classList.remove("voted-animation"), 300);
       }
 
-      // OPTIMIZED: Update local cache immediately instead of refetching
       const currentTotalVotes = allPollDataCache[clientId]?.total_votes || 0;
       const currentTotalScore = allPollDataCache[clientId]?.total_score || 0;
 
@@ -741,12 +904,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         average_score: (currentTotalScore + rating) / (currentTotalVotes + 1),
         skin_name: skinName,
         character_name: characterName,
-        client_id: clientId
+        client_id: clientId,
+        last_updated: new Date()
       };
 
-      // Save updated cache
       savePollDataToCache(allPollDataCache);
-
       cachedTotalVotes++;
 
       updateScoreDisplay(clientId, allPollDataCache[clientId]);
@@ -757,10 +919,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         skinInArray.average_score = allPollDataCache[clientId].average_score;
       }
 
-      const newLeaderboard = recalculateLeaderboard();
+      const newLeaderboard = recalculateLeaderboard(clientId);
       populateLeaderboard(newLeaderboard);
 
-      showNotification("투표가 성공적으로 저장되었습니다! 🎉", "success");
+      updateDataAgeIndicator();
+
+      showNotification(`✅ ${skinName}에 ${rating}점 투표 완료!`, "success");
 
     } catch (error) {
       if (error.message === "ALREADY_VOTED") {
@@ -777,22 +941,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       } else {
         console.error("❌ Transaction failed:", error);
-
-        if (error.code === 'permission-denied') {
-          showNotification("권한이 없습니다. Firestore 규칙을 확인하세요.", "error");
-        } else if (error.code === 'unavailable') {
-          showNotification("네트워크 오류입니다. 인터넷 연결을 확인하세요.", "error");
-        } else {
-          showNotification("투표를 저장하는 데 실패했습니다. 다시 시도해 주세요.", "error");
-        }
+        showNotification("투표를 저장하는 데 실패했습니다. 다시 시도해 주세요.", "error");
       }
 
-      const ratingArea = document.querySelector(`.rating-area[data-client-id="${clientId}"]`);
-      if (ratingArea) {
-        ratingArea.classList.remove('pending-vote');
-        const checkedRadio = ratingArea.querySelector(`input[name="rating-${displaySkinId}"]:checked`);
-        if (checkedRadio) checkedRadio.checked = false;
-      }
+      clearPendingVote();
     }
   };
 
@@ -848,18 +1000,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     const resultsEl = document.getElementById(`results-${clientId}`);
     if (!resultsEl) return;
 
-    resultsEl.innerHTML = `<div class="score-bar-visual">★★★★★<div class="score-bar-foreground" style="width: 0%;">★★★★★</div></div><div class="score-bar-text"></div>`;
     const foregroundEl = resultsEl.querySelector('.score-bar-foreground');
     const textEl = resultsEl.querySelector('.score-bar-text');
+
+    if (!foregroundEl || !textEl) {
+      resultsEl.innerHTML = `<div class="score-bar-visual">★★★★★<div class="score-bar-foreground" style="width: 0%;">★★★★★</div></div><div class="score-bar-text"></div>`;
+    }
+
+    const fg = resultsEl.querySelector('.score-bar-foreground');
+    const txt = resultsEl.querySelector('.score-bar-text');
 
     if (data && data.total_votes > 0) {
       const average = data.total_score / data.total_votes;
       const percentage = (average / 5) * 100;
-      foregroundEl.style.width = `${percentage}%`;
-      textEl.innerHTML = `평균: <strong>${average.toFixed(2)}</strong> (${data.total_votes}표)`;
+
+      const newWidth = `${percentage}%`;
+      const newText = `평균: <strong>${average.toFixed(2)}</strong> (${data.total_votes}표)`;
+
+      if (fg.style.width !== newWidth) fg.style.width = newWidth;
+      if (txt.innerHTML !== newText) txt.innerHTML = newText;
     } else {
-      foregroundEl.style.width = '0%';
-      textEl.textContent = '투표 없음';
+      if (fg.style.width !== '0%') fg.style.width = '0%';
+      if (txt.textContent !== '투표 없음') txt.textContent = '투표 없음';
     }
   };
 
@@ -911,7 +1073,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // --- Event Listeners ---
 
-
   pollContainer.addEventListener("click", (event) => {
     const clickedImage = event.target.closest('.poll-image');
     if (clickedImage) {
@@ -922,7 +1083,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (fullImageUrl && fullImageUrl !== 'null' && fullImageUrl !== 'undefined') {
         openImagePopup(fullImageUrl, skinName, charName);
       }
-      return; // Don't process vote clicks
+      return;
     }
 
     const starLabel = event.target.closest('.star-rating label');
@@ -957,6 +1118,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  // Refresh button
+  const refreshDataBtn = document.getElementById('refresh-data-btn');
+  if (refreshDataBtn) {
+    refreshDataBtn.addEventListener('click', refreshVoteData);
+  }
+
+  // Leaderboard toggle
   leaderboardToggleBtn.addEventListener('click', () => {
     leaderboardContent.classList.toggle('visible');
     leaderboardToggleBtn.textContent = leaderboardContent.classList.contains('visible') ? '🔼 리더보드 숨기기' : '🏆 Top 10 스킨 보기';
@@ -964,12 +1132,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   resetFiltersBtn.addEventListener('click', resetFilters);
 
+  const applyFiltersDebounced = debounce(applyFilters, 150);
+
   [skinTypeSelect, factionSelect, tagSelect].forEach((el) => {
-    el.addEventListener("change", applyFilters);
+    el.addEventListener("change", applyFiltersDebounced);
   });
 
   rarityCheckboxes.querySelectorAll("input").forEach((checkbox) => {
-    checkbox.addEventListener("change", applyFilters);
+    checkbox.addEventListener("change", applyFiltersDebounced);
   });
 
   sortSelect.addEventListener('change', () => {
@@ -979,7 +1149,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   window.addEventListener('popstate', applyFiltersFromURL);
 
-  // Close image popup handlers
+  // Image popup handlers
   closeImagePopupBtn.addEventListener('click', closeImagePopup);
 
   imagePopup.addEventListener('click', (event) => {
@@ -988,34 +1158,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Keyboard support for closing popup
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && imagePopup.classList.contains('visible')) {
       closeImagePopup();
     }
   });
 
-  // --- NEW: Info Pop-up Event Listeners ---
+  // Info popup handlers
   const infoButton = document.getElementById('info-button');
   const infoPopup = document.getElementById('info-popup');
-  const closePopupBtn = infoPopup.querySelector('.close-popup-btn');
 
-  const closeInfoPopup = () => {
-    infoPopup.classList.remove('visible');
-    document.body.classList.remove('no-scroll');
-  };
+  if (infoButton && infoPopup) {
+    const closePopupBtn = infoPopup.querySelector('.close-popup-btn');
 
-  infoButton.addEventListener('click', () => {
-    infoPopup.classList.add('visible');
-    document.body.classList.add('no-scroll');
-  });
+    const closeInfoPopup = () => {
+      infoPopup.classList.remove('visible');
+      document.body.classList.remove('no-scroll');
+    };
 
-  closePopupBtn.addEventListener('click', closeInfoPopup);
+    infoButton.addEventListener('click', () => {
+      infoPopup.classList.add('visible');
+      document.body.classList.add('no-scroll');
+    });
 
-  infoPopup.addEventListener('click', (event) => {
-    if (event.target === infoPopup) {
-      closeInfoPopup();
+    if (closePopupBtn) {
+      closePopupBtn.addEventListener('click', closeInfoPopup);
     }
-  });
+
+    infoPopup.addEventListener('click', (event) => {
+      if (event.target === infoPopup) {
+        closeInfoPopup();
+      }
+    });
+  }
 
 });
