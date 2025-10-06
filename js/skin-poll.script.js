@@ -26,7 +26,7 @@ const showNotification = (message, type = "info") => {
 
 document.addEventListener("DOMContentLoaded", async () => {
   const CACHE_VERSION = "v2.2-optimized"; // NEW VERSION
-  const CACHE_DURATION_MS = 1000 * 60 * 60 * 24; // 24 hour cache
+  const CACHE_DURATION_MS = 1000 * 60 * 60 * 1; // 1 hour cache
 
   // --- Firebase Setup ---
   const firebaseConfig = {
