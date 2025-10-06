@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function debounce(func, delay) {
         let timeout;
-        return function(...args) {
+        return function (...args) {
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(this, args), delay);
         };
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedRarities.length < 5) params.set('rarities', selectedRarities.join(','));
         if (exDialogueCheckbox.checked) params.set('ex', 'true');
         if (searchInput.value) params.set('search', searchInput.value);
-        
+
         const newUrl = `${window.location.pathname}?${params.toString()}`;
         history.replaceState({}, '', newUrl);
     };
@@ -79,30 +79,33 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Data Fetching and Processing ---
-    fetch('data/skin_voiceline_data.json')
+    // created a new json file faster load / reduce unnecessary data
+    fetch('data/skin_list_subset.json')
         .then(res => res.json())
         .then(skinJson => {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
-            const processedSkins = Object.values(skinJson).map(skin => {
-                if (skin['기간'] === null) {
-                    const skinType = skin['스킨 타입 - 한글'];
-                    if (skinType === null || skinType === '개조' || skinType === '서약') skin['기간'] = '상시';
-                }
-                if (skin['기간'] && skin['기간'].includes('한정')) {
-                    skin.isNew = false;
-                    try {
-                        const dateString = skin['기간'].substring(skin['기간'].indexOf('['));
-                        const [year, month, day] = JSON.parse(dateString);
-                        const skinDate = new Date(year, month - 1, day);
-                        if (skinDate >= today) skin.isNew = true;
-                    } catch (e) { /* Ignore parsing errors */ }
-                }
-                return skin;
-            });
+            // const processedSkins = Object.values(skinJson).map(skin => {
+            //     if (skin['기간'] === null) {
+            //         const skinType = skin['스킨 타입 - 한글'];
+            //         if (skinType === null || skinType === '개조' || skinType === '서약') skin['기간'] = '상시';
+            //     }
+            //     if (skin['기간'] && skin['기간'].includes('한정')) {
+            //         skin.isNew = false;
+            //         try {
+            //             const dateString = skin['기간'].substring(skin['기간'].indexOf('['));
+            //             const [year, month, day] = JSON.parse(dateString);
+            //             const skinDate = new Date(year, month - 1, day);
+            //             if (skinDate >= today) skin.isNew = true;
+            //         } catch (e) { /* Ignore parsing errors */ }
+            //     }
+            //     return skin;
+            // });
 
-            allSkins = processedSkins.filter(skin => skin['깔끔한 일러']);
+            // allSkins = processedSkins.filter(skin => skin['깔끔한 일러']);
+
+            allSkins = skinJson;
 
             const uniqueShipNames = [...new Set(allSkins.map(skin => skin['함순이 이름']))].sort();
             fuse = new Fuse(uniqueShipNames.map(name => ({ name })), fuseOptions);
@@ -164,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderSkinsBySection = (skinsToRender) => {
         Object.values(containers).forEach(c => c.innerHTML = '');
-        
+
         const fragments = {
             new: document.createDocumentFragment(),
             limited: document.createDocumentFragment(),
@@ -186,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 else fragments.other.appendChild(skinNode);
             }
         });
-        
+
         for (const key in containers) {
             containers[key].appendChild(fragments[key]);
             sections[key].style.display = containers[key].hasChildNodes() ? 'block' : 'none';
@@ -236,42 +239,46 @@ document.addEventListener('DOMContentLoaded', () => {
             autocompleteList.appendChild(suggestionDiv);
         });
     }
-    
+
+    // Optimize by combining conditions:
     const applyFilters = () => {
         const searchTerm = searchInput.value.toLowerCase().trim();
         const selectedType = skinTypeSelect.value;
         const selectedTag = tagSelect.value;
         const selectedPeriod = periodSelect.value;
         const selectedFaction = factionSelect.value;
-        const selectedRarities = [...rarityCheckboxes.querySelectorAll('input:checked')].map(cb => cb.value);
+        const selectedRarities = new Set([...rarityCheckboxes.querySelectorAll('input:checked')].map(cb => cb.value));
         const showOnlyEx = exDialogueCheckbox.checked;
 
-        let filteredSkins = allSkins;
-
-        if (searchTerm) filteredSkins = filteredSkins.filter(skin => skin['함순이 이름'].toLowerCase().includes(searchTerm));
-        if (selectedPeriod !== 'all') {
-            if (selectedPeriod === '한정') filteredSkins = filteredSkins.filter(s => s['기간'] && s['기간'].includes('한정'));
-            else if (selectedPeriod === '상시') filteredSkins = filteredSkins.filter(s => s['기간'] === '상시');
-        }
-        if (showOnlyEx) filteredSkins = filteredSkins.filter(s => s['ex_chat_status'] === 1);
-        if (selectedType !== 'all') {
-            if (selectedType === '기본') filteredSkins = filteredSkins.filter(s => !s['스킨 타입 - 한글']);
-            else filteredSkins = filteredSkins.filter(s => s['스킨 타입 - 한글'] === selectedType);
-        }
-        if (selectedFaction !== 'all') filteredSkins = filteredSkins.filter(s => s['진영'] === selectedFaction);
-        if (selectedTag !== 'all') {
-            if (selectedTag === "X") {
-                const tagsToExclude = ['듀얼', 'L2D', 'L2D+', '쁘띠모션'];
-                filteredSkins = filteredSkins.filter(s => !s['스킨 태그'] || !tagsToExclude.some(tag => s['스킨 태그'].includes(tag)));
-            } else {
-                filteredSkins = filteredSkins.filter(s => s["스킨 태그"] && s["스킨 태그"].includes(selectedTag));
+        const filteredSkins = allSkins.filter(skin => {
+            // Combine all conditions in one pass
+            if (searchTerm && !skin['함순이 이름'].toLowerCase().includes(searchTerm)) return false;
+            if (showOnlyEx && skin['ex_chat_status'] !== 1) return false;
+            if (selectedType !== 'all') {
+                if (selectedType === '기본' && skin['스킨 타입 - 한글']) return false;
+                if (selectedType !== '기본' && skin['스킨 타입 - 한글'] !== selectedType) return false;
             }
-        }
-        if (selectedRarities.length > 0) filteredSkins = filteredSkins.filter(s => selectedRarities.includes(s['레어도']));
+            if (selectedFaction !== 'all' && skin['진영'] !== selectedFaction) return false;
+            if (selectedPeriod !== 'all') {
+                if (selectedPeriod === '한정' && (!skin['기간'] || !skin['기간'].includes('한정'))) return false;
+                if (selectedPeriod === '상시' && skin['기간'] !== '상시') return false;
+            }
+            if (selectedTag !== 'all') {
+                if (selectedTag === "X") {
+                    const tagsToExclude = ['듀얼', 'L2D', 'L2D+', '영령모션'];
+                    if (skin['스킨 태그'] && tagsToExclude.some(tag => skin['스킨 태그'].includes(tag))) return false;
+                } else {
+                    if (!skin["스킨 태그"] || !skin["스킨 태그"].includes(selectedTag)) return false;
+                }
+            }
+            if (selectedRarities.size > 0 && !selectedRarities.has(skin['레어도'])) return false;
+
+            return true;
+        });
 
         renderSkinsBySection(filteredSkins);
     };
-    
+
     const debouncedApplyFiltersAndUpdateURL = debounce(() => {
         applyFilters();
         updateURLWithFilters();
@@ -287,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         debouncedApplyFiltersAndUpdateURL();
     }
-    
+
     function resetFilters() {
         searchInput.value = '';
         skinTypeSelect.value = 'all';
@@ -302,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Attach Event Listeners ---
     searchInput.addEventListener('input', handleSearchInput);
-    
+
     const filterElements = [skinTypeSelect, periodSelect, factionSelect, tagSelect, exDialogueCheckbox];
     filterElements.forEach(el => el.addEventListener('change', () => {
         applyFilters();
@@ -316,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('popstate', applyFiltersFromURL);
-    
+
     clearAllBtn.addEventListener('click', resetFilters);
 
     document.addEventListener("click", (e) => {
