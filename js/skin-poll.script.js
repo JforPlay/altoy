@@ -70,6 +70,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   const leaderboardContent = document.getElementById('leaderboard-content');
   const resetFiltersBtn = document.getElementById('reset-filters-btn');
 
+  // Image popup elements
+  const imagePopup = document.getElementById('image-popup');
+  const popupFullImage = document.getElementById('popup-full-image');
+  const popupSkinName = document.getElementById('popup-skin-name');
+  const popupCharName = document.getElementById('popup-char-name');
+  const closeImagePopupBtn = document.querySelector('.close-image-popup-btn');
+
   // --- State Variables ---
   let allSkins = [];
   let allCharacterNames = [];
@@ -83,6 +90,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   let cachedLeaderboard = [];
   let userVotesCache = new Set();
 
+  // Image Popup Functions ---
+  const openImagePopup = (fullImageUrl, skinName, charName) => {
+    popupFullImage.src = fullImageUrl;
+    popupSkinName.textContent = skinName;
+    popupCharName.textContent = charName;
+    imagePopup.classList.add('visible');
+    document.body.classList.add('no-scroll');
+  };
+
+  const closeImagePopup = () => {
+    imagePopup.classList.remove('visible');
+    document.body.classList.remove('no-scroll');
+    // Clear image after animation
+    setTimeout(() => {
+      popupFullImage.src = '';
+    }, 300);
+  };
   // --- NEW: Cache Management Functions ---
 
   /**
@@ -251,26 +275,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   };
 
-  const setupDropdown = (inputEl, dropdownEl, getSourceArray, onSelectCallback) => { 
-    const handleFilter = () => { 
-      const sourceArray = getSourceArray(); 
-      const searchTerm = inputEl.value.toLowerCase(); 
-      
+  const setupDropdown = (inputEl, dropdownEl, getSourceArray, onSelectCallback) => {
+    const handleFilter = () => {
+      const sourceArray = getSourceArray();
+      const searchTerm = inputEl.value.toLowerCase();
+
       // REMOVED: Exact match check - now always filters
-      const filteredItems = sourceArray.filter(item => item.toLowerCase().includes(searchTerm)); 
-      populateDropdown(dropdownEl, filteredItems, onSelectCallback); 
-    }; 
-    
-    inputEl.addEventListener('keyup', debounce(handleFilter, 200)); 
-    inputEl.addEventListener('focus', () => { 
-      handleFilter(); 
-      dropdownEl.style.display = 'block'; 
-    }); 
-    inputEl.addEventListener('blur', () => { 
-      setTimeout(() => { 
-        dropdownEl.style.display = 'none'; 
-      }, 200); 
-    }); 
+      const filteredItems = sourceArray.filter(item => item.toLowerCase().includes(searchTerm));
+      populateDropdown(dropdownEl, filteredItems, onSelectCallback);
+    };
+
+    inputEl.addEventListener('keyup', debounce(handleFilter, 200));
+    inputEl.addEventListener('focus', () => {
+      handleFilter();
+      dropdownEl.style.display = 'block';
+    });
+    inputEl.addEventListener('blur', () => {
+      setTimeout(() => {
+        dropdownEl.style.display = 'none';
+      }, 200);
+    });
   };
 
   const handleCharacterSelect = (characterName) => {
@@ -588,8 +612,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       const hasVoted = hasVotedLocal || hasVotedFirestore;
       const votedRating = hasVoted ? localStorage.getItem(`rating_${clientId}`) : null;
 
+      // NEW: Add data attributes for full image
       pollBox.innerHTML = ` 
-        <img src="${skin["깔끔한 일러"]}" class="poll-image" loading="lazy"> 
+        <img src="${skin["깔끔한 일러"]}" 
+             class="poll-image" 
+             loading="lazy"
+             data-full-image="${skin["전체 일러"] || skin["깔끔한 일러"]}"
+             data-skin-name="${skin["한글 함순이 + 스킨 이름"]}"
+             data-char-name="${skin["함순이 이름"]}"
+             title="클릭하여 전체 일러스트 보기"> 
         <div class="poll-info"> 
           <div class="character-name">${skin["함순이 이름"]}</div> 
           <h3>${skin["한글 함순이 + 스킨 이름"]}</h3> 
@@ -879,7 +910,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   // --- Event Listeners ---
+
+
   pollContainer.addEventListener("click", (event) => {
+    const clickedImage = event.target.closest('.poll-image');
+    if (clickedImage) {
+      const fullImageUrl = clickedImage.dataset.fullImage;
+      const skinName = clickedImage.dataset.skinName;
+      const charName = clickedImage.dataset.charName;
+
+      if (fullImageUrl && fullImageUrl !== 'null' && fullImageUrl !== 'undefined') {
+        openImagePopup(fullImageUrl, skinName, charName);
+      }
+      return; // Don't process vote clicks
+    }
+
     const starLabel = event.target.closest('.star-rating label');
     if (!starLabel) return;
 
@@ -934,6 +979,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   window.addEventListener('popstate', applyFiltersFromURL);
 
+  // Close image popup handlers
+  closeImagePopupBtn.addEventListener('click', closeImagePopup);
+
+  imagePopup.addEventListener('click', (event) => {
+    if (event.target === imagePopup) {
+      closeImagePopup();
+    }
+  });
+
+  // Keyboard support for closing popup
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && imagePopup.classList.contains('visible')) {
+      closeImagePopup();
+    }
+  });
+
   // --- NEW: Info Pop-up Event Listeners ---
   const infoButton = document.getElementById('info-button');
   const infoPopup = document.getElementById('info-popup');
@@ -956,4 +1017,5 @@ document.addEventListener("DOMContentLoaded", async () => {
       closeInfoPopup();
     }
   });
+
 });

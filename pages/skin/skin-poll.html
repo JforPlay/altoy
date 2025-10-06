@@ -26,13 +26,27 @@
                         <!-- 많은 트래픽을 보면서 여러가지 문제/개선점들을 찾아서 서버를 일시적으로 닫았습니다<br>
                     <span class="warning-text">서버가 닫힌동안은 페이지 확인 및 투표/점수확인이 불가능합니다, 죄송합니다</span> -->
                         모든 함순이 스킨들의 선호도 평가를 할 수 있습니다.<br>
-                        투표가 완료된 스킨들은 별이 파란색으로 표시됩니다.<br>
+                        투표가 완료된 스킨들은 별이 파란색으로 표시됩니다.<br><br>
+                        
+                        스킨 그림을 누르면 전체 일러도 감상하실 수 있습니다.<br>
                         함순이 이름 드랍다운 윗칸에 일부를 적으면 드랍다운에 검색된 함순이들이 뜹니다.<br>
                         <span class="warning-text">주의) 한번 투표를 확정하면 재투표는 안되니 신중하게 눌러주세요.</span>
                     </p>
                 </div>
             </div>
         </header>
+
+        <!-- NEW: Image Popup -->
+        <div id="image-popup">
+            <div class="image-popup-content">
+                <button class="close-image-popup-btn">&times;</button>
+                <img id="popup-full-image" class="popup-image" src="" alt="전체일러">
+                <div class="popup-skin-info">
+                    <div class="popup-skin-name" id="popup-skin-name"></div>
+                    <div class="popup-char-name" id="popup-char-name"></div>
+                </div>
+            </div>
+        </div>
 
         <section class="leaderboard-section">
             <button id="leaderboard-toggle-btn" class="leaderboard-toggle">🏆 Top 10 스킨 보기</button>
