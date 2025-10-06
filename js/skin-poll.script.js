@@ -91,8 +91,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const popupCharName = document.getElementById('popup-char-name');
   const closeImagePopupBtn = document.querySelector('.close-image-popup-btn');
 
-  // Data age indicator
-  const dataAgeIndicator = document.getElementById('data-age-indicator');
+  // REMOVED: Unused dataAgeIndicator variable
+  // const dataAgeIndicator = document.getElementById('data-age-indicator');
 
   // --- State Variables ---
   let allSkins = [];
@@ -241,12 +241,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("🔄 Cache version updated. Clearing old data...");
 
     Object.keys(localStorage).forEach(key => {
-      if (key.includes('pollDataCache') || 
-          key.includes('leaderboardCache') || 
-          key.includes('userVotesCache') ||
-          key.includes('pollDataTimestamp') ||
-          key.startsWith("voted_") || 
-          key.startsWith("rating_")) {
+      if (key.includes('pollDataCache') ||
+        key.includes('leaderboardCache') ||
+        key.includes('userVotesCache') ||
+        key.includes('pollDataTimestamp') ||
+        key.startsWith("voted_") ||
+        key.startsWith("rating_")) {
         localStorage.removeItem(key);
       }
     });
@@ -255,25 +255,69 @@ document.addEventListener("DOMContentLoaded", async () => {
     showNotification("데이터가 업데이트되었습니다.", "info");
   }
 
-  // --- Data Age Indicator ---
-  const updateDataAgeIndicator = () => {
-    if (!dataAgeIndicator) return;
+  /**
+   * Connection status tracking
+   */
+  let connectionStatus = {
+    isConnected: true,
+    lastError: null,
+    errorCount: 0
+  };
 
+  /**
+   * Update data age indicator with connection status
+   */
+  const updateDataAgeIndicator = () => {
     const cacheTimestamp = localStorage.getItem(`${CACHE_VERSION}_pollDataTimestamp`);
+    const indicator = document.getElementById('data-age-indicator');
+
+    if (!indicator) return;
+
+    // Check connection status first
+    if (!connectionStatus.isConnected) {
+      indicator.innerHTML = `<i class="fas fa-exclamation-circle"></i> 서버 연결 실패`;
+      indicator.style.backgroundColor = 'rgba(231, 76, 60, 0.2)';
+      indicator.style.borderLeft = '3px solid #e74c3c';
+      return;
+    }
+
+    if (connectionStatus.lastError) {
+      if (connectionStatus.lastError.code === 'resource-exhausted') {
+        indicator.innerHTML = `<i class="fas fa-ban"></i> 일일 한도 초과 (내일 재시도)`;
+        indicator.style.backgroundColor = 'rgba(231, 76, 60, 0.2)';
+        indicator.style.borderLeft = '3px solid #e74c3c';
+      } else if (connectionStatus.lastError.code === 'permission-denied') {
+        indicator.innerHTML = `<i class="fas fa-lock"></i> 권한 오류`;
+        indicator.style.backgroundColor = 'rgba(231, 76, 60, 0.2)';
+        indicator.style.borderLeft = '3px solid #e74c3c';
+      } else {
+        indicator.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 연결 불안정`;
+        indicator.style.backgroundColor = 'rgba(243, 156, 18, 0.2)';
+        indicator.style.borderLeft = '3px solid #f39c12';
+      }
+      return;
+    }
+
     if (!cacheTimestamp) {
-      dataAgeIndicator.innerHTML = `<i class="fas fa-circle" style="color: #27ae60;"></i> 실시간 동기화 중`;
+      indicator.innerHTML = `<i class="fas fa-spinner fa-spin"></i> 데이터 로딩 중...`;
+      indicator.style.backgroundColor = 'rgba(52, 152, 219, 0.2)';
+      indicator.style.borderLeft = '3px solid #3498db';
       return;
     }
 
     const cacheAge = Date.now() - parseInt(cacheTimestamp);
     const ageMinutes = Math.floor(cacheAge / 60000);
 
+    // Reset styles for normal operation
+    indicator.style.backgroundColor = 'rgba(47, 49, 54, 0.5)';
+    indicator.style.borderLeft = 'none';
+
     if (ageMinutes < 2) {
-      dataAgeIndicator.innerHTML = `<i class="fas fa-circle" style="color: #27ae60;"></i> 실시간 동기화 중`;
+      indicator.innerHTML = `<i class="fas fa-circle" style="color: #27ae60;"></i> 실시간 동기화 중`;
     } else if (ageMinutes < 30) {
-      dataAgeIndicator.innerHTML = `<i class="fas fa-clock" style="color: #f39c12;"></i> 데이터: ${ageMinutes}분 전`;
+      indicator.innerHTML = `<i class="fas fa-clock" style="color: #f39c12;"></i> 데이터: ${ageMinutes}분 전`;
     } else {
-      dataAgeIndicator.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: #e74c3c;"></i> 데이터: ${ageMinutes}분 전`;
+      indicator.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: #e74c3c;"></i> 데이터: ${ageMinutes}분 전`;
     }
   };
 
@@ -303,6 +347,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
+  /**
+   * Smart real-time sync with error detection
+   */
   const setupSmartVoteSync = () => {
     let isTabActive = !document.hidden;
     let realtimeUnsubscribe = null;
@@ -311,11 +358,45 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (realtimeUnsubscribe) return;
 
       console.log("🔴 Starting real-time sync...");
+
       realtimeUnsubscribe = db.collection("skin_polls").onSnapshot(
-        handleRealtimeUpdate,
+        // Success callback
+        (snapshot) => {
+          connectionStatus.isConnected = true;
+          connectionStatus.lastError = null;
+          connectionStatus.errorCount = 0;
+
+          handleRealtimeUpdate(snapshot);
+          updateDataAgeIndicator();
+        },
+        // Error callback
         (error) => {
           console.error("❌ Real-time listener error:", error);
-          showNotification("실시간 동기화 오류. 페이지를 새로고침하세요.", "error");
+
+          connectionStatus.isConnected = false;
+          connectionStatus.lastError = error;
+          connectionStatus.errorCount++;
+
+          updateDataAgeIndicator();
+
+          if (error.code === 'resource-exhausted') {
+            showNotification("⚠️ Firestore 일일 한도 초과. 내일 다시 시도하세요.", "error");
+          } else if (error.code === 'permission-denied') {
+            showNotification("🔒 권한 오류. 페이지를 새로고침하세요.", "error");
+          } else if (error.code === 'unavailable') {
+            showNotification("📡 서버 연결 불안정. 잠시 후 재시도합니다.", "error");
+          } else {
+            showNotification(`실시간 동기화 오류: ${error.message}`, "error");
+          }
+
+          const retryDelay = Math.min(5000 * Math.pow(2, connectionStatus.errorCount - 1), 60000);
+          console.log(`🔄 Retrying in ${retryDelay / 1000}s...`);
+
+          setTimeout(() => {
+            if (isTabActive && !realtimeUnsubscribe) {
+              startRealtimeSync();
+            }
+          }, retryDelay);
         }
       );
     };
@@ -365,7 +446,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         clearInterval(refreshCooldownTimer);
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-sync-alt"></i>새로고침';
+        btn.innerHTML = '<i class="fas fa-sync-alt"></i>'; // FIXED: Removed "새로고침" text
       }
     };
 
@@ -376,6 +457,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 1000);
   };
 
+  /**
+   * Refresh with error detection
+   */
   const refreshVoteData = async () => {
     const now = Date.now();
     const timeSinceLastRefresh = now - lastRefreshTime;
@@ -390,7 +474,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (btn) {
       btn.classList.add('loading');
       btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-sync-alt"></i> 업데이트 중...';
+      btn.innerHTML = '<i class="fas fa-sync-alt"></i>';
     }
 
     showNotification("투표 데이터 업데이트 중...", "info");
@@ -399,6 +483,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       lastRefreshTime = now;
 
       await fetchAllPollData();
+
+      connectionStatus.isConnected = true;
+      connectionStatus.lastError = null;
+      connectionStatus.errorCount = 0;
+
       applyFilters();
 
       const newLeaderboard = recalculateLeaderboard();
@@ -414,13 +503,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     } catch (error) {
       console.error("Error refreshing data:", error);
-      showNotification("데이터 새로고침 실패", "error");
+
+      connectionStatus.isConnected = false;
+      connectionStatus.lastError = error;
+      connectionStatus.errorCount++;
+
+      updateDataAgeIndicator();
+
+      if (error.code === 'resource-exhausted') {
+        showNotification("⚠️ Firestore 일일 한도 초과. 내일 다시 시도하세요.", "error");
+      } else if (error.code === 'permission-denied') {
+        showNotification("🔒 권한 오류가 발생했습니다.", "error");
+      } else if (error.code === 'unavailable') {
+        showNotification("📡 서버에 연결할 수 없습니다.", "error");
+      } else {
+        showNotification(`데이터 새로고침 실패: ${error.message}`, "error");
+      }
 
       lastRefreshTime = 0;
+
       if (btn) {
         btn.classList.remove('loading');
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-sync-alt"></i> 새로고침';
+        btn.innerHTML = '<i class="fas fa-sync-alt"></i>';
       }
     }
   };
@@ -531,6 +636,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       saveUserVotesToCache(votedClientIds);
     } catch (error) {
       console.error("Error fetching user votes:", error);
+      // ADDED: Update connection status on error
+      if (error.code) {
+        connectionStatus.lastError = error;
+        updateDataAgeIndicator();
+      }
     }
 
     return votedClientIds;
@@ -553,6 +663,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       return { leaderboard: [], totalVotes: 0 };
     } catch (error) {
       console.error("Error fetching leaderboard:", error);
+      // ADDED: Update connection status on error
+      if (error.code) {
+        connectionStatus.lastError = error;
+        updateDataAgeIndicator();
+      }
       return { leaderboard: [], totalVotes: 0 };
     }
   };
@@ -579,6 +694,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       savePollDataToCache(allPollData);
     } catch (error) {
       console.error("Error fetching poll data:", error);
+      // ADDED: Throw error to be caught by refresh function
+      throw error;
     }
 
     return allPollData;
@@ -597,6 +714,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       saveLeaderboardToCache(newLeaderboard, newTotalVotes);
     } catch (error) {
       console.error("Error updating leaderboard:", error);
+      // ADDED: Update connection status on error
+      if (error.code) {
+        connectionStatus.lastError = error;
+        updateDataAgeIndicator();
+      }
     }
   };
 
@@ -666,26 +788,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       setupDropdown(characterNameSearch, characterDropdownContent, () => allCharacterNames, handleCharacterSelect);
       displaySkeletonLoader();
 
-      // Load from cache first
       const cached = loadPollDataFromCache();
       if (cached.data && Object.keys(cached.data).length > 0) {
         console.log("✅ Loaded cached poll data");
         allPollDataCache = cached.data;
       } else {
         console.log("📥 No cache found, fetching initial data...");
-        await fetchAllPollData().then(data => {
-          allPollDataCache = data;
-        });
+        // ADDED: Try-catch for initial fetch
+        try {
+          allPollDataCache = await fetchAllPollData();
+        } catch (error) {
+          console.error("Failed to fetch initial data:", error);
+          showNotification("초기 데이터 로드 실패. 새로고침 버튼을 눌러주세요.", "error");
+        }
       }
 
-      // Start smart real-time sync
       setupSmartVoteSync();
 
-      // Update data age indicator
       updateDataAgeIndicator();
       setInterval(updateDataAgeIndicator, 60000);
 
-      // Fetch additional data
       const [leaderboardData, userVotes] = await Promise.all([
         fetchLeaderboardAndStats(),
         fetchUserVotes(currentUserId)
@@ -942,6 +1064,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         console.error("❌ Transaction failed:", error);
         showNotification("투표를 저장하는 데 실패했습니다. 다시 시도해 주세요.", "error");
+        
+        // ADDED: Update connection status
+        if (error.code) {
+          connectionStatus.lastError = error;
+          updateDataAgeIndicator();
+        }
       }
 
       clearPendingVote();
@@ -1118,13 +1246,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Refresh button
   const refreshDataBtn = document.getElementById('refresh-data-btn');
   if (refreshDataBtn) {
     refreshDataBtn.addEventListener('click', refreshVoteData);
   }
 
-  // Leaderboard toggle
   leaderboardToggleBtn.addEventListener('click', () => {
     leaderboardContent.classList.toggle('visible');
     leaderboardToggleBtn.textContent = leaderboardContent.classList.contains('visible') ? '🔼 리더보드 숨기기' : '🏆 Top 10 스킨 보기';
@@ -1149,7 +1275,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   window.addEventListener('popstate', applyFiltersFromURL);
 
-  // Image popup handlers
   closeImagePopupBtn.addEventListener('click', closeImagePopup);
 
   imagePopup.addEventListener('click', (event) => {
@@ -1164,7 +1289,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Info popup handlers
   const infoButton = document.getElementById('info-button');
   const infoPopup = document.getElementById('info-popup');
 

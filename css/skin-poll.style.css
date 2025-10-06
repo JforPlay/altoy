@@ -60,18 +60,29 @@ body.no-scroll {
 /* --- Data Age Indicator --- */
 .data-age-indicator {
   font-size: 0.9em;
-  margin: 0; /* Remove margins */
+  margin: 0;
   padding: 8px 16px;
   background-color: rgba(47, 49, 54, 0.5);
   border-radius: 5px;
   display: inline-flex;
   align-items: center;
-  height: 36px; /* Match button height */
+  height: 36px;
   box-sizing: border-box;
+  transition: all 0.3s ease; /* Smooth transition for error states */
 }
 
 .data-age-indicator i {
   margin-right: 8px;
+}
+
+/* Error state animation */
+@keyframes pulse-error {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.data-age-indicator[style*="rgb(231, 76, 60)"] {
+  animation: pulse-error 2s ease-in-out infinite;
 }
 
 /* --- Compact refresh button next to indicator --- */
