@@ -1,9 +1,12 @@
 /* General Navbar Styling */
+.theme-icon-hidden {
+    display: none;
+}
+
 .navbar {
-  /* UPDATED: Make the navbar sticky */
   position: sticky;
   top: 0;
-  z-index: 1000; /* A high number to keep it on top */
+  z-index: 1000;
   background-color: #333;
   padding: 1rem;
   font-family: sans-serif;
@@ -16,6 +19,7 @@
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
+  gap: 1rem;
 }
 
 .nav-logo {
@@ -26,6 +30,7 @@
   align-items: center;
   gap: 0.75em; /* Space between portrait and icon */
   transition: transform 0.2s ease-in-out;
+  order: 1; /* Home button first */
 }
 
 /* ADD THIS RULE for the hover effect */
@@ -50,6 +55,8 @@
   display: flex;
   margin: 0;
   padding: 0;
+  order: 3; /* Menu items third */
+  margin-left: auto; /* Push menu items to the right */
 }
 
 .nav-item {
@@ -85,6 +92,13 @@
   border-radius: 5px;
   min-width: 200px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Prevent dropdown overflow on right side */
+.nav-item:last-of-type .dropdown-menu,
+.nav-item:nth-last-of-type(2) .dropdown-menu {
+  left: auto;
+  right: 0;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -139,50 +153,87 @@
   display: none; /* Hidden by default on desktop */
   cursor: pointer;
   color: #fff; /* Or var(--text-color) if you want it to change with theme */
+  order: 4; /* Menu icon last */
 }
 
 /* --- Responsive Styles for Mobile --- */
 @media screen and (max-width: 768px) {
+  .navbar {
+    padding: 0.75rem 1rem; /* Reduce vertical padding */
+  }
+
   .nav-container {
-    /* Allow items to wrap and position the icon */
     flex-wrap: wrap;
+    gap: 0.5rem; /* Reduce gap to minimize height */
+  }
+
+  .nav-logo {
+    order: 1;
+    font-size: 1.25rem; /* Slightly smaller on mobile */
+  }
+
+  .nav-portrait {
+    width: 28px; /* Smaller portrait on mobile */
+    height: 28px;
+  }
+
+  .nav-logo .material-symbols-outlined {
+    font-size: 1.5rem; /* Smaller icon on mobile */
+  }
+
+  .theme-toggle {
+    order: 2;
+    padding: 0.35rem; /* Reduce padding to decrease height */
+    min-width: 36px;
+    min-height: 36px;
+  }
+  
+  .theme-icon-sun,
+  .theme-icon-moon {
+    font-size: 1.2rem; /* Smaller icons */
   }
 
   .menu-icon {
-    display: block; /* Show the icon on mobile */
+    display: block;
+    order: 3;
+    margin-left: auto;
+    font-size: 1.25rem; /* Ensure consistent size */
+    padding: 0.35rem; /* Add padding to match theme toggle */
   }
 
   .nav-menu {
-    /* Instead of display: none */
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s ease-in-out;
-
     width: 100%;
     flex-direction: column;
     text-align: center;
+    order: 4;
+    margin-left: 0;
   }
 
   .nav-menu.active {
-    /* Instead of display: flex */
-    max-height: 500px; /* A height larger than the menu will ever be */
+    max-height: 500px;
   }
 
   .nav-item {
-    margin: 1rem 0;
-    width: 100%;
+    margin: 0.5rem 0;
   }
 
-  .nav-item.dropdown.active .dropdown-menu {
-    display: block; /* Shows the dropdown when its parent has the 'active' class */
+  .nav-links {
+    display: block;
+    padding: 0.75rem;
   }
 
   .dropdown-menu {
-    position: static; /* Make dropdowns appear inline */
-    display: none; /* Keep them hidden until clicked */
-    background-color: #444; /* Slightly different color for sub-menu */
-    box-shadow: none;
+    position: static;
     width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .dropdown-menu li a {
+    padding: 0.75rem;
   }
 }
 
@@ -204,4 +255,54 @@
 /* Change triangle color for the light theme */
 .navbar.navbar-light .nav-item.dropdown > .nav-links::after {
     border-top-color: #333; /* Dark color for light background */
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-toggle {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: #fff;
+  min-width: 40px;
+  min-height: 40px;
+  order: 2; /* Theme toggle second */
+}
+
+/* Light mode toggle styles */
+.navbar.navbar-light .theme-toggle {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #1a1a1a;
+}
+
+.navbar.navbar-light .theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Fix icon visibility */
+body:not(.dark-mode) .theme-icon-sun {
+  display: block;
+}
+
+body:not(.dark-mode) .theme-icon-moon {
+  display: none;
+}
+
+body.dark-mode .theme-icon-sun {
+  display: none;
+}
+
+body.dark-mode .theme-icon-moon {
+  display: block;
 }

@@ -75,17 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Sets up the theme switcher logic.
-     */
-    function setupThemeSwitcher() {
-        const themeToggle = document.getElementById('theme-toggle');
-        
-        themeToggle.addEventListener('change', () => {
-            contentContainer.classList.toggle('dark-mode', themeToggle.checked);
-        });
-    }
-
-    /**
      * ✨ Sets up the font size control logic.
      */
     function setupFontControls() {
@@ -130,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(data => {
             initialize(data);
-            setupThemeSwitcher();
             setupFontControls(); // Initialize the new font controls
         })
         .catch(error => {

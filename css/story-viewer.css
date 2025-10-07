@@ -1,6 +1,5 @@
 /* --- Story Viewer Common Styles --- */
 /* --- Imports & Root Variables --- */
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 :root {
   /* Light Mode (Default) */
@@ -49,6 +48,37 @@ body {
   display: none !important;
 }
 
+/* --- Theme Toggle Styles --- */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.theme-toggle:hover {
+  background-color: var(--border-color);
+}
+
+.theme-icon-sun,
+.theme-icon-moon {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  transition: opacity 0.3s;
+}
+
+.theme-icon-sun.hidden,
+.theme-icon-moon.hidden {
+  display: none;
+}
+
+/* --- Error & Popup Notifications --- */
 .error-container {
   position: fixed;
   top: 70px;
@@ -62,7 +92,6 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* --- Soft Popup Notification --- */
 .soft-popup {
   position: fixed;
   bottom: 2rem;
@@ -366,7 +395,6 @@ body.dark-mode .story-header {
   align-items: center;
   width: 100%;
   padding: 0 1.5rem;
-  /* margin-top: auto; */
   margin-bottom: 1rem;
 }
 
@@ -377,7 +405,8 @@ body.dark-mode .story-header {
   grid-column: 2 / 3;
 }
 
-.nav-button, .story-nav-btn {
+.nav-button,
+.story-nav-btn {
   background: none;
   border: 1px solid transparent;
   color: var(--text-color);
@@ -395,7 +424,8 @@ body.dark-mode .story-header {
   border: 1px solid var(--border-color);
 }
 
-.nav-button:hover, .story-nav-btn:hover {
+.nav-button:hover,
+.story-nav-btn:hover {
   background-color: var(--border-color);
 }
 
@@ -405,30 +435,22 @@ body.dark-mode .story-header {
   cursor: not-allowed;
 }
 
-.theme-toggle {
-  font-size: 1.5rem;
-  line-height: 1;
-  border: none;
-}
-
-/* Add this new class for the BGM name */
 .bgm-name {
   font-size: 0.9rem;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 50px; /* Give it some base width */
-  flex-grow: 1;   /* Allow it to take up available space */
+  min-width: 50px;
+  flex-grow: 1;
   text-align: center;
   margin: 0 0.5rem;
 }
 
-/* Add this missing style for the volume control container */
 .volume-control {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; /* Adds a little space between mute button and slider */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .audio-player-container {
@@ -443,8 +465,8 @@ body.dark-mode .story-header {
   z-index: 20;
   grid-column: 1 / 2;
   justify-self: start;
-  min-width: 180px; /* Prevents the container from being squished */
-  flex-wrap: nowrap;  /* Keeps all controls on a single line */
+  min-width: 180px;
+  flex-wrap: nowrap;
 }
 
 .audio-btn {
@@ -472,7 +494,6 @@ body.dark-mode .story-header {
   border-radius: 5px;
 }
 
-/* --- ADD/REPLACE with these cross-browser slider styles --- */
 #volume-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -564,7 +585,8 @@ body.dark-mode .story-header {
   color: var(--subtitle-color);
 }
 
-.full-script-content, #summary-modal-content {
+.full-script-content,
+#summary-modal-content {
   overflow-y: auto;
   padding-right: 1rem;
 }
@@ -573,12 +595,14 @@ body.dark-mode .story-header {
   margin-bottom: 1rem;
 }
 
-.full-script-content strong, #summary-modal-content strong {
+.full-script-content strong,
+#summary-modal-content strong {
   color: var(--accent-color);
   margin-right: 0.5em;
 }
 
-#summary-modal-content h2, #summary-modal-content h3 {
+#summary-modal-content h2,
+#summary-modal-content h3 {
   color: var(--accent-color);
   margin-bottom: 1rem;
 }
@@ -623,20 +647,42 @@ body.dark-mode .story-header {
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
 }
 
 @keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 
 @keyframes flash-anim {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 /* --- Responsive Media Queries --- */
@@ -647,7 +693,7 @@ body.dark-mode .story-header {
     padding: 0.75rem 1rem;
     gap: 0.75rem;
   }
-  
+
   .header-title {
     width: 100%;
     text-align: center;
@@ -655,25 +701,52 @@ body.dark-mode .story-header {
     order: 1;
     margin: 0 0 0.5rem 0;
   }
-  
-  .viewer-header .nav-button { order: 2; }
-  .search-container { order: 3; flex-grow: 1; min-width: 120px; margin: 0; }
-  .viewer-header .theme-toggle { order: 4; }
 
-  .story-header { padding: 0.5rem 0.75rem; }
-  #story-title { font-size: 1.1rem; margin-left: 0.5rem; }
-  
+  .viewer-header .nav-button {
+    order: 2;
+  }
+
+  .search-container {
+    order: 3;
+    flex-grow: 1;
+    min-width: 120px;
+    margin: 0;
+  }
+
+  .story-header {
+    padding: 0.5rem 0.75rem;
+  }
+
+  #story-title {
+    font-size: 1.1rem;
+    margin-left: 0.5rem;
+  }
+
   #view-script-btn {
-    font-size: 0; /* Hides the text node */
+    font-size: 0;
     padding: 0.5rem;
     gap: 0;
   }
-  #view-script-btn .material-icons { font-size: 1.5rem; }
-  
-  .dialogue-box { width: 95%; padding: 1rem; }
-  .actor-portrait { width: 80px; height: 80px; margin-right: 1rem; }
-  .dialogue-text { font-size: 1rem; }
-  
+
+  #view-script-btn .material-icons {
+    font-size: 1.5rem;
+  }
+
+  .dialogue-box {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .actor-portrait {
+    width: 80px;
+    height: 80px;
+    margin-right: 1rem;
+  }
+
+  .dialogue-text {
+    font-size: 1rem;
+  }
+
   .bottom-bar-container {
     display: flex;
     flex-direction: column;

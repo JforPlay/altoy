@@ -10,7 +10,7 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Noto+Sans+KR:wght@300;400;700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="css/story-viewer.style.css">
+    <link rel="stylesheet" href="css/story-viewer.css">
     <link rel="stylesheet" href="css/nav.style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
@@ -27,10 +27,6 @@
             <div class="search-container">
                 <input type="text" id="search-bar" placeholder="이벤트 이름으로 검색...">
             </div>
-            <button class="nav-button theme-toggle">
-                <span class="theme-icon-sun hidden">☀️</span>
-                <span class="theme-icon-moon">🌙</span>
-            </button>
         </header>
         <main id="event-grid" class="story-grid-container"></main>
     </div>
@@ -103,8 +99,8 @@
     </div>
 
     <!-- The new common script MUST be included BEFORE the page-specific script -->
-    <script src="js/story-viewer-common.js" defer></script>
-    <script src="js/main-story-viewer.script.js" defer></script>
+    <script src="js/engine.story-viewer.js" defer></script>
+    <script src="js/main-story-viewer.js" defer></script>
     <script src="js/nav.script.js"></script>
 </body>
 

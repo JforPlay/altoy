@@ -1,13 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const iconFontId = 'google-material-icons';
-    if (!document.getElementById(iconFontId)) {
-        const link = document.createElement('link');
-        link.id = iconFontId;
-        link.rel = 'stylesheet';
-        link.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined';
-        document.head.appendChild(link);
-    }
-
     // Apply the theme as soon as the DOM is loaded
     applyTheme(localStorage.getItem('theme') || 'dark');
 
@@ -34,10 +25,10 @@ function applyTheme(theme) {
         const moonIcon = toggle.querySelector('.theme-icon-moon');
 
         // Show the sun icon when in dark mode, hide it in light mode.
-        if (sunIcon) sunIcon.classList.toggle('hidden', theme !== 'dark');
+        if (sunIcon) sunIcon.classList.toggle('theme-icon-hidden', theme !== 'dark');
 
         // Show the moon icon when in light mode, hide it in dark mode.
-        if (moonIcon) moonIcon.classList.toggle('hidden', theme === 'dark');
+        if (moonIcon) moonIcon.classList.toggle('theme-icon-hidden', theme === 'dark');
     });
 }
 

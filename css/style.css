@@ -1,59 +1,142 @@
-/* --- Color Variables --- */
+/* =====================================================
+   CSS VARIABLES & THEME CONFIGURATION
+   ===================================================== */
+
 :root {
+  /* Color Palette */
   --primary: #0071eb;
   --primary-dark: #0056b3;
   --primary-light: #4da3ff;
   --accent: #00a8e1;
-  --bg-black: #141414;
-  --bg-dark: #0a0a0a;
-  --text-white: #ffffff;
-  --text-gray: #808080;
+  
+  /* Layout */
   --container-max-width: 1200px;
 }
 
-/* --- Navbar Overrides (Index Page Specific) --- */
+/* Dark Theme (Default) */
+body,
+body.dark-mode {
+  --bg-gradient-start: #000000;
+  --bg-gradient-mid: #141414;
+  --bg-gradient-end: #0a0a0a;
+  --text-primary: #ffffff;
+  --text-secondary: #808080;
+  --card-bg: rgba(255, 255, 255, 0.02);
+  --card-bg-hover: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(255, 255, 255, 0.05);
+  --card-border-hover: rgba(0, 113, 235, 0.3);
+  --navbar-bg: rgba(0, 0, 0, 0.75);
+  --navbar-bg-scrolled: rgba(0, 0, 0, 0.95);
+  --navbar-border: rgba(0, 113, 235, 0.15);
+  --dropdown-bg: rgba(10, 10, 10, 0.98);
+  --dropdown-border: rgba(0, 113, 235, 0.25);
+  --link-bg: rgba(255, 255, 255, 0.03);
+  --link-border: rgba(255, 255, 255, 0.06);
+  --link-bg-hover: rgba(0, 113, 235, 0.12);
+  --link-border-hover: rgba(0, 113, 235, 0.3);
+  --external-badge-bg: rgba(0, 113, 235, 0.2);
+  --external-badge-border: rgba(0, 113, 235, 0.4);
+  --dual-link-bg: rgba(255, 255, 255, 0.04);
+  --dual-link-border: rgba(255, 255, 255, 0.1);
+  --dual-link-bg-hover: rgba(0, 113, 235, 0.15);
+  --dual-link-border-hover: rgba(0, 113, 235, 0.4);
+  --footer-bg: rgba(255, 255, 255, 0.02);
+  --footer-border: rgba(255, 255, 255, 0.05);
+  --footer-text: rgba(255, 255, 255, 0.6);
+}
+
+/* Light Theme */
+body:not(.dark-mode) {
+  --bg-gradient-start: #ffffff;
+  --bg-gradient-mid: #f5f5f5;
+  --bg-gradient-end: #e8e8e8;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --card-bg: rgba(255, 255, 255, 0.6);
+  --card-bg-hover: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(0, 0, 0, 0.15);
+  --card-border-hover: rgba(0, 113, 235, 0.4);
+  --navbar-bg: rgba(255, 255, 255, 0.95);
+  --navbar-bg-scrolled: rgba(255, 255, 255, 0.98);
+  --navbar-border: rgba(0, 0, 0, 0.1);
+  --dropdown-bg: rgba(255, 255, 255, 0.98);
+  --dropdown-border: rgba(0, 0, 0, 0.15);
+  --link-bg: rgba(0, 0, 0, 0.05);
+  --link-border: rgba(0, 0, 0, 0.1);
+  --link-bg-hover: rgba(0, 113, 235, 0.1);
+  --link-border-hover: rgba(0, 113, 235, 0.3);
+  --external-badge-bg: rgba(0, 113, 235, 0.15);
+  --external-badge-border: rgba(0, 113, 235, 0.35);
+  --dual-link-bg: rgba(0, 0, 0, 0.04);
+  --dual-link-border: rgba(0, 0, 0, 0.12);
+  --dual-link-bg-hover: rgba(0, 113, 235, 0.12);
+  --dual-link-border-hover: rgba(0, 113, 235, 0.35);
+  --footer-bg: rgba(0, 0, 0, 0.02);
+  --footer-border: rgba(0, 0, 0, 0.05);
+  --footer-text: rgba(0, 0, 0, 0.6);
+}
+
+/* =====================================================
+   GLOBAL STYLES
+   ===================================================== */
+
 body {
-  background: linear-gradient(180deg, #000000 0%, #141414 50%, #0a0a0a 100%);
+  background: linear-gradient(180deg, 
+    var(--bg-gradient-start) 0%, 
+    var(--bg-gradient-mid) 50%, 
+    var(--bg-gradient-end) 100%
+  );
   background-attachment: fixed;
-  color: var(--text-white);
+  color: var(--text-primary);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  padding-top: 1.5rem; /* Space for floating navbar */
+  padding-top: 1.5rem;
 }
+
+/* =====================================================
+   LAYOUT CONTAINERS
+   ===================================================== */
+
+.home-container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 2rem 3rem;
+  padding-top: 120px;
+}
+
+/* =====================================================
+   NAVBAR STYLES
+   ===================================================== */
 
 .navbar {
   position: fixed !important;
   top: 1.5rem !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
-
   width: calc(100% - 4rem) !important;
-  max-width: 1200px !important;
+  max-width: var(--container-max-width) !important;
   padding-left: 2rem !important;
   padding-right: 2rem !important;
   box-sizing: border-box !important;
-
-  background: rgba(0, 0, 0, 0.75) !important;
+  background: var(--navbar-bg) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-
   border-radius: 8px !important;
-  border: 1px solid rgba(0, 113, 235, 0.15) !important;
-
+  border: 1px solid var(--navbar-border) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6),
     0 0 0 1px rgba(255, 255, 255, 0.05) inset !important;
-
   z-index: 1000 !important;
   transition: all 0.3s ease !important;
 }
 
 .navbar.scrolled {
   top: 0.5rem !important;
-  background: rgba(0, 0, 0, 0.95) !important;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 60px rgba(0, 113, 235, 0.1) !important;
+  background: var(--navbar-bg-scrolled) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 
+    0 0 60px rgba(0, 113, 235, 0.1) !important;
 }
 
 .navbar::after {
@@ -63,8 +146,7 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(
-    90deg,
+  background: linear-gradient(90deg,
     transparent,
     rgba(0, 113, 235, 0.5) 50%,
     transparent
@@ -77,6 +159,24 @@ body {
   opacity: 1;
 }
 
+/* Light Mode Navbar Adjustments */
+body:not(.dark-mode) .navbar {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+body:not(.dark-mode) .navbar.scrolled {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+body:not(.dark-mode) .navbar::after {
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(0, 113, 235, 0.2) 50%,
+    transparent
+  );
+}
+
+/* Navbar Logo */
 .nav-logo {
   transition: all 0.3s ease !important;
 }
@@ -103,16 +203,18 @@ body {
   transform: scale(1.15) !important;
 }
 
+/* Navbar Links */
 .nav-menu li a {
-  background: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  background: var(--link-bg) !important;
+  border: 1px solid var(--link-border) !important;
   border-radius: 6px !important;
+  color: var(--text-primary) !important;
   transition: all 0.3s ease !important;
 }
 
 .nav-menu li a:hover {
-  background: rgba(0, 113, 235, 0.12) !important;
-  border-color: rgba(0, 113, 235, 0.3) !important;
+  background: var(--link-bg-hover) !important;
+  border-color: var(--link-border-hover) !important;
   transform: translateY(-2px);
 }
 
@@ -122,13 +224,20 @@ body {
   box-shadow: 0 0 16px rgba(0, 113, 235, 0.25);
 }
 
-.dropdown,
-.nav-item.dropdown {
-  position: relative;
+/* Light Mode Link Adjustments */
+body:not(.dark-mode) .nav-menu li a:hover {
+  color: var(--primary) !important;
 }
 
-.dropdown > a,
-.nav-item.dropdown > .nav-links {
+body:not(.dark-mode) .nav-menu li a.active {
+  background: rgba(0, 113, 235, 0.15) !important;
+  border-color: rgba(0, 113, 235, 0.4) !important;
+  color: var(--primary) !important;
+}
+
+/* Dropdown Menus */
+.dropdown,
+.nav-item.dropdown {
   position: relative;
 }
 
@@ -139,32 +248,25 @@ body {
   left: 0 !important;
   min-width: 200px !important;
   margin-top: 0 !important;
-  padding-top: 0.5rem !important;
-
+  padding: 0.5rem !important;
   background: rgba(10, 10, 10, 0.98) !important;
   backdrop-filter: blur(24px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-
-  border: 1px solid rgba(0, 113, 235, 0.25) !important;
+  border: 1px solid var(--dropdown-border) !important;
   border-radius: 8px !important;
-
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8),
     0 0 0 1px rgba(255, 255, 255, 0.05) inset,
     0 4px 24px rgba(0, 113, 235, 0.15) !important;
-
-  padding: 0.5rem !important;
-
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
   transform: translateY(-10px) !important;
-
   transition: opacity 0.25s ease, transform 0.25s ease,
     visibility 0s linear 0.25s !important;
-
   z-index: 1001 !important;
 }
 
+/* Show dropdown on hover (desktop) */
 .dropdown:hover .dropdown-menu,
 .dropdown:hover .dropdown-content,
 .nav-item.dropdown:hover .dropdown-menu,
@@ -176,36 +278,20 @@ body {
   transition: opacity 0.25s ease, transform 0.25s ease !important;
 }
 
-.dropdown-menu:hover,
-.dropdown-content:hover {
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-}
-
-.dropdown > a:hover + .dropdown-menu,
-.dropdown > a:hover + .dropdown-content,
-.nav-item.dropdown > .nav-links:hover + .dropdown-menu,
-.nav-item.dropdown > .nav-links:hover + .dropdown-content {
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  transform: translateY(0) !important;
-}
-
-.dropdown-menu.active,
-.dropdown-content.active {
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  transform: translateY(0) !important;
+/* Right-aligned dropdown for last nav items */
+.nav-menu > li:last-child .dropdown-menu,
+.nav-menu > li:last-child .dropdown-content,
+.dropdown.align-right .dropdown-menu,
+.dropdown.align-right .dropdown-content {
+  left: auto !important;
+  right: 0 !important;
 }
 
 .dropdown-menu a,
 .dropdown-content a {
   display: block !important;
-  padding: 0.75rem 1rem !important;
-  color: rgba(255, 255, 255, 0.9) !important;
+  padding: 0.75rem 1.5rem !important;
+  color: rgba(255, 255, 255, 0.95) !important;
   text-decoration: none !important;
   border-radius: 6px !important;
   transition: all 0.2s ease !important;
@@ -218,20 +304,33 @@ body {
 .dropdown-menu a:hover,
 .dropdown-content a:hover {
   background: rgba(0, 113, 235, 0.2) !important;
-  color: var(--text-white) !important;
+  color: #ffffff !important;
   transform: translateX(4px) !important;
   border-left-color: var(--primary) !important;
-  padding-left: 1.25rem !important;
+  padding-left: 1.75rem !important;
 }
 
-.home-container {
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding: 0 2rem 3rem;
-  padding-top: 120px;
+/* Light Mode Dropdown Adjustments */
+body:not(.dark-mode) .dropdown-menu,
+body:not(.dark-mode) .dropdown-content {
+  background: rgba(255, 255, 255, 0.98) !important;
 }
 
-/* --- Hero Carousel --- */
+body:not(.dark-mode) .dropdown-menu a,
+body:not(.dark-mode) .dropdown-content a {
+  color: var(--text-primary) !important;
+}
+
+body:not(.dark-mode) .dropdown-menu a:hover,
+body:not(.dark-mode) .dropdown-content a:hover {
+  background: rgba(0, 113, 235, 0.15) !important;
+  color: var(--primary) !important;
+}
+
+/* =====================================================
+   HERO CAROUSEL
+   ===================================================== */
+
 .hero-carousel {
   position: relative;
   width: 100%;
@@ -301,7 +400,7 @@ body {
   padding-right: calc(1.5rem + 48px + 1rem);
   max-width: 550px;
   z-index: 5;
-  color: var(--text-white);
+  color: #ffffff;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
   opacity: 0;
   transition: opacity 0.6s ease 0.3s;
@@ -353,7 +452,7 @@ body {
   align-items: center;
   gap: 0.6rem;
   background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: var(--text-white);
+  color: #ffffff;
   padding: 0.8rem 1.6rem;
   border-radius: 8px;
   text-decoration: none;
@@ -378,7 +477,7 @@ body {
   transform: translateX(4px);
 }
 
-/* Carousel Navigation Buttons */
+/* Carousel Navigation */
 .carousel-nav {
   position: absolute;
   top: 50%;
@@ -386,7 +485,7 @@ body {
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--text-white);
+  color: #ffffff;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -452,7 +551,10 @@ body {
   background: rgba(255, 255, 255, 0.7);
 }
 
-/* --- Bento Grid --- */
+/* =====================================================
+   BENTO GRID
+   ===================================================== */
+
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -460,6 +562,7 @@ body {
   grid-auto-rows: 130px;
 }
 
+/* Bento Card Sizes */
 .bento-card.large {
   grid-column: span 4;
   grid-row: span 2;
@@ -475,15 +578,15 @@ body {
   grid-row: span 1;
 }
 
-/* Base Card Style */
+/* Base Bento Card */
 .bento-card {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--card-bg);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 1.2rem;
   text-decoration: none;
-  color: var(--text-white);
+  color: var(--text-primary);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -510,8 +613,8 @@ body {
 
 .bento-card:hover {
   transform: translateY(-6px);
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(0, 113, 235, 0.3);
+  background: var(--card-bg-hover);
+  border-color: var(--card-border-hover);
   box-shadow: 0 12px 40px rgba(0, 113, 235, 0.15);
 }
 
@@ -524,6 +627,33 @@ body {
   border-color: rgba(0, 113, 235, 0.2);
 }
 
+/* Light Mode Bento Card Adjustments */
+body:not(.dark-mode) .bento-card::before {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 113, 235, 0.08),
+    rgba(0, 168, 225, 0.08)
+  );
+}
+
+body:not(.dark-mode) .bento-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 113, 235, 0.2);
+}
+
+body:not(.dark-mode) .bento-card.featured {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 113, 235, 0.1),
+    rgba(0, 86, 179, 0.1)
+  );
+  border: 2px solid rgba(0, 113, 235, 0.3);
+}
+
+body:not(.dark-mode) .bento-card p {
+  color: #4a4a4a;
+}
+
+/* Bento Card Content */
 .card-icon-large {
   font-size: 3.2em;
   margin-bottom: 0.8rem;
@@ -539,6 +669,7 @@ body {
   margin: 0 0 0.4rem;
   font-size: 1.2em;
   font-weight: 700;
+  color: var(--text-primary);
 }
 
 .bento-card p {
@@ -558,9 +689,12 @@ body {
   color: rgba(255, 255, 255, 0.5);
 }
 
-/* --- External Links (Start on new row) --- */
+/* =====================================================
+   EXTERNAL LINKS SECTION
+   ===================================================== */
+
 .external-links-section {
-  grid-column: 1 / -1; /* Span full width */
+  grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 1rem;
@@ -569,15 +703,8 @@ body {
 
 .bento-card.external-link {
   grid-column: span 2;
-  background: rgba(255, 255, 255, 0.02);
-  border: 2px solid transparent;
-  background-image: linear-gradient(
-      rgba(10, 10, 10, 0.95),
-      rgba(10, 10, 10, 0.95)
-    ),
-    linear-gradient(135deg, var(--primary), var(--accent));
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
 }
 
 .bento-card.external-link:nth-child(7) {
@@ -588,8 +715,8 @@ body {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
-  background: rgba(0, 113, 235, 0.2);
-  border: 1px solid rgba(0, 113, 235, 0.4);
+  background: var(--external-badge-bg);
+  border: 1px solid var(--external-badge-border);
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-size: 0.7em;
@@ -620,15 +747,28 @@ body {
   color: rgba(255, 255, 255, 0.6);
 }
 
-/* --- Dual External Links --- */
+/* Light Mode External Links Adjustments */
+body:not(.dark-mode) .bento-card.external-link {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+body:not(.dark-mode) .bento-card.external-link:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+body:not(.dark-mode) .external-link-desc {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* Dual External Links */
 .bento-card.dual-external {
   pointer-events: none;
 }
 
 .bento-card.dual-external:hover {
   transform: none;
-  background: rgba(255, 255, 255, 0.02);
-  border-color: rgba(255, 255, 255, 0.05);
+  background: var(--card-bg);
+  border-color: var(--card-border);
   box-shadow: none;
 }
 
@@ -649,10 +789,10 @@ body {
   justify-content: center;
   gap: 0.4rem;
   padding: 0.8rem 0.6rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--dual-link-bg);
+  border: 1px solid var(--dual-link-border);
   border-radius: 8px;
-  color: var(--text-white);
+  color: var(--text-primary);
   text-decoration: none;
   transition: all 0.3s ease;
   flex: 1;
@@ -662,8 +802,8 @@ body {
 }
 
 .dual-link-item:hover {
-  background: rgba(0, 113, 235, 0.15);
-  border-color: rgba(0, 113, 235, 0.4);
+  background: var(--dual-link-bg-hover);
+  border-color: var(--dual-link-border-hover);
   transform: translateY(-4px) scale(1.05);
   box-shadow: 0 6px 16px rgba(0, 113, 235, 0.25);
 }
@@ -700,18 +840,28 @@ body {
   line-height: 1.2;
 }
 
-/* --- Footer --- */
+body:not(.dark-mode) .dual-link-desc {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
 .site-footer {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--footer-bg);
   backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.6);
+  border-top: 1px solid var(--footer-border);
+  color: var(--footer-text);
   text-align: center;
   padding: 2rem 0;
   margin-top: 3rem;
 }
 
-/* --- Entrance Animations --- */
+/* =====================================================
+   ANIMATIONS
+   ===================================================== */
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -737,7 +887,18 @@ body {
   animation-delay: calc(0.1s + (var(--card-index, 0) * 0.1s));
 }
 
-/* --- Responsive --- */
+/* =====================================================
+   RESPONSIVE DESIGN - TABLET
+   ===================================================== */
+
+@media (max-width: 1240px) {
+  .dropdown-menu,
+  .dropdown-content {
+    left: auto !important;
+    right: 0 !important;
+  }
+}
+
 @media (max-width: 1024px) {
   .hero-carousel {
     height: 350px;
@@ -776,15 +937,161 @@ body {
   }
 }
 
+/* =====================================================
+   RESPONSIVE DESIGN - MOBILE
+   ===================================================== */
+
 @media (max-width: 768px) {
+  /* Navbar Mobile */
+  .navbar {
+    width: calc(100% - 2rem) !important;
+    padding: 0.75rem !important;
+  }
+
+  .nav-container {
+    width: 100%;
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .menu-icon {
+    display: block !important;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  .menu-icon.active {
+    transform: rotate(90deg);
+  }
+
+  /* Mobile Menu */
+  .nav-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+    width: 100%;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.98) !important;
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-radius: 0 0 8px 8px;
+    border: 1px solid var(--navbar-border);
+    border-top: none;
+    margin-top: 0;
+    padding: 0;
+  }
+
+  .nav-menu.active {
+    max-height: 600px;
+    padding: 0.5rem 0;
+  }
+
+  .nav-item {
+    margin: 0;
+    width: 100%;
+  }
+
+  .nav-menu li a {
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 0 !important;
+    margin: 0;
+  }
+
+  /* Mobile Dropdowns */
+  .dropdown-menu,
+  .dropdown-content {
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: rgba(10, 10, 10, 1) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+  }
+
+  .dropdown.active .dropdown-menu,
+  .dropdown.active .dropdown-content,
+  .nav-item.dropdown.active .dropdown-menu,
+  .nav-item.dropdown.active .dropdown-content {
+    max-height: 400px;
+  }
+
+  .dropdown-menu a,
+  .dropdown-content a {
+    padding: 0.75rem 1.5rem !important;
+    padding-left: 3rem !important;
+    background: rgba(0, 113, 235, 0.08) !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  .dropdown-menu a:hover,
+  .dropdown-content a:hover {
+    padding-left: 3.25rem !important;
+    color: #ffffff !important;
+    background: rgba(0, 113, 235, 0.2) !important;
+  }
+
+  .nav-item.dropdown > .nav-links::after {
+    float: right;
+    transition: transform 0.3s ease;
+  }
+
+  .nav-item.dropdown.active > .nav-links::after {
+    transform: rotate(180deg);
+  }
+
+  /* Light Mode Mobile Adjustments */
+  body:not(.dark-mode) .nav-menu {
+    background: rgba(255, 255, 255, 0.98) !important;
+  }
+
+  body:not(.dark-mode) .dropdown-menu,
+  body:not(.dark-mode) .dropdown-content {
+    background: rgba(255, 255, 255, 1) !important;
+  }
+
+  body:not(.dark-mode) .dropdown-menu a,
+  body:not(.dark-mode) .dropdown-content a {
+    background: rgba(0, 113, 235, 0.1) !important;
+    color: var(--text-primary) !important;
+  }
+
+  body:not(.dark-mode) .dropdown-menu a:hover,
+  body:not(.dark-mode) .dropdown-content a:hover {
+    color: var(--primary) !important;
+    background: rgba(0, 113, 235, 0.2) !important;
+  }
+
+  /* Container & Content */
   .home-container {
-    padding: 0 1rem 2rem;
+    padding: 1rem;
     padding-top: 140px;
   }
 
+  /* Hero Carousel Mobile */
   .hero-carousel {
     height: 280px;
     border-radius: 8px;
+    margin-bottom: 1.5rem;
   }
 
   .slide-content {
@@ -848,6 +1155,7 @@ body {
     width: 24px;
   }
 
+  /* Bento Grid Mobile */
   .bento-grid {
     grid-template-columns: 1fr;
     grid-auto-rows: auto;
@@ -866,6 +1174,7 @@ body {
     min-height: 160px;
   }
 
+  /* Dual Links Mobile */
   .dual-links-container {
     flex-direction: column;
     gap: 0.5rem;
@@ -893,6 +1202,10 @@ body {
     text-align: left;
   }
 }
+
+/* =====================================================
+   RESPONSIVE DESIGN - SMALL MOBILE
+   ===================================================== */
 
 @media (max-width: 480px) {
   .hero-carousel {
@@ -934,7 +1247,10 @@ body {
   }
 }
 
-/* --- Accessibility --- */
+/* =====================================================
+   ACCESSIBILITY
+   ===================================================== */
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -327,7 +327,8 @@ document.addEventListener('DOMContentLoaded', () => {
             this.currentBgm = null;
             this.currentStoryDefaultBgUrl = null;
 
-            if (this.config.viewerType === 'main' && memory.mask) {
+            // Set default background for both viewer types if mask exists
+            if (memory.mask) {
                 this.currentStoryDefaultBgUrl = `${this.BASE_URL}${memory.mask}.png`;
             }
 
