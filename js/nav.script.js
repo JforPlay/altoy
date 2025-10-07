@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const link = document.createElement('link');
         link.id = iconFontId;
         link.rel = 'stylesheet';
-        link.href = 'https://fonts.googleapis.com/icon?family=Material+Icons';
+        link.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined';
         document.head.appendChild(link);
     }
 
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     applyTheme(localStorage.getItem('theme') || 'dark');
 
     loadNavbar();
-    loadFooter(); // This was in your original code, keep if needed
+    loadFooter();
 });
 
 /**
@@ -33,7 +33,6 @@ function applyTheme(theme) {
         const sunIcon = toggle.querySelector('.theme-icon-sun');
         const moonIcon = toggle.querySelector('.theme-icon-moon');
 
-        // --- THIS IS THE UPDATED LOGIC ---
         // Show the sun icon when in dark mode, hide it in light mode.
         if (sunIcon) sunIcon.classList.toggle('hidden', theme !== 'dark');
 
@@ -73,6 +72,18 @@ function loadNavbar() {
 
             // Re-apply theme to ensure the loaded navbar gets the right class
             applyTheme(localStorage.getItem('theme') || 'dark');
+
+            // ADD: Setup scroll listener after navbar is loaded
+            const navbar = document.querySelector('.navbar');
+            if (navbar) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                });
+            }
         })
         .catch(error => console.error('Error loading the navigation bar:', error));
 }

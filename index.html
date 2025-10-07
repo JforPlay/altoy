@@ -5,86 +5,208 @@
     <base href="/altoy/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>메인</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>메인 - 벽람 장난감</title>
+
     <link rel="stylesheet" href="css/nav.style.css">
-    <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
-
     <div id="navbar-placeholder"></div>
 
     <main class="home-container">
+        <!-- Hero Carousel Section -->
+        <section class="hero-carousel">
+            <div class="carousel-track">
 
-        <header class="welcome-banner">
-            <h1>벽람 장난감 프로젝트에 오신것을 환영합니다</h1>
-            <p>벽람항로와 관련된 각종 함순이/스킨/대사/스토리 등을 한글로 확인가능합니다<br>
-                자세한 페이지들은 상단의 네비게이션 바를 통해 구경할 수 있습니다</p>
-        </header>
+                <!-- Slide 1: Skin Gallery -->
+                <div class="carousel-slide" data-slide="2">
+                    <div class="slide-background">
+                        <img src="https://azurlane.netojuu.com/images/9/9a/Bg_2025.09.12_1.png" alt="Gallery Background"
+                            loading="lazy">
+                        <div class="slide-overlay"></div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="slide-badge">
+                            <span class="material-symbols-outlined">apparel</span> 1000+
+                        </div>
+                        <h2 class="slide-title">스킨 모음집</h2>
+                        <p class="slide-description">
+                            1000개 이상의 스킨을 필터링하고 각종 일러스트들을 감상하세요
+                        </p>
+                        <a href="pages/skin/skin-list.html" class="slide-cta">
+                            <span>스킨 보러가기</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
 
-        <div class="link-grid">
+                <!-- Slide 2: Skin Poll -->
+                <div class="carousel-slide active" data-slide="0">
+                    <div class="slide-background">
+                        <img src="https://plus.unsplash.com/premium_photo-1704583083883-515a77e7c16f?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="Vote Background" loading="lazy">
+                        <div class="slide-overlay"></div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="slide-badge">🔥 New Update</div>
+                        <h2 class="slide-title">벽챈 스킨 선호도 투표</h2>
+                        <p class="slide-description">
+                            실시간으로 다른 벽붕이들과 함께 최애 스킨에 투표하고<br>
+                            인기 순위를 확인해보세요
+                        </p>
+                        <a href="pages/skin/skin-poll.html" class="slide-cta">
+                            <span>지금 투표하기</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
 
-            <div class="link-column">
-                <h2>주요 기능들</h2>
-                <!-- <a href="pages/shipgirl-tracker.html" class="link-card">
-                    <h3><i class="bi bi-clipboard2-check"></i>함순이 정보보기</h3>
-                    <p>진영점수/기술점수와 관련된 트래커를 필터링과 같이 사용할 수 있습니다</p>
-                </a> -->
-                <a href="pages/skin/skin-list.html" class="link-card">
-                    <h3><i class="bi bi-images"></i> 스킨 목록 페이지</h3>
-                    <p>필터링을 통해 원하는 스킨을 묶음으로 찾아볼 수 있습니다</p>
-                </a>
-                <a href="pages/skin/skin-poll.html" class="link-card">
-                    <h3><i class="bi bi-bar-chart-line-fill"></i> 벽챈 선호도 투표</h3>
-                    <p>다른 벽붕이들이 투표한 스킨 선호도도 확인하고 직접 투표에도 참여해보세요</p>
-                </a>
-                <a href="pages/ins-viewer.html" class="link-card">
-                    <h3><i class="bi bi-instagram"></i> 쥬스타그램 뷰어</h3>
-                    <p>인게임 쥬스타그램 게시물들을 간단한 검색기능과 함께 구경할 수 있습니다</p>
-                </a>
-                <a href="pages/story-viewer/main-story-viewer.html" class="link-card">
-                    <h3><i class="bi bi-archive"></i> 메인 스토리 뷰어</h3>
-                    <p>인게임 메인스토리를 감상할 수 있습니다</p>
-                </a>
+                <!-- Slide 3: Juustagram -->
+                <div class="carousel-slide" data-slide="1">
+                    <div class="slide-background">
+                        <img src="https://azurlane.netojuu.com/images/4/42/Juustagram_641.png"
+                            alt="Juustagram Background" loading="lazy">
+                        <div class="slide-overlay"></div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="slide-badge">🔥HOT</div>
+                        <h2 class="slide-title">쥬스타그램</h2>
+                        <p class="slide-description">
+                            함순이들의 일상이 담긴 SNS를 엿보고<br>
+                            숨겨진 이야기를 발견해보세요
+                        </p>
+                        <a href="pages/ins-viewer.html" class="slide-cta">
+                            <span>둘러보기</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+
             </div>
 
-            <div class="link-column">
-                <h2>외부 링크</h2>
-                <a href="https://999dulgi.github.io/azurlane-hearing/ships" target="_blank" class="link-card">
-                    <h3><i class="bi bi-clipboard2-check"></i>함순이 청문회 보러가기</h3>
-                    <p>함순이에 관한 다양한 정보를 확인할 수 있습니다</p>
-                </a>
-                <a href="https://godrooklyn.tistory.com/" target="_blank" class="link-card">
-                    <h3><i class="bi bi-wordpress"></i>최신 스토리 + 그 외 다른 벽람 스토리들 보러가기</h3>
-                </a>
-                
-                <a href="https://github.com/JforPlay/altoy" target="_blank" class="link-card">
-                    <h3><i class="bi bi-github"></i> 원본 소스코드 보러가기</h3>
-                </a>
-                
-                <div class="card-row">
-                    <a href="https://arca.live/b/azurlane" class="link-card">
-                        <h3><i class="bi bi-box-arrow-up-right"></i> 벽챈 바로가기</h3>
-                    </a>
-                    <a href="https://arca.live/b/manjuugame" class="link-card">
-                        <h3><i class="bi bi-box-arrow-up-right"></i> 맍챈 바로가기</h3>
-                    </a>
+            <!-- Carousel Controls -->
+            <button class="carousel-nav prev" aria-label="Previous slide">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="carousel-nav next" aria-label="Next slide">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <!-- Carousel Indicators -->
+            <div class="carousel-indicators">
+                <button class="indicator active" data-slide="0" aria-label="Go to slide 1"></button>
+                <button class="indicator" data-slide="1" aria-label="Go to slide 2"></button>
+                <button class="indicator" data-slide="2" aria-label="Go to slide 3"></button>
+            </div>
+        </section>
+
+        <!-- Bento Grid -->
+        <div class="bento-grid">
+            <!-- Large: Skin Poll -->
+            <a href="pages/skin/skin-poll.html" class="bento-card large featured">
+                <div class="card-icon-large">
+                    <i class="fa-solid fa-square-poll-vertical"></i>
                 </div>
-                <a href="https://arca.live/b/azurlane/148734027" target="_blank" class="link-card">
-                    <h3><i class="bi bi-bug"></i> 버그제보 / 기능건의 하러가기</h3>
+                <h3>스킨 선호도 투표</h3>
+                <p>개편 후 새롭게 오픈한 벽챈 스킨선호도 조사!<br>인기 스킨을 확인하고 투표하세요</p>
+                <div class="card-footer">
+                    <span class="card-meta">💬 실시간 동기화 / 서버 상태표시 기능추가</span>
+                </div>
+            </a>
+
+            <!-- Medium Cards -->
+            <a href="pages/skin/skin-list.html" class="bento-card medium">
+                <div class="card-icon">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                </div>
+                <h3>메인스토리 뷰어</h3>
+                <p>타임라인형 뷰어 + 브금/배경들과 함께 <br>
+                    메인스토리를 감상해보세요</p>
+            </a>
+
+            <a href="pages/ins-viewer.html" class="bento-card medium">
+                <div class="card-icon"><i class="fa-brands fa-instagram"></i></div>
+                <h3>쥬스타그램 뷰어</h3>
+                <p>함순이들의 쥬스타그램 / 댓글과 함께 지휘관의 댓글들을 <br>검색기능과 함께 감상해보세요</p>
+            </a>
+
+            <!-- Small Cards (Row 3) -->
+            <a href="pages/ins-chat-viewer.html" class="bento-card small">
+                <div class="card-icon">
+                    <i class="fa-solid fa-comments-dollar"></i>
+                </div>
+                <h3>JUUS 뷰어</h3>
+                <!-- <p>함순이들과의 쥬톡 대화들을 감상해보세요</p> -->
+            </a>
+
+            <a href="https://godrooklyn.tistory.com/" class="bento-card small featured">
+                <div class="card-icon">
+                    <i class="fa-solid fa-square-rss"></i>
+                </div>
+                <h3>최신 스토리 + 다른 이벤스들 보러가기</h3>
+            </a>
+
+            <a href="pages/comic-viewer.html" class="bento-card small">
+                <div class="card-icon">
+                    <i class="fa-solid fa-images"></i>
+                </div>
+                <h3>인게임 만화들 보러가기</h3>
+            </a>
+
+            <a href="https://arca.live/b/azurlane/148734027" class="bento-card small">
+                <div class="card-icon">
+                    <i class="fa-solid fa-bug"></i>
+                </div>
+                <h3>버그 제보 / 건의사항은 여기로</h3>
+            </a>
+
+            <!-- External Links Section (Auto new row) -->
+            <div class="external-links-section">
+                <a href="https://999dulgi.github.io/azurlane-hearing/ships" target="_blank"
+                    class="bento-card small external-link">
+                    <span class="external-badge">외부</span>
+                    <i class="fas fa-gavel external-link-icon"></i>
+                    <div class="external-link-label">함순이 청문회 웹버전</div>
+                    <div class="external-link-desc">함순이들의 스킬정보 / 간단평을 볼 수 있습니다</div>
                 </a>
+
+                <a href="https://github.com/JforPlay/altoy" target="_blank" class="bento-card small external-link">
+                    <span class="external-badge">외부</span>
+                    <i class="fab fa-github external-link-icon"></i>
+                    <div class="external-link-label">원본 소스코드 보러가기</div>
+                    <!-- <div class="external-link-desc">원본 소스코드 보러가기</div> -->
+                </a>
+
+                <div class="bento-card small external-link dual-external">
+                    <span class="external-badge">외부</span>
+                    <div class="dual-links-container">
+                        <a href="https://arca.live/b/azurlane" target="_blank" class="dual-link-item">
+                            <img src="assets/icon/arca.svg" alt="Arca" class="dual-link-svg-icon">
+                            <div class="dual-link-content">
+                                <div class="dual-link-label">벽챈 바로가기</div>
+                            </div>
+                        </a>
+                        <a href="https://arca.live/b/manjuugame" target="_blank" class="dual-link-item">
+                            <img src="assets/icon/arca.svg" alt="Arca" class="dual-link-svg-icon">
+                            <div class="dual-link-content">
+                                <div class="dual-link-label">맍챈 바로가기</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-
     </main>
 
     <div id="footer-placeholder"></div>
 
     <script src="js/nav.script.js"></script>
-    <script src="js/homepage-stats.js"></script>
-
+    <script src="js/script.js"></script>
 </body>
 
 </html>

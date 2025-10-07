@@ -34,7 +34,7 @@
 }
 
 /* ADD THIS RULE to increase the icon size */
-.nav-logo .material-icons {
+.nav-logo .material-symbols-outlined {
   font-size: 1.8rem; /* Increased from the default size */
 }
 
