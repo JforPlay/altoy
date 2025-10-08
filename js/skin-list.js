@@ -1,352 +1,377 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Get HTML elements
-    const searchInput = document.getElementById('search-input');
-    const skinTypeSelect = document.getElementById('skin-type-select');
-    const periodSelect = document.getElementById('period-select');
-    const rarityCheckboxes = document.getElementById('rarity-checkboxes');
-    const factionSelect = document.getElementById('faction-select');
-    const tagSelect = document.getElementById('tag-select');
-    const exDialogueCheckbox = document.getElementById('ex-dialogue-checkbox');
-    const clearAllBtn = document.getElementById('clear-all-btn');
-
-    // Pop-up elements
-    const infoButton = document.getElementById('info-button');
-    const infoPopup = document.getElementById('info-popup');
-    const closePopupBtn = infoPopup.querySelector('.close-popup-btn');
-
-    // Section wrappers and containers
-    const sections = {
-        new: document.getElementById('new-skins-section'),
-        limited: document.getElementById('limited-skins-section'),
-        permanent: document.getElementById('permanent-skins-section'),
-        other: document.getElementById('other-skins-section')
+    // === DOM ELEMENT REFERENCES ===
+    const DOM = {
+        search: document.getElementById('search-input'),
+        filters: {
+            skinType: document.getElementById('skin-type-select'),
+            period: document.getElementById('period-select'),
+            faction: document.getElementById('faction-select'),
+            tag: document.getElementById('tag-select'),
+            rarities: document.getElementById('rarity-checkboxes'),
+            exDialogue: document.getElementById('ex-dialogue-checkbox')
+        },
+        buttons: {
+            clearAll: document.getElementById('clear-all-btn'),
+            info: document.getElementById('info-button')
+        },
+        popup: {
+            container: document.getElementById('info-popup'),
+            closeBtn: document.getElementById('info-popup').querySelector('.close-popup-btn')
+        },
+        sections: {
+            new: document.getElementById('new-skins-section'),
+            limited: document.getElementById('limited-skins-section'),
+            permanent: document.getElementById('permanent-skins-section'),
+            other: document.getElementById('other-skins-section')
+        },
+        containers: {
+            new: document.getElementById('new-skins-container'),
+            limited: document.getElementById('limited-skins-container'),
+            permanent: document.getElementById('permanent-skins-container'),
+            other: document.getElementById('other-skins-container')
+        }
     };
-    const containers = {
-        new: document.getElementById('new-skins-container'),
-        limited: document.getElementById('limited-skins-container'),
-        permanent: document.getElementById('permanent-skins-container'),
-        other: document.getElementById('other-skins-container')
-    };
 
+    // === STATE ===
     let allSkins = [];
-    let fuse; // Fuse.js instance for fuzzy search
+    let fuse;
     const fuseOptions = {
         includeMatches: true,
         threshold: 0.4,
         keys: ['name']
     };
 
-    function debounce(func, delay) {
+    // === CONSTANTS ===
+    const FILTER_PARAMS = {
+        TYPE: 'type',
+        TAG: 'tag',
+        PERIOD: 'period',
+        FACTION: 'faction',
+        RARITIES: 'rarities',
+        EX: 'ex',
+        SEARCH: 'search'
+    };
+
+    const TAGS_TO_EXCLUDE = ['듀얼', 'L2D', 'L2D+', '쁘띠모션'];
+    const AUTOCOMPLETE_LIMIT = 10;
+    const DEBOUNCE_DELAY = 300;
+
+    // === UTILITY FUNCTIONS ===
+    const debounce = (func, delay) => {
         let timeout;
-        return function (...args) {
+        return (...args) => {
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(this, args), delay);
         };
-    }
-
-    // --- URL State Management ---
-    const updateURLWithFilters = () => {
-        const params = new URLSearchParams();
-        if (skinTypeSelect.value !== 'all') params.set('type', skinTypeSelect.value);
-        if (tagSelect.value !== 'all') params.set('tag', tagSelect.value);
-        if (periodSelect.value !== 'all') params.set('period', periodSelect.value);
-        if (factionSelect.value !== 'all') params.set('faction', factionSelect.value);
-        const selectedRarities = [...rarityCheckboxes.querySelectorAll("input:checked")].map(cb => cb.value);
-        if (selectedRarities.length < 5) params.set('rarities', selectedRarities.join(','));
-        if (exDialogueCheckbox.checked) params.set('ex', 'true');
-        if (searchInput.value) params.set('search', searchInput.value);
-
-        const newUrl = `${window.location.pathname}?${params.toString()}`;
-        history.replaceState({}, '', newUrl);
     };
 
-    const applyFiltersFromURL = () => {
-        const params = new URLSearchParams(window.location.search);
-        skinTypeSelect.value = params.get('type') || 'all';
-        tagSelect.value = params.get('tag') || 'all';
-        periodSelect.value = params.get('period') || 'all';
-        factionSelect.value = params.get('faction') || 'all';
-        searchInput.value = params.get('search') || '';
-        const raritiesParam = params.get('rarities');
-        if (raritiesParam) {
-            const activeRarities = raritiesParam.split(',');
-            rarityCheckboxes.querySelectorAll('input').forEach(cb => {
-                cb.checked = activeRarities.includes(cb.value);
+    // === URL STATE MANAGEMENT ===
+    const URLState = {
+        getFilters() {
+            const selectedRarities = [...DOM.filters.rarities.querySelectorAll("input:checked")]
+                .map(cb => cb.value);
+
+            return {
+                type: DOM.filters.skinType.value,
+                tag: DOM.filters.tag.value,
+                period: DOM.filters.period.value,
+                faction: DOM.filters.faction.value,
+                rarities: selectedRarities,
+                ex: DOM.filters.exDialogue.checked,
+                search: DOM.search.value
+            };
+        },
+
+        update() {
+            const params = new URLSearchParams();
+            const filters = this.getFilters();
+
+            if (filters.type !== 'all') params.set(FILTER_PARAMS.TYPE, filters.type);
+            if (filters.tag !== 'all') params.set(FILTER_PARAMS.TAG, filters.tag);
+            if (filters.period !== 'all') params.set(FILTER_PARAMS.PERIOD, filters.period);
+            if (filters.faction !== 'all') params.set(FILTER_PARAMS.FACTION, filters.faction);
+            if (filters.rarities.length < 5) params.set(FILTER_PARAMS.RARITIES, filters.rarities.join(','));
+            if (filters.ex) params.set(FILTER_PARAMS.EX, 'true');
+            if (filters.search) params.set(FILTER_PARAMS.SEARCH, filters.search);
+
+            history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+        },
+
+        apply() {
+            const params = new URLSearchParams(window.location.search);
+            
+            DOM.filters.skinType.value = params.get(FILTER_PARAMS.TYPE) || 'all';
+            DOM.filters.tag.value = params.get(FILTER_PARAMS.TAG) || 'all';
+            DOM.filters.period.value = params.get(FILTER_PARAMS.PERIOD) || 'all';
+            DOM.filters.faction.value = params.get(FILTER_PARAMS.FACTION) || 'all';
+            DOM.search.value = params.get(FILTER_PARAMS.SEARCH) || '';
+
+            const raritiesParam = params.get(FILTER_PARAMS.RARITIES);
+            if (raritiesParam) {
+                const activeRarities = new Set(raritiesParam.split(','));
+                DOM.filters.rarities.querySelectorAll('input').forEach(cb => {
+                    cb.checked = activeRarities.has(cb.value);
+                });
+            }
+
+            DOM.filters.exDialogue.checked = params.get(FILTER_PARAMS.EX) === 'true';
+            FilterEngine.apply();
+        }
+    };
+
+    // === AUTOCOMPLETE ===
+    const Autocomplete = {
+        close() {
+            document.getElementById("autocomplete-list")?.remove();
+        },
+
+        render(results) {
+            this.close();
+            if (results.length === 0) return;
+
+            const list = document.createElement("div");
+            list.id = "autocomplete-list";
+            list.className = "autocomplete-items";
+
+            results.slice(0, AUTOCOMPLETE_LIMIT).forEach(result => {
+                const item = result.item;
+                const matches = result.matches;
+                const div = document.createElement("div");
+
+                if (matches?.[0]?.indices) {
+                    div.innerHTML = this._highlightMatches(item.name, matches[0].indices);
+                } else {
+                    div.textContent = item.name;
+                }
+
+                div.addEventListener("click", () => {
+                    DOM.search.value = item.name;
+                    this.close();
+                    FilterEngine.apply();
+                    URLState.update();
+                });
+
+                list.appendChild(div);
+            });
+
+            DOM.search.parentNode.appendChild(list);
+        },
+
+        _highlightMatches(text, indices) {
+            let highlighted = '';
+            let lastIndex = 0;
+
+            indices.forEach(([start, end]) => {
+                highlighted += text.substring(lastIndex, start);
+                highlighted += `<mark>${text.substring(start, end + 1)}</mark>`;
+                lastIndex = end + 1;
+            });
+
+            highlighted += text.substring(lastIndex);
+            return highlighted;
+        }
+    };
+
+    // === FILTER ENGINE ===
+    const FilterEngine = {
+        _checkSkinType(skin, selectedType) {
+            if (selectedType === 'all') return true;
+            if (selectedType === '기본') return !skin['스킨 타입 - 한글'];
+            return skin['스킨 타입 - 한글'] === selectedType;
+        },
+
+        _checkPeriod(skin, selectedPeriod) {
+            if (selectedPeriod === 'all') return true;
+            if (selectedPeriod === '한정') return skin['기간']?.includes('한정');
+            if (selectedPeriod === '상시') return skin['기간'] === '상시';
+            return true;
+        },
+
+        _checkTag(skin, selectedTag) {
+            if (selectedTag === 'all') return true;
+            if (selectedTag === 'X') {
+                return !skin['스킨 태그'] || !TAGS_TO_EXCLUDE.some(tag => skin['스킨 태그'].includes(tag));
+            }
+            return skin['스킨 태그']?.includes(selectedTag);
+        },
+
+        apply() {
+            const searchTerm = DOM.search.value.toLowerCase().trim();
+            const filters = URLState.getFilters();
+            const selectedRarities = new Set(filters.rarities);
+
+            const filteredSkins = allSkins.filter(skin => {
+                if (searchTerm && !skin['함순이 이름'].toLowerCase().includes(searchTerm)) return false;
+                if (filters.ex && skin['ex_chat_status'] !== 1) return false;
+                if (!this._checkSkinType(skin, filters.type)) return false;
+                if (filters.faction !== 'all' && skin['진영'] !== filters.faction) return false;
+                if (!this._checkPeriod(skin, filters.period)) return false;
+                if (!this._checkTag(skin, filters.tag)) return false;
+                if (selectedRarities.size > 0 && !selectedRarities.has(skin['레어도'])) return false;
+
+                return true;
+            });
+
+            Renderer.renderSections(filteredSkins);
+        }
+    };
+
+    // === RENDERER ===
+    const Renderer = {
+        _createSkinBoxHtml(skin) {
+            const characterName = encodeURIComponent(skin['함순이 이름']);
+            const skinName = encodeURIComponent(skin['한글 함순이 + 스킨 이름']);
+            const linkUrl = `pages/skin/skin-viewer.html?character=${characterName}&skin=${skinName}`;
+
+            const gemIconHtml = `<img src="assets/icon/60px-Ruby.png" class="gem-icon" alt="Gem">`;
+            const costHtml = skin['재화'] ? `${gemIconHtml} ${skin['재화']}` : 'N/A';
+            const periodHtml = skin['기간'] || '정보 없음';
+            const badgeHtml = skin.isNew ? '<div class="new-badge">New</div>' : '';
+
+            return `
+                <a href="${linkUrl}" class="skin-box-link">
+                    <div class="skin-box">
+                        <div class="skin-image-wrapper">
+                            ${badgeHtml}
+                            <img src="${skin['깔끔한 일러']}" class="skin-image" loading="lazy">
+                        </div>
+                        <div class="skin-info">
+                            <h3>${skin['함순이 이름']}</h3>
+                            <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
+                            <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
+                            <div class="info-line"><strong>진영:</strong> ${skin['진영'] || '없음'}</div>
+                            <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
+                            <div class="info-line"><strong>가격:</strong> ${costHtml}</div>
+                            <div class="info-line"><strong>기간:</strong> ${periodHtml}</div>
+                        </div>
+                    </div>
+                </a>
+            `;
+        },
+
+        _categorizeSkin(skin) {
+            if (skin.isNew) return 'new';
+            
+            const period = skin['기간'];
+            if (period?.includes('한정')) return 'limited';
+            if (period === '상시') return 'permanent';
+            return 'other';
+        },
+
+        renderSections(skins) {
+            // Clear all containers
+            Object.values(DOM.containers).forEach(c => c.innerHTML = '');
+
+            // Create document fragments for better performance
+            const fragments = {
+                new: document.createDocumentFragment(),
+                limited: document.createDocumentFragment(),
+                permanent: document.createDocumentFragment(),
+                other: document.createDocumentFragment()
+            };
+
+            // Categorize and append skins
+            skins.forEach(skin => {
+                const category = this._categorizeSkin(skin);
+                const skinBoxHtml = this._createSkinBoxHtml(skin);
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = skinBoxHtml.trim();
+                fragments[category].appendChild(tempDiv.firstChild);
+            });
+
+            // Append fragments and toggle section visibility
+            Object.keys(DOM.containers).forEach(key => {
+                DOM.containers[key].appendChild(fragments[key]);
+                DOM.sections[key].style.display = DOM.containers[key].hasChildNodes() ? 'block' : 'none';
             });
         }
-        exDialogueCheckbox.checked = params.get('ex') === 'true';
-        applyFilters();
     };
 
-    // --- Data Fetching and Processing ---
-    // created a new json file faster load / reduce unnecessary data
+    // === EVENT HANDLERS ===
+    const EventHandlers = {
+        handleSearch() {
+            const searchTerm = DOM.search.value;
+            
+            if (fuse && searchTerm.trim()) {
+                const results = fuse.search(searchTerm);
+                Autocomplete.render(results);
+            } else {
+                Autocomplete.close();
+            }
+            
+            debouncedFilterUpdate();
+        },
+
+        resetFilters() {
+            DOM.search.value = '';
+            DOM.filters.skinType.value = 'all';
+            DOM.filters.period.value = 'all';
+            DOM.filters.faction.value = 'all';
+            DOM.filters.tag.value = 'all';
+            DOM.filters.exDialogue.checked = false;
+            DOM.filters.rarities.querySelectorAll('input').forEach(cb => cb.checked = true);
+            
+            FilterEngine.apply();
+            URLState.update();
+        },
+
+        handleFilterChange() {
+            FilterEngine.apply();
+            URLState.update();
+        },
+
+        openPopup() {
+            DOM.popup.container.classList.add('visible');
+            document.body.classList.add('no-scroll');
+        },
+
+        closePopup() {
+            DOM.popup.container.classList.remove('visible');
+            document.body.classList.remove('no-scroll');
+        }
+    };
+
+    // === DEBOUNCED FUNCTIONS ===
+    const debouncedFilterUpdate = debounce(() => {
+        FilterEngine.apply();
+        URLState.update();
+    }, DEBOUNCE_DELAY);
+
+    // === DATA INITIALIZATION ===
     fetch('data/skin_list_subset.json')
         .then(res => res.json())
         .then(skinJson => {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            // const processedSkins = Object.values(skinJson).map(skin => {
-            //     if (skin['기간'] === null) {
-            //         const skinType = skin['스킨 타입 - 한글'];
-            //         if (skinType === null || skinType === '개조' || skinType === '서약') skin['기간'] = '상시';
-            //     }
-            //     if (skin['기간'] && skin['기간'].includes('한정')) {
-            //         skin.isNew = false;
-            //         try {
-            //             const dateString = skin['기간'].substring(skin['기간'].indexOf('['));
-            //             const [year, month, day] = JSON.parse(dateString);
-            //             const skinDate = new Date(year, month - 1, day);
-            //             if (skinDate >= today) skin.isNew = true;
-            //         } catch (e) { /* Ignore parsing errors */ }
-            //     }
-            //     return skin;
-            // });
-
-            // allSkins = processedSkins.filter(skin => skin['깔끔한 일러']);
-
             allSkins = skinJson;
 
             const uniqueShipNames = [...new Set(allSkins.map(skin => skin['함순이 이름']))].sort();
             fuse = new Fuse(uniqueShipNames.map(name => ({ name })), fuseOptions);
 
-            applyFiltersFromURL();
-        }).catch(error => {
+            URLState.apply();
+        })
+        .catch(error => {
             console.error("Failed to load data:", error);
         });
 
-    // --- Rendering Functions ---
-    const formatPeriodString = (periodString) => {
-        if (!periodString) return '정보 없음';
-        if (periodString.includes('한정')) {
-            try {
-                const dateString = periodString.substring(periodString.indexOf('['));
-                const [year, month, day] = JSON.parse(dateString);
-                const mm = String(month).padStart(2, '0');
-                const dd = String(day).padStart(2, '0');
-                return `한정 (${year}/${mm}/${dd})`;
-            } catch (e) {
-                return periodString;
-            }
-        }
-        return periodString;
-    };
+    // === EVENT LISTENERS ===
+    DOM.search.addEventListener('input', EventHandlers.handleSearch);
 
-    const createSkinBoxHtml = (skin) => {
-        // Construct the dynamic URL for the skin viewer page
-        const characterName = encodeURIComponent(skin['함순이 이름']);
-        const skinName = encodeURIComponent(skin['한글 함순이 + 스킨 이름']);
-        const linkUrl = `pages/skin/skin-viewer.html?character=${characterName}&skin=${skinName}`;
+    [DOM.filters.skinType, DOM.filters.period, DOM.filters.faction, DOM.filters.tag, DOM.filters.exDialogue]
+        .forEach(el => el.addEventListener('change', EventHandlers.handleFilterChange));
 
-        const gemIconHtml = `<img src="assets/icon/60px-Ruby.png" class="gem-icon" alt="Gem">`;
-        let costHtml = skin['재화'] ? `${gemIconHtml} ${skin['재화']}` : 'N/A';
-        let periodHtml = formatPeriodString(skin['기간']);
-        const badgeHtml = skin.isNew ? '<div class="new-badge">New</div>' : '';
+    DOM.filters.rarities.querySelectorAll('input')
+        .forEach(cb => cb.addEventListener('change', EventHandlers.handleFilterChange));
 
-        // Wrap the entire skin box in an anchor tag
-        return `
-            <a href="${linkUrl}" class="skin-box-link">
-                <div class="skin-box">
-                    <div class="skin-image-wrapper">
-                        ${badgeHtml}
-                        <img src="${skin['깔끔한 일러']}" class="skin-image" loading="lazy">
-                    </div>
-                    <div class="skin-info">
-                        <h3>${skin['함순이 이름']}</h3>
-                        <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
-                        <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
-                        <div class="info-line"><strong>진영:</strong> ${skin['진영'] || '없음'}</div>
-                        <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
-                        <div class="info-line"><strong>가격:</strong> ${costHtml}</div>
-                        <div class="info-line"><strong>기간:</strong> ${periodHtml}</div>
-                    </div>
-                </div>
-            </a>
-        `;
-    };
+    DOM.buttons.clearAll.addEventListener('click', EventHandlers.resetFilters);
+    DOM.buttons.info.addEventListener('click', EventHandlers.openPopup);
+    DOM.popup.closeBtn.addEventListener('click', EventHandlers.closePopup);
 
-    const renderSkinsBySection = (skinsToRender) => {
-        Object.values(containers).forEach(c => c.innerHTML = '');
-
-        const fragments = {
-            new: document.createDocumentFragment(),
-            limited: document.createDocumentFragment(),
-            permanent: document.createDocumentFragment(),
-            other: document.createDocumentFragment()
-        };
-
-        skinsToRender.forEach(skin => {
-            const skinBoxHtml = createSkinBoxHtml(skin);
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = skinBoxHtml.trim();
-            const skinNode = tempDiv.firstChild;
-            if (skin.isNew) {
-                fragments.new.appendChild(skinNode);
-            } else {
-                const skinPeriod = skin['기간'];
-                if (skinPeriod && skinPeriod.includes('한정')) fragments.limited.appendChild(skinNode);
-                else if (skinPeriod === '상시') fragments.permanent.appendChild(skinNode);
-                else fragments.other.appendChild(skinNode);
-            }
-        });
-
-        for (const key in containers) {
-            containers[key].appendChild(fragments[key]);
-            sections[key].style.display = containers[key].hasChildNodes() ? 'block' : 'none';
-        }
-    };
-
-    // --- Autocomplete & Filtering Logic (Unchanged from previous version) ---
-    function closeAutocomplete() {
-        const list = document.getElementById("autocomplete-list");
-        if (list) list.remove();
-    }
-
-    function renderAutocomplete(results) {
-        closeAutocomplete();
-        if (results.length === 0) return;
-
-        const autocompleteList = document.createElement("div");
-        autocompleteList.id = "autocomplete-list";
-        autocompleteList.className = "autocomplete-items";
-        searchInput.parentNode.appendChild(autocompleteList);
-
-        results.slice(0, 10).forEach(result => {
-            const item = result.item;
-            const matches = result.matches;
-            const suggestionDiv = document.createElement("div");
-
-            if (matches && matches.length > 0 && matches[0].indices) {
-                let highlightedName = '';
-                let lastIndex = 0;
-                matches[0].indices.forEach(([start, end]) => {
-                    highlightedName += item.name.substring(lastIndex, start);
-                    highlightedName += `<mark>${item.name.substring(start, end + 1)}</mark>`;
-                    lastIndex = end + 1;
-                });
-                highlightedName += item.name.substring(lastIndex);
-                suggestionDiv.innerHTML = highlightedName;
-            } else {
-                suggestionDiv.textContent = item.name;
-            }
-
-            suggestionDiv.addEventListener("click", () => {
-                searchInput.value = item.name;
-                closeAutocomplete();
-                applyFilters();
-                updateURLWithFilters();
-            });
-            autocompleteList.appendChild(suggestionDiv);
-        });
-    }
-
-    // Optimize by combining conditions:
-    const applyFilters = () => {
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        const selectedType = skinTypeSelect.value;
-        const selectedTag = tagSelect.value;
-        const selectedPeriod = periodSelect.value;
-        const selectedFaction = factionSelect.value;
-        const selectedRarities = new Set([...rarityCheckboxes.querySelectorAll('input:checked')].map(cb => cb.value));
-        const showOnlyEx = exDialogueCheckbox.checked;
-
-        const filteredSkins = allSkins.filter(skin => {
-            // Combine all conditions in one pass
-            if (searchTerm && !skin['함순이 이름'].toLowerCase().includes(searchTerm)) return false;
-            if (showOnlyEx && skin['ex_chat_status'] !== 1) return false;
-            if (selectedType !== 'all') {
-                if (selectedType === '기본' && skin['스킨 타입 - 한글']) return false;
-                if (selectedType !== '기본' && skin['스킨 타입 - 한글'] !== selectedType) return false;
-            }
-            if (selectedFaction !== 'all' && skin['진영'] !== selectedFaction) return false;
-            if (selectedPeriod !== 'all') {
-                if (selectedPeriod === '한정' && (!skin['기간'] || !skin['기간'].includes('한정'))) return false;
-                if (selectedPeriod === '상시' && skin['기간'] !== '상시') return false;
-            }
-            if (selectedTag !== 'all') {
-                if (selectedTag === "X") {
-                    const tagsToExclude = ['듀얼', 'L2D', 'L2D+', '영령모션'];
-                    if (skin['스킨 태그'] && tagsToExclude.some(tag => skin['스킨 태그'].includes(tag))) return false;
-                } else {
-                    if (!skin["스킨 태그"] || !skin["스킨 태그"].includes(selectedTag)) return false;
-                }
-            }
-            if (selectedRarities.size > 0 && !selectedRarities.has(skin['레어도'])) return false;
-
-            return true;
-        });
-
-        renderSkinsBySection(filteredSkins);
-    };
-
-    const debouncedApplyFiltersAndUpdateURL = debounce(() => {
-        applyFilters();
-        updateURLWithFilters();
-    }, 300);
-
-    const handleSearchInput = () => {
-        const searchTerm = searchInput.value;
-        if (fuse && searchTerm.trim() !== '') {
-            const results = fuse.search(searchTerm);
-            renderAutocomplete(results);
-        } else {
-            closeAutocomplete();
-        }
-        debouncedApplyFiltersAndUpdateURL();
-    }
-
-    function resetFilters() {
-        searchInput.value = '';
-        skinTypeSelect.value = 'all';
-        periodSelect.value = 'all';
-        factionSelect.value = 'all';
-        tagSelect.value = 'all';
-        exDialogueCheckbox.checked = false;
-        rarityCheckboxes.querySelectorAll('input').forEach(cb => cb.checked = true);
-        applyFilters();
-        updateURLWithFilters();
-    }
-
-    // --- Attach Event Listeners ---
-    searchInput.addEventListener('input', handleSearchInput);
-
-    const filterElements = [skinTypeSelect, periodSelect, factionSelect, tagSelect, exDialogueCheckbox];
-    filterElements.forEach(el => el.addEventListener('change', () => {
-        applyFilters();
-        updateURLWithFilters();
-    }));
-    rarityCheckboxes.querySelectorAll('input').forEach(checkbox => {
-        checkbox.addEventListener('change', () => {
-            applyFilters();
-            updateURLWithFilters();
-        });
+    DOM.popup.container.addEventListener('click', (event) => {
+        if (event.target === DOM.popup.container) EventHandlers.closePopup();
     });
-
-    window.addEventListener('popstate', applyFiltersFromURL);
-
-    clearAllBtn.addEventListener('click', resetFilters);
 
     document.addEventListener("click", (e) => {
-        if (!searchInput.parentNode.contains(e.target)) {
-            closeAutocomplete();
-        }
+        if (!DOM.search.parentNode.contains(e.target)) Autocomplete.close();
     });
 
-    // Pop-up functionality
-    infoButton.addEventListener('click', () => {
-        infoPopup.classList.add('visible');
-        document.body.classList.add('no-scroll');
-    });
-
-    const closeInfoPopup = () => {
-        infoPopup.classList.remove('visible');
-        document.body.classList.remove('no-scroll');
-    };
-
-    closePopupBtn.addEventListener('click', closeInfoPopup);
-    infoPopup.addEventListener('click', (event) => {
-        if (event.target === infoPopup) {
-            closeInfoPopup();
-        }
-    });
+    window.addEventListener('popstate', URLState.apply);
 });

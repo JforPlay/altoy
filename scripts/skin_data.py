@@ -436,14 +436,22 @@ class AzurLaneDataProcessor:
             else:
                 skin['tag'] = "X"
             
-            # Process time field
+            # Process time field with formatting
             time_value = skin.get('time')
             if time_value == 'always':
                 skin['time'] = '상시'
             elif (isinstance(time_value, list) and time_value and 
                   isinstance(time_value[0], list) and len(time_value[0]) > 1 and 
                   isinstance(time_value[0][1], list) and time_value[0][1]):
-                skin['time'] = f'한정, {time_value[1][0]}'
+                # Format the date
+                date_list = time_value[1][0]
+                if isinstance(date_list, list) and len(date_list) >= 3:
+                    year, month, day = date_list[0], date_list[1], date_list[2]
+                    mm = str(month).zfill(2)
+                    dd = str(day).zfill(2)
+                    skin['time'] = f'한정 ({year}/{mm}/{dd})'
+                else:
+                    skin['time'] = f'한정, {time_value[1][0]}'
             else:
                 skin['time'] = None
             
@@ -666,14 +674,14 @@ class AzurLaneDataProcessor:
             
             # Save full JSON
             logger.info(f"Saving full dataset to {full_json_path}...")
-            df_cleaned.to_json(full_json_path, orient='records', force_ascii=False)
+            df_cleaned.to_json(full_json_path, orient='records', indent=4, force_ascii=False)
             
             # Create and save lightweight subset
             logger.info(f"Creating lightweight subset...")
             subset_df = self.create_lightweight_subset(df_cleaned)
             
             logger.info(f"Saving lightweight subset to {subset_json_path}...")
-            subset_df.to_json(subset_json_path, orient='records', force_ascii=False)
+            subset_df.to_json(subset_json_path, orient='records', indent=4, force_ascii=False)
             
             # Calculate size reduction
             import os
