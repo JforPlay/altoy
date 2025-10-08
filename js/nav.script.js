@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Apply the theme as soon as the DOM is loaded
+    
+    // Default to dark mode
     applyTheme(localStorage.getItem('theme') || 'dark');
 
     loadNavbar();
@@ -45,8 +46,10 @@ function setupThemeToggles() {
     });
 }
 
+/**
+ * Navigation bar loading and setup
+ */
 function loadNavbar() {
-    // Assuming nav.html is at the root or a known path. Adjust if necessary.
     fetch('pages/layouts/nav.html')
         .then(response => response.text())
         .then(data => {
