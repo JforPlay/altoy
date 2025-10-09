@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const gemIconHtml = `<img src="assets/icon/60px-Ruby.png" class="gem-icon" alt="Gem">`;
             const costHtml = skin['재화'] ? `${gemIconHtml} ${skin['재화']}` : 'N/A';
             const periodHtml = skin['기간'] || '정보 없음';
-            const badgeHtml = skin.isNew ? '<div class="new-badge">판매중</div>' : '';
+            const badgeHtml = skin.isSold ? '<div class="new-badge">판매중</div>' : '';
 
             return `
                 <a href="${linkUrl}" class="skin-box-link">
@@ -249,8 +249,30 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         },
 
+        _isSkinCurrentlySold(skin) {
+            const period = skin['기간'];
+            if (!period) return false;
+            
+            // Permanent skins are always sold
+            if (period === '상시') return true;
+            
+            // Extract date from "한정 (YYYY/MM/DD)" format
+            const dateMatch = period.match(/(\d{4})\/(\d{2})\/(\d{2})/);
+            if (!dateMatch) return false;
+            
+            const [_, year, month, day] = dateMatch;
+            const skinDate = new Date(year, month - 1, day);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            // Check if skin date is today or in the future
+            return skinDate >= today;
+        },
+
         _categorizeSkin(skin) {
-            if (skin.isNew) return 'new';
+            skin.isSold = this._isSkinCurrentlySold(skin);
+            
+            if (skin.isSold && skin['기간']?.includes('한정')) return 'new';
             
             const period = skin['기간'];
             if (period?.includes('한정')) return 'limited';
