@@ -27746,187 +27746,219 @@
     "584": {
         "id": 584,
         "ship_group": 30716,
-        "message": "Translation Source Missing",
+        "message": "(파파고)오늘 하쿠호 냄새 어때요~",
         "name": "Hakuhō ",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250912_baifengSdvy7dojqEMQpzgJ.png",
         "shipgirl_names": [
             30716
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
+        "op_option1": "(파파고)매일매일 향이 달라요",
+        "op_reply1": "(파파고)하쿠호님은 지휘관의 기분에 따라 새로운 향기를 구성해드려요~",
         "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
+        "op_option2": "(파파고)매우 향기로운",
+        "op_reply2": "(파파고)손으로 준비한 향을 지휘관님이 감상하실 수 있으니 하쿠호님이 무척 기뻐하시네요~",
         "reply2_shipgirl": null
     },
     "585": {
         "id": 585,
         "ship_group": 31702,
-        "message": "Translation Source Missing",
+        "message": "(파파고)슈퍼 화려 ~ 수중 전투 훈련",
         "name": "I404 ",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250912_i404602VMauNTnazR7Xk.png",
         "shipgirl_names": [
             31702
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
+        "op_option1": "(파파고)우아함! 아주 멋진! 강한!",
+        "op_reply1": "(파파고)더 화려한 동작이 있어요 지휘관님 보세요~",
         "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
+        "op_option2": "(파파고)좋은 훈련",
+        "op_reply2": "(파파고)404 실전훈련을 해보고 싶으신가요~",
         "reply2_shipgirl": null
     },
     "586": {
         "id": 586,
         "ship_group": 30516,
-        "message": "Translation Source Missing",
+        "message": "(파파고)호수에서 보트를 타고, 술을 마시고, 시를 써도, 천 잔은 따르지 않을 거예요~",
         "name": "Omi",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250912_jinjiangk6hsviGP7K0VmaGD.png",
         "shipgirl_names": [
             30516
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
+        "op_option1": "(파파고)길을 잃었나요? 나는 당신에게 온다",
+        "op_reply1": "(파파고)우리가 자주가던 호수 바로 위에서~",
         "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
+        "op_option2": "(파파고)오늘은 와인이 있다——",
+        "op_reply2": "(파파고)오늘은 술에 취해——건배~",
         "reply2_shipgirl": null
     },
     "587": {
         "id": 587,
         "ship_group": 30320,
-        "message": "Translation Source Missing",
+        "message": "(파파고)맛있는 도시락이 이렇게 빨리 없어진 걸까요...",
         "name": "Asama ",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250912_qianjianZmMMmxBDtf5K4ohP.png",
         "shipgirl_names": [
             30320
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
+        "op_option1": "(파파고)괜찮아 라면은 2인분으로 준비했어",
+        "op_reply1": "(파파고)지휘관님 마음속에 저를 갖고 계시다니 정말 좋네요~",
         "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
+        "op_option2": "(파파고)할인이 되는 다른 편의점을 알아요",
+        "op_reply2": "(파파고)더 이상 고민하지 말고 함께 출발하세요~",
         "reply2_shipgirl": null
     },
     "588": {
         "id": 588,
         "ship_group": 30227,
-        "message": "Translation Source Missing",
+        "message": "(파파고)향이 너무 좋아요~ 요리할 준비가 되었습니다~",
         "name": "Minase",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250912_shuiwulai0IP4i5poVCVn4DTR.png",
         "shipgirl_names": [
             30227
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
+        "op_option1": "(파파고)맛있는! 한 그릇 더 드세요!",
+        "op_reply1": "(파파고)지휘관님이 좋아하시면 그릇을 마음껏 드실 수 있어요~",
         "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
+        "op_option2": "(파파고)한 번도 먹어본 적 없는 생소한 재료들이네요...",
+        "op_reply2": "(파파고)맛있어요. 지휘관님한테는 이미 맛봤어~",
         "reply2_shipgirl": null
     },
     "589": {
         "id": 589,
         "ship_group": 30192,
-        "message": "Translation Source Missing",
+        "message": "(파파고)에헤헤, 지휘관님은 날 못 잡아요!",
         "name": "Taekaze",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250912_miaofengQC1VEDMFGoTnErEW.png",
         "shipgirl_names": [
             30192
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
+        "op_option1": "(파파고)멀리서 너를 봤어",
+        "op_reply1": "(파파고)이번에는 계산되지 않습니다! 타에카제이 던지는 모든 장난에 대비하세요!",
         "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
+        "op_option2": "(파파고)와-무서웠어요-",
+        "op_reply2": "(파파고)헤헤, 이게 타에카제의 변장 기술이에요!",
         "reply2_shipgirl": null
     },
     "590": {
         "id": 590,
         "ship_group": 30319,
-        "message": "Translation Source Missing",
+        "message": "(파파고)아직도 얽혀있는데...",
         "name": "Unzen",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250919_yunxian01V83KL8f8lO0Gif.png",
         "shipgirl_names": [
             30319
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
+        "op_option1": "(파파고)고의로 한 건가요, 아니면 실수로 한 건가요?",
+        "op_reply1": "(파파고)어쩌면 고의적이고 부주의한 행동이었을까?",
         "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
+        "op_option2": "(파파고)나도 줄타기 배우고 싶다",
+        "op_reply2": "(파파고)배우고 싶으시면 오세요 제가 직접 가르쳐 드리겠습니다",
         "reply2_shipgirl": null
     },
     "591": {
         "id": 591,
         "ship_group": 70301,
-        "message": "Translation Source Missing",
+        "message": "(파파고)아름다운 달~",
         "name": "Tallinn",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250919_talin80ZY6LiPDCfNEpza.png",
         "shipgirl_names": [
             70301
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
+        "op_option1": "(파파고)특별히 사진 기술을 배우러 갔나요?",
+        "op_reply1": "(파파고)조금 배웠어요~",
         "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
+        "op_option2": "(파파고)나도 같은 스타일 사진 찍고싶다",
+        "op_reply2": "(파파고)지휘관님, 잠시만 기다려주세요. 제가 찾으러 가겠습니다!",
         "reply2_shipgirl": null
     },
     "592": {
         "id": 592,
         "ship_group": 11802,
-        "message": "Translation Source Missing",
+        "message": "(파파고)닌자 아티스트 괌이 성대하게 데뷔합니다~!",
         "name": "Guam",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250919_guandaoaxfND7eifRsAmUB0.png",
         "shipgirl_names": [
             11802
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
+        "op_option1": "(파파고)안전 로프를 고정하는 것을 잊지 마세요",
+        "op_reply1": "(파파고)걱정하지 마세요~ 아주 단단하게 묶어놨어요!",
         "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
+        "op_option2": "(파파고)발코니 밖에서 무슨 일이 벌어지고 있는 것 같은데요?",
+        "op_reply2": "(파파고)지휘관님, 괌의 공중쇼를 감상하실 준비 되셨나요~",
         "reply2_shipgirl": null
     },
     "593": {
         "id": 593,
         "ship_group": 70502,
-        "message": "Translation Source Missing",
+        "message": "(파파고)특별수사 작전 진행 중",
         "name": "Sovetsky Soyuz",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250919_suweiaitongmengiUBtR7MjUcqqf3ud.png",
         "shipgirl_names": [
             70502
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
+        "op_option1": "(파파고)조사에 노고에 감사드립니다.",
+        "op_reply1": "(파파고)걱정해주셔서 감사합니다, 지휘관님. 닌자 역할을 하는 것은 꽤 재미있습니다.",
         "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
+        "op_option2": "(파파고)다음에는 누구를 조사할까요?",
+        "op_reply2": "(파파고)그러나 동지 사령관의 명령에 따라",
         "reply2_shipgirl": null
     },
     "594": {
         "id": 594,
         "ship_group": 80302,
-        "message": "Translation Source Missing",
+        "message": "(파파고)정말 독특한 소리..",
         "name": "Brennus",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250919_bulunnusiZu1m8TdxKi2w8i9r.png",
         "shipgirl_names": [
             80302
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
+        "op_option1": "(파파고)그럼 어디서 들을 수 있나요?",
+        "op_reply1": "(파파고)달빛 아래 조용한 곳에서 너를 기다릴게",
         "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
+        "op_option2": "(파파고)밝은 달을 향해 잔을 들어",
+        "op_reply2": "(파파고)우리는 당신과 함께 세 사람입니다",
         "reply2_shipgirl": null
     },
     "595": {
         "id": 595,
         "ship_group": 99901,
-        "message": "Translation Source Missing",
+        "message": "(파파고)진행 중인 지침: 유기 영양소를 사용하여 수생 탄소 기반 생명체의 생리적 요구를 충족합니다.",
         "name": "GascogneT8",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250919_jiasikenieqwbkOKo02VBzzWQy.png",
         "shipgirl_names": [
             99901
+        ],
+        "op_option1": "(파파고)이 표현은 누가 가르쳐줬나요?",
+        "op_reply1": "(파파고)답장은 전에 지나가던 Vittorio Cuniberti에게서 왔습니다.",
+        "reply1_shipgirl": null,
+        "op_option2": "(파파고)배고픈 것 봐...",
+        "op_reply2": "(파파고)Gascogne은 다른 유기 영양소를 사용하여 육상 탄소 기반 생명체의 생리학적 요구를 충족할 수 있습니다.",
+        "reply2_shipgirl": null
+    },
+    "596": {
+        "id": 596,
+        "ship_group": 80503,
+        "message": "(파파고)온도가 비정상적으로 올라가네요..",
+        "name": "Alsace",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/250919_aersasilKX1vyDSHuq6rYId.png",
+        "shipgirl_names": [
+            80503
+        ],
+        "op_option1": "(파파고)수영장으로 오세요. 시원하게 도와드릴께요",
+        "op_reply1": "(파파고)알자스, 지금 떠나라!",
+        "reply1_shipgirl": null,
+        "op_option2": "(파파고)얼음 좀 어때요?",
+        "op_reply2": "(파파고)사령관! 와인 맛이 더 좋아졌어요!",
+        "reply2_shipgirl": null
+    },
+    "597": {
+        "id": 597,
+        "ship_group": 1140001,
+        "message": "Translation Source Missing",
+        "name": "Hestia",
+        "picture_persist": "",
+        "shipgirl_names": [
+            1140001
         ],
         "op_option1": "Translation Source Missing",
         "op_reply1": "Translation Source Missing",
@@ -27935,14 +27967,14 @@
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
     },
-    "596": {
-        "id": 596,
-        "ship_group": 80503,
+    "598": {
+        "id": 598,
+        "ship_group": 1140002,
         "message": "Translation Source Missing",
-        "name": "Alsace",
+        "name": "Ryu Lion",
         "picture_persist": "",
         "shipgirl_names": [
-            80503
+            1140002
         ],
         "op_option1": "Translation Source Missing",
         "op_reply1": "Translation Source Missing",

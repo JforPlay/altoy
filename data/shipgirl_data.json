@@ -2395,6 +2395,10 @@
         "name": "정신 없는 안내원?",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202244/icon.png"
     },
+    "202248": {
+        "name": "Love's Greeting",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202248/icon.png"
+    },
     "202250": {
         "name": "셰필드(μ장비)",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202250/icon.png"
@@ -5051,6 +5055,10 @@
         "name": "옥좌 위에 핀 꽃",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307151/icon.png"
     },
+    "307158": {
+        "name": "물빛 달의 화촉",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307158/icon.png"
+    },
     "307160": {
         "name": "{namecode:302}",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307160/icon.png"
@@ -5954,6 +5962,10 @@
     "405033": {
         "name": "교실 안의 기다림",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405033/icon.png"
+    },
+    "405038": {
+        "name": "사랑이라는 이름의 독",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405038/icon.png"
     },
     "405040": {
         "name": "튀링겐",
