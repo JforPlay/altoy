@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentCharacterSkins = [];
     window.currentAudio = null;
     window.currentPlayButton = null;
+    window.globalVolume = 0.3; // Add global volume state (30% default)
 
     // Fuzzy Search Instances
     let characterFuse, skinFuse;
@@ -220,11 +221,48 @@ document.addEventListener('DOMContentLoaded', () => {
             stopCurrentAudio();
             window.currentPlayButton = button;
             window.currentAudio = new Audio(src);
+            window.currentAudio.volume = window.globalVolume; // Set volume from global state
             window.currentAudio.play().catch(e => console.error("Error playing audio:", e));
             button.textContent = '■';
             button.classList.add('playing');
             window.currentAudio.addEventListener('ended', stopCurrentAudio);
         }
+    };
+
+    // Add volume control handler
+    const handleVolumeChange = (event) => {
+        window.globalVolume = event.target.value / 100;
+        
+        // Update current playing audio if any
+        if (window.currentAudio) {
+            window.currentAudio.volume = window.globalVolume;
+        }
+        
+        // Sync all volume controls
+        const allVolumeSliders = document.querySelectorAll('.volume-slider');
+        const allVolumePercentages = document.querySelectorAll('.volume-percentage');
+        
+        allVolumeSliders.forEach(slider => {
+            if (slider !== event.target) {
+                slider.value = Math.round(window.globalVolume * 100);
+            }
+        });
+        
+        allVolumePercentages.forEach(percentage => {
+            percentage.textContent = `${Math.round(window.globalVolume * 100)}%`;
+        });
+    };
+
+    // Create volume control HTML
+    const createVolumeControl = () => {
+        const volumePercentage = Math.round(window.globalVolume * 100);
+        return `
+            <div class="volume-control-container">
+                <i class="fas fa-volume-up volume-icon"></i>
+                <input type="range" class="volume-slider" min="0" max="100" value="${volumePercentage}">
+                <span class="volume-percentage">${volumePercentage}%</span>
+            </div>
+        `;
     };
 
     function clearSkinDetails() {
@@ -236,7 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const displaySkinDetails = () => {
-        // ... (This entire function is unchanged from the previous version)
         const selectedSkinName = skinSearchInput.value;
         if (!selectedSkinName) {
             clearSkinDetails();
@@ -244,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const skin = skinData.find(row => row['한글 함순이 + 스킨 이름'] === selectedSkinName);
         if (!skin) return;
+
         skinInfoBox.innerHTML = '';
         let infoHtml = '';
         const gemIconHtml = `<img src="assets/icon/60px-Ruby.png" class="gem-icon" alt="Gem">`;
@@ -336,20 +374,44 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         finalNormalKeys.forEach(key => normalTableBodyHtml += createRow(key, key));
         oathVoiceKeys.forEach(key => oathTableBodyHtml += createRow(key, key.replace('_ex', ' EX')));
+        
         if (normalTableBodyHtml) {
-            textContentHtml += `<table class="voice-line-table"><thead><tr><th colspan="2">선택한 함순이의 대사 모음</th></tr></thead><tbody>${normalTableBodyHtml}</tbody></table>`;
+            const tableHeaderHtml = `
+                <div class="table-header-with-volume">
+                    <span>선택한 함순이의 대사 모음</span>
+                    ${createVolumeControl()}
+                </div>
+            `;
+            textContentHtml += `<table class="voice-line-table"><thead><tr><th colspan="2">${tableHeaderHtml}</th></tr></thead><tbody>${normalTableBodyHtml}</tbody></table>`;
         }
+        
         textContentArea.innerHTML = textContentHtml;
+        
         if (oathTableBodyHtml && skin['ex_chat_status'] === 1) {
-            const fullOathTableHtml = `<table class="voice-line-table"><thead><tr><th colspan="2">선택한 함순이의 서약대사 모음</th></tr></thead><tbody>${oathTableBodyHtml}</tbody></table>`;
+            const oathTableHeaderHtml = `
+                <div class="table-header-with-volume">
+                    <span>선택한 함순이의 서약대사 모음</span>
+                    ${createVolumeControl()}
+                </div>
+            `;
+            const fullOathTableHtml = `<table class="voice-line-table"><thead><tr><th colspan="2">${oathTableHeaderHtml}</th></tr></thead><tbody>${oathTableBodyHtml}</tbody></table>`;
             oathTableArea.innerHTML = fullOathTableHtml;
             oathTableArea.classList.remove('hidden');
         } else {
             oathTableArea.classList.add('hidden');
         }
+        
         textContentHtml ? textContentArea.classList.remove('hidden') : textContentArea.classList.add('hidden');
+        
+        // Add event listeners for both play buttons and volume controls
         textContentArea.addEventListener('click', handlePlayClick);
         oathTableArea.addEventListener('click', handlePlayClick);
+        
+        // Add volume control event listeners
+        const volumeSliders = document.querySelectorAll('.volume-slider');
+        volumeSliders.forEach(slider => {
+            slider.addEventListener('input', handleVolumeChange);
+        });
     };
 
     window.addEventListener('popstate', applyFiltersFromURL);
