@@ -83,6 +83,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    // Modified function for skin dropdown that always shows all options
+    const populateSkinDropdown = (dropdownEl, skinNames, onSelectCallback) => {
+        dropdownEl.innerHTML = '';
+        if (skinNames.length === 0) {
+            dropdownEl.innerHTML = `<div class="no-results">스킨이 없습니다</div>`;
+            return;
+        }
+
+        skinNames.forEach(skinName => {
+            const a = document.createElement('a');
+            a.textContent = skinName;
+            a.addEventListener('click', () => { onSelectCallback(skinName); });
+            dropdownEl.appendChild(a);
+        });
+    };
+
     const setupDropdown = (inputEl, dropdownEl, getFuseInstance, onSelectCallback) => {
         const handleFilter = () => {
             const fuse = getFuseInstance();
@@ -106,6 +122,23 @@ document.addEventListener('DOMContentLoaded', () => {
         inputEl.addEventListener('blur', () => { setTimeout(() => { dropdownEl.style.display = 'none'; }, 200); });
     };
 
+    // Special setup for skin dropdown that always shows all options
+    const setupSkinDropdown = (inputEl, dropdownEl, onSelectCallback) => {
+        const showAllSkins = () => {
+            if (currentCharacterSkins.length === 0) {
+                dropdownEl.innerHTML = `<div class="no-results">함순이를 먼저 선택해주세요</div>`;
+                return;
+            }
+            populateSkinDropdown(dropdownEl, currentCharacterSkins, onSelectCallback);
+        };
+
+        inputEl.addEventListener('focus', () => {
+            showAllSkins();
+            dropdownEl.style.display = 'block';
+        });
+        inputEl.addEventListener('blur', () => { setTimeout(() => { dropdownEl.style.display = 'none'; }, 200); });
+    };
+
     // URL State Management Functions
     const updateURLWithFilters = () => { const params = new URLSearchParams(); if (characterSearchInput.value) { params.set('character', characterSearchInput.value); } if (skinSearchInput.value) { params.set('skin', skinSearchInput.value); } const newUrl = `${window.location.pathname}?${params.toString()}`; history.replaceState({ path: newUrl }, '', newUrl); };
     const applyFiltersFromURL = () => { const params = new URLSearchParams(window.location.search); const character = params.get('character'); const skin = params.get('skin'); if (character) { if (allCharacterNames.includes(character)) { handleCharacterSelect(character, false); if (skin) { if (currentCharacterSkins.includes(skin)) { handleSkinSelect(skin); } } } } };
@@ -123,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             characterFuse = new Fuse(characterDataForFuse, fuseOptions);
 
             setupDropdown(characterSearchInput, characterDropdownContent, () => characterFuse, handleCharacterSelect);
-            setupDropdown(skinSearchInput, skinDropdownContent, () => skinFuse, handleSkinSelect);
+            setupSkinDropdown(skinSearchInput, skinDropdownContent, handleSkinSelect);
             
             applyFiltersFromURL();
             
@@ -147,8 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .filter(row => row['함순이 이름'] === characterName)
             .map(skin => skin['한글 함순이 + 스킨 이름']);
 
-        const skinDataForFuse = currentCharacterSkins.map(name => ({ name }));
-        skinFuse = new Fuse(skinDataForFuse, fuseOptions);
+        // Remove the skinFuse creation since we're not using fuzzy search for skins anymore
             
         if (clearSkin) {
             clearSkinDetails();
