@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const gemIconHtml = `<img src="assets/icon/60px-Ruby.png" class="gem-icon" alt="Gem">`;
             const costHtml = skin['재화'] ? `${gemIconHtml} ${skin['재화']}` : 'N/A';
             const periodHtml = skin['기간'] || '정보 없음';
-            const badgeHtml = skin.isNew ? '<div class="new-badge">New</div>' : '';
+            const badgeHtml = skin.isNew ? '<div class="new-badge">판매중</div>' : '';
 
             return `
                 <a href="${linkUrl}" class="skin-box-link">
