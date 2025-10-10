@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         buttons: {
             clearAll: document.getElementById('clear-all-btn'),
-            info: document.getElementById('info-button')
+            info: document.getElementById('info-button'),
+            filterToggle: document.getElementById('filter-toggle-btn')
         },
         popup: {
             container: document.getElementById('info-popup'),
@@ -29,7 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
             limited: document.getElementById('limited-skins-container'),
             permanent: document.getElementById('permanent-skins-container'),
             other: document.getElementById('other-skins-container')
-        }
+        },
+        filterContainer: document.getElementById('filter-container')
     };
 
     // === STATE ===
@@ -350,6 +352,11 @@ document.addEventListener('DOMContentLoaded', () => {
         closePopup() {
             DOM.popup.container.classList.remove('visible');
             document.body.classList.remove('no-scroll');
+        },
+
+        toggleFilters() {
+            DOM.filterContainer.classList.toggle('visible');
+            DOM.buttons.filterToggle.classList.toggle('active');
         }
     };
 
@@ -385,6 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     DOM.buttons.clearAll.addEventListener('click', EventHandlers.resetFilters);
     DOM.buttons.info.addEventListener('click', EventHandlers.openPopup);
+    DOM.buttons.filterToggle.addEventListener('click', EventHandlers.toggleFilters);
     DOM.popup.closeBtn.addEventListener('click', EventHandlers.closePopup);
 
     DOM.popup.container.addEventListener('click', (event) => {

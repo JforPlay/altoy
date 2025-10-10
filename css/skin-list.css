@@ -87,9 +87,35 @@ label {
 }
 .info-popup-content p { margin: 0; line-height: 1.6; font-size: 1.0em; color: #b9bbbe; }
 .info-popup-content strong { color: #ffffff; font-size: 1.2em; display: block; margin-bottom: 10px; }
+.info-popup-content .warning-text { color: #ffcc00; font-weight: bold; }
 
 
 /* --- Filters --- */
+.filter-toggle-btn {
+    display: none;
+    background-color: #5865f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 400px;
+}
+.filter-toggle-btn:hover {
+    background-color: #4752c4;
+}
+.filter-toggle-btn i {
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+}
+.filter-toggle-btn.active i {
+    transform: rotate(180deg);
+}
+
 .filter-container {
     display: flex;
     flex-wrap: wrap;
@@ -315,7 +341,97 @@ label {
 
 /* --- Responsive Styles --- */
 @media (max-width: 768px) {
-    html {
-        font-size: 12px;
+    .main-container {
+        padding: 10px;
+    }
+    
+    /* Show filter toggle button on mobile */
+    .filter-toggle-btn {
+        display: block;
+    }
+    
+    /* Hide filters by default on mobile */
+    .filter-container {
+        display: none;
+        margin-top: 10px;
+    }
+    
+    .filter-container.visible {
+        display: flex;
+    }
+    
+    /* Stack filter groups vertically on mobile */
+    .filter-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    /* Adjust checkbox layout for mobile */
+    .checkbox-group {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    /* Make search container full width on mobile */
+    .search-container {
+        flex-direction: column;
+        margin: 20px 0;
+        gap: 10px;
+        max-width: 100%;
+    }
+    
+    .search-input-group {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .clear-btn {
+        width: 100%;
+    }
+    
+    /* Optimize skin grid for mobile - fit 3 cards per row */
+    .skin-list-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    
+    /* Adjust card styling for mobile with better text sizes */
+    .skin-info {
+        padding: 8px;
+        gap: 4px;
+    }
+    
+    .skin-info h3 {
+        font-size: 0.85em;
+        line-height: 1.2;
+    }
+    
+    .info-line {
+        font-size: 0.7em;
+        line-height: 1.3;
+    }
+    
+    .gem-icon {
+        width: 11px;
+        height: 11px;
+    }
+    
+    .new-badge {
+        font-size: 0.6em;
+        padding: 2px 6px;
+        top: 4px;
+        right: 4px;
+    }
+    
+    /* Section headers */
+    .skin-section h2 {
+        font-size: 1.3em;
+        padding-bottom: 8px;
+        margin-bottom: 15px;
     }
 }

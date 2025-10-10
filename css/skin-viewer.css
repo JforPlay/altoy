@@ -269,7 +269,27 @@ h1, h2 {
 
 /* --- Responsive Styles --- */
 @media (max-width: 768px) {
-    html { font-size: 12px; }
+    /* html { font-size: 12px; } */
     .descriptions-panel, .description-group { flex-direction: column; }
     .voice-line-table { display: block; overflow-x: auto; }
+    
+    /* Description headers */
+    .description-item h2 {
+        font-size: 1.2em;
+    }
+    
+    /* Description text */
+    .description-item p {
+        font-size: 0.9em;
+    }
+    
+    /* Voice line table header */
+    .voice-line-table thead th {
+        font-size: 1.2em;
+    }
+    
+    /* Voice line table cells */
+    .voice-line-table td {
+        font-size: 0.9em;
+    }
 }
