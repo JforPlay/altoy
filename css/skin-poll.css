@@ -1,31 +1,27 @@
-/* --- Global & Body Styles --- */
+/* ====================================
+   GLOBAL STYLES & RESET
+   ==================================== */
+
 body {
   background-color: #36393f;
   font-family: sans-serif;
   color: #dcddde;
   margin: 0;
-  padding: 0 20px; /* NEW: Add horizontal padding to body */
+  padding: 0 20px;
 }
 
 body.no-scroll {
   overflow: hidden;
 }
 
-/* Alternatively, add max-width container */
-.main-content-wrapper {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
+/* ====================================
+   PAGE HEADER
+   ==================================== */
 
-/* --- Page Header --- */
 .page-header {
   text-align: center;
-  margin-bottom: 30px;
-  margin-top: 40px;
-  padding-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
+  margin: 40px 0 30px 0;
+  padding: 0 20px 20px 20px;
   border-bottom: 2px solid #40444b;
 }
 
@@ -34,7 +30,7 @@ body.no-scroll {
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin: 0 0 15px 0; /* Add bottom margin */
+  margin: 0 0 15px 0;
 }
 
 #info-button {
@@ -48,7 +44,7 @@ body.no-scroll {
   color: #a3b8f7;
 }
 
-/* NEW: Container for status indicator and refresh button */
+/* Status Row (Indicator + Refresh Button) */
 .header-status-row {
   display: flex;
   justify-content: center;
@@ -57,7 +53,10 @@ body.no-scroll {
   flex-wrap: wrap;
 }
 
-/* --- Data Age Indicator --- */
+/* ====================================
+   DATA AGE INDICATOR
+   ==================================== */
+
 .data-age-indicator {
   font-size: 0.9em;
   margin: 0;
@@ -68,7 +67,7 @@ body.no-scroll {
   align-items: center;
   height: 36px;
   box-sizing: border-box;
-  transition: all 0.3s ease; /* Smooth transition for error states */
+  transition: all 0.3s ease;
 }
 
 .data-age-indicator i {
@@ -85,7 +84,10 @@ body.no-scroll {
   animation: pulse-error 2s ease-in-out infinite;
 }
 
-/* --- Compact refresh button next to indicator --- */
+/* ====================================
+   REFRESH BUTTON (Compact)
+   ==================================== */
+
 .refresh-button-compact {
   padding: 8px 16px;
   font-size: 0.9em;
@@ -100,7 +102,7 @@ body.no-scroll {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  height: 34px; /* Match indicator height */
+  height: 36px;
   min-width: auto;
   white-space: nowrap;
   box-sizing: border-box;
@@ -135,26 +137,11 @@ body.no-scroll {
   to { transform: rotate(360deg); }
 }
 
-/* Remove old header-top styles if they exist */
-.header-top {
-  display: none;
-}
+/* ====================================
+   POPUP STYLES (Info & Image)
+   ==================================== */
 
-/* --- Data Age Indicator --- */
-.data-age-indicator {
-  font-size: 0.9em;
-  margin-top: 5px;
-  padding: 8px 12px;
-  background-color: rgba(47, 49, 54, 0.5);
-  border-radius: 5px;
-  display: inline-block;
-}
-
-.data-age-indicator i {
-  margin-right: 5px;
-}
-
-/* --- Info Popup Styles --- */
+/* Info Popup */
 #info-popup {
   position: fixed;
   top: 0;
@@ -188,23 +175,6 @@ body.no-scroll {
   text-align: center;
 }
 
-.close-popup-btn {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 2em;
-  color: #b9bbbe;
-  cursor: pointer;
-  line-height: 1;
-  transition: color 0.2s ease;
-}
-
-.close-popup-btn:hover {
-  color: #ffffff;
-}
-
 .info-popup-content p {
   margin: 0;
   line-height: 1.6;
@@ -224,7 +194,24 @@ body.no-scroll {
   font-weight: bold;
 }
 
-/* --- Image Popup Styles --- */
+.close-popup-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 2em;
+  color: #b9bbbe;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.close-popup-btn:hover {
+  color: #ffffff;
+}
+
+/* Image Popup */
 #image-popup {
   position: fixed;
   top: 0;
@@ -303,11 +290,14 @@ body.no-scroll {
   transform: scale(1.1);
 }
 
-/* --- Leaderboard Styles --- */
+/* ====================================
+   LEADERBOARD
+   ==================================== */
+
 .leaderboard-section {
   max-width: 800px;
   margin: 0 auto 30px auto;
-  padding: 0 20px; /* NEW: Add horizontal padding */
+  padding: 0 20px;
 }
 
 .leaderboard-toggle {
@@ -398,7 +388,40 @@ body.no-scroll {
   color: #8e9297;
 }
 
-/* --- Filter Container --- */
+/* ====================================
+   FILTER SECTION
+   ==================================== */
+
+/* Filter Toggle Button (Mobile) */
+.filter-toggle-btn {
+  display: none;
+  background-color: #5865f2;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin: 20px auto;
+  width: calc(100% - 40px);
+  max-width: 400px;
+}
+
+.filter-toggle-btn:hover {
+  background-color: #4752c4;
+}
+
+.filter-toggle-btn i {
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.filter-toggle-btn.active i {
+  transform: rotate(180deg);
+}
+
+/* Filter Container */
 .filter-container {
   display: flex;
   flex-wrap: wrap;
@@ -408,9 +431,7 @@ body.no-scroll {
   padding: 20px;
   background-color: #2f3136;
   border-radius: 8px;
-  margin-bottom: 30px;
-  margin-left: 20px;  /* NEW: Left margin */
-  margin-right: 20px; /* NEW: Right margin */
+  margin: 0 20px 30px 20px;
 }
 
 .filter-group {
@@ -433,15 +454,16 @@ body.no-scroll {
   color: #dcddde;
 }
 
-/* --- Dropdown Styles --- */
+/* Dropdown (Character Search) */
 .dropdown-container {
   position: relative;
-  width: 200px;
+  width: 100%;
+  min-width: 200px;
 }
 
 .dropdown-container input {
   font-size: 1em;
-  padding: 8px;
+  padding: 8px 12px;
   border-radius: 5px;
   border: 2px solid #2f3136;
   background-color: #40444b;
@@ -489,7 +511,7 @@ body.no-scroll {
   text-align: center;
 }
 
-/* --- Checkbox & Button Filters --- */
+/* Checkbox Group (Rarity Filter) */
 .checkbox-group {
   display: flex;
   flex-wrap: wrap;
@@ -497,7 +519,6 @@ body.no-scroll {
   background-color: #40444b;
   padding: 8px 12px;
   border-radius: 5px;
-  height: 100%;
   box-sizing: border-box;
 }
 
@@ -509,6 +530,7 @@ body.no-scroll {
   cursor: pointer;
 }
 
+/* Reset Button */
 .reset-button {
   padding: 8px 16px;
   font-size: 1em;
@@ -519,66 +541,21 @@ body.no-scroll {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s;
-  height: 100%;
 }
 
 .reset-button:hover {
   background-color: #5d636d;
 }
 
-/* --- Refresh Button --- */
-.refresh-button {
-  padding: 8px 16px;
-  font-size: 1em;
-  font-weight: bold;
-  color: #ffffff;
-  background-color: #27ae60;
-  border: 2px solid #229954;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 100%;
-  min-width: 130px;
-  justify-content: center;
-}
+/* ====================================
+   POLL CONTAINER & CARDS
+   ==================================== */
 
-.refresh-button:hover:not(:disabled) {
-  background-color: #229954;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
-}
-
-.refresh-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background-color: #95a5a6;
-  border-color: #7f8c8d;
-  transform: none;
-  box-shadow: none;
-}
-
-.refresh-button i {
-  transition: transform 0.3s ease;
-}
-
-.refresh-button.loading i {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* --- Poll Container & Cards --- */
 .poll-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 20px;
-  padding: 0 20px 20px 20px; /* NEW: Add horizontal padding */
+  padding: 0 20px 20px 20px;
 }
 
 .poll-box {
@@ -590,6 +567,7 @@ body.no-scroll {
   flex-direction: column;
 }
 
+/* Poll Image */
 .poll-image {
   width: 100%;
   aspect-ratio: 3 / 4;
@@ -604,6 +582,7 @@ body.no-scroll {
   box-shadow: 0px 4px 12px rgba(114, 137, 218, 0.5);
 }
 
+/* Poll Info Section */
 .poll-info {
   padding: 12px;
   display: flex;
@@ -635,9 +614,16 @@ body.no-scroll {
   color: #8e9297;
 }
 
-/* --- Rating Area --- */
+.info-line:last-of-type {
+  margin-bottom: 8px;
+}
+
+/* ====================================
+   RATING & VOTING AREA
+   ==================================== */
+
 .rating-area {
-  margin-top: auto;
+  margin-top: 8px;
   border-top: 1px solid #40444b;
   padding-top: 10px;
 }
@@ -658,7 +644,7 @@ body.no-scroll {
   top: 3px;
 }
 
-/* --- Star Rating --- */
+/* Star Rating */
 .star-rating {
   display: flex;
   flex-direction: row-reverse;
@@ -689,7 +675,7 @@ body.no-scroll {
   color: #03a9f4;
 }
 
-/* --- Confirm Vote Message --- */
+/* Confirm Vote Message */
 .confirm-vote-message {
   text-align: center;
   font-size: 0.75em;
@@ -726,7 +712,10 @@ body.no-scroll {
   animation: pop-effect 0.3s ease-in-out;
 }
 
-/* --- Poll Results / Score Bar --- */
+/* ====================================
+   POLL RESULTS & SCORE BAR
+   ==================================== */
+
 .poll-results {
   margin-top: 8px;
   text-align: center;
@@ -761,7 +750,10 @@ body.no-scroll {
   font-weight: bold;
 }
 
-/* --- Loading & No Results --- */
+/* ====================================
+   LOADING & EMPTY STATES
+   ==================================== */
+
 .loading-indicator,
 .no-results {
   color: #b9bbbe;
@@ -771,7 +763,7 @@ body.no-scroll {
   padding: 40px;
 }
 
-/* --- Skeleton Loader --- */
+/* Skeleton Loader */
 .skeleton-card {
   background-color: #2f3136;
   border-radius: 8px;
@@ -811,7 +803,10 @@ body.no-scroll {
   width: 60%;
 }
 
-/* --- Notification Styles --- */
+/* ====================================
+   NOTIFICATIONS
+   ==================================== */
+
 .notification {
   position: fixed;
   top: 20px;
@@ -864,12 +859,12 @@ body.no-scroll {
   }
 }
 
-/* --- Responsive Styles for Mobile --- */
+/* ====================================
+   RESPONSIVE DESIGN (Mobile)
+   ==================================== */
+
 @media (max-width: 768px) {
-  html {
-    font-size: 12px;
-  }
-  
+  /* Body & Header */
   body {
     padding: 0 10px;
   }
@@ -886,6 +881,7 @@ body.no-scroll {
     margin-bottom: 10px;
   }
   
+  /* Status Row */
   .header-status-row {
     gap: 8px;
   }
@@ -906,5 +902,172 @@ body.no-scroll {
     font-size: 1em;
   }
   
-  /* ... rest of mobile styles ... */
+  /* Leaderboard */
+  .leaderboard-section {
+    padding: 0 10px;
+  }
+  
+  .leaderboard-toggle {
+    font-size: 1em;
+    padding: 10px 16px;
+  }
+  
+  .leaderboard-item {
+    grid-template-columns: 25px 45px 1fr auto;
+    gap: 10px;
+    padding: 6px 0;
+  }
+  
+  .leaderboard-rank {
+    font-size: 0.9em;
+  }
+  
+  .leaderboard-image {
+    width: 45px;
+    height: 58px;
+  }
+  
+  .leaderboard-details .skin-name {
+    font-size: 0.9em;
+  }
+  
+  .leaderboard-details .char-name {
+    font-size: 0.75em;
+  }
+  
+  .leaderboard-score .avg-score {
+    font-size: 1em;
+  }
+  
+  .leaderboard-score .total-votes {
+    font-size: 0.7em;
+  }
+  
+  /* Filters */
+  .filter-toggle-btn {
+    display: block;
+  }
+  
+  .filter-container {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    margin: 10px 10px 20px 10px;
+  }
+  
+  .filter-container.visible {
+    display: flex;
+  }
+  
+  .filter-group {
+    width: 100%;
+  }
+  
+  .filter-group select {
+    width: 100%;
+  }
+  
+  .checkbox-group {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  /* Poll Grid - 2 columns on mobile */
+  .poll-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 10px 20px 10px;
+  }
+  
+  /* Poll Cards */
+  .poll-box {
+    font-size: 0.9em;
+  }
+  
+  .poll-info {
+    padding: 8px;
+  }
+  
+  .poll-info h3 {
+    font-size: 0.9em;
+    margin-bottom: 3px;
+  }
+  
+  .poll-info .character-name {
+    font-size: 0.8em;
+    margin-bottom: 6px;
+  }
+  
+  .info-line {
+    font-size: 0.75em;
+    line-height: 1.4;
+  }
+  
+  /* Voting Interface */
+  .vote-widget {
+    gap: 4px;
+    margin-bottom: 2px;
+  }
+  
+  .vote-label {
+    font-size: 0.9em;
+  }
+  
+  .star-rating label {
+    font-size: 1.6em;
+  }
+  
+  .confirm-vote-message {
+    font-size: 0.75em;
+  }
+  
+  .score-bar-visual {
+    font-size: 1.3em;
+  }
+  
+  .score-bar-text {
+    font-size: 0.8em;
+  }
+  
+  .score-bar-text strong {
+    font-size: 1.05em;
+  }
+  
+  /* Image Popup */
+  .image-popup-content {
+    max-width: 95%;
+    max-height: 95%;
+  }
+  
+  .popup-image {
+    max-height: 70vh;
+  }
+  
+  .popup-skin-info {
+    padding: 10px 15px;
+    margin-top: 10px;
+  }
+  
+  .popup-skin-info .popup-skin-name {
+    font-size: 1.1em;
+  }
+  
+  .popup-skin-info .popup-char-name {
+    font-size: 0.9em;
+  }
+  
+  .close-image-popup-btn {
+    top: -35px;
+    font-size: 2.5em;
+  }
+  
+  /* Notifications */
+  .notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    padding: 12px 16px;
+    font-size: 0.9em;
+  }
 }
