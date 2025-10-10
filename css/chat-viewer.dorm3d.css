@@ -91,6 +91,29 @@ h1, h2 { color: #ffffff; text-align: center; }
 .choice-button { background-color: #5865f2; color: #ffffff; border: none; border-radius: 5px; padding: 12px 18px; font-size: 1em; cursor: pointer; text-align: right; transition: background-color 0.2s; max-width: 80%; }
 .choice-button:hover { background-color: #4752c4; }
 
+/* Selected choice styling - smaller and more subtle */
+.message-bubble.selected-choice {
+    font-size: 0.85em;
+    opacity: 0.8;
+    margin: 8px 0;
+    padding: 8px 12px;
+    background-color: #e3f2fd;
+    border: 1px solid #bbdefb;
+}
+
+/* End of conversation message */
+.end-of-conversation {
+    text-align: center;
+    padding: 20px;
+    margin: 20px 0;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #666;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    border: 2px dashed #ccc;
+}
+
 /* --- Special Effects --- */
 .shake-effect { animation: shake 0.5s; }
 @keyframes shake {

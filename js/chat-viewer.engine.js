@@ -170,7 +170,11 @@ class ChatViewerEngine {
      * Main story progression engine
      */
     showNextLine() {
-        if (this.currentScriptIndex >= this.currentStoryScripts.length) return;
+        if (this.currentScriptIndex >= this.currentStoryScripts.length) {
+            // Display end of conversation message
+            this.displayEndOfConversation();
+            return;
+        }
         
         const script = this.currentStoryScripts[this.currentScriptIndex];
         let processed = false;
@@ -236,6 +240,7 @@ class ChatViewerEngine {
         const currentStoryInfo = this.allData[this.selectedCharacterName][this.storyDropdown.value];
         let speakerName = script.kr_name || '';
         let speakerIcon = script.icon || '';
+        let speakerUsername = '';
         let messageClass = '';
         
         // Determine message type
@@ -244,9 +249,17 @@ class ChatViewerEngine {
             messageClass = 'player';
         } else if (speakerName && speakerIcon) {
             messageClass = 'character';
+            // For guest characters, check if we have their username
+            if (this.shipGroupIdData && script.ship_group) {
+                const idEntry = this.shipGroupIdData[script.ship_group];
+                if (idEntry && idEntry.name) {
+                    speakerUsername = idEntry.name;
+                }
+            }
         } else if (script.ship_group === currentStoryInfo.ship_group) {
             speakerName = currentStoryInfo.kr_name;
             speakerIcon = currentStoryInfo.icon;
+            speakerUsername = currentStoryInfo.ship_name || '';
             messageClass = 'character';
         } else {
             messageClass = 'narrator';
@@ -257,17 +270,26 @@ class ChatViewerEngine {
         
         // Add speaker name with optional ID
         if (messageClass === 'character') {
-            const idEntry = this.shipGroupIdData[script.ship_group];
-            let displayName = speakerName;
-            if (idEntry && idEntry.name) {
-                displayName += ` <span class="speaker-id">@${idEntry.name}</span>`;
+            const speakerNameElement = document.createElement('p');
+            speakerNameElement.className = 'speaker-name';
+            speakerNameElement.textContent = speakerName;
+            
+            // Append @username if available
+            if (speakerUsername) {
+                const speakerId = document.createElement('span');
+                speakerId.className = 'speaker-id';
+                speakerId.textContent = ` @${speakerUsername}`;
+                speakerNameElement.appendChild(speakerId);
             }
-            messageBubble.innerHTML += `<p class="speaker-name">${displayName}</p>`;
+            
+            messageBubble.appendChild(speakerNameElement);
         } else if (speakerName && messageClass !== 'player') {
             messageBubble.innerHTML += `<p class="speaker-name">${speakerName}</p>`;
         }
         
-        messageBubble.innerHTML += `<p>${script.param}</p>`;
+        const messageText = document.createElement('p');
+        messageText.textContent = script.param;
+        messageBubble.appendChild(messageText);
         
         let topLevelElement = messageBubble;
         
@@ -376,7 +398,8 @@ class ChatViewerEngine {
      * Handles the player's choice and finds the next script block
      */
     handleChoice(chosenFlag, chosenText) {
-        this.displayBubble({ ship_group: 0, param: chosenText });
+        // Display the selected choice as a small option bubble
+        this.displaySelectedChoice(chosenText);
         this.optionsContainer.innerHTML = '';
         
         const foundIndex = this.currentStoryScripts.findIndex((script, index) => 
@@ -385,6 +408,29 @@ class ChatViewerEngine {
         
         this.currentScriptIndex = (foundIndex !== -1) ? foundIndex : this.currentScriptIndex + 1;
         this.showNextLineAfterDelay();
+    }
+    
+    /**
+     * Displays the selected choice as a small option bubble
+     */
+    displaySelectedChoice(chosenText) {
+        const choiceBubble = document.createElement('div');
+        choiceBubble.classList.add('message-bubble', 'player', 'selected-choice');
+        choiceBubble.innerHTML = `<p>${chosenText}</p>`;
+        
+        this.storyContainer.appendChild(choiceBubble);
+        choiceBubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+    
+    /**
+     * Displays end of conversation message
+     */
+    displayEndOfConversation() {
+        const endMessage = document.createElement('div');
+        endMessage.className = 'end-of-conversation';
+        endMessage.textContent = '대화 종료';
+        this.storyContainer.appendChild(endMessage);
+        endMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
     
     /**

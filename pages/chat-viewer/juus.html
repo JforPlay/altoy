@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>벽람항로 쥬톡 뷰어</title>
-    <link rel="stylesheet" href="css/chat-viewer.juus.css">
+    <link rel="stylesheet" href="css/chat-viewer.css">
     <link rel="stylesheet" href="css/nav.style.css">
 </head>
 <body>
@@ -17,12 +17,12 @@
     <main class="content-container">
         <section id="character-selection-section">
             <h3>1. 캐릭터/그룹 선택</h3>
-            <div id="character-selector-grid" class="character-grid">
+            <div id="character-selector-grid" class="character-grid juus">
                  <p class="loading-message">캐릭터 정보 불러오는 중...</p>
             </div>
         </section>
 
-        <section id="story-display-section" class="hidden">
+        <section id="story-display-section" class="hidden juus">
             <div class="story-controls">
                 <div class="story-controls-left">
                     <div class="story-select-wrapper">
@@ -36,7 +36,7 @@
                 <button id="restart-button" class="restart-button">다시 재생하기</button>
             </div>
             <div class="story-container" id="story-container"></div>
-            <div class="options-container" id="options-container"></div>
+            <div class="options-container juus" id="options-container"></div>
         </section>
     </main>
 
