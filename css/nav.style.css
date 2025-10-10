@@ -158,6 +158,11 @@
 
 /* --- Responsive Styles for Mobile --- */
 @media screen and (max-width: 768px) {
+  /* Global mobile text size reduction for all pages */
+  h1 {
+    font-size: calc(2em - 0.5em); /* Reduces h1 by 10% - adjust to 0.05em for even subtler */
+  }
+
   .navbar {
     padding: 0.75rem 1rem; /* Reduce vertical padding */
   }
@@ -223,6 +228,7 @@
   .nav-links {
     display: block;
     padding: 0.75rem;
+    font-size: calc(1em - 0.1em); /* Consistent with h1 reduction */
   }
 
   .dropdown-menu {
@@ -234,6 +240,7 @@
 
   .dropdown-menu li a {
     padding: 0.75rem;
+    font-size: calc(1em - 0.1em); /* Consistent with nav links */
   }
 }
 
