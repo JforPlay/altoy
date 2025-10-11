@@ -1088,8 +1088,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const applyFiltersFromURL = () => {
     const params = new URLSearchParams(window.location.search);
     if (params.toString() === '') {
-      skinTypeSelect.value = '수영복';
-      tagSelect.value = 'L2D';
+      skinTypeSelect.value = '닌자의 성';
+      // tagSelect.value = '전체';
     } else {
       characterNameSearch.value = params.get('character') || '';
       skinTypeSelect.value = params.get('type') || 'all';
