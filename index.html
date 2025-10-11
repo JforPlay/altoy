@@ -105,6 +105,32 @@
             </div>
         </section>
 
+        <!-- Event Carousel Section -->
+        <section class="event-carousel-container">
+            <div class="event-carousel-header">
+                <h2>
+                    <i class="fas fa-calendar-star"></i>
+                    진행중인 이벤트
+                </h2>
+                <div class="event-carousel-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    로딩 중...
+                </div>
+            </div>
+            <div class="event-carousel">
+                <div class="event-carousel-track">
+                    <!-- Banners will be loaded here dynamically -->
+                </div>
+                <button class="event-carousel-nav prev" aria-label="Previous event">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="event-carousel-nav next" aria-label="Next event">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="event-carousel-indicators"></div>
+            </div>
+        </section>
+
         <!-- Bento Grid -->
         <div class="bento-grid">
             <!-- Large: Skin Poll -->
@@ -120,6 +146,19 @@
             </a>
 
             <!-- Medium Cards -->
+            <a href="pages/event-timeline.html" class="bento-card medium">
+                <div class="card-icon">
+                    <i class="fa-solid fa-timeline"></i>
+                </div>
+                <h3>역대 이벤트 보기</h3>
+                <p>각종 필터링 + 함순이 리스트와 함께 <br>역대 이벤트를 확인해보세요</p>
+            </a>
+
+            <!-- <a href="pages/juustagram.html" class="bento-card medium">
+                <div class="card-icon"><i class="fa-brands fa-instagram"></i></div>
+                <h3>쥬스타그램 뷰어</h3>
+                <p>함순이들의 쥬스타그램 / 댓글과 함께 지휘관의 댓글들을 <br>검색기능과 함께 감상해보세요</p>
+            </a> -->
             <a href="pages/story-viewer/main-story.html" class="bento-card medium">
                 <div class="card-icon">
                     <i class="fa-solid fa-book-open-reader"></i>
@@ -127,12 +166,6 @@
                 <h3>메인스토리 뷰어</h3>
                 <p>타임라인형 뷰어 + 브금/배경들과 함께 <br>
                     메인스토리를 감상해보세요</p>
-            </a>
-
-            <a href="pages/juustagram.html" class="bento-card medium">
-                <div class="card-icon"><i class="fa-brands fa-instagram"></i></div>
-                <h3>쥬스타그램 뷰어</h3>
-                <p>함순이들의 쥬스타그램 / 댓글과 함께 지휘관의 댓글들을 <br>검색기능과 함께 감상해보세요</p>
             </a>
 
             <!-- Small Cards (Row 3) -->
@@ -207,6 +240,7 @@
 
     <script src="js/nav.script.js"></script>
     <script src="js/mainpage.script.js"></script>
+    <script src="js/mainpage.event-carousel.js"></script>
 </body>
 
 </html>

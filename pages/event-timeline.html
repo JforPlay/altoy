@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <base href="/altoy/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트 타임라인 - 벽람항로</title>
+    <link rel="stylesheet" href="css/event-timeline.css">
+    <link rel="stylesheet" href="css/nav.style.css">
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    
+    <div class="container">
+        <header>
+            <h1>벽람항로 이벤트 타임라인</h1>
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="이벤트명 또는 함선 이름으로 검색..."
+                    autocomplete="off"
+                >
+                <button id="clearBtn" class="clear-btn">×</button>
+            </div>
+            <div class="filter-container">
+                <select id="categoryFilter">
+                    <option value="">모든 분류</option>
+                </select>
+                <select id="factionFilter">
+                    <option value="">모든 진영</option>
+                </select>
+                <select id="mudakFilter">
+                    <option value="">무딱 이벤 전체</option>
+                    <option value="O">O</option>
+                    <option value="X">X</option>
+                </select>
+                <select id="rerunStatusFilter">
+                    <option value="">전체 상태</option>
+                    <option value="신규">신규</option>
+                    <option value="복각">복각</option>
+                    <option value="상시편입">상시편입</option>
+                    <option value="empty">미정</option>
+                </select>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="showJpDatesFilter">
+                    정리 안된 일섭기반 일정보기
+                </label>
+            </div>
+        </header>
+
+        <div class="stats">
+            <span id="eventCount">총 0개 이벤트</span>
+        </div>
+
+        <div id="eventList" class="event-list">
+            <div class="loading">데이터를 불러오는 중...</div>
+        </div>
+    </div>
+    
+    <script src="js/nav.script.js"></script>
+    <script src="js/event-timeline.js"></script>
+</body>
+</html>

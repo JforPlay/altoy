@@ -11049,7 +11049,7 @@
     },
     "30507": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305070/icon.png",
-        "name": "카가 ",
+        "name": "카가(전함)",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -20961,7 +20961,7 @@
     },
     "1010001": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10100010/icon.png",
-        "name": "넵튠",
+        "name": "넵튠(콜라보)",
         "nationality": 101,
         "type": 2,
         "description": [
@@ -21171,7 +21171,7 @@
     },
     "1060003": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600030/icon.png",
-        "name": "카스미",
+        "name": "카스미(콜라보)",
         "nationality": 106,
         "type": 3,
         "description": [
