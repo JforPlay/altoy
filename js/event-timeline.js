@@ -46,6 +46,9 @@ async function loadData() {
             shipgirlData = shipgirlRawData;
         }
 
+        // Filter out events with empty ID
+        eventData = eventData.filter(event => event.ID && event.ID.trim() !== '');
+
         // Sort events by ID in reverse order (high to low)
         eventData.sort((a, b) => {
             const idA = parseInt(a.ID) || 0;
@@ -231,10 +234,18 @@ function createEventCard(event) {
 
     const shipgirlsSection = createShipgirlsSection(event.함순이);
 
+    // Check if event has a link
+    const hasLink = event.링크 && event.링크.trim() !== '';
+    const cardClass = hasLink ? 'event-card event-card-clickable' : 'event-card';
+    const cardAttrs = hasLink ? `onclick="window.open('${event.링크}', '_blank')" style="cursor: pointer;"` : '';
+
     return `
-        <div class="event-card">
+        <div class="${cardClass}" ${cardAttrs}>
             <div class="event-header">
-                <div class="event-title">${event.이벤트명 || '제목 없음'}</div>
+                <div class="event-title">
+                    ${event.이벤트명 || '제목 없음'}
+                    ${hasLink ? '<span class="link-indicator">🔗</span>' : ''}
+                </div>
                 <div class="event-badges">
                     ${badges.join('')}
                 </div>

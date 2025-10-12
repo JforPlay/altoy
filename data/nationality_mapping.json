@@ -65,6 +65,12 @@
         "name": "아이리스 연합",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/8.png"
     },
+    "11": {
+        "id": 11,
+        "code": "HNLMS",
+        "name": "튤리퍼 왕국",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/11.png"
+    },
     "96": {
         "id": 96,
         "code": "MOT",
@@ -96,74 +102,86 @@
     "101": {
         "id": 101,
         "code": "NP",
-        "name": "Neptunia",
+        "name": "초차원 넵튠",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
         "prefix": [
             "HDN"
         ]
     },
-    "102": {
-        "id": 102,
-        "code": "BILI",
-        "name": "Bilibili",
-        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
-        "prefix": [
-            "BILI"
-        ]
-    },
     "103": {
         "id": 103,
         "code": "UM",
-        "name": "Utawarerumono",
+        "name": "칭송받는자",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
         "prefix": []
     },
     "104": {
         "id": 104,
         "code": "AI",
-        "name": "Kizuna AI",
+        "name": "키즈나 아이",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
         "prefix": []
     },
     "105": {
         "id": 105,
         "code": "HOLO",
-        "name": "Hololive",
+        "name": "홀로라이브",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
         "prefix": []
     },
     "106": {
         "id": 106,
         "code": "DOA",
-        "name": "Venus Vacation",
+        "name": "DOAXVV",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
         "prefix": []
     },
     "107": {
         "id": 107,
         "code": "IMAS",
-        "name": "The Idolmaster",
+        "name": "아이돌마스터",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
         "prefix": []
     },
     "108": {
         "id": 108,
         "code": "SSSS",
-        "name": "SSSS",
+        "name": "그리드맨 SSSS",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
         "prefix": []
     },
     "109": {
         "id": 109,
         "code": "RYZA",
-        "name": "Atelier Ryza",
+        "name": "라이자 아틀리에",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
         "prefix": []
     },
     "110": {
         "id": 110,
         "code": "SENRAN",
-        "name": "Senran Kagura",
+        "name": "섬란 카구라",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "111": {
+        "id": 111,
+        "code": "ToLove",
+        "name": "To Love-Ru",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "112": {
+        "id": 112,
+        "code": "BRS",
+        "name": "BLACK★ROCK SHOOTER",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "113": {
+        "id": 113,
+        "code": "YUMIA",
+        "name": "유미아 아틀리에",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
         "prefix": []
     }
