@@ -510,7 +510,7 @@ function renderDetailHeader(ship, nationalityInfo) {
                 </div>
                 ${ship.description && ship.description.length > 0 ? `
                     <div style="margin-top: 20px;">
-                        <strong>설명:</strong>
+                        <strong>드랍 정보:</strong>
                         <p style="margin-top: 10px;">${ship.description.join(', ')}</p>
                     </div>
                 ` : ''}
@@ -575,9 +575,9 @@ function renderStatsSection(ship, limitBreakOptions) {
                         <label for="favorabilitySelect">호감도</label>
                         <select id="favorabilitySelect">
                             <option value="other">기타 (0%)</option>
-                            <option value="friendly">우호 61+ (1%)</option>
-                            <option value="crush">호감 81+ (3%)</option>
-                            <option value="love" selected>애정 100 (6%)</option>
+                            <option value="friendly">호감 61+ (1%)</option>
+                            <option value="crush">기쁨 81+ (3%)</option>
+                            <option value="love" selected>사랑 100 (6%)</option>
                             <option value="oath">서약 100+ (9%)</option>
                             <option value="oath200">서약 200 (12%)</option>
                         </select>
