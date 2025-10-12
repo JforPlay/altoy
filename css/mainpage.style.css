@@ -771,6 +771,7 @@ body:not(.dark-mode) .dropdown-content a:hover {
   grid-template-columns: repeat(6, 1fr);
   gap: 1rem;
   grid-auto-rows: 130px;
+  margin-bottom: 5rem; /* Add this line */
 }
 
 /* Bento Card Sizes */
@@ -909,7 +910,8 @@ body:not(.dark-mode) .bento-card p {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 1rem;
-  grid-auto-rows: 144px;
+  grid-template-rows: repeat(2, 144px); /* Explicitly define 2 rows */
+  margin-bottom: 2rem;
 }
 
 .bento-card.external-link {
@@ -918,9 +920,9 @@ body:not(.dark-mode) .bento-card p {
   border: 1px solid var(--card-border);
 }
 
-.bento-card.external-link:nth-child(7) {
+/* .bento-card.external-link:nth-child(7) {
   grid-column: 1 / span 2;
-}
+} */
 
 .external-badge {
   position: absolute;
@@ -1066,7 +1068,7 @@ body:not(.dark-mode) .dual-link-desc {
   color: var(--footer-text);
   text-align: center;
   padding: 2rem 0;
-  margin-top: 3rem;
+  margin-top: 4rem; /* Increase from 3rem to 4rem */
 }
 
 /* =====================================================
@@ -1296,6 +1298,7 @@ body:not(.dark-mode) .dual-link-desc {
   .home-container {
     padding: 1rem;
     padding-top: 140px;
+    padding-bottom: 2rem; 
   }
 
   /* Hero Carousel Mobile */
