@@ -1,0 +1,816 @@
+// ===== Application State =====
+let shipgirlData = [];
+let filteredData = [];
+let currentShip = null;
+let currentLevel = 100;
+let currentLimitBreak = '';
+let currentFavorability = 'love';
+let nationalityData = {};
+let attrTypeData = {};
+let shipTypeData = {};
+let skillIconData = {};
+let skillDataTemplate = {};
+let viewMode = 'grid';
+
+// ===== DOM Elements =====
+const mainView = document.getElementById('mainView');
+const detailView = document.getElementById('detailView');
+const shipgirls = document.getElementById('shipgirls');
+const searchInput = document.getElementById('searchInput');
+const rarityFilter = document.getElementById('rarityFilter');
+const backButton = document.getElementById('backButton');
+const loading = document.getElementById('loading');
+const errorDiv = document.getElementById('error');
+
+// ===== Constants =====
+const FAVORABILITY_BONUSES = {
+    'other': 1.0,
+    'friendly': 1.01,
+    'crush': 1.03,
+    'love': 1.06,
+    'oath': 1.09,
+    'oath200': 1.12
+};
+
+const ARMOR_TYPES = {
+    1: '경장갑',
+    2: '중형장갑',
+    3: '중장갑'
+};
+
+const LIMIT_BREAK_NAMES = ['기본', '한계돌파 1', '한계돌파 2', '한계돌파 3'];
+
+const UNAFFECTED_STATS = ['speed', 'luck'];
+
+// ===== Data Loading =====
+async function loadData() {
+    const response = await fetch('data/ship_info_data.json');
+    if (!response.ok) throw new Error('Failed to fetch data');
+    shipgirlData = await response.json();
+    filteredData = [...shipgirlData];
+}
+
+async function loadNationalityData() {
+    const response = await fetch('data/nationality_mapping.json');
+    if (!response.ok) throw new Error('Failed to fetch nationality data');
+    nationalityData = await response.json();
+}
+
+async function loadAttrTypeData() {
+    const response = await fetch('data/attr_type_mapping.json');
+    if (!response.ok) throw new Error('Failed to fetch attribute type data');
+    attrTypeData = await response.json();
+}
+
+async function loadShipTypeData() {
+    const response = await fetch('data/ship_type_mapping.json');
+    if (!response.ok) throw new Error('Failed to fetch ship type data');
+    shipTypeData = await response.json();
+}
+
+async function loadSkillIconData() {
+    try {
+        const response = await fetch('data/skill_icon_mapping.json');
+        if (response.ok) {
+            skillIconData = await response.json();
+            console.log('Loaded local skill icon data:', Object.keys(skillIconData).length, 'icons');
+            return;
+        }
+    } catch (error) {
+        console.warn('Local skill icon data not found, fetching from remote...');
+    }
+    
+    const response = await fetch('https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/skill_icon.json');
+    if (!response.ok) throw new Error('Failed to fetch skill icon data');
+    skillIconData = await response.json();
+    console.log('Loaded remote skill icon data:', Object.keys(skillIconData).length, 'icons');
+}
+
+async function loadSkillDataTemplate() {
+    try {
+        const response = await fetch('data/skill_data_template.json');
+        if (response.ok) {
+            const data = await response.json();
+            
+            if (Array.isArray(data)) {
+                skillDataTemplate = Object.fromEntries(
+                    data.map(skill => [skill.id, skill])
+                );
+            } else if (typeof data === 'object') {
+                skillDataTemplate = data;
+            } else {
+                throw new Error('Invalid skill data format');
+            }
+            
+            console.log('Loaded local skill data template:', Object.keys(skillDataTemplate).length, 'skills');
+            return;
+        }
+    } catch (error) {
+        console.warn('Local skill data not found, fetching from remote...', error);
+    }
+    
+    const response = await fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/skill_data_template.json');
+    if (!response.ok) throw new Error('Failed to fetch skill data template');
+    const data = await response.json();
+    
+    if (Array.isArray(data)) {
+        skillDataTemplate = Object.fromEntries(
+            data.map(skill => [skill.id, skill])
+        );
+    } else if (typeof data === 'object') {
+        skillDataTemplate = data;
+    } else {
+        throw new Error('Invalid skill data format from remote');
+    }
+    
+    console.log('Loaded remote skill data template:', Object.keys(skillDataTemplate).length, 'skills');
+}
+
+// ===== Initialization =====
+async function init() {
+    try {
+        loading.style.display = 'block';
+        await Promise.all([
+            loadData(),
+            loadNationalityData(),
+            loadAttrTypeData(),
+            loadShipTypeData(),
+            loadSkillIconData(),
+            loadSkillDataTemplate()
+        ]);
+        loading.style.display = 'none';
+        
+        // Populate filter options BEFORE setting up event listeners
+        populateFilterOptions();
+        
+        handleRoute();
+        setupEventListeners();
+        window.addEventListener('popstate', handleRoute);
+    } catch (error) {
+        loading.style.display = 'none';
+        showError('데이터 로드 실패: ' + error.message);
+        console.error('Initialization error:', error);
+    }
+}
+
+// ===== Skill Helper Functions =====
+
+function getSkillIconUrl(skillId) {
+    const iconUrl = skillIconData[String(skillId)];
+    if (!iconUrl) {
+        console.log('No icon found for skill:', skillId);
+        return null;
+    }
+    console.log('Skill icon URL:', skillId, '->', iconUrl);
+    return iconUrl;
+}
+
+function processSkillDescription(desc, descGetAdd) {
+    if (!desc) return '설명 없음';
+    if (!descGetAdd || descGetAdd.length === 0) return desc;
+    
+    let processed = desc;
+    descGetAdd.forEach((params, index) => {
+        const placeholder = `$${index + 1}`;
+        const value = Array.isArray(params) ? params.join('/') : params;
+        processed = processed.replace(new RegExp(`\\${placeholder}`, 'g'), value);
+    });
+    
+    return processed;
+}
+
+function getSkillInfo(skillId) {
+    const skill = skillDataTemplate[String(skillId)];
+    
+    if (!skill) {
+        console.warn('Skill not found:', skillId);
+        return {
+            name: `스킬 ${skillId}`,
+            description: '정보 없음',
+            iconUrl: getSkillIconUrl(skillId)
+        };
+    }
+    
+    return {
+        name: skill.name || `스킬 ${skillId}`,
+        description: processSkillDescription(skill.desc, skill.desc_get_add),
+        iconUrl: getSkillIconUrl(skillId)
+    };
+}
+
+// ===== Helper Functions =====
+function getAttrKoreanName(attrName) {
+    if (!attrName) return '';
+    const lowerAttrName = attrName.toLowerCase();
+    
+    // Try to find by 'name' first, then by 'name2'
+    const attr = Object.values(attrTypeData).find(a => 
+        a.name === lowerAttrName || a.name2 === lowerAttrName
+    );
+    
+    return attr ? attr.condition : attrName;
+}
+
+function getShipType(type) {
+    const shipType = shipTypeData[String(type)];
+    if (shipType) {
+        return `
+            ${shipType.icon ? `<img src="${shipType.icon}" alt="${shipType.type_name}" style="height: 20px; vertical-align: middle; margin-right: 5px;">` : ''}
+            ${shipType.type_name}
+        `;
+    }
+    return `함종 ${type}`;
+}
+
+function showError(message) {
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    setTimeout(() => {
+        errorDiv.style.display = 'none';
+    }, 5000);
+}
+
+// ===== Event Listeners =====
+function setupEventListeners() {
+    searchInput.addEventListener('input', filterShipgirls);
+    rarityFilter.addEventListener('change', filterShipgirls);
+    document.getElementById('shipTypeFilter').addEventListener('change', filterShipgirls);
+    document.getElementById('nationalityFilter').addEventListener('change', filterShipgirls);
+    backButton.addEventListener('click', () => history.back());
+    
+    const gridViewBtn = document.getElementById('gridViewBtn');
+    const listViewBtn = document.getElementById('listViewBtn');
+    
+    if (gridViewBtn && listViewBtn) {
+        gridViewBtn.addEventListener('click', () => {
+            viewMode = 'grid';
+            shipgirls.className = 'shipgirl-grid';
+            gridViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+            localStorage.setItem('shipgirl-view-mode', 'grid');
+        });
+        
+        listViewBtn.addEventListener('click', () => {
+            viewMode = 'list';
+            shipgirls.className = 'shipgirl-grid list-view';
+            listViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
+            localStorage.setItem('shipgirl-view-mode', 'list');
+        });
+        
+        const savedView = localStorage.getItem('shipgirl-view-mode') || 'grid';
+        if (savedView === 'list') {
+            listViewBtn.click();
+        }
+    }
+}
+
+// ===== Populate Filter Options =====
+function populateFilterOptions() {
+    // Populate ship type filter
+    const shipTypeFilter = document.getElementById('shipTypeFilter');
+    const uniqueShipTypes = [...new Set(shipgirlData.map(ship => String(ship.type)))].sort((a, b) => parseInt(a) - parseInt(b));
+    
+    shipTypeFilter.innerHTML = '<option value="">모든 함종</option>' + 
+        uniqueShipTypes.map(type => {
+            const shipType = shipTypeData[type];
+            return `<option value="${type}">${shipType ? shipType.type_name : `함종 ${type}`}</option>`;
+        }).join('');
+    
+    // Populate nationality filter
+    const nationalityFilter = document.getElementById('nationalityFilter');
+    const uniqueNationalities = [...new Set(shipgirlData.map(ship => String(ship.nationality)))].sort((a, b) => parseInt(a) - parseInt(b));
+    
+    nationalityFilter.innerHTML = '<option value="">모든 진영</option>' + 
+        uniqueNationalities.map(nationality => {
+            const nationalityInfo = nationalityData[nationality];
+            return `<option value="${nationality}">${nationalityInfo ? nationalityInfo.name : `진영 ${nationality}`}</option>`;
+        }).join('');
+}
+
+// ===== Filtering and Rendering =====
+function filterShipgirls() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedRarity = rarityFilter.value;
+    const selectedShipType = document.getElementById('shipTypeFilter').value;
+    const selectedNationality = document.getElementById('nationalityFilter').value;
+    
+    filteredData = shipgirlData.filter(ship => {
+        // Add safety checks for undefined values
+        const matchesSearch = !searchTerm || (ship.name && ship.name.toLowerCase().includes(searchTerm));
+        const matchesRarity = !selectedRarity || ship.rarity === selectedRarity;
+        const matchesShipType = !selectedShipType || String(ship.type) === selectedShipType;
+        const matchesNationality = !selectedNationality || String(ship.nationality) === selectedNationality;
+        
+        return matchesSearch && matchesRarity && matchesShipType && matchesNationality;
+    });
+    
+    renderShipgirls();
+}
+
+function renderShipgirls() {
+    if (filteredData.length === 0) {
+        shipgirls.innerHTML = '<p style="color: var(--text-primary); text-align: center; grid-column: 1/-1;">함선을 찾을 수 없습니다.</p>';
+        return;
+    }
+    
+    shipgirls.innerHTML = filteredData.map(ship => createShipgirlCard(ship)).join('');
+    
+    document.querySelectorAll('.shipgirl-card').forEach((card, index) => {
+        card.addEventListener('click', () => navigateToDetail(filteredData[index].skin_id));
+    });
+}
+
+function createShipgirlCard(ship) {
+    const nationalityInfo = nationalityData[String(ship.nationality)] || { 
+        name: ship.nationality, 
+        code: ship.nationality, 
+        image: '' 
+    };
+    const shipTypeInfo = shipTypeData[String(ship.type)] || { 
+        type_name: `함종 ${ship.type}`, 
+        icon: '' 
+    };
+    
+    // Only use icon if it exists and is not undefined
+    const hasValidIcon = shipTypeInfo.icon && shipTypeInfo.icon !== 'undefined';
+    
+    return `
+        <div class="shipgirl-card">
+            <img src="${ship.shipyard || ''}" alt="${ship.name || '알 수 없음'}" class="shipgirl-image" 
+                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22250%22 height=%22200%22%3E%3Crect fill=%22%23ddd%22 width=%22250%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3E이미지 없음%3C/text%3E%3C/svg%3E'">
+            <div class="shipgirl-info">
+                <div class="shipgirl-name">${ship.name || '이름 없음'}</div>
+                <div class="shipgirl-meta">
+                    <span class="nationality-code" title="${nationalityInfo.name}">${nationalityInfo.code || nationalityInfo.name}</span>
+                    ${hasValidIcon ? 
+                        `<img src="${shipTypeInfo.icon}" alt="${shipTypeInfo.type_name}" class="ship-type-icon" title="${shipTypeInfo.type_name}">` : 
+                        `<span class="ship-type-text">${shipTypeInfo.type_name}</span>`
+                    }
+                    <span class="rarity-badge rarity-${ship.rarity}">${ship.rarity}</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ===== Navigation and Routing =====
+function navigateToDetail(skinId) {
+    history.pushState({ skinId }, '', `pages/shipgirl/shipgirl-info.html?ship=${skinId}`);
+    handleRoute();
+}
+
+function handleRoute() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const skinId = urlParams.get('ship');
+    
+    if (skinId) {
+        showDetailView(parseInt(skinId));
+    } else {
+        showMainView();
+    }
+}
+
+function showMainView() {
+    mainView.style.display = 'block';
+    detailView.style.display = 'none';
+    
+    // Only populate filters if they haven't been populated yet
+    if (document.getElementById('shipTypeFilter').options.length === 1) {
+        populateFilterOptions();
+    }
+    
+    renderShipgirls();
+}
+
+function showDetailView(skinId) {
+    const ship = shipgirlData.find(s => s.skin_id === skinId);
+    
+    if (!ship) {
+        showError('함선을 찾을 수 없습니다');
+        showMainView();
+        return;
+    }
+    
+    currentShip = ship;
+    currentLevel = 100;
+    currentFavorability = 'love';
+    
+    const limitBreakOptions = Object.keys(ship.base);
+    currentLimitBreak = limitBreakOptions[limitBreakOptions.length - 1];
+    
+    mainView.style.display = 'none';
+    detailView.style.display = 'block';
+    
+    renderDetailView(ship);
+}
+
+// ===== Detail View Rendering =====
+function renderDetailView(ship) {
+    document.getElementById('detailName').textContent = ship.name;
+    
+    const limitBreakOptions = Object.keys(ship.base);
+    const nationalityInfo = nationalityData[String(ship.nationality)] || { 
+        name: ship.nationality, 
+        code: '', 
+        image: '' 
+    };
+    
+    const detailContent = document.getElementById('detailContent');
+    detailContent.innerHTML = `
+        ${renderDetailHeader(ship, nationalityInfo)}
+        ${renderGiftSection(ship)}
+        ${renderStatsSection(ship, limitBreakOptions)}
+        ${renderSkillSection(ship)}
+        ${renderSpWeaponSection(ship)}
+    `;
+    
+    setupDetailEventListeners();
+    updateStats();
+}
+
+function renderDetailHeader(ship, nationalityInfo) {
+    // Check if ship has retrofit data
+    const hasRetrofit = ship.retrofit && ship.retrofit.id;
+    
+    // Filter retrofit bonuses to exclude equipment proficiency
+    let retrofitBonuses = {};
+    if (hasRetrofit && ship.retrofit.bonus) {
+        retrofitBonuses = Object.fromEntries(
+            Object.entries(ship.retrofit.bonus).filter(([stat, value]) => 
+                !stat.includes('equipment_proficiency')
+            )
+        );
+    }
+    
+    return `
+        <div class="detail-header">
+            <div class="detail-image">
+                <img src="${ship.shipyard}" alt="${ship.name}" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23ddd%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3E이미지 없음%3C/text%3E%3C/svg%3E'">
+            </div>
+            <div class="detail-basic-info">
+                <h2 class="detail-title">
+                    ${ship.name}
+                    ${hasRetrofit ? '<span class="retrofit-available-badge">개조 가능</span>' : ''}
+                </h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">등급</div>
+                        <div class="info-value">
+                            <span class="rarity-badge rarity-${ship.rarity}">${ship.rarity}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">그룹 ID</div>
+                        <div class="info-value">${ship.gid}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">함종</div>
+                        <div class="info-value">${getShipType(ship.type)}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">장갑</div>
+                        <div class="info-value">${ARMOR_TYPES[ship.armor] || `장갑 ${ship.armor}`}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">진영</div>
+                        <div class="info-value">
+                            ${nationalityInfo.image ? `<img src="${nationalityInfo.image}" alt="${nationalityInfo.code}" style="height: 24px; vertical-align: middle; margin-right: 5px;">` : ''}
+                            ${nationalityInfo.name}${nationalityInfo.code ? ` (${nationalityInfo.code})` : ''}
+                        </div>
+                    </div>
+                    ${hasRetrofit ? `
+                        <div class="info-item">
+                            <div class="info-label">개조 레벨 요구</div>
+                            <div class="info-value">${ship.retrofit.level}</div>
+                        </div>
+                    ` : ''}
+                </div>
+                ${ship.description && ship.description.length > 0 ? `
+                    <div style="margin-top: 20px;">
+                        <strong>설명:</strong>
+                        <p style="margin-top: 10px;">${ship.description.join(', ')}</p>
+                    </div>
+                ` : ''}
+                ${hasRetrofit && Object.keys(retrofitBonuses).length > 0 ? `
+                    <div class="retrofit-bonus-section">
+                        <h4 class="retrofit-bonus-title">개조 보너스</h4>
+                        <div class="retrofit-bonus-grid">
+                            ${Object.entries(retrofitBonuses).map(([stat, value]) => `
+                                <div class="retrofit-bonus-item">
+                                    <span class="bonus-stat">${getAttrKoreanName(stat) || stat}:</span>
+                                    <span class="bonus-value">+${value}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+            </div>
+        </div>
+    `;
+}
+
+function renderGiftSection(ship) {
+    return `
+        <div class="gift-section">
+            <h3 class="section-title">선호하는 선물</h3>
+            <div class="gift-container">
+                <div class="gift-group">
+                    <div class="gift-group-title">좋아하는 선물</div>
+                    <div class="gift-icons liked-gifts">
+                        ${generateGiftIcons(ship.gift_dislike || [], 'liked')}
+                    </div>
+                </div>
+                <div class="gift-group">
+                    <div class="gift-group-title">싫어하는 선물</div>
+                    <div class="gift-icons disliked-gifts">
+                        ${generateGiftIcons(ship.gift_dislike || [], 'disliked')}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function renderStatsSection(ship, limitBreakOptions) {
+    return `
+        <div class="stats-section">
+            <h3 class="section-title">능력치 계산기</h3>
+            <div class="stats-grid" id="statsGrid"></div>
+            <div class="stat-controls">
+                <div class="control-row">
+                    <div class="control-group">
+                        <label for="limitBreakSelect">한계돌파</label>
+                        <select id="limitBreakSelect">
+                            ${limitBreakOptions.map((key, index) => `
+                                <option value="${key}" ${key === currentLimitBreak ? 'selected' : ''}>
+                                    ${LIMIT_BREAK_NAMES[index] || `한계돌파 ${index}`}
+                                </option>
+                            `).join('')}
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="favorabilitySelect">호감도</label>
+                        <select id="favorabilitySelect">
+                            <option value="other">기타 (0%)</option>
+                            <option value="friendly">우호 61+ (1%)</option>
+                            <option value="crush">호감 81+ (3%)</option>
+                            <option value="love" selected>애정 100 (6%)</option>
+                            <option value="oath">서약 100+ (9%)</option>
+                            <option value="oath200">서약 200 (12%)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="level-slider-container">
+                    <label for="levelSlider">레벨: <span id="levelValue">${currentLevel}</span></label>
+                    <input type="range" id="levelSlider" min="1" max="125" value="${currentLevel}">
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function renderSkillSection(ship) {
+    if (!ship.skill || Object.keys(ship.skill).length === 0) return '';
+    
+    // Get all skills including retrofit skill if exists
+    const allSkills = [];
+    
+    // Add regular skills (ignore skills with "Retrofit" requirement)
+    Object.values(ship.skill).forEach(skill => {
+        if (skill.requirement !== 'Retrofit') {
+            allSkills.push({
+                id: skill.id,
+                parent: skill.parent,
+                requirement: skill.requirement || '없음',
+                isRetrofit: false
+            });
+        }
+    });
+    
+    // Add retrofit skill if it exists
+    if (ship.retrofit && ship.retrofit.skill_id) {
+        const retrofitSkillId = ship.retrofit.skill_id;
+        // Check if this skill isn't already in the regular skills
+        const alreadyExists = allSkills.some(s => s.id === retrofitSkillId);
+        if (!alreadyExists) {
+            allSkills.push({
+                id: retrofitSkillId,
+                parent: retrofitSkillId,
+                requirement: '개조',
+                isRetrofit: true
+            });
+        }
+    }
+    
+    if (allSkills.length === 0) return '';
+    
+    return `
+        <div class="stats-section">
+            <h3 class="section-title">스킬</h3>
+            <ul class="skill-list">
+                ${allSkills.map(skill => {
+                    const skillInfo = getSkillInfo(skill.id);
+                    const iconUrl = skillInfo.iconUrl;
+                    
+                    return `
+                        <li class="skill-item ${skill.isRetrofit ? 'retrofit-skill' : ''}">
+                            <div class="skill-header">
+                                ${iconUrl ? `
+                                    <img src="${iconUrl}" 
+                                         alt="${skillInfo.name}" 
+                                         class="skill-icon"
+                                         onerror="this.style.display='none';">
+                                ` : `
+                                    <div class="skill-icon-placeholder">${skill.id}</div>
+                                `}
+                                <div class="skill-title">
+                                    <div>
+                                        <strong>${skillInfo.name}</strong>
+                                        ${skill.isRetrofit ? '<span class="retrofit-badge">개조</span>' : ''}
+                                    </div>
+                                    <span class="skill-id">ID: ${skill.id}</span>
+                                </div>
+                            </div>
+                            <div class="skill-description">${skillInfo.description}</div>
+                            <div class="skill-meta">
+                                <span><strong>부모:</strong> ${skill.parent}</span>
+                                <span><strong>필요 조건:</strong> ${skill.requirement}</span>
+                            </div>
+                        </li>
+                    `;
+                }).join('')}
+            </ul>
+        </div>
+    `;
+}
+
+function renderSpWeaponSection(ship) {
+    if (!ship.sp_weapon) return '';
+    
+    const spWeapon = ship.sp_weapon;
+    const iconUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/spweapon/${spWeapon.icon}.png`;
+    
+    const skillUpgradeIds = (spWeapon.skill_upgrade || [])
+        .filter(skillArray => Array.isArray(skillArray) && skillArray.length > 1)
+        .map(skillArray => skillArray[1]);
+    
+    return `
+        <div class="sp-weapon-section">
+            <h3 class="section-title">특수 장비</h3>
+            <div class="sp-weapon-header">
+                <div class="sp-weapon-icon-container">
+                    <img src="${iconUrl}" 
+                         alt="${spWeapon.name}" 
+                         class="sp-weapon-icon"
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23ddd%22 width=%22100%22 height=%22100%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3E${spWeapon.icon}%3C/text%3E%3C/svg%3E'">
+                </div>
+                <div class="sp-weapon-details">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">이름</div>
+                            <div class="info-value">${spWeapon.name}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">속성 1</div>
+                            <div class="info-value">${getAttrKoreanName(spWeapon.attribute_1)}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">속성 2</div>
+                            <div class="info-value">${getAttrKoreanName(spWeapon.attribute_2)}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ${skillUpgradeIds.length > 0 ? `
+                <div class="sp-weapon-skills">
+                    <h4 class="sp-weapon-skills-title">스킬 강화</h4>
+                    <ul class="skill-list">
+                        ${skillUpgradeIds.map(skillId => {
+                            const skillInfo = getSkillInfo(skillId);
+                            return `
+                                <li class="skill-item">
+                                    <div class="skill-header">
+                                        ${skillInfo.iconUrl ? `
+                                            <img src="${skillInfo.iconUrl}" 
+                                                 alt="${skillInfo.name}" 
+                                                 class="skill-icon"
+                                                 onerror="this.style.display='none'">
+                                        ` : ''}
+                                        <div class="skill-title">
+                                            <strong>${skillInfo.name}</strong>
+                                            <span class="skill-id">ID: ${skillId}</span>
+                                        </div>
+                                    </div>
+                                    <div class="skill-description">${skillInfo.description}</div>
+                                    <div class="skill-meta">
+                                        <span><strong>타입:</strong> 특수 장비 강화 스킬</span>
+                                    </div>
+                                </li>
+                            `;
+                        }).join('')}
+                    </ul>
+                </div>
+            ` : ''}
+        </div>
+    `;
+}
+
+function setupDetailEventListeners() {
+    const levelSlider = document.getElementById('levelSlider');
+    const levelValue = document.getElementById('levelValue');
+    const limitBreakSelect = document.getElementById('limitBreakSelect');
+    const favorabilitySelect = document.getElementById('favorabilitySelect');
+    
+    levelSlider.addEventListener('input', (e) => {
+        currentLevel = parseInt(e.target.value);
+        levelValue.textContent = currentLevel;
+        updateStats();
+    });
+    
+    limitBreakSelect.addEventListener('change', (e) => {
+        currentLimitBreak = e.target.value;
+        updateStats();
+    });
+    
+    favorabilitySelect.addEventListener('change', (e) => {
+        currentFavorability = e.target.value;
+        updateStats();
+    });
+}
+
+// ===== Gift Generation =====
+function generateGiftIcons(dislikedGifts, type) {
+    const totalGifts = 9;
+    const dislikedCount = dislikedGifts.length || 0;
+    const count = type === 'liked' ? (totalGifts - dislikedCount) : dislikedCount;
+    
+    let icons = '';
+    for (let i = 1; i <= count; i++) {
+        const giftId = type === 'disliked' && dislikedGifts.length > 0 ? dislikedGifts[i - 1] : i;
+        icons += `
+            <div class="gift-icon ${type}" data-gift-id="${giftId}">
+                <div class="gift-placeholder">${giftId}</div>
+            </div>
+        `;
+    }
+    
+    return icons;
+}
+
+// ===== Stats Calculation =====
+function updateStats() {
+    if (!currentShip) return;
+    
+    const statsGrid = document.getElementById('statsGrid');
+    if (!statsGrid) return;
+    
+    const baseStats = currentShip.base[currentLimitBreak] || {};
+    const growthStats = currentShip.growth[currentLimitBreak] || {};
+    const enhanceStats = currentShip.enhance[currentLimitBreak] || {};
+    
+    const favorabilityBonus = FAVORABILITY_BONUSES[currentFavorability] || 1.06;
+    const attrMapping = createAttrMapping();
+    
+    statsGrid.innerHTML = Object.keys(baseStats).map(stat => {
+        const base = baseStats[stat] || 0;
+        const growth = growthStats[stat] || 0;
+        const enhance = enhanceStats[stat] || 0;
+        
+        const bonus = UNAFFECTED_STATS.includes(stat.toLowerCase()) ? 1.0 : favorabilityBonus;
+        const calculated = Math.floor((base + (growth * (currentLevel - 1) / 1000) + enhance) * bonus);
+        
+        const attrInfo = attrMapping[stat.toLowerCase()] || {};
+        const koreanName = attrInfo.condition || stat;
+        const icon = attrInfo.icon || '';
+        
+        return `
+            <div class="stat-item">
+                <div class="stat-name">
+                    ${icon ? `<img src="${icon}" alt="${koreanName}" style="height: 20px; vertical-align: middle; margin-right: 5px;">` : ''}
+                    ${koreanName}
+                </div>
+                <div class="stat-values">
+                    <span class="stat-calculated">${calculated}</span>
+                    <span class="stat-breakdown">기본: ${base} | 성장: ${growth}${enhance ? ` | 강화: ${enhance}` : ''}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function createAttrMapping() {
+    const mapping = {};
+    Object.values(attrTypeData).forEach(attr => {
+        mapping[attr.name] = attr;
+        // Also map name2 if it exists
+        if (attr.name2) {
+            mapping[attr.name2] = attr;
+        }
+    });
+    return mapping;
+}
+
+// ===== Start Application =====
+init();
