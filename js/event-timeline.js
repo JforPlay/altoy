@@ -236,18 +236,17 @@ function createEventCard(event) {
 
     // Check if event has a link
     const hasLink = event.링크 && event.링크.trim() !== '';
-    const cardClass = hasLink ? 'event-card event-card-clickable' : 'event-card';
-    const cardAttrs = hasLink ? `onclick="window.open('${event.링크}', '_blank')" style="cursor: pointer;"` : '';
+    const linkButton = hasLink ? `<a href="${event.링크}" target="_blank" class="event-link-btn" onclick="event.stopPropagation()">🔗 상세보기</a>` : '';
 
     return `
-        <div class="${cardClass}" ${cardAttrs}>
+        <div class="event-card">
             <div class="event-header">
                 <div class="event-title">
                     ${event.이벤트명 || '제목 없음'}
-                    ${hasLink ? '<span class="link-indicator">🔗</span>' : ''}
                 </div>
                 <div class="event-badges">
                     ${badges.join('')}
+                    ${linkButton}
                 </div>
             </div>
             <div class="event-details">
@@ -281,33 +280,39 @@ function createShipgirlsSection(shipgirlsStr) {
         
         if (shipgirl) {
             const rarityClass = getRarityClass(shipgirl.rarity);
+            const shipgirlUrl = `pages/shipgirl/shipgirl-info.html?ship=${encodeURIComponent(name)}`;
             return `
-                <div class="shipgirl-icon ${rarityClass}">
-                    <img src="${shipgirl.icon}" alt="${shipgirl.name}" onerror="this.style.display='none'">
-                    <div class="rarity-indicator">${shipgirl.rarity || '?'}</div>
-                    <div class="tooltip">${shipgirl.name}</div>
-                </div>
+                <a href="${shipgirlUrl}" class="shipgirl-icon-link">
+                    <div class="shipgirl-icon ${rarityClass}">
+                        <img src="${shipgirl.icon}" alt="${shipgirl.name}" onerror="this.style.display='none'">
+                        <div class="rarity-indicator">${shipgirl.rarity || '?'}</div>
+                        <div class="tooltip">${shipgirl.name}</div>
+                    </div>
+                </a>
             `;
         } else {
-            // If icon not found, show text only
+            // If icon not found, show text only with link
+            const shipgirlUrl = `pages/shipgirl/shipgirl-info.html?ship=${encodeURIComponent(name)}`;
             return `
-                <div class="shipgirl-icon rarity-unknown">
-                    <div style="
-                        width: 70px;
-                        height: 70px;
-                        border-radius: 8px;
-                        border: 2px solid #ccc;
-                        background: #f5f5f5;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 10px;
-                        text-align: center;
-                        padding: 5px;
-                        color: #999;
-                    ">${name}</div>
-                    <div class="tooltip">${name}</div>
-                </div>
+                <a href="${shipgirlUrl}" class="shipgirl-icon-link">
+                    <div class="shipgirl-icon rarity-unknown">
+                        <div style="
+                            width: 70px;
+                            height: 70px;
+                            border-radius: 8px;
+                            border: 2px solid #ccc;
+                            background: #f5f5f5;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 10px;
+                            text-align: center;
+                            padding: 5px;
+                            color: #999;
+                        ">${name}</div>
+                        <div class="tooltip">${name}</div>
+                    </div>
+                </a>
             `;
         }
     }).join('');

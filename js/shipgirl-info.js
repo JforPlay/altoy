@@ -79,7 +79,7 @@ async function loadSkillIconData() {
     } catch (error) {
         console.warn('Local skill icon data not found, fetching from remote...');
     }
-    
+
     const response = await fetch('https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/skill_icon.json');
     if (!response.ok) throw new Error('Failed to fetch skill icon data');
     skillIconData = await response.json();
@@ -91,7 +91,7 @@ async function loadSkillDataTemplate() {
         const response = await fetch('data/skill_data_template.json');
         if (response.ok) {
             const data = await response.json();
-            
+
             if (Array.isArray(data)) {
                 skillDataTemplate = Object.fromEntries(
                     data.map(skill => [skill.id, skill])
@@ -101,18 +101,18 @@ async function loadSkillDataTemplate() {
             } else {
                 throw new Error('Invalid skill data format');
             }
-            
+
             console.log('Loaded local skill data template:', Object.keys(skillDataTemplate).length, 'skills');
             return;
         }
     } catch (error) {
         console.warn('Local skill data not found, fetching from remote...', error);
     }
-    
+
     const response = await fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/skill_data_template.json');
     if (!response.ok) throw new Error('Failed to fetch skill data template');
     const data = await response.json();
-    
+
     if (Array.isArray(data)) {
         skillDataTemplate = Object.fromEntries(
             data.map(skill => [skill.id, skill])
@@ -122,7 +122,7 @@ async function loadSkillDataTemplate() {
     } else {
         throw new Error('Invalid skill data format from remote');
     }
-    
+
     console.log('Loaded remote skill data template:', Object.keys(skillDataTemplate).length, 'skills');
 }
 
@@ -130,6 +130,12 @@ async function loadSkillDataTemplate() {
 async function init() {
     try {
         loading.style.display = 'block';
+
+        // Prevent browser from restoring scroll position
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
         await Promise.all([
             loadData(),
             loadNationalityData(),
@@ -139,10 +145,10 @@ async function init() {
             loadSkillDataTemplate()
         ]);
         loading.style.display = 'none';
-        
+
         // Populate filter options BEFORE setting up event listeners
         populateFilterOptions();
-        
+
         handleRoute();
         setupEventListeners();
         window.addEventListener('popstate', handleRoute);
@@ -168,20 +174,20 @@ function getSkillIconUrl(skillId) {
 function processSkillDescription(desc, descGetAdd) {
     if (!desc) return '설명 없음';
     if (!descGetAdd || descGetAdd.length === 0) return desc;
-    
+
     let processed = desc;
     descGetAdd.forEach((params, index) => {
         const placeholder = `$${index + 1}`;
         const value = Array.isArray(params) ? params.join('/') : params;
         processed = processed.replace(new RegExp(`\\${placeholder}`, 'g'), value);
     });
-    
+
     return processed;
 }
 
 function getSkillInfo(skillId) {
     const skill = skillDataTemplate[String(skillId)];
-    
+
     if (!skill) {
         console.warn('Skill not found:', skillId);
         return {
@@ -190,7 +196,7 @@ function getSkillInfo(skillId) {
             iconUrl: getSkillIconUrl(skillId)
         };
     }
-    
+
     return {
         name: skill.name || `스킬 ${skillId}`,
         description: processSkillDescription(skill.desc, skill.desc_get_add),
@@ -202,12 +208,12 @@ function getSkillInfo(skillId) {
 function getAttrKoreanName(attrName) {
     if (!attrName) return '';
     const lowerAttrName = attrName.toLowerCase();
-    
+
     // Try to find by 'name' first, then by 'name2'
-    const attr = Object.values(attrTypeData).find(a => 
+    const attr = Object.values(attrTypeData).find(a =>
         a.name === lowerAttrName || a.name2 === lowerAttrName
     );
-    
+
     return attr ? attr.condition : attrName;
 }
 
@@ -237,10 +243,10 @@ function setupEventListeners() {
     document.getElementById('shipTypeFilter').addEventListener('change', filterShipgirls);
     document.getElementById('nationalityFilter').addEventListener('change', filterShipgirls);
     backButton.addEventListener('click', () => history.back());
-    
+
     const gridViewBtn = document.getElementById('gridViewBtn');
     const listViewBtn = document.getElementById('listViewBtn');
-    
+
     if (gridViewBtn && listViewBtn) {
         gridViewBtn.addEventListener('click', () => {
             viewMode = 'grid';
@@ -249,7 +255,7 @@ function setupEventListeners() {
             listViewBtn.classList.remove('active');
             localStorage.setItem('shipgirl-view-mode', 'grid');
         });
-        
+
         listViewBtn.addEventListener('click', () => {
             viewMode = 'list';
             shipgirls.className = 'shipgirl-grid list-view';
@@ -257,7 +263,7 @@ function setupEventListeners() {
             gridViewBtn.classList.remove('active');
             localStorage.setItem('shipgirl-view-mode', 'list');
         });
-        
+
         const savedView = localStorage.getItem('shipgirl-view-mode') || 'grid';
         if (savedView === 'list') {
             listViewBtn.click();
@@ -270,18 +276,18 @@ function populateFilterOptions() {
     // Populate ship type filter
     const shipTypeFilter = document.getElementById('shipTypeFilter');
     const uniqueShipTypes = [...new Set(shipgirlData.map(ship => String(ship.type)))].sort((a, b) => parseInt(a) - parseInt(b));
-    
-    shipTypeFilter.innerHTML = '<option value="">모든 함종</option>' + 
+
+    shipTypeFilter.innerHTML = '<option value="">모든 함종</option>' +
         uniqueShipTypes.map(type => {
             const shipType = shipTypeData[type];
             return `<option value="${type}">${shipType ? shipType.type_name : `함종 ${type}`}</option>`;
         }).join('');
-    
+
     // Populate nationality filter
     const nationalityFilter = document.getElementById('nationalityFilter');
     const uniqueNationalities = [...new Set(shipgirlData.map(ship => String(ship.nationality)))].sort((a, b) => parseInt(a) - parseInt(b));
-    
-    nationalityFilter.innerHTML = '<option value="">모든 진영</option>' + 
+
+    nationalityFilter.innerHTML = '<option value="">모든 진영</option>' +
         uniqueNationalities.map(nationality => {
             const nationalityInfo = nationalityData[nationality];
             return `<option value="${nationality}">${nationalityInfo ? nationalityInfo.name : `진영 ${nationality}`}</option>`;
@@ -294,17 +300,17 @@ function filterShipgirls() {
     const selectedRarity = rarityFilter.value;
     const selectedShipType = document.getElementById('shipTypeFilter').value;
     const selectedNationality = document.getElementById('nationalityFilter').value;
-    
+
     filteredData = shipgirlData.filter(ship => {
         // Add safety checks for undefined values
         const matchesSearch = !searchTerm || (ship.name && ship.name.toLowerCase().includes(searchTerm));
         const matchesRarity = !selectedRarity || ship.rarity === selectedRarity;
         const matchesShipType = !selectedShipType || String(ship.type) === selectedShipType;
         const matchesNationality = !selectedNationality || String(ship.nationality) === selectedNationality;
-        
+
         return matchesSearch && matchesRarity && matchesShipType && matchesNationality;
     });
-    
+
     renderShipgirls();
 }
 
@@ -313,28 +319,28 @@ function renderShipgirls() {
         shipgirls.innerHTML = '<p style="color: var(--text-primary); text-align: center; grid-column: 1/-1;">함선을 찾을 수 없습니다.</p>';
         return;
     }
-    
+
     shipgirls.innerHTML = filteredData.map(ship => createShipgirlCard(ship)).join('');
-    
+
     document.querySelectorAll('.shipgirl-card').forEach((card, index) => {
-        card.addEventListener('click', () => navigateToDetail(filteredData[index].skin_id));
+        card.addEventListener('click', () => navigateToDetail(filteredData[index].name));
     });
 }
 
 function createShipgirlCard(ship) {
-    const nationalityInfo = nationalityData[String(ship.nationality)] || { 
-        name: ship.nationality, 
-        code: ship.nationality, 
-        image: '' 
+    const nationalityInfo = nationalityData[String(ship.nationality)] || {
+        name: ship.nationality,
+        code: ship.nationality,
+        image: ''
     };
-    const shipTypeInfo = shipTypeData[String(ship.type)] || { 
-        type_name: `함종 ${ship.type}`, 
-        icon: '' 
+    const shipTypeInfo = shipTypeData[String(ship.type)] || {
+        type_name: `함종 ${ship.type}`,
+        icon: ''
     };
-    
+
     // Only use icon if it exists and is not undefined
     const hasValidIcon = shipTypeInfo.icon && shipTypeInfo.icon !== 'undefined';
-    
+
     return `
         <div class="shipgirl-card">
             <img src="${ship.shipyard || ''}" alt="${ship.name || '알 수 없음'}" class="shipgirl-image" 
@@ -343,10 +349,10 @@ function createShipgirlCard(ship) {
                 <div class="shipgirl-name">${ship.name || '이름 없음'}</div>
                 <div class="shipgirl-meta">
                     <span class="nationality-code" title="${nationalityInfo.name}">${nationalityInfo.code || nationalityInfo.name}</span>
-                    ${hasValidIcon ? 
-                        `<img src="${shipTypeInfo.icon}" alt="${shipTypeInfo.type_name}" class="ship-type-icon" title="${shipTypeInfo.type_name}">` : 
-                        `<span class="ship-type-text">${shipTypeInfo.type_name}</span>`
-                    }
+                    ${hasValidIcon ?
+            `<img src="${shipTypeInfo.icon}" alt="${shipTypeInfo.type_name}" class="ship-type-icon" title="${shipTypeInfo.type_name}">` :
+            `<span class="ship-type-text">${shipTypeInfo.type_name}</span>`
+        }
                     <span class="rarity-badge rarity-${ship.rarity}">${ship.rarity}</span>
                 </div>
             </div>
@@ -355,67 +361,76 @@ function createShipgirlCard(ship) {
 }
 
 // ===== Navigation and Routing =====
-function navigateToDetail(skinId) {
-    history.pushState({ skinId }, '', `pages/shipgirl/shipgirl-info.html?ship=${skinId}`);
+function navigateToDetail(shipName) {
+    history.pushState({ shipName }, '', `pages/shipgirl/shipgirl-info.html?ship=${encodeURIComponent(shipName)}`);
     handleRoute();
 }
 
 function handleRoute() {
     const urlParams = new URLSearchParams(window.location.search);
-    const skinId = urlParams.get('ship');
-    
-    if (skinId) {
-        showDetailView(parseInt(skinId));
+    const shipName = urlParams.get('ship');
+
+    if (shipName) {
+        showDetailView(shipName);
     } else {
         showMainView();
     }
+
+    // Reset scroll position to top
+    window.scrollTo(0, 0);
 }
 
 function showMainView() {
     mainView.style.display = 'block';
     detailView.style.display = 'none';
-    
+
     // Only populate filters if they haven't been populated yet
     if (document.getElementById('shipTypeFilter').options.length === 1) {
         populateFilterOptions();
     }
-    
+
     renderShipgirls();
+
+    // Reset scroll position to top
+    window.scrollTo(0, 0);
 }
 
-function showDetailView(skinId) {
-    const ship = shipgirlData.find(s => s.skin_id === skinId);
-    
+function showDetailView(shipName) {
+    const ship = shipgirlData.find(s => s.name === shipName);
+
     if (!ship) {
-        showError('함선을 찾을 수 없습니다');
+        showError('함순이을 찾을 수 없습니다');
         showMainView();
         return;
     }
-    
+
     currentShip = ship;
     currentLevel = 100;
     currentFavorability = 'love';
-    
+
     const limitBreakOptions = Object.keys(ship.base);
     currentLimitBreak = limitBreakOptions[limitBreakOptions.length - 1];
-    
+
     mainView.style.display = 'none';
     detailView.style.display = 'block';
-    
+
     renderDetailView(ship);
+
+    // Reset scroll position to top
+    window.scrollTo(0, 0);
 }
 
 // ===== Detail View Rendering =====
 function renderDetailView(ship) {
     document.getElementById('detailName').textContent = ship.name;
-    
+
     const limitBreakOptions = Object.keys(ship.base);
-    const nationalityInfo = nationalityData[String(ship.nationality)] || { 
-        name: ship.nationality, 
-        code: '', 
-        image: '' 
+    const nationalityInfo = nationalityData[String(ship.nationality)] || {
+        name: ship.nationality,
+        code: '',
+        image: ''
     };
-    
+
     const detailContent = document.getElementById('detailContent');
     detailContent.innerHTML = `
         ${renderDetailHeader(ship, nationalityInfo)}
@@ -424,7 +439,7 @@ function renderDetailView(ship) {
         ${renderSkillSection(ship)}
         ${renderSpWeaponSection(ship)}
     `;
-    
+
     setupDetailEventListeners();
     updateStats();
 }
@@ -432,17 +447,17 @@ function renderDetailView(ship) {
 function renderDetailHeader(ship, nationalityInfo) {
     // Check if ship has retrofit data
     const hasRetrofit = ship.retrofit && ship.retrofit.id;
-    
+
     // Filter retrofit bonuses to exclude equipment proficiency
     let retrofitBonuses = {};
     if (hasRetrofit && ship.retrofit.bonus) {
         retrofitBonuses = Object.fromEntries(
-            Object.entries(ship.retrofit.bonus).filter(([stat, value]) => 
+            Object.entries(ship.retrofit.bonus).filter(([stat, value]) =>
                 !stat.includes('equipment_proficiency')
             )
         );
     }
-    
+
     return `
         <div class="detail-header">
             <div class="detail-image">
@@ -454,6 +469,12 @@ function renderDetailHeader(ship, nationalityInfo) {
                     ${ship.name}
                     ${hasRetrofit ? '<span class="retrofit-available-badge">개조 가능</span>' : ''}
                 </h2>
+                <div class="skin-link-container">
+                        <a href="pages/skin/skin-viewer.html?character=${encodeURIComponent(ship.name)}&skin=${encodeURIComponent(ship.name)}" 
+                           class="skin-viewer-button">
+                            🎨 스킨/대사 보러가기
+                        </a>
+                    </div>
                 <div class="info-grid">
                     <div class="info-item">
                         <div class="info-label">등급</div>
@@ -573,10 +594,10 @@ function renderStatsSection(ship, limitBreakOptions) {
 
 function renderSkillSection(ship) {
     if (!ship.skill || Object.keys(ship.skill).length === 0) return '';
-    
+
     // Get all skills including retrofit skill if exists
     const allSkills = [];
-    
+
     // Add regular skills (ignore skills with "Retrofit" requirement)
     Object.values(ship.skill).forEach(skill => {
         if (skill.requirement !== 'Retrofit') {
@@ -588,7 +609,7 @@ function renderSkillSection(ship) {
             });
         }
     });
-    
+
     // Add retrofit skill if it exists
     if (ship.retrofit && ship.retrofit.skill_id) {
         const retrofitSkillId = ship.retrofit.skill_id;
@@ -603,18 +624,18 @@ function renderSkillSection(ship) {
             });
         }
     }
-    
+
     if (allSkills.length === 0) return '';
-    
+
     return `
         <div class="stats-section">
             <h3 class="section-title">스킬</h3>
             <ul class="skill-list">
                 ${allSkills.map(skill => {
-                    const skillInfo = getSkillInfo(skill.id);
-                    const iconUrl = skillInfo.iconUrl;
-                    
-                    return `
+        const skillInfo = getSkillInfo(skill.id);
+        const iconUrl = skillInfo.iconUrl;
+
+        return `
                         <li class="skill-item ${skill.isRetrofit ? 'retrofit-skill' : ''}">
                             <div class="skill-header">
                                 ${iconUrl ? `
@@ -635,12 +656,11 @@ function renderSkillSection(ship) {
                             </div>
                             <div class="skill-description">${skillInfo.description}</div>
                             <div class="skill-meta">
-                                <span><strong>부모:</strong> ${skill.parent}</span>
                                 <span><strong>필요 조건:</strong> ${skill.requirement}</span>
                             </div>
                         </li>
                     `;
-                }).join('')}
+    }).join('')}
             </ul>
         </div>
     `;
@@ -648,14 +668,14 @@ function renderSkillSection(ship) {
 
 function renderSpWeaponSection(ship) {
     if (!ship.sp_weapon) return '';
-    
+
     const spWeapon = ship.sp_weapon;
     const iconUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/spweapon/${spWeapon.icon}.png`;
-    
+
     const skillUpgradeIds = (spWeapon.skill_upgrade || [])
         .filter(skillArray => Array.isArray(skillArray) && skillArray.length > 1)
         .map(skillArray => skillArray[1]);
-    
+
     return `
         <div class="sp-weapon-section">
             <h3 class="section-title">특수 장비</h3>
@@ -688,8 +708,8 @@ function renderSpWeaponSection(ship) {
                     <h4 class="sp-weapon-skills-title">스킬 강화</h4>
                     <ul class="skill-list">
                         ${skillUpgradeIds.map(skillId => {
-                            const skillInfo = getSkillInfo(skillId);
-                            return `
+        const skillInfo = getSkillInfo(skillId);
+        return `
                                 <li class="skill-item">
                                     <div class="skill-header">
                                         ${skillInfo.iconUrl ? `
@@ -709,7 +729,7 @@ function renderSpWeaponSection(ship) {
                                     </div>
                                 </li>
                             `;
-                        }).join('')}
+    }).join('')}
                     </ul>
                 </div>
             ` : ''}
@@ -722,18 +742,18 @@ function setupDetailEventListeners() {
     const levelValue = document.getElementById('levelValue');
     const limitBreakSelect = document.getElementById('limitBreakSelect');
     const favorabilitySelect = document.getElementById('favorabilitySelect');
-    
+
     levelSlider.addEventListener('input', (e) => {
         currentLevel = parseInt(e.target.value);
         levelValue.textContent = currentLevel;
         updateStats();
     });
-    
+
     limitBreakSelect.addEventListener('change', (e) => {
         currentLimitBreak = e.target.value;
         updateStats();
     });
-    
+
     favorabilitySelect.addEventListener('change', (e) => {
         currentFavorability = e.target.value;
         updateStats();
@@ -745,7 +765,7 @@ function generateGiftIcons(dislikedGifts, type) {
     const totalGifts = 9;
     const dislikedCount = dislikedGifts.length || 0;
     const count = type === 'liked' ? (totalGifts - dislikedCount) : dislikedCount;
-    
+
     let icons = '';
     for (let i = 1; i <= count; i++) {
         const giftId = type === 'disliked' && dislikedGifts.length > 0 ? dislikedGifts[i - 1] : i;
@@ -755,36 +775,36 @@ function generateGiftIcons(dislikedGifts, type) {
             </div>
         `;
     }
-    
+
     return icons;
 }
 
 // ===== Stats Calculation =====
 function updateStats() {
     if (!currentShip) return;
-    
+
     const statsGrid = document.getElementById('statsGrid');
     if (!statsGrid) return;
-    
+
     const baseStats = currentShip.base[currentLimitBreak] || {};
     const growthStats = currentShip.growth[currentLimitBreak] || {};
     const enhanceStats = currentShip.enhance[currentLimitBreak] || {};
-    
+
     const favorabilityBonus = FAVORABILITY_BONUSES[currentFavorability] || 1.06;
     const attrMapping = createAttrMapping();
-    
+
     statsGrid.innerHTML = Object.keys(baseStats).map(stat => {
         const base = baseStats[stat] || 0;
         const growth = growthStats[stat] || 0;
         const enhance = enhanceStats[stat] || 0;
-        
+
         const bonus = UNAFFECTED_STATS.includes(stat.toLowerCase()) ? 1.0 : favorabilityBonus;
         const calculated = Math.floor((base + (growth * (currentLevel - 1) / 1000) + enhance) * bonus);
-        
+
         const attrInfo = attrMapping[stat.toLowerCase()] || {};
         const koreanName = attrInfo.condition || stat;
         const icon = attrInfo.icon || '';
-        
+
         return `
             <div class="stat-item">
                 <div class="stat-name">
