@@ -355,3 +355,25 @@ function findShipgirlByName(name) {
     
     return null;
 }
+
+// Info popup functionality
+const infoButton = document.getElementById('info-button');
+const infoPopup = document.getElementById('info-popup');
+const closePopupBtn = infoPopup.querySelector('.close-popup-btn');
+
+infoButton.addEventListener('click', () => {
+    infoPopup.classList.add('visible');
+    document.body.classList.add('no-scroll');
+});
+
+closePopupBtn.addEventListener('click', () => {
+    infoPopup.classList.remove('visible');
+    document.body.classList.remove('no-scroll');
+});
+
+infoPopup.addEventListener('click', (event) => {
+    if (event.target === infoPopup) {
+        infoPopup.classList.remove('visible');
+        document.body.classList.remove('no-scroll');
+    }
+});

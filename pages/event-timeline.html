@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <base href="/altoy/">
     <meta charset="UTF-8">
@@ -7,20 +8,41 @@
     <title>이벤트 타임라인 - 벽람항로</title>
     <link rel="stylesheet" href="css/event-timeline.css">
     <link rel="stylesheet" href="css/nav.style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
     <div id="navbar-placeholder"></div>
-    
+
     <div class="container">
         <header>
-            <h1>벽람항로 룽섭이벤트 전체보기</h1>
+            <div class="page-title">
+                <h1>벽람항로 룽섭이벤트 전체보기</h1>
+                <i id="info-button" class="fas fa-info-circle"></i>
+            </div>
+
+            <!-- Info Popup -->
+            <div id="info-popup">
+                <div class="info-popup-content">
+                    <button class="close-popup-btn">&times;</button>
+                    <p>
+                        <strong>초간단 설명서</strong><br>
+                        <strong>필터 옵션:</strong>
+                        • 검색창에서 이벤트명 또는 함선 이름으로 검색<br>
+                        • 이벤트 분류, 진영, 무딱이벤 (O, X) 여부로 필터링<br>
+                        • 복각/상시 현황으로 분류 가능<br>
+                        • 모든 이벤트는 신규/복각/상시 전부 각각 구현되어있습니다<br>
+                        ex) 뱅가드 이벤트 -> 신규 / 복각 / 상시 모두 존재<br>
+                        복각 or 상시편입된 이벤트만 보려면 필터링을 사용해주세요<br><br>
+
+                        <strong>참고:</strong> 굵직한 이벤트 외에 자잘한 이벤트들은 일섭 기반 일정으로 정리됨<br>
+                        기본적으로 숨겨져 있으며, 필터에서 활성화하면 볼 수 있습니다
+                    </p>
+                </div>
+            </div>
+
             <div class="search-container">
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    placeholder="이벤트명 또는 함선 이름으로 검색..."
-                    autocomplete="off"
-                >
+                <input type="text" id="searchInput" placeholder="이벤트명 또는 함선 이름으로 검색..." autocomplete="off">
                 <button id="clearBtn" class="clear-btn">×</button>
             </div>
             <div class="filter-container">
@@ -57,8 +79,9 @@
             <div class="loading">데이터를 불러오는 중...</div>
         </div>
     </div>
-    
+
     <script src="js/nav.script.js"></script>
     <script src="js/event-timeline.js"></script>
 </body>
+
 </html>
