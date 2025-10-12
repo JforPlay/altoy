@@ -1,8 +1,7 @@
 # Azur Lane KR Toy (ALtoy)
-- Last updated 2025/10/07 (KR: 아마하라에 바치는 춤 event)
-- This repo is the source to build the github pages to view story/skin text in kr.
+- Last updated 2025/10/12 (KR: 아마하라에 바치는 춤 event)
+- This repo is the source to build the github pages to view story/skin/info text in kr.
 - https://jforplay.github.io/altoy/
-
 - This repo is a non-profit fan project for the game Azur Lane.
 
 # Credits to all of the below
