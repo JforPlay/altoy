@@ -337,6 +337,15 @@ header h1 {
   background: transparent;
 }
 
+/* Add this new style block, for example after the .detail-content style */
+.navigation-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Find the existing .back-button style and remove its margin-bottom */
 .back-button {
   background: linear-gradient(
     135deg,
@@ -349,7 +358,7 @@ header h1 {
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */ /* <--- REMOVE THIS LINE */
   transition: opacity 0.3s;
 }
 
@@ -627,13 +636,14 @@ header h1 {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+  /* MODIFIED: Reduced minmax width and gap to make it more compact */
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
 }
 
 .stat-item {
   background: var(--section-bg);
-  padding: 15px;
+  padding: 12px;
   border-radius: 8px;
   transition: background 0.3s;
   box-shadow: 0 2px 4px var(--shadow-color);
@@ -659,14 +669,14 @@ header h1 {
 }
 
 .stat-calculated {
-  font-size: 1.4em;
+  font-size: 1.3em;
   font-weight: bold;
   color: var(--primary-color);
   transition: color 0.3s;
 }
 
 .stat-breakdown {
-  font-size: 0.85em;
+  font-size: 0.8em;
   color: var(--text-secondary);
   transition: color 0.3s;
 }
@@ -885,6 +895,31 @@ header h1 {
   transition: color 0.3s, border-color 0.3s;
 }
 
+.weapon-skill-clickable {
+    transition: all 0.2s ease;
+}
+
+.weapon-skill-clickable:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+    transform: translateX(4px);
+}
+
+.weapon-badge {
+    background-color: #4a90e2;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    margin-left: 8px;
+}
+
+.weapon-sim-hint {
+    color: #4a90e2;
+    font-size: 0.9em;
+    font-style: italic;
+    margin-left: auto;
+}
+
 /* Loading and Error */
 .loading {
   text-align: center;
@@ -968,5 +1003,9 @@ header h1 {
 
   .sp-weapon-icon-container {
     width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr); /* Enforce 2 columns on mobile */
   }
 }
