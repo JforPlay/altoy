@@ -1,0 +1,577 @@
+/* Modern Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #eaeaea;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Header Section */
+h1 {
+    text-align: center;
+    padding: 2rem 1rem 1rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Main Container - Full Width Layout */
+#simulation-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 1rem 2rem;
+}
+
+/* Simulation Container - Full Width */
+#simulation-container {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 170 / 50;
+    background: linear-gradient(180deg, #0a0e27 0%, #1a1a2e 100%);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Ocean Background */
+.ocean-background {
+    z-index: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Player Area */
+#player-area {
+    position: absolute;
+    background-color: rgba(70, 90, 120, 0.15);
+    height: auto;
+    z-index: 1;
+    pointer-events: none;
+    border-right: 1px dashed rgba(102, 126, 234, 0.2);
+}
+
+/* Entity Positioning */
+#vanguard,
+#mainfleet,
+#enemy {
+    position: absolute;
+    height: auto;
+    z-index: 10;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+#vanguard { aspect-ratio: 226 / 178; }
+#mainfleet { aspect-ratio: 253 / 195; }
+#enemy { aspect-ratio: 300 / 369; }
+
+#vanguard img,
+#mainfleet img,
+#enemy img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Bullets */
+.bullet {
+    background: linear-gradient(135deg, #ffd93d 0%, #fcbf49 100%);
+    position: absolute;
+    border-radius: 2px;
+    box-shadow: 0 0 12px #ffd93d, 0 0 24px rgba(255, 217, 61, 0.5);
+    z-index: 5;
+}
+
+/* Visual Log */
+#visual-log {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    pointer-events: none;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    opacity: 0.9;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 12px;
+    border-radius: 6px;
+    backdrop-filter: blur(4px);
+}
+
+/* Controls Section - Positioned below simulator, above stats */
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(42, 48, 49, 0.8) 0%, rgba(26, 32, 34, 0.8) 100%);
+    border-radius: 16px;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    max-width: 1800px;
+    width: 100%;
+    flex-wrap: wrap;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    order: 2; /* Ensure it comes after simulator */
+    position: relative;
+    z-index: 20;
+}
+
+.controls label {
+    font-weight: 500;
+    color: #a2d2ff;
+    font-size: 15px;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;          /* Allows the group to expand */
+    max-width: 600px; 
+}
+
+/* Modern Button Styles */
+button {
+    height: 48px;
+    padding: 0 28px; /* Adjust padding */
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* Fire Button */
+#fire-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+    position: relative;
+    z-index: 1001;
+}
+
+#fire-button:hover {
+    box-shadow: 0 6px 24px rgba(102, 126, 234, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Enemy Toggle Button */
+#enemy-toggle {
+    background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+    color: white;
+    box-shadow: 0 4px 16px rgba(0, 184, 148, 0.4);
+    position: relative;
+    z-index: 1001;
+}
+
+#enemy-toggle:hover {
+    box-shadow: 0 6px 24px rgba(0, 184, 148, 0.6);
+    transform: translateY(-2px);
+}
+
+#enemy-toggle.centered {
+    background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+    box-shadow: 0 4px 16px rgba(253, 203, 110, 0.4);
+}
+
+#enemy-toggle.centered:hover {
+    box-shadow: 0 6px 24px rgba(253, 203, 110, 0.6);
+}
+
+/* Stats Panel - Moved Below Controls */
+#stats-panel {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(42, 48, 49, 0.95) 0%, rgba(26, 32, 34, 0.95) 100%);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    order: 3; /* Ensure it comes after controls */
+}
+
+#stats-panel h2 {
+    margin: 0 0 20px 0;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#stats-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Two Column Layout for Skill Info */
+.stats-two-column {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+    margin: 16px 0;
+}
+
+.stats-column-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.stats-column-right {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#stats-content p {
+    margin: 0;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border-left: 3px solid rgba(102, 126, 234, 0.5);
+    transition: all 0.3s ease;
+}
+
+#stats-content p:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-left-color: #667eea;
+    transform: translateX(4px);
+}
+
+#stats-content strong {
+    color: #a2d2ff;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+#stats-content hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.3), transparent);
+    margin: 16px 0;
+    grid-column: 1 / -1;
+}
+
+/* Shipgirl Info Section - Enhanced and Larger */
+.shipgirl-info-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    width: 100%;
+}
+
+.shipgirl-info-card:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+    border-color: rgba(102, 126, 234, 0.6);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+}
+
+.shipgirl-name-large {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.shipyard-icon-large {
+    height: 48px;
+    width: auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.more-info-text {
+    font-size: 1rem;
+    opacity: 0.8;
+    color: #a2d2ff;
+    font-weight: 500;
+}
+
+.shipgirl-info-card:hover .more-info-text {
+    opacity: 1;
+    transform: translateX(4px);
+}
+
+.skill-icon-container {
+    text-align: center;
+    /* margin: 16px 0; */
+}
+
+.skill-icon-container img {
+    max-width: 96px;
+    max-height: 96px;
+    border-radius: 16px;
+    border: 3px solid rgba(102, 126, 234, 0.5);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.skill-icon-container img:hover {
+    transform: scale(1.08);
+    border-color: #667eea;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.6);
+}
+
+
+
+/* Level Toggle Button - Modern Design */
+#level-toggle {
+    width: 100%;
+    padding: 14px 24px;
+    /* margin-bottom: 16px; */
+    font-size: 17px;
+    font-weight: 700;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#level-toggle::after {
+    content: '◀ 클릭하여 변경 ▶';
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: 4px;
+    opacity: 0.7;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+#level-toggle:hover {
+    background: linear-gradient(135deg, #5a6778 0%, #3d4858 100%);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+#level-toggle.level-10 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+#level-toggle.level-10:hover {
+    background: linear-gradient(135deg, #7a8efc 0%, #8a5bba 100%);
+    border-color: rgba(102, 126, 234, 0.5);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+/* Choices.js Dropdown Styling */
+.choices {
+    width: 100%;
+    max-width: 600px;
+}
+
+.choices__inner {
+    background: linear-gradient(135deg, rgba(59, 66, 69, 0.8) 0%, rgba(45, 52, 54, 0.8) 100%);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    color: #eaeaea;
+    border-radius: 10px;
+    padding: 1 16px; /* Adjust padding */
+    font-size: 16px;
+    height: 48px; /* Replace min-height with height */
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+}
+
+.choices__inner:hover {
+    border-color: rgba(102, 126, 234, 0.5);
+}
+
+.choices.is-focused .choices__inner {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.choices__list--dropdown,
+.choices__list[aria-expanded] {
+    background: linear-gradient(135deg, rgba(42, 48, 49, 0.98) 0%, rgba(26, 32, 34, 0.98) 100%);
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    border-radius: 10px;
+    margin-top: 4px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    z-index: 1002; /* Add this line */
+}
+
+.choices__list--dropdown .choices__item--selectable.is-highlighted,
+.choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.choices__item {
+    color: #eaeaea;
+    padding: 10px 16px;
+}
+
+.choices__input {
+    background-color: rgba(73, 81, 85, 0.5);
+    color: #eaeaea;
+    border-radius: 6px;
+    padding: 8px;
+}
+
+.choices[data-type*="select-one"]::after {
+    border-color: #eaeaea transparent transparent;
+    margin-top: -2px;
+}
+
+.choices[data-type*="select-one"].is-open::after {
+    border-color: transparent transparent #eaeaea;
+    margin-top: -7.5px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    #stats-panel {
+        padding: 20px;
+    }
+    
+    .stats-two-column {
+        grid-template-columns: 250px 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.6rem;
+        padding: 1.5rem 1rem 0.5rem;
+    }
+    
+    .controls {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    #simulation-container {
+        border-radius: 12px;
+    }
+    
+    #stats-panel {
+        padding: 16px;
+    }
+    
+    .stats-two-column {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .shipgirl-name-large {
+        font-size: 1.4rem;
+    }
+    
+    .shipyard-icon-large {
+        height: 36px;
+    }
+}
+
+/* Smooth Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#stats-panel,
+#simulation-container {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(26, 26, 46, 0.5);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #7a8efc 0%, #8a5bba 100%);
+}
