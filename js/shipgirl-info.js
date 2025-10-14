@@ -244,6 +244,15 @@ function setupEventListeners() {
     document.getElementById('nationalityFilter').addEventListener('change', filterShipgirls);
     backButton.addEventListener('click', () => history.back());
 
+    const homeButton = document.getElementById('homeButton');
+    if (homeButton) {
+        homeButton.addEventListener('click', () => {
+            // Update the URL to the main page and re-run the router
+            history.pushState(null, '', 'pages/shipgirl/shipgirl-info.html');
+            handleRoute();
+        });
+    }
+
     const gridViewBtn = document.getElementById('gridViewBtn');
     const listViewBtn = document.getElementById('listViewBtn');
 
@@ -605,7 +614,8 @@ function renderSkillSection(ship) {
                 id: skill.id,
                 parent: skill.parent,
                 requirement: skill.requirement || '없음',
-                isRetrofit: false
+                isRetrofit: false,
+                weapon_true: skill.weapon_true || false
             });
         }
     });
@@ -616,11 +626,14 @@ function renderSkillSection(ship) {
         // Check if this skill isn't already in the regular skills
         const alreadyExists = allSkills.some(s => s.id === retrofitSkillId);
         if (!alreadyExists) {
+            // Find the retrofit skill to get weapon_true status
+            const retrofitSkillData = Object.values(ship.skill).find(s => s.id === retrofitSkillId);
             allSkills.push({
                 id: retrofitSkillId,
                 parent: retrofitSkillId,
                 requirement: '개조',
-                isRetrofit: true
+                isRetrofit: true,
+                weapon_true: retrofitSkillData?.weapon_true || false
             });
         }
     }
@@ -634,9 +647,12 @@ function renderSkillSection(ship) {
                 ${allSkills.map(skill => {
         const skillInfo = getSkillInfo(skill.id);
         const iconUrl = skillInfo.iconUrl;
+        const isWeaponSkill = skill.weapon_true === true;
+        const skillUrl = `pages/simulators/sim-weapon.html?skill_id=${skill.id}`;
 
         return `
-                        <li class="skill-item ${skill.isRetrofit ? 'retrofit-skill' : ''}">
+                        <li class="skill-item ${skill.isRetrofit ? 'retrofit-skill' : ''} ${isWeaponSkill ? 'weapon-skill-clickable' : ''}" 
+                            ${isWeaponSkill ? `onclick="window.open('${skillUrl}', '_blank')" style="cursor: pointer;"` : ''}>
                             <div class="skill-header">
                                 ${iconUrl ? `
                                     <img src="${iconUrl}" 
@@ -650,6 +666,7 @@ function renderSkillSection(ship) {
                                     <div>
                                         <strong>${skillInfo.name}</strong>
                                         ${skill.isRetrofit ? '<span class="retrofit-badge">개조</span>' : ''}
+                                        ${isWeaponSkill ? '<span class="weapon-badge">무기 시뮬레이터</span>' : ''}
                                     </div>
                                     <span class="skill-id">ID: ${skill.id}</span>
                                 </div>
@@ -657,6 +674,7 @@ function renderSkillSection(ship) {
                             <div class="skill-description">${skillInfo.description}</div>
                             <div class="skill-meta">
                                 <span><strong>필요 조건:</strong> ${skill.requirement}</span>
+                                ${isWeaponSkill ? '<span class="weapon-sim-hint">클릭하여 무기 시뮬레이터에서 보기 →</span>' : ''}
                             </div>
                         </li>
                     `;
@@ -709,8 +727,12 @@ function renderSpWeaponSection(ship) {
                     <ul class="skill-list">
                         ${skillUpgradeIds.map(skillId => {
         const skillInfo = getSkillInfo(skillId);
+        const isWeaponSkill = spWeapon.weapon_true === true;
+        const skillUrl = `pages/simulators/sim-weapon.html?skill_id=${skillId}`;
+
         return `
-                                <li class="skill-item">
+                                <li class="skill-item ${isWeaponSkill ? 'weapon-skill-clickable' : ''}" 
+                                    ${isWeaponSkill ? `onclick="window.open('${skillUrl}', '_blank')" style="cursor: pointer;"` : ''}>
                                     <div class="skill-header">
                                         ${skillInfo.iconUrl ? `
                                             <img src="${skillInfo.iconUrl}" 
@@ -719,13 +741,17 @@ function renderSpWeaponSection(ship) {
                                                  onerror="this.style.display='none'">
                                         ` : ''}
                                         <div class="skill-title">
-                                            <strong>${skillInfo.name}</strong>
+                                            <div>
+                                                <strong>${skillInfo.name}</strong>
+                                                ${isWeaponSkill ? '<span class="weapon-badge">무기 시뮬레이터</span>' : ''}
+                                                </div>
                                             <span class="skill-id">ID: ${skillId}</span>
                                         </div>
                                     </div>
                                     <div class="skill-description">${skillInfo.description}</div>
                                     <div class="skill-meta">
                                         <span><strong>타입:</strong> 특수 장비 강화 스킬</span>
+                                        ${isWeaponSkill ? '<span class="weapon-sim-hint">클릭하여 무기 시뮬레이터에서 보기 →</span>' : ''}
                                     </div>
                                 </li>
                             `;
