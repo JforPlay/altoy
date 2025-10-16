@@ -30980,5 +30980,61 @@
         "기간":"한정 (2025\/08\/20)",
         "ex_chat_status":0,
         "isNew":false
+    },
+    {
+        "클뜯 id":11400010,
+        "함순이 이름":"헤스티아",
+        "한글 함순이 + 스킨 이름":"헤스티아",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/11400010\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":114,
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
+        "클뜯 id":11400011,
+        "함순이 이름":"헤스티아",
+        "한글 함순이 + 스킨 이름":"God Vacation！",
+        "스킨 타입 - 한글":"수영복",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/11400011\/shipyard.png",
+        "스킨 태그":"쁘띠모션, 배경, 브금",
+        "진영":114,
+        "레어도":"SSR",
+        "재화":1000.0,
+        "기간":"한정 (2025\/10\/29)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":11400020,
+        "함순이 이름":"류 리온",
+        "한글 함순이 + 스킨 이름":"류 리온",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/11400020\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":114,
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
+        "클뜯 id":11400021,
+        "함순이 이름":"류 리온",
+        "한글 함순이 + 스킨 이름":"밤의 술집에서",
+        "스킨 타입 - 한글":"메이드 타임",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/11400021\/shipyard.png",
+        "스킨 태그":"쁘띠모션, 배경, 브금",
+        "진영":114,
+        "레어도":"SSR",
+        "재화":1000.0,
+        "기간":"한정 (2025\/10\/29)",
+        "ex_chat_status":0,
+        "isNew":false
     }
 ]

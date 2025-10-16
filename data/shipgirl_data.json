@@ -9127,6 +9127,14 @@
         "name": "{namecode:294}",
         "icon": null
     },
+    "900528": {
+        "name": "헤스티아",
+        "icon": null
+    },
+    "900529": {
+        "name": "류 리온",
+        "icon": null
+    },
     "901010": {
         "name": "르 마르스 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901010/icon.png"
@@ -10326,5 +10334,21 @@
     "11300041": {
         "name": "서머 베케이션",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11300041/icon.png"
+    },
+    "11400010": {
+        "name": "헤스티아",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11400010/icon.png"
+    },
+    "11400011": {
+        "name": "God Vacation！",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11400011/icon.png"
+    },
+    "11400020": {
+        "name": "류 리온",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11400020/icon.png"
+    },
+    "11400021": {
+        "name": "밤의 술집에서",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11400021/icon.png"
     }
 }

@@ -11011,8 +11011,9 @@
         "nationality": 3,
         "type": 5,
         "description": [
-            "중형함 건조",
-            "이벤트 : 검게 물든 강철의 벚꽃"
+            "이벤트 : 검게 물든 강철의 벚꽃",
+            "훈장 상점 교환(랜덤 갱신)",
+            "훈장 지원(랜덤 갱신)"
         ],
         "rarity": "SSR"
     },
@@ -11049,7 +11050,7 @@
     },
     "30507": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305070/icon.png",
-        "name": "카가(전함)",
+        "name": "카가 ",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -20961,7 +20962,7 @@
     },
     "1010001": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10100010/icon.png",
-        "name": "넵튠(콜라보)",
+        "name": "넵튠",
         "nationality": 101,
         "type": 2,
         "description": [
@@ -21171,7 +21172,7 @@
     },
     "1060003": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600030/icon.png",
-        "name": "카스미(콜라보)",
+        "name": "카스미",
         "nationality": 106,
         "type": 3,
         "description": [
@@ -21646,6 +21647,26 @@
         "type": 1,
         "description": [
             "이벤트: 연금술사와 하늘 끝이 만나는 탑"
+        ],
+        "rarity": "SSR"
+    },
+    "1140001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11400010/icon.png",
+        "name": "헤스티아",
+        "nationality": 114,
+        "type": 12,
+        "description": [
+            "이벤트: 푸른 하늘 아래의 만남"
+        ],
+        "rarity": "SSR"
+    },
+    "1140002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11400020/icon.png",
+        "name": "류 리온",
+        "nationality": 114,
+        "type": 2,
+        "description": [
+            "이벤트: 푸른 하늘 아래의 만남"
         ],
         "rarity": "SSR"
     }
