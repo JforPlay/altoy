@@ -33,7 +33,6 @@ def create_final_subset(input_filename, type_map_filename, skill_icon_map_filena
             ship_type = ship.get('type')
             type_key = str(ship_type)
 
-            # Create the base dictionary for the new entry
             new_ship = {
                 'gid': ship.get('gid'),
                 'name': ship.get('name'),
@@ -41,25 +40,25 @@ def create_final_subset(input_filename, type_map_filename, skill_icon_map_filena
                 'shipyard': ship.get('shipyard'),
             }
             
-            # Add position and type icon from the mapping file
             if type_key in type_map:
                 new_ship['position'] = type_map[type_key].get('position')
                 new_ship['icon'] = type_map[type_key].get('icon')
 
             # Filter skills, retrofit, and sp_weapon based on 'weapon_true'
+            # The .copy() method ensures all fields, including 'attached_weapon_skill_id', are carried over.
             if 'skill' in ship and isinstance(ship.get('skill'), dict):
                 filtered_skills = {
-                    key: obj for key, obj in ship['skill'].items() 
+                    key: obj.copy() for key, obj in ship['skill'].items() 
                     if isinstance(obj, dict) and obj.get('weapon_true') is True
                 }
                 if filtered_skills:
                     new_ship['skill'] = filtered_skills
 
             if isinstance(ship.get('retrofit'), dict) and ship['retrofit'].get('weapon_true') is True:
-                new_ship['retrofit'] = ship['retrofit']
+                new_ship['retrofit'] = ship['retrofit'].copy()
 
             if isinstance(ship.get('sp_weapon'), dict) and ship['sp_weapon'].get('weapon_true') is True:
-                new_ship['sp_weapon'] = ship['sp_weapon']
+                new_ship['sp_weapon'] = ship['sp_weapon'].copy()
             
             # Continue only if the ship has at least one relevant weapon skill
             if 'skill' not in new_ship and 'retrofit' not in new_ship and 'sp_weapon' not in new_ship:
@@ -67,13 +66,13 @@ def create_final_subset(input_filename, type_map_filename, skill_icon_map_filena
 
             # --- Perform cleanup and enrichment ---
             ship_name = new_ship.get('name')
-            ship_position = new_ship.get('position') # Get the ship's position
-            ship_yard = new_ship.get('shipyard') # Get the shipyard icon
+            ship_position = new_ship.get('position')
+            ship_yard = new_ship.get('shipyard')
 
             if 'skill' in new_ship:
                 for skill_obj in new_ship['skill'].values():
                     skill_obj['name'] = ship_name
-                    skill_obj['position'] = ship_position # Add position to skill
+                    skill_obj['position'] = ship_position
                     skill_obj['shipyard'] = ship_yard
                     skill_id = str(skill_obj.get('id'))
                     if skill_id in skill_icon_map:
@@ -83,7 +82,7 @@ def create_final_subset(input_filename, type_map_filename, skill_icon_map_filena
                 for key in retrofit_keys_to_remove:
                     new_ship['retrofit'].pop(key, None)
                 new_ship['retrofit']['name'] = ship_name
-                new_ship['retrofit']['position'] = ship_position # Add position to retrofit
+                new_ship['retrofit']['position'] = ship_position
                 new_ship['retrofit']['shipyard'] = ship_yard
                 skill_id = str(new_ship['retrofit'].get('skill_id'))
                 if skill_id in skill_icon_map:
@@ -93,7 +92,7 @@ def create_final_subset(input_filename, type_map_filename, skill_icon_map_filena
                 for key in sp_weapon_keys_to_remove:
                     new_ship['sp_weapon'].pop(key, None)
                 new_ship['sp_weapon']['name'] = ship_name
-                new_ship['sp_weapon']['position'] = ship_position # Add position to sp_weapon
+                new_ship['sp_weapon']['position'] = ship_position
                 new_ship['sp_weapon']['shipyard'] = ship_yard
                 try:
                     skill_id = str(new_ship['sp_weapon']['skill_upgrade'][0][1])
@@ -105,6 +104,8 @@ def create_final_subset(input_filename, type_map_filename, skill_icon_map_filena
             final_data.append(new_ship)
 
         # Step 3: Save the final, cleaned, and enriched subset to a file
+        os.makedirs(os.path.dirname(output_filename), exist_ok=True)
+
         with open(output_filename, 'w', encoding='utf-8') as f:
             json.dump(final_data, f, ensure_ascii=False, indent=4)
             
@@ -113,7 +114,7 @@ def create_final_subset(input_filename, type_map_filename, skill_icon_map_filena
 
     except FileNotFoundError as e:
         print(f"❌ Error: A required input file was not found: {e.filename}")
-        print("Please ensure all JSON files are in the same directory.")
+        print("Please ensure all JSON files are in the correct directories.")
     except Exception as e:
         print(f"❌ An unexpected error occurred: {e}")
 
