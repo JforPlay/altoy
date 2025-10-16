@@ -652,7 +652,7 @@ function renderSkillSection(ship) {
 
         return `
                         <li class="skill-item ${skill.isRetrofit ? 'retrofit-skill' : ''} ${isWeaponSkill ? 'weapon-skill-clickable' : ''}" 
-                            ${isWeaponSkill ? `onclick="window.open('${skillUrl}', '_blank')" style="cursor: pointer;"` : ''}>
+                            ${isWeaponSkill ? `onclick="window.location.href='${skillUrl}'" style="cursor: pointer;"` : ''}>
                             <div class="skill-header">
                                 ${iconUrl ? `
                                     <img src="${iconUrl}" 
@@ -732,7 +732,7 @@ function renderSpWeaponSection(ship) {
 
         return `
                                 <li class="skill-item ${isWeaponSkill ? 'weapon-skill-clickable' : ''}" 
-                                    ${isWeaponSkill ? `onclick="window.open('${skillUrl}', '_blank')" style="cursor: pointer;"` : ''}>
+                                    ${isWeaponSkill ? `onclick="window.location.href='${skillUrl}'" style="cursor: pointer;"` : ''}>
                                     <div class="skill-header">
                                         ${skillInfo.iconUrl ? `
                                             <img src="${skillInfo.iconUrl}" 
@@ -788,21 +788,40 @@ function setupDetailEventListeners() {
 
 // ===== Gift Generation =====
 function generateGiftIcons(dislikedGifts, type) {
-    const totalGifts = 9;
-    const dislikedCount = dislikedGifts.length || 0;
-    const count = type === 'liked' ? (totalGifts - dislikedCount) : dislikedCount;
+    // Define all possible gift IDs from 180001 to 180009
+    const allGiftIds = Array.from({ length: 9 }, (_, i) => 180001 + i);
+    const dislikedSet = new Set(dislikedGifts || []);
+    const baseUrl = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/props/';
 
-    let icons = '';
-    for (let i = 1; i <= count; i++) {
-        const giftId = type === 'disliked' && dislikedGifts.length > 0 ? dislikedGifts[i - 1] : i;
-        icons += `
-            <div class="gift-icon ${type}" data-gift-id="${giftId}">
-                <div class="gift-placeholder">${giftId}</div>
-            </div>
-        `;
+    let targetGiftIds;
+
+    // Determine which set of gifts to display based on the 'type' parameter
+    if (type === 'liked') {
+        // Liked gifts are all gifts that are NOT in the disliked set
+        targetGiftIds = allGiftIds.filter(id => !dislikedSet.has(id));
+    } else { // type === 'disliked'
+        // Disliked gifts are simply the ones provided in the list
+        targetGiftIds = [...dislikedSet];
     }
 
-    return icons;
+    // If there are no gifts in the target list, display a message
+    if (targetGiftIds.length === 0) {
+        return '<span class="no-gifts" style="color: var(--text-secondary);">없음</span>';
+    }
+
+    // Generate the HTML for each gift icon
+    return targetGiftIds.map(giftId => {
+        // Extract the last two digits from the ID to build the filename (e.g., 180005 -> 05)
+        const fileNumber = String(giftId).slice(-2);
+        const imageUrl = `${baseUrl}gift${fileNumber}.png`;
+
+        // Return the HTML for a single gift icon, now using an <img> tag
+        return `
+            <div class="gift-icon ${type}" data-gift-id="${giftId}">
+                <img src="${imageUrl}" alt="Gift ${fileNumber}" title="선물 ID: ${giftId}" style="width: 100%; height: 100%;">
+            </div>
+        `;
+    }).join('');
 }
 
 // ===== Stats Calculation =====
