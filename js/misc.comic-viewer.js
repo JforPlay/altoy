@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
     const gallery = document.getElementById('gallery');
     const sortButton = document.getElementById('sort-button');
     const imageBaseUrl = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/mangapic/';
@@ -10,11 +10,24 @@ document.addEventListener("DOMContentLoaded", function() {
     const lightboxImg = document.getElementById('lightbox-img');
     const closeButton = document.querySelector('.close-button');
 
-    // Generate the list of image files from 1.png to 333.png
-    function generateImageFiles() {
-        imageFiles = [];
-        for (let i = 1; i <= 333; i++) {
-            imageFiles.push(`${i}.png`);
+    /**
+     * Fetches the list of image files directly from the GitHub repository.
+     * This replaces the hardcoded file generation.
+     */
+    async function fetchImageFiles() {
+        const apiUrl = 'https://api.github.com/repos/JforPlay/data_for_toy/contents/mangapic';
+        try {
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error(`GitHub API responded with status: ${response.status}`);
+            }
+            const data = await response.json();
+            // Filter for files only (in case of subdirectories) and map to their names.
+            return data.filter(item => item.type === 'file').map(item => item.name);
+        } catch (error) {
+            console.error('Could not fetch image file list:', error);
+            gallery.innerHTML = '<p style="color: white; text-align: center;">Error loading images. Please try again later.</p>';
+            return []; // Return an empty array on error to prevent the script from breaking.
         }
     }
 
@@ -33,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
         img.setAttribute('data-src', fullImageUrl);
         img.alt = `Manga Image ${imageName}`;
         img.classList.add('lazy');
+        // Use a transparent placeholder to maintain layout
         img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
         img.addEventListener('click', function() {
@@ -51,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
         gallery.appendChild(div);
     }
     
-    // Function to initialize the Intersection Observer
+    // Function to initialize the Intersection Observer for lazy loading
     function initializeLazyLoading() {
         const lazyImages = document.querySelectorAll('img.lazy');
         const observerOptions = {
@@ -90,11 +104,13 @@ document.addEventListener("DOMContentLoaded", function() {
     // Sort function
     sortButton.addEventListener('click', function() {
         isAscending = !isAscending;
+        // Natural sort to handle numbers in filenames correctly (e.g., '10.png' vs '2.png')
+        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
         if (isAscending) {
-            imageFiles.sort((a, b) => parseInt(a) - parseInt(b));
+            imageFiles.sort(collator.compare);
             sortButton.textContent = '기간정렬 : 1호부터';
         } else {
-            imageFiles.sort((a, b) => parseInt(b) - parseInt(a));
+            imageFiles.sort((a, b) => collator.compare(b, a));
             sortButton.textContent = '기간정렬 : 최신부터';
         }
         renderGallery();
@@ -107,7 +123,6 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.style.overflow = '';
     });
 
-    // Close lightbox if clicked outside the image
     lightbox.addEventListener('click', function(event) {
         if (event.target === lightbox) {
             lightbox.style.display = 'none';
@@ -116,7 +131,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Close lightbox with ESC key
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape' && lightbox.style.display === 'block') {
             lightbox.style.display = 'none';
@@ -125,11 +139,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Initial setup
-    generateImageFiles();
-
-    imageFiles.sort((a, b) => parseInt(b) - parseInt(a)); // Sort descending initially
-    sortButton.textContent = '기간정렬 : 최신부터'; // Update button text
+    // --- Initial Setup ---
+    imageFiles = await fetchImageFiles(); // Fetch files dynamically
     
-    renderGallery();
+    if (imageFiles.length > 0) {
+        // Use natural sort for the initial descending order
+        const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+        imageFiles.sort((a, b) => collator.compare(b, a));
+        sortButton.textContent = '기간정렬 : 최신부터';
+        
+        renderGallery();
+    }
 });
