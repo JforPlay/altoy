@@ -1,6 +1,3 @@
-// Bullet physics engine for simulating Azur Lane weapon systems
-// Refactored with modular behavior system
-
 class BulletEngine {
     constructor(options) {
         this.container = options.container;
@@ -9,7 +6,7 @@ class BulletEngine {
         this.gSpeed = options.gSpeed || 1.5;
 
         // Config constants from BattleConfig
-        this.bulletSpeedConvert = 0.1;
+        this.bulletSpeedConvert = 0.12; // manually changed to make it feel similar to in-game
         this.bulletHeight = 1;
         this.heightOffsetRate = 1.5;
         this.gravity = -0.05;
@@ -17,7 +14,10 @@ class BulletEngine {
         this.allBarrages = {};
         this.allBullets = {};
 
-        // Perspective settings
+        // NEW: Time tracking for entire engine
+        this.frameTime = 1000 / this.targetFps; // Target time per frame in ms
+        this.frameTimeSec = 1 / this.targetFps; // Target time per frame in seconds
+        
         this.perspective = {
             enabled: false,
             minScale: 0.8,
@@ -39,9 +39,6 @@ class BulletEngine {
         this.scale = this.container.offsetWidth / gameWidth;
     }
 
-    /**
-     * Convert game coordinates to screen coordinates
-     */
     gameToScreen(gameX, gameY) {
         const screenX = (gameX - this.gameCoords.totalArea.minX) * this.scale;
         const screenY = (this.gameCoords.totalArea.maxY - gameY) * this.scale;
@@ -71,9 +68,6 @@ class BulletEngine {
         };
     }
 
-    /**
-     * Convert screen coordinates back to game coordinates
-     */
     screenToGame(screenX, screenY) {
         const gameX = (screenX / this.scale) + this.gameCoords.totalArea.minX;
         const gameY = this.gameCoords.totalArea.maxY - (screenY / this.scale);
@@ -86,7 +80,7 @@ class BulletEngine {
             startX, startY, angle, bulletInfo,
             transformChain = [], shrapnelCallback, parentBullet = null,
             inheritSpeed = null, airdropData = null, weaponPos = null,
-            enemyTarget = null
+            enemyTarget = null, aimType = null
         } = options;
 
         if (isNaN(startX) || isNaN(startY) || isNaN(angle)) {
@@ -102,7 +96,6 @@ class BulletEngine {
         const bulletWidth = bulletInfo.cld_box[0] * this.scale;
         const bulletHeight = bulletInfo.cld_box[1] * this.scale;
 
-        // Convert positions
         const startGamePos = this.screenToGame(startX, startY);
         const initialPos = this.gameToScreen(startGamePos.x, startGamePos.y);
 
@@ -127,65 +120,75 @@ class BulletEngine {
         const angleInRadians = angle * Math.PI / 180;
 
         const bullet = {
-            // Position
             x: startGamePos.x,
             y: startGamePos.y,
-
-            // Velocity
             velocity: currentVelocity_perFrame,
             angleRad: angleInRadians,
             velocityX: currentVelocity_perFrame * Math.cos(angleInRadians),
             velocityY: currentVelocity_perFrame * Math.sin(angleInRadians),
-
-            // References
             bulletInfo: bulletInfo,
             element: bulletElement,
+            aimType: aimType,
             transformChain: transformChain,
             airdropData: airdropData,
             weaponPos: weaponPos,
             enemyTarget: enemyTarget,
-
-            // State
             shouldRemove: false,
             framesLived: 0,
             distanceTraveled: 0,
-
-            // Lifecycle
+            
+            // **NEW: Time tracking**
+            timeElapsed: 0, // Total time in seconds
+            lastFrameTime: performance.now(), // Timestamp of last frame
+            
             range: bulletInfo.range + (Math.random() * 2 - 1) * (bulletInfo.range_offset || 0),
-            lifetime_frames: (() => {
-                const baseLifetime = (bulletInfo.range / currentVelocity_perFrame);
+            // **MODIFIED: Calculate lifetime in seconds instead of frames**
+            lifetime_seconds: (() => {
+                const baseLifetime = (bulletInfo.range / currentVelocity_perFrame) / this.targetFps;
                 const lingerTime = bulletInfo.extra_param?.lastTime || 0;
-                // Total lifetime = time to reach range + lingering time + buffer
-                return (baseLifetime + lingerTime + 1) * this.targetFps;
+                return baseLifetime + lingerTime + (1 / this.targetFps);
             })(),
-
-            // Helper
+            
             getBehavior: function (name) {
                 return this.behaviors.get(name);
             }
         };
 
-        // Create and initialize behaviors
         bullet.behaviors = BehaviorFactory.createBehaviors(bullet, this);
         bullet.behaviors.forEach(behavior => behavior.initialize());
 
-        // Animation loop
+        // Animation loop with delta time
         const animate = () => {
+            const now = performance.now();
+            const deltaTimeMs = now - bullet.lastFrameTime;
+            bullet.lastFrameTime = now;
+            
+            // **FIX: Prevent zero/negative delta on first frame or tab switching**
+            const safeDeltaTimeMs = Math.max(deltaTimeMs, 1);
+            
+            // Calculate delta multiplier (normalizes to target FPS)
+            const deltaMultiplier = safeDeltaTimeMs / this.frameTime;
+            const deltaTimeSec = safeDeltaTimeMs / 1000;
+            
+            // Update counters
             bullet.framesLived++;
+            bullet.timeElapsed += deltaTimeSec;
 
-            // Frame data passed to all behaviors
             const frameData = {
                 framesLived: bullet.framesLived,
+                timeElapsed: bullet.timeElapsed,
+                deltaMultiplier: deltaMultiplier,
+                deltaTimeSec: deltaTimeSec,
                 velocityX: bullet.velocityX,
                 velocityY: bullet.velocityY,
                 x: bullet.x,
                 y: bullet.y,
                 apexReached: false,
                 altitude: 0,
-                distanceTraveled: bullet.distanceTraveled  // ADD THIS!
+                distanceTraveled: bullet.distanceTraveled
             };
 
-            // Update behaviors in order (priority matters!)
+            // Update behaviors in order
             const updateOrder = [
                 'gravity',
                 'airdrop',
@@ -213,17 +216,16 @@ class BulletEngine {
             bullet.y = frameData.y;
             bullet.velocity = Math.sqrt(bullet.velocityX ** 2 + bullet.velocityY ** 2);
 
-            // Update distance traveled
-            const distanceMoved = bullet.velocity;
+            // Update distance traveled (time-normalized)
+            const distanceMoved = bullet.velocity * deltaMultiplier;
             bullet.distanceTraveled += distanceMoved;
             frameData.distanceTraveled = bullet.distanceTraveled;
 
-            // Update emission behaviors (shrapnel, transform)
+            // Update emission behaviors
             const shrapnelBehavior = bullet.behaviors.get('shrapnel');
             if (shrapnelBehavior) {
                 const shrapnelResult = shrapnelBehavior.update(frameData);
                 if (shrapnelResult) {
-                    // Apply any position/velocity overrides from lingering
                     if (shrapnelResult.x !== undefined) bullet.x = shrapnelResult.x;
                     if (shrapnelResult.y !== undefined) bullet.y = shrapnelResult.y;
                     if (shrapnelResult.velocityX !== undefined) bullet.velocityX = shrapnelResult.velocityX;
@@ -236,83 +238,75 @@ class BulletEngine {
                 transformBehavior.update(frameData);
             }
 
-            // === RENDER BULLET ===
+            // Render bullet
             const screenPos = this.gameToScreen(bullet.x, bullet.y);
             const scaledWidth = bulletWidth * screenPos.scale;
             const scaledHeight = bulletHeight * screenPos.scale;
 
-            // Update rotation to match velocity
             if (bulletInfo.extra_param?.dontRotate !== true) {
-                const visualAngle = Math.atan2(bullet.velocityY, bullet.velocityX) * 180 / Math.PI;
+                let visualAngle;
+                if (bullet.aimType === 1 && bullet.enemyTarget) {
+                    const dy = bullet.enemyTarget.y - bullet.y;
+                    const dx = bullet.enemyTarget.x - bullet.x;
+                    visualAngle = Math.atan2(dy, dx) * 180 / Math.PI;
+                } else {
+                    visualAngle = Math.atan2(bullet.velocityY, bullet.velocityX) * 180 / Math.PI;
+                }
                 bulletElement.style.transform = `rotate(${visualAngle}deg) scale(${screenPos.scale})`;
             } else {
                 bulletElement.style.transform = `scale(${screenPos.scale})`;
             }
 
-            // Apply depth effects
             if (this.perspective.enabled) {
                 bulletElement.style.filter = screenPos.blur > 0 ? `blur(${screenPos.blur}px)` : 'none';
                 bulletElement.style.zIndex = Math.floor(screenPos.depth * 0.1) + 5;
             }
 
-            // Position bullet
             bulletElement.style.left = `${screenPos.x - scaledWidth / 2}px`;
             bulletElement.style.top = `${screenPos.y - scaledHeight / 2}px`;
 
-        // === CHECK EXPIRATION ===
-        
-        // Check if shrapnel behavior is currently lingering OR has lingering capability
-        const isLingering = shrapnelBehavior?.isLingering;
-        
-        const hasLingeringCapability = shrapnelBehavior && 
-            shrapnelBehavior.rangeReached && 
-            !shrapnelBehavior.triggered && 
-            shrapnelBehavior.lastTimeFrames > 0 &&
-            shrapnelBehavior.splitShrapnels.length > 0;
-        
-        // Don't expire due to lifetime OR range if we're lingering or have lingering capability
-        const lifetimeExpired = !isLingering && !hasLingeringCapability &&
-            bullet.lifetime_frames > 0 && 
-            bullet.framesLived >= bullet.lifetime_frames;
-        
-        const rangeExpired = !isLingering && !hasLingeringCapability && 
-            frameData.distanceTraveled >= bullet.range;
+            // Check expiration (TIME-BASED)
+            const isLingering = shrapnelBehavior?.isLingering;
+            const hasLingeringCapability = shrapnelBehavior &&
+                shrapnelBehavior.rangeReached &&
+                !shrapnelBehavior.triggered &&
+                shrapnelBehavior.lastTimeSec > 0 &&
+                shrapnelBehavior.splitShrapnels.length > 0;
 
-        const isOutOfBounds = bullet.framesLived > 3 && (
-            (screenPos.x < -scaledWidth && bullet.velocityX <= 0) ||
-            (screenPos.x > this.container.offsetWidth + scaledWidth && bullet.velocityX >= 0) ||
-            (screenPos.y < -scaledHeight && bullet.velocityY <= 0) ||
-            (screenPos.y > this.container.offsetHeight + scaledHeight && bullet.velocityY >= 0)
-        );
+            // **MODIFIED: Use time-based expiration**
+            const lifetimeExpired = !isLingering && !hasLingeringCapability &&
+                bullet.lifetime_seconds > 0 &&
+                bullet.timeElapsed >= bullet.lifetime_seconds;
 
-        let shouldExpire = false;
+            const rangeExpired = !isLingering && !hasLingeringCapability &&
+                frameData.distanceTraveled >= bullet.range;
 
-        if ((bulletInfo.pierce_count || 0) > 1) {
-            if (rangeExpired || isOutOfBounds) {
-                shouldExpire = true;
-            }
-        } else {
-            if (lifetimeExpired || rangeExpired || isOutOfBounds) {
-                shouldExpire = true;
-            }
-        }
+            const isOutOfBounds = bullet.framesLived > 3 && (
+                (screenPos.x < -scaledWidth && bullet.velocityX <= 0) ||
+                (screenPos.x > this.container.offsetWidth + scaledWidth && bullet.velocityX >= 0) ||
+                (screenPos.y < -scaledHeight && bullet.velocityY <= 0) ||
+                (screenPos.y > this.container.offsetHeight + scaledHeight && bullet.velocityY >= 0)
+            );
 
-        if (bullet.shouldRemove || shouldExpire) {
-            // Trigger final shrapnel if not already triggered
-            if (shrapnelBehavior && !shrapnelBehavior.triggered && 
-                shrapnelBehavior.splitShrapnels.length > 0) {
-                console.log('🗑️ Expiring bullet, triggering final shrapnel split');
-                shrapnelBehavior.triggerSplit(frameData);
+            let shouldExpire = false;
+            if ((bulletInfo.pierce_count || 0) > 1) {
+                if (rangeExpired || isOutOfBounds) shouldExpire = true;
+            } else {
+                if (lifetimeExpired || rangeExpired || isOutOfBounds) shouldExpire = true;
             }
 
-            // Cleanup
-            bullet.behaviors.forEach(b => b.destroy());
-            bulletElement.remove();
-            return;
-        }
+            if (bullet.shouldRemove || shouldExpire) {
+                if (shrapnelBehavior && !shrapnelBehavior.triggered &&
+                    shrapnelBehavior.splitShrapnels.length > 0) {
+                    shrapnelBehavior.triggerSplit(frameData);
+                }
+                bullet.behaviors.forEach(b => b.destroy());
+                bulletElement.remove();
+                return;
+            }
 
-        requestAnimationFrame(animate);
-    };
+            requestAnimationFrame(animate);
+        };
 
         requestAnimationFrame(animate);
         return bulletElement;

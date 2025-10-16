@@ -1,8 +1,3 @@
-/**
- * Bullet Behavior System
- * Modular components for different bullet types
- */
-
 class BulletBehavior {
     constructor(bullet, engine) {
         this.bullet = bullet;
@@ -17,21 +12,15 @@ class BulletBehavior {
 // === MOVEMENT BEHAVIORS ===
 
 class StandardMovementBehavior extends BulletBehavior {
-    initialize() {
-        // No need to store velocity here
-    }
+    initialize() { }
 
     update(frameData) {
-        // Update position based on current velocity in frameData
-        const newX = frameData.x + frameData.velocityX;
-        const newY = frameData.y + frameData.velocityY;
+        // **FIX: Use deltaMultiplier properly**
+        const delta = frameData.deltaMultiplier || 1;
+        const newX = frameData.x + frameData.velocityX * delta;
+        const newY = frameData.y + frameData.velocityY * delta;
 
-        return {
-            x: newX,
-            y: newY,
-            // velocityX: frameData.velocityX,
-            // velocityY: frameData.velocityY
-        };
+        return { x: newX, y: newY };
     }
 }
 
@@ -44,14 +33,15 @@ class AccelerationBehavior extends BulletBehavior {
 
         if (Array.isArray(bulletInfo.acceleration)) {
             bulletInfo.acceleration.forEach(event => {
+                // **MODIFIED: Store time in seconds instead of frames**
                 this.schedule.push({
-                    frame: event.t * this.engine.targetFps,
+                    time: event.t, // Already in seconds
                     u: (event.u || 0) * this.engine.gSpeed,
                     v: (event.v || 0) * this.engine.gSpeed,
                     flip: event.flip || false
                 });
             });
-            this.schedule.sort((a, b) => a.frame - b.frame);
+            this.schedule.sort((a, b) => a.time - b.time);
 
             if (this.schedule.length > 0) {
                 this.currentAccel = this.schedule[0].u;
@@ -61,9 +51,9 @@ class AccelerationBehavior extends BulletBehavior {
     }
 
     update(frameData) {
-        // Update schedule
+        // **MODIFIED: Use time instead of frames**
         for (const event of this.schedule) {
-            if (frameData.framesLived >= event.frame) {
+            if (frameData.timeElapsed >= event.time) {
                 this.currentAccel = event.u;
                 this.currentCrossAccel = event.v;
             }
@@ -71,11 +61,9 @@ class AccelerationBehavior extends BulletBehavior {
 
         if (this.currentAccel === 0 && this.currentCrossAccel === 0) return;
 
-        const speed = Math.sqrt(
-            frameData.velocityX ** 2 + frameData.velocityY ** 2
-        );
+        const speed = Math.sqrt(frameData.velocityX ** 2 + frameData.velocityY ** 2);
 
-        if (this.currentAccel < 0 && speed + this.currentAccel < 0) {
+        if (this.currentAccel < 0 && speed + this.currentAccel * frameData.deltaMultiplier < 0) {
             this.schedule.forEach(e => e.u *= -1);
             this.currentAccel *= -1;
         }
@@ -89,8 +77,9 @@ class AccelerationBehavior extends BulletBehavior {
         const crossX = -normalY;
         const crossY = normalX;
 
-        const newVelX = frameData.velocityX + normalX * this.currentAccel + crossX * this.currentCrossAccel;
-        const newVelY = frameData.velocityY + normalY * this.currentAccel + crossY * this.currentCrossAccel;
+        const delta = frameData.deltaMultiplier || 1;
+        const newVelX = frameData.velocityX + (normalX * this.currentAccel + crossX * this.currentCrossAccel) * delta;
+        const newVelY = frameData.velocityY + (normalY * this.currentAccel + crossY * this.currentCrossAccel) * delta;
 
         return { velocityX: newVelX, velocityY: newVelY };
     }
@@ -100,7 +89,6 @@ class TrackerBehavior extends BulletBehavior {
     initialize() {
         const bulletInfo = this.bullet.bulletInfo;
 
-        // Handle both array and object format for acceleration
         let trackerData = null;
 
         if (Array.isArray(bulletInfo.acceleration)) {
@@ -110,13 +98,11 @@ class TrackerBehavior extends BulletBehavior {
         }
 
         if (!trackerData || !trackerData.tracker) {
-            // console.warn('⚠️ No tracker data found');
             this.enabled = false;
             return;
         }
 
         if (!this.bullet.enemyTarget) {
-            // console.warn('⚠️ No enemy target set for tracker bullet');
             this.enabled = false;
             return;
         }
@@ -125,7 +111,7 @@ class TrackerBehavior extends BulletBehavior {
         this.trackRange = trackerData.tracker.range || 50;
         this.angularSpeed = (trackerData.tracker.angular || 3) * Math.PI / 180;
         this.target = this.bullet.enemyTarget;
-        this.isTracking = false; // Start as not tracking
+        this.isTracking = false;
     }
 
     update(frameData) {
@@ -135,17 +121,13 @@ class TrackerBehavior extends BulletBehavior {
         const dy = this.target.y - frameData.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Check if we're in range
         const inRange = distance <= this.trackRange;
 
         if (inRange) {
             if (!this.isTracking) {
-                // debug log when tracking starts
-                // console.log('🎯 Tracker ACTIVATED! Bullet entered range:', distance.toFixed(2));
                 this.isTracking = true;
             }
 
-            // Calculate tracking
             const targetAngle = Math.atan2(dy, dx);
             const currentAngle = Math.atan2(frameData.velocityY, frameData.velocityX);
 
@@ -153,7 +135,8 @@ class TrackerBehavior extends BulletBehavior {
             while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
             while (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
 
-            const turnAmount = Math.sign(angleDiff) * Math.min(Math.abs(angleDiff), this.angularSpeed);
+            const delta = frameData.deltaMultiplier || 1;
+            const turnAmount = Math.sign(angleDiff) * Math.min(Math.abs(angleDiff), this.angularSpeed * delta);
             const newAngle = currentAngle + turnAmount;
             const speed = Math.sqrt(frameData.velocityX ** 2 + frameData.velocityY ** 2);
 
@@ -162,12 +145,9 @@ class TrackerBehavior extends BulletBehavior {
                 velocityY: speed * Math.sin(newAngle)
             };
         } else {
-            // Out of range - continue straight
             if (this.isTracking) {
-                console.log('⚠️ Tracker lost target (out of range):', distance.toFixed(2));
                 this.isTracking = false;
             }
-            // Return nothing = keep current velocity (continue straight)
             return;
         }
     }
@@ -178,7 +158,7 @@ class OrbitBehavior extends BulletBehavior {
         const orbitData = this.bullet.bulletInfo.acceleration?.find(a => a.orbit);
         if (!orbitData || !this.bullet.weaponPos) return;
 
-        this.center = this.engine.bulletEngine.screenToGame(
+        this.center = this.engine.screenToGame(
             this.bullet.weaponPos.x,
             this.bullet.weaponPos.y
         );
@@ -224,7 +204,10 @@ class CircleBehavior extends BulletBehavior {
         if (distance < 0.1) return;
 
         const speed = Math.sqrt(frameData.velocityX ** 2 + frameData.velocityY ** 2);
-        const rotationAngle = (speed / distance) * (this.antiClockwise ? 1 : -1);
+        
+        // **MODIFIED: Scale rotation by delta time**
+        const delta = frameData.deltaMultiplier || 1;
+        const rotationAngle = (speed / distance) * (this.antiClockwise ? 1 : -1) * delta;
         const cos_a = Math.cos(rotationAngle);
         const sin_a = Math.sin(rotationAngle);
 
@@ -252,9 +235,10 @@ class GravityBehavior extends BulletBehavior {
     update(frameData) {
         if (!this.hasGravity) return;
 
+        const delta = frameData.deltaMultiplier || 1;
         this.previousVerticalSpeed = this.verticalSpeed;
-        this.verticalSpeed += this.gravity;
-        this.altitude += this.verticalSpeed;
+        this.verticalSpeed += this.gravity * delta;
+        this.altitude += this.verticalSpeed * delta;
 
         return {
             altitude: this.altitude,
@@ -271,7 +255,6 @@ class AirdropBehavior extends BulletBehavior {
         const verticalDistance = this.bullet.airdropData.explodePos.y - 0;
         const timeToTarget = horizontalDistance / this.bullet.velocity;
 
-        // Get gravity from GravityBehavior if it exists
         const gravityBehavior = this.bullet.getBehavior('gravity');
         const gravity = gravityBehavior ? gravityBehavior.gravity : 0;
 
@@ -296,18 +279,15 @@ class ShrapnelBehavior extends BulletBehavior {
         this.fragile = bulletInfo.extra_param?.fragile;
         this.childEmitters = [];
 
-        // Lingering effect setup
-        this.lastTime = bulletInfo.extra_param?.lastTime || 0;
-        this.lastTimeFrames = this.lastTime * this.engine.targetFps;
-        this.lingeringStartFrame = -1;
+        // **MODIFIED: Store time in seconds**
+        this.lastTimeSec = bulletInfo.extra_param?.lastTime || 0;
+        this.lingeringStartTime = -1;
         this.isLingering = false;
         this.lingerPosition = null;
         this.rangeReached = false;
 
-        // Store the original range
         this.originalRange = bulletInfo.range || 50;
 
-        // Separate trailing and split shrapnel
         this.trailingShrapnels = [];
         this.splitShrapnels = [];
 
@@ -320,52 +300,30 @@ class ShrapnelBehavior extends BulletBehavior {
             if (!barrage || !bullet) continue;
 
             if (shrapnelInfo.initialSplit) {
+                // **MODIFIED: Store timing in seconds**
                 this.trailingShrapnels.push({
                     shrapnelInfo,
                     barrage,
                     bullet,
                     shotsFired: 0,
                     totalShots: (barrage.primal_repeat || 0) + 1,
-                    nextShotTime: (barrage.first_delay || 0) * this.engine.targetFps,
-                    currentInterval: (barrage.delay || 0) * this.engine.targetFps,
-                    delta_interval: (barrage.delta_delay || 0) * this.engine.targetFps
+                    nextShotTime: (barrage.first_delay || 0),
+                    currentInterval: (barrage.delay || 0),
+                    delta_interval: (barrage.delta_delay || 0)
                 });
             } else {
                 this.splitShrapnels.push({ shrapnelInfo, barrage, bullet });
             }
         }
-
-        // Debug shrapnel setup
-        // console.log('🎯 Shrapnel initialized:', {
-        //     bulletId: bulletInfo.id,
-        //     hasLastTime: this.lastTime > 0,
-        //     lastTime: this.lastTime + 's',
-        //     lastTimeFrames: this.lastTimeFrames,
-        //     originalRange: this.originalRange,
-        //     splitCount: this.splitShrapnels.length,
-        //     trailingCount: this.trailingShrapnels.length
-        // });
     }
 
     update(frameData) {
-        // DEBUG: Log every frame to see what's happening
-        // if (frameData.framesLived % 5 === 0) {
-        //     console.log('📊 Shrapnel update:', {
-        //         frame: frameData.framesLived,
-        //         distanceTraveled: frameData.distanceTraveled?.toFixed(2),
-        //         originalRange: this.originalRange,
-        //         rangeReached: this.rangeReached,
-        //         isLingering: this.isLingering,
-        //         triggered: this.triggered
-        //     });
-        // }
-
-        // If already lingering, keep bullet fixed at linger position
+        // If already lingering, keep bullet fixed
         if (this.isLingering) {
-            const lingeringDuration = frameData.framesLived - this.lingeringStartFrame;
+            const lingeringDuration = frameData.timeElapsed - this.lingeringStartTime;
 
-            if (lingeringDuration < this.lastTimeFrames) {
-                // Still lingering - keep bullet stationary
+            if (lingeringDuration < this.lastTimeSec) {
+                // Still lingering
                 return {
                     velocityX: 0,
                     velocityY: 0,
@@ -379,15 +337,15 @@ class ShrapnelBehavior extends BulletBehavior {
             }
         }
 
-        // Handle trailing shrapnel (only when not lingering)
+        // **MODIFIED: Use time-based scheduling for trailing shrapnel**
         this.trailingShrapnels.forEach(shrapnel => {
             while (shrapnel.shotsFired < shrapnel.totalShots &&
-                frameData.framesLived >= shrapnel.nextShotTime) {
+                frameData.timeElapsed >= shrapnel.nextShotTime) {
                 this._emitShrapnel(shrapnel, frameData, shrapnel.shotsFired);
 
                 shrapnel.shotsFired++;
                 let interval = shrapnel.currentInterval;
-                if (interval <= 0) interval = 1;
+                if (interval <= 0) interval = 1 / this.engine.targetFps; // Minimum one frame
                 shrapnel.nextShotTime += interval;
                 shrapnel.currentInterval += shrapnel.delta_interval;
             }
@@ -395,13 +353,11 @@ class ShrapnelBehavior extends BulletBehavior {
 
         // Check if bullet reached its range limit
         if (!this.rangeReached && !this.triggered) {
-            if (frameData.distanceTraveled >= this.originalRange) {      
+            if (frameData.distanceTraveled >= this.originalRange) {
                 this.rangeReached = true;
 
-                // If we have lastTime, start lingering at this position
-                if (this.lastTimeFrames > 0 && this.splitShrapnels.length > 0) {
+                if (this.lastTimeSec > 0 && this.splitShrapnels.length > 0) {
                     this._startLingering(frameData);
-                    // Return fixed position to stop movement
                     return {
                         velocityX: 0,
                         velocityY: 0,
@@ -416,23 +372,14 @@ class ShrapnelBehavior extends BulletBehavior {
             }
         }
 
-        // Normal bullet movement continues
         return undefined;
     }
 
     _startLingering(frameData) {
-        // console.log('🕐 Starting lingering effect:', {
-        //     frame: frameData.framesLived,
-        //     duration: this.lastTimeFrames + ' frames',
-        //     willSplitAt: frameData.framesLived + this.lastTimeFrames,
-        //     position: { x: frameData.x.toFixed(2), y: frameData.y.toFixed(2) }
-        // });
-
         this.isLingering = true;
-        this.lingeringStartFrame = frameData.framesLived;
+        this.lingeringStartTime = frameData.timeElapsed;
         this.lingerPosition = { x: frameData.x, y: frameData.y };
 
-        // Add visual effect to lingering bullet
         if (this.bullet.element) {
             this.bullet.element.style.opacity = '0.7';
             this.bullet.element.style.filter = 'brightness(1.5) drop-shadow(0 0 10px rgba(255,200,100,0.9))';
@@ -440,15 +387,6 @@ class ShrapnelBehavior extends BulletBehavior {
     }
 
     triggerSplit(frameData) {
-        // // DEBUG: Add stack trace to see WHO is calling this
-        // console.log('💥 Triggering shrapnel split at:', {
-        //     frame: frameData.framesLived,
-        //     position: this.lingerPosition || { x: frameData.x.toFixed(2), y: frameData.y.toFixed(2) },
-        //     wasLingering: this.isLingering,
-        //     stack: new Error().stack
-        // });
-
-        // Reset lingering visual effects
         if (this.bullet.element) {
             this.bullet.element.style.opacity = '0';
             this.bullet.element.style.filter = 'none';
@@ -485,10 +423,8 @@ class ShrapnelBehavior extends BulletBehavior {
             bulletAngleModifier = index * (barrage.delta_angle || 0);
         }
 
-        // Determine base angle based on reaim setting
         let baseAngle = 0;
         if (shrapnelInfo.reaim) {
-            // reaim = true: aim towards enemy
             if (this.bullet.enemyTarget) {
                 const finalX = this.lingerPosition ? this.lingerPosition.x : frameData.x;
                 const finalY = this.lingerPosition ? this.lingerPosition.y : frameData.y;
@@ -497,16 +433,13 @@ class ShrapnelBehavior extends BulletBehavior {
                 baseAngle = Math.atan2(dy, dx) * 180 / Math.PI;
             }
         } else if (shrapnelInfo.inheritAngle) {
-            // inheritAngle = true: inherit parent's direction
             baseAngle = Math.atan2(frameData.velocityY, frameData.velocityX) * 180 / Math.PI;
         } else {
-            // nothing, then shoot forward (0°)
             baseAngle = 0;
         }
 
         const finalAngle = baseAngle + (barrage.angle || 0) + bulletAngleModifier + (shrapnelInfo.rotateOffset || 0);
 
-        // Use linger position if available, otherwise current position
         const finalX = this.lingerPosition ? this.lingerPosition.x : frameData.x;
         const finalY = this.lingerPosition ? this.lingerPosition.y : frameData.y;
 
@@ -537,19 +470,21 @@ class TransformBehavior extends BulletBehavior {
 
         if (!this.bullet.transformChain || this.bullet.transformChain.length === 0) return;
 
+        // **MODIFIED: Store trigger times in seconds**
         this.bullet.transformChain.forEach(transformData => {
             this.timers.push({
-                triggerFrame: transformData.transStartDelay * this.engine.targetFps,
+                triggerTime: transformData.transStartDelay,
                 data: transformData,
                 triggered: false
             });
         });
-        this.timers.sort((a, b) => a.triggerFrame - b.triggerFrame);
+        this.timers.sort((a, b) => a.triggerTime - b.triggerTime);
     }
 
     update(frameData) {
+        // **MODIFIED: Use time-based triggering**
         this.timers.forEach(timer => {
-            if (!timer.triggered && frameData.framesLived >= timer.triggerFrame) {
+            if (!timer.triggered && frameData.timeElapsed >= timer.triggerTime) {
                 timer.triggered = true;
                 this._executeTransform(timer.data, frameData);
             }
@@ -557,16 +492,15 @@ class TransformBehavior extends BulletBehavior {
     }
 
     _executeTransform(transformData, frameData) {
-        // Transform logic (simplified - expand as needed)
         const transBarrage = transformData.barrage;
-        const transBullet = this.bullet.bulletInfo; // or from barrage.bullet_ID
+        const transBullet = this.bullet.bulletInfo;
 
         const primalRepeatCount = (transBarrage.primal_repeat || 0) + 1;
         for (let i = 0; i < primalRepeatCount; i++) {
             const finalAngle = transformData.transAimAngle || 0;
-            const screenPos = this.engine.bulletEngine.gameToScreen(this.bullet.x, this.bullet.y);
+            const screenPos = this.engine.gameToScreen(this.bullet.x, this.bullet.y);
 
-            this.engine.bulletEngine.createBullet({
+            this.engine.createBullet({
                 startX: screenPos.x,
                 startY: screenPos.y,
                 angle: finalAngle,
@@ -586,16 +520,12 @@ class BehaviorFactory {
         const behaviors = new Map();
         const bulletInfo = bullet.bulletInfo;
 
-        // Always add standard movement
         behaviors.set('movement', new StandardMovementBehavior(bullet, engine));
 
-        // Add behaviors based on bullet properties
         if (bulletInfo.acceleration) {
-            // Handle both array and object formats
             const accelData = bulletInfo.acceleration;
             const isArray = Array.isArray(accelData);
 
-            // Check for standard u/v acceleration
             if (isArray) {
                 if (accelData.some(a => a.u || a.v)) {
                     behaviors.set('acceleration', new AccelerationBehavior(bullet, engine));
@@ -610,7 +540,6 @@ class BehaviorFactory {
                     behaviors.set('circle', new CircleBehavior(bullet, engine));
                 }
             } else {
-                // Object format (like your bullet 79552)
                 if (accelData.u !== undefined || accelData.v !== undefined) {
                     behaviors.set('acceleration', new AccelerationBehavior(bullet, engine));
                 }

@@ -48,42 +48,50 @@ class WeaponSimData {
     }
 
     getWeaponIdsFromSkill(skillId, level = '1') {
-        const weaponIds = [];
+        const weaponInfoList = [];
+        const foundWeaponIds = new Set();
         const skill = this.allSkillData[skillId];
-        if (!skill) return weaponIds;
+        if (!skill) return weaponInfoList;
         
-        // Get effect_list with fallback logic
         let effectList = null;
         
-        // Try requested level first
         if (skill[level]?.effect_list) {
             effectList = skill[level].effect_list;
-        }
-        // Fallback to level 1
-        else if (skill['1']?.effect_list) {
+        } else if (skill['1']?.effect_list) {
             effectList = skill['1'].effect_list;
-        }
-        // Fallback to direct effect_list (legacy format)
-        else if (skill.effect_list) {
+        } else if (skill.effect_list) {
             effectList = skill.effect_list;
         }
         
-        if (!effectList) return weaponIds;
+        if (!effectList) return weaponInfoList;
         
         for (const effect of effectList) {
             if (effect.arg_list && effect.arg_list.weapon_id) {
                 const weaponId = effect.arg_list.weapon_id.toString();
-                if (!weaponIds.includes(weaponId)) weaponIds.push(weaponId);
+                
+                if (!foundWeaponIds.has(weaponId)) {
+                    const weaponInfo = { weaponId: weaponId };
+
+                    // Capture quota and time if they exist
+                    if (effect.quota !== undefined) {
+                        weaponInfo.quota = effect.quota;
+                    }
+                    if (effect.time !== undefined) {
+                        weaponInfo.time = effect.time;
+                    }
+
+                    weaponInfoList.push(weaponInfo);
+                    foundWeaponIds.add(weaponId);
+                }
             }
         }
-        return weaponIds;
+        return weaponInfoList;
     }
 
     getSkillById(skillId) {
         const skillData = this.allSkillData[skillId];
         if (!skillData) return null;
 
-        // Merge with template data if available
         const templateData = this.skillTemplateData[skillId];
         if (templateData) {
             return {
