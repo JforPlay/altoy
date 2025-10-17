@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/altoy/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>건조시간으로 보는 함순이목록</title>
+    <link rel="stylesheet" href="css/shipgirl-const.css">
+    <link rel="stylesheet" href="css/nav.style.css">
+</head>
+
+<body>
+    <div id="navbar-placeholder"></div>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>⚓ 함순이 필터링</h2>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="🔍 함순이 검색...">
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalShips">0</div>
+                    <div class="stat-label">총 함순이 수</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="filteredShips">0</div>
+                    <div class="stat-label">표시 중</div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>건조 시간 선택</h3>
+                <div class="timer-filters" id="timerFilters"></div>
+            </div>
+
+            <div class="filter-section">
+                <h3>희귀도 필터</h3>
+                <div class="rarity-filters" id="rarityFilters">
+                    <button class="filter-btn" data-rarity="all">전체</button>
+                    <button class="filter-btn" data-rarity="UR">UR</button>
+                    <button class="filter-btn" data-rarity="SSR">SSR</button>
+                    <button class="filter-btn" data-rarity="SR">SR</button>
+                    <button class="filter-btn" data-rarity="R">R</button>
+                    <button class="filter-btn" data-rarity="N">N</button>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>건조 종류 필터</h3>
+                <div class="construction-filters" id="constructionFilters">
+                    <button class="filter-btn" data-construction="all">전체</button>
+                    <button class="filter-btn" data-construction="light">소형</button>
+                    <button class="filter-btn" data-construction="medium">중형</button>
+                    <button class="filter-btn" data-construction="heavy">특형</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1>벽람항로 건조 타이머</h1>
+                <p class="subtitle">건조 시간별로 함순이를 확인해보세요</p>
+            </header>
+
+            <div class="loading" id="loading">함순이 데이터 로딩 중...</div>
+            <div class="error" id="error" style="display: none;"></div>
+
+            <div class="current-filter" id="currentFilter">
+                <span>선택된 목록: <strong>모두보기</strong></span>
+                <button class="clear-filter" id="clearFilter" style="display: none;">필터 초기화</button>
+            </div>
+
+            <div class="ships-grid" id="shipsGrid"></div>
+        </main>
+    </div>
+
+    <button class="mobile-filter-fab" id="mobileFilterFab">🔍 필터</button>
+
+    <script src="js/shipgirl-const.js"></script>
+    <script src="js/nav.script.js"></script>
+</body>
+
+</html>
