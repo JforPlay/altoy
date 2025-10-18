@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
         viewerType: 'world',
 
         dataPaths: [
-            'data/processed_world_storyline.json',
-            'data/world_storyline_summary.json',
-            'data/shipgirl_data.json',
+            'data/story-viewer/world_story_data.json',
+            'data/story-viewer/world_story_summary_data.json',
+            'data/story-viewer/shipgirl_data.json',
             'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json'
         ],
 

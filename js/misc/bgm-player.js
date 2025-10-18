@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchData() {
         try {
-            const response = await fetch('data/bgm_data.json');
+            const response = await fetch('data/misc/bgm_data.json');
             albumsData = await response.json();
             
             displayAlbums();

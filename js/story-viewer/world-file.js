@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Main Execution ---
-    fetch('data/processed_world_collection_data.json')
+    fetch('data/story-viewer/world_collection_data.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

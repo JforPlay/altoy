@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
         viewerType: 'main',
         
         dataPaths: [
-            'data/processed_storyline_data.json',
-            'data/shipgirl_data.json',
+            'data/story-viewer/main_story_data.json',
+            'data/story-viewer/shipgirl_data.json',
             'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json'
         ],
 

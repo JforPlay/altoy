@@ -17,11 +17,11 @@ class WeaponSimData {
             this.simEngine.logToScreen('Loading weapon simulation data...');
             
             const [weaponResponse, barrageResponse, bulletResponse, skillResponse, skillTemplateResponse] = await Promise.all([
-                fetch('data/weapon_property.json'),
-                fetch('data/barrage_template.json'),
-                fetch('data/bullet_template.json'),
-                fetch('data/skill_weapon_data.json'),
-                fetch('data/skill_data_template.json')
+                fetch('data/sim/weapon_property.json'),
+                fetch('data/sim/barrage_template.json'),
+                fetch('data/sim/bullet_template.json'),
+                fetch('data/sim/skill_weapon_data.json'),
+                fetch('data/sim/skill_data_template.json')
             ]);
 
             this.allWeaponData = await weaponResponse.json();

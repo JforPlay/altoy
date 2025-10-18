@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const applyFiltersFromURL = () => { const params = new URLSearchParams(window.location.search); const character = params.get('character'); const skin = params.get('skin'); if (character) { if (allCharacterNames.includes(character)) { handleCharacterSelect(character, false); if (skin) { if (currentCharacterSkins.includes(skin)) { handleSkinSelect(skin); } } } } };
 
     // Main Data Fetching and Initialization
-    fetch('data/skin_voiceline_data.json')
+    fetch('data/skin/skin_voiceline_data.json')
         .then(response => response.json())
         .then(jsonData => {
             if (!jsonData || Object.keys(jsonData).length === 0) throw new Error('JSON data is empty or invalid.');

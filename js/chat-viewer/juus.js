@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     new ChatViewerEngine({
-        dataUrl: 'data/processed_ins_chat_data.json',
+        dataUrl: 'data/chat-viewer/juus_chat_data.json',
         shipGroupIdUrl: 'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/CN/ShareCfg/activity_ins_ship_group_template.json',
         groupChatIcons: GROUP_CHAT_ICONS,
         defaultDelay: 1300,

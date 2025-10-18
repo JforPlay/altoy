@@ -43,8 +43,8 @@ function initPixi() {
 async function loadInitialData() {
     try {
         const [charListData, orbitDataResponse] = await Promise.all([
-            fetch('data/sd_list.json').then(res => res.json()),
-            fetch('data/orbit_data.json').then(res => res.json())
+            fetch('data/skin/sd_data.json').then(res => res.json()),
+            fetch('data/skin/orbit_data.json').then(res => res.json())
         ]);
 
         orbitData = orbitDataResponse;

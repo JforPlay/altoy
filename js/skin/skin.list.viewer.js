@@ -367,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, DEBOUNCE_DELAY);
 
     // === DATA INITIALIZATION ===
-    fetch('data/skin_list_subset.json')
+    fetch('data/skin/skin_voiceline_data_subset.json')
         .then(res => res.json())
         .then(skinJson => {
             allSkins = skinJson;

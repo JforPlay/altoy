@@ -51,19 +51,19 @@ async function loadData() {
 }
 
 async function loadNationalityData() {
-    const response = await fetch('data/nationality_mapping.json');
+    const response = await fetch('data/mapping/nationality_mapping.json');
     if (!response.ok) throw new Error('Failed to fetch nationality data');
     nationalityData = await response.json();
 }
 
 async function loadAttrTypeData() {
-    const response = await fetch('data/attr_type_mapping.json');
+    const response = await fetch('data/mapping/attr_type_mapping.json');
     if (!response.ok) throw new Error('Failed to fetch attribute type data');
     attrTypeData = await response.json();
 }
 
 async function loadShipTypeData() {
-    const response = await fetch('data/ship_type_mapping.json');
+    const response = await fetch('data/mapping/ship_type_mapping.json');
     if (!response.ok) throw new Error('Failed to fetch ship type data');
     shipTypeData = await response.json();
 }

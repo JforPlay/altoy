@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     new ChatViewerEngine({
-        dataUrl: 'data/processed_dorm3d_data.json',
+        dataUrl: 'data/chat-viewer/dorm3d_data.json',
         defaultDelay: 1300,
         initialDelay: 100,
         customHandlers: {

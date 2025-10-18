@@ -4,10 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchData() {
         const dataPaths = [
-            'data/shipgirl_group_data.json',
-            'data/nationality_mapping.json',
-            'data/ship_type_mapping.json',
-            'data/attr_type_mapping.json'
+            'data/ship_group_data.json',
+            'data/mapping/nationality_mapping.json',
+            'data/mapping/ship_type_mapping.json',
+            'data/mapping/attr_type_mapping.json'
         ];
         try {
             const responses = await Promise.all(dataPaths.map(path => fetch(path)));

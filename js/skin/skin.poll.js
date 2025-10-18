@@ -1450,7 +1450,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initializeCacheVersion();
 
   // Load skin data and initialize app
-  fetch("data/skin_voiceline_data.json")
+  fetch("data/skin/skin_voiceline_data.json")
     .then((response) => response.json())
     .then(async (jsonData) => {
       // Process skin data

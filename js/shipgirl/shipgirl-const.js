@@ -17,11 +17,11 @@ async function loadAllData() {
                 if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for ship_const_data.json`);
                 return res.json();
             }),
-            fetch('data/nationality_mapping.json').then(res => {
+            fetch('data/mapping/nationality_mapping.json').then(res => {
                 if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for nationality_mapping.json`);
                 return res.json();
             }),
-            fetch('data/ship_type_mapping.json').then(res => {
+            fetch('data/mapping/ship_type_mapping.json').then(res => {
                 if (!res.ok) throw new Error(`HTTP error! status: ${res.status} for ship_type_mapping.json`);
                 return res.json();
             })

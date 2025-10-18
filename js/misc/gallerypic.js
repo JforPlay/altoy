@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalImage = document.getElementById('modal-image');
     const closeModal = document.getElementById('close');
 
-    const jsonUrl = 'data/gallery_config.json';
+    const jsonUrl = 'data/misc/gallery_data.json';
     const baseImageUrl = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/gallerypic/';
 
     // Fetch the image data from the JSON file
@@ -21,13 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (item && typeof item === 'object' && item.illustration) {
                     const imageName = item.illustration; // This is "gallerypic1", "gallerypic2", etc.
 
-                    // *** MODIFICATION START ***
                     // Format the name to match the repo's capitalization, e.g., "GalleryPic1"
                     const formattedName = imageName.replace('gallerypic', 'GalleryPic');
                     
                     const thumbnailUrl = `${baseImageUrl}${formattedName}_t.png`;
                     const fullImageUrl = `${baseImageUrl}${formattedName}.png`;
-                    // *** MODIFICATION END ***
 
                     // Create gallery item container
                     const galleryItem = document.createElement('div');

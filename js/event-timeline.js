@@ -26,7 +26,7 @@ async function loadData() {
         // Load both JSON files
         const [eventsResponse, shipgirlsResponse] = await Promise.all([
             fetch('data/kr_event_timeline.json'),
-            fetch('data/shipgirl_group_data.json')
+            fetch('data/ship_group_data.json')
         ]);
 
         eventData = await eventsResponse.json();
