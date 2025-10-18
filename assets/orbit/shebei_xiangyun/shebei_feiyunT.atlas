@@ -1,0 +1,55 @@
+
+shebei_feiyunT.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1
+  rotate: true
+  xy: 2, 42
+  size: 208, 86
+  orig: 208, 86
+  offset: 0, 0
+  index: -1
+2
+  rotate: true
+  xy: 241, 143
+  size: 107, 72
+  orig: 107, 72
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 252, 8
+  size: 107, 70
+  orig: 107, 70
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 90, 2
+  size: 160, 74
+  orig: 160, 74
+  offset: 0, 0
+  index: -1
+6
+  rotate: true
+  xy: 165, 108
+  size: 142, 74
+  orig: 142, 74
+  offset: 0, 0
+  index: -1
+7
+  rotate: false
+  xy: 241, 80
+  size: 110, 61
+  orig: 110, 61
+  offset: 0, 0
+  index: -1
+8
+  rotate: true
+  xy: 90, 78
+  size: 172, 73
+  orig: 172, 73
+  offset: 0, 0
+  index: -1

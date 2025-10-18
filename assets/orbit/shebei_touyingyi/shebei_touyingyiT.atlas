@@ -1,0 +1,167 @@
+
+shebei_touyingyiT.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+body
+  rotate: false
+  xy: 432, 17
+  size: 213, 160
+  orig: 213, 160
+  offset: 0, 0
+  index: -1
+g_w1
+  rotate: true
+  xy: 324, 179
+  size: 163, 379
+  orig: 163, 379
+  offset: 0, 0
+  index: -1
+g_w2
+  rotate: true
+  xy: 324, 344
+  size: 166, 379
+  orig: 166, 379
+  offset: 0, 0
+  index: -1
+gd_1
+  rotate: false
+  xy: 111, 16
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+gd_2
+  rotate: true
+  xy: 127, 16
+  size: 14, 13
+  orig: 14, 13
+  offset: 0, 0
+  index: -1
+gd_3
+  rotate: true
+  xy: 33, 11
+  size: 19, 18
+  orig: 19, 18
+  offset: 0, 0
+  index: -1
+gd_4
+  rotate: false
+  xy: 53, 12
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1
+gd_5
+  rotate: true
+  xy: 73, 11
+  size: 19, 17
+  orig: 19, 17
+  offset: 0, 0
+  index: -1
+gd_6
+  rotate: true
+  xy: 92, 11
+  size: 19, 17
+  orig: 19, 17
+  offset: 0, 0
+  index: -1
+gd_7
+  rotate: true
+  xy: 2, 2
+  size: 28, 29
+  orig: 28, 29
+  offset: 0, 0
+  index: -1
+gp_3
+  rotate: true
+  xy: 647, 22
+  size: 45, 87
+  orig: 45, 87
+  offset: 0, 0
+  index: -1
+gp_3_2
+  rotate: true
+  xy: 736, 24
+  size: 43, 85
+  orig: 43, 85
+  offset: 0, 0
+  index: -1
+gp_3_3
+  rotate: true
+  xy: 823, 24
+  size: 43, 85
+  orig: 43, 85
+  offset: 0, 0
+  index: -1
+gp_3_4
+  rotate: true
+  xy: 910, 39
+  size: 43, 85
+  orig: 43, 85
+  offset: 0, 0
+  index: -1
+gp_3_5
+  rotate: false
+  xy: 861, 425
+  size: 43, 85
+  orig: 43, 85
+  offset: 0, 0
+  index: -1
+gp_3_6
+  rotate: false
+  xy: 861, 338
+  size: 43, 85
+  orig: 43, 85
+  offset: 0, 0
+  index: -1
+gp_6
+  rotate: true
+  xy: 2, 32
+  size: 110, 214
+  orig: 110, 214
+  offset: 0, 0
+  index: -1
+gp_6_2
+  rotate: true
+  xy: 218, 34
+  size: 108, 212
+  orig: 108, 212
+  offset: 0, 0
+  index: -1
+gp_6_3
+  rotate: true
+  xy: 647, 69
+  size: 108, 212
+  orig: 108, 212
+  offset: 0, 0
+  index: -1
+gp_6_4
+  rotate: false
+  xy: 910, 298
+  size: 108, 212
+  orig: 108, 212
+  offset: 0, 0
+  index: -1
+gp_6_5
+  rotate: false
+  xy: 910, 84
+  size: 108, 212
+  orig: 108, 212
+  offset: 0, 0
+  index: -1
+gp_6_6
+  rotate: false
+  xy: 705, 298
+  size: 108, 212
+  orig: 108, 212
+  offset: 0, 0
+  index: -1
+guangzhu
+  rotate: false
+  xy: 2, 144
+  size: 320, 366
+  orig: 320, 366
+  offset: 0, 0
+  index: -1

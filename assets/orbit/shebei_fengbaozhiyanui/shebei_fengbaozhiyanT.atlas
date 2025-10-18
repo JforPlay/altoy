@@ -1,0 +1,27 @@
+
+shebei_fengbaozhiyanT.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fengbaozhiyan
+  rotate: false
+  xy: 2, 285
+  size: 1024, 991
+  orig: 1024, 991
+  offset: 0, 0
+  index: -1
+fengbaozhiyan_t1
+  rotate: false
+  xy: 1028, 553
+  size: 956, 723
+  orig: 956, 723
+  offset: 0, 0
+  index: -1
+fengbaozhiyan_yy
+  rotate: false
+  xy: 1028, 2
+  size: 679, 549
+  orig: 679, 549
+  offset: 0, 0
+  index: -1

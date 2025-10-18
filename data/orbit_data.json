@@ -1,0 +1,2401 @@
+{
+  "shebei_bingchibangui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "빙결 마법 — 프로즌 윙",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "99173",
+    "id": 3052,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "프로즌 윙",
+    "orbit_combat": "shebei_bingchibang",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.1,
+        -1.3,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_bingchibangui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        82
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_bingchibang"
+    ]
+  },
+  "shebei_bingguanghuanui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "빙결 마법 — 프로즌 오라",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "99174",
+    "id": 3053,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "프로즌 오라",
+    "orbit_combat": "shebei_bingguanghuan",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.1,
+        -1.3,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_bingguanghuanui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -1.6,
+        77.5
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_bingguanghuanB",
+      "shebei_bingguanghuanT"
+    ]
+  },
+  "shebei_canghonghumianui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "여우 가면을 쓰고 붉은 꿈에 구원을",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "100074",
+    "id": 4040,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "붉은 여우 가면",
+    "orbit_combat": "shebei_canghonghumian",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        0.26,
+        2.26,
+        -2.93
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_canghonghumianui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        2.43,
+        -7.26
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_canghonghumian"
+    ]
+  },
+  "shebei_chushouui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "옵저버 인기 투표 2023 특별 투표 부문 우수 기념",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "99141",
+    "id": 3001,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "옵저버 텐터클스",
+    "orbit_combat": "shebei_chushou",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_chushouui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        82
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_chushou"
+    ]
+  },
+  "shebei_dainafeiyiui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "다이나윙을 모티브로 설계된 함재기 스킨",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "95241",
+    "id": 806,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "다이나윙",
+    "orbit_combat": "shebei_dainafeiyi",
+    "orbit_combat_anima_change": {
+      "change": [
+        {
+          "1": {
+            "activate": true,
+            "active": true,
+            "node": "spine"
+          },
+          "condition": {
+            "param": [
+              ">=0.4"
+            ],
+            "type": 1
+          }
+        },
+        {
+          "1": {
+            "activate": false,
+            "active": true,
+            "node": "spine"
+          },
+          "condition": {
+            "param": [
+              "<0.4"
+            ],
+            "type": 1
+          }
+        }
+      ],
+      "default": [
+        {
+          "activate": false,
+          "active": true,
+          "node": "spine"
+        }
+      ]
+    },
+    "orbit_combat_bound": [
+      "face",
+      [
+        0.03,
+        -1.1,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_dainafeiyiui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        9,
+        -81
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 30,
+    "type": 2,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "gulite_dainafeiyi"
+    ]
+  },
+  "shebei_duobianjiantouui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "위위아래아래왼오왼오 BABA…… 어라? 왜 아무 반응이 없지?",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96642",
+    "id": 2056,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "커서 화살표",
+    "orbit_combat": "shebei_duobianjiantou",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.15,
+        -1.85,
+        0
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_duobianjiantouui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -21,
+        -164
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 104,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_xiangsujiantou"
+    ]
+  },
+  "shebei_emochibangui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "기품있는 날개에 새겨진 오래된 상처에서 느껴지는 고대의 힘!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96820",
+    "id": 2096,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "악마의 날개",
+    "orbit_combat": "shebei_emochibang",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        0,
+        -1,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_emochibangui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        -100
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 107,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_emochibang"
+    ]
+  },
+  "shebei_fanhuanui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "빛과 어둠이 엮어내는 고리. 배척하면서도 하나를 이루는 인과.",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96824",
+    "id": 2100,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "이율배반의 고리",
+    "orbit_combat": "shebei_fanhuan",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.2,
+        -1,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_fanhuanui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -10,
+        100
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 107,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_fanhuanB",
+      "shebei_fanhuanT"
+    ]
+  },
+  "shebei_fengbaozhiyanui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "오늘의 일기 예보는——초강력 태풍!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96542",
+    "id": 2038,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "폭풍의 눈",
+    "orbit_combat": "shebei_fengbaozhiyan",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        0,
+        4.56,
+        -12.2
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_fengbaozhiyanui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -3,
+        205
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 103,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_fengbaozhiyanB",
+      "shebei_fengbaozhiyanT"
+    ]
+  },
+  "shebei_fenxiyiui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "전력 분석 완료, 승률은……",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96804",
+    "id": 2078,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "전력 스카우터",
+    "orbit_combat": "shebei_fenxiyi",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_fenxiyiui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -20,
+        -160
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 106,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_fenxiyi"
+    ]
+  },
+  "shebei_fuliciui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "「이터널 스타」의 포화 공격 광경을 모티브로 한 무드 조성 장치",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "99155",
+    "id": 3030,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "영원한 별의 잔향",
+    "orbit_combat": "shebei_fulici",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_fuliciui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        82
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_fuliciB",
+      "shebei_fuliciT"
+    ]
+  },
+  "shebei_guanglunui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "세상의 모든 순간을 지켜보며, 빛과 희망의 균형을 지킨다.",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96816",
+    "id": 2092,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "레벨레이션 오라클",
+    "orbit_combat": "shebei_guanglun",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_guanglunui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -20,
+        -160
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 107,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_guanglun"
+    ]
+  },
+  "shebei_huangguanui": {
+    "orbit_combat": "shebei_huangguanui",
+    "spine_files": [
+      "shebei_huangguan"
+    ]
+  },
+  "shebei_jiguangzhiyiui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "오로라가 수놓은 날개. 빛나는 별하늘을 자유롭게 날아봐요.",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96541",
+    "id": 2037,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "오로라 날개",
+    "orbit_combat": "shebei_jiguangzhiyi",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_jiguangzhiyiui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -26,
+        40
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 103,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_jiguangzhiyi"
+    ]
+  },
+  "shebei_jinglingzhiyiui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "나비 요정으로 변했다!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "95004",
+    "id": 774,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "정령의 날개",
+    "orbit_combat": "shebei_jinglingzhiyi",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.3,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_jinglingzhiyiui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -26,
+        74
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 47,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_jinglingzhiyi"
+    ]
+  },
+  "shebei_keyibodaiui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "회전과 충돌의 무한한 가능성!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96154",
+    "id": 2012,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "카이퍼벨트",
+    "orbit_combat": "shebei_keyibodai",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -1.25,
+        0.9,
+        -10
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_keyibodaiui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -30,
+        100
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 101,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "keyibodai"
+    ]
+  },
+  "shebei_meihuaui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "묵빛 바위는 고요하고 장엄하며, 한 송이 붉은 매화는 서릿발마저 감싼다.",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96832",
+    "id": 2108,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "홍매 한 가지",
+    "orbit_combat": "shebei_meihua",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.36,
+        -1.88,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_meihuaui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -10,
+        100
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 108,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_meihuaB",
+      "shebei_meihuaT"
+    ]
+  },
+  "shebei_mofaguangyiui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "마력으로 만든 날개... 못 날 것 같은데?！",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96743",
+    "id": 2074,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "홀리윙",
+    "orbit_combat": "shebei_mofaguangyi",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_mofaguangyiui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -3,
+        40
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 105,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_mofaguangyi"
+    ]
+  },
+  "shebei_mofazhenui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "마법진 전개 완료! ……뭐가 나올까?",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96741",
+    "id": 2064,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "언노운 서클",
+    "orbit_combat": "shebei_mofazhen",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_mofazhenui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        82
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 105,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_mofazhen"
+    ]
+  },
+  "shebei_mojingui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "도트 무늬 선글라스를 쓰고 바캉스하러 출발!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "99169",
+    "id": 3048,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "서머 도트 선글라스",
+    "orbit_combat": "shebei_mojing",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.1,
+        -1.3,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_mojingui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        82
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_mojingB",
+      "shebei_mojingT"
+    ]
+  },
+  "shebei_moshudengguangui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "It's showtime！",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96241",
+    "id": 2014,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "매직 서클",
+    "orbit_combat": "shebei_moshudengguang",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        0.13,
+        -0.13,
+        -10
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_moshudengguangui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -4.5,
+        -120
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 102,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "moshudengguangB",
+      "moshudengguangT"
+    ]
+  },
+  "shebei_moshudoupengui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "스스스로 움직이는 망토…쥬?",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96433",
+    "id": 2027,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "마술 망토",
+    "orbit_combat": "shebei_moshudoupeng",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        1.3,
+        -1.61,
+        -1.01
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_moshudoupengui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        140,
+        -150
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 102,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "moshudoupengshebei"
+    ]
+  },
+  "shebei_qinglanhumianui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "여우 가면을 쓰고 푸르른 꿈에서 발버둥쳐라.",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "100073",
+    "id": 4039,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "푸른 여우 가면",
+    "orbit_combat": "shebei_qinglanhumian",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        0.26,
+        2.26,
+        -2.93
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_qinglanhumianui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        2.43,
+        -7.26
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_qinglanhumian"
+    ]
+  },
+  "shebei_shenianyanhuaui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "새해 복 많이 받길! 금빛 뱀이 춤추면 행운이 찾아오리라!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "99157",
+    "id": 3034,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "뱀 폭죽 상자",
+    "orbit_combat": "shebei_shenianyanhua",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_shenianyanhuaui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        -130
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_shenianyanhua"
+    ]
+  },
+  "shebei_shigaomiaoui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "천진난만하게 자랄 수 있기를, 동심을 영원히 잃지 않기를...",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "100071",
+    "id": 4019,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "석고냥 머리",
+    "orbit_combat": "shebei_shigaomiao",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        0.26,
+        2.26,
+        -2.93
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_shigaomiaoui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        2.43,
+        -7.26
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 47,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_shigao"
+    ]
+  },
+  "shebei_shixianggui": {
+    "orbit_combat": "shebei_shixianggui",
+    "spine_files": [
+      "shebei_shixianggui"
+    ]
+  },
+  "shebei_shixiangguiui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "타천 가고일 인기 투표 2023 특별 투표 부문 우수 기념",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "99143",
+    "id": 3003,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "타천 가고일",
+    "orbit_combat": "shebei_shixianggui",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -0.74,
+        -1.35
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_shixiangguiui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -40,
+        146
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_shixianggui"
+    ]
+  },
+  "shebei_songtaoyunhaiui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "먹빛에 물든 산자락, 깊은 계곡에서 피어오르는 안개… 이는 환상인가, 현실인가…",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96828",
+    "id": 2104,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "구름을 품은 묵봉",
+    "orbit_combat": "shebei_songtaoyunhai",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.2,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_songtaoyunhaiui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        5.4,
+        96.8
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 108,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_songtaoyunhaiB",
+      "shebei_songtaoyunhaiT"
+    ]
+  },
+  "shebei_tanzhaodengui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "빛이 닿는 곳에는 범죄가 없다!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "100075",
+    "id": 4185,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "도시 탐조등 (설비)",
+    "orbit_combat": "shebei_tanzhaodeng",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        0.26,
+        2.26,
+        -2.93
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_tanzhaodengui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        2.43,
+        -7.26
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 47,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_tanzhaodeng"
+    ]
+  },
+  "shebei_tiancheng1ui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "수호의 불길이여, 온 땅과 하늘을 뒤덮어라!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "99145",
+    "id": 3016,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "염영의 진 (구체)",
+    "orbit_combat": "shebei_tiancheng1",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_tiancheng1ui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        82
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_tiancheng1B",
+      "shebei_tiancheng1T"
+    ]
+  },
+  "shebei_tiancheng2ui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "그림자의 진이여, 불꽃을 두르고 불사조가 되어라!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "99146",
+    "id": 3017,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "염영의 진 (봉황)",
+    "orbit_combat": "shebei_tiancheng2",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_tiancheng2ui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        82
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_tiancheng2"
+    ]
+  },
+  "shebei_touyingyiui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "퀀텀 스펙트럼 가디언, 크루저 모드로 전환!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96812",
+    "id": 2088,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "퀀텀 스펙트럼",
+    "orbit_combat": "shebei_touyingyi",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_touyingyiui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -20,
+        -160
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 106,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_touyingyiB",
+      "shebei_touyingyiT"
+    ]
+  },
+  "shebei_xiangsufeidieui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "우주의 궁극적인 대답은……",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96641",
+    "id": 2052,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "픽셀 플라잉 소스",
+    "orbit_combat": "shebei_xiangsufeidie",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        0,
+        1.15,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_xiangsufeidieui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        140
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 104,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_feiting"
+    ]
+  },
+  "shebei_xiangyunui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "상운이 드리우는 것이 좋은 일이 일어날 것만 같다!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "95841",
+    "id": 908,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "다채로운 상운",
+    "orbit_combat": "shebei_xiangyun",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        0,
+        -1.23,
+        0
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_xiangyunui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        -120
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 54,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_feiyunB",
+      "shebei_feiyunT"
+    ]
+  },
+  "shebei_xingqiuui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "별들이 둘러싸고 있는 기분을 느껴봐쥬!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96151",
+    "id": 2004,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "쥬쥬 성단",
+    "orbit_combat": "shebei_xingqiu",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        0,
+        -1.65,
+        0.2
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_xingqiuui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        -103
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 101,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "xingqiu1",
+      "xingqiu2",
+      "xingqiu3"
+    ]
+  },
+  "shebei_xingyunzhiyiui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "별빛을 타고 광대한 우주를 누벼요!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96153",
+    "id": 2007,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "달빛 나비",
+    "orbit_combat": "shebei_xingyunzhiyi",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.22,
+        -0.32,
+        -1.01
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_xingyunzhiyiui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        -103
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 101,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "xingyunzhiyishebei"
+    ]
+  },
+  "shebei_xingzhizhengyuui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "셀 수 없이 많은 신성 문자로 형성된 방어 결계",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "97441",
+    "id": 1507,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "별의 정역",
+    "orbit_combat": "shebei_xingzhizhengyu",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.1,
+        -1.53,
+        0.2
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_xingzhizhengyuui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0.44,
+        121.4
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 74,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_xingzhizhengyuB",
+      "shebei_xingzhizhengyuT"
+    ]
+  },
+  "shebei_yongzhezhidunui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "용자의 팀이 반드시 마왕을 타도할 거에요!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "94241",
+    "id": 659,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "용자의 방패",
+    "orbit_combat": "shebei_yongzhezhidun",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        5,
+        -1.57,
+        0
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_yongzhezhidunui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        215,
+        -558
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 39,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "yongzhezhidunshebei"
+    ]
+  },
+  "shebei_youlingui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "아무도 이 요동치는 기계 팔과 그물망 같은 레이더 전파 앞에서는 도망칠 수 없어!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "99164",
+    "id": 3043,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "엑소디텍터",
+    "orbit_combat": "shebei_youling",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.23,
+        -1.5,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_youlingui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        0,
+        -130
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_youlingleida"
+    ]
+  },
+  "shebei_youmiyadengui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "优米雅设备占坑",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "99170",
+    "id": 3049,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "优米雅设备芙米拉占坑",
+    "orbit_combat": "shebei_youmiyadeng",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.1,
+        -1.3,
+        -0.91
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_youmiyadengui",
+    "orbit_ui_back": 1,
+    "orbit_ui_bound": [
+      "face",
+      [
+        48,
+        132
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_youmiyadeng"
+    ]
+  },
+  "shebei_yuexiangui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "어둡거나 밝고, 차거나 기우는 달~",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96152",
+    "id": 2005,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "새틀라이트 문",
+    "orbit_combat": "shebei_yuexiang",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        0,
+        -0.11,
+        -0.69
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_yuexiangui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -7,
+        -114
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 101,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "yuexiangshebei"
+    ]
+  },
+  "shebei_yuguotianqingui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "큰 비가 내린 후에는 무지개와 맑은 날씨가 있을 거예요!",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "96444",
+    "id": 2032,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "비 온 뒤 맑음",
+    "orbit_combat": "shebei_yuguotianqing",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        -0.21,
+        0,
+        -10
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_yuguotianqingui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        -4.5,
+        -10
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 103,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "yuguotianqingshebei"
+    ]
+  },
+  "shebei_zhuhongjiamianui": {
+    "bullet_name": "",
+    "derivate_boom": "",
+    "derivate_bullet": "",
+    "derivate_torpedo": "",
+    "desc": "여우 가면을 쓰고 붉은 꿈에 빠지다",
+    "equip_type": [
+      10
+    ],
+    "fire_fx_name": "",
+    "hit_fx_name": "",
+    "hit_sfx": "",
+    "icon": "100072",
+    "id": 4020,
+    "mirror": 0,
+    "miss_sfx": "",
+    "name": "붉은 여우 가면",
+    "orbit_combat": "shebei_zhuhongjiamian",
+    "orbit_combat_anima_change": "",
+    "orbit_combat_bound": [
+      "face",
+      [
+        0.26,
+        2.26,
+        -2.93
+      ]
+    ],
+    "orbit_hidden_action": [
+      "sleep",
+      "wash"
+    ],
+    "orbit_rotate": false,
+    "orbit_slg": "",
+    "orbit_slg_bound": "",
+    "orbit_ui": "shebei_zhuhongjiamianui",
+    "orbit_ui_back": 0,
+    "orbit_ui_bound": [
+      "face",
+      [
+        2.43,
+        -7.26
+      ]
+    ],
+    "preview_hit_distance": 0,
+    "rarity": 4,
+    "ship_config_id": 100011,
+    "ship_skin_id": 0,
+    "themeid": 199,
+    "type": 1,
+    "weapon_ids": [
+      101,
+      101
+    ],
+    "spine_files": [
+      "shebei_zhuhonghumian"
+    ]
+  }
+}

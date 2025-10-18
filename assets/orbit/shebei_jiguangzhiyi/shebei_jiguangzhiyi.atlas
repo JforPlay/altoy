@@ -1,0 +1,41 @@
+
+shebei_jiguangzhiyi.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Ld_1
+  rotate: false
+  xy: 465, 407
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1
+Ld_2
+  rotate: false
+  xy: 465, 407
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1
+cb_l
+  rotate: false
+  xy: 2, 441
+  size: 602, 475
+  orig: 602, 475
+  offset: 0, 0
+  index: -1
+cb_r
+  rotate: true
+  xy: 2, 2
+  size: 437, 461
+  orig: 437, 461
+  offset: 0, 0
+  index: -1
+gd_1
+  rotate: false
+  xy: 500, 421
+  size: 18, 18
+  orig: 18, 18
+  offset: 0, 0
+  index: -1

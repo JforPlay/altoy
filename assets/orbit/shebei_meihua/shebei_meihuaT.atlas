@@ -1,0 +1,174 @@
+
+shebei_meihuaT.png
+size: 512,32
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+hua_10
+  rotate: false
+  xy: 200, 6
+  size: 20, 24
+  orig: 20, 24
+  offset: 0, 0
+  index: -1
+hua_10_2
+  rotate: false
+  xy: 222, 6
+  size: 20, 24
+  orig: 20, 24
+  offset: 0, 0
+  index: -1
+hua_10_3
+  rotate: false
+  xy: 244, 6
+  size: 20, 24
+  orig: 20, 24
+  offset: 0, 0
+  index: -1
+hua_11
+  rotate: true
+  xy: 335, 12
+  size: 18, 17
+  orig: 18, 17
+  offset: 0, 0
+  index: -1
+hua_11_2
+  rotate: true
+  xy: 354, 12
+  size: 18, 17
+  orig: 18, 17
+  offset: 0, 0
+  index: -1
+hua_11_3
+  rotate: true
+  xy: 373, 12
+  size: 18, 17
+  orig: 18, 17
+  offset: 0, 0
+  index: -1
+hua_12
+  rotate: false
+  xy: 392, 17
+  size: 11, 13
+  orig: 11, 13
+  offset: 0, 0
+  index: -1
+hua_12_2
+  rotate: false
+  xy: 392, 2
+  size: 11, 13
+  orig: 11, 13
+  offset: 0, 0
+  index: -1
+hua_12_3
+  rotate: false
+  xy: 405, 17
+  size: 11, 13
+  orig: 11, 13
+  offset: 0, 0
+  index: -1
+hua_14
+  rotate: true
+  xy: 335, 2
+  size: 8, 12
+  orig: 8, 12
+  offset: 0, 0
+  index: -1
+hua_14_2
+  rotate: true
+  xy: 349, 2
+  size: 8, 12
+  orig: 8, 12
+  offset: 0, 0
+  index: -1
+hua_14_3
+  rotate: true
+  xy: 363, 2
+  size: 8, 12
+  orig: 8, 12
+  offset: 0, 0
+  index: -1
+hua_17
+  rotate: true
+  xy: 405, 3
+  size: 12, 11
+  orig: 12, 11
+  offset: 0, 0
+  index: -1
+hua_17_2
+  rotate: true
+  xy: 418, 18
+  size: 12, 11
+  orig: 12, 11
+  offset: 0, 0
+  index: -1
+hua_17_3
+  rotate: true
+  xy: 418, 4
+  size: 12, 11
+  orig: 12, 11
+  offset: 0, 0
+  index: -1
+hua_20
+  rotate: false
+  xy: 122, 5
+  size: 24, 25
+  orig: 24, 25
+  offset: 0, 0
+  index: -1
+hua_20_2
+  rotate: false
+  xy: 148, 5
+  size: 24, 25
+  orig: 24, 25
+  offset: 0, 0
+  index: -1
+hua_20_3
+  rotate: false
+  xy: 174, 5
+  size: 24, 25
+  orig: 24, 25
+  offset: 0, 0
+  index: -1
+hua_3
+  rotate: true
+  xy: 266, 8
+  size: 22, 21
+  orig: 22, 21
+  offset: 0, 0
+  index: -1
+hua_3_2
+  rotate: true
+  xy: 289, 8
+  size: 22, 21
+  orig: 22, 21
+  offset: 0, 0
+  index: -1
+hua_3_3
+  rotate: true
+  xy: 312, 8
+  size: 22, 21
+  orig: 22, 21
+  offset: 0, 0
+  index: -1
+hua_8
+  rotate: false
+  xy: 2, 9
+  size: 38, 21
+  orig: 38, 21
+  offset: 0, 0
+  index: -1
+hua_8_2
+  rotate: false
+  xy: 42, 9
+  size: 38, 21
+  orig: 38, 21
+  offset: 0, 0
+  index: -1
+hua_8_3
+  rotate: false
+  xy: 82, 9
+  size: 38, 21
+  orig: 38, 21
+  offset: 0, 0
+  index: -1

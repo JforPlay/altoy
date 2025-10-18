@@ -1,0 +1,41 @@
+
+shebei_zhuhonghumian.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+mianju
+  rotate: true
+  xy: 2, 2
+  size: 211, 265
+  orig: 211, 265
+  offset: 0, 0
+  index: -1
+shengzi_1
+  rotate: false
+  xy: 2, 240
+  size: 28, 21
+  orig: 28, 21
+  offset: 0, 0
+  index: -1
+shengzi_2
+  rotate: true
+  xy: 32, 228
+  size: 33, 109
+  orig: 33, 109
+  offset: 0, 0
+  index: -1
+shengzi_3
+  rotate: true
+  xy: 143, 219
+  size: 42, 95
+  orig: 42, 95
+  offset: 0, 0
+  index: -1
+shengzi_4
+  rotate: true
+  xy: 240, 215
+  size: 46, 50
+  orig: 46, 50
+  offset: 0, 0
+  index: -1

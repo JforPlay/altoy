@@ -1,0 +1,202 @@
+
+shebei_mojingT.png
+size: 1024,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+hailang_1
+  rotate: false
+  xy: 330, 6
+  size: 40, 25
+  orig: 40, 25
+  offset: 0, 0
+  index: -1
+hailang_1_2
+  rotate: false
+  xy: 372, 6
+  size: 40, 25
+  orig: 40, 25
+  offset: 0, 0
+  index: -1
+hailang_1_3
+  rotate: false
+  xy: 414, 6
+  size: 40, 25
+  orig: 40, 25
+  offset: 0, 0
+  index: -1
+hailang_2
+  rotate: false
+  xy: 532, 40
+  size: 81, 41
+  orig: 81, 41
+  offset: 0, 0
+  index: -1
+hailang_2_2
+  rotate: false
+  xy: 549, 85
+  size: 81, 41
+  orig: 81, 41
+  offset: 0, 0
+  index: -1
+hailang_2_3
+  rotate: false
+  xy: 615, 42
+  size: 81, 41
+  orig: 81, 41
+  offset: 0, 0
+  index: -1
+hailang_3
+  rotate: false
+  xy: 210, 3
+  size: 38, 21
+  orig: 38, 21
+  offset: 0, 0
+  index: -1
+hailang_3_2
+  rotate: false
+  xy: 250, 3
+  size: 38, 21
+  orig: 38, 21
+  offset: 0, 0
+  index: -1
+hailang_3_3
+  rotate: false
+  xy: 290, 3
+  size: 38, 21
+  orig: 38, 21
+  offset: 0, 0
+  index: -1
+hailang_4
+  rotate: false
+  xy: 547, 4
+  size: 56, 34
+  orig: 56, 34
+  offset: 0, 0
+  index: -1
+hailang_4_2
+  rotate: false
+  xy: 605, 4
+  size: 56, 34
+  orig: 56, 34
+  offset: 0, 0
+  index: -1
+hailang_4_3
+  rotate: false
+  xy: 663, 6
+  size: 56, 34
+  orig: 56, 34
+  offset: 0, 0
+  index: -1
+hailang_5
+  rotate: false
+  xy: 310, 33
+  size: 109, 43
+  orig: 109, 43
+  offset: 0, 0
+  index: -1
+hailang_5_2
+  rotate: false
+  xy: 421, 33
+  size: 109, 43
+  orig: 109, 43
+  offset: 0, 0
+  index: -1
+hailang_5_3
+  rotate: false
+  xy: 438, 83
+  size: 109, 43
+  orig: 109, 43
+  offset: 0, 0
+  index: -1
+huahua_1
+  rotate: true
+  xy: 456, 2
+  size: 29, 31
+  orig: 29, 31
+  offset: 0, 0
+  index: -1
+huahua_1_2
+  rotate: false
+  xy: 489, 2
+  size: 27, 29
+  orig: 27, 29
+  offset: 0, 0
+  index: -1
+huahua_1_3
+  rotate: false
+  xy: 518, 2
+  size: 27, 29
+  orig: 27, 29
+  offset: 0, 0
+  index: -1
+huahua_2
+  rotate: false
+  xy: 632, 89
+  size: 34, 37
+  orig: 34, 37
+  offset: 0, 0
+  index: -1
+huahua_2_2
+  rotate: false
+  xy: 668, 91
+  size: 32, 35
+  orig: 32, 35
+  offset: 0, 0
+  index: -1
+huahua_2_3
+  rotate: false
+  xy: 698, 54
+  size: 32, 35
+  orig: 32, 35
+  offset: 0, 0
+  index: -1
+mojing
+  rotate: false
+  xy: 310, 78
+  size: 126, 48
+  orig: 126, 48
+  offset: 0, 0
+  index: -1
+shanguang
+  rotate: false
+  xy: 732, 56
+  size: 54, 70
+  orig: 54, 70
+  offset: 0, 0
+  index: -1
+shanguang_2
+  rotate: true
+  xy: 732, 2
+  size: 52, 68
+  orig: 52, 68
+  offset: 0, 0
+  index: -1
+shanguang_3
+  rotate: false
+  xy: 788, 56
+  size: 54, 70
+  orig: 54, 70
+  offset: 0, 0
+  index: -1
+taiyang_1
+  rotate: false
+  xy: 2, 16
+  size: 105, 110
+  orig: 105, 110
+  offset: 0, 0
+  index: -1
+taiyang_2
+  rotate: false
+  xy: 109, 24
+  size: 99, 102
+  orig: 99, 102
+  offset: 0, 0
+  index: -1
+taiyang_3
+  rotate: false
+  xy: 210, 26
+  size: 98, 100
+  orig: 98, 100
+  offset: 0, 0
+  index: -1

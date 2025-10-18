@@ -1,0 +1,27 @@
+
+shebei_xingzhizhengyuB.png
+size: 1024,32
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+giguang_b
+  rotate: false
+  xy: 2, 2
+  size: 225, 23
+  orig: 225, 23
+  offset: 0, 0
+  index: -1
+giguang_b_2
+  rotate: false
+  xy: 229, 2
+  size: 225, 23
+  orig: 225, 23
+  offset: 0, 0
+  index: -1
+giguang_b_3
+  rotate: false
+  xy: 456, 2
+  size: 225, 23
+  orig: 225, 23
+  offset: 0, 0
+  index: -1

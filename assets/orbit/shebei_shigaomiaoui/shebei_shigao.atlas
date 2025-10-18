@@ -1,0 +1,13 @@
+
+shebei_shigao.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shigaomiao
+  rotate: true
+  xy: 2, 2
+  size: 234, 258
+  orig: 234, 258
+  offset: 0, 0
+  index: -1

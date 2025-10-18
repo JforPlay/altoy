@@ -1,0 +1,125 @@
+
+shebei_tiancheng1B.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+diguang
+  rotate: false
+  xy: 2, 453
+  size: 321, 118
+  orig: 321, 118
+  offset: 0, 0
+  index: -1
+gs1
+  rotate: true
+  xy: 299, 713
+  size: 44, 202
+  orig: 44, 202
+  offset: 0, 0
+  index: -1
+gs2
+  rotate: true
+  xy: 2, 727
+  size: 30, 134
+  orig: 30, 134
+  offset: 0, 0
+  index: -1
+gs3
+  rotate: true
+  xy: 138, 722
+  size: 35, 159
+  orig: 35, 159
+  offset: 0, 0
+  index: -1
+guangqiu
+  rotate: true
+  xy: 274, 2
+  size: 281, 282
+  orig: 281, 282
+  offset: 0, 0
+  index: -1
+h1
+  rotate: true
+  xy: 2, 306
+  size: 145, 296
+  orig: 145, 296
+  offset: 0, 0
+  index: -1
+h1_1
+  rotate: true
+  xy: 300, 285
+  size: 145, 296
+  orig: 145, 296
+  offset: 0, 0
+  index: -1
+h2
+  rotate: true
+  xy: 2, 115
+  size: 189, 270
+  orig: 189, 270
+  offset: 0, 0
+  index: -1
+h3
+  rotate: true
+  xy: 742, 514
+  size: 149, 263
+  orig: 149, 263
+  offset: 0, 0
+  index: -1
+h4
+  rotate: true
+  xy: 458, 560
+  size: 106, 282
+  orig: 106, 282
+  offset: 0, 0
+  index: -1
+h5
+  rotate: true
+  xy: 743, 665
+  size: 92, 248
+  orig: 92, 248
+  offset: 0, 0
+  index: -1
+hz1
+  rotate: true
+  xy: 325, 432
+  size: 126, 290
+  orig: 126, 290
+  offset: 0, 0
+  index: -1
+hz1_1
+  rotate: true
+  xy: 617, 386
+  size: 126, 290
+  orig: 126, 290
+  offset: 0, 0
+  index: -1
+hz2
+  rotate: true
+  xy: 598, 212
+  size: 172, 244
+  orig: 172, 244
+  offset: 0, 0
+  index: -1
+hz3
+  rotate: true
+  xy: 240, 573
+  size: 138, 216
+  orig: 138, 216
+  offset: 0, 0
+  index: -1
+hz4
+  rotate: true
+  xy: 2, 621
+  size: 99, 236
+  orig: 99, 236
+  offset: 0, 0
+  index: -1
+hz5
+  rotate: true
+  xy: 503, 668
+  size: 89, 238
+  orig: 89, 238
+  offset: 0, 0
+  index: -1

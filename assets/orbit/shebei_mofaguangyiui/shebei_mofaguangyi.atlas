@@ -1,0 +1,13 @@
+
+shebei_mofaguangyi.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+yi_1
+  rotate: true
+  xy: 2, 2
+  size: 200, 260
+  orig: 200, 260
+  offset: 0, 0
+  index: -1

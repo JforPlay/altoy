@@ -1,0 +1,251 @@
+
+shebei_fanhuanB.png
+size: 2048,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dahuan_bai
+  rotate: true
+  xy: 2, 62
+  size: 192, 172
+  orig: 192, 172
+  offset: 0, 0
+  index: -1
+dahuan_h1
+  rotate: false
+  xy: 910, 186
+  size: 40, 68
+  orig: 40, 68
+  offset: 0, 0
+  index: -1
+dahuan_h1_2
+  rotate: false
+  xy: 694, 64
+  size: 38, 66
+  orig: 38, 66
+  offset: 0, 0
+  index: -1
+dahuan_h1_3
+  rotate: false
+  xy: 1035, 188
+  size: 38, 66
+  orig: 38, 66
+  offset: 0, 0
+  index: -1
+dahuan_h2
+  rotate: true
+  xy: 358, 2
+  size: 60, 46
+  orig: 60, 46
+  offset: 0, 0
+  index: -1
+dahuan_h2_2
+  rotate: true
+  xy: 2, 2
+  size: 58, 45
+  orig: 58, 45
+  offset: 0, 0
+  index: -1
+dahuan_h2_3
+  rotate: true
+  xy: 49, 2
+  size: 58, 45
+  orig: 58, 45
+  offset: 0, 0
+  index: -1
+dahuan_h3
+  rotate: true
+  xy: 406, 2
+  size: 60, 46
+  orig: 60, 46
+  offset: 0, 0
+  index: -1
+dahuan_h3_2
+  rotate: true
+  xy: 96, 2
+  size: 58, 45
+  orig: 58, 45
+  offset: 0, 0
+  index: -1
+dahuan_h3_3
+  rotate: true
+  xy: 143, 2
+  size: 58, 45
+  orig: 58, 45
+  offset: 0, 0
+  index: -1
+dahuan_h4
+  rotate: false
+  xy: 454, 16
+  size: 62, 46
+  orig: 62, 46
+  offset: 0, 0
+  index: -1
+dahuan_h4_2
+  rotate: true
+  xy: 951, 5
+  size: 61, 44
+  orig: 61, 44
+  offset: 0, 0
+  index: -1
+dahuan_h4_3
+  rotate: true
+  xy: 1032, 76
+  size: 61, 44
+  orig: 61, 44
+  offset: 0, 0
+  index: -1
+dahuan_h5
+  rotate: false
+  xy: 973, 139
+  size: 62, 45
+  orig: 62, 45
+  offset: 0, 0
+  index: -1
+dahuan_h5_2
+  rotate: false
+  xy: 1037, 143
+  size: 61, 43
+  orig: 61, 43
+  offset: 0, 0
+  index: -1
+dahuan_h5_3
+  rotate: true
+  xy: 1075, 193
+  size: 61, 43
+  orig: 61, 43
+  offset: 0, 0
+  index: -1
+dahuan_h6
+  rotate: false
+  xy: 952, 186
+  size: 39, 68
+  orig: 39, 68
+  offset: 0, 0
+  index: -1
+dahuan_h6_2
+  rotate: false
+  xy: 992, 71
+  size: 38, 66
+  orig: 38, 66
+  offset: 0, 0
+  index: -1
+dahuan_h6_3
+  rotate: false
+  xy: 997, 3
+  size: 38, 66
+  orig: 38, 66
+  offset: 0, 0
+  index: -1
+dahuan_hei
+  rotate: true
+  xy: 176, 62
+  size: 192, 172
+  orig: 192, 172
+  offset: 0, 0
+  index: -1
+dahuan_hei_2
+  rotate: true
+  xy: 350, 64
+  size: 190, 170
+  orig: 190, 170
+  offset: 0, 0
+  index: -1
+dahuan_hei_3
+  rotate: true
+  xy: 522, 64
+  size: 190, 170
+  orig: 190, 170
+  offset: 0, 0
+  index: -1
+dahuan_s1
+  rotate: false
+  xy: 951, 68
+  size: 39, 68
+  orig: 39, 68
+  offset: 0, 0
+  index: -1
+dahuan_s2
+  rotate: false
+  xy: 646, 16
+  size: 61, 46
+  orig: 61, 46
+  offset: 0, 0
+  index: -1
+dahuan_s3
+  rotate: false
+  xy: 910, 138
+  size: 61, 46
+  orig: 61, 46
+  offset: 0, 0
+  index: -1
+dahuan_s4
+  rotate: false
+  xy: 518, 16
+  size: 62, 46
+  orig: 62, 46
+  offset: 0, 0
+  index: -1
+dahuan_s5
+  rotate: false
+  xy: 582, 16
+  size: 62, 46
+  orig: 62, 46
+  offset: 0, 0
+  index: -1
+dahuan_s6
+  rotate: false
+  xy: 993, 187
+  size: 40, 67
+  orig: 40, 67
+  offset: 0, 0
+  index: -1
+fuyou
+  rotate: false
+  xy: 190, 4
+  size: 54, 56
+  orig: 54, 56
+  offset: 0, 0
+  index: -1
+fuyou_2
+  rotate: false
+  xy: 246, 4
+  size: 54, 56
+  orig: 54, 56
+  offset: 0, 0
+  index: -1
+fuyou_3
+  rotate: false
+  xy: 302, 4
+  size: 54, 56
+  orig: 54, 56
+  offset: 0, 0
+  index: -1
+xiaohuan_bai
+  rotate: true
+  xy: 694, 132
+  size: 122, 106
+  orig: 122, 106
+  offset: 0, 0
+  index: -1
+xiaohuan_hei
+  rotate: true
+  xy: 734, 9
+  size: 121, 107
+  orig: 121, 107
+  offset: 0, 0
+  index: -1
+xiaohuan_hei_2
+  rotate: true
+  xy: 802, 135
+  size: 119, 106
+  orig: 119, 106
+  offset: 0, 0
+  index: -1
+xiaohuan_hei_3
+  rotate: true
+  xy: 843, 14
+  size: 119, 106
+  orig: 119, 106
+  offset: 0, 0
+  index: -1

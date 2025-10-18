@@ -1,0 +1,13 @@
+
+shebei_jinglingzhiyi.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shebei_jinglingchibang
+  rotate: false
+  xy: 2, 2
+  size: 622, 483
+  orig: 622, 483
+  offset: 0, 0
+  index: -1

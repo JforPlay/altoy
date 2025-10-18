@@ -1,0 +1,69 @@
+
+yuexiangshebei.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+s_02
+  rotate: false
+  xy: 574, 306
+  size: 104, 180
+  orig: 104, 180
+  offset: 0, 0
+  index: -1
+s_03
+  rotate: false
+  xy: 573, 119
+  size: 110, 182
+  orig: 110, 182
+  offset: 0, 0
+  index: -1
+s_04
+  rotate: true
+  xy: 393, 4
+  size: 110, 183
+  orig: 110, 183
+  offset: 0, 0
+  index: -1
+s_05
+  rotate: false
+  xy: 442, 303
+  size: 130, 183
+  orig: 130, 183
+  offset: 0, 0
+  index: -1
+s_06
+  rotate: false
+  xy: 209, 16
+  size: 182, 210
+  orig: 182, 210
+  offset: 0, 0
+  index: -1
+s_07
+  rotate: false
+  xy: 2, 2
+  size: 205, 224
+  orig: 205, 224
+  offset: 0, 0
+  index: -1
+s_08
+  rotate: true
+  xy: 393, 116
+  size: 184, 178
+  orig: 184, 178
+  offset: 0, 0
+  index: -1
+s_09
+  rotate: true
+  xy: 262, 302
+  size: 184, 178
+  orig: 184, 178
+  offset: 0, 0
+  index: -1
+yue_base
+  rotate: false
+  xy: 2, 228
+  size: 258, 258
+  orig: 258, 258
+  offset: 0, 0
+  index: -1

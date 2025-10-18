@@ -1,0 +1,27 @@
+
+shebei_youmiyadeng.png
+size: 128,64
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+deng1
+  rotate: true
+  xy: 2, 10
+  size: 47, 65
+  orig: 47, 65
+  offset: 0, 0
+  index: -1
+deng2
+  rotate: true
+  xy: 69, 2
+  size: 26, 33
+  orig: 26, 33
+  offset: 0, 0
+  index: -1
+deng3
+  rotate: false
+  xy: 69, 30
+  size: 57, 27
+  orig: 57, 27
+  offset: 0, 0
+  index: -1

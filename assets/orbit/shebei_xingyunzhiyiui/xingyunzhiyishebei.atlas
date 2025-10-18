@@ -1,0 +1,20 @@
+
+xingyunzhiyishebei.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+yi_L
+  rotate: true
+  xy: 2, 2
+  size: 152, 258
+  orig: 152, 258
+  offset: 0, 0
+  index: -1
+yi_R
+  rotate: true
+  xy: 262, 34
+  size: 120, 230
+  orig: 120, 230
+  offset: 0, 0
+  index: -1

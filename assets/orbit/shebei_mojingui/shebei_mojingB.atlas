@@ -1,0 +1,69 @@
+
+shebei_mojingB.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+guang_1
+  rotate: true
+  xy: 562, 4
+  size: 199, 276
+  orig: 199, 276
+  offset: 0, 0
+  index: -1
+guang_2
+  rotate: true
+  xy: 2, 2
+  size: 201, 278
+  orig: 201, 278
+  offset: 0, 0
+  index: -1
+guang_3
+  rotate: true
+  xy: 282, 2
+  size: 201, 278
+  orig: 201, 278
+  offset: 0, 0
+  index: -1
+haiou_1
+  rotate: false
+  xy: 893, 185
+  size: 27, 18
+  orig: 27, 18
+  offset: 0, 0
+  index: -1
+haiou_2
+  rotate: false
+  xy: 840, 147
+  size: 51, 56
+  orig: 51, 56
+  offset: 0, 0
+  index: -1
+haiou_3
+  rotate: true
+  xy: 869, 120
+  size: 25, 26
+  orig: 25, 26
+  offset: 0, 0
+  index: -1
+haiou_4
+  rotate: true
+  xy: 840, 112
+  size: 33, 27
+  orig: 33, 27
+  offset: 0, 0
+  index: -1
+haiou_5
+  rotate: false
+  xy: 840, 83
+  size: 33, 27
+  orig: 33, 27
+  offset: 0, 0
+  index: -1
+haiou_6
+  rotate: false
+  xy: 893, 171
+  size: 28, 12
+  orig: 28, 12
+  offset: 0, 0
+  index: -1

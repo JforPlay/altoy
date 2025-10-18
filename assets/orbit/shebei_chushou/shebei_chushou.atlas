@@ -1,0 +1,41 @@
+
+shebei_chushou.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+chushou_1
+  rotate: false
+  xy: 278, 134
+  size: 198, 115
+  orig: 198, 115
+  offset: 0, 0
+  index: -1
+chushou_2
+  rotate: true
+  xy: 2, 53
+  size: 196, 151
+  orig: 196, 151
+  offset: 0, 0
+  index: -1
+chushou_3
+  rotate: false
+  xy: 278, 20
+  size: 195, 112
+  orig: 195, 112
+  offset: 0, 0
+  index: -1
+chushou_4
+  rotate: true
+  xy: 155, 15
+  size: 234, 121
+  orig: 234, 121
+  offset: 0, 0
+  index: -1
+chushou_b
+  rotate: false
+  xy: 2, 2
+  size: 38, 49
+  orig: 38, 49
+  offset: 0, 0
+  index: -1

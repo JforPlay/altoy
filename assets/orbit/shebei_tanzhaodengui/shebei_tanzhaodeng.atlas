@@ -1,0 +1,34 @@
+
+shebei_tanzhaodeng.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+sheguang_1
+  rotate: true
+  xy: 2, 2
+  size: 869, 310
+  orig: 869, 310
+  offset: 0, 0
+  index: -1
+sheguang_2
+  rotate: true
+  xy: 314, 2
+  size: 869, 310
+  orig: 869, 310
+  offset: 0, 0
+  index: -1
+sheguang_3
+  rotate: true
+  xy: 626, 3
+  size: 868, 309
+  orig: 868, 309
+  offset: 0, 0
+  index: -1
+tanzhaodeng
+  rotate: true
+  xy: 937, 536
+  size: 335, 221
+  orig: 335, 221
+  offset: 0, 0
+  index: -1

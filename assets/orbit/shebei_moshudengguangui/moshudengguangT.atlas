@@ -1,0 +1,209 @@
+
+moshudengguangT.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+caidai_1
+  rotate: true
+  xy: 1205, 526
+  size: 26, 30
+  orig: 26, 30
+  offset: 0, 0
+  index: -1
+caidai_10
+  rotate: true
+  xy: 1237, 527
+  size: 25, 39
+  orig: 25, 39
+  offset: 0, 0
+  index: -1
+caidai_11
+  rotate: true
+  xy: 1432, 552
+  size: 18, 28
+  orig: 18, 28
+  offset: 0, 0
+  index: -1
+caidai_2
+  rotate: false
+  xy: 1389, 572
+  size: 97, 61
+  orig: 97, 61
+  offset: 0, 0
+  index: -1
+caidai_3
+  rotate: true
+  xy: 1389, 550
+  size: 20, 41
+  orig: 20, 41
+  offset: 0, 0
+  index: -1
+caidai_4
+  rotate: true
+  xy: 1331, 408
+  size: 60, 95
+  orig: 60, 95
+  offset: 0, 0
+  index: -1
+caidai_5
+  rotate: true
+  xy: 1290, 533
+  size: 25, 36
+  orig: 25, 36
+  offset: 0, 0
+  index: -1
+caidai_6
+  rotate: true
+  xy: 1328, 534
+  size: 24, 30
+  orig: 24, 30
+  offset: 0, 0
+  index: -1
+caidai_7
+  rotate: false
+  xy: 1401, 271
+  size: 37, 90
+  orig: 37, 90
+  offset: 0, 0
+  index: -1
+caidai_8
+  rotate: true
+  xy: 1435, 533
+  size: 17, 35
+  orig: 17, 35
+  offset: 0, 0
+  index: -1
+caidai_9
+  rotate: false
+  xy: 1192, 144
+  size: 52, 102
+  orig: 52, 102
+  offset: 0, 0
+  index: -1
+gezi_1
+  rotate: false
+  xy: 1122, 525
+  size: 81, 108
+  orig: 81, 108
+  offset: 0, 0
+  index: -1
+gezi_1_l1
+  rotate: false
+  xy: 1256, 308
+  size: 61, 118
+  orig: 61, 118
+  offset: 0, 0
+  index: -1
+gezi_1_l2
+  rotate: true
+  xy: 1197, 344
+  size: 104, 57
+  orig: 104, 57
+  offset: 0, 0
+  index: -1
+gezi_1_r1
+  rotate: false
+  xy: 1205, 554
+  size: 83, 79
+  orig: 83, 79
+  offset: 0, 0
+  index: -1
+gezi_1_r2
+  rotate: false
+  xy: 1252, 236
+  size: 86, 70
+  orig: 86, 70
+  offset: 0, 0
+  index: -1
+gezi_2
+  rotate: false
+  xy: 1122, 450
+  size: 132, 73
+  orig: 132, 73
+  offset: 0, 0
+  index: -1
+gezi_2_l1
+  rotate: true
+  xy: 1331, 470
+  size: 62, 102
+  orig: 62, 102
+  offset: 0, 0
+  index: -1
+gezi_2_l2
+  rotate: false
+  xy: 1122, 248
+  size: 72, 101
+  orig: 72, 101
+  offset: 0, 0
+  index: -1
+gezi_2_r1
+  rotate: false
+  xy: 1122, 68
+  size: 64, 79
+  orig: 64, 79
+  offset: 0, 0
+  index: -1
+gezi_2_r2
+  rotate: true
+  xy: 1319, 322
+  size: 39, 80
+  orig: 39, 80
+  offset: 0, 0
+  index: -1
+guangzhu
+  rotate: true
+  xy: 2, 2
+  size: 631, 1118
+  orig: 631, 1118
+  offset: 0, 0
+  index: -1
+puke_1
+  rotate: false
+  xy: 1122, 149
+  size: 68, 97
+  orig: 68, 97
+  offset: 0, 0
+  index: -1
+puke_2
+  rotate: false
+  xy: 1256, 428
+  size: 73, 97
+  orig: 73, 97
+  offset: 0, 0
+  index: -1
+puke_3
+  rotate: true
+  xy: 1290, 560
+  size: 73, 97
+  orig: 73, 97
+  offset: 0, 0
+  index: -1
+puke_4
+  rotate: false
+  xy: 1122, 351
+  size: 73, 97
+  orig: 73, 97
+  offset: 0, 0
+  index: -1
+pukebei_1
+  rotate: true
+  xy: 1196, 253
+  size: 89, 54
+  orig: 89, 54
+  offset: 0, 0
+  index: -1
+pukebei_2
+  rotate: true
+  xy: 1319, 363
+  size: 43, 96
+  orig: 43, 96
+  offset: 0, 0
+  index: -1
+pukebei_3
+  rotate: true
+  xy: 1319, 363
+  size: 43, 96
+  orig: 43, 96
+  offset: 0, 0
+  index: -1

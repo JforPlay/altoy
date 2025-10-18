@@ -1,0 +1,153 @@
+
+shebei_bingguanghuanT.png
+size: 512,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bk_1
+  rotate: false
+  xy: 148, 48
+  size: 117, 78
+  orig: 117, 78
+  offset: 0, 0
+  index: -1
+bk_2
+  rotate: false
+  xy: 2, 48
+  size: 144, 78
+  orig: 144, 78
+  offset: 0, 0
+  index: -1
+gd_1
+  rotate: false
+  xy: 267, 55
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
+  index: -1
+gd_1_2
+  rotate: false
+  xy: 275, 55
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
+  index: -1
+gd_1_3
+  rotate: false
+  xy: 283, 55
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
+  index: -1
+lizi_1
+  rotate: false
+  xy: 267, 84
+  size: 18, 19
+  orig: 18, 19
+  offset: 0, 0
+  index: -1
+lizi_1_2
+  rotate: false
+  xy: 267, 63
+  size: 18, 19
+  orig: 18, 19
+  offset: 0, 0
+  index: -1
+lizi_1_3
+  rotate: false
+  xy: 274, 34
+  size: 18, 19
+  orig: 18, 19
+  offset: 0, 0
+  index: -1
+lizi_2
+  rotate: false
+  xy: 274, 13
+  size: 18, 19
+  orig: 18, 19
+  offset: 0, 0
+  index: -1
+lizi_3
+  rotate: false
+  xy: 251, 25
+  size: 21, 21
+  orig: 21, 21
+  offset: 0, 0
+  index: -1
+lizi_3_2
+  rotate: false
+  xy: 251, 2
+  size: 21, 21
+  orig: 21, 21
+  offset: 0, 0
+  index: -1
+lizi_3_3
+  rotate: false
+  xy: 267, 105
+  size: 21, 21
+  orig: 21, 21
+  offset: 0, 0
+  index: -1
+ym_1
+  rotate: false
+  xy: 176, 3
+  size: 23, 43
+  orig: 23, 43
+  offset: 0, 0
+  index: -1
+ym_1_2
+  rotate: false
+  xy: 201, 3
+  size: 23, 43
+  orig: 23, 43
+  offset: 0, 0
+  index: -1
+ym_1_3
+  rotate: false
+  xy: 226, 3
+  size: 23, 43
+  orig: 23, 43
+  offset: 0, 0
+  index: -1
+ym_2
+  rotate: false
+  xy: 98, 4
+  size: 24, 42
+  orig: 24, 42
+  offset: 0, 0
+  index: -1
+ym_2_2
+  rotate: false
+  xy: 124, 4
+  size: 24, 42
+  orig: 24, 42
+  offset: 0, 0
+  index: -1
+ym_2_3
+  rotate: false
+  xy: 150, 4
+  size: 24, 42
+  orig: 24, 42
+  offset: 0, 0
+  index: -1
+ym_3
+  rotate: false
+  xy: 2, 9
+  size: 30, 37
+  orig: 30, 37
+  offset: 0, 0
+  index: -1
+ym_3_2
+  rotate: false
+  xy: 34, 9
+  size: 30, 37
+  orig: 30, 37
+  offset: 0, 0
+  index: -1
+ym_3_3
+  rotate: false
+  xy: 66, 9
+  size: 30, 37
+  orig: 30, 37
+  offset: 0, 0
+  index: -1

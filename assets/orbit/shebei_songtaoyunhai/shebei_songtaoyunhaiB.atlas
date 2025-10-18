@@ -1,0 +1,76 @@
+
+shebei_songtaoyunhaiB.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+shan_1
+  rotate: false
+  xy: 167, 40
+  size: 309, 210
+  orig: 309, 210
+  offset: 0, 0
+  index: -1
+shan_2
+  rotate: true
+  xy: 2, 15
+  size: 235, 163
+  orig: 235, 163
+  offset: 0, 0
+  index: -1
+shan_3
+  rotate: true
+  xy: 719, 148
+  size: 102, 95
+  orig: 102, 95
+  offset: 0, 0
+  index: -1
+song_1
+  rotate: false
+  xy: 610, 2
+  size: 134, 109
+  orig: 134, 109
+  offset: 0, 0
+  index: -1
+song_2
+  rotate: true
+  xy: 746, 49
+  size: 97, 50
+  orig: 97, 50
+  offset: 0, 0
+  index: -1
+song_22
+  rotate: true
+  xy: 798, 57
+  size: 89, 60
+  orig: 89, 60
+  offset: 0, 0
+  index: -1
+song_23
+  rotate: true
+  xy: 554, 15
+  size: 70, 54
+  orig: 70, 54
+  offset: 0, 0
+  index: -1
+song_24
+  rotate: true
+  xy: 596, 113
+  size: 137, 121
+  orig: 137, 121
+  offset: 0, 0
+  index: -1
+song_3
+  rotate: true
+  xy: 478, 87
+  size: 163, 116
+  orig: 163, 116
+  offset: 0, 0
+  index: -1
+song_4
+  rotate: true
+  xy: 478, 4
+  size: 81, 74
+  orig: 81, 74
+  offset: 0, 0
+  index: -1

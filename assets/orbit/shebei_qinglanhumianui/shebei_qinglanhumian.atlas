@@ -1,0 +1,41 @@
+
+shebei_qinglanhumian.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+duandai_L
+  rotate: true
+  xy: 283, 25
+  size: 50, 96
+  orig: 50, 96
+  offset: 0, 0
+  index: -1
+duandai_R
+  rotate: false
+  xy: 381, 127
+  size: 34, 90
+  orig: 34, 90
+  offset: 0, 0
+  index: -1
+qinglanhumian
+  rotate: true
+  xy: 2, 8
+  size: 209, 279
+  orig: 209, 279
+  offset: 0, 0
+  index: -1
+sui_L
+  rotate: false
+  xy: 283, 77
+  size: 21, 140
+  orig: 21, 140
+  offset: 0, 0
+  index: -1
+sui_R
+  rotate: true
+  xy: 283, 2
+  size: 21, 128
+  orig: 21, 128
+  offset: 0, 0
+  index: -1

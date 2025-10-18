@@ -1,0 +1,27 @@
+
+xingqiu2.png
+size: 256,64
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+222/texiao1
+  rotate: false
+  xy: 65, 6
+  size: 55, 56
+  orig: 55, 56
+  offset: 0, 0
+  index: -1
+222/texiao2
+  rotate: true
+  xy: 122, 4
+  size: 58, 53
+  orig: 58, 53
+  offset: 0, 0
+  index: -1
+222/xingqiu2
+  rotate: true
+  xy: 2, 2
+  size: 60, 61
+  orig: 60, 61
+  offset: 0, 0
+  index: -1

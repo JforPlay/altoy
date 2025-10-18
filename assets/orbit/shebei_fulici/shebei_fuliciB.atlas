@@ -1,0 +1,69 @@
+
+shebei_fuliciB.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fazhen_m
+  rotate: false
+  xy: 2, 791
+  size: 199, 199
+  orig: 199, 199
+  offset: 0, 0
+  index: -1
+fazhen_m2
+  rotate: false
+  xy: 203, 772
+  size: 218, 218
+  orig: 218, 218
+  offset: 0, 0
+  index: -1
+fazhen_p
+  rotate: true
+  xy: 2, 2
+  size: 266, 267
+  orig: 266, 267
+  offset: 0, 0
+  index: -1
+shizi_1
+  rotate: true
+  xy: 423, 741
+  size: 249, 407
+  orig: 249, 407
+  offset: 0, 0
+  index: -1
+shizi_1_2
+  rotate: true
+  xy: 2, 521
+  size: 249, 407
+  orig: 249, 407
+  offset: 0, 0
+  index: -1
+shizi_1_3
+  rotate: true
+  xy: 411, 490
+  size: 249, 407
+  orig: 249, 407
+  offset: 0, 0
+  index: -1
+shizi_1_4
+  rotate: true
+  xy: 2, 270
+  size: 249, 407
+  orig: 249, 407
+  offset: 0, 0
+  index: -1
+shizi_2
+  rotate: true
+  xy: 411, 239
+  size: 249, 407
+  orig: 249, 407
+  offset: 0, 0
+  index: -1
+shizi_3
+  rotate: true
+  xy: 411, 239
+  size: 249, 407
+  orig: 249, 407
+  offset: 0, 0
+  index: -1

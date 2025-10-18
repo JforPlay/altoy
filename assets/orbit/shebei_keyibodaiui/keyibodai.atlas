@@ -1,0 +1,61 @@
+
+keyibodai.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+huanT
+  rotate: false
+  xy: 2, 2
+  size: 686, 420
+  orig: 686, 420
+  offset: 0, 0
+  index: -1
+shine1
+  rotate: true
+  xy: 2, 860
+  size: 73, 120
+  orig: 73, 120
+  offset: 0, 0
+  index: -1
+shine2
+  rotate: true
+  xy: 124, 842
+  size: 91, 122
+  orig: 91, 122
+  offset: 0, 0
+  index: -1
+shine3
+  rotate: true
+  xy: 248, 786
+  size: 147, 197
+  orig: 147, 197
+  offset: 0, 0
+  index: -1
+shitou1
+  rotate: false
+  xy: 2, 424
+  size: 609, 360
+  orig: 609, 360
+  offset: 0, 0
+  index: -1
+
+keyibodai2.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+huanB
+  rotate: false
+  xy: 2, 477
+  size: 767, 541
+  orig: 767, 541
+  offset: 0, 0
+  index: -1
+xingban
+  rotate: false
+  xy: 2, 2
+  size: 702, 473
+  orig: 702, 473
+  offset: 0, 0
+  index: -1

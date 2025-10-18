@@ -1,0 +1,41 @@
+
+shebei_bingguanghuanB.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bingkuai_di
+  rotate: false
+  xy: 2, 166
+  size: 199, 33
+  orig: 199, 33
+  offset: 0, 0
+  index: -1
+bk_1
+  rotate: false
+  xy: 2, 6
+  size: 117, 78
+  orig: 117, 78
+  offset: 0, 0
+  index: -1
+bk_2
+  rotate: false
+  xy: 2, 86
+  size: 144, 78
+  orig: 144, 78
+  offset: 0, 0
+  index: -1
+bk_3
+  rotate: true
+  xy: 148, 72
+  size: 92, 59
+  orig: 92, 59
+  offset: 0, 0
+  index: -1
+bk_4
+  rotate: false
+  xy: 121, 2
+  size: 96, 68
+  orig: 96, 68
+  offset: 0, 0
+  index: -1

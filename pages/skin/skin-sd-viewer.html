@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/altoy/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>벽람항로 스파인 애니메이션 뷰어</title>
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@5.3.12/dist/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi-spine@2.1.14/dist/pixi-spine.min.js"></script>
+    
+    <link rel="stylesheet" href="css/skin-sd-viewer.css">
+    <link rel="stylesheet" href="css/nav.style.css">
+</head>
+
+<body>
+    <div id="navbar-placeholder"></div>
+    <div class="container">
+        <h1>⚓ 벽람항로 SD 뷰어</h1>
+
+        <div id="status" class="status">
+            캐릭터를 선택하여 애니메이션 보기
+        </div>
+
+        <div class="viewer-section">
+            <div class="viewer-box">
+                <h2>애니메이션 미리보기</h2>
+                <div id="spineContainer"></div>
+            </div>
+
+            <div class="viewer-box">
+                <h2>컨트롤</h2>
+
+                <div class="control-group">
+                    <label>캐릭터 선택</label>
+                    <select id="charSelect">
+                        <option value="">-- 캐릭터를 선택하세요 --</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>장비 스킨 선택</label>
+                    <select id="equipSelect">
+                        <option value="">-- 장비 스킨을 선택하세요 --</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>디스플레이 모드</label>
+                    <div class="button-row" id="displayModeBtns">
+                        <button id="charOnlyBtn" class="active">캐릭터만</button>
+                        <button id="equipOnlyBtn">장비만</button>
+                        <button id="bothBtn">둘 다 표시</button>
+                    </div>
+                </div>
+
+                <div id="animationControls" style="display: none;">
+                    <div class="control-group">
+                        <label>애니메이션 (<span id="animCount">0</span>)</label>
+                        <div class="animation-list" id="animationList"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>스킨 (<span id="skinCount">0</span>)</label>
+                        <div class="skin-list" id="skinList"></div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>크기: <span id="scaleValue">100</span>%</label>
+                        <input type="range" id="scale" min="20" max="300" value="100" step="5">
+                    </div>
+
+                    <div class="control-group">
+                        <label>애니메이션 속도: <span id="speedValue">100</span>%</label>
+                        <input type="range" id="speed" min="10" max="200" value="100" step="5">
+                    </div>
+
+                    <div class="control-group">
+                        <label style="font-weight: normal; display: flex; align-items: center;">
+                            <input type="checkbox" id="loopAnim" checked>
+                            애니메이션 반복
+                        </label>
+                    </div>
+
+                    <div class="button-row">
+                        <button id="playBtn">▶️ 재생</button>
+                        <button id="pauseBtn">⏸️ 일시정지</button>
+                    </div>
+
+                    <button id="resetBtn">🔄 위치 초기화</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/skin-sd-viewer.js"></script>
+    <script src="js/nav.script.js"></script>
+</body>
+
+</html>

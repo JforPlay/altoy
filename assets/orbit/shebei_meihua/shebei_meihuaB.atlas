@@ -1,0 +1,265 @@
+
+shebei_meihuaB.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+hua_1
+  rotate: true
+  xy: 175, 67
+  size: 35, 29
+  orig: 35, 29
+  offset: 0, 0
+  index: -1
+hua_10
+  rotate: true
+  xy: 274, 82
+  size: 20, 24
+  orig: 20, 24
+  offset: 0, 0
+  index: -1
+hua_10_2
+  rotate: false
+  xy: 249, 29
+  size: 20, 24
+  orig: 20, 24
+  offset: 0, 0
+  index: -1
+hua_10_3
+  rotate: false
+  xy: 250, 3
+  size: 20, 24
+  orig: 20, 24
+  offset: 0, 0
+  index: -1
+hua_11
+  rotate: true
+  xy: 294, 38
+  size: 18, 17
+  orig: 18, 17
+  offset: 0, 0
+  index: -1
+hua_11_2
+  rotate: true
+  xy: 298, 62
+  size: 18, 17
+  orig: 18, 17
+  offset: 0, 0
+  index: -1
+hua_11_3
+  rotate: true
+  xy: 300, 84
+  size: 18, 17
+  orig: 18, 17
+  offset: 0, 0
+  index: -1
+hua_12
+  rotate: true
+  xy: 197, 54
+  size: 11, 13
+  orig: 11, 13
+  offset: 0, 0
+  index: -1
+hua_12_2
+  rotate: true
+  xy: 206, 68
+  size: 11, 13
+  orig: 11, 13
+  offset: 0, 0
+  index: -1
+hua_12_3
+  rotate: true
+  xy: 212, 55
+  size: 11, 13
+  orig: 11, 13
+  offset: 0, 0
+  index: -1
+hua_13
+  rotate: false
+  xy: 147, 12
+  size: 28, 38
+  orig: 28, 38
+  offset: 0, 0
+  index: -1
+hua_14
+  rotate: true
+  xy: 147, 2
+  size: 8, 12
+  orig: 8, 12
+  offset: 0, 0
+  index: -1
+hua_14_2
+  rotate: true
+  xy: 161, 2
+  size: 8, 12
+  orig: 8, 12
+  offset: 0, 0
+  index: -1
+hua_14_3
+  rotate: true
+  xy: 175, 2
+  size: 8, 12
+  orig: 8, 12
+  offset: 0, 0
+  index: -1
+hua_15
+  rotate: false
+  xy: 108, 4
+  size: 37, 45
+  orig: 37, 45
+  offset: 0, 0
+  index: -1
+hua_16
+  rotate: true
+  xy: 67, 6
+  size: 43, 39
+  orig: 43, 39
+  offset: 0, 0
+  index: -1
+hua_17
+  rotate: false
+  xy: 221, 68
+  size: 12, 11
+  orig: 12, 11
+  offset: 0, 0
+  index: -1
+hua_17_2
+  rotate: false
+  xy: 227, 55
+  size: 12, 11
+  orig: 12, 11
+  offset: 0, 0
+  index: -1
+hua_17_3
+  rotate: false
+  xy: 235, 68
+  size: 12, 11
+  orig: 12, 11
+  offset: 0, 0
+  index: -1
+hua_18
+  rotate: false
+  xy: 2, 6
+  size: 63, 39
+  orig: 63, 39
+  offset: 0, 0
+  index: -1
+hua_19
+  rotate: true
+  xy: 2, 47
+  size: 55, 53
+  orig: 55, 53
+  offset: 0, 0
+  index: -1
+hua_2
+  rotate: true
+  xy: 57, 51
+  size: 51, 57
+  orig: 51, 57
+  offset: 0, 0
+  index: -1
+hua_20
+  rotate: false
+  xy: 223, 28
+  size: 24, 25
+  orig: 24, 25
+  offset: 0, 0
+  index: -1
+hua_20_2
+  rotate: true
+  xy: 223, 2
+  size: 24, 25
+  orig: 24, 25
+  offset: 0, 0
+  index: -1
+hua_20_3
+  rotate: false
+  xy: 249, 55
+  size: 24, 25
+  orig: 24, 25
+  offset: 0, 0
+  index: -1
+hua_3
+  rotate: true
+  xy: 271, 31
+  size: 22, 21
+  orig: 22, 21
+  offset: 0, 0
+  index: -1
+hua_3_2
+  rotate: true
+  xy: 275, 58
+  size: 22, 21
+  orig: 22, 21
+  offset: 0, 0
+  index: -1
+hua_3_3
+  rotate: true
+  xy: 272, 7
+  size: 22, 21
+  orig: 22, 21
+  offset: 0, 0
+  index: -1
+hua_4
+  rotate: false
+  xy: 246, 82
+  size: 26, 20
+  orig: 26, 20
+  offset: 0, 0
+  index: -1
+hua_5
+  rotate: true
+  xy: 201, 2
+  size: 10, 14
+  orig: 10, 14
+  offset: 0, 0
+  index: -1
+hua_6
+  rotate: false
+  xy: 175, 53
+  size: 20, 12
+  orig: 20, 12
+  offset: 0, 0
+  index: -1
+hua_7
+  rotate: false
+  xy: 116, 52
+  size: 57, 50
+  orig: 57, 50
+  offset: 0, 0
+  index: -1
+hua_8
+  rotate: true
+  xy: 177, 13
+  size: 38, 21
+  orig: 38, 21
+  offset: 0, 0
+  index: -1
+hua_8_2
+  rotate: false
+  xy: 206, 81
+  size: 38, 21
+  orig: 38, 21
+  offset: 0, 0
+  index: -1
+hua_8_3
+  rotate: true
+  xy: 200, 14
+  size: 38, 21
+  orig: 38, 21
+  offset: 0, 0
+  index: -1
+hua_9
+  rotate: false
+  xy: 189, 2
+  size: 10, 9
+  orig: 10, 9
+  offset: 0, 0
+  index: -1
+shugan
+  rotate: false
+  xy: 2, 104
+  size: 309, 406
+  orig: 309, 406
+  offset: 0, 0
+  index: -1

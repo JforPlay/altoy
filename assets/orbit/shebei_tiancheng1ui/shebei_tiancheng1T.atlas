@@ -1,0 +1,160 @@
+
+shebei_tiancheng1T.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1
+  rotate: true
+  xy: 343, 565
+  size: 120, 335
+  orig: 120, 335
+  offset: 0, 0
+  index: -1
+1-1
+  rotate: true
+  xy: 624, 781
+  size: 69, 154
+  orig: 69, 154
+  offset: 0, 0
+  index: -1
+1-2
+  rotate: true
+  xy: 330, 213
+  size: 153, 313
+  orig: 153, 313
+  offset: 0, 0
+  index: -1
+1-2_1
+  rotate: true
+  xy: 645, 213
+  size: 153, 313
+  orig: 153, 313
+  offset: 0, 0
+  index: -1
+1-3
+  rotate: true
+  xy: 184, 784
+  size: 66, 177
+  orig: 66, 177
+  offset: 0, 0
+  index: -1
+1_s1
+  rotate: true
+  xy: 680, 504
+  size: 120, 335
+  orig: 120, 335
+  offset: 0, 0
+  index: -1
+2
+  rotate: true
+  xy: 286, 2
+  size: 209, 362
+  orig: 209, 362
+  offset: 0, 0
+  index: -1
+2-1
+  rotate: true
+  xy: 461, 694
+  size: 88, 154
+  orig: 88, 154
+  offset: 0, 0
+  index: -1
+2-2
+  rotate: true
+  xy: 281, 435
+  size: 128, 204
+  orig: 128, 204
+  offset: 0, 0
+  index: -1
+2-3
+  rotate: true
+  xy: 2, 291
+  size: 142, 326
+  orig: 142, 326
+  offset: 0, 0
+  index: -1
+3
+  rotate: true
+  xy: 487, 368
+  size: 134, 287
+  orig: 134, 287
+  offset: 0, 0
+  index: -1
+3-1
+  rotate: true
+  xy: 2, 476
+  size: 125, 277
+  orig: 125, 277
+  offset: 0, 0
+  index: -1
+3-2
+  rotate: false
+  xy: 918, 701
+  size: 86, 149
+  orig: 86, 149
+  offset: 0, 0
+  index: -1
+3-3
+  rotate: false
+  xy: 783, 626
+  size: 105, 150
+  orig: 105, 150
+  offset: 0, 0
+  index: -1
+4
+  rotate: true
+  xy: 2, 603
+  size: 93, 339
+  orig: 93, 339
+  offset: 0, 0
+  index: -1
+4-1
+  rotate: true
+  xy: 617, 687
+  size: 89, 164
+  orig: 89, 164
+  offset: 0, 0
+  index: -1
+4-2
+  rotate: true
+  xy: 780, 778
+  size: 72, 136
+  orig: 72, 136
+  offset: 0, 0
+  index: -1
+4-3
+  rotate: true
+  xy: 229, 698
+  size: 84, 230
+  orig: 84, 230
+  offset: 0, 0
+  index: -1
+5-1
+  rotate: true
+  xy: 2, 710
+  size: 72, 225
+  orig: 72, 225
+  offset: 0, 0
+  index: -1
+5-2
+  rotate: true
+  xy: 2, 785
+  size: 65, 180
+  orig: 65, 180
+  offset: 0, 0
+  index: -1
+5-3
+  rotate: true
+  xy: 363, 784
+  size: 66, 259
+  orig: 66, 259
+  offset: 0, 0
+  index: -1
+guangqiu
+  rotate: true
+  xy: 2, 8
+  size: 281, 282
+  orig: 281, 282
+  offset: 0, 0
+  index: -1

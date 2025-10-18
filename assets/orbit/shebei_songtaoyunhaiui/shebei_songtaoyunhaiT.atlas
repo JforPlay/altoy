@@ -1,0 +1,153 @@
+
+shebei_songtaoyunhaiT.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+yun_1
+  rotate: true
+  xy: 2, 165
+  size: 342, 161
+  orig: 342, 161
+  offset: 0, 0
+  index: -1
+yun_1_2
+  rotate: false
+  xy: 2, 2
+  size: 342, 161
+  orig: 342, 161
+  offset: 0, 0
+  index: -1
+yun_1_3
+  rotate: true
+  xy: 165, 170
+  size: 337, 158
+  orig: 337, 158
+  offset: 0, 0
+  index: -1
+yun_2
+  rotate: false
+  xy: 1182, 198
+  size: 132, 60
+  orig: 132, 60
+  offset: 0, 0
+  index: -1
+yun_2_2
+  rotate: true
+  xy: 1235, 66
+  size: 130, 58
+  orig: 130, 58
+  offset: 0, 0
+  index: -1
+yun_2_3
+  rotate: false
+  xy: 1235, 8
+  size: 126, 56
+  orig: 126, 56
+  offset: 0, 0
+  index: -1
+yun_3
+  rotate: true
+  xy: 346, 16
+  size: 156, 80
+  orig: 156, 80
+  offset: 0, 0
+  index: -1
+yun_3_2
+  rotate: true
+  xy: 761, 35
+  size: 154, 78
+  orig: 154, 78
+  offset: 0, 0
+  index: -1
+yun_3_3
+  rotate: true
+  xy: 841, 37
+  size: 152, 76
+  orig: 152, 76
+  offset: 0, 0
+  index: -1
+yun_4
+  rotate: true
+  xy: 722, 191
+  size: 316, 151
+  orig: 316, 151
+  offset: 0, 0
+  index: -1
+yun_4_2
+  rotate: false
+  xy: 919, 41
+  size: 314, 149
+  orig: 314, 149
+  offset: 0, 0
+  index: -1
+yun_4_3
+  rotate: true
+  xy: 1033, 196
+  size: 311, 147
+  orig: 311, 147
+  offset: 0, 0
+  index: -1
+yun_5
+  rotate: true
+  xy: 325, 174
+  size: 333, 157
+  orig: 333, 157
+  offset: 0, 0
+  index: -1
+yun_5_2
+  rotate: false
+  xy: 428, 17
+  size: 331, 155
+  orig: 331, 155
+  offset: 0, 0
+  index: -1
+yun_5_3
+  rotate: true
+  xy: 484, 180
+  size: 327, 154
+  orig: 327, 154
+  offset: 0, 0
+  index: -1
+yun_6
+  rotate: true
+  xy: 1182, 260
+  size: 247, 61
+  orig: 247, 61
+  offset: 0, 0
+  index: -1
+yun_6_2
+  rotate: true
+  xy: 1245, 262
+  size: 245, 59
+  orig: 245, 59
+  offset: 0, 0
+  index: -1
+yun_6_3
+  rotate: true
+  xy: 1306, 263
+  size: 244, 58
+  orig: 244, 58
+  offset: 0, 0
+  index: -1
+yun_7
+  rotate: true
+  xy: 640, 190
+  size: 317, 80
+  orig: 317, 80
+  offset: 0, 0
+  index: -1
+yun_7_2
+  rotate: true
+  xy: 875, 192
+  size: 315, 78
+  orig: 315, 78
+  offset: 0, 0
+  index: -1
+yun_7_3
+  rotate: true
+  xy: 955, 193
+  size: 314, 76
+  orig: 314, 76
+  offset: 0, 0
+  index: -1

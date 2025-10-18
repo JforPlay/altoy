@@ -1,0 +1,104 @@
+
+shebei_fanhuanT.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+fanghuzhao
+  rotate: false
+  xy: 2, 189
+  size: 154, 312
+  orig: 154, 312
+  offset: 0, 0
+  index: -1
+fanghuzhao_2
+  rotate: false
+  xy: 158, 189
+  size: 154, 312
+  orig: 154, 312
+  offset: 0, 0
+  index: -1
+fanghuzhao_3
+  rotate: false
+  xy: 314, 189
+  size: 154, 312
+  orig: 154, 312
+  offset: 0, 0
+  index: -1
+fanghuzhao_4
+  rotate: true
+  xy: 2, 42
+  size: 145, 294
+  orig: 145, 294
+  offset: 0, 0
+  index: -1
+fuyou
+  rotate: true
+  xy: 298, 43
+  size: 54, 56
+  orig: 54, 56
+  offset: 0, 0
+  index: -1
+fuyou_2
+  rotate: true
+  xy: 356, 17
+  size: 54, 56
+  orig: 54, 56
+  offset: 0, 0
+  index: -1
+fuyou_3
+  rotate: false
+  xy: 414, 15
+  size: 54, 56
+  orig: 54, 56
+  offset: 0, 0
+  index: -1
+guangyun_1
+  rotate: true
+  xy: 2, 2
+  size: 28, 38
+  orig: 28, 38
+  offset: 0, 0
+  index: -1
+guangyun_2
+  rotate: false
+  xy: 298, 99
+  size: 64, 88
+  orig: 64, 88
+  offset: 0, 0
+  index: -1
+guangyun_2_2
+  rotate: true
+  xy: 364, 73
+  size: 62, 86
+  orig: 62, 86
+  offset: 0, 0
+  index: -1
+guangyun_3
+  rotate: true
+  xy: 364, 137
+  size: 50, 101
+  orig: 50, 101
+  offset: 0, 0
+  index: -1
+jiguang
+  rotate: true
+  xy: 470, 218
+  size: 283, 8
+  orig: 283, 8
+  offset: 0, 0
+  index: -1
+jiguang_2
+  rotate: false
+  xy: 2, 32
+  size: 283, 8
+  orig: 283, 8
+  offset: 0, 0
+  index: -1
+jiguang_3
+  rotate: true
+  xy: 480, 218
+  size: 283, 8
+  orig: 283, 8
+  offset: 0, 0
+  index: -1

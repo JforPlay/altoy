@@ -1,0 +1,251 @@
+
+moshudoupengshebei.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bz_1
+  rotate: false
+  xy: 2, 2
+  size: 1246, 694
+  orig: 1246, 694
+  offset: 0, 0
+  index: -1
+caidai_1
+  rotate: false
+  xy: 1427, 249
+  size: 27, 33
+  orig: 27, 33
+  offset: 0, 0
+  index: -1
+caidai_10
+  rotate: true
+  xy: 1456, 246
+  size: 36, 17
+  orig: 36, 17
+  offset: 0, 0
+  index: -1
+caidai_11
+  rotate: true
+  xy: 1347, 164
+  size: 29, 22
+  orig: 29, 22
+  offset: 0, 0
+  index: -1
+caidai_12
+  rotate: false
+  xy: 1288, 141
+  size: 16, 20
+  orig: 16, 20
+  offset: 0, 0
+  index: -1
+caidai_13
+  rotate: false
+  xy: 1250, 141
+  size: 36, 50
+  orig: 36, 50
+  offset: 0, 0
+  index: -1
+caidai_14
+  rotate: false
+  xy: 1499, 201
+  size: 21, 25
+  orig: 21, 25
+  offset: 0, 0
+  index: -1
+caidai_15
+  rotate: false
+  xy: 1441, 199
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
+caidai_16
+  rotate: false
+  xy: 1427, 214
+  size: 27, 33
+  orig: 27, 33
+  offset: 0, 0
+  index: -1
+caidai_17
+  rotate: true
+  xy: 1456, 235
+  size: 9, 16
+  orig: 9, 16
+  offset: 0, 0
+  index: -1
+caidai_18
+  rotate: true
+  xy: 1551, 469
+  size: 8, 15
+  orig: 8, 15
+  offset: 0, 0
+  index: -1
+caidai_19
+  rotate: true
+  xy: 1417, 183
+  size: 25, 22
+  orig: 25, 22
+  offset: 0, 0
+  index: -1
+caidai_2
+  rotate: false
+  xy: 1475, 235
+  size: 15, 13
+  orig: 15, 13
+  offset: 0, 0
+  index: -1
+caidai_3
+  rotate: false
+  xy: 1475, 250
+  size: 23, 32
+  orig: 23, 32
+  offset: 0, 0
+  index: -1
+caidai_4
+  rotate: false
+  xy: 1288, 163
+  size: 16, 28
+  orig: 16, 28
+  offset: 0, 0
+  index: -1
+caidai_5
+  rotate: true
+  xy: 1393, 178
+  size: 30, 22
+  orig: 30, 22
+  offset: 0, 0
+  index: -1
+caidai_6
+  rotate: false
+  xy: 1393, 210
+  size: 32, 72
+  orig: 32, 72
+  offset: 0, 0
+  index: -1
+caidai_7
+  rotate: false
+  xy: 1485, 220
+  size: 12, 13
+  orig: 12, 13
+  offset: 0, 0
+  index: -1
+caidai_8
+  rotate: false
+  xy: 1371, 167
+  size: 19, 26
+  orig: 19, 26
+  offset: 0, 0
+  index: -1
+caidai_9
+  rotate: false
+  xy: 1456, 201
+  size: 27, 25
+  orig: 27, 25
+  offset: 0, 0
+  index: -1
+doupeng_b
+  rotate: true
+  xy: 1250, 418
+  size: 278, 200
+  orig: 278, 200
+  offset: 0, 0
+  index: -1
+doupeng_lz
+  rotate: true
+  xy: 1501, 228
+  size: 112, 71
+  orig: 112, 71
+  offset: 0, 0
+  index: -1
+doupeng_mao
+  rotate: false
+  xy: 1551, 479
+  size: 195, 85
+  orig: 195, 85
+  offset: 0, 0
+  index: -1
+doupeng_tl
+  rotate: true
+  xy: 1452, 566
+  size: 130, 248
+  orig: 130, 248
+  offset: 0, 0
+  index: -1
+doupeng_tr
+  rotate: true
+  xy: 1250, 284
+  size: 132, 249
+  orig: 132, 249
+  offset: 0, 0
+  index: -1
+gezi_2_b
+  rotate: false
+  xy: 1702, 621
+  size: 120, 75
+  orig: 120, 75
+  offset: 0, 0
+  index: -1
+gezi_3_b
+  rotate: false
+  xy: 1501, 342
+  size: 72, 75
+  orig: 72, 75
+  offset: 0, 0
+  index: -1
+gz2_cb_l1
+  rotate: true
+  xy: 1702, 566
+  size: 53, 90
+  orig: 53, 90
+  offset: 0, 0
+  index: -1
+gz2_cb_l2
+  rotate: true
+  xy: 1306, 144
+  size: 78, 39
+  orig: 78, 39
+  offset: 0, 0
+  index: -1
+gz2_cb_r1
+  rotate: true
+  xy: 1452, 469
+  size: 95, 97
+  orig: 95, 97
+  offset: 0, 0
+  index: -1
+gz2_cb_r2
+  rotate: true
+  xy: 1452, 419
+  size: 48, 110
+  orig: 48, 110
+  offset: 0, 0
+  index: -1
+gz3_cb_l1
+  rotate: false
+  xy: 1568, 420
+  size: 63, 57
+  orig: 63, 57
+  offset: 0, 0
+  index: -1
+gz3_cb_l2
+  rotate: true
+  xy: 1306, 224
+  size: 58, 44
+  orig: 58, 44
+  offset: 0, 0
+  index: -1
+gz3_cb_r1
+  rotate: true
+  xy: 1250, 193
+  size: 89, 54
+  orig: 89, 54
+  offset: 0, 0
+  index: -1
+gz3_cb_r2
+  rotate: true
+  xy: 1352, 195
+  size: 87, 39
+  orig: 87, 39
+  offset: 0, 0
+  index: -1

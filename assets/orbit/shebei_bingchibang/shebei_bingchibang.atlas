@@ -1,0 +1,139 @@
+
+shebei_bingchibang.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cb_L
+  rotate: false
+  xy: 601, 43
+  size: 176, 210
+  orig: 176, 210
+  offset: 0, 0
+  index: -1
+cb_Lb
+  rotate: false
+  xy: 2, 10
+  size: 208, 243
+  orig: 208, 243
+  offset: 0, 0
+  index: -1
+cb_R
+  rotate: false
+  xy: 422, 42
+  size: 177, 211
+  orig: 177, 211
+  offset: 0, 0
+  index: -1
+cb_Rb
+  rotate: false
+  xy: 212, 10
+  size: 208, 243
+  orig: 208, 243
+  offset: 0, 0
+  index: -1
+hb_1
+  rotate: false
+  xy: 548, 12
+  size: 41, 28
+  orig: 41, 28
+  offset: 0, 0
+  index: -1
+hb_1_2
+  rotate: false
+  xy: 591, 12
+  size: 41, 28
+  orig: 41, 28
+  offset: 0, 0
+  index: -1
+hb_1_3
+  rotate: false
+  xy: 634, 13
+  size: 41, 28
+  orig: 41, 28
+  offset: 0, 0
+  index: -1
+hb_2
+  rotate: false
+  xy: 761, 14
+  size: 24, 27
+  orig: 24, 27
+  offset: 0, 0
+  index: -1
+hb_2_2
+  rotate: false
+  xy: 779, 226
+  size: 24, 27
+  orig: 24, 27
+  offset: 0, 0
+  index: -1
+hb_2_3
+  rotate: false
+  xy: 779, 197
+  size: 24, 27
+  orig: 24, 27
+  offset: 0, 0
+  index: -1
+hb_3
+  rotate: true
+  xy: 422, 9
+  size: 31, 40
+  orig: 31, 40
+  offset: 0, 0
+  index: -1
+hb_3_2
+  rotate: true
+  xy: 464, 9
+  size: 31, 40
+  orig: 31, 40
+  offset: 0, 0
+  index: -1
+hb_3_3
+  rotate: true
+  xy: 506, 9
+  size: 31, 40
+  orig: 31, 40
+  offset: 0, 0
+  index: -1
+hb_4
+  rotate: true
+  xy: 677, 14
+  size: 27, 26
+  orig: 27, 26
+  offset: 0, 0
+  index: -1
+hb_4_2
+  rotate: true
+  xy: 705, 14
+  size: 27, 26
+  orig: 27, 26
+  offset: 0, 0
+  index: -1
+hb_4_3
+  rotate: true
+  xy: 733, 14
+  size: 27, 26
+  orig: 27, 26
+  offset: 0, 0
+  index: -1
+lz_1
+  rotate: false
+  xy: 2, 2
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
+  index: -1
+lz_1_2
+  rotate: false
+  xy: 10, 2
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
+  index: -1
+lz_1_3
+  rotate: false
+  xy: 18, 2
+  size: 6, 6
+  orig: 6, 6
+  offset: 0, 0
+  index: -1

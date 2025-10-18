@@ -1,0 +1,167 @@
+
+shebei_xingzhizhengyuT.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+diguang_f
+  rotate: false
+  xy: 354, 713
+  size: 278, 92
+  orig: 278, 92
+  offset: 0, 0
+  index: -1
+diguang_f_2
+  rotate: false
+  xy: 634, 713
+  size: 278, 92
+  orig: 278, 92
+  offset: 0, 0
+  index: -1
+diguang_f_3
+  rotate: false
+  xy: 2, 691
+  size: 278, 92
+  orig: 278, 92
+  offset: 0, 0
+  index: -1
+fasan_1
+  rotate: false
+  xy: 168, 787
+  size: 31, 18
+  orig: 31, 18
+  offset: 0, 0
+  index: -1
+fasan_1_2
+  rotate: false
+  xy: 201, 787
+  size: 31, 18
+  orig: 31, 18
+  offset: 0, 0
+  index: -1
+fasan_1_3
+  rotate: false
+  xy: 234, 787
+  size: 31, 18
+  orig: 31, 18
+  offset: 0, 0
+  index: -1
+fasan_2
+  rotate: false
+  xy: 117, 791
+  size: 15, 14
+  orig: 15, 14
+  offset: 0, 0
+  index: -1
+fasan_2_2
+  rotate: false
+  xy: 134, 791
+  size: 15, 14
+  orig: 15, 14
+  offset: 0, 0
+  index: -1
+fasan_2_3
+  rotate: false
+  xy: 151, 791
+  size: 15, 14
+  orig: 15, 14
+  offset: 0, 0
+  index: -1
+fasan_3
+  rotate: false
+  xy: 267, 785
+  size: 27, 20
+  orig: 27, 20
+  offset: 0, 0
+  index: -1
+fasan_3_2
+  rotate: false
+  xy: 296, 785
+  size: 27, 20
+  orig: 27, 20
+  offset: 0, 0
+  index: -1
+fasan_3_3
+  rotate: false
+  xy: 325, 785
+  size: 27, 20
+  orig: 27, 20
+  offset: 0, 0
+  index: -1
+fasan_4
+  rotate: true
+  xy: 66, 793
+  size: 12, 15
+  orig: 12, 15
+  offset: 0, 0
+  index: -1
+fasan_4_2
+  rotate: true
+  xy: 83, 793
+  size: 12, 15
+  orig: 12, 15
+  offset: 0, 0
+  index: -1
+fasan_4_3
+  rotate: true
+  xy: 100, 793
+  size: 12, 15
+  orig: 12, 15
+  offset: 0, 0
+  index: -1
+fasan_5
+  rotate: true
+  xy: 2, 794
+  size: 11, 30
+  orig: 11, 30
+  offset: 0, 0
+  index: -1
+fasan_5_2
+  rotate: true
+  xy: 34, 794
+  size: 11, 30
+  orig: 11, 30
+  offset: 0, 0
+  index: -1
+languang_f
+  rotate: true
+  xy: 282, 168
+  size: 278, 422
+  orig: 278, 422
+  offset: 0, 0
+  index: -1
+languang_f_2
+  rotate: false
+  xy: 706, 24
+  size: 278, 422
+  orig: 278, 422
+  offset: 0, 0
+  index: -1
+languang_f_3
+  rotate: false
+  xy: 2, 2
+  size: 278, 422
+  orig: 278, 422
+  offset: 0, 0
+  index: -1
+sheng_1
+  rotate: false
+  xy: 282, 448
+  size: 278, 263
+  orig: 278, 263
+  offset: 0, 0
+  index: -1
+sheng_1_2
+  rotate: false
+  xy: 562, 448
+  size: 278, 263
+  orig: 278, 263
+  offset: 0, 0
+  index: -1
+sheng_1_3
+  rotate: false
+  xy: 2, 426
+  size: 278, 263
+  orig: 278, 263
+  offset: 0, 0
+  index: -1

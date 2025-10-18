@@ -1,0 +1,41 @@
+
+shebei_huangguan.png
+size: 512,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+base_1
+  rotate: false
+  xy: 2, 2
+  size: 183, 181
+  orig: 183, 181
+  offset: 0, 0
+  index: -1
+base_b
+  rotate: true
+  xy: 187, 2
+  size: 181, 85
+  orig: 181, 85
+  offset: 0, 0
+  index: -1
+x_1
+  rotate: false
+  xy: 274, 136
+  size: 27, 47
+  orig: 27, 47
+  offset: 0, 0
+  index: -1
+x_2
+  rotate: false
+  xy: 274, 67
+  size: 18, 32
+  orig: 18, 32
+  offset: 0, 0
+  index: -1
+x_3
+  rotate: false
+  xy: 274, 101
+  size: 18, 33
+  orig: 18, 33
+  offset: 0, 0
+  index: -1
