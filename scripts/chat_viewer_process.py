@@ -303,13 +303,13 @@ class AzurLaneChatProcessor:
             ins_chat_data = self.process_chat_data('ins')
             
             # Save chat processing results
-            self.save_to_json(dorm3d_data, './output/processed_dorm3d_data.json')
-            self.save_to_json(ins_chat_data, './output/processed_ins_chat_data.json')
-            
+            self.save_to_json(dorm3d_data, './output/chat-viewer/dorm3d_data.json')
+            self.save_to_json(ins_chat_data, './output/chat-viewer/juus_chat_data.json')
+
             # Optionally create and save enhanced skins data (separate from chat processing)
             if save_enhanced_skins:
                 enhanced_skins_data = self._enhance_skins_with_ship_data()
-                self.save_to_json(enhanced_skins_data, './output/shipgirl_group_data.json')
+                self.save_to_json(enhanced_skins_data, './output/ship_group_data.json')
                 print("Enhanced shipgirl group data saved")
             
             print("All processing completed successfully!")

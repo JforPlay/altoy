@@ -113,7 +113,7 @@ def main():
         enrich_child_data(processed_world_collection_data, world_collection_template_data)
         
         print("Saving processed data...")
-        output_filename = './output/processed_world_collection_data.json'
+        output_filename = './output/world_collection_data.json'
         save_json_data(processed_world_collection_data, output_filename)
         
         print(f"\n✓ Successfully processed and saved data to '{output_filename}'")

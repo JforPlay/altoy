@@ -666,7 +666,7 @@ class AzurLaneDataProcessor:
     
     def save_data(self, df: pd.DataFrame, 
                   full_json_path: str = './output/skin_voiceline_data.json',
-                  subset_json_path: str = './output/skin_list_subset.json') -> None:
+                  subset_json_path: str = './output/skin_voiceline_data_subset.json') -> None:
         """Save processed data to JSON files (full and lightweight subset)."""
         try:
             # Clean empty voice data before saving
@@ -682,7 +682,7 @@ class AzurLaneDataProcessor:
             
             logger.info(f"Saving lightweight subset to {subset_json_path}...")
             subset_df.to_json(subset_json_path, orient='records', indent=4, force_ascii=False)
-            
+
             # Calculate size reduction
             import os
             if os.path.exists(full_json_path) and os.path.exists(subset_json_path):
@@ -714,7 +714,7 @@ def main():
         print(f"✓ Full dataset shape: {df.shape}")
         print(f"✓ Files created:")
         print(f"  - skin_voiceline_data.json (full)")
-        print(f"  - skin_list_subset.json (lightweight)")
+        print(f"  - skin_voiceline_data_subset.json (lightweight)")
         
     except Exception as e:
         logger.error(f"Processing failed: {e}")

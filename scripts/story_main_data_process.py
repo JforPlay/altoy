@@ -13,7 +13,7 @@ URL_MEMORY_TEMPLATE = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneD
 URL_NAME_CODE = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json"
 
 LOCAL_STORY_PATH = "story.json"
-LOCAL_SHIPGIRL_DATA_PATH = "./output/shipgirl_data.json"
+LOCAL_SHIPGIRL_DATA_PATH = "./output/story-viewer/shipgirl_data.json"
 LOCAL_DUNGEON_PATH = "dungeon.json"
 
 FIELDS_TO_REMOVE_TYPE1 = ["hidePaintObj", "typewriter", "portrait", "expression"]
@@ -60,7 +60,7 @@ class DataProcessor:
                 shipgirl_data[key]["icon"] = skin_list_dict.get(key, {}).get("icon")
 
             # Save to file
-            with open('./output/shipgirl_data.json', 'w', encoding='utf-8') as f:
+            with open(LOCAL_SHIPGIRL_DATA_PATH, 'w', encoding='utf-8') as f:
                 json.dump(shipgirl_data, f, ensure_ascii=False, indent=4)
 
             print("shipgirl_data has been created.")
@@ -302,10 +302,10 @@ class DataProcessor:
             processed_storyline_data = self.process_storyline_data()
             
             # Save results
-            with open('./output/processed_storyline_data.json', 'w', encoding='utf-8') as f:
+            with open('./output/story-viewer/main_story_data.json', 'w', encoding='utf-8') as f:
                 json.dump(processed_storyline_data, f, ensure_ascii=False, indent=4)
                 
-            print("Processed storyline data saved to './output/processed_storyline_data.json'")
+            print("Processed storyline data saved to './output/story-viewer/main_story_data.json'")
             
         except requests.exceptions.RequestException as e:
             print(f"Error fetching data: {e}")

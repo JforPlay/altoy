@@ -34,7 +34,6 @@ class AzurLaneDataProcessor:
     
     def __init__(self):
         """Initialize the processor with empty data containers."""
-        self.default_skins_data = {}
         self.name_code_dict = {}
         self.processed_activity_data = {}
         
@@ -130,48 +129,6 @@ class AzurLaneDataProcessor:
             return self.translate_text_safe(cn_data.get('value'), key)
         
         return "Translation Source Missing"
-    
-    def process_ship_skins(self) -> None:
-        """Process ship skin data and create default skins mapping."""
-        print("Processing ship skin data...")
-        
-        try:
-            # Fetch required data
-            skin_list_data = self.fetch_json_data(self.URLS['skin_list'])
-            kr_skin_data = self.fetch_json_data(self.URLS['kr_skin_template'])
-            name_code_data = self.fetch_json_data(self.URLS['name_code'])
-            
-            # Create name code mapping
-            self.name_code_dict = {key: value.get("name", "") for key, value in name_code_data.items()}
-            
-            # Process default skins
-            for skin in skin_list_data:
-                if skin.get("type") == "Default":
-                    gid = skin.get("gid")
-                    icon = skin.get("icon")
-                    
-                    # Get ship name
-                    skin_key = f"{gid}0"
-                    name = ""
-                    if skin_key in kr_skin_data:
-                        name = kr_skin_data[skin_key].get("name", "")
-                        name = self.replace_name_codes(name, self.name_code_dict)
-                    
-                    self.default_skins_data[str(gid)] = {
-                        "icon": icon,
-                        "name": name
-                    }
-            
-            # Save to file
-            with open('./output/shipgirl_group_data.json', 'w', encoding='utf-8') as f:
-                json.dump(self.default_skins_data, f, ensure_ascii=False, indent=4)
-            
-            print(f"Processed {len(self.default_skins_data)} default skins")
-            print("Sample data:", dict(list(self.default_skins_data.items())[:3]))
-            
-        except Exception as e:
-            print(f"Error processing ship skins: {e}")
-            raise
     
     def process_activity_data(self) -> None:
         """Process activity Instagram-style post data."""
@@ -339,10 +296,10 @@ class AzurLaneDataProcessor:
         )
         
         # Save processed data
-        with open('./output/processed_ins_data.json', 'w', encoding='utf-8') as f:
+        with open('./output/juustagram_data.json', 'w', encoding='utf-8') as f:
             json.dump(self.processed_activity_data, f, indent=4, ensure_ascii=False)
-        
-        print(f"Saved {len(self.processed_activity_data)} processed activities to './output/processed_ins_data.json'")
+
+        print(f"Saved {len(self.processed_activity_data)} processed activities to './output/juustagram_data.json'")
         print("Sample processed data:")
         for i, (key, value) in enumerate(self.processed_activity_data.items()):
             if i >= 2:  # Show only first 2 entries
@@ -354,7 +311,6 @@ class AzurLaneDataProcessor:
         print("Starting Azur Lane data processing...")
         
         try:
-            self.process_ship_skins()
             self.process_activity_data()
             self.finalize_processing()
             print("\nData processing completed successfully!")

@@ -66,7 +66,7 @@ def create_bgm_data():
                 merged_data[album_id_for_track]['tracks'].append(soundtrack_info)
 
         # 3. Saving the final data to a JSON file
-        output_filename = 'bgm_data.json'
+        output_filename = './output/misc/bgm_data.json'
         with open(output_filename, 'w', encoding='utf-8') as f:
             json.dump(merged_data, f, ensure_ascii=False, indent=4)
 

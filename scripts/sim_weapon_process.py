@@ -143,6 +143,6 @@ def process_final_skills(input_filename, skill_url, output_filename):
 if __name__ == "__main__":
     INPUT_FILE = "./output/weapon_sim_data.json"
     SKILL_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/GameCfg/skill.json"
-    OUTPUT_FILE = "./output/skill_weapon_data.json"
+    OUTPUT_FILE = "./output/sim/skill_weapon_data.json"
 
     process_final_skills(INPUT_FILE, SKILL_URL, OUTPUT_FILE)

@@ -5,10 +5,9 @@ import re # Import the regular expression module
 # URLs for the data sources
 URL_RECORD_GROUP = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/world_collection_record_group.json"
 URL_RECORD_TEMPLATE = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/world_collection_record_template.json"
-LOCAL_STORY_PATH = "story.json" # Local path for story data
-URL_NAME_CODE = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json" # URL for name_code data
-LOCAL_SHIPGIRL_DATA_PATH = "./output/shipgirl_data.json" # Local path for shipgirl_data
-
+LOCAL_STORY_PATH = "story.json"
+URL_NAME_CODE = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json"
+LOCAL_SHIPGIRL_DATA_PATH = "./output/story-viewer/shipgirl_data.json"
 
 def fetch_json_data(url):
     """Fetches JSON data from a given URL."""
@@ -131,10 +130,10 @@ try:
     # pprint.pprint(list(processed_record_data.items())[:5])
 
     # Optionally, save the processed data to a JSON file
-    with open('./output/processed_world_storyline.json', 'w', encoding='utf-8') as f:
+    with open('./output/story-viewer/world_story_data.json', 'w', encoding='utf-8') as f:
         json.dump(processed_record_data, f, ensure_ascii=False, indent=4)
 
-    print("\nProcessed data successfully saved to './output/processed_world_storyline.json'")
+    print("\nProcessed data successfully saved to './output/story-viewer/world_story_data.json'")
 
 
 except requests.exceptions.RequestException as e:
