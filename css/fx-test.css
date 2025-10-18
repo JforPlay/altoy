@@ -1,0 +1,97 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #1a1a1a;
+    color: white;
+    font-family: sans-serif;
+    gap: 2rem;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+select {
+    padding: 8px 12px;
+    font-size: 16px;
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 5px;
+}
+
+.sprite-container {
+    border: 2px dashed #444;
+    padding: 2rem;
+    border-radius: 10px;
+    background-color: #2a2a2a;
+    /* Adjusted container max-width to accommodate wider sprites */
+    max-width: 1050px; /* e.g., for the sequence sprite */
+    width: 100%; /* Ensure it's responsive */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Hide parts of sprites that might temporarily overflow */
+}
+
+/* --- Base class with shared properties --- */
+#sprite-box {
+    background-repeat: no-repeat;
+    /* No transform by default, sprites show at their defined frame size */
+}
+
+/* --- Style for the Explosion (2x2 Grid) --- */
+.sprite-explosion {
+    /* Full image: 256x256, 2x2 grid = 4 frames */
+    /* Single frame: 128px x 128px */
+    width: 128px;
+    height: 128px;
+    background-image: url('AL_Fire11.png');
+    background-size: 256px 256px;
+    animation: play-grid 0.4s steps(1, end) infinite;
+}
+
+@keyframes play-grid {
+    0% { background-position: 0 0; }
+    25% { background-position: -128px 0; }
+    50% { background-position: 0 -128px; }
+    75% { background-position: -128px -128px; }
+    100% { background-position: -128px -128px; }
+}
+
+/* --- Style for the Sequence (1x6 Vertical) --- */
+.sprite-sequence {
+    /* Full image: 1024x2048, 1x6 vertical strip = 6 frames */
+    /* Single frame: 1024px x 341.33px */
+    width: 1024px;
+    height: 341.33px; /* 2048px / 6 frames */
+    background-image: url('Sequence_1x6_04.png');
+    background-size: 1024px 2048px;
+    animation: play-vertical 0.6s steps(6) infinite;
+}
+
+@keyframes play-vertical {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 -2048px; } /* Move up by total height of sheet */
+}
+
+/* --- Style for the Ice (5-frame Horizontal) --- */
+.sprite-ice {
+    /* Full image: 512x128, 5-frame horizontal strip */
+    /* Single frame: 102.4px x 128px (512px / 5 frames) */
+    width: 102.4px;
+    height: 128px;
+    background-image: url('ice_sprite.png'); /* Assuming your image is named ice_sprite.png */
+    background-size: 512px 128px;
+    animation: play-horizontal 0.5s steps(5) infinite; /* 0.1s per frame */
+}
+
+@keyframes play-horizontal {
+    0% { background-position: 0 0; }
+    100% { background-position: -512px 0; } /* Move left by total width of sheet */
+}

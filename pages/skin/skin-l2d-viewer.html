@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/altoy/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>라투디 뷰어</title>
+    <link rel="stylesheet" href="css/skin-l2d-viewer.css">
+</head>
+<body>
+    <div id="status" class="status-loading">로딩 중...</div>
+    
+    <div id="canvas-container">
+        <canvas id="live2d-canvas"></canvas>
+    </div>
+    
+    <div id="controls">
+        <div class="control-group">
+            <label>스킨 선택:</label>
+            <select id="character-select">
+                <option value="">스킨을 골라주세요...</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>애니메이션 선택:</label>
+            <select id="animation-select" disabled>
+                <option value="">먼저 스킨을 불러와 주세요</option>
+            </select>
+        </div>
+        
+        <button onclick="playSelectedAnimation()" id="play-btn" disabled>애니메이션 재생</button>
+        <button onclick="resetPose()" id="reset-btn" disabled>포즈 초기화</button>
+        <button onclick="toggleAutoBreath()" id="breath-btn" disabled>자동 재생: 켜짐</button>
+        <button onclick="reloadCharacter()" id="reload-btn" disabled>캐릭터 다시 불러오기</button>
+    </div>
+
+    <!-- Load libraries for Cubism 4 support -->
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.x/dist/pixi.min.js"></script>
+    <script src="lib/live2dcubismcore.min.js"></script>
+    <script src="lib/live2dcubismframework.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script>
+    
+    
+    
+    <!-- Debug script to verify loading -->
+    <script>
+        console.log('PIXI loaded:', typeof PIXI !== 'undefined');
+        console.log('PIXI version:', PIXI?.VERSION);
+        console.log('Live2DCubismCore loaded:', typeof Live2DCubismCore !== 'undefined');
+        
+        // Wait for pixi-live2d-display to load
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                console.log('PIXI.live2d loaded:', typeof PIXI !== 'undefined' && typeof PIXI.live2d !== 'undefined');
+                if (typeof PIXI !== 'undefined') {
+                    console.log('PIXI.live2d contents:', PIXI.live2d);
+                    if (typeof PIXI.live2d !== 'undefined') {
+                        console.log('Available Live2D classes:', Object.keys(PIXI.live2d));
+                    }
+                }
+            }, 100);
+        });
+    </script>
+    
+    <script src="js/skin-l2d-viewer.js"></script>
+</body>
+</html>
