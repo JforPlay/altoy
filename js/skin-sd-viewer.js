@@ -129,7 +129,8 @@ async function loadAnimation(charName) {
 
         if (currentSpine) {
             app.stage.removeChild(currentSpine);
-            currentSpine.destroy({ children: true, texture: false, baseTexture: false });
+            currentSpine.destroy({ children: true, texture: true, baseTexture: true });
+            currentSpine = null;
         }
 
         const basePath = `assets/sd/${charName}/${charName}`;
