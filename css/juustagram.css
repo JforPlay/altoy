@@ -11,6 +11,20 @@
     --button-hover-bg: #d8dadf;
     --accent-border: #1877f2;
     --shadow-color: rgba(0, 0, 0, 0.1);
+
+    /* Modern CSS: prefer reduced motion for accessibility */
+    --animation-duration: 0.2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --animation-duration: 0.01ms;
+    }
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 
 body.dark-mode {
@@ -34,7 +48,11 @@ body {
     margin: 0;
     padding: 20px;
     color: var(--text-color);
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, color 0.2s;
+
+    /* Modern CSS improvements */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 header {
@@ -83,6 +101,18 @@ header {
     box-sizing: border-box;
     background-color: var(--bg-color);
     color: var(--text-color);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Modern focus styles - only show outline for keyboard navigation */
+.dropdown-container input:focus-visible {
+    outline: 2px solid var(--accent-border);
+    outline-offset: 2px;
+    border-color: var(--accent-border);
+}
+
+.dropdown-container input:focus:not(:focus-visible) {
+    outline: none;
 }
 
 .dropdown-content {
@@ -118,11 +148,21 @@ header {
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.1s;
 }
 
 #clear-filters-btn:hover {
     background-color: var(--button-hover-bg);
+}
+
+/* Modern focus and active states */
+#clear-filters-btn:focus-visible {
+    outline: 2px solid var(--accent-border);
+    outline-offset: 2px;
+}
+
+#clear-filters-btn:active {
+    transform: scale(0.98);
 }
 
 /* --- Main Layout --- */
@@ -139,7 +179,8 @@ header {
     flex: 1;
     min-width: 300px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    /* Modern CSS: Responsive grid without media queries */
+    grid-template-columns: repeat(auto-fill, minmax(clamp(80px, 10vw, 120px), 1fr));
     gap: 10px;
     height: calc(100vh - 185px);
     overflow-y: auto;
@@ -149,6 +190,10 @@ header {
     border-radius: 8px;
     box-shadow: 0 2px 4px var(--shadow-color);
     align-content: start;
+
+    /* Modern CSS: Smooth scrolling */
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
 }
 
 .gallery-container img {
@@ -157,7 +202,30 @@ header {
     object-fit: cover;
     cursor: pointer;
     border-radius: 6px;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Lazy loading placeholder effect */
+.gallery-container img.lazy {
+    opacity: 0.3;
+    background: linear-gradient(90deg, var(--border-color) 25%, var(--hover-bg) 50%, var(--border-color) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+/* Smooth fade-in when lazy image loads */
+.gallery-container img.loaded {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .gallery-container img:hover {
@@ -166,6 +234,9 @@ header {
 
 .gallery-container .selected {
     border: 3px solid var(--accent-border);
+    /* Fallback for browsers without color-mix support */
+    box-shadow: 0 0 8px rgba(29, 136, 242, 0.5);
+    /* Modern color-mix for better theme integration */
     box-shadow: 0 0 8px color-mix(in srgb, var(--accent-border) 50%, transparent);
 }
 
@@ -190,6 +261,10 @@ header {
     padding: 25px;
     overflow-y: auto;
     flex-grow: 1;
+
+    /* Modern CSS: Smooth scrolling */
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
 }
 
 .post-header {
@@ -315,16 +390,30 @@ header {
     cursor: pointer;
     font-weight: 600;
     text-align: left;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.1s;
 }
 
 .commander-options button:hover {
     background-color: var(--button-hover-bg);
 }
 
+/* Modern accessibility improvements */
+.commander-options button:focus-visible {
+    outline: 2px solid var(--accent-border);
+    outline-offset: 2px;
+}
+
+.commander-options button:active {
+    transform: scale(0.98);
+}
+
 .shipgirl-reply {
     margin-top: 15px;
     padding: 12px;
+    /* Fallback for browsers without color-mix support */
+    background-color: rgba(29, 136, 242, 0.15);
+    border: 1px solid rgba(29, 136, 242, 0.4);
+    /* Modern color-mix for better theme integration */
     background-color: color-mix(in srgb, var(--accent-border) 15%, transparent);
     border: 1px solid color-mix(in srgb, var(--accent-border) 40%, transparent);
     border-radius: 6px;
@@ -339,11 +428,16 @@ header {
     width: 250px;
     height: 250px;
     object-fit: cover;
-    border: 3px solid white;
+    border: 3px solid var(--card-bg);
     border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 15px var(--shadow-color);
     pointer-events: none;
     z-index: 100;
+
+    /* Modern CSS: Performance optimization for animated elements */
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0); /* Create GPU layer */
 }
 
 /* --- Modern Scrollbar Styles --- */
