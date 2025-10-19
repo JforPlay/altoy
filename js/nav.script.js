@@ -60,14 +60,14 @@ function loadNavbar() {
 
             // After navbar is loaded, set up its interactive elements
             setupMobileMenu();
-            setupThemeToggles(); // Setup theme toggles within the navbar AND on the page
-            setupDropdownToggles();
+            setupThemeToggles();
+            setupMegaMenuToggles();
             updateNavbarHeight();
 
             // Re-apply theme to ensure the loaded navbar gets the right class
             applyTheme(localStorage.getItem('theme') || 'dark');
 
-            // ADD: Setup scroll listener after navbar is loaded
+            // Setup scroll listener after navbar is loaded
             const navbar = document.querySelector('.navbar');
             if (navbar) {
                 window.addEventListener('scroll', () => {
@@ -82,7 +82,7 @@ function loadNavbar() {
         .catch(error => console.error('Error loading the navigation bar:', error));
 }
 
-// Added footer
+// Footer loading
 function loadFooter() {
     fetch('pages/layouts/footer.html')
         .then(response => {
@@ -91,9 +91,8 @@ function loadFooter() {
         })
         .then(data => {
             const footerPlaceholder = document.getElementById('footer-placeholder');
-            if (footerPlaceholder) { // Check if the element exists
+            if (footerPlaceholder) {
                 footerPlaceholder.innerHTML = data;
-                // Automatically set the current year
                 const copyrightYear = document.getElementById('copyright-year');
                 if (copyrightYear) {
                     copyrightYear.textContent = new Date().getFullYear();
@@ -103,30 +102,42 @@ function loadFooter() {
         .catch(error => console.error('Error loading the footer:', error));
 }
 
-function setupDropdownToggles() {
-    const dropdowns = document.querySelectorAll('.nav-item.dropdown');
+/**
+ * Setup mega menu toggles for mobile (accordion style)
+ */
+function setupMegaMenuToggles() {
+    const megaDropdowns = document.querySelectorAll('.mega-dropdown');
 
-    dropdowns.forEach(dropdown => {
+    megaDropdowns.forEach(dropdown => {
         const toggleLink = dropdown.querySelector('.nav-links');
 
         toggleLink.addEventListener('click', function(event) {
-            // This prevents the page from jumping to the top from the href="#"
+            // Prevent default link behavior
             event.preventDefault();
 
-            // This mobile-only logic toggles the dropdown on tap
+            // Mobile-only accordion behavior
             if (window.innerWidth <= 768) {
-                // Check if the current dropdown is already open
                 const wasActive = dropdown.classList.contains('active');
 
-                // First, close all dropdowns to ensure only one is open at a time
-                document.querySelectorAll('.nav-item.dropdown').forEach(d => d.classList.remove('active'));
+                // Close all mega dropdowns
+                document.querySelectorAll('.mega-dropdown').forEach(d => d.classList.remove('active'));
 
-                // If the clicked dropdown wasn't already open, open it
+                // Toggle the clicked dropdown
                 if (!wasActive) {
                     dropdown.classList.add('active');
                 }
             }
         });
+    });
+
+    // Close mega menus when clicking outside on mobile
+    document.addEventListener('click', function(event) {
+        if (window.innerWidth <= 768) {
+            const isClickInsideMenu = event.target.closest('.mega-dropdown');
+            if (!isClickInsideMenu) {
+                document.querySelectorAll('.mega-dropdown').forEach(d => d.classList.remove('active'));
+            }
+        }
     });
 }
 
