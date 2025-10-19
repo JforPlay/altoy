@@ -8,7 +8,7 @@
   --primary-dark: #0056b3;
   --primary-light: #4da3ff;
   --accent: #00a8e1;
-  
+
   /* Layout */
   --container-max-width: 1200px;
 }
@@ -81,9 +81,10 @@ body:not(.dark-mode) {
    ===================================================== */
 
 body {
-  background: linear-gradient(180deg, 
-    var(--bg-gradient-start) 0%, 
-    var(--bg-gradient-mid) 50%, 
+  background: linear-gradient(
+    180deg,
+    var(--bg-gradient-start) 0%,
+    var(--bg-gradient-mid) 50%,
     var(--bg-gradient-end) 100%
   );
   background-attachment: fixed;
@@ -93,7 +94,7 @@ body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  padding-top: 1.5rem;
+  padding-top: 1rem;
 }
 
 /* =====================================================
@@ -104,7 +105,7 @@ body {
   max-width: var(--container-max-width);
   margin: 0 auto;
   padding: 0 2rem 3rem;
-  padding-top: 120px;
+  padding-top: 100px;
 }
 
 /* =====================================================
@@ -135,8 +136,7 @@ body {
 .navbar.scrolled {
   top: 0.5rem !important;
   background: var(--navbar-bg-scrolled) !important;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 
-    0 0 60px rgba(0, 113, 235, 0.1) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 60px rgba(0, 113, 235, 0.1) !important;
 }
 
 .navbar::after {
@@ -146,7 +146,8 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg,
+  background: linear-gradient(
+    90deg,
     transparent,
     rgba(0, 113, 235, 0.5) 50%,
     transparent
@@ -169,7 +170,8 @@ body:not(.dark-mode) .navbar.scrolled {
 }
 
 body:not(.dark-mode) .navbar::after {
-  background: linear-gradient(90deg,
+  background: linear-gradient(
+    90deg,
     transparent,
     rgba(0, 113, 235, 0.2) 50%,
     transparent
@@ -246,8 +248,7 @@ body:not(.dark-mode) .nav-links.active {
   -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
   border-top: 2px solid rgba(0, 113, 235, 0.3) !important;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-    0 4px 24px rgba(0, 113, 235, 0.2) !important;
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset, 0 4px 24px rgba(0, 113, 235, 0.2) !important;
 }
 
 body:not(.dark-mode) .mega-menu {
@@ -617,14 +618,14 @@ body:not(.dark-mode) .mega-dropdown > .nav-links::after {
 }
 
 .event-carousel {
-    position: relative;
-    width: 100%;
-    border-radius: 12px;
-    overflow: hidden;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    flex-grow: 1;
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  flex-grow: 1;
 }
 .event-carousel-track {
   display: flex;
@@ -851,15 +852,15 @@ body:not(.dark-mode) .patch-notes-content ul {
 }
 
 .event-carousel-container {
-    grid-column: span 2;
-    grid-row: span 2;
-    margin-bottom: 0;
-    display: flex;
-    flex-direction: column;
+  grid-column: span 2;
+  grid-row: span 2;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .event-carousel {
-    height: 100%;
+  height: 100%;
 }
 
 /* =====================================================
@@ -870,7 +871,7 @@ body:not(.dark-mode) .patch-notes-content ul {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 1rem;
-  grid-auto-rows: 120px;
+  grid-auto-rows: 90px;
   margin-bottom: 5rem;
 }
 
@@ -991,6 +992,24 @@ body:not(.dark-mode) .bento-card p {
   line-height: 1.4;
 }
 
+.bento-card .card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.bento-card .card-header .card-icon-large,
+.bento-card .card-header .card-icon,
+.bento-card .card-header .external-link-icon {
+  margin-bottom: 0;
+}
+
+.bento-card .card-header h3,
+.bento-card .card-header .external-link-label {
+  margin-bottom: 0;
+}
+
 .card-footer {
   margin-top: auto;
   padding-top: 0.8rem;
@@ -1014,7 +1033,7 @@ body:not(.dark-mode) .card-meta {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 1rem;
-  grid-template-rows: repeat(2, 144px);
+  grid-template-rows: repeat(2, 120px);
   margin-bottom: 2rem;
 }
 
@@ -1379,7 +1398,7 @@ body:not(.dark-mode) .dual-link-desc {
   .home-container {
     padding: 1rem;
     padding-top: 100px;
-    padding-bottom: 2rem; 
+    padding-bottom: 2rem;
   }
 
   /* Hero Carousel Mobile */
@@ -1587,6 +1606,10 @@ body:not(.dark-mode) .dual-link-desc {
   .event-banner-overlay {
     padding: 1rem;
     font-size: 0.9em;
+  }
+
+  .event-banner img {
+    height: 100%;
   }
 }
 
