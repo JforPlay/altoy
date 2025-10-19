@@ -1,28 +1,109 @@
 document.addEventListener('DOMContentLoaded', () => {
-    let fullShipData, nationalityData, shipTypeData, attrTypeData;
+    let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData;
+    let filteredShipIds = [];
     const SAVE_KEY = 'shipgirlTrackerProgress';
+    const GOAL_KEY = 'shipgirlTrackerSelectedGoal';
+    const UNIQUE_ID_LENGTH = 9;
 
+    // Cached DOM elements for performance
+    let cachedElements = {
+        fleetTechContainer: null,
+        statTechContainer: null,
+        shipListContainer: null,
+        filterBar: null,
+        searchBar: null,
+        searchDropdown: null,
+        confirmationModal: null,
+        modalText: null,
+        modalConfirmBtn: null,
+        modalCancelBtn: null
+    };
+
+    // Cache ship data lookups for goal tracker (avoid expensive searches)
+    const shipDataCache = new Map();
+
+    /**
+     * Caches frequently accessed DOM elements for performance optimization.
+     */
+    function cacheDOMElements() {
+        cachedElements.fleetTechContainer = document.getElementById('fleet-tech-container');
+        cachedElements.statTechContainer = document.getElementById('stat-tech-container');
+        cachedElements.shipListContainer = document.getElementById('ship-list-container');
+        cachedElements.filterBar = document.getElementById('filter-bar');
+        cachedElements.confirmationModal = document.getElementById('confirmation-modal');
+        cachedElements.modalText = document.getElementById('modal-text');
+        cachedElements.modalConfirmBtn = document.getElementById('modal-confirm-btn');
+        cachedElements.modalCancelBtn = document.getElementById('modal-cancel-btn');
+    }
+
+    // Use utilities from external file
+    const { parseDatasetInt, getCheckedFilterValues, debounce, filterSearchDropdown, setupDropdownToggle, createTrackerItem } = ShipgirlTrackerUtils;
+
+    /**
+     * Cached ship data lookup for goal tracker (avoids expensive searches).
+     * @param {string} shipName - Ship name to search for.
+     * @returns {object|null} Ship data or null if not found.
+     */
+    function getShipDataByName(shipName) {
+        // Check cache first
+        if (shipDataCache.has(shipName)) {
+            return shipDataCache.get(shipName);
+        }
+
+        // Exact match
+        let shipData = Object.values(fullShipData).find(ship => ship.name === shipName);
+
+        // Fallback: Partial match
+        if (!shipData) {
+            shipData = Object.values(fullShipData).find(ship =>
+                ship.name && (ship.name.includes(shipName) || shipName.includes(ship.name))
+            );
+        }
+
+        // Cache the result (even if null to avoid repeated searches)
+        shipDataCache.set(shipName, shipData || null);
+
+        if (!shipData) {
+            console.warn(`Ship data not found for: "${shipName}"`);
+        }
+
+        return shipData;
+    }
+
+    /**
+     * Fetches all necessary data from JSON files.
+     * This includes ship data, nationality mappings, ship type mappings, and attribute mappings.
+     * It uses Promise.all for efficient, parallel fetching.
+     */
     async function fetchData() {
+        // Paths to the data files.
         const dataPaths = [
             'data/ship_group_data.json',
             'data/mapping/nationality_mapping.json',
             'data/mapping/ship_type_mapping.json',
-            'data/mapping/attr_type_mapping.json'
+            'data/mapping/attr_type_mapping.json',
+            'data/shipgirl/fleet_tech_goal.json',
+            'data/shipgirl/fleet_tech_template.json'
         ];
         try {
+            // Fetch all files simultaneously.
             const responses = await Promise.all(dataPaths.map(path => fetch(path)));
+            // Check if all responses are successful.
             for (const res of responses) {
                 if (!res.ok) {
                     throw new Error(`Failed to fetch ${res.url}: ${res.statusText}`);
                 }
             }
-            [fullShipData, nationalityData, shipTypeData, attrTypeData] = await Promise.all(
+            // Parse JSON from all responses and assign to global variables.
+            [fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData] = await Promise.all(
                 responses.map(res => res.json())
             );
         } catch (error) {
+            // Log the error and display a message to the user if fetching fails.
             console.error("Error loading data files:", error);
             const container = document.getElementById('ship-list-container');
             if (container) container.innerHTML = `<p style="color: red; text-align: center;">데이터 파일을 불러오는 데 실패했습니다. 파일 경로와 JSON 형식을 확인하세요.</p>`;
+            // Re-throw the error to stop further execution.
             throw error;
         }
     }
@@ -30,8 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function createShipCard(ship, shipId) {
         const card = document.createElement('div');
         card.className = 'ship-card';
-        card.style.display = 'flex';
-
+    
+        // Store ship data as data attributes on the card element for easy access.
         card.dataset.shipId = shipId;
         card.dataset.nationality = ship.nationality;
         card.dataset.type = ship.type;
@@ -40,7 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
         card.dataset.ptGet = ship.pt_get ?? 0;
         card.dataset.ptLevel = ship.pt_level ?? 0;
         card.dataset.ptUpgrade = ship.pt_upgrage ?? 0;
-
+    
+        // Add additional attributes if they exist.
         if (ship.add_get_attr) {
             card.dataset.addGetAttr = ship.add_get_attr;
             card.dataset.addGetShiptype = ship.add_get_shiptype.join(',');
@@ -51,56 +133,91 @@ document.addEventListener('DOMContentLoaded', () => {
             card.dataset.addLevelShiptype = ship.add_level_shiptype.join(',');
             card.dataset.addLevelValue = ship.add_level_value;
         }
-
+    
+        // Create and append the ship's icon.
+        const icon = document.createElement('img');
+        icon.src = ship.icon;
+        icon.alt = ship.name;
+        icon.className = 'ship-icon';
+        icon.loading = 'lazy'; // Lazy load images for better performance.
+        card.appendChild(icon);
+    
+        // Create and append the ship's name.
+        const name = document.createElement('div');
+        name.className = 'ship-name';
+        name.textContent = ship.name;
+        card.appendChild(name);
+    
+        // Create the info section for nationality, type, and rarity.
+        const infoSection = document.createElement('div');
+        infoSection.className = 'info-section';
+    
         const nationInfo = nationalityData[ship.nationality];
+        if (nationInfo) {
+            const infoItem = document.createElement('div');
+            infoItem.className = 'info-item';
+            infoItem.title = nationInfo.name;
+            infoItem.innerHTML = `<img src="${nationInfo.image}" alt="${nationInfo.name}" class="info-icon"><span>${nationInfo.code || nationInfo.name}</span>`;
+            infoSection.appendChild(infoItem);
+        }
+    
         const primaryTypeInfo = shipTypeData[ship.type];
-        const rarityClass = ship.rarity ? `rarity-${ship.rarity}` : '';
-
-        let descriptionHTML = '';
+        if (primaryTypeInfo) {
+            const infoItem = document.createElement('div');
+            infoItem.className = 'info-item';
+            infoItem.title = primaryTypeInfo.type_name;
+            infoItem.innerHTML = `<img src="${primaryTypeInfo.icon}" alt="${primaryTypeInfo.type_name}" class="info-icon"><span>${primaryTypeInfo.type_name}</span>`;
+            infoSection.appendChild(infoItem);
+        }
+    
+        if (ship.rarity) {
+            const infoItem = document.createElement('div');
+            infoItem.className = 'info-item';
+            const raritySpan = document.createElement('span');
+            raritySpan.className = `rarity-text rarity-${ship.rarity}`;
+            raritySpan.textContent = ship.rarity;
+            infoItem.appendChild(raritySpan);
+            infoSection.appendChild(infoItem);
+        }
+        card.appendChild(infoSection);
+    
+        // Create and append the description section if it exists.
         if (ship.description && ship.description.length > 0) {
-            const listItems = ship.description.map(desc => `<li>• ${desc}</li>`).join('');
-            descriptionHTML = `
-                <div class="description-section">
-                    <div class="description-label">입수 방법</div>
-                    <ul class="description-list">${listItems}</ul>
-                </div>
-            `;
+            const descriptionSection = document.createElement('div');
+            descriptionSection.className = 'description-section';
+            const label = document.createElement('div');
+            label.className = 'description-label';
+            label.textContent = '입수 방법';
+            descriptionSection.appendChild(label);
+            const list = document.createElement('ul');
+            list.className = 'description-list';
+            ship.description.forEach(desc => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `• ${desc}`;
+                list.appendChild(listItem);
+            });
+            descriptionSection.appendChild(list);
+            card.appendChild(descriptionSection);
         }
-
-        let trackerHTML = '';
-        const trackerItems = [];
-        if (ship.pt_get !== undefined) trackerItems.push(createTrackerItemHTML('입수 시', ship.pt_get, 'get'));
-        if (ship.pt_level !== undefined) trackerItems.push(createTrackerItemHTML('120 달성시', ship.pt_level, 'level'));
-        if (ship.pt_upgrage !== undefined) trackerItems.push(createTrackerItemHTML('풀돌 시', ship.pt_upgrage, 'upgrade'));
-        if (trackerItems.length > 0) {
-            trackerHTML = `<div class="tracker-section">${trackerItems.join('')}</div>`;
+    
+        // Create the tracker section with checkboxes for progress.
+        const trackerSection = document.createElement('div');
+        trackerSection.className = 'tracker-section';
+        if (ship.pt_get !== undefined) trackerSection.appendChild(createTrackerItem('입수 시', ship.pt_get, 'get', UNIQUE_ID_LENGTH));
+        if (ship.pt_level !== undefined) trackerSection.appendChild(createTrackerItem('120 달성시', ship.pt_level, 'level', UNIQUE_ID_LENGTH));
+        if (ship.pt_upgrage !== undefined) trackerSection.appendChild(createTrackerItem('풀돌 시', ship.pt_upgrage, 'upgrade', UNIQUE_ID_LENGTH));
+        if (trackerSection.hasChildNodes()) {
+            card.appendChild(trackerSection);
         }
-
-        card.innerHTML = `
-            <img src="${ship.icon}" alt="${ship.name}" class="ship-icon" loading="lazy">
-            <div class="ship-name">${ship.name}</div>
-            <div class="info-section">
-                ${nationInfo ? `<div class="info-item" title="${nationInfo.name}"><img src="${nationInfo.image}" alt="${nationInfo.name}" class="info-icon"><span>${nationInfo.code || nationInfo.name}</span></div>` : ''}
-                ${primaryTypeInfo ? `<div class="info-item" title="${primaryTypeInfo.type_name}"><img src="${primaryTypeInfo.icon}" alt="${primaryTypeInfo.type_name}" class="info-icon"><span>${primaryTypeInfo.type_name}</span></div>` : ''}
-                ${ship.rarity ? `<div class="info-item"><span class="rarity-text ${rarityClass}">${ship.rarity}</span></div>` : ''}
-            </div>
-            ${descriptionHTML}
-            ${trackerHTML}
-        `;
-
+    
         return card;
     }
 
-    function createTrackerItemHTML(labelText, points, type) {
-        const uniqueId = `${type}-${Math.random().toString(36).substr(2, 9)}`;
-        return `
-            <div class="tracker-item">
-                <label for="${uniqueId}">${labelText} (+${points})</label>
-                <input type="checkbox" id="${uniqueId}" class="tracker-checkbox" data-type="${type}">
-            </div>
-        `;
-    }
-
+    /**
+     * Handles the logic for checkbox interactions within a ship card.
+     * For example, checking "120 달성시" will also check "입수 시".
+     * @param {HTMLInputElement} checkbox - The checkbox that was changed.
+     */
     function handleCheckboxLogic(checkbox) {
         const card = checkbox.closest('.ship-card');
         if (!card) return;
@@ -108,10 +225,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const levelCheckbox = card.querySelector('[data-type="level"]');
         const upgradeCheckbox = card.querySelector('[data-type="upgrade"]');
         if (checkbox.checked) {
+            // If level or upgrade is checked, 'get' must also be checked.
             if ((checkbox.dataset.type === 'level' || checkbox.dataset.type === 'upgrade') && getCheckbox) {
                 getCheckbox.checked = true;
             }
         } else {
+            // If 'get' is unchecked, level and upgrade must also be unchecked.
             if (checkbox.dataset.type === 'get') {
                 if (levelCheckbox) levelCheckbox.checked = false;
                 if (upgradeCheckbox) upgradeCheckbox.checked = false;
@@ -119,88 +238,847 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Calculates the scores based on the checked items and updates the display.
+     * Returns calculated scores for reuse by goal tracker.
+     */
     function calculateAndDisplayScores() {
-        const fleetTech = {};
-        const statTech = {};
-        Object.keys(nationalityData).forEach(id => { fleetTech[id] = 0; });
-        Object.keys(attrTypeData).forEach(id => { statTech[id] = {}; });
+        // Initialize score objects efficiently
+        const fleetTech = Object.fromEntries(Object.keys(nationalityData).map(id => [id, 0]));
+        const statTech = Object.fromEntries(Object.keys(attrTypeData).map(id => [id, {}]));
+        const fleetTechByName = {}; // For goal tracker (by nationality name)
+        const positionCounts = {}; // For goal tracker (by position)
 
-        document.querySelectorAll('.ship-card').forEach(card => {
-            if (card.style.display === 'none') return;
+        // Iterate over all ship cards to calculate scores (use cached container for better performance)
+        const shipCards = cachedElements.shipListContainer?.querySelectorAll('.ship-card') || [];
+        shipCards.forEach(card => {
             const data = card.dataset;
             const nationId = data.nationality;
+            const nationalityName = nationalityData[nationId]?.name;
+            const typeId = data.type;
+            const position = shipTypeData[typeId]?.position;
             const isGetChecked = card.querySelector('[data-type="get"]')?.checked;
             const isLevelChecked = card.querySelector('[data-type="level"]')?.checked;
             const isUpgradeChecked = card.querySelector('[data-type="upgrade"]')?.checked;
 
             if (isGetChecked) {
-                fleetTech[nationId] += parseInt(data.ptGet, 10);
+                fleetTech[nationId] += parseDatasetInt(data.ptGet);
+
+                // Calculate for goal tracker (avoid duplicate calculation)
+                if (nationalityName) {
+                    if (!fleetTechByName[nationalityName]) fleetTechByName[nationalityName] = 0;
+                    fleetTechByName[nationalityName] += parseDatasetInt(data.ptGet);
+                }
+                if (nationalityName && position) {
+                    if (!positionCounts[nationalityName]) positionCounts[nationalityName] = {};
+                    if (!positionCounts[nationalityName][position]) positionCounts[nationalityName][position] = 0;
+                    positionCounts[nationalityName][position]++;
+                }
+
                 if (data.addGetAttr) {
                     data.addGetShiptype.split(',').forEach(type => {
+                        if (!statTech[data.addGetAttr]) statTech[data.addGetAttr] = {};
                         if (!statTech[data.addGetAttr][type]) statTech[data.addGetAttr][type] = { get: 0, level: 0 };
-                        statTech[data.addGetAttr][type].get += parseInt(data.addGetValue, 10);
+                        statTech[data.addGetAttr][type].get += parseDatasetInt(data.addGetValue);
                     });
                 }
             }
             if (isLevelChecked) {
-                fleetTech[nationId] += parseInt(data.ptLevel, 10);
+                fleetTech[nationId] += parseDatasetInt(data.ptLevel);
+
+                // Add to goal tracker scores
+                if (nationalityName) {
+                    if (!fleetTechByName[nationalityName]) fleetTechByName[nationalityName] = 0;
+                    fleetTechByName[nationalityName] += parseDatasetInt(data.ptLevel);
+                }
+
                 if (data.addLevelAttr) {
                     data.addLevelShiptype.split(',').forEach(type => {
+                        if (!statTech[data.addLevelAttr]) statTech[data.addLevelAttr] = {};
                         if (!statTech[data.addLevelAttr][type]) statTech[data.addLevelAttr][type] = { get: 0, level: 0 };
-                        statTech[data.addLevelAttr][type].level += parseInt(data.addLevelValue, 10);
+                        statTech[data.addLevelAttr][type].level += parseDatasetInt(data.addLevelValue);
                     });
                 }
             }
-            if (isUpgradeChecked) fleetTech[nationId] += parseInt(data.ptUpgrade, 10);
-        });
+            if (isUpgradeChecked) {
+                fleetTech[nationId] += parseDatasetInt(data.ptUpgrade);
 
-        renderFleetTechTable(fleetTech);
-        renderStatTechTable(statTech);
-    }
-
-    function renderFleetTechTable(scores) {
-        const container = document.getElementById('fleet-tech-container');
-        let tableHTML = `<div class="score-table-wrapper"><h2>진영 점수</h2><table class="score-table"><tr><th>진영</th><th>점수</th></tr>`;
-        Object.keys(scores).forEach(id => {
-            if (nationalityData[id] && scores[id] > 0) {
-                tableHTML += `<tr><td class="header-col">${nationalityData[id].name}</td><td>${scores[id]}</td></tr>`;
+                // Add to goal tracker scores
+                if (nationalityName) {
+                    if (!fleetTechByName[nationalityName]) fleetTechByName[nationalityName] = 0;
+                    fleetTechByName[nationalityName] += parseDatasetInt(data.ptUpgrade);
+                }
             }
         });
-        tableHTML += `</table></div>`;
-        container.innerHTML = tableHTML;
+
+        // Render the updated score tables.
+        renderFleetTechTable(fleetTech);
+        renderStatTechTable(statTech);
+        updateGoalDisplay(fleetTechByName, positionCounts); // Pass pre-calculated data
+
+        // Calculate and render faction tech bonuses
+        const factionBonuses = calculateFactionTechBonuses(fleetTechByName);
+        renderFactionTechBonuses(factionBonuses);
     }
 
+    // Create debounced version for checkbox changes (150ms delay)
+    const debouncedCalculateScores = debounce(calculateAndDisplayScores, 150);
+
+    /**
+     * Calculates faction tech levels and bonuses based on current scores.
+     * Only uses: id, groupid, pt, add fields from fleet_tech_template.json
+     * @param {object} fleetTechByName - Fleet tech scores by nationality name.
+     * @returns {object} Faction tech levels and bonuses for each faction.
+     */
+    function calculateFactionTechBonuses(fleetTechByName) {
+        const factionBonuses = {};
+
+        // Process each nationality to find their faction groupid
+        Object.entries(nationalityData).forEach(([natId, natData]) => {
+            const groupId = parseInt(natId);
+            if (isNaN(groupId) || groupId < 1 || groupId > 4) return;
+
+            const nationName = natData.name;
+            const currentScore = fleetTechByName[nationName] || 0;
+
+            // Find highest tech level achieved based on pt (required score)
+            let currentLevel = 0;
+            let activeTechData = null;
+
+            for (let level = 1; level <= 9; level++) {
+                const techId = `${groupId}00${level}`;
+                const techData = factionTechData[techId];
+
+                // pt field = required score to reach this level
+                if (techData && currentScore >= techData.pt) {
+                    currentLevel = level;
+                    activeTechData = techData;
+                } else {
+                    break; // Stop if score insufficient for next level
+                }
+            }
+
+            // Only show factions with achieved levels
+            if (activeTechData && currentLevel > 0) {
+                // Aggregate bonuses by attr_type
+                // add field format: [[ship_types], attr_type, value]
+                const bonusesByAttr = {};
+
+                activeTechData.add.forEach(([shipTypes, attrType, value]) => {
+                    if (!bonusesByAttr[attrType]) {
+                        bonusesByAttr[attrType] = {
+                            types: new Set(),
+                            value: 0
+                        };
+                    }
+                    shipTypes.forEach(typeId => {
+                        const typeName = shipTypeData[typeId]?.name;
+                        if (typeName) bonusesByAttr[attrType].types.add(typeName);
+                    });
+                    bonusesByAttr[attrType].value += value;
+                });
+
+                factionBonuses[groupId] = {
+                    name: nationName,
+                    level: currentLevel,
+                    score: currentScore,
+                    nextLevelScore: factionTechData[`${groupId}00${currentLevel + 1}`]?.pt || null,
+                    bonuses: bonusesByAttr
+                };
+            }
+        });
+
+        return factionBonuses;
+    }
+
+    /**
+     * Renders the faction tech bonuses display.
+     * @param {object} factionBonuses - Calculated faction bonuses.
+     */
+    function renderFactionTechBonuses(factionBonuses) {
+        let container = document.getElementById('faction-tech-container');
+
+        // Create container if it doesn't exist
+        if (!container) {
+            const scoreArea = document.getElementById('score-display-area');
+            if (!scoreArea) return;
+
+            container = document.createElement('div');
+            container.id = 'faction-tech-container';
+            container.className = 'faction-tech-wrapper';
+            scoreArea.parentNode.insertBefore(container, scoreArea.nextSibling);
+        }
+
+        container.innerHTML = '';
+
+        // Header
+        const header = document.createElement('div');
+        header.className = 'faction-tech-header';
+        header.textContent = '진영 기술 보너스';
+        container.appendChild(header);
+
+        // Grid container
+        const grid = document.createElement('div');
+        grid.className = 'faction-tech-grid';
+
+        // Render each faction card
+        Object.entries(factionBonuses).forEach(([groupId, data]) => {
+            if (!data || data.level === 0) return;
+
+            const card = document.createElement('div');
+            card.className = 'faction-tech-card';
+
+            // Card header
+            const cardHeader = document.createElement('div');
+            cardHeader.className = 'faction-tech-card-header';
+
+            const factionName = document.createElement('div');
+            factionName.className = 'faction-name';
+            factionName.textContent = data.name;
+
+            const levelBadge = document.createElement('div');
+            levelBadge.className = `faction-level${data.level === 9 ? ' max-level' : ''}`;
+            levelBadge.textContent = `Lv ${data.level}`;
+
+            cardHeader.appendChild(factionName);
+            cardHeader.appendChild(levelBadge);
+            card.appendChild(cardHeader);
+
+            // Progress to next level (if not max)
+            if (data.nextLevelScore) {
+                const progress = document.createElement('div');
+                progress.className = 'faction-progress';
+                progress.textContent = `다음 레벨: ${data.score} / ${data.nextLevelScore}`;
+                card.appendChild(progress);
+            }
+
+            // Bonuses list
+            const bonusesList = document.createElement('div');
+            bonusesList.className = 'faction-bonuses';
+
+            Object.entries(data.bonuses).forEach(([attrType, bonusData]) => {
+                const bonusItem = document.createElement('div');
+                bonusItem.className = 'faction-bonus-item';
+
+                const typesText = document.createElement('div');
+                typesText.className = 'bonus-types';
+                const attrName = attrTypeData[attrType]?.condition || `속성 ${attrType}`;
+                const shipTypesText = Array.from(bonusData.types).join(', ');
+                typesText.textContent = `${shipTypesText} ${attrName}`;
+
+                const valueText = document.createElement('div');
+                valueText.className = 'bonus-value';
+                valueText.textContent = `+${bonusData.value}`;
+
+                bonusItem.appendChild(typesText);
+                bonusItem.appendChild(valueText);
+                bonusesList.appendChild(bonusItem);
+            });
+
+            card.appendChild(bonusesList);
+            grid.appendChild(card);
+        });
+
+        container.appendChild(grid);
+    }
+
+    /**
+     * Renders the fleet tech score table.
+     * @param {object} scores - The calculated fleet tech scores.
+     */
+    function renderFleetTechTable(scores) {
+        const container = cachedElements.fleetTechContainer;
+        if (!container) return;
+        container.innerHTML = '';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'score-table-wrapper';
+
+        const title = document.createElement('h2');
+        title.textContent = '진영 점수';
+        wrapper.appendChild(title);
+
+        const table = document.createElement('table');
+        table.className = 'score-table';
+
+        const thead = table.createTHead();
+        const headerRow = thead.insertRow();
+        headerRow.innerHTML = '<th>진영</th><th>점수</th>';
+
+        const tbody = table.createTBody();
+        Object.keys(scores).forEach(id => {
+            if (nationalityData[id] && scores[id] > 0) {
+                const row = tbody.insertRow();
+                const cell1 = row.insertCell();
+                cell1.className = 'header-col';
+                cell1.textContent = nationalityData[id].name;
+                const cell2 = row.insertCell();
+                cell2.textContent = scores[id];
+            }
+        });
+
+        wrapper.appendChild(table);
+        container.appendChild(wrapper);
+    }
+
+    /**
+     * Renders the stat tech score table.
+     * @param {object} scores - The calculated stat tech scores.
+     */
     function renderStatTechTable(scores) {
-        const container = document.getElementById('stat-tech-container');
+        const container = cachedElements.statTechContainer;
+        if (!container) return;
+        container.innerHTML = '';
+
         const headers = new Set();
         Object.values(scores).forEach(attrScores => Object.keys(attrScores).forEach(typeId => headers.add(typeId)));
 
         if (headers.size === 0) {
-            container.innerHTML = '';
-            return;
+            return; // Don't render if there are no scores.
         }
 
         const sortedHeaders = Array.from(headers).sort((a, b) => a - b);
-        let tableHTML = `<div class="score-table-wrapper"><h2>함대 기술점수 (획득/120렙)</h2><table class="score-table"><tr><th>속성</th>${sortedHeaders.map(id => `<th>${shipTypeData[id]?.type_name || `Type ${id}`}</th>`).join('')}</tr>`;
 
+        const wrapper = document.createElement('div');
+        wrapper.className = 'score-table-wrapper';
+
+        const title = document.createElement('h2');
+        title.textContent = '함대 기술점수 (획득/120렙)';
+        wrapper.appendChild(title);
+
+        const table = document.createElement('table');
+        table.className = 'score-table';
+
+        const thead = table.createTHead();
+        const headerRow = thead.insertRow();
+        headerRow.innerHTML = `<th>속성</th>${sortedHeaders.map(id => `<th>${shipTypeData[id]?.type_name || `Type ${id}`}</th>`).join('')}`;
+
+        const tbody = table.createTBody();
         for (const attrId in scores) {
             if (Object.keys(scores[attrId]).length > 0) {
-                tableHTML += `<tr><td class="header-col">${attrTypeData[attrId]?.condition || `스탯 ${attrId}`}</td>`;
+                const row = tbody.insertRow();
+                const cell1 = row.insertCell();
+                cell1.className = 'header-col';
+                cell1.textContent = attrTypeData[attrId]?.condition || `스탯 ${attrId}`;
+
                 sortedHeaders.forEach(typeId => {
+                    const cell = row.insertCell();
                     const cellScores = scores[attrId][typeId] || { get: 0, level: 0 };
                     if (cellScores.get > 0 || cellScores.level > 0) {
-                        tableHTML += `<td>+${cellScores.get} / +${cellScores.level}</td>`;
+                        cell.textContent = `+${cellScores.get} / +${cellScores.level}`;
                     } else {
-                        tableHTML += `<td>0</td>`;
+                        cell.textContent = '0';
                     }
                 });
-                tableHTML += `</tr>`;
             }
         }
-        tableHTML += `</table></div>`;
-        container.innerHTML = tableHTML;
+
+        wrapper.appendChild(table);
+        container.appendChild(wrapper);
     }
 
+    /**
+     * Calculates current progress for fleet tech goals.
+     * Returns an object mapping nationality names to their current fleet tech scores.
+     */
+    function calculateCurrentFleetTechScores() {
+        const scores = {};
+
+        // Calculate scores from checked ships
+        document.querySelectorAll('.ship-card').forEach(card => {
+            const nationalityId = card.dataset.nationality;
+            const nationalityName = nationalityData[nationalityId]?.name;
+
+            if (!nationalityName) return;
+            if (!scores[nationalityName]) scores[nationalityName] = 0;
+
+            const isGetChecked = card.querySelector('[data-type="get"]')?.checked;
+            const isLevelChecked = card.querySelector('[data-type="level"]')?.checked;
+            const isUpgradeChecked = card.querySelector('[data-type="upgrade"]')?.checked;
+
+            if (isGetChecked) scores[nationalityName] += parseDatasetInt(card.dataset.ptGet);
+            if (isLevelChecked) scores[nationalityName] += parseDatasetInt(card.dataset.ptLevel);
+            if (isUpgradeChecked) scores[nationalityName] += parseDatasetInt(card.dataset.ptUpgrade);
+        });
+
+        return scores;
+    }
+
+    /**
+     * Calculates current ship counts by position for each nationality.
+     * Returns nested object: { nationality: { position: count } }
+     */
+    function calculatePositionCounts() {
+        const counts = {};
+
+        document.querySelectorAll('.ship-card').forEach(card => {
+            const nationalityId = card.dataset.nationality;
+            const typeId = card.dataset.type;
+            const nationalityName = nationalityData[nationalityId]?.name;
+            const position = shipTypeData[typeId]?.position;
+
+            if (!nationalityName || !position) return;
+
+            const isGetChecked = card.querySelector('[data-type="get"]')?.checked;
+            if (!isGetChecked) return; // Only count collected ships
+
+            if (!counts[nationalityName]) counts[nationalityName] = {};
+            if (!counts[nationalityName][position]) counts[nationalityName][position] = 0;
+            counts[nationalityName][position]++;
+        });
+
+        return counts;
+    }
+
+    /**
+     * Gets or sets the selected goal ship name.
+     */
+    function getSelectedGoal() {
+        const saved = localStorage.getItem(GOAL_KEY);
+        if (saved && fleetTechGoalData[saved]) {
+            return saved;
+        }
+        // Default to first ship
+        return Object.keys(fleetTechGoalData)[0];
+    }
+
+    function setSelectedGoal(shipName) {
+        localStorage.setItem(GOAL_KEY, shipName);
+    }
+
+    /**
+     * Renders the goal tracker panel with hybrid selection UI.
+     */
+    function renderGoalTracker() {
+        const mainElement = document.querySelector('main');
+        const filterBar = document.getElementById('filter-bar');
+
+        // Remove existing goal tracker if present
+        const existingToggle = document.getElementById('goal-tracker-toggle-btn');
+        const existingTracker = document.getElementById('goal-tracker-panel');
+        if (existingToggle) existingToggle.remove();
+        if (existingTracker) existingTracker.remove();
+
+        // Create toggle button
+        const toggleButton = document.createElement('button');
+        toggleButton.id = 'goal-tracker-toggle-btn';
+        const toggleText = document.createElement('span');
+        toggleText.textContent = '목표 달성 현황 보기';
+        const toggleChevron = document.createElement('span');
+        toggleChevron.className = 'chevron';
+        toggleChevron.textContent = '▼';
+        toggleButton.appendChild(toggleText);
+        toggleButton.appendChild(toggleChevron);
+
+        // Create goal tracker container
+        const goalPanel = document.createElement('div');
+        goalPanel.id = 'goal-tracker-panel';
+        goalPanel.className = 'goal-tracker-panel collapsed';
+
+        toggleButton.addEventListener('click', () => {
+            const isCollapsed = goalPanel.classList.toggle('collapsed');
+            toggleText.textContent = isCollapsed ? '목표 달성 현황 보기' : '목표 달성 현황 숨기기';
+            toggleChevron.textContent = isCollapsed ? '▼' : '▲';
+        });
+
+        // Create selection controls container
+        const selectionContainer = document.createElement('div');
+        selectionContainer.className = 'goal-selection-container';
+
+        // Create dropdown for goal selection
+        const dropdownWrapper = document.createElement('div');
+        dropdownWrapper.className = 'goal-dropdown-wrapper';
+
+        const dropdownLabel = document.createElement('label');
+        dropdownLabel.textContent = '현재 목표:';
+        dropdownLabel.className = 'goal-dropdown-label';
+
+        const dropdown = document.createElement('select');
+        dropdown.id = 'goal-select-dropdown';
+        dropdown.className = 'goal-select-dropdown';
+
+        // Group ships by project
+        const projects = [...new Set(Object.values(fleetTechGoalData).map(ship => ship.project))].sort((a, b) => a - b);
+
+        projects.forEach(project => {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = `${project}기`;
+
+            Object.entries(fleetTechGoalData)
+                .filter(([name, data]) => data.project === project)
+                .forEach(([shipName, goalData]) => {
+                    const option = document.createElement('option');
+                    option.value = shipName;
+                    option.textContent = `${shipName} (${goalData.rarity_type})`;
+                    optgroup.appendChild(option);
+                });
+
+            dropdown.appendChild(optgroup);
+        });
+
+        const selectedGoal = getSelectedGoal();
+        dropdown.value = selectedGoal;
+
+        dropdown.addEventListener('change', (e) => {
+            setSelectedGoal(e.target.value);
+            updateGoalDisplay();
+            updateQuickButtons();
+        });
+
+        dropdownWrapper.appendChild(dropdownLabel);
+        dropdownWrapper.appendChild(dropdown);
+        selectionContainer.appendChild(dropdownWrapper);
+
+        // Create quick selection buttons container
+        const quickButtonsWrapper = document.createElement('div');
+        quickButtonsWrapper.className = 'goal-quick-buttons-wrapper';
+
+        const quickLabel = document.createElement('div');
+        quickLabel.textContent = '빠른 선택:';
+        quickLabel.className = 'goal-quick-label';
+        quickButtonsWrapper.appendChild(quickLabel);
+
+        const quickButtonsContainer = document.createElement('div');
+        quickButtonsContainer.id = 'goal-quick-buttons';
+        quickButtonsContainer.className = 'goal-quick-buttons';
+
+        quickButtonsWrapper.appendChild(quickButtonsContainer);
+        selectionContainer.appendChild(quickButtonsWrapper);
+
+        // Create detail card container
+        const detailContainer = document.createElement('div');
+        detailContainer.id = 'goal-detail-container';
+        detailContainer.className = 'goal-detail-container';
+
+        // Assemble panel
+        goalPanel.appendChild(selectionContainer);
+        goalPanel.appendChild(detailContainer);
+
+        // Insert into DOM after filter bar (filter bar should be sticky at top)
+        const shipListContainer = document.getElementById('ship-list-container');
+        mainElement.insertBefore(toggleButton, shipListContainer);
+        mainElement.insertBefore(goalPanel, shipListContainer);
+
+        // Initial render
+        updateQuickButtons();
+        updateGoalDisplay();
+    }
+
+    /**
+     * Updates the quick selection buttons based on current goal's project.
+     */
+    function updateQuickButtons() {
+        const quickButtonsContainer = document.getElementById('goal-quick-buttons');
+        if (!quickButtonsContainer) return;
+
+        quickButtonsContainer.innerHTML = '';
+
+        const selectedGoal = getSelectedGoal();
+        const selectedProject = fleetTechGoalData[selectedGoal]?.project;
+
+        // Get all ships from the same project
+        const projectShips = Object.entries(fleetTechGoalData)
+            .filter(([name, data]) => data.project === selectedProject)
+            .sort((a, b) => a[0].localeCompare(b[0]));
+
+        projectShips.forEach(([shipName, goalData]) => {
+            const button = document.createElement('button');
+            button.className = 'goal-quick-button';
+            button.textContent = shipName;
+
+            if (shipName === selectedGoal) {
+                button.classList.add('active');
+            }
+
+            button.addEventListener('click', () => {
+                setSelectedGoal(shipName);
+                document.getElementById('goal-select-dropdown').value = shipName;
+                updateGoalDisplay();
+                updateQuickButtons();
+            });
+
+            quickButtonsContainer.appendChild(button);
+        });
+    }
+
+    /**
+     * Updates the goal detail display for the selected ship.
+     * @param {object} currentScores - Pre-calculated fleet tech scores (optional, will calculate if not provided)
+     * @param {object} positionCounts - Pre-calculated position counts (optional, will calculate if not provided)
+     */
+    function updateGoalDisplay(currentScores, positionCounts) {
+        const detailContainer = document.getElementById('goal-detail-container');
+        if (!detailContainer) return;
+
+        const selectedGoal = getSelectedGoal();
+        const goalData = fleetTechGoalData[selectedGoal];
+
+        if (!goalData) return;
+
+        // Only recalculate if data not provided (e.g., on initial render or goal change)
+        if (!currentScores || !positionCounts) {
+            currentScores = calculateCurrentFleetTechScores();
+            positionCounts = calculatePositionCounts();
+            // Full re-render needed
+            detailContainer.innerHTML = '';
+            const card = createDetailedGoalCard(selectedGoal, goalData, currentScores, positionCounts);
+            detailContainer.appendChild(card);
+        } else {
+            // Data provided - just update progress bars efficiently
+            updateGoalProgressBars(selectedGoal, goalData, currentScores, positionCounts);
+        }
+    }
+
+    /**
+     * Efficiently updates only the progress bars without recreating the entire card.
+     */
+    function updateGoalProgressBars(shipName, goalData, currentScores, positionCounts) {
+        const detailContainer = document.getElementById('goal-detail-container');
+        if (!detailContainer) return;
+
+        const card = detailContainer.querySelector('.goal-card');
+        if (!card) {
+            // Card doesn't exist, do full render
+            detailContainer.innerHTML = '';
+            const newCard = createDetailedGoalCard(shipName, goalData, currentScores, positionCounts);
+            detailContainer.appendChild(newCard);
+            return;
+        }
+
+        // Update each requirement's progress bar
+        const requirements = card.querySelectorAll('.goal-requirement');
+        let reqIndex = 0;
+
+        for (let i = 1; i <= 3; i++) {
+            const nationality = goalData[`unlock_${i}`];
+            const reqType = goalData[`unlock_${i}_req_type`];
+            const reqValue = parseDatasetInt(goalData[`unlock_${i}_req_type_value`]);
+
+            if (!nationality || !reqType || !reqValue) continue;
+
+            const req = requirements[reqIndex];
+            if (!req) continue;
+
+            let current = 0;
+            let isComplete = false;
+
+            if (reqType === '점수') {
+                current = currentScores[nationality] || 0;
+                isComplete = current >= reqValue;
+            } else {
+                current = positionCounts[nationality]?.[reqType] || 0;
+                isComplete = current >= reqValue;
+            }
+
+            // Update progress bar
+            const progressFill = req.querySelector('.goal-progress-fill');
+            const progressText = req.querySelector('.goal-progress-text');
+
+            if (progressFill && progressText) {
+                const percentage = Math.min((current / reqValue) * 100, 100);
+                progressFill.style.width = `${percentage}%`;
+
+                if (isComplete) {
+                    progressFill.classList.add('complete');
+                    progressText.classList.add('complete');
+                    progressText.innerHTML = `${current} / ${reqValue} <span class="checkmark">✓</span>`;
+                } else {
+                    progressFill.classList.remove('complete');
+                    progressText.classList.remove('complete');
+                    progressText.textContent = `${current} / ${reqValue}`;
+                }
+            }
+
+            reqIndex++;
+        }
+
+        // Update overall completion status
+        let allComplete = true;
+        for (let i = 1; i <= 3; i++) {
+            const nationality = goalData[`unlock_${i}`];
+            const reqType = goalData[`unlock_${i}_req_type`];
+            const reqValue = parseDatasetInt(goalData[`unlock_${i}_req_type_value`]);
+
+            if (!nationality || !reqType || !reqValue) continue;
+
+            let current = 0;
+            if (reqType === '점수') {
+                current = currentScores[nationality] || 0;
+            } else {
+                current = positionCounts[nationality]?.[reqType] || 0;
+            }
+
+            if (current < reqValue) {
+                allComplete = false;
+                break;
+            }
+        }
+
+        // Toggle complete state on card
+        const completeLabel = card.querySelector('.goal-complete-label');
+        if (allComplete) {
+            card.classList.add('complete');
+            if (!completeLabel) {
+                const label = document.createElement('div');
+                label.className = 'goal-complete-label';
+                label.textContent = '✓ 해금 가능';
+                card.querySelector('.goal-card-content').appendChild(label);
+            }
+        } else {
+            card.classList.remove('complete');
+            if (completeLabel) completeLabel.remove();
+        }
+    }
+
+    /**
+     * Creates a detailed goal card for a single ship (larger, more detailed version).
+     */
+    function createDetailedGoalCard(shipName, goalData, currentScores, positionCounts) {
+        const card = document.createElement('div');
+        card.className = 'goal-card goal-card-detailed';
+
+        // Use cached ship data lookup (much faster than repeated searches)
+        const shipData = getShipDataByName(shipName);
+
+        // Create main content wrapper (left side)
+        const contentWrapper = document.createElement('div');
+        contentWrapper.className = 'goal-card-content';
+
+        // Header with ship name and rarity
+        const header = document.createElement('div');
+        header.className = 'goal-card-header';
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'goal-ship-name';
+        nameSpan.textContent = shipName;
+
+        const raritySpan = document.createElement('span');
+        raritySpan.className = `goal-rarity rarity-${goalData.rarity_type}`;
+        raritySpan.textContent = goalData.rarity_type;
+
+        header.appendChild(nameSpan);
+        header.appendChild(raritySpan);
+        contentWrapper.appendChild(header);
+
+        // Requirements container
+        const reqsContainer = document.createElement('div');
+        reqsContainer.className = 'goal-requirements';
+
+        let allComplete = true;
+
+        // Process up to 3 unlock requirements
+        for (let i = 1; i <= 3; i++) {
+            const nationality = goalData[`unlock_${i}`];
+            const reqType = goalData[`unlock_${i}_req_type`];
+            const reqValue = parseDatasetInt(goalData[`unlock_${i}_req_type_value`]);
+
+            if (!nationality || !reqType || !reqValue) continue;
+
+            const req = document.createElement('div');
+            req.className = 'goal-requirement';
+
+            let current = 0;
+            let label = '';
+            let isComplete = false;
+
+            if (reqType === '점수') {
+                // Fleet tech score requirement
+                current = currentScores[nationality] || 0;
+                label = `${nationality} 점수`;
+                isComplete = current >= reqValue;
+            } else {
+                // Position-based requirement (전열 or 후열)
+                current = positionCounts[nationality]?.[reqType] || 0;
+                label = `${nationality} ${reqType}`;
+                isComplete = current >= reqValue;
+            }
+
+            if (!isComplete) allComplete = false;
+
+            // Requirement label
+            const reqLabel = document.createElement('div');
+            reqLabel.className = 'goal-req-label';
+            reqLabel.textContent = label;
+
+            // Progress bar
+            const progressBar = document.createElement('div');
+            progressBar.className = 'goal-progress-bar';
+
+            const progressFill = document.createElement('div');
+            progressFill.className = 'goal-progress-fill';
+            const percentage = Math.min((current / reqValue) * 100, 100);
+            progressFill.style.width = `${percentage}%`;
+            if (isComplete) progressFill.classList.add('complete');
+
+            progressBar.appendChild(progressFill);
+
+            // Progress text
+            const progressText = document.createElement('div');
+            progressText.className = 'goal-progress-text';
+            progressText.textContent = `${current} / ${reqValue}`;
+            if (isComplete) {
+                progressText.classList.add('complete');
+                progressText.innerHTML = `${current} / ${reqValue} <span class="checkmark">✓</span>`;
+            }
+
+            req.appendChild(reqLabel);
+            req.appendChild(progressBar);
+            req.appendChild(progressText);
+            reqsContainer.appendChild(req);
+        }
+
+        contentWrapper.appendChild(reqsContainer);
+
+        // Overall completion status
+        if (allComplete) {
+            card.classList.add('complete');
+            const completeLabel = document.createElement('div');
+            completeLabel.className = 'goal-complete-label';
+            completeLabel.textContent = '✓ 해금 가능';
+            contentWrapper.appendChild(completeLabel);
+        }
+
+        // Add content to card
+        card.appendChild(contentWrapper);
+
+        // Add ship image (right side) - always create wrapper for consistent layout
+        const imageWrapper = document.createElement('div');
+        imageWrapper.className = 'goal-card-image-wrapper';
+
+        if (shipData && shipData.icon) {
+            const image = document.createElement('img');
+            image.src = shipData.icon;
+            image.alt = shipName;
+            image.className = 'goal-card-image';
+            image.loading = 'lazy';
+
+            // Add error handling for missing images
+            image.onerror = () => {
+                // Show placeholder instead of hiding
+                image.style.display = 'none';
+                const placeholder = document.createElement('div');
+                placeholder.className = 'goal-card-image-placeholder';
+                placeholder.textContent = '?';
+                imageWrapper.appendChild(placeholder);
+            };
+
+            imageWrapper.appendChild(image);
+        } else {
+            // No ship data found - show placeholder
+            const placeholder = document.createElement('div');
+            placeholder.className = 'goal-card-image-placeholder';
+            placeholder.textContent = '?';
+            imageWrapper.appendChild(placeholder);
+        }
+
+        card.appendChild(imageWrapper);
+
+        return card;
+    }
+
+    /**
+     * Populates the filter bar with all filter options.
+     */
     function populateFilters() {
         const filterBar = document.getElementById('filter-bar');
         filterBar.innerHTML = '';
@@ -211,22 +1089,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const searchContainer = document.createElement('div');
         searchContainer.className = 'search-container';
-        searchContainer.innerHTML = `
-            <label for="search-bar" class="filter-group-label">함순이 검색</label>
-            <div class="dropdown-container">
-                <input type="text" id="search-bar" placeholder="이름으로 검색..." autocomplete="off">
-                <div class="dropdown-content" id="search-dropdown"></div>
-            </div>
-        `;
+        const searchLabel = document.createElement('label');
+        searchLabel.htmlFor = 'search-bar';
+        searchLabel.className = 'filter-group-label';
+        searchLabel.textContent = '함순이 검색';
+        searchContainer.appendChild(searchLabel);
+
+        const dropdownContainer = document.createElement('div');
+        dropdownContainer.className = 'dropdown-container';
+        const searchInput = document.createElement('input');
+        searchInput.type = 'text';
+        searchInput.id = 'search-bar';
+        searchInput.placeholder = '이름으로 검색...';
+        searchInput.autocomplete = 'off';
+        dropdownContainer.appendChild(searchInput);
+
+        const searchDropdown = document.createElement('div');
+        searchDropdown.className = 'dropdown-content';
+        searchDropdown.id = 'search-dropdown';
+        dropdownContainer.appendChild(searchDropdown);
+        searchContainer.appendChild(dropdownContainer);
         topFiltersWrapper.appendChild(searchContainer);
 
-        const searchDropdown = document.getElementById('search-dropdown');
         const allShipNames = Object.values(fullShipData).map(ship => ship.name).filter(Boolean).sort((a, b) => a.localeCompare(b));
         allShipNames.forEach(name => {
             const a = document.createElement('a');
             a.textContent = name;
             a.addEventListener('click', () => {
-                document.getElementById('search-bar').value = name;
+                searchInput.value = name;
                 searchDropdown.style.display = 'none';
                 applyFilters();
             });
@@ -235,9 +1125,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const dropdownGroupWrapper = document.createElement('div');
         dropdownGroupWrapper.className = 'dropdown-group-wrapper';
-        dropdownGroupWrapper.innerHTML = `<label class="filter-group-label">보기 옵션</label>`;
-        const dropdownContainer = document.createElement('div');
-        dropdownContainer.className = 'dropdown-controls-container';
+        const dropdownGroupLabel = document.createElement('label');
+        dropdownGroupLabel.className = 'filter-group-label';
+        dropdownGroupLabel.textContent = '보기 옵션';
+        dropdownGroupWrapper.appendChild(dropdownGroupLabel);
+
+        const dropdownControlsContainer = document.createElement('div');
+        dropdownControlsContainer.className = 'dropdown-controls-container';
         const dropdownFilters = [
             { id: 'progress-filter', label: '체크된 함순이들로 필터링', options: { all: '체크여부 - 전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' }, description: '체크박스 상태에 따라 함순이를 필터링합니다.' },
             { id: 'get-attr-filter', label: '입수 스탯으로 필터링', data: attrTypeData, allOptionText: '입수스탯 - 전체', description: '함순이 입수 시 제공하는 함대 기술 스탯으로 필터링합니다.' },
@@ -249,25 +1143,39 @@ document.addEventListener('DOMContentLoaded', () => {
             if (f.description) {
                 group.setAttribute('data-tooltip', f.description);
             }
-            group.innerHTML = `<label for="${f.id}" class="filter-group-label sr-only">${f.label}</label>`;
+            const label = document.createElement('label');
+            label.htmlFor = f.id;
+            label.className = 'filter-group-label sr-only';
+            label.textContent = f.label;
+            group.appendChild(label);
+
             const select = document.createElement('select');
             select.id = f.id;
             select.setAttribute('aria-label', f.label);
-            let optionsHTML = '';
             if (f.options) {
-                optionsHTML = Object.entries(f.options).map(([val, text]) => `<option value="${val}">${text}</option>`).join('');
+                Object.entries(f.options).forEach(([val, text]) => {
+                    const option = document.createElement('option');
+                    option.value = val;
+                    option.textContent = text;
+                    select.appendChild(option);
+                });
             } else {
                 const allText = f.allOptionText || '전체';
-                optionsHTML = `<option value="all">${allText}</option>`;
+                const allOption = document.createElement('option');
+                allOption.value = 'all';
+                allOption.textContent = allText;
+                select.appendChild(allOption);
                 for (const attrId in f.data) {
-                    optionsHTML += `<option value="${f.data[attrId].id}">${f.data[attrId].condition}</option>`;
+                    const option = document.createElement('option');
+                    option.value = f.data[attrId].id;
+                    option.textContent = f.data[attrId].condition;
+                    select.appendChild(option);
                 }
             }
-            select.innerHTML = optionsHTML;
             group.appendChild(select);
-            dropdownContainer.appendChild(group);
+            dropdownControlsContainer.appendChild(group);
         });
-        dropdownGroupWrapper.appendChild(dropdownContainer);
+        dropdownGroupWrapper.appendChild(dropdownControlsContainer);
         topFiltersWrapper.appendChild(dropdownGroupWrapper);
 
         const rarities = [...new Set(Object.values(fullShipData).map(ship => ship.rarity).filter(Boolean))];
@@ -288,9 +1196,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const isCollapsible = f.id === 'nationality-filter' || f.id === 'type-filter';
             if (isCollapsible) {
-                group.innerHTML = `<button class="filter-group-toggle collapsed">${f.label} <span class="chevron">▼</span></button>`;
+                const button = document.createElement('button');
+                button.className = 'filter-group-toggle collapsed';
+                button.innerHTML = `${f.label} <span class="chevron">▼</span>`;
+                group.appendChild(button);
             } else {
-                group.innerHTML = `<div class="filter-group-label">${f.label}</div>`;
+                const label = document.createElement('div');
+                label.className = 'filter-group-label';
+                label.textContent = f.label;
+                group.appendChild(label);
             }
             
             const wrapper = document.createElement('div');
@@ -365,7 +1279,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const bulkCheckContainer = document.createElement('div');
         bulkCheckContainer.className = 'bulk-check-controls';
-        bulkCheckContainer.innerHTML = `<div class="filter-group-label">일괄 체크 --> 주의) 목록에 보이는 모든 함순이들에게 적용</div>`;
+        const bulkCheckLabel = document.createElement('div');
+        bulkCheckLabel.className = 'filter-group-label';
+        bulkCheckLabel.textContent = '일괄 체크 --> 주의) 목록에 보이는 모든 함순이들에게 적용';
+        bulkCheckContainer.appendChild(bulkCheckLabel);
+
         const bulkCheckWrapper = document.createElement('div');
         bulkCheckWrapper.className = 'filter-controls-wrapper';
         const bulkCheckActions = [
@@ -398,13 +1316,52 @@ document.addEventListener('DOMContentLoaded', () => {
         filterBar.appendChild(actionContainer);
     }
 
+    /**
+     * Performs a bulk check/uncheck operation on the visible ship cards.
+     * @param {string} type - The type of checkbox to change ('get', 'level', 'upgrade', 'all').
+     * @param {boolean} shouldBeChecked - The desired state of the checkbox.
+     */
     function bulkCheck(type, shouldBeChecked) {
         document.querySelectorAll('.ship-card').forEach(card => {
-            if (card.style.display !== 'none') {
+            if (filteredShipIds.includes(card.dataset.shipId)) {
                 if (type === 'all') {
-                    card.querySelectorAll('.tracker-checkbox').forEach(checkbox => {
-                        checkbox.checked = shouldBeChecked;
-                    });
+                    // For 'all' type, we need to handle the checkboxes in the right order
+                    // to ensure proper cascading logic
+                    if (shouldBeChecked) {
+                        // When checking all, check in order: get, level, upgrade
+                        const getCheckbox = card.querySelector('[data-type="get"]');
+                        const levelCheckbox = card.querySelector('[data-type="level"]');
+                        const upgradeCheckbox = card.querySelector('[data-type="upgrade"]');
+                        if (getCheckbox) {
+                            getCheckbox.checked = true;
+                            handleCheckboxLogic(getCheckbox);
+                        }
+                        if (levelCheckbox) {
+                            levelCheckbox.checked = true;
+                            handleCheckboxLogic(levelCheckbox);
+                        }
+                        if (upgradeCheckbox) {
+                            upgradeCheckbox.checked = true;
+                            handleCheckboxLogic(upgradeCheckbox);
+                        }
+                    } else {
+                        // When unchecking all, uncheck in reverse order: upgrade, level, get
+                        const upgradeCheckbox = card.querySelector('[data-type="upgrade"]');
+                        const levelCheckbox = card.querySelector('[data-type="level"]');
+                        const getCheckbox = card.querySelector('[data-type="get"]');
+                        if (upgradeCheckbox) {
+                            upgradeCheckbox.checked = false;
+                            handleCheckboxLogic(upgradeCheckbox);
+                        }
+                        if (levelCheckbox) {
+                            levelCheckbox.checked = false;
+                            handleCheckboxLogic(levelCheckbox);
+                        }
+                        if (getCheckbox) {
+                            getCheckbox.checked = false;
+                            handleCheckboxLogic(getCheckbox);
+                        }
+                    }
                 } else {
                     const checkbox = card.querySelector(`[data-type="${type}"]`);
                     if (checkbox && checkbox.checked !== shouldBeChecked) {
@@ -418,39 +1375,68 @@ document.addEventListener('DOMContentLoaded', () => {
         autoSaveProgress();
     }
 
-    function showConfirmationModal(message, onConfirm) {
-        const modal = document.getElementById('confirmation-modal');
-        if (!modal) return;
-        const modalText = document.getElementById('modal-text');
-        const confirmBtn = document.getElementById('modal-confirm-btn');
-        const cancelBtn = document.getElementById('modal-cancel-btn');
-        modalText.textContent = message;
-        const newConfirmBtn = confirmBtn.cloneNode(true);
-        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
-        const closeModal = () => {
-            modal.classList.remove('visible');
-            setTimeout(() => {
-                if (!modal.classList.contains('visible')) {
-                    modal.style.display = 'none';
-                }
-            }, 300);
-        };
-        newConfirmBtn.addEventListener('click', () => {
-            onConfirm();
-            closeModal();
-        });
-        cancelBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-        modal.style.display = 'flex';
-        setTimeout(() => modal.classList.add('visible'), 10);
+    /**
+     * Current confirmation callback for the modal.
+     */
+    let currentConfirmCallback = null;
+
+    /**
+     * Closes the confirmation modal.
+     */
+    function closeConfirmationModal() {
+        if (cachedElements.confirmationModal) {
+            cachedElements.confirmationModal.classList.remove('visible');
+            currentConfirmCallback = null;
+        }
     }
 
+    /**
+     * Handles the confirm button click in the modal.
+     */
+    function handleModalConfirm() {
+        if (currentConfirmCallback) {
+            currentConfirmCallback();
+        }
+        closeConfirmationModal();
+    }
+
+    /**
+     * Sets up modal event listeners (called once during initialization).
+     */
+    function setupModalEventListeners() {
+        if (cachedElements.modalConfirmBtn) {
+            cachedElements.modalConfirmBtn.addEventListener('click', handleModalConfirm);
+        }
+        if (cachedElements.modalCancelBtn) {
+            cachedElements.modalCancelBtn.addEventListener('click', closeConfirmationModal);
+        }
+        if (cachedElements.confirmationModal) {
+            cachedElements.confirmationModal.addEventListener('click', (e) => {
+                if (e.target === cachedElements.confirmationModal) {
+                    closeConfirmationModal();
+                }
+            });
+        }
+    }
+
+    /**
+     * Shows a confirmation modal for critical actions.
+     * @param {string} message - The message to display in the modal.
+     * @param {function} onConfirm - The callback function to execute on confirmation.
+     */
+    function showConfirmationModal(message, onConfirm) {
+        if (!cachedElements.confirmationModal || !cachedElements.modalText) return;
+
+        cachedElements.modalText.textContent = message;
+        currentConfirmCallback = onConfirm;
+        cachedElements.confirmationModal.classList.add('visible');
+    }
+
+    /**
+     * Saves the current progress (checked boxes) to localStorage.
+     */
     function autoSaveProgress() {
-        const progress = {};
+        const progress = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
         document.querySelectorAll('.ship-card').forEach(card => {
             let state = 0;
             if (card.querySelector('[data-type="get"]')?.checked) state |= 1;
@@ -458,16 +1444,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (card.querySelector('[data-type="upgrade"]')?.checked) state |= 4;
             if (state > 0) {
                 progress[card.dataset.shipId] = state;
+            } else {
+                delete progress[card.dataset.shipId];
             }
         });
         localStorage.setItem(SAVE_KEY, JSON.stringify(progress));
     }
 
+    /**
+     * Applies the saved progress to the ship cards.
+     * @param {object} progress - The progress object loaded from localStorage.
+     */
     function applyProgress(progress) {
-        document.querySelectorAll('.tracker-checkbox').forEach(cb => cb.checked = false);
-        for (const shipId in progress) {
-            const card = document.querySelector(`.ship-card[data-ship-id="${shipId}"]`);
-            if (card) {
+        document.querySelectorAll('.ship-card').forEach(card => {
+            const shipId = card.dataset.shipId;
+            if (progress[shipId]) {
                 const state = progress[shipId];
                 const get = (state & 1) > 0;
                 const level = (state & 2) > 0;
@@ -479,10 +1470,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (levelCheckbox) levelCheckbox.checked = level;
                 if (upgradeCheckbox) upgradeCheckbox.checked = upgrade;
             }
-        }
-        calculateAndDisplayScores();
+        });
     }
 
+    /**
+     * Loads progress from localStorage and applies it.
+     */
     function loadProgress() {
         const savedProgress = localStorage.getItem(SAVE_KEY);
         if (!savedProgress) return;
@@ -494,6 +1487,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Handles the logic for the ship type filter checkboxes.
+     * @param {HTMLInputElement} checkbox - The changed checkbox.
+     * @param {HTMLElement} group - The filter group element.
+     */
     function handleShipTypeFilterLogic(checkbox, group) {
         const allToggle = group.querySelector('[data-filter-type="all"]');
         if (checkbox === allToggle && checkbox.checked) {
@@ -515,6 +1513,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     groupAllToggle.checked = individuals.every(cb => cb.checked);
                 }
             }
+            
         }
         const anyIndividualChecked = group.querySelector('[data-filter-type="individual"]:checked');
         if (anyIndividualChecked) {
@@ -525,6 +1524,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Handles the logic for filter checkboxes (e.g., 'All' vs. individual items).
+     * @param {HTMLInputElement} changedCheckbox - The checkbox that was changed.
+     */
     function handleFilterCheckboxLogic(changedCheckbox) {
         const group = changedCheckbox.closest('.filter-group');
         if (!group) return;
@@ -547,40 +1550,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Applies all active filters to the ship list.
+     */
     function applyFilters() {
         const searchQuery = document.getElementById('search-bar').value.toLowerCase();
         const progressFilter = document.getElementById('progress-filter').value;
         const getAttrFilter = document.getElementById('get-attr-filter').value;
         const levelAttrFilter = document.getElementById('level-attr-filter').value;
-        const checkedNations = Array.from(document.querySelectorAll('#nationality-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value);
-        const checkedTypes = Array.from(document.querySelectorAll('#type-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value);
-        const checkedRarities = Array.from(document.querySelectorAll('#rarity-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value);
+        const checkedNations = Array.from(document.querySelectorAll('#nationality-filter input[data-filter-type="individual"]:checked')).map(cb => parseDatasetInt(cb.value));
+        const checkedTypes = Array.from(document.querySelectorAll('#type-filter input[data-filter-type="individual"]:checked')).map(cb => parseDatasetInt(cb.value));
+        const checkedRarities = getCheckedFilterValues('#rarity-filter input[data-filter-type="individual"]:checked');
         const isNationFilterActive = checkedNations.length > 0;
         const isTypeFilterActive = checkedTypes.length > 0;
         const isRarityFilterActive = checkedRarities.length > 0;
-        document.querySelectorAll('.ship-card').forEach(card => {
-            const data = card.dataset;
-            const getChecked = card.querySelector('[data-type="get"]')?.checked;
-            const levelChecked = card.querySelector('[data-type="level"]')?.checked;
-            const upgradeChecked = card.querySelector('[data-type="upgrade"]')?.checked;
-            const isAnyChecked = getChecked || levelChecked || upgradeChecked;
+
+        const savedProgress = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
+
+        filteredShipIds = Object.keys(fullShipData).filter(shipId => {
+            const ship = fullShipData[shipId];
+
+            const state = savedProgress[shipId] || 0;
+            const isAnyChecked = state > 0;
+
             let progressMatch = true;
             if (progressFilter === 'checked') {
                 progressMatch = isAnyChecked;
             } else if (progressFilter === 'unchecked') {
                 progressMatch = !isAnyChecked;
             }
-            const searchMatch = !searchQuery || (data.name && data.name.toLowerCase().includes(searchQuery));
-            const natMatch = !isNationFilterActive || checkedNations.includes(data.nationality);
-            const typeMatch = !isTypeFilterActive || (data.type && checkedTypes.includes(data.type));
-            const rarityMatch = !isRarityFilterActive || (data.rarity && checkedRarities.includes(data.rarity));
-            const getAttrMatch = getAttrFilter === 'all' || data.addGetAttr === getAttrFilter;
-            const levelAttrMatch = levelAttrFilter === 'all' || data.addLevelAttr === levelAttrFilter;
-            card.style.display = (searchMatch && natMatch && typeMatch && rarityMatch && progressMatch && getAttrMatch && levelAttrMatch) ? 'flex' : 'none';
+
+            const searchMatch = !searchQuery || (ship.name && ship.name.toLowerCase().includes(searchQuery));
+            const natMatch = !isNationFilterActive || checkedNations.includes(ship.nationality);
+            const typeMatch = !isTypeFilterActive || (ship.type && checkedTypes.includes(ship.type));
+            const rarityMatch = !isRarityFilterActive || (ship.rarity && checkedRarities.includes(ship.rarity));
+            const getAttrMatch = getAttrFilter === 'all' || ship.add_get_attr === parseDatasetInt(getAttrFilter);
+            const levelAttrMatch = levelAttrFilter === 'all' || ship.add_level_attr === parseDatasetInt(levelAttrFilter);
+
+            return searchMatch && natMatch && typeMatch && rarityMatch && progressMatch && getAttrMatch && levelAttrMatch;
         });
+
+        renderVisibleCards();
         calculateAndDisplayScores();
     }
 
+    /**
+     * Resets all filters to their default state.
+     */
     function resetFilters() {
         document.getElementById('search-bar').value = '';
         document.querySelectorAll('#filter-bar input[type="checkbox"]').forEach(cb => {
@@ -591,36 +1607,52 @@ document.addEventListener('DOMContentLoaded', () => {
         applyFilters();
     }
 
-    function filterSearchDropdown(input, dropdown) {
-        const filter = input.value.toUpperCase();
-        const items = dropdown.getElementsByTagName('a');
-        for (let i = 0; i < items.length; i++) {
-            const txtValue = items[i].textContent || items[i].innerText;
-            items[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
-        }
-    }
-
-    function setupDropdownToggle(input, dropdown) {
-        input.addEventListener('focus', () => dropdown.style.display = 'block');
-        input.addEventListener('blur', () => {
-            setTimeout(() => {
-                dropdown.style.display = 'none';
-            }, 150);
+    /**
+     * Renders the ship cards that are currently visible after filtering.
+     */
+    function renderVisibleCards() {
+        const container = cachedElements.shipListContainer;
+        if (!container) return;
+        container.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+        filteredShipIds.forEach(shipId => {
+            const ship = fullShipData[shipId];
+            if (ship) {
+                const card = createShipCard(ship, shipId);
+                fragment.appendChild(card);
+            }
         });
+        container.appendChild(fragment);
+        // Apply saved progress after rendering the cards.
+        loadProgress();
     }
 
     async function initialize() {
         try {
             await fetchData();
+
+            // Cache DOM elements for performance
+            cacheDOMElements();
+
+            // Setup modal event listeners once
+            setupModalEventListeners();
+
             const header = document.querySelector('header');
             const scoreArea = document.getElementById('score-display-area');
             const mainElement = document.querySelector('main');
-            const container = document.getElementById('ship-list-container');
-            const filterBar = document.getElementById('filter-bar');
+            const container = cachedElements.shipListContainer;
+            const filterBar = cachedElements.filterBar;
 
+            // Create and set up the score toggle button.
             const scoreToggleButton = document.createElement('button');
             scoreToggleButton.id = 'score-toggle-btn';
-            scoreToggleButton.innerHTML = '점수판 보기 <span class="chevron">▼</span>';
+            const scoreButtonText = document.createElement('span');
+            scoreButtonText.textContent = '점수판 보기';
+            const scoreChevron = document.createElement('span');
+            scoreChevron.className = 'chevron';
+            scoreChevron.textContent = '▼';
+            scoreToggleButton.appendChild(scoreButtonText);
+            scoreToggleButton.appendChild(scoreChevron);
             scoreToggleButton.classList.add('collapsed');
             scoreArea.classList.add('collapsed');
             header.appendChild(scoreToggleButton);
@@ -628,33 +1660,37 @@ document.addEventListener('DOMContentLoaded', () => {
             scoreToggleButton.addEventListener('click', () => {
                 scoreArea.classList.toggle('collapsed');
                 const isCollapsed = scoreToggleButton.classList.toggle('collapsed');
-                const chevron = scoreToggleButton.querySelector('.chevron');
-                if (isCollapsed) {
-                    scoreToggleButton.childNodes[0].nodeValue = '점수현황판 보기 ';
-                    chevron.innerHTML = '▼';
-                } else {
-                    scoreToggleButton.childNodes[0].nodeValue = '점수현황판 숨기기 ';
-                    chevron.innerHTML = '▲';
-                }
+                scoreButtonText.textContent = isCollapsed ? '점수현황판 보기' : '점수현황판 숨기기';
+                scoreChevron.textContent = isCollapsed ? '▼' : '▲';
             });
 
+            // Create and set up the filter toggle button.
             const toggleButton = document.createElement('button');
             toggleButton.id = 'filter-toggle-btn';
-            toggleButton.innerHTML = '필터 <span class="chevron">▼</span>';
+            const buttonText = document.createElement('span');
+            buttonText.textContent = '필터 보기';
+            const chevron = document.createElement('span');
+            chevron.className = 'chevron';
+            chevron.textContent = '▼';
+            toggleButton.appendChild(buttonText);
+            toggleButton.appendChild(chevron);
+            // Start collapsed
+            filterBar.classList.add('filters-collapsed');
             mainElement.insertBefore(toggleButton, filterBar);
             toggleButton.addEventListener('click', () => {
-                filterBar.classList.toggle('filters-expanded');
-                toggleButton.classList.toggle('active');
+                const isActive = toggleButton.classList.toggle('active');
+                filterBar.classList.toggle('filters-collapsed');
+                buttonText.textContent = isActive ? '필터 숨기기' : '필터 보기';
+                chevron.textContent = isActive ? '▲' : '▼';
             });
 
+            // Populate filters and render initial ship list.
+            // Note: Order matters - filter bar is rendered first, then goal tracker below it
             populateFilters();
+            applyFilters();
+            renderGoalTracker();
 
-            const fragment = document.createDocumentFragment();
-            for (const shipId in fullShipData) {
-                fragment.appendChild(createShipCard(fullShipData[shipId], shipId));
-            }
-            container.appendChild(fragment);
-
+            // Set up event listeners for search and filters.
             const searchInput = document.getElementById('search-bar');
             const searchDropdown = document.getElementById('search-dropdown');
             searchInput.addEventListener('input', () => {
@@ -684,19 +1720,38 @@ document.addEventListener('DOMContentLoaded', () => {
                     applyFilters();
                 }
             });
+            // Event delegation for tracker checkboxes.
             container.addEventListener('change', (e) => {
                 if (e.target.classList.contains('tracker-checkbox')) {
                     handleCheckboxLogic(e.target);
-                    calculateAndDisplayScores();
+                    debouncedCalculateScores();
                     autoSaveProgress();
                 }
             });
 
-            loadProgress();
+            // Set up scroll to top button
+            const scrollToTopBtn = document.getElementById('scroll-to-top');
+
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 500) {
+                    scrollToTopBtn.classList.add('visible');
+                } else {
+                    scrollToTopBtn.classList.remove('visible');
+                }
+            });
+
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
         } catch (error) {
-            // Error is handled by fetchData
+            // Errors from fetchData are caught here, stopping initialization.
         }
     }
 
+    // Start the application.
     initialize();
 });
