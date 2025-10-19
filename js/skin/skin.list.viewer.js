@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         _createSkinBoxHtml(skin) {
             const characterName = encodeURIComponent(skin['함순이 이름']);
             const skinName = encodeURIComponent(skin['한글 함순이 + 스킨 이름']);
-            const linkUrl = `pages/skin/skin-viewer.html?character=${characterName}&skin=${skinName}`;
+            const linkUrl = `pages/skin/skin-detail-viewer.html?character=${characterName}&skin=${skinName}`;
 
             const gemIconHtml = `<img src="assets/icon/60px-Ruby.png" class="gem-icon" alt="Gem">`;
             const costHtml = skin['재화'] ? `${gemIconHtml} ${skin['재화']}` : 'N/A';
