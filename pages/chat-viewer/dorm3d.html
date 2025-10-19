@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <base href="/altoy/">
     <meta charset="UTF-8">
@@ -9,25 +9,34 @@
     <link rel="stylesheet" href="css/nav.style.css">
 </head>
 <body>
+    <!-- Navigation Bar -->
     <div id="navbar-placeholder"></div>
+
+    <!-- Page Header -->
     <header class="main-header">
         <h1>벽람항로 3D숙소 쥬톡</h1>
     </header>
 
     <main class="content-container">
+        <!-- Step 1: Character Selection -->
         <section id="character-selection-section">
-            <h3>1. 캐릭터 선택</h3>
+            <h3>
+                1. 캐릭터 선택
+                <span class="selected-character-display" id="selected-character-name"></span>
+            </h3>
             <div id="character-selector-grid" class="character-grid dorm3d">
                  <p class="loading-message">함순이 정보 불러오는 중...</p>
             </div>
         </section>
 
+        <!-- Step 2: Story Display (hidden until character selected) -->
         <section id="story-display-section" class="hidden">
+            <!-- Story Controls -->
             <div class="story-controls">
                 <div class="story-controls-left">
                     <div class="story-select-wrapper">
                         <label for="story-dropdown" class="story-select-label">2. 스토리 선택하기 :</label>
-                        <select id="story-dropdown"></select>
+                        <select id="story-dropdown" autocomplete="off"></select>
                     </div>
                     <div id="flavor-text-box" class="flavor-text-box">
                         <p id="unlock-desc-text"></p>
@@ -35,11 +44,21 @@
                 </div>
                 <button id="restart-button" class="restart-button">다시 재생하기</button>
             </div>
+
+            <!-- Chat Messages Container -->
             <div class="story-container" id="story-container"></div>
+
+            <!-- Player Choice Options -->
             <div class="options-container" id="options-container"></div>
         </section>
     </main>
 
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top-btn" class="scroll-to-top-btn" aria-label="Scroll to top">
+        ↑
+    </button>
+
+    <!-- Scripts -->
     <script src="js/chat-viewer/dorm3d.js"></script>
     <script src="js/chat-viewer/chat-viewer.engine.js"></script>
     <script src="js/nav.script.js"></script>

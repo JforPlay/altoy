@@ -13,12 +13,15 @@ class ChatViewerEngine {
         
         // DOM Elements
         this.characterGrid = document.getElementById('character-selector-grid');
+        this.characterSelectionSection = document.getElementById('character-selection-section');
+        this.selectedCharacterNameDisplay = document.getElementById('selected-character-name');
         this.storyDisplaySection = document.getElementById('story-display-section');
         this.storyDropdown = document.getElementById('story-dropdown');
         this.unlockDescText = document.getElementById('unlock-desc-text');
         this.storyContainer = document.getElementById('story-container');
         this.optionsContainer = document.getElementById('options-container');
         this.restartButton = document.getElementById('restart-button');
+        this.scrollToTopBtn = document.getElementById('scroll-to-top-btn');
         
         // Data and state
         this.allData = {};
@@ -87,7 +90,8 @@ class ChatViewerEngine {
             if (!iconSrc && this.groupChatIcons[firstStory.kr_name]) {
                 iconSrc = this.groupChatIcons[firstStory.kr_name];
             } else if (!iconSrc) {
-                iconSrc = 'https://via.placeholder.com/80';
+                // SVG fallback placeholder (no external dependency)
+                iconSrc = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
             }
             
             const shipName = firstStory.ship_name || '';
@@ -108,15 +112,33 @@ class ChatViewerEngine {
      */
     handleCharacterClick(characterName) {
         this.selectedCharacterName = characterName;
-        
+
         document.querySelectorAll('.character-card').forEach(card => {
             card.classList.toggle('selected', card.dataset.characterName === characterName);
         });
-        
+
+        // Get character display name
+        const characterData = this.allData[characterName];
+        const firstStoryId = Object.keys(characterData)[0];
+        const displayName = characterData[firstStoryId]?.kr_name || characterName;
+
+        // Update collapsed state display
+        if (this.selectedCharacterNameDisplay) {
+            this.selectedCharacterNameDisplay.textContent = `(${displayName})`;
+        }
+
+        // Collapse character selection section
+        this.characterSelectionSection.classList.add('collapsed');
+
         this.storyDisplaySection.classList.remove('hidden');
         this.populateStoryDropdown(this.allData[characterName]);
         this.storyContainer.innerHTML = '';
         this.optionsContainer.innerHTML = '';
+
+        // Smooth scroll to show the chat section
+        setTimeout(() => {
+            this.storyDisplaySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
     }
     
     /**
@@ -166,6 +188,34 @@ class ChatViewerEngine {
         this.showNextLineAfterDelay(this.initialDelay);
     }
     
+    /**
+     * Modern chat-style auto-scroll with smart behavior
+     * Only scrolls if user is near the bottom (not reading old messages)
+     * Adds comfortable spacing for better readability
+     */
+    scrollToLatest(element) {
+        // Small delay to ensure element is rendered and CSS transitions applied
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                const container = this.storyContainer;
+
+                // For initial messages or when at bottom, always scroll
+                // Check if user is near the bottom (within 150px) or container is very short
+                const scrolledFromBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
+                const isNearBottom = scrolledFromBottom < 150 || container.scrollHeight <= container.clientHeight;
+
+                // Only auto-scroll if user hasn't scrolled up to read old messages
+                if (isNearBottom) {
+                    // Modern approach: scroll container to bottom with smooth animation
+                    container.scrollTo({
+                        top: container.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    }
+
     /**
      * Main story progression engine
      */
@@ -310,8 +360,8 @@ class ChatViewerEngine {
         } else {
             this.storyContainer.appendChild(messageBubble);
         }
-        
-        topLevelElement.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+        this.scrollToLatest(topLevelElement);
         return topLevelElement;
     }
     
@@ -338,20 +388,20 @@ class ChatViewerEngine {
             wrapper.style.background = 'transparent';
             wrapper.appendChild(container);
             this.storyContainer.appendChild(wrapper);
-            wrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            this.scrollToLatest(wrapper);
         } else {
             const wrapper = document.createElement('div');
             wrapper.className = 'character-line-wrapper';
-            
+
             const portrait = document.createElement('img');
             portrait.className = 'portrait';
             portrait.src = script.icon;
             portrait.alt = script.kr_name;
-            
+
             wrapper.appendChild(portrait);
             wrapper.appendChild(container);
             this.storyContainer.appendChild(wrapper);
-            wrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            this.scrollToLatest(wrapper);
         }
     }
     
@@ -363,9 +413,9 @@ class ChatViewerEngine {
         message.className = 'system-message';
         message.textContent = script.param;
         this.storyContainer.appendChild(message);
-        message.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        this.scrollToLatest(message);
     }
-    
+
     /**
      * Displays a red envelope
      */
@@ -374,7 +424,7 @@ class ChatViewerEngine {
         envelope.className = 'red-envelope-bubble';
         envelope.textContent = '세뱃돈을 탭하여 확인';
         this.storyContainer.appendChild(envelope);
-        envelope.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        this.scrollToLatest(envelope);
     }
     
     /**
@@ -382,7 +432,7 @@ class ChatViewerEngine {
      */
     displayOptions(options) {
         this.optionsContainer.innerHTML = '';
-        
+
         options.forEach(option => {
             const button = document.createElement('button');
             button.classList.add('choice-button');
@@ -390,8 +440,17 @@ class ChatViewerEngine {
             button.onclick = () => this.handleChoice(option.flag, option.content);
             this.optionsContainer.appendChild(button);
         });
-        
-        this.optionsContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+        // Force scroll to bottom when options appear (they push content up)
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                const container = this.storyContainer;
+                container.scrollTo({
+                    top: container.scrollHeight,
+                    behavior: 'smooth'
+                });
+            });
+        });
     }
     
     /**
@@ -417,11 +476,11 @@ class ChatViewerEngine {
         const choiceBubble = document.createElement('div');
         choiceBubble.classList.add('message-bubble', 'player', 'selected-choice');
         choiceBubble.innerHTML = `<p>${chosenText}</p>`;
-        
+
         this.storyContainer.appendChild(choiceBubble);
-        choiceBubble.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        this.scrollToLatest(choiceBubble);
     }
-    
+
     /**
      * Displays end of conversation message
      */
@@ -430,7 +489,7 @@ class ChatViewerEngine {
         endMessage.className = 'end-of-conversation';
         endMessage.textContent = '대화 종료';
         this.storyContainer.appendChild(endMessage);
-        endMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        this.scrollToLatest(endMessage);
     }
     
     /**
@@ -439,5 +498,33 @@ class ChatViewerEngine {
     attachEventListeners() {
         this.storyDropdown.addEventListener('change', () => this.loadSelectedStory());
         this.restartButton.addEventListener('click', () => this.initializeStory());
+
+        // Toggle character selection section
+        const sectionHeader = this.characterSelectionSection.querySelector('h3');
+        if (sectionHeader) {
+            sectionHeader.addEventListener('click', () => {
+                this.characterSelectionSection.classList.toggle('collapsed');
+            });
+        }
+
+        // Scroll to top button functionality
+        if (this.scrollToTopBtn) {
+            // Show/hide button based on scroll position
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    this.scrollToTopBtn.classList.add('visible');
+                } else {
+                    this.scrollToTopBtn.classList.remove('visible');
+                }
+            });
+
+            // Scroll to top when clicked
+            this.scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
     }
 }
