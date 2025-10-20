@@ -29,6 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
         currentStoryDefaultBgUrl: null, // Only used by main viewer
         audio: new Audio(),
 
+        // Performance cache for background state
+        cachedBackground: {
+            url: null,
+            isBlack: false,
+            lastIndex: -1
+        },
+
         COMMANDER_ICON_PATH: 'assets/icon/commander.png',
         BASE_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/",
         BGM_URL_PREFIX: "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/",
@@ -76,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             muteBtn: document.getElementById('mute-btn'),
             volumeSlider: document.getElementById('volume-slider'),
             bgmNameSpan: document.getElementById('bgm-name'),
+            progressIndicator: document.getElementById('progress-indicator'),
         },
 
         // =========================================================================
@@ -85,15 +93,19 @@ document.addEventListener('DOMContentLoaded', () => {
             this.config = config;
             this.audio.loop = true;
             this.audio.volume = 0.01;
+            this.showLoadingState();
             this.loadData()
                 .then(() => {
                     this.populateEventGrid();
                     this.handleUrlParameters();
                     this.setupEventListeners();
+                    this.setupBrowserBackButton();
+                    this.hideLoadingState();
                 })
                 .catch(error => {
                     console.error('Initialization failed:', error);
                     this.showError('Failed to load critical story data. Please refresh.');
+                    this.hideLoadingState();
                 });
         },
 
@@ -156,6 +168,47 @@ document.addEventListener('DOMContentLoaded', () => {
             this.audio.addEventListener('pause', () => this.updateAudioPlayerUI());
         },
 
+        setupBrowserBackButton() {
+            window.addEventListener('popstate', (e) => {
+                if (e.state) {
+                    // User pressed back with saved state
+                    const { eventId, storyId } = e.state;
+                    if (eventId && storyId) {
+                        // Restore story view
+                        this.selectEvent(eventId, false);
+                        const eventData = this.storylineData[eventId];
+                        const memoryData = this.config.findMemory(eventData, storyId);
+                        if (memoryData) {
+                            this.startStory(memoryData, false);
+                        }
+                    } else if (eventId) {
+                        // Restore memory selection view
+                        this.selectEvent(eventId, false);
+                    }
+                } else {
+                    // User pressed back to initial state
+                    this.switchView(this.elements.eventSelectionView);
+                }
+            });
+        },
+
+        cleanupAudioListeners() {
+            // Remove old event listeners if they exist
+            if (this.audioPlayHandler) {
+                this.audio.removeEventListener('play', this.audioPlayHandler);
+            }
+            if (this.audioPauseHandler) {
+                this.audio.removeEventListener('pause', this.audioPauseHandler);
+            }
+
+            // Store new handlers for future cleanup
+            this.audioPlayHandler = () => this.updateAudioPlayerUI();
+            this.audioPauseHandler = () => this.updateAudioPlayerUI();
+
+            this.audio.addEventListener('play', this.audioPlayHandler);
+            this.audio.addEventListener('pause', this.audioPauseHandler);
+        },
+
         // =========================================================================
         // URL & VIEW MANAGEMENT
         // =========================================================================
@@ -178,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         handleUrlParameters() {
             const urlParams = new URLSearchParams(window.location.search);
-            const eventId = urlParams.get('eventId') || urlParams.get('eventid');
+            const eventId = urlParams.get('eventid'); // Consistently use lowercase 'eventid'
             const storyId = urlParams.get('story');
 
             if (eventId && this.storylineData[eventId]) {
@@ -216,6 +269,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const filteredEvents = Object.entries(this.storylineData) // Use Object.entries to get both key and value
                 .filter(([key, event]) => event.name.toLowerCase().includes((searchTerm || '').toLowerCase()));
 
+            if (filteredEvents.length === 0 && Object.keys(this.storylineData).length === 0) {
+                // Still loading - show skeleton cards
+                for (let i = 0; i < 6; i++) {
+                    const skeletonCard = this.createSkeletonCard();
+                    this.elements.eventGrid.appendChild(skeletonCard);
+                }
+                return;
+            }
+
             filteredEvents.forEach(([key, event]) => {
                 // This new line robustly finds the ID whether it's the key or a property inside the object.
                 const eventId = event.id || key;
@@ -229,6 +291,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 );
                 this.elements.eventGrid.appendChild(card);
             });
+        },
+
+        createSkeletonCard() {
+            const card = document.createElement('div');
+            card.className = 'grid-card skeleton-card';
+            card.innerHTML = `
+                <div class="card-thumbnail skeleton-thumbnail"></div>
+                <div class="card-content">
+                    <div class="skeleton-title"></div>
+                    <div class="skeleton-subtitle"></div>
+                </div>`;
+            return card;
         },
 
         createCard(title, subtitle, icon, pathPrefix, onClick, id = null) {
@@ -326,6 +400,13 @@ document.addEventListener('DOMContentLoaded', () => {
             this.lastActorId = null;
             this.currentBgm = null;
             this.currentStoryDefaultBgUrl = null;
+
+            // Reset background cache for new story
+            this.cachedBackground = {
+                url: null,
+                isBlack: false,
+                lastIndex: -1
+            };
 
             // Set default background for both viewer types if mask exists
             if (memory.mask) {
@@ -448,10 +529,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const nextDisplayableExists = this.currentStoryScript.slice(this.scriptIndex + 1)
                 .some(line => this.isLineDisplayable(line));
             el.nextLineBtn.classList.toggle('hidden', hasOptions || !nextDisplayableExists);
-            
+
             el.returnBtn.classList.toggle('hidden', !isAtEnd);
             el.nextStoryBtn.classList.toggle('hidden', !(isAtEnd && this.nextMemory));
             el.nextPageIndicator.classList.toggle('hidden', isAtEnd || hasOptions);
+
+            // Update progress indicator
+            this.updateProgressIndicator();
 
             if (hasOptions) {
                 line.options.forEach(opt => {
@@ -519,9 +603,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const actorNameId = parseInt(line.actorName, 10);
                 if (!isNaN(actorNameId) && this.shipgirlData[actorNameId]) {
                     const overrideChar = this.shipgirlData[actorNameId];
+                    actorInfo.id = actorNameId; // Update ID so UI knows actor changed
                     actorInfo.name = overrideChar.name;
                     actorInfo.icon = overrideChar.icon;
                 } else {
+                    // For text actorName, use it as both ID and name
+                    actorInfo.id = line.actorName;
                     actorInfo.name = line.actorName;
                 }
             }
@@ -563,9 +650,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updateBackground() {
             const backgroundElement = this.elements.storyViewerView.querySelector('.story-background');
+
+            // Check if we need to recalculate background (performance optimization)
+            if (this.cachedBackground.lastIndex === this.scriptIndex) {
+                return; // Background hasn't changed
+            }
+
+            // Only scan if current line has background info, otherwise use cached
+            const currentLine = this.currentStoryScript[this.scriptIndex];
+            const needsRescan = currentLine?.bgName || currentLine?.blackBg !== undefined;
+
+            if (!needsRescan && this.cachedBackground.lastIndex >= 0) {
+                // Use cached values
+                this.cachedBackground.lastIndex = this.scriptIndex;
+                return;
+            }
+
             let backgroundImageUrl = null;
             let isBlackBackground = false;
 
+            // Only scan backwards when necessary
             for (let i = this.scriptIndex; i >= 0; i--) {
                 const line = this.currentStoryScript[i];
                 if (line) {
@@ -577,6 +681,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!backgroundImageUrl && this.currentStoryDefaultBgUrl) {
                 backgroundImageUrl = `url('${this.currentStoryDefaultBgUrl}')`;
             }
+
+            // Update cache
+            this.cachedBackground = {
+                url: backgroundImageUrl,
+                isBlack: isBlackBackground,
+                lastIndex: this.scriptIndex
+            };
 
             if (isBlackBackground) {
                 backgroundElement.style.backgroundColor = 'black';
@@ -644,9 +755,17 @@ document.addEventListener('DOMContentLoaded', () => {
         updateAudioPlayerUI() {
             const el = this.elements;
             if (!el.playPauseBtn || !el.muteBtn || !el.volumeSlider) return;
+
+            const isPlaying = !this.audio.paused;
+
             el.playPauseBtn.querySelector('.material-icons').textContent = this.audio.paused ? 'play_arrow' : 'pause';
             el.muteBtn.querySelector('.material-icons').textContent = this.audio.muted || this.audio.volume === 0 ? 'volume_off' : 'volume_up';
             el.volumeSlider.value = this.audio.muted ? 0 : this.audio.volume;
+
+            // Toggle waveform animation
+            if (el.audioPlayerContainer) {
+                el.audioPlayerContainer.classList.toggle('playing', isPlaying);
+            }
         },
 
         showError(message) {
@@ -666,6 +785,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 popup.classList.remove('show');
                 setTimeout(() => popup.classList.add('hidden'), 500);
             }, duration);
+        },
+
+        updateProgressIndicator() {
+            if (!this.elements.progressIndicator) return;
+
+            const totalLines = this.currentStoryScript.length;
+            const currentLine = this.scriptIndex + 1;
+            const percentage = Math.round((currentLine / totalLines) * 100);
+
+            this.elements.progressIndicator.innerHTML = `
+                <div class="progress-text">${currentLine} / ${totalLines}</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" style="width: ${percentage}%"></div>
+                </div>
+            `;
+        },
+
+        showLoadingState() {
+            // Show skeleton cards in the event grid
+            if (this.elements.eventGrid) {
+                this.elements.eventGrid.innerHTML = '';
+                for (let i = 0; i < 6; i++) {
+                    const skeletonCard = this.createSkeletonCard();
+                    this.elements.eventGrid.appendChild(skeletonCard);
+                }
+            }
+        },
+
+        hideLoadingState() {
+            // Loading state is automatically removed when populateEventGrid is called
+            // This method is here for explicit cleanup if needed
         },
 
         // =========================================================================

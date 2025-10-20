@@ -161,6 +161,51 @@ body {
   margin: 0 auto;
 }
 
+/* --- Skeleton Loading States --- */
+.skeleton-card {
+  pointer-events: none;
+  cursor: default;
+}
+
+.skeleton-card:hover {
+  transform: none;
+  box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.skeleton-thumbnail {
+  background: linear-gradient(90deg, var(--border-color) 25%, var(--bg-color) 50%, var(--border-color) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-title,
+.skeleton-subtitle {
+  height: 1.2rem;
+  background: linear-gradient(90deg, var(--border-color) 25%, var(--bg-color) 50%, var(--border-color) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-title {
+  width: 70%;
+  height: 1.4rem;
+}
+
+.skeleton-subtitle {
+  width: 90%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 .grid-card {
   background-color: var(--card-bg);
   border-radius: 0.75rem;
@@ -276,6 +321,38 @@ body {
   font-size: 1.5rem;
   flex-grow: 1;
   text-align: center;
+}
+
+/* --- Progress Indicator --- */
+.progress-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0 1rem;
+  min-width: 120px;
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--subtitle-color);
+  white-space: nowrap;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 4px;
+  background-color: var(--border-color);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 70%, white));
+  border-radius: 2px;
+  transition: width 0.3s ease;
 }
 
 body.dark-mode .story-header {
@@ -465,8 +542,60 @@ body.dark-mode .story-header {
   z-index: 20;
   grid-column: 1 / 2;
   justify-self: start;
-  min-width: 180px;
+  min-width: 240px;
   flex-wrap: nowrap;
+}
+
+/* --- Waveform Visualization --- */
+.waveform-container {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 24px;
+  padding: 0 0.5rem;
+}
+
+.waveform-bar {
+  width: 3px;
+  background: var(--accent-color);
+  border-radius: 2px;
+  height: 4px;
+  transition: height 0.1s ease;
+}
+
+/* Animated waveform when playing */
+.audio-player-container.playing .waveform-bar:nth-child(1) {
+  animation: wave 0.8s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.audio-player-container.playing .waveform-bar:nth-child(2) {
+  animation: wave 0.8s ease-in-out infinite;
+  animation-delay: 0.1s;
+}
+
+.audio-player-container.playing .waveform-bar:nth-child(3) {
+  animation: wave 0.8s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+.audio-player-container.playing .waveform-bar:nth-child(4) {
+  animation: wave 0.8s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.audio-player-container.playing .waveform-bar:nth-child(5) {
+  animation: wave 0.8s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
+
+@keyframes wave {
+  0%, 100% {
+    height: 4px;
+  }
+  50% {
+    height: 20px;
+  }
 }
 
 .audio-btn {
@@ -720,6 +849,15 @@ body.dark-mode .story-header {
   #story-title {
     font-size: 1.1rem;
     margin-left: 0.5rem;
+  }
+
+  .progress-indicator {
+    min-width: 80px;
+    margin: 0 0.5rem;
+  }
+
+  .progress-text {
+    font-size: 0.75rem;
   }
 
   #view-script-btn {

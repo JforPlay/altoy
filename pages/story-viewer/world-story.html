@@ -17,6 +17,7 @@
 <body>
     <div id="navbar-placeholder"></div>
     <div id="error-container" class="error-container hidden"></div>
+    <div id="soft-popup" class="soft-popup hidden"></div>
 
     <div id="event-selection-view">
         <header class="viewer-header">
@@ -37,11 +38,13 @@
     </div>
 
     <div id="story-viewer-view" class="hidden">
+        <div id="fade-overlay" class="fade-overlay"></div>
         <div id="viewer-container" class="viewer-container">
             <div class="story-background"></div>
             <header id="story-header" class="story-header">
                 <button id="back-to-memory-selection" class="nav-button back-button">&#x2190;</button>
                 <h2 id="story-title"></h2>
+                <div id="progress-indicator" class="progress-indicator"></div>
                 <button id="view-script-btn" class="nav-button" title="View Full Script">
                     <span class="material-icons">menu_book</span>
                     전체 대사보기
@@ -66,6 +69,13 @@
                     <button id="play-pause-btn" class="audio-btn">
                         <span class="material-icons">play_arrow</span>
                     </button>
+                    <div class="waveform-container">
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
+                        <div class="waveform-bar"></div>
+                    </div>
                     <span id="bgm-name" class="bgm-name"></span>
                     <div class="volume-control">
                         <button id="mute-btn" class="audio-btn">
