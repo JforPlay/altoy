@@ -19,9 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
         modalCancelBtn: null
     };
 
-    // Cache ship data lookups for goal tracker (avoid expensive searches)
-    const shipDataCache = new Map();
-
     /**
      * Caches frequently accessed DOM elements for performance optimization.
      */
@@ -40,34 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const { parseDatasetInt, getCheckedFilterValues, debounce, filterSearchDropdown, setupDropdownToggle, createTrackerItem } = ShipgirlTrackerUtils;
 
     /**
-     * Cached ship data lookup for goal tracker (avoids expensive searches).
+     * Lookup ship data by name for goal tracker.
      * @param {string} shipName - Ship name to search for.
      * @returns {object|null} Ship data or null if not found.
      */
     function getShipDataByName(shipName) {
-        // Check cache first
-        if (shipDataCache.has(shipName)) {
-            return shipDataCache.get(shipName);
-        }
-
-        // Exact match
-        let shipData = Object.values(fullShipData).find(ship => ship.name === shipName);
-
-        // Fallback: Partial match
-        if (!shipData) {
-            shipData = Object.values(fullShipData).find(ship =>
-                ship.name && (ship.name.includes(shipName) || shipName.includes(ship.name))
-            );
-        }
-
-        // Cache the result (even if null to avoid repeated searches)
-        shipDataCache.set(shipName, shipData || null);
-
-        if (!shipData) {
-            console.warn(`Ship data not found for: "${shipName}"`);
-        }
-
-        return shipData;
+        return Object.values(fullShipData).find(ship => ship.name === shipName) ||
+               Object.values(fullShipData).find(ship =>
+                   ship.name && (ship.name.includes(shipName) || shipName.includes(ship.name))
+               ) || null;
     }
 
     /**
@@ -578,59 +556,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Calculates current progress for fleet tech goals.
-     * Returns an object mapping nationality names to their current fleet tech scores.
-     */
-    function calculateCurrentFleetTechScores() {
-        const scores = {};
-
-        // Calculate scores from checked ships
-        document.querySelectorAll('.ship-card').forEach(card => {
-            const nationalityId = card.dataset.nationality;
-            const nationalityName = nationalityData[nationalityId]?.name;
-
-            if (!nationalityName) return;
-            if (!scores[nationalityName]) scores[nationalityName] = 0;
-
-            const isGetChecked = card.querySelector('[data-type="get"]')?.checked;
-            const isLevelChecked = card.querySelector('[data-type="level"]')?.checked;
-            const isUpgradeChecked = card.querySelector('[data-type="upgrade"]')?.checked;
-
-            if (isGetChecked) scores[nationalityName] += parseDatasetInt(card.dataset.ptGet);
-            if (isLevelChecked) scores[nationalityName] += parseDatasetInt(card.dataset.ptLevel);
-            if (isUpgradeChecked) scores[nationalityName] += parseDatasetInt(card.dataset.ptUpgrade);
-        });
-
-        return scores;
-    }
-
-    /**
-     * Calculates current ship counts by position for each nationality.
-     * Returns nested object: { nationality: { position: count } }
-     */
-    function calculatePositionCounts() {
-        const counts = {};
-
-        document.querySelectorAll('.ship-card').forEach(card => {
-            const nationalityId = card.dataset.nationality;
-            const typeId = card.dataset.type;
-            const nationalityName = nationalityData[nationalityId]?.name;
-            const position = shipTypeData[typeId]?.position;
-
-            if (!nationalityName || !position) return;
-
-            const isGetChecked = card.querySelector('[data-type="get"]')?.checked;
-            if (!isGetChecked) return; // Only count collected ships
-
-            if (!counts[nationalityName]) counts[nationalityName] = {};
-            if (!counts[nationalityName][position]) counts[nationalityName][position] = 0;
-            counts[nationalityName][position]++;
-        });
-
-        return counts;
-    }
-
-    /**
      * Gets or sets the selected goal ship name.
      */
     function getSelectedGoal() {
@@ -803,8 +728,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Updates the goal detail display for the selected ship.
-     * @param {object} currentScores - Pre-calculated fleet tech scores (optional, will calculate if not provided)
-     * @param {object} positionCounts - Pre-calculated position counts (optional, will calculate if not provided)
+     * @param {object} currentScores - Pre-calculated fleet tech scores from calculateAndDisplayScores
+     * @param {object} positionCounts - Pre-calculated position counts from calculateAndDisplayScores
      */
     function updateGoalDisplay(currentScores, positionCounts) {
         const detailContainer = document.getElementById('goal-detail-container');
@@ -815,18 +740,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!goalData) return;
 
-        // Only recalculate if data not provided (e.g., on initial render or goal change)
+        // If scores not provided (e.g., goal selection changed), recalculate by calling calculateAndDisplayScores
         if (!currentScores || !positionCounts) {
-            currentScores = calculateCurrentFleetTechScores();
-            positionCounts = calculatePositionCounts();
-            // Full re-render needed
-            detailContainer.innerHTML = '';
-            const card = createDetailedGoalCard(selectedGoal, goalData, currentScores, positionCounts);
-            detailContainer.appendChild(card);
-        } else {
-            // Data provided - just update progress bars efficiently
-            updateGoalProgressBars(selectedGoal, goalData, currentScores, positionCounts);
+            calculateAndDisplayScores(); // This will call updateGoalDisplay with scores
+            return;
         }
+
+        // Data provided - update progress bars efficiently
+        updateGoalProgressBars(selectedGoal, goalData, currentScores, positionCounts);
     }
 
     /**
@@ -837,8 +758,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!detailContainer) return;
 
         const card = detailContainer.querySelector('.goal-card');
-        if (!card) {
-            // Card doesn't exist, do full render
+        const currentShipName = card?.querySelector('.goal-ship-name')?.textContent;
+
+        // Card doesn't exist OR different ship selected - do full render
+        if (!card || currentShipName !== shipName) {
             detailContainer.innerHTML = '';
             const newCard = createDetailedGoalCard(shipName, goalData, currentScores, positionCounts);
             detailContainer.appendChild(newCard);
@@ -1608,14 +1531,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Renders the ship cards that are currently visible after filtering.
+     * Initial render of all ship cards (called once on page load).
      */
-    function renderVisibleCards() {
+    function renderAllCards() {
         const container = cachedElements.shipListContainer;
         if (!container) return;
-        container.innerHTML = '';
         const fragment = document.createDocumentFragment();
-        filteredShipIds.forEach(shipId => {
+        Object.keys(fullShipData).forEach(shipId => {
             const ship = fullShipData[shipId];
             if (ship) {
                 const card = createShipCard(ship, shipId);
@@ -1623,8 +1545,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         container.appendChild(fragment);
-        // Apply saved progress after rendering the cards.
         loadProgress();
+    }
+
+    /**
+     * Updates visibility of ship cards based on current filters (show/hide instead of recreate).
+     */
+    function renderVisibleCards() {
+        const container = cachedElements.shipListContainer;
+        if (!container) return;
+        const visibleSet = new Set(filteredShipIds);
+        container.querySelectorAll('.ship-card').forEach(card => {
+            card.style.display = visibleSet.has(card.dataset.shipId) ? '' : 'none';
+        });
     }
 
     async function initialize() {
@@ -1687,20 +1620,24 @@ document.addEventListener('DOMContentLoaded', () => {
             // Populate filters and render initial ship list.
             // Note: Order matters - filter bar is rendered first, then goal tracker below it
             populateFilters();
+            renderAllCards();
             applyFilters();
             renderGoalTracker();
 
             // Set up event listeners for search and filters.
             const searchInput = document.getElementById('search-bar');
             const searchDropdown = document.getElementById('search-dropdown');
-            searchInput.addEventListener('input', () => {
+            const debouncedSearchFilter = debounce(() => {
                 filterSearchDropdown(searchInput, searchDropdown);
                 applyFilters();
-            });
+            }, 150);
+            const debouncedApplyFilters = debounce(applyFilters, 150);
+
+            searchInput.addEventListener('input', debouncedSearchFilter);
             setupDropdownToggle(searchInput, searchDropdown);
 
             document.getElementById('reset-filters-btn').addEventListener('click', resetFilters);
-            
+
             filterBar.addEventListener('click', (e) => {
                 const toggle = e.target.closest('.filter-group-toggle');
                 if (toggle) {
@@ -1717,7 +1654,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (target.type === 'checkbox') {
                         handleFilterCheckboxLogic(target);
                     }
-                    applyFilters();
+                    debouncedApplyFilters();
                 }
             });
             // Event delegation for tracker checkboxes.
