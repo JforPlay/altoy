@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
         buttons: {
             clearAll: document.getElementById('clear-all-btn'),
             info: document.getElementById('info-button'),
-            filterToggle: document.getElementById('filter-toggle-btn')
+            filterToggle: document.getElementById('filter-toggle-btn'),
+            scrollToTop: document.getElementById('scroll-to-top')
         },
         popup: {
             container: document.getElementById('info-popup'),
@@ -64,6 +65,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return (...args) => {
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    };
+
+    const throttle = (func, limit) => {
+        let inThrottle;
+        return (...args) => {
+            if (!inThrottle) {
+                func.apply(this, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
         };
     };
 
@@ -220,35 +232,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === RENDERER ===
     const Renderer = {
-        _createSkinBoxHtml(skin) {
+        _createSkinBox(skin) {
             const characterName = encodeURIComponent(skin['함순이 이름']);
             const skinName = encodeURIComponent(skin['한글 함순이 + 스킨 이름']);
             const linkUrl = `pages/skin/skin-detail-viewer.html?character=${characterName}&skin=${skinName}`;
 
-            const gemIconHtml = `<img src="assets/icon/60px-Ruby.png" class="gem-icon" alt="Gem">`;
-            const costHtml = skin['재화'] ? `${gemIconHtml} ${skin['재화']}` : 'N/A';
-            const periodHtml = skin['기간'] || '정보 없음';
-            const badgeHtml = skin.isSold ? '<div class="new-badge">판매중</div>' : '';
+            const link = document.createElement('a');
+            link.href = linkUrl;
+            link.className = 'skin-box-link';
 
-            return `
-                <a href="${linkUrl}" class="skin-box-link">
-                    <div class="skin-box">
-                        <div class="skin-image-wrapper">
-                            ${badgeHtml}
-                            <img src="${skin['깔끔한 일러']}" class="skin-image" loading="lazy">
-                        </div>
-                        <div class="skin-info">
-                            <h3>${skin['함순이 이름']}</h3>
-                            <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
-                            <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
-                            <div class="info-line"><strong>진영:</strong> ${skin['진영'] || '없음'}</div>
-                            <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
-                            <div class="info-line"><strong>가격:</strong> ${costHtml}</div>
-                            <div class="info-line"><strong>기간:</strong> ${periodHtml}</div>
-                        </div>
+            const costHtml = skin['재화']
+                ? `<img src="assets/icon/60px-Ruby.png" class="gem-icon" alt="Gem"> ${skin['재화']}`
+                : 'N/A';
+
+            link.innerHTML = `
+                <div class="skin-box">
+                    <div class="skin-image-wrapper">
+                        ${skin.isSold ? '<div class="new-badge">판매중</div>' : ''}
+                        <img src="${skin['깔끔한 일러']}" class="skin-image" loading="lazy" alt="${skin['함순이 이름']}">
                     </div>
-                </a>
+                    <div class="skin-info">
+                        <h3>${skin['함순이 이름']}</h3>
+                        <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
+                        <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
+                        <div class="info-line"><strong>진영:</strong> ${skin['진영'] || '없음'}</div>
+                        <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
+                        <div class="info-line"><strong>가격:</strong> ${costHtml}</div>
+                        <div class="info-line"><strong>기간:</strong> ${skin['기간'] || '정보 없음'}</div>
+                    </div>
+                </div>
             `;
+
+            return link;
         },
 
         _isSkinCurrentlySold(skin) {
@@ -297,10 +312,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Categorize and append skins
             skins.forEach(skin => {
                 const category = this._categorizeSkin(skin);
-                const skinBoxHtml = this._createSkinBoxHtml(skin);
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = skinBoxHtml.trim();
-                fragments[category].appendChild(tempDiv.firstChild);
+                const skinBox = this._createSkinBox(skin);
+                fragments[category].appendChild(skinBox);
             });
 
             // Append fragments and toggle section visibility
@@ -346,25 +359,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
         openPopup() {
             DOM.popup.container.classList.add('visible');
-            document.body.classList.add('no-scroll');
+            document.body.style.overflow = 'hidden';
         },
 
         closePopup() {
             DOM.popup.container.classList.remove('visible');
-            document.body.classList.remove('no-scroll');
+            document.body.style.overflow = '';
         },
 
         toggleFilters() {
             DOM.filterContainer.classList.toggle('visible');
             DOM.buttons.filterToggle.classList.toggle('active');
+        },
+
+        scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        },
+
+        handleScroll() {
+            const scrollThreshold = 300;
+            if (window.scrollY > scrollThreshold) {
+                DOM.buttons.scrollToTop.classList.add('visible');
+            } else {
+                DOM.buttons.scrollToTop.classList.remove('visible');
+            }
         }
     };
 
-    // === DEBOUNCED FUNCTIONS ===
+    // === DEBOUNCED/THROTTLED FUNCTIONS ===
     const debouncedFilterUpdate = debounce(() => {
         FilterEngine.apply();
         URLState.update();
     }, DEBOUNCE_DELAY);
+
+    const throttledScrollHandler = throttle(EventHandlers.handleScroll, 100);
 
     // === DATA INITIALIZATION ===
     fetch('data/skin/skin_voiceline_data_subset.json')
@@ -393,6 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
     DOM.buttons.clearAll.addEventListener('click', EventHandlers.resetFilters);
     DOM.buttons.info.addEventListener('click', EventHandlers.openPopup);
     DOM.buttons.filterToggle.addEventListener('click', EventHandlers.toggleFilters);
+    DOM.buttons.scrollToTop.addEventListener('click', EventHandlers.scrollToTop);
     DOM.popup.closeBtn.addEventListener('click', EventHandlers.closePopup);
 
     DOM.popup.container.addEventListener('click', (event) => {
@@ -403,5 +435,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!DOM.search.parentNode.contains(e.target)) Autocomplete.close();
     });
 
+    window.addEventListener('scroll', throttledScrollHandler);
     window.addEventListener('popstate', URLState.apply);
 });

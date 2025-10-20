@@ -1,38 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
-    function setResponsiveFontSize() {
-        const baseWidth = 1920;
-        const minWidth = 1024;
-        const maxWidth = 2560;
+    // =========================================================================
+    // UTILITY FUNCTIONS
+    // =========================================================================
 
-        let windowWidth = window.innerWidth;
-        if (windowWidth < minWidth) windowWidth = minWidth;
-        if (windowWidth > maxWidth) windowWidth = maxWidth;
-
-        const scaleFactor = windowWidth / baseWidth;
-        const baseFontSize = 16;
-
-        document.documentElement.style.fontSize = `${baseFontSize * scaleFactor}px`;
+    // Debounce function for performance
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
     }
 
-    setResponsiveFontSize();
-    window.addEventListener('resize', setResponsiveFontSize);
+    // Removed responsive font sizing - using fixed sizes instead
 
-    const timelineWrapper = document.querySelector('.timeline-wrapper');
-    const timelineContainer = document.getElementById('timeline-container');
-    const canvas = document.getElementById('timeline-canvas');
-    const ctx = canvas.getContext('2d');
-    const indicator = document.getElementById('timeline-indicator');
-    const progressBarContainer = document.getElementById('progress-bar-container');
-    const filterButton = document.getElementById('filter-button');
-    const filterPanel = document.getElementById('filter-panel');
+    // =========================================================================
+    // DOM ELEMENTS - Cached for performance
+    // =========================================================================
+    const elements = {
+        loadingOverlay: document.getElementById('loading-overlay'),
+        timelineWrapper: document.querySelector('.timeline-wrapper'),
+        timelineContainer: document.getElementById('timeline-container'),
+        canvas: document.getElementById('timeline-canvas'),
+        indicator: document.getElementById('timeline-indicator'),
+        progressBarContainer: document.getElementById('progress-bar-container'),
+        progressBar: document.getElementById('progress-bar'),
+        filterButton: document.getElementById('filter-button'),
+        filterPanel: document.getElementById('filter-panel'),
+        filterBadge: document.getElementById('filter-badge'),
+        searchInput: document.getElementById('search-input'),
+        modal: document.getElementById('details-modal'),
+        modalTitle: document.getElementById('modal-title'),
+        modalDescription: document.getElementById('modal-description'),
+        modalSummary: document.getElementById('modal-summary'),
+        modalShipNation: document.getElementById('modal-shipnation'),
+        modalBgm: document.getElementById('modal-bgm'),
+        modalFooter: document.querySelector('#details-modal .modal-footer'),
+        closeButton: document.querySelector('.close-button'),
+        storyButton: null // Will be created once and reused
+    };
 
-    const modal = document.getElementById('details-modal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalDescription = document.getElementById('modal-description');
-    const modalSummary = document.getElementById('modal-summary');
-    const modalShipNation = document.getElementById('modal-shipnation');
-    const modalBgm = document.getElementById('modal-bgm');
-    const closeButton = document.querySelector('.close-button');
+    const ctx = elements.canvas.getContext('2d');
 
     const factionMap = {
         1: "이글 유니온",
@@ -49,8 +61,16 @@ document.addEventListener('DOMContentLoaded', () => {
         97: "META"
     };
 
+    // =========================================================================
+    // STATE
+    // =========================================================================
     let allData = {};
+    let allDataArray = []; // Cache Object.values result
+    let domElementsCache = new Map(); // Cache for DOM queries
 
+    // =========================================================================
+    // DATA LOADING
+    // =========================================================================
     fetch('data/story-viewer/main_story_data.json')
         .then(response => {
             if (!response.ok) {
@@ -60,32 +80,56 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(data => {
             allData = data;
-            renderTimeline(Object.values(allData));
-            populateFilters(Object.values(allData));
+            allDataArray = Object.values(allData); // Cache the array
+
+            renderTimeline(allDataArray);
+            populateFilters(allDataArray);
             setupFilterListeners();
-            setTimeout(() => setupChapters(Object.values(allData)), 100);
+            setupSearchListener();
+            setupKeyboardNavigation();
+            setupProgressBarClick();
+            setTimeout(() => {
+                setupChapters(allDataArray);
+                // Scroll vertically to show rows 2, 3, 4 (skip the first row)
+                const firstCard = elements.timelineContainer.querySelector('.timeline-item');
+                if (firstCard) {
+                    const cardHeight = firstCard.offsetHeight;
+                    const gridGapVertical = parseFloat(getComputedStyle(elements.timelineContainer).rowGap) || 60; // 3.75rem = 60px
+                    elements.timelineWrapper.scrollTop = cardHeight + gridGapVertical;
+                }
+                hideLoading();
+            }, 100);
         })
         .catch(error => {
             console.error("Failed to load timeline data:", error);
-            timelineContainer.innerHTML = `<p style="color: red; padding: 20px;">Error loading data.</p>`;
+            hideLoading();
+            elements.timelineContainer.innerHTML = `<p style="color: var(--text-color); padding: 20px;">데이터 로드 실패. 페이지를 새로고침 해주세요.</p>`;
         });
 
+    function hideLoading() {
+        if (elements.loadingOverlay) {
+            elements.loadingOverlay.classList.add('hidden');
+        }
+    }
+
     function renderTimeline(items) {
-        timelineContainer.innerHTML = '';
-        timelineContainer.appendChild(canvas);
+        elements.timelineContainer.innerHTML = '';
+        elements.timelineContainer.appendChild(elements.canvas);
+        domElementsCache.clear(); // Clear DOM cache when re-rendering
 
         if (items.length === 0) return;
 
         const maxCol = Math.max(...items.map(item => item.column)) + 1;
         const maxRow = Math.max(...items.map(item => item.row)) + 2;
 
-        // CHANGE: Grid column width increased to match the new card width
-        timelineContainer.style.gridTemplateColumns = `repeat(${maxCol}, 13.5rem)`;
-        timelineContainer.style.gridTemplateRows = `repeat(${maxRow}, auto)`;
+        elements.timelineContainer.style.gridTemplateColumns = `repeat(${maxCol}, 13.5rem)`;
+        elements.timelineContainer.style.gridTemplateRows = `repeat(${maxRow}, auto)`;
 
         items.forEach(itemData => {
             const itemElement = createTimelineItem(itemData);
-            timelineContainer.appendChild(itemElement);
+            elements.timelineContainer.appendChild(itemElement);
+            // Cache the DOM element
+            domElementsCache.set(itemData.id, itemElement);
         });
 
         requestAnimationFrame(() => drawLines(items.map(item => item.id)));
@@ -133,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const chapterMarkersContainer = document.getElementById('chapter-markers');
         chapterMarkersContainer.innerHTML = '';
 
-        const timelineScrollWidth = timelineContainer.scrollWidth;
+        const timelineScrollWidth = elements.timelineContainer.scrollWidth;
         if (timelineScrollWidth <= 0) return;
 
         items.sort((a, b) => a.id - b.id);
@@ -143,7 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         uniqueChapters.forEach(chapter => {
             const firstItemOfChapter = items.find(item => item.chapter === chapter);
-            const domElement = document.querySelector(`.timeline-item[data-id='${firstItemOfChapter.id}']`);
+            // Use cached DOM element if available
+            const domElement = domElementsCache.get(firstItemOfChapter.id) || document.querySelector(`.timeline-item[data-id='${firstItemOfChapter.id}']`);
             if (domElement) {
                 let chapterText;
                 if (chapter === 0) {
@@ -154,7 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 chaptersData.push({
                     text: chapterText,
-                    offsetLeft: domElement.offsetLeft
+                    offsetLeft: domElement.offsetLeft,
+                    itemId: firstItemOfChapter.id
                 });
             }
         });
@@ -164,16 +210,15 @@ document.addEventListener('DOMContentLoaded', () => {
             marker.className = 'chapter-marker';
             marker.textContent = data.text;
 
-            const percentage = (data.offsetLeft / timelineScrollWidth) * 100;
+            // Position marker based on scrollable position (matches indicator calculation)
+            const scrollableWidth = elements.timelineWrapper.scrollWidth - elements.timelineWrapper.clientWidth;
+            const percentage = scrollableWidth > 0 ? (data.offsetLeft / scrollableWidth) * 100 : 0;
             marker.style.left = `${percentage}%`;
 
             marker.onclick = () => {
-                // Calculate the precise scroll position that will align the indicator with this marker.
-                const scrollableWidth = timelineWrapper.scrollWidth - timelineWrapper.clientWidth;
-                const targetScrollLeft = (data.offsetLeft / timelineScrollWidth) * scrollableWidth;
-
-                timelineWrapper.scrollTo({
-                    left: targetScrollLeft,
+                // Scroll directly to the item position
+                elements.timelineWrapper.scrollTo({
+                    left: data.offsetLeft,
                     behavior: 'smooth'
                 });
             };
@@ -210,38 +255,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>`;
         });
 
-        filterPanel.innerHTML = filterHtml;
+        elements.filterPanel.innerHTML = filterHtml;
     }
 
     function setupFilterListeners() {
-        filterButton.addEventListener('click', (e) => {
+        elements.filterButton.addEventListener('click', (e) => {
             e.stopPropagation();
-            const isHidden = filterPanel.classList.toggle('hidden');
+            const isHidden = elements.filterPanel.classList.toggle('hidden');
 
             // Disable dragging when the filter panel is open
             if (!isHidden) {
-                timelineWrapper.style.pointerEvents = 'none';
-                timelineWrapper.style.cursor = 'default';
+                elements.timelineWrapper.style.pointerEvents = 'none';
+                elements.timelineWrapper.style.cursor = 'default';
             } else {
-                timelineWrapper.style.pointerEvents = 'auto';
-                timelineWrapper.style.cursor = 'grab';
+                elements.timelineWrapper.style.pointerEvents = 'auto';
+                elements.timelineWrapper.style.cursor = 'grab';
             }
         });
 
         document.addEventListener('click', (e) => {
-            if (!filterPanel.contains(e.target) && !filterButton.contains(e.target)) {
-                if (!filterPanel.classList.contains('hidden')) {
-                    filterPanel.classList.add('hidden');
+            if (!elements.filterPanel.contains(e.target) && !elements.filterButton.contains(e.target)) {
+                if (!elements.filterPanel.classList.contains('hidden')) {
+                    elements.filterPanel.classList.add('hidden');
                     // Re-enable dragging when the panel is closed
-                    timelineWrapper.style.pointerEvents = 'auto';
-                    timelineWrapper.style.cursor = 'grab';
+                    elements.timelineWrapper.style.pointerEvents = 'auto';
+                    elements.timelineWrapper.style.cursor = 'grab';
                 }
             }
         });
 
-        filterPanel.addEventListener('change', (e) => {
+        elements.filterPanel.addEventListener('change', (e) => {
             const allCheckbox = document.getElementById('nation-all');
-            const otherCheckboxes = [...filterPanel.querySelectorAll('input[type="checkbox"]')]
+            const otherCheckboxes = [...elements.filterPanel.querySelectorAll('input[type="checkbox"]')]
                 .filter(cb => cb.id !== 'nation-all');
 
             if (e.target.id === 'nation-all') {
@@ -254,13 +299,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            const allCheckboxes = [...filterPanel.querySelectorAll('input[type="checkbox"]')];
+            const allCheckboxes = [...elements.filterPanel.querySelectorAll('input[type="checkbox"]')];
             if (allCheckboxes.every(cb => !cb.checked)) {
                 allCheckbox.checked = true;
             }
 
             applyFilter();
+            updateFilterBadge();
         });
+    }
+
+    function updateFilterBadge() {
+        const selectedCount = [...elements.filterPanel.querySelectorAll('input[type="checkbox"]:checked')]
+            .filter(cb => cb.id !== 'nation-all').length;
+
+        if (selectedCount > 0) {
+            elements.filterBadge.textContent = selectedCount;
+            elements.filterBadge.classList.remove('hidden');
+        } else {
+            elements.filterBadge.classList.add('hidden');
+        }
     }
 
     function applyFilter() {
@@ -274,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const selectedNationIds = [...filterPanel.querySelectorAll('input:checked')].map(cb => cb.value);
+        const selectedNationIds = [...elements.filterPanel.querySelectorAll('input:checked')].map(cb => cb.value);
 
         timelineItems.forEach(item => {
             const itemNationIds = JSON.parse(item.dataset.shipnation || '[]');
@@ -292,10 +350,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // draw lines between linked events
     function drawLines(visibleItemIds) {
-        canvas.width = timelineContainer.scrollWidth;
-        canvas.height = timelineContainer.scrollHeight;
+        elements.canvas.width = elements.timelineContainer.scrollWidth;
+        elements.canvas.height = elements.timelineContainer.scrollHeight;
 
-        ctx.strokeStyle = '#5c677d';
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--line-color') || '#5c677d';
         ctx.lineWidth = 3;
         ctx.shadowColor = 'rgba(92, 103, 125, 0.7)';
         ctx.shadowBlur = 7;
@@ -304,7 +362,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const itemData = allData[itemId];
             if (!itemData || !itemData.link_event || String(itemData.link_event).length === 0) return;
 
-            const startNode = document.querySelector(`.timeline-item[data-id='${itemId}']`);
+            // Use cached DOM element if available
+            const startNode = domElementsCache.get(itemId) || document.querySelector(`.timeline-item[data-id='${itemId}']`);
             if (!startNode) return;
 
             const startX = startNode.offsetLeft + startNode.offsetWidth / 2;
@@ -315,7 +374,9 @@ document.addEventListener('DOMContentLoaded', () => {
             linkedEvents.forEach(targetId => {
                 const targetData = allData[targetId];
                 if (!targetData || !visibleItemIds.includes(targetId)) return;
-                const endNode = document.querySelector(`.timeline-item[data-id='${targetId}']`);
+
+                // Use cached DOM element if available
+                const endNode = domElementsCache.get(targetId) || document.querySelector(`.timeline-item[data-id='${targetId}']`);
                 if (!endNode) return;
 
                 const endX = endNode.offsetLeft + endNode.offsetWidth / 2;
@@ -329,119 +390,213 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    timelineContainer.addEventListener('click', (event) => {
+    elements.timelineContainer.addEventListener('click', (event) => {
         const item = event.target.closest('.timeline-item');
         if (!item) return;
 
         // The 'id' is now correctly destructured from item.dataset
         const { id, name, description, summary, shipnation, bgm } = item.dataset;
 
-        modalTitle.textContent = name;
-        modalDescription.textContent = description;
-        modalSummary.textContent = summary || "No summary available.";
+        elements.modalTitle.textContent = name;
+        elements.modalDescription.textContent = description;
+        elements.modalSummary.textContent = summary || "요약 정보가 없습니다.";
 
-        const nations = JSON.parse(shipnation).map(id => factionMap[id] || `Faction ${id}`).join(', ');
-        modalShipNation.textContent = nations;
+        const nations = JSON.parse(shipnation).map(id => factionMap[id] || `진영 ${id}`).join(', ');
+        elements.modalShipNation.textContent = nations;
 
-        const modalFooter = document.querySelector('#details-modal .modal-footer');
-        const oldBtn = document.getElementById('view-story-btn');
-        if (oldBtn) oldBtn.remove();
-
-        const storyButton = document.createElement('button');
-        storyButton.id = 'view-story-btn';
-        storyButton.textContent = '해당 스토리 보러가기'; // Updated Text
-        storyButton.className = 'chapter-button';
-        storyButton.style.marginTop = '1rem';
-        storyButton.onclick = () => {
-            // This now correctly links to the Tier 2 memory selection page
-            window.location.href = `pages/story-viewer/main-story.html?eventId=${id}`;
-        };
-        modalFooter.prepend(storyButton);
-
-        if (bgm && bgm.trim() !== "") {
-            modalBgm.src = `https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/${bgm}.ogg`;
-            modalBgm.volume = 0.01;
-            modalBgm.play().catch(e => console.error("Audio playback error:", e));
-        } else {
-            modalBgm.src = "";
+        // Create or reuse button (performance improvement)
+        if (!elements.storyButton) {
+            elements.storyButton = document.createElement('button');
+            elements.storyButton.id = 'view-story-btn';
+            elements.storyButton.textContent = '해당 스토리 보러가기';
+            elements.storyButton.className = 'chapter-button';
+            elements.storyButton.style.marginTop = '1rem';
+            elements.modalFooter.prepend(elements.storyButton);
         }
 
-        modal.style.display = 'block';
+        // Update onclick handler
+        elements.storyButton.onclick = () => {
+            window.location.href = `pages/story-viewer/main-story.html?eventid=${id}`;
+        };
+
+        if (bgm && bgm.trim() !== "") {
+            elements.modalBgm.src = `https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/${bgm}.ogg`;
+            elements.modalBgm.volume = 0.01;
+            elements.modalBgm.play().catch(e => console.warn("Audio playback blocked or failed:", e));
+        } else {
+            elements.modalBgm.src = "";
+        }
+
+        elements.modal.style.display = 'block';
     });
 
     const closeModal = () => {
-        modal.style.display = 'none';
-        if (modalBgm.src) {
-            modalBgm.pause();
-            modalBgm.currentTime = 0;
+        elements.modal.style.display = 'none';
+        if (elements.modalBgm.src) {
+            elements.modalBgm.pause();
+            elements.modalBgm.currentTime = 0;
         }
     };
 
-    closeButton.addEventListener('click', closeModal);
+    elements.closeButton.addEventListener('click', closeModal);
     window.addEventListener('click', (event) => {
-        if (event.target === modal) closeModal();
+        if (event.target === elements.modal) closeModal();
     });
 
     function updateIndicator() {
-        const scrollableWidth = timelineWrapper.scrollWidth - timelineWrapper.clientWidth;
+        const scrollableWidth = elements.timelineWrapper.scrollWidth - elements.timelineWrapper.clientWidth;
         if (scrollableWidth <= 0) {
-            indicator.style.transform = `translateX(0px) translateY(-50%)`;
+            elements.indicator.style.left = '0px';
             return;
         }
-        const scrollPercentage = timelineWrapper.scrollLeft / scrollableWidth;
-        const indicatorMaxPos = progressBarContainer.clientWidth;
-        indicator.style.transform = `translateX(${scrollPercentage * indicatorMaxPos}px) translateY(-50%)`;
+        const scrollPercentage = elements.timelineWrapper.scrollLeft / scrollableWidth;
+        const indicatorMaxPos = elements.progressBarContainer.clientWidth;
+        const indicatorPos = scrollPercentage * indicatorMaxPos;
+        elements.indicator.style.left = `${indicatorPos}px`;
     }
 
-    timelineWrapper.addEventListener('scroll', () => requestAnimationFrame(updateIndicator));
+    elements.timelineWrapper.addEventListener('scroll', () => requestAnimationFrame(updateIndicator));
 
     let isDown = false;
     let startX, startY;
     let scrollLeft, scrollTop;
-    timelineWrapper.addEventListener('mousedown', (e) => {
-        if (timelineWrapper.style.pointerEvents === 'none') return;
+    elements.timelineWrapper.addEventListener('mousedown', (e) => {
+        if (elements.timelineWrapper.style.pointerEvents === 'none') return;
         if (e.target.closest('.timeline-item')) {
             return;
         }
 
         isDown = true;
-        timelineWrapper.classList.add('active');
-        startX = e.pageX - timelineWrapper.offsetLeft;
-        startY = e.pageY - timelineWrapper.offsetTop;
-        scrollLeft = timelineWrapper.scrollLeft;
-        scrollTop = timelineWrapper.scrollTop;
+        elements.timelineWrapper.classList.add('active');
+        startX = e.pageX - elements.timelineWrapper.offsetLeft;
+        startY = e.pageY - elements.timelineWrapper.offsetTop;
+        scrollLeft = elements.timelineWrapper.scrollLeft;
+        scrollTop = elements.timelineWrapper.scrollTop;
     });
-    timelineWrapper.addEventListener('mouseleave', () => {
+    elements.timelineWrapper.addEventListener('mouseleave', () => {
         isDown = false;
-        timelineWrapper.classList.remove('active');
+        elements.timelineWrapper.classList.remove('active');
     });
-    timelineWrapper.addEventListener('mouseup', () => {
+    elements.timelineWrapper.addEventListener('mouseup', () => {
         isDown = false;
-        timelineWrapper.classList.remove('active');
+        elements.timelineWrapper.classList.remove('active');
     });
-    timelineWrapper.addEventListener('mousemove', (e) => {
+    elements.timelineWrapper.addEventListener('mousemove', (e) => {
         if (!isDown) return;
         e.preventDefault();
 
-        const x = e.pageX - timelineWrapper.offsetLeft;
+        const x = e.pageX - elements.timelineWrapper.offsetLeft;
         const walkX = (x - startX) * 2;
-        timelineWrapper.scrollLeft = scrollLeft - walkX;
+        elements.timelineWrapper.scrollLeft = scrollLeft - walkX;
 
-        const y = e.pageY - timelineWrapper.offsetTop;
+        const y = e.pageY - elements.timelineWrapper.offsetTop;
         const walkY = (y - startY) * 2;
-        timelineWrapper.scrollTop = scrollTop - walkY;
+        elements.timelineWrapper.scrollTop = scrollTop - walkY;
     });
 
-    const originalResizeHandler = () => {
-        renderTimeline(Object.values(allData));
+    // =========================================================================
+    // SEARCH FUNCTIONALITY
+    // =========================================================================
+    function setupSearchListener() {
+        if (!elements.searchInput) return;
+
+        const debouncedSearch = debounce((searchTerm) => {
+            const items = document.querySelectorAll('.timeline-item');
+            const term = searchTerm.toLowerCase().trim();
+
+            if (!term) {
+                items.forEach(item => {
+                    item.classList.remove('dimmed', 'highlighted');
+                });
+                return;
+            }
+
+            items.forEach(item => {
+                const name = item.dataset.name?.toLowerCase() || '';
+                const description = item.dataset.description?.toLowerCase() || '';
+                const chapter = item.dataset.chapter || '';
+
+                if (name.includes(term) || description.includes(term) || chapter.includes(term)) {
+                    item.classList.add('highlighted');
+                    item.classList.remove('dimmed');
+                } else {
+                    item.classList.add('dimmed');
+                    item.classList.remove('highlighted');
+                }
+            });
+        }, 300);
+
+        elements.searchInput.addEventListener('input', (e) => {
+            debouncedSearch(e.target.value);
+        });
+    }
+
+    // =========================================================================
+    // KEYBOARD NAVIGATION
+    // =========================================================================
+    function setupKeyboardNavigation() {
+        document.addEventListener('keydown', (e) => {
+            // ESC to close modal
+            if (e.key === 'Escape' && elements.modal.style.display === 'block') {
+                closeModal();
+            }
+
+            // Arrow keys for scrolling timeline
+            if (!elements.searchInput || document.activeElement !== elements.searchInput) {
+                const scrollAmount = 200;
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        elements.timelineWrapper.scrollLeft -= scrollAmount;
+                        e.preventDefault();
+                        break;
+                    case 'ArrowRight':
+                        elements.timelineWrapper.scrollLeft += scrollAmount;
+                        e.preventDefault();
+                        break;
+                    case 'ArrowUp':
+                        elements.timelineWrapper.scrollTop -= scrollAmount;
+                        e.preventDefault();
+                        break;
+                    case 'ArrowDown':
+                        elements.timelineWrapper.scrollTop += scrollAmount;
+                        e.preventDefault();
+                        break;
+                }
+            }
+        });
+    }
+
+    // =========================================================================
+    // INTERACTIVE PROGRESS BAR
+    // =========================================================================
+    function setupProgressBarClick() {
+        if (!elements.progressBar) return;
+
+        elements.progressBar.addEventListener('click', (e) => {
+            const rect = elements.progressBar.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const percentage = clickX / rect.width;
+
+            const scrollableWidth = elements.timelineWrapper.scrollWidth - elements.timelineWrapper.clientWidth;
+            const targetScrollLeft = percentage * scrollableWidth;
+
+            elements.timelineWrapper.scrollTo({
+                left: targetScrollLeft,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // =========================================================================
+    // RESIZE HANDLER (DEBOUNCED)
+    // =========================================================================
+    const debouncedResizeHandler = debounce(() => {
+        renderTimeline(allDataArray);
         setTimeout(() => {
-            setupChapters(Object.values(allData));
+            setupChapters(allDataArray);
             updateIndicator();
         }, 100);
-    };
+    }, 250);
 
-    window.addEventListener('resize', () => {
-        setResponsiveFontSize();
-        originalResizeHandler();
-    });
+    window.addEventListener('resize', debouncedResizeHandler);
 });

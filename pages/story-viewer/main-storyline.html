@@ -1,23 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <base href="/altoy/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>벽람 메인스 타임라인</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/story-viewer/main-storyline.css">
+    <link rel="stylesheet" href="css/nav.style.css">
 </head>
 <body>
+    <div id="navbar-placeholder"></div>
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>타임라인 로딩 중...</p>
+    </div>
     <div class="main-container">
         <header class="timeline-header">
             <a href="pages/story-viewer/main-story.html" id="story-viewer-nav-button" class="nav-button">전체스토리 보기</a>
             <h1>벽람항로 메인스토리 타임라인</h1>
 
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="스토리 검색..." />
+                <span class="material-icons search-icon">search</span>
+            </div>
+
             <div class="filter-container">
-                <button id="filter-button" class="nav-button">진영 필터</button>
+                <button id="filter-button" class="nav-button">
+                    <span class="material-icons">filter_list</span>
+                    진영 필터
+                    <span id="filter-badge" class="filter-badge hidden">0</span>
+                </button>
                 <div id="filter-panel" class="filter-panel hidden">
-                    </div>
+                </div>
             </div>
         </header>
 
@@ -55,5 +71,6 @@
     </div>
 
     <script src="js/story-viewer/main-storyline.js"></script>
+    <script src="js/nav.script.js"></script>
 </body>
 </html>
