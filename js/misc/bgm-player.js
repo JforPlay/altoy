@@ -6,11 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const nowPlayingTrackEl = document.getElementById('now-playing-track');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
+    const visualizerCanvas = document.getElementById('visualizer-canvas');
+    const visualizerContainer = document.querySelector('.visualizer-container');
 
     let albumsData = {};
     let currentAlbumId = null;
     let isScrolling = false;
     let sortedAlbumIds = [];
+    let animationId = null;
+    let canvasContext = null;
 
     // Set default volume to 10%
     audioEl.volume = 0.1;
@@ -60,10 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Use the scaled-up size (1.5x) for padding calculation
                 // Adjust for mobile screen width
                 const isMobile = window.innerWidth <= 768;
-                const baseWidth = isMobile ? 180 : 240;
+                const baseWidth = isMobile ? 120 : 240;
                 const scaledAlbumWidth = baseWidth * 1.5;
                 const padding = (containerWidth / 2) - (scaledAlbumWidth / 2);
-                
+
                 albumListEl.style.paddingLeft = `${padding}px`;
                 albumListEl.style.paddingRight = `${padding}px`;
                 firstAlbum.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' });
@@ -189,15 +193,129 @@ document.addEventListener('DOMContentLoaded', () => {
             audioEl.play();
             nowPlayingTrackEl.textContent = trackName;
             albumNameEl.textContent = albumName;
-            
+
             // Highlight active track
             document.querySelectorAll('#track-list li').forEach(li => li.classList.remove('playing'));
             if (trackElement) trackElement.classList.add('playing');
+
+            // Add playing class to active album
+            updatePlayingAlbumState(true);
+
+            // Initialize visualizer on first play
+            if (!canvasContext) {
+                initVisualizer();
+            }
         } else {
             nowPlayingTrackEl.textContent = `Track not found: ${trackName}`;
             console.error('Music link was missing for track:', trackName);
         }
     }
+
+    // Update playing state on active album
+    function updatePlayingAlbumState(isPlaying) {
+        const activeAlbum = albumListEl.querySelector('.album-item.active');
+        if (activeAlbum) {
+            if (isPlaying) {
+                activeAlbum.classList.add('playing');
+            } else {
+                activeAlbum.classList.remove('playing');
+            }
+        }
+    }
+
+    // Simple Animated Visualizer (no audio analysis needed)
+    function initVisualizer() {
+        try {
+            // Canvas setup
+            canvasContext = visualizerCanvas.getContext('2d');
+            resizeCanvas();
+
+            // Start visualization
+            visualizerContainer.classList.add('active');
+            drawVisualizer();
+        } catch (error) {
+            console.error('Error initializing visualizer:', error);
+        }
+    }
+
+    function resizeCanvas() {
+        const rect = visualizerCanvas.getBoundingClientRect();
+        visualizerCanvas.width = rect.width * window.devicePixelRatio;
+        visualizerCanvas.height = rect.height * window.devicePixelRatio;
+        canvasContext.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+
+    function drawVisualizer() {
+        animationId = requestAnimationFrame(drawVisualizer);
+
+        const width = visualizerCanvas.width / window.devicePixelRatio;
+        const height = visualizerCanvas.height / window.devicePixelRatio;
+
+        // Clear canvas
+        canvasContext.clearRect(0, 0, width, height);
+
+        // Get theme colors
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        const accentColor = isDarkMode ? '#667eea' : '#5e72e4';
+        const gradientStart = isDarkMode ? '#667eea' : '#5e72e4';
+        const gradientEnd = isDarkMode ? '#764ba2' : '#825ee4';
+
+        // Draw animated bars
+        const barCount = 64;
+        const barWidth = width / barCount;
+        const barGap = 2;
+        const time = Date.now() / 1000; // Current time in seconds
+
+        for (let i = 0; i < barCount; i++) {
+            // Create wave patterns with different frequencies
+            const wave1 = Math.sin(time * 2 + i * 0.15) * 0.3;
+            const wave2 = Math.sin(time * 3 - i * 0.1) * 0.2;
+            const wave3 = Math.sin(time * 1.5 + i * 0.2) * 0.25;
+
+            // Combine waves for natural-looking motion
+            const amplitude = (wave1 + wave2 + wave3 + 1) / 2; // Normalize to 0-1
+            const barHeight = amplitude * height * 0.8;
+
+            const x = i * barWidth;
+            const y = height - barHeight;
+
+            // Create gradient for each bar
+            const gradient = canvasContext.createLinearGradient(x, y, x, height);
+            gradient.addColorStop(0, gradientStart);
+            gradient.addColorStop(1, gradientEnd);
+
+            canvasContext.fillStyle = gradient;
+            canvasContext.fillRect(x, y, barWidth - barGap, barHeight);
+
+            // Add glow effect to taller bars
+            if (barHeight > height * 0.5) {
+                canvasContext.shadowBlur = 10;
+                canvasContext.shadowColor = accentColor;
+                canvasContext.fillRect(x, y, barWidth - barGap, barHeight);
+                canvasContext.shadowBlur = 0;
+            }
+        }
+    }
+
+    // Handle audio play/pause events
+    audioEl.addEventListener('play', () => {
+        updatePlayingAlbumState(true);
+    });
+
+    audioEl.addEventListener('pause', () => {
+        updatePlayingAlbumState(false);
+    });
+
+    audioEl.addEventListener('ended', () => {
+        updatePlayingAlbumState(false);
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (canvasContext) {
+            resizeCanvas();
+        }
+    });
 
     fetchData();
 });
