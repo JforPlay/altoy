@@ -775,8 +775,9 @@
         // Clear canvas
         ctx.clearRect(0, 0, width, height);
 
-        // Get theme colors
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        // Get theme colors (check both data-theme and dark-mode class)
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
+                       document.body.classList.contains('dark-mode');
         const textColor = isDark ? '#f8f9fa' : '#212529';
         const gridColor = isDark ? '#495057' : '#dee2e6';
         const gridColorLight = isDark ? '#3d3d3d' : '#f1f3f5';
