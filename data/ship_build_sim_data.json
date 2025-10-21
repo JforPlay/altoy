@@ -1,0 +1,1398 @@
+{
+    "1": {
+        "101031": {
+            "name": "캐신",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101030/icon.png"
+        },
+        "101041": {
+            "name": "다운즈",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101040/icon.png"
+        },
+        "101061": {
+            "name": "크레이븐",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101060/icon.png"
+        },
+        "101071": {
+            "name": "맥콜",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101070/icon.png"
+        },
+        "101091": {
+            "name": "플레처",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101090/icon.png"
+        },
+        "101131": {
+            "name": "얼릭",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101130/icon.png"
+        },
+        "101141": {
+            "name": "푸트",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101140/icon.png"
+        },
+        "101151": {
+            "name": "스펜스",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101150/icon.png"
+        },
+        "101171": {
+            "name": "라피",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101170/icon.png"
+        },
+        "101251": {
+            "name": "허먼",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101250/icon.png"
+        },
+        "101351": {
+            "name": "배시 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101350/icon.png"
+        },
+        "101361": {
+            "name": "하비",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101360/icon.png"
+        },
+        "101371": {
+            "name": "커크",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101370/icon.png"
+        },
+        "101411": {
+            "name": "스탠리",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101410/icon.png"
+        },
+        "101421": {
+            "name": "스몰리 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101420/icon.png"
+        },
+        "101441": {
+            "name": "쿠퍼 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101440/icon.png"
+        },
+        "101481": {
+            "name": "잉그레이엄",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101480/icon.png"
+        },
+        "101491": {
+            "name": "브리스톨",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101490/icon.png"
+        },
+        "102011": {
+            "name": "오마하",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102010/icon.png"
+        },
+        "102021": {
+            "name": "롤리",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102020/icon.png"
+        },
+        "102031": {
+            "name": "브루클린",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102030/icon.png"
+        },
+        "102041": {
+            "name": "피닉스",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102040/icon.png"
+        },
+        "102061": {
+            "name": "애틀란타",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102060/icon.png"
+        },
+        "102071": {
+            "name": "쥬노",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102070/icon.png"
+        },
+        "102081": {
+            "name": "샌디에이고",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102080/icon.png"
+        },
+        "102131": {
+            "name": "세인트루이스",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102130/icon.png"
+        },
+        "102141": {
+            "name": "몬트필리어",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102140/icon.png"
+        },
+        "102151": {
+            "name": "덴버",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102150/icon.png"
+        },
+        "102181": {
+            "name": "콩코드",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102180/icon.png"
+        },
+        "102191": {
+            "name": "꼬마 헬레나 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102190/icon.png"
+        },
+        "102201": {
+            "name": "꼬마 클리블랜드 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102200/icon.png"
+        },
+        "102261": {
+            "name": "리노 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102260/icon.png"
+        },
+        "102271": {
+            "name": "마블헤드 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102270/icon.png"
+        },
+        "102291": {
+            "name": "보이시",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102290/icon.png"
+        },
+        "201011": {
+            "name": "아마존",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201010/icon.png"
+        },
+        "201021": {
+            "name": "아카스타",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201020/icon.png"
+        },
+        "201031": {
+            "name": "아덴트",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201030/icon.png"
+        },
+        "201061": {
+            "name": "비글",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201060/icon.png"
+        },
+        "201071": {
+            "name": "불독",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201070/icon.png"
+        },
+        "201081": {
+            "name": "코멧",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201080/icon.png"
+        },
+        "201091": {
+            "name": "크레센트",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201090/icon.png"
+        },
+        "201101": {
+            "name": "시그넷",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201100/icon.png"
+        },
+        "201111": {
+            "name": "폭스하운드",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201110/icon.png"
+        },
+        "201161": {
+            "name": "하디 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201160/icon.png"
+        },
+        "201211": {
+            "name": "재블린",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201210/icon.png"
+        },
+        "201241": {
+            "name": "주피터",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201240/icon.png"
+        },
+        "201251": {
+            "name": "저지",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201250/icon.png"
+        },
+        "201321": {
+            "name": "에스키모 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201320/icon.png"
+        },
+        "201341": {
+            "name": "저비스",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201340/icon.png"
+        },
+        "201351": {
+            "name": "재너스",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201350/icon.png"
+        },
+        "202011": {
+            "name": "리엔더",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202010/icon.png"
+        },
+        "202021": {
+            "name": "아킬레스",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202020/icon.png"
+        },
+        "202031": {
+            "name": "에이잭스",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202030/icon.png"
+        },
+        "202071": {
+            "name": "사우스햄튼 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202070/icon.png"
+        },
+        "202091": {
+            "name": "맨체스터",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202090/icon.png"
+        },
+        "202121": {
+            "name": "벨파스트",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202120/icon.png"
+        },
+        "202151": {
+            "name": "오로라 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202150/icon.png"
+        },
+        "202181": {
+            "name": "꼬마 벨파스트",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202180/icon.png"
+        },
+        "202211": {
+            "name": "퀴라소 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202210/icon.png"
+        },
+        "202221": {
+            "name": "컬루 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202220/icon.png"
+        },
+        "202231": {
+            "name": "스위프트슈어 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202230/icon.png"
+        },
+        "202261": {
+            "name": "글래스고 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202260/icon.png"
+        },
+        "202271": {
+            "name": "허마이오니 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202270/icon.png"
+        },
+        "202301": {
+            "name": "카리브디스",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202300/icon.png"
+        },
+        "202321": {
+            "name": "엔터프라이즈",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202320/icon.png"
+        },
+        "301011": {
+            "name": "후부키",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301010/icon.png"
+        },
+        "301051": {
+            "name": "아야나미",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301050/icon.png"
+        },
+        "301211": {
+            "name": "하츠하루",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301210/icon.png"
+        },
+        "301231": {
+            "name": "와카바",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301230/icon.png"
+        },
+        "301261": {
+            "name": "유구레",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301260/icon.png"
+        },
+        "301301": {
+            "name": "카미카제",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301300/icon.png"
+        },
+        "301311": {
+            "name": "마츠카제",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301310/icon.png"
+        },
+        "301321": {
+            "name": "무츠키",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301320/icon.png"
+        },
+        "301331": {
+            "name": "키사라기",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301330/icon.png"
+        },
+        "301351": {
+            "name": "우즈키",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301350/icon.png"
+        },
+        "301381": {
+            "name": "후미즈키 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301380/icon.png"
+        },
+        "301471": {
+            "name": "우미카제",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301470/icon.png"
+        },
+        "301541": {
+            "name": "키요나미 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301540/icon.png"
+        },
+        "301591": {
+            "name": "우라카제 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301590/icon.png"
+        },
+        "301601": {
+            "name": "이소카제 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301600/icon.png"
+        },
+        "301611": {
+            "name": "하마카제 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301610/icon.png"
+        },
+        "301621": {
+            "name": "타니카제",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301620/icon.png"
+        },
+        "301631": {
+            "name": "아사시오 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301630/icon.png"
+        },
+        "301791": {
+            "name": "하타카제 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301790/icon.png"
+        },
+        "301841": {
+            "name": "스즈츠키",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301840/icon.png"
+        },
+        "301851": {
+            "name": "오이테",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301850/icon.png"
+        },
+        "302011": {
+            "name": "유바리",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302010/icon.png"
+        },
+        "302041": {
+            "name": "나가라",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302040/icon.png"
+        },
+        "302071": {
+            "name": "유라",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302070/icon.png"
+        },
+        "302141": {
+            "name": "나카 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302140/icon.png"
+        },
+        "401021": {
+            "name": "Z2",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401020/icon.png"
+        },
+        "401191": {
+            "name": "Z19",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401190/icon.png"
+        },
+        "401231": {
+            "name": "Z23",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401230/icon.png"
+        },
+        "402011": {
+            "name": "쾨니히스베르크",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402010/icon.png"
+        },
+        "402021": {
+            "name": "카를스루에",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402020/icon.png"
+        },
+        "402031": {
+            "name": "쾰른",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402030/icon.png"
+        },
+        "402051": {
+            "name": "뉘른베르크",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402050/icon.png"
+        },
+        "402061": {
+            "name": "마그데부르크",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402060/icon.png"
+        },
+        "501051": {
+            "name": "롱우",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501050/icon.png"
+        },
+        "501061": {
+            "name": "후번",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501060/icon.png"
+        },
+        "502011": {
+            "name": "얏센",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502010/icon.png"
+        },
+        "502091": {
+            "name": "지안",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502090/icon.png"
+        },
+        "601031": {
+            "name": "빈첸초 조베르티",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601030/icon.png"
+        },
+        "601041": {
+            "name": "마에스트라레",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601040/icon.png"
+        },
+        "601051": {
+            "name": "리베치오",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601050/icon.png"
+        },
+        "601061": {
+            "name": "니콜로소 다 레코",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601060/icon.png"
+        },
+        "601071": {
+            "name": "폼페오 마뇨",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601070/icon.png"
+        },
+        "601081": {
+            "name": "알프레도 오리아니",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601080/icon.png"
+        },
+        "602011": {
+            "name": "두카 델리 아브루치",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602010/icon.png"
+        },
+        "602021": {
+            "name": "주세페 가리발디",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602020/icon.png"
+        },
+        "701021": {
+            "name": "그로즈니 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701020/icon.png"
+        },
+        "701041": {
+            "name": "타슈켄트 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701040/icon.png"
+        },
+        "701061": {
+            "name": "스트례미텔니",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701060/icon.png"
+        },
+        "701071": {
+            "name": "그리먀시",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701070/icon.png"
+        },
+        "701101": {
+            "name": "키예프",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701100/icon.png"
+        },
+        "702011": {
+            "name": "아브로라 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702010/icon.png"
+        },
+        "702021": {
+            "name": "파먀티 메르쿠리야 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702020/icon.png"
+        },
+        "702031": {
+            "name": "차파예프 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702030/icon.png"
+        },
+        "702041": {
+            "name": "키로프",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702040/icon.png"
+        },
+        "702051": {
+            "name": "쿠이비셰프",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702050/icon.png"
+        },
+        "702061": {
+            "name": "무르만스크",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702060/icon.png"
+        },
+        "801021": {
+            "name": "포르뱅 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801020/icon.png"
+        },
+        "801071": {
+            "name": "르 테리블",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801070/icon.png"
+        },
+        "801081": {
+            "name": "마이예 브레제",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801080/icon.png"
+        },
+        "802021": {
+            "name": "잔 다르크 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802020/icon.png"
+        },
+        "901011": {
+            "name": "르 마르스 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901010/icon.png"
+        },
+        "901021": {
+            "name": "타르투 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901020/icon.png"
+        },
+        "901031": {
+            "name": "보클랭 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901030/icon.png"
+        },
+        "901131": {
+            "name": "랭동타블",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901130/icon.png"
+        }
+    },
+    "2": {
+        "103011": {
+            "name": "펜사콜라",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103010/icon.png"
+        },
+        "103031": {
+            "name": "노샘프턴",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103030/icon.png"
+        },
+        "103041": {
+            "name": "시카고",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103040/icon.png"
+        },
+        "103051": {
+            "name": "휴스턴",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103050/icon.png"
+        },
+        "103061": {
+            "name": "포틀랜드",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103060/icon.png"
+        },
+        "103071": {
+            "name": "인디애나폴리스",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103070/icon.png"
+        },
+        "103141": {
+            "name": "샌프란시스코",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103140/icon.png"
+        },
+        "103241": {
+            "name": "브레머튼",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103240/icon.png"
+        },
+        "105011": {
+            "name": "네바다",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105010/icon.png"
+        },
+        "105021": {
+            "name": "오클라호마",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105020/icon.png"
+        },
+        "105031": {
+            "name": "펜실베이니아",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105030/icon.png"
+        },
+        "105041": {
+            "name": "애리조나",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105040/icon.png"
+        },
+        "105071": {
+            "name": "테네시",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105070/icon.png"
+        },
+        "105081": {
+            "name": "캘리포니아",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105080/icon.png"
+        },
+        "105171": {
+            "name": "뉴저지",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105170/icon.png"
+        },
+        "203011": {
+            "name": "런던",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203010/icon.png"
+        },
+        "203021": {
+            "name": "슈롭셔",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203020/icon.png"
+        },
+        "203031": {
+            "name": "켄트",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203030/icon.png"
+        },
+        "203041": {
+            "name": "서포크",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203040/icon.png"
+        },
+        "203051": {
+            "name": "노포크",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203050/icon.png"
+        },
+        "203071": {
+            "name": "요크",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203070/icon.png"
+        },
+        "203081": {
+            "name": "엑세터",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203080/icon.png"
+        },
+        "203091": {
+            "name": "서식스 ",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203090/icon.png"
+        },
+        "204011": {
+            "name": "리나운",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/204010/icon.png"
+        },
+        "204021": {
+            "name": "리펄스",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/204020/icon.png"
+        },
+        "204031": {
+            "name": "후드",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/204030/icon.png"
+        },
+        "204041": {
+            "name": "꼬마 리나운 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/204040/icon.png"
+        },
+        "205011": {
+            "name": "퀸 엘리자베스",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205010/icon.png"
+        },
+        "205021": {
+            "name": "워스파이트",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205020/icon.png"
+        },
+        "205031": {
+            "name": "넬슨",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205030/icon.png"
+        },
+        "205041": {
+            "name": "로드니",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205040/icon.png"
+        },
+        "205091": {
+            "name": "하우",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205090/icon.png"
+        },
+        "205101": {
+            "name": "밸리언트 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205100/icon.png"
+        },
+        "205111": {
+            "name": "리벤지",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205110/icon.png"
+        },
+        "205131": {
+            "name": "뱅가드",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205130/icon.png"
+        },
+        "213011": {
+            "name": "에레버스",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/213010/icon.png"
+        },
+        "213021": {
+            "name": "테러",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/213020/icon.png"
+        },
+        "213041": {
+            "name": "애버크롬비 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/213040/icon.png"
+        },
+        "301291": {
+            "name": "시마카제",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301290/icon.png"
+        },
+        "303031": {
+            "name": "아오바",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303030/icon.png"
+        },
+        "303041": {
+            "name": "키누가사",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303040/icon.png"
+        },
+        "303061": {
+            "name": "치쿠마",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303060/icon.png"
+        },
+        "303111": {
+            "name": "타카오",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303110/icon.png"
+        },
+        "303171": {
+            "name": "스즈야 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303170/icon.png"
+        },
+        "304021": {
+            "name": "히에이",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304020/icon.png"
+        },
+        "304041": {
+            "name": "키리시마",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304040/icon.png"
+        },
+        "304061": {
+            "name": "꼬마 히에이 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304060/icon.png"
+        },
+        "304071": {
+            "name": "꼬마 아마기",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304070/icon.png"
+        },
+        "305031": {
+            "name": "이세",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305030/icon.png"
+        },
+        "305041": {
+            "name": "휴가",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305040/icon.png"
+        },
+        "305121": {
+            "name": "키이",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305120/icon.png"
+        },
+        "307081": {
+            "name": "시나노",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307080/icon.png"
+        },
+        "403031": {
+            "name": "프린츠 오이겐",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403030/icon.png"
+        },
+        "403041": {
+            "name": "도이칠란트",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403040/icon.png"
+        },
+        "403091": {
+            "name": "프린츠 하인리히",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403090/icon.png"
+        },
+        "403101": {
+            "name": "프린츠 아달베르트",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403100/icon.png"
+        },
+        "405031": {
+            "name": "울리히 폰 후텐",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405030/icon.png"
+        },
+        "504011": {
+            "name": "환창",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/504010/icon.png"
+        },
+        "603041": {
+            "name": "트리에스테",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603040/icon.png"
+        },
+        "603051": {
+            "name": "볼차노",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603050/icon.png"
+        },
+        "605011": {
+            "name": "비토리오 베네토",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605010/icon.png"
+        },
+        "605031": {
+            "name": "로마",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605030/icon.png"
+        },
+        "703011": {
+            "name": "탈린",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703010/icon.png"
+        },
+        "705041": {
+            "name": "소비에츠카야 벨로루시아",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705040/icon.png"
+        },
+        "705051": {
+            "name": "소비에츠카야 러시아 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705050/icon.png"
+        },
+        "705061": {
+            "name": "아르한겔스크",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705060/icon.png"
+        },
+        "718011": {
+            "name": "크론시타트",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/718010/icon.png"
+        },
+        "805011": {
+            "name": "리슐리외 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/805010/icon.png"
+        },
+        "903011": {
+            "name": "포슈",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/903010/icon.png"
+        },
+        "903021": {
+            "name": "알제리 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/903020/icon.png"
+        },
+        "904011": {
+            "name": "됭케르크 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/904010/icon.png"
+        }
+    },
+    "3": {
+        "103011": {
+            "name": "펜사콜라",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103010/icon.png"
+        },
+        "103031": {
+            "name": "노샘프턴",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103030/icon.png"
+        },
+        "103041": {
+            "name": "시카고",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103040/icon.png"
+        },
+        "103051": {
+            "name": "휴스턴",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103050/icon.png"
+        },
+        "103061": {
+            "name": "포틀랜드",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103060/icon.png"
+        },
+        "103071": {
+            "name": "인디애나폴리스",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103070/icon.png"
+        },
+        "105171": {
+            "name": "뉴저지",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105170/icon.png"
+        },
+        "106011": {
+            "name": "롱 아일랜드",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/106010/icon.png"
+        },
+        "106021": {
+            "name": "보그",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/106020/icon.png"
+        },
+        "107011": {
+            "name": "랭글리",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107010/icon.png"
+        },
+        "107021": {
+            "name": "렉싱턴",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107020/icon.png"
+        },
+        "107031": {
+            "name": "새러토가",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107030/icon.png"
+        },
+        "107041": {
+            "name": "레인저",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107040/icon.png"
+        },
+        "107051": {
+            "name": "요크타운",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107050/icon.png"
+        },
+        "107061": {
+            "name": "엔터프라이즈",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107060/icon.png"
+        },
+        "107071": {
+            "name": "호넷",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107070/icon.png"
+        },
+        "107091": {
+            "name": "에식스",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107090/icon.png"
+        },
+        "107111": {
+            "name": "인트레피드",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107110/icon.png"
+        },
+        "107141": {
+            "name": "타이콘데로가",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107140/icon.png"
+        },
+        "107231": {
+            "name": "프린스턴",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107230/icon.png"
+        },
+        "107381": {
+            "name": "샹그릴라 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107380/icon.png"
+        },
+        "107991": {
+            "name": "꼬마 엔터프라이즈",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107990/icon.png"
+        },
+        "108061": {
+            "name": "아처피시",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108060/icon.png"
+        },
+        "108071": {
+            "name": "노틸러스",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108070/icon.png"
+        },
+        "112011": {
+            "name": "베스탈",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/112010/icon.png"
+        },
+        "203011": {
+            "name": "런던",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203010/icon.png"
+        },
+        "203021": {
+            "name": "슈롭셔",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203020/icon.png"
+        },
+        "203031": {
+            "name": "켄트",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203030/icon.png"
+        },
+        "203041": {
+            "name": "서포크",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203040/icon.png"
+        },
+        "203051": {
+            "name": "노포크",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203050/icon.png"
+        },
+        "205131": {
+            "name": "뱅가드",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205130/icon.png"
+        },
+        "206011": {
+            "name": "허미즈",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206010/icon.png"
+        },
+        "206031": {
+            "name": "유니콘",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206030/icon.png"
+        },
+        "206041": {
+            "name": "센토",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206040/icon.png"
+        },
+        "206061": {
+            "name": "퍼시어스 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206060/icon.png"
+        },
+        "206071": {
+            "name": "알비온",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206070/icon.png"
+        },
+        "206081": {
+            "name": "테세우스",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206080/icon.png"
+        },
+        "207011": {
+            "name": "이글 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207010/icon.png"
+        },
+        "207021": {
+            "name": "아크 로열",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207020/icon.png"
+        },
+        "207031": {
+            "name": "일러스트리어스",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207030/icon.png"
+        },
+        "207041": {
+            "name": "빅토리어스",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207040/icon.png"
+        },
+        "207091": {
+            "name": "꼬마 일러스트리어스 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207090/icon.png"
+        },
+        "207121": {
+            "name": "인도미터블",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207120/icon.png"
+        },
+        "301291": {
+            "name": "시마카제",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301290/icon.png"
+        },
+        "306081": {
+            "name": "치토세",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306080/icon.png"
+        },
+        "306091": {
+            "name": "치요다",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306090/icon.png"
+        },
+        "307071": {
+            "name": "다이호",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307070/icon.png"
+        },
+        "307081": {
+            "name": "시나노",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307080/icon.png"
+        },
+        "307091": {
+            "name": "꼬마 아카기 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307090/icon.png"
+        },
+        "307121": {
+            "name": "카츠라기",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307120/icon.png"
+        },
+        "308011": {
+            "name": "이19",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308010/icon.png"
+        },
+        "308021": {
+            "name": "이26",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308020/icon.png"
+        },
+        "308031": {
+            "name": "이58",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308030/icon.png"
+        },
+        "308041": {
+            "name": "이25",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308040/icon.png"
+        },
+        "308051": {
+            "name": "이56",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308050/icon.png"
+        },
+        "308061": {
+            "name": "이168",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308060/icon.png"
+        },
+        "317011": {
+            "name": "이13 ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317010/icon.png"
+        },
+        "319011": {
+            "name": "카시노",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/319010/icon.png"
+        },
+        "405031": {
+            "name": "울리히 폰 후텐",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405030/icon.png"
+        },
+        "406011": {
+            "name": "베저",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/406010/icon.png"
+        },
+        "406021": {
+            "name": "엘베",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/406020/icon.png"
+        },
+        "407011": {
+            "name": "그라프 체펠린",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/407010/icon.png"
+        },
+        "407021": {
+            "name": "꼬마 그라프 체펠린 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/407020/icon.png"
+        },
+        "407031": {
+            "name": "페터 슈트라서",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/407030/icon.png"
+        },
+        "408011": {
+            "name": "U-81",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408010/icon.png"
+        },
+        "408021": {
+            "name": "U-47",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408020/icon.png"
+        },
+        "408061": {
+            "name": "U-101",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408060/icon.png"
+        },
+        "408071": {
+            "name": "U-522",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408070/icon.png"
+        },
+        "408101": {
+            "name": "U-37",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408100/icon.png"
+        },
+        "506011": {
+            "name": "젠하이",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/506010/icon.png"
+        },
+        "506021": {
+            "name": "화지아",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/506020/icon.png"
+        },
+        "607011": {
+            "name": "아퀼라",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/607010/icon.png"
+        },
+        "607021": {
+            "name": "임페로",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/607020/icon.png"
+        },
+        "608021": {
+            "name": "레오나르도 다 빈치",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/608020/icon.png"
+        },
+        "707011": {
+            "name": "볼가",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/707010/icon.png"
+        },
+        "718011": {
+            "name": "크론시타트",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/718010/icon.png"
+        },
+        "808011": {
+            "name": "쉬르쿠프 ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/808010/icon.png"
+        },
+        "907011": {
+            "name": "조프르",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/907010/icon.png"
+        }
+    }
+}
