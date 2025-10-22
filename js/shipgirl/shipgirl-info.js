@@ -12,6 +12,10 @@ let skillIconData = {};
 let skillDataTemplate = {};
 let viewMode = 'grid';
 
+// Construction-specific filters
+let currentConstructionType = 'all';
+let currentTimerFilter = 'all';
+
 // ===== DOM Elements =====
 const mainView = document.getElementById('mainView');
 const detailView = document.getElementById('detailView');
@@ -149,6 +153,9 @@ async function init() {
         // Populate filter options BEFORE setting up event listeners
         populateFilterOptions();
 
+        // Initialize stats counter
+        updateFilterStats();
+
         handleRoute();
         setupEventListeners();
         window.addEventListener('popstate', handleRoute);
@@ -242,6 +249,45 @@ function setupEventListeners() {
     rarityFilter.addEventListener('change', filterShipgirls);
     document.getElementById('shipTypeFilter').addEventListener('change', filterShipgirls);
     document.getElementById('nationalityFilter').addEventListener('change', filterShipgirls);
+
+    // Construction filter
+    const constructionFilter = document.getElementById('constructionFilter');
+    if (constructionFilter) {
+        constructionFilter.addEventListener('change', (e) => {
+            currentConstructionType = e.target.value;
+            filterShipgirls();
+        });
+    }
+
+    // Info modal
+    const infoButton = document.getElementById('infoButton');
+    const infoModal = document.getElementById('infoModal');
+    const closeModal = document.getElementById('closeModal');
+
+    if (infoButton && infoModal && closeModal) {
+        infoButton.addEventListener('click', () => {
+            infoModal.classList.add('show');
+        });
+
+        closeModal.addEventListener('click', () => {
+            infoModal.classList.remove('show');
+        });
+
+        // Close modal when clicking outside
+        infoModal.addEventListener('click', (e) => {
+            if (e.target === infoModal) {
+                infoModal.classList.remove('show');
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && infoModal.classList.contains('show')) {
+                infoModal.classList.remove('show');
+            }
+        });
+    }
+
     backButton.addEventListener('click', () => history.back());
 
     const homeButton = document.getElementById('homeButton');
@@ -263,6 +309,7 @@ function setupEventListeners() {
             gridViewBtn.classList.add('active');
             listViewBtn.classList.remove('active');
             localStorage.setItem('shipgirl-view-mode', 'grid');
+            renderShipgirls(); // Re-render with grid layout
         });
 
         listViewBtn.addEventListener('click', () => {
@@ -271,6 +318,7 @@ function setupEventListeners() {
             listViewBtn.classList.add('active');
             gridViewBtn.classList.remove('active');
             localStorage.setItem('shipgirl-view-mode', 'list');
+            renderShipgirls(); // Re-render with list layout
         });
 
         const savedView = localStorage.getItem('shipgirl-view-mode') || 'grid';
@@ -317,10 +365,17 @@ function filterShipgirls() {
         const matchesShipType = !selectedShipType || String(ship.type) === selectedShipType;
         const matchesNationality = !selectedNationality || String(ship.nationality) === selectedNationality;
 
-        return matchesSearch && matchesRarity && matchesShipType && matchesNationality;
+        // Construction type filter
+        const matchesConstruction = currentConstructionType === 'all' || ship[currentConstructionType] === true;
+
+        // Timer filter
+        const matchesTimer = currentTimerFilter === 'all' || ship.timer === currentTimerFilter;
+
+        return matchesSearch && matchesRarity && matchesShipType && matchesNationality && matchesConstruction && matchesTimer;
     });
 
     renderShipgirls();
+    updateFilterStats();
 }
 
 function renderShipgirls() {
@@ -337,6 +392,14 @@ function renderShipgirls() {
 }
 
 function createShipgirlCard(ship) {
+    if (viewMode === 'list') {
+        return createListCard(ship);
+    } else {
+        return createGridCard(ship);
+    }
+}
+
+function createGridCard(ship) {
     const nationalityInfo = nationalityData[String(ship.nationality)] || {
         name: ship.nationality,
         code: ship.nationality,
@@ -347,15 +410,86 @@ function createShipgirlCard(ship) {
         icon: ''
     };
 
-    // Only use icon if it exists and is not undefined
     const hasValidIcon = shipTypeInfo.icon && shipTypeInfo.icon !== 'undefined';
+
+    // Construction badges for overlay
+    let constructionBadges = '';
+    if (ship.limited) {
+        constructionBadges += '<span class="construction-badge limited-badge">★ 한정</span>';
+    }
+    if (ship.light) {
+        constructionBadges += '<span class="construction-badge">소형</span>';
+    }
+    if (ship.medium) {
+        constructionBadges += '<span class="construction-badge">중형</span>';
+    }
+    if (ship.heavy) {
+        constructionBadges += '<span class="construction-badge">특형</span>';
+    }
+
+    const timerDisplay = ship.timer ? `<span class="timer-badge">${formatTimer(ship.timer)}</span>` : '';
 
     return `
         <div class="shipgirl-card">
-            <img src="${ship.shipyard || ''}" alt="${ship.name || '알 수 없음'}" class="shipgirl-image" 
+            <img src="${ship.shipyard || ''}" alt="${ship.name || '알 수 없음'}" class="shipgirl-image"
                  onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22250%22 height=%22200%22%3E%3Crect fill=%22%23ddd%22 width=%22250%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3E이미지 없음%3C/text%3E%3C/svg%3E'">
+            ${constructionBadges ? `<div class="construction-badges-overlay">${constructionBadges}</div>` : ''}
             <div class="shipgirl-info">
                 <div class="shipgirl-name">${ship.name || '이름 없음'}</div>
+                <div class="shipgirl-meta">
+                    <span class="nationality-code" title="${nationalityInfo.name}">${nationalityInfo.code || nationalityInfo.name}</span>
+                    ${hasValidIcon ?
+            `<img src="${shipTypeInfo.icon}" alt="${shipTypeInfo.type_name}" class="ship-type-icon" title="${shipTypeInfo.type_name}">` :
+            `<span class="ship-type-text">${shipTypeInfo.type_name}</span>`
+        }
+                    <span class="rarity-badge rarity-${ship.rarity}">${ship.rarity}</span>
+                </div>
+                ${timerDisplay}
+            </div>
+        </div>
+    `;
+}
+
+function createListCard(ship) {
+    const nationalityInfo = nationalityData[String(ship.nationality)] || {
+        name: ship.nationality,
+        code: ship.nationality,
+        image: ''
+    };
+    const shipTypeInfo = shipTypeData[String(ship.type)] || {
+        type_name: `함종 ${ship.type}`,
+        icon: ''
+    };
+
+    const hasValidIcon = shipTypeInfo.icon && shipTypeInfo.icon !== 'undefined';
+
+    // Construction badges for inline display
+    let constructionBadges = '';
+    if (ship.limited) {
+        constructionBadges += '<span class="construction-badge limited-badge">★ 한정</span>';
+    }
+    if (ship.light) {
+        constructionBadges += '<span class="construction-badge">소형</span>';
+    }
+    if (ship.medium) {
+        constructionBadges += '<span class="construction-badge">중형</span>';
+    }
+    if (ship.heavy) {
+        constructionBadges += '<span class="construction-badge">특형</span>';
+    }
+
+    const timerDisplay = ship.timer ? `<span class="timer-badge">${formatTimer(ship.timer)}</span>` : '';
+
+    return `
+        <div class="shipgirl-card">
+            <img src="${ship.shipyard || ''}" alt="${ship.name || '알 수 없음'}" class="shipgirl-image"
+                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22250%22 height=%22200%22%3E%3Crect fill=%22%23ddd%22 width=%22250%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3E이미지 없음%3C/text%3E%3C/svg%3E'">
+            <div class="shipgirl-info">
+                <div class="left-info">
+                    <div class="shipgirl-name">${ship.name || '이름 없음'}</div>
+                    ${constructionBadges}
+                    ${timerDisplay}
+                </div>
                 <div class="shipgirl-meta">
                     <span class="nationality-code" title="${nationalityInfo.name}">${nationalityInfo.code || nationalityInfo.name}</span>
                     ${hasValidIcon ?
@@ -367,6 +501,37 @@ function createShipgirlCard(ship) {
             </div>
         </div>
     `;
+}
+
+// Format timer for display
+function formatTimer(timer) {
+    if (!timer || timer === '건조시간 없음') return timer;
+    const parts = timer.split(':');
+    const hours = parseInt(parts[0]);
+    const minutes = parseInt(parts[1]);
+    const seconds = parts[2] ? parseInt(parts[2]) : 0;
+
+    if (hours === 0 && seconds === 0) {
+        return `${minutes}분`;
+    } else if (hours === 0) {
+        return `${minutes}분 ${seconds}초`;
+    } else if (seconds === 0) {
+        return `${hours}시간 ${minutes}분`;
+    }
+    return `${hours}시간 ${minutes}분 ${seconds}초`;
+}
+
+// Update filter statistics
+function updateFilterStats() {
+    const totalCount = shipgirlData.length;
+    const filteredCount = filteredData.length;
+
+    // Update stats display if elements exist
+    const totalElement = document.getElementById('totalShips');
+    const filteredElement = document.getElementById('filteredShips');
+
+    if (totalElement) totalElement.textContent = totalCount;
+    if (filteredElement) filteredElement.textContent = filteredCount;
 }
 
 // ===== Navigation and Routing =====
@@ -399,6 +564,7 @@ function showMainView() {
     }
 
     renderShipgirls();
+    updateFilterStats();
 
     // Reset scroll position to top
     window.scrollTo(0, 0);
@@ -877,5 +1043,30 @@ function createAttrMapping() {
     return mapping;
 }
 
+// ===== Scroll to Top Button =====
+function setupScrollToTop() {
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+
+    if (scrollToTopBtn) {
+        // Show/hide button based on scroll position
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        });
+
+        // Scroll to top when clicked
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+}
+
 // ===== Start Application =====
 init();
+setupScrollToTop();

@@ -73,11 +73,54 @@ header {
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Header Top - Title and Stats on same line */
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.header-title-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 header h1 {
   color: var(--primary-color);
-  margin-bottom: 15px;
-  font-size: 2.5em;
+  margin: 0;
+  font-size: 2.0em;
   transition: color 0.3s ease;
+}
+
+/* Info Icon Button */
+.info-icon {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 1.5em;
+  color: #7289da;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-icon:hover {
+  color: #5b6eae;
+  transform: scale(1.15);
+}
+
+.info-icon:active {
+  transform: scale(0.95);
+}
+
+.info-icon:focus {
+  outline: none;
 }
 
 /* Search Container */
@@ -112,7 +155,8 @@ header h1 {
 
 #rarityFilter,
 #shipTypeFilter,
-#nationalityFilter {
+#nationalityFilter,
+#constructionFilter {
   padding: 10px 15px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -178,7 +222,7 @@ header h1 {
 
 .shipgirl-image {
   width: 100%;
-  height: 100px;
+  height: 150px;
   object-fit: cover;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   border-bottom: 2px solid var(--border-color);
@@ -296,21 +340,46 @@ header h1 {
 
 .shipgirl-grid.list-view .shipgirl-info {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   padding: 15px;
+  gap: 15px;
+}
+
+.shipgirl-grid.list-view .left-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
 }
 
 .shipgirl-grid.list-view .shipgirl-name {
   font-size: 1.1em;
-  white-space: normal;
-  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  min-width: 80px;
+}
+
+.shipgirl-grid.list-view .construction-badge {
+  font-size: 0.7em;
+  padding: 3px 7px;
+  flex-shrink: 0;
+}
+
+.shipgirl-grid.list-view .timer-badge {
+  width: auto;
+  margin-top: 0;
+  flex-shrink: 0;
+  font-size: 0.7em;
+  padding: 3px 7px;
 }
 
 .shipgirl-grid.list-view .shipgirl-meta {
-  justify-content: flex-end;
+  display: flex;
   gap: 8px;
   flex-shrink: 0;
 }
@@ -332,6 +401,10 @@ header h1 {
   font-size: 0.85em;
 }
 
+.shipgirl-grid.list-view .shipgirl-info {
+  flex-wrap: nowrap;
+}
+
 /* Detail View */
 .detail-content {
   background: transparent;
@@ -345,25 +418,36 @@ header h1 {
   margin-bottom: 15px;
 }
 
-/* Find the existing .back-button style and remove its margin-bottom */
+/* Back button and navigation buttons */
 .back-button {
-  background: linear-gradient(
-    135deg,
-    var(--accent-gradient-start),
-    var(--accent-gradient-end)
-  );
-  color: white;
-  border: none;
+  background: #f5f5f5;
+  color: #2a2a2a;
+  border: 1px solid #d4d4d4;
   padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  /* margin-bottom: 15px; */ /* <--- REMOVE THIS LINE */
-  transition: opacity 0.3s;
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
 .back-button:hover {
-  opacity: 0.9;
+  background: #e8e8e8;
+  border-color: #b8b8b8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .back-button {
+  background: #3a3a3a;
+  color: #e8e8e8;
+  border-color: #4a4a4a;
+}
+
+body.dark-mode .back-button:hover {
+  background: #4a4a4a;
+  border-color: #5a5a5a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .detail-header {
@@ -976,17 +1060,24 @@ header h1 {
   }
 
   .shipgirl-grid.list-view .shipgirl-info {
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
   }
 
+  .shipgirl-grid.list-view .left-info {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
   .shipgirl-grid.list-view .shipgirl-name {
+    white-space: normal;
     width: 100%;
   }
 
   .shipgirl-grid.list-view .shipgirl-meta {
-    justify-content: flex-start;
     width: 100%;
+    justify-content: flex-start;
   }
 
   .detail-header {
@@ -1007,5 +1098,290 @@ header h1 {
 
   .stats-grid {
     grid-template-columns: repeat(2, 1fr); /* Enforce 2 columns on mobile */
+  }
+}
+
+/* ===== Construction-specific Styles ===== */
+
+/* Stats Container */
+.stats-container {
+  display: flex;
+  gap: 20px;
+  padding: 8px 16px;
+  background: var(--section-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.stats-container .stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stats-container .stat-label {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.stats-container .stat-value {
+  font-size: 1.1em;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+/* Info Modal */
+.info-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+}
+
+.info-modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.info-modal-content {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  position: relative;
+}
+
+.info-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 2em;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.info-modal-close:hover {
+  background: var(--section-bg);
+  color: var(--text-primary);
+}
+
+.info-modal-content h2 {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  font-size: 1.8em;
+}
+
+.info-section {
+  margin-bottom: 25px;
+}
+
+.info-section h3 {
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  font-size: 1.2em;
+}
+
+.info-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.info-section li {
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.info-section li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.info-section p {
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Construction Badges Overlay */
+.construction-badges-overlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 10;
+  align-items: flex-end;
+}
+
+.construction-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  background: rgba(74, 74, 74, 0.9);
+  color: white;
+  font-size: 0.7em;
+  font-weight: bold;
+  border-radius: 4px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .construction-badge {
+  background: rgba(192, 192, 192, 0.9);
+  color: #1a1a1a;
+}
+
+.construction-badge.limited-badge {
+  background: #ff6b6b;
+  color: white;
+}
+
+body.dark-mode .construction-badge.limited-badge {
+  background: #d65454;
+  color: white;
+}
+
+/* Timer Badge */
+.timer-badge {
+  display: block;
+  margin-top: 6px;
+  padding: 4px 8px;
+  background: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.75em;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+}
+
+/* Shipgirl Card - add relative positioning for badges */
+.shipgirl-card {
+  position: relative;
+}
+
+/* Scroll to Top Button */
+.scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.scroll-to-top:hover {
+  background: #357abd;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(74, 144, 226, 0.5);
+}
+
+.scroll-to-top:active {
+  transform: translateY(-1px);
+}
+
+.scroll-to-top.show {
+  display: flex;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-title-container {
+    width: 100%;
+  }
+
+  header h1 {
+    font-size: 2em;
+  }
+
+  .stats-container {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .construction-badge {
+    font-size: 0.65em;
+    padding: 2px 6px;
+  }
+
+  .info-modal-content {
+    padding: 20px;
+  }
+
+  .info-modal-content h2 {
+    font-size: 1.5em;
+  }
+
+  .scroll-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
   }
 }

@@ -2,12 +2,13 @@ import requests
 import json
 import os
 
-def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_url, skill_url, buff_url, output_filename):
+def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_url, skill_url, buff_url, ship_drops_file, output_filename):
     """
     Fetches ship data from multiple sources, filters and merges it,
     and saves the final result to a file.
-    
+
     Includes advanced logic to trace ALL weapon skills through buffs, capturing firing data.
+    Also includes construction-specific data (timer, light, medium, heavy, limited).
     """
     RARITY_MAPPING = {6: 'UR', 5: 'SSR', 4: 'SR', 3: 'R', 2: 'N'}
 
@@ -42,6 +43,16 @@ def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_u
         
         response_buffs = requests.get(buff_url); response_buffs.raise_for_status()
         buff_effects_data = response_buffs.json()
+
+        # Load ship_drops.json for timer data
+        print("Loading ship_drops.json for construction timer data...")
+        with open(ship_drops_file, 'r', encoding='utf-8') as f:
+            ship_drops_data = json.load(f)
+        ship_drops_map = {
+            details['id']: details.get('timer')
+            for _, details in ship_drops_data.items() if 'id' in details
+        }
+
         print("All external data fetched and mapped.")
 
         # --- PART 3: Filtering and Merging ---
@@ -55,7 +66,7 @@ def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_u
             filtered_ships.append(new_ship_dict)
 
         for ship in filtered_ships:
-            gid, sid = ship.get('gid'), ship.get('sid')
+            gid, sid, ship_id = ship.get('gid'), ship.get('sid'), ship.get('id')
             if gid in description_map: ship['description'] = description_map[gid]
             if sid in stats_map: ship.update(stats_map[sid])
             if gid in sp_weapon_map: ship['sp_weapon'] = sp_weapon_map[gid]
@@ -64,6 +75,20 @@ def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_u
             if 'retrofit' in ship and isinstance(ship.get('retrofit'), dict):
                 if ship['retrofit'].get('skill') in transform_map:
                     ship['retrofit']['skill_id'] = transform_map[ship['retrofit']['skill']]
+
+            # --- Add construction-specific fields ---
+            # Add timer from ship_drops.json
+            ship['timer'] = ship_drops_map.get(ship_id)
+
+            # Parse construction types from description
+            description_text = "".join(ship.get("description", []))
+            ship['light'] = "소형함 건조" in description_text
+            ship['medium'] = "중형함 건조" in description_text
+            ship['heavy'] = "특형함 건조" in description_text
+
+            # Check for "limited" status
+            is_limited_event = "한정" in description_text
+            ship['limited'] = is_limited_event and not (ship['light'] or ship['medium'] or ship['heavy'])
 
             # --- PART 4: Advanced 'weapon_true' Check ---
             skill_locations = []
@@ -169,6 +194,7 @@ if __name__ == "__main__":
     TRANSFORM_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/transform_data_template.json"
     SKILL_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/GameCfg/skill.json"
     BUFF_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/GameCfg/buff.json"
+    SHIP_DROPS_FILE = "ship_drops.json"
     OUTPUT_FILE = "./output/ship_info_data.json"
 
-    process_ship_data(SHIP_URL, GROUP_URL, STATS_URL, SP_WEAPON_URL, TRANSFORM_URL, SKILL_URL, BUFF_URL, OUTPUT_FILE)
+    process_ship_data(SHIP_URL, GROUP_URL, STATS_URL, SP_WEAPON_URL, TRANSFORM_URL, SKILL_URL, BUFF_URL, SHIP_DROPS_FILE, OUTPUT_FILE)

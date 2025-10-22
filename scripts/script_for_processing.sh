@@ -45,8 +45,8 @@ python sim_weapon_process.py
 
 echo others
 python misc_bgm_process.py
-python ship_const_time_process.py
 # python orbit_process.py
+python ship_build_sim_process.py # requires ship_info_data.json created by skin_info_process.py
 
 echo cleanup files not needed for the final output
 rm story.json dungeon.json
