@@ -769,11 +769,22 @@
         const height = parseFloat(canvas.dataset.height);
         const shipName = canvas.dataset.shipName;
 
-        const chartWidth = width - padding.left - padding.right;
-        const chartHeight = height - padding.top - padding.bottom;
+        // Ensure canvas bitmap size matches stored dimensions
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+
+        // Use current rect dimensions for rendering
+        const currentWidth = rect.width;
+        const currentHeight = rect.height;
+
+        const chartWidth = currentWidth - padding.left - padding.right;
+        const chartHeight = currentHeight - padding.top - padding.bottom;
 
         // Clear canvas
-        ctx.clearRect(0, 0, width, height);
+        ctx.clearRect(0, 0, currentWidth, currentHeight);
 
         // Get theme colors (check both data-theme and dark-mode class)
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
@@ -859,7 +870,7 @@
         // X-axis label
         const xLabel = '건조 횟수';
         const xLabelWidth = ctx.measureText(xLabel).width;
-        ctx.fillText(xLabel, padding.left + chartWidth / 2 - xLabelWidth / 2, height - 20);
+        ctx.fillText(xLabel, padding.left + chartWidth / 2 - xLabelWidth / 2, currentHeight - 20);
 
         // Y-axis label
         ctx.save();
@@ -1068,6 +1079,9 @@
 
         // Set cursor
         canvas.style.cursor = 'crosshair';
+
+        // Render the graph initially (after canvas was cloned)
+        renderGraph(canvas, null);
     }
 
     // Load Ship Database (lazy)
