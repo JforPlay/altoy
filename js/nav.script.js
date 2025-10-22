@@ -1,10 +1,81 @@
+// ============================================
+// CENTRALIZED LINK CONFIGURATION
+// ============================================
+const LINKS = {
+    // Main Pages
+    HOME: 'index.html',
+
+    // Shipgirl & Skin
+    SHIPGIRL_INFO: 'pages/shipgirl/shipgirl-info.html',
+    SHIPGIRL_TRACKER: 'pages/shipgirl/shipgirl-tracker.html',
+    SHIPGIRL_BUILD: 'pages/shipgirl-build-sim.html',
+    SKIN_DETAIL: 'pages/skin/skin-detail-viewer.html',
+    SKIN_LIST: 'pages/skin/skin-list-viewer.html',
+    SKIN_POLL: 'pages/skin/skin-poll.html',
+    SKIN_SD: 'pages/skin/skin-sd-viewer.html',
+
+    // Chat & Social
+    JUUSTAGRAM: 'pages/juustagram.html',
+    CHAT_JUUS: 'pages/chat-viewer/juus.html',
+    CHAT_DORM3D: 'pages/chat-viewer/dorm3d.html',
+
+    // Story
+    MAIN_STORY: 'pages/story-viewer/main-story.html',
+    MAIN_STORYLINE: 'pages/story-viewer/main-storyline.html',
+    WORLD_STORY: 'pages/story-viewer/world-story.html',
+    WORLD_FILE: 'pages/story-viewer/world-file.html',
+    HOF: 'pages/story-viewer/hof.html',
+
+    // Misc
+    EVENT_TIMELINE: 'pages/event-timeline.html',
+    COMIC_VIEWER: 'pages/misc/comic-viewer.html',
+    LOADINGBG: 'pages/misc/loadingbg.html',
+    GALLERYPIC: 'pages/misc/gallerypic.html',
+    BGM_PLAYER: 'pages/misc/bgm-player.html',
+
+    // Simulators
+    SIM_WEAPON: 'pages/simulators/sim-weapon.html',
+
+    // External Links
+    EXTERNAL_HEARING: 'https://999dulgi.github.io/azurlane-hearing/ships',
+    EXTERNAL_EQUIPMENT: 'https://gateisbug.github.io/alit/#/item',
+    EXTERNAL_ARCA_AZUR: 'https://arca.live/b/azurlane',
+    EXTERNAL_ARCA_MANJUU: 'https://arca.live/b/manjuugame',
+    EXTERNAL_BUG_REPORT: 'https://arca.live/b/azurlane/148734027',
+    EXTERNAL_GODROOKLYN: 'https://godrooklyn.tistory.com/',
+    EXTERNAL_GITHUB: 'https://github.com/JforPlay/altoy'
+};
+
+// ============================================
+// LINK INITIALIZATION
+// ============================================
+function initLinks() {
+    const linkElements = document.querySelectorAll('[data-link]');
+
+    linkElements.forEach(el => {
+        const linkKey = el.getAttribute('data-link');
+        if (LINKS[linkKey]) {
+            el.href = LINKS[linkKey];
+        } else {
+            console.warn(`[Links] Key not found: "${linkKey}"`);
+            el.href = '#';
+        }
+    });
+}
+
+// ============================================
+// MAIN INITIALIZATION
+// ============================================
 document.addEventListener('DOMContentLoaded', function () {
-    
+
     // Default to dark mode
     applyTheme(localStorage.getItem('theme') || 'dark');
 
     loadNavbar();
     loadFooter();
+
+    // Initialize links after DOM is loaded
+    initLinks();
 });
 
 /**
@@ -66,6 +137,9 @@ function loadNavbar() {
 
             // Re-apply theme to ensure the loaded navbar gets the right class
             applyTheme(localStorage.getItem('theme') || 'dark');
+
+            // Initialize links in the navbar after it's loaded
+            initLinks();
 
             // Setup scroll listener after navbar is loaded
             const navbar = document.querySelector('.navbar');

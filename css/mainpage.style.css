@@ -972,14 +972,14 @@ body:not(.dark-mode) .bento-card p {
 
 /* Bento Card Content */
 .card-icon-large {
-  font-size: 3.2em;
-  margin-bottom: 0.8rem;
+  font-size: 2em;
+  margin-bottom: 0.5rem;
   filter: drop-shadow(0 0 16px rgba(0, 113, 235, 0.3));
 }
 
 .card-icon {
   font-size: 2em;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .bento-card h3 {

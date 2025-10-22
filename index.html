@@ -17,6 +17,8 @@
 <body>
     <div id="navbar-placeholder"></div>
 
+    <!-- Now the links are handled by the nav.script.js file -->
+    <!-- ex) data-link="TAG_to_LINK" -->
     <main class="home-container">
         <!-- Hero Carousel Section -->
         <section class="hero-carousel">
@@ -37,7 +39,7 @@
                         <p class="slide-description">
                             1000개 이상의 스킨을 필터링하고 각종 일러스트들을 감상하세요
                         </p>
-                        <a href="pages/skin/skin-list-viewer.html" class="slide-cta">
+                        <a data-link="SKIN_LIST" class="slide-cta">
                             <span>스킨 보러가기</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -57,7 +59,7 @@
                         <p class="slide-description">
                             함순이들의 스킬에 붙은 탄막들을 실시간으로 확인해보세요<br>
                         </p>
-                        <a href="pages/simulators/sim-weapon.html" class="slide-cta">
+                        <a data-link="SIM_WEAPON" class="slide-cta">
                             <span>보러가기</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -78,7 +80,7 @@
                             함순이들의 일상이 담긴 SNS를 엿보고<br>
                             숨겨진 이야기를 발견해보세요
                         </p>
-                        <a href="pages/juustagram.html" class="slide-cta">
+                        <a data-link="JUUSTAGRAM" class="slide-cta">
                             <span>둘러보기</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -167,7 +169,7 @@
         <!-- Bento Grid -->
         <div class="bento-grid">
             <!-- Large: Skin Poll -->
-            <a href="pages/skin/skin-poll.html" class="bento-card large featured">
+            <a data-link="SKIN_POLL" class="bento-card large featured">
                 <div class="card-header">
                     <div class="card-icon-large">
                         <i class="fa-solid fa-square-poll-vertical"></i>
@@ -181,7 +183,7 @@
             </a>
 
             <!-- Medium Cards -->
-            <a href="pages/event-timeline.html" class="bento-card medium">
+            <a data-link="EVENT_TIMELINE" class="bento-card medium">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-timeline"></i>
@@ -191,12 +193,7 @@
                 <p>각종 필터링 + 함순이 리스트와 함께 <br>역대 이벤트를 확인해보세요</p>
             </a>
 
-            <!-- <a href="pages/juustagram.html" class="bento-card medium">
-                <div class="card-icon"><i class="fa-brands fa-instagram"></i></div>
-                <h3>쥬스타그램 뷰어</h3>
-                <p>함순이들의 쥬스타그램 / 댓글과 함께 지휘관의 댓글들을 <br>검색기능과 함께 감상해보세요</p>
-            </a> -->
-            <a href="pages/story-viewer/main-story.html" class="bento-card medium">
+            <a data-link="MAIN_STORY" class="bento-card medium">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-book-open-reader"></i>
@@ -207,18 +204,17 @@
                     메인스토리를 감상해보세요</p>
             </a>
 
-            <!-- Small Cards (Row 3) -->
-            <a href="pages/chat-viewer/juus.html" class="bento-card small">
+            <!-- Small Cards -->
+            <a data-link="CHAT_JUUS" class="bento-card small">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-comments-dollar"></i>
                     </div>
                     <h3>JUUS 뷰어</h3>
                 </div>
-                <!-- <p>함순이들과의 쥬톡 대화들을 감상해보세요</p> -->
             </a>
 
-            <a href="https://godrooklyn.tistory.com/" class="bento-card small featured">
+            <a data-link="EXTERNAL_GODROOKLYN" class="bento-card small featured">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-square-rss"></i>
@@ -227,7 +223,7 @@
                 </div>
             </a>
 
-            <a href="pages/misc/comic-viewer.html" class="bento-card small">
+            <a data-link="COMIC_VIEWER" class="bento-card small">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-images"></i>
@@ -236,7 +232,7 @@
                 </div>
             </a>
 
-            <a href="https://arca.live/b/azurlane/148734027" class="bento-card small">
+            <a data-link="EXTERNAL_BUG_REPORT" class="bento-card small">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-bug"></i>
@@ -247,7 +243,7 @@
 
             <!-- External Links Section (Auto new row) -->
             <div class="external-links-section">
-                <a href="https://999dulgi.github.io/azurlane-hearing/ships" target="_blank"
+                <a data-link="EXTERNAL_HEARING" target="_blank"
                     class="bento-card small external-link">
                     <span class="external-badge">외부</span>
                     <div class="card-header">
@@ -256,7 +252,7 @@
                     </div>
                     <div class="external-link-desc">함순이들의 스킬정보 / 간단평을 볼 수 있습니다</div>
                 </a>
-                <a href="https://gateisbug.github.io/alit/#/item" target="_blank"
+                <a data-link="EXTERNAL_EQUIPMENT" target="_blank"
                     class="bento-card small external-link">
                     <span class="external-badge">외부</span>
                     <div class="card-header">
@@ -268,13 +264,13 @@
                 <div class="bento-card small external-link dual-external">
                     <span class="external-badge">외부</span>
                     <div class="dual-links-container">
-                        <a href="https://arca.live/b/azurlane" target="_blank" class="dual-link-item">
+                        <a data-link="EXTERNAL_ARCA_AZUR" target="_blank" class="dual-link-item">
                             <img src="assets/icon/arca.svg" alt="Arca" class="dual-link-svg-icon">
                             <div class="dual-link-content">
                                 <div class="dual-link-label">벽챈 바로가기</div>
                             </div>
                         </a>
-                        <a href="https://arca.live/b/manjuugame" target="_blank" class="dual-link-item">
+                        <a data-link="EXTERNAL_ARCA_MANJUU" target="_blank" class="dual-link-item">
                             <img src="assets/icon/arca.svg" alt="Arca" class="dual-link-svg-icon">
                             <div class="dual-link-content">
                                 <div class="dual-link-label">맍챈 바로가기</div>
@@ -282,7 +278,7 @@
                         </a>
                     </div>
                 </div>
-                <a href="https://github.com/JforPlay/altoy" target="_blank" class="bento-card small external-link">
+                <a data-link="EXTERNAL_GITHUB" target="_blank" class="bento-card small external-link">
                     <span class="external-badge">외부</span>
                     <div class="card-header">
                         <i class="fab fa-github external-link-icon"></i>
