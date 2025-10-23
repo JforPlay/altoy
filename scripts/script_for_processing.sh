@@ -48,6 +48,9 @@ python misc_bgm_process.py
 # python orbit_process.py
 python ship_build_sim_process.py # requires ship_info_data.json created by skin_info_process.py
 
+# echo processing child story data
+# python child_story_process.py # requires story.json
+
 echo cleanup files not needed for the final output
 rm story.json dungeon.json
 rm ./output/sim/transform_data_template.json

@@ -1,0 +1,122 @@
+{
+  "1": {
+    "character": 1,
+    "id": 1,
+    "name": "진학",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA32",
+    "pic": "bg_project_oceana_cg23",
+    "pic_preview": "oceana_ending1"
+  },
+  "2": {
+    "character": 1,
+    "id": 2,
+    "name": "파티시에",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA33",
+    "pic": "bg_project_oceana_cg24",
+    "pic_preview": "oceana_ending2"
+  },
+  "3": {
+    "character": 1,
+    "id": 3,
+    "name": "바텐더",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA34",
+    "pic": "bg_project_oceana_cg25",
+    "pic_preview": "oceana_ending3"
+  },
+  "4": {
+    "character": 1,
+    "id": 4,
+    "name": "풍경 사진",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA35",
+    "pic": "bg_project_oceana_cg26",
+    "pic_preview": "oceana_ending4"
+  },
+  "5": {
+    "character": 1,
+    "id": 5,
+    "name": "폭파 전문가",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA36",
+    "pic": "bg_project_oceana_cg27",
+    "pic_preview": "oceana_ending5"
+  },
+  "6": {
+    "character": 1,
+    "id": 6,
+    "name": "상담가",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA37",
+    "pic": "bg_project_oceana_cg28",
+    "pic_preview": "oceana_ending6"
+  },
+  "7": {
+    "character": 1,
+    "id": 7,
+    "name": "보안 전문가",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA38",
+    "pic": "bg_project_oceana_cg29",
+    "pic_preview": "oceana_ending7"
+  },
+  "8": {
+    "character": 1,
+    "id": 8,
+    "name": "캠핑 지도사",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA39",
+    "pic": "bg_project_oceana_cg30",
+    "pic_preview": "oceana_ending8"
+  },
+  "9": {
+    "character": 1,
+    "id": 9,
+    "name": "바이커",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA40",
+    "pic": "bg_project_oceana_cg31",
+    "pic_preview": "oceana_ending9"
+  },
+  "10": {
+    "character": 1,
+    "id": 10,
+    "name": "수의사",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA41",
+    "pic": "bg_project_oceana_cg32",
+    "pic_preview": "oceana_ending10"
+  },
+  "11": {
+    "character": 1,
+    "id": 11,
+    "name": "락스타",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA42",
+    "pic": "bg_project_oceana_cg33",
+    "pic_preview": "oceana_ending11"
+  },
+  "12": {
+    "character": 1,
+    "id": 12,
+    "name": "빛나는 아이돌",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA43",
+    "pic": "bg_project_oceana_cg34",
+    "pic_preview": "oceana_ending12"
+  },
+  "13": {
+    "character": 1,
+    "id": 13,
+    "name": "견습 간호사",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA44",
+    "pic": "bg_project_oceana_cg35",
+    "pic_preview": "oceana_ending13"
+  },
+  "14": {
+    "character": 1,
+    "id": 14,
+    "name": "동물원 원장",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA45",
+    "pic": "bg_project_oceana_cg36",
+    "pic_preview": "oceana_ending14"
+  },
+  "15": {
+    "character": 1,
+    "id": 15,
+    "name": "유능한 정비사",
+    "performance": "LINGYANGZHEYANGCHENGJIHUA46",
+    "pic": "bg_project_oceana_cg37",
+    "pic_preview": "oceana_ending15"
+  }
+}

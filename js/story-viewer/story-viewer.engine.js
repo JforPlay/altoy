@@ -454,6 +454,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (i === this.currentStoryScript.length - 1) nextIndex = i; // last line
                 }
             }
+            // Skip optionFlag lines when advancing
+            while (nextIndex < this.currentStoryScript.length &&
+                   this.currentStoryScript[nextIndex].optionFlag !== undefined) {
+                nextIndex++;
+            }
             this.scriptIndex = nextIndex;
             this.renderScriptLine();
         },
@@ -470,6 +475,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     if (i === 0) prevIndex = i; // first line
                 }
+            }
+            // Skip optionFlag lines when going back
+            while (prevIndex > 0 &&
+                   this.currentStoryScript[prevIndex].optionFlag !== undefined) {
+                prevIndex--;
             }
             this.scriptIndex = prevIndex;
             this.renderScriptLine();
@@ -549,12 +559,33 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         handleOptionSelect(chosenFlag) {
+            const currentLine = this.currentStoryScript[this.scriptIndex];
+            const optionCount = currentLine.options ? currentLine.options.length : 0;
+
+            // If only one option, just advance to the next line
+            if (optionCount === 1) {
+                this.scriptIndex++;
+                this.renderScriptLine();
+                return;
+            }
+
+            // Multiple options: find the chosen optionFlag line
             let nextIndex = -1;
             for (let i = this.scriptIndex + 1; i < this.currentStoryScript.length; i++) {
-                if (this.currentStoryScript[i].optionFlag === chosenFlag) { nextIndex = i; break; }
+                if (this.currentStoryScript[i].optionFlag === chosenFlag) {
+                    nextIndex = i;
+                    break;
+                }
             }
-            if (nextIndex !== -1) { this.scriptIndex = nextIndex; this.renderScriptLine(); }
-            else { this.advanceStory(); }
+
+            if (nextIndex !== -1) {
+                this.scriptIndex = nextIndex;
+                this.renderScriptLine();
+            } else {
+                // No optionFlag found, just advance
+                this.scriptIndex++;
+                this.renderScriptLine();
+            }
         },
 
         // =========================================================================

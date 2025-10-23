@@ -24,6 +24,8 @@ const LINKS = {
     MAIN_STORYLINE: 'pages/story-viewer/main-storyline.html',
     WORLD_STORY: 'pages/story-viewer/world-story.html',
     WORLD_FILE: 'pages/story-viewer/world-file.html',
+    NAVI_STORY: 'pages/story-viewer/navi-story.html',
+    TB_STORY: 'pages/story-viewer/tb-story.html',
     HOF: 'pages/story-viewer/hof.html',
 
     // Misc
