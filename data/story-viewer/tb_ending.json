@@ -1,0 +1,102 @@
+{
+  "1": {
+    "group": 1,
+    "id": 1,
+    "level": 1,
+    "name": "사진 모델",
+    "performance": "LINGHANGYUANYANGCHENGJIHUA33",
+    "pic": "bg_project_tb_cg26",
+    "polaroid_condition": 201
+  },
+  "2": {
+    "group": 2,
+    "id": 2,
+    "level": 1,
+    "name": "아티스트",
+    "performance": "LINGHANGYUANYANGCHENGJIHUA34",
+    "pic": "bg_project_tb_cg27",
+    "polaroid_condition": 201
+  },
+  "3": {
+    "group": 3,
+    "id": 3,
+    "level": 1,
+    "name": "인기 뮤지션",
+    "performance": "LINGHANGYUANYANGCHENGJIHUA35",
+    "pic": "bg_project_tb_cg28",
+    "polaroid_condition": 201
+  },
+  "4": {
+    "group": 4,
+    "id": 4,
+    "level": 1,
+    "name": "인기 뉴스타",
+    "performance": "LINGHANGYUANYANGCHENGJIHUA36",
+    "pic": "bg_project_tb_cg29",
+    "polaroid_condition": 203
+  },
+  "5": {
+    "group": 5,
+    "id": 5,
+    "level": 1,
+    "name": "제빵 달인",
+    "performance": "LINGHANGYUANYANGCHENGJIHUA37",
+    "pic": "bg_project_tb_cg30",
+    "polaroid_condition": 203
+  },
+  "6": {
+    "group": 6,
+    "id": 6,
+    "level": 1,
+    "name": "소설 작가",
+    "performance": "LINGHANGYUANYANGCHENGJIHUA38",
+    "pic": "bg_project_tb_cg31",
+    "polaroid_condition": 203
+  },
+  "7": {
+    "group": 7,
+    "id": 7,
+    "level": 1,
+    "name": "기대 선수",
+    "performance": "LINGHANGYUANYANGCHENGJIHUA39",
+    "pic": "bg_project_tb_cg32",
+    "polaroid_condition": 202
+  },
+  "8": {
+    "group": 8,
+    "id": 8,
+    "level": 1,
+    "name": "비즈니스 우먼",
+    "performance": "LINGHANGYUANYANGCHENGJIHUA40",
+    "pic": "bg_project_tb_cg33",
+    "polaroid_condition": 202
+  },
+  "9": {
+    "group": 9,
+    "id": 9,
+    "level": 1,
+    "name": "농장 주인",
+    "performance": "LINGHANGYUANYANGCHENGJIHUA41",
+    "pic": "bg_project_tb_cg34",
+    "polaroid_condition": 202
+  },
+  "10": {
+    "group": 10,
+    "id": 10,
+    "level": 1,
+    "name": "반복 일상",
+    "performance": "LINGHANGYUANYANGCHENGJIHUA42",
+    "pic": "bg_project_tb_cg35",
+    "polaroid_condition": 0,
+    "story": "linghangyuanyangchengjihua42"
+  },
+  "11": {
+    "group": 11,
+    "id": 11,
+    "level": 1,
+    "name": "두문불출",
+    "performance": "LINGHANGYUANYANGCHENGJIHUA43",
+    "pic": "bg_project_tb_cg36",
+    "polaroid_condition": 0
+  }
+}

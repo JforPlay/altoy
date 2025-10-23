@@ -1,10 +1,10 @@
 /**
- * navi-story.js
+ * tb-story.js
  * -------------
- * Handles the Navi Story Viewer with tab navigation for:
- * - Memories (navi_memory.json)
- * - Endings (navi_ending.json)
- * - Polaroids (navi_polaroid.json)
+ * Handles the TB Story Viewer with tab navigation for:
+ * - Memories (tb_memory.json)
+ * - Endings (tb_ending.json)
+ * - Polaroids (tb_polaroid.json)
  * - Photos (placeholder)
  *
  * Uses the common StoryViewer engine for story playback with proper URL state management
@@ -14,12 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     // STATE & DATA
     // =========================================================================
-    const NaviViewer = {
+    const TbViewer = {
         // Data storage
         memoriesData: {},
         endingsData: {},
         polaroidsData: {},
-        visitsData: {}, // Real world visits
+        affectionData: {}, // Affection stories
         dailyData: {}, // Daily life
         storyData: {},
         shipgirlData: {},
@@ -30,11 +30,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Current state
         currentTab: 'memories',
-        currentCategory: null, // 'memory', 'ending', 'visit', or 'daily'
+        currentCategory: null, // 'memory', 'ending', 'affection', or 'daily'
         currentStoryId: null,
 
-        // Image base URL - all images for this page are in neweducateicon folder
-        BASE_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/neweducateicon/",
+        // Image base URLs
+        BASE_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/educatepolaroid/",
+        AVATAR_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/educateavatar/",
+
+        // Photo filenames from educateavatar folder
+        PHOTO_FILENAMES: [
+            'linghangyuan1_1', 'linghangyuan1_2', 'linghangyuan1_3', 'linghangyuan1_4', 'linghangyuan1_5', 'linghangyuan1_6',
+            'linghangyuan2_1', 'linghangyuan2_2', 'linghangyuan2_3', 'linghangyuan2_4', 'linghangyuan2_5',
+            'linghangyuan31_1', 'linghangyuan31_2',
+            'linghangyuan32_1', 'linghangyuan32_2',
+            'linghangyuan33_1', 'linghangyuan33_2'
+        ],
 
         // DOM elements
         elements: {
@@ -45,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Grids
             memoriesGrid: document.getElementById('memories-grid'),
             endingsGrid: document.getElementById('endings-grid'),
-            visitsGrid: document.getElementById('visits-grid'),
+            affectionGrid: document.getElementById('affection-grid'),
             dailyGrid: document.getElementById('daily-grid'),
             polaroidsGrid: document.getElementById('polaroids-grid'),
             photosGrid: document.getElementById('photos-grid'),
@@ -96,10 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
         async loadAllData() {
             try {
                 const [memoriesData, endingsData, polaroidsData, storyData, shipgirlData, nameCodeData] = await Promise.all([
-                    fetch('data/story-viewer/navi_memory.json').then(r => r.json()),
-                    fetch('data/story-viewer/navi_ending.json').then(r => r.json()),
-                    fetch('data/story-viewer/navi_polaroid.json').then(r => r.json()),
-                    fetch('data/story-viewer/navi_story_data.json').then(r => r.json()),
+                    fetch('data/story-viewer/tb_memory.json').then(r => r.json()),
+                    fetch('data/story-viewer/tb_ending.json').then(r => r.json()),
+                    fetch('data/story-viewer/tb_polaroid.json').then(r => r.json()),
+                    fetch('data/story-viewer/tb_story_data.json').then(r => r.json()),
                     fetch('data/story-viewer/shipgirl_data.json').then(r => r.json()),
                     fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json').then(r => r.json())
                 ]);
@@ -111,8 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.shipgirlData = shipgirlData;
                 this.nameCodeData = nameCodeData;
 
-                // Extract visits and daily data from storyData
-                this.extractVisitsData();
+                // Extract affection and daily data from storyData
+                this.extractAffectionData();
                 this.extractDailyData();
 
             } catch (error) {
@@ -121,32 +131,32 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
-        // Extract visits stories from storyData (lingyangzhelaifangjishi)
-        extractVisitsData() {
-            this.visitsData = {};
+        // Extract affection stories from storyData (linghangyuanhaogandu - lowercase keys)
+        extractAffectionData() {
+            this.affectionData = {};
             for (const key in this.storyData) {
-                if (key.startsWith('lingyangzhelaifangjishi')) {
+                if (key.startsWith('linghangyuanhaogandu')) {
                     // Extract the number from the key
-                    const match = key.match(/lingyangzhelaifangjishi(\d+)/);
+                    const match = key.match(/linghangyuanhaogandu(\d+)/);
                     if (match) {
                         const id = parseInt(match[1], 10);
-                        this.visitsData[id] = {
+                        this.affectionData[id] = {
                             id: id,
                             storyKey: key,
-                            title: `현실방문 ${id}`
+                            title: `호감도 ${id}`
                         };
                     }
                 }
             }
         },
 
-        // Extract daily life stories from storyData (lingyangzhexinzhixuyu)
+        // Extract daily life stories from storyData (linghangyuantanxin - lowercase keys)
         extractDailyData() {
             this.dailyData = {};
             for (const key in this.storyData) {
-                if (key.startsWith('lingyangzhexinzhixuyu')) {
+                if (key.startsWith('linghangyuantanxin')) {
                     // Extract the number from the key
-                    const match = key.match(/lingyangzhexinzhixuyu(\d+)/);
+                    const match = key.match(/linghangyuantanxin(\d+)/);
                     if (match) {
                         const id = parseInt(match[1], 10);
                         this.dailyData[id] = {
@@ -159,24 +169,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
-        // Convert navi data into the event/memory structure expected by story engine
+        // Convert tb data into the event/memory structure expected by story engine
         convertDataForEngine() {
-            // Create four "events": memories, endings, visits, and daily
+            // Create four "events": memories, endings, affection, and daily
             this.convertedStorylineData = {
                 'memory': {
                     id: 'memory',
-                    name: 'Navi Memories',
+                    name: 'TB Memories',
                     child: Object.values(this.memoriesData).map(mem => ({
                         id: mem.id,
                         title: mem.desc || `Memory ${mem.id}`,
                         condition: mem.condition || '',
                         icon: null,
-                        story: this.storyData[mem.lua?.toLowerCase()] || { scripts: [] }
+                        story: this.storyData[mem.performance?.toLowerCase()] || { scripts: [] }
                     }))
                 },
                 'ending': {
                     id: 'ending',
-                    name: 'Navi Endings',
+                    name: 'TB Endings',
                     child: Object.values(this.endingsData).map(end => ({
                         id: end.id,
                         title: end.name || `Ending ${end.id}`,
@@ -185,20 +195,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         story: this.storyData[end.performance?.toLowerCase()] || { scripts: [] }
                     }))
                 },
-                'visit': {
-                    id: 'visit',
-                    name: '네비의 현실방문',
-                    child: Object.values(this.visitsData).map(visit => ({
-                        id: visit.id,
-                        title: visit.title,
+                'affection': {
+                    id: 'affection',
+                    name: 'TB의 호감도 스토리',
+                    child: Object.values(this.affectionData).map(affection => ({
+                        id: affection.id,
+                        title: affection.title,
                         condition: '',
                         icon: null,
-                        story: this.storyData[visit.storyKey] || { scripts: [] }
+                        story: this.storyData[affection.storyKey] || { scripts: [] }
                     }))
                 },
                 'daily': {
                     id: 'daily',
-                    name: '네비의 일상',
+                    name: 'TB의 일상',
                     child: Object.values(this.dailyData).map(daily => ({
                         id: daily.id,
                         title: daily.title,
@@ -274,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
         populateAllGrids() {
             this.populateMemoriesGrid();
             this.populateEndingsGrid();
-            this.populateVisitsGrid();
+            this.populateAffectionGrid();
             this.populateDailyGrid();
             this.populatePolaroidsGrid();
             this.populatePhotosGrid();
@@ -298,15 +308,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         },
 
-        populateVisitsGrid() {
-            this.elements.visitsGrid.innerHTML = '';
+        populateAffectionGrid() {
+            this.elements.affectionGrid.innerHTML = '';
 
             // Sort by ID to maintain order
-            const sortedVisits = Object.values(this.visitsData).sort((a, b) => a.id - b.id);
+            const sortedAffection = Object.values(this.affectionData).sort((a, b) => a.id - b.id);
 
-            sortedVisits.forEach(visit => {
-                const card = this.createVisitCard(visit);
-                this.elements.visitsGrid.appendChild(card);
+            sortedAffection.forEach(affection => {
+                const card = this.createAffectionCard(affection);
+                this.elements.affectionGrid.appendChild(card);
             });
         },
 
@@ -334,11 +344,11 @@ document.addEventListener('DOMContentLoaded', () => {
         populatePhotosGrid() {
             this.elements.photosGrid.innerHTML = '';
 
-            // Create cards for plan_square_1 through plan_square_15
-            for (let i = 1; i <= 15; i++) {
-                const card = this.createPhotoCard(i);
+            // Create cards for all photos from educateavatar folder
+            this.PHOTO_FILENAMES.forEach(filename => {
+                const card = this.createPhotoCard(filename);
                 this.elements.photosGrid.appendChild(card);
-            }
+            });
         },
 
         // =========================================================================
@@ -346,27 +356,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // =========================================================================
         createMemoryCard(memory) {
             const card = document.createElement('div');
-            card.className = 'navi-card';
+            card.className = 'tb-card';
             card.dataset.title = memory.desc || '';
 
             const imageUrl = memory.pic
                 ? `${this.BASE_URL}${memory.pic}.png`
-                : 'assets/img/navi_placeholder.png';
+                : 'assets/img/tb_placeholder.png';
 
             card.innerHTML = `
-                <img class="navi-card-image" src="${imageUrl}" alt="${memory.desc}" loading="lazy">
-                <div class="navi-card-content">
-                    <h3 class="navi-card-title">${memory.desc || 'Untitled'}</h3>
-                    <span class="navi-card-badge">메모리 #${memory.id}</span>
+                <img class="tb-card-image" src="${imageUrl}" alt="${memory.desc}" loading="lazy">
+                <div class="tb-card-content">
+                    <h3 class="tb-card-title">${memory.desc || 'Untitled'}</h3>
+                    <span class="tb-card-badge">메모리 #${memory.id}</span>
                 </div>
             `;
 
             // Add error handling properly to avoid infinite loops
-            const img = card.querySelector('.navi-card-image');
+            const img = card.querySelector('.tb-card-image');
             img.addEventListener('error', function(e) {
-                if (this.src !== window.location.origin + '/altoy/assets/img/navi_placeholder.png' && !this.dataset.errorHandled) {
+                if (this.src !== window.location.origin + '/altoy/assets/img/tb_placeholder.png' && !this.dataset.errorHandled) {
                     this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
+                    this.src = 'assets/img/tb_placeholder.png';
                 }
             }, { once: false });
 
@@ -379,27 +389,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         createEndingCard(ending) {
             const card = document.createElement('div');
-            card.className = 'navi-card';
+            card.className = 'tb-card';
             card.dataset.title = ending.name || '';
 
             const imageUrl = ending.pic_preview
                 ? `${this.BASE_URL}${ending.pic_preview}.png`
-                : 'assets/img/navi_placeholder.png';
+                : 'assets/img/tb_placeholder.png';
 
             card.innerHTML = `
-                <img class="navi-card-image" src="${imageUrl}" alt="${ending.name}" loading="lazy">
-                <div class="navi-card-content">
-                    <h3 class="navi-card-title">${ending.name || 'Untitled'}</h3>
-                    <span class="navi-card-badge">엔딩 #${ending.id}</span>
+                <img class="tb-card-image" src="${imageUrl}" alt="${ending.name}" loading="lazy">
+                <div class="tb-card-content">
+                    <h3 class="tb-card-title">${ending.name || 'Untitled'}</h3>
+                    <span class="tb-card-badge">엔딩 #${ending.id}</span>
                 </div>
             `;
 
             // Add error handling properly to avoid infinite loops
-            const img = card.querySelector('.navi-card-image');
+            const img = card.querySelector('.tb-card-image');
             img.addEventListener('error', function(e) {
-                if (this.src !== window.location.origin + '/altoy/assets/img/navi_placeholder.png' && !this.dataset.errorHandled) {
+                if (this.src !== window.location.origin + '/altoy/assets/img/tb_placeholder.png' && !this.dataset.errorHandled) {
                     this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
+                    this.src = 'assets/img/tb_placeholder.png';
                 }
             }, { once: false });
 
@@ -410,24 +420,24 @@ document.addEventListener('DOMContentLoaded', () => {
             return card;
         },
 
-        createVisitCard(visit) {
+        createAffectionCard(affection) {
             const card = document.createElement('div');
-            card.className = 'navi-card';
-            card.dataset.title = visit.title;
+            card.className = 'tb-card';
+            card.dataset.title = affection.title;
 
-            // Use a placeholder or generic visit image
-            const imageUrl = 'assets/img/navi_placeholder.png';
+            // Use a placeholder or generic affection image
+            const imageUrl = 'assets/img/tb_placeholder.png';
 
             card.innerHTML = `
-                <img class="navi-card-image" src="${imageUrl}" alt="${visit.title}" loading="lazy">
-                <div class="navi-card-content">
-                    <h3 class="navi-card-title">${visit.title}</h3>
-                    <span class="navi-card-badge">방문 #${visit.id}</span>
+                <img class="tb-card-image" src="${imageUrl}" alt="${affection.title}" loading="lazy">
+                <div class="tb-card-content">
+                    <h3 class="tb-card-title">${affection.title}</h3>
+                    <span class="tb-card-badge">호감도 #${affection.id}</span>
                 </div>
             `;
 
             card.addEventListener('click', () => {
-                this.playStory('visit', visit.id, visit.title);
+                this.playStory('affection', affection.id, affection.title);
             });
 
             return card;
@@ -435,17 +445,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         createDailyCard(daily) {
             const card = document.createElement('div');
-            card.className = 'navi-card';
+            card.className = 'tb-card';
             card.dataset.title = daily.title;
 
             // Use a placeholder or generic daily life image
-            const imageUrl = 'assets/img/navi_placeholder.png';
+            const imageUrl = 'assets/img/tb_placeholder.png';
 
             card.innerHTML = `
-                <img class="navi-card-image" src="${imageUrl}" alt="${daily.title}" loading="lazy">
-                <div class="navi-card-content">
-                    <h3 class="navi-card-title">${daily.title}</h3>
-                    <span class="navi-card-badge">일상 #${daily.id}</span>
+                <img class="tb-card-image" src="${imageUrl}" alt="${daily.title}" loading="lazy">
+                <div class="tb-card-content">
+                    <h3 class="tb-card-title">${daily.title}</h3>
+                    <span class="tb-card-badge">일상 #${daily.id}</span>
                 </div>
             `;
 
@@ -458,19 +468,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         createPolaroidCard(polaroid) {
             const card = document.createElement('div');
-            card.className = 'navi-card polaroid-card';
+            card.className = 'tb-card polaroid-card';
             card.dataset.title = polaroid.title || '';
 
             // Use pic field (529x514 thumbnail)
             const imageUrl = polaroid.pic
                 ? `${this.BASE_URL}${polaroid.pic}.png`
-                : 'assets/img/navi_placeholder.png';
+                : 'assets/img/tb_placeholder.png';
 
             card.innerHTML = `
-                <img class="navi-card-image" src="${imageUrl}" alt="${polaroid.title}" loading="lazy">
-                <div class="navi-card-content">
-                    <h3 class="navi-card-title">${polaroid.title || 'Untitled'}</h3>
-                    <p class="navi-card-desc">${polaroid.condition || ''}</p>
+                <img class="tb-card-image" src="${imageUrl}" alt="${polaroid.title}" loading="lazy">
+                <div class="tb-card-content">
+                    <h3 class="tb-card-title">${polaroid.title || 'Untitled'}</h3>
+                    <p class="tb-card-desc">${polaroid.condition || ''}</p>
                     <div class="polaroid-card-footer">
                         <span class="polaroid-stage">
                             <span class="material-icons" style="font-size: 14px; vertical-align: middle;">star</span>
@@ -482,12 +492,12 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
 
             // Add error handling properly to avoid infinite loops
-            const img = card.querySelector('.navi-card-image');
+            const img = card.querySelector('.tb-card-image');
             img.addEventListener('error', function(e) {
                 // Only try to set placeholder once
-                if (this.src !== window.location.origin + '/altoy/assets/img/navi_placeholder.png' && !this.dataset.errorHandled) {
+                if (this.src !== window.location.origin + '/altoy/assets/img/tb_placeholder.png' && !this.dataset.errorHandled) {
                     this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
+                    this.src = 'assets/img/tb_placeholder.png';
                 }
             }, { once: false });
 
@@ -498,14 +508,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return card;
         },
 
-        createPhotoCard(number) {
+        createPhotoCard(filename) {
             const card = document.createElement('div');
             card.className = 'photo-card';
 
-            const imageUrl = `${this.BASE_URL}plan_square_${number}.png`;
+            const imageUrl = `${this.AVATAR_URL}${filename}.png`;
 
             card.innerHTML = `
-                <img src="${imageUrl}" alt="Photo ${number}" loading="lazy">
+                <img src="${imageUrl}" alt="${filename}" loading="lazy">
             `;
 
             // Add error handling
@@ -513,7 +523,7 @@ document.addEventListener('DOMContentLoaded', () => {
             img.addEventListener('error', function(e) {
                 if (!this.dataset.errorHandled) {
                     this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
+                    this.src = 'assets/img/tb_placeholder.png';
                 }
             }, { once: false });
 
@@ -554,7 +564,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // =========================================================================
         playStory(category, id, title) {
             // category: 'memory' or 'ending'
-            // id: numeric ID of the story
             this.currentCategory = category;
             this.currentStoryId = id;
 
@@ -662,11 +671,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Use pic (529x514) for front/thumbnail
             const frontUrl = polaroid.pic
                 ? `${this.BASE_URL}${polaroid.pic}.png`
-                : 'assets/img/navi_placeholder.png';
+                : 'assets/img/tb_placeholder.png';
             // Use pic_2 (960x720) for back/larger view
             const backUrl = polaroid.pic_2
                 ? `${this.BASE_URL}${polaroid.pic_2}.png`
-                : 'assets/img/navi_placeholder.png';
+                : 'assets/img/tb_placeholder.png';
 
             // Reset error handling flags
             delete this.elements.polaroidImgFront.dataset.errorHandled;
@@ -678,17 +687,17 @@ document.addEventListener('DOMContentLoaded', () => {
             this.elements.polaroidImgBack.classList.add('hidden');
 
             // Add error handling with guards to prevent infinite loops
-            const placeholderPath = window.location.origin + '/altoy/assets/img/navi_placeholder.png';
+            const placeholderPath = window.location.origin + '/altoy/assets/img/tb_placeholder.png';
             this.elements.polaroidImgFront.onerror = function() {
                 if (this.src !== placeholderPath && !this.dataset.errorHandled) {
                     this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
+                    this.src = 'assets/img/tb_placeholder.png';
                 }
             };
             this.elements.polaroidImgBack.onerror = function() {
                 if (this.src !== placeholderPath && !this.dataset.errorHandled) {
                     this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
+                    this.src = 'assets/img/tb_placeholder.png';
                 }
             };
 
@@ -752,16 +761,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // STORY VIEWER INITIALIZATION
         // =========================================================================
         initStoryViewer() {
-            const naviStoryConfig = {
-                viewerType: 'navi',
+            const tbStoryConfig = {
+                viewerType: 'tb',
 
                 dataPaths: [],
 
                 processLoadedData: (viewer, dataArray) => {
                     // Inject our converted data
-                    viewer.storylineData = NaviViewer.convertedStorylineData;
-                    viewer.shipgirlData = NaviViewer.shipgirlData;
-                    viewer.nameCodeData = NaviViewer.nameCodeData;
+                    viewer.storylineData = TbViewer.convertedStorylineData;
+                    viewer.shipgirlData = TbViewer.shipgirlData;
+                    viewer.nameCodeData = TbViewer.nameCodeData;
                 },
 
                 getEventMemories: (eventData) => eventData?.child,
@@ -780,9 +789,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.StoryViewer) {
                 // Override the loadData method to use our already-loaded data
                 window.StoryViewer.loadData = async function() {
-                    this.storylineData = NaviViewer.convertedStorylineData;
-                    this.shipgirlData = NaviViewer.shipgirlData;
-                    this.nameCodeData = NaviViewer.nameCodeData;
+                    this.storylineData = TbViewer.convertedStorylineData;
+                    this.shipgirlData = TbViewer.shipgirlData;
+                    this.nameCodeData = TbViewer.nameCodeData;
 
                     // Build name map
                     for (const id in this.shipgirlData) {
@@ -795,10 +804,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Override returnToMemorySelection to go back to tabs instead
                 const originalReturnToMemory = window.StoryViewer.returnToMemorySelection;
                 window.StoryViewer.returnToMemorySelection = function() {
-                    NaviViewer.returnToTabs();
+                    TbViewer.returnToTabs();
                 };
 
-                window.StoryViewer.init(naviStoryConfig);
+                window.StoryViewer.init(tbStoryConfig);
 
                 // Override populateEventGrid to do nothing (we use our own tabs)
                 window.StoryViewer.populateEventGrid = () => {};
@@ -820,5 +829,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     // START THE APPLICATION
     // =========================================================================
-    NaviViewer.init();
+    TbViewer.init();
 });
