@@ -92,7 +92,7 @@ async function loadSkillIconData() {
 
 async function loadSkillDataTemplate() {
     try {
-        const response = await fetch('data/skill_data_template.json');
+        const response = await fetch('data/sim/skill_data_template.json');
         if (response.ok) {
             const data = await response.json();
 
