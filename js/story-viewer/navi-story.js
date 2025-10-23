@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
         storyData: {},
         shipgirlData: {},
         nameCodeData: {},
+        iconMappingData: {}, // Icon mapping from tb_navi_memory.json
+        storyIconMap: {}, // Reverse lookup: storyKey -> {icon, title}
 
         // Converted data for story engine (event/memory structure)
         convertedStorylineData: {},
@@ -33,8 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
         currentCategory: null, // 'memory', 'ending', 'visit', or 'daily'
         currentStoryId: null,
 
-        // Image base URL - all images for this page are in neweducateicon folder
+        // Image base URLs
         BASE_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/neweducateicon/",
+        ICON_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/memoryicon/",
 
         // DOM elements
         elements: {
@@ -95,13 +98,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async loadAllData() {
             try {
-                const [memoriesData, endingsData, polaroidsData, storyData, shipgirlData, nameCodeData] = await Promise.all([
+                const [memoriesData, endingsData, polaroidsData, storyData, shipgirlData, nameCodeData, iconMappingData] = await Promise.all([
                     fetch('data/story-viewer/navi_memory.json').then(r => r.json()),
                     fetch('data/story-viewer/navi_ending.json').then(r => r.json()),
                     fetch('data/story-viewer/navi_polaroid.json').then(r => r.json()),
                     fetch('data/story-viewer/navi_story_data.json').then(r => r.json()),
                     fetch('data/story-viewer/shipgirl_data.json').then(r => r.json()),
-                    fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json').then(r => r.json())
+                    fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json').then(r => r.json()),
+                    fetch('data/story-viewer/tb_navi_memory.json').then(r => r.json())
                 ]);
 
                 this.memoriesData = memoriesData;
@@ -110,6 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.storyData = storyData;
                 this.shipgirlData = shipgirlData;
                 this.nameCodeData = nameCodeData;
+                this.iconMappingData = iconMappingData;
+
+                // Build reverse lookup map: storyKey -> iconName
+                this.buildStoryIconMap();
 
                 // Extract visits and daily data from storyData
                 this.extractVisitsData();
@@ -118,6 +126,21 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 console.error('Failed to load data:', error);
                 this.showError('데이터를 불러오는데 실패했습니다.');
+            }
+        },
+
+        // Build reverse lookup map: storyKey (lowercase) -> {icon, title}
+        buildStoryIconMap() {
+            this.storyIconMap = {};
+            for (const id in this.iconMappingData) {
+                const entry = this.iconMappingData[id];
+                if (entry.story) {
+                    // Store in lowercase for case-insensitive matching
+                    this.storyIconMap[entry.story.toLowerCase()] = {
+                        icon: entry.icon || null,
+                        title: entry.title || null
+                    };
+                }
             }
         },
 
@@ -130,10 +153,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     const match = key.match(/lingyangzhelaifangjishi(\d+)/);
                     if (match) {
                         const id = parseInt(match[1], 10);
+                        // Look up icon and title from the mapping
+                        const mappingData = this.storyIconMap[key] || {};
+                        const title = mappingData.title || `현실방문 ${id}`; // Fallback to default
+                        const icon = mappingData.icon || null;
+
                         this.visitsData[id] = {
                             id: id,
                             storyKey: key,
-                            title: `현실방문 ${id}`
+                            title: title,
+                            icon: icon
                         };
                     }
                 }
@@ -149,10 +178,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     const match = key.match(/lingyangzhexinzhixuyu(\d+)/);
                     if (match) {
                         const id = parseInt(match[1], 10);
+                        // Look up icon and title from the mapping
+                        const mappingData = this.storyIconMap[key] || {};
+                        const title = mappingData.title || `일상 ${id}`; // Fallback to default
+                        const icon = mappingData.icon || null;
+
                         this.dailyData[id] = {
                             id: id,
                             storyKey: key,
-                            title: `일상 ${id}`
+                            title: title,
+                            icon: icon
                         };
                     }
                 }
@@ -166,13 +201,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 'memory': {
                     id: 'memory',
                     name: 'Navi Memories',
-                    child: Object.values(this.memoriesData).map(mem => ({
-                        id: mem.id,
-                        title: mem.desc || `Memory ${mem.id}`,
-                        condition: mem.condition || '',
-                        icon: null,
-                        story: this.storyData[mem.lua?.toLowerCase()] || { scripts: [] }
-                    }))
+                    child: Object.values(this.memoriesData).map(mem => {
+                        // Look up icon and title from mapping based on lua field
+                        const mappingData = this.storyIconMap[mem.lua?.toLowerCase()] || {};
+                        const title = mappingData.title || mem.desc || `Memory ${mem.id}`;
+                        const icon = mappingData.icon || null;
+
+                        return {
+                            id: mem.id,
+                            title: title,
+                            condition: mem.condition || '',
+                            icon: icon,
+                            iconUrl: icon ? `${this.ICON_URL}${icon}.png` : null,
+                            story: this.storyData[mem.lua?.toLowerCase()] || { scripts: [] }
+                        };
+                    })
                 },
                 'ending': {
                     id: 'ending',
@@ -347,31 +390,26 @@ document.addEventListener('DOMContentLoaded', () => {
         createMemoryCard(memory) {
             const card = document.createElement('div');
             card.className = 'navi-card';
-            card.dataset.title = memory.desc || '';
 
-            const imageUrl = memory.pic
-                ? `${this.BASE_URL}${memory.pic}.png`
-                : 'assets/img/navi_placeholder.png';
+            // Look up title from mapping based on lua field (use title but not icon)
+            const mappingData = this.storyIconMap[memory.lua?.toLowerCase()] || {};
+            const title = mappingData.title || memory.desc || 'Untitled';
+
+            card.dataset.title = title;
+
+            // Use placeholder for memories (icons are too plain)
+            const imageUrl = 'assets/img/navi_placeholder.png';
 
             card.innerHTML = `
-                <img class="navi-card-image" src="${imageUrl}" alt="${memory.desc}" loading="lazy">
+                <img class="navi-card-image" src="${imageUrl}" alt="${title}" loading="lazy">
                 <div class="navi-card-content">
-                    <h3 class="navi-card-title">${memory.desc || 'Untitled'}</h3>
+                    <h3 class="navi-card-title">${title}</h3>
                     <span class="navi-card-badge">메모리 #${memory.id}</span>
                 </div>
             `;
 
-            // Add error handling properly to avoid infinite loops
-            const img = card.querySelector('.navi-card-image');
-            img.addEventListener('error', function(e) {
-                if (this.src !== window.location.origin + '/altoy/assets/img/navi_placeholder.png' && !this.dataset.errorHandled) {
-                    this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
-                }
-            }, { once: false });
-
             card.addEventListener('click', () => {
-                this.playStory('memory', memory.id, memory.desc || `Memory ${memory.id}`);
+                this.playStory('memory', memory.id, title);
             });
 
             return card;
@@ -415,8 +453,10 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'navi-card';
             card.dataset.title = visit.title;
 
-            // Use a placeholder or generic visit image
-            const imageUrl = 'assets/img/navi_placeholder.png';
+            // Use icon from mapping, fallback to placeholder
+            const imageUrl = visit.icon
+                ? `${this.ICON_URL}${visit.icon}.png`
+                : 'assets/img/navi_placeholder.png';
 
             card.innerHTML = `
                 <img class="navi-card-image" src="${imageUrl}" alt="${visit.title}" loading="lazy">
@@ -425,6 +465,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="navi-card-badge">방문 #${visit.id}</span>
                 </div>
             `;
+
+            // Add error handling properly to avoid infinite loops
+            const img = card.querySelector('.navi-card-image');
+            img.addEventListener('error', function(e) {
+                if (this.src !== window.location.origin + '/altoy/assets/img/navi_placeholder.png' && !this.dataset.errorHandled) {
+                    this.dataset.errorHandled = 'true';
+                    this.src = 'assets/img/navi_placeholder.png';
+                }
+            }, { once: false });
 
             card.addEventListener('click', () => {
                 this.playStory('visit', visit.id, visit.title);
@@ -438,8 +487,10 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'navi-card';
             card.dataset.title = daily.title;
 
-            // Use a placeholder or generic daily life image
-            const imageUrl = 'assets/img/navi_placeholder.png';
+            // Use icon from mapping, fallback to placeholder
+            const imageUrl = daily.icon
+                ? `${this.ICON_URL}${daily.icon}.png`
+                : 'assets/img/navi_placeholder.png';
 
             card.innerHTML = `
                 <img class="navi-card-image" src="${imageUrl}" alt="${daily.title}" loading="lazy">
@@ -448,6 +499,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="navi-card-badge">일상 #${daily.id}</span>
                 </div>
             `;
+
+            // Add error handling properly to avoid infinite loops
+            const img = card.querySelector('.navi-card-image');
+            img.addEventListener('error', function(e) {
+                if (this.src !== window.location.origin + '/altoy/assets/img/navi_placeholder.png' && !this.dataset.errorHandled) {
+                    this.dataset.errorHandled = 'true';
+                    this.src = 'assets/img/navi_placeholder.png';
+                }
+            }, { once: false });
 
             card.addEventListener('click', () => {
                 this.playStory('daily', daily.id, daily.title);

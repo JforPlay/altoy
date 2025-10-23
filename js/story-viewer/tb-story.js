@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
         storyData: {},
         shipgirlData: {},
         nameCodeData: {},
+        iconMappingData: {}, // Icon mapping from tb_navi_memory.json
+        storyIconMap: {}, // Reverse lookup: storyKey -> {icon, title}
 
         // Converted data for story engine (event/memory structure)
         convertedStorylineData: {},
@@ -36,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Image base URLs
         BASE_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/educatepolaroid/",
         AVATAR_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/educateavatar/",
+        ICON_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/memoryicon/",
 
         // Photo filenames from educateavatar folder
         PHOTO_FILENAMES: [
@@ -105,13 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         async loadAllData() {
             try {
-                const [memoriesData, endingsData, polaroidsData, storyData, shipgirlData, nameCodeData] = await Promise.all([
+                const [memoriesData, endingsData, polaroidsData, storyData, shipgirlData, nameCodeData, iconMappingData] = await Promise.all([
                     fetch('data/story-viewer/tb_memory.json').then(r => r.json()),
                     fetch('data/story-viewer/tb_ending.json').then(r => r.json()),
                     fetch('data/story-viewer/tb_polaroid.json').then(r => r.json()),
                     fetch('data/story-viewer/tb_story_data.json').then(r => r.json()),
                     fetch('data/story-viewer/shipgirl_data.json').then(r => r.json()),
-                    fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json').then(r => r.json())
+                    fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json').then(r => r.json()),
+                    fetch('data/story-viewer/tb_navi_memory.json').then(r => r.json())
                 ]);
 
                 this.memoriesData = memoriesData;
@@ -120,6 +124,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.storyData = storyData;
                 this.shipgirlData = shipgirlData;
                 this.nameCodeData = nameCodeData;
+                this.iconMappingData = iconMappingData;
+
+                // Build reverse lookup map: storyKey -> iconName
+                this.buildStoryIconMap();
 
                 // Extract affection and daily data from storyData
                 this.extractAffectionData();
@@ -128,6 +136,21 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 console.error('Failed to load data:', error);
                 this.showError('데이터를 불러오는데 실패했습니다.');
+            }
+        },
+
+        // Build reverse lookup map: storyKey (lowercase) -> {icon, title}
+        buildStoryIconMap() {
+            this.storyIconMap = {};
+            for (const id in this.iconMappingData) {
+                const entry = this.iconMappingData[id];
+                if (entry.story) {
+                    // Store in lowercase for case-insensitive matching
+                    this.storyIconMap[entry.story.toLowerCase()] = {
+                        icon: entry.icon || null,
+                        title: entry.title || null
+                    };
+                }
             }
         },
 
@@ -140,10 +163,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     const match = key.match(/linghangyuanhaogandu(\d+)/);
                     if (match) {
                         const id = parseInt(match[1], 10);
+                        // Look up icon and title from the mapping
+                        const mappingData = this.storyIconMap[key] || {};
+                        const title = mappingData.title || `호감도 ${id}`; // Fallback to default
+                        const icon = mappingData.icon || null;
+
                         this.affectionData[id] = {
                             id: id,
                             storyKey: key,
-                            title: `호감도 ${id}`
+                            title: title,
+                            icon: icon
                         };
                     }
                 }
@@ -159,10 +188,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     const match = key.match(/linghangyuantanxin(\d+)/);
                     if (match) {
                         const id = parseInt(match[1], 10);
+                        // Look up icon and title from the mapping
+                        const mappingData = this.storyIconMap[key] || {};
+                        const title = mappingData.title || `일상 ${id}`; // Fallback to default
+                        const icon = mappingData.icon || null;
+
                         this.dailyData[id] = {
                             id: id,
                             storyKey: key,
-                            title: `일상 ${id}`
+                            title: title,
+                            icon: icon
                         };
                     }
                 }
@@ -176,24 +211,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 'memory': {
                     id: 'memory',
                     name: 'TB Memories',
-                    child: Object.values(this.memoriesData).map(mem => ({
-                        id: mem.id,
-                        title: mem.desc || `Memory ${mem.id}`,
-                        condition: mem.condition || '',
-                        icon: null,
-                        story: this.storyData[mem.performance?.toLowerCase()] || { scripts: [] }
-                    }))
+                    child: Object.values(this.memoriesData).map(mem => {
+                        // Look up icon and title from mapping based on performance field
+                        const mappingData = this.storyIconMap[mem.performance?.toLowerCase()] || {};
+                        const title = mappingData.title || mem.desc || `Memory ${mem.id}`;
+                        const icon = mappingData.icon || null;
+
+                        return {
+                            id: mem.id,
+                            title: title,
+                            condition: mem.condition || '',
+                            icon: icon,
+                            iconUrl: icon ? `${this.ICON_URL}${icon}.png` : null,
+                            story: this.storyData[mem.performance?.toLowerCase()] || { scripts: [] }
+                        };
+                    })
                 },
                 'ending': {
                     id: 'ending',
                     name: 'TB Endings',
-                    child: Object.values(this.endingsData).map(end => ({
-                        id: end.id,
-                        title: end.name || `Ending ${end.id}`,
-                        condition: '',
-                        icon: null,
-                        story: this.storyData[end.performance?.toLowerCase()] || { scripts: [] }
-                    }))
+                    child: Object.values(this.endingsData).map(end => {
+                        // Look up icon and title from mapping based on performance field
+                        const mappingData = this.storyIconMap[end.performance?.toLowerCase()] || {};
+                        const title = mappingData.title || end.name || `Ending ${end.id}`;
+                        const icon = mappingData.icon || null;
+
+                        return {
+                            id: end.id,
+                            title: title,
+                            condition: '',
+                            icon: icon,
+                            iconUrl: icon ? `${this.ICON_URL}${icon}.png` : null,
+                            story: this.storyData[end.performance?.toLowerCase()] || { scripts: [] }
+                        };
+                    })
                 },
                 'affection': {
                     id: 'affection',
@@ -357,31 +408,26 @@ document.addEventListener('DOMContentLoaded', () => {
         createMemoryCard(memory) {
             const card = document.createElement('div');
             card.className = 'tb-card';
-            card.dataset.title = memory.desc || '';
 
-            const imageUrl = memory.pic
-                ? `${this.BASE_URL}${memory.pic}.png`
-                : 'assets/img/tb_placeholder.png';
+            // Look up title from mapping based on performance field (use title but not icon)
+            const mappingData = this.storyIconMap[memory.performance?.toLowerCase()] || {};
+            const title = mappingData.title || memory.desc || 'Untitled';
+
+            card.dataset.title = title;
+
+            // Use placeholder for memories (icons are too plain)
+            const imageUrl = 'assets/img/tb_placeholder.png';
 
             card.innerHTML = `
-                <img class="tb-card-image" src="${imageUrl}" alt="${memory.desc}" loading="lazy">
+                <img class="tb-card-image" src="${imageUrl}" alt="${title}" loading="lazy">
                 <div class="tb-card-content">
-                    <h3 class="tb-card-title">${memory.desc || 'Untitled'}</h3>
+                    <h3 class="tb-card-title">${title}</h3>
                     <span class="tb-card-badge">메모리 #${memory.id}</span>
                 </div>
             `;
 
-            // Add error handling properly to avoid infinite loops
-            const img = card.querySelector('.tb-card-image');
-            img.addEventListener('error', function(e) {
-                if (this.src !== window.location.origin + '/altoy/assets/img/tb_placeholder.png' && !this.dataset.errorHandled) {
-                    this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/tb_placeholder.png';
-                }
-            }, { once: false });
-
             card.addEventListener('click', () => {
-                this.playStory('memory', memory.id, memory.desc || `Memory ${memory.id}`);
+                this.playStory('memory', memory.id, title);
             });
 
             return card;
@@ -390,16 +436,23 @@ document.addEventListener('DOMContentLoaded', () => {
         createEndingCard(ending) {
             const card = document.createElement('div');
             card.className = 'tb-card';
-            card.dataset.title = ending.name || '';
 
-            const imageUrl = ending.pic_preview
-                ? `${this.BASE_URL}${ending.pic_preview}.png`
-                : 'assets/img/tb_placeholder.png';
+            // Look up icon and title from mapping based on performance field
+            const mappingData = this.storyIconMap[ending.performance?.toLowerCase()] || {};
+            const title = mappingData.title || ending.name || 'Untitled';
+            const icon = mappingData.icon;
+
+            card.dataset.title = title;
+
+            // Use icon from mapping, fallback to pic_preview, then placeholder
+            const imageUrl = icon
+                ? `${this.ICON_URL}${icon}.png`
+                : (ending.pic_preview ? `${this.BASE_URL}${ending.pic_preview}.png` : 'assets/img/tb_placeholder.png');
 
             card.innerHTML = `
-                <img class="tb-card-image" src="${imageUrl}" alt="${ending.name}" loading="lazy">
+                <img class="tb-card-image" src="${imageUrl}" alt="${title}" loading="lazy">
                 <div class="tb-card-content">
-                    <h3 class="tb-card-title">${ending.name || 'Untitled'}</h3>
+                    <h3 class="tb-card-title">${title}</h3>
                     <span class="tb-card-badge">엔딩 #${ending.id}</span>
                 </div>
             `;
@@ -414,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, { once: false });
 
             card.addEventListener('click', () => {
-                this.playStory('ending', ending.id, ending.name || `Ending ${ending.id}`);
+                this.playStory('ending', ending.id, title);
             });
 
             return card;
@@ -425,8 +478,10 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'tb-card';
             card.dataset.title = affection.title;
 
-            // Use a placeholder or generic affection image
-            const imageUrl = 'assets/img/tb_placeholder.png';
+            // Use icon from mapping, fallback to placeholder
+            const imageUrl = affection.icon
+                ? `${this.ICON_URL}${affection.icon}.png`
+                : 'assets/img/tb_placeholder.png';
 
             card.innerHTML = `
                 <img class="tb-card-image" src="${imageUrl}" alt="${affection.title}" loading="lazy">
@@ -435,6 +490,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="tb-card-badge">호감도 #${affection.id}</span>
                 </div>
             `;
+
+            // Add error handling properly to avoid infinite loops
+            const img = card.querySelector('.tb-card-image');
+            img.addEventListener('error', function(e) {
+                if (this.src !== window.location.origin + '/altoy/assets/img/tb_placeholder.png' && !this.dataset.errorHandled) {
+                    this.dataset.errorHandled = 'true';
+                    this.src = 'assets/img/tb_placeholder.png';
+                }
+            }, { once: false });
 
             card.addEventListener('click', () => {
                 this.playStory('affection', affection.id, affection.title);
@@ -448,8 +512,10 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'tb-card';
             card.dataset.title = daily.title;
 
-            // Use a placeholder or generic daily life image
-            const imageUrl = 'assets/img/tb_placeholder.png';
+            // Use icon from mapping, fallback to placeholder
+            const imageUrl = daily.icon
+                ? `${this.ICON_URL}${daily.icon}.png`
+                : 'assets/img/tb_placeholder.png';
 
             card.innerHTML = `
                 <img class="tb-card-image" src="${imageUrl}" alt="${daily.title}" loading="lazy">
@@ -458,6 +524,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="tb-card-badge">일상 #${daily.id}</span>
                 </div>
             `;
+
+            // Add error handling properly to avoid infinite loops
+            const img = card.querySelector('.tb-card-image');
+            img.addEventListener('error', function(e) {
+                if (this.src !== window.location.origin + '/altoy/assets/img/tb_placeholder.png' && !this.dataset.errorHandled) {
+                    this.dataset.errorHandled = 'true';
+                    this.src = 'assets/img/tb_placeholder.png';
+                }
+            }, { once: false });
 
             card.addEventListener('click', () => {
                 this.playStory('daily', daily.id, daily.title);
