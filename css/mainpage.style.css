@@ -1327,7 +1327,9 @@ body:not(.dark-mode) .dual-link-desc {
   }
 
   .nav-menu.active {
-    max-height: 600px;
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding: 0.5rem 0;
   }
 

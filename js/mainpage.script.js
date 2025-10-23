@@ -146,17 +146,40 @@ document.addEventListener('DOMContentLoaded', function() {
             carousel.addEventListener('mouseleave', resetAutoplay);
 
             let touchStartX = 0;
+            let touchStartY = 0;
+
             track.addEventListener('touchstart', (e) => {
+                // Ignore touches on navbar or its children
+                if (e.target.closest('.navbar')) {
+                    return;
+                }
+
                 touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
                 clearInterval(autoplay);
             });
 
             track.addEventListener('touchend', (e) => {
+                // Ignore touches on navbar or its children
+                if (e.target.closest('.navbar')) {
+                    return;
+                }
+
                 const touchEndX = e.changedTouches[0].screenX;
-                if (touchEndX < touchStartX - 50) {
-                    nextSlide();
-                } else if (touchEndX > touchStartX + 50) {
-                    prevSlide();
+                const touchEndY = e.changedTouches[0].screenY;
+
+                // Calculate horizontal and vertical distances
+                const deltaX = touchEndX - touchStartX;
+                const deltaY = touchEndY - touchStartY;
+
+                // Only trigger carousel swipe if horizontal swipe is dominant
+                // and vertical scroll is minimal (prevents interfering with scroll)
+                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                    if (deltaX < 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
                 }
                 resetAutoplay();
             });

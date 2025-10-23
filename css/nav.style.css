@@ -390,8 +390,10 @@ body.dark-mode .theme-icon-moon {
   }
 
   .nav-menu.active {
-    max-height: 1000px;
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
     padding-top: 0.5rem;
+    -webkit-overflow-scrolling: touch;
   }
 
   .nav-item {
