@@ -473,29 +473,24 @@ main {
   font-size: 0.7rem;
 }
 
-/* Unified rarity styles for all contexts */
-.rarity-N,
+/* Rarity styles - ONLY for shipgirl card badges, NOT for filters */
 .info-section .rarity-N {
   background-color: var(--rarity-n);
 }
 
-.rarity-R,
 .info-section .rarity-R {
   background-color: var(--rarity-r);
 }
 
-.rarity-SR,
 .info-section .rarity-SR {
   background-color: var(--rarity-sr);
 }
 
-.rarity-SSR,
 .info-section .rarity-SSR {
   background-color: var(--rarity-ssr);
   color: var(--rarity-ssr-text);
 }
 
-.rarity-UR,
 .info-section .rarity-UR {
   background: var(--rarity-ur-gradient);
   background-size: 200% 200%;
