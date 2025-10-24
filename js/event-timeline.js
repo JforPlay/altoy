@@ -31,7 +31,7 @@ async function loadData() {
 
         eventData = await eventsResponse.json();
         const shipgirlRawData = await shipgirlsResponse.json();
-        
+
         // Convert shipgirl data to object for easier lookup
         // Check if it's already an object or an array
         if (Array.isArray(shipgirlRawData)) {
@@ -58,7 +58,7 @@ async function loadData() {
 
         // Initialize filters
         populateFilters();
-        
+
         // Start with filtered view (hide JP dates by default)
         filterEvents();
     } catch (error) {
@@ -109,10 +109,10 @@ function populateFilters() {
 // Handle search input
 function handleSearch() {
     const query = searchInput.value.trim();
-    
+
     // Show/hide clear button
     clearBtn.classList.toggle('visible', query.length > 0);
-    
+
     filterEvents();
 }
 
@@ -143,7 +143,7 @@ function filterEvents() {
         if (searchQuery) {
             const eventName = (event.이벤트명 || '').toLowerCase();
             const shipgirls = (event.함순이 || '').toLowerCase();
-            
+
             if (!eventName.includes(searchQuery) && !shipgirls.includes(searchQuery)) {
                 return false;
             }
@@ -206,15 +206,15 @@ function displayEvents() {
 // Create event card HTML
 function createEventCard(event) {
     const badges = [];
-    
+
     if (event.분류) {
         badges.push(`<span class="badge badge-category">${event.분류}</span>`);
     }
-    
+
     if (event.진영) {
         badges.push(`<span class="badge badge-faction">${event.진영}</span>`);
     }
-    
+
     // Add badge based on 복각여부 field value
     if (event.복각여부 === '신규') {
         badges.push(`<span class="badge badge-new">신규</span>`);
@@ -270,14 +270,14 @@ function createShipgirlsSection(shipgirlsStr) {
 
     // Split by comma and trim whitespace
     const shipgirlNames = shipgirlsStr.split(',').map(name => name.trim()).filter(name => name);
-    
+
     if (shipgirlNames.length === 0) {
         return '';
     }
 
     const icons = shipgirlNames.map(name => {
         const shipgirl = findShipgirlByName(name);
-        
+
         if (shipgirl) {
             const rarityClass = getRarityClass(shipgirl.rarity);
             const shipgirlUrl = `pages/shipgirl/shipgirl-info.html?ship=${encodeURIComponent(name)}`;
@@ -343,7 +343,7 @@ function getRarityClass(rarity) {
 function findShipgirlByName(name) {
     // Remove extra whitespace
     const cleanName = name.trim();
-    
+
     // Search through all shipgirl data
     for (const [id, shipgirl] of Object.entries(shipgirlData)) {
         // Compare with and without trailing spaces
@@ -352,7 +352,7 @@ function findShipgirlByName(name) {
             return shipgirl;
         }
     }
-    
+
     return null;
 }
 

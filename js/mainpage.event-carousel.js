@@ -1,5 +1,5 @@
 // Event Carousel Handler
-(function() {
+(function () {
     const API_URL = 'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/activity_banner.json';
     const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/activitybanner/';
 
@@ -36,12 +36,12 @@
         if (!banner.time) {
             return false;
         }
-        
+
         // Ignore stopped banners
         if (banner.time === 'stop') {
             return false;
         }
-        
+
         // Include always-active banners
         if (banner.time === 'always') {
             return false;
@@ -64,11 +64,11 @@
     function formatDate(dateArray) {
         const date = parseDate(dateArray);
         if (!date) return '';
-        
+
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        
+
         return `${year}.${month}.${day}`;
     }
 
@@ -82,9 +82,9 @@
         img.src = `${IMAGE_BASE_URL}${banner.pic}.png`;
         img.alt = `Event Banner ${banner.id}`;
         img.loading = 'lazy';
-        
+
         // Error handling for missing images
-        img.onerror = function() {
+        img.onerror = function () {
             this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200"%3E%3Crect fill="%23141414" width="800" height="200"/%3E%3Ctext x="400" y="100" font-family="Arial" font-size="20" fill="%23666" text-anchor="middle"%3E이미지를 불러올 수 없습니다%3C/text%3E%3C/svg%3E';
         };
 
@@ -97,7 +97,7 @@
 
         const dateDiv = document.createElement('div');
         dateDiv.className = 'event-banner-date';
-        
+
         if (banner.time && Array.isArray(banner.time) && banner.time.length === 2) {
             const startDate = formatDate(banner.time[0]);
             const endDate = formatDate(banner.time[1]);
@@ -120,7 +120,7 @@
         indicator.className = 'event-indicator';
         indicator.setAttribute('aria-label', `Go to event ${index + 1}`);
         indicator.dataset.index = index;
-        
+
         if (index === 0) {
             indicator.classList.add('active');
         }
@@ -185,7 +185,7 @@
                 <p>진행중인 이벤트가 없습니다</p>
             </div>
         `;
-        
+
         if (prevButton) prevButton.style.display = 'none';
         if (nextButton) nextButton.style.display = 'none';
         indicatorsContainer.style.display = 'none';
@@ -198,7 +198,7 @@
             if (!response.ok) throw new Error('Failed to fetch banners');
 
             const data = await response.json();
-            
+
             // Filter active banners
             banners = Object.values(data)
                 .filter(banner => isActiveBanner(banner))

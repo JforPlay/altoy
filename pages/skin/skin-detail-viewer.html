@@ -1,67 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <base href="/altoy/">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>함순이 스킨/대사보기</title>
-    <link rel="stylesheet" href="css/skin/skin.detail.viewer.css">
-    <link rel="stylesheet" href="css/nav.style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <div id="navbar-placeholder"></div>
-    
-    <div class="main-container">
-        <header class="controls-header">
-            <h1 class="page-title">
-                함순이 스킨 / 대사보기 
-                <i id="info-button" class="fas fa-info-circle"></i>
-            </h1>
-            
-            <div id="info-popup">
-                <div class="info-popup-content">
-                    <button class="close-popup-btn">&times;</button>
-                    <p>
-                        <strong>초간단 설명서</strong>
-                        1. 함순이를 고르고, 2. 스킨을 고르면 해당 스킨의 대사를 전부 볼 수 있습니다.<br>
-                        함순이 선택의 윗칸에 이름을 일부 입력하면 드랍다운에서 해당 글자검색도 가능합니다.<br><br>
-                        <span class="warning-text">주의) 서약 대사는 해당 스킨이 서약대사가 있을때만 보입니다.</span><br>
-                        바꿔말하면 극소수를 제외하면 거의 대부분 기본 스킨에만 서약대사가 보입니다.
-                    </p>
+---
+layout: default
+title: 함순이 스킨/대사보기
+head: <link rel="stylesheet" href="css/skin/skin.detail.viewer.css">
+---
+
+<div class="main-container">
+    <header class="controls-header">
+        <h1 class="page-title">
+            함순이 스킨 / 대사보기 
+            <i id="info-button" class="fas fa-info-circle"></i>
+        </h1>
+        
+        <div id="info-popup">
+            <div class="info-popup-content">
+                <button class="close-popup-btn">&times;</button>
+                <p>
+                    <strong>초간단 설명서</strong>
+                    1. 함순이를 고르고, 2. 스킨을 고르면 해당 스킨의 대사를 전부 볼 수 있습니다.<br>
+                    함순이 선택의 윗칸에 이름을 일부 입력하면 드랍다운에서 해당 글자검색도 가능합니다.<br><br>
+                    <span class="warning-text">주의) 서약 대사는 해당 스킨이 서약대사가 있을때만 보입니다.</span><br>
+                    바꿔말하면 극소수를 제외하면 거의 대부분 기본 스킨에만 서약대사가 보입니다.
+                </p>
+            </div>
+        </div>
+
+        <div class="selectors">
+            <div class="selector-wrapper">
+                <label for="character-search-input">1. 함순이 선택</label>
+                <div class="dropdown-container">
+                    <input type="text" id="character-search-input" placeholder="함순이를 검색/선택해주세요..." autocomplete="off">
+                    <div class="dropdown-content" id="character-dropdown-content"></div>
                 </div>
             </div>
-
-            <div class="selectors">
-                <div class="selector-wrapper">
-                    <label for="character-search-input">1. 함순이 선택</label>
-                    <div class="dropdown-container">
-                        <input type="text" id="character-search-input" placeholder="함순이를 검색/선택해주세요..." autocomplete="off">
-                        <div class="dropdown-content" id="character-dropdown-content"></div>
-                    </div>
+            <div class="selector-wrapper">
+                <label for="skin-search-input">2. 스킨 선택</label>
+                <div class="dropdown-container">
+                    <input type="text" id="skin-search-input" placeholder="함순이를 먼저 선택해주세요..." autocomplete="off" disabled>
+                    <div class="dropdown-content" id="skin-dropdown-content"></div>
                 </div>
-                <div class="selector-wrapper">
-                    <label for="skin-search-input">2. 스킨 선택</label>
-                    <div class="dropdown-container">
-                        <input type="text" id="skin-search-input" placeholder="함순이를 먼저 선택해주세요..." autocomplete="off" disabled>
-                        <div class="dropdown-content" id="skin-dropdown-content"></div>
-                    </div>
-                </div>
-                 <button id="clear-filters-btn" class="clear-btn" title="Clear Filters">
-                    <i class="fas fa-times"></i> 검색 초기화
-                </button>
             </div>
-        </header>
+             <button id="clear-filters-btn" class="clear-btn" title="Clear Filters">
+                <i class="fas fa-times"></i> 검색 초기화
+            </button>
+        </div>
+    </header>
 
-        <div id="skin-info-box" class="skin-info-box hidden"></div>
-        <div id="image-gallery" class="image-gallery hidden"></div>
-        <div id="text-content-area" class="text-content-area hidden"></div>
-        <div id="oath-table-area" class="text-content-area hidden"></div>
-    </div>
+    <div id="skin-info-box" class="skin-info-box hidden"></div>
+    <div id="image-gallery" class="image-gallery hidden"></div>
+    <div id="text-content-area" class="text-content-area hidden"></div>
+    <div id="oath-table-area" class="text-content-area hidden"></div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
 
-    <script src="js/skin/skin.detail.viewer.js"></script>
-    <script src="js/nav.script.js"></script>
-</body>
-</html>
+<script src="js/skin/skin.detail.viewer.js"></script>

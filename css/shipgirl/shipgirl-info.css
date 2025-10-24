@@ -92,7 +92,7 @@ header {
 header h1 {
   color: var(--primary-color);
   margin: 0;
-  font-size: 2.0em;
+  font-size: 2em;
   transition: color 0.3s ease;
 }
 
@@ -980,28 +980,28 @@ body.dark-mode .back-button:hover {
 }
 
 .weapon-skill-clickable {
-    transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .weapon-skill-clickable:hover {
-    background-color: rgba(74, 144, 226, 0.1);
-    transform: translateX(4px);
+  background-color: rgba(74, 144, 226, 0.1);
+  transform: translateX(4px);
 }
 
 .weapon-badge {
-    background-color: #4a90e2;
-    color: white;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.75em;
-    margin-left: 8px;
+  background-color: #4a90e2;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75em;
+  margin-left: 8px;
 }
 
 .weapon-sim-hint {
-    color: #4a90e2;
-    font-size: 0.9em;
-    font-style: italic;
-    margin-left: auto;
+  color: #4a90e2;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-left: auto;
 }
 
 /* Loading and Error */

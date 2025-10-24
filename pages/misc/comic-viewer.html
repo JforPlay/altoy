@@ -1,35 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <base href="/altoy/">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>벽람항로 만화</title>
-    <link rel="stylesheet" href="css/misc/comic-viewer.css">
-    <link rel="stylesheet" href="css/nav.style.css">
-</head>
-<body>
-    <div id="navbar-placeholder"></div>
+---
+layout: default
+title: 벽람항로 만화
+head: <link rel="stylesheet" href="css/misc/comic-viewer.css">
+---
 
-    <header>
-        <h1>벽람항로 만화보기</h1>
-        <button id="sort-button">기간정렬 : 1호부터</button>
-    </header>
-    <main>
-        <div id="gallery" class="gallery-container">
-            </div>
-    </main>
+<header>
+    <h1>벽람항로 만화보기</h1>
+    <button id="sort-button">기간정렬 : 1호부터</button>
+</header>
+<main>
+    <div id="gallery" class="gallery-container">
+        </div>
+</main>
 
-    <div id="lightbox" class="lightbox">
-        <span class="close-button">&times;</span>
-        <img id="lightbox-img" class="lightbox-content" src="" alt="Enlarged Manga Image">
-    </div>
+<div id="lightbox" class="lightbox">
+    <span class="close-button">&times;</span>
+    <img id="lightbox-img" class="lightbox-content" src="" alt="Enlarged Manga Image">
+</div>
 
-    <footer>
-        <p>&copy; All images are a property/copyright of Manjuu, Xiamen Yongshi, Yostar Inc, and the kr publisher X.D. Global Limited, respectively.</p>
-    </footer>
-    
-    <script src="js/misc/comic-viewer.js"></script>
-    <script src="js/nav.script.js"></script>
-</body>
-</html>
+
+
+<script src="js/misc/comic-viewer.js"></script>

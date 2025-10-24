@@ -1,53 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <base href="/altoy/">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>브금 재생기</title>
-    <link rel="stylesheet" href="css/misc/bgm-player.css">
-    <link rel="stylesheet" href="css/nav.style.css">
-</head>
-<body>
-    <div id="navbar-placeholder"></div>
-    <div class="bgm-player">
-        <div class="album-carousel-container">
-            <button class="nav-btn prev-btn" id="prev-btn" aria-label="Previous Album">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M15 18l-6-6 6-6"/>
-                </svg>
-            </button>
-            <div class="album-list" id="album-list"></div>
-            <button class="nav-btn next-btn" id="next-btn" aria-label="Next Album">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 18l6-6-6-6"/>
-                </svg>
-            </button>
-        </div>
-        <div class="track-player-container">
-            <div class="content-wrapper">
-                <div class="track-list-container">
-                    <ul id="track-list"></ul>
-                </div>
-                <div class="audio-player">
-                    <div class="now-playing">
-                        <h3 class="album-title" id="album-name">재생할 앨범을 선택해주세요</h3>
-                        <span class="now-playing-label">Now Playing</span>
-                        <p id="now-playing-track">—</p>
-                    </div>
+---
+layout: default
+title: 브금 재생기
+head: <link rel="stylesheet" href="css/misc/bgm-player.css">
+---
 
-                    <!-- Audio Visualizer -->
-                    <div class="visualizer-container">
-                        <canvas id="visualizer-canvas"></canvas>
-                    </div>
-
-                    <audio id="audio" controls></audio>
+<div class="bgm-player">
+    <div class="album-carousel-container">
+        <button class="nav-btn prev-btn" id="prev-btn" aria-label="Previous Album">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </button>
+        <div class="album-list" id="album-list"></div>
+        <button class="nav-btn next-btn" id="next-btn" aria-label="Next Album">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"/>
+            </svg>
+        </button>
+    </div>
+    <div class="track-player-container">
+        <div class="content-wrapper">
+            <div class="track-list-container">
+                <ul id="track-list"></ul>
+            </div>
+            <div class="audio-player">
+                <div class="now-playing">
+                    <h3 class="album-title" id="album-name">재생할 앨범을 선택해주세요</h3>
+                    <span class="now-playing-label">Now Playing</span>
+                    <p id="now-playing-track">—</p>
                 </div>
+
+                <!-- Audio Visualizer -->
+                <div class="visualizer-container">
+                    <canvas id="visualizer-canvas"></canvas>
+                </div>
+
+                <audio id="audio" controls></audio>
             </div>
         </div>
     </div>
-    <script src="js/nav.script.js"></script>
-    <script src="js/misc/bgm-player.js"></script>
-    
-</body>
-</html>
+</div>
+<script src="js/misc/bgm-player.js"></script>

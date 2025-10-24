@@ -1,46 +1,36 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <base href="/altoy/">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>벽람 점수 트래커</title>
-    <link rel="stylesheet" href="css/shipgirl/shipgirl-tracker.css">
-    <link rel="stylesheet" href="css/nav.style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <div id="navbar-placeholder"></div>
-    <header>
-        <h1>기술/진영점수 계산기</h1>
-        <div id="score-display-area">
-            <div id="fleet-tech-container"></div>
-            <div id="stat-tech-container"></div>
-        </div>
-    </header>
-    <main>
-        <div id="filter-bar"></div>
-        <div id="ship-list-container"></div>
-    </main>
+---
+layout: default
+title: 벽람 점수 트래커
+head: <link rel="stylesheet" href="css/shipgirl/shipgirl-tracker.css">
+---
 
-    <!-- Scroll to Top Button -->
-    <button id="scroll-to-top" aria-label="Scroll to top">
-        <i class="fas fa-chevron-up"></i>
-    </button>
+<header>
+    <h1>기술/진영점수 계산기</h1>
+    <div id="score-display-area">
+        <div id="fleet-tech-container"></div>
+        <div id="stat-tech-container"></div>
+    </div>
+</header>
+<main>
+    <div id="filter-bar"></div>
+    <div id="ship-list-container"></div>
+</main>
 
-    <!-- Confirmation Modal -->
-    <div id="confirmation-modal">
-        <div class="modal-content">
-            <p id="modal-text">Are you sure?</p>
-            <div class="modal-actions">
-                <button id="modal-confirm-btn">당장 진행시켜</button>
-                <button id="modal-cancel-btn">잘못 눌렀어요</button>
-            </div>
+<!-- Scroll to Top Button -->
+<button id="scroll-to-top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- Confirmation Modal -->
+<div id="confirmation-modal">
+    <div class="modal-content">
+        <p id="modal-text">Are you sure?</p>
+        <div class="modal-actions">
+            <button id="modal-confirm-btn">당장 진행시켜</button>
+            <button id="modal-cancel-btn">잘못 눌렀어요</button>
         </div>
     </div>
+</div>
 
-    <script src="js/shipgirl/shipgirl-tracker-utils.js"></script>
-    <script src="js/shipgirl/shipgirl-tracker.js"></script>
-    <script src="js/nav.script.js"></script>
-</body>
-</html>
+<script src="js/shipgirl/shipgirl-tracker-utils.js"></script>
+<script src="js/shipgirl/shipgirl-tracker.js"></script>

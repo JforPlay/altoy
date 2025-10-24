@@ -76,8 +76,13 @@ body.no-scroll {
 
 /* Error state animation */
 @keyframes pulse-error {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 .data-age-indicator[style*="rgb(231, 76, 60)"] {
@@ -133,8 +138,12 @@ body.no-scroll {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ====================================
@@ -692,9 +701,15 @@ body.no-scroll {
 }
 
 @keyframes pulse-glow {
-  0% { text-shadow: 0 0 4px #4caf50; }
-  50% { text-shadow: 0 0 12px #81c784, 0 0 20px #4caf50; }
-  100% { text-shadow: 0 0 4px #4caf50; }
+  0% {
+    text-shadow: 0 0 4px #4caf50;
+  }
+  50% {
+    text-shadow: 0 0 12px #81c784, 0 0 20px #4caf50;
+  }
+  100% {
+    text-shadow: 0 0 4px #4caf50;
+  }
 }
 
 .rating-area.pending-vote .star-rating input:checked ~ label {
@@ -703,9 +718,15 @@ body.no-scroll {
 }
 
 @keyframes pop-effect {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .rating-area.voted-animation .star-rating {
@@ -780,8 +801,12 @@ body.no-scroll {
 }
 
 @keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 .skeleton-card .skeleton-image {
@@ -868,86 +893,86 @@ body.no-scroll {
   body {
     padding: 0 10px;
   }
-  
+
   .page-header {
     margin-top: 20px;
     padding-bottom: 15px;
     padding-left: 10px;
     padding-right: 10px;
   }
-  
+
   .page-title {
     font-size: 1.3em;
     margin-bottom: 10px;
   }
-  
+
   /* Status Row */
   .header-status-row {
     gap: 8px;
   }
-  
+
   .data-age-indicator {
     font-size: 0.85em;
     padding: 6px 12px;
     height: 32px;
   }
-  
+
   .refresh-button-compact {
     padding: 6px 12px;
     font-size: 0.85em;
     height: 32px;
   }
-  
+
   .refresh-button-compact i {
     font-size: 1em;
   }
-  
+
   /* Leaderboard */
   .leaderboard-section {
     padding: 0 10px;
   }
-  
+
   .leaderboard-toggle {
     font-size: 1em;
     padding: 10px 16px;
   }
-  
+
   .leaderboard-item {
     grid-template-columns: 25px 45px 1fr auto;
     gap: 10px;
     padding: 6px 0;
   }
-  
+
   .leaderboard-rank {
     font-size: 0.9em;
   }
-  
+
   .leaderboard-image {
     width: 45px;
     height: 58px;
   }
-  
+
   .leaderboard-details .skin-name {
     font-size: 0.9em;
   }
-  
+
   .leaderboard-details .char-name {
     font-size: 0.75em;
   }
-  
+
   .leaderboard-score .avg-score {
     font-size: 1em;
   }
-  
+
   .leaderboard-score .total-votes {
     font-size: 0.7em;
   }
-  
+
   /* Filters */
   .filter-toggle-btn {
     display: block;
   }
-  
+
   .filter-container {
     display: none;
     flex-direction: column;
@@ -955,113 +980,113 @@ body.no-scroll {
     padding: 15px;
     margin: 10px 10px 20px 10px;
   }
-  
+
   .filter-container.visible {
     display: flex;
   }
-  
+
   .filter-group {
     width: 100%;
   }
-  
+
   .filter-group select {
     width: 100%;
   }
-  
+
   .checkbox-group {
     flex-wrap: wrap;
     gap: 10px;
   }
-  
+
   /* Poll Grid - 2 columns on mobile */
   .poll-container {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     padding: 0 10px 20px 10px;
   }
-  
+
   /* Poll Cards */
   .poll-box {
     font-size: 0.9em;
   }
-  
+
   .poll-info {
     padding: 8px;
   }
-  
+
   .poll-info h3 {
     font-size: 0.9em;
     margin-bottom: 3px;
   }
-  
+
   .poll-info .character-name {
     font-size: 0.8em;
     margin-bottom: 6px;
   }
-  
+
   .info-line {
     font-size: 0.75em;
     line-height: 1.4;
   }
-  
+
   /* Voting Interface */
   .vote-widget {
     gap: 4px;
     margin-bottom: 2px;
   }
-  
+
   .vote-label {
     font-size: 0.9em;
   }
-  
+
   .star-rating label {
     font-size: 1.6em;
   }
-  
+
   .confirm-vote-message {
     font-size: 0.75em;
   }
-  
+
   .score-bar-visual {
     font-size: 1.3em;
   }
-  
+
   .score-bar-text {
     font-size: 0.8em;
   }
-  
+
   .score-bar-text strong {
     font-size: 1.05em;
   }
-  
+
   /* Image Popup */
   .image-popup-content {
     max-width: 95%;
     max-height: 95%;
   }
-  
+
   .popup-image {
     max-height: 70vh;
   }
-  
+
   .popup-skin-info {
     padding: 10px 15px;
     margin-top: 10px;
   }
-  
+
   .popup-skin-info .popup-skin-name {
     font-size: 1.1em;
   }
-  
+
   .popup-skin-info .popup-char-name {
     font-size: 0.9em;
   }
-  
+
   .close-image-popup-btn {
     top: -35px;
     font-size: 2.5em;
   }
-  
+
   /* Notifications */
   .notification {
     top: 10px;

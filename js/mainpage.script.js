@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // ===== MOBILE MENU FUNCTIONALITY =====
     const menuIcon = document.querySelector('.menu-icon');
     const navMenu = document.querySelector('.nav-menu');
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Toggle mobile menu
     if (menuIcon) {
-        menuIcon.addEventListener('click', function(e) {
+        menuIcon.addEventListener('click', function (e) {
             e.stopPropagation();
             navMenu.classList.toggle('active');
             menuIcon.classList.toggle('active');
@@ -18,16 +18,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.innerWidth <= 768) {
             dropdowns.forEach(dropdown => {
                 const link = dropdown.querySelector('.nav-links');
-                
+
                 // Remove existing listener if any
                 const newLink = link.cloneNode(true);
                 link.parentNode.replaceChild(newLink, link);
-                
-                newLink.addEventListener('click', function(e) {
+
+                newLink.addEventListener('click', function (e) {
                     if (window.innerWidth <= 768) {
                         e.preventDefault();
                         dropdown.classList.toggle('active');
-                        
+
                         // Close other dropdowns
                         dropdowns.forEach(other => {
                             if (other !== dropdown) {
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupMobileDropdowns();
 
     // Close menu when clicking outside
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (window.innerWidth <= 768) {
             if (!e.target.closest('.navbar')) {
                 if (navMenu) navMenu.classList.remove('active');
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Reset on window resize
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
         if (window.innerWidth > 768) {
             if (navMenu) navMenu.classList.remove('active');
             if (menuIcon) menuIcon.classList.remove('active');
@@ -187,17 +187,17 @@ document.addEventListener('DOMContentLoaded', function() {
             resetAutoplay(); // Initial start
         }
     }
-    
+
 
     // ===== CARD ANIMATION STAGGER =====
     const mainCards = document.querySelectorAll('.bento-grid > .bento-card');
     const externalCards = document.querySelectorAll('.external-links-section .bento-card');
-    
+
     // Assign indices to main cards
     mainCards.forEach((card, index) => {
         card.style.setProperty('--card-index', index + 1);
     });
-    
+
     // Continue indexing for external cards
     externalCards.forEach((card, index) => {
         card.style.setProperty('--card-index', mainCards.length + index + 1);

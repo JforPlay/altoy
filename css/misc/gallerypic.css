@@ -10,13 +10,13 @@
 
 /* Base body styling with smooth transitions */
 body {
-    transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Dark mode theme */
 body.dark-mode {
-    background-color: #1a1a1a;
-    color: #e0e0e0;
+  background-color: #1a1a1a;
+  color: #e0e0e0;
 }
 
 /* ============================================
@@ -25,12 +25,12 @@ body.dark-mode {
 
 /* Header title styling */
 h1 {
-    transition: color 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 /* Dark mode header text */
 body.dark-mode h1 {
-    color: #e0e0e0;
+  color: #e0e0e0;
 }
 
 /* ============================================
@@ -39,37 +39,37 @@ body.dark-mode h1 {
 
 /* Gallery item container - light mode */
 .gallery-item {
-    overflow: hidden;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    cursor: pointer;
-    background-color: #fff;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  cursor: pointer;
+  background-color: #fff;
 }
 
 /* Gallery item container - dark mode */
 body.dark-mode .gallery-item {
-    background-color: #2d2d2d;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  background-color: #2d2d2d;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* Gallery item hover effect - light mode */
 .gallery-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Gallery item hover effect - dark mode */
 body.dark-mode .gallery-item:hover {
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
 }
 
 /* Gallery item image styling */
 .gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* ============================================
@@ -78,37 +78,12 @@ body.dark-mode .gallery-item:hover {
 
 /* Modal close button positioning and styling */
 #close {
-    right: -1rem;
-    top: -2.5rem;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  right: -1rem;
+  top: -2.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* Modal content - dark mode */
 body.dark-mode .modal-content {
-    background-color: #2d2d2d;
-}
-
-/* ============================================
-   FOOTER
-   ============================================ */
-
-/* Fixed footer - light mode */
-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
-    text-align: center;
-    padding: 10px;
-    background-color: #fff;
-    border-top: 2px solid #ddd;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-/* Fixed footer - dark mode */
-body.dark-mode footer {
-    background-color: #2d2d2d;
-    border-top-color: #444;
-    color: #e0e0e0;
+  background-color: #2d2d2d;
 }

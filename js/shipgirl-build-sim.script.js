@@ -1,5 +1,5 @@
 // Build Simulator Script
-(function() {
+(function () {
     'use strict';
 
     // State Management
@@ -520,7 +520,7 @@
         // If it's a despair pool, check if ships are selected
         if (poolId.startsWith('despair-')) {
             const hasSelection = state.despairSelections[poolId] &&
-                                state.despairSelections[poolId].length === 2;
+                state.despairSelections[poolId].length === 2;
 
             if (!hasSelection) {
                 // Open modal for ship selection
@@ -788,7 +788,7 @@
 
         // Get theme colors (check both data-theme and dark-mode class)
         const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
-                       document.body.classList.contains('dark-mode');
+            document.body.classList.contains('dark-mode');
         const textColor = isDark ? '#f8f9fa' : '#212529';
         const gridColor = isDark ? '#495057' : '#dee2e6';
         const gridColorLight = isDark ? '#3d3d3d' : '#f1f3f5';

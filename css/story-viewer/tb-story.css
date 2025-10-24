@@ -10,33 +10,33 @@
    ======================================== */
 
 .tb-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 2.5rem 2rem;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    /* Override the sticky positioning from viewer-header class */
-    position: static !important;
-    z-index: auto !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  /* Override the sticky positioning from viewer-header class */
+  position: static !important;
+  z-index: auto !important;
 }
 
 .header-content {
-    max-width: 1200px;
-    margin: 0 auto;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .header-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: white;
-    margin: 0;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .header-subtitle {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.9);
-    margin: 0.5rem 0 0 0;
-    font-weight: 300;
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0.5rem 0 0 0;
+  font-weight: 300;
 }
 
 /* ========================================
@@ -44,107 +44,117 @@
    ======================================== */
 
 .tab-navigation {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 1.5rem 1rem 0.5rem;
-    border-bottom: 2px solid #e9ecef;
-    position: sticky;
-    top: 0;
-    z-index: 900;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    backdrop-filter: blur(10px);
-    background: linear-gradient(to bottom, rgba(248, 249, 250, 0.95), rgba(255, 255, 255, 0.95));
-    transition: box-shadow 0.3s ease, padding 0.3s ease;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem 0.5rem;
+  border-bottom: 2px solid #e9ecef;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  background: linear-gradient(
+    to bottom,
+    rgba(248, 249, 250, 0.95),
+    rgba(255, 255, 255, 0.95)
+  );
+  transition: box-shadow 0.3s ease, padding 0.3s ease;
 }
 
 .tab-navigation::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #667eea, #764ba2, transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #667eea,
+    #764ba2,
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .tab-navigation.scrolled::after {
-    opacity: 1;
+  opacity: 1;
 }
 
 .tab-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.875rem 1.5rem;
-    background: white;
-    border: 2px solid #e9ecef;
-    border-radius: 12px 12px 0 0;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #495057;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 12px 12px 0 0;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #495057;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .tab-btn::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, #667eea, #764ba2);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
 }
 
 .tab-btn:hover {
-    background: #f8f9fa;
-    border-color: #667eea;
-    color: #667eea;
-    transform: translateY(-2px);
+  background: #f8f9fa;
+  border-color: #667eea;
+  color: #667eea;
+  transform: translateY(-2px);
 }
 
 .tab-btn.active {
-    background: white;
-    border-color: #667eea;
-    color: #667eea;
-    font-weight: 600;
-    box-shadow: 0 -2px 10px rgba(102, 126, 234, 0.1);
+  background: white;
+  border-color: #667eea;
+  color: #667eea;
+  font-weight: 600;
+  box-shadow: 0 -2px 10px rgba(102, 126, 234, 0.1);
 }
 
 .tab-btn.active::before {
-    transform: scaleX(1);
+  transform: scaleX(1);
 }
 
-.tab-btn .material-icons {
-    font-size: 1.25rem;
+.tab-btn .material-symbols-outlined {
+  font-size: 1.25rem;
 }
 
 /* Responsive tabs */
 @media (max-width: 768px) {
-    .tab-navigation {
-        gap: 0.25rem;
-        padding: 1rem 0.5rem 0.25rem;
-    }
+  .tab-navigation {
+    gap: 0.25rem;
+    padding: 1rem 0.5rem 0.25rem;
+  }
 
-    .tab-btn {
-        padding: 0.75rem 1rem;
-        font-size: 0.9rem;
-    }
+  .tab-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
 
-    .tab-btn span:not(.material-icons) {
-        display: none;
-    }
+  .tab-btn span:not(.material-symbols-outlined) {
+    display: none;
+  }
 
-    .tab-btn .material-icons {
-        font-size: 1.5rem;
-    }
+  .tab-btn .material-symbols-outlined {
+    font-size: 1.5rem;
+  }
 }
 
 /* ========================================
@@ -152,23 +162,23 @@
    ======================================== */
 
 .tab-content {
-    display: none;
-    animation: fadeIn 0.4s ease;
+  display: none;
+  animation: fadeIn 0.4s ease;
 }
 
 .tab-content.active {
-    display: block;
+  display: block;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ========================================
@@ -176,30 +186,30 @@
    ======================================== */
 
 .search-container {
-    max-width: 600px;
-    margin: 2rem auto 1.5rem;
-    padding: 0 1rem;
+  max-width: 600px;
+  margin: 2rem auto 1.5rem;
+  padding: 0 1rem;
 }
 
 .search-input {
-    width: 100%;
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
-    border: 2px solid #e9ecef;
-    border-radius: 50px;
-    background: white;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 50px;
+  background: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .search-input:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
 }
 
 .search-input::placeholder {
-    color: #adb5bd;
+  color: #adb5bd;
 }
 
 /* ========================================
@@ -207,20 +217,20 @@
    ======================================== */
 
 .tb-grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    padding: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
-    .tb-grid-container {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 1rem;
-        padding: 1rem;
-    }
+  .tb-grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
 }
 
 /* ========================================
@@ -228,77 +238,81 @@
    ======================================== */
 
 .tb-card {
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    position: relative;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: relative;
 }
 
 .tb-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 }
 
 .tb-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.1),
+    rgba(118, 75, 162, 0.1)
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .tb-card:hover::before {
-    opacity: 1;
+  opacity: 1;
 }
 
 .tb-card-image {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 /* Taller aspect ratio for ending cards to show more of the image */
 #endings-content .tb-card-image {
-    aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 5;
 }
 
 .tb-card-content {
-    padding: 1.25rem;
+  padding: 1.25rem;
 }
 
 .tb-card-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #212529;
-    margin: 0 0 0.5rem 0;
-    line-height: 1.4;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #212529;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.4;
 }
 
 .tb-card-desc {
-    font-size: 0.9rem;
-    color: #6c757d;
-    margin: 0;
-    line-height: 1.5;
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin: 0;
+  line-height: 1.5;
 }
 
 .tb-card-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: 12px;
-    margin-top: 0.75rem;
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 12px;
+  margin-top: 0.75rem;
 }
 
 /* ========================================
@@ -306,52 +320,52 @@
    ======================================== */
 
 .polaroid-card {
-    background: linear-gradient(145deg, #ffffff, #f8f9fa);
-    padding: 0.75rem;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-    border: 1px solid #e9ecef;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  padding: 0.75rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e9ecef;
 }
 
 .polaroid-card:hover {
-    box-shadow: 0 12px 32px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 12px 32px rgba(102, 126, 234, 0.2);
 }
 
 .polaroid-card .tb-card-image {
-    border: 6px solid #ffffff;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-    aspect-ratio: 529 / 514;
+  border: 6px solid #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  aspect-ratio: 529 / 514;
 }
 
 .polaroid-card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0.75rem;
-    padding-top: 0.75rem;
-    border-top: 2px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid #e9ecef;
 }
 
 .polaroid-stage {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #667eea;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #667eea;
 }
 
 .polaroid-group-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.25rem 0.6rem;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
-    letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.6rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+  letter-spacing: 0.3px;
 }
 
 /* ========================================
@@ -359,35 +373,35 @@
    ======================================== */
 
 #photos-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
 }
 
 @media (max-width: 768px) {
-    #photos-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    }
+  #photos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
 }
 
 .photo-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    aspect-ratio: 1 / 1;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  aspect-ratio: 1 / 1;
 }
 
 .photo-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .photo-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 /* ========================================
@@ -395,24 +409,24 @@
    ======================================== */
 
 .coming-soon-message {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 2rem;
-    text-align: center;
-    color: #6c757d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #6c757d;
 }
 
-.coming-soon-message .material-icons {
-    font-size: 5rem;
-    color: #adb5bd;
-    margin-bottom: 1rem;
+.coming-soon-message .material-symbols-outlined {
+  font-size: 5rem;
+  color: #adb5bd;
+  margin-bottom: 1rem;
 }
 
 .coming-soon-message p {
-    font-size: 1.25rem;
-    margin: 0;
+  font-size: 1.25rem;
+  margin: 0;
 }
 
 /* ========================================
@@ -420,142 +434,143 @@
    ======================================== */
 
 .polaroid-modal-content {
-    background: white;
-    border-radius: 24px;
-    padding: 2.5rem;
-    max-width: 900px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+  background: white;
+  border-radius: 24px;
+  padding: 2.5rem;
+  max-width: 900px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
 }
 
 .polaroid-detail {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .polaroid-images {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .polaroid-img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    border-radius: 16px;
-    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 8px solid #ffffff;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 8px solid #ffffff;
 }
 
 .polaroid-img.hidden {
-    opacity: 0;
-    transform: scale(0.95) rotateY(90deg);
-    position: absolute;
-    top: 0;
-    left: 0;
+  opacity: 0;
+  transform: scale(0.95) rotateY(90deg);
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .flip-polaroid-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    font-size: 1.05rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .flip-polaroid-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
 }
 
-.flip-polaroid-btn .material-icons {
-    transition: transform 0.5s ease;
+.flip-polaroid-btn .material-symbols-outlined {
+  transition: transform 0.5s ease;
 }
 
-.flip-polaroid-btn:hover .material-icons {
-    transform: rotateY(180deg);
+.flip-polaroid-btn:hover .material-symbols-outlined {
+  transform: rotateY(180deg);
 }
 
 .polaroid-info {
-    padding: 2rem;
-    background: linear-gradient(145deg, #f8f9fa, #ffffff);
-    border-radius: 16px;
-    border: 2px solid #e9ecef;
+  padding: 2rem;
+  background: linear-gradient(145deg, #f8f9fa, #ffffff);
+  border-radius: 16px;
+  border: 2px solid #e9ecef;
 }
 
 .polaroid-info h3 {
-    margin: 0 0 1.5rem 0;
-    color: #212529;
-    font-size: 1.5rem;
-    font-weight: 700;
-    padding-bottom: 0.75rem;
-    border-bottom: 3px solid #667eea;
+  margin: 0 0 1.5rem 0;
+  color: #212529;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid #667eea;
 }
 
 .polaroid-info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
 }
 
 .polaroid-info-item {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    padding: 1rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
 .polaroid-info-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
 }
 
 .polaroid-info-item.polaroid-info-full {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1;
 }
 
-.polaroid-info-item .material-icons {
-    color: #667eea;
-    font-size: 24px;
-    flex-shrink: 0;
+.polaroid-info-item .material-symbols-outlined {
+  color: #667eea;
+  font-size: 24px;
+  flex-shrink: 0;
 }
 
 .polaroid-info-item strong {
-    display: block;
-    color: #495057;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.25rem;
+  display: block;
+  color: #495057;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
 }
 
 .polaroid-info-item p {
-    margin: 0;
-    color: #212529;
-    line-height: 1.6;
-    font-size: 0.95rem;
+  margin: 0;
+  color: #212529;
+  line-height: 1.6;
+  font-size: 0.95rem;
 }
 
 /* ========================================
@@ -563,23 +578,23 @@
    ======================================== */
 
 #back-to-tabs {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid #667eea;
-    border-radius: 12px;
-    color: #667eea;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #667eea;
+  border-radius: 12px;
+  color: #667eea;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 #back-to-tabs:hover {
-    background: #667eea;
-    color: white;
-    transform: translateX(-4px);
+  background: #667eea;
+  color: white;
+  transform: translateX(-4px);
 }
 
 /* ========================================
@@ -587,52 +602,52 @@
    ======================================== */
 
 @media (max-width: 768px) {
-    .header-title {
-        font-size: 2rem;
-    }
+  .header-title {
+    font-size: 2rem;
+  }
 
-    .header-subtitle {
-        font-size: 1rem;
-    }
+  .header-subtitle {
+    font-size: 1rem;
+  }
 
-    .tb-card-title {
-        font-size: 1rem;
-    }
+  .tb-card-title {
+    font-size: 1rem;
+  }
 
-    .tb-card-desc {
-        font-size: 0.85rem;
-    }
+  .tb-card-desc {
+    font-size: 0.85rem;
+  }
 
-    .polaroid-modal-content {
-        width: 95%;
-        padding: 1.5rem;
-    }
+  .polaroid-modal-content {
+    width: 95%;
+    padding: 1.5rem;
+  }
 
-    .polaroid-info {
-        padding: 1.25rem;
-    }
+  .polaroid-info {
+    padding: 1.25rem;
+  }
 
-    .polaroid-info h3 {
-        font-size: 1.25rem;
-    }
+  .polaroid-info h3 {
+    font-size: 1.25rem;
+  }
 
-    .polaroid-info-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
+  .polaroid-info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 
-    .polaroid-info-item {
-        padding: 0.875rem;
-    }
+  .polaroid-info-item {
+    padding: 0.875rem;
+  }
 
-    .flip-polaroid-btn {
-        padding: 0.875rem 1.5rem;
-        font-size: 0.95rem;
-    }
+  .flip-polaroid-btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.95rem;
+  }
 
-    .polaroid-card .tb-card-image {
-        border-width: 4px;
-    }
+  .polaroid-card .tb-card-image {
+    border-width: 4px;
+  }
 }
 
 /* ========================================
@@ -640,93 +655,97 @@
    ======================================== */
 
 @media (prefers-color-scheme: dark) {
-    body[data-theme="dark"] .tb-header {
-        background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-    }
+  body[data-theme="dark"] .tb-header {
+    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+  }
 
-    body[data-theme="dark"] .tab-navigation {
-        background: linear-gradient(to bottom, rgba(45, 55, 72, 0.95), rgba(26, 32, 44, 0.95));
-        border-bottom-color: #4a5568;
-        backdrop-filter: blur(10px);
-    }
+  body[data-theme="dark"] .tab-navigation {
+    background: linear-gradient(
+      to bottom,
+      rgba(45, 55, 72, 0.95),
+      rgba(26, 32, 44, 0.95)
+    );
+    border-bottom-color: #4a5568;
+    backdrop-filter: blur(10px);
+  }
 
-    body[data-theme="dark"] .tab-btn {
-        background: #2d3748;
-        border-color: #4a5568;
-        color: #e2e8f0;
-    }
+  body[data-theme="dark"] .tab-btn {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
 
-    body[data-theme="dark"] .tab-btn:hover {
-        background: #374151;
-        border-color: #667eea;
-        color: #667eea;
-    }
+  body[data-theme="dark"] .tab-btn:hover {
+    background: #374151;
+    border-color: #667eea;
+    color: #667eea;
+  }
 
-    body[data-theme="dark"] .tab-btn.active {
-        background: #374151;
-        color: #667eea;
-    }
+  body[data-theme="dark"] .tab-btn.active {
+    background: #374151;
+    color: #667eea;
+  }
 
-    body[data-theme="dark"] .search-input {
-        background: #2d3748;
-        border-color: #4a5568;
-        color: #e2e8f0;
-    }
+  body[data-theme="dark"] .search-input {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
 
-    body[data-theme="dark"] .tb-card {
-        background: #2d3748;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
+  body[data-theme="dark"] .tb-card {
+    background: #2d3748;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
 
-    body[data-theme="dark"] .tb-card-title {
-        color: #e2e8f0;
-    }
+  body[data-theme="dark"] .tb-card-title {
+    color: #e2e8f0;
+  }
 
-    body[data-theme="dark"] .tb-card-desc {
-        color: #a0aec0;
-    }
+  body[data-theme="dark"] .tb-card-desc {
+    color: #a0aec0;
+  }
 
-    body[data-theme="dark"] .polaroid-card {
-        background: linear-gradient(145deg, #2d3748, #1a202c);
-        border-color: #4a5568;
-    }
+  body[data-theme="dark"] .polaroid-card {
+    background: linear-gradient(145deg, #2d3748, #1a202c);
+    border-color: #4a5568;
+  }
 
-    body[data-theme="dark"] .polaroid-card .tb-card-image {
-        border-color: #2d3748;
-    }
+  body[data-theme="dark"] .polaroid-card .tb-card-image {
+    border-color: #2d3748;
+  }
 
-    body[data-theme="dark"] .polaroid-card-footer {
-        border-top-color: #4a5568;
-    }
+  body[data-theme="dark"] .polaroid-card-footer {
+    border-top-color: #4a5568;
+  }
 
-    body[data-theme="dark"] .polaroid-modal-content {
-        background: #2d3748;
-    }
+  body[data-theme="dark"] .polaroid-modal-content {
+    background: #2d3748;
+  }
 
-    body[data-theme="dark"] .polaroid-img {
-        background: linear-gradient(145deg, #1a202c, #2d3748);
-        border-color: #1a202c;
-    }
+  body[data-theme="dark"] .polaroid-img {
+    background: linear-gradient(145deg, #1a202c, #2d3748);
+    border-color: #1a202c;
+  }
 
-    body[data-theme="dark"] .polaroid-info {
-        background: linear-gradient(145deg, #1a202c, #2d3748);
-        border-color: #4a5568;
-    }
+  body[data-theme="dark"] .polaroid-info {
+    background: linear-gradient(145deg, #1a202c, #2d3748);
+    border-color: #4a5568;
+  }
 
-    body[data-theme="dark"] .polaroid-info h3 {
-        color: #e2e8f0;
-        border-bottom-color: #667eea;
-    }
+  body[data-theme="dark"] .polaroid-info h3 {
+    color: #e2e8f0;
+    border-bottom-color: #667eea;
+  }
 
-    body[data-theme="dark"] .polaroid-info-item {
-        background: #2d3748;
-    }
+  body[data-theme="dark"] .polaroid-info-item {
+    background: #2d3748;
+  }
 
-    body[data-theme="dark"] .polaroid-info-item strong {
-        color: #a0aec0;
-    }
+  body[data-theme="dark"] .polaroid-info-item strong {
+    color: #a0aec0;
+  }
 
-    body[data-theme="dark"] .polaroid-info-item p {
-        color: #e2e8f0;
-    }
+  body[data-theme="dark"] .polaroid-info-item p {
+    color: #e2e8f0;
+  }
 }

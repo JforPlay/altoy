@@ -190,6 +190,7 @@ header {
     border-radius: 8px;
     box-shadow: 0 2px 4px var(--shadow-color);
     align-content: start;
+    box-sizing: border-box;
 
     /* Modern CSS: Smooth scrolling */
     scroll-behavior: smooth;

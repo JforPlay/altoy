@@ -1,7 +1,27 @@
-/* General Navbar Styling */
-.theme-icon-hidden {
-    display: none;
+/* ==========================================================================
+   1. BASE & THEME VARIABLES
+   ========================================================================== */
+
+body {
+  font-family: "Noto Sans KR", "Roboto", sans-serif;
 }
+
+body,
+body.dark-mode {
+  --footer-bg: rgba(255, 255, 255, 0.02);
+  --footer-border: rgba(255, 255, 255, 0.05);
+  --footer-text: rgba(255, 255, 255, 0.6);
+}
+
+body:not(.dark-mode) {
+  --footer-bg: rgba(0, 0, 0, 0.02);
+  --footer-border: rgba(0, 0, 0, 0.05);
+  --footer-text: rgba(0, 0, 0, 0.6);
+}
+
+/* ==========================================================================
+   2. NAVBAR - GENERAL STYLES
+   ========================================================================== */
 
 .navbar {
   position: sticky;
@@ -9,7 +29,8 @@
   z-index: 1000;
   background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
   padding: 0.5rem 1.5rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, sans-serif;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
@@ -27,6 +48,10 @@
   margin: 0 auto;
   gap: 1.5rem;
 }
+
+/* ==========================================================================
+   3. NAVBAR - LOGO & MENU ITEMS
+   ========================================================================== */
 
 .nav-logo {
   color: #ffffff;
@@ -93,7 +118,10 @@
   color: #ffffff;
 }
 
-/* Mega Menu Styling */
+/* ==========================================================================
+   4. NAVBAR - MEGA MENU
+   ========================================================================== */
+
 .mega-dropdown {
   position: static;
 }
@@ -114,11 +142,18 @@
   overflow: hidden;
 }
 
-.mega-dropdown:hover .mega-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  max-height: 600px;
+/* Desktop only hover behavior */
+@media screen and (min-width: 769px) {
+  .mega-dropdown:hover .mega-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    max-height: 600px;
+  }
+
+  .mega-dropdown:hover > .nav-links::after {
+    transform: rotate(180deg);
+  }
 }
 
 .mega-menu-content {
@@ -186,6 +221,24 @@
   font-weight: 400;
 }
 
+/* Arrow indicator for mega menu dropdown */
+.mega-dropdown > .nav-links::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid currentColor;
+  transition: transform 0.2s ease;
+}
+
+/* ==========================================================================
+   5. THEME (LIGHT & DARK)
+   ========================================================================== */
+
 /* Light Theme */
 .navbar.navbar-light {
   background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
@@ -252,7 +305,7 @@
   color: #2a2a2a;
 }
 
-/* Theme Toggle */
+/* Theme Toggle Button */
 .nav-actions {
   display: flex;
   align-items: center;
@@ -290,7 +343,11 @@
   background: rgba(0, 0, 0, 0.08);
 }
 
-/* Icon visibility */
+/* Theme Icon Visibility */
+.theme-icon-hidden {
+  display: none;
+}
+
 body:not(.dark-mode) .theme-icon-sun {
   display: block;
 }
@@ -307,7 +364,11 @@ body.dark-mode .theme-icon-moon {
   display: block;
 }
 
-/* Hamburger Menu */
+/* ==========================================================================
+   6. MOBILE & RESPONSIVE STYLES
+   ========================================================================== */
+
+/* Hamburger Menu Icon (visible on mobile) */
 .menu-icon {
   display: none;
   cursor: pointer;
@@ -322,25 +383,7 @@ body.dark-mode .theme-icon-moon {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Down arrow indicator */
-.mega-dropdown > .nav-links::after {
-  content: '';
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: 0.5rem;
-  vertical-align: middle;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 4px solid currentColor;
-  transition: transform 0.2s ease;
-}
-
-.mega-dropdown:hover > .nav-links::after {
-  transform: rotate(180deg);
-}
-
-/* Responsive Styles for Mobile */
+/* Responsive Styles */
 @media screen and (max-width: 768px) {
   .navbar {
     padding: 0.75rem 1rem;
@@ -405,7 +448,7 @@ body.dark-mode .theme-icon-moon {
     border-radius: 0;
   }
 
-  /* Mobile mega menu becomes accordion */
+  /* Mobile mega menu becomes an accordion */
   .mega-dropdown {
     position: relative;
   }
@@ -463,7 +506,7 @@ body.dark-mode .theme-icon-moon {
     font-size: 0.75rem;
   }
 
-  /* Hide arrow rotation on mobile */
+  /* Arrow rotation on mobile */
   .mega-dropdown > .nav-links::after {
     transition: transform 0.2s ease;
   }
@@ -471,4 +514,18 @@ body.dark-mode .theme-icon-moon {
   .mega-dropdown.active > .nav-links::after {
     transform: rotate(180deg);
   }
+}
+
+/* ==========================================================================
+   7. FOOTER
+   ========================================================================== */
+
+.site-footer {
+  background: var(--footer-bg);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--footer-border);
+  color: var(--footer-text);
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 4rem;
 }

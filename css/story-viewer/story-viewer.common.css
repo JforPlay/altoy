@@ -37,7 +37,6 @@ body.dark-mode {
 }
 
 body {
-  font-family: "Noto Sans KR", "Roboto", sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
   line-height: 1.6;
@@ -173,7 +172,12 @@ body {
 }
 
 .skeleton-thumbnail {
-  background: linear-gradient(90deg, var(--border-color) 25%, var(--bg-color) 50%, var(--border-color) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--border-color) 25%,
+    var(--bg-color) 50%,
+    var(--border-color) 75%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -181,7 +185,12 @@ body {
 .skeleton-title,
 .skeleton-subtitle {
   height: 1.2rem;
-  background: linear-gradient(90deg, var(--border-color) 25%, var(--bg-color) 50%, var(--border-color) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--border-color) 25%,
+    var(--bg-color) 50%,
+    var(--border-color) 75%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 4px;
@@ -225,12 +234,13 @@ body {
 
 .grid-card.highlighted-card {
   border: 2px solid var(--accent-color);
-  box-shadow: 0 6px 25px color-mix(in srgb, var(--accent-color) 50%, transparent);
+  box-shadow: 0 6px 25px
+    color-mix(in srgb, var(--accent-color) 50%, transparent);
   transform: translateY(-5px) scale(1.02);
 }
 
 .grid-card.highlighted-card::after {
-  content: '다음 회차보기';
+  content: "다음 회차보기";
   position: absolute;
   top: 1rem;
   right: -2.2rem;
@@ -352,7 +362,11 @@ body {
 
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 70%, white));
+  background: linear-gradient(
+    90deg,
+    var(--accent-color),
+    color-mix(in srgb, var(--accent-color) 70%, white)
+  );
   border-radius: 2px;
   transition: width 0.3s ease;
 }
@@ -589,7 +603,8 @@ body.dark-mode .story-header {
 }
 
 @keyframes wave {
-  0%, 100% {
+  0%,
+  100% {
     height: 4px;
   }
   50% {
@@ -608,7 +623,7 @@ body.dark-mode .story-header {
   padding: 0.25rem;
 }
 
-.audio-btn .material-icons {
+.audio-btn .material-symbols-outlined {
   font-size: 2rem;
 }
 
@@ -865,7 +880,7 @@ body.dark-mode .story-header {
     gap: 0;
   }
 
-  #view-script-btn .material-icons {
+  #view-script-btn .material-symbols-outlined {
     font-size: 1.5rem;
   }
 

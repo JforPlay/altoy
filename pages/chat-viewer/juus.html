@@ -1,66 +1,55 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <base href="/altoy/">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>벽람항로 쥬톡 뷰어</title>
-    <link rel="stylesheet" href="css/chat-viewer/chat-viewer.common.css">
-    <link rel="stylesheet" href="css/nav.style.css">
-</head>
-<body>
-    <!-- Navigation Bar -->
-    <div id="navbar-placeholder"></div>
+---
+layout: default
+title: 벽람항로 쥬톡 뷰어
+head: <link rel="stylesheet" href="css/chat-viewer/chat-viewer.common.css">
+---
 
-    <!-- Page Header -->
-    <header class="main-header">
-        <h1>벽람항로 쥬톡 뷰어</h1>
-    </header>
+<!-- Page Header -->
+<header class="main-header">
+    <h1>벽람항로 쥬톡 뷰어</h1>
+</header>
 
-    <main class="content-container">
-        <!-- Step 1: Character/Group Selection -->
-        <section id="character-selection-section">
-            <h3>
-                1. 캐릭터/그룹 선택
-                <span class="selected-character-display" id="selected-character-name"></span>
-            </h3>
-            <div id="character-selector-grid" class="character-grid juus">
-                 <p class="loading-message">캐릭터 정보 불러오는 중...</p>
-            </div>
-        </section>
+<main class="content-container">
+    <!-- Step 1: Character/Group Selection -->
+    <section id="character-selection-section">
+        <h3>
+            1. 캐릭터/그룹 선택
+            <span class="selected-character-display" id="selected-character-name"></span>
+        </h3>
+        <div id="character-selector-grid" class="character-grid juus">
+             <p class="loading-message">캐릭터 정보 불러오는 중...</p>
+        </div>
+    </section>
 
-        <!-- Step 2: Story Display (hidden until character selected) -->
-        <section id="story-display-section" class="hidden juus">
-            <!-- Story Controls -->
-            <div class="story-controls">
-                <div class="story-controls-left">
-                    <div class="story-select-wrapper">
-                        <label for="story-dropdown" class="story-select-label">2. 스토리 선택 :</label>
-                        <select id="story-dropdown" autocomplete="off"></select>
-                    </div>
-                    <div id="flavor-text-box" class="flavor-text-box">
-                        <p id="unlock-desc-text"></p>
-                    </div>
+    <!-- Step 2: Story Display (hidden until character selected) -->
+    <section id="story-display-section" class="hidden juus">
+        <!-- Story Controls -->
+        <div class="story-controls">
+            <div class="story-controls-left">
+                <div class="story-select-wrapper">
+                    <label for="story-dropdown" class="story-select-label">2. 스토리 선택 :</label>
+                    <select id="story-dropdown" autocomplete="off"></select>
                 </div>
-                <button id="restart-button" class="restart-button">다시 재생하기</button>
+                <div id="flavor-text-box" class="flavor-text-box">
+                    <p id="unlock-desc-text"></p>
+                </div>
             </div>
+            <button id="restart-button" class="restart-button">다시 재생하기</button>
+        </div>
 
-            <!-- Chat Messages Container -->
-            <div class="story-container" id="story-container"></div>
+        <!-- Chat Messages Container -->
+        <div class="story-container" id="story-container"></div>
 
-            <!-- Player Choice Options -->
-            <div class="options-container juus" id="options-container"></div>
-        </section>
-    </main>
+        <!-- Player Choice Options -->
+        <div class="options-container juus" id="options-container"></div>
+    </section>
+</main>
 
-    <!-- Scroll to Top Button -->
-    <button id="scroll-to-top-btn" class="scroll-to-top-btn" aria-label="Scroll to top">
-        ↑
-    </button>
+<!-- Scroll to Top Button -->
+<button id="scroll-to-top-btn" class="scroll-to-top-btn" aria-label="Scroll to top">
+    ↑
+</button>
 
-    <!-- Scripts -->
-    <script src="js/chat-viewer/juus.js"></script>
-    <script src="js/chat-viewer/chat-viewer.engine.js"></script>
-    <script src="js/nav.script.js"></script>
-</body>
-</html>
+<!-- Scripts -->
+<script src="js/chat-viewer/juus.js"></script>
+<script src="js/chat-viewer/chat-viewer.engine.js"></script>

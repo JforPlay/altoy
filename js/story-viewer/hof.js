@@ -67,8 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Audio Logic ---
     function updateAudioPlayerUI() {
         if (!playPauseBtn || !muteBtn || !volumeSlider) return;
-        playPauseBtn.querySelector('.material-icons').textContent = audio.paused ? 'play_arrow' : 'pause';
-        muteBtn.querySelector('.material-icons').textContent = audio.muted || audio.volume === 0 ? 'volume_off' : 'volume_up';
+        playPauseBtn.querySelector('.material-symbols-outlined').textContent = audio.paused ? 'play_arrow' : 'pause';
+        muteBtn.querySelector('.material-symbols-outlined').textContent = audio.muted || audio.volume === 0 ? 'volume_off' : 'volume_up';
         volumeSlider.value = audio.muted ? 0 : audio.volume;
     }
 

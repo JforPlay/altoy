@@ -69,15 +69,25 @@ function initLinks() {
 // MAIN INITIALIZATION
 // ============================================
 document.addEventListener('DOMContentLoaded', function () {
-
-    // Default to dark mode
+    // Apply saved theme or default to dark mode
     applyTheme(localStorage.getItem('theme') || 'dark');
 
-    loadNavbar();
-    loadFooter();
+    // Setup interactive elements
+    setupMobileMenu();
+    setupThemeToggles();
+    setupMegaMenuToggles();
+    updateNavbarHeight();
 
-    // Initialize links after DOM is loaded
+    // Initialize links
     initLinks();
+
+    // Setup scroll listener for navbar
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+    }
 });
 
 /**
@@ -87,21 +97,18 @@ document.addEventListener('DOMContentLoaded', function () {
 function applyTheme(theme) {
     document.body.classList.toggle('dark-mode', theme === 'dark');
 
-    // Find the navbar and apply the correct light/dark class
-    const navbar = document.querySelector('#navbar-placeholder .navbar');
+    // Apply the correct light/dark class to navbar
+    const navbar = document.querySelector('.navbar');
     if (navbar) {
         navbar.classList.toggle('navbar-light', theme !== 'dark');
     }
 
-    // Update all theme toggle icons on the page
+    // Update all theme toggle icons
     document.querySelectorAll('.theme-toggle').forEach(toggle => {
         const sunIcon = toggle.querySelector('.theme-icon-sun');
         const moonIcon = toggle.querySelector('.theme-icon-moon');
 
-        // Show the sun icon when in dark mode, hide it in light mode.
         if (sunIcon) sunIcon.classList.toggle('theme-icon-hidden', theme !== 'dark');
-
-        // Show the moon icon when in light mode, hide it in dark mode.
         if (moonIcon) moonIcon.classList.toggle('theme-icon-hidden', theme === 'dark');
     });
 }
@@ -120,65 +127,6 @@ function setupThemeToggles() {
 }
 
 /**
- * Navigation bar loading and setup
- */
-function loadNavbar() {
-    fetch('pages/layouts/nav.html')
-        .then(response => response.text())
-        .then(data => {
-            const navbarPlaceholder = document.getElementById('navbar-placeholder');
-            if (navbarPlaceholder) {
-                navbarPlaceholder.innerHTML = data;
-            }
-
-            // After navbar is loaded, set up its interactive elements
-            setupMobileMenu();
-            setupThemeToggles();
-            setupMegaMenuToggles();
-            updateNavbarHeight();
-
-            // Re-apply theme to ensure the loaded navbar gets the right class
-            applyTheme(localStorage.getItem('theme') || 'dark');
-
-            // Initialize links in the navbar after it's loaded
-            initLinks();
-
-            // Setup scroll listener after navbar is loaded
-            const navbar = document.querySelector('.navbar');
-            if (navbar) {
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 50) {
-                        navbar.classList.add('scrolled');
-                    } else {
-                        navbar.classList.remove('scrolled');
-                    }
-                });
-            }
-        })
-        .catch(error => console.error('Error loading the navigation bar:', error));
-}
-
-// Footer loading
-function loadFooter() {
-    fetch('pages/layouts/footer.html')
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.text();
-        })
-        .then(data => {
-            const footerPlaceholder = document.getElementById('footer-placeholder');
-            if (footerPlaceholder) {
-                footerPlaceholder.innerHTML = data;
-                const copyrightYear = document.getElementById('copyright-year');
-                if (copyrightYear) {
-                    copyrightYear.textContent = new Date().getFullYear();
-                }
-            }
-        })
-        .catch(error => console.error('Error loading the footer:', error));
-}
-
-/**
  * Setup mega menu toggles for mobile (accordion style)
  */
 function setupMegaMenuToggles() {
@@ -187,32 +135,28 @@ function setupMegaMenuToggles() {
     megaDropdowns.forEach(dropdown => {
         const toggleLink = dropdown.querySelector('.nav-links');
 
-        toggleLink.addEventListener('click', function(event) {
-            // Prevent default link behavior
-            event.preventDefault();
-
-            // Mobile-only accordion behavior
+        toggleLink?.addEventListener('click', (event) => {
+            // Only handle on mobile
             if (window.innerWidth <= 768) {
-                const wasActive = dropdown.classList.contains('active');
+                event.preventDefault();
 
-                // Close all mega dropdowns
-                document.querySelectorAll('.mega-dropdown').forEach(d => d.classList.remove('active'));
+                const isActive = dropdown.classList.contains('active');
 
-                // Toggle the clicked dropdown
-                if (!wasActive) {
+                // Close all other dropdowns
+                megaDropdowns.forEach(d => d.classList.remove('active'));
+
+                // Toggle this dropdown
+                if (!isActive) {
                     dropdown.classList.add('active');
                 }
             }
         });
     });
 
-    // Close mega menus when clicking outside on mobile
-    document.addEventListener('click', function(event) {
-        if (window.innerWidth <= 768) {
-            const isClickInsideMenu = event.target.closest('.mega-dropdown');
-            if (!isClickInsideMenu) {
-                document.querySelectorAll('.mega-dropdown').forEach(d => d.classList.remove('active'));
-            }
+    // Close all dropdowns when clicking outside nav menu
+    document.addEventListener('click', (event) => {
+        if (window.innerWidth <= 768 && !event.target.closest('.nav-menu')) {
+            megaDropdowns.forEach(d => d.classList.remove('active'));
         }
     });
 }

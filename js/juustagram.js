@@ -46,22 +46,22 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('data/ship_group_data.json').then(res => res.json()),
         fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/CN/ShareCfg/activity_ins_ship_group_template.json').then(res => res.json())
     ])
-    .then(([posts, shipgirlData, templateData]) => {
-        // Store fetched data in module-level variables
-        postsData = posts;
-        shipgirlDataMap = shipgirlData;
-        shipgroupTemplateMap = templateData;
+        .then(([posts, shipgirlData, templateData]) => {
+            // Store fetched data in module-level variables
+            postsData = posts;
+            shipgirlDataMap = shipgirlData;
+            shipgroupTemplateMap = templateData;
 
-        // Initialize filter dropdowns with available options
-        initializeFilters();
+            // Initialize filter dropdowns with available options
+            initializeFilters();
 
-        // Populate gallery with all posts (no filters applied initially)
-        populateGallery();
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-        galleryView.innerHTML = `<p>데이터를 불러오는 데 실패했습니다. 모든 .json 파일이 있는지 확인해주세요.</p>`;
-    });
+            // Populate gallery with all posts (no filters applied initially)
+            populateGallery();
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            galleryView.innerHTML = `<p>데이터를 불러오는 데 실패했습니다. 모든 .json 파일이 있는지 확인해주세요.</p>`;
+        });
 
     // ============================================================================
     // HELPER FUNCTIONS
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Handle unknown IDs that are already marked as such
         if (typeof id === 'string' && id.startsWith('Unknown')) {
-             return { name: id, icon: placeholderIcon, username: '' };
+            return { name: id, icon: placeholderIcon, username: '' };
         }
 
         // Fallback for completely unknown IDs

@@ -533,7 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p class="navi-card-desc">${polaroid.condition || ''}</p>
                     <div class="polaroid-card-footer">
                         <span class="polaroid-stage">
-                            <span class="material-icons" style="font-size: 14px; vertical-align: middle;">star</span>
+                            <span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle;">star</span>
                             ${polaroid.stage?.join(', ') || 'N/A'}
                         </span>
                         <span class="polaroid-group-badge">그룹 ${polaroid.group || 1}</span>
@@ -757,21 +757,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h3>${polaroid.title || 'Untitled'}</h3>
                 <div class="polaroid-info-grid">
                     <div class="polaroid-info-item">
-                        <span class="material-icons">bookmark</span>
+                        <span class="material-symbols-outlined">bookmark</span>
                         <div>
                             <strong>조건</strong>
                             <p>${polaroid.condition || 'N/A'}</p>
                         </div>
                     </div>
                     <div class="polaroid-info-item">
-                        <span class="material-icons">star</span>
+                        <span class="material-symbols-outlined">star</span>
                         <div>
                             <strong>스테이지</strong>
                             <p>${polaroid.stage?.join(', ') || 'N/A'}</p>
                         </div>
                     </div>
                     <div class="polaroid-info-item">
-                        <span class="material-icons">category</span>
+                        <span class="material-symbols-outlined">category</span>
                         <div>
                             <strong>그룹</strong>
                             <p>${polaroid.group || 'N/A'}</p>
@@ -779,7 +779,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     ${polaroid.desc ? `
                         <div class="polaroid-info-item polaroid-info-full">
-                            <span class="material-icons">description</span>
+                            <span class="material-symbols-outlined">description</span>
                             <div>
                                 <strong>설명</strong>
                                 <p>${Array.isArray(polaroid.desc) ? polaroid.desc.join(', ') : polaroid.desc}</p>

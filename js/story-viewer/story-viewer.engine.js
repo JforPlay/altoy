@@ -456,7 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             // Skip optionFlag lines when advancing
             while (nextIndex < this.currentStoryScript.length &&
-                   this.currentStoryScript[nextIndex].optionFlag !== undefined) {
+                this.currentStoryScript[nextIndex].optionFlag !== undefined) {
                 nextIndex++;
             }
             this.scriptIndex = nextIndex;
@@ -478,7 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             // Skip optionFlag lines when going back
             while (prevIndex > 0 &&
-                   this.currentStoryScript[prevIndex].optionFlag !== undefined) {
+                this.currentStoryScript[prevIndex].optionFlag !== undefined) {
                 prevIndex--;
             }
             this.scriptIndex = prevIndex;
@@ -789,8 +789,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const isPlaying = !this.audio.paused;
 
-            el.playPauseBtn.querySelector('.material-icons').textContent = this.audio.paused ? 'play_arrow' : 'pause';
-            el.muteBtn.querySelector('.material-icons').textContent = this.audio.muted || this.audio.volume === 0 ? 'volume_off' : 'volume_up';
+            el.playPauseBtn.querySelector('.material-symbols-outlined').textContent = this.audio.paused ? 'play_arrow' : 'pause';
+            el.muteBtn.querySelector('.material-symbols-outlined').textContent = this.audio.muted || this.audio.volume === 0 ? 'volume_off' : 'volume_up';
             el.volumeSlider.value = this.audio.muted ? 0 : this.audio.volume;
 
             // Toggle waveform animation

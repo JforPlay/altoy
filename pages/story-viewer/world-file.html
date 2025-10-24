@@ -1,34 +1,25 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <base href="/altoy/">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>벽람항로 대작전 파일 문서 뷰어</title>
-    <link rel="stylesheet" href="css/story-viewer/world-file.css">
-    <link rel="stylesheet" href="css/nav.style.css">
-</head>
-<body>
-    <div id="navbar-placeholder"></div>
-    <header>
-        <h1>벽람항로 대작전 파일 문서 뷰어</h1>
-    </header>
+---
+layout: default
+title: 벽람항로 대작전 파일 문서 뷰어
+head: <link rel="stylesheet" href="css/story-viewer/world-file.css">
+---
 
-    <div id="main-container">
-        <aside id="gallery-container">
-            </aside>
-        <main id="content-container">
-            <div class="top-controls">
-                <div id="font-controls">
-                    <button id="font-decrease" title="글자 크기 작게">-</button>
-                    <button id="font-increase" title="글자 크기 크게">+</button>
-                </div>
+<header>
+    <h1>벽람항로 대작전 파일 문서 뷰어</h1>
+</header>
+
+<div id="main-container">
+    <aside id="gallery-container">
+        </aside>
+    <main id="content-container">
+        <div class="top-controls">
+            <div id="font-controls">
+                <button id="font-decrease" title="글자 크기 작게">-</button>
+                <button id="font-increase" title="글자 크기 크게">+</button>
             </div>
-            <div class="placeholder">항목을 선택하여 이야기를 확인하세요.</div>
-        </main>
-    </div>
-    
-    <script src="js/story-viewer/world-file.js"></script>
-    <script src="js/nav.script.js"></script>
-</body>
-</html>
+        </div>
+        <div class="placeholder">항목을 선택하여 이야기를 확인하세요.</div>
+    </main>
+</div>
+
+<script src="js/story-viewer/world-file.js"></script>
