@@ -562,14 +562,14 @@ body.no-scroll {
 
 .poll-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
   padding: 0 20px 20px 20px;
 }
 
 .poll-box {
   background-color: #2f3136;
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
   border: 1px solid #40444b;
   display: flex;
@@ -593,29 +593,29 @@ body.no-scroll {
 
 /* Poll Info Section */
 .poll-info {
-  padding: 12px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
 .poll-info h3 {
-  margin: 0 0 4px 0;
+  margin: 0 0 3px 0;
   color: #ffffff;
-  font-size: 1em;
+  font-size: 0.95em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .poll-info .character-name {
-  font-size: 0.8em;
+  font-size: 0.75em;
   color: #b9bbbe;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .info-line {
-  font-size: 0.8em;
+  font-size: 0.75em;
   color: #b9bbbe;
 }
 
@@ -624,7 +624,7 @@ body.no-scroll {
 }
 
 .info-line:last-of-type {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 /* ====================================
@@ -632,25 +632,25 @@ body.no-scroll {
    ==================================== */
 
 .rating-area {
-  margin-top: 8px;
+  margin-top: 6px;
   border-top: 1px solid #40444b;
-  padding-top: 10px;
+  padding-top: 8px;
 }
 
 .vote-widget {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
+  gap: 6px;
+  margin-bottom: 3px;
 }
 
 .vote-label {
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: bold;
   color: #7c97c0;
   position: relative;
-  top: 3px;
+  top: 2px;
 }
 
 /* Star Rating */
@@ -665,7 +665,7 @@ body.no-scroll {
 }
 
 .star-rating label {
-  font-size: 2em;
+  font-size: 1.5em;
   color: #444;
   cursor: pointer;
   transition: color 0.2s, text-shadow 0.2s;
@@ -687,9 +687,9 @@ body.no-scroll {
 /* Confirm Vote Message */
 .confirm-vote-message {
   text-align: center;
-  font-size: 0.75em;
+  font-size: 0.7em;
   color: #4caf50;
-  margin-top: 4px;
+  margin-top: 3px;
   height: 0;
   opacity: 0;
   transition: all 0.3s;
@@ -738,17 +738,17 @@ body.no-scroll {
    ==================================== */
 
 .poll-results {
-  margin-top: 8px;
+  margin-top: 6px;
   text-align: center;
 }
 
 .score-bar-visual {
   position: relative;
   display: inline-block;
-  font-size: 1.4em;
+  font-size: 1.2em;
   line-height: 1;
   color: #444;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .score-bar-foreground {
@@ -761,12 +761,12 @@ body.no-scroll {
 }
 
 .score-bar-text {
-  font-size: 0.9em;
+  font-size: 0.85em;
   color: #b9bbbe;
 }
 
 .score-bar-text strong {
-  font-size: 1.1em;
+  font-size: 1.05em;
   color: #ffffff;
   font-weight: bold;
 }
@@ -787,7 +787,7 @@ body.no-scroll {
 /* Skeleton Loader */
 .skeleton-card {
   background-color: #2f3136;
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid #40444b;
   display: flex;
   flex-direction: column;
@@ -812,16 +812,16 @@ body.no-scroll {
 .skeleton-card .skeleton-image {
   width: 100%;
   aspect-ratio: 3 / 4;
-  border-radius: 8px 8px 0 0;
+  border-radius: 6px 6px 0 0;
 }
 
 .skeleton-card .skeleton-info {
-  padding: 12px;
+  padding: 10px;
 }
 
 .skeleton-card .skeleton-line {
-  height: 1em;
-  margin-bottom: 8px;
+  height: 0.9em;
+  margin-bottom: 6px;
 }
 
 .skeleton-card .skeleton-line.short {
