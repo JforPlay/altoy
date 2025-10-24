@@ -92,20 +92,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
-h2,
-h3 {
-  color: var(--text-heading);
-  text-align: center;
-  transition: color var(--animation-duration) ease;
-}
-
 .main-header {
   margin-bottom: 30px;
+  text-align: center;
 }
 
 .main-header h1 {
   margin-bottom: 5px;
+  color: var(--text-heading);
+  transition: color var(--animation-duration) ease;
+}
+
+.main-header h2,
+.main-header h3 {
+  color: var(--text-heading);
+  text-align: center;
+  transition: color var(--animation-duration) ease;
 }
 
 .main-header p {
