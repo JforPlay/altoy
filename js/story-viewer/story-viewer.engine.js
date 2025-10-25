@@ -29,6 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
         currentStoryDefaultBgUrl: null, // Only used by main viewer
         audio: new Audio(),
 
+        // Branching state, for handling options
+        activeOptionFlag: null,     // currently selected option flag (null when not in a branch)
+        lastOptionIndex: -1,        // index of the last line that presented options (decision point)
+
         // Performance cache for background state
         cachedBackground: {
             url: null,
@@ -400,6 +404,9 @@ document.addEventListener('DOMContentLoaded', () => {
             this.lastActorId = null;
             this.currentBgm = null;
             this.currentStoryDefaultBgUrl = null;
+            this.activeOptionFlag = null;
+            this.lastOptionIndex = -1;
+
 
             // Reset background cache for new story
             this.cachedBackground = {
@@ -443,47 +450,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
         advanceStory() {
             if (this.scriptIndex >= this.currentStoryScript.length - 1) return;
-            let nextIndex = this.scriptIndex + 1;
-            // For world viewer, skip non-displayable lines
+
+            let i = this.scriptIndex + 1;
+
+            // For world viewer, optionally skip non-displayable lines while scanning forward
             if (this.config.viewerType === 'world') {
-                for (let i = this.scriptIndex + 1; i < this.currentStoryScript.length; i++) {
-                    if (this.isLineDisplayable(this.currentStoryScript[i])) {
-                        nextIndex = i;
-                        break;
-                    }
-                    if (i === this.currentStoryScript.length - 1) nextIndex = i; // last line
+                for (let j = i; j < this.currentStoryScript.length; j++) {
+                    if (this.isLineDisplayable(this.currentStoryScript[j])) { i = j; break; }
+                    if (j === this.currentStoryScript.length - 1) i = j; // last line fallback
                 }
             }
-            // Skip optionFlag lines when advancing
-            while (nextIndex < this.currentStoryScript.length &&
-                this.currentStoryScript[nextIndex].optionFlag !== undefined) {
-                nextIndex++;
+
+            // Scan forward until we find a REACHABLE line as per branch rules
+            while (i < this.currentStoryScript.length && !this.isReachableIndex(i)) {
+                i++;
             }
-            this.scriptIndex = nextIndex;
+
+            // If nothing reachable ahead, we're at the end for this path
+            if (i >= this.currentStoryScript.length) {
+                // Show current state as end-of-story for this branch
+                this.renderScriptLine(); // updates buttons/indicators to reflect end
+                return;
+            }
+
+            this.scriptIndex = i;
             this.renderScriptLine();
         },
 
         goBackStory() {
             if (this.scriptIndex <= 0) return;
-            let prevIndex = this.scriptIndex - 1;
-            // For world viewer, skip non-displayable lines
+
+            let i = this.scriptIndex - 1;
+
+            // For world viewer, optionally skip non-displayable lines while scanning backward
             if (this.config.viewerType === 'world') {
-                for (let i = this.scriptIndex - 1; i >= 0; i--) {
-                    if (this.isLineDisplayable(this.currentStoryScript[i])) {
-                        prevIndex = i;
-                        break;
-                    }
-                    if (i === 0) prevIndex = i; // first line
+                for (let j = i; j >= 0; j--) {
+                    if (this.isLineDisplayable(this.currentStoryScript[j])) { i = j; break; }
+                    if (j === 0) i = j; // first line fallback
                 }
             }
-            // Skip optionFlag lines when going back
-            while (prevIndex > 0 &&
-                this.currentStoryScript[prevIndex].optionFlag !== undefined) {
-                prevIndex--;
+
+            if (this.activeOptionFlag == null) {
+                // Outside branch: skip flagged lines going backward
+                while (i > 0 && this.currentStoryScript[i].optionFlag !== undefined) {
+                    i--;
+                }
+                this.scriptIndex = i;
+                this.renderScriptLine();
+                return;
             }
-            this.scriptIndex = prevIndex;
+
+            // Inside a branch:
+            // Move back until we find a line that's either:
+            //  - same-flag, or
+            //  - the decision point (lastOptionIndex)
+            while (i > this.lastOptionIndex) {
+                const line = this.currentStoryScript[i];
+                if (!line || line.optionFlag === this.activeOptionFlag) break;
+                i--;
+            }
+
+            // If we've moved back to (or before) the decision point, exit branch mode
+            if (i <= this.lastOptionIndex) {
+                this.activeOptionFlag = null;
+                i = this.lastOptionIndex; // land on the options line
+            }
+
+            this.scriptIndex = i;
             this.renderScriptLine();
         },
+
 
         renderScriptLine() {
             if (this.scriptIndex >= this.currentStoryScript.length) return;
@@ -532,17 +568,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update navigation buttons
             const hasOptions = line.options && line.options.length > 0;
-            const isAtEnd = this.scriptIndex >= this.currentStoryScript.length - 1;
+            const isAtFileEnd = this.scriptIndex >= this.currentStoryScript.length - 1;
             el.prevLineBtn.disabled = (this.scriptIndex <= 0);
 
-            // Determine if this is the last *displayable* line
-            const nextDisplayableExists = this.currentStoryScript.slice(this.scriptIndex + 1)
-                .some(line => this.isLineDisplayable(line));
+            // Use "reachable path" semantics (branch-aware) for both Next and Return
+            const nextDisplayableExists = this.hasReachableNextDisplayable();
+            const isAtPathEnd = !nextDisplayableExists;
+
+            // Hide Next when there’s no reachable next line OR we’re on an options line
             el.nextLineBtn.classList.toggle('hidden', hasOptions || !nextDisplayableExists);
 
-            el.returnBtn.classList.toggle('hidden', !isAtEnd);
-            el.nextStoryBtn.classList.toggle('hidden', !(isAtEnd && this.nextMemory));
-            el.nextPageIndicator.classList.toggle('hidden', isAtEnd || hasOptions);
+            // Show the Return/Go Back button when at the end of file OR end of reachable path
+            el.returnBtn.classList.toggle('hidden', !(isAtFileEnd || isAtPathEnd));
+
+            // If you have a "next story" button, you probably want to show it
+            // only at the *true* file end; keep that behavior:
+            el.nextStoryBtn.classList.toggle('hidden', !((isAtFileEnd || isAtPathEnd) && this.nextMemory));
+
+            // Page indicator hidden when we’re at path end (no next) or on options
+            el.nextPageIndicator.classList.toggle('hidden', isAtPathEnd || hasOptions);
+
 
             // Update progress indicator
             this.updateProgressIndicator();
@@ -559,20 +604,26 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         handleOptionSelect(chosenFlag) {
-            const currentLine = this.currentStoryScript[this.scriptIndex];
+            const currentLineIndex = this.scriptIndex;
+            const currentLine = this.currentStoryScript[currentLineIndex];
             const optionCount = currentLine.options ? currentLine.options.length : 0;
 
-            // If only one option, just advance to the next line
-            if (optionCount === 1) {
-                this.scriptIndex++;
-                this.renderScriptLine();
-                return;
-            }
+            // Record decision point
+            this.lastOptionIndex = currentLineIndex;
 
-            // Multiple options: find the chosen optionFlag line
+            // If only one option, we simply "advance" but explicitly set branch state anyway
+            this.activeOptionFlag = (optionCount >= 1) ? chosenFlag : null;
+
+            // Find the first line with the chosen flag after the options
             let nextIndex = -1;
-            for (let i = this.scriptIndex + 1; i < this.currentStoryScript.length; i++) {
-                if (this.currentStoryScript[i].optionFlag === chosenFlag) {
+            for (let i = currentLineIndex + 1; i < this.currentStoryScript.length; i++) {
+                const line = this.currentStoryScript[i];
+                if (line && line.optionFlag === chosenFlag) {
+                    nextIndex = i;
+                    break;
+                }
+                // If we hit an unflagged line before any chosen-flag line, we treat it as a rejoin
+                if (line && line.optionFlag === undefined) {
                     nextIndex = i;
                     break;
                 }
@@ -582,11 +633,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.scriptIndex = nextIndex;
                 this.renderScriptLine();
             } else {
-                // No optionFlag found, just advance
-                this.scriptIndex++;
+                // No reachable line -> this option ends the story immediately
+                this.scriptIndex = currentLineIndex; // stay put; UI will show end after render
                 this.renderScriptLine();
             }
         },
+
 
         // =========================================================================
         // HELPERS (VISUAL & AUDIO)
@@ -727,6 +779,61 @@ document.addEventListener('DOMContentLoaded', () => {
                 backgroundElement.style.backgroundColor = 'transparent';
                 backgroundElement.style.backgroundImage = backgroundImageUrl || 'none';
             }
+        },
+
+        /**
+         * Determine whether a target line index is reachable from the current position,
+         * given the activeOptionFlag rules:
+         * - If not in branch mode: only lines WITHOUT optionFlag are reachable.
+         * - If in branch mode: lines with matching optionFlag OR with no optionFlag are reachable.
+         * - Lines with different optionFlag are not reachable while in a branch.
+         */
+        isReachableIndex(targetIndex) {
+            if (targetIndex < 0 || targetIndex >= this.currentStoryScript.length) return false;
+            const line = this.currentStoryScript[targetIndex];
+            const hasFlag = line && line.optionFlag !== undefined;
+            if (this.activeOptionFlag == null) {
+                // Outside branch: skip all flagged lines
+                return !hasFlag;
+            }
+            // Inside a branch: allow same-flag lines or unflagged lines; disallow different flags
+            return !hasFlag || line.optionFlag === this.activeOptionFlag;
+        },
+
+        // to determine if there is any non-option flag ahead that can be displayed
+        hasReachableNextDisplayable() {
+            const curr = this.currentStoryScript[this.scriptIndex];
+
+            // If we're currently on an options line, do NOT consider this a path end.
+            // We still have pending user choice, so treat it as having a "next".
+            if (curr?.options?.length) {
+                return true;
+            }
+            
+            const currFlag = (curr && curr.optionFlag !== undefined) ? curr.optionFlag : null;
+
+            const fallbackReachable = (idx) => {
+                const line = this.currentStoryScript[idx];
+                const hasFlag = line && line.optionFlag !== undefined;
+                if (currFlag == null) {
+                    // Outside branch: only unflagged lines are reachable
+                    return !hasFlag;
+                }
+                // Inside a branch: same flag or unflagged lines are reachable
+                return !hasFlag || line.optionFlag === currFlag;
+            };
+
+            for (let i = this.scriptIndex + 1; i < this.currentStoryScript.length; i++) {
+                const reachable = (typeof this.isReachableIndex === 'function')
+                    ? this.isReachableIndex(i)
+                    : fallbackReachable(i);
+
+                if (!reachable) continue;
+
+                const line = this.currentStoryScript[i];
+                if (this.isLineDisplayable(line)) return true;
+            }
+            return false;
         },
 
         handleEffect(effects) {

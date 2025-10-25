@@ -1,14 +1,16 @@
 /**
- * tb-story.css
+ * tab-story.css
  * --------------
- * Modern, polished styling for the tb Story Viewer
+ * Unified styling for Navi and TB Story Viewers
  * Features: Tab navigation, card grid layouts, modal windows
+ * Used by: navi-story.html, tb-story.html
  */
 
 /* ========================================
    HEADER & MAIN LAYOUT
    ======================================== */
 
+.navi-header,
 .tb-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 2.5rem 2rem;
@@ -216,6 +218,7 @@
    GRID LAYOUT
    ======================================== */
 
+.navi-grid-container,
 .tb-grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -226,6 +229,7 @@
 }
 
 @media (max-width: 768px) {
+  .navi-grid-container,
   .tb-grid-container {
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 1rem;
@@ -237,6 +241,7 @@
    CARDS
    ======================================== */
 
+.navi-card,
 .tb-card {
   background: white;
   border-radius: 16px;
@@ -247,11 +252,13 @@
   position: relative;
 }
 
+.navi-card:hover,
 .tb-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 }
 
+.navi-card::before,
 .tb-card::before {
   content: "";
   position: absolute;
@@ -269,10 +276,12 @@
   pointer-events: none;
 }
 
+.navi-card:hover::before,
 .tb-card:hover::before {
   opacity: 1;
 }
 
+.navi-card-image,
 .tb-card-image {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -281,14 +290,17 @@
 }
 
 /* Taller aspect ratio for ending cards to show more of the image */
+#endings-content .navi-card-image,
 #endings-content .tb-card-image {
   aspect-ratio: 4 / 5;
 }
 
+.navi-card-content,
 .tb-card-content {
   padding: 1.25rem;
 }
 
+.navi-card-title,
 .tb-card-title {
   font-size: 1.1rem;
   font-weight: 600;
@@ -297,6 +309,7 @@
   line-height: 1.4;
 }
 
+.navi-card-desc,
 .tb-card-desc {
   font-size: 0.9rem;
   color: #6c757d;
@@ -304,6 +317,7 @@
   line-height: 1.5;
 }
 
+.navi-card-badge,
 .tb-card-badge {
   display: inline-block;
   padding: 0.25rem 0.75rem;
@@ -330,6 +344,7 @@
   box-shadow: 0 12px 32px rgba(102, 126, 234, 0.2);
 }
 
+.polaroid-card .navi-card-image,
 .polaroid-card .tb-card-image {
   border: 6px solid #ffffff;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
@@ -610,10 +625,12 @@
     font-size: 1rem;
   }
 
+  .navi-card-title,
   .tb-card-title {
     font-size: 1rem;
   }
 
+  .navi-card-desc,
   .tb-card-desc {
     font-size: 0.85rem;
   }
@@ -645,6 +662,7 @@
     font-size: 0.95rem;
   }
 
+  .polaroid-card .navi-card-image,
   .polaroid-card .tb-card-image {
     border-width: 4px;
   }
@@ -655,6 +673,7 @@
    ======================================== */
 
 @media (prefers-color-scheme: dark) {
+  body[data-theme="dark"] .navi-header,
   body[data-theme="dark"] .tb-header {
     background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
   }
@@ -692,15 +711,18 @@
     color: #e2e8f0;
   }
 
+  body[data-theme="dark"] .navi-card,
   body[data-theme="dark"] .tb-card {
     background: #2d3748;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
+  body[data-theme="dark"] .navi-card-title,
   body[data-theme="dark"] .tb-card-title {
     color: #e2e8f0;
   }
 
+  body[data-theme="dark"] .navi-card-desc,
   body[data-theme="dark"] .tb-card-desc {
     color: #a0aec0;
   }
@@ -710,6 +732,7 @@
     border-color: #4a5568;
   }
 
+  body[data-theme="dark"] .polaroid-card .navi-card-image,
   body[data-theme="dark"] .polaroid-card .tb-card-image {
     border-color: #2d3748;
   }

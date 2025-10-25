@@ -1,43 +1,45 @@
 /**
- * navi-story.js
+ * tab-story.js
  * -------------
- * Handles the Navi Story Viewer with tab navigation for:
- * - Memories (navi_memory.json)
- * - Endings (navi_ending.json)
- * - Polaroids (navi_polaroid.json)
- * - Photos (placeholder)
+ * Unified Story Viewer with tab navigation for Navi and TB
+ * Handles: Memories, Endings, Polaroids, Photos, and custom categories
  *
  * Uses the common StoryViewer engine for story playback with proper URL state management
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-    // =========================================================================
-    // STATE & DATA
-    // =========================================================================
-    const NaviViewer = {
+/**
+ * Creates a tab-based story viewer instance
+ * @param {Object} config - Configuration object
+ * @param {string} config.type - Viewer type: 'navi' or 'tb'
+ * @param {Object} config.dataPaths - Paths to JSON data files
+ * @param {Object} config.imageUrls - Base URLs for images
+ * @param {string} config.placeholderImage - Placeholder image path
+ * @param {Array} config.categories - Custom category definitions
+ * @param {Array} config.photoList - List of photo filenames (optional)
+ */
+function createTabStoryViewer(config) {
+    const viewer = {
+        // Configuration
+        config: config,
+
         // Data storage
         memoriesData: {},
         endingsData: {},
         polaroidsData: {},
-        visitsData: {}, // Real world visits
-        dailyData: {}, // Daily life
+        customCategoriesData: {}, // For visits/affection/daily/etc
         storyData: {},
         shipgirlData: {},
         nameCodeData: {},
-        iconMappingData: {}, // Icon mapping from tb_navi_memory.json
-        storyIconMap: {}, // Reverse lookup: storyKey -> {icon, title}
+        iconMappingData: {},
+        storyIconMap: {},
 
-        // Converted data for story engine (event/memory structure)
+        // Converted data for story engine
         convertedStorylineData: {},
 
         // Current state
         currentTab: 'memories',
-        currentCategory: null, // 'memory', 'ending', 'visit', or 'daily'
+        currentCategory: null,
         currentStoryId: null,
-
-        // Image base URLs
-        BASE_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/neweducateicon/",
-        ICON_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/memoryicon/",
 
         // DOM elements
         elements: {
@@ -48,8 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Grids
             memoriesGrid: document.getElementById('memories-grid'),
             endingsGrid: document.getElementById('endings-grid'),
-            visitsGrid: document.getElementById('visits-grid'),
-            dailyGrid: document.getElementById('daily-grid'),
             polaroidsGrid: document.getElementById('polaroids-grid'),
             photosGrid: document.getElementById('photos-grid'),
 
@@ -77,6 +77,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // =========================================================================
         async init() {
             this.showLoadingState();
+
+            // Add custom category grids to elements
+            this.config.categories.forEach(cat => {
+                this.elements[`${cat.id}Grid`] = document.getElementById(`${cat.id}-grid`);
+                this.customCategoriesData[cat.id] = {};
+            });
+
             await this.loadAllData();
             this.convertDataForEngine();
             this.setupEventListeners();
@@ -99,13 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
         async loadAllData() {
             try {
                 const [memoriesData, endingsData, polaroidsData, storyData, shipgirlData, nameCodeData, iconMappingData] = await Promise.all([
-                    fetch('data/story-viewer/navi_memory.json').then(r => r.json()),
-                    fetch('data/story-viewer/navi_ending.json').then(r => r.json()),
-                    fetch('data/story-viewer/navi_polaroid.json').then(r => r.json()),
-                    fetch('data/story-viewer/navi_story_data.json').then(r => r.json()),
-                    fetch('data/story-viewer/shipgirl_data.json').then(r => r.json()),
+                    fetch(this.config.dataPaths.memories).then(r => r.json()),
+                    fetch(this.config.dataPaths.endings).then(r => r.json()),
+                    fetch(this.config.dataPaths.polaroids).then(r => r.json()),
+                    fetch(this.config.dataPaths.stories).then(r => r.json()),
+                    fetch(this.config.dataPaths.shipgirls).then(r => r.json()),
                     fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json').then(r => r.json()),
-                    fetch('data/story-viewer/tb_navi_memory.json').then(r => r.json())
+                    fetch(this.config.dataPaths.iconMapping).then(r => r.json())
                 ]);
 
                 this.memoriesData = memoriesData;
@@ -116,12 +123,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.nameCodeData = nameCodeData;
                 this.iconMappingData = iconMappingData;
 
-                // Build reverse lookup map: storyKey -> iconName
+                // Build reverse lookup map
                 this.buildStoryIconMap();
 
-                // Extract visits and daily data from storyData
-                this.extractVisitsData();
-                this.extractDailyData();
+                // Extract custom categories data
+                this.config.categories.forEach(cat => {
+                    this.extractCategoryData(cat);
+                });
 
             } catch (error) {
                 console.error('Failed to load data:', error);
@@ -129,13 +137,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
-        // Build reverse lookup map: storyKey (lowercase) -> {icon, title}
         buildStoryIconMap() {
             this.storyIconMap = {};
             for (const id in this.iconMappingData) {
                 const entry = this.iconMappingData[id];
                 if (entry.story) {
-                    // Store in lowercase for case-insensitive matching
                     this.storyIconMap[entry.story.toLowerCase()] = {
                         icon: entry.icon || null,
                         title: entry.title || null
@@ -144,21 +150,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
-        // Extract visits stories from storyData (lingyangzhelaifangjishi)
-        extractVisitsData() {
-            this.visitsData = {};
+        extractCategoryData(category) {
+            this.customCategoriesData[category.id] = {};
+
             for (const key in this.storyData) {
-                if (key.startsWith('lingyangzhelaifangjishi')) {
-                    // Extract the number from the key
-                    const match = key.match(/lingyangzhelaifangjishi(\d+)/);
+                if (key.startsWith(category.storyKeyPrefix)) {
+                    const match = key.match(new RegExp(`${category.storyKeyPrefix}(\\d+)`));
                     if (match) {
                         const id = parseInt(match[1], 10);
-                        // Look up icon and title from the mapping
                         const mappingData = this.storyIconMap[key] || {};
-                        const title = mappingData.title || `현실방문 ${id}`; // Fallback to default
+                        const title = mappingData.title || `${category.defaultTitlePrefix} ${id}`;
                         const icon = mappingData.icon || null;
 
-                        this.visitsData[id] = {
+                        this.customCategoriesData[category.id][id] = {
                             id: id,
                             storyKey: key,
                             title: title,
@@ -169,88 +173,65 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
-        // Extract daily life stories from storyData (lingyangzhexinzhixuyu)
-        extractDailyData() {
-            this.dailyData = {};
-            for (const key in this.storyData) {
-                if (key.startsWith('lingyangzhexinzhixuyu')) {
-                    // Extract the number from the key
-                    const match = key.match(/lingyangzhexinzhixuyu(\d+)/);
-                    if (match) {
-                        const id = parseInt(match[1], 10);
-                        // Look up icon and title from the mapping
-                        const mappingData = this.storyIconMap[key] || {};
-                        const title = mappingData.title || `일상 ${id}`; // Fallback to default
-                        const icon = mappingData.icon || null;
-
-                        this.dailyData[id] = {
-                            id: id,
-                            storyKey: key,
-                            title: title,
-                            icon: icon
-                        };
-                    }
-                }
-            }
-        },
-
-        // Convert navi data into the event/memory structure expected by story engine
         convertDataForEngine() {
-            // Create four "events": memories, endings, visits, and daily
-            this.convertedStorylineData = {
-                'memory': {
-                    id: 'memory',
-                    name: 'Navi Memories',
-                    child: Object.values(this.memoriesData).map(mem => {
-                        // Look up icon and title from mapping based on lua field
-                        const mappingData = this.storyIconMap[mem.lua?.toLowerCase()] || {};
-                        const title = mappingData.title || mem.desc || `Memory ${mem.id}`;
-                        const icon = mappingData.icon || null;
+            this.convertedStorylineData = {};
 
-                        return {
-                            id: mem.id,
-                            title: title,
-                            condition: mem.condition || '',
-                            icon: icon,
-                            iconUrl: icon ? `${this.ICON_URL}${icon}.png` : null,
-                            story: this.storyData[mem.lua?.toLowerCase()] || { scripts: [] }
-                        };
-                    })
-                },
-                'ending': {
-                    id: 'ending',
-                    name: 'Navi Endings',
-                    child: Object.values(this.endingsData).map(end => ({
-                        id: end.id,
-                        title: end.name || `Ending ${end.id}`,
-                        condition: '',
-                        icon: null,
-                        story: this.storyData[end.performance?.toLowerCase()] || { scripts: [] }
-                    }))
-                },
-                'visit': {
-                    id: 'visit',
-                    name: '네비의 현실방문',
-                    child: Object.values(this.visitsData).map(visit => ({
-                        id: visit.id,
-                        title: visit.title,
-                        condition: '',
-                        icon: null,
-                        story: this.storyData[visit.storyKey] || { scripts: [] }
-                    }))
-                },
-                'daily': {
-                    id: 'daily',
-                    name: '네비의 일상',
-                    child: Object.values(this.dailyData).map(daily => ({
-                        id: daily.id,
-                        title: daily.title,
-                        condition: '',
-                        icon: null,
-                        story: this.storyData[daily.storyKey] || { scripts: [] }
-                    }))
-                }
+            // Memories
+            this.convertedStorylineData['memory'] = {
+                id: 'memory',
+                name: `${this.config.type.toUpperCase()} Memories`,
+                child: Object.values(this.memoriesData).map(mem => {
+                    const storyKey = this.config.type === 'navi' ? mem.lua : mem.performance;
+                    const mappingData = this.storyIconMap[storyKey?.toLowerCase()] || {};
+                    const title = mappingData.title || mem.desc || `Memory ${mem.id}`;
+                    const icon = mappingData.icon || null;
+
+                    return {
+                        id: mem.id,
+                        title: title,
+                        condition: mem.condition || '',
+                        icon: icon,
+                        iconUrl: icon ? `${this.config.imageUrls.icon}${icon}.png` : null,
+                        story: this.storyData[storyKey?.toLowerCase()] || { scripts: [] }
+                    };
+                })
             };
+
+            // Endings
+            this.convertedStorylineData['ending'] = {
+                id: 'ending',
+                name: `${this.config.type.toUpperCase()} Endings`,
+                child: Object.values(this.endingsData).map(end => {
+                    const storyKey = end.performance;
+                    const mappingData = this.storyIconMap[storyKey?.toLowerCase()] || {};
+                    const title = mappingData.title || end.name || `Ending ${end.id}`;
+                    const icon = mappingData.icon || null;
+
+                    return {
+                        id: end.id,
+                        title: title,
+                        condition: '',
+                        icon: icon,
+                        iconUrl: icon ? `${this.config.imageUrls.icon}${icon}.png` : null,
+                        story: this.storyData[storyKey?.toLowerCase()] || { scripts: [] }
+                    };
+                })
+            };
+
+            // Custom categories
+            this.config.categories.forEach(cat => {
+                this.convertedStorylineData[cat.id] = {
+                    id: cat.id,
+                    name: cat.name,
+                    child: Object.values(this.customCategoriesData[cat.id]).map(item => ({
+                        id: item.id,
+                        title: item.title,
+                        condition: '',
+                        icon: null,
+                        story: this.storyData[item.storyKey] || { scripts: [] }
+                    }))
+                };
+            });
         },
 
         // =========================================================================
@@ -285,10 +266,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setupBrowserBackButton() {
             window.addEventListener('popstate', (e) => {
                 if (e.state && e.state.category && e.state.storyId) {
-                    // Restore story view
                     this.playStoryById(e.state.category, e.state.storyId, false);
                 } else {
-                    // Return to tabs
                     this.returnToTabs(false);
                 }
             });
@@ -300,12 +279,10 @@ document.addEventListener('DOMContentLoaded', () => {
         switchTab(tabName) {
             this.currentTab = tabName;
 
-            // Update tab buttons
             this.elements.tabBtns.forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.tab === tabName);
             });
 
-            // Update tab content
             this.elements.tabContents.forEach(content => {
                 content.classList.toggle('active', content.id === `${tabName}-content`);
             });
@@ -317,15 +294,15 @@ document.addEventListener('DOMContentLoaded', () => {
         populateAllGrids() {
             this.populateMemoriesGrid();
             this.populateEndingsGrid();
-            this.populateVisitsGrid();
-            this.populateDailyGrid();
+            this.config.categories.forEach(cat => {
+                this.populateCategoryGrid(cat);
+            });
             this.populatePolaroidsGrid();
             this.populatePhotosGrid();
         },
 
         populateMemoriesGrid() {
             this.elements.memoriesGrid.innerHTML = '';
-
             Object.values(this.memoriesData).forEach(memory => {
                 const card = this.createMemoryCard(memory);
                 this.elements.memoriesGrid.appendChild(card);
@@ -334,40 +311,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         populateEndingsGrid() {
             this.elements.endingsGrid.innerHTML = '';
-
             Object.values(this.endingsData).forEach(ending => {
                 const card = this.createEndingCard(ending);
                 this.elements.endingsGrid.appendChild(card);
             });
         },
 
-        populateVisitsGrid() {
-            this.elements.visitsGrid.innerHTML = '';
+        populateCategoryGrid(category) {
+            const grid = this.elements[`${category.id}Grid`];
+            if (!grid) return;
 
-            // Sort by ID to maintain order
-            const sortedVisits = Object.values(this.visitsData).sort((a, b) => a.id - b.id);
+            grid.innerHTML = '';
+            const sortedData = Object.values(this.customCategoriesData[category.id])
+                .sort((a, b) => a.id - b.id);
 
-            sortedVisits.forEach(visit => {
-                const card = this.createVisitCard(visit);
-                this.elements.visitsGrid.appendChild(card);
-            });
-        },
-
-        populateDailyGrid() {
-            this.elements.dailyGrid.innerHTML = '';
-
-            // Sort by ID to maintain order
-            const sortedDaily = Object.values(this.dailyData).sort((a, b) => a.id - b.id);
-
-            sortedDaily.forEach(daily => {
-                const card = this.createDailyCard(daily);
-                this.elements.dailyGrid.appendChild(card);
+            sortedData.forEach(item => {
+                const card = this.createCategoryCard(category.id, item);
+                grid.appendChild(card);
             });
         },
 
         populatePolaroidsGrid() {
             this.elements.polaroidsGrid.innerHTML = '';
-
             Object.values(this.polaroidsData).forEach(polaroid => {
                 const card = this.createPolaroidCard(polaroid);
                 this.elements.polaroidsGrid.appendChild(card);
@@ -377,10 +342,17 @@ document.addEventListener('DOMContentLoaded', () => {
         populatePhotosGrid() {
             this.elements.photosGrid.innerHTML = '';
 
-            // Create cards for plan_square_1 through plan_square_15
-            for (let i = 1; i <= 15; i++) {
-                const card = this.createPhotoCard(i);
-                this.elements.photosGrid.appendChild(card);
+            if (this.config.photoList) {
+                this.config.photoList.forEach(filename => {
+                    const card = this.createPhotoCard(filename);
+                    this.elements.photosGrid.appendChild(card);
+                });
+            } else {
+                // Default: plan_square_1 to plan_square_15
+                for (let i = 1; i <= 15; i++) {
+                    const card = this.createPhotoCard(`plan_square_${i}`);
+                    this.elements.photosGrid.appendChild(card);
+                }
             }
         },
 
@@ -389,22 +361,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // =========================================================================
         createMemoryCard(memory) {
             const card = document.createElement('div');
-            card.className = 'navi-card';
+            card.className = `${this.config.type}-card`;
 
-            // Look up title from mapping based on lua field (use title but not icon)
-            const mappingData = this.storyIconMap[memory.lua?.toLowerCase()] || {};
+            const storyKey = this.config.type === 'navi' ? memory.lua : memory.performance;
+            const mappingData = this.storyIconMap[storyKey?.toLowerCase()] || {};
             const title = mappingData.title || memory.desc || 'Untitled';
 
             card.dataset.title = title;
-
-            // Use placeholder for memories (icons are too plain)
-            const imageUrl = 'assets/img/navi_placeholder.png';
+            const imageUrl = this.config.placeholderImage;
 
             card.innerHTML = `
-                <img class="navi-card-image" src="${imageUrl}" alt="${title}" loading="lazy">
-                <div class="navi-card-content">
-                    <h3 class="navi-card-title">${title}</h3>
-                    <span class="navi-card-badge">메모리 #${memory.id}</span>
+                <img class="${this.config.type}-card-image" src="${imageUrl}" alt="${title}" loading="lazy">
+                <div class="${this.config.type}-card-content">
+                    <h3 class="${this.config.type}-card-title">${title}</h3>
+                    <span class="${this.config.type}-card-badge">메모리 #${memory.id}</span>
                 </div>
             `;
 
@@ -417,100 +387,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
         createEndingCard(ending) {
             const card = document.createElement('div');
-            card.className = 'navi-card';
-            card.dataset.title = ending.name || '';
+            card.className = `${this.config.type}-card`;
 
-            const imageUrl = ending.pic_preview
-                ? `${this.BASE_URL}${ending.pic_preview}.png`
-                : 'assets/img/navi_placeholder.png';
+            const mappingData = this.storyIconMap[ending.performance?.toLowerCase()] || {};
+            const title = mappingData.title || ending.name || 'Untitled';
+            const icon = mappingData.icon;
+
+            card.dataset.title = title;
+
+            let imageUrl;
+            if (this.config.type === 'navi') {
+                imageUrl = ending.pic_preview
+                    ? `${this.config.imageUrls.base}${ending.pic_preview}.png`
+                    : this.config.placeholderImage;
+            } else {
+                imageUrl = icon
+                    ? `${this.config.imageUrls.icon}${icon}.png`
+                    : (ending.pic_preview ? `${this.config.imageUrls.base}${ending.pic_preview}.png` : this.config.placeholderImage);
+            }
 
             card.innerHTML = `
-                <img class="navi-card-image" src="${imageUrl}" alt="${ending.name}" loading="lazy">
-                <div class="navi-card-content">
-                    <h3 class="navi-card-title">${ending.name || 'Untitled'}</h3>
-                    <span class="navi-card-badge">엔딩 #${ending.id}</span>
+                <img class="${this.config.type}-card-image" src="${imageUrl}" alt="${title}" loading="lazy">
+                <div class="${this.config.type}-card-content">
+                    <h3 class="${this.config.type}-card-title">${title}</h3>
+                    <span class="${this.config.type}-card-badge">엔딩 #${ending.id}</span>
                 </div>
             `;
 
-            // Add error handling properly to avoid infinite loops
-            const img = card.querySelector('.navi-card-image');
-            img.addEventListener('error', function(e) {
-                if (this.src !== window.location.origin + '/altoy/assets/img/navi_placeholder.png' && !this.dataset.errorHandled) {
-                    this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
-                }
-            }, { once: false });
+            const img = card.querySelector(`.${this.config.type}-card-image`);
+            this.addImageErrorHandler(img);
 
             card.addEventListener('click', () => {
-                this.playStory('ending', ending.id, ending.name || `Ending ${ending.id}`);
+                this.playStory('ending', ending.id, title);
             });
 
             return card;
         },
 
-        createVisitCard(visit) {
+        createCategoryCard(categoryId, item) {
             const card = document.createElement('div');
-            card.className = 'navi-card';
-            card.dataset.title = visit.title;
+            card.className = `${this.config.type}-card`;
+            card.dataset.title = item.title;
 
-            // Use icon from mapping, fallback to placeholder
-            const imageUrl = visit.icon
-                ? `${this.ICON_URL}${visit.icon}.png`
-                : 'assets/img/navi_placeholder.png';
+            const imageUrl = item.icon
+                ? `${this.config.imageUrls.icon}${item.icon}.png`
+                : this.config.placeholderImage;
+
+            const category = this.config.categories.find(c => c.id === categoryId);
+            const badgeText = category ? `${category.badgePrefix} #${item.id}` : `#${item.id}`;
 
             card.innerHTML = `
-                <img class="navi-card-image" src="${imageUrl}" alt="${visit.title}" loading="lazy">
-                <div class="navi-card-content">
-                    <h3 class="navi-card-title">${visit.title}</h3>
-                    <span class="navi-card-badge">방문 #${visit.id}</span>
+                <img class="${this.config.type}-card-image" src="${imageUrl}" alt="${item.title}" loading="lazy">
+                <div class="${this.config.type}-card-content">
+                    <h3 class="${this.config.type}-card-title">${item.title}</h3>
+                    <span class="${this.config.type}-card-badge">${badgeText}</span>
                 </div>
             `;
 
-            // Add error handling properly to avoid infinite loops
-            const img = card.querySelector('.navi-card-image');
-            img.addEventListener('error', function(e) {
-                if (this.src !== window.location.origin + '/altoy/assets/img/navi_placeholder.png' && !this.dataset.errorHandled) {
-                    this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
-                }
-            }, { once: false });
+            const img = card.querySelector(`.${this.config.type}-card-image`);
+            this.addImageErrorHandler(img);
 
             card.addEventListener('click', () => {
-                this.playStory('visit', visit.id, visit.title);
-            });
-
-            return card;
-        },
-
-        createDailyCard(daily) {
-            const card = document.createElement('div');
-            card.className = 'navi-card';
-            card.dataset.title = daily.title;
-
-            // Use icon from mapping, fallback to placeholder
-            const imageUrl = daily.icon
-                ? `${this.ICON_URL}${daily.icon}.png`
-                : 'assets/img/navi_placeholder.png';
-
-            card.innerHTML = `
-                <img class="navi-card-image" src="${imageUrl}" alt="${daily.title}" loading="lazy">
-                <div class="navi-card-content">
-                    <h3 class="navi-card-title">${daily.title}</h3>
-                    <span class="navi-card-badge">일상 #${daily.id}</span>
-                </div>
-            `;
-
-            // Add error handling properly to avoid infinite loops
-            const img = card.querySelector('.navi-card-image');
-            img.addEventListener('error', function(e) {
-                if (this.src !== window.location.origin + '/altoy/assets/img/navi_placeholder.png' && !this.dataset.errorHandled) {
-                    this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
-                }
-            }, { once: false });
-
-            card.addEventListener('click', () => {
-                this.playStory('daily', daily.id, daily.title);
+                this.playStory(categoryId, item.id, item.title);
             });
 
             return card;
@@ -518,19 +456,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         createPolaroidCard(polaroid) {
             const card = document.createElement('div');
-            card.className = 'navi-card polaroid-card';
+            card.className = `${this.config.type}-card polaroid-card`;
             card.dataset.title = polaroid.title || '';
 
-            // Use pic field (529x514 thumbnail)
             const imageUrl = polaroid.pic
-                ? `${this.BASE_URL}${polaroid.pic}.png`
-                : 'assets/img/navi_placeholder.png';
+                ? `${this.config.imageUrls.base}${polaroid.pic}.png`
+                : this.config.placeholderImage;
 
             card.innerHTML = `
-                <img class="navi-card-image" src="${imageUrl}" alt="${polaroid.title}" loading="lazy">
-                <div class="navi-card-content">
-                    <h3 class="navi-card-title">${polaroid.title || 'Untitled'}</h3>
-                    <p class="navi-card-desc">${polaroid.condition || ''}</p>
+                <img class="${this.config.type}-card-image" src="${imageUrl}" alt="${polaroid.title}" loading="lazy">
+                <div class="${this.config.type}-card-content">
+                    <h3 class="${this.config.type}-card-title">${polaroid.title || 'Untitled'}</h3>
+                    <p class="${this.config.type}-card-desc">${polaroid.condition || ''}</p>
                     <div class="polaroid-card-footer">
                         <span class="polaroid-stage">
                             <span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle;">star</span>
@@ -541,15 +478,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            // Add error handling properly to avoid infinite loops
-            const img = card.querySelector('.navi-card-image');
-            img.addEventListener('error', function(e) {
-                // Only try to set placeholder once
-                if (this.src !== window.location.origin + '/altoy/assets/img/navi_placeholder.png' && !this.dataset.errorHandled) {
-                    this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
-                }
-            }, { once: false });
+            const img = card.querySelector(`.${this.config.type}-card-image`);
+            this.addImageErrorHandler(img);
 
             card.addEventListener('click', () => {
                 this.showPolaroidDetail(polaroid);
@@ -558,28 +488,29 @@ document.addEventListener('DOMContentLoaded', () => {
             return card;
         },
 
-        createPhotoCard(number) {
+        createPhotoCard(filename) {
             const card = document.createElement('div');
             card.className = 'photo-card';
 
-            const imageUrl = `${this.BASE_URL}plan_square_${number}.png`;
+            const imageUrl = `${this.config.imageUrls.photo || this.config.imageUrls.base}${filename}.png`;
 
-            card.innerHTML = `
-                <img src="${imageUrl}" alt="Photo ${number}" loading="lazy">
-            `;
+            card.innerHTML = `<img src="${imageUrl}" alt="${filename}" loading="lazy">`;
 
-            // Add error handling
             const img = card.querySelector('img');
-            img.addEventListener('error', function(e) {
-                if (!this.dataset.errorHandled) {
-                    this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
-                }
-            }, { once: false });
+            this.addImageErrorHandler(img);
 
             return card;
         },
 
+        addImageErrorHandler(img) {
+            const placeholderPath = window.location.origin + `/altoy/${this.config.placeholderImage}`;
+            img.addEventListener('error', function() {
+                if (this.src !== placeholderPath && !this.dataset.errorHandled) {
+                    this.dataset.errorHandled = 'true';
+                    this.src = viewer.config.placeholderImage;
+                }
+            }, { once: false });
+        },
 
         // =========================================================================
         // URL & STATE MANAGEMENT
@@ -613,15 +544,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // STORY PLAYBACK
         // =========================================================================
         playStory(category, id, title) {
-            // category: 'memory' or 'ending'
-            // id: numeric ID of the story
             this.currentCategory = category;
             this.currentStoryId = id;
-
-            // Update URL
             this.updateUrl(category, id);
-
-            // Play the story using the engine
             this.playStoryById(category, id, false);
         },
 
@@ -643,22 +568,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Set state
             this.currentCategory = category;
             this.currentStoryId = storyId;
 
-            // Update URL if needed
             if (updateUrl) {
                 this.updateUrl(category, storyId);
             }
 
-            // Hide tab view, show story viewer
             this.elements.tabNavView.classList.add('hidden');
             this.elements.storyViewerView.classList.remove('hidden');
 
-            // Use the StoryViewer engine to play the story
             if (window.StoryViewer) {
-                // Reset all state properly
                 window.StoryViewer.currentEventId = category;
                 window.StoryViewer.currentMemoryId = storyId;
                 window.StoryViewer.currentStoryScript = memory.story.scripts;
@@ -667,24 +587,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.StoryViewer.currentBgm = null;
                 window.StoryViewer.currentStoryDefaultBgUrl = null;
 
-                // Reset background cache for new story
                 window.StoryViewer.cachedBackground = {
                     url: null,
                     isBlack: false,
                     lastIndex: -1
                 };
 
-                // Set default background if mask exists
                 if (memory.story.mask) {
                     window.StoryViewer.currentStoryDefaultBgUrl = `${window.StoryViewer.BASE_URL}${memory.story.mask}.png`;
                 }
 
-                // Calculate next memory
                 const memories = eventData.child;
                 const index = memories.findIndex(m => m.id === storyId);
                 window.StoryViewer.nextMemory = (index >= 0 && index < memories.length - 1) ? memories[index + 1] : null;
 
-                // Clear fade overlay if present
                 if (window.StoryViewer.elements.fadeOverlay) {
                     window.StoryViewer.elements.fadeOverlay.classList.remove('visible');
                 }
@@ -695,22 +611,18 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         returnToTabs(updateUrl = true) {
-            // Stop audio
             if (window.StoryViewer && window.StoryViewer.audio) {
                 window.StoryViewer.audio.pause();
                 window.StoryViewer.currentBgm = null;
             }
 
-            // Clear state
             this.currentCategory = null;
             this.currentStoryId = null;
 
-            // Update URL
             if (updateUrl) {
                 this.updateUrl(null, null, true);
             }
 
-            // Show tab view, hide story viewer
             this.elements.storyViewerView.classList.add('hidden');
             this.elements.tabNavView.classList.remove('hidden');
         },
@@ -719,16 +631,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // POLAROID MODAL
         // =========================================================================
         showPolaroidDetail(polaroid) {
-            // Use pic (529x514) for front/thumbnail
             const frontUrl = polaroid.pic
-                ? `${this.BASE_URL}${polaroid.pic}.png`
-                : 'assets/img/navi_placeholder.png';
-            // Use pic_2 (960x720) for back/larger view
+                ? `${this.config.imageUrls.base}${polaroid.pic}.png`
+                : this.config.placeholderImage;
             const backUrl = polaroid.pic_2
-                ? `${this.BASE_URL}${polaroid.pic_2}.png`
-                : 'assets/img/navi_placeholder.png';
+                ? `${this.config.imageUrls.base}${polaroid.pic_2}.png`
+                : this.config.placeholderImage;
 
-            // Reset error handling flags
             delete this.elements.polaroidImgFront.dataset.errorHandled;
             delete this.elements.polaroidImgBack.dataset.errorHandled;
 
@@ -737,22 +646,20 @@ document.addEventListener('DOMContentLoaded', () => {
             this.elements.polaroidImgFront.classList.remove('hidden');
             this.elements.polaroidImgBack.classList.add('hidden');
 
-            // Add error handling with guards to prevent infinite loops
-            const placeholderPath = window.location.origin + '/altoy/assets/img/navi_placeholder.png';
+            const placeholderPath = window.location.origin + `/altoy/${this.config.placeholderImage}`;
             this.elements.polaroidImgFront.onerror = function() {
                 if (this.src !== placeholderPath && !this.dataset.errorHandled) {
                     this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
+                    this.src = viewer.config.placeholderImage;
                 }
             };
             this.elements.polaroidImgBack.onerror = function() {
                 if (this.src !== placeholderPath && !this.dataset.errorHandled) {
                     this.dataset.errorHandled = 'true';
-                    this.src = 'assets/img/navi_placeholder.png';
+                    this.src = viewer.config.placeholderImage;
                 }
             };
 
-            // Populate info with better formatting
             this.elements.polaroidInfo.innerHTML = `
                 <h3>${polaroid.title || 'Untitled'}</h3>
                 <div class="polaroid-info-grid">
@@ -812,39 +719,30 @@ document.addEventListener('DOMContentLoaded', () => {
         // STORY VIEWER INITIALIZATION
         // =========================================================================
         initStoryViewer() {
-            const naviStoryConfig = {
-                viewerType: 'navi',
-
+            const viewerConfig = {
+                viewerType: this.config.type,
                 dataPaths: [],
-
-                processLoadedData: (viewer, dataArray) => {
-                    // Inject our converted data
-                    viewer.storylineData = NaviViewer.convertedStorylineData;
-                    viewer.shipgirlData = NaviViewer.shipgirlData;
-                    viewer.nameCodeData = NaviViewer.nameCodeData;
+                processLoadedData: (storyViewer, dataArray) => {
+                    storyViewer.storylineData = viewer.convertedStorylineData;
+                    storyViewer.shipgirlData = viewer.shipgirlData;
+                    storyViewer.nameCodeData = viewer.nameCodeData;
                 },
-
                 getEventMemories: (eventData) => eventData?.child,
-
                 findMemory: (eventData, storyId) => {
                     const numericStoryId = parseInt(storyId, 10);
                     return eventData?.child?.find(mem => mem.id === numericStoryId);
                 },
-
                 getMemoryStory: (memoryData) => memoryData?.story,
-
                 getEventIconPath: () => null,
                 populateMemoryGridExtras: () => {},
             };
 
             if (window.StoryViewer) {
-                // Override the loadData method to use our already-loaded data
                 window.StoryViewer.loadData = async function() {
-                    this.storylineData = NaviViewer.convertedStorylineData;
-                    this.shipgirlData = NaviViewer.shipgirlData;
-                    this.nameCodeData = NaviViewer.nameCodeData;
+                    this.storylineData = viewer.convertedStorylineData;
+                    this.shipgirlData = viewer.shipgirlData;
+                    this.nameCodeData = viewer.nameCodeData;
 
-                    // Build name map
                     for (const id in this.shipgirlData) {
                         this.shipgirlNameMap[this.shipgirlData[id].name] = id;
                     }
@@ -852,15 +750,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     return Promise.resolve();
                 };
 
-                // Override returnToMemorySelection to go back to tabs instead
-                const originalReturnToMemory = window.StoryViewer.returnToMemorySelection;
                 window.StoryViewer.returnToMemorySelection = function() {
-                    NaviViewer.returnToTabs();
+                    viewer.returnToTabs();
                 };
 
-                window.StoryViewer.init(naviStoryConfig);
-
-                // Override populateEventGrid to do nothing (we use our own tabs)
+                window.StoryViewer.init(viewerConfig);
                 window.StoryViewer.populateEventGrid = () => {};
             }
         },
@@ -877,8 +771,8 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     };
 
-    // =========================================================================
-    // START THE APPLICATION
-    // =========================================================================
-    NaviViewer.init();
-});
+    return viewer;
+}
+
+// Export for use in page-specific scripts
+window.createTabStoryViewer = createTabStoryViewer;

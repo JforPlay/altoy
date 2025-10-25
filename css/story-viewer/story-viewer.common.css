@@ -1,8 +1,32 @@
-/* --- Story Viewer Common Styles --- */
-/* --- Imports & Root Variables --- */
+/* =============================================================================
+   STORY VIEWER COMMON STYLES
+   Shared styles for all story viewer pages (main story and world events)
+
+   Organization:
+   1. CSS Variables & Theme System
+   2. Global Resets & Utilities
+   3. Selection View (Card Grid)
+   4. Story Viewer Layout
+   5. UI Components (Dialogue, Audio Player, Modals)
+   6. Effects & Animations
+   7. Responsive Media Queries
+
+   Z-Index Layering System:
+   - 0: Background images
+   - 5: Info screen overlays
+   - 10: Story header, dialogue boxes
+   - 20: Audio player
+   - 999: Sticky headers (selection view)
+   - 2000: Modals and notifications
+   - 9998-9999: Full-screen effects (fade, flash)
+============================================================================= */
+
+/* =============================================================================
+   1. CSS VARIABLES & THEME SYSTEM
+============================================================================= */
 
 :root {
-  /* Light Mode (Default) */
+  /* Light Mode Theme (Default) */
   --bg-color: #f4f7fa;
   --text-color: #333333;
   --header-bg: rgba(255, 255, 255, 0.85);
@@ -16,7 +40,7 @@
 }
 
 body.dark-mode {
-  /* Dark Mode */
+  /* Dark Mode Theme */
   --bg-color: #121212;
   --text-color: #e0e0e0;
   --header-bg: rgba(28, 28, 28, 0.9);
@@ -29,7 +53,15 @@ body.dark-mode {
   --shadow-color: rgba(0, 0, 0, 0.4);
 }
 
-/* --- General Body & Utility Styles --- */
+/* Dark mode specific overrides */
+body.dark-mode .story-header {
+  color: #ffffff;
+}
+
+/* =============================================================================
+   2. GLOBAL RESETS & UTILITIES
+============================================================================= */
+
 * {
   margin: 0;
   padding: 0;
@@ -43,17 +75,18 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
+/* Utility class for hiding elements */
 .hidden {
   display: none !important;
 }
 
-/* --- Theme Toggle Styles --- */
+/* --- Theme Toggle Button --- */
 .theme-toggle {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0.5rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,15 +105,11 @@ body {
   transition: opacity 0.3s;
 }
 
-.theme-icon-sun.hidden,
-.theme-icon-moon.hidden {
-  display: none;
-}
-
-/* --- Error & Popup Notifications --- */
+/* --- Notifications --- */
+/* Error notification (top-center, red background) */
 .error-container {
   position: fixed;
-  top: 70px;
+  top: 4.375rem; /* Below navbar */
   left: 50%;
   transform: translateX(-50%);
   background-color: #e74c3c;
@@ -91,21 +120,22 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Soft popup notification (bottom-center, toast-style) */
 .soft-popup {
   position: fixed;
   bottom: 2rem;
   left: 50%;
-  transform: translateX(-50%) translateY(20px);
+  transform: translateX(-50%) translateY(1.25rem);
   background-color: rgba(28, 28, 28, 0.9);
   color: white;
   padding: 0.75rem 1.5rem;
-  border-radius: 50px;
+  border-radius: 3.125rem;
   z-index: 2000;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   font-size: 0.9rem;
   opacity: 0;
   transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-  pointer-events: none;
+  pointer-events: none; /* Don't block clicks when invisible */
 }
 
 .soft-popup.show {
@@ -113,10 +143,15 @@ body {
   transform: translateX(-50%) translateY(0);
 }
 
-/* --- Selection View Header --- */
+/* =============================================================================
+   3. SELECTION VIEW (CARD GRID)
+   Used on the initial story/chapter selection screen
+============================================================================= */
+
+/* --- Header Bar --- */
 .viewer-header {
   background-color: var(--header-bg);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px); /* Frosted glass effect */
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -137,7 +172,7 @@ body {
 .search-container {
   flex-grow: 1;
   margin: 0 2rem;
-  max-width: 400px;
+  max-width: 25rem; /* Prevent search bar from becoming too wide */
 }
 
 #search-bar {
@@ -150,17 +185,19 @@ body {
   font-size: 1rem;
 }
 
-/* --- Selection View Grid & Cards --- */
+/* --- Card Grid Container --- */
+/* Responsive grid that auto-fills with cards at minimum 280px width */
 .story-grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
   gap: 1.5rem;
   padding: 2rem;
-  max-width: 1600px;
+  max-width: 100rem;
   margin: 0 auto;
 }
 
 /* --- Skeleton Loading States --- */
+/* Displayed while data is being fetched */
 .skeleton-card {
   pointer-events: none;
   cursor: default;
@@ -168,10 +205,12 @@ body {
 
 .skeleton-card:hover {
   transform: none;
-  box-shadow: 0 4px 15px var(--shadow-color);
+  box-shadow: 0 4px 15px var(--shadow-color); /* Maintain shadow, no lift */
 }
 
-.skeleton-thumbnail {
+.skeleton-thumbnail,
+.skeleton-title,
+.skeleton-subtitle {
   background: linear-gradient(
     90deg,
     var(--border-color) 25%,
@@ -180,19 +219,15 @@ body {
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
+}
+
+.skeleton-thumbnail {
+  /* Applied to card thumbnail area */
 }
 
 .skeleton-title,
 .skeleton-subtitle {
   height: 1.2rem;
-  background: linear-gradient(
-    90deg,
-    var(--border-color) 25%,
-    var(--bg-color) 50%,
-    var(--border-color) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
   border-radius: 4px;
   margin-bottom: 0.5rem;
 }
@@ -206,15 +241,7 @@ body {
   width: 90%;
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
+/* --- Story/Chapter Cards --- */
 .grid-card {
   background-color: var(--card-bg);
   border-radius: 0.75rem;
@@ -232,6 +259,7 @@ body {
   box-shadow: 0 8px 25px var(--shadow-color);
 }
 
+/* Highlighted card (e.g., "Continue Reading" indicator) */
 .grid-card.highlighted-card {
   border: 2px solid var(--accent-color);
   box-shadow: 0 6px 25px
@@ -239,8 +267,9 @@ body {
   transform: translateY(-5px) scale(1.02);
 }
 
+/* Ribbon badge on highlighted card */
 .grid-card.highlighted-card::after {
-  content: "다음 회차보기";
+  content: "다음 회차보기"; /* "View Next Episode" in Korean */
   position: absolute;
   top: 1rem;
   right: -2.2rem;
@@ -257,8 +286,8 @@ body {
 
 .card-thumbnail {
   width: 100%;
-  height: 160px;
-  background-color: #ccc;
+  height: 10rem;
+  background-color: #ccc; /* Fallback color */
   background-size: cover;
   background-position: center;
 }
@@ -272,7 +301,7 @@ body {
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  word-break: keep-all;
+  word-break: keep-all; /* Korean text wrapping */
 }
 
 .card-subtitle {
@@ -280,14 +309,20 @@ body {
   color: var(--subtitle-color);
 }
 
-/* --- Story Viewer Layout --- */
+/* =============================================================================
+   4. STORY VIEWER LAYOUT
+   Main layout for the story reading interface
+============================================================================= */
+
+/* --- Main Container --- */
+/* Uses dvh (dynamic viewport height) to account for mobile browser UI */
 #story-viewer-view {
   position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100dvh - var(--navbar-height, 56px));
-  -webkit-user-select: none;
+  height: calc(100dvh - var(--navbar-height, 3.5rem));
+  -webkit-user-select: none; /* Prevent text selection during story reading */
   -ms-user-select: none;
   user-select: none;
 }
@@ -301,20 +336,24 @@ body {
   padding-bottom: 1.5rem;
 }
 
+/* --- Background Image --- */
+/* Positioned below story header, fills remaining space */
 .story-background {
   position: absolute;
-  top: 0;
+  top: 5rem; /* Offset by header height */
   left: 0;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 5rem);
   background-size: contain;
-  background-position: center calc(0% + 60px);
+  background-position: center top;
   background-repeat: no-repeat;
-  background-color: #000000;
-  z-index: -1;
+  background-color: #000000; /* Black background for letterboxing */
+  z-index: 0;
   transition: background-image 0.5s ease-in-out;
+  pointer-events: none; /* Allow clicks to pass through */
 }
 
+/* --- Story Header (Title Bar) --- */
 .story-header {
   width: 100%;
   padding: 1rem;
@@ -326,6 +365,7 @@ body {
   z-index: 10;
   color: var(--text-color);
   margin-bottom: auto;
+  position: relative;
 }
 
 #story-title {
@@ -342,7 +382,7 @@ body {
   align-items: center;
   gap: 0.25rem;
   margin: 0 1rem;
-  min-width: 120px;
+  min-width: 7.5rem;
 }
 
 .progress-text {
@@ -371,11 +411,12 @@ body {
   transition: width 0.3s ease;
 }
 
-body.dark-mode .story-header {
-  color: #ffffff;
-}
+/* =============================================================================
+   5. UI COMPONENTS
+============================================================================= */
 
-/* --- Story Viewer UI Elements --- */
+/* --- Info Screen Overlay --- */
+/* Used for displaying location/time text in the corner */
 .info-screen {
   position: absolute;
   top: 0;
@@ -398,11 +439,12 @@ body.dark-mode .story-header {
   text-align: right;
 }
 
+/* --- Dialogue Box --- */
 .dialogue-box {
   background-color: var(--dialogue-bg);
   backdrop-filter: blur(5px);
   width: 90%;
-  max-width: 800px;
+  max-width: 50rem;
   margin: 0 auto 1rem auto;
   border-radius: 0.75rem;
   padding: 1.5rem;
@@ -412,9 +454,10 @@ body.dark-mode .story-header {
   z-index: 10;
 }
 
+/* Character portrait (circular) */
 .actor-portrait {
-  width: 100px;
-  height: 100px;
+  width: 6.25rem;
+  height: 6.25rem;
   margin-right: 1.5rem;
   flex-shrink: 0;
   border-radius: 50%;
@@ -447,6 +490,7 @@ body.dark-mode .story-header {
   font-size: 1.1rem;
 }
 
+/* Next page indicator (bouncing arrow) */
 .next-page-indicator {
   position: absolute;
   bottom: 1rem;
@@ -455,13 +499,16 @@ body.dark-mode .story-header {
   animation: bounce 1s infinite;
 }
 
+/* --- Choice Options --- */
+/* Displayed when story presents branching choices */
 .options-box {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   width: 90%;
-  max-width: 600px;
+  max-width: 37.5rem;
   margin: 0 auto 2rem auto;
+  z-index: 10;
 }
 
 .option-button {
@@ -481,11 +528,13 @@ body.dark-mode .story-header {
   background-color: var(--border-color);
 }
 
-/* --- Bottom Bar & Controls --- */
+/* --- Bottom Bar & Navigation --- */
+/* Grid layout: Audio player (left) | Nav buttons (center) | Empty (right) */
 .bottom-bar-container {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 1rem;
   width: 100%;
   padding: 0 1.5rem;
   margin-bottom: 1rem;
@@ -495,9 +544,10 @@ body.dark-mode .story-header {
   display: flex;
   justify-content: center;
   gap: 2rem;
-  grid-column: 2 / 3;
+  grid-column: 2 / 3; /* Center column */
 }
 
+/* Navigation buttons (back, prev, next) */
 .nav-button,
 .story-nav-btn {
   background-color: var(--card-bg);
@@ -525,13 +575,30 @@ body.dark-mode .story-header {
   cursor: not-allowed;
 }
 
+/* --- Audio Player --- */
+.audio-player-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--dialogue-bg);
+  padding: 0.5rem 1rem;
+  border-radius: 3.125rem; /* Pill shape */
+  box-shadow: 0 4px 15px var(--shadow-color);
+  backdrop-filter: blur(5px);
+  z-index: 20;
+  grid-column: 1 / 2; /* Left column */
+  justify-self: start;
+  min-width: 15rem;
+  flex-wrap: nowrap;
+}
+
 .bgm-name {
   font-size: 0.9rem;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 50px;
+  min-width: 3.125rem;
   flex-grow: 1;
   text-align: center;
   margin: 0 0.5rem;
@@ -543,28 +610,12 @@ body.dark-mode .story-header {
   gap: 0.5rem;
 }
 
-.audio-player-container {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  background-color: var(--dialogue-bg);
-  padding: 0.5rem 1rem;
-  border-radius: 50px;
-  box-shadow: 0 4px 15px var(--shadow-color);
-  backdrop-filter: blur(5px);
-  z-index: 20;
-  grid-column: 1 / 2;
-  justify-self: start;
-  min-width: 240px;
-  flex-wrap: nowrap;
-}
-
-/* --- Waveform Visualization --- */
+/* Waveform Visualization */
 .waveform-container {
   display: flex;
   align-items: center;
   gap: 3px;
-  height: 24px;
+  height: 1.5rem;
   padding: 0 0.5rem;
 }
 
@@ -576,7 +627,8 @@ body.dark-mode .story-header {
   transition: height 0.1s ease;
 }
 
-/* Animated waveform when playing */
+/* Animated waveform bars when audio is playing */
+/* Staggered animation delays create wave effect */
 .audio-player-container.playing .waveform-bar:nth-child(1) {
   animation: wave 0.8s ease-in-out infinite;
   animation-delay: 0s;
@@ -602,16 +654,7 @@ body.dark-mode .story-header {
   animation-delay: 0.4s;
 }
 
-@keyframes wave {
-  0%,
-  100% {
-    height: 4px;
-  }
-  50% {
-    height: 20px;
-  }
-}
-
+/* Audio controls */
 .audio-btn {
   background: none;
   border: none;
@@ -627,10 +670,11 @@ body.dark-mode .story-header {
   font-size: 2rem;
 }
 
+/* Volume slider styling */
 #volume-slider {
   -webkit-appearance: none;
   appearance: none;
-  width: 100px;
+  width: 6.25rem;
   height: 5px;
   background: var(--border-color);
   outline: none;
@@ -640,23 +684,24 @@ body.dark-mode .story-header {
 #volume-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 15px;
-  height: 15px;
+  width: 0.9375rem;
+  height: 0.9375rem;
   background: var(--accent-color);
   cursor: pointer;
   border-radius: 50%;
 }
 
 #volume-slider::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
+  width: 0.9375rem;
+  height: 0.9375rem;
   background: var(--accent-color);
   cursor: pointer;
   border-radius: 50%;
   border: none;
 }
 
-/* --- Modals (Full Script & Summary) --- */
+/* --- Modals --- */
+/* Full script and summary modal overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -675,7 +720,7 @@ body.dark-mode .story-header {
   background-color: var(--card-bg);
   padding: 2rem;
   border-radius: 0.75rem;
-  max-width: 800px;
+  max-width: 50rem;
   width: 90%;
   max-height: 85vh;
   display: flex;
@@ -684,6 +729,7 @@ body.dark-mode .story-header {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
+/* Summary modal content styling */
 #summary-modal-content h2 {
   font-size: 1.8rem;
   color: var(--accent-color);
@@ -728,6 +774,7 @@ body.dark-mode .story-header {
   color: var(--subtitle-color);
 }
 
+/* Scrollable modal content areas */
 .full-script-content,
 #summary-modal-content {
   overflow-y: auto;
@@ -744,19 +791,18 @@ body.dark-mode .story-header {
   margin-right: 0.5em;
 }
 
-#summary-modal-content h2,
-#summary-modal-content h3 {
-  color: var(--accent-color);
-  margin-bottom: 1rem;
-}
-
 #view-script-btn {
   display: flex;
   align-items: center;
   gap: 0.5em;
 }
 
-/* --- Effects & Animations --- */
+/* =============================================================================
+   6. EFFECTS & ANIMATIONS
+============================================================================= */
+
+/* --- Full-screen Effects --- */
+/* Fade overlay for scene transitions */
 .fade-overlay {
   position: fixed;
   top: 0;
@@ -774,10 +820,12 @@ body.dark-mode .story-header {
   opacity: 1;
 }
 
+/* Shake effect (applied to elements) */
 .shake {
   animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
+/* Flash overlay (white flash effect) */
 .flash {
   position: fixed;
   top: 0;
@@ -789,6 +837,18 @@ body.dark-mode .story-header {
   animation: flash-anim 0.3s ease-out;
 }
 
+/* --- Keyframe Animations --- */
+/* Shimmer effect for skeleton loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Bounce animation for next-page indicator */
 @keyframes bounce {
   0%,
   100% {
@@ -799,6 +859,7 @@ body.dark-mode .story-header {
   }
 }
 
+/* Shake animation for emphasis/error */
 @keyframes shake {
   10%,
   90% {
@@ -819,6 +880,7 @@ body.dark-mode .story-header {
   }
 }
 
+/* Flash animation (fade out) */
 @keyframes flash-anim {
   from {
     opacity: 1;
@@ -828,8 +890,27 @@ body.dark-mode .story-header {
   }
 }
 
-/* --- Responsive Media Queries --- */
+/* Waveform bar animation (audio visualizer) */
+@keyframes wave {
+  0%,
+  100% {
+    height: 4px;
+  }
+  50% {
+    height: 1.25rem;
+  }
+}
+
+/* =============================================================================
+   7. RESPONSIVE MEDIA QUERIES
+
+   Breakpoints:
+   - 600px: Mobile layout (compact spacing, reorder elements)
+============================================================================= */
+
+/* --- Mobile (≤600px) --- */
 @media (max-width: 600px) {
+  /* Selection view header adjustments */
   .viewer-header {
     flex-wrap: wrap;
     justify-content: center;
@@ -852,10 +933,11 @@ body.dark-mode .story-header {
   .search-container {
     order: 3;
     flex-grow: 1;
-    min-width: 120px;
+    min-width: 7.5rem;
     margin: 0;
   }
 
+  /* Story header compact mode */
   .story-header {
     padding: 0.5rem 0.75rem;
   }
@@ -865,8 +947,9 @@ body.dark-mode .story-header {
     margin-left: 0.5rem;
   }
 
+  /* Compact progress indicator */
   .progress-indicator {
-    min-width: 80px;
+    min-width: 5rem;
     margin: 0 0.5rem;
   }
 
@@ -874,6 +957,7 @@ body.dark-mode .story-header {
     font-size: 0.75rem;
   }
 
+  /* View script button: hide text, show only icon */
   #view-script-btn {
     font-size: 0;
     padding: 0.5rem;
@@ -884,27 +968,20 @@ body.dark-mode .story-header {
     font-size: 1.5rem;
   }
 
+  /* Compact dialogue box */
   .dialogue-box {
     width: 95%;
     padding: 1rem;
   }
 
+  /* Smaller actor portrait on mobile */
   .actor-portrait {
-    width: 80px;
-    height: 80px;
+    width: 5rem;
+    height: 5rem;
     margin-right: 1rem;
   }
 
   .dialogue-text {
     font-size: 1rem;
-  }
-
-  .bottom-bar-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0;
-    margin-bottom: 1rem;
   }
 }
