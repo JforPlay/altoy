@@ -167,6 +167,7 @@ function setupMobileMenu() {
     if (menuIcon && navMenu) {
         menuIcon.addEventListener('click', () => {
             navMenu.classList.toggle('active');
+            menuIcon.classList.toggle('active');
         });
     }
 }
