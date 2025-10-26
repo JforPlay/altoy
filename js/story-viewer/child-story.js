@@ -578,6 +578,9 @@ function createTabStoryViewer(config) {
             this.elements.tabNavView.classList.add('hidden');
             this.elements.storyViewerView.classList.remove('hidden');
 
+            // Scroll to top when entering story viewer
+            window.scrollTo(0, 0);
+
             if (window.StoryViewer) {
                 window.StoryViewer.currentEventId = category;
                 window.StoryViewer.currentMemoryId = storyId;
