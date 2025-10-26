@@ -1,465 +1,349 @@
-/* --- CSS Variables and Global Styles --- */
-:root {
-  /* Light Mode (Default) */
-  --bg-color: #f8f9fa;
-  --header-bg: rgba(255, 255, 255, 0.8);
-  --card-bg: #ffffff;
-  --text-color: #212529;
-  --text-muted-color: #6c757d;
-  --border-color: #dee2e6;
-  --shadow-color: rgba(0, 0, 0, 0.05);
-  --player-bubble-bg: #495057;
-  --player-bubble-text: #ffffff;
-  --char-bubble-bg: #e9ecef;
-  --char-bubble-text: #212529;
-  --accent-color: #007bff;
-  --narrator-text-color: #000000;
-  --scrollbar-thumb-bg: rgba(0, 0, 0, 0.2);
+/* =============================================================================
+   HALL OF FAME - CUSTOM GALLERY STYLES
+   =============================================================================
+
+   This file contains ONLY HOF-specific styles for the character gallery.
+   All common story viewer styles are in story-viewer.common.css.
+
+   Design: Modern, sleek gallery with timeline-style year separators
+============================================================================= */
+
+/* --- Page Background Enhancement --- */
+#event-selection-view {
+  background: linear-gradient(180deg,
+    var(--bg-color) 0%,
+    var(--bg-color) 50%,
+    color-mix(in srgb, var(--bg-color) 95%, var(--accent-color)) 100%
+  );
+  min-height: calc(100vh - 4rem);
+  padding-bottom: 6rem; /* Space for floating info box + footer */
 }
 
-body.dark-mode {
-  /* Dark Mode */
-  --bg-color: #18191a;
-  --header-bg: rgba(24, 25, 26, 0.8);
-  --card-bg: #242526;
-  --text-color: #e4e6eb;
-  --text-muted-color: #b0b3b8;
-  --border-color: #3a3b3c;
-  --shadow-color: rgba(0, 0, 0, 0.2);
-  --player-bubble-bg: #e9ecef;
-  --player-bubble-text: #212529;
-  --char-bubble-bg: #3a3b3c;
-  --char-bubble-text: #e4e6eb;
-  --accent-color: #4dabf7;
-  --narrator-text-color: #ffffff;
-  --scrollbar-thumb-bg: rgba(255, 255, 255, 0.2);
+/* --- Hero Section Styling --- */
+#event-selection-view .viewer-header {
+  padding: 2rem 1.5rem 1.5rem;
+  text-align: center;
+  background: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin-bottom: 2rem;
 }
 
-/* --- General Styles --- */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+#event-selection-view .header-title {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 80%, var(--text-color)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
 }
 
-body {
-  font-family: "Noto Sans KR", sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: background-color 0.3s, color 0.3s;
-  padding-top: var(--navbar-height, 56px);
+/* --- Footer Integration --- */
+/* Override default footer margin to integrate with page background */
+body:has(#event-selection-view) .site-footer {
+  margin-top: 0;
+  background: transparent;
+  backdrop-filter: none;
+  border-top: 1px solid color-mix(in srgb, var(--border-color) 30%, transparent);
 }
 
-#navbar-placeholder .navbar {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  z-index: 1000 !important;
+body:has(#event-selection-view) {
+  background: var(--bg-color);
 }
 
-.hidden {
-  display: none !important;
-}
-
-/* --- Theme Toggle Styles --- */
-.theme-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s;
+/* --- HOF Gallery Container --- */
+.hof-gallery-container {
+  max-width: 60rem; /* Wider to accommodate 3 cards side-by-side */
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
   position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column; /* Force vertical stacking */
 }
 
-.theme-toggle:hover {
-  background-color: var(--char-bubble-bg);
+/* --- Gallery Groups (Year-based sections) --- */
+.hof-gallery-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center year badges and cards */
+  width: 100%;
+  margin-bottom: 0; /* No gap - sections connected */
+  position: relative;
+  padding-top: 5rem; /* Space above for timeline segment and marker */
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
-.theme-icon-sun,
-.theme-icon-moon {
-  font-size: 1.5rem;
-  color: var(--text-color);
-  transition: opacity 0.3s;
+.hof-gallery-group:first-child {
+  padding-top: 2rem; /* Less space for first group (no timeline above) */
 }
 
-.theme-icon-sun.hidden,
-.theme-icon-moon.hidden {
+.hof-gallery-group:last-child {
+  padding-bottom: 3rem; /* Extra space at bottom of page */
+}
+
+/* Timeline segment ABOVE year badge (connecting from previous section to marker) */
+.hof-gallery-group::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 3.5rem; /* Connects to the marker above badge */
+  background: var(--accent-color);
+  opacity: 0.5;
+  z-index: 0;
+}
+
+/* Decorative timeline above first group */
+.hof-gallery-group:first-child::before {
+  top: -1rem; /* Start higher up */
+  height: 3rem; /* Extended decorative line reaching to marker */
+  opacity: 0.3; /* More subtle */
+}
+
+/* No timeline segment needed below - sections are directly connected */
+.hof-gallery-group::after {
   display: none;
 }
 
-/* --- Background --- */
-#story-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  z-index: -1;
-  transition: background-image 0.4s ease-in-out, opacity 0.4s ease-in-out;
-  opacity: 0.6;
-}
-
-/* --- Header Styles --- */
-.viewer-header {
-  background-color: var(--header-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 0.75rem 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  z-index: 100;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.header-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.header-spacer {
-  flex-grow: 1;
-}
-
-.nav-button {
-  background: none;
-  border: none;
-  color: var(--text-color);
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: background-color 0.2s;
-  flex-shrink: 0;
-}
-
-.nav-button:hover {
-  background-color: var(--char-bubble-bg);
-}
-
-/* --- Gallery View Styles --- */
-#gallery-view .viewer-header {
-  position: sticky;
-  top: var(--navbar-height, 56px);
-}
-
-.flavor-text-box {
-  background-color: var(--char-bubble-bg);
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  margin: 1.5rem auto 0 auto;
-  width: fit-content;
-  max-width: 90%;
-}
-
-.flavor-text-box p {
-  margin: 0;
-  font-size: 0.9em;
-  font-weight: 500;
-  color: var(--text-muted-color);
-}
-
-#gallery-container {
-  max-width: 620px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.gallery-group {
-  margin-bottom: 3rem;
-}
-
-.gallery-group-title {
-  max-width: 620px;
-  margin: 0 auto 1.5rem auto;
-  font-size: 1.2rem;
-  font-weight: 700;
+/* Year Title with Badge Style */
+.hof-group-title {
+  font-size: 1.1rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text-muted-color);
-  border-bottom: 2px solid var(--border-color);
-  padding-bottom: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--text-color);
+  margin-bottom: 3rem;
+  position: relative;
+  text-align: center;
+  padding: 0.75rem 1.5rem;
+  width: fit-content; /* Don't stretch full width */
+
+  /* Badge background */
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--accent-color) 15%, transparent),
+    color-mix(in srgb, var(--accent-color) 5%, transparent)
+  );
+  border: 2px solid color-mix(in srgb, var(--accent-color) 30%, transparent);
+  border-radius: 3.125rem;
 }
 
-.character-grid-container {
+/* Timeline node/dot ABOVE the badge */
+.hof-group-title::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -1.5rem;
+  transform: translateX(-50%);
+  width: 1rem;
+  height: 1rem;
+  background: var(--accent-color);
+  border: 3px solid var(--bg-color);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--accent-color);
+  z-index: 1;
+}
+
+/* Timeline segment from badge to character grid */
+.hof-group-title::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -3rem;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 3rem;
+  background: var(--accent-color);
+  opacity: 0.5;
+  z-index: 0;
+}
+
+/* --- Character Grid --- */
+.hof-character-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);  /* 3 cards side-by-side on desktop */
   gap: 1.5rem;
-  max-width: 620px;
-  margin: 0 auto;
+  padding: 0 1rem;
+  position: relative;
+  width: 100%;
+  max-width: 30rem;
 }
 
-.character-card {
+/* Subtle background card behind character grid */
+.hof-character-grid::before {
+  content: '';
+  position: absolute;
+  top: -1.5rem;
+  left: -2rem;
+  right: -2rem;
+  bottom: -1.5rem;
+  background: var(--card-bg);
+  border-radius: 1.25rem;
+  box-shadow: 0 0.25rem 1.25rem var(--shadow-color);
+  z-index: -1;
+  opacity: 0.4;
+}
+
+/* --- Character Cards --- */
+.hof-character-card {
   background-color: var(--card-bg);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px var(--shadow-color);
+  border-radius: 1rem;
+  box-shadow: 0 0.125rem 0.75rem var(--shadow-color);
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: center;
+  border: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
+  position: relative;
 }
 
-.character-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px var(--shadow-color);
+.hof-character-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--accent-color) 10%, transparent) 0%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
-.character-card img {
+.hof-character-card:hover {
+  transform: translateY(-0.5rem) scale(1.02);
+  box-shadow: 0 0.75rem 1.75rem color-mix(in srgb, var(--shadow-color) 150%, black),
+              0 0 0 1px color-mix(in srgb, var(--accent-color) 40%, transparent);
+}
+
+.hof-character-card:hover::before {
+  opacity: 1;
+}
+
+.hof-card-image {
   width: 100%;
-  height: 180px;
+  height: 10rem;
   object-fit: cover;
-  background-color: var(--bg-color);
+  background: linear-gradient(135deg, var(--bg-color), color-mix(in srgb, var(--bg-color) 95%, var(--accent-color)));
+  transition: transform 0.3s ease;
 }
 
-.character-card p {
-  font-weight: 600;
-  padding: 1rem;
-  margin: 0;
+.hof-character-card:hover .hof-card-image {
+  transform: scale(1.05);
 }
 
-/* --- Story View Styles --- */
-#story-view {
-  position: fixed;
-  top: var(--navbar-height, 56px);
-  left: 0;
-  width: 100%;
-  height: calc(100% - var(--navbar-height, 56px));
-  display: flex;
-  flex-direction: column;
-}
-
-.story-header-controls {
-  flex-shrink: 0;
-}
-
-.story-header-controls .header-title {
-  margin: 0;
-}
-
-.story-container {
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  flex-grow: 1;
-  overflow-y: auto;
-}
-
-.story-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.story-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.story-container::-webkit-scrollbar-thumb {
-  background-color: var(--scrollbar-thumb-bg);
-  border-radius: 10px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
-.story-container::-webkit-scrollbar-thumb:hover {
-  background-color: var(--text-muted-color);
-}
-
-.story-title-display {
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.story-title-display h1 {
-  font-size: 1.1em;
-  font-weight: 400;
-  color: var(--text-muted-color);
-  margin: 0 0 0.5rem 0;
-}
-
-.story-title-display h2 {
-  font-size: 1.6em;
+.hof-card-name {
   font-weight: 700;
-  color: var(--text-color);
-  margin: 0;
-}
-
-/* --- Message Bubbles --- */
-.bubble-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.portrait-internal {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-  background-color: var(--bg-color);
-}
-
-.speaker-name {
-  font-weight: bold;
-  font-size: 0.9em;
-  margin: 0;
-}
-
-.dialogue-text {
-  margin: 0;
-}
-
-.message-bubble {
-  padding: 10px 15px;
-  border-radius: 18px;
-  max-width: 80%;
-  line-height: 1.5;
-  word-wrap: break-word;
-}
-
-.message-bubble p {
-  margin: 0;
-}
-
-.character {
-  background-color: var(--char-bubble-bg);
-  color: var(--char-bubble-text);
-  align-self: flex-start;
-  border-bottom-left-radius: 4px;
-}
-
-.player {
-  background-color: var(--player-bubble-bg);
-  color: var(--player-bubble-text);
-  align-self: flex-end;
-  border-bottom-right-radius: 4px;
-}
-
-.player .speaker-name {
-  color: var(--player-bubble-text);
-}
-
-.narrator {
-  background-color: transparent;
-  font-style: italic;
-  font-weight: 700;
-  color: var(--narrator-text-color);
-  text-align: center;
-  align-self: center;
-  max-width: 90%;
-  font-size: 1em;
-}
-
-/* --- Bottom Controls --- */
-.bottom-controls {
+  font-size: 0.95rem;
   padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  flex-shrink: 0;
-}
-
-.options-container {
-  width: 100%;
-  max-width: 800px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-}
-
-.choice-button {
-  background-color: var(--card-bg);
-  color: var(--accent-color);
-  border: 1px solid var(--border-color);
-  border-radius: 18px;
-  padding: 10px 18px;
-  font-size: 1em;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: right;
-  transition: background-color 0.2s;
-  max-width: 75%;
-}
-
-.choice-button:hover {
-  background-color: var(--char-bubble-bg);
-}
-
-/* --- Audio Player --- */
-.audio-player-container {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: var(--char-bubble-bg);
-  padding: 0.25rem 0.75rem;
-  border-radius: 50px;
-}
-
-.audio-btn {
-  background: none;
-  border: none;
   color: var(--text-color);
-  cursor: pointer;
-  padding: 0.25rem;
-  transition: background-color 0.2s;
-  border-radius: 8px;
+  background: linear-gradient(to top,
+    var(--card-bg) 0%,
+    color-mix(in srgb, var(--card-bg) 98%, var(--accent-color)) 100%
+  );
+  letter-spacing: 0.02em;
 }
 
-.audio-btn:hover {
-  background-color: var(--char-bubble-bg);
+/* Card entrance animation - staggered fade-in */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.audio-btn .material-symbols-outlined {
-  font-size: 1.5rem;
+.hof-character-card {
+  animation: fadeInUp 0.6s ease backwards;
 }
 
-.volume-control {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.hof-character-card:nth-child(1) { animation-delay: 0.1s; }
+.hof-character-card:nth-child(2) { animation-delay: 0.2s; }
+.hof-character-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  #event-selection-view .header-title {
+    font-size: 1.75rem;
+  }
+
+  .hof-gallery-container {
+    padding: 0 1rem 2.5rem;
+  }
+
+  .hof-character-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .hof-card-image {
+    height: 12rem;
+  }
+
+  .hof-card-name {
+    font-size: 0.9rem;
+    padding: 0.85rem;
+  }
+
+  .hof-character-grid::before {
+    left: -1rem;
+    right: -1rem;
+  }
 }
 
-#volume-slider {
-  width: 70px;
-  height: 4px;
-  -webkit-appearance: none;
-  appearance: none;
-  background: var(--border-color);
-  outline: none;
-  border-radius: 5px;
-}
+@media (max-width: 480px) {
+  #event-selection-view .header-title {
+    font-size: 1.5rem;
+  }
 
-#volume-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 12px;
-  height: 12px;
-  background: var(--accent-color);
-  cursor: pointer;
-  border-radius: 50%;
-}
+  #event-selection-view .viewer-header {
+    padding: 1.5rem 1rem 1rem;
+  }
 
-#volume-slider::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
-  background: var(--accent-color);
-  cursor: pointer;
-  border-radius: 50%;
-  border: none;
+  #event-selection-view {
+    padding-bottom: 5rem;
+  }
+
+  .hof-gallery-container {
+    padding: 0 0.75rem 2rem;
+  }
+
+  .hof-gallery-group {
+    margin-bottom: 0; /* Remove gap on mobile too */
+  }
+
+  .hof-character-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+    padding: 0 0.5rem;
+  }
+
+  .hof-character-grid::before {
+    left: -0.5rem;
+    right: -0.5rem;
+  }
+
+  .hof-card-image {
+    height: 10rem;
+  }
+
+  .hof-card-name {
+    font-size: 0.85rem;
+    padding: 0.75rem;
+  }
+
+  .hof-group-title {
+    font-size: 1rem;
+    padding: 0.65rem 1.25rem;
+    margin-bottom: 2.5rem;
+  }
 }
