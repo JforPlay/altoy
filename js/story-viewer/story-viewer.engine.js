@@ -28,10 +28,17 @@ document.addEventListener('DOMContentLoaded', () => {
         currentBgm: null,
         currentStoryDefaultBgUrl: null, // Only used by main viewer
         audio: new Audio(),
+        activeSfx: [], // Track active sound effects to prevent memory leaks
 
         // Branching state, for handling options
         activeOptionFlag: null,     // currently selected option flag (null when not in a branch)
         lastOptionIndex: -1,        // index of the last line that presented options (decision point)
+
+        // Navigation cache for fast lookups (precomputed on story start)
+        scriptNavCache: null,
+
+        // Performance cache for full script modal
+        cachedFullScript: null,
 
         // Performance cache for background state
         cachedBackground: {
@@ -78,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
             infoScreen: document.getElementById('info-screen'),
             infoScreenText: document.getElementById('info-screen-text'),
             fadeOverlay: document.getElementById('fade-overlay'),
-            softPopup: document.getElementById('soft-popup'),
             summaryModalOverlay: document.getElementById('summary-modal-overlay'),
             closeSummaryModalBtn: document.getElementById('close-summary-modal-btn'),
             summaryModalContent: document.getElementById('summary-modal-content'),
@@ -88,6 +94,21 @@ document.addEventListener('DOMContentLoaded', () => {
             volumeSlider: document.getElementById('volume-slider'),
             bgmNameSpan: document.getElementById('bgm-name'),
             progressIndicator: document.getElementById('progress-indicator'),
+            // Cached elements (populated on first access)
+            storyBackground: null,
+            playPauseIcon: null,
+            muteIcon: null,
+        },
+
+        // =========================================================================
+        // UTILITY METHODS
+        // =========================================================================
+        debounce(func, wait) {
+            let timeout;
+            return (...args) => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
         },
 
         // =========================================================================
@@ -97,19 +118,17 @@ document.addEventListener('DOMContentLoaded', () => {
             this.config = config;
             this.audio.loop = true;
             this.audio.volume = 0.01;
-            this.showLoadingState();
             this.loadData()
                 .then(() => {
                     this.populateEventGrid();
                     this.handleUrlParameters();
                     this.setupEventListeners();
                     this.setupBrowserBackButton();
-                    this.hideLoadingState();
+                    // Loading state automatically handled by populateEventGrid
                 })
                 .catch(error => {
                     console.error('Initialization failed:', error);
                     this.showError('Failed to load critical story data. Please refresh.');
-                    this.hideLoadingState();
                 });
         },
 
@@ -136,7 +155,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const el = this.elements;
 
             // --- Listeners for Static Page Elements ---
-            el.searchBar?.addEventListener('input', (e) => this.populateEventGrid(e.target.value));
+            // Debounce search to avoid rebuilding grid on every keystroke
+            if (el.searchBar) {
+                const debouncedSearch = this.debounce((value) => this.populateEventGrid(value), 300);
+                el.searchBar.addEventListener('input', (e) => debouncedSearch(e.target.value));
+            }
             el.backToEventBtn?.addEventListener('click', (e) => {
                 e.preventDefault();
                 this.switchView(el.eventSelectionView);
@@ -168,8 +191,9 @@ document.addEventListener('DOMContentLoaded', () => {
             el.playPauseBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.audio.paused ? this.audio.play().catch(console.warn) : this.audio.pause(); });
             el.muteBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.audio.muted = !this.audio.muted; this.updateAudioPlayerUI(); });
             el.volumeSlider?.addEventListener('input', (e) => { e.stopPropagation(); this.audio.volume = e.target.value; this.audio.muted = e.target.value == 0; this.updateAudioPlayerUI(); });
-            this.audio.addEventListener('play', () => this.updateAudioPlayerUI());
-            this.audio.addEventListener('pause', () => this.updateAudioPlayerUI());
+
+            // Clean up old audio listeners and add new ones
+            this.cleanupAudioListeners();
         },
 
         setupBrowserBackButton() {
@@ -254,12 +278,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
-        switchView(viewToShow) {
+        switchView(viewToShow, scrollToTop = true) {
             [this.elements.eventSelectionView, this.elements.memorySelectionView, this.elements.storyViewerView].forEach(view => {
                 if (view) view.classList.toggle('hidden', view !== viewToShow);
             });
-            if (viewToShow !== this.elements.storyViewerView) {
+
+            // Scroll to top when navigating forward (unless explicitly disabled)
+            if (scrollToTop) {
                 window.scrollTo(0, 0);
+            }
+
+            // When leaving memory view, pause audio and hide player
+            if (viewToShow !== this.elements.storyViewerView) {
                 this.audio.pause();
                 if (this.elements.audioPlayerContainer) this.elements.audioPlayerContainer.classList.add('hidden');
             }
@@ -365,14 +395,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             this.switchView(this.elements.memorySelectionView);
-            if (this.config.viewerType === 'main') {
-                this.showSoftPopup("스토리 재생시 브금자동재생에 주의하세요.");
-            }
+            // Note: Audio warning now displayed via flavor-text-box in HTML (not programmatic popup)
         },
 
         returnToMemorySelection() {
             this.updateUrl(this.currentEventId);
-            this.switchView(this.elements.memorySelectionView);
+            this.switchView(this.elements.memorySelectionView, false); // Don't scroll to top when going back
 
             const previouslyHighlighted = this.elements.memoryGrid.querySelector('.highlighted-card');
             if (previouslyHighlighted) previouslyHighlighted.classList.remove('highlighted-card');
@@ -384,6 +412,83 @@ document.addEventListener('DOMContentLoaded', () => {
                     nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             }
+        },
+
+        // =========================================================================
+        // NAVIGATION CACHE (Precomputed for Performance)
+        // =========================================================================
+        buildNavigationCache() {
+            // First pass: collect metadata and find all unique flags
+            const flagSet = new Set();
+            const lineMetadata = [];
+
+            this.currentStoryScript.forEach((line, idx) => {
+                const isDisplayable = this.isLineDisplayable(line);
+                const hasOptions = line.options && line.options.length > 0;
+                const flag = line.optionFlag;
+
+                lineMetadata.push({ flag, isDisplayable, hasOptions });
+
+                if (flag !== undefined) {
+                    flagSet.add(flag);
+                }
+            });
+
+            // Flag contexts: null (outside branch) + all unique flags
+            const flagContexts = [null, ...Array.from(flagSet)];
+
+            // Second pass: for each (index, flagContext) pair, compute navigation
+            const navigation = {};
+
+            for (let i = 0; i < this.currentStoryScript.length; i++) {
+                for (const flagContext of flagContexts) {
+                    const key = `${i}_${flagContext}`;
+
+                    // Find next displayable line reachable from this position in this flag context
+                    let next = null;
+                    for (let j = i + 1; j < this.currentStoryScript.length; j++) {
+                        const targetMeta = lineMetadata[j];
+                        if (!targetMeta.isDisplayable) continue;
+
+                        // Check if reachable based on flag context
+                        const reachable = (flagContext === null)
+                            ? (targetMeta.flag === undefined)  // Outside branch: only unflagged
+                            : (targetMeta.flag === undefined || targetMeta.flag === flagContext); // Inside: same flag or unflagged
+
+                        if (reachable) {
+                            next = j;
+                            break;
+                        }
+                    }
+
+                    // Find previous displayable line reachable to this position in this flag context
+                    let prev = null;
+                    for (let j = i - 1; j >= 0; j--) {
+                        const targetMeta = lineMetadata[j];
+                        if (!targetMeta.isDisplayable) continue;
+
+                        // For going back, check if we could have reached current position from j
+                        const reachable = (flagContext === null)
+                            ? (targetMeta.flag === undefined)
+                            : (targetMeta.flag === undefined || targetMeta.flag === flagContext);
+
+                        if (reachable) {
+                            prev = j;
+                            break;
+                        }
+                    }
+
+                    navigation[key] = {
+                        next,
+                        prev
+                    };
+                }
+            }
+
+            this.scriptNavCache = {
+                lineMetadata,
+                navigation
+            };
         },
 
         // =========================================================================
@@ -408,12 +513,14 @@ document.addEventListener('DOMContentLoaded', () => {
             this.lastOptionIndex = -1;
 
 
-            // Reset background cache for new story
+            // Reset caches for new story
             this.cachedBackground = {
                 url: null,
                 isBlack: false,
                 lastIndex: -1
             };
+            this.scriptNavCache = null; // Will be rebuilt after preloading
+            this.cachedFullScript = null; // Will be built on first modal open
 
             // Set default background for both viewer types if mask exists
             if (memory.mask) {
@@ -439,6 +546,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (firstBgLine) imagesToPreload.add(`${this.BASE_URL}bg/${firstBgLine.bgName}.png`);
             imagesToPreload.forEach(src => { new Image().src = src; });
 
+            // Build navigation cache for fast lookups
+            this.buildNavigationCache();
+
             this.renderScriptLine();
             this.switchView(this.elements.storyViewerView);
         },
@@ -451,73 +561,50 @@ document.addEventListener('DOMContentLoaded', () => {
         advanceStory() {
             if (this.scriptIndex >= this.currentStoryScript.length - 1) return;
 
-            let i = this.scriptIndex + 1;
+            const currentLine = this.currentStoryScript[this.scriptIndex];
+            const flagContext = (currentLine && currentLine.optionFlag !== undefined) ? currentLine.optionFlag : null;
+            const key = `${this.scriptIndex}_${flagContext}`;
+            const navInfo = this.scriptNavCache.navigation[key];
 
-            // For world viewer, optionally skip non-displayable lines while scanning forward
-            if (this.config.viewerType === 'world') {
-                for (let j = i; j < this.currentStoryScript.length; j++) {
-                    if (this.isLineDisplayable(this.currentStoryScript[j])) { i = j; break; }
-                    if (j === this.currentStoryScript.length - 1) i = j; // last line fallback
-                }
+            if (navInfo && navInfo.next !== null) {
+                this.scriptIndex = navInfo.next;
+                this.renderScriptLine();
+            } else {
+                // At end of reachable path
+                this.renderScriptLine();
             }
-
-            // Scan forward until we find a REACHABLE line as per branch rules
-            while (i < this.currentStoryScript.length && !this.isReachableIndex(i)) {
-                i++;
-            }
-
-            // If nothing reachable ahead, we're at the end for this path
-            if (i >= this.currentStoryScript.length) {
-                // Show current state as end-of-story for this branch
-                this.renderScriptLine(); // updates buttons/indicators to reflect end
-                return;
-            }
-
-            this.scriptIndex = i;
-            this.renderScriptLine();
         },
 
         goBackStory() {
             if (this.scriptIndex <= 0) return;
 
-            let i = this.scriptIndex - 1;
+            // For going back, we need to consider both the current line's context
+            // and whether we're in an active branch
+            const currentLine = this.currentStoryScript[this.scriptIndex];
+            let flagContext;
 
-            // For world viewer, optionally skip non-displayable lines while scanning backward
-            if (this.config.viewerType === 'world') {
-                for (let j = i; j >= 0; j--) {
-                    if (this.isLineDisplayable(this.currentStoryScript[j])) { i = j; break; }
-                    if (j === 0) i = j; // first line fallback
-                }
+            if (this.activeOptionFlag !== null) {
+                // Inside a branch, use the active flag
+                flagContext = this.activeOptionFlag;
+            } else {
+                // Outside branch, use current line's flag (if any)
+                flagContext = (currentLine && currentLine.optionFlag !== undefined) ? currentLine.optionFlag : null;
             }
 
-            if (this.activeOptionFlag == null) {
-                // Outside branch: skip flagged lines going backward
-                while (i > 0 && this.currentStoryScript[i].optionFlag !== undefined) {
-                    i--;
+            const key = `${this.scriptIndex}_${flagContext}`;
+            const navInfo = this.scriptNavCache.navigation[key];
+
+            if (navInfo && navInfo.prev !== null) {
+                // Check if going back crosses the decision point
+                if (this.activeOptionFlag !== null && navInfo.prev <= this.lastOptionIndex) {
+                    // Exit branch mode and land on the options line
+                    this.activeOptionFlag = null;
+                    this.scriptIndex = this.lastOptionIndex;
+                } else {
+                    this.scriptIndex = navInfo.prev;
                 }
-                this.scriptIndex = i;
                 this.renderScriptLine();
-                return;
             }
-
-            // Inside a branch:
-            // Move back until we find a line that's either:
-            //  - same-flag, or
-            //  - the decision point (lastOptionIndex)
-            while (i > this.lastOptionIndex) {
-                const line = this.currentStoryScript[i];
-                if (!line || line.optionFlag === this.activeOptionFlag) break;
-                i--;
-            }
-
-            // If we've moved back to (or before) the decision point, exit branch mode
-            if (i <= this.lastOptionIndex) {
-                this.activeOptionFlag = null;
-                i = this.lastOptionIndex; // land on the options line
-            }
-
-            this.scriptIndex = i;
-            this.renderScriptLine();
         },
 
 
@@ -563,6 +650,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     el.actorPortrait.innerHTML = actorInfo.icon ? `<img src="${actorInfo.icon}" alt="${actorInfo.name}">` : '';
                     el.actorPortrait.classList.toggle('hidden', !actorInfo.icon);
                 }
+
+                // Apply shadow effect if actorShadow flag is set
+                el.actorPortrait.classList.toggle('actor-shadow', line.actorShadow === true);
+
                 this.lastActorId = actorInfo.id;
             }
 
@@ -732,7 +823,11 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         updateBackground() {
-            const backgroundElement = this.elements.storyViewerView.querySelector('.story-background');
+            // Cache the background element on first access
+            if (!this.elements.storyBackground) {
+                this.elements.storyBackground = this.elements.storyViewerView.querySelector('.story-background');
+            }
+            const backgroundElement = this.elements.storyBackground;
 
             // Check if we need to recalculate background (performance optimization)
             if (this.cachedBackground.lastIndex === this.scriptIndex) {
@@ -781,25 +876,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
-        /**
-         * Determine whether a target line index is reachable from the current position,
-         * given the activeOptionFlag rules:
-         * - If not in branch mode: only lines WITHOUT optionFlag are reachable.
-         * - If in branch mode: lines with matching optionFlag OR with no optionFlag are reachable.
-         * - Lines with different optionFlag are not reachable while in a branch.
-         */
-        isReachableIndex(targetIndex) {
-            if (targetIndex < 0 || targetIndex >= this.currentStoryScript.length) return false;
-            const line = this.currentStoryScript[targetIndex];
-            const hasFlag = line && line.optionFlag !== undefined;
-            if (this.activeOptionFlag == null) {
-                // Outside branch: skip all flagged lines
-                return !hasFlag;
-            }
-            // Inside a branch: allow same-flag lines or unflagged lines; disallow different flags
-            return !hasFlag || line.optionFlag === this.activeOptionFlag;
-        },
-
         // to determine if there is any non-option flag ahead that can be displayed
         hasReachableNextDisplayable() {
             const curr = this.currentStoryScript[this.scriptIndex];
@@ -809,31 +885,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (curr?.options?.length) {
                 return true;
             }
-            
+
             const currFlag = (curr && curr.optionFlag !== undefined) ? curr.optionFlag : null;
-
-            const fallbackReachable = (idx) => {
-                const line = this.currentStoryScript[idx];
-                const hasFlag = line && line.optionFlag !== undefined;
-                if (currFlag == null) {
-                    // Outside branch: only unflagged lines are reachable
-                    return !hasFlag;
-                }
-                // Inside a branch: same flag or unflagged lines are reachable
-                return !hasFlag || line.optionFlag === currFlag;
-            };
-
-            for (let i = this.scriptIndex + 1; i < this.currentStoryScript.length; i++) {
-                const reachable = (typeof this.isReachableIndex === 'function')
-                    ? this.isReachableIndex(i)
-                    : fallbackReachable(i);
-
-                if (!reachable) continue;
-
-                const line = this.currentStoryScript[i];
-                if (this.isLineDisplayable(line)) return true;
-            }
-            return false;
+            const key = `${this.scriptIndex}_${currFlag}`;
+            const navInfo = this.scriptNavCache.navigation[key];
+            return navInfo ? navInfo.next !== null : false;
         },
 
         handleEffect(effects) {
@@ -848,7 +904,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         const flashEl = document.createElement('div');
                         flashEl.className = 'flash';
                         document.body.appendChild(flashEl);
-                        setTimeout(() => document.body.removeChild(flashEl), 300);
+                        setTimeout(() => {
+                            if (flashEl.parentNode) {
+                                flashEl.parentNode.removeChild(flashEl);
+                            }
+                        }, 300);
                         break;
                     case "fadeout":
                         if (this.elements.fadeOverlay) {
@@ -864,8 +924,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         break;
                     case "se":
                         if (effect.audio) {
+                            // Limit concurrent sound effects to prevent memory issues
+                            const MAX_CONCURRENT_SFX = 3;
+
+                            // Clean up finished SFX
+                            this.activeSfx = this.activeSfx.filter(sfx => !sfx.ended && !sfx.paused);
+
+                            // If at limit, stop the oldest SFX
+                            if (this.activeSfx.length >= MAX_CONCURRENT_SFX) {
+                                const oldest = this.activeSfx.shift();
+                                oldest.pause();
+                                oldest.src = '';
+                            }
+
                             const sfx = new Audio(`${this.BGM_URL_PREFIX}${effect.audio}.ogg`);
                             sfx.volume = this.audio.volume;
+
+                            // Clean up audio resources after playback completes
+                            sfx.addEventListener('ended', () => {
+                                sfx.src = '';
+                                this.activeSfx = this.activeSfx.filter(s => s !== sfx);
+                            }, { once: true });
+
+                            this.activeSfx.push(sfx);
                             sfx.play().catch(e => console.warn("SFX playback failed.", e));
                         }
                         break;
@@ -894,15 +975,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const el = this.elements;
             if (!el.playPauseBtn || !el.muteBtn || !el.volumeSlider) return;
 
-            const isPlaying = !this.audio.paused;
+            // Cache icon elements on first access
+            if (!el.playPauseIcon) {
+                el.playPauseIcon = el.playPauseBtn.querySelector('.material-symbols-outlined');
+            }
+            if (!el.muteIcon) {
+                el.muteIcon = el.muteBtn.querySelector('.material-symbols-outlined');
+            }
 
-            el.playPauseBtn.querySelector('.material-symbols-outlined').textContent = this.audio.paused ? 'play_arrow' : 'pause';
-            el.muteBtn.querySelector('.material-symbols-outlined').textContent = this.audio.muted || this.audio.volume === 0 ? 'volume_off' : 'volume_up';
+            el.playPauseIcon.textContent = this.audio.paused ? 'play_arrow' : 'pause';
+            el.muteIcon.textContent = this.audio.muted || this.audio.volume === 0 ? 'volume_off' : 'volume_up';
             el.volumeSlider.value = this.audio.muted ? 0 : this.audio.volume;
 
             // Toggle waveform animation
             if (el.audioPlayerContainer) {
-                el.audioPlayerContainer.classList.toggle('playing', isPlaying);
+                el.audioPlayerContainer.classList.toggle('playing', !this.audio.paused);
             }
         },
 
@@ -910,19 +997,6 @@ document.addEventListener('DOMContentLoaded', () => {
             this.elements.errorContainer.textContent = message;
             this.elements.errorContainer.classList.remove('hidden');
             setTimeout(() => this.elements.errorContainer.classList.add('hidden'), 5000);
-        },
-
-        showSoftPopup(message, duration = 3000) {
-            const popup = this.elements.softPopup;
-            if (!popup) return;
-            clearTimeout(this.popupTimeout);
-            popup.textContent = message;
-            popup.classList.remove('hidden');
-            setTimeout(() => popup.classList.add('show'), 10);
-            this.popupTimeout = setTimeout(() => {
-                popup.classList.remove('show');
-                setTimeout(() => popup.classList.add('hidden'), 500);
-            }, duration);
         },
 
         updateProgressIndicator() {
@@ -940,35 +1014,24 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         },
 
-        showLoadingState() {
-            // Show skeleton cards in the event grid
-            if (this.elements.eventGrid) {
-                this.elements.eventGrid.innerHTML = '';
-                for (let i = 0; i < 6; i++) {
-                    const skeletonCard = this.createSkeletonCard();
-                    this.elements.eventGrid.appendChild(skeletonCard);
-                }
-            }
-        },
-
-        hideLoadingState() {
-            // Loading state is automatically removed when populateEventGrid is called
-            // This method is here for explicit cleanup if needed
-        },
-
         // =========================================================================
         // MODALS
         // =========================================================================
         showFullScript() {
             if (!this.currentStoryScript || this.currentStoryScript.length === 0) return;
-            const scriptHtml = this.currentStoryScript
-                .filter(line => line.say && line.say.trim() !== "")
-                .map(line => {
-                    const actorInfo = this.getActorInfo(line);
-                    const dialogue = line.say.replace(/<.*?>/g, '');
-                    return `<p><strong>${actorInfo.name || 'Narrator'}:</strong> ${dialogue}</p>`;
-                }).join('');
-            this.elements.fullScriptContent.innerHTML = scriptHtml;
+
+            // Use cached script if available
+            if (!this.cachedFullScript) {
+                this.cachedFullScript = this.currentStoryScript
+                    .filter(line => line.say && line.say.trim() !== "")
+                    .map(line => {
+                        const actorInfo = this.getActorInfo(line);
+                        const dialogue = line.say.replace(/<.*?>/g, '');
+                        return `<p><strong>${actorInfo.name || 'Narrator'}:</strong> ${dialogue}</p>`;
+                    }).join('');
+            }
+
+            this.elements.fullScriptContent.innerHTML = this.cachedFullScript;
             this.elements.scriptModalOverlay.classList.remove('hidden');
         },
         hideFullScript() { this.elements.scriptModalOverlay.classList.add('hidden'); },

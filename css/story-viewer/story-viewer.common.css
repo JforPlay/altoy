@@ -120,27 +120,74 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Soft popup notification (bottom-center, toast-style) */
-.soft-popup {
+/* Flavor text box (floating warning in memory selection / tab views) */
+.flavor-text-box {
   position: fixed;
-  bottom: 2rem;
+  bottom: 6rem; /* Above footer */
   left: 50%;
-  transform: translateX(-50%) translateY(1.25rem);
-  background-color: rgba(28, 28, 28, 0.9);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 3.125rem;
-  z-index: 2000;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  font-size: 0.9rem;
-  opacity: 0;
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-  pointer-events: none; /* Don't block clicks when invisible */
+  transform: translateX(-50%);
+  z-index: 10;
+
+  background-color: color-mix(in srgb, var(--card-bg) 85%, transparent);
+  backdrop-filter: blur(0.75rem);
+  -webkit-backdrop-filter: blur(0.75rem);
+  border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent);
+  border-radius: 1.5rem;
+  padding: 0.65rem 1.5rem;
+  width: fit-content;
+  max-width: calc(100% - 2rem);
+  text-align: center;
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.15),
+              0 0 0 1px color-mix(in srgb, var(--accent-color) 20%, transparent);
+
+  /* Smooth entrance animation - appears at 0.3s, fades out at 5.3s */
+  animation: floatInOut 5.6s ease 0.3s both;
 }
 
-.soft-popup.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+@keyframes floatInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(1rem);
+  }
+  5% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(1rem);
+  }
+}
+
+.flavor-text-box p {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-color);
+  letter-spacing: 0.01em;
+}
+
+/* Icon before text for visual interest */
+.flavor-text-box p::before {
+  content: '🎵';
+  margin-right: 0.5rem;
+}
+
+/* Responsive adjustments for flavor text */
+@media (max-width: 480px) {
+  .flavor-text-box {
+    bottom: 5rem;
+    padding: 0.55rem 1rem;
+    border-radius: 1.25rem;
+  }
+
+  .flavor-text-box p {
+    font-size: 0.75rem;
+  }
 }
 
 /* =============================================================================
@@ -186,7 +233,6 @@ body {
 }
 
 /* --- Card Grid Container --- */
-/* Responsive grid that auto-fills with cards at minimum 280px width */
 .story-grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
@@ -221,10 +267,6 @@ body {
   animation: shimmer 1.5s infinite;
 }
 
-.skeleton-thumbnail {
-  /* Applied to card thumbnail area */
-}
-
 .skeleton-title,
 .skeleton-subtitle {
   height: 1.2rem;
@@ -252,6 +294,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
+  will-change: transform, box-shadow;
 }
 
 .grid-card:hover {
@@ -315,15 +358,13 @@ body {
 ============================================================================= */
 
 /* --- Main Container --- */
-/* Uses dvh (dynamic viewport height) to account for mobile browser UI */
 #story-viewer-view {
   position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: calc(100dvh - var(--navbar-height, 3.5rem));
-  -webkit-user-select: none; /* Prevent text selection during story reading */
-  -ms-user-select: none;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -337,20 +378,21 @@ body {
 }
 
 /* --- Background Image --- */
-/* Positioned below story header, fills remaining space */
 .story-background {
   position: absolute;
-  top: 5rem; /* Offset by header height */
+  top: 5rem;
   left: 0;
   width: 100%;
   height: calc(100% - 5rem);
   background-size: contain;
   background-position: center top;
   background-repeat: no-repeat;
-  background-color: #000000; /* Black background for letterboxing */
+  background-color: #000000;
   z-index: 0;
   transition: background-image 0.5s ease-in-out;
-  pointer-events: none; /* Allow clicks to pass through */
+  pointer-events: none;
+  will-change: background-image;
+  contain: layout style paint;
 }
 
 /* --- Story Header (Title Bar) --- */
@@ -416,7 +458,6 @@ body {
 ============================================================================= */
 
 /* --- Info Screen Overlay --- */
-/* Used for displaying location/time text in the corner */
 .info-screen {
   position: absolute;
   top: 0;
@@ -454,7 +495,6 @@ body {
   z-index: 10;
 }
 
-/* Character portrait (circular) */
 .actor-portrait {
   width: 6.25rem;
   height: 6.25rem;
@@ -468,6 +508,8 @@ body {
 
 .actor-portrait.actor-shadow {
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+  filter: brightness(0.5);
+  opacity: 0.7;
 }
 
 .actor-portrait img {
@@ -490,7 +532,6 @@ body {
   font-size: 1.1rem;
 }
 
-/* Next page indicator (bouncing arrow) */
 .next-page-indicator {
   position: absolute;
   bottom: 1rem;
@@ -500,7 +541,6 @@ body {
 }
 
 /* --- Choice Options --- */
-/* Displayed when story presents branching choices */
 .options-box {
   display: flex;
   flex-direction: column;
@@ -529,7 +569,6 @@ body {
 }
 
 /* --- Bottom Bar & Navigation --- */
-/* Grid layout: Audio player (left) | Nav buttons (center) | Empty (right) */
 .bottom-bar-container {
   display: flex;
   flex-direction: column;
@@ -544,14 +583,12 @@ body {
   display: flex;
   justify-content: center;
   gap: 2rem;
-  grid-column: 2 / 3; /* Center column */
 }
 
-/* Navigation buttons (back, prev, next) */
 .nav-button,
 .story-nav-btn {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
+  background-color: color-mix(in srgb, var(--card-bg) 85%, var(--text-color));
+  border: 1.5px solid color-mix(in srgb, var(--border-color) 70%, var(--text-color));
   color: var(--text-color);
   padding: 0.5rem 1rem;
   border-radius: 0.3rem;
@@ -560,6 +597,7 @@ body {
   font-size: 1rem;
   text-decoration: none;
   font-family: "Noto Sans KR", "Roboto", sans-serif;
+  opacity: 0.85;
 }
 
 .nav-button:hover,
@@ -567,6 +605,7 @@ body {
   background-color: var(--border-color);
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  opacity: 1;
 }
 
 .story-nav-btn:disabled {
@@ -586,8 +625,6 @@ body {
   box-shadow: 0 4px 15px var(--shadow-color);
   backdrop-filter: blur(5px);
   z-index: 20;
-  grid-column: 1 / 2; /* Left column */
-  justify-self: start;
   min-width: 15rem;
   flex-wrap: nowrap;
 }
@@ -625,10 +662,10 @@ body {
   border-radius: 2px;
   height: 4px;
   transition: height 0.1s ease;
+  will-change: height;
 }
 
-/* Animated waveform bars when audio is playing */
-/* Staggered animation delays create wave effect */
+/* Animated waveform bars - staggered delays create wave effect */
 .audio-player-container.playing .waveform-bar:nth-child(1) {
   animation: wave 0.8s ease-in-out infinite;
   animation-delay: 0s;
@@ -701,7 +738,6 @@ body {
 }
 
 /* --- Modals --- */
-/* Full script and summary modal overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -774,7 +810,6 @@ body {
   color: var(--subtitle-color);
 }
 
-/* Scrollable modal content areas */
 .full-script-content,
 #summary-modal-content {
   overflow-y: auto;
@@ -802,7 +837,6 @@ body {
 ============================================================================= */
 
 /* --- Full-screen Effects --- */
-/* Fade overlay for scene transitions */
 .fade-overlay {
   position: fixed;
   top: 0;
@@ -814,18 +848,17 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s ease-in-out;
+  will-change: opacity;
 }
 
 .fade-overlay.visible {
   opacity: 1;
 }
 
-/* Shake effect (applied to elements) */
 .shake {
   animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
-/* Flash overlay (white flash effect) */
 .flash {
   position: fixed;
   top: 0;
@@ -838,7 +871,6 @@ body {
 }
 
 /* --- Keyframe Animations --- */
-/* Shimmer effect for skeleton loading states */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -848,7 +880,6 @@ body {
   }
 }
 
-/* Bounce animation for next-page indicator */
 @keyframes bounce {
   0%,
   100% {
@@ -859,7 +890,6 @@ body {
   }
 }
 
-/* Shake animation for emphasis/error */
 @keyframes shake {
   10%,
   90% {
@@ -880,7 +910,6 @@ body {
   }
 }
 
-/* Flash animation (fade out) */
 @keyframes flash-anim {
   from {
     opacity: 1;
@@ -890,7 +919,6 @@ body {
   }
 }
 
-/* Waveform bar animation (audio visualizer) */
 @keyframes wave {
   0%,
   100% {
@@ -957,7 +985,6 @@ body {
     font-size: 0.75rem;
   }
 
-  /* View script button: hide text, show only icon */
   #view-script-btn {
     font-size: 0;
     padding: 0.5rem;
@@ -974,7 +1001,6 @@ body {
     padding: 1rem;
   }
 
-  /* Smaller actor portrait on mobile */
   .actor-portrait {
     width: 5rem;
     height: 5rem;

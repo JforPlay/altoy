@@ -41,6 +41,10 @@ function createTabStoryViewer(config) {
         currentCategory: null,
         currentStoryId: null,
 
+        // Event listener cleanup tracking
+        cardClickHandlers: [],
+        boundImageErrorHandler: null,
+
         // DOM elements
         elements: {
             // Tab navigation
@@ -90,6 +94,7 @@ function createTabStoryViewer(config) {
             this.setupBrowserBackButton();
             this.populateAllGrids();
             this.initStoryViewer();
+            this.preloadFirstImages();
             this.handleUrlParameters();
             this.hideLoadingState();
         },
@@ -302,58 +307,71 @@ function createTabStoryViewer(config) {
         },
 
         populateMemoriesGrid() {
-            this.elements.memoriesGrid.innerHTML = '';
+            // Use DocumentFragment for batch insertion (single reflow)
+            const fragment = document.createDocumentFragment();
             Object.values(this.memoriesData).forEach(memory => {
                 const card = this.createMemoryCard(memory);
-                this.elements.memoriesGrid.appendChild(card);
+                fragment.appendChild(card);
             });
+            this.elements.memoriesGrid.innerHTML = '';
+            this.elements.memoriesGrid.appendChild(fragment);
         },
 
         populateEndingsGrid() {
-            this.elements.endingsGrid.innerHTML = '';
+            const fragment = document.createDocumentFragment();
             Object.values(this.endingsData).forEach(ending => {
                 const card = this.createEndingCard(ending);
-                this.elements.endingsGrid.appendChild(card);
+                fragment.appendChild(card);
             });
+            this.elements.endingsGrid.innerHTML = '';
+            this.elements.endingsGrid.appendChild(fragment);
         },
 
         populateCategoryGrid(category) {
             const grid = this.elements[`${category.id}Grid`];
             if (!grid) return;
 
-            grid.innerHTML = '';
             const sortedData = Object.values(this.customCategoriesData[category.id])
                 .sort((a, b) => a.id - b.id);
 
+            const fragment = document.createDocumentFragment();
             sortedData.forEach(item => {
                 const card = this.createCategoryCard(category.id, item);
-                grid.appendChild(card);
+                fragment.appendChild(card);
             });
+
+            grid.innerHTML = '';
+            grid.appendChild(fragment);
         },
 
         populatePolaroidsGrid() {
-            this.elements.polaroidsGrid.innerHTML = '';
+            const fragment = document.createDocumentFragment();
             Object.values(this.polaroidsData).forEach(polaroid => {
                 const card = this.createPolaroidCard(polaroid);
-                this.elements.polaroidsGrid.appendChild(card);
+                fragment.appendChild(card);
             });
+            this.elements.polaroidsGrid.innerHTML = '';
+            this.elements.polaroidsGrid.appendChild(fragment);
         },
 
         populatePhotosGrid() {
-            this.elements.photosGrid.innerHTML = '';
+            const fragment = document.createDocumentFragment();
 
             if (this.config.photoList) {
                 this.config.photoList.forEach(filename => {
                     const card = this.createPhotoCard(filename);
-                    this.elements.photosGrid.appendChild(card);
+                    fragment.appendChild(card);
                 });
             } else {
                 // Default: plan_square_1 to plan_square_15
                 for (let i = 1; i <= 15; i++) {
                     const card = this.createPhotoCard(`plan_square_${i}`);
-                    this.elements.photosGrid.appendChild(card);
+                    fragment.appendChild(card);
                 }
             }
+
+            this.elements.photosGrid.innerHTML = '';
+            this.elements.photosGrid.appendChild(fragment);
         },
 
         // =========================================================================
@@ -503,13 +521,19 @@ function createTabStoryViewer(config) {
         },
 
         addImageErrorHandler(img) {
-            const placeholderPath = window.location.origin + `/altoy/${this.config.placeholderImage}`;
-            img.addEventListener('error', function() {
-                if (this.src !== placeholderPath && !this.dataset.errorHandled) {
-                    this.dataset.errorHandled = 'true';
-                    this.src = viewer.config.placeholderImage;
-                }
-            }, { once: false });
+            // Use arrow function to avoid closure, and { once: true } to auto-cleanup
+            if (!this.boundImageErrorHandler) {
+                const placeholderImage = this.config.placeholderImage;
+                this.boundImageErrorHandler = function(event) {
+                    const img = event.target;
+                    if (!img.dataset.errorHandled) {
+                        img.dataset.errorHandled = 'true';
+                        img.src = placeholderImage;
+                    }
+                };
+            }
+            // Using { once: true } auto-removes the listener after first error
+            img.addEventListener('error', this.boundImageErrorHandler, { once: true });
         },
 
         // =========================================================================
@@ -589,12 +613,17 @@ function createTabStoryViewer(config) {
                 window.StoryViewer.lastActorId = null;
                 window.StoryViewer.currentBgm = null;
                 window.StoryViewer.currentStoryDefaultBgUrl = null;
+                window.StoryViewer.activeOptionFlag = null;
+                window.StoryViewer.lastOptionIndex = -1;
 
+                // Reset caches for new story
                 window.StoryViewer.cachedBackground = {
                     url: null,
                     isBlack: false,
                     lastIndex: -1
                 };
+                window.StoryViewer.scriptNavCache = null;
+                window.StoryViewer.cachedFullScript = null;
 
                 if (memory.story.mask) {
                     window.StoryViewer.currentStoryDefaultBgUrl = `${window.StoryViewer.BASE_URL}${memory.story.mask}.png`;
@@ -609,6 +638,10 @@ function createTabStoryViewer(config) {
                 }
 
                 window.StoryViewer.elements.storyTitle.textContent = `${eventData.name} - ${memory.title}`;
+
+                // Build navigation cache for fast lookups (required for advanceStory to work)
+                window.StoryViewer.buildNavigationCache();
+
                 window.StoryViewer.renderScriptLine();
             }
         },
@@ -649,19 +682,9 @@ function createTabStoryViewer(config) {
             this.elements.polaroidImgFront.classList.remove('hidden');
             this.elements.polaroidImgBack.classList.add('hidden');
 
-            const placeholderPath = window.location.origin + `/altoy/${this.config.placeholderImage}`;
-            this.elements.polaroidImgFront.onerror = function() {
-                if (this.src !== placeholderPath && !this.dataset.errorHandled) {
-                    this.dataset.errorHandled = 'true';
-                    this.src = viewer.config.placeholderImage;
-                }
-            };
-            this.elements.polaroidImgBack.onerror = function() {
-                if (this.src !== placeholderPath && !this.dataset.errorHandled) {
-                    this.dataset.errorHandled = 'true';
-                    this.src = viewer.config.placeholderImage;
-                }
-            };
+            // Use the shared error handler with { once: true } for auto-cleanup
+            this.addImageErrorHandler(this.elements.polaroidImgFront);
+            this.addImageErrorHandler(this.elements.polaroidImgBack);
 
             this.elements.polaroidInfo.innerHTML = `
                 <h3>${polaroid.title || 'Untitled'}</h3>
@@ -726,9 +749,9 @@ function createTabStoryViewer(config) {
                 viewerType: this.config.type,
                 dataPaths: [],
                 processLoadedData: (storyViewer, dataArray) => {
-                    storyViewer.storylineData = viewer.convertedStorylineData;
-                    storyViewer.shipgirlData = viewer.shipgirlData;
-                    storyViewer.nameCodeData = viewer.nameCodeData;
+                    storyViewer.storylineData = this.convertedStorylineData;
+                    storyViewer.shipgirlData = this.shipgirlData;
+                    storyViewer.nameCodeData = this.nameCodeData;
                 },
                 getEventMemories: (eventData) => eventData?.child,
                 findMemory: (eventData, storyId) => {
@@ -741,10 +764,16 @@ function createTabStoryViewer(config) {
             };
 
             if (window.StoryViewer) {
+                // Store references to avoid closure capture
+                const convertedData = this.convertedStorylineData;
+                const shipgirlData = this.shipgirlData;
+                const nameCodeData = this.nameCodeData;
+                const returnToTabsFn = this.returnToTabs.bind(this);
+
                 window.StoryViewer.loadData = async function() {
-                    this.storylineData = viewer.convertedStorylineData;
-                    this.shipgirlData = viewer.shipgirlData;
-                    this.nameCodeData = viewer.nameCodeData;
+                    this.storylineData = convertedData;
+                    this.shipgirlData = shipgirlData;
+                    this.nameCodeData = nameCodeData;
 
                     for (const id in this.shipgirlData) {
                         this.shipgirlNameMap[this.shipgirlData[id].name] = id;
@@ -753,12 +782,47 @@ function createTabStoryViewer(config) {
                     return Promise.resolve();
                 };
 
-                window.StoryViewer.returnToMemorySelection = function() {
-                    viewer.returnToTabs();
-                };
+                window.StoryViewer.returnToMemorySelection = returnToTabsFn;
 
                 window.StoryViewer.init(viewerConfig);
                 window.StoryViewer.populateEventGrid = () => {};
+            }
+        },
+
+        // =========================================================================
+        // CLEANUP & OPTIMIZATION
+        // =========================================================================
+        cleanup() {
+            // Cleanup method for removing event listeners and freeing memory
+            // Called when page is unloaded or viewer is destroyed
+
+            // Clear card click handlers (though event delegation would be better)
+            this.cardClickHandlers = [];
+
+            // Clear bound error handler
+            this.boundImageErrorHandler = null;
+
+            // Pause audio if playing
+            if (window.StoryViewer && window.StoryViewer.audio) {
+                window.StoryViewer.audio.pause();
+                window.StoryViewer.audio.src = '';
+            }
+        },
+
+        preloadFirstImages() {
+            // Preload the first few visible images for faster initial render
+            const firstMemory = Object.values(this.memoriesData)[0];
+            if (firstMemory) {
+                const storyKey = this.config.type === 'navi' ? firstMemory.lua : firstMemory.performance;
+                const story = this.storyData[storyKey?.toLowerCase()];
+                if (story && story.scripts) {
+                    // Preload first background image
+                    const firstBgLine = story.scripts.find(line => line.bgName);
+                    if (firstBgLine) {
+                        const img = new Image();
+                        img.src = `${window.StoryViewer?.BASE_URL || 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/'}bg/${firstBgLine.bgName}.png`;
+                    }
+                }
             }
         },
 
@@ -773,6 +837,11 @@ function createTabStoryViewer(config) {
             }, 5000);
         },
     };
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+        if (viewer) viewer.cleanup();
+    });
 
     return viewer;
 }
