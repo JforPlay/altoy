@@ -10,8 +10,8 @@ class ChatViewerEngine {
         this.groupChatIcons = config.groupChatIcons || {};
         this.defaultDelay = config.defaultDelay || 1300;
         this.initialDelay = config.initialDelay || 100;
-        
-        // DOM Elements
+
+        // DOM Elements (cached for performance)
         this.characterGrid = document.getElementById('character-selector-grid');
         this.characterSelectionSection = document.getElementById('character-selection-section');
         this.selectedCharacterNameDisplay = document.getElementById('selected-character-name');
@@ -22,17 +22,23 @@ class ChatViewerEngine {
         this.optionsContainer = document.getElementById('options-container');
         this.restartButton = document.getElementById('restart-button');
         this.scrollToTopBtn = document.getElementById('scroll-to-top-btn');
-        
+
         // Data and state
         this.allData = {};
         this.shipGroupIdData = {};
         this.selectedCharacterName = null;
         this.currentStoryScripts = [];
         this.currentScriptIndex = 0;
-        
+
+        // Cached character cards for efficient queries
+        this.characterCards = null;
+
+        // Timer management for cleanup
+        this.activeTimers = [];
+
         // Custom handlers
         this.customHandlers = config.customHandlers || {};
-        
+
         // Initialize
         this.initialize();
     }
@@ -75,17 +81,18 @@ class ChatViewerEngine {
      */
     populateCharacterSelector() {
         this.characterGrid.innerHTML = '';
-        
+        const fragment = document.createDocumentFragment();
+
         for (const characterName in this.allData) {
             const characterData = this.allData[characterName];
             const firstStoryId = Object.keys(characterData)[0];
             if (!firstStoryId) continue;
-            
+
             const firstStory = characterData[firstStoryId];
             const card = document.createElement('div');
             card.className = 'character-card';
             card.dataset.characterName = characterName;
-            
+
             let iconSrc = firstStory.icon;
             if (!iconSrc && this.groupChatIcons[firstStory.kr_name]) {
                 iconSrc = this.groupChatIcons[firstStory.kr_name];
@@ -93,18 +100,37 @@ class ChatViewerEngine {
                 // SVG fallback placeholder (no external dependency)
                 iconSrc = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
             }
-            
+
             const shipName = firstStory.ship_name || '';
-            
-            card.innerHTML = `
-                <img src="${iconSrc}" alt="${firstStory.kr_name}">
-                <p class="char-name">${firstStory.kr_name}</p>
-                <p class="ship-name">${shipName}</p>
-            `;
-            
+
+            // Create image element with error handling
+            const img = document.createElement('img');
+            img.src = iconSrc;
+            img.alt = firstStory.kr_name;
+            img.onerror = () => {
+                // Fallback to placeholder on error
+                img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
+            };
+
+            const charNameP = document.createElement('p');
+            charNameP.className = 'char-name';
+            charNameP.textContent = firstStory.kr_name;
+
+            const shipNameP = document.createElement('p');
+            shipNameP.className = 'ship-name';
+            shipNameP.textContent = shipName;
+
+            card.appendChild(img);
+            card.appendChild(charNameP);
+            card.appendChild(shipNameP);
+
             card.addEventListener('click', () => this.handleCharacterClick(characterName));
-            this.characterGrid.appendChild(card);
+            fragment.appendChild(card);
         }
+
+        this.characterGrid.appendChild(fragment);
+        // Cache character cards for efficient queries
+        this.characterCards = this.characterGrid.querySelectorAll('.character-card');
     }
     
     /**
@@ -113,9 +139,12 @@ class ChatViewerEngine {
     handleCharacterClick(characterName) {
         this.selectedCharacterName = characterName;
 
-        document.querySelectorAll('.character-card').forEach(card => {
-            card.classList.toggle('selected', card.dataset.characterName === characterName);
-        });
+        // Use cached character cards for better performance
+        if (this.characterCards) {
+            this.characterCards.forEach(card => {
+                card.classList.toggle('selected', card.dataset.characterName === characterName);
+            });
+        }
 
         // Get character display name
         const characterData = this.allData[characterName];
@@ -136,9 +165,10 @@ class ChatViewerEngine {
         this.optionsContainer.innerHTML = '';
 
         // Smooth scroll to show the chat section
-        setTimeout(() => {
+        const scrollTimer = setTimeout(() => {
             this.storyDisplaySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
+        this.activeTimers.push(scrollTimer);
     }
     
     /**
@@ -182,6 +212,9 @@ class ChatViewerEngine {
      * Clears the display and starts the current story
      */
     initializeStory() {
+        // Clear any pending timers
+        this.clearTimers();
+
         this.storyContainer.innerHTML = '';
         this.optionsContainer.innerHTML = '';
         this.currentScriptIndex = 0;
@@ -280,7 +313,8 @@ class ChatViewerEngine {
      * Delays before showing next line
      */
     showNextLineAfterDelay(delay = this.defaultDelay) {
-        setTimeout(() => this.showNextLine(), delay);
+        const timer = setTimeout(() => this.showNextLine(), delay);
+        this.activeTimers.push(timer);
     }
     
     /**
@@ -347,12 +381,16 @@ class ChatViewerEngine {
         if (messageClass === 'character') {
             const wrapper = document.createElement('div');
             wrapper.className = 'character-line-wrapper';
-            
+
             const portrait = document.createElement('img');
             portrait.className = 'portrait';
             portrait.src = speakerIcon;
             portrait.alt = speakerName;
-            
+            // Add error handling for portrait images
+            portrait.onerror = () => {
+                portrait.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
+            };
+
             wrapper.appendChild(portrait);
             wrapper.appendChild(messageBubble);
             this.storyContainer.appendChild(wrapper);
@@ -371,17 +409,22 @@ class ChatViewerEngine {
     displaySticker(script) {
         const isPlayer = script.ship_group === 0;
         const stickerUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/emoji/${script.param}.png`;
-        
+
         const container = document.createElement('div');
         container.className = 'sticker-container';
-        
+
         const sticker = document.createElement('img');
         sticker.src = stickerUrl;
         sticker.className = 'sticker-image';
         sticker.alt = '움짤은 아직 안돼요..';
-        
+        // Add error handling for sticker images
+        sticker.onerror = () => {
+            sticker.alt = '이미지를 불러올 수 없습니다';
+            sticker.style.display = 'none';
+        };
+
         container.appendChild(sticker);
-        
+
         if (isPlayer) {
             const wrapper = document.createElement('div');
             wrapper.className = 'player';
@@ -397,6 +440,10 @@ class ChatViewerEngine {
             portrait.className = 'portrait';
             portrait.src = script.icon;
             portrait.alt = script.kr_name;
+            // Add error handling for portrait images
+            portrait.onerror = () => {
+                portrait.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
+            };
 
             wrapper.appendChild(portrait);
             wrapper.appendChild(container);
@@ -526,5 +573,50 @@ class ChatViewerEngine {
                 });
             });
         }
+    }
+
+    /**
+     * Clears all active timers
+     */
+    clearTimers() {
+        this.activeTimers.forEach(timer => clearTimeout(timer));
+        this.activeTimers = [];
+    }
+
+    /**
+     * Cleanup method for proper resource management
+     * Call this when navigating away or before re-initializing
+     */
+    destroy() {
+        // Clear all pending timers
+        this.clearTimers();
+
+        // Remove event listeners
+        if (this.storyDropdown) {
+            this.storyDropdown.removeEventListener('change', () => this.loadSelectedStory());
+        }
+
+        if (this.restartButton) {
+            this.restartButton.removeEventListener('click', () => this.initializeStory());
+        }
+
+        if (this.scrollToTopBtn) {
+            window.removeEventListener('scroll', () => {});
+            this.scrollToTopBtn.removeEventListener('click', () => {});
+        }
+
+        // Clear character card event listeners (if needed for re-initialization)
+        if (this.characterCards) {
+            this.characterCards.forEach(card => {
+                card.replaceWith(card.cloneNode(true));
+            });
+        }
+
+        // Clear cached references
+        this.characterCards = null;
+        this.allData = {};
+        this.shipGroupIdData = {};
+
+        console.log('ChatViewerEngine cleaned up successfully');
     }
 }

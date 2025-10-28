@@ -83,7 +83,7 @@ body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: var(--text-primary);
   margin: 0;
-  padding: 20px;
+  padding: 1.25rem;
   transition: background-color var(--animation-duration) ease,
     color var(--animation-duration) ease;
 
@@ -93,12 +93,12 @@ body {
 }
 
 .main-header {
-  margin-bottom: 30px;
+  margin-bottom: 1.875rem;
   text-align: center;
 }
 
 .main-header h1 {
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem;
   color: var(--text-heading);
   transition: color var(--animation-duration) ease;
 }
@@ -128,10 +128,10 @@ body {
 #character-selection-section {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  padding: 20px 25px;
-  border-radius: 10px;
-  margin: 0 auto 30px auto;
-  max-width: 900px;
+  padding: 1.25rem 1.5625rem;
+  border-radius: 0.625rem;
+  margin: 0 auto 1.875rem auto;
+  max-width: 56.25rem;
   box-sizing: border-box;
   transition: background-color var(--animation-duration) ease,
     border-color var(--animation-duration) ease,
@@ -140,7 +140,7 @@ body {
 
 /* Collapsed state - shows only when character is selected */
 #character-selection-section.collapsed {
-  padding: 15px 25px;
+  padding: 0.9375rem 1.5625rem;
 }
 
 #character-selection-section.collapsed .character-grid {
@@ -151,8 +151,9 @@ body {
 }
 
 #character-selection-section:not(.collapsed) .character-grid {
-  max-height: 500px;
-  margin-top: 15px;
+  max-height: 31.25rem;
+  margin-top: 0.9375rem;
+  padding-top: 0.5rem;
   overflow-y: auto;
   overflow-x: hidden;
   transition: max-height 0.3s ease, margin-top 0.3s ease;
@@ -172,7 +173,7 @@ body {
 
 #character-selection-section .character-grid::-webkit-scrollbar-thumb {
   background-color: var(--border-color);
-  border-radius: 10px;
+  border-radius: 0.625rem;
 }
 
 #character-selection-section .character-grid::-webkit-scrollbar-thumb:hover {
@@ -216,7 +217,7 @@ body {
   font-size: 0.9em;
   color: var(--text-secondary);
   font-weight: normal;
-  margin-left: 15px;
+  margin-left: 0.9375rem;
 }
 
 #character-selection-section.collapsed .selected-character-display {
@@ -228,18 +229,18 @@ body {
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
-    minmax(clamp(110px, 15vw, 150px), 1fr)
+    minmax(clamp(6.875rem, 15vw, 9.375rem), 1fr)
   );
-  gap: 20px;
+  gap: 1.25rem;
 }
 
 /* Juus variant - more compact grid */
 .character-grid.juus {
   grid-template-columns: repeat(
     auto-fill,
-    minmax(clamp(100px, 12vw, 130px), 1fr)
+    minmax(clamp(6.25rem, 12vw, 8.125rem), 1fr)
   );
-  gap: 15px;
+  gap: 0.9375rem;
 }
 
 /* Loading/Error States */
@@ -249,8 +250,8 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 150px;
-  gap: 15px;
+  min-height: 9.375rem;
+  gap: 0.9375rem;
 }
 
 .loading-message {
@@ -263,49 +264,6 @@ body {
   color: var(--accent-danger);
 }
 
-/* Loading Spinner */
-.loading-spinner {
-  border: 6px solid var(--border-color);
-  border-top: 6px solid var(--accent-light);
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Retry Button */
-.retry-button {
-  background-color: var(--accent-primary);
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  font-size: 0.9em;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
-}
-
-.retry-button:hover {
-  background-color: var(--accent-hover);
-}
-
-.retry-button:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
-}
-
-.retry-button:active {
-  transform: scale(0.98);
-}
 
 /* ============================================================================
    CHARACTER CARDS
@@ -314,8 +272,8 @@ body {
 .character-card {
   background-color: var(--bg-secondary);
   border: 2px solid var(--border-color);
-  border-radius: 10px;
-  padding: 15px;
+  border-radius: 0.625rem;
+  padding: 0.9375rem;
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease,
@@ -323,9 +281,9 @@ body {
 }
 
 .character-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-0.3125rem);
   border-color: var(--border-hover);
-  box-shadow: 0 4px 12px var(--shadow-light);
+  box-shadow: 0 0.25rem 0.75rem var(--shadow-light);
 }
 
 .character-card:focus-visible {
@@ -336,7 +294,7 @@ body {
 .character-card.selected {
   border-color: var(--accent-primary);
   background-color: var(--bg-tertiary);
-  box-shadow: 0 0 12px var(--shadow-medium);
+  box-shadow: 0 0 0.75rem var(--shadow-medium);
 }
 
 body:not(.dark-mode) .character-card.selected {
@@ -344,10 +302,10 @@ body:not(.dark-mode) .character-card.selected {
 }
 
 .character-card img {
-  width: 80px;
-  height: 80px;
+  width: 5rem;
+  height: 5rem;
   border-radius: 50%;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
   background-color: var(--bg-tertiary);
   object-fit: cover;
   transition: background-color var(--animation-duration) ease;
@@ -357,7 +315,7 @@ body:not(.dark-mode) .character-card.selected {
   font-weight: bold;
   font-size: 1.1em;
   color: var(--text-heading);
-  margin: 0 0 5px 0;
+  margin: 0 0 0.3125rem 0;
   transition: color var(--animation-duration) ease;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -376,19 +334,19 @@ body:not(.dark-mode) .character-card.selected {
 
 /* Juus variant - more compact cards */
 .character-grid.juus .character-card {
-  padding: 10px;
-  border-radius: 8px;
+  padding: 0.625rem;
+  border-radius: 0.5rem;
 }
 
 .character-grid.juus .character-card img {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 8px;
+  width: 3.75rem;
+  height: 3.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .character-grid.juus .character-card .char-name {
   font-size: 0.85em;
-  margin: 0 0 4px 0;
+  margin: 0 0 0.25rem 0;
   line-height: 1.2;
 }
 
@@ -404,9 +362,9 @@ body:not(.dark-mode) .character-card.selected {
 .story-controls {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 15px;
+  gap: 0.9375rem;
   align-items: start;
-  padding: 20px 25px 15px 25px;
+  padding: 1.25rem 1.5625rem 0.9375rem 1.5625rem;
   border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
 }
@@ -414,13 +372,13 @@ body:not(.dark-mode) .character-card.selected {
 .story-controls-left {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 0.9375rem;
 }
 
 .story-select-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 .story-select-label {
@@ -432,8 +390,8 @@ body:not(.dark-mode) .character-card.selected {
 
 #story-dropdown {
   width: 100%;
-  padding: 12px;
-  border-radius: 5px;
+  padding: 0.75rem;
+  border-radius: 0.3125rem;
   border: 1px solid var(--border-color);
   background-color: var(--bg-tertiary);
   color: var(--text-primary);
@@ -453,10 +411,10 @@ body:not(.dark-mode) .character-card.selected {
 .flavor-text-box {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 15px;
+  border-radius: 0.5rem;
+  padding: 0.9375rem;
   text-align: center;
-  min-height: 24px;
+  min-height: 1.5rem;
   transition: background-color var(--animation-duration) ease,
     border-color var(--animation-duration) ease;
 }
@@ -476,7 +434,7 @@ body:not(.dark-mode) .flavor-text-box {
 .flavor-text-box strong {
   font-weight: bold;
   color: var(--text-heading);
-  margin-right: 8px;
+  margin-right: 0.5rem;
   font-style: normal;
   transition: color var(--animation-duration) ease;
 }
@@ -485,13 +443,13 @@ body:not(.dark-mode) .flavor-text-box {
   background-color: var(--accent-danger);
   color: #ffffff;
   border: none;
-  border-radius: 5px;
-  padding: 12px 18px;
+  border-radius: 0.3125rem;
+  padding: 0.75rem 1.125rem;
   font-size: 0.9em;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.1s;
-  height: 48px;
+  height: 3rem;
 }
 
 .restart-button:hover {
@@ -512,25 +470,25 @@ body:not(.dark-mode) .flavor-text-box {
    ============================================================================ */
 
 #story-display-section {
-  max-width: 900px;
+  max-width: 56.25rem;
   margin: 0 auto;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 0.625rem;
   box-sizing: border-box;
   transition: background-color var(--animation-duration) ease,
     border-color var(--animation-duration) ease;
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 280px);
+  max-height: calc(100vh - 17.5rem);
 }
 
 .story-container {
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  padding: 20px 25px;
+  gap: 0.9375rem;
+  padding: 1.25rem 1.5625rem;
   overflow-y: auto;
   flex: 1;
 
@@ -550,7 +508,7 @@ body:not(.dark-mode) .flavor-text-box {
 
 .story-container::-webkit-scrollbar-thumb {
   background-color: var(--border-color);
-  border-radius: 10px;
+  border-radius: 0.625rem;
 }
 
 .story-container::-webkit-scrollbar-thumb:hover {
@@ -561,17 +519,17 @@ body:not(.dark-mode) .flavor-text-box {
 .character-line-wrapper {
   display: flex;
   align-items: flex-end;
-  gap: 10px;
+  gap: 0.625rem;
   max-width: 80%;
   align-self: flex-start;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(1.25rem);
   animation: bubble-fade-in 0.4s forwards;
 }
 
 .character-line-wrapper .portrait {
-  width: 45px;
-  height: 45px;
+  width: 2.8125rem;
+  height: 2.8125rem;
   border-radius: 50%;
   border: 2px solid var(--border-color);
   flex-shrink: 0;
@@ -581,8 +539,8 @@ body:not(.dark-mode) .flavor-text-box {
 
 /* Message bubbles */
 .message-bubble {
-  padding: 12px 15px;
-  border-radius: 8px;
+  padding: 0.75rem 0.9375rem;
+  border-radius: 0.5rem;
   max-width: 75%;
   line-height: 1.4;
   box-sizing: border-box;
@@ -593,7 +551,7 @@ body:not(.dark-mode) .flavor-text-box {
 .player,
 .narrator {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(1.25rem);
   animation: bubble-fade-in 0.4s forwards;
 }
 
@@ -611,7 +569,7 @@ body:not(.dark-mode) .flavor-text-box {
 
 .speaker-name {
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem;
   color: var(--text-heading);
   transition: color var(--animation-duration) ease;
 }
@@ -620,7 +578,7 @@ body:not(.dark-mode) .flavor-text-box {
   color: var(--text-muted);
   font-size: 0.8em;
   font-weight: normal;
-  margin-left: 4px;
+  margin-left: 0.25rem;
   transition: color var(--animation-duration) ease;
 }
 
@@ -655,11 +613,11 @@ body:not(.dark-mode) .character {
 
 .options-container {
   max-width: 100%;
-  padding: 15px 25px 20px 25px;
+  padding: 0.9375rem 1.5625rem 1.25rem 1.5625rem;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 10px;
+  gap: 0.625rem;
   background-color: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
 }
@@ -668,8 +626,8 @@ body:not(.dark-mode) .character {
   background-color: var(--accent-primary);
   color: #ffffff;
   border: none;
-  border-radius: 5px;
-  padding: 12px 18px;
+  border-radius: 0.3125rem;
+  padding: 0.75rem 1.125rem;
   font-size: 1em;
   cursor: pointer;
   text-align: right;
@@ -694,8 +652,8 @@ body:not(.dark-mode) .character {
 .message-bubble.selected-choice {
   font-size: 0.85em;
   opacity: 0.7;
-  margin: 8px 0;
-  padding: 8px 12px;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.75rem;
   background-color: var(--accent-primary);
   border: 1px solid var(--accent-hover);
   color: #ffffff;
@@ -711,13 +669,13 @@ body:not(.dark-mode) .message-bubble.selected-choice {
 /* End of conversation message */
 .end-of-conversation {
   text-align: center;
-  padding: 20px;
-  margin: 20px 0;
+  padding: 1.25rem;
+  margin: 1.25rem 0;
   font-size: 1.1em;
   font-weight: bold;
   color: var(--text-secondary);
   background-color: var(--bg-secondary);
-  border-radius: 10px;
+  border-radius: 0.625rem;
   border: 2px dashed var(--border-color);
   transition: background-color var(--animation-duration) ease,
     border-color var(--animation-duration) ease,
@@ -735,7 +693,7 @@ body:not(.dark-mode) .end-of-conversation {
 /* Stickers/Emojis */
 .sticker-container {
   align-self: flex-start;
-  max-width: 150px;
+  max-width: 9.375rem;
 }
 
 .player .sticker-container {
@@ -754,9 +712,9 @@ body:not(.dark-mode) .end-of-conversation {
   color: var(--text-secondary);
   font-size: 0.9em;
   font-style: italic;
-  padding: 8px;
+  padding: 0.5rem;
   background-color: var(--bg-tertiary);
-  border-radius: 8px;
+  border-radius: 0.5rem;
   align-self: center;
   width: 90%;
   transition: background-color var(--animation-duration) ease,
@@ -767,14 +725,14 @@ body:not(.dark-mode) .end-of-conversation {
 .red-envelope-bubble {
   background-color: var(--red-envelope);
   color: #ffffff;
-  padding: 15px;
-  border-radius: 12px;
+  padding: 0.9375rem;
+  border-radius: 0.75rem;
   text-align: center;
   font-weight: bold;
   cursor: pointer;
   align-self: center;
-  width: 250px;
-  box-shadow: 0 4px 6px var(--shadow-medium);
+  width: 15.625rem;
+  box-shadow: 0 0.25rem 0.375rem var(--shadow-medium);
   transition: transform 0.2s;
 }
 
@@ -822,10 +780,10 @@ body:not(.dark-mode) .end-of-conversation {
 
 .scroll-to-top-btn {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 50px;
-  height: 50px;
+  bottom: 1.875rem;
+  right: 1.875rem;
+  width: 3.125rem;
+  height: 3.125rem;
   border-radius: 50%;
   background-color: var(--accent-primary);
   color: #ffffff;
@@ -835,7 +793,7 @@ body:not(.dark-mode) .end-of-conversation {
   align-items: center;
   justify-content: center;
   font-size: 1.5em;
-  box-shadow: 0 4px 12px var(--shadow-medium);
+  box-shadow: 0 0.25rem 0.75rem var(--shadow-medium);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease,
@@ -850,20 +808,20 @@ body:not(.dark-mode) .end-of-conversation {
 
 .scroll-to-top-btn:hover {
   background-color: var(--accent-hover);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px var(--shadow-medium);
+  transform: translateY(-0.1875rem);
+  box-shadow: 0 0.375rem 1rem var(--shadow-medium);
 }
 
 .scroll-to-top-btn:active {
-  transform: translateY(-1px);
+  transform: translateY(-0.0625rem);
 }
 
 @media (max-width: 768px) {
   .scroll-to-top-btn {
-    bottom: 20px;
-    right: 20px;
-    width: 45px;
-    height: 45px;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    width: 2.8125rem;
+    height: 2.8125rem;
     font-size: 1.3em;
   }
 }
@@ -874,19 +832,18 @@ body:not(.dark-mode) .end-of-conversation {
 
 @media (max-width: 768px) {
   body {
-    padding: 5px;
-    font-size: 14px;
+    padding: 0.3125rem;
   }
 
   /* Header */
   .main-header h1 {
     font-size: 1.3em;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
   }
 
   #character-selection-section {
-    margin-bottom: 12px;
-    padding: 15px 18px;
+    margin-bottom: 0.75rem;
+    padding: 0.9375rem 1.125rem;
   }
 
   #character-selection-section h3 {
@@ -894,8 +851,8 @@ body:not(.dark-mode) .end-of-conversation {
   }
 
   #character-selection-section:not(.collapsed) .character-grid {
-    max-height: 350px;
-    gap: 8px;
+    max-height: 21.875rem;
+    gap: 0.5rem;
   }
 
   .selected-character-display {
@@ -905,28 +862,28 @@ body:not(.dark-mode) .end-of-conversation {
   /* Story Controls - More Compact */
   .story-controls {
     grid-template-columns: 1fr;
-    padding: 10px 12px 8px 12px;
-    gap: 8px;
+    padding: 0.625rem 0.75rem 0.5rem 0.75rem;
+    gap: 0.5rem;
   }
 
   .story-select-wrapper {
     flex-direction: column;
     align-items: stretch;
-    gap: 5px;
+    gap: 0.3125rem;
   }
 
   .story-select-label {
     font-size: 0.85em;
-    margin-bottom: 3px;
+    margin-bottom: 0.1875rem;
   }
 
   #story-dropdown {
-    padding: 8px 10px;
+    padding: 0.5rem 0.625rem;
     font-size: 0.9em;
   }
 
   .flavor-text-box {
-    padding: 8px 10px;
+    padding: 0.5rem 0.625rem;
     font-size: 0.8em;
     line-height: 1.4;
   }
@@ -937,32 +894,32 @@ body:not(.dark-mode) .end-of-conversation {
 
   .restart-button {
     width: 100%;
-    margin-top: 8px;
-    padding: 8px 12px;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.75rem;
     font-size: 0.85em;
     height: auto;
   }
 
   /* Character Cards - Smaller */
   .character-grid {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-    gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(5.625rem, 1fr));
+    gap: 0.5rem;
   }
 
   .character-grid.juus {
-    grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-    gap: 6px;
+    grid-template-columns: repeat(auto-fill, minmax(4.6875rem, 1fr));
+    gap: 0.375rem;
   }
 
   .character-card {
-    padding: 8px;
-    border-radius: 8px;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
   }
 
   .character-card img {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 6px;
+    width: 3.125rem;
+    height: 3.125rem;
+    margin-bottom: 0.375rem;
   }
 
   .character-card .char-name {
@@ -977,36 +934,36 @@ body:not(.dark-mode) .end-of-conversation {
 
   /* Chat Messages - Smaller but readable */
   #story-display-section {
-    max-height: calc(100vh - 120px);
-    margin-bottom: 10px;
+    max-height: calc(100vh - 7.5rem);
+    margin-bottom: 0.625rem;
   }
 
   .story-container {
-    padding: 10px 12px;
-    gap: 12px;
+    padding: 0.625rem 0.75rem;
+    gap: 0.75rem;
   }
 
   .character-line-wrapper {
-    gap: 8px;
+    gap: 0.5rem;
   }
 
   .character-line-wrapper .portrait {
-    width: 32px;
-    height: 32px;
+    width: 2rem;
+    height: 2rem;
     border-width: 1.5px;
   }
 
   .message-bubble {
-    padding: 10px 12px;
+    padding: 0.625rem 0.75rem;
     font-size: 0.9em;
     line-height: 1.5;
     max-width: 85%;
-    border-radius: 12px;
+    border-radius: 0.75rem;
   }
 
   .speaker-name {
     font-size: 0.85em;
-    margin-bottom: 3px;
+    margin-bottom: 0.1875rem;
   }
 
   .speaker-id {
@@ -1019,64 +976,43 @@ body:not(.dark-mode) .end-of-conversation {
 
   /* Options - Smaller */
   .options-container {
-    padding: 8px 12px 10px 12px;
-    gap: 8px;
+    padding: 0.5rem 0.75rem 0.625rem 0.75rem;
+    gap: 0.5rem;
   }
 
   .choice-button {
-    padding: 10px 14px;
+    padding: 0.625rem 0.875rem;
     font-size: 0.9em;
     max-width: 85%;
   }
 
   .message-bubble.selected-choice {
     font-size: 0.8em;
-    padding: 6px 10px;
+    padding: 0.375rem 0.625rem;
   }
 
   /* Special Messages */
   .system-message {
     font-size: 0.8em;
-    padding: 6px;
+    padding: 0.375rem;
   }
 
   .sticker-container {
-    max-width: 120px;
+    max-width: 7.5rem;
   }
 
   .end-of-conversation {
     font-size: 0.95em;
-    padding: 15px;
+    padding: 0.9375rem;
   }
 
   .red-envelope-bubble {
-    width: 200px;
+    width: 12.5rem;
     font-size: 0.9em;
-    padding: 12px;
+    padding: 0.75rem;
   }
 
   .red-envelope-bubble::before {
     font-size: 1.5em;
-  }
-
-  /* Comments Section */
-  .comments-section h3 {
-    font-size: 0.9em;
-    padding-bottom: 8px;
-    margin-bottom: 12px;
-  }
-
-  .comment {
-    font-size: 0.85em;
-    margin-bottom: 8px;
-  }
-
-  .comment-icon {
-    width: 20px;
-    height: 20px;
-  }
-
-  .comment.reply {
-    margin-left: 20px;
   }
 }
