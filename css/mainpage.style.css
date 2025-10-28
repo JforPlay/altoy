@@ -1413,13 +1413,11 @@ body:not(.dark-mode) .dual-link-desc {
   .bento-card.medium,
   .bento-card.small {
     grid-column: span 1;
-    min-height: 110px;
   }
 
   .bento-card.external-link {
     grid-column: span 1;
     grid-row: auto;
-    min-height: 140px;
   }
 
   /* Dual Links Mobile */
