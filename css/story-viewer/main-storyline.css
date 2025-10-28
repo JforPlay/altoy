@@ -50,10 +50,6 @@ body::before {
   opacity: 0.2;
 }
 
-html {
-  font-size: 16px;
-}
-
 /* Loading Overlay */
 .loading-overlay {
   position: fixed;
