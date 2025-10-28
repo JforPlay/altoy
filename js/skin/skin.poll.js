@@ -11,6 +11,12 @@ const CACHE_DURATION_MS = 1000 * 60 * 60; // 1 hour
 const REFRESH_COOLDOWN_MS = 60000; // 60 seconds
 const MIN_VOTES_FOR_LEADERBOARD = 10;
 
+// Featured Event Showcase
+// Set this to highlight specific event skins on first page load
+// Change this based on current in-game events to showcase relevant content
+// Set to 'all' to show everything by default
+const FEATURED_SKIN_TYPE = '닌자의 성';  // Current featured event
+
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyCmtsfkzlISZDd0totgv3MIrpT9kvLvKLk",
   authDomain: "azurlane-skin-vote.firebaseapp.com",
@@ -63,6 +69,20 @@ const debounce = (func, delay) => {
   };
 };
 
+/**
+ * Create SVG placeholder for broken images
+ */
+const createImageErrorHandler = () => {
+  return (event) => {
+    const img = event.target;
+    if (img.dataset.errorHandled) return;
+    img.dataset.errorHandled = 'true';
+
+    const svgPlaceholder = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%2340444b'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23dcddde' font-family='sans-serif' font-size='14'%3E이미지 없음%3C/text%3E%3C/svg%3E";
+    img.src = svgPlaceholder;
+  };
+};
+
 // ====================================
 // ANIMATION STYLES
 // ====================================
@@ -108,6 +128,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const filterToggleBtn = document.getElementById('filter-toggle-btn');
   const filterContainer = document.getElementById('filter-container');
 
+  // Cache rarity checkboxes for performance
+  const cachedRarityCheckboxes = Array.from(rarityCheckboxes.querySelectorAll('input'));
+
   // Image popup elements
   const imagePopup = document.getElementById('image-popup');
   const popupFullImage = document.getElementById('popup-full-image');
@@ -126,6 +149,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let allSkins = [];
   let allCharacterNames = [];
+  let characterFuse;  // Fuse.js instance for fuzzy character search
   let allPollDataCache = {};
   let skinIdToClientIdMap = {};
   let clientIdToSkinMap = {};
@@ -137,6 +161,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   let userVotesCache = new Set();
   let currentUserId = null;
 
+  // Fuse.js options for character search
+  const fuseOptions = {
+    includeScore: true,
+    includeMatches: true,
+    threshold: 0.4,
+    keys: ['name']
+  };
+
   // Refresh cooldown state
   let refreshCooldownTimer = null;
   let lastRefreshTime = 0;
@@ -146,6 +178,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     isConnected: true,
     lastError: null,
     errorCount: 0
+  };
+
+  // Timer tracking for cleanup
+  const activeTimers = {
+    dataAgeInterval: null,
+    refreshCooldown: null
   };
 
   // ====================================
@@ -835,6 +873,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       </div>
     `).join('');
+
+    // Add image error handlers to leaderboard images
+    leaderboardContent.querySelectorAll('.leaderboard-image').forEach(img => {
+      img.addEventListener('error', createImageErrorHandler());
+    });
   };
 
   // ====================================
@@ -913,6 +956,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>`;
       pollContainer.appendChild(pollBox);
 
+      // Add image error handler
+      const pollImage = pollBox.querySelector('.poll-image');
+      if (pollImage) {
+        pollImage.addEventListener('error', createImageErrorHandler());
+      }
+
       updateScoreDisplay(clientId, {
         total_votes: skin.total_votes,
         total_score: skin.average_score * skin.total_votes
@@ -964,7 +1013,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const selectedType = skinTypeSelect.value;
     const selectedFaction = factionSelect.value;
     const selectedTag = tagSelect.value;
-    const selectedRarities = [...rarityCheckboxes.querySelectorAll("input:checked")].map(cb => cb.value);
+    const selectedRarities = cachedRarityCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
 
     const filteredSkins = allSkins.filter(skin => {
       if (selectedCharName && skin["함순이 이름"] !== selectedCharName) return false;
@@ -1056,7 +1105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     factionSelect.value = "all";
     tagSelect.value = "all";
     sortSelect.value = "default";
-    rarityCheckboxes.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
+    cachedRarityCheckboxes.forEach(checkbox => {
       checkbox.checked = true;
     });
     applyFilters();
@@ -1076,7 +1125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (factionSelect.value !== 'all') params.set('faction', factionSelect.value);
     if (tagSelect.value !== 'all') params.set('tag', tagSelect.value);
     if (sortSelect.value !== 'default') params.set('sort', sortSelect.value);
-    const selectedRarities = [...rarityCheckboxes.querySelectorAll("input:checked")].map(cb => cb.value);
+    const selectedRarities = cachedRarityCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
     if (selectedRarities.length < 5) params.set('rarities', selectedRarities.join(','));
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     history.pushState({}, '', newUrl);
@@ -1084,13 +1133,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   /**
    * Apply filters from URL parameters
+   * If no URL parameters exist (first visit), showcase featured event skins
    */
   const applyFiltersFromURL = () => {
     const params = new URLSearchParams(window.location.search);
+
     if (params.toString() === '') {
-      skinTypeSelect.value = '닌자의 성';
-      // tagSelect.value = '전체';
+      // First visit with no URL params - showcase featured event
+      skinTypeSelect.value = FEATURED_SKIN_TYPE;
     } else {
+      // Returning visit or shared link - respect URL parameters
       characterNameSearch.value = params.get('character') || '';
       skinTypeSelect.value = params.get('type') || 'all';
       factionSelect.value = params.get('faction') || 'all';
@@ -1099,7 +1151,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const raritiesParam = params.get('rarities');
       if (raritiesParam) {
         const activeRarities = raritiesParam.split(',');
-        rarityCheckboxes.querySelectorAll('input').forEach(cb => {
+        cachedRarityCheckboxes.forEach(cb => {
           cb.checked = activeRarities.includes(cb.value);
         });
       }
@@ -1112,31 +1164,63 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ====================================
 
   /**
-   * Populate dropdown with items
+   * Populate dropdown with Fuse.js results (with highlighting)
    */
-  const populateDropdown = (dropdownEl, items, onSelectCallback) => {
+  const populateDropdown = (dropdownEl, results, onSelectCallback) => {
     dropdownEl.innerHTML = '';
-    if (items.length === 0) {
+    if (results.length === 0) {
       dropdownEl.innerHTML = `<div class="no-results">검색 결과가 없습니다</div>`;
       return;
     }
-    items.forEach(item => {
+
+    results.forEach((result) => {
+      const item = result.item;
+      const matches = result.matches;
       const a = document.createElement('a');
-      a.textContent = item;
-      a.addEventListener('click', () => onSelectCallback(item));
+      a.setAttribute('role', 'option');
+      a.setAttribute('tabindex', '0');
+
+      // Highlight matches if available
+      if (matches && matches.length > 0 && matches[0].indices) {
+        let highlightedName = '';
+        let lastIndex = 0;
+        matches[0].indices.forEach(([start, end]) => {
+          highlightedName += item.name.substring(lastIndex, start);
+          highlightedName += `<mark>${item.name.substring(start, end + 1)}</mark>`;
+          lastIndex = end + 1;
+        });
+        highlightedName += item.name.substring(lastIndex);
+        a.innerHTML = highlightedName;
+      } else {
+        a.textContent = item.name;
+      }
+
+      a.addEventListener('click', () => onSelectCallback(item.name));
+      a.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') onSelectCallback(item.name);
+      });
       dropdownEl.appendChild(a);
     });
   };
 
   /**
-   * Setup dropdown with search functionality
+   * Setup dropdown with Fuse.js fuzzy search
    */
-  const setupDropdown = (inputEl, dropdownEl, getSourceArray, onSelectCallback) => {
+  const setupDropdown = (inputEl, dropdownEl, getFuseInstance, onSelectCallback) => {
     const handleFilter = () => {
-      const sourceArray = getSourceArray();
-      const searchTerm = inputEl.value.toLowerCase();
-      const filteredItems = sourceArray.filter(item => item.toLowerCase().includes(searchTerm));
-      populateDropdown(dropdownEl, filteredItems, onSelectCallback);
+      const fuse = getFuseInstance();
+      if (!fuse) return;
+
+      const searchTerm = inputEl.value;
+      if (searchTerm.trim() === '') {
+        // Show all items when empty
+        const allItems = fuse.getIndex().docs.map(doc => ({ item: doc, matches: [] }));
+        populateDropdown(dropdownEl, allItems, onSelectCallback);
+      } else {
+        // Fuzzy search with highlighting
+        const results = fuse.search(searchTerm);
+        populateDropdown(dropdownEl, results, onSelectCallback);
+      }
     };
 
     inputEl.addEventListener('keyup', debounce(handleFilter, 200));
@@ -1168,6 +1252,16 @@ document.addEventListener("DOMContentLoaded", async () => {
    * Open image popup
    */
   const openImagePopup = (fullImageUrl, skinName, charName) => {
+    // Remove previous error handler if exists
+    const oldHandler = popupFullImage.dataset.errorHandler;
+    if (oldHandler) {
+      popupFullImage.removeEventListener('error', createImageErrorHandler());
+    }
+
+    // Add new error handler
+    popupFullImage.addEventListener('error', createImageErrorHandler(), { once: true });
+    popupFullImage.dataset.errorHandler = 'true';
+
     popupFullImage.src = fullImageUrl;
     popupSkinName.textContent = skinName;
     popupCharName.textContent = charName;
@@ -1241,6 +1335,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       secondsLeft--;
       updateButtonText();
     }, 1000);
+    activeTimers.refreshCooldown = refreshCooldownTimer;
   };
 
   /**
@@ -1397,7 +1492,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     el.addEventListener("change", applyFiltersDebounced);
   });
 
-  rarityCheckboxes.querySelectorAll("input").forEach((checkbox) => {
+  cachedRarityCheckboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", applyFiltersDebounced);
   });
 
@@ -1442,6 +1537,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  // Scroll to top button is handled globally by nav.script.js
+
   // ====================================
   // MAIN DATA LOADING
   // ====================================
@@ -1465,8 +1562,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       allCharacterNames = [...new Set(allSkins.map((s) => s["함순이 이름"]))].filter(Boolean).sort();
 
-      // Setup character search dropdown
-      setupDropdown(characterNameSearch, characterDropdownContent, () => allCharacterNames, handleCharacterSelect);
+      // Initialize Fuse.js for character search
+      const characterDataForFuse = allCharacterNames.map(name => ({ name }));
+      characterFuse = new Fuse(characterDataForFuse, fuseOptions);
+
+      // Setup character search dropdown with Fuse.js
+      setupDropdown(characterNameSearch, characterDropdownContent, () => characterFuse, handleCharacterSelect);
 
       // Show skeleton loader
       displaySkeletonLoader();
@@ -1491,7 +1592,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Update data age indicator
       updateDataAgeIndicator();
-      setInterval(updateDataAgeIndicator, 60000);
+      activeTimers.dataAgeInterval = setInterval(updateDataAgeIndicator, 60000);
 
       // Fetch leaderboard and user votes
       const [leaderboardData, userVotes] = await Promise.all([
@@ -1511,4 +1612,35 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Error loading skin data:", error);
       showNotification("스킨 데이터 로드 실패", "error");
     });
+
+  // ====================================
+  // CLEANUP METHOD
+  // ====================================
+
+  /**
+   * Cleanup function to prevent memory leaks
+   * Call this when the page is being unloaded or for testing
+   */
+  const cleanup = () => {
+    console.log("🧹 Cleaning up skin-poll resources...");
+
+    // Clear all intervals
+    if (activeTimers.dataAgeInterval) {
+      clearInterval(activeTimers.dataAgeInterval);
+      activeTimers.dataAgeInterval = null;
+    }
+
+    if (activeTimers.refreshCooldown) {
+      clearInterval(activeTimers.refreshCooldown);
+      activeTimers.refreshCooldown = null;
+    }
+
+    console.log("✅ Cleanup complete");
+  };
+
+  // Expose cleanup method globally for manual cleanup if needed
+  window.skinPollCleanup = cleanup;
+
+  // Auto-cleanup on page unload
+  window.addEventListener('beforeunload', cleanup);
 });

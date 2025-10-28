@@ -13,9 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
         buttons: {
             clearAll: document.getElementById('clear-all-btn'),
             info: document.getElementById('info-button'),
-            filterToggle: document.getElementById('filter-toggle-btn'),
-            scrollToTop: document.getElementById('scroll-to-top')
+            filterToggle: document.getElementById('filter-toggle-btn')
+            // scrollToTop handled globally by nav.script.js
         },
+        progressBar: document.getElementById('progress-bar'),
         popup: {
             container: document.getElementById('info-popup'),
             closeBtn: document.getElementById('info-popup').querySelector('.close-popup-btn')
@@ -38,11 +39,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // === STATE ===
     let allSkins = [];
     let fuse;
+    let isLoading = false;
     const fuseOptions = {
+        includeScore: true,
         includeMatches: true,
         threshold: 0.4,
         keys: ['name']
     };
+
+    // === CACHED QUERIES ===
+    const cachedRarityCheckboxes = Array.from(DOM.filters.rarities.querySelectorAll('input'));
+    const allSkinContainers = Object.values(DOM.containers);
 
     // === CONSTANTS ===
     const FILTER_PARAMS = {
@@ -59,12 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const AUTOCOMPLETE_LIMIT = 10;
     const DEBOUNCE_DELAY = 300;
 
+    // === TIMER MANAGEMENT ===
+    let activeTimers = {
+        debounce: null,
+        throttle: null,
+        progressBar: null
+    };
+
     // === UTILITY FUNCTIONS ===
     const debounce = (func, delay) => {
-        let timeout;
         return (...args) => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), delay);
+            clearTimeout(activeTimers.debounce);
+            activeTimers.debounce = setTimeout(() => func.apply(this, args), delay);
         };
     };
 
@@ -74,15 +87,37 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!inThrottle) {
                 func.apply(this, args);
                 inThrottle = true;
-                setTimeout(() => inThrottle = false, limit);
+                activeTimers.throttle = setTimeout(() => inThrottle = false, limit);
             }
         };
+    };
+
+    const showFilteringState = () => {
+        // Only show progress bar if filtering takes longer than 150ms
+        activeTimers.progressBar = setTimeout(() => {
+            if (DOM.progressBar) {
+                DOM.progressBar.classList.add('visible');
+            }
+        }, 150);
+    };
+
+    const hideFilteringState = () => {
+        // Cancel the delayed progress bar if it hasn't shown yet
+        clearTimeout(activeTimers.progressBar);
+        activeTimers.progressBar = null;
+
+        // Hide progress bar if it was shown
+        if (DOM.progressBar) {
+            DOM.progressBar.classList.remove('visible');
+        }
     };
 
     // === URL STATE MANAGEMENT ===
     const URLState = {
         getFilters() {
-            const selectedRarities = [...DOM.filters.rarities.querySelectorAll("input:checked")]
+            // Use cached checkboxes instead of querying every time
+            const selectedRarities = cachedRarityCheckboxes
+                .filter(cb => cb.checked)
                 .map(cb => cb.value);
 
             return {
@@ -113,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         apply() {
             const params = new URLSearchParams(window.location.search);
-            
+
             DOM.filters.skinType.value = params.get(FILTER_PARAMS.TYPE) || 'all';
             DOM.filters.tag.value = params.get(FILTER_PARAMS.TAG) || 'all';
             DOM.filters.period.value = params.get(FILTER_PARAMS.PERIOD) || 'all';
@@ -123,7 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const raritiesParam = params.get(FILTER_PARAMS.RARITIES);
             if (raritiesParam) {
                 const activeRarities = new Set(raritiesParam.split(','));
-                DOM.filters.rarities.querySelectorAll('input').forEach(cb => {
+                // Use cached checkboxes
+                cachedRarityCheckboxes.forEach(cb => {
                     cb.checked = activeRarities.has(cb.value);
                 });
             }
@@ -210,23 +246,34 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         apply() {
-            const searchTerm = DOM.search.value.toLowerCase().trim();
-            const filters = URLState.getFilters();
-            const selectedRarities = new Set(filters.rarities);
+            if (isLoading) return; // Don't filter while loading data
 
-            const filteredSkins = allSkins.filter(skin => {
-                if (searchTerm && !skin['함순이 이름'].toLowerCase().includes(searchTerm)) return false;
-                if (filters.ex && skin['ex_chat_status'] !== 1) return false;
-                if (!this._checkSkinType(skin, filters.type)) return false;
-                if (filters.faction !== 'all' && skin['진영'] !== filters.faction) return false;
-                if (!this._checkPeriod(skin, filters.period)) return false;
-                if (!this._checkTag(skin, filters.tag)) return false;
-                if (selectedRarities.size > 0 && !selectedRarities.has(skin['레어도'])) return false;
+            // Show visual feedback
+            showFilteringState();
 
-                return true;
+            // Use requestAnimationFrame for smooth UI update
+            requestAnimationFrame(() => {
+                const searchTerm = DOM.search.value.toLowerCase().trim();
+                const filters = URLState.getFilters();
+                const selectedRarities = new Set(filters.rarities);
+
+                const filteredSkins = allSkins.filter(skin => {
+                    if (searchTerm && !skin['함순이 이름'].toLowerCase().includes(searchTerm)) return false;
+                    if (filters.ex && skin['ex_chat_status'] !== 1) return false;
+                    if (!this._checkSkinType(skin, filters.type)) return false;
+                    if (filters.faction !== 'all' && skin['진영'] !== filters.faction) return false;
+                    if (!this._checkPeriod(skin, filters.period)) return false;
+                    if (!this._checkTag(skin, filters.tag)) return false;
+                    if (selectedRarities.size > 0 && !selectedRarities.has(skin['레어도'])) return false;
+
+                    return true;
+                });
+
+                Renderer.renderSections(filteredSkins);
+
+                // Hide visual feedback after render
+                requestAnimationFrame(() => hideFilteringState());
             });
-
-            Renderer.renderSections(filteredSkins);
         }
     };
 
@@ -245,23 +292,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? `<img src="assets/icon/60px-Ruby.png" class="gem-icon" alt="Gem"> ${skin['재화']}`
                 : 'N/A';
 
-            link.innerHTML = `
-                <div class="skin-box">
-                    <div class="skin-image-wrapper">
-                        ${skin.isSold ? '<div class="new-badge">판매중</div>' : ''}
-                        <img src="${skin['깔끔한 일러']}" class="skin-image" loading="lazy" alt="${skin['함순이 이름']}">
-                    </div>
-                    <div class="skin-info">
-                        <h3>${skin['함순이 이름']}</h3>
-                        <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
-                        <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
-                        <div class="info-line"><strong>진영:</strong> ${skin['진영'] || '없음'}</div>
-                        <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
-                        <div class="info-line"><strong>가격:</strong> ${costHtml}</div>
-                        <div class="info-line"><strong>기간:</strong> ${skin['기간'] || '정보 없음'}</div>
-                    </div>
-                </div>
+            // Create image element with error handling
+            const skinBox = document.createElement('div');
+            skinBox.className = 'skin-box';
+
+            const imageWrapper = document.createElement('div');
+            imageWrapper.className = 'skin-image-wrapper';
+
+            if (skin.isSold) {
+                const badge = document.createElement('div');
+                badge.className = 'new-badge';
+                badge.textContent = '판매중';
+                imageWrapper.appendChild(badge);
+            }
+
+            const img = document.createElement('img');
+            img.src = skin['깔끔한 일러'];
+            img.className = 'skin-image';
+            img.loading = 'lazy';
+            img.alt = skin['함순이 이름'];
+            // Add error handling for images
+            img.addEventListener('error', () => {
+                img.style.opacity = '0.3';
+                img.alt = '이미지를 불러올 수 없습니다';
+            }, { once: true });
+
+            imageWrapper.appendChild(img);
+            skinBox.appendChild(imageWrapper);
+
+            const skinInfo = document.createElement('div');
+            skinInfo.className = 'skin-info';
+            skinInfo.innerHTML = `
+                <h3>${skin['함순이 이름']}</h3>
+                <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
+                <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
+                <div class="info-line"><strong>진영:</strong> ${skin['진영'] || '없음'}</div>
+                <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
+                <div class="info-line"><strong>가격:</strong> ${costHtml}</div>
+                <div class="info-line"><strong>기간:</strong> ${skin['기간'] || '정보 없음'}</div>
             `;
+
+            skinBox.appendChild(skinInfo);
+            link.appendChild(skinBox);
 
             return link;
         },
@@ -269,28 +341,28 @@ document.addEventListener('DOMContentLoaded', () => {
         _isSkinCurrentlySold(skin) {
             const period = skin['기간'];
             if (!period) return false;
-            
+
             // Permanent skins are always sold
             if (period === '상시') return true;
-            
+
             // Extract date from "한정 (YYYY/MM/DD)" format
             const dateMatch = period.match(/(\d{4})\/(\d{2})\/(\d{2})/);
             if (!dateMatch) return false;
-            
+
             const [_, year, month, day] = dateMatch;
             const skinDate = new Date(year, month - 1, day);
             const today = new Date();
             today.setHours(0, 0, 0, 0);
-            
+
             // Check if skin date is today or in the future
             return skinDate >= today;
         },
 
         _categorizeSkin(skin) {
             skin.isSold = this._isSkinCurrentlySold(skin);
-            
+
             if (skin.isSold && skin['기간']?.includes('한정')) return 'new';
-            
+
             const period = skin['기간'];
             if (period?.includes('한정')) return 'limited';
             if (period === '상시') return 'permanent';
@@ -328,14 +400,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const EventHandlers = {
         handleSearch() {
             const searchTerm = DOM.search.value;
-            
+
             if (fuse && searchTerm.trim()) {
                 const results = fuse.search(searchTerm);
                 Autocomplete.render(results);
             } else {
                 Autocomplete.close();
             }
-            
+
             debouncedFilterUpdate();
         },
 
@@ -346,8 +418,9 @@ document.addEventListener('DOMContentLoaded', () => {
             DOM.filters.faction.value = 'all';
             DOM.filters.tag.value = 'all';
             DOM.filters.exDialogue.checked = false;
-            DOM.filters.rarities.querySelectorAll('input').forEach(cb => cb.checked = true);
-            
+            // Use cached checkboxes
+            cachedRarityCheckboxes.forEach(cb => cb.checked = true);
+
             FilterEngine.apply();
             URLState.update();
         },
@@ -370,23 +443,9 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleFilters() {
             DOM.filterContainer.classList.toggle('visible');
             DOM.buttons.filterToggle.classList.toggle('active');
-        },
-
-        scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        },
-
-        handleScroll() {
-            const scrollThreshold = 300;
-            if (window.scrollY > scrollThreshold) {
-                DOM.buttons.scrollToTop.classList.add('visible');
-            } else {
-                DOM.buttons.scrollToTop.classList.remove('visible');
-            }
         }
+
+        // scrollToTop and handleScroll are now handled globally by nav.script.js
     };
 
     // === DEBOUNCED/THROTTLED FUNCTIONS ===
@@ -395,13 +454,37 @@ document.addEventListener('DOMContentLoaded', () => {
         URLState.update();
     }, DEBOUNCE_DELAY);
 
-    const throttledScrollHandler = throttle(EventHandlers.handleScroll, 100);
-
     // === DATA INITIALIZATION ===
+    const showLoadingState = () => {
+        isLoading = true;
+        allSkinContainers.forEach(container => {
+            container.innerHTML = '<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">데이터 불러오는 중...</p>';
+        });
+    };
+
+    const showErrorState = (error) => {
+        isLoading = false;
+        allSkinContainers.forEach(container => {
+            container.innerHTML = `
+                <p style="text-align: center; padding: 2rem; color: #f04747;">
+                    데이터를 불러오는데 실패했습니다.<br>
+                    <small style="color: var(--text-muted);">${error.message || 'Unknown error'}</small>
+                </p>
+            `;
+        });
+        console.error("Failed to load data:", error);
+    };
+
+    showLoadingState();
+
     fetch('data/skin/skin_voiceline_data_subset.json')
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+            return res.json();
+        })
         .then(skinJson => {
             allSkins = skinJson;
+            isLoading = false;
 
             const uniqueShipNames = [...new Set(allSkins.map(skin => skin['함순이 이름']))].sort();
             fuse = new Fuse(uniqueShipNames.map(name => ({ name })), fuseOptions);
@@ -409,8 +492,44 @@ document.addEventListener('DOMContentLoaded', () => {
             URLState.apply();
         })
         .catch(error => {
-            console.error("Failed to load data:", error);
+            showErrorState(error);
         });
+
+    // === CLEANUP METHOD ===
+    const cleanup = () => {
+        // Clear all active timers
+        clearTimeout(activeTimers.debounce);
+        clearTimeout(activeTimers.throttle);
+        clearTimeout(activeTimers.progressBar);
+        activeTimers.debounce = null;
+        activeTimers.throttle = null;
+        activeTimers.progressBar = null;
+
+        // Remove event listeners
+        DOM.search.removeEventListener('input', EventHandlers.handleSearch);
+        [DOM.filters.skinType, DOM.filters.period, DOM.filters.faction, DOM.filters.tag, DOM.filters.exDialogue]
+            .forEach(el => el.removeEventListener('change', EventHandlers.handleFilterChange));
+        cachedRarityCheckboxes.forEach(cb => cb.removeEventListener('change', EventHandlers.handleFilterChange));
+        DOM.buttons.clearAll.removeEventListener('click', EventHandlers.resetFilters);
+        DOM.buttons.info.removeEventListener('click', EventHandlers.openPopup);
+        DOM.buttons.filterToggle.removeEventListener('click', EventHandlers.toggleFilters);
+        DOM.popup.closeBtn.removeEventListener('click', EventHandlers.closePopup);
+        window.removeEventListener('popstate', URLState.apply);
+        // scrollToTop event listeners handled globally by nav.script.js
+
+        // Close autocomplete
+        Autocomplete.close();
+
+        // Hide progress bar
+        if (DOM.progressBar) {
+            DOM.progressBar.classList.remove('visible');
+        }
+
+        console.log('Skin list viewer cleaned up successfully');
+    };
+
+    // Expose cleanup method for external use (e.g., before page navigation)
+    window.skinListViewerCleanup = cleanup;
 
     // === EVENT LISTENERS ===
     DOM.search.addEventListener('input', EventHandlers.handleSearch);
@@ -418,14 +537,14 @@ document.addEventListener('DOMContentLoaded', () => {
     [DOM.filters.skinType, DOM.filters.period, DOM.filters.faction, DOM.filters.tag, DOM.filters.exDialogue]
         .forEach(el => el.addEventListener('change', EventHandlers.handleFilterChange));
 
-    DOM.filters.rarities.querySelectorAll('input')
+    cachedRarityCheckboxes
         .forEach(cb => cb.addEventListener('change', EventHandlers.handleFilterChange));
 
     DOM.buttons.clearAll.addEventListener('click', EventHandlers.resetFilters);
     DOM.buttons.info.addEventListener('click', EventHandlers.openPopup);
     DOM.buttons.filterToggle.addEventListener('click', EventHandlers.toggleFilters);
-    DOM.buttons.scrollToTop.addEventListener('click', EventHandlers.scrollToTop);
     DOM.popup.closeBtn.addEventListener('click', EventHandlers.closePopup);
+    // scrollToTop handled globally by nav.script.js
 
     DOM.popup.container.addEventListener('click', (event) => {
         if (event.target === DOM.popup.container) EventHandlers.closePopup();
@@ -435,6 +554,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!DOM.search.parentNode.contains(e.target)) Autocomplete.close();
     });
 
-    window.addEventListener('scroll', throttledScrollHandler);
     window.addEventListener('popstate', URLState.apply);
+    // scroll event listener for scrollToTop handled globally by nav.script.js
 });

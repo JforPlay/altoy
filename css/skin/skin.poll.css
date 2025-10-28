@@ -1,77 +1,77 @@
-/* ====================================
-   GLOBAL STYLES & RESET
-   ==================================== */
+/* =================================================================
+   Skin Poll (Page-Specific Styles)
+   Requires: css/skin/skin.common.css
+   ================================================================= */
 
-body {
-  background-color: #36393f;
-  font-family: sans-serif;
-  color: #dcddde;
-  margin: 0;
-  padding: 0 20px;
-}
-
-body.no-scroll {
-  overflow: hidden;
-}
-
-/* ====================================
-   PAGE HEADER
-   ==================================== */
-
+/* --- Page Header --- */
 .page-header {
   text-align: center;
-  margin: 40px 0 30px 0;
-  padding: 0 20px 20px 20px;
-  border-bottom: 2px solid #40444b;
+  margin: 2.5rem 0 1.875rem 0;
+  padding: 0 1.25rem 1.25rem 1.25rem;
+  border-bottom: 2px solid var(--bg-input);
 }
 
 .page-title {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  margin: 0 0 15px 0;
+  gap: 0.625rem;
+  margin: 0 0 0.9375rem 0;
 }
 
-#info-button {
-  font-size: 0.7em;
-  color: #7289da;
-  cursor: pointer;
-  transition: color 0.2s ease;
+/* --- Filter Elements Alignment --- */
+/* Ensure all filter elements have the same height */
+.filter-group select,
+.filter-group .dropdown-container input,
+.filter-group .checkbox-group,
+.filter-group .reset-button {
+  min-height: 3rem;
+  box-sizing: border-box;
 }
 
-#info-button:hover {
-  color: #a3b8f7;
+.filter-group select {
+  padding: 0.75rem var(--spacing-sm);
 }
 
-/* Status Row (Indicator + Refresh Button) */
+.filter-group .checkbox-group {
+  padding: 0.75rem var(--spacing-sm);
+  display: flex;
+  align-items: center;
+}
+
+.filter-group .reset-button {
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+/* --- Status Row (Indicator + Refresh Button) --- */
 .header-status-row {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 0.625rem;
   flex-wrap: wrap;
 }
 
-/* ====================================
-   DATA AGE INDICATOR
-   ==================================== */
-
+/* --- Data Age Indicator --- */
 .data-age-indicator {
   font-size: 0.9em;
   margin: 0;
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   background-color: rgba(47, 49, 54, 0.5);
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   display: inline-flex;
   align-items: center;
-  height: 36px;
+  height: 2.25rem;
   box-sizing: border-box;
   transition: all 0.3s ease;
 }
 
 .data-age-indicator i {
-  margin-right: 8px;
+  margin-right: 0.5rem;
 }
 
 /* Error state animation */
@@ -89,25 +89,22 @@ body.no-scroll {
   animation: pulse-error 2s ease-in-out infinite;
 }
 
-/* ====================================
-   REFRESH BUTTON (Compact)
-   ==================================== */
-
+/* --- Refresh Button (Compact) --- */
 .refresh-button-compact {
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   font-size: 0.9em;
   font-weight: bold;
-  color: #ffffff;
-  background-color: #27ae60;
+  color: var(--text-primary);
+  background-color: var(--success-color);
   border: 2px solid #229954;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-fast);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  height: 36px;
+  gap: 0.375rem;
+  height: 2.25rem;
   min-width: auto;
   white-space: nowrap;
   box-sizing: border-box;
@@ -115,8 +112,8 @@ body.no-scroll {
 
 .refresh-button-compact:hover:not(:disabled) {
   background-color: #229954;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+  transform: translateY(-0.0625rem);
+  box-shadow: 0 2px 0.5rem rgba(39, 174, 96, 0.3);
 }
 
 .refresh-button-compact:disabled {
@@ -146,81 +143,7 @@ body.no-scroll {
   }
 }
 
-/* ====================================
-   POPUP STYLES (Info & Image)
-   ==================================== */
-
-/* Info Popup */
-#info-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-#info-popup.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.info-popup-content {
-  background-color: #2f3136;
-  border: 1px solid #4f545c;
-  border-radius: 8px;
-  padding: 25px 30px;
-  max-width: 600px;
-  width: 90%;
-  position: relative;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
-  text-align: center;
-}
-
-.info-popup-content p {
-  margin: 0;
-  line-height: 1.6;
-  font-size: 1em;
-  color: #b9bbbe;
-}
-
-.info-popup-content strong {
-  color: #ffffff;
-  font-size: 1.2em;
-  display: block;
-  margin-bottom: 10px;
-}
-
-.info-popup-content .warning-text {
-  color: #ffcc00;
-  font-weight: bold;
-}
-
-.close-popup-btn {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 2em;
-  color: #b9bbbe;
-  cursor: pointer;
-  line-height: 1;
-  transition: color 0.2s ease;
-}
-
-.close-popup-btn:hover {
-  color: #ffffff;
-}
-
-/* Image Popup */
+/* --- Image Popup (Poll Specific) --- */
 #image-popup {
   position: fixed;
   top: 0;
@@ -234,7 +157,7 @@ body.no-scroll {
   align-items: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
 }
 
 #image-popup.visible {
@@ -255,43 +178,43 @@ body.no-scroll {
   max-width: 100%;
   max-height: 80vh;
   object-fit: contain;
-  border-radius: 8px;
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xl);
 }
 
 .popup-skin-info {
-  margin-top: 15px;
+  margin-top: 0.9375rem;
   text-align: center;
-  color: #ffffff;
+  color: var(--text-primary);
   background-color: rgba(47, 49, 54, 0.95);
-  padding: 12px 20px;
-  border-radius: 8px;
-  max-width: 600px;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  max-width: 37.5rem;
 }
 
 .popup-skin-info .popup-skin-name {
   font-size: 1.3em;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem;
 }
 
 .popup-skin-info .popup-char-name {
   font-size: 1em;
-  color: #b9bbbe;
+  color: var(--text-muted);
 }
 
 .close-image-popup-btn {
   position: absolute;
-  top: -40px;
+  top: -2.5rem;
   right: 0;
   background: none;
   border: none;
   font-size: 3em;
-  color: #ffffff;
+  color: var(--text-primary);
   cursor: pointer;
   line-height: 1;
-  transition: color 0.2s ease, transform 0.2s ease;
-  text-shadow: 0px 2px 8px rgba(0, 0, 0, 0.8);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  text-shadow: 0 2px 0.5rem rgba(0, 0, 0, 0.8);
 }
 
 .close-image-popup-btn:hover {
@@ -299,57 +222,54 @@ body.no-scroll {
   transform: scale(1.1);
 }
 
-/* ====================================
-   LEADERBOARD
-   ==================================== */
-
+/* --- Leaderboard --- */
 .leaderboard-section {
-  max-width: 800px;
-  margin: 0 auto 30px auto;
-  padding: 0 20px;
+  max-width: 50rem;
+  margin: 0 auto 1.875rem auto;
+  padding: 0 1.25rem;
 }
 
 .leaderboard-toggle {
   width: 100%;
-  padding: 12px 20px;
+  padding: 0.75rem 1.25rem;
   font-size: 1.1em;
   font-weight: bold;
-  color: #ffffff;
-  background-color: #7289da;
+  color: var(--text-primary);
+  background-color: var(--primary-color);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color var(--transition-fast);
   text-align: center;
 }
 
 .leaderboard-toggle:hover {
-  background-color: #677bc4;
+  background-color: var(--primary-hover);
 }
 
 .leaderboard-content {
   max-height: 0;
   overflow: hidden;
-  background-color: #2f3136;
-  border-radius: 0 0 8px 8px;
+  background-color: var(--bg-secondary);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
   transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
-  padding: 0 20px;
+  padding: 0 1.25rem;
 }
 
 .leaderboard-content.visible {
-  max-height: 1000px;
-  padding: 15px 20px;
-  border: 1px solid #4f545c;
+  max-height: 62.5rem;
+  padding: 0.9375rem 1.25rem;
+  border: 1px solid var(--border-color);
   border-top: none;
 }
 
 .leaderboard-item {
   display: grid;
-  grid-template-columns: 30px 50px 1fr auto;
-  gap: 15px;
+  grid-template-columns: 1.875rem 3.125rem 1fr auto;
+  gap: 0.9375rem;
   align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid #40444b;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--bg-input);
 }
 
 .leaderboard-item:last-child {
@@ -359,27 +279,27 @@ body.no-scroll {
 .leaderboard-rank {
   font-size: 1.1em;
   font-weight: bold;
-  color: #b9bbbe;
+  color: var(--text-muted);
   text-align: center;
 }
 
 .leaderboard-image {
-  width: 50px;
-  height: 65px;
+  width: 3.125rem;
+  height: 4.0625rem;
   object-fit: cover;
-  border-radius: 4px;
-  background-color: #202225;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-tertiary);
 }
 
 .leaderboard-details .skin-name {
   font-size: 1em;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .leaderboard-details .char-name {
   font-size: 0.8em;
-  color: #b9bbbe;
+  color: var(--text-muted);
 }
 
 .leaderboard-score {
@@ -397,181 +317,19 @@ body.no-scroll {
   color: #8e9297;
 }
 
-/* ====================================
-   FILTER SECTION
-   ==================================== */
-
-/* Filter Toggle Button (Mobile) */
-.filter-toggle-btn {
-  display: none;
-  background-color: #5865f2;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  padding: 12px 20px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin: 20px auto;
-  width: calc(100% - 40px);
-  max-width: 400px;
-}
-
-.filter-toggle-btn:hover {
-  background-color: #4752c4;
-}
-
-.filter-toggle-btn i {
-  margin-left: 8px;
-  transition: transform 0.3s ease;
-}
-
-.filter-toggle-btn.active i {
-  transform: rotate(180deg);
-}
-
-/* Filter Container */
-.filter-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 20px;
-  padding: 20px;
-  background-color: #2f3136;
-  border-radius: 8px;
-  margin: 0 20px 30px 20px;
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.filter-group label {
-  font-weight: bold;
-  color: #ffffff;
-}
-
-.filter-group select {
-  font-size: 1em;
-  padding: 8px;
-  border-radius: 5px;
-  border: 2px solid #2f3136;
-  background-color: #40444b;
-  color: #dcddde;
-}
-
-/* Dropdown (Character Search) */
-.dropdown-container {
-  position: relative;
-  width: 100%;
-  min-width: 200px;
-}
-
-.dropdown-container input {
-  font-size: 1em;
-  padding: 8px 12px;
-  border-radius: 5px;
-  border: 2px solid #2f3136;
-  background-color: #40444b;
-  color: #dcddde;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.dropdown-container input:focus {
-  outline: none;
-  border-color: #7289da;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #40444b;
-  width: 100%;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 10;
-  max-height: 250px;
-  overflow-y: auto;
-  border: 1px solid #2f3136;
-  border-radius: 5px;
-  margin-top: 4px;
-}
-
-.dropdown-content a {
-  color: #dcddde;
-  padding: 10px 12px;
-  text-decoration: none;
-  display: block;
-  cursor: pointer;
-}
-
-.dropdown-content a:hover {
-  background-color: #7289da;
-  color: #ffffff;
-}
-
-.dropdown-content .no-results {
-  color: #8e9297;
-  padding: 10px 12px;
-  font-style: italic;
-  text-align: center;
-}
-
-/* Checkbox Group (Rarity Filter) */
-.checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  background-color: #40444b;
-  padding: 8px 12px;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-.checkbox-group label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-weight: normal;
-  cursor: pointer;
-}
-
-/* Reset Button */
-.reset-button {
-  padding: 8px 16px;
-  font-size: 1em;
-  font-weight: bold;
-  color: #dcddde;
-  background-color: #4f545c;
-  border: 2px solid #2f3136;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.reset-button:hover {
-  background-color: #5d636d;
-}
-
-/* ====================================
-   POLL CONTAINER & CARDS
-   ==================================== */
-
+/* --- Poll Container & Cards --- */
 .poll-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 15px;
-  padding: 0 20px 20px 20px;
+  grid-template-columns: repeat(auto-fill, minmax(11.25rem, 1fr));
+  gap: 0.9375rem;
+  padding: 0 1.25rem 1.25rem 1.25rem;
 }
 
 .poll-box {
-  background-color: #2f3136;
-  border-radius: 6px;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-sm);
   overflow: hidden;
-  border: 1px solid #40444b;
+  border: 1px solid var(--bg-input);
   display: flex;
   flex-direction: column;
 }
@@ -581,9 +339,10 @@ body.no-scroll {
   width: 100%;
   aspect-ratio: 3 / 4;
   object-fit: contain;
-  background-color: #202225;
+  background-color: var(--bg-tertiary);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .poll-image:hover {
@@ -593,15 +352,15 @@ body.no-scroll {
 
 /* Poll Info Section */
 .poll-info {
-  padding: 10px;
+  padding: 0.625rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
 .poll-info h3 {
-  margin: 0 0 3px 0;
-  color: #ffffff;
+  margin: 0 0 0.1875rem 0;
+  color: var(--text-primary);
   font-size: 0.95em;
   white-space: nowrap;
   overflow: hidden;
@@ -610,13 +369,13 @@ body.no-scroll {
 
 .poll-info .character-name {
   font-size: 0.75em;
-  color: #b9bbbe;
-  margin-bottom: 6px;
+  color: var(--text-muted);
+  margin-bottom: 0.375rem;
 }
 
 .info-line {
   font-size: 0.75em;
-  color: #b9bbbe;
+  color: var(--text-muted);
 }
 
 .info-line strong {
@@ -624,25 +383,22 @@ body.no-scroll {
 }
 
 .info-line:last-of-type {
-  margin-bottom: 6px;
+  margin-bottom: 0.375rem;
 }
 
-/* ====================================
-   RATING & VOTING AREA
-   ==================================== */
-
+/* --- Rating & Voting Area --- */
 .rating-area {
-  margin-top: 6px;
-  border-top: 1px solid #40444b;
-  padding-top: 8px;
+  margin-top: 0.375rem;
+  border-top: 1px solid var(--bg-input);
+  padding-top: 0.5rem;
 }
 
 .vote-widget {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 3px;
+  gap: 0.375rem;
+  margin-bottom: 0.1875rem;
 }
 
 .vote-label {
@@ -668,7 +424,7 @@ body.no-scroll {
   font-size: 1.5em;
   color: #444;
   cursor: pointer;
-  transition: color 0.2s, text-shadow 0.2s;
+  transition: color var(--transition-fast), text-shadow var(--transition-fast);
 }
 
 .star-rating:not(.voted):hover label:hover,
@@ -689,10 +445,10 @@ body.no-scroll {
   text-align: center;
   font-size: 0.7em;
   color: #4caf50;
-  margin-top: 3px;
+  margin-top: 0.1875rem;
   height: 0;
   opacity: 0;
-  transition: all 0.3s;
+  transition: all var(--transition-base);
 }
 
 .rating-area.pending-vote .confirm-vote-message {
@@ -733,12 +489,9 @@ body.no-scroll {
   animation: pop-effect 0.3s ease-in-out;
 }
 
-/* ====================================
-   POLL RESULTS & SCORE BAR
-   ==================================== */
-
+/* --- Poll Results & Score Bar --- */
 .poll-results {
-  margin-top: 6px;
+  margin-top: 0.375rem;
   text-align: center;
 }
 
@@ -748,7 +501,7 @@ body.no-scroll {
   font-size: 1.2em;
   line-height: 1;
   color: #444;
-  margin-bottom: 3px;
+  margin-bottom: 0.1875rem;
 }
 
 .score-bar-foreground {
@@ -762,87 +515,57 @@ body.no-scroll {
 
 .score-bar-text {
   font-size: 0.85em;
-  color: #b9bbbe;
+  color: var(--text-muted);
 }
 
 .score-bar-text strong {
   font-size: 1.05em;
-  color: #ffffff;
+  color: var(--text-primary);
   font-weight: bold;
 }
 
-/* ====================================
-   LOADING & EMPTY STATES
-   ==================================== */
-
+/* --- Loading & Empty States --- */
 .loading-indicator,
 .no-results {
-  color: #b9bbbe;
+  color: var(--text-muted);
   text-align: center;
   grid-column: 1 / -1;
   font-size: 1.2em;
-  padding: 40px;
+  padding: 2.5rem;
 }
 
-/* Skeleton Loader */
-.skeleton-card {
-  background-color: #2f3136;
-  border-radius: 6px;
-  border: 1px solid #40444b;
-  display: flex;
-  flex-direction: column;
-}
-
-.skeleton-element {
-  background: linear-gradient(90deg, #40444b 25%, #4f545c 50%, #40444b 75%);
-  background-size: 200% 100%;
-  border-radius: 4px;
-  animation: shimmer 1.5s infinite linear;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-
+/* Skeleton Loader (Poll Specific) */
 .skeleton-card .skeleton-image {
   width: 100%;
   aspect-ratio: 3 / 4;
-  border-radius: 6px 6px 0 0;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
 }
 
 .skeleton-card .skeleton-info {
-  padding: 10px;
+  padding: 0.625rem;
 }
 
 .skeleton-card .skeleton-line {
   height: 0.9em;
-  margin-bottom: 6px;
+  margin-bottom: 0.375rem;
 }
 
 .skeleton-card .skeleton-line.short {
   width: 60%;
 }
 
-/* ====================================
-   NOTIFICATIONS
-   ==================================== */
-
+/* --- Notifications --- */
 .notification {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 15px 20px;
-  border-radius: 8px;
+  top: 1.25rem;
+  right: 1.25rem;
+  padding: 0.9375rem 1.25rem;
+  border-radius: var(--radius-md);
   font-size: 1em;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--text-primary);
   z-index: 2000;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-lg);
   animation: slideIn 0.3s ease-out forwards;
 }
 
@@ -851,7 +574,7 @@ body.no-scroll {
 }
 
 .notification-success {
-  background-color: #27ae60;
+  background-color: var(--success-color);
 }
 
 .notification-error {
@@ -864,7 +587,7 @@ body.no-scroll {
 
 @keyframes slideIn {
   from {
-    transform: translateX(400px);
+    transform: translateX(25rem);
     opacity: 0;
   }
   to {
@@ -879,48 +602,44 @@ body.no-scroll {
     opacity: 1;
   }
   to {
-    transform: translateX(400px);
+    transform: translateX(25rem);
     opacity: 0;
   }
 }
 
-/* ====================================
-   RESPONSIVE DESIGN (Mobile)
-   ==================================== */
-
+/* --- Responsive Design (Mobile) --- */
 @media (max-width: 768px) {
-  /* Body & Header */
   body {
-    padding: 0 10px;
+    padding: 0 0.625rem;
   }
 
   .page-header {
-    margin-top: 20px;
-    padding-bottom: 15px;
-    padding-left: 10px;
-    padding-right: 10px;
+    margin-top: 1.25rem;
+    padding-bottom: 0.9375rem;
+    padding-left: 0.625rem;
+    padding-right: 0.625rem;
   }
 
   .page-title {
     font-size: 1.3em;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
   }
 
   /* Status Row */
   .header-status-row {
-    gap: 8px;
+    gap: 0.5rem;
   }
 
   .data-age-indicator {
     font-size: 0.85em;
-    padding: 6px 12px;
-    height: 32px;
+    padding: 0.375rem 0.75rem;
+    height: 2rem;
   }
 
   .refresh-button-compact {
-    padding: 6px 12px;
+    padding: 0.375rem 0.75rem;
     font-size: 0.85em;
-    height: 32px;
+    height: 2rem;
   }
 
   .refresh-button-compact i {
@@ -929,18 +648,18 @@ body.no-scroll {
 
   /* Leaderboard */
   .leaderboard-section {
-    padding: 0 10px;
+    padding: 0 0.625rem;
   }
 
   .leaderboard-toggle {
     font-size: 1em;
-    padding: 10px 16px;
+    padding: 0.625rem 1rem;
   }
 
   .leaderboard-item {
-    grid-template-columns: 25px 45px 1fr auto;
-    gap: 10px;
-    padding: 6px 0;
+    grid-template-columns: 1.5625rem 2.8125rem 1fr auto;
+    gap: 0.625rem;
+    padding: 0.375rem 0;
   }
 
   .leaderboard-rank {
@@ -948,8 +667,8 @@ body.no-scroll {
   }
 
   .leaderboard-image {
-    width: 45px;
-    height: 58px;
+    width: 2.8125rem;
+    height: 3.625rem;
   }
 
   .leaderboard-details .skin-name {
@@ -968,41 +687,11 @@ body.no-scroll {
     font-size: 0.7em;
   }
 
-  /* Filters */
-  .filter-toggle-btn {
-    display: block;
-  }
-
-  .filter-container {
-    display: none;
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px;
-    margin: 10px 10px 20px 10px;
-  }
-
-  .filter-container.visible {
-    display: flex;
-  }
-
-  .filter-group {
-    width: 100%;
-  }
-
-  .filter-group select {
-    width: 100%;
-  }
-
-  .checkbox-group {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
   /* Poll Grid - 2 columns on mobile */
   .poll-container {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 0 10px 20px 10px;
+    gap: 0.625rem;
+    padding: 0 0.625rem 1.25rem 0.625rem;
   }
 
   /* Poll Cards */
@@ -1011,17 +700,17 @@ body.no-scroll {
   }
 
   .poll-info {
-    padding: 8px;
+    padding: 0.5rem;
   }
 
   .poll-info h3 {
     font-size: 0.9em;
-    margin-bottom: 3px;
+    margin-bottom: 0.1875rem;
   }
 
   .poll-info .character-name {
     font-size: 0.8em;
-    margin-bottom: 6px;
+    margin-bottom: 0.375rem;
   }
 
   .info-line {
@@ -1031,8 +720,8 @@ body.no-scroll {
 
   /* Voting Interface */
   .vote-widget {
-    gap: 4px;
-    margin-bottom: 2px;
+    gap: 0.25rem;
+    margin-bottom: 0.125rem;
   }
 
   .vote-label {
@@ -1070,8 +759,8 @@ body.no-scroll {
   }
 
   .popup-skin-info {
-    padding: 10px 15px;
-    margin-top: 10px;
+    padding: 0.625rem 0.9375rem;
+    margin-top: 0.625rem;
   }
 
   .popup-skin-info .popup-skin-name {
@@ -1083,16 +772,36 @@ body.no-scroll {
   }
 
   .close-image-popup-btn {
-    top: -35px;
+    top: -2.1875rem;
     font-size: 2.5em;
   }
 
   /* Notifications */
   .notification {
-    top: 10px;
-    right: 10px;
-    left: 10px;
-    padding: 12px 16px;
+    top: 0.625rem;
+    right: 0.625rem;
+    left: 0.625rem;
+    padding: 0.75rem 1rem;
     font-size: 0.9em;
+  }
+
+  /* Filter elements maintain height on mobile */
+  .filter-group select,
+  .filter-group .dropdown-container input,
+  .filter-group .checkbox-group,
+  .filter-group .reset-button {
+    min-height: 2.5rem;
+  }
+
+  .filter-group select {
+    padding: 0.5rem var(--spacing-xs);
+  }
+
+  .filter-group .checkbox-group {
+    padding: 0.5rem var(--spacing-xs);
+  }
+
+  .filter-group .reset-button {
+    padding: 0.5rem 1rem;
   }
 }
