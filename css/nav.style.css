@@ -1,4 +1,22 @@
 /* ==========================================================================
+   NAVIGATION SYSTEM - GLOBAL STYLES
+   ==========================================================================
+
+   This stylesheet provides global navigation and utility components:
+   - Responsive navbar with mega menus
+   - Theme toggle (light/dark mode)
+   - Mobile hamburger menu
+   - Scroll-to-top button
+   - Info popups and modals
+   - Search dropdowns (Fuse.js powered)
+   - Step components (instruction/info)
+   - Warning/alert boxes
+
+   Note: Some pages override these styles (mainpage.style.css, event-timeline.css)
+   Be careful when changing selectors or cascade order.
+   ========================================================================== */
+
+/* ==========================================================================
    1. BASE & THEME VARIABLES
    ========================================================================== */
 
@@ -159,7 +177,9 @@ body:not(.dark-mode) {
   overflow: hidden;
 }
 
-/* Desktop only hover behavior */
+/* Desktop only hover behavior
+   On desktop (>768px): Mega menus open on hover
+   On mobile (≤768px): Mega menus become accordions (click to toggle) */
 @media screen and (min-width: 769px) {
   .mega-dropdown:hover .mega-menu {
     opacity: 1;
@@ -322,7 +342,9 @@ body:not(.dark-mode) {
   color: #2a2a2a;
 }
 
-/* Theme Toggle Button */
+/* Theme Toggle Button
+   Switches between light and dark mode
+   Theme preference is saved to localStorage via nav.script.js */
 .nav-actions {
   display: flex;
   align-items: center;
@@ -385,7 +407,9 @@ body.dark-mode .theme-icon-moon {
    6. MOBILE & RESPONSIVE STYLES
    ========================================================================== */
 
-/* Hamburger Menu Icon (visible on mobile) */
+/* Hamburger Menu Icon (visible on mobile ≤768px)
+   Toggles navigation menu visibility
+   Animated rotation when active (90deg) */
 .menu-icon {
   display: none;
   cursor: pointer;
@@ -404,7 +428,12 @@ body.dark-mode .theme-icon-moon {
   transform: rotate(90deg);
 }
 
-/* Responsive Styles */
+/* Mobile Responsive Styles (≤768px)
+   Key behaviors:
+   - Navbar uses flexbox with flex-wrap to stack menu below
+   - Hamburger icon appears (order: logo → theme → hamburger → menu)
+   - Mega menus become accordions (click to expand/collapse)
+   - Navigation menu uses max-height transition for smooth animation */
 @media screen and (max-width: 768px) {
   .navbar {
     padding: 0.75rem 1rem;
@@ -549,4 +578,613 @@ body.dark-mode .theme-icon-moon {
   text-align: center;
   padding: 1rem 0;
   margin-top: 4rem;
+}
+
+/* ==========================================================================
+   8. GLOBAL UTILITY COMPONENTS
+   ==========================================================================
+
+   These components are available globally across all pages.
+   Usage: Simply add the HTML structure and functionality is automatic.
+   Styling is consistent but can be overridden in page-specific CSS.
+   ========================================================================== */
+
+/* --- Scroll to Top Button ---
+   Usage: Add button with .scroll-to-top class to any page
+   Auto-shows when scrolled >300px (handled by nav.script.js)
+   Note: Some pages override this (event-timeline.css) */
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+  background: linear-gradient(135deg, #7289da, #43b581);
+  color: white;
+  border: none;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(100px);
+}
+
+.scroll-to-top:not(.hidden),
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.5);
+}
+
+.scroll-to-top:active {
+  transform: translateY(-2px);
+}
+
+.scroll-to-top i {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-to-top:hover i {
+  transform: translateY(-3px);
+}
+
+/* Let the scroll-to-top button animate instead of disappearing */
+.scroll-to-top.hidden {
+  /* cancel the global .hidden display:none for this component only */
+  display: flex !important;
+
+  /* animate to the "hidden" state instead of popping out */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(100px);
+  pointer-events: none; /* prevents clicks while hidden */
+}
+
+/* Optional: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-to-top {
+    transition: none;
+  }
+}
+
+/* --- Info Button ---
+   Usage: <button class="info-button"><i class="material-symbols-outlined">info</i></button>
+   Inline variant: Add .info-button-inline for smaller buttons in page titles */
+#info-button,
+.info-button {
+  background: none;
+  border: none;
+  color: #7289da;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inline variant for smaller buttons in page titles */
+.info-button-inline {
+  font-size: 0.7em;
+  padding: 0.25rem;
+}
+
+#info-button:hover,
+.info-button:hover {
+  color: #8ea1e1;
+  background: rgba(114, 137, 218, 0.1);
+  transform: scale(1.1) rotate(15deg);
+}
+
+#info-button:focus,
+.info-button:focus {
+  outline: 2px solid #7289da;
+  outline-offset: 2px;
+}
+
+/* --- Info Popup (Modal) ---
+   Usage: Create overlay with .info-popup, add .visible class to show
+   Contains .info-popup-content with .popup-header and .popup-body
+   Used for help dialogs, instructions, and feature explanations */
+#info-popup,
+.info-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#info-popup.visible,
+.info-popup.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.info-popup-content {
+  background: #2f3136;
+  border: 1px solid #4f545c;
+  border-radius: 1rem;
+  max-width: 37.5rem;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.5);
+  animation: popup-scale-in 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+@keyframes popup-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #4f545c;
+  background: linear-gradient(135deg, #202225 0%, #2f3136 100%);
+  border-radius: 1rem 1rem 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.popup-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #8ea1e1;
+}
+
+.close-popup-btn {
+  background: #3d4148;
+  border: 1px solid #4f545c;
+  color: #b9bbbe;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+.close-popup-btn:hover {
+  color: #ffffff;
+  background: #f04747;
+  border-color: #f04747;
+  transform: rotate(90deg);
+}
+
+.popup-body {
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.info-popup-content p {
+  margin: 0 0 0.75rem 0;
+  line-height: 1.6;
+  color: #b9bbbe;
+}
+
+.info-popup-content strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* --- Dropdown Container (for Fuse.js search) ---
+   Usage: Wrap search input in .dropdown-container
+   Results shown in .dropdown-content with fuzzy match highlighting
+   Fuse.js must be loaded globally (via default.html) */
+.dropdown-container {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-container input {
+  font-size: 1rem;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  border: 2px solid #4f545c;
+  background-color: #3d4148;
+  color: #dcddde;
+  border-radius: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+}
+
+.dropdown-container input:hover {
+  border-color: #5c6067;
+  background-color: #2f3136;
+}
+
+.dropdown-container input:focus {
+  outline: none;
+  border-color: #7289da;
+  box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.2);
+  transform: translateY(-1px);
+}
+
+.dropdown-container input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dropdown-container input::placeholder {
+  color: #8e9297;
+}
+
+.dropdown-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b9bbbe;
+  pointer-events: none;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-container input:focus + .dropdown-icon {
+  transform: translateY(-50%) rotate(180deg);
+  color: #7289da;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #3d4148;
+  width: 100%;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  max-height: 18.75rem;
+  overflow-y: auto;
+  border: 1px solid #4f545c;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  animation: dropdown-slide-in 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dropdown-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-content a {
+  color: #dcddde;
+  padding: 0.875rem 1rem;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 3px solid transparent;
+}
+
+.dropdown-content a:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(114, 137, 218, 0.2) 0%,
+    transparent 100%
+  );
+  color: #ffffff;
+  border-left-color: #7289da;
+  padding-left: 1.25rem;
+}
+
+.dropdown-content a:focus {
+  outline: 2px solid #7289da;
+  outline-offset: -2px;
+}
+
+.dropdown-content .no-results {
+  color: #72767d;
+  padding: 1.5rem;
+  text-align: center;
+  font-style: italic;
+}
+
+.dropdown-content a mark {
+  background-color: #7289da;
+  color: white;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   9. STEP COMPONENTS (Instruction & Info Steps)
+   ==========================================================================
+
+   Two variants available:
+   1. .instruction-step - Numbered steps (1, 2, 3...) for sequential instructions
+   2. .info-step - Icon-based steps for feature explanations
+
+   Both use same structure: container + (number/icon) + content
+   ========================================================================== */
+
+/* Base step container - shared by both instruction-step and info-step */
+.instruction-step,
+.info-step {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #3d4148;
+  border-radius: 0.5rem;
+  border-left: 3px solid #7289da;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.instruction-step:hover,
+.info-step:hover {
+  transform: translateX(4px);
+  border-left-color: #43b581;
+}
+
+/* Step number badge (for numbered instructions) */
+.step-number {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  background: linear-gradient(135deg, #7289da, #5b6eae);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.125rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+/* Step icon badge (for icon-based steps) */
+.info-icon {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: linear-gradient(135deg, #7289da, #5b6eae);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+/* Step content - shared text styles */
+.step-content,
+.info-content {
+  text-align: left;
+  flex: 1;
+}
+
+.step-content h3,
+.info-content h3 {
+  text-align: left;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.step-content p,
+.info-content p {
+  margin: 0;
+  color: #b9bbbe;
+  font-size: 0.9375rem;
+  text-align: left;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   10. WARNING & ALERT COMPONENTS
+   ==========================================================================
+
+   Usage: Add .warning-box for important notices and cautions
+   Contains icon (<i>) + content (<div>) with <strong> title + <p> description
+   Orange color scheme indicates caution but not critical errors
+   ========================================================================== */
+
+/* Warning box - for important notices and alerts */
+.warning-box {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(250, 166, 26, 0.1);
+  border: 1px solid #faa61a;
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
+  text-align: left;
+  align-items: flex-start;
+}
+
+.warning-box i {
+  color: #faa61a;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.warning-box div {
+  text-align: left;
+  flex: 1;
+}
+
+.warning-box strong {
+  color: #faa61a;
+  display: block;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.warning-box p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  text-align: left;
+  color: #dcddde;
+}
+
+/* Warning text utility - for inline warnings */
+.warning-text,
+.info-popup-content .warning-text {
+  color: #faa61a;
+  font-weight: bold;
+}
+
+/* --- Utility Classes --- */
+.no-scroll {
+  overflow: hidden;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* --- Mobile Responsive (Global Components) ---
+   Adjustments for utility components on mobile devices */
+@media (max-width: 768px) {
+  .scroll-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.125rem;
+  }
+
+  .info-popup {
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .info-popup-content {
+    max-height: 90vh;
+    width: calc(100% - 2rem);
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 5vh;
+    margin-bottom: 0.5rem;
+    border-radius: 0.75rem;
+  }
+
+  .popup-header {
+    padding: 1rem;
+  }
+
+  .popup-body {
+    padding: 1rem;
+  }
+
+  .dropdown-container {
+    width: 100%;
+  }
+}
+
+/* Small mobile devices (≤480px)
+   Further reductions in size and spacing */
+@media (max-width: 480px) {
+  .info-popup-content {
+    width: calc(100% - 1rem);
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 3vh;
+    margin-bottom: 0.5rem;
+    max-height: 94vh;
+  }
+
+  .popup-header {
+    padding: 0.5rem 1rem;
+  }
+
+  .popup-header h2 {
+    font-size: 1rem;
+  }
+
+  .popup-body {
+    padding: 0.5rem 1rem;
+  }
+
+  /* Step components mobile adjustments */
+  .step-number {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 1rem;
+  }
+
+  .info-icon {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+
+  .step-content h3,
+  .info-content h3 {
+    font-size: 0.9375rem;
+  }
+
+  .step-content p,
+  .info-content p {
+    font-size: 0.875rem;
+  }
+
+  .instruction-step,
+  .info-step {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Warning box mobile adjustments */
+  .warning-box {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .warning-box i {
+    font-size: 1.25rem;
+  }
 }

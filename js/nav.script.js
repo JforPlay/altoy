@@ -1,4 +1,56 @@
 // ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+/**
+ * Throttle function execution for performance
+ * Limits function calls to once per delay period
+ * @param {Function} func - Function to throttle
+ * @param {number} delay - Minimum delay between calls (ms)
+ * @returns {Function} Throttled function
+ */
+function throttle(func, delay) {
+    let timeout = null;
+    return function(...args) {
+        if (timeout) return;
+        timeout = setTimeout(() => {
+            func.apply(this, args);
+            timeout = null;
+        }, delay);
+    };
+}
+
+/**
+ * Safely get item from localStorage
+ * Handles private browsing mode and permission errors
+ * @param {string} key - Storage key
+ * @param {string} defaultValue - Default if unavailable
+ * @returns {string} Stored value or default
+ */
+function getStorageItem(key, defaultValue) {
+    try {
+        return localStorage.getItem(key) || defaultValue;
+    } catch (e) {
+        console.warn('[Nav] localStorage unavailable:', e);
+        return defaultValue;
+    }
+}
+
+/**
+ * Safely set item in localStorage
+ * Handles private browsing mode and permission errors
+ * @param {string} key - Storage key
+ * @param {string} value - Value to store
+ */
+function setStorageItem(key, value) {
+    try {
+        localStorage.setItem(key, value);
+    } catch (e) {
+        console.warn('[Nav] localStorage unavailable:', e);
+    }
+}
+
+// ============================================
 // CENTRALIZED LINK CONFIGURATION
 // ============================================
 const LINKS = {
@@ -70,7 +122,8 @@ function initLinks() {
 // ============================================
 document.addEventListener('DOMContentLoaded', function () {
     // Apply saved theme or default to dark mode
-    applyTheme(localStorage.getItem('theme') || 'dark');
+    const savedTheme = getStorageItem('theme', 'dark');
+    applyTheme(savedTheme);
 
     // Setup interactive elements
     setupMobileMenu();
@@ -81,13 +134,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize links
     initLinks();
 
-    // Setup scroll listener for navbar
+    // Setup scroll listener for navbar with throttling (performance optimization)
     const navbar = document.querySelector('.navbar');
     if (navbar) {
-        window.addEventListener('scroll', () => {
+        const handleNavbarScroll = throttle(() => {
             navbar.classList.toggle('scrolled', window.scrollY > 50);
-        });
+        }, 100);
+        window.addEventListener('scroll', handleNavbarScroll);
     }
+
+    // Initialize scroll-to-top button
+    setupScrollToTop();
 });
 
 /**
@@ -114,13 +171,14 @@ function applyTheme(theme) {
 }
 
 /**
- * Attaches click event listeners to all theme toggle buttons.
+ * Attaches click event listeners to all theme toggle buttons
+ * Persists theme preference to localStorage
  */
 function setupThemeToggles() {
     document.querySelectorAll('.theme-toggle').forEach(toggle => {
         toggle.addEventListener('click', () => {
             const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
-            localStorage.setItem('theme', newTheme);
+            setStorageItem('theme', newTheme);
             applyTheme(newTheme);
         });
     });
@@ -128,6 +186,8 @@ function setupThemeToggles() {
 
 /**
  * Setup mega menu toggles for mobile (accordion style)
+ * On desktop: hover to open (handled by CSS)
+ * On mobile: click to toggle accordion
  */
 function setupMegaMenuToggles() {
     const megaDropdowns = document.querySelectorAll('.mega-dropdown');
@@ -136,13 +196,13 @@ function setupMegaMenuToggles() {
         const toggleLink = dropdown.querySelector('.nav-links');
 
         toggleLink?.addEventListener('click', (event) => {
-            // Only handle on mobile
+            // Only handle on mobile (≤768px)
             if (window.innerWidth <= 768) {
                 event.preventDefault();
 
                 const isActive = dropdown.classList.contains('active');
 
-                // Close all other dropdowns
+                // Close all other dropdowns (accordion behavior)
                 megaDropdowns.forEach(d => d.classList.remove('active'));
 
                 // Toggle this dropdown
@@ -161,6 +221,10 @@ function setupMegaMenuToggles() {
     });
 }
 
+/**
+ * Setup mobile hamburger menu toggle
+ * Toggles mobile menu and hamburger icon animation
+ */
 function setupMobileMenu() {
     const menuIcon = document.querySelector('.menu-icon');
     const navMenu = document.querySelector('.nav-menu');
@@ -172,6 +236,10 @@ function setupMobileMenu() {
     }
 }
 
+/**
+ * Update CSS custom property with navbar height
+ * Useful for pages that need to offset content below fixed navbar
+ */
 function updateNavbarHeight() {
     const navbar = document.querySelector('.navbar');
     if (navbar) {
@@ -180,7 +248,51 @@ function updateNavbarHeight() {
     }
 }
 
-// Update navbar height on window resize
+/**
+ * Setup scroll-to-top button functionality
+ * Shows button when user scrolls down 300px, hides when at top
+ * Applies to pages that have #scroll-to-top element in HTML
+ */
+function setupScrollToTop() {
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+    if (!scrollToTopBtn) return; // Exit gracefully if button doesn't exist
+
+    // Show/hide button based on scroll position
+    const toggleButton = () => {
+        if (window.scrollY > 300) {
+            scrollToTopBtn.classList.remove('hidden');
+        } else {
+            scrollToTopBtn.classList.add('hidden');
+        }
+    };
+
+    // Scroll to top with smooth animation
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    // Throttled scroll handler for better performance
+    const throttledToggle = throttle(toggleButton, 100);
+    window.addEventListener('scroll', throttledToggle);
+
+    // Click handler
+    scrollToTopBtn.addEventListener('click', scrollToTop);
+
+    // Initial visibility check
+    toggleButton();
+}
+
+// ============================================
+// RESIZE HANDLER
+// ============================================
+
+/**
+ * Update navbar height on window resize (debounced)
+ * Prevents excessive updates during resize
+ */
 let resizeTimer;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
