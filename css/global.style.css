@@ -1,5 +1,5 @@
 /* ==========================================================================
-   NAVIGATION SYSTEM - GLOBAL STYLES
+   GLOBAL STYLES
    ==========================================================================
 
    This stylesheet provides global navigation and utility components:
@@ -344,7 +344,7 @@ body:not(.dark-mode) {
 
 /* Theme Toggle Button
    Switches between light and dark mode
-   Theme preference is saved to localStorage via nav.script.js */
+   Theme preference is saved to localStorage via global.script.js */
 .nav-actions {
   display: flex;
   align-items: center;
@@ -591,7 +591,7 @@ body.dark-mode .theme-icon-moon {
 
 /* --- Scroll to Top Button ---
    Usage: Add button with .scroll-to-top class to any page
-   Auto-shows when scrolled >300px (handled by nav.script.js)
+   Auto-shows when scrolled >300px (handled by global.script.js)
    Note: Some pages override this (event-timeline.css) */
 .scroll-to-top {
   position: fixed;
@@ -807,6 +807,46 @@ body.dark-mode .theme-icon-moon {
   font-weight: 600;
 }
 
+/* Light Mode Info Popup */
+body:not(.dark-mode) .info-popup {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+body:not(.dark-mode) .info-popup-content {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+}
+
+body:not(.dark-mode) .popup-header {
+  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+  border-bottom: 1px solid #e0e0e0;
+}
+
+body:not(.dark-mode) .popup-header h2 {
+  color: #0071eb;
+}
+
+body:not(.dark-mode) .close-popup-btn {
+  background: #f5f5f5;
+  border: 1px solid #d0d0d0;
+  color: #666666;
+}
+
+body:not(.dark-mode) .close-popup-btn:hover {
+  color: #ffffff;
+  background: #f04747;
+  border-color: #f04747;
+}
+
+body:not(.dark-mode) .info-popup-content p {
+  color: #4a4a4a;
+}
+
+body:not(.dark-mode) .info-popup-content strong {
+  color: #1a1a1a;
+}
+
 /* --- Dropdown Container (for Fuse.js search) ---
    Usage: Wrap search input in .dropdown-container
    Results shown in .dropdown-content with fuzzy match highlighting
@@ -933,19 +973,89 @@ body.dark-mode .theme-icon-moon {
   font-weight: 600;
 }
 
+/* Light Mode Dropdown */
+body:not(.dark-mode) .dropdown-container input {
+  border: 2px solid #d0d0d0;
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+body:not(.dark-mode) .dropdown-container input:hover {
+  border-color: #b0b0b0;
+  background-color: #f8f9fa;
+}
+
+body:not(.dark-mode) .dropdown-container input:focus {
+  border-color: #0071eb;
+  box-shadow: 0 0 0 3px rgba(0, 113, 235, 0.1);
+}
+
+body:not(.dark-mode) .dropdown-container input::placeholder {
+  color: #999999;
+}
+
+body:not(.dark-mode) .dropdown-icon {
+  color: #666666;
+}
+
+body:not(.dark-mode) .dropdown-container input:focus + .dropdown-icon {
+  color: #0071eb;
+}
+
+body:not(.dark-mode) .dropdown-content {
+  background-color: #ffffff;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0;
+}
+
+body:not(.dark-mode) .dropdown-content a {
+  color: #1a1a1a;
+}
+
+body:not(.dark-mode) .dropdown-content a:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 113, 235, 0.08) 0%,
+    transparent 100%
+  );
+  color: #0071eb;
+  border-left-color: #0071eb;
+}
+
+body:not(.dark-mode) .dropdown-content .no-results {
+  color: #999999;
+}
+
+body:not(.dark-mode) .dropdown-content a mark {
+  background-color: #0071eb;
+  color: white;
+}
+
 /* ==========================================================================
-   9. STEP COMPONENTS (Instruction & Info Steps)
+   9. STEP COMPONENTS (Unified Info Steps)
    ==========================================================================
 
-   Two variants available:
-   1. .instruction-step - Numbered steps (1, 2, 3...) for sequential instructions
-   2. .info-step - Icon-based steps for feature explanations
+   Unified step component that supports both numbered and icon-based displays:
+   - Use .info-step as container
+   - Use .info-icon as badge (works for numbers, Font Awesome icons, Material Icons)
+   - Use .info-content for text content
 
-   Both use same structure: container + (number/icon) + content
+   Example usage:
+   <div class="info-step">
+     <div class="info-icon">1</div>  <!-- Number -->
+     <div class="info-content">
+       <h3>Step Title</h3>
+       <p>Description</p>
+     </div>
+   </div>
+
+   <div class="info-step">
+     <div class="info-icon"><i class="fas fa-star"></i></div>  <!-- Icon -->
+     <div class="info-content">...</div>
+   </div>
    ========================================================================== */
 
-/* Base step container - shared by both instruction-step and info-step */
-.instruction-step,
+/* Step container */
 .info-step {
   display: flex;
   gap: 1rem;
@@ -957,17 +1067,16 @@ body.dark-mode .theme-icon-moon {
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.instruction-step:hover,
 .info-step:hover {
   transform: translateX(4px);
   border-left-color: #43b581;
 }
 
-/* Step number badge (for numbered instructions) */
-.step-number {
+/* Step badge (works for both numbers and icons) */
+.info-icon {
   flex-shrink: 0;
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   background: linear-gradient(135deg, #7289da, #5b6eae);
   color: white;
   border-radius: 50%;
@@ -979,29 +1088,12 @@ body.dark-mode .theme-icon-moon {
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
 }
 
-/* Step icon badge (for icon-based steps) */
-.info-icon {
-  flex-shrink: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  background: linear-gradient(135deg, #7289da, #5b6eae);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.125rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
-}
-
-/* Step content - shared text styles */
-.step-content,
+/* Step content */
 .info-content {
   text-align: left;
   flex: 1;
 }
 
-.step-content h3,
 .info-content h3 {
   text-align: left;
   margin-bottom: 0.5rem;
@@ -1010,13 +1102,36 @@ body.dark-mode .theme-icon-moon {
   font-weight: 600;
 }
 
-.step-content p,
 .info-content p {
   margin: 0;
   color: #b9bbbe;
   font-size: 0.9375rem;
   text-align: left;
   line-height: 1.6;
+}
+
+/* Light Mode Step Components */
+body:not(.dark-mode) .info-step {
+  background: #f8f9fa;
+  border-left: 3px solid #0071eb;
+}
+
+body:not(.dark-mode) .info-step:hover {
+  border-left-color: #43b581;
+  background: #ffffff;
+}
+
+body:not(.dark-mode) .info-icon {
+  background: linear-gradient(135deg, #0071eb, #4da3ff);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 113, 235, 0.2);
+}
+
+body:not(.dark-mode) .info-content h3 {
+  color: #1a1a1a;
+}
+
+body:not(.dark-mode) .info-content p {
+  color: #4a4a4a;
 }
 
 /* ==========================================================================
@@ -1069,11 +1184,156 @@ body.dark-mode .theme-icon-moon {
   color: #dcddde;
 }
 
-/* Warning text utility - for inline warnings */
-.warning-text,
-.info-popup-content .warning-text {
-  color: #faa61a;
-  font-weight: bold;
+/* Light Mode Warning Box */
+body:not(.dark-mode) .warning-box {
+  background: rgba(250, 166, 26, 0.08);
+  border: 1px solid rgba(250, 166, 26, 0.5);
+}
+
+body:not(.dark-mode) .warning-box i {
+  color: #d68910;
+}
+
+body:not(.dark-mode) .warning-box strong {
+  color: #d68910;
+}
+
+body:not(.dark-mode) .warning-box p {
+  color: #4a4a4a;
+}
+
+/* ==========================================================================
+   11. TOOLTIP BUBBLE COMPONENT
+   ==========================================================================
+
+   Usage: Toggle tooltip with button click
+   Example:
+   <button class="tooltip-toggle-button" data-tooltip-target="myTooltip">
+     <span class="material-symbols-outlined">help</span>
+   </button>
+   <div class="info-tooltip" id="myTooltip">
+     <div class="tooltip-content">
+       <h4>Title</h4>
+       <p>Content here...</p>
+     </div>
+   </div>
+   ========================================================================== */
+
+.tooltip-toggle-button {
+  background: #e0e0e0;
+  color: #424242;
+  border: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+body.dark-mode .tooltip-toggle-button {
+  background: #616161;
+  color: #212121;
+}
+
+.tooltip-toggle-button .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+.tooltip-toggle-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .tooltip-toggle-button:hover {
+  background: #757575;
+}
+
+.info-tooltip {
+  position: relative;
+  background: var(--card-bg);
+  border: 2px solid var(--primary-color);
+  border-radius: 0.75rem;
+  padding: 0;
+  margin-bottom: 0;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease, max-height 0.4s ease;
+}
+
+.info-tooltip.visible {
+  max-height: 500px;
+  opacity: 1;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tooltip-content h4 {
+  color: var(--primary-color);
+  margin: 0 0 0.75rem 0;
+  font-size: 1.1em;
+}
+
+.tooltip-content p {
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+.tooltip-content strong {
+  color: var(--primary-color);
+}
+
+/* Tooltip formula display styles */
+.tooltip-formula {
+  background: var(--section-bg);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border-left: 3px solid var(--primary-color);
+  margin: 1rem 0;
+}
+
+.tooltip-details {
+  background: var(--section-bg);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.tooltip-details p {
+  margin: 0.375rem 0;
+  padding-left: 0.5rem;
+}
+
+.tooltip-note {
+  font-size: 0.85em;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-top: 0.75rem;
+}
+
+/* Light Mode Tooltip */
+body:not(.dark-mode) .tooltip-toggle-button {
+  background: var(--primary-color);
+}
+
+body:not(.dark-mode) .info-tooltip {
+  background: var(--card-bg);
+  border-color: var(--primary-color);
+}
+
+body:not(.dark-mode) .tooltip-content h4 {
+  color: var(--primary-color);
+}
+
+body:not(.dark-mode) .tooltip-content p {
+  color: var(--text-primary);
 }
 
 /* --- Utility Classes --- */
@@ -1149,29 +1409,20 @@ body.dark-mode .theme-icon-moon {
   }
 
   /* Step components mobile adjustments */
-  .step-number {
-    width: 1.75rem;
-    height: 1.75rem;
-    font-size: 1rem;
-  }
-
   .info-icon {
     width: 2rem;
     height: 2rem;
     font-size: 1rem;
   }
 
-  .step-content h3,
   .info-content h3 {
     font-size: 0.9375rem;
   }
 
-  .step-content p,
   .info-content p {
     font-size: 0.875rem;
   }
 
-  .instruction-step,
   .info-step {
     padding: 0.5rem;
     margin-bottom: 1rem;

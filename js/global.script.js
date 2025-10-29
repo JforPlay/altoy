@@ -145,6 +145,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize scroll-to-top button
     setupScrollToTop();
+
+    // Initialize info popups
+    setupInfoPopups();
+
+    // Initialize tooltip toggles
+    setupTooltipToggles();
 });
 
 /**
@@ -249,6 +255,60 @@ function updateNavbarHeight() {
 }
 
 /**
+ * Setup info popup functionality
+ * Handles opening/closing info popups with keyboard and click events
+ * Applies to pages that have .info-button and .info-popup elements
+ */
+function setupInfoPopups() {
+    // Support both single button or multiple buttons
+    const infoButtons = document.querySelectorAll('.info-button, #info-button');
+    const infoPopups = document.querySelectorAll('.info-popup, #info-popup');
+
+    infoButtons.forEach((infoButton, index) => {
+        if (!infoButton) return;
+
+        // Find corresponding popup (either by index or just use the first one)
+        const infoPopup = infoPopups[index] || infoPopups[0];
+        if (!infoPopup) return;
+
+        const closePopupBtn = infoPopup.querySelector('.close-popup-btn');
+
+        const openPopup = () => {
+            infoPopup.classList.add('visible');
+            infoPopup.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('no-scroll');
+            if (closePopupBtn) closePopupBtn.focus();
+        };
+
+        const closePopup = () => {
+            infoPopup.classList.remove('visible');
+            infoPopup.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('no-scroll');
+        };
+
+        // Button click to open
+        infoButton.addEventListener('click', openPopup);
+
+        // Close button click
+        if (closePopupBtn) {
+            closePopupBtn.addEventListener('click', closePopup);
+        }
+
+        // Click outside to close
+        infoPopup.addEventListener('click', (e) => {
+            if (e.target === infoPopup) closePopup();
+        });
+
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && infoPopup.classList.contains('visible')) {
+                closePopup();
+            }
+        });
+    });
+}
+
+/**
  * Setup scroll-to-top button functionality
  * Shows button when user scrolls down 300px, hides when at top
  * Applies to pages that have #scroll-to-top element in HTML
@@ -283,6 +343,66 @@ function setupScrollToTop() {
 
     // Initial visibility check
     toggleButton();
+}
+
+/**
+ * Setup tooltip toggle functionality
+ * Toggles visibility of info tooltips with fade-in/out animation
+ * Uses data-tooltip-target attribute to link button to tooltip
+ *
+ * Usage:
+ * <button class="tooltip-toggle-button" data-tooltip-target="myTooltip">
+ *   <span class="material-symbols-outlined">help</span>
+ * </button>
+ * <div class="info-tooltip" id="myTooltip">
+ *   <div class="tooltip-content">
+ *     <h4>Title</h4>
+ *     <p>Content</p>
+ *   </div>
+ * </div>
+ */
+function setupTooltipToggles() {
+    const tooltipButtons = document.querySelectorAll('.tooltip-toggle-button');
+
+    tooltipButtons.forEach(button => {
+        const targetId = button.getAttribute('data-tooltip-target');
+        if (!targetId) return;
+
+        const tooltip = document.getElementById(targetId);
+        if (!tooltip) return;
+
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            // Close all other tooltips
+            document.querySelectorAll('.info-tooltip.visible').forEach(otherTooltip => {
+                if (otherTooltip !== tooltip) {
+                    otherTooltip.classList.remove('visible');
+                }
+            });
+
+            // Toggle this tooltip
+            tooltip.classList.toggle('visible');
+        });
+    });
+
+    // Close tooltips when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.tooltip-toggle-button') && !e.target.closest('.info-tooltip')) {
+            document.querySelectorAll('.info-tooltip.visible').forEach(tooltip => {
+                tooltip.classList.remove('visible');
+            });
+        }
+    });
+
+    // Close tooltips on ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.info-tooltip.visible').forEach(tooltip => {
+                tooltip.classList.remove('visible');
+            });
+        }
+    });
 }
 
 // ============================================
