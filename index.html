@@ -3,7 +3,7 @@ layout: default
 title: 메인 - 벽람 장난감
 head: <link rel="stylesheet" href="css/mainpage.style.css">
 ---
-<!-- Now the links are handled by the nav.script.js file -->
+<!-- Now the links are handled by the global.script.js file -->
 <!-- ex) data-link="TAG_to_LINK" -->
 <main class="home-container">
     <!-- Hero Carousel Section -->
@@ -35,7 +35,7 @@ head: <link rel="stylesheet" href="css/mainpage.style.css">
             <!-- Slide 2: weapon simulator -->
             <div class="carousel-slide active" data-slide="0">
                 <div class="slide-background">
-                    <img src="https://webusstatic.yo-star.com/news-admin/azurlane-us/8R9OBJBQP9XQAEPBLZ2YVR.png"
+                    <img src="assets/img/card_bg_1.png"
                         alt="sim Background" loading="lazy">
                     <div class="slide-overlay"></div>
                 </div>
@@ -274,4 +274,4 @@ head: <link rel="stylesheet" href="css/mainpage.style.css">
 </main>
 
 <script src="js/mainpage.script.js"></script>
-<script src="js/mainpage.event-carousel.js"></script>
+<!-- Event carousel merged into mainpage.script.js for performance -->
