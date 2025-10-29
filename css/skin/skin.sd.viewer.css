@@ -217,3 +217,96 @@ body {
     height: 500px;
   }
 }
+
+/* =================================================================
+   LIGHT MODE SUPPORT
+   SD Viewer already uses light colors, but adjust for consistency
+   ================================================================= */
+
+body:not(.dark-mode) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+body:not(.dark-mode) .container {
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+body:not(.dark-mode) .container h1 {
+  color: #2c3e50;
+}
+
+body:not(.dark-mode) .viewer-box,
+body:not(.dark-mode) .controls {
+  background: #f8f9fa;
+}
+
+body:not(.dark-mode) .viewer-box h2 {
+  color: #555555;
+}
+
+body:not(.dark-mode) #spineContainer {
+  background: white;
+  border: 3px solid #e0e0e0;
+}
+
+body:not(.dark-mode) .control-group label {
+  color: #555555;
+}
+
+body:not(.dark-mode) input[type="file"],
+body:not(.dark-mode) select {
+  background: white;
+  border: 2px solid #e0e0e0;
+  color: #333333;
+}
+
+body:not(.dark-mode) .range-value {
+  color: #666666;
+}
+
+body:not(.dark-mode) button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+body:not(.dark-mode) #displayModeBtns button {
+  background: #e0e0e0;
+  color: #333333;
+}
+
+body:not(.dark-mode) #displayModeBtns button.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+body:not(.dark-mode) .animation-list,
+body:not(.dark-mode) .skin-list {
+  background: white;
+  border: 2px solid #e0e0e0;
+}
+
+body:not(.dark-mode) .animation-item,
+body:not(.dark-mode) .skin-item {
+  background: #f8f9fa;
+  color: #333333;
+}
+
+body:not(.dark-mode) .animation-item:hover,
+body:not(.dark-mode) .skin-item:hover {
+  background: #e9ecef;
+}
+
+body:not(.dark-mode) .animation-item.active,
+body:not(.dark-mode) .skin-item.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+body:not(.dark-mode) .file-status {
+  color: #666666;
+}
+
+body:not(.dark-mode) .file-status.loaded {
+  color: #28a745;
+}
