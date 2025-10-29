@@ -5,6 +5,7 @@ let currentShip = null;
 let currentLevel = 100;
 let currentLimitBreak = '';
 let currentFavorability = 'love';
+let currentEnhancement = 'complete'; // 'none' or 'complete'
 let nationalityData = {};
 let attrTypeData = {};
 let shipTypeData = {};
@@ -259,34 +260,7 @@ function setupEventListeners() {
         });
     }
 
-    // Info modal
-    const infoButton = document.getElementById('infoButton');
-    const infoModal = document.getElementById('infoModal');
-    const closeModal = document.getElementById('closeModal');
-
-    if (infoButton && infoModal && closeModal) {
-        infoButton.addEventListener('click', () => {
-            infoModal.classList.add('show');
-        });
-
-        closeModal.addEventListener('click', () => {
-            infoModal.classList.remove('show');
-        });
-
-        // Close modal when clicking outside
-        infoModal.addEventListener('click', (e) => {
-            if (e.target === infoModal) {
-                infoModal.classList.remove('show');
-            }
-        });
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && infoModal.classList.contains('show')) {
-                infoModal.classList.remove('show');
-            }
-        });
-    }
+    // Info popup is handled globally by global.script.js
 
     backButton.addEventListener('click', () => history.back());
 
@@ -597,8 +571,6 @@ function showDetailView(shipName) {
 
 // ===== Detail View Rendering =====
 function renderDetailView(ship) {
-    document.getElementById('detailName').textContent = ship.name;
-
     const limitBreakOptions = Object.keys(ship.base);
     const nationalityInfo = nationalityData[String(ship.nationality)] || {
         name: ship.nationality,
@@ -732,7 +704,25 @@ function renderGiftSection(ship) {
 function renderStatsSection(ship, limitBreakOptions) {
     return `
         <div class="stats-section">
-            <h3 class="section-title">능력치 계산기</h3>
+            <h3 class="section-title">
+                능력치 계산기
+                <button class="tooltip-toggle-button" data-tooltip-target="statInfoTooltip" title="계산 방식 보기">
+                    <span class="material-symbols-outlined">help</span>
+                </button>
+            </h3>
+            <div class="info-tooltip" id="statInfoTooltip">
+                <div class="tooltip-content">
+                    <h4>능력치 계산 공식</h4>
+                    <p class="tooltip-formula">최종 능력치 = <strong>⌊(기본 + 성장 × (레벨-1) / 1000 + 강화) × 호감도 보너스⌋</strong></p>
+                    <div class="tooltip-details">
+                        <p><strong>기본:</strong> 한계돌파에 따른 기본 능력치</p>
+                        <p><strong>성장:</strong> 레벨업 시 증가하는 성장치</p>
+                        <p><strong>강화:</strong> 강화 완료 시 추가되는 수치</p>
+                        <p><strong>호감도:</strong> 호감도에 따른 배율 (속도, 행운 제외)</p>
+                    </div>
+                    <p class="tooltip-note">※ ⌊ ⌋는 소수점 버림을 의미합니다</p>
+                </div>
+            </div>
             <div class="stats-grid" id="statsGrid"></div>
             <div class="stat-controls">
                 <div class="control-row">
@@ -755,6 +745,13 @@ function renderStatsSection(ship, limitBreakOptions) {
                             <option value="love" selected>사랑 100 (6%)</option>
                             <option value="oath">서약 100+ (9%)</option>
                             <option value="oath200">서약 200 (12%)</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="enhancementSelect">강화</label>
+                        <select id="enhancementSelect">
+                            <option value="none">강화 X</option>
+                            <option value="complete" selected>강화 완료</option>
                         </select>
                     </div>
                 </div>
@@ -934,6 +931,7 @@ function setupDetailEventListeners() {
     const levelValue = document.getElementById('levelValue');
     const limitBreakSelect = document.getElementById('limitBreakSelect');
     const favorabilitySelect = document.getElementById('favorabilitySelect');
+    const enhancementSelect = document.getElementById('enhancementSelect');
 
     levelSlider.addEventListener('input', (e) => {
         currentLevel = parseInt(e.target.value);
@@ -950,6 +948,16 @@ function setupDetailEventListeners() {
         currentFavorability = e.target.value;
         updateStats();
     });
+
+    enhancementSelect.addEventListener('change', (e) => {
+        currentEnhancement = e.target.value;
+        updateStats();
+    });
+
+    // Reinitialize tooltip functionality for dynamically loaded content
+    if (typeof setupTooltipToggles === 'function') {
+        setupTooltipToggles();
+    }
 }
 
 // ===== Gift Generation =====
@@ -999,7 +1007,8 @@ function updateStats() {
 
     const baseStats = currentShip.base[currentLimitBreak] || {};
     const growthStats = currentShip.growth[currentLimitBreak] || {};
-    const enhanceStats = currentShip.enhance[currentLimitBreak] || {};
+    // Enhance is NOT organized by limit break - it's a flat object
+    const enhanceStats = currentShip.enhance || {};
 
     const favorabilityBonus = FAVORABILITY_BONUSES[currentFavorability] || 1.06;
     const attrMapping = createAttrMapping();
@@ -1007,7 +1016,8 @@ function updateStats() {
     statsGrid.innerHTML = Object.keys(baseStats).map(stat => {
         const base = baseStats[stat] || 0;
         const growth = growthStats[stat] || 0;
-        const enhance = enhanceStats[stat] || 0;
+        const enhanceValue = enhanceStats[stat] || 0;
+        const enhance = currentEnhancement === 'complete' ? enhanceValue : 0;
 
         const bonus = UNAFFECTED_STATS.includes(stat.toLowerCase()) ? 1.0 : favorabilityBonus;
         const calculated = Math.floor((base + (growth * (currentLevel - 1) / 1000) + enhance) * bonus);
@@ -1024,7 +1034,12 @@ function updateStats() {
                 </div>
                 <div class="stat-values">
                     <span class="stat-calculated">${calculated}</span>
-                    <span class="stat-breakdown">기본: ${base} | 성장: ${growth}${enhance ? ` | 강화: ${enhance}` : ''}</span>
+                    <div class="stat-breakdown">
+                        <span class="stat-base">기본 ${base}</span>
+                        <span class="stat-separator">|</span>
+                        <span class="stat-growth">성장 ${growth}</span>
+                        ${enhance ? `<span class="stat-enhance">강화 ${enhance}</span>` : ''}
+                    </div>
                 </div>
             </div>
         `;
@@ -1043,30 +1058,6 @@ function createAttrMapping() {
     return mapping;
 }
 
-// ===== Scroll to Top Button =====
-function setupScrollToTop() {
-    const scrollToTopBtn = document.getElementById('scrollToTop');
-
-    if (scrollToTopBtn) {
-        // Show/hide button based on scroll position
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollToTopBtn.classList.add('show');
-            } else {
-                scrollToTopBtn.classList.remove('show');
-            }
-        });
-
-        // Scroll to top when clicked
-        scrollToTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    }
-}
-
 // ===== Start Application =====
+// Scroll to top button is handled globally by global.script.js
 init();
-setupScrollToTop();

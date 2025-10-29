@@ -10,8 +10,9 @@ head: <link rel="stylesheet" href="css/shipgirl/shipgirl-info.css">
         <header>
             <div class="header-top">
                 <div class="header-title-container">
-                    <span class="material-symbols-outlined">database</span><h1>함순이 DB</h1>
-                    <button class="info-icon" id="infoButton" title="사용법 보기">
+                    <span class="material-symbols-outlined">database</span>
+                    <h1>함순이 DB</h1>
+                    <button class="info-button" id="info-button" title="사용법 보기">
                         <i class="fas fa-info-circle"></i>
                     </button>
                 </div>
@@ -60,58 +61,83 @@ head: <link rel="stylesheet" href="css/shipgirl/shipgirl-info.css">
             </div>
         </header>
 
-        <!-- Info Modal -->
-        <div class="info-modal" id="infoModal">
-            <div class="info-modal-content">
-                <button class="info-modal-close" id="closeModal">×</button>
-                <h2>사용 방법</h2>
-                <div class="info-section">
-                    <h3>🔍 필터링</h3>
-                    <ul>
-                        <li><strong>이름 검색:</strong> 함순이 이름으로 검색할 수 있습니다</li>
-                        <li><strong>등급:</strong> N, R, SR, SSR, UR 등급으로 필터링</li>
-                        <li><strong>함종:</strong> 구축함, 경순양함, 중순양함 등으로 필터링</li>
-                        <li><strong>진영:</strong> 각 진영별로 필터링</li>
-                        <li><strong>건조:</strong> 소형/중형/특형/한정 건조로 필터링</li>
-                    </ul>
+        <!-- Info Popup -->
+        <div id="info-popup" class="info-popup" role="dialog" aria-labelledby="popup-title" aria-hidden="true">
+            <div class="info-popup-content">
+                <div class="popup-header">
+                    <h2 id="popup-title">초간단 설명서</h2>
+                    <button class="close-popup-btn" aria-label="닫기">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                <div class="info-section">
-                    <h3>🏷️ 배지 설명</h3>
-                    <ul>
-                        <li><strong>소형/중형/특형:</strong> 건조 가능한 상시풀만 표시됩니다</li>
-                        <li><strong>★ 한정:</strong> 기간 한정 이벤트 함선, 다만 룽청 인게임기반</li>
-                        <li><strong>타이머:</strong> 건조 함순이의 경우 건조시간도 확인가능</li>
-                    </ul>
-                </div>
-                <div class="info-section">
-                    <h3>📊 상세 정보</h3>
-                    <p>함순이 카드를 클릭하면 스탯, 스킬, 특수장비 등 상세 정보를 볼 수 있습니다</p>
+                <div class="popup-body">
+                    <div class="info-step">
+                        <div class="info-icon">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                        <div class="info-content">
+                            <h3>필터링 기능</h3>
+                            <p>
+                                • 이름 검색: 함순이 이름으로 검색할 수 있습니다<br>
+                                • 등급: N, R, SR, SSR, UR 등급으로 필터링<br>
+                                • 함종: 구축함, 경순양함, 중순양함 등으로 필터링<br>
+                                • 진영: 각 진영별로 필터링<br>
+                                • 건조: 소형/중형/특형/한정 건조로 필터링
+                            </p>
+                        </div>
+                    </div>
+                    <div class="info-step">
+                        <div class="info-icon">
+                            <i class="fa-solid fa-tags"></i>
+                        </div>
+                        <div class="info-content">
+                            <h3>배지 정보</h3>
+                            <p>
+                                <strong>• 소형/중형/특형:</strong> 건조 가능한 상시풀만 표시됩니다<br>
+                                <strong>• ★ 한정:</strong> 기간 한정 이벤트 함선, 다만 룽청 인게임기반<br>
+                                <strong>• 타이머:</strong> 건조 함순이의 경우 건조시간도 확인가능
+                            </p>
+                        </div>
+                    </div>
+                    <div class="info-step">
+                        <div class="info-icon">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <div class="info-content">
+                            <h3>상세 정보</h3>
+                            <p>함순이 카드를 클릭하면 스탯, 스킬, 특수장비 등 상세 정보를 볼 수 있습니다</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="shipgirls" class="shipgirl-grid"></div>
     </div>
+    <div id="shipgirls" class="shipgirl-grid"></div>
+</div>
 
-    <!-- Detail page view -->
-    <div id="detailView" class="view" style="display: none;">
-        <header>
-            <button id="backButton" class="back-button">← 이전페이지 돌아가기</button>
-            <button id="homeButton" class="back-button">🔍 함순이 전체목록 보기</button>
-            <h1 id="detailName"></h1>
-        </header>
-        <div id="detailContent" class="detail-content"></div>
-    </div>
+<!-- Detail page view -->
+<div id="detailView" class="view" style="display: none;">
+    <header class="detail-view-header">
+        <button id="backButton" class="back-button">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <button id="homeButton" class="back-button">
+            <span class="material-symbols-outlined">view_list</span>
+        </button>
+    </header>
+    <div id="detailContent" class="detail-content"></div>
+</div>
 
-    <!-- Loading indicator -->
-    <div id="loading" class="loading">로딩 중...</div>
+<!-- Loading indicator -->
+<div id="loading" class="loading">로딩 중...</div>
 
-    <!-- Error message -->
-    <div id="error" class="error" style="display: none;"></div>
+<!-- Error message -->
+<div id="error" class="error" style="display: none;"></div>
 </div>
 
 <!-- Scroll to top button -->
-<button id="scrollToTop" class="scroll-to-top" title="맨 위로">
-     <i class="fas fa-chevron-up"></i>
+<button id="scroll-to-top" class="scroll-to-top hidden" aria-label="맨 위로 가기">
+    <i class="fas fa-chevron-up"></i>
 </button>
 
 <script src="js/shipgirl/shipgirl-info.js"></script>
