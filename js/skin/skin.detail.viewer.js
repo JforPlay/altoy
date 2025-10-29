@@ -15,10 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const oathTableArea = document.getElementById('oath-table-area');
     const loadingSkeleton = document.getElementById('loading-skeleton');
 
-    // Info Popup elements
-    const infoButton = document.getElementById('info-button');
-    const infoPopup = document.getElementById('info-popup');
-    const closePopupBtn = infoPopup.querySelector('.close-popup-btn');
+    // Info popup is handled globally by global.script.js
+
     const clearFiltersBtn = document.getElementById('clear-filters-btn');
 
     // Lightbox elements
@@ -30,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxCaption = lightboxModal.querySelector('.lightbox-caption');
     const lightboxCounter = lightboxModal.querySelector('.lightbox-counter');
 
-    // Scroll to top button - handled globally by nav.script.js
+    // Scroll to top button - handled globally by global.script.js
 
     // ===== State Management =====
     let skinData = [];
@@ -89,36 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingSkeleton.classList.add('hidden');
     };
 
-    // ===== Popup Functions =====
-    const openPopup = () => {
-        infoPopup.classList.add('visible');
-        infoPopup.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('no-scroll');
-        closePopupBtn.focus();
-    };
-
-    const closePopup = () => {
-        infoPopup.classList.remove('visible');
-        infoPopup.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('no-scroll');
-    };
-
-    infoButton.addEventListener('click', openPopup);
-    closePopupBtn.addEventListener('click', closePopup);
-
-    // Click outside to close popup
-    infoPopup.addEventListener('click', (e) => {
-        if (e.target === infoPopup) closePopup();
-    });
-
-    // ESC key to close popup
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && infoPopup.classList.contains('visible')) {
-            closePopup();
-        }
-    });
-
-    // Scroll to top functionality is handled globally by nav.script.js
+    // Info popup and scroll-to-top are handled globally by global.script.js
 
     // ===== Lightbox Functions =====
     const openLightbox = (images, startIndex = 0) => {

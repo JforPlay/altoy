@@ -138,10 +138,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const popupCharName = document.getElementById('popup-char-name');
   const closeImagePopupBtn = document.querySelector('.close-image-popup-btn');
 
-  // Info popup elements
-  const infoButton = document.getElementById('info-button');
-  const infoPopup = document.getElementById('info-popup');
-  const closeInfoPopupBtn = infoPopup?.querySelector('.close-popup-btn');
+  // Info popup is handled globally by global.script.js
 
   // ====================================
   // STATE VARIABLES
@@ -1280,14 +1277,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 300);
   };
 
-  /**
-   * Close info popup
-   */
-  const closeInfoPopup = () => {
-    infoPopup.classList.remove('visible');
-    document.body.classList.remove('no-scroll');
-  };
-
   // ====================================
   // VOTING LOGIC
   // ====================================
@@ -1519,25 +1508,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Info popup handlers
-  if (infoButton && infoPopup) {
-    infoButton.addEventListener('click', () => {
-      infoPopup.classList.add('visible');
-      document.body.classList.add('no-scroll');
-    });
-
-    if (closeInfoPopupBtn) {
-      closeInfoPopupBtn.addEventListener('click', closeInfoPopup);
-    }
-
-    infoPopup.addEventListener('click', (event) => {
-      if (event.target === infoPopup) {
-        closeInfoPopup();
-      }
-    });
-  }
-
-  // Scroll to top button is handled globally by nav.script.js
+  // Info popup and scroll-to-top are handled globally by global.script.js
 
   // ====================================
   // MAIN DATA LOADING

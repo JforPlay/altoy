@@ -783,3 +783,49 @@
     font-size: 0.875rem;
   }
 }
+
+/* =================================================================
+   LIGHT MODE OVERRIDES
+   ================================================================= */
+
+body:not(.dark-mode) .lightbox-modal {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+body:not(.dark-mode) .no-images-message {
+  border: 2px dashed var(--border-color);
+  color: var(--text-muted);
+}
+
+/* Voice Line Table - Brighter backgrounds for light mode */
+body:not(.dark-mode) .voice-line-table tbody tr:nth-child(even) {
+  background-color: rgba(0, 113, 235, 0.04);
+}
+
+body:not(.dark-mode) .voice-line-table tbody tr:hover {
+  background-color: rgba(0, 113, 235, 0.08);
+}
+
+/* Image Gallery - Better separation from white background */
+body:not(.dark-mode) .image-gallery img {
+  border: 2px solid var(--border-color);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
+}
+
+body:not(.dark-mode) .image-gallery img:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 113, 235, 0.15);
+}
+
+/* Volume Control - Better distinction from table */
+body:not(.dark-mode) .volume-control-container {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Volume Slider - Visible track in light mode */
+body:not(.dark-mode) .volume-slider {
+  background: #d0d0d0;
+}

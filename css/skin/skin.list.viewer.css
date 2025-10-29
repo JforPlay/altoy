@@ -312,3 +312,39 @@
     margin-bottom: 0.75rem;
   }
 }
+
+/* =================================================================
+   LIGHT MODE OVERRIDES
+   ================================================================= */
+
+body:not(.dark-mode) .info-line strong {
+  color: #666666;
+}
+
+body:not(.dark-mode) #search-input::placeholder {
+  color: #999999;
+}
+
+body:not(.dark-mode) .autocomplete-items {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+}
+
+body:not(.dark-mode) .autocomplete-items div {
+  border-bottom: 1px solid var(--border-color);
+}
+
+body:not(.dark-mode) .autocomplete-items div:hover {
+  background-color: rgba(0, 113, 235, 0.1);
+}
+
+/* Skin Cards - Better visibility in light mode */
+body:not(.dark-mode) .skin-box {
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+body:not(.dark-mode) .skin-box-link:hover .skin-box {
+  box-shadow: 0 4px 12px rgba(0, 113, 235, 0.12);
+}

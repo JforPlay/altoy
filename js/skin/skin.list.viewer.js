@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearAll: document.getElementById('clear-all-btn'),
             info: document.getElementById('info-button'),
             filterToggle: document.getElementById('filter-toggle-btn')
-            // scrollToTop handled globally by nav.script.js
+            // scrollToTop handled globally by global.script.js
         },
         progressBar: document.getElementById('progress-bar'),
         popup: {
@@ -430,22 +430,12 @@ document.addEventListener('DOMContentLoaded', () => {
             URLState.update();
         },
 
-        openPopup() {
-            DOM.popup.container.classList.add('visible');
-            document.body.style.overflow = 'hidden';
-        },
-
-        closePopup() {
-            DOM.popup.container.classList.remove('visible');
-            document.body.style.overflow = '';
-        },
-
         toggleFilters() {
             DOM.filterContainer.classList.toggle('visible');
             DOM.buttons.filterToggle.classList.toggle('active');
         }
 
-        // scrollToTop and handleScroll are now handled globally by nav.script.js
+        // Info popup and scrollToTop are now handled globally by global.script.js
     };
 
     // === DEBOUNCED/THROTTLED FUNCTIONS ===
@@ -511,11 +501,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .forEach(el => el.removeEventListener('change', EventHandlers.handleFilterChange));
         cachedRarityCheckboxes.forEach(cb => cb.removeEventListener('change', EventHandlers.handleFilterChange));
         DOM.buttons.clearAll.removeEventListener('click', EventHandlers.resetFilters);
-        DOM.buttons.info.removeEventListener('click', EventHandlers.openPopup);
         DOM.buttons.filterToggle.removeEventListener('click', EventHandlers.toggleFilters);
-        DOM.popup.closeBtn.removeEventListener('click', EventHandlers.closePopup);
         window.removeEventListener('popstate', URLState.apply);
-        // scrollToTop event listeners handled globally by nav.script.js
+        // Info popup and scrollToTop event listeners handled globally by global.script.js
 
         // Close autocomplete
         Autocomplete.close();
@@ -541,19 +529,13 @@ document.addEventListener('DOMContentLoaded', () => {
         .forEach(cb => cb.addEventListener('change', EventHandlers.handleFilterChange));
 
     DOM.buttons.clearAll.addEventListener('click', EventHandlers.resetFilters);
-    DOM.buttons.info.addEventListener('click', EventHandlers.openPopup);
     DOM.buttons.filterToggle.addEventListener('click', EventHandlers.toggleFilters);
-    DOM.popup.closeBtn.addEventListener('click', EventHandlers.closePopup);
-    // scrollToTop handled globally by nav.script.js
-
-    DOM.popup.container.addEventListener('click', (event) => {
-        if (event.target === DOM.popup.container) EventHandlers.closePopup();
-    });
+    // Info popup and scrollToTop handled globally by global.script.js
 
     document.addEventListener("click", (e) => {
         if (!DOM.search.parentNode.contains(e.target)) Autocomplete.close();
     });
 
     window.addEventListener('popstate', URLState.apply);
-    // scroll event listener for scrollToTop handled globally by nav.script.js
+    // scroll event listener for scrollToTop handled globally by global.script.js
 });

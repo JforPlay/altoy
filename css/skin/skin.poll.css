@@ -805,3 +805,119 @@
     padding: 0.5rem 1rem;
   }
 }
+
+/* =================================================================
+   LIGHT MODE OVERRIDES
+   ================================================================= */
+
+body:not(.dark-mode) .data-age-indicator {
+  background-color: #fcfcfc;
+  border: 1px solid var(--border-color);
+  color: #000000;
+}
+
+body:not(.dark-mode) .refresh-button-compact {
+  background-color: var(--success-color);
+  border: 2px solid #1e8449;
+  color: white;
+}
+
+body:not(.dark-mode) .refresh-button-compact:hover:not(:disabled) {
+  background-color: #1e8449;
+  box-shadow: 0 2px 0.5rem rgba(39, 174, 96, 0.2);
+}
+
+body:not(.dark-mode) .refresh-button-compact:disabled {
+  background-color: #bdc3c7;
+  border-color: #95a5a6;
+}
+
+body:not(.dark-mode) #image-popup {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+body:not(.dark-mode) .popup-skin-info {
+  background-color: rgba(255, 255, 255, 0.98);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+}
+
+body:not(.dark-mode) .popup-skin-name {
+  text-shadow: none;
+  color: var(--text-primary);
+}
+
+body:not(.dark-mode) .vote-count-number {
+  color: #0071eb;
+}
+
+body:not(.dark-mode) .info-text {
+  color: var(--text-muted);
+}
+
+body:not(.dark-mode) .vote-btn {
+  box-shadow: 0px 4px 12px rgba(0, 113, 235, 0.2);
+}
+
+body:not(.dark-mode) .selected-indicator {
+  color: var(--text-muted);
+}
+
+body:not(.dark-mode) .stat-value {
+  color: #0071eb;
+}
+
+body:not(.dark-mode) .vote-date-label {
+  color: #666666;
+}
+
+body:not(.dark-mode) .vote-date {
+  color: #f39c12;
+}
+
+body:not(.dark-mode) .toggle-stats-btn {
+  color: #0071eb;
+}
+
+body:not(.dark-mode) .toggle-stats-btn:hover {
+  color: #0056b3;
+}
+
+body:not(.dark-mode) .toggle-stats-btn.active {
+  color: #27ae60;
+  text-shadow: none;
+}
+
+body:not(.dark-mode) .selected-skin-name {
+  color: #27ae60;
+}
+
+body:not(.dark-mode) .form-disclaimer {
+  color: #666666;
+}
+
+body:not(.dark-mode) .submit-vote-btn {
+  background-color: #0071eb;
+}
+
+body:not(.dark-mode) .submit-vote-btn:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+body:not(.dark-mode) .cancel-vote-btn {
+  background-color: #e74c3c;
+}
+
+body:not(.dark-mode) .cancel-vote-btn:hover:not(:disabled) {
+  background-color: #c0392b;
+}
+
+/* Poll Cards - Better visibility in light mode */
+body:not(.dark-mode) .poll-box {
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+body:not(.dark-mode) .poll-box:hover {
+  box-shadow: 0 4px 12px rgba(0, 113, 235, 0.12);
+}
