@@ -1,6 +1,7 @@
 // Global data storage
 let eventData = [];
 let shipgirlData = {};
+let shipgirlNameMap = new Map(); // Optimized lookup by name
 let filteredEvents = [];
 
 // DOM elements
@@ -13,6 +14,19 @@ const rerunStatusFilter = document.getElementById('rerunStatusFilter');
 const showJpDatesFilter = document.getElementById('showJpDatesFilter');
 const eventList = document.getElementById('eventList');
 const eventCount = document.getElementById('eventCount');
+
+// Utility: Debounce function for performance optimization
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
 
 // Load data on page load
 document.addEventListener('DOMContentLoaded', async () => {
@@ -40,10 +54,20 @@ async function loadData() {
                 if (shipgirl.id) {
                     shipgirlData[shipgirl.id.toString()] = shipgirl;
                 }
+                // Build name-based lookup map for O(1) access
+                if (shipgirl.name) {
+                    shipgirlNameMap.set(shipgirl.name.trim(), shipgirl);
+                }
             });
         } else {
             // If it's already an object, use it directly
             shipgirlData = shipgirlRawData;
+            // Build name map from object
+            Object.values(shipgirlData).forEach(shipgirl => {
+                if (shipgirl.name) {
+                    shipgirlNameMap.set(shipgirl.name.trim(), shipgirl);
+                }
+            });
         }
 
         // Filter out events with empty ID
@@ -74,7 +98,10 @@ async function loadData() {
 
 // Setup event listeners
 function setupEventListeners() {
-    searchInput.addEventListener('input', handleSearch);
+    // Debounce search input for better performance (300ms delay)
+    const debouncedSearch = debounce(handleSearch, 300);
+    searchInput.addEventListener('input', debouncedSearch);
+
     clearBtn.addEventListener('click', clearSearch);
     categoryFilter.addEventListener('change', filterEvents);
     factionFilter.addEventListener('change', filterEvents);
@@ -296,20 +323,7 @@ function createShipgirlsSection(shipgirlsStr) {
             return `
                 <a href="${shipgirlUrl}" class="shipgirl-icon-link">
                     <div class="shipgirl-icon rarity-unknown">
-                        <div style="
-                            width: 70px;
-                            height: 70px;
-                            border-radius: 8px;
-                            border: 2px solid #ccc;
-                            background: #f5f5f5;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            font-size: 10px;
-                            text-align: center;
-                            padding: 5px;
-                            color: #999;
-                        ">${name}</div>
+                        <div class="shipgirl-icon-placeholder">${name}</div>
                         <div class="tooltip">${name}</div>
                     </div>
                 </a>
@@ -340,62 +354,10 @@ function getRarityClass(rarity) {
 }
 
 // Find shipgirl by name in shipgirl_data
+// Optimized with Map for O(1) lookup instead of O(n) iteration
 function findShipgirlByName(name) {
-    // Remove extra whitespace
     const cleanName = name.trim();
-
-    // Search through all shipgirl data
-    for (const [id, shipgirl] of Object.entries(shipgirlData)) {
-        // Compare with and without trailing spaces
-        const shipgirlName = (shipgirl.name || '').trim();
-        if (shipgirlName === cleanName) {
-            return shipgirl;
-        }
-    }
-
-    return null;
+    return shipgirlNameMap.get(cleanName) || null;
 }
 
-// Info popup functionality
-const infoButton = document.getElementById('info-button');
-const infoPopup = document.getElementById('info-popup');
-const closePopupBtn = infoPopup.querySelector('.close-popup-btn');
-
-infoButton.addEventListener('click', () => {
-    infoPopup.classList.add('visible');
-    document.body.classList.add('no-scroll');
-});
-
-closePopupBtn.addEventListener('click', () => {
-    infoPopup.classList.remove('visible');
-    document.body.classList.remove('no-scroll');
-});
-
-infoPopup.addEventListener('click', (event) => {
-    if (event.target === infoPopup) {
-        infoPopup.classList.remove('visible');
-        document.body.classList.remove('no-scroll');
-    }
-});
-
-// Scroll to Top Button
-const scrollToTopBtn = document.getElementById('scrollToTop');
-
-if (scrollToTopBtn) {
-    // Show/hide button based on scroll position
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            scrollToTopBtn.classList.add('show');
-        } else {
-            scrollToTopBtn.classList.remove('show');
-        }
-    });
-
-    // Scroll to top when clicked
-    scrollToTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-}
+// Info popup and scroll-to-top are handled globally by global.script.js
