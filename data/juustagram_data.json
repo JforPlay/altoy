@@ -28383,11 +28383,113 @@
     "597": {
         "id": 597,
         "ship_group": 1140001,
-        "message": "Translation Source Missing",
+        "message": "(파파고)정말 마법같은 소품이네요!",
         "name": "Hestia",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/251009_hesitiyasX14UwGiscKcQutL.png",
+        "shipgirl_names": [
+            70208,
+            1140001,
+            11201,
+            50209,
+            20234,
+            110201
+        ],
+        "reply_group1": {
+            "1": {
+                "50209": "(파파고)헤스티아는 전자레인지 사용법을 배웠나요?"
+            },
+            "2": {
+                "1140001": "(파파고)흠, 손잡이를 돌리는 것부터 시작되는 거겠죠? 이 간단한 조작은 저에게는 식은 죽 먹기입니다~"
+            },
+            "3": {
+                "11201": "(파파고)그거...설정시간이 너무 길죠?"
+            },
+            "4": {
+                "1140001": "(파파고)타이밍? 어떤 타이밍? 이거 타이머 기능 있나요? !"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "110201": "(파파고)순조롭게 시작되네요 신기하네요~ 왜인지는 모르겠지만 사용할 때마다 전자레인지에서 연기가 나요..."
+            },
+            "2": {
+                "1140001": "(파파고)뭔가 타는 냄새가 나는 것 같은데?"
+            },
+            "3": {
+                "70208": "(파파고)폭발 예감이 들어요~ 확인해볼게요!"
+            },
+            "4": {
+                "20234": "(파파고)부엌, 위험하다"
+            }
+        },
+        "op_option1": "(파파고)가열되는 것은 무엇입니까?",
+        "op_reply1": "(파파고)감자볼 튀김!",
+        "reply1_shipgirl": 1140001,
+        "op_option2": "(파파고)소품의 힘을 마스터하셨나요?",
+        "op_reply2": "(파파고)음, 문제 없습니다. 그걸로 만든 감자볼도 맛이 좋아요!",
+        "reply2_shipgirl": 1140001
+    },
+    "598": {
+        "id": 598,
+        "ship_group": 1140002,
+        "message": "(파파고)나는 당신과 함께하기 위해 여기 있습니다",
+        "name": "Ryu Lion",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/251009_liuliangywfVbowWkuFCg0eV.png",
+        "shipgirl_names": [
+            1140002,
+            20204,
+            20208,
+            20210,
+            20212,
+            30132,
+            20220
+        ],
+        "reply_group1": {
+            "1": {
+                "20212": "(파파고)Miss Liu Liang이 우리와 함께한 것을 환영합니다"
+            },
+            "2": {
+                "1140002": "(파파고)\"풍요의 여주인\"에서 일한 경험을 활용하고 싶습니다."
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "20204": "(파파고)식탁 위에 있는 저 검은 것은 샌드위치인가요...?"
+            },
+            "2": {
+                "1140002": "(파파고)이것, 이것, 저것... 뭔가 진전이 있을 줄 알았는데"
+            },
+            "3": {
+                "20208": "(파파고)검은색 샌드위치, 음, 청소됐어"
+            },
+            "4": {
+                "20210": "(파파고)청소됨"
+            },
+            "5": {
+                "20220": "(파파고)뭐! 아무래도... 본 것 같습니다..."
+            },
+            "6": {
+                "30132": "(파파고)블랙샌드위치 초코맛인가요...너무 먹고 싶네요~"
+            },
+            "7": {
+                "1140002": "(파파고)...정말 초콜릿 맛이 나는 음식을 먹고 싶다면 제가 만들어 드릴 수 있는 방법을 찾아드릴게요."
+            }
+        },
+        "op_option1": "(파파고)이 샌드위치는 나를 위해 준비되어 있지 않나요?",
+        "op_reply1": "(파파고)지휘관의 몫은 지휘실 테이블 위에 놓여 있습니다.",
+        "reply1_shipgirl": 1140002,
+        "op_option2": "(파파고)완전...완전히 익은 것 같아요",
+        "op_reply2": "(파파고)우후...난 항상 이러는데...",
+        "reply2_shipgirl": 1140002
+    },
+    "599": {
+        "id": 599,
+        "ship_group": 960012,
+        "message": "Translation Source Missing",
+        "name": "Queen Anne's Revenge",
         "picture_persist": "",
         "shipgirl_names": [
-            1140001
+            960012
         ],
         "op_option1": "Translation Source Missing",
         "op_reply1": "Translation Source Missing",
@@ -28396,14 +28498,62 @@
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
     },
-    "598": {
-        "id": 598,
-        "ship_group": 1140002,
+    "600": {
+        "id": 600,
+        "ship_group": 960014,
         "message": "Translation Source Missing",
-        "name": "Ryu Lion",
+        "name": "Pearl",
         "picture_persist": "",
         "shipgirl_names": [
-            1140002
+            960014
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "601": {
+        "id": 601,
+        "ship_group": 960013,
+        "message": "Translation Source Missing",
+        "name": "Lyme",
+        "picture_persist": "",
+        "shipgirl_names": [
+            960013
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "602": {
+        "id": 602,
+        "ship_group": 960015,
+        "message": "Translation Source Missing",
+        "name": "Royal James",
+        "picture_persist": "",
+        "shipgirl_names": [
+            960015
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "603": {
+        "id": 603,
+        "ship_group": 960016,
+        "message": "Translation Source Missing",
+        "name": "Adventure",
+        "picture_persist": "",
+        "shipgirl_names": [
+            960016
         ],
         "op_option1": "Translation Source Missing",
         "op_reply1": "Translation Source Missing",

@@ -2163,14 +2163,14 @@
             ]
         }
     },
-    "시리우스 ": {
+    "시리우스": {
         "20220101": {
             "id": 20220101,
             "type": "1",
             "unlock_desc": "시리우스 룸을 1일간 방문하다",
             "ship_group": 20220,
             "name": "편안함",
-            "kr_name": "시리우스 ",
+            "kr_name": "시리우스",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202200/icon.png",
             "ship_name": "forMaster_Sirius",
             "scripts": [
@@ -2333,7 +2333,7 @@
             "unlock_desc": "시리우스 룸의 물품 20개를 수집",
             "ship_group": 20220,
             "name": "두 번째 착각",
-            "kr_name": "시리우스 ",
+            "kr_name": "시리우스",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202200/icon.png",
             "ship_name": "forMaster_Sirius",
             "scripts": [
@@ -2475,7 +2475,7 @@
             "unlock_desc": "시리우스 터치 모드 10회 진입",
             "ship_group": 20220,
             "name": "원기 회복",
-            "kr_name": "시리우스 ",
+            "kr_name": "시리우스",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202200/icon.png",
             "ship_name": "forMaster_Sirius",
             "scripts": [
@@ -2625,7 +2625,7 @@
             "unlock_desc": "시리우스에게 사진 2장 찍기",
             "ship_group": 20220,
             "name": "기록",
-            "kr_name": "시리우스 ",
+            "kr_name": "시리우스",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202200/icon.png",
             "ship_name": "forMaster_Sirius",
             "scripts": [
@@ -2751,7 +2751,7 @@
             "unlock_desc": "(밤) 시리우스 1번 터치",
             "ship_group": 20220,
             "name": "소원",
-            "kr_name": "시리우스 ",
+            "kr_name": "시리우스",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202200/icon.png",
             "ship_name": "forMaster_Sirius",
             "scripts": [
@@ -2888,14 +2888,14 @@
             ]
         }
     },
-    "노시로 ": {
+    "노시로": {
         "30221101": {
             "id": 30221101,
             "type": "1",
             "unlock_desc": "노시로 룸을 1일간 방문하다",
             "ship_group": 30221,
             "name": "원하신다면……",
-            "kr_name": "노시로 ",
+            "kr_name": "노시로",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302210/icon.png",
             "ship_name": "Nshiro",
             "scripts": [
@@ -3037,7 +3037,7 @@
             "unlock_desc": "노시로 룸의 물품 20개를 수집",
             "ship_group": 30221,
             "name": "의지",
-            "kr_name": "노시로 ",
+            "kr_name": "노시로",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302210/icon.png",
             "ship_name": "Nshiro",
             "scripts": [
@@ -3192,7 +3192,7 @@
             "unlock_desc": "노시로와 15회 대화",
             "ship_group": 30221,
             "name": "이야깃거리",
-            "kr_name": "노시로 ",
+            "kr_name": "노시로",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302210/icon.png",
             "ship_name": "Nshiro",
             "scripts": [
@@ -3342,7 +3342,7 @@
             "unlock_desc": "노시로 터치 모드 10회 진입",
             "ship_group": 30221,
             "name": "미래",
-            "kr_name": "노시로 ",
+            "kr_name": "노시로",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302210/icon.png",
             "ship_name": "Nshiro",
             "scripts": [
@@ -3484,7 +3484,7 @@
             "unlock_desc": "(밤) 노시로를 1번 사진 찍기",
             "ship_group": 30221,
             "name": "달이 아름답네",
-            "kr_name": "노시로 ",
+            "kr_name": "노시로",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302210/icon.png",
             "ship_name": "Nshiro",
             "scripts": [

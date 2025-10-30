@@ -194783,7 +194783,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":780.0,
-        "기간":"한정 (2024\/11\/20)",
+        "기간":"상시",
         "진영":"KMS",
         "레어도":"SR",
         "ex_chat_status":0
@@ -236576,7 +236576,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":780.0,
-        "기간":"한정 (2024\/11\/20)",
+        "기간":"상시",
         "진영":"ROC",
         "레어도":"SR",
         "ex_chat_status":0
@@ -291059,7 +291059,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":880.0,
-        "기간":"한정 (2024\/11\/20)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -291386,7 +291386,7 @@
         "스킨 태그":"L2D, 배경",
         "입수 영상":"X",
         "재화":1180.0,
-        "기간":"한정 (2024\/11\/20)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -291738,7 +291738,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":880.0,
-        "기간":"한정 (2024\/11\/20)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -292074,7 +292074,7 @@
         "스킨 태그":"쁘띠모션, 배경",
         "입수 영상":"X",
         "재화":880.0,
-        "기간":"한정 (2024\/11\/20)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SR",
         "ex_chat_status":0
@@ -292407,7 +292407,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":780.0,
-        "기간":"한정 (2024\/11\/20)",
+        "기간":"상시",
         "진영":"MOT",
         "레어도":"SR",
         "ex_chat_status":0
@@ -325317,19 +325317,19 @@
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/11400010\/shipyard.png",
         "설명":"나는 헤스티아. 헤스티아 파밀리아의 주신이다. 이래 봬도 신이란 말씀! ……응? 하나도 안 놀라네? 흠… 내가 아는 애들이랑은 전혀 다른걸……",
         "자기소개":{
-            "voiceline":"나는 헤스티아, 불꽃을 다루는 화로의 여신이지! 신이니까 사양 말고 마음껏 공경하라고. 그나저나 이 세상에 좀 괜찮은 알바 같은 건 없어?",
+            "voiceline":"나는 헤스티아… 불꽃을 다루는 화로의 여신이지! 신이니까 사양말고 마음껏 공경하라고. 그나저나 이 세상에 괜찮은 알바 같은 건 없느냐?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/profile.ogg"
         },
         "메인1":{
-            "voiceline":"여긴 맛있는 게 참 많네. 감자돌이에 뒤지지 않을 정도야. 원래 세상으로 돌아가기 전에 전부 제패하고 말겠어!",
+            "voiceline":"여긴 맛있는 게 참 많구나. 감자돌이에 뒤지지 않을 정도야. 원래 세상으로 돌아가기 전에 전부 제패하고 말겠어!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/main1.ogg"
         },
         "메인2":{
-            "voiceline":"지휘관 군, 맛있는 걸 찾았는데 한 입 어때? 사양 말고 어서 먹어봐봐.",
+            "voiceline":"지휘관, 맛있는 걸 찾았는데 한 입 어떤가? 사양 말고 어서 먹어보거라.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/main2.ogg"
         },
         "메인3":{
-            "voiceline":"아야야얏! …지휘관 군?! 왜 이런 곳에 누워 있는 거야? 졸릴 땐 침대에서 자야 피로가 풀린다고.",
+            "voiceline":"아야야얏! …지휘관?! 왜 이런 곳에 누워있는 거지? 졸릴 땐 침대에서 자야 피로가 풀린다고.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/main3.ogg"
         },
         "전투개시":{
@@ -325337,23 +325337,23 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/battle.ogg"
         },
         "상세확인":{
-            "voiceline":"원래 세상에서는 여러 신의 파밀리아들이 던전을 공략했는데, 여기선 그게 바다 위…에서 벌어지는 건가?",
+            "voiceline":"원래 세상에서는 여러 신의 권속들이 던전을 공략했는데, 여기선 그게 바다 위…에서 벌어지는 건가?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/detail.ogg"
         },
         "드랍 설명":{
-            "voiceline":"공작함-헤스티아",
+            "voiceline":"나는 헤스티아. 헤스티아 파밀리아의 주신이니라. 이래 봬도 신이니라! ……응? 하나도 안 놀라네? 흠… 내가 아는 애들이랑은 전혀 다른걸……",
             "voicelink":null
         },
         "의뢰 완료":{
-            "voiceline":"심부름하러 나간 네 파밀리아가 돌아온 모양이야. 뭐? 파밀리아가 아니라 동료라고? 그래, 그 점은 양보 못 하는구나.",
+            "voiceline":"심부름하러 나간 네 권속이 돌아온 모양이구나. 뭐? 권속이 아니라 동료라고? 그래, 그 점은 확실히 짚고 넘어가는구나.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/expedition.ogg"
         },
         "실망":{
-            "voiceline":"무슨 일이야? 음… 나중에 하면 안 될까? 지금은 너무 졸려서.",
+            "voiceline":"무슨 일이지? 음… 나중에 하면 안 될까? 지금은 너무 졸려서.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/feeling1.ogg"
         },
         "낯섦":{
-            "voiceline":"아르바이트랑 지휘관 군과 외출하는 날이 겹치면… 음… 정말 고민되겠는걸.",
+            "voiceline":"아르바이트랑 지휘관과 외출하는 날이 겹치면… 음… 정말 고민되겠는걸.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/feeling2.ogg"
         },
         "호감":{
@@ -325361,7 +325361,7 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/feeling3.ogg"
         },
         "기쁨":{
-            "voiceline":"혹시 날 만나러 온 거야? 음, 좋아. 파밀리아로서 아주 바람직한 자세야… 아, 파밀리아가 아니라 친구라고?",
+            "voiceline":"혹시 날 만나러 온 건가? 음, 좋아. 권속으로서 아주 바람직한 자세야… 아, 권속이 아니라 친구라고?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/feeling4.ogg"
         },
         "사랑":{
@@ -325369,11 +325369,11 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/feeling5.ogg"
         },
         "터치3":{
-            "voiceline":"으윽…! 뭘 그렇게 빤히 보는 거야?! 핫, 꼬맹이라고 하기만 해봐, 혼내줄 거야!",
+            "voiceline":"으윽…! 뭘 그렇게 빤히 보는 거지?! 아, 작다고 놀리면 혼내줄 테다!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/headtouch.ogg"
         },
         "모항귀환":{
-            "voiceline":"어서 와, 지휘관 군! 무슨 일이라도 생기면 어쩌나 걱정했는데, 무사해서 다행이네.",
+            "voiceline":"어서 와라, 지휘관! 무슨 일이라도 생기면 어쩌나 걱정했는데, 무사해서 다행이구나.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/home.ogg"
         },
         "hp 경고":{
@@ -325381,19 +325381,19 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/hp_warning.ogg"
         },
         "로그인":{
-            "voiceline":"잘 왔어, 지휘관 군~! 목이 빠져라 기다렸다고!",
+            "voiceline":"잘 왔다, 지휘관~! 목이 빠져라 기다렸느니라!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/login.ogg"
         },
         "실패":{
-            "voiceline":"이런… 이러다 또 얼빠진 여신이니 뭐니 한 소리 듣겠어…! 무효! 무효! 방금 전투는 무효야!!",
+            "voiceline":"이런… 이러다 또 얼빠진 여신이니 뭐니 한 소리 듣겠어…! 무효! 무효! 방금 전투는 무효니라!!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/lose.ogg"
         },
         "우편":{
-            "voiceline":"이건… 지휘관 군 앞으로 온 편지인가? 설마… 러브레터?!",
+            "voiceline":"이건… 지휘관 앞으로 온 편지인가? 설마… 러브레터?!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/mail.ogg"
         },
         "임무":{
-            "voiceline":"응? 아직 안 끝났잖아? 나도 도와줄게.",
+            "voiceline":"응? 아직 안 끝났잖아. 나도 도와주지.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/mission.ogg"
         },
         "임무완료":{
@@ -325405,19 +325405,19 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/propose.ogg"
         },
         "스킬":{
-            "voiceline":"나도 할 수 있는 걸 할게.",
+            "voiceline":"내가 할 수 있는 걸 할게.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/skill.ogg"
         },
         "터치1":{
-            "voiceline":"그렇게 내가 신경이 쓰여? 뭐? 먼지가 붙어 있다고? 그랬구나. 그럼 좀 떼줄 수 있어?",
+            "voiceline":"그렇게 내가 신경이 쓰이느냐? 뭐? 먼지가 붙어 있다고? 그랬구나. 그럼 좀 떼주는 게 어떤가?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/touch.ogg"
         },
         "터치2":{
-            "voiceline":"지휘관 군, 각오는 되어 있겠지?",
+            "voiceline":"지휘관, 각오는 되어 있겠지?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/touch2.ogg"
         },
         "입수시":{
-            "voiceline":"나는 헤스티아. 헤스티아 파밀리아의 주신이다. 이래 봬도 신이란 말씀! ……응? 하나도 안 놀라네? 흠… 내가 아는 애들이랑은 전혀 다른걸……",
+            "voiceline":"나는 헤스티아. 헤스티아 파밀리아의 주신이니라. 이래 봬도 신이니라! ……응? 하나도 안 놀라네? 흠… 내가 아는 애들이랑은 전혀 다른걸……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/unlock.ogg"
         },
         "강화성공":{
@@ -325473,7 +325473,7 @@
         },
         "함대 특수대사":[
             {
-                "voiceline":"['류 리온'] : 엘프, 나 먼저 갈게.",
+                "voiceline":"['류 리온'] : 엘프, 나 먼저 간다.",
                 "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/couple_encourage1.ogg"
             }
         ],

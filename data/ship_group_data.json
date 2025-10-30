@@ -35,7 +35,7 @@
     },
     "10102": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101020/icon.png",
-        "name": "듀이 ",
+        "name": "듀이",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -781,7 +781,7 @@
     },
     "10135": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101350/icon.png",
-        "name": "배시 ",
+        "name": "배시",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -873,7 +873,7 @@
     },
     "10138": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101380/icon.png",
-        "name": "킴벌리 ",
+        "name": "킴벌리",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -905,7 +905,7 @@
     },
     "10139": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101390/icon.png",
-        "name": "멀라니 ",
+        "name": "멀라니",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -937,7 +937,7 @@
     },
     "10140": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101400/icon.png",
-        "name": "아일윈 ",
+        "name": "아일윈",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -967,7 +967,7 @@
     },
     "10141": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101410/icon.png",
-        "name": "스탠리 ",
+        "name": "스탠리",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -1060,7 +1060,7 @@
     },
     "10144": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101440/icon.png",
-        "name": "쿠퍼 ",
+        "name": "쿠퍼",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -1726,7 +1726,7 @@
     },
     "10214": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102143/icon.png",
-        "name": "몬트필리어 ",
+        "name": "몬트필리어",
         "add_get_attr": 4,
         "add_get_shiptype": [
             2
@@ -1752,7 +1752,7 @@
     },
     "10215": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102150/icon.png",
-        "name": "덴버 ",
+        "name": "덴버",
         "add_get_attr": 4,
         "add_get_shiptype": [
             2
@@ -1805,7 +1805,7 @@
     },
     "10218": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102180/icon.png",
-        "name": "콩코드 ",
+        "name": "콩코드",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -1831,7 +1831,7 @@
     },
     "10219": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102190/icon.png",
-        "name": "꼬마 헬레나 ",
+        "name": "꼬마 헬레나",
         "nationality": 1,
         "type": 2,
         "description": [
@@ -1841,7 +1841,7 @@
     },
     "10220": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102200/icon.png",
-        "name": "꼬마 클리블랜드 ",
+        "name": "꼬마 클리블랜드",
         "nationality": 1,
         "type": 2,
         "description": [
@@ -1851,7 +1851,7 @@
     },
     "10221": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102210/icon.png",
-        "name": "꼬마 샌디에이고 ",
+        "name": "꼬마 샌디에이고",
         "nationality": 1,
         "type": 2,
         "description": [
@@ -1861,7 +1861,7 @@
     },
     "10222": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102220/icon.png",
-        "name": "산후안 ",
+        "name": "산후안",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -1888,7 +1888,7 @@
     },
     "10223": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102230/icon.png",
-        "name": "버밍햄 ",
+        "name": "버밍햄",
         "add_get_attr": 4,
         "add_get_shiptype": [
             2
@@ -1956,7 +1956,7 @@
     },
     "10226": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102260/icon.png",
-        "name": "리노 ",
+        "name": "리노",
         "add_get_attr": 6,
         "add_get_shiptype": [
             2
@@ -1983,7 +1983,7 @@
     },
     "10227": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102270/icon.png",
-        "name": "마블헤드 ",
+        "name": "마블헤드",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -2564,7 +2564,7 @@
     },
     "10316": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103160/icon.png",
-        "name": "볼티모어 ",
+        "name": "볼티모어",
         "add_get_attr": 1,
         "add_get_shiptype": [
             3,
@@ -3210,7 +3210,7 @@
     },
     "10519": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105190/icon.png",
-        "name": "매사추세츠 ",
+        "name": "매사추세츠",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -3241,7 +3241,7 @@
     },
     "10520": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105200/icon.png",
-        "name": "앨라배마 ",
+        "name": "앨라배마",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -3330,7 +3330,7 @@
     },
     "10655": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/106550/icon.png",
-        "name": "카사블랑카 ",
+        "name": "카사블랑카",
         "add_get_attr": 12,
         "add_get_shiptype": [
             6
@@ -3651,7 +3651,7 @@
     },
     "10711": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107110/icon.png",
-        "name": "인트레피드 ",
+        "name": "인트레피드",
         "add_get_attr": 1,
         "add_get_shiptype": [
             6,
@@ -3765,7 +3765,7 @@
     },
     "10717": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107170/icon.png",
-        "name": "벙커힐 ",
+        "name": "벙커힐",
         "add_get_attr": 1,
         "add_get_shiptype": [
             6,
@@ -3793,7 +3793,7 @@
     },
     "10722": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107220/icon.png",
-        "name": "인디펜던스 ",
+        "name": "인디펜던스",
         "add_get_attr": 12,
         "add_get_shiptype": [
             6
@@ -3874,7 +3874,7 @@
     },
     "10729": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107290/icon.png",
-        "name": "바탄 ",
+        "name": "바탄",
         "add_get_attr": 12,
         "add_get_shiptype": [
             6
@@ -3929,7 +3929,7 @@
     },
     "10738": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107380/icon.png",
-        "name": "샹그릴라 ",
+        "name": "샹그릴라",
         "add_get_attr": 1,
         "add_get_shiptype": [
             6,
@@ -4025,7 +4025,7 @@
     },
     "10803": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108030/icon.png",
-        "name": "카발라 ",
+        "name": "카발라",
         "add_get_attr": 8,
         "add_get_shiptype": [
             8,
@@ -4053,7 +4053,7 @@
     },
     "10804": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108040/icon.png",
-        "name": "블루길 ",
+        "name": "블루길",
         "add_get_attr": 1,
         "add_get_shiptype": [
             8,
@@ -4267,7 +4267,7 @@
     },
     "19901": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199010/icon.png",
-        "name": "시애틀 ",
+        "name": "시애틀",
         "add_get_attr": 4,
         "add_get_shiptype": [
             2
@@ -4293,7 +4293,7 @@
     },
     "19902": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199020/icon.png",
-        "name": "조지아 ",
+        "name": "조지아",
         "add_get_attr": 8,
         "add_get_shiptype": [
             4,
@@ -4759,7 +4759,7 @@
     },
     "20113": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201130/icon.png",
-        "name": "그렌빌 ",
+        "name": "그렌빌",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -4821,7 +4821,7 @@
     },
     "20116": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201160/icon.png",
-        "name": "하디 ",
+        "name": "하디",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -4852,7 +4852,7 @@
     },
     "20120": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201200/icon.png",
-        "name": "헌터 ",
+        "name": "헌터",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -4975,7 +4975,7 @@
     },
     "20124": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201240/icon.png",
-        "name": "주피터 ",
+        "name": "주피터",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -5100,7 +5100,7 @@
     },
     "20129": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201290/icon.png",
-        "name": "에코 ",
+        "name": "에코",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -5131,7 +5131,7 @@
     },
     "20132": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201320/icon.png",
-        "name": "에스키모 ",
+        "name": "에스키모",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -5162,7 +5162,7 @@
     },
     "20133": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201330/icon.png",
-        "name": "이카로스 ",
+        "name": "이카로스",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -5486,7 +5486,7 @@
     },
     "20207": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202070/icon.png",
-        "name": "사우스햄튼 ",
+        "name": "사우스햄튼",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -5704,7 +5704,7 @@
     },
     "20215": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202150/icon.png",
-        "name": "오로라 ",
+        "name": "오로라",
         "add_get_attr": 8,
         "add_get_shiptype": [
             2
@@ -5823,7 +5823,7 @@
     },
     "20220": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202200/icon.png",
-        "name": "시리우스 ",
+        "name": "시리우스",
         "add_get_attr": 4,
         "add_get_shiptype": [
             2
@@ -5851,7 +5851,7 @@
     },
     "20221": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202210/icon.png",
-        "name": "퀴라소 ",
+        "name": "퀴라소",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -5878,7 +5878,7 @@
     },
     "20222": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202220/icon.png",
-        "name": "컬루 ",
+        "name": "컬루",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -5968,7 +5968,7 @@
     },
     "20226": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202260/icon.png",
-        "name": "글래스고 ",
+        "name": "글래스고",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -5994,7 +5994,7 @@
     },
     "20227": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202270/icon.png",
-        "name": "허마이오니 ",
+        "name": "허마이오니",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -6114,7 +6114,7 @@
     },
     "20232": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202320/icon.png",
-        "name": "엔터프라이즈",
+        "name": "엔터프라이즈(경순)",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -6500,7 +6500,7 @@
     },
     "20309": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/203090/icon.png",
-        "name": "서식스 ",
+        "name": "서식스",
         "add_get_attr": 1,
         "add_get_shiptype": [
             3,
@@ -6660,7 +6660,7 @@
     },
     "20404": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/204040/icon.png",
-        "name": "꼬마 리나운 ",
+        "name": "꼬마 리나운",
         "nationality": 2,
         "type": 4,
         "description": [
@@ -6798,7 +6798,7 @@
     },
     "20505": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205050/icon.png",
-        "name": "킹 조지 5세 ",
+        "name": "킹 조지 5세",
         "add_get_attr": 4,
         "add_get_shiptype": [
             4,
@@ -6921,7 +6921,7 @@
     },
     "20510": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205100/icon.png",
-        "name": "밸리언트 ",
+        "name": "밸리언트",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -7187,7 +7187,7 @@
     },
     "20605": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206050/icon.png",
-        "name": "체이서 ",
+        "name": "체이서",
         "add_get_attr": 12,
         "add_get_shiptype": [
             6
@@ -7214,7 +7214,7 @@
     },
     "20606": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206060/icon.png",
-        "name": "퍼시어스 ",
+        "name": "퍼시어스",
         "add_get_attr": 1,
         "add_get_shiptype": [
             6
@@ -7296,7 +7296,7 @@
     },
     "20701": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207010/icon.png",
-        "name": "이글 ",
+        "name": "이글",
         "add_get_attr": 1,
         "add_get_shiptype": [
             6,
@@ -7413,7 +7413,7 @@
     },
     "20705": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207050/icon.png",
-        "name": "포미더블 ",
+        "name": "포미더블",
         "add_get_attr": 1,
         "add_get_shiptype": [
             6,
@@ -7500,7 +7500,7 @@
     },
     "20709": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207090/icon.png",
-        "name": "꼬마 일러스트리어스 ",
+        "name": "꼬마 일러스트리어스",
         "nationality": 2,
         "type": 7,
         "description": [
@@ -7634,7 +7634,7 @@
     },
     "21304": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/213040/icon.png",
-        "name": "애버크롬비 ",
+        "name": "애버크롬비",
         "add_get_attr": 1,
         "add_get_shiptype": [
             3,
@@ -7720,7 +7720,7 @@
     },
     "29903": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299030/icon.png",
-        "name": "체셔 ",
+        "name": "체셔",
         "add_get_attr": 1,
         "add_get_shiptype": [
             3,
@@ -7750,7 +7750,7 @@
     },
     "29904": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299040/icon.png",
-        "name": "드레이크 ",
+        "name": "드레이크",
         "add_get_attr": 1,
         "add_get_shiptype": [
             3,
@@ -7960,7 +7960,7 @@
     },
     "30110": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301100/icon.png",
-        "name": "히비키 ",
+        "name": "히비키",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -8141,7 +8141,7 @@
     },
     "30116": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301160/icon.png",
-        "name": "유키카제 ",
+        "name": "유키카제",
         "add_get_attr": 9,
         "add_get_shiptype": [
             1,
@@ -8264,7 +8264,7 @@
     },
     "30121": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301210/icon.png",
-        "name": "하츠하루 ",
+        "name": "하츠하루",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -8543,7 +8543,7 @@
     },
     "30131": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301310/icon.png",
-        "name": "마츠카제 ",
+        "name": "마츠카제",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -8694,7 +8694,7 @@
     },
     "30138": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301380/icon.png",
-        "name": "후미즈키 ",
+        "name": "후미즈키",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -8725,7 +8725,7 @@
     },
     "30139": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301390/icon.png",
-        "name": "나가츠키 ",
+        "name": "나가츠키",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -8848,7 +8848,7 @@
     },
     "30149": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301490/icon.png",
-        "name": "카와카제 ",
+        "name": "카와카제",
         "add_get_attr": 8,
         "add_get_shiptype": [
             1,
@@ -8879,7 +8879,7 @@
     },
     "30154": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301540/icon.png",
-        "name": "키요나미 ",
+        "name": "키요나미",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -8940,7 +8940,7 @@
     },
     "30157": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301570/icon.png",
-        "name": "하루츠키 ",
+        "name": "하루츠키",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -8972,7 +8972,7 @@
     },
     "30158": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301580/icon.png",
-        "name": "요이즈키 ",
+        "name": "요이즈키",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -9004,7 +9004,7 @@
     },
     "30159": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301590/icon.png",
-        "name": "우라카제 ",
+        "name": "우라카제",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -9035,7 +9035,7 @@
     },
     "30160": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301600/icon.png",
-        "name": "이소카제 ",
+        "name": "이소카제",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -9127,7 +9127,7 @@
     },
     "30163": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301630/icon.png",
-        "name": "아사시오 ",
+        "name": "아사시오",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -9158,7 +9158,7 @@
     },
     "30164": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301640/icon.png",
-        "name": "오오시오 ",
+        "name": "오오시오",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -9219,7 +9219,7 @@
     },
     "30166": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301660/icon.png",
-        "name": "아라시오 ",
+        "name": "아라시오",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -9280,7 +9280,7 @@
     },
     "30179": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301790/icon.png",
-        "name": "하타카제 ",
+        "name": "하타카제",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -9311,7 +9311,7 @@
     },
     "30180": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301800/icon.png",
-        "name": "마키나미 ",
+        "name": "마키나미",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -9342,7 +9342,7 @@
     },
     "30181": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301810/icon.png",
-        "name": "카스미 ",
+        "name": "카스미",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -9374,7 +9374,7 @@
     },
     "30182": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301820/icon.png",
-        "name": "하나즈키 ",
+        "name": "하나즈키",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -9406,7 +9406,7 @@
     },
     "30183": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301830/icon.png",
-        "name": "나가나미 ",
+        "name": "나가나미",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -9866,7 +9866,7 @@
     },
     "30210": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302100/icon.png",
-        "name": "모가미 ",
+        "name": "모가미",
         "add_get_attr": 3,
         "add_get_shiptype": [
             2
@@ -9893,7 +9893,7 @@
     },
     "30211": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302110/icon.png",
-        "name": "미쿠마 ",
+        "name": "미쿠마",
         "add_get_attr": 6,
         "add_get_shiptype": [
             2
@@ -9972,7 +9972,7 @@
     },
     "30214": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302140/icon.png",
-        "name": "나카 ",
+        "name": "나카",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -10025,7 +10025,7 @@
     },
     "30221": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302210/icon.png",
-        "name": "노시로 ",
+        "name": "노시로",
         "add_get_attr": 3,
         "add_get_shiptype": [
             2
@@ -10377,7 +10377,7 @@
     },
     "30309": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303090/icon.png",
-        "name": "아시가라 ",
+        "name": "아시가라",
         "add_get_attr": 1,
         "add_get_shiptype": [
             3,
@@ -10684,7 +10684,7 @@
     },
     "30401": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304010/icon.png",
-        "name": "콘고 ",
+        "name": "콘고",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -10742,7 +10742,7 @@
     },
     "30403": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304030/icon.png",
-        "name": "하루나 ",
+        "name": "하루나",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -10800,7 +10800,7 @@
     },
     "30405": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304050/icon.png",
-        "name": "아마기 ",
+        "name": "아마기",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -10832,7 +10832,7 @@
     },
     "30406": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304060/icon.png",
-        "name": "꼬마 히에이 ",
+        "name": "꼬마 히에이",
         "nationality": 3,
         "type": 4,
         "description": [
@@ -10987,7 +10987,7 @@
     },
     "30505": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305050/icon.png",
-        "name": "나가토 ",
+        "name": "나가토",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -11019,7 +11019,7 @@
     },
     "30506": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305060/icon.png",
-        "name": "무츠 ",
+        "name": "무츠",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -11050,7 +11050,7 @@
     },
     "30507": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305070/icon.png",
-        "name": "카가 ",
+        "name": "카가(전함)",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -11081,7 +11081,7 @@
     },
     "30508": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305080/icon.png",
-        "name": "토사 ",
+        "name": "토사",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -11236,7 +11236,7 @@
     },
     "30514": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305140/icon.png",
-        "name": "스루가 ",
+        "name": "스루가",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -11325,7 +11325,7 @@
     },
     "30602": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306020/icon.png",
-        "name": "준요 ",
+        "name": "준요",
         "add_get_attr": 12,
         "add_get_shiptype": [
             6
@@ -11434,7 +11434,7 @@
     },
     "30606": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306060/icon.png",
-        "name": "류조 ",
+        "name": "류조",
         "add_get_attr": 12,
         "add_get_shiptype": [
             6
@@ -11462,7 +11462,7 @@
     },
     "30607": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306070/icon.png",
-        "name": "류호 ",
+        "name": "류호",
         "add_get_attr": 12,
         "add_get_shiptype": [
             6
@@ -11748,7 +11748,7 @@
     },
     "30708": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307080/icon.png",
-        "name": "시나노 ",
+        "name": "시나노",
         "add_get_attr": 1,
         "add_get_shiptype": [
             6,
@@ -11778,7 +11778,7 @@
     },
     "30709": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307090/icon.png",
-        "name": "꼬마 아카기 ",
+        "name": "꼬마 아카기",
         "nationality": 3,
         "type": 7,
         "description": [
@@ -12002,7 +12002,7 @@
     },
     "30804": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308040/icon.png",
-        "name": "이25 ",
+        "name": "이25",
         "add_get_attr": 1,
         "add_get_shiptype": [
             8,
@@ -12030,7 +12030,7 @@
     },
     "30805": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308050/icon.png",
-        "name": "이56 ",
+        "name": "이56",
         "add_get_attr": 1,
         "add_get_shiptype": [
             8,
@@ -12058,7 +12058,7 @@
     },
     "30806": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/308060/icon.png",
-        "name": "이168 ",
+        "name": "이168",
         "add_get_attr": 8,
         "add_get_shiptype": [
             8,
@@ -12254,7 +12254,7 @@
     },
     "39903": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399030/icon.png",
-        "name": "키타카제 ",
+        "name": "키타카제",
         "add_get_attr": 2,
         "add_get_shiptype": [
             1,
@@ -12284,7 +12284,7 @@
     },
     "39904": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399040/icon.png",
-        "name": "아즈마 ",
+        "name": "아즈마",
         "add_get_attr": 2,
         "add_get_shiptype": [
             3,
@@ -13885,7 +13885,7 @@
     },
     "40501": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405010/icon.png",
-        "name": "비스마르크 ",
+        "name": "비스마르크",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -14160,7 +14160,7 @@
     },
     "40702": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/407020/icon.png",
-        "name": "꼬마 그라프 체펠린 ",
+        "name": "꼬마 그라프 체펠린",
         "nationality": 4,
         "type": 7,
         "description": [
@@ -14662,7 +14662,7 @@
     },
     "49902": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499020/icon.png",
-        "name": "프리드리히 데어 그로세 ",
+        "name": "프리드리히 데어 그로세",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -14692,7 +14692,7 @@
     },
     "49903": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499030/icon.png",
-        "name": "마인츠 ",
+        "name": "마인츠",
         "add_get_attr": 2,
         "add_get_shiptype": [
             2
@@ -14718,7 +14718,7 @@
     },
     "49904": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499040/icon.png",
-        "name": "오딘 ",
+        "name": "오딘",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -14926,7 +14926,7 @@
     },
     "50101": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501010/icon.png",
-        "name": "안샨 ",
+        "name": "안샨",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -14956,7 +14956,7 @@
     },
     "50102": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501020/icon.png",
-        "name": "푸슌 ",
+        "name": "푸슌",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -14987,7 +14987,7 @@
     },
     "50103": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501030/icon.png",
-        "name": "창춘 ",
+        "name": "창춘",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -15018,7 +15018,7 @@
     },
     "50104": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501040/icon.png",
-        "name": "타이위안 ",
+        "name": "타이위안",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -15203,7 +15203,7 @@
     },
     "50201": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502010/icon.png",
-        "name": "얏센 ",
+        "name": "얏센",
         "add_get_attr": 6,
         "add_get_shiptype": [
             2
@@ -15607,7 +15607,7 @@
     },
     "60102": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601020/icon.png",
-        "name": "카라비니에레 ",
+        "name": "카라비니에레",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -15992,7 +15992,7 @@
     },
     "60301": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603010/icon.png",
-        "name": "트렌토 ",
+        "name": "트렌토",
         "add_get_attr": 1,
         "add_get_shiptype": [
             3,
@@ -16023,7 +16023,7 @@
     },
     "60302": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603020/icon.png",
-        "name": "차라 ",
+        "name": "차라",
         "add_get_attr": 1,
         "add_get_shiptype": [
             3,
@@ -16209,7 +16209,7 @@
     },
     "60502": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605020/icon.png",
-        "name": "리토리오 ",
+        "name": "리토리오",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -16270,7 +16270,7 @@
     },
     "60505": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605050/icon.png",
-        "name": "콘테 디 카보우르 ",
+        "name": "콘테 디 카보우르",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -16301,7 +16301,7 @@
     },
     "60506": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605060/icon.png",
-        "name": "줄리오 체사레 ",
+        "name": "줄리오 체사레",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -16626,7 +16626,7 @@
     },
     "70102": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701020/icon.png",
-        "name": "그로즈니 ",
+        "name": "그로즈니",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -16657,7 +16657,7 @@
     },
     "70103": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701030/icon.png",
-        "name": "민스크 ",
+        "name": "민스크",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -16688,7 +16688,7 @@
     },
     "70104": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701040/icon.png",
-        "name": "타슈켄트 ",
+        "name": "타슈켄트",
         "add_get_attr": 2,
         "add_get_shiptype": [
             1,
@@ -16946,7 +16946,7 @@
     },
     "70201": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702010/icon.png",
-        "name": "아브로라 ",
+        "name": "아브로라",
         "add_get_attr": 8,
         "add_get_shiptype": [
             2
@@ -16974,7 +16974,7 @@
     },
     "70202": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702025/icon.png",
-        "name": "파먀티 메르쿠리야 ",
+        "name": "파먀티 메르쿠리야",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -17001,7 +17001,7 @@
     },
     "70203": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702030/icon.png",
-        "name": "차파예프 ",
+        "name": "차파예프",
         "add_get_attr": 8,
         "add_get_shiptype": [
             2
@@ -17221,7 +17221,7 @@
     },
     "70501": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705010/icon.png",
-        "name": "강구트 ",
+        "name": "강구트",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -17313,7 +17313,7 @@
     },
     "70505": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705050/icon.png",
-        "name": "소비에츠카야 러시아 ",
+        "name": "소비에츠카야 러시아",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -17608,7 +17608,7 @@
     },
     "80101": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801010/icon.png",
-        "name": "르 트리옹팡 ",
+        "name": "르 트리옹팡",
         "add_get_attr": 9,
         "add_get_shiptype": [
             1,
@@ -17640,7 +17640,7 @@
     },
     "80102": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801020/icon.png",
-        "name": "포르뱅 ",
+        "name": "포르뱅",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -17701,7 +17701,7 @@
     },
     "80104": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801040/icon.png",
-        "name": "로피니아트르 ",
+        "name": "로피니아트르",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -17834,7 +17834,7 @@
     },
     "80201": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802010/icon.png",
-        "name": "에밀 베르탱 ",
+        "name": "에밀 베르탱",
         "add_get_attr": 3,
         "add_get_shiptype": [
             2
@@ -17860,7 +17860,7 @@
     },
     "80202": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802020/icon.png",
-        "name": "잔 다르크 ",
+        "name": "잔 다르크",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -18057,7 +18057,7 @@
     },
     "80501": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/805010/icon.png",
-        "name": "리슐리외 ",
+        "name": "리슐리외",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -18175,7 +18175,7 @@
     },
     "80701": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/807010/icon.png",
-        "name": "베아른 ",
+        "name": "베아른",
         "add_get_attr": 1,
         "add_get_shiptype": [
             6,
@@ -18232,7 +18232,7 @@
     },
     "80801": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/808010/icon.png",
-        "name": "쉬르쿠프 ",
+        "name": "쉬르쿠프",
         "add_get_attr": 2,
         "add_get_shiptype": [
             8,
@@ -18291,7 +18291,7 @@
     },
     "89902": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/899020/icon.png",
-        "name": "샹파뉴 ",
+        "name": "샹파뉴",
         "add_get_attr": 2,
         "add_get_shiptype": [
             4,
@@ -18377,7 +18377,7 @@
     },
     "90101": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901010/icon.png",
-        "name": "르 마르스 ",
+        "name": "르 마르스",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -18408,7 +18408,7 @@
     },
     "90102": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901020/icon.png",
-        "name": "타르투 ",
+        "name": "타르투",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -18439,7 +18439,7 @@
     },
     "90103": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901030/icon.png",
-        "name": "보클랭 ",
+        "name": "보클랭",
         "add_get_attr": 1,
         "add_get_shiptype": [
             1,
@@ -18590,7 +18590,7 @@
     },
     "90111": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901110/icon.png",
-        "name": "르 말랭 ",
+        "name": "르 말랭",
         "add_get_attr": 9,
         "add_get_shiptype": [
             1,
@@ -18694,7 +18694,7 @@
     },
     "90201": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/902010/icon.png",
-        "name": "라 갈리소니에르 ",
+        "name": "라 갈리소니에르",
         "add_get_attr": 1,
         "add_get_shiptype": [
             2
@@ -18778,7 +18778,7 @@
     },
     "90302": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/903020/icon.png",
-        "name": "알제리 ",
+        "name": "알제리",
         "add_get_attr": 1,
         "add_get_shiptype": [
             3,
@@ -18839,7 +18839,7 @@
     },
     "90401": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/904010/icon.png",
-        "name": "됭케르크 ",
+        "name": "됭케르크",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -18896,7 +18896,7 @@
     },
     "90501": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/905010/icon.png",
-        "name": "장 바르 ",
+        "name": "장 바르",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
@@ -18998,7 +18998,7 @@
     },
     "99901": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/999010/icon.png",
-        "name": "가스코뉴 ",
+        "name": "가스코뉴",
         "add_get_attr": 2,
         "add_get_shiptype": [
             4,
@@ -20962,7 +20962,7 @@
     },
     "1010001": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10100010/icon.png",
-        "name": "넵튠",
+        "name": "넵튠(콜라보)",
         "nationality": 101,
         "type": 2,
         "description": [
@@ -21042,7 +21042,7 @@
     },
     "1040001": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10400010/icon.png",
-        "name": "키즈나 아이 ",
+        "name": "키즈나 아이",
         "nationality": 104,
         "type": 1,
         "description": [
@@ -21172,7 +21172,7 @@
     },
     "1060003": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600030/icon.png",
-        "name": "카스미",
+        "name": "카스미(콜라보)",
         "nationality": 106,
         "type": 3,
         "description": [
@@ -21502,7 +21502,7 @@
     },
     "1100005": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11000050/icon.png",
-        "name": "후부키",
+        "name": "후부키(콜라보)",
         "nationality": 110,
         "type": 5,
         "description": [

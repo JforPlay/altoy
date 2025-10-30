@@ -33,6 +33,15 @@ class AzurLaneChatProcessor:
         3: 'R',
         2: 'N'
     }
+
+    # NEW: Strict name overrides for specific GIDs
+    STRICT_NAME_OVERRIDES = {
+        "30507": "카가(전함)",
+        "20232": "엔터프라이즈(경순)",
+        "1010001": "넵튠(콜라보)",
+        "1060003": "카스미(콜라보)",
+        "1100005": "후부키(콜라보)"
+    }
     
     def __init__(self):
         self.default_skins_data: Dict[str, Dict[str, Any]] = {}
@@ -77,6 +86,9 @@ class AzurLaneChatProcessor:
             if isinstance(value, dict)
         }
         
+        # 1. Create a temporary list to store debug info
+        overridden_names_debug = []
+    
         # Process default skins
         for skin in skin_list_data:
             if skin.get("type") == "Default":
@@ -85,9 +97,35 @@ class AzurLaneChatProcessor:
                 
                 skin_key = gid + "0"
                 if skin_key in kr_skin_data:
-                    name = kr_skin_data[skin_key].get("name", "")
-                    name = self.replace_name_codes(name)
-                    self.default_skins_data[gid] = {"icon": icon, "name": name}
+                    
+                    # Get and process the original name
+                    original_name_raw = kr_skin_data[skin_key].get("name", "")
+                    processed_original_name = self.replace_name_codes(original_name_raw)
+                    
+                    final_name = processed_original_name # Default to the processed name
+                    
+                    # Check if this gid has a strict override
+                    if gid in self.STRICT_NAME_OVERRIDES:
+                        final_name = self.STRICT_NAME_OVERRIDES[gid] # Apply the override
+                        
+                        # 2. Add the change to our debug list
+                        overridden_names_debug.append(
+                            (gid, processed_original_name, final_name)
+                        )
+                        
+                    # Store the data with the final name
+                    # No "original_name_debug" key is stored here
+                    self.default_skins_data[gid] = {
+                        "icon": icon, 
+                        "name": final_name.strip()  # remove extra spaces
+                    }
+        
+        # 3. Print the debug report *before* the final "Loaded" message
+        if overridden_names_debug:
+            print("\n--- Name Overrides Applied (Debug) ---")
+            for gid, original, new in overridden_names_debug:
+                print(f"  GID: {gid:<8} | Original: '{original}' | New: '{new}'")
+            print("----------------------------------------\n")
         
         print(f"Loaded {len(self.default_skins_data)} default skins")
     
