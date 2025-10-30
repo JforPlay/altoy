@@ -2,6 +2,15 @@ import requests
 import json
 import os
 
+# NEW: Strict name overrides for specific GIDs
+STRICT_NAME_OVERRIDES = {
+    "30507": "카가(전함)",
+    "20232": "엔터프라이즈(경순)",
+    "1010001": "넵튠(콜라보)",
+    "1060003": "카스미(콜라보)",
+    "1100005": "후부키(콜라보)"
+}
+
 def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_url, skill_url, buff_url, ship_drops_file, output_filename):
     """
     Fetches ship data from multiple sources, filters and merges it,
@@ -75,6 +84,13 @@ def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_u
             if 'retrofit' in ship and isinstance(ship.get('retrofit'), dict):
                 if ship['retrofit'].get('skill') in transform_map:
                     ship['retrofit']['skill_id'] = transform_map[ship['retrofit']['skill']]
+
+            # Name processing
+            ship['name'] = ship['name'].strip()
+            # print(gid)
+            if str(gid) in STRICT_NAME_OVERRIDES:
+                ship['name'] = STRICT_NAME_OVERRIDES[str(gid)]
+                print(f"Applied strict name override for GID {gid}: {ship['name']}")
 
             # --- Add construction-specific fields ---
             # Add timer from ship_drops.json

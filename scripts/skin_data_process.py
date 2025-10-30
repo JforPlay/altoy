@@ -96,6 +96,15 @@ class AzurLaneDataProcessor:
         "기간",
         "ex_chat_status"
     ]
+
+    # NEW: Strict name overrides for specific GIDs
+    STRICT_NAME_OVERRIDES = {
+        30507: "카가(전함)",
+        20232: "엔터프라이즈(경순)",
+        1010001: "넵튠(콜라보)",
+        1060003: "카스미(콜라보)",
+        1100005: "후부키(콜라보)"
+    }
     
     def __init__(self):
         self.data = {}
@@ -157,8 +166,16 @@ class AzurLaneDataProcessor:
             
             if skin_id in lookups['kr_skin']:
                 kr_data = lookups['kr_skin'][skin_id]
+
+                # process strict name overrides
+                if int(skin_id[:-1]) in self.STRICT_NAME_OVERRIDES and skin_id.endswith('0'):
+                    skin_kr_name = self.STRICT_NAME_OVERRIDES[int(skin_id[:-1])]
+                    print(int(skin_id[:-1]))
+                else:
+                    skin_kr_name = kr_data.get("name").strip()
+
                 skin.update({
-                    'kr_name': kr_data.get("name"),
+                    'kr_name': skin_kr_name,
                     'desc': kr_data.get("desc"),
                     'shop_id': kr_data.get("shop_id"),
                     'shop_type_id': kr_data.get("shop_type_id"),
@@ -168,10 +185,17 @@ class AzurLaneDataProcessor:
                 
                 # Build GID to Korean name mapping
                 if gid is not None and skin['kr_name'] is not None and gid not in gid_to_kr_name:
-                    gid_to_kr_name[gid] = skin['kr_name']
+                    # process strict name overrides
+                    if gid in self.STRICT_NAME_OVERRIDES:
+                        gid_to_kr_name[gid] = self.STRICT_NAME_OVERRIDES[gid]
+                        print(gid)
+                    else:
+                        gid_to_kr_name[gid] = skin['kr_name']
+
             else:
                 skin.update({key: None for key in ['kr_name', 'desc', 'shop_id', 
                            'shop_type_id', 'tag', 'get_showing']})
+                print("아마도 한섭에 없는 스킨")
         
         return gid_to_kr_name
     
@@ -458,6 +482,7 @@ class AzurLaneDataProcessor:
             # Process get_showing field
             get_showing_value = skin.get('get_showing')
             skin['get_showing'] = 'O' if get_showing_value not in [None, ''] else 'X'
+
     
     def create_dataframe(self, skin_data: List[Dict], lookups: Dict) -> pd.DataFrame:
         """Create and process the final DataFrame."""
@@ -665,8 +690,8 @@ class AzurLaneDataProcessor:
         return df
     
     def save_data(self, df: pd.DataFrame, 
-                  full_json_path: str = './output/skin_voiceline_data.json',
-                  subset_json_path: str = './output/skin_voiceline_data_subset.json') -> None:
+                  full_json_path: str = './output/skin/skin_voiceline_data.json',
+                  subset_json_path: str = './output/skin/skin_voiceline_data_subset.json') -> None:
         """Save processed data to JSON files (full and lightweight subset)."""
         try:
             # Clean empty voice data before saving
