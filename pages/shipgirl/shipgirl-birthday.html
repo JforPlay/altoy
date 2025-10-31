@@ -1,0 +1,104 @@
+---
+layout: default
+title: 함순이 생일
+body_class: calendar-page
+head: <link rel="stylesheet" href="css/shipgirl/shipgirl-birthday.css">
+---
+
+<!-- Main content wrapper -->
+<main class="birthday-container">
+    <!-- Controls for switching views -->
+    <div class="calendar-controls">
+        <button class="view-toggle active" data-view="year" title="연간 보기" aria-label="연간 보기로 전환">
+            <span class="material-symbols-outlined">calendar_month</span>
+            연간
+        </button>
+        <button class="view-toggle" data-view="month" title="월간 보기" aria-label="월간 보기로 전환">
+            <span class="material-symbols-outlined">view_agenda</span>
+            월간
+        </button>
+        <button class="view-toggle" data-view="week" title="주간 보기" aria-label="주간 보기로 전환">
+            <span class="material-symbols-outlined">view_week</span>
+            주간
+        </button>
+        <div class="dropdown-container">
+            <input type="text" id="searchInput" placeholder="함순이 검색..." aria-label="이름으로 함순이 검색" autocomplete="off">
+            <span class="dropdown-icon material-symbols-outlined">search</span>
+            <div class="dropdown-content" id="searchDropdown"></div>
+        </div>
+        <span class="calendar-title" id="calendarTitle"></span>
+    </div>
+
+    <div class="calendar-wrapper">
+        <!-- Calendar display -->
+        <div class="calendar-view" id="calendarContainer">
+            <!-- JavaScript will inject calendar markup here -->
+        </div>
+    </div>
+
+    <!-- Sidebar toggle button -->
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="다가오는 생일 사이드바 토글">
+        <span class="material-symbols-outlined">calendar_today</span>
+    </button>
+
+    <!-- Sidebar backdrop -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Upcoming birthdays sidebar -->
+    <aside class="upcoming-panel" id="upcomingPanel" aria-label="다가오는 생일 사이드바">
+        <div class="upcoming-panel-header">
+            <h2>다가오는 생일</h2>
+            <button class="sidebar-close" id="sidebarClose" aria-label="사이드바 닫기">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div id="upcomingList" class="upcoming-list" role="list"></div>
+    </aside>
+</main>
+
+<!-- Templates for JavaScript rendering -->
+<template id="event-card-template">
+    <div class="event-card">
+        <img class="event-img" alt="" loading="lazy" />
+        <div>
+            <div class="title"></div>
+            <div class="meta"></div>
+            <div class="badges">
+                <span class="badge rarity-badge"></span>
+                <span class="badge type-badge"></span>
+                <span class="badge faction-badge"></span>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="event-card-empty-template">
+    <div class="event-card">
+        <div class="title"></div>
+        <div class="meta"></div>
+    </div>
+</template>
+
+<template id="upcoming-item-template">
+    <div class="upcoming-item" role="listitem" tabindex="0">
+        <img class="upcoming-icon" alt="" loading="lazy" />
+        <div class="upcoming-info">
+            <span class="upcoming-date"></span>
+            <span class="upcoming-name" lang="ko"></span>
+        </div>
+    </div>
+</template>
+
+<template id="search-result-template">
+    <a href="#" class="search-result-item">
+        <strong lang="ko" class="search-name"></strong>
+        <small class="search-meta"></small>
+    </a>
+</template>
+
+<template id="no-results-template">
+    <div class="no-results">함순이를 찾을 수 없습니다</div>
+</template>
+
+<!-- Calendar logic -->
+<script src="js/shipgirl/shipgirl-birthday.js"></script>
