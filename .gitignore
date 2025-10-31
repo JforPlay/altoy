@@ -5,3 +5,5 @@ _site/
 _config.yml
 scripts/output/
 deprecated/
+package-lock.json
+node_modules/
