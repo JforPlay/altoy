@@ -57,10 +57,13 @@ const LINKS = {
     // Main Pages
     HOME: 'index.html',
 
-    // Shipgirl & Skin
+    // Shipgirl
     SHIPGIRL_INFO: 'pages/shipgirl/shipgirl-info.html',
     SHIPGIRL_TRACKER: 'pages/shipgirl/shipgirl-tracker.html',
     SHIPGIRL_BUILD: 'pages/shipgirl-build-sim.html',
+    SHIPGIRL_BIRTHDAY: 'pages/shipgirl/shipgirl-birthday.html',
+
+    // Skin
     SKIN_DETAIL: 'pages/skin/skin-detail-viewer.html',
     SKIN_LIST: 'pages/skin/skin-list-viewer.html',
     SKIN_POLL: 'pages/skin/skin-poll.html',
@@ -78,6 +81,7 @@ const LINKS = {
     WORLD_FILE: 'pages/story-viewer/world-file.html',
     NAVI_STORY: 'pages/story-viewer/navi-story.html',
     TB_STORY: 'pages/story-viewer/tb-story.html',
+    SECRETARY_STORY: 'pages/story-viewer/secretary-story.html',
     HOF: 'pages/story-viewer/hof.html',
 
     // Misc
