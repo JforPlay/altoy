@@ -1,302 +1,417 @@
+/* ============================================================
+   Secretary Story Viewer – Page Script (engine-agnostic)
+   ============================================================ */
+
 const COMPLETION_STORAGE_KEY = 'secretaryStoryCompletion';
 
 function getCompletionData() {
-    const data = localStorage.getItem(COMPLETION_STORAGE_KEY);
-    return data ? JSON.parse(data) : {};
+  const data = localStorage.getItem(COMPLETION_STORAGE_KEY);
+  return data ? JSON.parse(data) : {};
 }
-
 function setCompletionData(data) {
-    localStorage.setItem(COMPLETION_STORAGE_KEY, JSON.stringify(data));
+  localStorage.setItem(COMPLETION_STORAGE_KEY, JSON.stringify(data));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // ... existing code ...
+  // Guard: engine must be present
+  if (typeof window.StoryViewer === 'undefined') {
+    console.error(
+      'StoryViewer engine not loaded. Include story-viewer.engine.js before this script.'
+    );
+    return;
+  }
 
-    // --- Completion Tracking and Filtering ---
-    let currentFilter = 'all';
+  /* ------------------------------------------------------------
+     State
+  ------------------------------------------------------------ */
+  let currentFilter = 'all'; // 'all' | 'completed' | 'unmarked'
+  let initialHydrateDone = false; // ensure first view uses our renderer
+
+  /* ------------------------------------------------------------
+     Rendering helper (no engine edits required)
+     Renders provided entries with engine's card factory,
+     then immediately wires checkboxes.
+  ------------------------------------------------------------ */
+  function renderEventEntries(entries) {
+    const grid = document.getElementById('event-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    entries.forEach(([id, event]) => {
+      const eventId = event.id || id;
+      const card = window.StoryViewer.createCard(
+        event.name,
+        event.description || `Chapter: ${event.name.replace(/[^0-9]/g, '')}`,
+        event.icon,
+        window.StoryViewer.config.getEventIconPath(event),
+        () => window.StoryViewer.selectEvent(eventId),
+        eventId // ensure data-id is present for checkbox logic
+      );
+      grid.appendChild(card);
+    });
+
+    // ✅ Immediately annotate with saved completion state
+    setupCompletionTracking();
+  }
+
+  /* ------------------------------------------------------------
+     Filter (reads fresh completion snapshot each time)
+     - String-normalized keys so "0" vs 0 never mismatches.
+     - Calls renderEventEntries(), which will annotate right away.
+  ------------------------------------------------------------ */
+  function applyFilter() {
+    const done = getCompletionData();
+    const allEntries = Object.entries(window.StoryViewer.storylineData || {});
+    let entries = allEntries;
+
+    if (currentFilter === 'completed') {
+      entries = allEntries.filter(([id]) => !!done[String(id)]);
+    } else if (currentFilter === 'unmarked') {
+      entries = allEntries.filter(([id]) => !done[String(id)]);
+    }
+
+    renderEventEntries(entries);
+  }
+
+  /* ------------------------------------------------------------
+     Checkbox injection + persistence
+     - Derives data-id when engine didn't set it
+     - Special case: "아카시" → "0"
+     - Avoids duplicate checkboxes on re-renders
+     - String-normalized keys everywhere
+  ------------------------------------------------------------ */
+  function setupCompletionTracking() {
+    const grid = document.getElementById('event-grid');
+    if (!grid) return;
+
+    const cards = grid.querySelectorAll('.grid-card');
     const completionData = getCompletionData();
+    const nameMap =
+      (window.StoryViewer && window.StoryViewer.shipgirlNameMap) || {};
 
-    function setupCompletionTracking() {
-        const grid = document.getElementById('event-grid');
-        if (!grid) return;
+    cards.forEach((card) => {
+      // Ensure card has a usable id
+      if (!card.dataset.id) {
+        const titleEl = card.querySelector('.card-title');
+        const name = titleEl ? titleEl.textContent.trim() : '';
+        let derivedId = nameMap[name];
+        if (!derivedId && name === '아카시') derivedId = '0'; // special case
+        if (derivedId) card.dataset.id = String(derivedId);
+      }
 
-        const cards = grid.querySelectorAll('.grid-card');
-        const map =
-            (window.StoryViewer && window.StoryViewer.shipgirlNameMap) || {};
-        const completionData = getCompletionData(); // uses your existing helper
+      const shipgirlIdRaw = card.dataset.id || card.dataset.eventId || '';
+      const shipgirlId = String(shipgirlIdRaw);
+      if (!shipgirlId) return;
 
-        cards.forEach(card => {
-            // 1) Ensure each card has a usable id
-            if (!card.dataset.id) {
-                const titleEl = card.querySelector('.card-title');
-                const name = titleEl ? titleEl.textContent.trim() : '';
-
-                // Try to derive id from name map
-                let derivedId = map[name];
-
-                // Special case: Akashi (hardcoded storyline entry uses id "0")
-                if (!derivedId && name === '아카시') derivedId = '0';
-
-                if (derivedId) card.dataset.id = String(derivedId);
-            }
-
-            // 2) Read the id (prefer data-id; fall back to any legacy data-event-id)
-            const shipgirlId = card.dataset.id || card.dataset.eventId;
-
-            // Helpful debug (you can keep/remove)
-            console.log('Processing card for shipgirlId:', shipgirlId);
-
-            if (!shipgirlId) return;
-
-            // 3) Prevent duplicate checkboxes on re-renders
-            if (card.querySelector('.card-checkbox')) return;
-
-            // 4) Create/initialize the checkbox UI
-            const checkbox = document.createElement('div');
-            checkbox.className = 'card-checkbox';
-
-            if (completionData[shipgirlId]) {
-                checkbox.classList.add('completed');
-                card.classList.add('completed-card');
-            }
-
-            // 5) Toggle + persist
-            checkbox.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
-                completionData[shipgirlId] = !completionData[shipgirlId];
-                setCompletionData(completionData);
-
-                checkbox.classList.toggle('completed');
-                card.classList.toggle('completed-card');
-
-                // Re-apply your filter to reflect new state
-                if (typeof applyFilter === 'function') applyFilter();
-            });
-
-            card.appendChild(checkbox);
-        });
-    }
-    
-    function applyFilter() {
-        const allData = Object.values(window.StoryViewer.storylineData);
-        let filteredData;
-
-        if (currentFilter === 'completed') {
-            filteredData = allData.filter(item => completionData[item.id]);
-        } else if (currentFilter === 'unmarked') {
-            filteredData = allData.filter(item => !completionData[item.id]);
+      // Prevent duplicate UI on grid re-renders
+      if (card.querySelector('.card-checkbox')) {
+        // Also ensure class state reflects storage on first hydration
+        if (completionData[String(shipgirlId)]) {
+          card.classList.add('completed-card');
+          card.querySelector('.card-checkbox')?.classList.add('completed');
         } else {
-            filteredData = allData;
+          card.classList.remove('completed-card');
+          card.querySelector('.card-checkbox')?.classList.remove('completed');
         }
-
-        const mappedData = filteredData.map(item => [item.id, item]);
-        window.StoryViewer.populateEventGrid('', mappedData);
-    }
-
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            currentFilter = button.dataset.filter;
-            applyFilter();
-        });
-    });
-    // Ensure StoryViewer global object exists
-    if (typeof window.StoryViewer === 'undefined') {
-        console.error('StoryViewer engine not loaded. Make sure story-viewer.engine.js is included before this script.');
         return;
+      }
+
+      // Create checkbox UI
+      const checkbox = document.createElement('div');
+      checkbox.className = 'card-checkbox';
+
+      if (completionData[String(shipgirlId)]) {
+        checkbox.classList.add('completed');
+        card.classList.add('completed-card');
+      }
+
+      // Toggle + persist
+      checkbox.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const fresh = getCompletionData();
+        const key = String(shipgirlId);
+        fresh[key] = !fresh[key];
+        setCompletionData(fresh);
+
+        checkbox.classList.toggle('completed');
+        card.classList.toggle('completed-card');
+
+        // Re-apply filter so the view stays in sync
+        applyFilter();
+      });
+
+      card.appendChild(checkbox);
+    });
+  }
+
+  /* ------------------------------------------------------------
+     Fuse.js search (with highlight)
+  ------------------------------------------------------------ */
+  function setupSearch() {
+    const source = Object.values(window.StoryViewer.storylineData || {});
+    if (typeof Fuse === 'undefined') {
+      console.warn('Fuse.js was not found; search will be disabled.');
+      return;
     }
-
-    // Configuration for the Secretary Story Viewer
-    const secretaryStoryConfig = {
-        viewerType: 'secretary',
-        dataPaths: [
-            'data/story-viewer/secretary_task_groups.json',
-            'data/story-viewer/secretary_task_data.json',
-            'data/story-viewer/secretary_story_data.json',
-            'data/ship_group_data.json',
-            'data/story-viewer/shipgirl_data.json' // Added this line
-        ],
-
-        // Process all loaded JSON data
-        processLoadedData: function (viewer, jsonDataArray) {
-            const [taskGroups, taskData, storyData, shipgirlGroupData, shipgirlStoryData] = jsonDataArray;
-
-            // Merge shipgirl data
-            const shipgirlData = {};
-            Object.assign(shipgirlData, shipgirlStoryData, shipgirlGroupData);
-
-            viewer.secretaryTaskGroups = taskGroups;
-            viewer.shipgirlData = shipgirlData;
-
-            // Combine task and story data into a single object for easier access
-            viewer.secretaryMemories = {};
-            for (const taskId in taskData) {
-                const task = taskData[taskId];
-                if (task.story_id) {
-                    viewer.secretaryMemories[taskId] = {
-                        ...task,
-                        story: storyData[task.story_id.toLowerCase()]
-                    };
-                }
-            }
-
-            // Populate storylineData with shipgirls that have tasks
-            viewer.storylineData = {};
-            for (const groupId in taskGroups) {
-                const shipgirlId = groupId;
-
-                if (shipgirlId === "0") { // Special handling for Akashi
-                    viewer.storylineData[shipgirlId] = {
-                        id: shipgirlId,
-                        name: "아카시",
-                        icon: "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/312010/icon.png", // Akashi's icon
-                        rarity: "SSR", // Akashi's rarity
-                        description: "아카시 상점<br> 진행퀘스트"
-                    };
-                } else if (viewer.shipgirlData[shipgirlId]) {
-                    const shipgirl = viewer.shipgirlData[shipgirlId];
-                    viewer.storylineData[shipgirlId] = {
-                        id: shipgirlId,
-                        name: shipgirl.name,
-                        icon: shipgirl.icon,
-                        rarity: shipgirl.rarity,
-                        description: `${shipgirl.name}의 <br> 비서함 스토리`
-                    };
-                }
-            }
-
-            // Build shipgirlNameMap for actor lookup
-            for (const id in viewer.shipgirlData) {
-                viewer.shipgirlNameMap[viewer.shipgirlData[id].name] = id;
-            }
-        },
-
-        getEventIconPath: function (event) {
-            return event.icon;
-        },
-
-        getEventMemories: function (shipgirl) {
-            const memories = [];
-            const taskIds = StoryViewer.secretaryTaskGroups[shipgirl.id];
-            if (taskIds) {
-                taskIds.forEach(taskId => {
-                    const memory = StoryViewer.secretaryMemories[taskId];
-                    if (memory) {
-                        memories.push({
-                            id: taskId,
-                            title: memory.name,
-                            condition: memory.desc,
-                            icon: shipgirl.id === "0" ? `https://raw.githubusercontent.com/JForPlay/data_for_toy/main/memoryicon/akashi.png` : `https://raw.githubusercontent.com/JForPlay/data_for_toy/main/memoryicon/memory_${memory.story_icon}.png`,
-                            story: memory.story
-                        });
-                    }
-                });
-            }
-            return memories;
-        },
-
-        getMemoryStory: function (memory) {
-            return memory.story;
-        },
-
-
-    };
-
-    // Initialize the StoryViewer with the secretary story configuration
-    window.StoryViewer.init(secretaryStoryConfig);
-
-    // --- Fuse.js Search Setup ---
-    function setupSearch() {
-        const fuse = new Fuse(Object.values(window.StoryViewer.storylineData), {
-            keys: ['name'],
-            threshold: 0.4,
-            includeMatches: true,
-        });
-
-        const searchBar = document.getElementById('search-bar');
-        const searchResults = document.getElementById('search-results');
-
-        // Helper function to highlight matches
-        function highlightText(text, matches) {
-            let highlightedText = '';
-            let lastIndex = 0;
-
-            matches.forEach(match => {
-                // Only consider matches for the 'name' key
-                if (match.key === 'name') {
-                    const [start, end] = match.indices[0]; // Fuse.js returns [start, end] inclusive
-                    highlightedText += text.substring(lastIndex, start);
-                    highlightedText += `<mark>${text.substring(start, end + 1)}</mark>`;
-                    lastIndex = end + 1;
-                }
-            });
-
-            highlightedText += text.substring(lastIndex);
-            return highlightedText;
-        }
-
-        searchBar.addEventListener('input', (e) => {
-            const searchTerm = e.target.value;
-            searchResults.innerHTML = '';
-
-            if (searchTerm) {
-                let result = fuse.search(searchTerm);
-                searchResults.style.display = 'block';
-
-                if (currentFilter === 'completed') {
-                    result = result.filter(item => completionData[item.item.id]);
-                } else if (currentFilter === 'unmarked') {
-                    result = result.filter(item => !completionData[item.item.id]);
-                }
-
-                if (result.length > 0) {
-                    result.forEach(item => {
-                        const a = document.createElement('a');
-                        a.href = '#';
-                        a.innerHTML = highlightText(item.item.name, item.matches); // Use innerHTML for mark tags
-                        a.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            window.StoryViewer.populateEventGrid('', [[item.item.id, item.item]]);
-                            searchBar.value = '';
-                            searchResults.style.display = 'none';
-                        });
-                        searchResults.appendChild(a);
-                    });
-                } else {
-                    const noResults = document.createElement('div');
-                    noResults.className = 'no-results';
-                    noResults.textContent = 'No results found';
-                    searchResults.appendChild(noResults);
-                }
-            } else {
-                searchResults.style.display = 'none';
-                applyFilter(); // Call applyFilter when search is cleared
-            }
-        });
-        document.addEventListener('click', (e) => {
-            if (e.target !== searchBar && !searchResults.contains(e.target)) { // Also check if click is inside searchResults
-                searchResults.style.display = 'none';
-            }
-        });
-    }
-
-    // Wait for data to be loaded before setting up search and completion tracking
-    const observer = new MutationObserver((mutationsList, observer) => {
-        for (const mutation of mutationsList) {
-            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                if (!window.StoryViewer.searchInitialized) {
-                    setupSearch();
-                    window.StoryViewer.searchInitialized = true;
-                }
-                setupCompletionTracking();
-                break;
-            }
-        }
+    const fuse = new Fuse(source, {
+      keys: ['name'],
+      threshold: 0.4,
+      includeMatches: true
     });
 
-    observer.observe(document.getElementById('event-grid'), { childList: true });
+    const searchBar = document.getElementById('search-bar');
+    const searchResults = document.getElementById('search-results');
+    if (!searchBar || !searchResults) return;
+
+    function highlightText(text, matches) {
+      let out = '';
+      let last = 0;
+      (matches || []).forEach((m) => {
+        if (m.key !== 'name' || !m.indices || !m.indices.length) return;
+        const [start, end] = m.indices[0];
+        out += text.substring(last, start);
+        out += `<mark>${text.substring(start, end + 1)}</mark>`;
+        last = end + 1;
+      });
+      out += text.substring(last);
+      return out;
+    }
+
+    searchBar.addEventListener('input', (e) => {
+      const term = e.target.value;
+      searchResults.innerHTML = '';
+
+      if (term) {
+        let result = fuse.search(term);
+        searchResults.style.display = 'block';
+
+        const done = getCompletionData();
+        if (currentFilter === 'completed') {
+          result = result.filter((r) => !!done[String(r.item.id)]);
+        } else if (currentFilter === 'unmarked') {
+          result = result.filter((r) => !done[String(r.item.id)]);
+        }
+
+        if (result.length > 0) {
+          result.forEach((r) => {
+            const a = document.createElement('a');
+            a.href = '#';
+            a.innerHTML = highlightText(r.item.name, r.matches);
+            a.addEventListener('click', (ev) => {
+              ev.preventDefault();
+              renderEventEntries([[r.item.id, r.item]]);
+              searchBar.value = '';
+              searchResults.style.display = 'none';
+            });
+            searchResults.appendChild(a);
+          });
+        } else {
+          const none = document.createElement('div');
+          none.className = 'no-results';
+          none.textContent = 'No results found';
+          searchResults.appendChild(none);
+        }
+      } else {
+        searchResults.style.display = 'none';
+        applyFilter(); // reset to current filter when cleared
+      }
+    });
+
+    // Hide dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (e.target !== searchBar && !searchResults.contains(e.target)) {
+        searchResults.style.display = 'none';
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------
+     Filter buttons
+  ------------------------------------------------------------ */
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      filterButtons.forEach((btn) => btn.classList.remove('active'));
+      button.classList.add('active');
+      currentFilter = button.dataset.filter || 'all';
+      applyFilter();
+    });
+  });
+
+  /* ------------------------------------------------------------
+     Page-specific configuration for the engine (no engine edits)
+  ------------------------------------------------------------ */
+  const secretaryStoryConfig = {
+    viewerType: 'secretary',
+    dataPaths: [
+      'data/story-viewer/secretary_task_groups.json',
+      'data/story-viewer/secretary_task_data.json',
+      'data/story-viewer/secretary_story_data.json',
+      'data/ship_group_data.json',
+      'data/story-viewer/shipgirl_data.json'
+    ],
+
+    processLoadedData(viewer, jsonDataArray) {
+      const [taskGroups, taskData, storyData, shipgirlGroupData, shipgirlStoryData] =
+        jsonDataArray;
+
+      // Merge shipgirl data
+      const shipgirlData = {};
+      Object.assign(shipgirlData, shipgirlStoryData, shipgirlGroupData);
+
+      viewer.secretaryTaskGroups = taskGroups;
+      viewer.shipgirlData = shipgirlData;
+
+      // Build secretaryMemories (task → story)
+      viewer.secretaryMemories = {};
+      for (const taskId in taskData) {
+        const task = taskData[taskId];
+        if (task.story_id) {
+          viewer.secretaryMemories[taskId] = {
+            ...task,
+            story: storyData[task.story_id.toLowerCase()]
+          };
+        }
+      }
+
+      // Populate storylineData (only shipgirls that have tasks)
+      viewer.storylineData = {};
+      for (const groupId in taskGroups) {
+        const shipgirlId = groupId;
+
+        if (shipgirlId === '0') {
+          // Special handling for Akashi
+          viewer.storylineData[shipgirlId] = {
+            id: shipgirlId,
+            name: '아카시',
+            icon:
+              'https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/312010/icon.png',
+            rarity: 'SSR',
+            description: '아카시 상점<br> 진행퀘스트'
+          };
+        } else if (viewer.shipgirlData[shipgirlId]) {
+          const s = viewer.shipgirlData[shipgirlId];
+          viewer.storylineData[shipgirlId] = {
+            id: shipgirlId,
+            name: s.name,
+            icon: s.icon,
+            rarity: s.rarity,
+            description: `${s.name}의 <br> 비서함 스토리`
+          };
+        }
+      }
+
+      // Build name → id map (used for deriving card ids)
+      viewer.shipgirlNameMap = viewer.shipgirlNameMap || {};
+      for (const id in viewer.shipgirlData) {
+        const n = viewer.shipgirlData[id]?.name;
+        if (n) viewer.shipgirlNameMap[n] = id;
+      }
+      // Ensure Akashi is discoverable
+      viewer.shipgirlNameMap['아카시'] = '0';
+    },
+
+    getEventIconPath(event) {
+      // Icons are absolute URLs in this page config
+      return event.icon;
+    },
+
+    // Returns the list of memory cards for a shipgirl
+    getEventMemories(eventData) {
+      const memories = [];
+      const groupId = String(eventData.id);
+      const group = window.StoryViewer.secretaryTaskGroups[groupId];
+
+      // Accept both shapes:
+      //   A) { [id]: { tasks: [...] } }
+      //   B) { [id]: [...] }
+      const taskIds = Array.isArray(group) ? group : (group?.tasks || []);
+      if (!taskIds.length) return memories;
+
+      taskIds.forEach((taskId) => {
+        const memory = window.StoryViewer.secretaryMemories[taskId];
+        if (!memory) return;
+
+        const icon =
+          memory.story_icon === 'akashi'
+            ? 'https://raw.githubusercontent.com/JForPlay/data_for_toy/main/memoryicon/akashi.png'
+            : `https://raw.githubusercontent.com/JForPlay/data_for_toy/main/memoryicon/memory_${memory.story_icon}.png`;
+
+        memories.push({
+          id: memory.id || taskId,
+          title: memory.title || memory.name || memory.task_name,
+          condition: memory.condition || memory.desc || '',
+          icon,
+          story: memory.story
+        });
+      });
+
+      return memories;
+    },
+
+    // Engine may call this when deep-linking to a memory via URL
+    findMemory(eventData, memoryId) {
+      const mems = this.getEventMemories(eventData) || [];
+      return mems.find((m) => String(m.id) === String(memoryId));
+    },
+
+    // Engine calls this to play a memory
+    getMemoryStory(memory) {
+      return memory.story;
+    }
+  };
+
+  // Initialize engine with our page configuration
+  window.StoryViewer.init(secretaryStoryConfig);
+
+  /* ------------------------------------------------------------
+     Automatic wiring after the grid is (re)rendered
+     - set up search once
+     - inject/refresh checkboxes every time
+     - trigger our own initial hydrate exactly once
+  ------------------------------------------------------------ */
+  const observer = new MutationObserver((mutationsList) => {
+    for (const m of mutationsList) {
+      if (m.type === 'childList' && m.addedNodes.length > 0) {
+        if (!window.StoryViewer.searchInitialized) {
+          setupSearch();
+          window.StoryViewer.searchInitialized = true;
+        }
+
+        // If this is the engine's first paint, immediately re-render via our filter
+        if (!initialHydrateDone) {
+          initialHydrateDone = true;
+          applyFilter(); // this calls renderEventEntries() -> setupCompletionTracking()
+        } else {
+          // For subsequent engine renders (if any), ensure checkboxes match storage
+          setupCompletionTracking();
+        }
+        break;
+      }
+    }
+  });
+
+  const eventGrid = document.getElementById('event-grid');
+  if (eventGrid) {
+    observer.observe(eventGrid, { childList: true });
+
+    // If engine populated before we started observing, hydrate now
+    if (eventGrid.children.length > 0 && !initialHydrateDone) {
+      initialHydrateDone = true;
+      applyFilter();
+    }
+  }
+
+  // If data is already present very early, render immediately
+  if (
+    window.StoryViewer &&
+    window.StoryViewer.storylineData &&
+    Object.keys(window.StoryViewer.storylineData).length &&
+    !initialHydrateDone
+  ) {
+    initialHydrateDone = true;
+    applyFilter();
+  }
 });
