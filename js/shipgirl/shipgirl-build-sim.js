@@ -124,13 +124,13 @@
     async function loadData() {
         try {
             // Load base pools
-            const response = await fetch('data/ship_build_sim_data.json');
+            const response = await fetch('data/shipgirl/ship_build_sim_data.json');
             const data = await response.json();
             state.poolData = JSON.parse(JSON.stringify(data));
             state.originalPoolData = JSON.parse(JSON.stringify(data));
 
             // Load pickup pools
-            const pickupResponse = await fetch('data/ship_build_sim_pickup_data.json');
+            const pickupResponse = await fetch('data/shipgirl/ship_build_sim_pickup_data.json');
             state.pickupData = await pickupResponse.json();
 
             // Initialize custom ships

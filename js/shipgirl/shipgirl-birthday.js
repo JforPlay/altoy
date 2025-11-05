@@ -108,7 +108,7 @@
         const cached = getCachedData();
         if (cached) { processData(cached); return; }
 
-        fetch('data/shipgirl_birthday_data.json')
+        fetch('data/shipgirl/shipgirl_birthday_data.json')
             .then(res => { if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`); return res.json(); })
             .then(data => { cacheData(data); processData(data); })
             .catch(err => {
