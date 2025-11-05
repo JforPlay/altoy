@@ -60,7 +60,7 @@ const LINKS = {
     // Shipgirl
     SHIPGIRL_INFO: 'pages/shipgirl/shipgirl-info.html',
     SHIPGIRL_TRACKER: 'pages/shipgirl/shipgirl-tracker.html',
-    SHIPGIRL_BUILD: 'pages/shipgirl-build-sim.html',
+    SHIPGIRL_BUILD: 'pages/shipgirl/shipgirl-build-sim.html',
     SHIPGIRL_BIRTHDAY: 'pages/shipgirl/shipgirl-birthday.html',
 
     // Skin
@@ -93,6 +93,9 @@ const LINKS = {
 
     // Simulators
     SIM_WEAPON: 'pages/simulators/sim-weapon.html',
+
+    // Island
+    ISLAND: 'pages/island/island.html',
 
     // External Links
     EXTERNAL_HEARING: 'https://999dulgi.github.io/azurlane-hearing/ships',
