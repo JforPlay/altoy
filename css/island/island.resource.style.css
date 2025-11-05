@@ -1,0 +1,1586 @@
+/* ==========================================================================
+   ISLAND RESOURCE STYLES
+   Recipe browser with dependency chain visualization
+   ========================================================================== */
+
+/* ==========================================================================
+   1. RESOURCE LAYOUT (3-COLUMN)
+   ========================================================================== */
+
+.resource-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr 400px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* ==========================================================================
+   2. FILTER CONTROLS
+   ========================================================================== */
+
+.resource-filter-controls {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.category-select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    border-radius: 8px;
+    color: var(--island-text-primary);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--island-transition);
+    appearance: none;
+}
+
+.category-select:hover,
+.category-select:focus {
+    border-color: var(--island-accent);
+    outline: none;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    padding-right: 2.5rem;
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    border-radius: 8px;
+    color: var(--island-text-primary);
+    font-size: 0.9375rem;
+    transition: var(--island-transition);
+}
+
+.search-input:focus {
+    border-color: var(--island-accent);
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: var(--island-text-tertiary);
+}
+
+.dropdown-container {
+    position: relative;
+}
+
+.dropdown-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--island-text-tertiary);
+    pointer-events: none;
+    font-size: 1.25rem;
+}
+
+/* ==========================================================================
+   3. RECIPE LIST (LEFT COLUMN)
+   ========================================================================== */
+
+.recipe-list {
+    background: var(--island-surface);
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: var(--island-shadow-sm);
+    max-height: 800px;
+    overflow-y: auto;
+}
+
+.recipe-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: 10px;
+    padding: 0.875rem;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: var(--island-transition);
+}
+
+.recipe-card:last-child {
+    margin-bottom: 0;
+}
+
+.recipe-card:hover {
+    border-color: var(--island-accent);
+    background: var(--island-surface-hover);
+    transform: translateX(4px);
+}
+
+.recipe-card.active {
+    border-color: var(--island-accent);
+    background: var(--island-accent-light);
+    box-shadow: var(--island-shadow-sm);
+}
+
+.recipe-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    overflow: hidden;
+}
+
+.recipe-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.recipe-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.recipe-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--island-text-primary);
+    margin-bottom: 0.375rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recipe-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: var(--island-text-secondary);
+}
+
+.recipe-time,
+.recipe-exp {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* ==========================================================================
+   4. RECIPE DETAIL (CENTER COLUMN)
+   ========================================================================== */
+
+.recipe-detail {
+    background: var(--island-surface);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: var(--island-shadow-md);
+    min-height: 600px;
+}
+
+.recipe-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--island-border);
+    margin-bottom: 2rem;
+}
+
+.recipe-icon-large {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    background: var(--island-bg);
+    border: 3px solid var(--island-accent);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    overflow: hidden;
+    box-shadow: var(--island-shadow-sm);
+}
+
+.recipe-icon-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.recipe-title-section h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--island-text-primary);
+    margin: 0 0 0.75rem 0;
+}
+
+.recipe-meta-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.recipe-category {
+    display: inline-flex;
+    align-items: center;
+    background: var(--island-accent);
+    color: #ffffff;
+    padding: 0.375rem 0.875rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.625rem;
+    background: var(--island-bg);
+    border: 1px solid var(--island-border);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--island-text-secondary);
+}
+
+.stat-badge.exp {
+    border-color: #f39c12;
+    color: #f39c12;
+}
+
+.stat-badge.stamina {
+    border-color: #3498db;
+    color: #3498db;
+}
+
+/* Recipe Flow Layout (Horizontal Input -> Output) */
+.recipe-flow {
+    display: flex;
+    align-items: stretch;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: 12px;
+}
+
+.flow-section {
+    flex: 1;
+    min-width: 0;
+}
+
+.flow-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--island-text-primary);
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.flow-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0 1rem;
+    position: relative;
+}
+
+.arrow-head {
+    width: 48px;
+    height: 48px;
+    background: var(--island-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(114, 137, 218, 0.3);
+}
+
+.arrow-head .material-symbols-outlined {
+    font-size: 1.75rem;
+    color: #ffffff;
+}
+
+.flow-stats {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.flow-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.625rem;
+    background: var(--island-surface);
+    border: 1px solid var(--island-border);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--island-text-secondary);
+    white-space: nowrap;
+}
+
+/* Vertical Material List (for flow sections) */
+.material-list-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.material-item-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: var(--island-transition);
+    text-align: center;
+}
+
+.material-top-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.material-item-vertical:hover {
+    border-color: var(--island-accent);
+    transform: translateX(2px);
+}
+
+/* Rarity colors (shared for both horizontal and vertical items) */
+.material-item-vertical.rarity-1,
+.material-item.rarity-1 { border-left: 4px solid #95a5a6; }
+
+.material-item-vertical.rarity-2,
+.material-item.rarity-2 { border-left: 4px solid #3498db; }
+
+.material-item-vertical.rarity-3,
+.material-item.rarity-3 { border-left: 4px solid #9b59b6; }
+
+.material-item-vertical.rarity-4,
+.material-item.rarity-4 { border-left: 4px solid #f39c12; }
+
+.material-item-vertical.rarity-5,
+.material-item.rarity-5 { border-left: 4px solid #e74c3c; }
+
+/* Manual Drop Section */
+.manual-drop-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-left: 4px solid #9b59b6;
+    border-radius: 12px;
+}
+
+.manual-drop-section.category1-manual {
+    border-left-color: #27ae60;
+}
+
+.manual-drop-section.category2-manual {
+    border-left-color: #3498db;
+}
+
+.manual-flow {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--island-surface);
+    border-radius: 8px;
+}
+
+.manual-drop-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--island-text-primary);
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.manual-time {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--island-text-tertiary);
+}
+
+/* Keep old horizontal material list for modals */
+.material-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+
+.material-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: var(--island-transition);
+}
+
+.material-item:hover {
+    border-color: var(--island-accent);
+    transform: translateY(-2px);
+}
+
+/* Rarity colors defined below with vertical items */
+
+.material-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    background: var(--island-surface);
+    border: 1px solid var(--island-border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    overflow: hidden;
+}
+
+.material-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.material-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.material-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--island-text-primary);
+    width: 100%;
+}
+
+.material-quantity {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--island-accent);
+    white-space: nowrap;
+}
+
+.no-materials {
+    color: var(--island-text-tertiary);
+    font-style: italic;
+    font-size: 0.875rem;
+    margin: 0;
+    padding: 1rem;
+    background: var(--island-bg);
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Recipe Actions */
+.recipe-actions {
+    display: flex;
+    gap: 0.75rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--island-border);
+}
+
+.action-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem;
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: 8px;
+    color: var(--island-text-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--island-transition);
+}
+
+.action-btn:hover {
+    border-color: var(--island-accent);
+    background: var(--island-accent-light);
+    color: var(--island-accent);
+}
+
+.action-btn.primary {
+    background: var(--island-accent);
+    border-color: var(--island-accent);
+    color: #ffffff;
+}
+
+.action-btn.primary:hover {
+    background: var(--island-accent-hover);
+    transform: translateY(-2px);
+}
+
+.action-btn .material-symbols-outlined {
+    font-size: 1.125rem;
+}
+
+/* ==========================================================================
+   5. DEPENDENCY CHAIN (RIGHT COLUMN)
+   ========================================================================== */
+
+.dependency-chain {
+    background: var(--island-surface);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--island-shadow-md);
+    position: sticky;
+    top: 2rem;
+    max-height: 800px;
+    overflow-y: auto;
+}
+
+/* === DEPENDENCY TREE (SIMPLIFIED CARD DESIGN) === */
+
+/* Tree Header */
+.tree-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--island-border);
+    margin-bottom: 1.5rem;
+}
+
+.tree-header h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--island-text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tree-header h3 .material-symbols-outlined {
+    font-size: 1.375rem;
+    color: var(--island-accent);
+}
+
+.tree-stats {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.stat-badge-sm {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--island-bg);
+    border: 1px solid var(--island-border);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--island-text-secondary);
+}
+
+.stat-badge-sm .material-symbols-outlined {
+    font-size: 0.875rem;
+}
+
+.stat-badge-sm.upstream {
+    border-color: #3498db;
+    color: #3498db;
+}
+
+.stat-badge-sm.downstream {
+    border-color: #e67e22;
+    color: #e67e22;
+}
+
+/* Tree Sections */
+.tree-section {
+    margin-bottom: 1.5rem;
+}
+
+.tree-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--island-text-primary);
+    margin: 0 0 1.25rem 0;
+    padding: 0.75rem 1rem;
+    background: var(--island-bg);
+    border-radius: 8px;
+}
+
+.tree-section-title .material-symbols-outlined {
+    font-size: 1rem;
+}
+
+.tree-section-title.upstream {
+    border: 2px solid #3498db;
+    background: rgba(52, 152, 219, 0.05);
+    color: #3498db;
+}
+
+.tree-section-title.downstream {
+    border: 2px solid #e67e22;
+    background: rgba(230, 126, 34, 0.05);
+    color: #e67e22;
+}
+
+.tree-nodes-wrapper {
+    position: relative;
+}
+
+/* Current Recipe Separator (Simplified with Visual Effect) */
+.current-recipe-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 1.25rem;
+    margin: 2rem 0;
+    background:
+        repeating-linear-gradient(
+            45deg,
+            var(--island-surface),
+            var(--island-surface) 10px,
+            rgba(114, 137, 218, 0.05) 10px,
+            rgba(114, 137, 218, 0.05) 20px
+        );
+    border: 2px solid var(--island-accent);
+    border-left: 4px solid var(--island-accent);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--island-text-secondary);
+    box-shadow: 0 2px 8px rgba(114, 137, 218, 0.15);
+}
+
+.current-recipe-separator .material-symbols-outlined {
+    font-size: 1.125rem;
+    color: var(--island-accent);
+    animation: pulse-icon 2s ease-in-out infinite;
+}
+
+@keyframes pulse-icon {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.current-recipe-text {
+    color: var(--island-text-primary);
+}
+
+/* Tree Nodes with Connectors */
+.tree-node {
+    position: relative;
+    margin-bottom: 0;
+}
+
+/* Vertical line connecting siblings */
+.tree-node::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--island-border);
+}
+
+/* Color-coded vertical lines */
+.tree-node[data-direction="upstream"]::before {
+    background: rgba(52, 152, 219, 0.4);
+}
+
+.tree-node[data-direction="downstream"]::before {
+    background: rgba(230, 126, 34, 0.4);
+}
+
+/* Don't show vertical line for root level */
+.tree-node.depth-0::before {
+    display: none;
+}
+
+/* Last child - vertical line only goes halfway */
+.tree-node.last-child::before {
+    height: 50%;
+}
+
+/* Tree Node Card */
+.tree-node-card {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-left: 1.75rem;
+    margin-bottom: 0.875rem;
+    cursor: pointer;
+    transition: var(--island-transition);
+    position: relative;
+}
+
+.tree-node-card.manual-mode {
+    border-left: 4px solid #27ae60;
+    background: linear-gradient(to right, rgba(39, 174, 96, 0.05) 0%, var(--island-surface) 50%);
+}
+
+.manual-badge {
+    display: inline-block;
+    font-size: 0.875rem;
+    margin-right: 0.25rem;
+}
+
+/* Root level cards - no left margin */
+.tree-node.depth-0 > .tree-node-card {
+    margin-left: 0;
+}
+
+/* Horizontal connector line (L-shape) */
+.tree-node-card::before {
+    content: '';
+    position: absolute;
+    left: -1.75rem;
+    top: 50%;
+    width: 1.75rem;
+    height: 2px;
+    background: var(--island-border);
+}
+
+/* Color-coded horizontal connectors */
+.tree-node-card.upstream::before {
+    background: rgba(52, 152, 219, 0.6);
+}
+
+.tree-node-card.downstream::before {
+    background: rgba(230, 126, 34, 0.6);
+}
+
+/* Root level - no horizontal connector */
+.tree-node.depth-0 > .tree-node-card::before {
+    display: none;
+}
+
+/* Hover effects */
+.tree-node-card:hover {
+    border-color: var(--island-accent);
+    background: var(--island-surface-hover);
+    transform: translateX(3px);
+    box-shadow: var(--island-shadow-sm);
+}
+
+.tree-node-card:hover .tree-node-arrow {
+    opacity: 1;
+    transform: translateX(2px);
+}
+
+/* Tree Node Components */
+.tree-node-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    overflow: hidden;
+}
+
+.tree-node-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tree-node-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.tree-node-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--island-text-primary);
+    margin-bottom: 0.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tree-node-via {
+    font-size: 0.6875rem;
+    color: var(--island-accent);
+    margin-bottom: 0.375rem;
+    font-style: italic;
+}
+
+.tree-node-meta {
+    display: flex;
+    gap: 0.875rem;
+    font-size: 0.75rem;
+    color: var(--island-text-secondary);
+}
+
+.tree-node-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.tree-node-arrow {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    color: var(--island-accent);
+    opacity: 0;
+    transition: var(--island-transition);
+    font-size: 1.125rem;
+}
+
+/* Children container */
+.tree-node-children {
+    margin-top: 0.5rem;
+}
+
+/* Empty state styling now in island.style.css (unified) */
+
+/* Modal-specific empty state override */
+.modal-empty-state {
+    min-height: 400px;
+}
+
+/* ==========================================================================
+   6. RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 1400px) {
+    .resource-layout {
+        grid-template-columns: 320px 1fr 350px;
+        gap: 1.25rem;
+    }
+
+    .recipe-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .resource-layout {
+        grid-template-columns: 300px 1fr;
+        gap: 1.5rem;
+    }
+
+    .dependency-chain {
+        display: none;
+    }
+
+    .material-list {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .resource-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .recipe-detail {
+        position: static;
+    }
+
+    .recipe-list {
+        max-height: 500px;
+    }
+
+    .resource-filter-controls {
+        grid-template-columns: 1fr;
+    }
+
+    /* Stack flow layout vertically on mobile */
+    .recipe-flow {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .flow-arrow {
+        flex-direction: row;
+        padding: 1rem 0;
+    }
+
+    .arrow-head {
+        transform: rotate(90deg);
+    }
+
+    .flow-stats {
+        flex-direction: row;
+    }
+
+    .material-list {
+        grid-template-columns: 1fr;
+    }
+
+    .recipe-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .recipe-detail {
+        padding: 1.5rem;
+    }
+
+    .recipe-detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .recipe-meta-badges {
+        width: 100%;
+    }
+
+    .recipe-flow {
+        padding: 1rem;
+    }
+
+    .manual-drop-section {
+        padding: 1rem;
+    }
+}
+
+/* Scrollbar styling now in island.style.css (unified) */
+/* Loading state styling now in island.style.css (unified) */
+
+/* ==========================================================================
+   9. DEPENDENCY MODAL
+   ========================================================================== */
+
+.recipe-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.recipe-modal.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+.modal-container {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    background: var(--island-surface);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid var(--island-border);
+}
+
+.modal-header h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--island-text-primary);
+    margin: 0;
+}
+
+.modal-close-btn {
+    width: 36px;
+    height: 36px;
+    background: var(--island-danger);
+    border: none;
+    border-radius: 50%;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--island-transition);
+}
+
+.modal-close-btn:hover {
+    background: var(--island-danger-hover);
+    transform: scale(1.1);
+}
+
+.modal-close-btn .material-symbols-outlined {
+    font-size: 1.25rem;
+}
+
+.modal-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+}
+
+/* Modal Recipe Groups */
+.modal-recipe-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.modal-recipe-group {
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.modal-item-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--island-border);
+}
+
+.modal-item-icon {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    background: var(--island-surface);
+    border: 2px solid var(--island-accent);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    overflow: hidden;
+}
+
+.modal-item-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-item-info h4 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--island-text-primary);
+    margin: 0 0 0.375rem 0;
+}
+
+.modal-item-info p {
+    font-size: 0.875rem;
+    color: var(--island-text-secondary);
+    margin: 0;
+}
+
+/* Modal Recipe List */
+.modal-recipe-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.modal-recipe-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    border-radius: 10px;
+    padding: 1rem;
+    transition: var(--island-transition);
+    cursor: pointer;
+}
+
+.modal-recipe-card:hover {
+    border-color: var(--island-accent);
+    transform: translateX(4px);
+}
+
+.modal-recipe-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    background: var(--island-bg);
+    border: 1px solid var(--island-border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    overflow: hidden;
+}
+
+.modal-recipe-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-recipe-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.modal-recipe-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--island-text-primary);
+    margin-bottom: 0.375rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modal-recipe-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: var(--island-text-secondary);
+    flex-wrap: wrap;
+}
+
+.modal-recipe-category {
+    background: var(--island-accent);
+    color: #ffffff;
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.modal-select-btn {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    background: var(--island-accent);
+    border: none;
+    border-radius: 50%;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--island-transition);
+}
+
+.modal-select-btn:hover {
+    background: var(--island-accent-hover);
+    transform: scale(1.1);
+}
+
+.modal-select-btn .material-symbols-outlined {
+    font-size: 1.25rem;
+}
+
+/* Modal Source Info */
+.modal-source-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: var(--island-accent-light);
+    border: 2px solid var(--island-accent);
+    border-radius: 8px;
+    color: var(--island-text-primary);
+    font-size: 0.875rem;
+}
+
+.modal-source-info .material-symbols-outlined {
+    color: var(--island-accent);
+    font-size: 1.25rem;
+}
+
+/* Modal empty state styles defined in shared empty state section above */
+
+/* Modal scrollbar styles defined in shared scrollbar section above */
+
+/* Modal Responsive */
+@media (max-width: 768px) {
+    .recipe-modal {
+        padding: 1rem;
+    }
+
+    .modal-container {
+        max-height: 95vh;
+    }
+
+    .modal-header {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+    }
+
+    .modal-recipe-card {
+        flex-wrap: wrap;
+    }
+
+    .modal-select-btn {
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .modal-recipe-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* ==========================================================================
+   11. SHOP PURCHASE NODES & COST SUMMARY
+   ========================================================================== */
+
+/* Cost Summary Section */
+.cost-summary {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.05) 0%, rgba(243, 156, 18, 0.02) 100%);
+    border: 2px solid #f39c12;
+    border-left: 4px solid #f39c12;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(243, 156, 18, 0.15);
+}
+
+.cost-summary-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #f39c12;
+    margin: 0 0 1rem 0;
+}
+
+.cost-summary-title .material-symbols-outlined {
+    font-size: 1.125rem;
+}
+
+.cost-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.cost-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: var(--island-transition);
+}
+
+.cost-item:hover {
+    border-color: #f39c12;
+    transform: translateX(2px);
+}
+
+.cost-item.gold {
+    border-color: #f39c12;
+    background: rgba(243, 156, 18, 0.05);
+}
+
+.cost-item.normalized {
+    border-color: var(--island-border);
+    background: var(--island-bg);
+    border-left: 3px solid #3498db;
+}
+
+.cost-item.normalized:hover {
+    border-color: #3498db;
+    border-left-color: #3498db;
+}
+
+.cost-item .cost-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    overflow: hidden;
+}
+
+.cost-item.gold .cost-icon {
+    border-color: #f39c12;
+    font-size: 1.5rem;
+}
+
+.cost-item.normalized .cost-icon {
+    border-color: #3498db;
+    font-size: 1.125rem;
+}
+
+.cost-item .cost-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cost-name {
+    flex: 1;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--island-text-primary);
+}
+
+.cost-item.gold .cost-name {
+    color: #f39c12;
+    font-weight: 700;
+}
+
+.cost-amount {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--island-accent);
+}
+
+.cost-item.gold .cost-amount {
+    color: #f39c12;
+    font-size: 1rem;
+}
+
+.cost-item.normalized .cost-name {
+    color: var(--island-text-secondary);
+    font-weight: 500;
+    font-size: 0.8125rem;
+}
+
+.cost-item.normalized .cost-amount {
+    color: #3498db;
+    font-weight: 600;
+    font-size: 0.8125rem;
+}
+
+/* Dual Column Layout for Category 1 */
+.cost-comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cost-column {
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.cost-column.manual-cost {
+    border-left: 4px solid #27ae60;
+}
+
+.cost-column.auto-cost {
+    border-left: 4px solid #3498db;
+}
+
+.cost-column-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--island-text-primary);
+    margin: 0 0 0.75rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cost-column.manual-cost .cost-column-title {
+    color: #27ae60;
+}
+
+.cost-column.auto-cost .cost-column-title {
+    color: #3498db;
+}
+
+.resource-costs {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--island-border);
+}
+
+.resource-costs-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--island-text-secondary);
+    margin: 0 0 0.75rem 0;
+}
+
+/* Responsive: Stack columns on smaller screens */
+@media (max-width: 768px) {
+    .cost-comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Shop Purchase Tree Nodes - Reduced Emphasis */
+.tree-node.shop-purchase {
+    position: relative;
+}
+
+.tree-node-card.shop {
+    background: var(--island-bg);
+    border: 1px solid var(--island-border);
+    border-left: 2px solid rgba(243, 156, 18, 0.4);
+    cursor: default;
+    padding: 0.625rem 0.75rem;
+    box-shadow: none;
+}
+
+.tree-node-card.shop::before {
+    background: rgba(243, 156, 18, 0.3);
+}
+
+.tree-node-card.shop:hover {
+    border-color: var(--island-border);
+    border-left-color: rgba(243, 156, 18, 0.6);
+    background: var(--island-bg);
+    transform: none;
+}
+
+.tree-node-card.shop .tree-node-arrow {
+    display: none;
+}
+
+.tree-node-card.shop .tree-node-icon {
+    width: 36px;
+    height: 36px;
+    border-width: 1px;
+}
+
+.shop-badge {
+    display: inline-block;
+    background: rgba(243, 156, 18, 0.15);
+    color: #f39c12;
+    border: 1px solid rgba(243, 156, 18, 0.3);
+    padding: 0.125rem 0.375rem;
+    border-radius: 3px;
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-right: 0.375rem;
+    vertical-align: middle;
+}
+
+.tree-node-meta.shop-cost {
+    display: flex;
+    flex-direction: row;
+    gap: 0.375rem;
+    align-items: center;
+    margin-top: 0.25rem;
+    padding-top: 0;
+    border-top: none;
+}
+
+.shop-cost-label {
+    font-size: 0.625rem;
+    font-weight: 500;
+    color: var(--island-text-tertiary);
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.shop-cost-value {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--island-text-secondary);
+}
+
+.total-cost {
+    font-size: 0.625rem;
+    color: var(--island-text-tertiary);
+    font-weight: 500;
+}

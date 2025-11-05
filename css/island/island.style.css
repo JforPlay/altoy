@@ -1,0 +1,762 @@
+/* ==========================================================================
+   ISLAND PAGE STYLES - GLOBAL/SHARED
+   Modern, clean UI/UX design for island management interface
+   ========================================================================== */
+
+/* ==========================================================================
+   1. THEME VARIABLES
+   ========================================================================== */
+
+:root {
+    /* Dark Mode (Default) */
+    --island-bg: #1a1d23;
+    --island-surface: #2a2d35;
+    --island-surface-hover: #32353d;
+    --island-border: #3a3d45;
+    --island-text-primary: #e4e6eb;
+    --island-text-secondary: #b0b3b8;
+    --island-text-tertiary: #8a8d93;
+
+    --island-accent: #7289da;
+    --island-accent-hover: #8ea1e1;
+    --island-accent-light: rgba(114, 137, 218, 0.1);
+
+    /* Danger/Error Colors */
+    --island-danger: #e74c3c;
+    --island-danger-hover: #c0392b;
+
+    /* Success Colors */
+    --island-success: #27ae60;
+    --island-success-hover: #229954;
+
+    /* Warning Colors */
+    --island-warning: #f39c12;
+    --island-warning-hover: #d68910;
+
+    --island-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --island-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --island-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    --island-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Spacing System */
+    --island-spacing-xs: 0.5rem;    /* 8px */
+    --island-spacing-sm: 0.75rem;   /* 12px */
+    --island-spacing-md: 1rem;      /* 16px */
+    --island-spacing-lg: 1.5rem;    /* 24px */
+    --island-spacing-xl: 2rem;      /* 32px */
+    --island-spacing-2xl: 3rem;     /* 48px */
+
+    /* Gap Sizes */
+    --island-gap-xs: 0.375rem;      /* 6px */
+    --island-gap-sm: 0.5rem;        /* 8px */
+    --island-gap-md: 0.75rem;       /* 12px */
+    --island-gap-lg: 1rem;          /* 16px */
+    --island-gap-xl: 1.5rem;        /* 24px */
+
+    /* Border Radius */
+    --island-radius-sm: 6px;
+    --island-radius-md: 8px;
+    --island-radius-lg: 10px;
+    --island-radius-xl: 12px;
+    --island-radius-2xl: 16px;
+    --island-radius-round: 50%;
+
+    /* Font Sizes */
+    --island-text-xs: 0.75rem;      /* 12px */
+    --island-text-sm: 0.8125rem;    /* 13px */
+    --island-text-base: 0.875rem;   /* 14px */
+    --island-text-md: 0.9375rem;    /* 15px */
+    --island-text-lg: 1rem;         /* 16px */
+    --island-text-xl: 1.125rem;     /* 18px */
+    --island-text-2xl: 1.25rem;     /* 20px */
+    --island-text-3xl: 1.5rem;      /* 24px */
+    --island-text-4xl: 2rem;        /* 32px */
+
+    /* Icon Sizes */
+    --island-icon-xs: 1rem;         /* 16px */
+    --island-icon-sm: 1.125rem;     /* 18px */
+    --island-icon-md: 1.25rem;      /* 20px */
+    --island-icon-lg: 1.5rem;       /* 24px */
+    --island-icon-xl: 2rem;         /* 32px */
+    --island-icon-2xl: 2.5rem;      /* 40px */
+
+    /* Z-Index Scale */
+    --island-z-base: 1;
+    --island-z-sticky: 10;
+    --island-z-dropdown: 100;
+    --island-z-floating: 1000;
+    --island-z-modal: 9999;
+}
+
+/* Light Mode Override */
+body:not(.dark-mode) {
+    --island-bg: #f5f7fa;
+    --island-surface: #ffffff;
+    --island-surface-hover: #f8f9fa;
+    --island-border: #e1e4e8;
+    --island-text-primary: #1a1d23;
+    --island-text-secondary: #606770;
+    --island-text-tertiary: #8a8d93;
+
+    --island-accent: #0071eb;
+    --island-accent-hover: #005ec4;
+    --island-accent-light: rgba(0, 113, 235, 0.08);
+
+    --island-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --island-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --island-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ==========================================================================
+   2. CONTAINER & LAYOUT
+   ========================================================================== */
+
+.island-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    min-height: calc(100vh - 200px);
+    background: var(--island-bg);
+}
+
+/* Apply background to body for full coverage */
+body {
+    background: var(--island-bg);
+}
+
+/* ==========================================================================
+   3. HEADER
+   ========================================================================== */
+
+.island-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--island-border);
+}
+
+.island-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--island-text-primary);
+    margin: 0 0 0.75rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.island-header h1 .material-symbols-outlined {
+    font-size: 2.75rem;
+    color: var(--island-accent);
+}
+
+.island-header .subtitle {
+    font-size: 1.125rem;
+    color: var(--island-text-secondary);
+    margin: 0;
+    font-weight: 400;
+}
+
+/* ==========================================================================
+   4. TAB NAVIGATION
+   ========================================================================== */
+
+.tab-navigation {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 0.5rem;
+    background: var(--island-surface);
+    border-radius: 12px;
+    box-shadow: var(--island-shadow-sm);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tab-button {
+    flex: 1;
+    min-width: 140px;
+    padding: 0.875rem 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: var(--island-text-secondary);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--island-transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.tab-button .material-symbols-outlined {
+    font-size: 1.25rem;
+}
+
+.tab-button:hover {
+    background: var(--island-accent-light);
+    color: var(--island-accent);
+}
+
+.tab-button.active {
+    background: var(--island-accent);
+    color: #ffffff;
+    box-shadow: var(--island-shadow-sm);
+}
+
+/* ==========================================================================
+   5. TAB CONTENT
+   ========================================================================== */
+
+.tab-content-wrapper {
+    position: relative;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   6. SEARCH SECTION
+   ========================================================================== */
+
+.search-section {
+    margin-bottom: 2rem;
+}
+
+.search-section .dropdown-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   7. CONTENT LAYOUT (Master-Detail)
+   ========================================================================== */
+
+.content-layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* ==========================================================================
+   8. SHARED STATES (Loading, Empty, Placeholder)
+   ========================================================================== */
+
+.loading-state,
+.empty-state,
+.placeholder-content {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--island-text-tertiary);
+}
+
+.loading-state .material-symbols-outlined,
+.empty-state .material-symbols-outlined,
+.placeholder-content .material-symbols-outlined {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+    display: block;
+}
+
+.loading-state p,
+.empty-state p,
+.placeholder-content p {
+    margin: 0;
+    font-size: 0.9375rem;
+}
+
+.rotating {
+    animation: rotate 1.5s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.empty-state h3 {
+    color: var(--island-text-secondary);
+    font-size: 1.5rem;
+    margin: 1rem 0 0.5rem 0;
+}
+
+/* ==========================================================================
+   9. DETAIL SECTIONS (Shared Structure)
+   ========================================================================== */
+
+.detail-section {
+    margin-bottom: 2rem;
+}
+
+.detail-section h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--island-text-primary);
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-section h3 .material-symbols-outlined {
+    font-size: 1.5rem;
+    color: var(--island-accent);
+}
+
+.title-with-help {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Help Icon & Tooltip */
+.help-icon {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: var(--island-transition);
+    display: inline-flex;
+    align-items: center;
+}
+
+.help-icon:hover {
+    opacity: 1;
+    color: var(--island-accent);
+}
+
+.help-icon .material-symbols-outlined {
+    font-size: 1.125rem;
+}
+
+.help-tooltip {
+    background: var(--island-surface);
+    border: 2px solid var(--island-accent);
+    border-radius: 8px;
+    padding: 0;
+    margin-bottom: 0;
+    box-shadow: var(--island-shadow-md);
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+}
+
+.help-tooltip.visible {
+    opacity: 1;
+    max-height: 500px;
+    padding: 1rem;
+    margin-bottom: 0.3rem;
+}
+
+.help-tooltip p {
+    margin: 0.5rem 0;
+    font-size: 0.875rem;
+    color: var(--island-text-secondary);
+    line-height: 1.6;
+}
+
+.help-tooltip p:first-child {
+    margin-top: 0;
+    font-size: 1rem;
+    color: var(--island-text-primary);
+}
+
+.help-tooltip strong {
+    color: var(--island-accent);
+}
+
+/* ==========================================================================
+   10. PLACEHOLDER CONTENT
+   ========================================================================== */
+
+.placeholder-content {
+    background: var(--island-surface);
+    border-radius: 12px;
+    padding: 4rem 2rem;
+    box-shadow: var(--island-shadow-md);
+}
+
+.placeholder-content h2 {
+    font-size: 2rem;
+    color: var(--island-text-primary);
+    margin: 1rem 0;
+}
+
+/* ==========================================================================
+   11. UNIFIED SCROLLBAR UTILITY
+   ========================================================================== */
+
+/* Apply to utility class and all scrollable containers */
+.island-scrollbar::-webkit-scrollbar,
+.character-list::-webkit-scrollbar,
+.tech-tree-container::-webkit-scrollbar,
+.tech-detail::-webkit-scrollbar,
+.quest-list::-webkit-scrollbar,
+.quest-type-menu::-webkit-scrollbar,
+.recipe-list::-webkit-scrollbar,
+.dependency-chain::-webkit-scrollbar,
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.island-scrollbar::-webkit-scrollbar-track,
+.character-list::-webkit-scrollbar-track,
+.tech-tree-container::-webkit-scrollbar-track,
+.tech-detail::-webkit-scrollbar-track,
+.quest-list::-webkit-scrollbar-track,
+.quest-type-menu::-webkit-scrollbar-track,
+.recipe-list::-webkit-scrollbar-track,
+.dependency-chain::-webkit-scrollbar-track,
+.modal-content::-webkit-scrollbar-track {
+    background: var(--island-bg);
+    border-radius: var(--island-radius-sm);
+}
+
+.island-scrollbar::-webkit-scrollbar-thumb,
+.character-list::-webkit-scrollbar-thumb,
+.tech-tree-container::-webkit-scrollbar-thumb,
+.tech-detail::-webkit-scrollbar-thumb,
+.quest-list::-webkit-scrollbar-thumb,
+.quest-type-menu::-webkit-scrollbar-thumb,
+.recipe-list::-webkit-scrollbar-thumb,
+.dependency-chain::-webkit-scrollbar-thumb,
+.modal-content::-webkit-scrollbar-thumb {
+    background: var(--island-border);
+    border-radius: var(--island-radius-sm);
+    transition: var(--island-transition);
+}
+
+.island-scrollbar::-webkit-scrollbar-thumb:hover,
+.character-list::-webkit-scrollbar-thumb:hover,
+.tech-tree-container::-webkit-scrollbar-thumb:hover,
+.tech-detail::-webkit-scrollbar-thumb:hover,
+.quest-list::-webkit-scrollbar-thumb:hover,
+.quest-type-menu::-webkit-scrollbar-thumb:hover,
+.recipe-list::-webkit-scrollbar-thumb:hover,
+.dependency-chain::-webkit-scrollbar-thumb:hover,
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: var(--island-accent);
+}
+
+.island-scrollbar::-webkit-scrollbar-corner,
+.tech-tree-container::-webkit-scrollbar-corner {
+    background: var(--island-bg);
+}
+
+/* Firefox scrollbar */
+.island-scrollbar,
+.character-list,
+.tech-tree-container,
+.tech-detail,
+.quest-list,
+.quest-type-menu,
+.recipe-list,
+.dependency-chain,
+.modal-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--island-border) var(--island-bg);
+}
+
+/* ==========================================================================
+   12. UNIFIED BADGE SYSTEM
+   ========================================================================== */
+
+.island-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--island-gap-xs);
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--island-radius-md);
+    font-size: var(--island-text-sm);
+    font-weight: 600;
+    transition: var(--island-transition);
+}
+
+.island-badge-sm { padding: 0.25rem 0.5rem; font-size: var(--island-text-xs); }
+.island-badge-lg { padding: 0.5rem 1rem; font-size: var(--island-text-md); }
+
+/* Status badges */
+.island-badge-primary {
+    background: var(--island-accent);
+    color: #ffffff;
+}
+
+.island-badge-success {
+    background: var(--island-success);
+    color: #ffffff;
+}
+
+.island-badge-warning {
+    background: var(--island-warning);
+    color: #ffffff;
+}
+
+.island-badge-danger {
+    background: var(--island-danger);
+    color: #ffffff;
+}
+
+.island-badge-neutral {
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    color: var(--island-text-secondary);
+}
+
+/* ==========================================================================
+   13. UNIFIED CARD SYSTEM
+   ========================================================================== */
+
+.island-card {
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: var(--island-radius-lg);
+    padding: var(--island-spacing-md);
+    cursor: pointer;
+    transition: var(--island-transition);
+}
+
+.island-card:hover {
+    border-color: var(--island-accent);
+    box-shadow: var(--island-shadow-sm);
+}
+
+.island-card-hover-slide-x:hover {
+    transform: translateX(4px);
+}
+
+.island-card-hover-slide-y:hover {
+    transform: translateY(-2px);
+}
+
+.island-card.active {
+    border-color: var(--island-accent);
+    background: var(--island-accent-light);
+    box-shadow: var(--island-shadow-sm);
+}
+
+.island-card-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    border-radius: var(--island-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: var(--island-transition);
+}
+
+/* ==========================================================================
+   14. UNIFIED BUTTON SYSTEM
+   ========================================================================== */
+
+.island-btn {
+    padding: 0.875rem 1.25rem;
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    border-radius: var(--island-radius-md);
+    color: var(--island-text-secondary);
+    font-size: var(--island-text-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--island-transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--island-gap-sm);
+}
+
+.island-btn-sm { padding: 0.5rem 0.75rem; font-size: var(--island-text-sm); }
+.island-btn-lg { padding: 1rem 1.5rem; font-size: var(--island-text-lg); }
+
+.island-btn:hover {
+    background: var(--island-surface-hover);
+    border-color: var(--island-accent);
+    color: var(--island-accent);
+}
+
+.island-btn.active {
+    background: var(--island-accent);
+    border-color: var(--island-accent);
+    color: #ffffff;
+    box-shadow: var(--island-shadow-sm);
+}
+
+.island-btn-primary {
+    background: var(--island-accent);
+    border-color: var(--island-accent);
+    color: #ffffff;
+}
+
+.island-btn-primary:hover {
+    background: var(--island-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--island-shadow-md);
+}
+
+.island-btn-danger {
+    background: var(--island-danger);
+    border-color: var(--island-danger);
+    color: #ffffff;
+}
+
+.island-btn-danger:hover {
+    background: var(--island-danger-hover);
+}
+
+.island-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   15. UNIFIED ICON CONTAINERS
+   ========================================================================== */
+
+.island-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    border-radius: var(--island-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: var(--island-transition);
+}
+
+.island-icon-sm { width: 40px; height: 40px; }
+.island-icon-md { width: 60px; height: 60px; }
+.island-icon-lg { width: 80px; height: 80px; }
+.island-icon-xl { width: 120px; height: 120px; }
+
+/* ==========================================================================
+   16. UNIFIED PANEL SYSTEM
+   ========================================================================== */
+
+.island-list-panel {
+    background: var(--island-surface);
+    border-radius: var(--island-radius-xl);
+    padding: var(--island-spacing-lg);
+    box-shadow: var(--island-shadow-md);
+    overflow-y: auto;
+}
+
+.island-list-panel-compact { padding: var(--island-spacing-md); }
+
+.island-detail-panel {
+    background: var(--island-surface);
+    border-radius: var(--island-radius-xl);
+    padding: var(--island-spacing-xl);
+    box-shadow: var(--island-shadow-md);
+    min-height: 500px;
+}
+
+.island-detail-panel-sticky {
+    position: sticky;
+    top: var(--island-spacing-xl);
+}
+
+.island-detail-panel-floating {
+    position: fixed;
+    top: 50%;
+    right: var(--island-spacing-xl);
+    transform: translateY(-50%);
+    z-index: var(--island-z-floating);
+}
+
+/* ==========================================================================
+   17. RESPONSIVE DESIGN (Global)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .content-layout {
+        grid-template-columns: 320px 1fr;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .island-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .island-header h1 {
+        font-size: 2rem;
+    }
+
+    .island-header h1 .material-symbols-outlined {
+        font-size: 2.25rem;
+    }
+
+    .tab-navigation {
+        padding: 0.375rem;
+        gap: 0.375rem;
+    }
+
+    .tab-button {
+        min-width: 120px;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .content-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .island-header h1 {
+        font-size: 1.75rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .island-header .subtitle {
+        font-size: 1rem;
+    }
+
+    .tab-button {
+        min-width: 100px;
+        padding: 0.625rem 0.75rem;
+        font-size: 0.8125rem;
+    }
+
+    .tab-button .material-symbols-outlined {
+        font-size: 1.125rem;
+    }
+}

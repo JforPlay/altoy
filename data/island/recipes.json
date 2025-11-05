@@ -1,0 +1,4958 @@
+{
+  "1": [
+    {
+      "affected_vfx": [
+        0.09,
+        0,
+        0.21
+      ],
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1000,
+          9
+        ]
+      ],
+      "commission_product": [
+        [
+          2000,
+          9
+        ]
+      ],
+      "cost": [
+        [
+          1000,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2000,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 101001,
+      "is_condition": 0,
+      "item_id": 2000,
+      "name": "Wheat",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20102
+        ],
+        [
+          1,
+          20103
+        ]
+      ],
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1001,
+          9
+        ]
+      ],
+      "commission_product": [
+        [
+          2001,
+          18
+        ]
+      ],
+      "cost": [
+        [
+          1001,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2001,
+          2
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 101002,
+      "is_condition": 0,
+      "item_id": 2001,
+      "name": "Corn",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 60,
+      "stamina_cost": 12,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20104
+        ],
+        [
+          1,
+          20105
+        ]
+      ],
+      "unlock_type": 3101002,
+      "vfx_offset": "",
+      "workload": 36000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1008,
+          9
+        ]
+      ],
+      "commission_product": [
+        [
+          2008,
+          9
+        ]
+      ],
+      "cost": [
+        [
+          1008,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2008,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 101003,
+      "is_condition": 0,
+      "item_id": 2008,
+      "name": "Grass",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 40,
+      "stamina_cost": 8,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20116
+        ],
+        [
+          1,
+          20117
+        ]
+      ],
+      "unlock_type": 3101003,
+      "vfx_offset": "",
+      "workload": 24000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1009,
+          9
+        ]
+      ],
+      "commission_product": [
+        [
+          2009,
+          9
+        ]
+      ],
+      "cost": [
+        [
+          1009,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2009,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 101004,
+      "is_condition": 0,
+      "item_id": 2009,
+      "name": "Coffee Beans",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 200,
+      "stamina_cost": 40,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20120
+        ],
+        [
+          1,
+          20121
+        ]
+      ],
+      "unlock_type": 3101004,
+      "vfx_offset": "",
+      "workload": 120000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1002,
+          9
+        ]
+      ],
+      "commission_product": [
+        [
+          2002,
+          18
+        ]
+      ],
+      "cost": [
+        [
+          1002,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2002,
+          2
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 101005,
+      "is_condition": 0,
+      "item_id": 2002,
+      "name": "Rice",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 120,
+      "stamina_cost": 24,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20106
+        ],
+        [
+          1,
+          20107
+        ]
+      ],
+      "unlock_type": 3101005,
+      "vfx_offset": "",
+      "workload": 72000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1003,
+          9
+        ]
+      ],
+      "commission_product": [
+        [
+          2003,
+          9
+        ]
+      ],
+      "cost": [
+        [
+          1003,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2003,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 101006,
+      "is_condition": 0,
+      "item_id": 2003,
+      "name": "Napa Cabbage",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 50,
+      "stamina_cost": 10,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20108
+        ],
+        [
+          1,
+          20109
+        ]
+      ],
+      "unlock_type": 3101006,
+      "vfx_offset": "",
+      "workload": 30000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1005,
+          9
+        ]
+      ],
+      "commission_product": [
+        [
+          2005,
+          9
+        ]
+      ],
+      "cost": [
+        [
+          1005,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2005,
+          3
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 101007,
+      "is_condition": 0,
+      "item_id": 2005,
+      "name": "Potato",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 360,
+      "stamina_cost": 72,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20118
+        ],
+        [
+          1,
+          20119
+        ]
+      ],
+      "unlock_type": 3101008,
+      "vfx_offset": "",
+      "workload": 216000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1006,
+          9
+        ]
+      ],
+      "commission_product": [
+        [
+          2006,
+          27
+        ]
+      ],
+      "cost": [
+        [
+          1006,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2006,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 101008,
+      "is_condition": 0,
+      "item_id": 2006,
+      "name": "Soy Beans",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 100,
+      "stamina_cost": 20,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20112
+        ],
+        [
+          1,
+          20113
+        ]
+      ],
+      "unlock_type": 3101007,
+      "vfx_offset": "",
+      "workload": 60000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1016,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2016,
+          8
+        ]
+      ],
+      "cost": [
+        [
+          1016,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2016,
+          8
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 501001,
+      "is_condition": 0,
+      "item_id": 2016,
+      "name": "Apple",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 120,
+      "stamina_cost": 24,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20023
+        ],
+        [
+          0.9,
+          20131
+        ],
+        [
+          1,
+          20132
+        ]
+      ],
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 72000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1017,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2017,
+          8
+        ]
+      ],
+      "cost": [
+        [
+          1017,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2017,
+          8
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 501002,
+      "is_condition": 0,
+      "item_id": 2017,
+      "name": "Citrus Fruit",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 160,
+      "stamina_cost": 32,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20023
+        ],
+        [
+          0.9,
+          20131
+        ],
+        [
+          1,
+          20135
+        ]
+      ],
+      "unlock_type": 3501002,
+      "vfx_offset": "",
+      "workload": 96000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1018,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2018,
+          8
+        ]
+      ],
+      "cost": [
+        [
+          1018,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2018,
+          8
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 501003,
+      "is_condition": 0,
+      "item_id": 2018,
+      "name": "Banana",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 200,
+      "stamina_cost": 40,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20136
+        ],
+        [
+          0.9,
+          20137
+        ],
+        [
+          1,
+          20138
+        ]
+      ],
+      "unlock_type": 3501003,
+      "vfx_offset": "",
+      "workload": 120000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1019,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2019,
+          6
+        ]
+      ],
+      "cost": [
+        [
+          1019,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2019,
+          6
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 501004,
+      "is_condition": 0,
+      "item_id": 2019,
+      "name": "Mango",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 300,
+      "stamina_cost": 60,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20023
+        ],
+        [
+          0.9,
+          20131
+        ],
+        [
+          1,
+          20141
+        ]
+      ],
+      "unlock_type": 3501004,
+      "vfx_offset": "",
+      "workload": 180000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1020,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2020,
+          12
+        ]
+      ],
+      "cost": [
+        [
+          1020,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2020,
+          12
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 501005,
+      "is_condition": 0,
+      "item_id": 2020,
+      "name": "Lemon",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 100,
+      "stamina_cost": 20,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20023
+        ],
+        [
+          0.9,
+          20131
+        ],
+        [
+          1,
+          20144
+        ]
+      ],
+      "unlock_type": 3501005,
+      "vfx_offset": "",
+      "workload": 60000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1021,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2021,
+          4
+        ]
+      ],
+      "cost": [
+        [
+          1021,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2021,
+          4
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 501006,
+      "is_condition": 0,
+      "item_id": 2021,
+      "name": "Avocado",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 360,
+      "stamina_cost": 72,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20023
+        ],
+        [
+          0.9,
+          20131
+        ],
+        [
+          1,
+          20147
+        ]
+      ],
+      "unlock_type": 3501006,
+      "vfx_offset": "",
+      "workload": 216000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1022,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2022,
+          8
+        ]
+      ],
+      "cost": [
+        [
+          1022,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2022,
+          8
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 501007,
+      "is_condition": 0,
+      "item_id": 2022,
+      "name": "Rubber",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 490,
+      "stamina_cost": 98,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20148
+        ],
+        [
+          0.9,
+          20149
+        ],
+        [
+          1,
+          20150
+        ]
+      ],
+      "unlock_type": 3501007,
+      "vfx_offset": "",
+      "workload": 294000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1010,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2010,
+          3
+        ]
+      ],
+      "cost": [
+        [
+          1010,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2010,
+          3
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 502001,
+      "is_condition": 0,
+      "item_id": 2010,
+      "name": "Flax",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 70,
+      "stamina_cost": 14,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20120
+        ],
+        [
+          1,
+          20121
+        ]
+      ],
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 42000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1011,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2011,
+          9
+        ]
+      ],
+      "cost": [
+        [
+          1011,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2011,
+          9
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 502002,
+      "is_condition": 0,
+      "item_id": 2011,
+      "name": "Strawberries",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 160,
+      "stamina_cost": 32,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20122
+        ],
+        [
+          1,
+          20123
+        ]
+      ],
+      "unlock_type": 3502002,
+      "vfx_offset": "",
+      "workload": 96000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1012,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2012,
+          3
+        ]
+      ],
+      "cost": [
+        [
+          1012,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2012,
+          3
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 502003,
+      "is_condition": 0,
+      "item_id": 2012,
+      "name": "Cotton",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 90,
+      "stamina_cost": 18,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20124
+        ],
+        [
+          1,
+          20125
+        ]
+      ],
+      "unlock_type": 3502003,
+      "vfx_offset": "",
+      "workload": 54000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1014,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2014,
+          9
+        ]
+      ],
+      "cost": [
+        [
+          1014,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2014,
+          9
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 502004,
+      "is_condition": 0,
+      "item_id": 2014,
+      "name": "Tea Leaves",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 300,
+      "stamina_cost": 60,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20126
+        ],
+        [
+          1,
+          20127
+        ]
+      ],
+      "unlock_type": 3502004,
+      "vfx_offset": "",
+      "workload": 180000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1015,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2015,
+          6
+        ]
+      ],
+      "cost": [
+        [
+          1015,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2015,
+          6
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 502005,
+      "is_condition": 0,
+      "item_id": 2015,
+      "name": "Lavender",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 500,
+      "stamina_cost": 100,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20128
+        ],
+        [
+          1,
+          20129
+        ]
+      ],
+      "unlock_type": 3502005,
+      "vfx_offset": "",
+      "workload": 300000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1004,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2004,
+          9
+        ]
+      ],
+      "cost": [
+        [
+          1004,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2004,
+          9
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 502006,
+      "is_condition": 0,
+      "item_id": 2004,
+      "name": "Carrot",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 120,
+      "stamina_cost": 24,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20110
+        ],
+        [
+          1,
+          20111
+        ]
+      ],
+      "unlock_type": 3502006,
+      "vfx_offset": "",
+      "workload": 72000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          1007,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          2007,
+          3
+        ]
+      ],
+      "cost": [
+        [
+          1007,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          2007,
+          3
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 502007,
+      "is_condition": 0,
+      "item_id": 2007,
+      "name": "Onion",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 240,
+      "stamina_cost": 48,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20114
+        ],
+        [
+          1,
+          20115
+        ]
+      ],
+      "unlock_type": 3502007,
+      "vfx_offset": "",
+      "workload": 144000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          4006,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          4005,
+          8
+        ]
+      ],
+      "cost": [
+        [
+          4006,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          4005,
+          8
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 9900001,
+      "is_condition": 0,
+      "item_id": 4005,
+      "name": "Yoizuki Pear",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20130
+        ],
+        [
+          0.9,
+          20131
+        ],
+        [
+          1,
+          20144
+        ]
+      ],
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          4008,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          4007,
+          4
+        ]
+      ],
+      "cost": [
+        [
+          4008,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          4007,
+          4
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 9900002,
+      "is_condition": 0,
+      "item_id": 4007,
+      "name": "Kaki Persimmon",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20130
+        ],
+        [
+          0.9,
+          20131
+        ],
+        [
+          1,
+          20147
+        ]
+      ],
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 18000
+    }
+  ],
+  "3": [
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 3,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3000,
+          4
+        ]
+      ],
+      "commission_product": [
+        [
+          2601,
+          5
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 101013,
+      "is_condition": 0,
+      "item_id": 2601,
+      "name": "Eggs",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [
+        3,
+        [
+          1101,
+          2602
+        ]
+      ],
+      "second_product_display": [
+        [
+          2602,
+          4
+        ]
+      ],
+      "ship_exp": 80,
+      "stamina_cost": 16,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 48000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 3,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3001,
+          3
+        ]
+      ],
+      "commission_product": [
+        [
+          2600,
+          4
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 101015,
+      "is_condition": 0,
+      "item_id": 2600,
+      "name": "Fresh Meat",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 180,
+      "stamina_cost": 36,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 108000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 3,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3002,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          2603,
+          4
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 101016,
+      "is_condition": 0,
+      "item_id": 2603,
+      "name": "Milk",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [
+        3,
+        [
+          1102,
+          2604
+        ]
+      ],
+      "second_product_display": [
+        [
+          2604,
+          4
+        ]
+      ],
+      "ship_exp": 360,
+      "stamina_cost": 72,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 216000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 3,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3003,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          2605,
+          2
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 101018,
+      "is_condition": 0,
+      "item_id": 2605,
+      "name": "Wool",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 470,
+      "stamina_cost": 94,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 282000
+    }
+  ],
+  "2": [
+    {
+      "affected_vfx": [
+        60007,
+        1
+      ],
+      "affected_vfx_offset": [
+        [
+          -0.012,
+          -0.203,
+          0.098
+        ],
+        [
+          18.109,
+          8.246,
+          -23.416
+        ]
+      ],
+      "attribute": 2,
+      "collectable_vfx": 60005,
+      "commission_cost": [],
+      "commission_product": [
+        [
+          2700,
+          2
+        ]
+      ],
+      "cost": [],
+      "drop_display": [
+        [
+          2700,
+          8
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 80,
+      "id": 401001,
+      "is_condition": 0,
+      "item_id": 2700,
+      "name": "Coal",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 20,
+      "stamina_cost": 4,
+      "unitid": [
+        [
+          1,
+          20028
+        ]
+      ],
+      "unlock_type": 0,
+      "vfx_offset": [
+        [
+          0.016,
+          -0.004,
+          0.149
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "workload": 12000
+    },
+    {
+      "affected_vfx": [
+        60007,
+        1
+      ],
+      "affected_vfx_offset": "",
+      "attribute": 2,
+      "collectable_vfx": 60005,
+      "commission_cost": [],
+      "commission_product": [
+        [
+          2701,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [
+        [
+          2701,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 80,
+      "id": 401002,
+      "is_condition": 0,
+      "item_id": 2701,
+      "name": "Copper Ore",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 40,
+      "stamina_cost": 8,
+      "unitid": [
+        [
+          1,
+          20028
+        ]
+      ],
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 24000
+    },
+    {
+      "affected_vfx": [
+        60007,
+        1
+      ],
+      "affected_vfx_offset": "",
+      "attribute": 2,
+      "collectable_vfx": 60005,
+      "commission_cost": [],
+      "commission_product": [
+        [
+          2702,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [
+        [
+          2702,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 80,
+      "id": 401004,
+      "is_condition": 0,
+      "item_id": 2702,
+      "name": "Bauxite Ore",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 100,
+      "stamina_cost": 20,
+      "unitid": [
+        [
+          1,
+          20028
+        ]
+      ],
+      "unlock_type": 3401004,
+      "vfx_offset": "",
+      "workload": 60000
+    },
+    {
+      "affected_vfx": [
+        60007,
+        1
+      ],
+      "affected_vfx_offset": "",
+      "attribute": 2,
+      "collectable_vfx": 60005,
+      "commission_cost": [],
+      "commission_product": [
+        [
+          2703,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [
+        [
+          2703,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 80,
+      "id": 401005,
+      "is_condition": 0,
+      "item_id": 2703,
+      "name": "Iron Ore",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 60,
+      "stamina_cost": 12,
+      "unitid": [
+        [
+          1,
+          20028
+        ]
+      ],
+      "unlock_type": 3401005,
+      "vfx_offset": "",
+      "workload": 36000
+    },
+    {
+      "affected_vfx": [
+        60007,
+        1
+      ],
+      "affected_vfx_offset": "",
+      "attribute": 2,
+      "collectable_vfx": 60005,
+      "commission_cost": [],
+      "commission_product": [
+        [
+          2704,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [
+        [
+          2704,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 401006,
+      "is_condition": 0,
+      "item_id": 2704,
+      "name": "Sulfur",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 200,
+      "stamina_cost": 40,
+      "unitid": [
+        [
+          1,
+          20028
+        ]
+      ],
+      "unlock_type": 3401006,
+      "vfx_offset": "",
+      "workload": 120000
+    },
+    {
+      "affected_vfx": [
+        60007,
+        1
+      ],
+      "affected_vfx_offset": "",
+      "attribute": 2,
+      "collectable_vfx": 60005,
+      "commission_cost": [],
+      "commission_product": [
+        [
+          2705,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [
+        [
+          2705,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 401007,
+      "is_condition": 0,
+      "item_id": 2705,
+      "name": "Silver Ore",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 400,
+      "stamina_cost": 80,
+      "unitid": [
+        [
+          1,
+          20028
+        ]
+      ],
+      "unlock_type": 3401007,
+      "vfx_offset": "",
+      "workload": 240000
+    },
+    {
+      "affected_vfx": [
+        60008,
+        2
+      ],
+      "affected_vfx_offset": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "attribute": 2,
+      "collectable_vfx": 60006,
+      "commission_cost": [],
+      "commission_product": [
+        [
+          2800,
+          2
+        ]
+      ],
+      "cost": [],
+      "drop_display": [
+        [
+          2800,
+          8
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 80,
+      "id": 402001,
+      "is_condition": 0,
+      "item_id": 2800,
+      "name": "Raw Timber",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 20,
+      "stamina_cost": 4,
+      "unitid": [
+        [
+          1,
+          20024
+        ]
+      ],
+      "unlock_type": 0,
+      "vfx_offset": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "workload": 12000
+    },
+    {
+      "affected_vfx": [
+        60008,
+        2
+      ],
+      "affected_vfx_offset": "",
+      "attribute": 2,
+      "collectable_vfx": 60006,
+      "commission_cost": [],
+      "commission_product": [
+        [
+          2801,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [
+        [
+          2801,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 402002,
+      "is_condition": 0,
+      "item_id": 2801,
+      "name": "Workable Wood",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 50,
+      "stamina_cost": 10,
+      "unitid": [
+        [
+          1,
+          20024
+        ]
+      ],
+      "unlock_type": 3402002,
+      "vfx_offset": "",
+      "workload": 30000
+    },
+    {
+      "affected_vfx": [
+        60008,
+        2
+      ],
+      "affected_vfx_offset": "",
+      "attribute": 2,
+      "collectable_vfx": 60006,
+      "commission_cost": [],
+      "commission_product": [
+        [
+          2802,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [
+        [
+          2802,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 402003,
+      "is_condition": 0,
+      "item_id": 2802,
+      "name": "Premium Wood",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 120,
+      "stamina_cost": 24,
+      "unitid": [
+        [
+          1,
+          20024
+        ]
+      ],
+      "unlock_type": 3402003,
+      "vfx_offset": "",
+      "workload": 72000
+    },
+    {
+      "affected_vfx": [
+        60008,
+        2
+      ],
+      "affected_vfx_offset": "",
+      "attribute": 2,
+      "collectable_vfx": 60006,
+      "commission_cost": [],
+      "commission_product": [
+        [
+          2803,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [
+        [
+          2803,
+          1
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 402004,
+      "is_condition": 0,
+      "item_id": 2803,
+      "name": "Elegant Wood",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 300,
+      "stamina_cost": 60,
+      "unitid": [
+        [
+          1,
+          20024
+        ]
+      ],
+      "unlock_type": 3402004,
+      "vfx_offset": "",
+      "workload": 180000
+    }
+  ],
+  "4": [
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2006,
+          15
+        ]
+      ],
+      "commission_product": [
+        [
+          3011,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 601001,
+      "is_condition": 1,
+      "item_id": 3011,
+      "name": "Tofu",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 120,
+      "stamina_cost": 24,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 72000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3011,
+          2
+        ],
+        [
+          2600,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3012,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 601002,
+      "is_condition": 1,
+      "item_id": 3012,
+      "name": "Tofu with Minced Meat",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 80,
+      "stamina_cost": 16,
+      "unitid": "",
+      "unlock_type": 3601002,
+      "vfx_offset": "",
+      "workload": 48000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2601,
+          4
+        ],
+        [
+          2002,
+          9
+        ]
+      ],
+      "commission_product": [
+        [
+          3013,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 601003,
+      "is_condition": 1,
+      "item_id": 3013,
+      "name": "Omurice",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 40,
+      "stamina_cost": 8,
+      "unitid": "",
+      "unlock_type": 3601003,
+      "vfx_offset": "",
+      "workload": 24000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2003,
+          6
+        ],
+        [
+          3011,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3014,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 601004,
+      "is_condition": 1,
+      "item_id": 3014,
+      "name": "Cabbage and Tofu Soup",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 60,
+      "stamina_cost": 12,
+      "unitid": "",
+      "unlock_type": 3601004,
+      "vfx_offset": "",
+      "workload": 36000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2004,
+          2
+        ],
+        [
+          2003,
+          3
+        ],
+        [
+          2001,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3015,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 601005,
+      "is_condition": 1,
+      "item_id": 3015,
+      "name": "Vegetable Salad",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 20,
+      "stamina_cost": 4,
+      "unitid": "",
+      "unlock_type": 3601005,
+      "vfx_offset": "",
+      "workload": 12000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3012,
+          1
+        ],
+        [
+          3014,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3101,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 601101,
+      "is_condition": 0,
+      "item_id": 3101,
+      "name": "Classic Tofu Combo",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3013,
+          1
+        ],
+        [
+          3011,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3102,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 601102,
+      "is_condition": 0,
+      "item_id": 3102,
+      "name": "Hearty Meal",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2016,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          3017,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 602001,
+      "is_condition": 1,
+      "item_id": 3017,
+      "name": "Apple Juice",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 20,
+      "stamina_cost": 4,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 12000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2018,
+          1
+        ],
+        [
+          2019,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3018,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 602002,
+      "is_condition": 1,
+      "item_id": 3018,
+      "name": "Banana and Mango Juice",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": "",
+      "unlock_type": 3602002,
+      "vfx_offset": "",
+      "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2020,
+          3
+        ],
+        [
+          2606,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3019,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 602003,
+      "is_condition": 1,
+      "item_id": 3019,
+      "name": "Honey and Lemon Water",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 20,
+      "stamina_cost": 4,
+      "unitid": "",
+      "unlock_type": 3602003,
+      "vfx_offset": "",
+      "workload": 12000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2011,
+          5
+        ],
+        [
+          2020,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          3020,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 602004,
+      "is_condition": 1,
+      "item_id": 3020,
+      "name": "Strawberry Lemon Drink",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 40,
+      "stamina_cost": 8,
+      "unitid": "",
+      "unlock_type": 3602004,
+      "vfx_offset": "",
+      "workload": 24000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2014,
+          6
+        ],
+        [
+          2015,
+          4
+        ]
+      ],
+      "commission_product": [
+        [
+          3021,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 602005,
+      "is_condition": 1,
+      "item_id": 3021,
+      "name": "Lavender Tea",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 80,
+      "stamina_cost": 16,
+      "unitid": "",
+      "unlock_type": 3602005,
+      "vfx_offset": "",
+      "workload": 48000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2011,
+          10
+        ],
+        [
+          2606,
+          4
+        ]
+      ],
+      "commission_product": [
+        [
+          3022,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 602006,
+      "is_condition": 1,
+      "item_id": 3022,
+      "name": "Strawberry Honey Frappé",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 60,
+      "stamina_cost": 12,
+      "unitid": "",
+      "unlock_type": 3602006,
+      "vfx_offset": "",
+      "workload": 36000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3021,
+          1
+        ],
+        [
+          3017,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3103,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 602101,
+      "is_condition": 0,
+      "item_id": 3103,
+      "name": "Floral and Fruity",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3018,
+          1
+        ],
+        [
+          3022,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3104,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 602102,
+      "is_condition": 0,
+      "item_id": 3104,
+      "name": "Colorful Fruit Paradise",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3020,
+          1
+        ],
+        [
+          3019,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3105,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 602103,
+      "is_condition": 0,
+      "item_id": 3105,
+      "name": "Sunny Honey",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2001,
+          3
+        ],
+        [
+          2603,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3023,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 603001,
+      "is_condition": 1,
+      "item_id": 3023,
+      "name": "Corn Cup",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3004,
+          5
+        ],
+        [
+          2016,
+          3
+        ]
+      ],
+      "commission_product": [
+        [
+          3009,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 603002,
+      "is_condition": 1,
+      "item_id": 3009,
+      "name": "Apple Pie",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 60,
+      "stamina_cost": 12,
+      "unitid": "",
+      "unlock_type": 3603002,
+      "vfx_offset": "",
+      "workload": 36000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2017,
+          3
+        ],
+        [
+          3004,
+          6
+        ]
+      ],
+      "commission_product": [
+        [
+          3024,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 603003,
+      "is_condition": 1,
+      "item_id": 3024,
+      "name": "Orange Pie",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 60,
+      "stamina_cost": 12,
+      "unitid": "",
+      "unlock_type": 3603003,
+      "vfx_offset": "",
+      "workload": 36000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2019,
+          3
+        ],
+        [
+          2002,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          3025,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 603004,
+      "is_condition": 1,
+      "item_id": 3025,
+      "name": "Sticky Rice with Mango",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 40,
+      "stamina_cost": 8,
+      "unitid": "",
+      "unlock_type": 3603004,
+      "vfx_offset": "",
+      "workload": 24000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2018,
+          2
+        ],
+        [
+          3004,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          3026,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 603005,
+      "is_condition": 1,
+      "item_id": 3026,
+      "name": "Banana Crêpe",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": "",
+      "unlock_type": 3603005,
+      "vfx_offset": "",
+      "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2011,
+          1
+        ],
+        [
+          3006,
+          2
+        ],
+        [
+          3004,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          3028,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 603006,
+      "is_condition": 1,
+      "item_id": 3028,
+      "name": "Strawberry Charlotte",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 70,
+      "stamina_cost": 14,
+      "unitid": "",
+      "unlock_type": 3603006,
+      "vfx_offset": "",
+      "workload": 42000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3025,
+          1
+        ],
+        [
+          3023,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3106,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 603101,
+      "is_condition": 0,
+      "item_id": 3106,
+      "name": "Succulently Sweet",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3026,
+          1
+        ],
+        [
+          3009,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3107,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 603102,
+      "is_condition": 0,
+      "item_id": 3107,
+      "name": "Orchard Duo",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3028,
+          1
+        ],
+        [
+          3024,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3108,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 603103,
+      "is_condition": 0,
+      "item_id": 3108,
+      "name": "Berry and Orange Dessert",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2600,
+          4
+        ]
+      ],
+      "commission_product": [
+        [
+          3029,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 604001,
+      "is_condition": 1,
+      "item_id": 3029,
+      "name": "Coal-Roasted Skewer",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 40,
+      "stamina_cost": 8,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 24000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2005,
+          6
+        ],
+        [
+          2602,
+          5
+        ]
+      ],
+      "commission_product": [
+        [
+          3030,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 604002,
+      "is_condition": 1,
+      "item_id": 3030,
+      "name": "Chicken and Potato Hors d'Oeuvre",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 60,
+      "stamina_cost": 12,
+      "unitid": "",
+      "unlock_type": 3604002,
+      "vfx_offset": "",
+      "workload": 36000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2602,
+          3
+        ],
+        [
+          2007,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3032,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 604004,
+      "is_condition": 1,
+      "item_id": 3032,
+      "name": "Stir-Fried Chicken",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 50,
+      "stamina_cost": 10,
+      "unitid": "",
+      "unlock_type": 3604004,
+      "vfx_offset": "",
+      "workload": 30000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2601,
+          5
+        ],
+        [
+          2004,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          3033,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 604005,
+      "is_condition": 1,
+      "item_id": 3033,
+      "name": "Rolled Carrot Omelette",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 20,
+      "stamina_cost": 4,
+      "unitid": "",
+      "unlock_type": 3604005,
+      "vfx_offset": "",
+      "workload": 12000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2002,
+          12
+        ],
+        [
+          2600,
+          6
+        ],
+        [
+          2003,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          3034,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 604006,
+      "is_condition": 1,
+      "item_id": 3034,
+      "name": "Steak Bowl",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 50,
+      "stamina_cost": 10,
+      "unitid": "",
+      "unlock_type": 3604006,
+      "vfx_offset": "",
+      "workload": 30000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3029,
+          1
+        ],
+        [
+          3030,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3109,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 604101,
+      "is_condition": 0,
+      "item_id": 3109,
+      "name": "The Carne-val",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3034,
+          1
+        ],
+        [
+          3032,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3110,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 604102,
+      "is_condition": 0,
+      "item_id": 3110,
+      "name": "Double Energy Combo",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2601,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3059,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 901001,
+      "is_condition": 1,
+      "item_id": 3059,
+      "name": "Omelette",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2009,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          3005,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 901002,
+      "is_condition": 1,
+      "item_id": 3005,
+      "name": "Iced Coffee",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2603,
+          8
+        ]
+      ],
+      "commission_product": [
+        [
+          3006,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 901003,
+      "is_condition": 1,
+      "item_id": 3006,
+      "name": "Cheese",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 90,
+      "stamina_cost": 18,
+      "unitid": "",
+      "unlock_type": 3901003,
+      "vfx_offset": "",
+      "workload": 54000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2009,
+          3
+        ],
+        [
+          2603,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          3007,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 901004,
+      "is_condition": 1,
+      "item_id": 3007,
+      "name": "Latte",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 40,
+      "stamina_cost": 8,
+      "unitid": "",
+      "unlock_type": 3901004,
+      "vfx_offset": "",
+      "workload": 24000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2017,
+          1
+        ],
+        [
+          2009,
+          3
+        ]
+      ],
+      "commission_product": [
+        [
+          3008,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 901005,
+      "is_condition": 1,
+      "item_id": 3008,
+      "name": "Citrus Coffee",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": "",
+      "unlock_type": 3901005,
+      "vfx_offset": "",
+      "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2014,
+          1
+        ],
+        [
+          2011,
+          1
+        ],
+        [
+          2603,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3010,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 901006,
+      "is_condition": 1,
+      "item_id": 3010,
+      "name": "Strawberry Milkshake",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 40,
+      "stamina_cost": 8,
+      "unitid": "",
+      "unlock_type": 3901006,
+      "vfx_offset": "",
+      "workload": 24000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3059,
+          1
+        ],
+        [
+          3007,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3111,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 901101,
+      "is_condition": 0,
+      "item_id": 3111,
+      "name": "Morning Light Energy Combo",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3005,
+          1
+        ],
+        [
+          3006,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3112,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 901102,
+      "is_condition": 0,
+      "item_id": 3112,
+      "name": "The Wake-Up Call",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3008,
+          1
+        ],
+        [
+          3010,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3113,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 901103,
+      "is_condition": 0,
+      "item_id": 3113,
+      "name": "Fruity & Fruitier",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "unitid": "",
+      "unlock_type": -1,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          1,
+          5000
+        ],
+        [
+          2001,
+          63
+        ]
+      ],
+      "commission_product": [],
+      "cost": [
+        [
+          1,
+          5000
+        ],
+        [
+          2001,
+          63
+        ]
+      ],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 7530201,
+      "is_condition": 0,
+      "item_id": 0,
+      "name": "Corn Cup",
+      "production_limit": 1,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 60,
+      "stamina_cost": 12,
+      "unitid": "",
+      "unlock_type": 37530201,
+      "vfx_offset": "",
+      "workload": 36000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4007,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          4009,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900003,
+      "is_condition": 0,
+      "item_id": 4009,
+      "name": "Dried Persimmon",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2602,
+          2
+        ],
+        [
+          4004,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          4010,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900004,
+      "is_condition": 0,
+      "item_id": 4010,
+      "name": "Matsutake and Chicken Soup",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4005,
+          3
+        ],
+        [
+          2004,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          4013,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900007,
+      "is_condition": 0,
+      "item_id": 4013,
+      "name": "Carrot and Pear Juice",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4001,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          4014,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900008,
+      "is_condition": 0,
+      "item_id": 4014,
+      "name": "Chrysanthemum Tea",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 18000
+    }
+  ],
+  "6": [
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2010,
+          4
+        ]
+      ],
+      "commission_product": [
+        [
+          3035,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701001,
+      "is_condition": 0,
+      "item_id": 3035,
+      "name": "Cloth",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2604,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3036,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701002,
+      "is_condition": 0,
+      "item_id": 3036,
+      "name": "Leather",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 100,
+      "stamina_cost": 20,
+      "unitid": "",
+      "unlock_type": 3701002,
+      "vfx_offset": "",
+      "workload": 60000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2012,
+          1
+        ],
+        [
+          2010,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3037,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701003,
+      "is_condition": 0,
+      "item_id": 3037,
+      "name": "Rope",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 180,
+      "stamina_cost": 36,
+      "unitid": "",
+      "unlock_type": 3701003,
+      "vfx_offset": "",
+      "workload": 108000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2022,
+          1
+        ],
+        [
+          3035,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3038,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701004,
+      "is_condition": 0,
+      "item_id": 3038,
+      "name": "Gloves",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 120,
+      "stamina_cost": 24,
+      "unitid": "",
+      "unlock_type": 3701004,
+      "vfx_offset": "",
+      "workload": 72000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3035,
+          1
+        ],
+        [
+          2015,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3039,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701005,
+      "is_condition": 0,
+      "item_id": 3039,
+      "name": "Aroma Sachet",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 180,
+      "stamina_cost": 36,
+      "unitid": "",
+      "unlock_type": 3701005,
+      "vfx_offset": "",
+      "workload": 108000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3036,
+          1
+        ],
+        [
+          2022,
+          1
+        ],
+        [
+          2605,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3040,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701006,
+      "is_condition": 0,
+      "item_id": 3040,
+      "name": "Shoes",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 240,
+      "stamina_cost": 48,
+      "unitid": "",
+      "unlock_type": 3701006,
+      "vfx_offset": "",
+      "workload": 144000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2705,
+          1
+        ],
+        [
+          3035,
+          1
+        ],
+        [
+          2012,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3041,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701007,
+      "is_condition": 0,
+      "item_id": 3041,
+      "name": "Wound Dressings",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 80,
+      "stamina_cost": 16,
+      "unitid": "",
+      "unlock_type": 3701007,
+      "vfx_offset": "",
+      "workload": 48000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2700,
+          1
+        ],
+        [
+          2801,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3042,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701008,
+      "is_condition": 0,
+      "item_id": 3042,
+      "name": "Charcoal Brush",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 60,
+      "stamina_cost": 12,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 36000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2701,
+          1
+        ],
+        [
+          2022,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3043,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701009,
+      "is_condition": 0,
+      "item_id": 3043,
+      "name": "Cable",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 180,
+      "stamina_cost": 36,
+      "unitid": "",
+      "unlock_type": 3701009,
+      "vfx_offset": "",
+      "workload": 108000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2703,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3044,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701010,
+      "is_condition": 0,
+      "item_id": 3044,
+      "name": "Nails",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 240,
+      "stamina_cost": 48,
+      "unitid": "",
+      "unlock_type": 3701010,
+      "vfx_offset": "",
+      "workload": 144000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2704,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3045,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701011,
+      "is_condition": 0,
+      "item_id": 3045,
+      "name": "Chemicals",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 120,
+      "stamina_cost": 24,
+      "unitid": "",
+      "unlock_type": 3701011,
+      "vfx_offset": "",
+      "workload": 72000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3045,
+          1
+        ],
+        [
+          2700,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3046,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701012,
+      "is_condition": 0,
+      "item_id": 3046,
+      "name": "Gunpowder",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 120,
+      "stamina_cost": 24,
+      "unitid": "",
+      "unlock_type": 3701012,
+      "vfx_offset": "",
+      "workload": 72000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2705,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3047,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701013,
+      "is_condition": 0,
+      "item_id": 3047,
+      "name": "Utensils",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 360,
+      "stamina_cost": 72,
+      "unitid": "",
+      "unlock_type": 3701013,
+      "vfx_offset": "",
+      "workload": 216000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2800,
+          10
+        ]
+      ],
+      "commission_product": [
+        [
+          3048,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701014,
+      "is_condition": 0,
+      "item_id": 3048,
+      "name": "Paper",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 60,
+      "stamina_cost": 12,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 36000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3048,
+          4
+        ],
+        [
+          2801,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3049,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701015,
+      "is_condition": 0,
+      "item_id": 3049,
+      "name": "Notebook",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 120,
+      "stamina_cost": 24,
+      "unitid": "",
+      "unlock_type": 3701015,
+      "vfx_offset": "",
+      "workload": 72000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2801,
+          1
+        ],
+        [
+          2702,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3050,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701016,
+      "is_condition": 0,
+      "item_id": 3050,
+      "name": "Chair and Desk",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 180,
+      "stamina_cost": 36,
+      "unitid": "",
+      "unlock_type": 3701016,
+      "vfx_offset": "",
+      "workload": 108000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2802,
+          1
+        ],
+        [
+          3044,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3051,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701017,
+      "is_condition": 0,
+      "item_id": 3051,
+      "name": "Choice Wooden Barrel",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 180,
+      "stamina_cost": 36,
+      "unitid": "",
+      "unlock_type": 3701017,
+      "vfx_offset": "",
+      "workload": 108000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2803,
+          1
+        ],
+        [
+          3044,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3052,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701018,
+      "is_condition": 0,
+      "item_id": 3052,
+      "name": "Filing Cabinet",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 300,
+      "stamina_cost": 60,
+      "unitid": "",
+      "unlock_type": 3701018,
+      "vfx_offset": "",
+      "workload": 180000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2700,
+          1
+        ],
+        [
+          2702,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3053,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701019,
+      "is_condition": 0,
+      "item_id": 3053,
+      "name": "Ink Cartridge",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 120,
+      "stamina_cost": 24,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 72000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2705,
+          1
+        ],
+        [
+          2703,
+          1
+        ],
+        [
+          2701,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3054,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701020,
+      "is_condition": 0,
+      "item_id": 3054,
+      "name": "Clock",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 360,
+      "stamina_cost": 72,
+      "unitid": "",
+      "unlock_type": 3701020,
+      "vfx_offset": "",
+      "workload": 216000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          3045,
+          1
+        ],
+        [
+          2701,
+          1
+        ],
+        [
+          2703,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3055,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701021,
+      "is_condition": 0,
+      "item_id": 3055,
+      "name": "Battery",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 180,
+      "stamina_cost": 36,
+      "unitid": "",
+      "unlock_type": 3701021,
+      "vfx_offset": "",
+      "workload": 108000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          2700,
+          1
+        ],
+        [
+          2705,
+          1
+        ],
+        [
+          2012,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          3056,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 701022,
+      "is_condition": 0,
+      "item_id": 3056,
+      "name": "Water Filter",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 240,
+      "stamina_cost": 48,
+      "unitid": "",
+      "unlock_type": 3701022,
+      "vfx_offset": "",
+      "workload": 144000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4002,
+          2
+        ],
+        [
+          4001,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          4011,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900005,
+      "is_condition": 0,
+      "item_id": 4011,
+      "name": "Autumn Bouquet",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4003,
+          8
+        ]
+      ],
+      "commission_product": [
+        [
+          4012,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900006,
+      "is_condition": 0,
+      "item_id": 4012,
+      "name": "Peanut Oil",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 18000
+    }
+  ]
+}
