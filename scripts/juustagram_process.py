@@ -75,6 +75,7 @@ class AzurLaneDataProcessor:
         Returns:
             Processed text/data with name codes replaced
         """
+        
         if isinstance(text, dict):
             return {key: self.replace_name_codes(value, name_code_dict) for key, value in text.items()}
         elif isinstance(text, list):
@@ -288,6 +289,11 @@ class AzurLaneDataProcessor:
     def finalize_processing(self) -> None:
         """Apply final processing steps like name code replacement and save data."""
         print("Finalizing data processing...")
+
+        name_code_data = self.fetch_json_data(self.URLS['name_code'])
+            
+        # Create name code mapping
+        self.name_code_dict = {key: value.get("name", "") for key, value in name_code_data.items()}
         
         # Apply name code replacement to all processed data
         self.processed_activity_data = self.replace_name_codes(

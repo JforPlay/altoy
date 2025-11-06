@@ -210,7 +210,7 @@ if __name__ == "__main__":
     TRANSFORM_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/transform_data_template.json"
     SKILL_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/GameCfg/skill.json"
     BUFF_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/GameCfg/buff.json"
-    SHIP_DROPS_FILE = "ship_drops.json"
+    SHIP_DROPS_FILE = "./helper/ship_drops.json"
     OUTPUT_FILE = "./output/ship_info_data.json"
 
     process_ship_data(SHIP_URL, GROUP_URL, STATS_URL, SP_WEAPON_URL, TRANSFORM_URL, SKILL_URL, BUFF_URL, SHIP_DROPS_FILE, OUTPUT_FILE)

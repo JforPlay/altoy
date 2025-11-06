@@ -121,7 +121,7 @@ def create_final_subset(input_filename, type_map_filename, skill_icon_map_filena
 # --- Main execution ---
 if __name__ == "__main__":
     INPUT_FILE = "./output/ship_info_data.json"
-    TYPE_MAPPING_FILE = "ship_type_mapping.json"
+    TYPE_MAPPING_FILE = "./helper/ship_type_mapping.json"
     SKILL_ICON_MAPPING_FILE = "./output/skill_icon_mapping.json"
     OUTPUT_FILE = "./output/weapon_sim_data.json"
     

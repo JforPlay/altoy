@@ -3,8 +3,8 @@ import json
 import re  # Import the regular expression module
 
 # URLs for the data
-TRIGGER_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/0bfd474af737d41d005a3a2f6eb7945085c65907/KR/ShareCfg/task_data_trigger.json"
-TEMPLATE_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/0bfd474af737d41d005a3a2f6eb7945085c65907/KR/sharecfgdata/task_data_template.json"
+TRIGGER_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/task_data_trigger.json"
+TEMPLATE_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/sharecfgdata/task_data_template.json"
 NAME_CODE_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json"  # New URL for name codes
 
 # The specific fields you want to keep for the polished data

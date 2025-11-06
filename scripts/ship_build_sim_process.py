@@ -4,7 +4,7 @@ import sys
 import os
 
 POOL_DATA_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/activity_ship_create.json"
-SHIP_INFO_LOCAL_PATH = os.path.join("./output", "ship_info_data.json")
+SHIP_INFO_LOCAL_PATH = os.path.join("./output/", "ship_info_data.json")
 
 # The specific construction pools we want to process
 POOLS_TO_PROCESS = ["1", "2", "3"]
@@ -111,7 +111,7 @@ def build_database():
             else:
                 print(f"Warning: Ship ID '{ship_id}' from pool '{pool_id}' not found in {SHIP_INFO_LOCAL_PATH} using 'sid' field. Skipping.", file=sys.stderr)
 
-    output_filename = "./output/ship_database.json"
+    output_filename = "./output/shipgirl/ship_build_sim_data.json"
     try:
         with open(output_filename, 'w', encoding='utf-8') as f:
             json.dump(new_database, f, ensure_ascii=False, indent=4)

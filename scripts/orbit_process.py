@@ -3,9 +3,9 @@ import json
 import requests
 
 # --- Configuration ---
-ORBIT_DIR = '../assets/orbit'
+ORBIT_DIR = 'assets/orbit'
 JSON_URL = 'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/equip_skin_template.json'
-OUTPUT_FILE = '../data/orbit_data.json'
+OUTPUT_FILE = './output/skin/orbit_data.json'
 # ---------------------
 
 def get_orbit_structure(directory):
