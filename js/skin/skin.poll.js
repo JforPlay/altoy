@@ -15,7 +15,7 @@ const MIN_VOTES_FOR_LEADERBOARD = 10;
 // Set this to highlight specific event skins on first page load
 // Change this based on current in-game events to showcase relevant content
 // Set to 'all' to show everything by default
-const FEATURED_SKIN_TYPE = '닌자의 성';  // Current featured event
+const FEATURED_SKIN_TYPE = '이세계 모험';  // Current featured event
 
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyCmtsfkzlISZDd0totgv3MIrpT9kvLvKLk",
