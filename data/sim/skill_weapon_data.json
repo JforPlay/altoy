@@ -46,7 +46,7 @@
     "20011": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "아일윈 ",
+        "name": "아일윈",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101400/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -91,7 +91,7 @@
     "20012": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "아일윈 ",
+        "name": "아일윈",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101400/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -872,7 +872,7 @@
     "4081": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "민스크 ",
+        "name": "민스크",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/4080.png",
@@ -982,7 +982,7 @@
     "13130": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "쿠퍼 ",
+        "name": "쿠퍼",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101440/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13130.png",
@@ -1065,7 +1065,7 @@
     "20081": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "쿠퍼 ",
+        "name": "쿠퍼",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101440/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -1110,7 +1110,7 @@
     "20082": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "쿠퍼 ",
+        "name": "쿠퍼",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101440/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -2362,7 +2362,7 @@
     "20131": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "산후안 ",
+        "name": "산후안",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102220/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -2407,7 +2407,7 @@
     "20132": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "산후안 ",
+        "name": "산후안",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102220/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -2595,7 +2595,7 @@
     "20141": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "빌럭시 ",
+        "name": "빌럭시",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102250/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -2640,7 +2640,7 @@
     "20142": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "빌럭시 ",
+        "name": "빌럭시",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102250/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -2770,7 +2770,7 @@
     "12270": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "꼬마 샌디에이고 ",
+        "name": "꼬마 샌디에이고",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102210/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/12270.png",
@@ -2813,7 +2813,7 @@
     "29451": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "클리블랜드(μ장비) ",
+        "name": "클리블랜드(μ장비)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102240/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29450.png",
@@ -2858,7 +2858,7 @@
     "29452": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "클리블랜드(μ장비) ",
+        "name": "클리블랜드(μ장비)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102240/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29450.png",
@@ -2908,7 +2908,7 @@
                 "id": 29523
             }
         ],
-        "name": "리노 ",
+        "name": "리노",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102260/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29520.png",
@@ -2994,7 +2994,7 @@
                 "id": 29533
             }
         ],
-        "name": "리노 ",
+        "name": "리노",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102260/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29530.png",
@@ -6018,7 +6018,7 @@
     "11990": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "벙커힐 ",
+        "name": "벙커힐",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107170/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11990.png",
@@ -6063,7 +6063,7 @@
     "11920": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "인디펜던스 ",
+        "name": "인디펜던스",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107220/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11920.png",
@@ -6226,7 +6226,7 @@
     "11930": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "샹그릴라 ",
+        "name": "샹그릴라",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107380/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11930.png",
@@ -6299,7 +6299,7 @@
     "11940": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "샹그릴라 ",
+        "name": "샹그릴라",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107380/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11940.png",
@@ -6359,7 +6359,7 @@
     },
     "1011940": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11940.png",
-        "name": "샹그릴라 ",
+        "name": "샹그릴라",
         "weapon_true": true,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107380/shipyard.png",
@@ -6685,7 +6685,7 @@
     "29441": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "카발라 ",
+        "name": "카발라",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29440.png",
@@ -6730,7 +6730,7 @@
     "29442": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "카발라 ",
+        "name": "카발라",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29440.png",
@@ -7298,7 +7298,7 @@
     "29391": {
         "requirement": "Devs 10",
         "weapon_true": true,
-        "name": "시애틀 ",
+        "name": "시애틀",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29390.png",
@@ -7343,7 +7343,7 @@
     "29392": {
         "requirement": "Devs 30",
         "weapon_true": true,
-        "name": "시애틀 ",
+        "name": "시애틀",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29390.png",
@@ -7388,7 +7388,7 @@
     "19160": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "조지아 ",
+        "name": "조지아",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199020/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/19160.png",
@@ -8615,7 +8615,7 @@
     "11960": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "하디 ",
+        "name": "하디",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201160/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11960.png",
@@ -8773,7 +8773,7 @@
     },
     "1011960": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11960.png",
-        "name": "하디 ",
+        "name": "하디",
         "weapon_true": true,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201160/shipyard.png",
@@ -9429,7 +9429,7 @@
     "21091": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "에코 ",
+        "name": "에코",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201290/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -9474,7 +9474,7 @@
     "21092": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "에코 ",
+        "name": "에코",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201290/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -9519,7 +9519,7 @@
     "13390": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "에스키모 ",
+        "name": "에스키모",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201320/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13390.png",
@@ -9564,7 +9564,7 @@
     "21016": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "에스키모 ",
+        "name": "에스키모",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201320/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -9609,7 +9609,7 @@
     "21017": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "에스키모 ",
+        "name": "에스키모",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201320/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -9654,7 +9654,7 @@
     "13480": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "이카로스 ",
+        "name": "이카로스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201330/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13480.png",
@@ -9719,7 +9719,7 @@
     "21026": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "이카로스 ",
+        "name": "이카로스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201330/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -9764,7 +9764,7 @@
     "21027": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "이카로스 ",
+        "name": "이카로스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201330/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -10664,7 +10664,7 @@
     "29491": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "다이도 ",
+        "name": "다이도",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29490.png",
@@ -10709,7 +10709,7 @@
     "29492": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "다이도 ",
+        "name": "다이도",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29490.png",
@@ -10754,7 +10754,7 @@
     "21151": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "글래스고 ",
+        "name": "글래스고",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202260/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -10799,7 +10799,7 @@
     "21152": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "글래스고 ",
+        "name": "글래스고",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202260/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -11355,7 +11355,7 @@
     "29361": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "시리우스 ",
+        "name": "시리우스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202200/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29360.png",
@@ -11400,7 +11400,7 @@
     "29362": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "시리우스 ",
+        "name": "시리우스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202200/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29360.png",
@@ -11445,7 +11445,7 @@
     "21171": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "컬루 ",
+        "name": "컬루",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202220/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -11490,7 +11490,7 @@
     "21172": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "컬루 ",
+        "name": "컬루",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202220/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -11535,7 +11535,7 @@
     "29401": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "스위프트슈어 ",
+        "name": "스위프트슈어",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202230/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29400.png",
@@ -11580,7 +11580,7 @@
     "29402": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "스위프트슈어 ",
+        "name": "스위프트슈어",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202230/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29400.png",
@@ -11715,7 +11715,7 @@
     "29461": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "셰필드(μ장비) ",
+        "name": "셰필드(μ장비)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202250/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29460.png",
@@ -11760,7 +11760,7 @@
     "29462": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "셰필드(μ장비) ",
+        "name": "셰필드(μ장비)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202250/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29460.png",
@@ -11805,7 +11805,7 @@
     "13460": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "허마이오니 ",
+        "name": "허마이오니",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202270/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13460.png",
@@ -11848,7 +11848,7 @@
     "29581": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "허마이오니 ",
+        "name": "허마이오니",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202270/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29580.png",
@@ -11893,7 +11893,7 @@
     "29582": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "허마이오니 ",
+        "name": "허마이오니",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202270/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29580.png",
@@ -12211,7 +12211,7 @@
     "21191": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "엔터프라이즈",
+        "name": "엔터프라이즈(경순)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202320/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -12256,7 +12256,7 @@
     "21192": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "엔터프라이즈",
+        "name": "엔터프라이즈(경순)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202320/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -13674,7 +13674,7 @@
     "13500": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "밸리언트 ",
+        "name": "밸리언트",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205100/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13500.png",
@@ -13717,7 +13717,7 @@
     "13510": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "밸리언트 ",
+        "name": "밸리언트",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205100/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13510.png",
@@ -14013,7 +14013,7 @@
     "11900": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "체이서 ",
+        "name": "체이서",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206050/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11900.png",
@@ -14091,7 +14091,7 @@
     },
     "1011900": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11900.png",
-        "name": "체이서 ",
+        "name": "체이서",
         "weapon_true": true,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206050/shipyard.png",
@@ -14425,7 +14425,7 @@
     "13530": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "이글 ",
+        "name": "이글",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13530.png",
@@ -14529,7 +14529,7 @@
     "13360": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "꼬마 일러스트리어스 ",
+        "name": "꼬마 일러스트리어스",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207090/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13360.png",
@@ -14572,7 +14572,7 @@
     "13370": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "꼬마 일러스트리어스 ",
+        "name": "꼬마 일러스트리어스",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207090/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13370.png",
@@ -14859,7 +14859,7 @@
     "11300": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "애버크롬비 ",
+        "name": "애버크롬비",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/213040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11300.png",
@@ -15181,7 +15181,7 @@
     "19280": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "체셔 ",
+        "name": "체셔",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/19280.png",
@@ -15276,7 +15276,7 @@
     "29551": {
         "requirement": "Devs 10",
         "weapon_true": true,
-        "name": "체셔 ",
+        "name": "체셔",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29550.png",
@@ -15321,7 +15321,7 @@
     "29552": {
         "requirement": "Devs 30",
         "weapon_true": true,
-        "name": "체셔 ",
+        "name": "체셔",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29550.png",
@@ -15366,7 +15366,7 @@
     "19300": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "드레이크 ",
+        "name": "드레이크",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/19300.png",
@@ -15427,7 +15427,7 @@
     "29561": {
         "requirement": "Devs 10",
         "weapon_true": true,
-        "name": "드레이크 ",
+        "name": "드레이크",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29560.png",
@@ -15472,7 +15472,7 @@
     "29562": {
         "requirement": "Devs 30",
         "weapon_true": true,
-        "name": "드레이크 ",
+        "name": "드레이크",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29560.png",
@@ -15517,7 +15517,7 @@
     "18300": {
         "requirement": "Fate Simulation 3",
         "weapon_true": true,
-        "name": "드레이크 ",
+        "name": "드레이크",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/18300.png",
@@ -15688,7 +15688,7 @@
     "22021": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "우라나미 ",
+        "name": "우라나미",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301720/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -15733,7 +15733,7 @@
     "22022": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "우라나미 ",
+        "name": "우라나미",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301720/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -16378,7 +16378,7 @@
     "29131": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "유키카제 ",
+        "name": "유키카제",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301160/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29130.png",
@@ -16443,7 +16443,7 @@
     "29132": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "유키카제 ",
+        "name": "유키카제",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301160/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29130.png",
@@ -17105,7 +17105,7 @@
     "29281": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "카와카제 ",
+        "name": "카와카제",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301490/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29280.png",
@@ -17170,7 +17170,7 @@
     "29282": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "카와카제 ",
+        "name": "카와카제",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301490/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29280.png",
@@ -17325,7 +17325,7 @@
     "22061": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "하나즈키 ",
+        "name": "하나즈키",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301820/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -17370,7 +17370,7 @@
     "22062": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "하나즈키 ",
+        "name": "하나즈키",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301820/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -17415,7 +17415,7 @@
     "22091": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "카스미 ",
+        "name": "카스미",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301810/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -17460,7 +17460,7 @@
     "22092": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "카스미 ",
+        "name": "카스미",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301810/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -18802,7 +18802,7 @@
     "22251": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "미쿠마 ",
+        "name": "미쿠마",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302110/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20200.png",
@@ -18847,7 +18847,7 @@
     "22252": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "미쿠마 ",
+        "name": "미쿠마",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302110/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20200.png",
@@ -18892,7 +18892,7 @@
     "22253": {
         "requirement": "Retrofit",
         "weapon_true": true,
-        "name": "모가미 ",
+        "name": "모가미",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302100/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20200.png",
@@ -19117,7 +19117,7 @@
     "29481": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "노시로 ",
+        "name": "노시로",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302210/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29480.png",
@@ -19162,7 +19162,7 @@
     "29482": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "노시로 ",
+        "name": "노시로",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302210/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29480.png",
@@ -20001,7 +20001,7 @@
     "11850": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "아시가라 ",
+        "name": "아시가라",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303090/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11850.png",
@@ -20072,7 +20072,7 @@
     "22261": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "초카이 ",
+        "name": "초카이",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303140/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20200.png",
@@ -20135,7 +20135,7 @@
     "22262": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "초카이 ",
+        "name": "초카이",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303140/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20200.png",
@@ -20197,7 +20197,7 @@
     },
     "1011250": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11250.png",
-        "name": "초카이 ",
+        "name": "초카이",
         "weapon_true": true,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303140/shipyard.png",
@@ -20797,7 +20797,7 @@
     "11800": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "아마기 ",
+        "name": "아마기",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304050/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11800.png",
@@ -20943,7 +20943,7 @@
     "12050": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "꼬마 히에이 ",
+        "name": "꼬마 히에이",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/304060/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/12050.png",
@@ -21071,7 +21071,7 @@
     "11420": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "나가토 ",
+        "name": "나가토",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305050/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11420.png",
@@ -21116,7 +21116,7 @@
     "11430": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "무츠 ",
+        "name": "무츠",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305060/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11430.png",
@@ -21161,7 +21161,7 @@
     "11810": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "카가 ",
+        "name": "카가(전함)",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305070/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11810.png",
@@ -21222,7 +21222,7 @@
     "11820": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "카가 ",
+        "name": "카가(전함)",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305070/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11820.png",
@@ -21328,7 +21328,7 @@
                 "id": 13171
             }
         ],
-        "name": "토사 ",
+        "name": "토사",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305080/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13170.png",
@@ -21514,7 +21514,7 @@
     "12810": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "스루가 ",
+        "name": "스루가",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305140/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/12810.png",
@@ -21839,7 +21839,7 @@
     "11260": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "준요 ",
+        "name": "준요",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306020/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11260.png",
@@ -22356,7 +22356,7 @@
     "12070": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "꼬마 아카기 ",
+        "name": "꼬마 아카기",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307090/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/12070.png",
@@ -22406,7 +22406,7 @@
                 "time": 10
             }
         ],
-        "name": "아카기(μ장비) ",
+        "name": "아카기(μ장비)",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307100/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/12740.png",
@@ -23265,7 +23265,7 @@
     "12010": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "이13 ",
+        "name": "이13",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/12010.png",
@@ -23326,7 +23326,7 @@
     "29371": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "이13 ",
+        "name": "이13",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29370.png",
@@ -23371,7 +23371,7 @@
     "29372": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "이13 ",
+        "name": "이13",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29370.png",
@@ -23997,7 +23997,7 @@
     "19180": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "키타카제 ",
+        "name": "키타카제",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/19180.png",
@@ -24044,7 +24044,7 @@
     "29381": {
         "requirement": "Devs 10",
         "weapon_true": true,
-        "name": "키타카제 ",
+        "name": "키타카제",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29380.png",
@@ -24109,7 +24109,7 @@
     "29382": {
         "requirement": "Devs 30",
         "weapon_true": true,
-        "name": "키타카제 ",
+        "name": "키타카제",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29380.png",
@@ -24174,7 +24174,7 @@
     "18180": {
         "requirement": "Fate Simulation 5",
         "weapon_true": true,
-        "name": "키타카제 ",
+        "name": "키타카제",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/18180.png",
@@ -24246,7 +24246,7 @@
                 "id": 19211
             }
         ],
-        "name": "아즈마 ",
+        "name": "아즈마",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/19210.png",
@@ -24314,7 +24314,7 @@
                 "id": 18211
             }
         ],
-        "name": "아즈마 ",
+        "name": "아즈마",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/18210.png",
@@ -28040,7 +28040,7 @@
     "29471": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "아드미랄 히퍼(μ장비) ",
+        "name": "아드미랄 히퍼(μ장비)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403070/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29470.png",
@@ -28085,7 +28085,7 @@
     "29472": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "아드미랄 히퍼(μ장비) ",
+        "name": "아드미랄 히퍼(μ장비)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403070/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29470.png",
@@ -29544,7 +29544,7 @@
     "12090": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "꼬마 그라프 체펠린 ",
+        "name": "꼬마 그라프 체펠린",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/407020/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/12090.png",
@@ -31137,7 +31137,7 @@
     "19220": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "프리드리히 데어 그로세 ",
+        "name": "프리드리히 데어 그로세",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499020/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/19220.png",
@@ -31216,7 +31216,7 @@
     "18220": {
         "requirement": "Fate Simulation 3",
         "weapon_true": true,
-        "name": "프리드리히 데어 그로세 ",
+        "name": "프리드리히 데어 그로세",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499020/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/19220.png",
@@ -31259,7 +31259,7 @@
     "29571": {
         "requirement": "Devs 10",
         "weapon_true": true,
-        "name": "마인츠 ",
+        "name": "마인츠",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29570.png",
@@ -31304,7 +31304,7 @@
     "29572": {
         "requirement": "Devs 30",
         "weapon_true": true,
-        "name": "마인츠 ",
+        "name": "마인츠",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29570.png",
@@ -31349,7 +31349,7 @@
     "19340": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "오딘 ",
+        "name": "오딘",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/19340.png",
@@ -31415,7 +31415,7 @@
     "18340": {
         "requirement": "Fate Simulation 5",
         "weapon_true": true,
-        "name": "오딘 ",
+        "name": "오딘",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/18340.png",
@@ -34642,7 +34642,7 @@
     "25011": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "카라비니에레 ",
+        "name": "카라비니에레",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601020/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -34687,7 +34687,7 @@
     "25012": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "카라비니에레 ",
+        "name": "카라비니에레",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601020/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -36033,7 +36033,7 @@
     "25211": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "트렌토 ",
+        "name": "트렌토",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20200.png",
@@ -36078,7 +36078,7 @@
     "25212": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "트렌토 ",
+        "name": "트렌토",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20200.png",
@@ -36531,7 +36531,7 @@
     },
     "1012600": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/12600.png",
-        "name": "리토리오 ",
+        "name": "리토리오",
         "weapon_true": true,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605020/shipyard.png",
@@ -36671,7 +36671,7 @@
     "12650": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "줄리오 체사레 ",
+        "name": "줄리오 체사레",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605060/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/12650.png",
@@ -36713,7 +36713,7 @@
     },
     "1090090": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/12650.png",
-        "name": "콘테 디 카보우르 ",
+        "name": "콘테 디 카보우르",
         "weapon_true": true,
         "attached_weapon_skill_id": [
             {
@@ -36800,7 +36800,7 @@
     "12640": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "줄리오 체사레 ",
+        "name": "줄리오 체사레",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605060/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/12640.png",
@@ -38078,7 +38078,7 @@
     "26021": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "민스크 ",
+        "name": "민스크",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -38123,7 +38123,7 @@
     "26022": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "민스크 ",
+        "name": "민스크",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -38168,7 +38168,7 @@
     "29501": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "타슈켄트 ",
+        "name": "타슈켄트",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29500.png",
@@ -38213,7 +38213,7 @@
     "29502": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "타슈켄트 ",
+        "name": "타슈켄트",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29500.png",
@@ -38829,7 +38829,7 @@
     "29191": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "아브로라 ",
+        "name": "아브로라",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29190.png",
@@ -38874,7 +38874,7 @@
     "29192": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "아브로라 ",
+        "name": "아브로라",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29190.png",
@@ -39009,7 +39009,7 @@
     "13000": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "차파예프 ",
+        "name": "차파예프",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13000.png",
@@ -39044,7 +39044,7 @@
     "29511": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "차파예프 ",
+        "name": "차파예프",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29510.png",
@@ -39089,7 +39089,7 @@
     "29512": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "차파예프 ",
+        "name": "차파예프",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29510.png",
@@ -39133,7 +39133,7 @@
     },
     "1013000": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13000.png",
-        "name": "차파예프 ",
+        "name": "차파예프",
         "weapon_true": true,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702030/shipyard.png",
@@ -40349,7 +40349,7 @@
     "13020": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "소비에츠카야 러시아 ",
+        "name": "소비에츠카야 러시아",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705050/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13020.png",
@@ -41161,7 +41161,7 @@
     "29331": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "르 트리옹팡 ",
+        "name": "르 트리옹팡",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29330.png",
@@ -41226,7 +41226,7 @@
     "29332": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "르 트리옹팡 ",
+        "name": "르 트리옹팡",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29330.png",
@@ -41291,7 +41291,7 @@
     "28011": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "르 마르스 ",
+        "name": "르 마르스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -41336,7 +41336,7 @@
     "28012": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "르 마르스 ",
+        "name": "르 마르스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
@@ -42087,7 +42087,7 @@
     "28111": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "에밀 베르탱 ",
+        "name": "에밀 베르탱",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -42132,7 +42132,7 @@
     "28112": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "에밀 베르탱 ",
+        "name": "에밀 베르탱",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -42177,7 +42177,7 @@
     "29541": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "잔 다르크 ",
+        "name": "잔 다르크",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802020/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29540.png",
@@ -42222,7 +42222,7 @@
     "29542": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "잔 다르크 ",
+        "name": "잔 다르크",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802020/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29540.png",
@@ -43009,7 +43009,7 @@
                 "id": 13351
             }
         ],
-        "name": "베아른 ",
+        "name": "베아른",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/807010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13350.png",
@@ -43090,7 +43090,7 @@
     "29321": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "쉬르쿠프 ",
+        "name": "쉬르쿠프",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/808010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29320.png",
@@ -43133,7 +43133,7 @@
     "29322": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "쉬르쿠프 ",
+        "name": "쉬르쿠프",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/808010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/29320.png",
@@ -43175,7 +43175,7 @@
     },
     "1090150": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/3520.png",
-        "name": "쉬르쿠프 ",
+        "name": "쉬르쿠프",
         "weapon_true": true,
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/808010/shipyard.png",
@@ -44325,7 +44325,7 @@
     "13320": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "라 갈리소니에르 ",
+        "name": "라 갈리소니에르",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/902010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13320.png",
@@ -44360,7 +44360,7 @@
     "28121": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "라 갈리소니에르 ",
+        "name": "라 갈리소니에르",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/902010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -44405,7 +44405,7 @@
     "28122": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "라 갈리소니에르 ",
+        "name": "라 갈리소니에르",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/902010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
@@ -44540,7 +44540,7 @@
     "13270": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "알제리 ",
+        "name": "알제리",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/903020/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13270.png",
@@ -44575,7 +44575,7 @@
     "28211": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "알제리 ",
+        "name": "알제리",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/903020/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20200.png",
@@ -44620,7 +44620,7 @@
     "28212": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "알제리 ",
+        "name": "알제리",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/903020/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20200.png",
@@ -44664,7 +44664,7 @@
     },
     "1013270": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/13270.png",
-        "name": "알제리 ",
+        "name": "알제리",
         "weapon_true": true,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/903020/shipyard.png",
@@ -44705,7 +44705,7 @@
                 "time": 10
             }
         ],
-        "name": "됭케르크 ",
+        "name": "됭케르크",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/904010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11490.png",
@@ -44810,7 +44810,7 @@
     },
     "1011490": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/11490.png",
-        "name": "됭케르크 ",
+        "name": "됭케르크",
         "weapon_true": true,
         "attached_weapon_skill_id": [
             {
@@ -45026,7 +45026,7 @@
     "19260": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "가스코뉴 ",
+        "name": "가스코뉴",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/999010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/19260.png",
@@ -47383,6 +47383,530 @@
                     "casterAniEffect": "",
                     "targetAniEffect": "",
                     "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30551": {
+        "requirement": "Limit Break 1",
+        "weapon_true": true,
+        "name": "라임",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600130/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/30550.png",
+        "skill_id": 30551,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170891
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170891
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30552": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "라임",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600130/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/30550.png",
+        "skill_id": 30552,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170892
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170892
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "151770": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "펄",
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600140/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/151770.png",
+        "skill_id": 151770,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169481
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169490
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "151790": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/151770.png",
+        "name": "펄",
+        "weapon_true": true,
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600140/shipyard.png",
+        "skill_id": 151790,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169481
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169490
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "151680": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "로열 제임스",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600150/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/151680.png",
+        "skill_id": 151680,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169441
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169450
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30531": {
+        "requirement": "Limit Break 1",
+        "weapon_true": true,
+        "name": "로열 제임스",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600150/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/30530.png",
+        "skill_id": 30531,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170881
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170881
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30532": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "로열 제임스",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600150/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/30530.png",
+        "skill_id": 30532,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170882
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170882
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "151740": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/151740.png",
+        "name": "로열 제임스",
+        "weapon_true": true,
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600150/shipyard.png",
+        "skill_id": 151740,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 151742
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 169451
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 151742
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 169460
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "151720": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "attached_weapon_skill_id": [
+            {
+                "id": 151721
+            }
+        ],
+        "name": "어드벤처",
+        "position": "잠수",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600160/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/151720.png",
+        "skill_id": 151720,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 151721
+                    },
+                    "target_choise": [
+                        "TargetSelf"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 169331
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 151721
+                    },
+                    "target_choise": [
+                        "TargetSelf"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 169340
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30541": {
+        "requirement": "Limit Break 1",
+        "weapon_true": true,
+        "name": "어드벤처",
+        "position": "잠수",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600160/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/30540.png",
+        "skill_id": 30541,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170871
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandom",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170871
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandom",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30542": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "어드벤처",
+        "position": "잠수",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600160/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/30540.png",
+        "skill_id": 30542,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170872
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandom",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170872
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandom",
                     "type": "BattleSkillFire"
                 }
             ]
@@ -52613,7 +53137,7 @@
                 "quota": 3
             }
         ],
-        "name": "키즈나 아이 ",
+        "name": "키즈나 아이",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10400010/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/104020.png",
@@ -52698,7 +53222,7 @@
     "104050": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "키즈나 아이 - 애니버서리 ",
+        "name": "키즈나 아이 - 애니버서리",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10400030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/104050.png",
@@ -52741,7 +53265,7 @@
     "104070": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "키즈나 아이 - 슈퍼 게이머 ",
+        "name": "키즈나 아이 - 슈퍼 게이머",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10400040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/104070.png",
@@ -53343,7 +53867,7 @@
     "106050": {
         "requirement": "Default",
         "weapon_true": true,
-        "name": "카스미",
+        "name": "카스미(콜라보)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600030/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/106050.png",

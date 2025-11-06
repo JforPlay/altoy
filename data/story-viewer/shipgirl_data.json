@@ -3767,6 +3767,10 @@
         "name": "아름다운 영춘의 춤",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301571/icon.png"
     },
+    "301572": {
+        "name": "수증기 속 정령",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301572/icon.png"
+    },
     "301580": {
         "name": "요이즈키 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301580/icon.png"
@@ -5246,6 +5250,10 @@
     "399021": {
         "name": "구름을 벗어난 천 그루 벚꽃처럼 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399021/icon.png"
+    },
+    "399022": {
+        "name": "두근거리는 꼬리 칵테일",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399022/icon.png"
     },
     "399030": {
         "name": "키타카제 ",
@@ -7399,6 +7407,10 @@
         "name": "돌입 개시!",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/718011/icon.png"
     },
+    "718012": {
+        "name": "애니멀 에이전트",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/718012/icon.png"
+    },
     "799010": {
         "name": "치칼로프",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/799010/icon.png"
@@ -9135,6 +9147,10 @@
         "name": "류 리온",
         "icon": null
     },
+    "900530": {
+        "name": "unknown_undefined",
+        "icon": null
+    },
     "901010": {
         "name": "르 마르스 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901010/icon.png"
@@ -9514,6 +9530,46 @@
     "9600111": {
         "name": "부활의 주문",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600111/icon.png"
+    },
+    "9600120": {
+        "name": "퀸 앤즈 리벤지",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600120/icon.png"
+    },
+    "9600121": {
+        "name": "은밀한 포옹의 속삭임",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600121/icon.png"
+    },
+    "9600130": {
+        "name": "라임",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600130/icon.png"
+    },
+    "9600131": {
+        "name": "데빌라이즈 트랩",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600131/icon.png"
+    },
+    "9600140": {
+        "name": "펄",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600140/icon.png"
+    },
+    "9600141": {
+        "name": "마성의 타락 천사",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600141/icon.png"
+    },
+    "9600150": {
+        "name": "로열 제임스",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600150/icon.png"
+    },
+    "9600151": {
+        "name": "금기의 츄잉 본",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600151/icon.png"
+    },
+    "9600160": {
+        "name": "어드벤처",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600160/icon.png"
+    },
+    "9600161": {
+        "name": "세이프 하우스 마스터",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600161/icon.png"
     },
     "9701010": {
         "name": "헌터·META",
