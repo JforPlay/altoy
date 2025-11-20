@@ -391,7 +391,7 @@
         "id": 10517,
         "in_task": [],
         "invite_item": 200005,
-        "name": "{namecode:199}",
+        "name": "뉴저지",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
@@ -1997,7 +1997,7 @@
         "id": 30129,
         "in_task": [],
         "invite_item": 200006,
-        "name": "{namecode:18}",
+        "name": "시마카제",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
@@ -2307,7 +2307,7 @@
         "id": 30407,
         "in_task": [],
         "invite_item": 200012,
-        "name": "{namecode:193}",
+        "name": "꼬마 아마기",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
@@ -2631,7 +2631,7 @@
         "id": 30707,
         "in_task": [],
         "invite_item": 200004,
-        "name": "{namecode:97}",
+        "name": "다이호",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
@@ -2946,7 +2946,7 @@
             10001150
         ],
         "invite_item": 200003,
-        "name": "{namecode:98}",
+        "name": "아카시",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
@@ -3270,7 +3270,7 @@
         "id": 40303,
         "in_task": [],
         "invite_item": 200013,
-        "name": "{namecode:427}",
+        "name": "프린츠 오이겐",
         "power": 100,
         "power_recover": 300,
         "skill_id": {

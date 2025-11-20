@@ -24,6 +24,13 @@ window.RestaurantModule = (function () {
         diamond: '다이아몬드'
     };
 
+    const RANK_ICONS = {
+        bronze: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rank_tong.png',
+        silver: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rank_yin.png',
+        gold: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rank_jin.png',
+        diamond: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rank_zuanshi.png'
+    };
+
     const RANK_COLORS = {
         bronze: '#cd7f32',
         silver: '#c0c0c0',
@@ -35,6 +42,13 @@ window.RestaurantModule = (function () {
         manjuu_tour: { name: '만쥬 투어 그룹', bonus: 0.10 },
         health_day: { name: '건강의 날', bonus: 0.20 },
         food_review: { name: '요리 리뷰', bonus: 0.30 }
+    };
+
+    const RARITY_BACKGROUNDS = {
+        1: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_gray.png',
+        2: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_blue.png',
+        3: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_purple.png',
+        4: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_orange.png'
     };
 
     const STORAGE_KEY_RANK = 'island-restaurant-rank';
@@ -331,7 +345,7 @@ window.RestaurantModule = (function () {
                     <button class="rank-btn ${state.selectedRank === rank ? 'active' : ''}"
                             data-rank="${rank}"
                             style="--rank-color: ${RANK_COLORS[rank]}">
-                        <span class="rank-icon material-symbols-outlined">grade</span>
+                        <img class="rank-icon" src="${RANK_ICONS[rank]}" alt="${RANK_NAMES[rank]}">
                         <span class="rank-name">${RANK_NAMES[rank]}</span>
                         <span class="rank-coeff">×${RANK_COEFFICIENTS[rank]}</span>
                     </button>
@@ -479,12 +493,14 @@ window.RestaurantModule = (function () {
             return { rank, ...data };
         });
 
+        const rarityBackground = RARITY_BACKGROUNDS[item.rarity] || '';
+
         return `
             <div class="menu-card">
                 <!-- Header -->
                 <div class="menu-card-header">
-                    <div class="restaurant-menu-icon">
-                        <span class="material-symbols-outlined">restaurant_menu</span>
+                    <div class="restaurant-menu-icon" style="background-image: url('${rarityBackground}')">
+                        ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '<span class="material-symbols-outlined">restaurant_menu</span>'}
                     </div>
                     <div class="menu-info">
                         <h4 class="menu-name">${profitData.itemName}</h4>

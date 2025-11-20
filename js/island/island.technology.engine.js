@@ -581,8 +581,8 @@ window.TechnologyModule = (function () {
                  style="grid-column: ${x}; grid-row: ${y};">
                 ${topLeftBadges}
                 ${toggleButton}
-                <div class="node-icon" style="background-color: ${category.color}20; border-color: ${category.color};">
-                    <span class="material-symbols-outlined" style="color: ${category.color};">${category.icon}</span>
+                <div class="node-icon">
+                    <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${tech.tech_icon}.png" alt="${tech.tech_name}" />
                 </div>
                 <div class="node-name">
                     <span class="node-level-badge">Lv.${tech.island_level}</span>
@@ -625,8 +625,8 @@ window.TechnologyModule = (function () {
                  data-tech-id="${tech.id}">
                 ${lockBadge}
                 ${toggleButton}
-                <div class="tech-card-icon" style="background-color: ${category.color}20; border-color: ${category.color};">
-                    <span class="material-symbols-outlined" style="color: ${category.color};">${category.icon}</span>
+                <div class="tech-card-icon">
+                    <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${tech.tech_icon}.png" alt="${tech.tech_name}" />
                 </div>
                 <div class="tech-card-content">
                     <h4 class="tech-card-name">
@@ -734,8 +734,8 @@ window.TechnologyModule = (function () {
 
                 <!-- Header -->
                 <div class="tech-detail-header">
-                    <div class="tech-detail-icon" style="background-color: ${category.color}20; border-color: ${category.color};">
-                        <span class="material-symbols-outlined" style="color: ${category.color}; font-size: 3rem;">${category.icon}</span>
+                    <div class="tech-detail-icon">
+                        <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${tech.tech_icon}.png" alt="${tech.tech_name}" />
                     </div>
                     <div class="tech-detail-title">
                         <h2>${tech.tech_name}</h2>
@@ -903,12 +903,20 @@ window.TechnologyModule = (function () {
                     <div class="formula-costs">
                         <h4>필요 자원</h4>
                         <div class="cost-list">
-                            ${costs.map(([resourceId, amount]) => `
+                            ${costs.map(([resourceId, amount]) => {
+                                const resource = state.resourceData[resourceId];
+                                const resourceName = resource?.name || `Resource #${resourceId}`;
+                                const resourceIcon = resource?.icon ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${resource.icon.split('/').pop()}.png` : '';
+                                return `
                                 <div class="cost-item">
-                                    <span class="cost-resource">Resource #${resourceId}</span>
+                                    <div class="cost-resource-display">
+                                        ${resourceIcon ? `<img src="${resourceIcon}" alt="${resourceName}" class="cost-resource-icon">` : '<span class="material-symbols-outlined cost-resource-icon">inventory_2</span>'}
+                                        <span class="cost-resource-name">${resourceName}</span>
+                                    </div>
                                     <span class="cost-amount">×${amount}</span>
                                 </div>
-                            `).join('')}
+                            `;
+                            }).join('')}
                         </div>
                     </div>
                 ` : ''}
@@ -1000,7 +1008,7 @@ window.TechnologyModule = (function () {
                         return `
                             <div class="resource-total-item">
                                 <div class="resource-total-icon">
-                                    <span class="material-symbols-outlined">currency_exchange</span>
+                                    <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${resourceIcon.split('/').pop()}.png" alt="${resourceName}" />
                                 </div>
                                 <div class="resource-total-info">
                                     <span class="resource-total-name">${resourceName}</span>

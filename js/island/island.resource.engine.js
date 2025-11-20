@@ -755,10 +755,9 @@ window.ResourceModule = (function () {
             return `
                 <div class="recipe-card ${isSelected ? 'active' : ''}" 
                      data-recipe-id="${recipe.id}">
-                    <div class="recipe-icon">
-                        ${item.icon ? `<img src="https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/${item.icon}.png" alt="${item.name}">` : '📦'}
-                    </div>
-                    <div class="recipe-info">
+                                            <div class="recipe-icon">
+                                                ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
+                                            </div>                    <div class="recipe-info">
                         <div class="recipe-name">${recipe.name || item.name}</div>
                         <div class="recipe-meta">
                             <span class="recipe-time">⏱ ${IslandEngine.formatTime(recipe.workload)}</span>
@@ -884,7 +883,7 @@ window.ResourceModule = (function () {
         return `
             <div class="recipe-detail-header">
                 <div class="recipe-icon-large">
-                    ${item.icon ? `<img src="https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/${item.icon}.png" alt="${item.name}">` : '📦'}
+                    ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
                 </div>
                 <div class="recipe-title-section">
                     <h3>${recipe.name || item.name}</h3>
@@ -1056,7 +1055,7 @@ window.ResourceModule = (function () {
                                 ${Object.entries(goldConsumption.resources).map(([itemId, data]) => `
                                     <div class="cost-item">
                                         <div class="cost-icon">
-                                            ${data.icon ? `<img src="https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/${data.icon}.png" alt="${data.name}">` : '📦'}
+                                            ${data.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${data.icon.split('/').pop()}.png" alt="${data.name}">` : '📦'}
                                         </div>
                                         <span class="cost-name">${data.name}</span>
                                         <span class="cost-amount">×${data.amount.toLocaleString()}</span>
@@ -1097,7 +1096,7 @@ window.ResourceModule = (function () {
                     ${Object.entries(goldConsumption.resources).map(([itemId, data]) => `
                         <div class="cost-item">
                             <div class="cost-icon">
-                                ${data.icon ? `<img src="https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/${data.icon}.png" alt="${data.name}">` : '📦'}
+                                ${data.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${data.icon.split('/').pop()}.png" alt="${data.name}">` : '📦'}
                             </div>
                             <span class="cost-name">${data.name}</span>
                             <span class="cost-amount">×${data.amount.toLocaleString()}</span>
@@ -1156,7 +1155,7 @@ window.ResourceModule = (function () {
             return `
                         <div class="material-item rarity-${item.rarity || 1}">
                             <div class="material-icon">
-                                ${item.icon ? `<img src="https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/${item.icon}.png" alt="${item.name}">` : '📦'}
+                                ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
                             </div>
                             <div class="material-info">
                                 <span class="material-name">${item.name}</span>
@@ -1182,7 +1181,7 @@ window.ResourceModule = (function () {
                         <div class="material-item-vertical rarity-${item.rarity || 1}">
                             <div class="material-top-row">
                                 <div class="material-icon">
-                                    ${item.icon ? `<img src="https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/${item.icon}.png" alt="${item.name}">` : '📦'}
+                                    ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
                                 </div>
                                 <span class="material-quantity">×${quantity}</span>
                             </div>
@@ -1299,7 +1298,7 @@ window.ResourceModule = (function () {
                     <div class="tree-node depth-${depth} ${isLast ? 'last-child' : ''} shop-purchase" data-direction="${direction}">
                         <div class="tree-node-card shop ${direction}">
                             <div class="tree-node-icon">
-                                ${item.icon ? `<img src="https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/${item.icon}.png" alt="${item.name}">` : '📦'}
+                                ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
                             </div>
                             <div class="tree-node-info">
                                 <div class="tree-node-name">
@@ -1332,7 +1331,7 @@ window.ResourceModule = (function () {
                 <div class="tree-node depth-${depth} ${isLast ? 'last-child' : ''}" data-direction="${direction}">
                     <div class="tree-node-card ${direction} ${isManualMode ? 'manual-mode' : ''}" data-recipe-id="${node.recipe.id}" onclick="ResourceModule.selectRecipeFromTree(${node.recipe.id})">
                         <div class="tree-node-icon">
-                            ${item.icon ? `<img src="https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/${item.icon}.png" alt="${item.name}">` : '📦'}
+                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
                         </div>
                         <div class="tree-node-info">
                             <div class="tree-node-name">
@@ -1540,7 +1539,7 @@ window.ResourceModule = (function () {
                         <div class="modal-recipe-group">
                             <div class="modal-item-header">
                                 <div class="modal-item-icon">
-                                    ${itemInfo.icon ? `<img src="https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/${itemInfo.icon}.png" alt="${itemInfo.name}">` : '📦'}
+                                    ${itemInfo.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${itemInfo.icon.split('/').pop()}.png" alt="${itemInfo.name}">` : '📦'}
                                 </div>
                                 <div class="modal-item-info">
                                     <h4>${itemInfo.name}</h4>
@@ -1553,7 +1552,7 @@ window.ResourceModule = (function () {
                 return `
                                         <div class="modal-recipe-card" data-recipe-id="${recipe.id}">
                                             <div class="modal-recipe-icon">
-                                                ${recipeItem.icon ? `<img src="https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/${recipeItem.icon}.png" alt="${recipeItem.name}">` : '📦'}
+                                                ${recipeItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${recipeItem.icon.split('/').pop()}.png" alt="${recipeItem.name}">` : '📦'}
                                             </div>
                                             <div class="modal-recipe-info">
                                                 <div class="modal-recipe-name">${recipe.name || recipeItem.name}</div>

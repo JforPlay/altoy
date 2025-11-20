@@ -19,7 +19,8 @@ window.CharacterModule = (function () {
         selectedEnhancement: 0, // 0 = no enhancement, 1 = 1st enhancement, 2 = 2nd enhancement
         selectedSkillLevel: 1, // Skill level 1-10
         fuseInstance: null,
-        items: {} // Item data from island_item_data_template.json
+        items: {}, // Item data from island_item_data_template.json
+        characterIcons: {} // Icon data from character_icon.json
     };
 
     // ============================================
@@ -37,15 +38,17 @@ window.CharacterModule = (function () {
             }
 
             // Load module-specific data in parallel
-            const [charactersData, attData, levelData] = await Promise.all([
+            const [charactersData, attData, levelData, iconData] = await Promise.all([
                 IslandEngine.fetchJSON('data/island/characters.json'),
                 IslandEngine.fetchJSON('data/island/island_chara_att.json'),
-                IslandEngine.fetchJSON('data/island/island_chara_level.json')
+                IslandEngine.fetchJSON('data/island/island_chara_level.json'),
+                IslandEngine.fetchJSON('data/island/character_icon.json')
             ]);
 
             state.characters = charactersData;
             state.attRankings = attData;
             state.levelData = levelData;
+            state.characterIcons = iconData;
 
             // Convert rankings to sorted array for easy lookup
             state.attRankingsArray = Object.values(attData)
@@ -142,8 +145,9 @@ window.CharacterModule = (function () {
      * Create HTML for a character card
      */
     function createCharacterCard(char) {
-        const portraitUrl = char.chara_pic && char.chara_pic !== 'aabbcc'
-            ? `https://raw.githubusercontent.com/Fernando2603/AzurLane/main/portrait/${char.chara_pic}.png`
+        const iconPath = state.characterIcons[char.name];
+        const portraitUrl = iconPath
+            ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${iconPath}.png`
             : '';
 
         const isSelected = state.selectedCharacterId === String(char.id);
@@ -205,8 +209,8 @@ window.CharacterModule = (function () {
             return;
         }
 
-        const portraitUrl = char.chara_pic && char.chara_pic !== 'aabbcc'
-            ? `https://raw.githubusercontent.com/Fernando2603/AzurLane/main/portrait/${char.chara_pic}.png`
+        const portraitUrl = char.unit_id
+            ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${char.unit_id}.png`
             : '';
 
         const currentPower = calculatePower(char, state.selectedLevel);
@@ -705,7 +709,7 @@ window.CharacterModule = (function () {
 
         const skill = char.skill_id;
         const iconUrl = skill.icon
-            ? `https://raw.githubusercontent.com/Fernando2603/AzurLane/main/skillicon/${skill.icon}.png`
+            ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${skill.icon}.png`
             : '';
 
         // Get current skill level value (1-10, index 0-9)
@@ -743,14 +747,16 @@ window.CharacterModule = (function () {
                 </h3>
                 <div class="skill-card">
                     <div class="skill-header">
-                        ${iconUrl ? `
-                            <div class="skill-icon">
-                                <img src="${iconUrl}" alt="스킬 아이콘" onerror="this.parentElement.style.display='none'">
+                        <div class="skill-title-container">
+                            ${iconUrl ? `
+                                <div class="skill-icon">
+                                    <img src="${iconUrl}" alt="스킬 아이콘" onerror="this.parentElement.style.display='none'">
+                                </div>
+                            ` : ''}
+                            <div>
+                                <h4 class="skill-title">${skill.name || '특수 능력'}</h4>
+                                <p class="skill-level-label">레벨 <span id="current-skill-level">${state.selectedSkillLevel}</span></p>
                             </div>
-                        ` : ''}
-                        <div>
-                            <h4 class="skill-title">${skill.name || '특수 능력'}</h4>
-                            <p class="skill-level-label">레벨 <span id="current-skill-level">${state.selectedSkillLevel}</span></p>
                         </div>
                     </div>
                     <p class="skill-description" id="skill-description">${description}</p>
@@ -897,7 +903,7 @@ window.CharacterModule = (function () {
                 </label>
                 <div class="skill-material-item">
                     <div class="skill-material-icon">
-                        ${item.icon ? `<div class="icon-placeholder">🎁</div>` : '<div class="icon-placeholder">📦</div>'}
+                        ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '<div class="icon-placeholder">📦</div>'}
                     </div>
                     <div class="skill-material-info">
                         <div class="skill-material-name">${item.name}</div>

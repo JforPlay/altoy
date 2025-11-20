@@ -233,9 +233,9 @@
 
 /* Node Icon */
 .node-icon {
-    width: 1.625rem;
-    height: 1.625rem;
-    min-width: 1.625rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    min-width: 1.25rem;
     border-radius: 0.375rem;
     display: flex;
     align-items: center;
@@ -401,9 +401,9 @@
 }
 
 .tech-card-icon {
-    width: 3.5rem;
-    height: 3.5rem;
-    min-width: 3.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 2.5rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -448,9 +448,9 @@
 }
 
 .tech-detail-icon {
-    width: 5rem;
-    height: 5rem;
-    min-width: 5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    min-width: 3.5rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -660,6 +660,30 @@
     color: var(--island-text-primary);
 }
 
+.cost-resource-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cost-resource-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.cost-resource-icon.material-symbols-outlined {
+    font-size: 1.5rem;
+    color: var(--island-text-secondary);
+}
+
+.cost-resource-name {
+    font-size: 0.875rem;
+    color: var(--island-text-secondary);
+    font-weight: 500;
+}
+
 /* Completion Tips */
 .completion-tips {
     padding: 1rem;
@@ -856,6 +880,12 @@
 .resource-total-icon .material-symbols-outlined {
     font-size: 1.5rem;
     color: var(--island-accent);
+}
+
+.resource-total-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .resource-total-info {
@@ -1150,4 +1180,18 @@
     .tech-completion-toggle .material-symbols-outlined {
         font-size: 1.25rem;
     }
+}
+
+.node-icon img,
+.tech-card-icon img,
+.tech-detail-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.node-icon,
+.tech-card-icon,
+.tech-detail-icon {
+    background-color: black;
 }
