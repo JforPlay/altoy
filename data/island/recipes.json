@@ -18,7 +18,7 @@
       "commission_product": [
         [
           2000,
-          9
+          162
         ]
       ],
       "cost": [
@@ -30,7 +30,7 @@
       "drop_display": [
         [
           2000,
-          1
+          18
         ]
       ],
       "harvest_vfx": 60021,
@@ -38,13 +38,13 @@
       "id": 101001,
       "is_condition": 0,
       "item_id": 2000,
-      "name": "Wheat",
-      "production_limit": 5,
+      "name": "밀",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 30,
-      "stamina_cost": 6,
+      "ship_exp": 40,
+      "stamina_cost": 8,
       "unitid": [
         [
           0,
@@ -65,7 +65,7 @@
       ],
       "unlock_type": 0,
       "vfx_offset": "",
-      "workload": 18000
+      "workload": 24000
     },
     {
       "affected_vfx": "",
@@ -81,7 +81,7 @@
       "commission_product": [
         [
           2001,
-          18
+          162
         ]
       ],
       "cost": [
@@ -93,7 +93,7 @@
       "drop_display": [
         [
           2001,
-          2
+          18
         ]
       ],
       "harvest_vfx": 60021,
@@ -101,13 +101,13 @@
       "id": 101002,
       "is_condition": 0,
       "item_id": 2001,
-      "name": "Corn",
-      "production_limit": 5,
+      "name": "옥수수",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 60,
-      "stamina_cost": 12,
+      "ship_exp": 40,
+      "stamina_cost": 8,
       "unitid": [
         [
           0,
@@ -128,7 +128,7 @@
       ],
       "unlock_type": 3101002,
       "vfx_offset": "",
-      "workload": 36000
+      "workload": 24000
     },
     {
       "affected_vfx": "",
@@ -144,7 +144,7 @@
       "commission_product": [
         [
           2008,
-          9
+          108
         ]
       ],
       "cost": [
@@ -156,7 +156,7 @@
       "drop_display": [
         [
           2008,
-          1
+          12
         ]
       ],
       "harvest_vfx": 60021,
@@ -164,8 +164,8 @@
       "id": 101003,
       "is_condition": 0,
       "item_id": 2008,
-      "name": "Grass",
-      "production_limit": 5,
+      "name": "목초",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -207,7 +207,7 @@
       "commission_product": [
         [
           2009,
-          9
+          81
         ]
       ],
       "cost": [
@@ -219,7 +219,7 @@
       "drop_display": [
         [
           2009,
-          1
+          9
         ]
       ],
       "harvest_vfx": 60021,
@@ -227,13 +227,13 @@
       "id": 101004,
       "is_condition": 0,
       "item_id": 2009,
-      "name": "Coffee Beans",
+      "name": "커피콩",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 200,
-      "stamina_cost": 40,
+      "ship_exp": 140,
+      "stamina_cost": 28,
       "unitid": [
         [
           0,
@@ -254,7 +254,7 @@
       ],
       "unlock_type": 3101004,
       "vfx_offset": "",
-      "workload": 120000
+      "workload": 84000
     },
     {
       "affected_vfx": "",
@@ -270,7 +270,7 @@
       "commission_product": [
         [
           2002,
-          18
+          162
         ]
       ],
       "cost": [
@@ -282,7 +282,7 @@
       "drop_display": [
         [
           2002,
-          2
+          18
         ]
       ],
       "harvest_vfx": 60021,
@@ -290,13 +290,13 @@
       "id": 101005,
       "is_condition": 0,
       "item_id": 2002,
-      "name": "Rice",
-      "production_limit": 5,
+      "name": "쌀",
+      "production_limit": 6,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 120,
-      "stamina_cost": 24,
+      "ship_exp": 80,
+      "stamina_cost": 16,
       "unitid": [
         [
           0,
@@ -317,7 +317,7 @@
       ],
       "unlock_type": 3101005,
       "vfx_offset": "",
-      "workload": 72000
+      "workload": 48000
     },
     {
       "affected_vfx": "",
@@ -333,7 +333,7 @@
       "commission_product": [
         [
           2003,
-          9
+          81
         ]
       ],
       "cost": [
@@ -345,7 +345,7 @@
       "drop_display": [
         [
           2003,
-          1
+          9
         ]
       ],
       "harvest_vfx": 60021,
@@ -353,13 +353,13 @@
       "id": 101006,
       "is_condition": 0,
       "item_id": 2003,
-      "name": "Napa Cabbage",
-      "production_limit": 5,
+      "name": "배추",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 50,
-      "stamina_cost": 10,
+      "ship_exp": 40,
+      "stamina_cost": 8,
       "unitid": [
         [
           0,
@@ -380,7 +380,7 @@
       ],
       "unlock_type": 3101006,
       "vfx_offset": "",
-      "workload": 30000
+      "workload": 24000
     },
     {
       "affected_vfx": "",
@@ -396,7 +396,7 @@
       "commission_product": [
         [
           2005,
-          9
+          243
         ]
       ],
       "cost": [
@@ -408,7 +408,7 @@
       "drop_display": [
         [
           2005,
-          3
+          27
         ]
       ],
       "harvest_vfx": 60021,
@@ -416,13 +416,13 @@
       "id": 101007,
       "is_condition": 0,
       "item_id": 2005,
-      "name": "Potato",
+      "name": "감자",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 360,
-      "stamina_cost": 72,
+      "ship_exp": 180,
+      "stamina_cost": 36,
       "unitid": [
         [
           0,
@@ -443,7 +443,7 @@
       ],
       "unlock_type": 3101008,
       "vfx_offset": "",
-      "workload": 216000
+      "workload": 108000
     },
     {
       "affected_vfx": "",
@@ -459,7 +459,7 @@
       "commission_product": [
         [
           2006,
-          27
+          243
         ]
       ],
       "cost": [
@@ -471,7 +471,7 @@
       "drop_display": [
         [
           2006,
-          1
+          27
         ]
       ],
       "harvest_vfx": 60021,
@@ -479,13 +479,13 @@
       "id": 101008,
       "is_condition": 0,
       "item_id": 2006,
-      "name": "Soy Beans",
-      "production_limit": 5,
+      "name": "대두",
+      "production_limit": 6,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 100,
-      "stamina_cost": 20,
+      "ship_exp": 70,
+      "stamina_cost": 14,
       "unitid": [
         [
           0,
@@ -506,7 +506,7 @@
       ],
       "unlock_type": 3101007,
       "vfx_offset": "",
-      "workload": 60000
+      "workload": 42000
     },
     {
       "affected_vfx": "",
@@ -516,13 +516,13 @@
       "commission_cost": [
         [
           1016,
-          1
+          4
         ]
       ],
       "commission_product": [
         [
           2016,
-          8
+          32
         ]
       ],
       "cost": [
@@ -542,13 +542,13 @@
       "id": 501001,
       "is_condition": 0,
       "item_id": 2016,
-      "name": "Apple",
-      "production_limit": 5,
+      "name": "사과",
+      "production_limit": 6,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 120,
-      "stamina_cost": 24,
+      "ship_exp": 75,
+      "stamina_cost": 15,
       "unitid": [
         [
           0,
@@ -569,7 +569,7 @@
       ],
       "unlock_type": 0,
       "vfx_offset": "",
-      "workload": 72000
+      "workload": 45000
     },
     {
       "affected_vfx": "",
@@ -579,13 +579,13 @@
       "commission_cost": [
         [
           1017,
-          1
+          4
         ]
       ],
       "commission_product": [
         [
           2017,
-          8
+          32
         ]
       ],
       "cost": [
@@ -605,13 +605,13 @@
       "id": 501002,
       "is_condition": 0,
       "item_id": 2017,
-      "name": "Citrus Fruit",
-      "production_limit": 5,
+      "name": "감귤",
+      "production_limit": 6,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 160,
-      "stamina_cost": 32,
+      "ship_exp": 75,
+      "stamina_cost": 15,
       "unitid": [
         [
           0,
@@ -632,7 +632,7 @@
       ],
       "unlock_type": 3501002,
       "vfx_offset": "",
-      "workload": 96000
+      "workload": 45000
     },
     {
       "affected_vfx": "",
@@ -642,13 +642,13 @@
       "commission_cost": [
         [
           1018,
-          1
+          4
         ]
       ],
       "commission_product": [
         [
           2018,
-          8
+          32
         ]
       ],
       "cost": [
@@ -668,13 +668,13 @@
       "id": 501003,
       "is_condition": 0,
       "item_id": 2018,
-      "name": "Banana",
+      "name": "바나나",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 200,
-      "stamina_cost": 40,
+      "ship_exp": 100,
+      "stamina_cost": 20,
       "unitid": [
         [
           0,
@@ -695,7 +695,7 @@
       ],
       "unlock_type": 3501003,
       "vfx_offset": "",
-      "workload": 120000
+      "workload": 60000
     },
     {
       "affected_vfx": "",
@@ -705,13 +705,13 @@
       "commission_cost": [
         [
           1019,
-          1
+          4
         ]
       ],
       "commission_product": [
         [
           2019,
-          6
+          32
         ]
       ],
       "cost": [
@@ -723,7 +723,7 @@
       "drop_display": [
         [
           2019,
-          6
+          8
         ]
       ],
       "harvest_vfx": 60021,
@@ -731,13 +731,13 @@
       "id": 501004,
       "is_condition": 0,
       "item_id": 2019,
-      "name": "Mango",
+      "name": "망고",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 300,
-      "stamina_cost": 60,
+      "ship_exp": 150,
+      "stamina_cost": 30,
       "unitid": [
         [
           0,
@@ -758,7 +758,7 @@
       ],
       "unlock_type": 3501004,
       "vfx_offset": "",
-      "workload": 180000
+      "workload": 90000
     },
     {
       "affected_vfx": "",
@@ -768,13 +768,13 @@
       "commission_cost": [
         [
           1020,
-          1
+          4
         ]
       ],
       "commission_product": [
         [
           2020,
-          12
+          48
         ]
       ],
       "cost": [
@@ -794,13 +794,13 @@
       "id": 501005,
       "is_condition": 0,
       "item_id": 2020,
-      "name": "Lemon",
-      "production_limit": 5,
+      "name": "레몬",
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 100,
-      "stamina_cost": 20,
+      "ship_exp": 60,
+      "stamina_cost": 12,
       "unitid": [
         [
           0,
@@ -821,7 +821,7 @@
       ],
       "unlock_type": 3501005,
       "vfx_offset": "",
-      "workload": 60000
+      "workload": 36000
     },
     {
       "affected_vfx": "",
@@ -831,13 +831,13 @@
       "commission_cost": [
         [
           1021,
-          1
+          4
         ]
       ],
       "commission_product": [
         [
           2021,
-          4
+          16
         ]
       ],
       "cost": [
@@ -857,13 +857,13 @@
       "id": 501006,
       "is_condition": 0,
       "item_id": 2021,
-      "name": "Avocado",
+      "name": "아보카도",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 360,
-      "stamina_cost": 72,
+      "ship_exp": 200,
+      "stamina_cost": 40,
       "unitid": [
         [
           0,
@@ -884,7 +884,7 @@
       ],
       "unlock_type": 3501006,
       "vfx_offset": "",
-      "workload": 216000
+      "workload": 120000
     },
     {
       "affected_vfx": "",
@@ -894,13 +894,13 @@
       "commission_cost": [
         [
           1022,
-          1
+          4
         ]
       ],
       "commission_product": [
         [
           2022,
-          8
+          32
         ]
       ],
       "cost": [
@@ -920,13 +920,13 @@
       "id": 501007,
       "is_condition": 0,
       "item_id": 2022,
-      "name": "Rubber",
+      "name": "고무",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 490,
-      "stamina_cost": 98,
+      "ship_exp": 160,
+      "stamina_cost": 32,
       "unitid": [
         [
           0,
@@ -947,7 +947,7 @@
       ],
       "unlock_type": 3501007,
       "vfx_offset": "",
-      "workload": 294000
+      "workload": 96000
     },
     {
       "affected_vfx": "",
@@ -957,13 +957,13 @@
       "commission_cost": [
         [
           1010,
-          1
+          3
         ]
       ],
       "commission_product": [
         [
           2010,
-          3
+          18
         ]
       ],
       "cost": [
@@ -975,7 +975,7 @@
       "drop_display": [
         [
           2010,
-          3
+          6
         ]
       ],
       "harvest_vfx": 60021,
@@ -983,13 +983,13 @@
       "id": 502001,
       "is_condition": 0,
       "item_id": 2010,
-      "name": "Flax",
-      "production_limit": 5,
+      "name": "아마",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 70,
-      "stamina_cost": 14,
+      "ship_exp": 40,
+      "stamina_cost": 8,
       "unitid": [
         [
           0,
@@ -1010,7 +1010,7 @@
       ],
       "unlock_type": 0,
       "vfx_offset": "",
-      "workload": 42000
+      "workload": 24000
     },
     {
       "affected_vfx": "",
@@ -1020,13 +1020,13 @@
       "commission_cost": [
         [
           1011,
-          1
+          3
         ]
       ],
       "commission_product": [
         [
           2011,
-          9
+          54
         ]
       ],
       "cost": [
@@ -1038,7 +1038,7 @@
       "drop_display": [
         [
           2011,
-          9
+          18
         ]
       ],
       "harvest_vfx": 60021,
@@ -1046,13 +1046,13 @@
       "id": 502002,
       "is_condition": 0,
       "item_id": 2011,
-      "name": "Strawberries",
+      "name": "딸기",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 160,
-      "stamina_cost": 32,
+      "ship_exp": 90,
+      "stamina_cost": 18,
       "unitid": [
         [
           0,
@@ -1073,7 +1073,7 @@
       ],
       "unlock_type": 3502002,
       "vfx_offset": "",
-      "workload": 96000
+      "workload": 54000
     },
     {
       "affected_vfx": "",
@@ -1083,13 +1083,13 @@
       "commission_cost": [
         [
           1012,
-          1
+          3
         ]
       ],
       "commission_product": [
         [
           2012,
-          3
+          18
         ]
       ],
       "cost": [
@@ -1101,7 +1101,7 @@
       "drop_display": [
         [
           2012,
-          3
+          6
         ]
       ],
       "harvest_vfx": 60021,
@@ -1109,13 +1109,13 @@
       "id": 502003,
       "is_condition": 0,
       "item_id": 2012,
-      "name": "Cotton",
-      "production_limit": 5,
+      "name": "목화",
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 90,
-      "stamina_cost": 18,
+      "ship_exp": 60,
+      "stamina_cost": 12,
       "unitid": [
         [
           0,
@@ -1136,7 +1136,7 @@
       ],
       "unlock_type": 3502003,
       "vfx_offset": "",
-      "workload": 54000
+      "workload": 36000
     },
     {
       "affected_vfx": "",
@@ -1146,13 +1146,13 @@
       "commission_cost": [
         [
           1014,
-          1
+          3
         ]
       ],
       "commission_product": [
         [
           2014,
-          9
+          36
         ]
       ],
       "cost": [
@@ -1164,7 +1164,7 @@
       "drop_display": [
         [
           2014,
-          9
+          12
         ]
       ],
       "harvest_vfx": 60021,
@@ -1172,13 +1172,13 @@
       "id": 502004,
       "is_condition": 0,
       "item_id": 2014,
-      "name": "Tea Leaves",
+      "name": "찻잎",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 300,
-      "stamina_cost": 60,
+      "ship_exp": 90,
+      "stamina_cost": 18,
       "unitid": [
         [
           0,
@@ -1199,7 +1199,7 @@
       ],
       "unlock_type": 3502004,
       "vfx_offset": "",
-      "workload": 180000
+      "workload": 54000
     },
     {
       "affected_vfx": "",
@@ -1209,13 +1209,13 @@
       "commission_cost": [
         [
           1015,
-          1
+          3
         ]
       ],
       "commission_product": [
         [
           2015,
-          6
+          24
         ]
       ],
       "cost": [
@@ -1227,7 +1227,7 @@
       "drop_display": [
         [
           2015,
-          6
+          8
         ]
       ],
       "harvest_vfx": 60021,
@@ -1235,13 +1235,13 @@
       "id": 502005,
       "is_condition": 0,
       "item_id": 2015,
-      "name": "Lavender",
+      "name": "라벤더",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 500,
-      "stamina_cost": 100,
+      "ship_exp": 180,
+      "stamina_cost": 36,
       "unitid": [
         [
           0,
@@ -1262,7 +1262,7 @@
       ],
       "unlock_type": 3502005,
       "vfx_offset": "",
-      "workload": 300000
+      "workload": 108000
     },
     {
       "affected_vfx": "",
@@ -1272,13 +1272,13 @@
       "commission_cost": [
         [
           1004,
-          1
+          3
         ]
       ],
       "commission_product": [
         [
           2004,
-          9
+          36
         ]
       ],
       "cost": [
@@ -1290,7 +1290,7 @@
       "drop_display": [
         [
           2004,
-          9
+          12
         ]
       ],
       "harvest_vfx": 60021,
@@ -1298,13 +1298,13 @@
       "id": 502006,
       "is_condition": 0,
       "item_id": 2004,
-      "name": "Carrot",
-      "production_limit": 5,
+      "name": "당근",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 120,
-      "stamina_cost": 24,
+      "ship_exp": 40,
+      "stamina_cost": 8,
       "unitid": [
         [
           0,
@@ -1325,7 +1325,7 @@
       ],
       "unlock_type": 3502006,
       "vfx_offset": "",
-      "workload": 72000
+      "workload": 24000
     },
     {
       "affected_vfx": "",
@@ -1335,13 +1335,13 @@
       "commission_cost": [
         [
           1007,
-          1
+          3
         ]
       ],
       "commission_product": [
         [
           2007,
-          3
+          12
         ]
       ],
       "cost": [
@@ -1353,7 +1353,7 @@
       "drop_display": [
         [
           2007,
-          3
+          4
         ]
       ],
       "harvest_vfx": 60021,
@@ -1361,13 +1361,13 @@
       "id": 502007,
       "is_condition": 0,
       "item_id": 2007,
-      "name": "Onion",
+      "name": "양파",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 240,
-      "stamina_cost": 48,
+      "ship_exp": 90,
+      "stamina_cost": 18,
       "unitid": [
         [
           0,
@@ -1388,7 +1388,7 @@
       ],
       "unlock_type": 3502007,
       "vfx_offset": "",
-      "workload": 144000
+      "workload": 54000
     },
     {
       "affected_vfx": "",
@@ -1424,7 +1424,7 @@
       "id": 9900001,
       "is_condition": 0,
       "item_id": 4005,
-      "name": "Yoizuki Pear",
+      "name": "아키즈키 배",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -1487,7 +1487,7 @@
       "id": 9900002,
       "is_condition": 0,
       "item_id": 4007,
-      "name": "Kaki Persimmon",
+      "name": "감",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -1526,7 +1526,7 @@
       "commission_cost": [
         [
           3000,
-          4
+          2
         ]
       ],
       "commission_product": [
@@ -1542,8 +1542,8 @@
       "id": 101013,
       "is_condition": 0,
       "item_id": 2601,
-      "name": "Eggs",
-      "production_limit": 5,
+      "name": "달걀",
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [
         3,
@@ -1558,12 +1558,12 @@
           4
         ]
       ],
-      "ship_exp": 80,
-      "stamina_cost": 16,
+      "ship_exp": 60,
+      "stamina_cost": 12,
       "unitid": "",
       "unlock_type": 0,
       "vfx_offset": "",
-      "workload": 48000
+      "workload": 36000
     },
     {
       "affected_vfx": "",
@@ -1573,7 +1573,7 @@
       "commission_cost": [
         [
           3001,
-          3
+          2
         ]
       ],
       "commission_product": [
@@ -1589,17 +1589,17 @@
       "id": 101015,
       "is_condition": 0,
       "item_id": 2600,
-      "name": "Fresh Meat",
+      "name": "신선한 고기",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 180,
-      "stamina_cost": 36,
+      "ship_exp": 120,
+      "stamina_cost": 24,
       "unitid": "",
       "unlock_type": 0,
       "vfx_offset": "",
-      "workload": 108000
+      "workload": 72000
     },
     {
       "affected_vfx": "",
@@ -1625,7 +1625,7 @@
       "id": 101016,
       "is_condition": 0,
       "item_id": 2603,
-      "name": "Milk",
+      "name": "우유",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [
@@ -1641,12 +1641,12 @@
           4
         ]
       ],
-      "ship_exp": 360,
-      "stamina_cost": 72,
+      "ship_exp": 90,
+      "stamina_cost": 18,
       "unitid": "",
       "unlock_type": 0,
       "vfx_offset": "",
-      "workload": 216000
+      "workload": 54000
     },
     {
       "affected_vfx": "",
@@ -1662,7 +1662,7 @@
       "commission_product": [
         [
           2605,
-          2
+          4
         ]
       ],
       "cost": [],
@@ -1672,17 +1672,17 @@
       "id": 101018,
       "is_condition": 0,
       "item_id": 2605,
-      "name": "Wool",
+      "name": "양모",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
-      "ship_exp": 470,
-      "stamina_cost": 94,
+      "ship_exp": 300,
+      "stamina_cost": 60,
       "unitid": "",
       "unlock_type": 0,
       "vfx_offset": "",
-      "workload": 282000
+      "workload": 180000
     }
   ],
   "2": [
@@ -1709,23 +1709,18 @@
       "commission_product": [
         [
           2700,
-          2
-        ]
-      ],
-      "cost": [],
-      "drop_display": [
-        [
-          2700,
           8
         ]
       ],
+      "cost": [],
+      "drop_display": [],
       "harvest_vfx": 60021,
       "hitpoint": 80,
       "id": 401001,
       "is_condition": 0,
       "item_id": 2700,
-      "name": "Coal",
-      "production_limit": 5,
+      "name": "석탄",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -1764,23 +1759,18 @@
       "commission_product": [
         [
           2701,
-          1
+          4
         ]
       ],
       "cost": [],
-      "drop_display": [
-        [
-          2701,
-          1
-        ]
-      ],
+      "drop_display": [],
       "harvest_vfx": 60021,
       "hitpoint": 80,
       "id": 401002,
       "is_condition": 0,
       "item_id": 2701,
-      "name": "Copper Ore",
-      "production_limit": 5,
+      "name": "구리 광석",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -1808,22 +1798,17 @@
       "commission_product": [
         [
           2702,
-          1
+          4
         ]
       ],
       "cost": [],
-      "drop_display": [
-        [
-          2702,
-          1
-        ]
-      ],
+      "drop_display": [],
       "harvest_vfx": 60021,
       "hitpoint": 80,
       "id": 401004,
       "is_condition": 0,
       "item_id": 2702,
-      "name": "Bauxite Ore",
+      "name": "알루미늄 광석",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -1852,23 +1837,18 @@
       "commission_product": [
         [
           2703,
-          1
+          4
         ]
       ],
       "cost": [],
-      "drop_display": [
-        [
-          2703,
-          1
-        ]
-      ],
+      "drop_display": [],
       "harvest_vfx": 60021,
       "hitpoint": 80,
       "id": 401005,
       "is_condition": 0,
       "item_id": 2703,
-      "name": "Iron Ore",
-      "production_limit": 5,
+      "name": "철광석",
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -1896,22 +1876,17 @@
       "commission_product": [
         [
           2704,
-          1
+          4
         ]
       ],
       "cost": [],
-      "drop_display": [
-        [
-          2704,
-          1
-        ]
-      ],
+      "drop_display": [],
       "harvest_vfx": 60021,
       "hitpoint": 0,
       "id": 401006,
       "is_condition": 0,
       "item_id": 2704,
-      "name": "Sulfur",
+      "name": "황광석",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -1940,22 +1915,17 @@
       "commission_product": [
         [
           2705,
-          1
+          4
         ]
       ],
       "cost": [],
-      "drop_display": [
-        [
-          2705,
-          1
-        ]
-      ],
+      "drop_display": [],
       "harvest_vfx": 60021,
       "hitpoint": 0,
       "id": 401007,
       "is_condition": 0,
       "item_id": 2705,
-      "name": "Silver Ore",
+      "name": "은광석",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -1995,23 +1965,18 @@
       "commission_product": [
         [
           2800,
-          2
-        ]
-      ],
-      "cost": [],
-      "drop_display": [
-        [
-          2800,
           8
         ]
       ],
+      "cost": [],
+      "drop_display": [],
       "harvest_vfx": 60021,
       "hitpoint": 80,
       "id": 402001,
       "is_condition": 0,
       "item_id": 2800,
-      "name": "Raw Timber",
-      "production_limit": 5,
+      "name": "자연 목재",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2050,23 +2015,18 @@
       "commission_product": [
         [
           2801,
-          1
+          4
         ]
       ],
       "cost": [],
-      "drop_display": [
-        [
-          2801,
-          1
-        ]
-      ],
+      "drop_display": [],
       "harvest_vfx": 60021,
       "hitpoint": 0,
       "id": 402002,
       "is_condition": 0,
       "item_id": 2801,
-      "name": "Workable Wood",
-      "production_limit": 5,
+      "name": "실용 목재",
+      "production_limit": 9,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2094,22 +2054,17 @@
       "commission_product": [
         [
           2802,
-          1
+          4
         ]
       ],
       "cost": [],
-      "drop_display": [
-        [
-          2802,
-          1
-        ]
-      ],
+      "drop_display": [],
       "harvest_vfx": 60021,
       "hitpoint": 0,
       "id": 402003,
       "is_condition": 0,
       "item_id": 2802,
-      "name": "Premium Wood",
+      "name": "엄선 목재",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -2138,22 +2093,17 @@
       "commission_product": [
         [
           2803,
-          1
+          4
         ]
       ],
       "cost": [],
-      "drop_display": [
-        [
-          2803,
-          1
-        ]
-      ],
+      "drop_display": [],
       "harvest_vfx": 60021,
       "hitpoint": 0,
       "id": 402004,
       "is_condition": 0,
       "item_id": 2803,
-      "name": "Elegant Wood",
+      "name": "우아한 목재",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -2196,7 +2146,7 @@
       "id": 601001,
       "is_condition": 1,
       "item_id": 3011,
-      "name": "Tofu",
+      "name": "두부",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -2236,8 +2186,8 @@
       "id": 601002,
       "is_condition": 1,
       "item_id": 3012,
-      "name": "Tofu with Minced Meat",
-      "production_limit": 5,
+      "name": "다진 고기 두부볶음",
+      "production_limit": 6,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2276,8 +2226,8 @@
       "id": 601003,
       "is_condition": 1,
       "item_id": 3013,
-      "name": "Omurice",
-      "production_limit": 5,
+      "name": "오므라이스",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2316,8 +2266,8 @@
       "id": 601004,
       "is_condition": 1,
       "item_id": 3014,
-      "name": "Cabbage and Tofu Soup",
-      "production_limit": 5,
+      "name": "배추 두부탕",
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2360,8 +2310,8 @@
       "id": 601005,
       "is_condition": 1,
       "item_id": 3015,
-      "name": "Vegetable Salad",
-      "production_limit": 5,
+      "name": "야채 샐러드",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2400,8 +2350,8 @@
       "id": 601101,
       "is_condition": 0,
       "item_id": 3101,
-      "name": "Classic Tofu Combo",
-      "production_limit": 5,
+      "name": "정통 두부 세트",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2440,8 +2390,8 @@
       "id": 601102,
       "is_condition": 0,
       "item_id": 3102,
-      "name": "Hearty Meal",
-      "production_limit": 5,
+      "name": "부드러운 한 상",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2476,8 +2426,8 @@
       "id": 602001,
       "is_condition": 1,
       "item_id": 3017,
-      "name": "Apple Juice",
-      "production_limit": 5,
+      "name": "사과 주스",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2516,8 +2466,8 @@
       "id": 602002,
       "is_condition": 1,
       "item_id": 3018,
-      "name": "Banana and Mango Juice",
-      "production_limit": 5,
+      "name": "바나나 망고 주스",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2556,8 +2506,8 @@
       "id": 602003,
       "is_condition": 1,
       "item_id": 3019,
-      "name": "Honey and Lemon Water",
-      "production_limit": 5,
+      "name": "꿀 레몬 워터",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2596,8 +2546,8 @@
       "id": 602004,
       "is_condition": 1,
       "item_id": 3020,
-      "name": "Strawberry Lemon Drink",
-      "production_limit": 5,
+      "name": "딸기 레몬 드링크",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2636,8 +2586,8 @@
       "id": 602005,
       "is_condition": 1,
       "item_id": 3021,
-      "name": "Lavender Tea",
-      "production_limit": 5,
+      "name": "라벤더 차",
+      "production_limit": 6,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2676,8 +2626,8 @@
       "id": 602006,
       "is_condition": 1,
       "item_id": 3022,
-      "name": "Strawberry Honey Frappé",
-      "production_limit": 5,
+      "name": "딸기 꿀 프라페",
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2716,8 +2666,8 @@
       "id": 602101,
       "is_condition": 0,
       "item_id": 3103,
-      "name": "Floral and Fruity",
-      "production_limit": 5,
+      "name": "향기로운 과일 세트",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2756,8 +2706,8 @@
       "id": 602102,
       "is_condition": 0,
       "item_id": 3104,
-      "name": "Colorful Fruit Paradise",
-      "production_limit": 5,
+      "name": "컬러풀 프루트 파라다이스",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2796,8 +2746,8 @@
       "id": 602103,
       "is_condition": 0,
       "item_id": 3105,
-      "name": "Sunny Honey",
-      "production_limit": 5,
+      "name": "태양의 꿀물",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2836,8 +2786,8 @@
       "id": 603001,
       "is_condition": 1,
       "item_id": 3023,
-      "name": "Corn Cup",
-      "production_limit": 5,
+      "name": "옥수수 컵",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2876,8 +2826,8 @@
       "id": 603002,
       "is_condition": 1,
       "item_id": 3009,
-      "name": "Apple Pie",
-      "production_limit": 5,
+      "name": "애플파이",
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2916,8 +2866,8 @@
       "id": 603003,
       "is_condition": 1,
       "item_id": 3024,
-      "name": "Orange Pie",
-      "production_limit": 5,
+      "name": "오렌지 파이",
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2956,8 +2906,8 @@
       "id": 603004,
       "is_condition": 1,
       "item_id": 3025,
-      "name": "Sticky Rice with Mango",
-      "production_limit": 5,
+      "name": "망고 찹쌀밥",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -2996,8 +2946,8 @@
       "id": 603005,
       "is_condition": 1,
       "item_id": 3026,
-      "name": "Banana Crêpe",
-      "production_limit": 5,
+      "name": "바나나 크레이프",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3040,8 +2990,8 @@
       "id": 603006,
       "is_condition": 1,
       "item_id": 3028,
-      "name": "Strawberry Charlotte",
-      "production_limit": 5,
+      "name": "딸기 샬럿",
+      "production_limit": 6,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3080,8 +3030,8 @@
       "id": 603101,
       "is_condition": 0,
       "item_id": 3106,
-      "name": "Succulently Sweet",
-      "production_limit": 5,
+      "name": "스위트 테이스트",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3120,8 +3070,8 @@
       "id": 603102,
       "is_condition": 0,
       "item_id": 3107,
-      "name": "Orchard Duo",
-      "production_limit": 5,
+      "name": "과수원의 이중주",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3160,8 +3110,8 @@
       "id": 603103,
       "is_condition": 0,
       "item_id": 3108,
-      "name": "Berry and Orange Dessert",
-      "production_limit": 5,
+      "name": "베리 오렌지 디저트",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3196,8 +3146,8 @@
       "id": 604001,
       "is_condition": 1,
       "item_id": 3029,
-      "name": "Coal-Roasted Skewer",
-      "production_limit": 5,
+      "name": "숯불고기 꼬치",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3236,8 +3186,8 @@
       "id": 604002,
       "is_condition": 1,
       "item_id": 3030,
-      "name": "Chicken and Potato Hors d'Oeuvre",
-      "production_limit": 5,
+      "name": "닭고기 감자 플래터",
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3276,8 +3226,8 @@
       "id": 604004,
       "is_condition": 1,
       "item_id": 3032,
-      "name": "Stir-Fried Chicken",
-      "production_limit": 5,
+      "name": "닭고기 볶음",
+      "production_limit": 9,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3316,8 +3266,8 @@
       "id": 604005,
       "is_condition": 1,
       "item_id": 3033,
-      "name": "Rolled Carrot Omelette",
-      "production_limit": 5,
+      "name": "두꺼운 당근 계란말이",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3360,8 +3310,8 @@
       "id": 604006,
       "is_condition": 1,
       "item_id": 3034,
-      "name": "Steak Bowl",
-      "production_limit": 5,
+      "name": "햄버그 덮밥",
+      "production_limit": 9,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3400,8 +3350,8 @@
       "id": 604101,
       "is_condition": 0,
       "item_id": 3109,
-      "name": "The Carne-val",
-      "production_limit": 5,
+      "name": "미트 카니발",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3440,8 +3390,8 @@
       "id": 604102,
       "is_condition": 0,
       "item_id": 3110,
-      "name": "Double Energy Combo",
-      "production_limit": 5,
+      "name": "에너지 더블 콤보",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3476,8 +3426,8 @@
       "id": 901001,
       "is_condition": 1,
       "item_id": 3059,
-      "name": "Omelette",
-      "production_limit": 5,
+      "name": "오믈렛",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3512,8 +3462,8 @@
       "id": 901002,
       "is_condition": 1,
       "item_id": 3005,
-      "name": "Iced Coffee",
-      "production_limit": 5,
+      "name": "아이스 커피",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3548,7 +3498,7 @@
       "id": 901003,
       "is_condition": 1,
       "item_id": 3006,
-      "name": "Cheese",
+      "name": "치즈",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -3588,8 +3538,8 @@
       "id": 901004,
       "is_condition": 1,
       "item_id": 3007,
-      "name": "Latte",
-      "production_limit": 5,
+      "name": "라떼",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3628,8 +3578,8 @@
       "id": 901005,
       "is_condition": 1,
       "item_id": 3008,
-      "name": "Citrus Coffee",
-      "production_limit": 5,
+      "name": "시트러스 커피",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3672,8 +3622,8 @@
       "id": 901006,
       "is_condition": 1,
       "item_id": 3010,
-      "name": "Strawberry Milkshake",
-      "production_limit": 5,
+      "name": "딸기 밀크쉐이크",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3712,8 +3662,8 @@
       "id": 901101,
       "is_condition": 0,
       "item_id": 3111,
-      "name": "Morning Light Energy Combo",
-      "production_limit": 5,
+      "name": "아침의 활력 콤보",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3752,8 +3702,8 @@
       "id": 901102,
       "is_condition": 0,
       "item_id": 3112,
-      "name": "The Wake-Up Call",
-      "production_limit": 5,
+      "name": "굿모닝 브렉퍼스트",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3792,8 +3742,8 @@
       "id": 901103,
       "is_condition": 0,
       "item_id": 3113,
-      "name": "Fruity & Fruitier",
-      "production_limit": 5,
+      "name": "프루트 트윈즈",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -3836,7 +3786,7 @@
       "id": 7530201,
       "is_condition": 0,
       "item_id": 0,
-      "name": "Corn Cup",
+      "name": "옥수수 컵",
       "production_limit": 1,
       "pt_award": 0,
       "second_product": [],
@@ -3872,7 +3822,7 @@
       "id": 9900003,
       "is_condition": 0,
       "item_id": 4009,
-      "name": "Dried Persimmon",
+      "name": "곶감",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -3912,7 +3862,7 @@
       "id": 9900004,
       "is_condition": 0,
       "item_id": 4010,
-      "name": "Matsutake and Chicken Soup",
+      "name": "송이버섯 닭고기 스프",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -3952,7 +3902,7 @@
       "id": 9900007,
       "is_condition": 0,
       "item_id": 4013,
-      "name": "Carrot and Pear Juice",
+      "name": "당근과 배 주스",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -3988,7 +3938,7 @@
       "id": 9900008,
       "is_condition": 0,
       "item_id": 4014,
-      "name": "Chrysanthemum Tea",
+      "name": "국화차",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4026,8 +3976,8 @@
       "id": 701001,
       "is_condition": 0,
       "item_id": 3035,
-      "name": "Cloth",
-      "production_limit": 5,
+      "name": "천",
+      "production_limit": 12,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -4062,7 +4012,7 @@
       "id": 701002,
       "is_condition": 0,
       "item_id": 3036,
-      "name": "Leather",
+      "name": "가죽",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4102,7 +4052,7 @@
       "id": 701003,
       "is_condition": 0,
       "item_id": 3037,
-      "name": "Rope",
+      "name": "밧줄",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4142,7 +4092,7 @@
       "id": 701004,
       "is_condition": 0,
       "item_id": 3038,
-      "name": "Gloves",
+      "name": "장갑",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4182,7 +4132,7 @@
       "id": 701005,
       "is_condition": 0,
       "item_id": 3039,
-      "name": "Aroma Sachet",
+      "name": "향낭",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4226,7 +4176,7 @@
       "id": 701006,
       "is_condition": 0,
       "item_id": 3040,
-      "name": "Shoes",
+      "name": "신발",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4270,8 +4220,8 @@
       "id": 701007,
       "is_condition": 0,
       "item_id": 3041,
-      "name": "Wound Dressings",
-      "production_limit": 5,
+      "name": "붕대",
+      "production_limit": 6,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -4310,8 +4260,8 @@
       "id": 701008,
       "is_condition": 0,
       "item_id": 3042,
-      "name": "Charcoal Brush",
-      "production_limit": 5,
+      "name": "연필",
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -4350,7 +4300,7 @@
       "id": 701009,
       "is_condition": 0,
       "item_id": 3043,
-      "name": "Cable",
+      "name": "케이블",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4386,7 +4336,7 @@
       "id": 701010,
       "is_condition": 0,
       "item_id": 3044,
-      "name": "Nails",
+      "name": "못",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4422,7 +4372,7 @@
       "id": 701011,
       "is_condition": 0,
       "item_id": 3045,
-      "name": "Chemicals",
+      "name": "화학품",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4462,7 +4412,7 @@
       "id": 701012,
       "is_condition": 0,
       "item_id": 3046,
-      "name": "Gunpowder",
+      "name": "화약",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4498,7 +4448,7 @@
       "id": 701013,
       "is_condition": 0,
       "item_id": 3047,
-      "name": "Utensils",
+      "name": "식기",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4534,8 +4484,8 @@
       "id": 701014,
       "is_condition": 0,
       "item_id": 3048,
-      "name": "Paper",
-      "production_limit": 5,
+      "name": "종이",
+      "production_limit": 8,
       "pt_award": 0,
       "second_product": [],
       "second_product_display": [],
@@ -4574,7 +4524,7 @@
       "id": 701015,
       "is_condition": 0,
       "item_id": 3049,
-      "name": "Notebook",
+      "name": "수첩",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4614,7 +4564,7 @@
       "id": 701016,
       "is_condition": 0,
       "item_id": 3050,
-      "name": "Chair and Desk",
+      "name": "책상과 의자",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4654,7 +4604,7 @@
       "id": 701017,
       "is_condition": 0,
       "item_id": 3051,
-      "name": "Choice Wooden Barrel",
+      "name": "특선 나무통",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4694,7 +4644,7 @@
       "id": 701018,
       "is_condition": 0,
       "item_id": 3052,
-      "name": "Filing Cabinet",
+      "name": "서류 캐비닛",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4734,7 +4684,7 @@
       "id": 701019,
       "is_condition": 0,
       "item_id": 3053,
-      "name": "Ink Cartridge",
+      "name": "잉크 카트리지",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4778,7 +4728,7 @@
       "id": 701020,
       "is_condition": 0,
       "item_id": 3054,
-      "name": "Clock",
+      "name": "시계",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4822,7 +4772,7 @@
       "id": 701021,
       "is_condition": 0,
       "item_id": 3055,
-      "name": "Battery",
+      "name": "축전지",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4866,7 +4816,7 @@
       "id": 701022,
       "is_condition": 0,
       "item_id": 3056,
-      "name": "Water Filter",
+      "name": "정수 필터",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4906,7 +4856,7 @@
       "id": 9900005,
       "is_condition": 0,
       "item_id": 4011,
-      "name": "Autumn Bouquet",
+      "name": "가을 꽃다발",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],
@@ -4942,7 +4892,7 @@
       "id": 9900006,
       "is_condition": 0,
       "item_id": 4012,
-      "name": "Peanut Oil",
+      "name": "땅콩기름",
       "production_limit": 5,
       "pt_award": 0,
       "second_product": [],

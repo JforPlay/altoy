@@ -169,16 +169,16 @@
         "id": 1,
         "in_task": [],
         "invite_item": 0,
-        "name": "Workerjuu",
+        "name": "작업 만쥬",
         "power": 999,
         "power_recover": 5,
         "skill_id": {
-            "desc": "When performing work of any sort, stamina will not deplete.",
+            "desc": "작업 시 체력 한도 없음",
             "desc_add": [],
             "icon": "chara_all_skill_8",
             "id": 99999,
             "material": [],
-            "name": "Infinite Stamina"
+            "name": "무한 체력"
         },
         "skill_unlock": 0,
         "unit_id": 300200,
@@ -285,42 +285,42 @@
             [
                 1,
                 [
-                    100,
+                    220,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    223,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    140,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    135,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    214,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    228,
                     300
                 ]
             ]
@@ -391,11 +391,11 @@
         "id": 10517,
         "in_task": [],
         "invite_item": 200005,
-        "name": "New Jersey",
+        "name": "{namecode:199}",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When performing work in the Verdant Woods, lumber production time is shortened by $1%.",
+            "desc": "우거진 벌목장에서 작업 시, 목재 산출 시간이 $1 단축된다.",
             "desc_add": [
                 [
                     [
@@ -488,7 +488,7 @@
                     ]
                 ]
             ],
-            "name": "Lumberjack Expertise"
+            "name": "벌목 기술"
         },
         "skill_unlock": 2,
         "unit_id": 1051700,
@@ -531,13 +531,13 @@
         ],
         "skin": [
             {
-                "desc": "A fresh, practical ensemble perfect for everyday life. One look at her and you can tell – she's ready to have a great day out with you.",
+                "desc": "일상 생활에 딱 맞는 쾌적한 차림. 당신과 즐겁게 놀 준비를 마친 듯하다.",
                 "icon": "skin_1051701",
                 "icon_normal": "props/skin_1051701",
                 "id": 1051701,
                 "jump_page": [],
                 "model": 1051701,
-                "name": "Daily Steps",
+                "name": "가벼운 일상",
                 "ship_group": 10517,
                 "shop_goods_id": 0,
                 "shop_id": 0,
@@ -609,42 +609,42 @@
             [
                 1,
                 [
-                    100,
+                    189,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    214,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    137,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    224,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    220,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    212,
                     300
                 ]
             ]
@@ -715,11 +715,11 @@
         "id": 10703,
         "in_task": [],
         "invite_item": 200002,
-        "name": "Saratoga",
+        "name": "새러토가",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When performing work at Faircrop Fields, crop ripening time is shortened by $1%.",
+            "desc": "비옥한 농지에서 작업 시, 작물 성숙 시간이 $1 단축된다.",
             "desc_add": [
                 [
                     [
@@ -812,7 +812,7 @@
                     ]
                 ]
             ],
-            "name": "Farming Expertise"
+            "name": "경작 기술"
         },
         "skill_unlock": 2,
         "unit_id": 1070300,
@@ -855,13 +855,13 @@
         ],
         "skin": [
             {
-                "desc": "Cute and energetic. She carries behind her a backpack full of sweet little secrets, sealing them away with an innocent giggle upon the wind.",
+                "desc": "넘치는 귀여움과 활기. 작은 비밀이 가득 담긴 가방을 메고, 구김살 없는 미소를 바람결에 전한다.",
                 "icon": "skin_1070301",
                 "icon_normal": "props/skin_1070301",
                 "id": 1070301,
                 "jump_page": [],
                 "model": 1070301,
-                "name": "Canvas Day",
+                "name": "순수한 캠퍼스",
                 "ship_group": 10703,
                 "shop_goods_id": 0,
                 "shop_id": 0,
@@ -933,42 +933,42 @@
             [
                 1,
                 [
-                    100,
+                    221,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    222,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    138,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    218,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    135,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    226,
                     300
                 ]
             ]
@@ -1039,11 +1039,11 @@
         "id": 20403,
         "in_task": [],
         "invite_item": 200011,
-        "name": "Hood",
+        "name": "후드",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When performing work at Newsprout Nursery, crop ripening time is shortened by $1%.",
+            "desc": "초록색 모밭에서 작업 시, 작물 성숙 시간이 $1 단축된다.",
             "desc_add": [
                 [
                     [
@@ -1136,7 +1136,7 @@
                     ]
                 ]
             ],
-            "name": "Nursery Expertise"
+            "name": "재배 기술"
         },
         "skill_unlock": 2,
         "unit_id": 2040300,
@@ -1243,42 +1243,42 @@
             [
                 1,
                 [
-                    100,
+                    227,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    214,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    224,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    185,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    180,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    195,
                     300
                 ]
             ]
@@ -1349,11 +1349,11 @@
         "id": 20603,
         "in_task": [],
         "invite_item": 200009,
-        "name": "Unicorn",
+        "name": "유니콘",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When performing work at Rockheap Mine, mineral mining time is shortened by $1%.",
+            "desc": "석암 광산에서 작업 시, 광물 채굴 시간이 $1 단축된다.",
             "desc_add": [
                 [
                     [
@@ -1446,7 +1446,7 @@
                     ]
                 ]
             ],
-            "name": "Mining Expertise"
+            "name": "채굴 기술"
         },
         "skill_unlock": 2,
         "unit_id": 2060300,
@@ -1489,13 +1489,13 @@
         ],
         "skin": [
             {
-                "desc": "Like a pure, bright star plucked from the night sky, every little detail glimmers with the light of hope.",
+                "desc": "마치 밤하늘에서 밝게 빛나는 별이 떨어진 것처럼, 작은 부분 하나하나가 희망의 빛으로 빛난다.",
                 "icon": "skin_2060301",
                 "icon_normal": "props/skin_2060301",
                 "id": 2060301,
                 "jump_page": [],
                 "model": 2060301,
-                "name": "Dreamy Starlight",
+                "name": "동경의 별빛",
                 "ship_group": 20603,
                 "shop_goods_id": 0,
                 "shop_id": 0,
@@ -1567,42 +1567,42 @@
             [
                 1,
                 [
-                    100,
+                    140,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    218,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    228,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    217,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    214,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    140,
                     300
                 ]
             ]
@@ -1673,11 +1673,11 @@
         "id": 29903,
         "in_task": [],
         "invite_item": 200001,
-        "name": "Cheshire",
+        "name": "체셔",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When assigned as staff to Café Manjuu or the Polar Bear Teahouse, revenue from food increases by $1% and 1 food item slot is added.",
+            "desc": "쥬카페, 백곰 음료의 직원으로 배치하면, 요리 판매 수익이 $1 증가하고, 메뉴 슬롯의 수용량이 +1 증가한다.",
             "desc_add": [
                 [
                     [
@@ -1770,7 +1770,7 @@
                     ]
                 ]
             ],
-            "name": "Thirst Quencher"
+            "name": "음료 판매"
         },
         "skill_unlock": 2,
         "unit_id": 2990300,
@@ -1813,13 +1813,13 @@
         ],
         "skin": [
             {
-                "desc": "She carries with her the sweet aroma and the electrifying freshness of the sea breeze. Whose heart has she stricken with her cuteness today?",
+                "desc": "선선한 바닷바람이 전해주는 달콤한 향기와 활기찬 에너지. 대체 누구의 마음을 설레게 한 걸까?",
                 "icon": "skin_2990301",
                 "icon_normal": "props/skin_2990301",
                 "id": 2990301,
                 "jump_page": [],
                 "model": 2990301,
-                "name": "Seaspray Leisure",
+                "name": "씨솔트 레저",
                 "ship_group": 29903,
                 "shop_goods_id": 0,
                 "shop_id": 0,
@@ -1891,42 +1891,42 @@
             [
                 1,
                 [
-                    100,
+                    222,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    140,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    224,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    213,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    135,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    226,
                     300
                 ]
             ]
@@ -1997,11 +1997,11 @@
         "id": 30129,
         "in_task": [],
         "invite_item": 200006,
-        "name": "Shimakaze",
+        "name": "{namecode:18}",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When performing work at Laidback Ranch, animal product production time is shortened by $1%.",
+            "desc": "한가로운 목장에서 작업 시, 축산물 산출 시간이 $1 단축된다.",
             "desc_add": [
                 [
                     [
@@ -2094,7 +2094,7 @@
                     ]
                 ]
             ],
-            "name": "Ranching Expertise"
+            "name": "목축 기술"
         },
         "skill_unlock": 2,
         "unit_id": 3012900,
@@ -2201,42 +2201,42 @@
             [
                 1,
                 [
-                    100,
+                    226,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    217,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    219,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    136,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    218,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    144,
                     300
                 ]
             ]
@@ -2307,11 +2307,11 @@
         "id": 30407,
         "in_task": [],
         "invite_item": 200012,
-        "name": "Amagi-chan",
+        "name": "{namecode:193}",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When performing work at Sweetscent Orchard, there is a $1% chance of getting additional output each time work is done.",
+            "desc": "향기로운 과수원에서 작업 시, 배치할 때마다 $1의 확률로 추가 산출을 획득한다.",
             "desc_add": [
                 [
                     [
@@ -2404,7 +2404,7 @@
                     ]
                 ]
             ],
-            "name": "Fruit-Harvesting Expertise"
+            "name": "가지치기 기술"
         },
         "skill_unlock": 2,
         "unit_id": 3040700,
@@ -2447,13 +2447,13 @@
         ],
         "skin": [
             {
-                "desc": "A golden-yellow fledgling basking beneath the soft sunlight. It warbles a fairytale melody of sweet candy and seashells.",
+                "desc": "부드러운 빛을 발하는 태양에 비춰진 노란 병아리. 달콤한 사탕과 조가비가 노래하는 동화.",
                 "icon": "skin_3040701",
                 "icon_normal": "props/skin_3040701",
                 "id": 3040701,
                 "jump_page": [],
                 "model": 3040701,
-                "name": "Fledgling's Fairytale",
+                "name": "동화 속 병아리",
                 "ship_group": 30407,
                 "shop_goods_id": 0,
                 "shop_id": 0,
@@ -2525,42 +2525,42 @@
             [
                 1,
                 [
-                    100,
+                    228,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    219,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    217,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    148,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    135,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    212,
                     300
                 ]
             ]
@@ -2631,11 +2631,11 @@
         "id": 30707,
         "in_task": [],
         "invite_item": 200004,
-        "name": "Taihou",
+        "name": "{namecode:97}",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When performing work at Sweetscent Orchard, fruit ripening time is shortened by $1%.",
+            "desc": "향기로운 과수원에서 작업 시, 열매의 성숙 시간이 $1 단축된다.",
             "desc_add": [
                 [
                     [
@@ -2728,7 +2728,7 @@
                     ]
                 ]
             ],
-            "name": "Fruit-Growing Expertise"
+            "name": "과일 재배 기술"
         },
         "skill_unlock": 2,
         "unit_id": 3070700,
@@ -2835,42 +2835,42 @@
             [
                 1,
                 [
-                    100,
+                    135,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    222,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    140,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    226,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    220,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    228,
                     300
                 ]
             ]
@@ -2946,11 +2946,11 @@
             10001150
         ],
         "invite_item": 200003,
-        "name": "Akashi",
+        "name": "{namecode:98}",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When researching Island Technologies, research time is shortened by $1%.",
+            "desc": "아일랜드 기술 연구 시, 연구 시간이 $1 단축된다.",
             "desc_add": [
                 [
                     [
@@ -3043,7 +3043,7 @@
                     ]
                 ]
             ],
-            "name": "Research Expertise"
+            "name": "연구 기술"
         },
         "skill_unlock": 2,
         "unit_id": 3120100,
@@ -3086,13 +3086,13 @@
         ],
         "skin": [
             {
-                "desc": "Beneath the neatly tucked collar of her sailor uniform is a sly, mischievous smile, her black skirt fluttering like the playful waves at night. Beware, for this \"mysterious merchant\" has opened up shop at school.",
+                "desc": "반듯한 세일러복 칼라 아래에는 장난스러운 미소가 숨어 있다. 밤바다와도 같은 검은 옷자락을 휘날리며, 「악덕 상인」이 학교에서 몰래 영업 중…이다냥.",
                 "icon": "skin_3120101",
                 "icon_normal": "props/skin_3120101",
                 "id": 3120101,
                 "jump_page": [],
                 "model": 3120101,
-                "name": "Night of the Empty Bell",
+                "name": "밤의 방울소리",
                 "ship_group": 31201,
                 "shop_goods_id": 0,
                 "shop_id": 0,
@@ -3164,42 +3164,42 @@
             [
                 1,
                 [
-                    100,
+                    227,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    137,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    217,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    214,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    140,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    225,
                     300
                 ]
             ]
@@ -3270,11 +3270,11 @@
         "id": 40303,
         "in_task": [],
         "invite_item": 200013,
-        "name": "Prinz Eugen",
+        "name": "{namecode:427}",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When assigned as staff to the Fin-'n'-Feather Grill or the Manjuu Eatery, revenue from food increases by $1%. ",
+            "desc": "오징어 구이, 쥬쥬 간편식의 직원으로 배치하면, 요리 판매 수익이 $1 증가한다.",
             "desc_add": [
                 [
                     [
@@ -3367,7 +3367,7 @@
                     ]
                 ]
             ],
-            "name": "Food Seller"
+            "name": "요리 판매"
         },
         "skill_unlock": 2,
         "unit_id": 4030300,
@@ -3474,42 +3474,42 @@
             [
                 1,
                 [
-                    100,
+                    142,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    216,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    229,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    220,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    217,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    135,
                     300
                 ]
             ]
@@ -3580,11 +3580,11 @@
         "id": 50204,
         "in_task": [],
         "invite_item": 200007,
-        "name": "Ying Swei",
+        "name": "잉 루이",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When performing work at the Golden Koi Restaurant, food preparation time is shortened by $1%.",
+            "desc": "유어 레스토랑에서 작업 시, 요리 제작 시간이 $1 단축된다.",
             "desc_add": [
                 [
                     [
@@ -3677,7 +3677,7 @@
                     ]
                 ]
             ],
-            "name": "Cooking Expertise"
+            "name": "요리 기술"
         },
         "skill_unlock": 2,
         "unit_id": 5020400,
@@ -3784,42 +3784,42 @@
             [
                 1,
                 [
-                    100,
+                    218,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    143,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    228,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    135,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    217,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    218,
                     300
                 ]
             ]
@@ -3890,11 +3890,11 @@
         "id": 50205,
         "in_task": [],
         "invite_item": 200014,
-        "name": "Chao Ho",
+        "name": "차오 호",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When assigned as staff to the Golden Koi Restaurant, revenue from food increases by $1% and 1 food item slot is added.",
+            "desc": "유어 레스토랑의 직원으로 배치하면, 요리 판매 수익이 $1 증가하고, 메뉴 슬롯의 수용량이 +1 증가한다.",
             "desc_add": [
                 [
                     [
@@ -3987,7 +3987,7 @@
                     ]
                 ]
             ],
-            "name": "Restaurant Specialty"
+            "name": "식당 전매"
         },
         "skill_unlock": 2,
         "unit_id": 5020500,
@@ -4094,42 +4094,42 @@
             [
                 1,
                 [
-                    100,
+                    220,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    203,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    226,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    226,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    205,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    134,
                     300
                 ]
             ]
@@ -4200,11 +4200,11 @@
         "id": 60802,
         "in_task": [],
         "invite_item": 200015,
-        "name": "Leonardo da Vinci",
+        "name": "레오나르도 다 빈치",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When researching Island Technologies, stamina consumption is reduced by $1%.",
+            "desc": "아일랜드 기술 연구 시, 체력 소모가 $1 경감된다.",
             "desc_add": [
                 [
                     [
@@ -4297,7 +4297,7 @@
                     ]
                 ]
             ],
-            "name": "Efficient Researcher"
+            "name": "고효율 연구"
         },
         "skill_unlock": 2,
         "unit_id": 6080200,
@@ -4404,42 +4404,42 @@
             [
                 1,
                 [
-                    100,
+                    229,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    137,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    140,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    214,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    228,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    211,
                     300
                 ]
             ]
@@ -4510,11 +4510,11 @@
         "id": 70104,
         "in_task": [],
         "invite_item": 200010,
-        "name": "Tashkent",
+        "name": "타슈켄트",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "When assigned to the manual workbench at the Base Factory, items take $1% less time to manufacture.",
+            "desc": "기지 공장의 수공 작업대에 배치하면, 해당하는 제품 생산 시간이 $1 단축된다.",
             "desc_add": [
                 [
                     [
@@ -4607,7 +4607,7 @@
                     ]
                 ]
             ],
-            "name": "Manufacturing Expertise"
+            "name": "제조 기술"
         },
         "skill_unlock": 2,
         "unit_id": 7010400,
@@ -4714,42 +4714,42 @@
             [
                 1,
                 [
-                    100,
+                    198,
                     300
                 ]
             ],
             [
                 2,
                 [
-                    100,
+                    195,
                     300
                 ]
             ],
             [
                 3,
                 [
-                    100,
+                    192,
                     300
                 ]
             ],
             [
                 4,
                 [
-                    100,
+                    192,
                     300
                 ]
             ],
             [
                 5,
                 [
-                    100,
+                    194,
                     300
                 ]
             ],
             [
                 6,
                 [
-                    100,
+                    209,
                     300
                 ]
             ]
@@ -4820,11 +4820,11 @@
         "id": 90111,
         "in_task": [],
         "invite_item": 200008,
-        "name": "Le Malin",
+        "name": "르 말랭",
         "power": 100,
         "power_recover": 300,
         "skill_id": {
-            "desc": "Stamina recovery is increased by $1%.",
+            "desc": "체력 회복 속도가 $1 상승한다.",
             "desc_add": [
                 [
                     [
@@ -4917,7 +4917,7 @@
                     ]
                 ]
             ],
-            "name": "Efficient Recovery"
+            "name": "고효율 회복"
         },
         "skill_unlock": 2,
         "unit_id": 9011100,

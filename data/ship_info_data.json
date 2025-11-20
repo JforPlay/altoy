@@ -23163,6 +23163,19 @@
             180004
         ],
         "skin_id": 107220,
+        "sp_weapon": {
+            "icon": "14740",
+            "name": "일사필중",
+            "skill_upgrade": [
+                [
+                    0,
+                    1011910
+                ]
+            ],
+            "attribute_1": "air",
+            "attribute_2": "reload",
+            "weapon_true": false
+        },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107220/shipyard.png",
         "timer": null,
         "light": false,
@@ -88583,6 +88596,19 @@
             180007
         ],
         "skin_id": 408010,
+        "sp_weapon": {
+            "icon": "14720",
+            "name": "Alarmtauchen!",
+            "skill_upgrade": [
+                [
+                    0,
+                    1011390
+                ]
+            ],
+            "attribute_1": "torpedo",
+            "attribute_2": "hit",
+            "weapon_true": false
+        },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408010/shipyard.png",
         "timer": "00:12:00",
         "light": false,

@@ -1,7 +1,7 @@
 {
   "1": {
     "convert": 0,
-    "desc": "Currency used around the development area. The foundation of continued development.",
+    "desc": "아일랜드 개발 구역에서 유통되는 화폐. 지속적인 발전의 기본이다.",
     "drop_after_use": 0,
     "filter": [
       10312
@@ -13,16 +13,16 @@
     "id": 1,
     "jump_page": [
       [
-        "Island Request",
+        "아일랜드 의뢰",
         []
       ],
       [
-        "Store Management",
+        "점포 경영",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Development Funds",
+    "name": "개발 자금",
     "order_price": 1,
     "price": 0,
     "pt_num": 0,
@@ -36,7 +36,7 @@
   },
   "2": {
     "convert": 0,
-    "desc": "Island development experience. Accumulate it to increase your development level.",
+    "desc": "아일랜드 개발 경험치. 개발 경험치가 쌓이면 개발 등급이 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10312
@@ -48,16 +48,16 @@
     "id": 2,
     "jump_page": [
       [
-        "Island Request",
+        "아일랜드 의뢰",
         []
       ],
       [
-        "Planning",
+        "계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Development EXP",
+    "name": "개발 EXP",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -71,7 +71,7 @@
   },
   "3": {
     "convert": 0,
-    "desc": "A palette containing various dyes. Allows you to recolor outfits and give yourself a truly unique look!",
+    "desc": "다양한 염료가 담긴 컬러 팔레트. 스킨 색상을 자유롭게 바꿔 나만의 스타일을 완성할 수 있다!",
     "drop_after_use": 0,
     "filter": [
       10312
@@ -83,12 +83,16 @@
     "id": 3,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
+        []
+      ],
+      [
+        "합계 PT",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Outfit Colors",
+    "name": "스킨 색상",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -102,7 +106,7 @@
   },
   "4": {
     "convert": 0,
-    "desc": "A building permit for Get-Together Island. Use it to rebuild the island just the way you like it.",
+    "desc": "하모니섬의 건축 허가증. 이것이 있으면 섬에서 자신만의 공간을 자유롭게 꾸밀 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10312
@@ -114,7 +118,7 @@
     "id": 4,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Building Permit",
+    "name": "건축 허가증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -128,7 +132,7 @@
   },
   "5": {
     "convert": 0,
-    "desc": "A mysterious piece of paper. Its crooked lines seem to conceal some sort of secret.",
+    "desc": "수수께끼의 종잇조각. 삐뚤빼뚤한 선에 무언가 비밀이 숨어 있는 듯하다.",
     "drop_after_use": 0,
     "filter": [
       10311
@@ -140,7 +144,7 @@
     "id": 5,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Map Fragment - 1",
+    "name": "지도 조각 - 1",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -154,7 +158,7 @@
   },
   "6": {
     "convert": 0,
-    "desc": "A mysterious piece of paper. Its crooked lines seem to conceal some sort of secret.",
+    "desc": "수수께끼의 종잇조각. 삐뚤빼뚤한 선에 무언가 비밀이 숨어 있는 듯하다.",
     "drop_after_use": 0,
     "filter": [
       10311
@@ -166,7 +170,7 @@
     "id": 6,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Map Fragment - 2",
+    "name": "지도 조각 - 2",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -180,7 +184,7 @@
   },
   "7": {
     "convert": 0,
-    "desc": "A mysterious piece of paper. Its crooked lines seem to conceal some sort of secret.",
+    "desc": "수수께끼의 종잇조각. 삐뚤빼뚤한 선에 무언가 비밀이 숨어 있는 듯하다.",
     "drop_after_use": 0,
     "filter": [
       10311
@@ -192,7 +196,7 @@
     "id": 7,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Map Fragment - 3",
+    "name": "지도 조각 - 3",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -206,7 +210,7 @@
   },
   "8": {
     "convert": 0,
-    "desc": "A mysterious piece of paper. Its crooked lines seem to conceal some sort of secret.",
+    "desc": "수수께끼의 종잇조각. 삐뚤빼뚤한 선에 무언가 비밀이 숨어 있는 듯하다.",
     "drop_after_use": 0,
     "filter": [
       10311
@@ -218,7 +222,7 @@
     "id": 8,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Map Fragment - 4",
+    "name": "지도 조각 - 4",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -232,7 +236,7 @@
   },
   "9": {
     "convert": 0,
-    "desc": "A mysterious piece of paper. Its crooked lines seem to conceal some sort of secret.",
+    "desc": "수수께끼의 종잇조각. 삐뚤빼뚤한 선에 무언가 비밀이 숨어 있는 듯하다.",
     "drop_after_use": 0,
     "filter": [
       10311
@@ -244,7 +248,7 @@
     "id": 9,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Map Fragment - 5",
+    "name": "지도 조각 - 5",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -256,13 +260,39 @@
     "usage": "usage_undefined",
     "usage_arg": "[]"
   },
+  "10": {
+    "convert": 1,
+    "desc": "아일랜드 시즌 개발 Pt 교환 티켓. 시즌 종료 시에 자동으로 해당 시즌의 개발 Pt로 변환됩니다(창고에서 수동으로 변환 가능).",
+    "drop_after_use": 0,
+    "filter": [
+      10114
+    ],
+    "group_max": 0,
+    "have_max": 0,
+    "icon": "islandprops/Item_6",
+    "icon_normal": "props/item_island_6",
+    "id": 10,
+    "jump_page": [],
+    "manage_influence": 0,
+    "name": "아일랜드 시즌 Pt 교환 티켓",
+    "order_price": 0,
+    "price": 1,
+    "pt_num": 1,
+    "rarity": 1,
+    "resource_type": 1,
+    "sub_attribute": [],
+    "tech_id": 0,
+    "type": 1,
+    "usage": "usage_undefined",
+    "usage_arg": "[]"
+  },
   "1000": {
     "convert": 1,
-    "desc": "A bunch of the port's premium wheat seeds. Can be used to grow quality wheat.",
+    "desc": "모항에서 엄선된 밀 씨앗. 좋은 품질의 밀을 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -271,7 +301,7 @@
     "id": 1000,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -279,7 +309,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Wheat Seeds",
+    "name": "밀 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -293,11 +323,11 @@
   },
   "1001": {
     "convert": 1,
-    "desc": "A bunch of the port's premium corn seeds. They're filled with the power of a bountiful harvest.",
+    "desc": "모항에서 엄선된 옥수수 씨앗. 농작물의 힘이 담겨져 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -306,7 +336,7 @@
     "id": 1001,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -314,7 +344,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Corn Seeds",
+    "name": "옥수수 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -328,11 +358,11 @@
   },
   "1002": {
     "convert": 1,
-    "desc": "A bunch of the port's premium upland rice seeds. Just plant and wait for the harvest.",
+    "desc": "모항에서 엄선된 밭벼 씨앗. 수확할 때를 인내심을 가지고 기다리자.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -341,7 +371,7 @@
     "id": 1002,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -349,7 +379,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Upland Rice Seeds",
+    "name": "밭벼 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -363,11 +393,11 @@
   },
   "1003": {
     "convert": 1,
-    "desc": "A bunch of the port's premium napa cabbage seeds. Can be used to grow crisp and large cabbages.",
+    "desc": "모항에서 엄선된 배추 씨앗. 촉촉하고 커다란 배추를 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -376,7 +406,7 @@
     "id": 1003,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -384,7 +414,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Napa Cabbage Seeds",
+    "name": "배추 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -398,11 +428,11 @@
   },
   "1004": {
     "convert": 1,
-    "desc": "A bunch of the port's premium carrot seeds. Can be used to grow sweet carrots.",
+    "desc": "모항에서 엄선된 당근 씨앗. 달콤한 당근을 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -411,7 +441,7 @@
     "id": 1004,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -419,7 +449,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Carrot Seeds",
+    "name": "당근 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -433,11 +463,11 @@
   },
   "1005": {
     "convert": 1,
-    "desc": "A bunch of the port's premium potato seeds. Can be used to grow a large harvest of potatoes.",
+    "desc": "모항에서 엄선된 감자 씨앗. 수확량이 많은 감자를 얻을 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -446,7 +476,7 @@
     "id": 1005,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -454,7 +484,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Potato Seeds",
+    "name": "감자 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -468,11 +498,11 @@
   },
   "1006": {
     "convert": 1,
-    "desc": "A bunch of the port's premium soy bean seeds. Can be used to grow quality soy beans.",
+    "desc": "모항에서 엄선된 대두 씨앗. 좋은 품질의 대두를 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -481,7 +511,7 @@
     "id": 1006,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -489,7 +519,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Soy Bean Seeds",
+    "name": "대두 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -503,11 +533,11 @@
   },
   "1007": {
     "convert": 1,
-    "desc": "A bunch of the port's premium onion seeds. Can be used to grow luscious onions.",
+    "desc": "모항에서 엄선된 양파 씨앗. 매력적인 양파를 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -516,7 +546,7 @@
     "id": 1007,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -524,7 +554,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Onion Seeds",
+    "name": "양파 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -538,11 +568,11 @@
   },
   "1008": {
     "convert": 1,
-    "desc": "A bunch of the port's premium grass seeds. Can be used to grow loads of grass.",
+    "desc": "모항에서 엄선된 목초 씨앗. 풍부한 목초를 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -551,7 +581,7 @@
     "id": 1008,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -559,7 +589,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Grass Seeds",
+    "name": "목초 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -573,11 +603,11 @@
   },
   "1009": {
     "convert": 1,
-    "desc": "A bunch of the port's premium coffee tree seeds. Can be used to grow flavorful coffee beans.",
+    "desc": "모항에서 엄선된 커피나무 씨앗. 풍미가 깊은 커피콩을 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -586,7 +616,7 @@
     "id": 1009,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -594,7 +624,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Coffee Tree Seeds",
+    "name": "커피나무 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -608,11 +638,11 @@
   },
   "1010": {
     "convert": 1,
-    "desc": "A bunch of the port's premium flax seeds. Grows fast and yields long, sturdy fibers. A great material for spinning thread.",
+    "desc": "모항에서 엄선된 아마 씨앗. 성장 속도가 빠르며, 오래 가는 튼튼한 섬유를 획득할 수 있다. 방적할 때 좋은 재료.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -621,7 +651,7 @@
     "id": 1010,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -629,7 +659,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Flax Seeds",
+    "name": "아마 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -643,11 +673,11 @@
   },
   "1011": {
     "convert": 1,
-    "desc": "A bunch of the port's premium strawberry seeds. Can be used to grow brilliantly red strawberries.",
+    "desc": "모항에서 엄선된 딸기 씨앗. 빨간 딸기를 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -656,7 +686,7 @@
     "id": 1011,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -664,7 +694,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Strawberry Seeds",
+    "name": "딸기 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -678,11 +708,11 @@
   },
   "1012": {
     "convert": 1,
-    "desc": "A bunch of the port's premium cotton seeds. Can be used to grow soft cotton.",
+    "desc": "모항에서 엄선된 목화 씨앗. 부드러운 목화가 열린다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -691,7 +721,7 @@
     "id": 1012,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -699,7 +729,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Cotton Seeds",
+    "name": "목화 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -713,11 +743,11 @@
   },
   "1014": {
     "convert": 1,
-    "desc": "A bunch of the port's premium tea tree seeds. Can be used to grow quality tea leaves.",
+    "desc": "모항에서 엄선된 차나무 씨앗. 좋은 품질의 찻잎을 획득할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -726,7 +756,7 @@
     "id": 1014,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -734,7 +764,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Tea Tree Seeds",
+    "name": "차나무 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -748,11 +778,11 @@
   },
   "1015": {
     "convert": 1,
-    "desc": "A bunch of the port's premium lavender seeds. Can be used to grow purple flowers.",
+    "desc": "모항에서 엄선된 라벤더 씨앗. 보랏빛 꽃밭이 자라난다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -761,7 +791,7 @@
     "id": 1015,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -769,7 +799,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Lavender Seeds",
+    "name": "라벤더 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -783,11 +813,11 @@
   },
   "1016": {
     "convert": 1,
-    "desc": "Seeds from the excellent apple trees grown at the port. Can be used to grow crisp and delicious apples.",
+    "desc": "모항에서 재배한 좋은 품질의 사과나무 씨앗. 과즙이 많고 맛있는 사과를 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -796,7 +826,7 @@
     "id": 1016,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -804,7 +834,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Apple Tree Seeds",
+    "name": "사과나무 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -818,11 +848,11 @@
   },
   "1017": {
     "convert": 1,
-    "desc": "Seeds from the excellent citrus trees grown at the port. Can be used to grow sweet and juicy citrus fruits.",
+    "desc": "모항에서 재배한 좋은 품질의 귤나무 씨앗. 달콤하고 새콤한 귤나무를 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -831,7 +861,7 @@
     "id": 1017,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -839,7 +869,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Citrus Fruit Tree Seeds",
+    "name": "귤나무 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -853,11 +883,11 @@
   },
   "1018": {
     "convert": 1,
-    "desc": "Seeds from the excellent banana trees grown at the port. Can be used to grow tender bananas.",
+    "desc": "모항에서 재배한 좋은 품질의 바나나나무 씨앗. 부드러운 바나나를 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -866,7 +896,7 @@
     "id": 1018,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -874,7 +904,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Banana Tree Seed",
+    "name": "바나나나무 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -888,11 +918,11 @@
   },
   "1019": {
     "convert": 1,
-    "desc": "Seeds from the excellent mango trees grown at the port. Can be used to grow sweet mangos.",
+    "desc": "모항에서 재배한 좋은 품질의 망고나무 씨앗. 달콤한 망고를 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -901,7 +931,7 @@
     "id": 1019,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -909,7 +939,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Mango Tree Seeds",
+    "name": "망고나무 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -923,11 +953,11 @@
   },
   "1020": {
     "convert": 1,
-    "desc": "Seeds from the excellent lemon trees grown at the port. Can be used to grow refreshing lemons.",
+    "desc": "모항에서 재배한 좋은 품질의 레몬나무 씨앗. 상큼한 레몬을 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -936,7 +966,7 @@
     "id": 1020,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -944,7 +974,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Lemon Tree Seed",
+    "name": "레몬나무 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -958,11 +988,11 @@
   },
   "1021": {
     "convert": 1,
-    "desc": "Seeds from the excellent avocado trees grown at the port. Can be used to grow nutritious avocados.",
+    "desc": "모항에서 재배한 좋은 품질의 아보카도나무 씨앗. 영양이 풍부한 아보카도를 수확할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -971,7 +1001,7 @@
     "id": 1021,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -979,7 +1009,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Avocado Tree Seeds",
+    "name": "아보카도 나무 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -993,11 +1023,11 @@
   },
   "1022": {
     "convert": 1,
-    "desc": "A bunch of the port's premium rubber tree seeds. Can be used to grow quality rubber.",
+    "desc": "언제든 재배, 채집이 가능하다. 휴식기가 없다!",
     "drop_after_use": 0,
     "filter": [
       10114,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1006,7 +1036,7 @@
     "id": 1022,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -1014,7 +1044,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Rubber Tree Seeds",
+    "name": "고무나무 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -1028,7 +1058,7 @@
   },
   "2000": {
     "convert": 1,
-    "desc": "Fresh wheat straight from the fields. The base ingredient needed to make flour.",
+    "desc": "막 수확한 신선한 밀. 밀가루를 만드는데 빼놓을 수 없는 재료.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1041,15 +1071,12 @@
     "id": 2000,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "비옥한 농지",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Wheat",
+    "name": "밀",
     "order_price": 8,
     "price": 1,
     "pt_num": 1,
@@ -1063,7 +1090,7 @@
   },
   "2001": {
     "convert": 1,
-    "desc": "Ripe, golden corn. It lends a sweet smell to the fields.",
+    "desc": "황금빛 열매가 맺힌 옥수수. 밭에 달콤한 향이 감돈다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1076,15 +1103,12 @@
     "id": 2001,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "비옥한 농지",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Corn",
+    "name": "옥수수",
     "order_price": 8,
     "price": 1,
     "pt_num": 1,
@@ -1098,7 +1122,7 @@
   },
   "2002": {
     "convert": 1,
-    "desc": "White, high-quality rice. Contains plentiful starch and granular protein.",
+    "desc": "새하얀 양질의 쌀. 풍부한 전분과 곡물 단백질을 포함하고 있다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1111,15 +1135,12 @@
     "id": 2002,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "비옥한 농지",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Rice",
+    "name": "쌀",
     "order_price": 17,
     "price": 1,
     "pt_num": 1,
@@ -1133,7 +1154,7 @@
   },
   "2003": {
     "convert": 1,
-    "desc": "Crisp and delicious napa cabbage. It's straight from the farm!",
+    "desc": "촉촉하고 맛있는 배추. 갓 채집해서 신선하다!",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1146,15 +1167,12 @@
     "id": 2003,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "비옥한 농지",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Napa Cabbage",
+    "name": "배추",
     "order_price": 14,
     "price": 1,
     "pt_num": 1,
@@ -1168,11 +1186,11 @@
   },
   "2004": {
     "convert": 1,
-    "desc": "A common household vegetable. Sweet and full of nutrients.",
+    "desc": "가정에서도 흔히 사용하는 채소. 영양이 풍부하고 달콤하다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10132
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1181,15 +1199,12 @@
     "id": 2004,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "초록색 모밭",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Carrot",
+    "name": "당근",
     "order_price": 34,
     "price": 1,
     "pt_num": 1,
@@ -1203,7 +1218,7 @@
   },
   "2005": {
     "convert": 1,
-    "desc": "The king of starch in the vegetable world. Can be prepared in all kinds of ways.",
+    "desc": "전분하면 빼놓을 수 없는 채소. 다양한 모양으로 조리할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1216,15 +1231,12 @@
     "id": 2005,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "비옥한 농지",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Potato",
+    "name": "감자",
     "order_price": 33,
     "price": 1,
     "pt_num": 1,
@@ -1238,7 +1250,7 @@
   },
   "2006": {
     "convert": 1,
-    "desc": "Round, fluffy, and filled with protein. Has all sorts of uses, not just in cooking, but in manufacturing as well.",
+    "desc": "동그랗고 풍성하며, 단백질이 풍부하다. 요리뿐만 아니라 공업에서도 쓰임새가 많다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1251,15 +1263,12 @@
     "id": 2006,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "비옥한 농지",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Soy Beans",
+    "name": "대두",
     "order_price": 14,
     "price": 1,
     "pt_num": 1,
@@ -1273,11 +1282,11 @@
   },
   "2007": {
     "convert": 1,
-    "desc": "Try not to cry when you peel it!",
+    "desc": "보랏빛 껍질을 벗기면… 눈물이 나올 수도 있으니 조심!",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10132
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1286,15 +1295,12 @@
     "id": 2007,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "초록색 모밭",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Onion",
+    "name": "양파",
     "order_price": 244,
     "price": 1,
     "pt_num": 24,
@@ -1308,7 +1314,7 @@
   },
   "2008": {
     "convert": 1,
-    "desc": "High-quality grass. Provides life in abundance to the farm!",
+    "desc": "우수한 품질의 목초. 목장에 넘칠 정도의 활기를 부여한다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1321,15 +1327,12 @@
     "id": 2008,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "비옥한 농지",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Grass",
+    "name": "목초",
     "order_price": 11,
     "price": 1,
     "pt_num": 1,
@@ -1343,7 +1346,7 @@
   },
   "2009": {
     "convert": 1,
-    "desc": "Fragrant and reinvigorating. Care for a cup?",
+    "desc": "향기도 진하고 기분도 상쾌해진다. 한 잔 어떠신지…?",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1356,15 +1359,12 @@
     "id": 2009,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "비옥한 농지",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Coffee Beans",
+    "name": "커피콩",
     "order_price": 68,
     "price": 1,
     "pt_num": 6,
@@ -1378,11 +1378,11 @@
   },
   "2010": {
     "convert": 1,
-    "desc": "A flower with long fibers suited for making threads and textiles. Perfect for your workshop!",
+    "desc": "장섬유인 아마. 실을 잣거나 천을 짜기에 안성맞춤이다. 공방 작업에도 제격이다!",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10132
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1391,15 +1391,12 @@
     "id": 2010,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "초록색 모밭",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Flax",
+    "name": "아마",
     "order_price": 72,
     "price": 1,
     "pt_num": 6,
@@ -1413,11 +1410,11 @@
   },
   "2011": {
     "convert": 1,
-    "desc": "Deep red, juicy, and sweet and sour at the same time. Pairs wonderfully with desserts.",
+    "desc": "새빨간 열매가 새콤하고 맛있다. 달콤한 디저트와 잘 어우러진다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10132
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1426,15 +1423,12 @@
     "id": 2011,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "초록색 모밭",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Strawberries",
+    "name": "딸기",
     "order_price": 54,
     "price": 1,
     "pt_num": 5,
@@ -1448,11 +1442,11 @@
   },
   "2012": {
     "convert": 1,
-    "desc": "White and soft cotton. An essential ingredient in thread-spinning.",
+    "desc": "부드럽고 하얀 목화. 방적에 중요한 재료.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10132
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1461,15 +1455,12 @@
     "id": 2012,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "초록색 모밭",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Cotton",
+    "name": "목화",
     "order_price": 92,
     "price": 1,
     "pt_num": 6,
@@ -1483,11 +1474,11 @@
   },
   "2014": {
     "convert": 1,
-    "desc": "They give off a bitter yet clean aroma. Savor a taste of nature.",
+    "desc": "쌉쌀하지만 상쾌한 향이 난다. 자연의 맛을 즐겨보자.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10132
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1496,15 +1487,12 @@
     "id": 2014,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "초록색 모밭",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Tea Leaves",
+    "name": "찻잎",
     "order_price": 118,
     "price": 1,
     "pt_num": 14,
@@ -1518,11 +1506,11 @@
   },
   "2015": {
     "convert": 1,
-    "desc": "Not only do these aromatic flowers add color to your garden, but you can also extract essential oils from them.",
+    "desc": "풍부한 향으로 정원을 채워줄 뿐만 아니라, 정유를 추출하는 데에도 쓰인다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10132
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1531,15 +1519,12 @@
     "id": 2015,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "초록색 모밭",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Lavender",
+    "name": "라벤더",
     "order_price": 294,
     "price": 1,
     "pt_num": 35,
@@ -1553,11 +1538,11 @@
   },
   "2016": {
     "convert": 1,
-    "desc": "Sour, juicy, and loaded with all kinds of vitamins, it can be turned into juice or eaten as it is.",
+    "desc": "새콤하고 맛있다. 각종 비타민이 함유되어 있어, 그대로 먹어도 좋고 주스로 마셔도 좋다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10125
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1566,15 +1551,12 @@
     "id": 2016,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "향기로운 과수원",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Apple",
+    "name": "사과",
     "order_price": 50,
     "price": 1,
     "pt_num": 1,
@@ -1588,11 +1570,11 @@
   },
   "2017": {
     "convert": 1,
-    "desc": "Cheap and long-lasting fruit with a fresh fragrance.",
+    "desc": "저렴하고 보존하기 편하며, 상쾌한 향이 매력적인 과일.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10125
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1601,15 +1583,12 @@
     "id": 2017,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "향기로운 과수원",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Citrus Fruit",
+    "name": "감귤",
     "order_price": 65,
     "price": 1,
     "pt_num": 1,
@@ -1623,11 +1602,11 @@
   },
   "2018": {
     "convert": 1,
-    "desc": "A tropical fruit that's sweet, soft, and rich in dietary fiber.",
+    "desc": "휴양지 느낌이 물씬 풍기는 과일. 달콤하면서도 부드러우며, 식물 섬유가 풍부하다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10125
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1636,15 +1615,12 @@
     "id": 2018,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "향기로운 과수원",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Banana",
+    "name": "바나나",
     "order_price": 80,
     "price": 1,
     "pt_num": 1,
@@ -1658,11 +1634,11 @@
   },
   "2019": {
     "convert": 1,
-    "desc": "A summer fruit with smooth flesh. Very sweet, juicy, and delicious.",
+    "desc": "과육이 부드러운 여름 대표 과일. 무척 달콤하면서도 맛있다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10125
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1671,15 +1647,12 @@
     "id": 2019,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "향기로운 과수원",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Mango",
+    "name": "망고",
     "order_price": 180,
     "price": 1,
     "pt_num": 18,
@@ -1693,11 +1666,11 @@
   },
   "2020": {
     "convert": 1,
-    "desc": "Its skin has a fresh aroma and its flesh is perfectly sour. Used in cooking to adjust the flavor.",
+    "desc": "껍질은 상쾌한 향기가 풍기고, 내용물은 딱 좋을 정도로 새콤하다. 요리의 맛을 잡는 데에도 쓰인다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10125
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1706,15 +1679,12 @@
     "id": 2020,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "향기로운 과수원",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Lemon",
+    "name": "레몬",
     "order_price": 32,
     "price": 1,
     "pt_num": 3,
@@ -1728,11 +1698,11 @@
   },
   "2021": {
     "convert": 1,
-    "desc": "Its flesh is smooth and creamy. Being low in calories, it's both tasty and healthy.",
+    "desc": "매끄럽고 크리미한 식감. 칼로리가 적지만 맛있고 건강에 좋다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10125
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1741,15 +1711,12 @@
     "id": 2021,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "향기로운 과수원",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Avocado",
+    "name": "아보카도",
     "order_price": 375,
     "price": 1,
     "pt_num": 45,
@@ -1763,11 +1730,11 @@
   },
   "2022": {
     "convert": 1,
-    "desc": "A highly elastic ingredient commonly used in manufacturing. Its uses are many!",
+    "desc": "높은 탄성을 가진 일반적인 공업 가공 재료. 쓰임새가 많다!",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10125
     ],
     "group_max": 0,
     "have_max": 0,
@@ -1776,15 +1743,12 @@
     "id": 2022,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "향기로운 과수원",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Rubber",
+    "name": "고무",
     "order_price": 250,
     "price": 1,
     "pt_num": 30,
@@ -1798,7 +1762,7 @@
   },
   "2600": {
     "convert": 1,
-    "desc": "Meat freshly harvested from an animal. It's a high-quality source of protein.",
+    "desc": "동물에게서 채취할 수 있는 신선한 고기. 최고급 품질의 단백질원이다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1811,15 +1775,12 @@
     "id": 2600,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "한가로운 목장",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Fresh Meat",
+    "name": "신선한 고기",
     "order_price": 200,
     "price": 1,
     "pt_num": 2,
@@ -1833,7 +1794,7 @@
   },
   "2601": {
     "convert": 1,
-    "desc": "Brown eggs. Often used in cooking.",
+    "desc": "갈색 달걀. 요리에 자주 쓰이는 식재료.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1846,15 +1807,12 @@
     "id": 2601,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "한가로운 목장",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Eggs",
+    "name": "달걀",
     "order_price": 55,
     "price": 1,
     "pt_num": 1,
@@ -1868,7 +1826,7 @@
   },
   "2602": {
     "convert": 1,
-    "desc": "Meat high in protein and low in fat. Suited for all kinds of dishes.",
+    "desc": "저지방에 고단백인 육류. 다양한 요리에 쓰인다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1881,15 +1839,12 @@
     "id": 2602,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "한가로운 목장",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Poultry",
+    "name": "닭고기",
     "order_price": 20,
     "price": 1,
     "pt_num": 1,
@@ -1903,7 +1858,7 @@
   },
   "2603": {
     "convert": 1,
-    "desc": "An all-natural drink. Can be processed into yogurt or cheese.",
+    "desc": "천연 음료. 가공하면 요거트나 치즈로도 만들 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1916,15 +1871,12 @@
     "id": 2603,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "한가로운 목장",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Milk",
+    "name": "우유",
     "order_price": 136,
     "price": 1,
     "pt_num": 1,
@@ -1938,7 +1890,7 @@
   },
   "2604": {
     "convert": 1,
-    "desc": "Simply prepared animal pelt. Can be tanned and turned into leather.",
+    "desc": "가볍게 손질한 동물 가죽. 무두질하면 가죽으로 만들 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1951,15 +1903,12 @@
     "id": 2604,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "한가로운 목장",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Pelt",
+    "name": "가죽 재료",
     "order_price": 95,
     "price": 1,
     "pt_num": 10,
@@ -1973,7 +1922,7 @@
   },
   "2605": {
     "convert": 1,
-    "desc": "Harvested animal hair. A core ingredient in the production of fabrics.",
+    "desc": "동물에게서 얻은 털 섬유. 직물 공업에 중요한 원료다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -1986,15 +1935,12 @@
     "id": 2605,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "한가로운 목장",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Wool",
+    "name": "양모",
     "order_price": 600,
     "price": 1,
     "pt_num": 72,
@@ -2008,11 +1954,11 @@
   },
   "2606": {
     "convert": 1,
-    "desc": "Honey straight from the hive. It's full of natural, rich aroma.",
+    "desc": "갓 채집한 꿀. 자연의 달콤한 향기가 가득하다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2021,15 +1967,12 @@
     "id": 2606,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "지도에서 채집",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Fresh Honey",
+    "name": "신선한 꿀",
     "order_price": 200,
     "price": 1,
     "pt_num": 2,
@@ -2043,7 +1986,7 @@
   },
   "2700": {
     "convert": 1,
-    "desc": "A fundamental type of fuel. It burns very efficiently and is often used in heating and manufacturing.",
+    "desc": "기본적인 연료. 연소 효율이 높아 난방이나 공업 생산에 쓰인다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -2056,15 +1999,12 @@
     "id": 2700,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "석암 광산",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Coal",
+    "name": "석탄",
     "order_price": 12,
     "price": 1,
     "pt_num": 1,
@@ -2078,7 +2018,7 @@
   },
   "2701": {
     "convert": 1,
-    "desc": "Ore that's rich in copper. Once refined, it's often used in the production of electronics.",
+    "desc": "구리를 풍부하게 함유하고 있는 광석. 제련 후에는 전자 제품 제조에 자주 사용된다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -2091,15 +2031,12 @@
     "id": 2701,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "석암 광산",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Copper Ore",
+    "name": "구리 광석",
     "order_price": 100,
     "price": 1,
     "pt_num": 1,
@@ -2113,7 +2050,7 @@
   },
   "2702": {
     "convert": 1,
-    "desc": "Ore that's rich in aluminum. Once refined, it's often used in the manufacturing of aircraft and ships.",
+    "desc": "알루미늄을 풍부하게 함유하고 있는 광석. 제련 후에는 항공기나 함선 제조에 자주 사용된다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -2126,15 +2063,12 @@
     "id": 2702,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "석암 광산",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Bauxite Ore",
+    "name": "알루미늄 광석",
     "order_price": 300,
     "price": 1,
     "pt_num": 30,
@@ -2148,7 +2082,7 @@
   },
   "2703": {
     "convert": 1,
-    "desc": "Ore that's rich in iron. Once refined, it's often used in the construction of buildings and structures.",
+    "desc": "철을 풍부하게 함유하고 있는 광석. 제련 후에는 시설 건설에 자주 사용된다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -2161,15 +2095,12 @@
     "id": 2703,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "석암 광산",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Iron Ore",
+    "name": "철광석",
     "order_price": 180,
     "price": 1,
     "pt_num": 18,
@@ -2183,7 +2114,7 @@
   },
   "2704": {
     "convert": 1,
-    "desc": "A deposit that's rich in sulfur. Once refined, it's often used in the manufacturing of fertilizers and insecticides.",
+    "desc": "유황을 풍부하게 함유하고 있는 광석. 제련 후에는 비료나 살충제 제조에 자주 사용된다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -2196,15 +2127,12 @@
     "id": 2704,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "석암 광산",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Sulfur",
+    "name": "황광석",
     "order_price": 700,
     "price": 1,
     "pt_num": 80,
@@ -2218,7 +2146,7 @@
   },
   "2705": {
     "convert": 1,
-    "desc": "Ore that's rich in silver. Once refined, it's often used in the manufacturing of alloys and chemical instruments.",
+    "desc": "은을 풍부하게 함유하고 있는 광석. 제련 후에는 합금이나 화학 재료 제조에 자주 사용된다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -2231,15 +2159,12 @@
     "id": 2705,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "석암 광산",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Silver Ore",
+    "name": "은광석",
     "order_price": 1600,
     "price": 1,
     "pt_num": 240,
@@ -2253,7 +2178,7 @@
   },
   "2800": {
     "convert": 1,
-    "desc": "A basic material. It has many applications, ranging from construction to making paper.",
+    "desc": "기본적인 목재. 제지에서 건축까지 다양한 용도를 가진다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -2266,15 +2191,12 @@
     "id": 2800,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "우거진 벌목장",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Raw Timber",
+    "name": "자연 목재",
     "order_price": 12,
     "price": 1,
     "pt_num": 1,
@@ -2288,7 +2210,7 @@
   },
   "2801": {
     "convert": 1,
-    "desc": "With its beautiful grain, it's perfect for creating furniture or flooring.",
+    "desc": "무늬가 아름다워 가구나 바닥재 제작에 적합하다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -2301,15 +2223,12 @@
     "id": 2801,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "우거진 벌목장",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Workable Wood",
+    "name": "실용 목재",
     "order_price": 125,
     "price": 1,
     "pt_num": 1,
@@ -2323,7 +2242,7 @@
   },
   "2802": {
     "convert": 1,
-    "desc": "Solid and durable, it's used in the making of high-end furniture and traditional shipbuilding.",
+    "desc": "튼튼하고 내구성이 뛰어나, 전통적인 조선이나 고급 가구 제조에 사용된다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -2336,15 +2255,12 @@
     "id": 2802,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "우거진 벌목장",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Premium Wood",
+    "name": "엄선 목재",
     "order_price": 360,
     "price": 1,
     "pt_num": 36,
@@ -2358,7 +2274,7 @@
   },
   "2803": {
     "convert": 1,
-    "desc": "Pretty and durable. Suited for making luxury decorations and furniture.",
+    "desc": "아름답고 튼튼하다. 고급 장식이나 가구 제조에 적합하다.",
     "drop_after_use": 0,
     "filter": [
       10111,
@@ -2371,15 +2287,12 @@
     "id": 2803,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "우거진 벌목장",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Elegant Wood",
+    "name": "우아한 목재",
     "order_price": 1200,
     "price": 1,
     "pt_num": 180,
@@ -2393,11 +2306,11 @@
   },
   "3000": {
     "convert": 1,
-    "desc": "High-protein feed for the clucky clucky bird. Provides it with all the energy it needs.",
+    "desc": "꼬꼬닭 전용 고단백 사료. 충분한 에너지를 공급한다.",
     "drop_after_use": 0,
     "filter": [
       10112,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2406,18 +2319,15 @@
     "id": 3000,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "방앗간",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Clucky Clucky Bird Feed",
+    "name": "꼬꼬닭의 사료",
     "order_price": 25,
     "price": 1,
-    "pt_num": 1,
+    "pt_num": 3,
     "rarity": 1,
     "resource_type": 1,
     "sub_attribute": [],
@@ -2428,11 +2338,11 @@
   },
   "3001": {
     "convert": 1,
-    "desc": "Fattening feed for the oinky oinky pig. Perfect for a growing animal.",
+    "desc": "꿀꿀이 전용 체중 증가용 사료. 많이 먹는 동물에게 적합하다.",
     "drop_after_use": 0,
     "filter": [
       10112,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2441,18 +2351,15 @@
     "id": 3001,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "방앗간",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Oinky Oinky Pig Feed",
+    "name": "꿀꿀이 사료",
     "order_price": 25,
     "price": 1,
-    "pt_num": 1,
+    "pt_num": 3,
     "rarity": 1,
     "resource_type": 1,
     "sub_attribute": [],
@@ -2463,11 +2370,11 @@
   },
   "3002": {
     "convert": 1,
-    "desc": "Nutritional feed for the moo moo cow. Fragrant and aids in the production of rich milk.",
+    "desc": "무무소 전용 영양 사료. 향기가 좋고 고소한 우유가 생산될 수 있게 해준다.",
     "drop_after_use": 0,
     "filter": [
       10112,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2476,15 +2383,12 @@
     "id": 3002,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "방앗간",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Moo Moo Cow Feed",
+    "name": "무무소 사료",
     "order_price": 40,
     "price": 1,
     "pt_num": 4,
@@ -2498,11 +2402,11 @@
   },
   "3003": {
     "convert": 1,
-    "desc": "Cornmeal feed for the baa baa sheep. Helps promote the growth of softer wool.",
+    "desc": "메메양 전용 옥수수 가루 사료. 더 부드러운 양털을 얻는데 도움을 준다.",
     "drop_after_use": 0,
     "filter": [
       10112,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2511,15 +2415,12 @@
     "id": 3003,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "방앗간",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Baa Baa Sheep Feed",
+    "name": "메메양의 사료",
     "order_price": 40,
     "price": 1,
     "pt_num": 4,
@@ -2533,11 +2434,11 @@
   },
   "3004": {
     "convert": 1,
-    "desc": "White flour made from grinding wheat. Needed to make bread, cakes, and pizzas.",
+    "desc": "밀을 갈아 만든 하얀 가루. 빵, 케이크, 피자 등을 만드는데 빼놓을 수 없는 재료다.",
     "drop_after_use": 0,
     "filter": [
       10112,
-      10127
+      10140
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2546,18 +2447,15 @@
     "id": 3004,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "방앗간",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Flour",
+    "name": "밀가루",
     "order_price": 50,
     "price": 1,
-    "pt_num": 1,
+    "pt_num": 6,
     "rarity": 1,
     "resource_type": 1,
     "sub_attribute": [],
@@ -2568,7 +2466,7 @@
   },
   "3005": {
     "convert": 1,
-    "desc": "A refreshing flavor that's sure to top up your batteries!",
+    "desc": "개운한 맛으로 기분을 상쾌하게 해준다!",
     "drop_after_use": 0,
     "filter": [
       10113,
@@ -2581,18 +2479,15 @@
     "id": 3005,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬카페",
+        []
       ]
     ],
     "manage_influence": 190,
-    "name": "Iced Coffee",
+    "name": "아이스 커피",
     "order_price": 95,
     "price": 1,
-    "pt_num": 1,
+    "pt_num": 15,
     "rarity": 1,
     "resource_type": 1,
     "sub_attribute": [
@@ -2606,7 +2501,7 @@
   },
   "3006": {
     "convert": 1,
-    "desc": "Made from milk, it contains loads of protein and fat. Frequently combined with bread.",
+    "desc": "우유를 원료로 만들어져, 풍부한 단백질과 지방을 함유하고 있다. 빵에 곁들여 사용할 때가 많다.",
     "drop_after_use": 0,
     "filter": [
       10113,
@@ -2619,15 +2514,12 @@
     "id": 3006,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬카페",
+        []
       ]
     ],
     "manage_influence": 150,
-    "name": "Cheese",
+    "name": "치즈",
     "order_price": 550,
     "price": 1,
     "pt_num": 55,
@@ -2644,7 +2536,7 @@
   },
   "3007": {
     "convert": 1,
-    "desc": "An espresso combined with milk. Very aromatic and smooth, it's a favorite among coffee lovers.",
+    "desc": "에스프레소와 우유를 섞은 음료. 향기가 좋고 부드러워 커피 애호가들의 사랑을 받고 있다.",
     "drop_after_use": 0,
     "filter": [
       10113,
@@ -2657,15 +2549,12 @@
     "id": 3007,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬카페",
+        []
       ]
     ],
     "manage_influence": 180,
-    "name": "Latte",
+    "name": "라떼",
     "order_price": 250,
     "price": 1,
     "pt_num": 25,
@@ -2682,7 +2571,7 @@
   },
   "3008": {
     "convert": 1,
-    "desc": "A coffee beverage with citrus juice added. Its pleasant acidity and fruity smell are its standout traits.",
+    "desc": "감귤 과즙을 더한 커피 음료. 상쾌한 산미와 과일 향이 특징이다.",
     "drop_after_use": 0,
     "filter": [
       10113,
@@ -2695,18 +2584,15 @@
     "id": 3008,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬카페",
+        []
       ]
     ],
     "manage_influence": 180,
-    "name": "Citrus Coffee",
+    "name": "시트러스 커피",
     "order_price": 190,
     "price": 1,
-    "pt_num": 20,
+    "pt_num": 25,
     "rarity": 2,
     "resource_type": 1,
     "sub_attribute": [
@@ -2720,11 +2606,11 @@
   },
   "3009": {
     "convert": 1,
-    "desc": "A sweet pie consisting of candied apples put inside the crust. A commonplace dessert.",
+    "desc": "설탕으로 졸인 사과를 파이로 감싸 구운 달콤한 음식. 대표적인 디저트이다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10126
+      10129
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2733,15 +2619,12 @@
     "id": 3009,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬카페",
+        []
       ]
     ],
     "manage_influence": 190,
-    "name": "Apple Pie",
+    "name": "애플파이",
     "order_price": 385,
     "price": 1,
     "pt_num": 35,
@@ -2758,7 +2641,7 @@
   },
   "3010": {
     "convert": 1,
-    "desc": "It's smooth as velvet, cool, and airy, with a rich flavor.",
+    "desc": "부드러운 우유 크림과 상쾌하고 부드러운 딸기가 어우러진 음료수.",
     "drop_after_use": 0,
     "filter": [
       10113,
@@ -2771,18 +2654,15 @@
     "id": 3010,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬카페",
+        []
       ]
     ],
     "manage_influence": 240,
-    "name": "Strawberry Milkshake",
+    "name": "딸기 밀크쉐이크",
     "order_price": 260,
     "price": 1,
-    "pt_num": 25,
+    "pt_num": 60,
     "rarity": 2,
     "resource_type": 1,
     "sub_attribute": [
@@ -2796,11 +2676,11 @@
   },
   "3011": {
     "convert": 1,
-    "desc": "White and soft. Made from soy beans, it contains plant-based proteins in abundance.",
+    "desc": "하얗고 부드럽다. 대두로 만들어 풍부한 식물성 단백질을 함유하고 있다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10127
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2809,15 +2689,12 @@
     "id": 3011,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "유어 레스토랑",
+        []
       ]
     ],
     "manage_influence": 170,
-    "name": "Tofu",
+    "name": "두부",
     "order_price": 340,
     "price": 1,
     "pt_num": 35,
@@ -2834,11 +2711,11 @@
   },
   "3012": {
     "convert": 1,
-    "desc": "A traditional Dragon Empery dish. The texture is silky-smooth, and the sauce is rich and delicious.",
+    "desc": "이스트 글림의 전통 가정식. 부드러운 식감에 국물이 아주 진하다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10127
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2847,15 +2724,12 @@
     "id": 3012,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "유어 레스토랑",
+        []
       ]
     ],
     "manage_influence": 180,
-    "name": "Tofu with Minced Meat",
+    "name": "다진 고기 두부볶음",
     "order_price": 1300,
     "price": 1,
     "pt_num": 155,
@@ -2872,11 +2746,11 @@
   },
   "3013": {
     "convert": 1,
-    "desc": "Fluffy rice wrapped in a thin, golden omelette. A surprise awaits in each bite!",
+    "desc": "노릇한 달걀 부침으로 부드러운 밥을 감싼 요리. 한 입마다 특별한 맛이 가득하다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10127
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2885,15 +2759,12 @@
     "id": 3013,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "유어 레스토랑",
+        []
       ]
     ],
     "manage_influence": 240,
-    "name": "Omurice",
+    "name": "오므라이스",
     "order_price": 355,
     "price": 1,
     "pt_num": 35,
@@ -2910,11 +2781,11 @@
   },
   "3014": {
     "convert": 1,
-    "desc": "The sweetness of napa cabbage and the umami flavor of tofu. A light and healthy dish.",
+    "desc": "배추의 단 맛과 두부의 감칠맛이 어우러진 단백한 건강식.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10127
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2923,18 +2794,15 @@
     "id": 3014,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "유어 레스토랑",
+        []
       ]
     ],
     "manage_influence": 180,
-    "name": "Cabbage and Tofu Soup",
+    "name": "배추 두부탕",
     "order_price": 425,
     "price": 1,
-    "pt_num": 40,
+    "pt_num": 65,
     "rarity": 2,
     "resource_type": 1,
     "sub_attribute": [
@@ -2948,11 +2816,11 @@
   },
   "3015": {
     "convert": 1,
-    "desc": "Fresh veggies combined with a nice dressing. Crisp and delicious!",
+    "desc": "신선한 야채와 드레싱의 조합. 상큼하고 맛있다!",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10127
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2961,15 +2829,12 @@
     "id": 3015,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "유어 레스토랑",
+        []
       ]
     ],
     "manage_influence": 160,
-    "name": "Vegetable Salad",
+    "name": "야채 샐러드",
     "order_price": 105,
     "price": 1,
     "pt_num": 10,
@@ -2986,11 +2851,11 @@
   },
   "3017": {
     "convert": 1,
-    "desc": "Freshly squeezed juice with a pronounced fruity aroma. A popular and healthy drink!",
+    "desc": "갓 짜낸 주스에 과일 향이 가득하다. 건강한 인기 메뉴다!",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10128
     ],
     "group_max": 0,
     "have_max": 0,
@@ -2999,15 +2864,12 @@
     "id": 3017,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "백곰 음료",
+        []
       ]
     ],
     "manage_influence": 200,
-    "name": "Apple Juice",
+    "name": "사과 주스",
     "order_price": 105,
     "price": 1,
     "pt_num": 10,
@@ -3024,11 +2886,11 @@
   },
   "3018": {
     "convert": 1,
-    "desc": "The perfect combination of banana and mango. It's pure, concentrated tropical flavor!",
+    "desc": "바나나와 망고의 완벽한 조화. 열대 과일의 맛이 응축되어 있다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10128
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3037,18 +2899,15 @@
     "id": 3018,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "백곰 음료",
+        []
       ]
     ],
     "manage_influence": 190,
-    "name": "Banana and Mango Juice",
+    "name": "바나나 망고 주스",
     "order_price": 215,
     "price": 1,
-    "pt_num": 20,
+    "pt_num": 25,
     "rarity": 2,
     "resource_type": 1,
     "sub_attribute": [
@@ -3062,11 +2921,11 @@
   },
   "3019": {
     "convert": 1,
-    "desc": "A sublime pairing of sweet honey and refreshing lemon. A good source of vitamin C.",
+    "desc": "달콤한 꿀과 상쾌한 레몬의 절묘한 조화. 비타민 C더 섭취할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10128
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3075,15 +2934,12 @@
     "id": 3019,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "백곰 음료",
+        []
       ]
     ],
     "manage_influence": 240,
-    "name": "Honey and Lemon Water",
+    "name": "꿀 레몬 워터",
     "order_price": 140,
     "price": 1,
     "pt_num": 15,
@@ -3100,11 +2956,11 @@
   },
   "3020": {
     "convert": 1,
-    "desc": "A fruity combination of strawberries and lemons. Cooling and great for blowing off the summer heat!",
+    "desc": "딸기와 레몬의 절묘한 조합으로 상큼하고도 질리지 않는 과일 풍미의 특제 음료.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10128
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3113,18 +2969,15 @@
     "id": 3020,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "백곰 음료",
+        []
       ]
     ],
     "manage_influence": 180,
-    "name": "Strawberry Lemon Drink",
+    "name": "딸기 레몬 드링크",
     "order_price": 270,
     "price": 1,
-    "pt_num": 25,
+    "pt_num": 50,
     "rarity": 2,
     "resource_type": 1,
     "sub_attribute": [
@@ -3138,11 +2991,11 @@
   },
   "3021": {
     "convert": 1,
-    "desc": "It soothes your heart, relieves stress, and clears your mind and body.",
+    "desc": "마음을 진정시키고, 스트레스를 해소하여 심신을 달래준다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10128
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3151,15 +3004,12 @@
     "id": 3021,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "백곰 음료",
+        []
       ]
     ],
     "manage_influence": 160,
-    "name": "Lavender Tea",
+    "name": "라벤더 차",
     "order_price": 1590,
     "price": 1,
     "pt_num": 240,
@@ -3176,11 +3026,11 @@
   },
   "3022": {
     "convert": 1,
-    "desc": "A sweet coffee. The sweet and sour flavor of the strawberries melds perfectly with the mellowness of the honey.",
+    "desc": "딸기의 새콤함과 꿀의 달콤함이 완벽하게 융합된 감미로운 프라페.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10128
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3189,15 +3039,12 @@
     "id": 3022,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "백곰 음료",
+        []
       ]
     ],
     "manage_influence": 220,
-    "name": "Strawberry Honey Frappé",
+    "name": "딸기 꿀 프라페",
     "order_price": 790,
     "price": 1,
     "pt_num": 95,
@@ -3214,11 +3061,11 @@
   },
   "3023": {
     "convert": 1,
-    "desc": "Lightly steamed, golden corn kernels put into a cup. A common and yummy snack.",
+    "desc": "가볍게 쪄낸 황금빛 옥수수 알을 컵에 담아낸 요리. 흔히 볼 수 있는 맛있는 간식.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10129
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3227,18 +3074,15 @@
     "id": 3023,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬쥬 간편식",
+        []
       ]
     ],
     "manage_influence": 180,
-    "name": "Corn Cup",
+    "name": "옥수수 컵",
     "order_price": 45,
     "price": 1,
-    "pt_num": 4,
+    "pt_num": 7,
     "rarity": 2,
     "resource_type": 1,
     "sub_attribute": [
@@ -3252,11 +3096,11 @@
   },
   "3024": {
     "convert": 1,
-    "desc": "A classic dessert. Tastes even better when you have it with afternoon tea.",
+    "desc": "클래식한 디저트. 오후의 티 타임에 먹으면 맛있다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10126
+      10129
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3265,15 +3109,12 @@
     "id": 3024,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬쥬 간편식",
+        []
       ]
     ],
     "manage_influence": 185,
-    "name": "Orange Pie",
+    "name": "오렌지 파이",
     "order_price": 375,
     "price": 1,
     "pt_num": 35,
@@ -3290,11 +3131,11 @@
   },
   "3025": {
     "convert": 1,
-    "desc": "A homely dish brimming with tropical taste. Great for when you don't have an appetite.",
+    "desc": "열대 과일의 매력을 즐길 수 있는 가정 요리. 입맛이 없을 때 먹으면 좋다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10126
+      10129
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3303,15 +3144,12 @@
     "id": 3025,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬쥬 간편식",
+        []
       ]
     ],
     "manage_influence": 160,
-    "name": "Sticky Rice with Mango",
+    "name": "망고 찹쌀밥",
     "order_price": 510,
     "price": 1,
     "pt_num": 60,
@@ -3328,11 +3166,11 @@
   },
   "3026": {
     "convert": 1,
-    "desc": "A classic breakfast item. It's crunchy and loved by men and women of all ages.",
+    "desc": "클래식한 조식 메뉴. 바삭한 식감으로 남녀노소 가리지 않고 인기가 있다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10126
+      10129
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3341,15 +3179,12 @@
     "id": 3026,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬쥬 간편식",
+        []
       ]
     ],
     "manage_influence": 170,
-    "name": "Banana Crêpe",
+    "name": "바나나 크레페",
     "order_price": 230,
     "price": 1,
     "pt_num": 30,
@@ -3366,11 +3201,11 @@
   },
   "3028": {
     "convert": 1,
-    "desc": "A beloved food among dessert lovers, this cake is made with crispy meringue dough and sweet strawberry mousse.",
+    "desc": "바삭바삭한 머랭에 달콤한 딸기 무스를 조합한, 디저트 애호가들의 최애 요리.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10126
+      10129
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3379,15 +3214,12 @@
     "id": 3028,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬쥬 간편식",
+        []
       ]
     ],
     "manage_influence": 190,
-    "name": "Strawberry Charlotte",
+    "name": "딸기 샬럿",
     "order_price": 1350,
     "price": 1,
     "pt_num": 200,
@@ -3404,11 +3236,11 @@
   },
   "3029": {
     "convert": 1,
-    "desc": "Crispy on the outside and tender on the inside, with a fragrant aroma. An indispensable dish at barbecue parties!",
+    "desc": "겉은 바삭하고 속은 촉촉하며, 향긋한 불맛이 가득하다. 바비큐 파티의 필수 요리다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10130
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3417,15 +3249,12 @@
     "id": 3029,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "오징어 구이",
+        []
       ]
     ],
     "manage_influence": 210,
-    "name": "Coal-Roasted Skewer",
+    "name": "숯불고기 꼬치",
     "order_price": 390,
     "price": 1,
     "pt_num": 40,
@@ -3442,11 +3271,11 @@
   },
   "3030": {
     "convert": 1,
-    "desc": "A straightforward and delicious meal that's often seen on the dinner table at home!",
+    "desc": "단순하면서도 맛있다. 가정식에서 빼놓을 수 없는 요리!",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10130
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3455,15 +3284,12 @@
     "id": 3030,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "오징어 구이",
+        []
       ]
     ],
     "manage_influence": 230,
-    "name": "Chicken and Potato Hors d'Oeuvre",
+    "name": "닭고기 감자 플래터",
     "order_price": 370,
     "price": 1,
     "pt_num": 36,
@@ -3480,11 +3306,11 @@
   },
   "3032": {
     "convert": 1,
-    "desc": "A dish of chicken stir-fried with spices. Its fragrance makes you hungry!",
+    "desc": "닭고기를 조미료와 함께 볶아낸 요리. 고소한 냄새가 식욕을 자극한다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10130
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3493,15 +3319,12 @@
     "id": 3032,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "오징어 구이",
+        []
       ]
     ],
     "manage_influence": 220,
-    "name": "Stir-Fried Chicken",
+    "name": "닭고기 볶음",
     "order_price": 580,
     "price": 1,
     "pt_num": 70,
@@ -3518,11 +3341,11 @@
   },
   "3033": {
     "convert": 1,
-    "desc": "A thin omelette wrapped with sweet carrots resulting in a complex flavor. A great choice for breakfast or as an afternoon snack!",
+    "desc": "얇은 달걀 부침으로 달콤한 당근을 감싸 풍부한 식감을 자랑한다. 아침이나 오후 티 타임에 어울리는 요리다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10130
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3531,15 +3354,12 @@
     "id": 3033,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "오징어 구이",
+        []
       ]
     ],
     "manage_influence": 180,
-    "name": "Rolled Carrot Omelette",
+    "name": "두꺼운 당근 계란말이",
     "order_price": 170,
     "price": 1,
     "pt_num": 16,
@@ -3556,11 +3376,11 @@
   },
   "3034": {
     "convert": 1,
-    "desc": "Filling and quick to prepare, this is a dish for those who like to be efficient!",
+    "desc": "간편한 조리로 배를 한 가득 채울 수 있다. 시간 절약에 좋은 요리다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10130
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3569,15 +3389,12 @@
     "id": 3034,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "오징어 구이",
+        []
       ]
     ],
     "manage_influence": 150,
-    "name": "Steak Bowl",
+    "name": "햄버그 덮밥",
     "order_price": 845,
     "price": 1,
     "pt_num": 100,
@@ -3594,11 +3411,11 @@
   },
   "3035": {
     "convert": 1,
-    "desc": "Basic cloth made from material containing fiber. A base material in many day-to-day products and industrial goods.",
+    "desc": "섬유가 포함된 재료로 만든 천 재료. 다양한 생활용품과 공업 제품의 원료다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3607,15 +3424,12 @@
     "id": 3035,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "수공 작업대",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Cloth",
+    "name": "천",
     "order_price": 340,
     "price": 1,
     "pt_num": 34,
@@ -3629,11 +3443,11 @@
   },
   "3036": {
     "convert": 1,
-    "desc": "Processed animal pelts. Often used in the production of clothing and furniture.",
+    "desc": "동물의 가죽을 가공한 재료. 의류나 가구 제작에도 자주 쓰인다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3642,15 +3456,12 @@
     "id": 3036,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "수공 작업대",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Leather",
+    "name": "가죽",
     "order_price": 600,
     "price": 1,
     "pt_num": 60,
@@ -3664,11 +3475,11 @@
   },
   "3037": {
     "convert": 1,
-    "desc": "Firm and strong. Can be used to tie things up, of course, but also helps to hold scaffoldings in place.",
+    "desc": "튼튼하고 질기다. 짐을 묶을 때는 물론이고, 구조물을 세울 때도 자주 쓰인다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3677,15 +3488,12 @@
     "id": 3037,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "수공 작업대",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Rope",
+    "name": "밧줄",
     "order_price": 600,
     "price": 1,
     "pt_num": 72,
@@ -3699,11 +3507,11 @@
   },
   "3038": {
     "convert": 1,
-    "desc": "An essential household item for keeping warm. You don't want to go out on a cold day without these.",
+    "desc": "어느 가정에도 하나씩은 있는 필수 보온용품. 추운 날에 외출하려면 꼭 필요하다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3712,15 +3520,12 @@
     "id": 3038,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "수공 작업대",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Gloves",
+    "name": "장갑",
     "order_price": 890,
     "price": 1,
     "pt_num": 105,
@@ -3734,11 +3539,11 @@
   },
   "3039": {
     "convert": 1,
-    "desc": "A sachet filled with herbs and spices. Bring the freshness with you wherever you go!",
+    "desc": "허브나 향신료가 담긴 주머니. 가지고 다니면 정신을 맑게 해준다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3747,15 +3552,12 @@
     "id": 3039,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "수공 작업대",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Aroma Sachet",
+    "name": "향낭",
     "order_price": 1100,
     "price": 1,
     "pt_num": 130,
@@ -3769,11 +3571,11 @@
   },
   "3040": {
     "convert": 1,
-    "desc": "A leather product. Worn to protect your feet.",
+    "desc": "가죽 제품. 발을 보호하기 위해 신는다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3782,15 +3584,12 @@
     "id": 3040,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "수공 작업대",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Shoes",
+    "name": "신발",
     "order_price": 2380,
     "price": 1,
     "pt_num": 350,
@@ -3804,11 +3603,11 @@
   },
   "3041": {
     "convert": 1,
-    "desc": "An indispensable medical item. Whether you have a gash or a bruise, this provides immediate treatment.",
+    "desc": "필수 구급용품. 베이거나 긁힌 상처에 즉시 사용할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3817,15 +3616,12 @@
     "id": 3041,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "수공 작업대",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Wound Dressings",
+    "name": "붕대",
     "order_price": 2380,
     "price": 1,
     "pt_num": 350,
@@ -3839,11 +3635,11 @@
   },
   "3042": {
     "convert": 1,
-    "desc": "An art product often used for sketching and designing on paper.",
+    "desc": "드로잉이나 스케치에 자주 사용되는 미술 도구.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3852,15 +3648,12 @@
     "id": 3042,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "공장 기계",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Charcoal Brush",
+    "name": "연필",
     "order_price": 300,
     "price": 1,
     "pt_num": 30,
@@ -3874,11 +3667,11 @@
   },
   "3043": {
     "convert": 1,
-    "desc": "A symbol of modernity used to provide electricity to lots of machinery.",
+    "desc": "많은 시설에 전력을 공급하는 현대 문물의 상징.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3887,15 +3680,12 @@
     "id": 3043,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "공장 기계",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Cable",
+    "name": "케이블",
     "order_price": 770,
     "price": 1,
     "pt_num": 92,
@@ -3909,11 +3699,11 @@
   },
   "3044": {
     "convert": 1,
-    "desc": "An item commonly seen in construction, often being used to fix signs in place or construct furniture.",
+    "desc": "흔히 보이는 건축 자재. 나무판을 고정하거나, 가구를 제조하는데 사용된다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3922,15 +3712,12 @@
     "id": 3044,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "공장 기계",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Nails",
+    "name": "못",
     "order_price": 660,
     "price": 1,
     "pt_num": 66,
@@ -3944,11 +3731,11 @@
   },
   "3045": {
     "convert": 1,
-    "desc": "Chemicals that are highly corrosive. Used in herbicides and detergents.",
+    "desc": "강한 부식성을 가진 화학품.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3957,15 +3744,12 @@
     "id": 3045,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "공장 기계",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Chemicals",
+    "name": "화학품",
     "order_price": 840,
     "price": 1,
     "pt_num": 84,
@@ -3979,11 +3763,11 @@
   },
   "3046": {
     "convert": 1,
-    "desc": "An essential component in modern weaponry. Must be handled with care.",
+    "desc": "현대 무기에 자주 쓰인다. 적절한 관리가 이뤄져야 하는 위험한 물품.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -3992,15 +3776,12 @@
     "id": 3046,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "공장 기계",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Gunpowder",
+    "name": "화약",
     "order_price": 1200,
     "price": 1,
     "pt_num": 150,
@@ -4014,11 +3795,11 @@
   },
   "3047": {
     "convert": 1,
-    "desc": "Tableware that's a must-have in any home.",
+    "desc": "어느 가정에도 빼놓을 수 없는 필수품.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4027,15 +3808,12 @@
     "id": 3047,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "공장 기계",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Utensils",
+    "name": "식기",
     "order_price": 2560,
     "price": 1,
     "pt_num": 380,
@@ -4049,11 +3827,11 @@
   },
   "3048": {
     "convert": 1,
-    "desc": "Often made out of cheap plant fiber. Easy to preserve and write on.",
+    "desc": "저렴한 식물 섬유로 만들어지는 경우가 많다. 보관하기도 쉽고, 무언가를 기록하기 좋다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4062,18 +3840,15 @@
     "id": 3048,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "목재 가공",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Paper",
+    "name": "종이",
     "order_price": 175,
     "price": 1,
-    "pt_num": 1,
+    "pt_num": 6,
     "rarity": 1,
     "resource_type": 1,
     "sub_attribute": [],
@@ -4084,11 +3859,11 @@
   },
   "3049": {
     "convert": 1,
-    "desc": "A book filled with descriptions of daily tasks and errands. Can also be used as a diary.",
+    "desc": "일상적인 업무가 빼곡하게 적힌 노트. 일기장으로도 쓸 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4097,15 +3872,12 @@
     "id": 3049,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "목재 가공",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Notebook",
+    "name": "수첩",
     "order_price": 1230,
     "price": 1,
     "pt_num": 120,
@@ -4119,11 +3891,11 @@
   },
   "3050": {
     "convert": 1,
-    "desc": "The most common types of furniture. They provide a place to stop and rest.",
+    "desc": "가장 일반적인 가구. 휴식할 곳을 제공해 준다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4132,15 +3904,12 @@
     "id": 3050,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "목재 가공",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Chair and Desk",
+    "name": "책상과 의자",
     "order_price": 810,
     "price": 1,
     "pt_num": 80,
@@ -4154,11 +3923,11 @@
   },
   "3051": {
     "convert": 1,
-    "desc": "A multipurpose barrel used for storing wine, honey, and the like.",
+    "desc": "와인이나 꿀을 저장할 때 쓰이는 다기능 통.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4167,15 +3936,12 @@
     "id": 3051,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "목재 가공",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Choice Wooden Barrel",
+    "name": "특선 나무통",
     "order_price": 1610,
     "price": 1,
     "pt_num": 190,
@@ -4189,11 +3955,11 @@
   },
   "3052": {
     "convert": 1,
-    "desc": "Every self-respecting office has some of these. Nice to have for storing and managing documents of all kinds.",
+    "desc": "사무실의 필수품. 각종 서류를 보관하고 관리하기 편리하다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4202,15 +3968,12 @@
     "id": 3052,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "목재 가공",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Filing Cabinet",
+    "name": "서류 캐비닛",
     "order_price": 2880,
     "price": 1,
     "pt_num": 430,
@@ -4224,11 +3987,11 @@
   },
   "3053": {
     "convert": 1,
-    "desc": "Stores printing ink. A core part of any printer.",
+    "desc": "인쇄용 잉크가 보관된 용기. 프린터의 핵심 부품이다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4237,15 +4000,12 @@
     "id": 3053,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "전자 부품 가공",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Ink Cartridge",
+    "name": "잉크 카트리지",
     "order_price": 570,
     "price": 1,
     "pt_num": 55,
@@ -4259,11 +4019,11 @@
   },
   "3054": {
     "convert": 1,
-    "desc": "Used to tell the time. Usually hung on walls.",
+    "desc": "시간을 알려주는 정밀 기기. 보통은 벽에 고정해서 쓴다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4272,15 +4032,12 @@
     "id": 3054,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "전자 부품 가공",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Clock",
+    "name": "시계",
     "order_price": 2590,
     "price": 1,
     "pt_num": 310,
@@ -4294,11 +4051,11 @@
   },
   "3055": {
     "convert": 1,
-    "desc": "A reusable and stable power source for motors, lights, and things like that.",
+    "desc": "여러 번 사용할 수 있으며, 모터나 조명 장치 등에 안정적인 전력을 공급한다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4307,15 +4064,12 @@
     "id": 3055,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "전자 부품 가공",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Battery",
+    "name": "축전지",
     "order_price": 1750,
     "price": 1,
     "pt_num": 210,
@@ -4329,11 +4083,11 @@
   },
   "3056": {
     "convert": 1,
-    "desc": "Removes impurities from water and makes it clean!",
+    "desc": "물속의 불순물을 걸러내어 깨끗한 식수를 제공한다.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10131
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4342,15 +4096,12 @@
     "id": 3056,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "전자 부품 가공",
+        []
       ]
     ],
     "manage_influence": 0,
-    "name": "Water Filter",
+    "name": "정수 필터",
     "order_price": 2400,
     "price": 1,
     "pt_num": 360,
@@ -4364,7 +4115,7 @@
   },
   "3059": {
     "convert": 1,
-    "desc": "Tender filling covered with a fluffy egg skin. Golden and tempting, it's a simple but satisfying delicacy.",
+    "desc": "폭신폭신한 달걀로 부드러운 식재료를 감싼 황금빛의 유혹적인 요리. 단순하면서도 만족감이 느껴지는 맛.",
     "drop_after_use": 0,
     "filter": [
       10113,
@@ -4377,18 +4128,15 @@
     "id": 3059,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬카페",
+        []
       ]
     ],
     "manage_influence": 210,
-    "name": "Omelette",
+    "name": "오믈렛",
     "order_price": 50,
     "price": 1,
-    "pt_num": 1,
+    "pt_num": 2,
     "rarity": 1,
     "resource_type": 1,
     "sub_attribute": [
@@ -4402,11 +4150,11 @@
   },
   "3101": {
     "convert": 1,
-    "desc": "A serving of minced meat with tofu and a soup with napa cabbage and tofu. Straightforward and tasty.",
+    "desc": "다진 고기 두부볶음과 배추 두부 스프의 조합. 단순하면서도 맛있다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10127
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4415,18 +4163,15 @@
     "id": 3101,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "유어 레스토랑",
+        []
       ]
     ],
     "manage_influence": 210,
-    "name": "Classic Tofu Combo",
+    "name": "정통 두부 세트",
     "order_price": 1735,
     "price": 1,
-    "pt_num": 200,
+    "pt_num": 230,
     "rarity": 3,
     "resource_type": 1,
     "sub_attribute": [
@@ -4440,11 +4185,11 @@
   },
   "3102": {
     "convert": 1,
-    "desc": "Hearty in more ways than one, this meal consists of fluffy omurice and some warm and smooth tofu. Simple but satisfying flavors.",
+    "desc": "폭신한 오므라이스와 따뜻하고 부드러운 두부의 조합. 단순하지만 만족스러운 맛.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10127
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4453,15 +4198,12 @@
     "id": 3102,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "유어 레스토랑",
+        []
       ]
     ],
     "manage_influence": 220,
-    "name": "Hearty Meal",
+    "name": "부드러운 한 상",
     "order_price": 695,
     "price": 1,
     "pt_num": 100,
@@ -4478,11 +4220,11 @@
   },
   "3103": {
     "convert": 1,
-    "desc": "The soothing scent of the lavender and the fresh sweetness of the apple come together exquisitely, providing a double-layered kind of enjoyment.",
+    "desc": "라벤더의 은은한 향기와 사과의 상쾌한 단맛이 절묘하게 어우러져, 즐거움을 이중으로 느낄 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10128
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4491,18 +4233,15 @@
     "id": 3103,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "백곰 음료",
+        []
       ]
     ],
     "manage_influence": 210,
-    "name": "Floral and Fruity",
+    "name": "향기로운 과일 세트",
     "order_price": 1700,
     "price": 1,
-    "pt_num": 200,
+    "pt_num": 250,
     "rarity": 3,
     "resource_type": 1,
     "sub_attribute": [
@@ -4516,11 +4255,11 @@
   },
   "3104": {
     "convert": 1,
-    "desc": "A shaved ice set with banana and mango juice and strawberry honey flavor. A fresh and fruity experience you won't forget.",
+    "desc": "바나나 망고 주스와 꿀 딸기 빙수 세트. 과일의 풍미로 상쾌한 맛을 선사해준다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10128
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4529,15 +4268,12 @@
     "id": 3104,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "백곰 음료",
+        []
       ]
     ],
     "manage_influence": 215,
-    "name": "Colorful Fruit Paradise",
+    "name": "컬러풀 프루트 파라다이스",
     "order_price": 1000,
     "price": 1,
     "pt_num": 120,
@@ -4554,11 +4290,11 @@
   },
   "3105": {
     "convert": 1,
-    "desc": "A combination of sweet strawberry honey and honey-lemon water. Its sunny flavor will fill you with energy.",
+    "desc": "꿀 딸기의 달콤함과 레몬 꿀물의 조합. 생기가 넘치는 태양의 맛.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10128
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4567,18 +4303,15 @@
     "id": 3105,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "백곰 음료",
+        []
       ]
     ],
     "manage_influence": 260,
-    "name": "Sunny Honey",
+    "name": "태양의 꿀물",
     "order_price": 410,
     "price": 1,
-    "pt_num": 60,
+    "pt_num": 70,
     "rarity": 4,
     "resource_type": 1,
     "sub_attribute": [
@@ -4592,11 +4325,11 @@
   },
   "3106": {
     "convert": 1,
-    "desc": "Fragrant and tropical mango meets a sweet and crispy corn cup. It lets you taste two types of happiness at once.",
+    "desc": "열대 망고의 향이 풍부한 식감과 옥수수 컵의 든든함이 함께 어울려, 한 번에 두 가지 행복을 맛볼 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10129
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4605,18 +4338,15 @@
     "id": 3106,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬쥬 간편식",
+        []
       ]
     ],
     "manage_influence": 250,
-    "name": "Succulently Sweet",
+    "name": "스위트 테이스트",
     "order_price": 560,
     "price": 1,
-    "pt_num": 65,
+    "pt_num": 70,
     "rarity": 3,
     "resource_type": 1,
     "sub_attribute": [
@@ -4630,11 +4360,11 @@
   },
   "3107": {
     "convert": 1,
-    "desc": "The softness of the banana crêpe combines with the crunchiness of the golden apple pie into a layered, fruity sweetness.",
+    "desc": "부드러운 바나나 크레페와 황금빛 애플파이의 바삭함이 어우러져, 한 번에 두 과일의 달콤한 풍미를 즐길 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10129
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4643,15 +4373,12 @@
     "id": 3107,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬쥬 간편식",
+        []
       ]
     ],
     "manage_influence": 240,
-    "name": "Orchard Duo",
+    "name": "과수원의 이중주",
     "order_price": 615,
     "price": 1,
     "pt_num": 70,
@@ -4668,11 +4395,11 @@
   },
   "3108": {
     "convert": 1,
-    "desc": "The romantic encounter of strawberry and the sunny scent of orange come together for an ecstatic dessert time.",
+    "desc": "딸기의 낭만적인 만남과 오렌지의 태양 같은 향이 융합되어, 황홀한 디저트 시간을 연출해준다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10129
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4681,15 +4408,12 @@
     "id": 3108,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬쥬 간편식",
+        []
       ]
     ],
     "manage_influence": 210,
-    "name": "Berry and Orange Dessert",
+    "name": "베리 오렌지 디저트",
     "order_price": 1730,
     "price": 1,
     "pt_num": 260,
@@ -4706,11 +4430,11 @@
   },
   "3109": {
     "convert": 1,
-    "desc": "Fragrant skewers, soft chicken, and crunchy fries. There's enough here to satisfy anyone's stomach.",
+    "desc": "고소한 꼬치와 부드러운 닭고기, 바삭한 감자튀김. 마음껏 배불리 먹을 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10130
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4719,15 +4443,12 @@
     "id": 3109,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "오징어 구이",
+        []
       ]
     ],
     "manage_influence": 230,
-    "name": "The Carne-val",
+    "name": "미트 카니발",
     "order_price": 760,
     "price": 1,
     "pt_num": 90,
@@ -4744,11 +4465,11 @@
   },
   "3110": {
     "convert": 1,
-    "desc": "A steak bowl with spicy, stir-fried chicken. If this won't provide you with enough energy and protein for a whole day, nothing will.",
+    "desc": "햄버그 덮밥과 향신료의 맛을 살린 닭고기 볶음까지, 단백질이 넘치는 구성으로 하루 에너지를 보충해 준다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10130
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4757,15 +4478,12 @@
     "id": 3110,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "오징어 구이",
+        []
       ]
     ],
     "manage_influence": 210,
-    "name": "Double Energy Combo",
+    "name": "에너지 더블 콤보",
     "order_price": 1430,
     "price": 1,
     "pt_num": 210,
@@ -4782,11 +4500,11 @@
   },
   "3111": {
     "convert": 1,
-    "desc": "Fluffy omurice and a luxury latte. The perfect start to your day.",
+    "desc": "폭신한 오믈렛과 고급스러운 라떼로 완벽한 아침 식사 시간을 만들어 준다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10126
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4795,15 +4513,12 @@
     "id": 3111,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬카페",
+        []
       ]
     ],
     "manage_influence": 250,
-    "name": "Morning Light Energy Combo",
+    "name": "아침의 활력 콤보",
     "order_price": 300,
     "price": 1,
     "pt_num": 36,
@@ -4820,11 +4535,11 @@
   },
   "3112": {
     "convert": 1,
-    "desc": "Iced coffee and rich cheese. This mix of sweet and bitter will give you a classic wake-up call of a breakfast.",
+    "desc": "아이스 커피와 진한 치즈, 쓴맛과 단맛의 균형이 어우러진 전형적인 아침 식사.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10126
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4833,15 +4548,12 @@
     "id": 3112,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬카페",
+        []
       ]
     ],
     "manage_influence": 240,
-    "name": "The Wake-Up Call",
+    "name": "굿모닝 브렉퍼스트",
     "order_price": 650,
     "price": 1,
     "pt_num": 80,
@@ -4858,11 +4570,11 @@
   },
   "3113": {
     "convert": 1,
-    "desc": "Citrus coffee and a strawberry milkshake. This one-two punch of delicious drinks is sure to satisfy you.",
+    "desc": "시트러스 커피와 딸기 밀크쉐이크. 두 가지 특제 음료를 한 번에 마음껏 즐길 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10125
+      10126
     ],
     "group_max": 0,
     "have_max": 0,
@@ -4871,18 +4583,15 @@
     "id": 3113,
     "jump_page": [
       [
-        "Buy in Shop",
-        [
-          "IslandShopScene",
-          "page = 1"
-        ]
+        "쥬카페",
+        []
       ]
     ],
     "manage_influence": 260,
-    "name": "Fruity & Fruitier",
+    "name": "프루트 트윈즈",
     "order_price": 450,
     "price": 1,
-    "pt_num": 65,
+    "pt_num": 90,
     "rarity": 4,
     "resource_type": 1,
     "sub_attribute": [
@@ -4896,7 +4605,7 @@
   },
   "4001": {
     "convert": 1,
-    "desc": "Golden autumn chrysanthemums that sway in the wind. They can be relished both in tea and as ornamental flowers.",
+    "desc": "바람에 흔들리는 황금빛 가을 국화. 감상용으로도, 차로 우려 마시기에도 좋다.",
     "drop_after_use": 0,
     "filter": [
       10111
@@ -4908,12 +4617,12 @@
     "id": 4001,
     "jump_page": [
       [
-        "Gather on Map",
+        "지도에서 채집",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Autumn Chrysanthemum",
+    "name": "가을 국화",
     "order_price": 400,
     "price": 1,
     "pt_num": 40,
@@ -4927,7 +4636,7 @@
   },
   "4002": {
     "convert": 1,
-    "desc": "The light, pure white flowers of the common reed, which grow in abundance near water. Often dried and used as an ornament.",
+    "desc": "물가에서 자라는 가벼운 순백색 갈대 꽃. 드라이 플라워 장식으로 자주 쓰인다.",
     "drop_after_use": 0,
     "filter": [
       10111
@@ -4939,12 +4648,12 @@
     "id": 4002,
     "jump_page": [
       [
-        "Gather on Map",
+        "지도에서 채집",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Reed Flowers",
+    "name": "갈대꽃",
     "order_price": 200,
     "price": 1,
     "pt_num": 2,
@@ -4958,7 +4667,7 @@
   },
   "4003": {
     "convert": 1,
-    "desc": "Peanut seeds are fragrant and delicious, and they're rich in protein and healthy fats.",
+    "desc": "고소하고 맛있는 땅콩에는 단백질과 건강한 지방이 풍부하다.",
     "drop_after_use": 0,
     "filter": [
       10111
@@ -4970,12 +4679,12 @@
     "id": 4003,
     "jump_page": [
       [
-        "Gather on Map",
+        "지도에서 채집",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Peanuts",
+    "name": "땅콩",
     "order_price": 150,
     "price": 1,
     "pt_num": 1,
@@ -4989,7 +4698,7 @@
   },
   "4004": {
     "convert": 1,
-    "desc": "Fresh matsutake mushrooms. A rare treat from the mountains. They have a unique aroma, and are often used as a top-tier flavor enhancer in soups.",
+    "desc": "신선한 산의 진미. 독특한 향취를 지니고 있어, 스프의 육수로도 쓰이는 최고급 식자재.",
     "drop_after_use": 0,
     "filter": [
       10111
@@ -5001,12 +4710,12 @@
     "id": 4004,
     "jump_page": [
       [
-        "Gather on Map",
+        "지도에서 채집",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Matsutake",
+    "name": "송이버섯",
     "order_price": 800,
     "price": 1,
     "pt_num": 95,
@@ -5020,11 +4729,11 @@
   },
   "4005": {
     "convert": 1,
-    "desc": "A sweet and juicy pear. Its texture is very smooth, and it has the thirst-quenching taste of autumn.",
+    "desc": "달콤하고 촉촉한 배. 섬세한 감촉으로 목을 적셔주는 가을의 별미.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10125
     ],
     "group_max": 0,
     "have_max": 0,
@@ -5033,12 +4742,12 @@
     "id": 4005,
     "jump_page": [
       [
-        "Sweetscent Orchard",
+        "향기로운 과수원",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Yoizuki Pear",
+    "name": "아키즈키 배",
     "order_price": 70,
     "price": 1,
     "pt_num": 5,
@@ -5052,7 +4761,7 @@
   },
   "4006": {
     "convert": 1,
-    "desc": "Yoizuki pear seeds that hold a sweet future in them. Can be used to grow a high-quality pear tree.",
+    "desc": "달콤한 미래가 담긴 아키즈키 배나무 씨앗. 좋은 품질의 배나무를 재배할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10114
@@ -5064,7 +4773,7 @@
     "id": 4006,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -5072,7 +4781,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Yoizuki Pear Seeds",
+    "name": "아키즈키 배 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -5086,11 +4795,11 @@
   },
   "4007": {
     "convert": 1,
-    "desc": "Kaki persimmon that's ripened into a vivid red color. This autumn fruit is soft, sweet, and full of vitamins.",
+    "desc": "선명한 붉은 빛으로 익은 감. 부드럽고 달콤하며, 비타민이 풍부한 가을 제철 과일.",
     "drop_after_use": 0,
     "filter": [
       10111,
-      10121
+      10125
     ],
     "group_max": 0,
     "have_max": 0,
@@ -5099,12 +4808,12 @@
     "id": 4007,
     "jump_page": [
       [
-        "Sweetscent Orchard",
+        "향기로운 과수원",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Kaki Persimmon",
+    "name": "감",
     "order_price": 200,
     "price": 1,
     "pt_num": 24,
@@ -5118,7 +4827,7 @@
   },
   "4008": {
     "convert": 1,
-    "desc": "Plant these seeds and pray for a life so healthy, your doctor will be left pale with awe.",
+    "desc": "씨앗을 심어서 의사의 얼굴이 파랗게 질릴 정도로 건강해지자.",
     "drop_after_use": 0,
     "filter": [
       10114
@@ -5130,7 +4839,7 @@
     "id": 4008,
     "jump_page": [
       [
-        "Buy in Shop",
+        "상점 구매",
         [
           "IslandShopScene",
           "page = 1"
@@ -5138,7 +4847,7 @@
       ]
     ],
     "manage_influence": 0,
-    "name": "Kaki Persimmon Seeds",
+    "name": "감 씨앗",
     "order_price": 0,
     "price": 1,
     "pt_num": 1,
@@ -5152,11 +4861,11 @@
   },
   "4009": {
     "convert": 1,
-    "desc": "Sweet and doughy dried persimmon. Made from fresh persimmon.",
+    "desc": "달콤하고 쫄깃한 곶감. 신선한 감으로 만든다.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10129
+      10127
     ],
     "group_max": 0,
     "have_max": 0,
@@ -5165,12 +4874,12 @@
     "id": 4009,
     "jump_page": [
       [
-        "Golden Koi Restaurant",
+        "유어 레스토랑",
         []
       ]
     ],
     "manage_influence": 280,
-    "name": "Dried Persimmon",
+    "name": "곶감",
     "order_price": 210,
     "price": 1,
     "pt_num": 25,
@@ -5187,11 +4896,11 @@
   },
   "4010": {
     "convert": 1,
-    "desc": "A soup made with highly fragrant and rich matsutake and chicken that have been slowly simmered together. It's warming and nutritious.",
+    "desc": "향기롭고 진한 송이버섯과 닭고기 수프. 송이버섯과 닭고기를 정성스럽게 끓인, 따뜻한 보양 음식.",
     "drop_after_use": 0,
     "filter": [
       10113,
-      10129
+      10127
     ],
     "group_max": 0,
     "have_max": 0,
@@ -5200,12 +4909,12 @@
     "id": 4010,
     "jump_page": [
       [
-        "Golden Koi Restaurant",
+        "유어 레스토랑",
         []
       ]
     ],
     "manage_influence": 280,
-    "name": "Matsutake and Chicken Soup",
+    "name": "송이버섯 닭고기 스프",
     "order_price": 900,
     "price": 1,
     "pt_num": 135,
@@ -5222,7 +4931,7 @@
   },
   "4011": {
     "convert": 1,
-    "desc": "A bouquet with warm, orange colors. Consisting of the finest seasonal flowers, like reed and chrysanthemum, it presents the essence of autumn.",
+    "desc": "따뜻한 오렌지빛 꽃다발. 국화, 갈대 등 제철 꽃 재료를 엄선하여 가을 분위기를 연출한다.",
     "drop_after_use": 0,
     "filter": [
       10113,
@@ -5235,12 +4944,12 @@
     "id": 4011,
     "jump_page": [
       [
-        "Arts & Crafts Production",
+        "수공 작업대",
         []
       ]
     ],
     "manage_influence": 280,
-    "name": "Autumn Bouquet",
+    "name": "가을 꽃다발",
     "order_price": 705,
     "price": 1,
     "pt_num": 70,
@@ -5257,7 +4966,7 @@
   },
   "4012": {
     "convert": 1,
-    "desc": "A healthy, mild cooking oil extracted from high-quality peanuts.",
+    "desc": "부드러운 땅콩기름. 좋은 땅콩을 짜서 만든 건강한 조리용 기름.",
     "drop_after_use": 0,
     "filter": [
       10113,
@@ -5270,12 +4979,12 @@
     "id": 4012,
     "jump_page": [
       [
-        "Arts & Crafts Production",
+        "수공 작업대",
         []
       ]
     ],
     "manage_influence": 280,
-    "name": "Peanut Oil",
+    "name": "땅콩기름",
     "order_price": 1005,
     "price": 1,
     "pt_num": 100,
@@ -5292,7 +5001,7 @@
   },
   "4013": {
     "convert": 1,
-    "desc": "A fresh and sweet juice made with carrots and pears. The nutrients from the carrots and the sour flavor of the pears come together into an invigorating drink.",
+    "desc": "당근과 배를 사용한 신선하고 달콤한 주스. 당근의 영양과 배의 깔끔한 맛이 어우러진 상쾌한 음료.",
     "drop_after_use": 0,
     "filter": [
       10113,
@@ -5305,12 +5014,12 @@
     "id": 4013,
     "jump_page": [
       [
-        "Polar Bear Teahouse",
+        "백곰 음료",
         []
       ]
     ],
     "manage_influence": 280,
-    "name": "Carrot and Pear Juice",
+    "name": "당근과 배 주스",
     "order_price": 200,
     "price": 1,
     "pt_num": 20,
@@ -5327,7 +5036,7 @@
   },
   "4014": {
     "convert": 1,
-    "desc": "A tea with a refined, clean aroma. Made with the petals of the chrysanthemum flower, it has a mild aftertaste that clears your head.",
+    "desc": "우아하고 맑은 향을 지닌 국화차. 국화 꽃잎을 우려내, 열을 내려주고 담백한 여운을 입안에 남긴다.",
     "drop_after_use": 0,
     "filter": [
       10113,
@@ -5340,12 +5049,12 @@
     "id": 4014,
     "jump_page": [
       [
-        "Polar Bear Teahouse",
+        "백곰 음료",
         []
       ]
     ],
     "manage_influence": 280,
-    "name": "Chrysanthemum Tea",
+    "name": "국화차",
     "order_price": 840,
     "price": 1,
     "pt_num": 100,
@@ -5362,7 +5071,7 @@
   },
   "100001": {
     "convert": 0,
-    "desc": "A book containing fundamental knowledge on island living. Used to slightly increase a character's Island EXP.",
+    "desc": "아일랜드 생활의 기초 지식을 정리한 지침서. 사용하면 캐릭터의 아일랜드 EXP가 조금 증가한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5374,12 +5083,20 @@
     "id": 100001,
     "jump_page": [
       [
-        "Polar Bear Teahouse",
+        "합계 PT",
+        []
+      ],
+      [
+        "상점",
+        []
+      ],
+      [
+        "개발 계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island EXP Textbook T1",
+    "name": "아일랜드 EXP 교본 T1",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5393,7 +5110,7 @@
   },
   "100002": {
     "convert": 0,
-    "desc": "A book containing detailed knowledge on island living. Used to moderately increase a character's Island EXP.",
+    "desc": "아일랜드 생활 경험을 자세히 정리한 지침서. 사용하면 캐릭터의 아일랜드 EXP가 어느 정도 증가한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5405,16 +5122,20 @@
     "id": 100002,
     "jump_page": [
       [
-        "Shop",
+        "합계 PT",
         []
       ],
       [
-        "Planning",
+        "상점",
+        []
+      ],
+      [
+        "개발 계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island EXP Textbook T2",
+    "name": "아일랜드 EXP 교본 T2",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5428,7 +5149,7 @@
   },
   "100003": {
     "convert": 0,
-    "desc": "A book containing abundant knowledge on island living. Used to greatly increase a character's Island EXP.",
+    "desc": "아일랜드 생활에 대한 풍부한 노하우가 가득 담긴 지침서. 사용하면 캐릭터의 아일랜드 EXP가 대폭 증가한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5440,16 +5161,20 @@
     "id": 100003,
     "jump_page": [
       [
-        "Shop",
+        "합계 PT",
         []
       ],
       [
-        "Planning",
+        "상점",
+        []
+      ],
+      [
+        "개발 계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island EXP Textbook T3",
+    "name": "아일랜드 EXP 교본 T3",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5463,7 +5188,7 @@
   },
   "100011": {
     "convert": 0,
-    "desc": "A book containing fundamental knowledge on management techniques. Used to slightly increase a character's Management stat.",
+    "desc": "경영 테크닉의 기초 지식을 정리한 지침서. 사용하면 캐릭터의 경영 능력치가 조금 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5475,16 +5200,16 @@
     "id": 100011,
     "jump_page": [
       [
-        "Shop",
+        "합계 PT",
         []
       ],
       [
-        "Planning",
+        "개발 계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Management Textbook T1",
+    "name": "경영 교본 T1",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5498,7 +5223,7 @@
   },
   "100012": {
     "convert": 0,
-    "desc": "A book containing detailed knowledge on management techniques. Used to moderately increase a character's Management stat.",
+    "desc": "경영 테크닉을 자세하게 해설한 지침서. 사용하면 캐릭터의 경영 능력치가 어느 정도 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5510,16 +5235,12 @@
     "id": 100012,
     "jump_page": [
       [
-        "Milestone Points",
-        []
-      ],
-      [
-        "Development Plan",
+        "합계 PT",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Management Textbook T2",
+    "name": "경영 교본 T2",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5533,7 +5254,7 @@
   },
   "100013": {
     "convert": 0,
-    "desc": "A book containing abundant knowledge on management techniques. Used to greatly increase a character's Management stat.",
+    "desc": "경영 테크닉을 풍부하게 수록한 지침서. 사용하면 캐릭터의 경영 능력치가 대폭 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5543,14 +5264,9 @@
     "icon": "IslandProps/item_100013",
     "icon_normal": "",
     "id": 100013,
-    "jump_page": [
-      [
-        "Milestone Points",
-        []
-      ]
-    ],
+    "jump_page": [],
     "manage_influence": 0,
-    "name": "Management Textbook T3",
+    "name": "경영 교본 T3",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5564,7 +5280,7 @@
   },
   "100021": {
     "convert": 0,
-    "desc": "A book containing fundamental knowledge on farming techniques. Used to slightly increase a character's Farming stat.",
+    "desc": "농업 테크닉의 기초 지식을 정리한 지침서. 사용하면 캐릭터의 농업 능력치가 조금 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5576,16 +5292,16 @@
     "id": 100021,
     "jump_page": [
       [
-        "Milestone Points",
+        "합계 PT",
         []
       ],
       [
-        "Development Plan",
+        "개발 계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Farming Textbook T1",
+    "name": "농업 교본 T1",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5599,7 +5315,7 @@
   },
   "100022": {
     "convert": 0,
-    "desc": "A book containing detailed knowledge on farming techniques. Used to moderately increase a character's Farming stat.",
+    "desc": "농업 테크닉을 자세하게 해설한 지침서. 사용하면 캐릭터의 농업 능력치가 어느 정도 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5611,12 +5327,12 @@
     "id": 100022,
     "jump_page": [
       [
-        "Milestone Points",
+        "합계 PT",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Farming Textbook T2",
+    "name": "농업 교본 T2",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5630,7 +5346,7 @@
   },
   "100023": {
     "convert": 0,
-    "desc": "A book containing abundant knowledge on farming techniques. Used to greatly increase a character's Farming stat.",
+    "desc": "농업 테크닉을 풍부하게 수록한 지침서. 사용하면 캐릭터의 농업 능력치가 대폭 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5642,7 +5358,7 @@
     "id": 100023,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Farming Textbook T3",
+    "name": "농업 교본 T3",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5656,7 +5372,7 @@
   },
   "100031": {
     "convert": 0,
-    "desc": "A book containing fundamental knowledge on manufacturing techniques. Used to slightly increase a character's Manufacturing stat.",
+    "desc": "제작 테크닉의 기초 지식을 정리한 지침서. 사용하면 캐릭터의 제작 능력치가 조금 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5668,16 +5384,16 @@
     "id": 100031,
     "jump_page": [
       [
-        "Milestone Points",
+        "합계 PT",
         []
       ],
       [
-        "Development Plan",
+        "개발 계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Manufacturing Textbook T1",
+    "name": "제작 교본 T1",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5691,7 +5407,7 @@
   },
   "100032": {
     "convert": 0,
-    "desc": "A book containing detailed knowledge on manufacturing techniques. Used to moderately increase a character's Manufacturing stat.",
+    "desc": "제작 테크닉을 자세하게 해설한 지침서. 사용하면 캐릭터의 제작 능력치가 어느 정도 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5703,12 +5419,12 @@
     "id": 100032,
     "jump_page": [
       [
-        "Milestone Points",
+        "합계 PT",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Manufacturing Textbook T2",
+    "name": "제작 교본 T2",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5722,7 +5438,7 @@
   },
   "100033": {
     "convert": 0,
-    "desc": "A book containing abundant knowledge on manufacturing techniques. Used to greatly increase a character's Manufacturing stat.",
+    "desc": "제작 테크닉을 풍부하게 수록한 지침서. 사용하면 캐릭터의 제작 능력치가 대폭 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5734,7 +5450,7 @@
     "id": 100033,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Manufacturing Textbook T3",
+    "name": "제작 교본 T3",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5748,7 +5464,7 @@
   },
   "100041": {
     "convert": 0,
-    "desc": "A book containing fundamental knowledge on gathering techniques. Used to slightly increase a character's Gathering stat.",
+    "desc": "채집 테크닉의 기초 지식을 정리한 지침서. 사용하면 캐릭터의 채집 능력치가 조금 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5760,16 +5476,16 @@
     "id": 100041,
     "jump_page": [
       [
-        "Milestone Points",
+        "합계 PT",
         []
       ],
       [
-        "Development Plan",
+        "개발 계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Gathering Textbook T1",
+    "name": "채집 교본 T1",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5783,7 +5499,7 @@
   },
   "100042": {
     "convert": 0,
-    "desc": "A book containing detailed knowledge on gathering techniques. Used to moderately increase a character's Gathering stat.",
+    "desc": "채집 테크닉을 자세하게 해설한 지침서. 사용하면 캐릭터의 채집 능력치가 어느 정도 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5795,12 +5511,12 @@
     "id": 100042,
     "jump_page": [
       [
-        "Milestone Points",
+        "합계 PT",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Gathering Textbook T2",
+    "name": "채집 교본 T2",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5814,7 +5530,7 @@
   },
   "100043": {
     "convert": 0,
-    "desc": "A book containing abundant knowledge on gathering techniques. Used to greatly increase a character's Gathering stat.",
+    "desc": "채집 테크닉을 풍부하게 수록한 지침서. 사용하면 캐릭터의 채집 능력치가 대폭 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5826,7 +5542,7 @@
     "id": 100043,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Gathering Textbook T3",
+    "name": "채집 교본 T3",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5840,7 +5556,7 @@
   },
   "100051": {
     "convert": 0,
-    "desc": "A book containing fundamental knowledge on husbandry techniques. Used to slightly increase a character's Husbandry stat.",
+    "desc": "사육 테크닉의 기초 지식을 정리한 지침서. 사용하면 캐릭터의 사육 능력치가 조금 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5852,16 +5568,16 @@
     "id": 100051,
     "jump_page": [
       [
-        "Milestone Points",
+        "합계 PT",
         []
       ],
       [
-        "Development Plan",
+        "개발 계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Husbandry Textbook T1",
+    "name": "사육 교본 T1",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5875,7 +5591,7 @@
   },
   "100052": {
     "convert": 0,
-    "desc": "A book containing detailed knowledge on husbandry techniques. Used to moderately increase a character's Husbandry stat.",
+    "desc": "사육 테크닉을 자세하게 해설한 지침서. 사용하면 캐릭터의 사육 능력치가 어느 정도 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5887,12 +5603,12 @@
     "id": 100052,
     "jump_page": [
       [
-        "Milestone Points",
+        "합계 PT",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Husbandry Textbook T2",
+    "name": "사육 교본 T2",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5906,7 +5622,7 @@
   },
   "100053": {
     "convert": 0,
-    "desc": "A book containing abundant knowledge on husbandry techniques. Used to greatly increase a character's Husbandry stat.",
+    "desc": "사육 테크닉을 풍부하게 수록한 지침서. 사용하면 캐릭터의 사육 능력치가 대폭 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5918,7 +5634,7 @@
     "id": 100053,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Husbandry Textbook T3",
+    "name": "사육 교본 T3",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5932,7 +5648,7 @@
   },
   "100061": {
     "convert": 0,
-    "desc": "A book containing fundamental knowledge on cooking techniques. Used to slightly increase a character's Cooking stat.",
+    "desc": "요리 테크닉의 기초 지식을 정리한 지침서. 사용하면 캐릭터의 요리 능력치가 조금 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5944,16 +5660,16 @@
     "id": 100061,
     "jump_page": [
       [
-        "Milestone Points",
+        "합계 PT",
         []
       ],
       [
-        "Development Plan",
+        "개발 계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Cooking Textbook T1",
+    "name": "요리 교본 T1",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5967,7 +5683,7 @@
   },
   "100062": {
     "convert": 0,
-    "desc": "A book containing detailed knowledge on cooking techniques. Used to moderately increase a character's Cooking stat.",
+    "desc": "요리 테크닉을 자세하게 해설한 지침서. 사용하면 캐릭터의 요리 능력치가 어느 정도 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -5979,12 +5695,12 @@
     "id": 100062,
     "jump_page": [
       [
-        "Milestone Points",
+        "합계 PT",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Cooking Textbook T2",
+    "name": "요리 교본 T2",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -5998,7 +5714,7 @@
   },
   "100063": {
     "convert": 0,
-    "desc": "A book containing abundant knowledge on cooking techniques. Used to greatly increase a character's Cooking stat.",
+    "desc": "요리 테크닉을 풍부하게 수록한 지침서. 사용하면 캐릭터의 요리 능력치가 대폭 상승한다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -6010,7 +5726,7 @@
     "id": 100063,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Cooking Textbook T3",
+    "name": "요리 교본 T3",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6024,7 +5740,7 @@
   },
   "100101": {
     "convert": 0,
-    "desc": "A book containing fundamental knowledge on production techniques. Used to slightly increase a character's Production stats.",
+    "desc": "생산 기술에 대한 기초 지식이 정리된 지침서. 사용하면 캐릭터의 아일랜드 개발 생산 기술 레벨이 조금 향상된다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -6036,12 +5752,20 @@
     "id": 100101,
     "jump_page": [
       [
-        "Shop",
+        "합계 PT",
+        []
+      ],
+      [
+        "상점",
+        []
+      ],
+      [
+        "개발 계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Production Textbook T1",
+    "name": "생산 기술 교본 T1",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6055,7 +5779,7 @@
   },
   "100102": {
     "convert": 0,
-    "desc": "A book containing detailed knowledge on production techniques. Used to moderately increase a character's Production stats.",
+    "desc": "생산 기술에 대한 지식이 자세히 정리된 지침서. 사용하면 캐릭터의 아일랜드 개발 생산 기술 레벨이 어느 정도 향상된다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -6067,12 +5791,20 @@
     "id": 100102,
     "jump_page": [
       [
-        "Shop",
+        "합계 PT",
+        []
+      ],
+      [
+        "상점",
+        []
+      ],
+      [
+        "개발 계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Production Textbook T2",
+    "name": "생산 기술 교본 T2",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6086,7 +5818,7 @@
   },
   "100103": {
     "convert": 0,
-    "desc": "A book containing abundant knowledge on production techniques. Used to greatly increase a character's Production stats.",
+    "desc": "생산 기술에 대한 지식이 풍부하게 정리된 지침서. 사용하면 캐릭터의 아일랜드 개발 생산 기술 레벨이 대폭 향상된다.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -6098,12 +5830,20 @@
     "id": 100103,
     "jump_page": [
       [
-        "Shop",
+        "합계 PT",
+        []
+      ],
+      [
+        "상점",
+        []
+      ],
+      [
+        "개발 계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Production Textbook T3",
+    "name": "생산 기술 교본 T3",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6117,7 +5857,7 @@
   },
   "100201": {
     "convert": 0,
-    "desc": "A crystal of island development experience. Required to Limit Break characters.",
+    "desc": "아일랜드 개발 경험의 결정체. 캐릭터 돌파에 필요한 재료.",
     "drop_after_use": 0,
     "filter": [
       10211
@@ -6129,12 +5869,12 @@
     "id": 100201,
     "jump_page": [
       [
-        "Shop",
+        "상점",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Development Gem",
+    "name": "아일랜드 개발 결정",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6148,7 +5888,7 @@
   },
   "110001": {
     "convert": 0,
-    "desc": "Recovers 50 stamina. A basic energy drink. This drink feels like a salty breeze rolling over the tip of your tongue. It's salty, sweet, and unique.",
+    "desc": "체력 50 회복. 이를 좋아하는 캐릭터는 추가로 버프 효과를 얻는다. 마치 바닷바람이 혀끝을 스친 것처럼 짭짤하고도 달콤한 독특한 맛이 느껴진다.",
     "drop_after_use": 0,
     "filter": [
       10212
@@ -6160,16 +5900,16 @@
     "id": 110001,
     "jump_page": [
       [
-        "Daily Supply",
+        "일상 보급",
         []
       ],
       [
-        "Daily",
+        "일간",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Sea Salt Drink",
+    "name": "씨솔트 드링크",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6192,7 +5932,7 @@
   },
   "110002": {
     "convert": 0,
-    "desc": "Recovers 50 stamina. Character also gains a buff: all stats increase by 3% for 8 hours. This drink's verdant, fresh aroma clears your head.",
+    "desc": "체력 50 회복. 마치 바닷바람이 혀끝을 스친 것처럼 짭짤하고도 달콤한 독특한 맛이 느껴진다.",
     "drop_after_use": 0,
     "filter": [
       10212
@@ -6204,12 +5944,12 @@
     "id": 110002,
     "jump_page": [
       [
-        "Daily Supply",
+        "일상 보급",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Green Verdure Drink",
+    "name": "신록 드링크",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6234,7 +5974,7 @@
   },
   "110003": {
     "convert": 0,
-    "desc": "Recovers 50 stamina. Character also gains a buff: when assigned to farming, gathering or husbandry, the time needed for production is reduced by 5% for 8 hours. Its sweet strawberry fragrance fills you with joy and energy.",
+    "desc": "체력을 50 회복하고, 8시간 동안 기본 자원 생산 시 필요 시간이 5% 단축된다. 딸기의 달콤한 향이 활기찬 하루를 만들어 준다.",
     "drop_after_use": 0,
     "filter": [
       10212
@@ -6246,12 +5986,12 @@
     "id": 110003,
     "jump_page": [
       [
-        "Daily Supply",
+        "일상 보급",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Strawberry Drink",
+    "name": "딸기 드링크",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6276,7 +6016,7 @@
   },
   "110004": {
     "convert": 0,
-    "desc": "Recovers 50 stamina. Character also gains a buff: when assigned to Base Factory, the time needed for manufacturing is reduced by 5% for 8 hours. While the kumquat is a bit sour, its aftertaste is sweet and uplifting.",
+    "desc": "체력을 50 회복하고, 8시간 동안 기지 공장에서의 아이템 제작 필요 시간이 5% 단축된다. 금귤의 쌉쌀한 맛 뒤에 따라오는 달콤한 여운이 기분을 상쾌하게 해준다.",
     "drop_after_use": 0,
     "filter": [
       10212
@@ -6288,12 +6028,12 @@
     "id": 110004,
     "jump_page": [
       [
-        "Daily Supply",
+        "일상 보급",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Kumquat Drink",
+    "name": "금귤 드링크",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6318,7 +6058,7 @@
   },
   "110005": {
     "convert": 0,
-    "desc": "Recovers 50 stamina. Character also gains a buff: when assigned to cook in a food store, the time needed for cooking is reduced by 5% for 8 hours. Sweet and sour, it's brimming with the joyful and fruity flavor of berries.",
+    "desc": "체력을 50 회복하고, 8시간 동안 가게에서의 요리 아이템 제작 필요 시간이 5% 단축된다. 상큼하고 달콤한, 프루티한 베리의 즐거운 맛.",
     "drop_after_use": 0,
     "filter": [
       10212
@@ -6330,12 +6070,12 @@
     "id": 110005,
     "jump_page": [
       [
-        "Daily Supply",
+        "일상 보급",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Berry Drink",
+    "name": "베리 드링크",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6360,7 +6100,7 @@
   },
   "110006": {
     "convert": 0,
-    "desc": "Recovers 50 stamina. Character also gains a buff: when assigned to manage a food store, food sales are increased by 5% for 8 hours. Its smooth and sweet flavor is impossible to get enough of.",
+    "desc": "체력을 50 회복하고, 8시간 동안 가게에서 점원 담당 시 가게 매상이 5% 오른다. 부드럽고도 달콤한 풍미가 매력적이다.",
     "drop_after_use": 0,
     "filter": [
       10212
@@ -6372,12 +6112,12 @@
     "id": 110006,
     "jump_page": [
       [
-        "Daily Supply",
+        "일상 보급",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Grape Drink",
+    "name": "포도 드링크",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6400,7 +6140,7 @@
   },
   "200001": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Cheshire. Use it to give the character the credentials to visit the island freely.",
+    "desc": "체셔의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6412,12 +6152,12 @@
     "id": 200001,
     "jump_page": [
       [
-        "星彩赏",
+        "별빛상",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Cheshire",
+    "name": "체셔 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6431,7 +6171,7 @@
   },
   "200002": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Saratoga. Use it to give the character credentials to visit the island freely.",
+    "desc": "새러토가의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6443,7 +6183,7 @@
     "id": 200002,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Saratoga",
+    "name": "새러토가 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6457,7 +6197,7 @@
   },
   "200003": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Akashi. Use it to give the character the credentials to visit the island freely.",
+    "desc": "아카시의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6469,12 +6209,12 @@
     "id": 200003,
     "jump_page": [
       [
-        "计划",
+        "계획",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Akashi",
+    "name": "아카시 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6488,7 +6228,7 @@
   },
   "200004": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Taihou. Use it to give the character the credentials to visit the island freely.",
+    "desc": "다이호의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6500,7 +6240,7 @@
     "id": 200004,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Taihou",
+    "name": "다이호 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6514,7 +6254,7 @@
   },
   "200005": {
     "convert": 0,
-    "desc": "An Island Authority Permit for New Jersey. Use it to give the character the credentials to visit the island freely.",
+    "desc": "뉴저지의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6526,12 +6266,12 @@
     "id": 200005,
     "jump_page": [
       [
-        "科技",
+        "기술",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Authority Permit: New Jersey",
+    "name": "뉴저지 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6545,7 +6285,7 @@
   },
   "200006": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Shimakaze. Use it to give the character the credentials to visit the island freely.",
+    "desc": "시마카제의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6557,12 +6297,12 @@
     "id": 200006,
     "jump_page": [
       [
-        "图鉴",
+        "도감",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Shimakaze",
+    "name": "시마카제 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6576,7 +6316,7 @@
   },
   "200007": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Ying Swei. Use it to give the character the credentials to visit the island freely.",
+    "desc": "잉 루이의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6588,12 +6328,12 @@
     "id": 200007,
     "jump_page": [
       [
-        "科技",
+        "기술",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Ying Swei",
+    "name": "잉 루이 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6607,7 +6347,7 @@
   },
   "200008": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Le Malin. Use it to give the character the credentials to visit the island freely.",
+    "desc": "르 말랭의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6619,12 +6359,12 @@
     "id": 200008,
     "jump_page": [
       [
-        "成就",
+        "실적",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Le Malin",
+    "name": "르 말랭 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6638,7 +6378,7 @@
   },
   "200009": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Unicorn. Use it to give the character the credentials to visit the island freely.",
+    "desc": "유니콘의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6650,12 +6390,12 @@
     "id": 200009,
     "jump_page": [
       [
-        "星彩赏",
+        "별빛상",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Unicorn",
+    "name": "유니콘 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6669,7 +6409,7 @@
   },
   "200010": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Tashkent. Use it to give the character the credentials to visit the island freely.",
+    "desc": "타슈켄트의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6681,12 +6421,12 @@
     "id": 200010,
     "jump_page": [
       [
-        "科技",
+        "기술",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Tashkent",
+    "name": "타슈켄트 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6700,7 +6440,7 @@
   },
   "200011": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Hood. Use it to give the character the credentials to visit the island freely.",
+    "desc": "후드의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6712,12 +6452,12 @@
     "id": 200011,
     "jump_page": [
       [
-        "科技",
+        "기술",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Hood",
+    "name": "후드 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6731,7 +6471,7 @@
   },
   "200012": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Amagi-chan. Use it to give the character the credentials to visit the island freely.",
+    "desc": "꼬마 아마기의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6743,12 +6483,12 @@
     "id": 200012,
     "jump_page": [
       [
-        "星彩赏",
+        "별빛상",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Amagi-chan",
+    "name": "꼬마 아마기 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6762,7 +6502,7 @@
   },
   "200013": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Prinz Eugen. Use it to give the character the credentials to visit the island freely.",
+    "desc": "프린츠 오이겐의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6774,7 +6514,7 @@
     "id": 200013,
     "jump_page": [],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Prinz Eugen",
+    "name": "프린츠 오이겐 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6788,7 +6528,7 @@
   },
   "200014": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Chao Ho. Use it to give the character the credentials to visit the island freely.",
+    "desc": "차오 호의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6800,12 +6540,12 @@
     "id": 200014,
     "jump_page": [
       [
-        "科技",
+        "기술",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Chao Ho",
+    "name": "차오 호 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6819,7 +6559,7 @@
   },
   "200015": {
     "convert": 0,
-    "desc": "An Island Authority Permit for Leonardo da Vinci. Use it to give the character the credentials to visit the island freely.",
+    "desc": "레오나르도 다 빈치의 아일랜드 권한 인증. 아일랜드 권한 인증 장치를 사용하면, 캐릭터에게 아일랜드 개발 구역의 출입 권한을 부여할 수 있다.",
     "drop_after_use": 0,
     "filter": [
       10213
@@ -6831,12 +6571,12 @@
     "id": 200015,
     "jump_page": [
       [
-        "成就",
+        "실적",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Island Authority Permit: Leonardo da Vinci",
+    "name": "레오나르도 다 빈치 - 아일랜드 권한 인증",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6850,7 +6590,7 @@
   },
   "300001": {
     "convert": 0,
-    "desc": "When obtained, Working Efficiency at Faircrop Fields +4%",
+    "desc": "획득 후 비옥한 농지 배치 작업 효율 4% 상승",
     "drop_after_use": 0,
     "filter": [],
     "group_max": 0,
@@ -6860,12 +6600,12 @@
     "id": 300001,
     "jump_page": [
       [
-        "Island Collection",
+        "도감",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Working Efficiency at Faircrop Fields +4%",
+    "name": "비옥한 농지 배치 작업 효율 4% 상승",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6879,7 +6619,7 @@
   },
   "300002": {
     "convert": 0,
-    "desc": "When obtained, Working Efficiency at Sweetscent Orchard +4%",
+    "desc": "획득 후 향기로운 과수원 배치 작업 효율 4% 상승",
     "drop_after_use": 0,
     "filter": [],
     "group_max": 0,
@@ -6889,12 +6629,12 @@
     "id": 300002,
     "jump_page": [
       [
-        "Island Collection",
+        "도감",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Working Efficiency at Sweetscent Orchard +4%",
+    "name": "향기로운 과수원 배치 작업 효율 4% 상승",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6908,7 +6648,7 @@
   },
   "300003": {
     "convert": 0,
-    "desc": "When obtained, Working Efficiency at Newsprout Nursery +4%",
+    "desc": "획득 후 초록색 모밭 배치 작업 효율 4% 상승",
     "drop_after_use": 0,
     "filter": [],
     "group_max": 0,
@@ -6918,12 +6658,12 @@
     "id": 300003,
     "jump_page": [
       [
-        "Island Collection",
+        "도감",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Working Efficiency at Newsprout Nursery +4%",
+    "name": "초록색 모밭 배치 작업 효율 4% 상승",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6937,7 +6677,7 @@
   },
   "300004": {
     "convert": 0,
-    "desc": "When obtained, Working Efficiency at Faircrop Fields +8%",
+    "desc": "획득 후 비옥한 농지 배치 작업 효율 8% 상승",
     "drop_after_use": 0,
     "filter": [],
     "group_max": 0,
@@ -6947,12 +6687,12 @@
     "id": 300004,
     "jump_page": [
       [
-        "Island Collection",
+        "도감",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Working Efficiency at Faircrop Fields +8%",
+    "name": "비옥한 농지 배치 작업 효율 8% 상승",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6966,7 +6706,7 @@
   },
   "300005": {
     "convert": 0,
-    "desc": "When obtained, Working Efficiency at Sweetscent Orchard +8%",
+    "desc": "획득 후 향기로운 과수원 배치 작업 효율 8% 상승",
     "drop_after_use": 0,
     "filter": [],
     "group_max": 0,
@@ -6976,12 +6716,12 @@
     "id": 300005,
     "jump_page": [
       [
-        "Island Collection",
+        "도감",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Working Efficiency at Sweetscent Orchard +8%",
+    "name": "향기로운 과수원 배치 작업 효율 8% 상승",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,
@@ -6995,7 +6735,7 @@
   },
   "300006": {
     "convert": 0,
-    "desc": "When obtained, Working Efficiency at Newsprout Nursery +8%",
+    "desc": "획득 후 초록색 모밭 배치 작업 효율 8% 상승",
     "drop_after_use": 0,
     "filter": [],
     "group_max": 0,
@@ -7005,12 +6745,12 @@
     "id": 300006,
     "jump_page": [
       [
-        "Island Collection",
+        "도감",
         []
       ]
     ],
     "manage_influence": 0,
-    "name": "Working Efficiency at Newsprout Nursery +8%",
+    "name": "초록색 모밭 배치 작업 효율 8% 상승",
     "order_price": 0,
     "price": 0,
     "pt_num": 0,

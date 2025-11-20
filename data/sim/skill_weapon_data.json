@@ -57677,7 +57677,7 @@
             "effect_list": [
                 {
                     "arg_list": {
-                        "weapon_id": 180016
+                        "weapon_id": 180020
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",
@@ -57723,7 +57723,7 @@
             "effect_list": [
                 {
                     "arg_list": {
-                        "weapon_id": 180016
+                        "weapon_id": 180020
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",
@@ -57790,7 +57790,7 @@
             "effect_list": [
                 {
                     "arg_list": {
-                        "weapon_id": 180016
+                        "weapon_id": 180020
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",
@@ -57836,7 +57836,7 @@
             "effect_list": [
                 {
                     "arg_list": {
-                        "weapon_id": 180016
+                        "weapon_id": 180020
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",
