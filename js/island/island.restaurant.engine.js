@@ -72,6 +72,8 @@ window.RestaurantModule = (function () {
         selectedRestaurant: null,
         selectedRank: 'silver',
         activeEvents: new Set(),
+        menuIndex: {},           // { formulaId: [{ restaurantId, itemId }] }
+        highlightFormulaId: null
     };
 
     // ============================================
@@ -100,6 +102,7 @@ window.RestaurantModule = (function () {
             state.recipes = recipeData;
 
             // Build data structures for tree-based cost calculation
+            buildMenuIndex();
             buildShopDataIndex(shopData);
             buildRecipeIndices();
             buildDependencyGraph();
@@ -130,6 +133,22 @@ window.RestaurantModule = (function () {
     // ============================================
     // DATA STRUCTURE BUILDERS
     // ============================================
+
+    function buildMenuIndex() {
+        state.menuIndex = {};
+        Object.entries(state.restaurants).forEach(([restaurantId, restaurant]) => {
+            (restaurant.item_id || []).forEach(([itemId, formulaId]) => {
+                if (!state.menuIndex[formulaId]) {
+                    state.menuIndex[formulaId] = [];
+                }
+                state.menuIndex[formulaId].push({
+                    restaurantId,
+                    restaurantName: restaurant.name,
+                    itemId
+                });
+            });
+        });
+    }
 
     function buildShopDataIndex(shopData) {
         Object.entries(shopData).forEach(([shopEntryId, shopItem]) => {
@@ -282,6 +301,46 @@ window.RestaurantModule = (function () {
             profit: Math.round(profit),
             profitMargin: profitMargin.toFixed(1)
         };
+    }
+
+    // ============================================
+    // CROSS-TAB NAVIGATION
+    // ============================================
+
+    function getRestaurantsForRecipe(formulaId) {
+        if (!formulaId) return [];
+        return (state.menuIndex[formulaId] || []).map(entry => ({ ...entry }));
+    }
+
+    function navigateToMenu(formulaId, restaurantId) {
+        const targets = state.menuIndex[formulaId] || [];
+        if (!targets.length) return;
+
+        const target = restaurantId
+            ? targets.find(t => t.restaurantId === String(restaurantId)) || targets[0]
+            : targets[0];
+
+        state.highlightFormulaId = formulaId;
+        selectRestaurant(target.restaurantId);
+        IslandEngine.activateTab('restaurant');
+
+        // Focus after render
+        setTimeout(() => focusMenuCard(formulaId), 150);
+    }
+
+    function viewRecipe(formulaId) {
+        if (!window.ResourceModule || !ResourceModule.selectRecipeById) return;
+        IslandEngine.activateTab('resources');
+        ResourceModule.selectRecipeById(formulaId);
+    }
+
+    function focusMenuCard(formulaId) {
+        const card = document.querySelector(`.menu-card[data-formula-id=\"${formulaId}\"]`);
+        if (card) {
+            card.classList.add('menu-card-highlight');
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => card.classList.remove('menu-card-highlight'), 1200);
+        }
     }
 
     // ============================================
@@ -462,6 +521,11 @@ window.RestaurantModule = (function () {
         }).join('');
 
         container.innerHTML = html;
+
+        if (state.highlightFormulaId) {
+            focusMenuCard(state.highlightFormulaId);
+            state.highlightFormulaId = null;
+        }
     }
 
     function createMenuCard(itemId, formulaId) {
@@ -496,7 +560,7 @@ window.RestaurantModule = (function () {
         const rarityBackground = RARITY_BACKGROUNDS[item.rarity] || '';
 
         return `
-            <div class="menu-card">
+            <div class="menu-card" data-item-id="${itemId}" data-formula-id="${formulaId}">
                 <!-- Header -->
                 <div class="menu-card-header">
                     <div class="restaurant-menu-icon" style="background-image: url('${rarityBackground}')">
@@ -597,6 +661,12 @@ window.RestaurantModule = (function () {
                         }).join('')}
                     </div>
                 </details>
+                <div class="menu-actions">
+                    <button class="menu-action-btn" type="button" onclick="RestaurantModule.viewRecipe(${formulaId})">
+                        <span class="material-symbols-outlined">menu_book</span>
+                        레시피 보기
+                    </button>
+                </div>
             </div>
         `;
     }
@@ -607,6 +677,9 @@ window.RestaurantModule = (function () {
 
     return {
         init,
+        navigateToMenu,
+        getRestaurantsForRecipe,
+        viewRecipe,
         state: () => state // For debugging
     };
 

@@ -639,6 +639,34 @@
     font-weight: 600;
 }
 
+.menu-actions {
+    display: flex;
+    gap: var(--island-gap-sm);
+    margin-top: var(--island-spacing-md);
+}
+
+.menu-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: var(--island-radius-md);
+    border: 1px solid var(--island-border);
+    background: var(--island-accent);
+    color: #ffffff;
+    cursor: pointer;
+    transition: var(--island-transition);
+}
+
+.menu-action-btn:hover {
+    box-shadow: var(--island-shadow-md);
+}
+
+.menu-card-highlight {
+    outline: 2px solid var(--island-accent);
+    box-shadow: 0 0 0 6px rgba(var(--island-accent-rgb), 0.12);
+}
+
 /* ==========================================================================
    6. RESPONSIVE DESIGN
    ========================================================================== */
