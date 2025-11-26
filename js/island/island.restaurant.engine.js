@@ -329,9 +329,9 @@ window.RestaurantModule = (function () {
     }
 
     function viewRecipe(formulaId) {
-        if (!window.ResourceModule || !ResourceModule.selectRecipeById) return;
+        if (!window.ResourceModule || !ResourceModule.selectRecipe) return;
         IslandEngine.activateTab('resources');
-        ResourceModule.selectRecipeById(formulaId);
+        ResourceModule.selectRecipe(formulaId);
     }
 
     function focusMenuCard(formulaId) {
