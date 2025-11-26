@@ -715,9 +715,15 @@ window.ResourceModule = (function () {
                     <input type="text" 
                            id="recipe-search" 
                            class="search-input" 
-                           placeholder="레시피 검색..."
+                           placeholder="레시피를 검색하세요..."
                            autocomplete="off">
                     <span class="material-symbols-outlined dropdown-icon">search</span>
+                </div>
+                <div class="filter-action">
+                    <button id="recipe-forest-btn" class="ghost-btn tree-btn" type="button">
+                        <span class="material-symbols-outlined">account_tree</span>
+                        레시피 트리
+                    </button>
                 </div>
             </div>
         `;
@@ -880,6 +886,8 @@ window.ResourceModule = (function () {
 
     function renderRecipeHeader(recipe, data) {
         const { item, category } = data;
+        const restaurants = window.RestaurantModule ? window.RestaurantModule.getRestaurantsForRecipe(recipe.id) : [];
+
         return `
             <div class="recipe-detail-header">
                 <div class="recipe-icon-large">
@@ -892,6 +900,14 @@ window.ResourceModule = (function () {
                         <span class="stat-badge exp">⚡ ${recipe.ship_exp} EXP</span>
                         <span class="stat-badge stamina">🔋 ${recipe.stamina_cost} Stamina</span>
                     </div>
+                </div>
+                <div class="recipe-header-actions">
+                    ${restaurants.length > 0 ? `
+                        <button class="action-btn" onclick="ResourceModule.viewInRestaurant(${recipe.id})">
+                            <span class="material-symbols-outlined">restaurant</span>
+                            레스토랑에서 보기
+                        </button>
+                    ` : ''}
                 </div>
             </div>
         `;
@@ -1393,6 +1409,10 @@ window.ResourceModule = (function () {
             renderEmptyDetail();
         });
 
+        // Full recipe forest view
+        const forestButton = document.getElementById('recipe-forest-btn');
+        forestButton?.addEventListener('click', showRecipeForest);
+
         // Search with debouncing
         const searchInput = document.getElementById('recipe-search');
         let searchTimeout;
@@ -1459,6 +1479,15 @@ window.ResourceModule = (function () {
 
     function selectRecipeFromTree(recipeId) {
         selectRecipe(recipeId);
+    }
+
+    function viewInRestaurant(recipeId) {
+        if (!window.RestaurantModule || !window.RestaurantModule.navigateToMenu) return;
+
+        const restaurants = window.RestaurantModule.getRestaurantsForRecipe(recipeId);
+        if (restaurants.length > 0) {
+            window.RestaurantModule.navigateToMenu(recipeId);
+        }
     }
 
     function showRelatedRecipes(recipeId, direction) {
@@ -1585,6 +1614,134 @@ window.ResourceModule = (function () {
         document.body.style.overflow = 'hidden';
     }
 
+    /**
+     * Render forest nodes (recursive) for the full forest view
+     */
+    function renderForestDependencies(nodes, depth = 0) {
+        if (!nodes || nodes.length === 0) {
+            return `
+                <div class="forest-tree__group">
+                    <div class="forest-tree__node">
+                        <div class="forest-tree__content">
+                            <span class="forest-tree__text">기본 재료</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        return `
+            <div class="forest-tree__group">
+                ${nodes.map((node) => {
+            const hasChildren = node.dependencies && node.dependencies.length > 0;
+
+            // Shop purchases become leaves with cost info
+            if (node.isShopPurchase) {
+                const item = node.itemInfo || IslandEngine.getItemInfo(node.itemId);
+                const costItem = node.shopCost?.itemInfo || IslandEngine.getItemInfo(node.shopCost?.itemId);
+                return `
+                        <div class="forest-tree__node">
+                            <div class="forest-tree__content">
+                                ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}" class="forest-tree__icon"/>` : '<span class="forest-tree__icon">•</span>'}
+                                <span class="forest-tree__text">${item.name} (×${node.quantity})</span>
+                                <span class="forest-tree__cost">— ${costItem?.name || '자원'} ×${node.shopCost?.totalCost?.toFixed?.(1) || '?'}</span>
+                            </div>
+                        </div>
+                    `;
+            }
+
+            // Recipe node
+            const item = IslandEngine.getItemInfo(node.recipe.item_id);
+            const chip = `
+                        <div class="forest-tree__content" onclick="event.stopPropagation(); ResourceModule.selectRecipeFromTree(${node.recipe.id});">
+                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}" class="forest-tree__icon"/>` : '<span class="forest-tree__icon">•</span>'}
+                            <span class="forest-tree__text">${node.recipe.name || item.name}</span>
+                            <span class="forest-tree__meta">⏱${IslandEngine.formatTime(node.recipe.workload)}</span>
+                        </div>
+                    `;
+
+            return `
+                        <div class="forest-tree__node">
+                            ${chip}
+                            ${hasChildren ? renderForestDependencies(node.dependencies, depth + 1) : ''}
+                        </div>
+                    `;
+        }).join('')}
+            </div>
+        `;
+    }
+
+    /**
+     * Render a single tree in the forest (rooted at a recipe)
+     */
+    function renderForestTree(recipe, categoryId) {
+        const tree = IslandEngine.buildRecipeDependencyTree(
+            recipe.id,
+            state.recipeIndex,
+            state.recipeCategoryIndex,
+            state.dependencyGraph,
+            state.shopPurchaseData,
+            { useManualMode: false }
+        );
+
+        const stats = calculateTreeStats(tree, 'dependencies');
+        const item = IslandEngine.getItemInfo(recipe.item_id);
+
+        return `
+            <div class="forest-tree-wrapper">
+                <details class="forest-tree" open>
+                    <summary class="forest-root">
+                        <div class="forest-root-chip" onclick="event.stopPropagation(); ResourceModule.selectRecipeFromModal(${recipe.id});">
+                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}" />` : '•'}
+                            <span class="forest-chip-name">${recipe.name || item.name}</span>
+                            <span class="forest-root-meta">
+                                ${categoryNames[categoryId] || '카테고리'} · ⏱${IslandEngine.formatTime(recipe.workload)} · ⚡${recipe.ship_exp} ·  Dependencies: ${Math.max(stats.count - 1, 0)}
+                            </span>
+                        </div>
+                    </summary>
+                    <div class="forest-tree-body">
+                        ${tree && tree.dependencies?.length ? renderForestDependencies(tree.dependencies) : '<ul class="forest-tree-group"><li class="forest-node is-leaf is-last"><span class="forest-node-content">입력 없음</span></li></ul>'}
+                    </div>
+                </details>
+            </div>
+        `;
+    }
+
+    /**
+     * Show a full recipe forest (all categories) without needing a selected recipe
+     * Each recipe becomes a root; dependencies expand to show all upstream inputs.
+     */
+    function showRecipeForest() {
+        const modal = document.getElementById('dependency-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        if (!modal || !modalTitle || !modalContent) return;
+
+        modalTitle.textContent = '전체 레시피 트리';
+
+        const categorySections = Object.entries(state.recipes).map(([categoryId, recipes]) => `
+            <details class="forest-category" data-category="${categoryId}" open>
+                <summary class="forest-category-header">
+                    <span class="material-symbols-outlined">widgets</span>
+                    ${categoryNames[categoryId] || '카테고리'}
+                    <span class="forest-category-count">(${recipes.length} recipes)</span>
+                </summary>
+                <div class="forest-category-body">
+                    ${recipes.map(recipe => renderForestTree(recipe, categoryId)).join('')}
+                </div>
+            </details>
+        `).join('');
+
+        modalContent.innerHTML = `
+            <div class="forest-container">
+                ${categorySections}
+            </div>
+        `;
+
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
     function closeModal() {
         const modal = document.getElementById('dependency-modal');
         if (modal) {
@@ -1616,7 +1773,9 @@ window.ResourceModule = (function () {
 
     return {
         init,
+        selectRecipe,
         selectRecipeFromTree,
+        viewInRestaurant,
         showUpstream,
         showDownstream,
         closeModal,

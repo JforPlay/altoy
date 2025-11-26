@@ -9,10 +9,10 @@
 
 :root {
     /* Dark Mode (Default) */
-    --island-bg: #1a1d23;
-    --island-surface: #2a2d35;
-    --island-surface-hover: #32353d;
-    --island-border: #3a3d45;
+    --island-bg: #1e222a;
+    --island-surface: #282c34;
+    --island-surface-hover: #31353f;
+    --island-border: #3c414b;
     --island-text-primary: #e4e6eb;
     --island-text-secondary: #b0b3b8;
     --island-text-tertiary: #8a8d93;
