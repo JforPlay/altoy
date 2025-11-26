@@ -105,6 +105,34 @@ window.IslandEngine = (function () {
     }
 
     /**
+     * Programmatically activate a tab (mirrors button click behavior)
+     */
+    function activateTab(tabName) {
+        // Persist selection for consistency with manual clicks
+        try {
+            localStorage.setItem('island-active-tab', tabName);
+        } catch (e) {
+            console.warn('[Island] Could not persist tab state:', e);
+        }
+
+        const tabButton = document.querySelector(`.tab-button[data-tab="${tabName}"]`);
+        if (tabButton) {
+            tabButton.click();
+        } else {
+            // Fallback: toggle classes directly if button not found
+            document.querySelectorAll('.tab-content').forEach(content => {
+                const contentId = content.id.replace('tab-', '');
+                content.classList.toggle('active', contentId === tabName);
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tabName);
+            });
+        }
+
+        switchTab(tabName);
+    }
+
+    /**
      * Get active tab
      */
     function getActiveTab() {
@@ -402,6 +430,7 @@ window.IslandEngine = (function () {
     return {
         init,
         switchTab,
+        activateTab,
         getActiveTab,
         fetchJSON,
         getSharedData,
