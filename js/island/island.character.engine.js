@@ -356,11 +356,11 @@ window.CharacterModule = (function () {
      */
     function renderStatsSection(char) {
         const attributeNames = [
-            '농업',
+            '재배',
             '채집',
-            '축산',
+            '사육',
             '요리',
-            '관리',
+            '경영',
             '제조'
         ];
 

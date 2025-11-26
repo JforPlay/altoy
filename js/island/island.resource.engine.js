@@ -37,9 +37,9 @@ window.ResourceModule = (function () {
     };
 
     const categoryNames = {
-        '1': '농사 (Farming)',
+        '1': '재배 (Farming)',
         '2': '채집 (Gathering)',
-        '3': '축산 (Husbandry)',
+        '3': '사육 (Husbandry)',
         '4': '요리 (Cooking)',
         '6': '제조 (Manufacturing)'
     };

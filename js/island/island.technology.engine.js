@@ -20,10 +20,10 @@ window.TechnologyModule = (function () {
 
     // Category mapping
     const CATEGORIES = {
-        1: { name: '권한', icon: 'admin_panel_settings', color: '#7289da' },
+        1: { name: '본부 인증', icon: 'admin_panel_settings', color: '#7289da' },
         2: { name: '채집', icon: 'nature', color: '#43b581' },
-        3: { name: '농업', icon: 'agriculture', color: '#faa61a' },
-        4: { name: '축산', icon: 'savings', color: '#99aab5' },
+        3: { name: '재배', icon: 'agriculture', color: '#faa61a' },
+        4: { name: '사육', icon: 'savings', color: '#99aab5' },
         5: { name: '요리', icon: 'restaurant', color: '#f47fff' },
         6: { name: '제조', icon: 'construction', color: '#00b0f4' }
     };
