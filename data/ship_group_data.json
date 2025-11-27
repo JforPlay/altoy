@@ -20104,6 +20104,32 @@
         ],
         "rarity": "SSR"
     },
+    "970208": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702080/icon.png",
+        "name": "보이시·META",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            2
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 2,
+        "add_level_shiptype": [
+            2
+        ],
+        "add_level_value": 1,
+        "class": 970208,
+        "id": 970208,
+        "max_star": 5,
+        "pt_get": 12,
+        "pt_level": 18,
+        "pt_upgrage": 25,
+        "nationality": 97,
+        "type": 2,
+        "description": [
+            "한정 이벤트: 월드 패스"
+        ],
+        "rarity": "SR"
+    },
     "970301": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9703010/icon.png",
         "name": "트렌토·META",
@@ -21817,6 +21843,66 @@
         "type": 2,
         "description": [
             "이벤트: 푸른 하늘 아래의 만남"
+        ],
+        "rarity": "SSR"
+    },
+    "1150001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500010/icon.png",
+        "name": "야토가미 토카",
+        "nationality": 115,
+        "type": 3,
+        "description": [
+            "이벤트: DATE A LANE"
+        ],
+        "rarity": "SSR"
+    },
+    "1150002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500020/icon.png",
+        "name": "토비이치 오리가미",
+        "nationality": 115,
+        "type": 7,
+        "description": [
+            "이벤트: DATE A LANE"
+        ],
+        "rarity": "SSR"
+    },
+    "1150003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500030/icon.png",
+        "name": "이츠카 코토리",
+        "nationality": 115,
+        "type": 5,
+        "description": [
+            "이벤트: DATE A LANE"
+        ],
+        "rarity": "SSR"
+    },
+    "1150004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500040/icon.png",
+        "name": "요시노",
+        "nationality": 115,
+        "type": 6,
+        "description": [
+            "이벤트: DATE A LANE"
+        ],
+        "rarity": "SSR"
+    },
+    "1150005": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500050/icon.png",
+        "name": "토키사키 쿠루미",
+        "nationality": 115,
+        "type": 2,
+        "description": [
+            "이벤트: DATE A LANE"
+        ],
+        "rarity": "SSR"
+    },
+    "1150006": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500060/icon.png",
+        "name": "야마이 카구야 · 야마이 유즈루",
+        "nationality": 115,
+        "type": 2,
+        "description": [
+            "이벤트: DATE A LANE"
         ],
         "rarity": "SSR"
     }

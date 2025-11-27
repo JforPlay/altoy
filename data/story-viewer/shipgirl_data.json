@@ -5159,6 +5159,10 @@
         "name": "이13",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317010/icon.png"
     },
+    "317011": {
+        "name": "방과 후의 관찰 숙제",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317011/icon.png"
+    },
     "317020": {
         "name": "{namecode:303}",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/317020/icon.png"
@@ -9151,6 +9155,10 @@
         "name": "unknown_undefined",
         "icon": null
     },
+    "900531": {
+        "name": "오디너 엘",
+        "icon": null
+    },
     "901010": {
         "name": "르 마르스 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901010/icon.png"
@@ -9638,6 +9646,10 @@
     "9702070": {
         "name": "파먀티 메르쿠리야·META",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702070/icon.png"
+    },
+    "9702080": {
+        "name": "보이시·META",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702080/icon.png"
     },
     "9703010": {
         "name": "트렌토·META",
@@ -10406,5 +10418,53 @@
     "11400021": {
         "name": "밤의 술집에서",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11400021/icon.png"
+    },
+    "11500010": {
+        "name": "야토가미 토카",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500010/icon.png"
+    },
+    "11500011": {
+        "name": "브레이크 타임",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500011/icon.png"
+    },
+    "11500020": {
+        "name": "토비이치 오리가미",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500020/icon.png"
+    },
+    "11500021": {
+        "name": "매혹을 관장하는 정령",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500021/icon.png"
+    },
+    "11500030": {
+        "name": "이츠카 코토리",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500030/icon.png"
+    },
+    "11500031": {
+        "name": "물가의 여신",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500031/icon.png"
+    },
+    "11500040": {
+        "name": "요시노",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500040/icon.png"
+    },
+    "11500041": {
+        "name": "시크릿 베이스",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500041/icon.png"
+    },
+    "11500050": {
+        "name": "토키사키 쿠루미",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500050/icon.png"
+    },
+    "11500051": {
+        "name": "트윈 로즈",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500051/icon.png"
+    },
+    "11500060": {
+        "name": "야마이 카구야 · 야마이 유즈루",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500060/icon.png"
+    },
+    "11500061": {
+        "name": "블루 오션 랑데부",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500061/icon.png"
     }
 }
