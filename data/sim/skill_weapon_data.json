@@ -50311,6 +50311,163 @@
             ]
         }
     },
+    "801961": {
+        "requirement": "Limit Break 1",
+        "weapon_true": true,
+        "name": "보이시·META",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702080/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/801960.png",
+        "skill_id": 801961,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170901
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170901
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "801962": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "보이시·META",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702080/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/801960.png",
+        "skill_id": 801962,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170902
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170902
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "801940": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "보이시·META",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702080/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/801940.png",
+        "skill_id": 801940,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169611
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 801942
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetPlayerVanguardFleet",
+                        "TargetHelpLeastHPRatio"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169620
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 801942
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetPlayerVanguardFleet",
+                        "TargetHelpLeastHPRatio"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
     "800531": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
@@ -57920,6 +58077,423 @@
                     "targetAniEffect": "",
                     "target_choise": "TargetNil",
                     "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "115010": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "야토가미 토카",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500010/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/115010.png",
+        "skill_id": 115010,
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169311
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169320
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "115020": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "attached_weapon_skill_id": [
+            {
+                "id": 115021
+            }
+        ],
+        "name": "야토가미 토카",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500010/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/115020.png",
+        "skill_id": 115020,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 115021
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 115022
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "bullet_type_list": [
+                            1,
+                            3
+                        ],
+                        "damage_param_a": 200,
+                        "damage_param_b": 0,
+                        "damage_tag_list": [
+                            "Yatogami Tōka"
+                        ],
+                        "effect": "shixiang_hengsao",
+                        "life_time": 0.5,
+                        "move_type": 1,
+                        "range": 45,
+                        "speed_x": 0
+                    },
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillCLSArea"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.6,
+                        "weapon_id": 169381
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 115021
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 115022
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "bullet_type_list": [
+                            1,
+                            3
+                        ],
+                        "damage_param_a": 200,
+                        "damage_param_b": 0,
+                        "damage_tag_list": [
+                            "Yatogami Tōka"
+                        ],
+                        "effect": "shixiang_hengsao",
+                        "life_time": 0.5,
+                        "move_type": 1,
+                        "range": 45,
+                        "speed_x": 0
+                    },
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillCLSArea"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.6,
+                        "weapon_id": 169390
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "115030": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/115010.png",
+        "name": "야토가미 토카",
+        "weapon_true": true,
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500010/shipyard.png",
+        "skill_id": 115030,
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169421
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169430
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "115170": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "토비이치 오리가미",
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500020/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/115170.png",
+        "skill_id": 115170,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169351
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169360
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "115180": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "토비이치 오리가미",
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500020/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/115180.png",
+        "skill_id": 115180,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 115182
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 115182
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
+    "115250": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/115180.png",
+        "name": "토비이치 오리가미",
+        "weapon_true": true,
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500020/shipyard.png",
+        "skill_id": 115250,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 115254
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 115254
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
+    "115220": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "요시노",
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500040/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/115220.png",
+        "skill_id": 115220,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169411
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169420
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "115140": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "토키사키 쿠루미",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500050/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/115140.png",
+        "skill_id": 115140,
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169261
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "attr": "kuangsanshuliang",
+                        "value": -3
+                    },
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillEditFleetAttr"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 169261
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "attr": "kuangsanshuliang",
+                        "value": -3
+                    },
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillEditFleetAttr"
                 }
             ]
         }
