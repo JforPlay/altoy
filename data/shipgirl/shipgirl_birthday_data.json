@@ -7027,19 +7027,95 @@
         "룽섭 이름": "라임",
         "레어도": "SSR",
         "함종": "범선",
-        "진영": null,
+        "진영": "템페스타",
         "연": "1695",
         "월": "4",
-        "일": "20"
+        "일": "20",
+        "group_id": "960013",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600130/icon.png"
     },
     {
         "ID": "711",
         "룽섭 이름": "펄",
         "레어도": "SSR",
         "함종": "범선",
-        "진영": null,
+        "진영": "템페스타",
         "연": "1708",
         "월": "8",
-        "일": "5"
+        "일": "5",
+        "group_id": "960014",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600140/icon.png"
+    },
+    {
+        "ID": "Z151",
+        "룽섭 이름": "야토가미 토가",
+        "레어도": "SSR",
+        "함종": "중순",
+        "진영": "데어라",
+        "연": null,
+        "월": "4",
+        "일": "10",
+        "group_id": "1150001",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500010/icon.png"
+    },
+    {
+        "ID": "Z152",
+        "룽섭 이름": "토비이치 오리가미",
+        "레어도": "SSR",
+        "함종": "항모",
+        "진영": "데어라",
+        "연": null,
+        "월": "11",
+        "일": "11",
+        "group_id": "1150002",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500020/icon.png"
+    },
+    {
+        "ID": "Z153",
+        "룽섭 이름": "이츠카 코토리",
+        "레어도": "SSR",
+        "함종": "전함",
+        "진영": "데어라",
+        "연": null,
+        "월": "8",
+        "일": "3",
+        "group_id": "1150003",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500030/icon.png"
+    },
+    {
+        "ID": "Z154",
+        "룽섭 이름": "요시노",
+        "레어도": "SSR",
+        "함종": "경항모",
+        "진영": "데어라",
+        "연": null,
+        "월": "3",
+        "일": "20",
+        "group_id": "1150004",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500040/icon.png"
+    },
+    {
+        "ID": "Z155",
+        "룽섭 이름": "토키사키 쿠루미",
+        "레어도": "SSR",
+        "함종": "경순",
+        "진영": "데어라",
+        "연": null,
+        "월": "6",
+        "일": "10",
+        "group_id": "1150005",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500050/icon.png"
+    },
+    {
+        "ID": "Z156",
+        "룽섭 이름": "야마이 카구야 · 야마이 유즈루",
+        "레어도": "SSR",
+        "함종": "경순",
+        "진영": "데어라",
+        "연": null,
+        "월": "10",
+        "일": "18",
+        "group_id": "1150006",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500060/icon.png"
     }
 ]
