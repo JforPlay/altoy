@@ -26,24 +26,6 @@ const ShipgirlTrackerUtils = {
     },
 
     /**
-     * Debounce utility function to limit how often a function is called.
-     * @param {Function} func - Function to debounce.
-     * @param {number} wait - Milliseconds to wait.
-     * @returns {Function} Debounced function.
-     */
-    debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    },
-
-    /**
      * Filters the search dropdown based on user input.
      * @param {HTMLInputElement} input - The search input element.
      * @param {HTMLElement} dropdown - The dropdown element.

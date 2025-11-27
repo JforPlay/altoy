@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Use utilities from external file
-    const { parseDatasetInt, getCheckedFilterValues, debounce, filterSearchDropdown, setupDropdownToggle, createTrackerItem } = ShipgirlTrackerUtils;
+    const { parseDatasetInt, getCheckedFilterValues, filterSearchDropdown, setupDropdownToggle, createTrackerItem } = ShipgirlTrackerUtils;
 
     /**
      * Lookup ship data by name for goal tracker.
@@ -1664,24 +1664,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     debouncedCalculateScores();
                     autoSaveProgress();
                 }
-            });
-
-            // Set up scroll to top button
-            const scrollToTopBtn = document.getElementById('scroll-to-top');
-
-            window.addEventListener('scroll', () => {
-                if (window.pageYOffset > 500) {
-                    scrollToTopBtn.classList.add('visible');
-                } else {
-                    scrollToTopBtn.classList.remove('visible');
-                }
-            });
-
-            scrollToTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
             });
 
         } catch (error) {

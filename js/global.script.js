@@ -3,24 +3,6 @@
 // ============================================
 
 /**
- * Throttle function execution for performance
- * Limits function calls to once per delay period
- * @param {Function} func - Function to throttle
- * @param {number} delay - Minimum delay between calls (ms)
- * @returns {Function} Throttled function
- */
-function throttle(func, delay) {
-    let timeout = null;
-    return function(...args) {
-        if (timeout) return;
-        timeout = setTimeout(() => {
-            func.apply(this, args);
-            timeout = null;
-        }, delay);
-    };
-}
-
-/**
  * Safely get item from localStorage
  * Handles private browsing mode and permission errors
  * @param {string} key - Storage key
@@ -313,43 +295,6 @@ function setupInfoPopups() {
             }
         });
     });
-}
-
-/**
- * Setup scroll-to-top button functionality
- * Shows button when user scrolls down 300px, hides when at top
- * Applies to pages that have #scroll-to-top element in HTML
- */
-function setupScrollToTop() {
-    const scrollToTopBtn = document.getElementById('scroll-to-top');
-    if (!scrollToTopBtn) return; // Exit gracefully if button doesn't exist
-
-    // Show/hide button based on scroll position
-    const toggleButton = () => {
-        if (window.scrollY > 300) {
-            scrollToTopBtn.classList.remove('hidden');
-        } else {
-            scrollToTopBtn.classList.add('hidden');
-        }
-    };
-
-    // Scroll to top with smooth animation
-    const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    };
-
-    // Throttled scroll handler for better performance
-    const throttledToggle = throttle(toggleButton, 100);
-    window.addEventListener('scroll', throttledToggle);
-
-    // Click handler
-    scrollToTopBtn.addEventListener('click', scrollToTop);
-
-    // Initial visibility check
-    toggleButton();
 }
 
 /**
