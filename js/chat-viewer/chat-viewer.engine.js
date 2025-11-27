@@ -21,7 +21,6 @@ class ChatViewerEngine {
         this.storyContainer = document.getElementById('story-container');
         this.optionsContainer = document.getElementById('options-container');
         this.restartButton = document.getElementById('restart-button');
-        this.scrollToTopBtn = document.getElementById('scroll-to-top-btn');
 
         // Data and state
         this.allData = {};
@@ -38,6 +37,13 @@ class ChatViewerEngine {
 
         // Custom handlers
         this.customHandlers = config.customHandlers || {};
+
+        // Bind event handlers
+        this.handleStoryChange = this.loadSelectedStory.bind(this);
+        this.handleRestart = this.initializeStory.bind(this);
+        this.handleSectionToggle = () => {
+            this.characterSelectionSection.classList.toggle('collapsed');
+        };
 
         // Initialize
         this.initialize();
@@ -543,35 +549,13 @@ class ChatViewerEngine {
      * Attaches event listeners to controls
      */
     attachEventListeners() {
-        this.storyDropdown.addEventListener('change', () => this.loadSelectedStory());
-        this.restartButton.addEventListener('click', () => this.initializeStory());
+        this.storyDropdown.addEventListener('change', this.handleStoryChange);
+        this.restartButton.addEventListener('click', this.handleRestart);
 
         // Toggle character selection section
         const sectionHeader = this.characterSelectionSection.querySelector('h3');
         if (sectionHeader) {
-            sectionHeader.addEventListener('click', () => {
-                this.characterSelectionSection.classList.toggle('collapsed');
-            });
-        }
-
-        // Scroll to top button functionality
-        if (this.scrollToTopBtn) {
-            // Show/hide button based on scroll position
-            window.addEventListener('scroll', () => {
-                if (window.pageYOffset > 300) {
-                    this.scrollToTopBtn.classList.add('visible');
-                } else {
-                    this.scrollToTopBtn.classList.remove('visible');
-                }
-            });
-
-            // Scroll to top when clicked
-            this.scrollToTopBtn.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
+            sectionHeader.addEventListener('click', this.handleSectionToggle);
         }
     }
 
@@ -593,16 +577,16 @@ class ChatViewerEngine {
 
         // Remove event listeners
         if (this.storyDropdown) {
-            this.storyDropdown.removeEventListener('change', () => this.loadSelectedStory());
+            this.storyDropdown.removeEventListener('change', this.handleStoryChange);
         }
 
         if (this.restartButton) {
-            this.restartButton.removeEventListener('click', () => this.initializeStory());
+            this.restartButton.removeEventListener('click', this.handleRestart);
         }
 
-        if (this.scrollToTopBtn) {
-            window.removeEventListener('scroll', () => {});
-            this.scrollToTopBtn.removeEventListener('click', () => {});
+        const sectionHeader = this.characterSelectionSection?.querySelector('h3');
+        if (sectionHeader) {
+            sectionHeader.removeEventListener('click', this.handleSectionToggle);
         }
 
         // Clear character card event listeners (if needed for re-initialization)

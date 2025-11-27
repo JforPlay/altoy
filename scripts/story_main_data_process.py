@@ -267,6 +267,26 @@ class DataProcessor:
                 return shipgirl_id
         return None
 
+    def create_meta_data(self, processed_data: Dict[str, Any]) -> None:
+        """Creates metadata file without scripts."""
+        meta_data = {}
+        keep_fields = [
+            'id', 'name', 'description', 'summary', 'shipnation', 'bgm', 
+            'link_event', 'chapter', 'column', 'row', 'icon'
+        ]
+        
+        for key, item in processed_data.items():
+            meta_item = {}
+            for field in keep_fields:
+                if field in item:
+                    meta_item[field] = item[field]
+            meta_data[key] = meta_item
+            
+        with open('./output/story-viewer/main_story_meta.json', 'w', encoding='utf-8') as f:
+            json.dump(meta_data, f, ensure_ascii=False, indent=4)
+            
+        print("Meta data saved to './output/story-viewer/main_story_meta.json'")
+
     def process_storyline_data(self) -> Dict[str, Any]:
         """Main function to process storyline data."""
         storyline_data = self.fetch_json_data(URL_STORYLINE)
@@ -306,6 +326,8 @@ class DataProcessor:
                 json.dump(processed_storyline_data, f, ensure_ascii=False, indent=4)
                 
             print("Processed storyline data saved to './output/story-viewer/main_story_data.json'")
+            
+            self.create_meta_data(processed_storyline_data)
             
         except requests.exceptions.RequestException as e:
             print(f"Error fetching data: {e}")

@@ -15,19 +15,6 @@ const showJpDatesFilter = document.getElementById('showJpDatesFilter');
 const eventList = document.getElementById('eventList');
 const eventCount = document.getElementById('eventCount');
 
-// Utility: Debounce function for performance optimization
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
 // Load data on page load
 document.addEventListener('DOMContentLoaded', async () => {
     await loadData();

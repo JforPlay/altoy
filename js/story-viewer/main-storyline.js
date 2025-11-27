@@ -3,19 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // UTILITY FUNCTIONS
     // =========================================================================
 
-    // Debounce function for performance
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
     // Removed responsive font sizing - using fixed sizes instead
 
     // =========================================================================
@@ -71,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     // DATA LOADING
     // =========================================================================
-    fetch('data/story-viewer/main_story_data.json')
+    fetch('data/story-viewer/main_story_meta.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
