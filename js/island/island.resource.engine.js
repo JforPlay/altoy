@@ -41,7 +41,8 @@ window.ResourceModule = (function () {
         '2': '채집 (Gathering)',
         '3': '사육 (Husbandry)',
         '4': '요리 (Cooking)',
-        '6': '제조 (Manufacturing)'
+        '6': '제조 (Manufacturing)',
+        '시즌템': '시즌템 (Seasonal Items)'
     };
 
     // ============================================
@@ -49,13 +50,10 @@ window.ResourceModule = (function () {
     // ============================================
 
     async function init(sharedData) {
-        console.log('[Resource] Initializing...');
-
         try {
             // Use shared item data instead of loading again
             if (sharedData && sharedData.items) {
                 state.items = sharedData.items;
-                console.log('[Resource] Using shared item data');
             }
 
             // Load module-specific data files
@@ -75,6 +73,12 @@ window.ResourceModule = (function () {
             // Build dependency graph
             buildDependencyGraph();
 
+            // Build seasonal items category (must be after dependency graph)
+            buildSeasonalItemsCategory();
+
+            // Rebuild recipe indices to include seasonal items
+            buildRecipeIndices();
+
             // Render UI
             renderCategoryFilter();
             renderRecipeList();
@@ -83,8 +87,6 @@ window.ResourceModule = (function () {
 
             // Setup event listeners
             setupEventListeners();
-
-            console.log('[Resource] Initialization complete');
         } catch (error) {
             console.error('[Resource] Initialization failed:', error);
             IslandEngine.showError('Failed to load resource data');
@@ -113,8 +115,73 @@ window.ResourceModule = (function () {
                 }
             }
         });
+    }
 
-        console.log('[Resource] Shop data indexed:', Object.keys(state.shopPurchaseData).length, 'items');
+    function buildSeasonalItemsCategory() {
+        // Filter items with IDs 4000-4999 from item data
+        const seasonalItems = Object.entries(state.items)
+            .filter(([id]) => {
+                const itemId = parseInt(id);
+                return itemId >= 4000 && itemId <= 4999;
+            })
+            .map(([id, itemData]) => parseInt(id));
+
+        // Build synthetic recipes for seasonal items
+        const seasonalRecipes = [];
+
+        seasonalItems.forEach(itemId => {
+            const itemInfo = IslandEngine.getItemInfo(itemId);
+            
+            // Check if this item is produced by any recipe
+            const producingRecipes = state.dependencyGraph.producedBy[itemId] || [];
+            
+            // Check if this item can be purchased from shop
+            const isInShop = state.shopPurchaseData[itemId] !== undefined;
+            
+            // If not in shop and not produced by recipes, it's a pickup item
+            const isPickup = !isInShop && producingRecipes.length === 0;
+
+            // If there are producing recipes, use the first one as the main recipe
+            if (producingRecipes.length > 0) {
+                const mainRecipe = state.recipeIndex[producingRecipes[0]];
+                if (mainRecipe) {
+                    // Use the actual recipe but mark it as seasonal
+                    const seasonalRecipe = {
+                        ...mainRecipe,
+                        _isSeasonalView: true,
+                        _seasonalItemId: itemId,
+                        _allRecipes: producingRecipes,
+                        _isPickup: false,
+                        _isShop: isInShop
+                    };
+                    seasonalRecipes.push(seasonalRecipe);
+                    return;
+                }
+            }
+
+            // Create a synthetic recipe entry for display (pickup or shop items)
+            const syntheticRecipe = {
+                id: `seasonal_${itemId}`,
+                name: itemInfo.name,
+                item_id: itemId,
+                workload: 0,
+                ship_exp: 0,
+                stamina_cost: 0,
+                commission_cost: [],
+                commission_product: [[itemId, 1]],
+                production_limit: 0,
+                _isSeasonalView: true,
+                _seasonalItemId: itemId,
+                _isPickup: isPickup,
+                _isShop: isInShop,
+                _allRecipes: []
+            };
+
+            seasonalRecipes.push(syntheticRecipe);
+        });
+
+        // Add seasonal category to recipes
+        state.recipes['시즌템'] = seasonalRecipes;
     }
 
     function buildRecipeIndices() {
@@ -127,8 +194,6 @@ window.ResourceModule = (function () {
                 state.recipeCategoryIndex[recipe.id] = categoryId;
             });
         });
-
-        console.log('[Resource] Recipe indices built:', Object.keys(state.recipeIndex).length, 'recipes');
     }
 
     // ============================================
@@ -137,7 +202,6 @@ window.ResourceModule = (function () {
 
     function clearTreeCache() {
         state.treeCache = {};
-        console.log('[Resource] Tree cache cleared');
     }
 
     // ============================================
@@ -164,8 +228,6 @@ window.ResourceModule = (function () {
                 });
             });
         });
-
-        console.log('[Resource] Dependency graph built:', state.dependencyGraph);
     }
 
     function buildUpstreamTree(recipeId, options = {}) {
@@ -244,6 +306,7 @@ window.ResourceModule = (function () {
                         if (!childRecipe) return;
 
                         // Calculate how many times we need to run the child recipe
+                        // Always use commission_product because commission_cost quantities are designed for commission_product outputs
                         const childOutput = (childRecipe.commission_product || []).find(([id]) => id === requiredItemId);
                         const childOutputQuantity = childOutput ? childOutput[1] : 1;
                         const childMultiplier = scaledQuantity / childOutputQuantity;
@@ -272,6 +335,7 @@ window.ResourceModule = (function () {
                     if (!childRecipe) return;
 
                     // Calculate how many times we need to run the child recipe
+                    // Always use commission_product because commission_cost quantities are designed for commission_product outputs
                     const childOutput = (childRecipe.commission_product || []).find(([id]) => id === itemId);
                     const childOutputQuantity = childOutput ? childOutput[1] : 1;
                     const childMultiplier = scaledQuantity / childOutputQuantity;
@@ -628,7 +692,8 @@ window.ResourceModule = (function () {
      * Input materials still use auto mode time (they're produced automatically)
      */
     function calculateCumulativeTimeManual(recipe) {
-        const outputQuantity = (recipe.commission_product?.[0]?.[1]) || 1;
+        // For manual mode in category 1, use drop_display quantity
+        const outputQuantity = (recipe.drop_display?.[0]?.[1]) || (recipe.commission_product?.[0]?.[1]) || 1;
 
         // Manual mode: 30% time reduction for the main recipe
         let cumulativeTimePerUnit = (recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER) / outputQuantity;
@@ -666,8 +731,8 @@ window.ResourceModule = (function () {
                 const isProducerCat1 = producerCategory === '1';
 
                 if (isProducerCat1 && useManualForCat1 && producerRecipe.cost && producerRecipe.cost.length > 0) {
-                    // Use manual time for category 1
-                    const producerOutputQty = (producerRecipe.commission_product?.[0]?.[1]) || 1;
+                    // Use manual time for category 1 - use drop_display quantity
+                    const producerOutputQty = (producerRecipe.drop_display?.[0]?.[1]) || (producerRecipe.commission_product?.[0]?.[1]) || 1;
                     let producerTimePerUnit = (producerRecipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER) / producerOutputQty;
 
                     // Add time for producer's inputs (auto mode)
@@ -785,7 +850,7 @@ window.ResourceModule = (function () {
         const isCategory3 = state.selectedCategory === '3';
         const isCategory4 = state.selectedCategory === '4';
         const isCategory6 = state.selectedCategory === '6';
-        const showDualCost = isCategory1 || isCategory3 || isCategory4 || isCategory6;
+        const showDualCost = isCategory1; // Only category 1 has manual/auto distinction
 
         // Get upstream/downstream recipes
         const outputs = (recipe.commission_product || []).map(([id]) => id);
@@ -811,10 +876,15 @@ window.ResourceModule = (function () {
         // Calculate gold consumption using shared utility
         const goldConsumption = IslandEngine.calculateTreeCost(upstreamTree);
 
+        // Calculate season points consumption using shared utility
+        const seasonPointsConsumption = IslandEngine.calculateTreePoints(upstreamTree);
+
         // Calculate manual gold consumption
         let manualGoldConsumption = { gold: 0, resources: {} };
+        let manualSeasonPointsConsumption = 0;
         let upstreamTreeManual = null;
 
+        // Only calculate manual mode for category 1
         if (isCategory1 && recipe.cost && recipe.cost.length > 0) {
             manualGoldConsumption = calculateManualGoldConsumption(recipe);
             upstreamTreeManual = IslandEngine.buildRecipeDependencyTree(
@@ -825,16 +895,7 @@ window.ResourceModule = (function () {
                 state.shopPurchaseData,
                 { useManualMode: true }
             );
-        } else if ((isCategory3 || isCategory4 || isCategory6) && goldConsumption.gold > 0) {
-            upstreamTreeManual = IslandEngine.buildRecipeDependencyTree(
-                recipe.id,
-                state.recipeIndex,
-                state.recipeCategoryIndex,
-                state.dependencyGraph,
-                state.shopPurchaseData,
-                { useManualMode: true }
-            );
-            manualGoldConsumption = calculateGoldConsumptionWithManual(upstreamTreeManual, true);
+            manualSeasonPointsConsumption = IslandEngine.calculateTreePoints(upstreamTreeManual);
         }
 
         // Calculate normalized costs with cumulative time
@@ -851,16 +912,23 @@ window.ResourceModule = (function () {
         let costPerItemManual = 0;
         let costPerHourManual = 0;
         let cumulativeTimeManual = 0;
+        let ptPerItemManual = 0;
+        let ptPerItemAuto = 0;
+        
         if (showDualCost && manualGoldConsumption.gold > 0) {
-            if (isCategory1) {
-                cumulativeTimeManual = calculateCumulativeTimeManual(recipe);
-            } else {
-                cumulativeTimeManual = calculateCumulativeTimeWithManual(recipe, true);
-            }
+            cumulativeTimeManual = calculateCumulativeTimeManual(recipe);
 
             const cumulativeTimeManualInHours = cumulativeTimeManual / CONSTANTS.DECISECONDS_PER_HOUR;
-            costPerItemManual = manualGoldConsumption.gold / outputQuantity;
+            // For category 1, use drop_display quantity for manual calculation
+            const manualOutputQuantity = (recipe.drop_display && recipe.drop_display.length > 0)
+                ? recipe.drop_display[0][1]
+                : outputQuantity;
+            costPerItemManual = manualGoldConsumption.gold / manualOutputQuantity;
             costPerHourManual = cumulativeTimeManualInHours > 0 ? manualGoldConsumption.gold / cumulativeTimeManualInHours : 0;
+            
+            // Calculate per-item season points for both modes
+            ptPerItemManual = manualSeasonPointsConsumption / manualOutputQuantity;
+            ptPerItemAuto = seasonPointsConsumption / outputQuantity;
         }
 
         return {
@@ -876,6 +944,10 @@ window.ResourceModule = (function () {
             producedByRecipes,
             goldConsumption,
             manualGoldConsumption,
+            seasonPointsConsumption,
+            manualSeasonPointsConsumption,
+            ptPerItemManual,
+            ptPerItemAuto,
             outputQuantity,
             costPerItemAuto,
             costPerHourAuto,
@@ -940,7 +1012,7 @@ window.ResourceModule = (function () {
     }
 
     function renderManualSection(recipe, data) {
-        const { isCategory1, isCategory2 } = data;
+        const { isCategory1, isCategory2, isCategory3 } = data;
 
         if (isCategory1 && recipe.cost?.length) {
             return `
@@ -963,7 +1035,35 @@ window.ResourceModule = (function () {
 
                         <div class="flow-section output-section">
                             <h4 class="flow-title">📤 생산품</h4>
-                            ${renderMaterialListVertical(recipe.commission_product)}
+                            ${renderMaterialListVertical(recipe.drop_display || recipe.commission_product)}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        if (isCategory3 && recipe.cost?.length) {
+            return `
+                <div class="manual-drop-section category3-manual">
+                    <h4 class="manual-drop-title">💎 수동 사육 <span class="manual-time">(${IslandEngine.formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)})</span></h4>
+                    <div class="recipe-flow manual-flow">
+                        <div class="flow-section input-section">
+                            <h4 class="flow-title">📥 요구재료 (수동)</h4>
+                            ${renderMaterialListVertical(recipe.cost)}
+                        </div>
+
+                        <div class="flow-arrow">
+                            <div class="arrow-head">
+                                <span class="material-symbols-outlined">arrow_forward</span>
+                            </div>
+                            <div class="flow-stats">
+                                <span class="flow-stat">⏱ ${IslandEngine.formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)}</span>
+                            </div>
+                        </div>
+
+                        <div class="flow-section output-section">
+                            <h4 class="flow-title">📤 생산품</h4>
+                            ${renderMaterialListVertical(recipe.drop_display || recipe.commission_product)}
                         </div>
                     </div>
                 </div>
@@ -995,8 +1095,13 @@ window.ResourceModule = (function () {
         const {
             showDualCost,
             isCategory1,
+            isCategory2,
             goldConsumption,
             manualGoldConsumption,
+            seasonPointsConsumption,
+            manualSeasonPointsConsumption,
+            ptPerItemManual,
+            ptPerItemAuto,
             costPerItemAuto,
             costPerHourAuto,
             costPerItemManual,
@@ -1010,32 +1115,39 @@ window.ResourceModule = (function () {
 
         if (!hasAnyCosts) return '';
 
-        // Dual cost mode (categories 1, 3, 4, 6)
+        // Dual cost mode (category 1 only)
         if (showDualCost) {
             return `
                 <div class="cost-summary">
                     <h4 class="cost-summary-title">
                         <span class="material-symbols-outlined">shopping_cart</span>
-                        총 구매 비용${isCategory1 ? '' : ' (카테고리 1 수동 생산 포함)'}
+                        총 구매 비용
                     </h4>
                     <div class="cost-comparison-grid">
                         ${manualGoldConsumption.gold > 0 ? `
                             <div class="cost-column manual-cost">
-                                <h5 class="cost-column-title">💎 ${isCategory1 ? '수동 생산' : '수동 (카테고리 1)'}</h5>
+                                <h5 class="cost-column-title">💎 수동 생산</h5>
                                 <div class="cost-items">
                                     <div class="cost-item gold">
                                         <span class="cost-icon">💰</span>
-                                        <span class="cost-name">Total Gold</span>
+                                        <span class="cost-name">총 생산단가</span>
                                         <span class="cost-amount">×${manualGoldConsumption.gold.toLocaleString()}</span>
                                     </div>
+                                    ${manualSeasonPointsConsumption > 0 ? `
+                                        <div class="cost-item points">
+                                            <span class="cost-icon">🎯</span>
+                                            <span class="cost-name">개당 시즌 pt 비용</span>
+                                            <span class="cost-amount">×${ptPerItemManual.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                                        </div>
+                                    ` : ''}
                                     <div class="cost-item normalized">
                                         <span class="cost-icon">📊</span>
-                                        <span class="cost-name">Per Item</span>
+                                        <span class="cost-name">개당 생산단가</span>
                                         <span class="cost-amount">${costPerItemManual.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} G/ea</span>
                                     </div>
                                     <div class="cost-item normalized">
                                         <span class="cost-icon">⏱️</span>
-                                        <span class="cost-name">Per Hour</span>
+                                        <span class="cost-name">시간당 생산단가</span>
                                         <span class="cost-amount">${costPerHourManual.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} G/hr</span>
                                     </div>
                                 </div>
@@ -1047,17 +1159,24 @@ window.ResourceModule = (function () {
                                 <div class="cost-items">
                                     <div class="cost-item gold">
                                         <span class="cost-icon">💰</span>
-                                        <span class="cost-name">Total Gold</span>
+                                        <span class="cost-name">총 생산단가</span>
                                         <span class="cost-amount">×${goldConsumption.gold.toLocaleString()}</span>
                                     </div>
+                                    ${seasonPointsConsumption > 0 ? `
+                                        <div class="cost-item points">
+                                            <span class="cost-icon">🎯</span>
+                                            <span class="cost-name">개당 시즌 pt 비용</span>
+                                            <span class="cost-amount">×${ptPerItemAuto.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                                        </div>
+                                    ` : ''}
                                     <div class="cost-item normalized">
                                         <span class="cost-icon">📊</span>
-                                        <span class="cost-name">Per Item</span>
+                                        <span class="cost-name">개당 생산단가</span>
                                         <span class="cost-amount">${costPerItemAuto.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} G/ea</span>
                                     </div>
                                     <div class="cost-item normalized">
                                         <span class="cost-icon">⏱️</span>
-                                        <span class="cost-name">Per Hour</span>
+                                        <span class="cost-name">시간당 생산단가</span>
                                         <span class="cost-amount">${costPerHourAuto.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} G/hr</span>
                                     </div>
                                 </div>
@@ -1084,28 +1203,36 @@ window.ResourceModule = (function () {
             `;
         }
 
-        // Simple cost mode (category 2)
+        // Simple cost mode (categories 2, 3, 4, 6)
         return `
             <div class="cost-summary">
                 <h4 class="cost-summary-title">
                     <span class="material-symbols-outlined">shopping_cart</span>
                     총 구매 비용
+                    ${!isCategory2 ? '<span style="font-size: 0.85em; font-weight: normal; opacity: 0.7; margin-left: 0.5rem;">(자동 생산 기준)</span>' : ''}
                 </h4>
                 <div class="cost-items">
                     ${goldConsumption.gold > 0 ? `
                         <div class="cost-item gold">
                             <span class="cost-icon">💰</span>
-                            <span class="cost-name">Total Gold</span>
+                            <span class="cost-name">총 생산단가</span>
                             <span class="cost-amount">×${goldConsumption.gold.toLocaleString()}</span>
                         </div>
+                        ${seasonPointsConsumption > 0 ? `
+                            <div class="cost-item points">
+                                <span class="cost-icon">🎯</span>
+                                <span class="cost-name">시즌 pt 비용 (×1개 생산 기준)</span>
+                                <span class="cost-amount">×${seasonPointsConsumption.toLocaleString()}</span>
+                            </div>
+                        ` : ''}
                         <div class="cost-item normalized">
                             <span class="cost-icon">📊</span>
-                            <span class="cost-name">Per Item (×${outputQuantity}개 생산)</span>
+                            <span class="cost-name">개당 생산단가 (×${outputQuantity}개 생산)</span>
                             <span class="cost-amount">${costPerItemAuto.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} G/ea</span>
                         </div>
                         <div class="cost-item normalized">
                             <span class="cost-icon">⏱️</span>
-                            <span class="cost-name">Per Hour</span>
+                            <span class="cost-name">시간당 생산단가</span>
                             <span class="cost-amount">${costPerHourAuto.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} G/hr</span>
                         </div>
                     ` : ''}
@@ -1143,6 +1270,29 @@ window.ResourceModule = (function () {
         const container = document.getElementById('recipe-detail');
         if (!container) return;
 
+        // Handle seasonal view recipes
+        if (recipe._isSeasonalView) {
+            // If this is a real recipe (not just a shop/pickup item), show full detail with tree
+            if (!recipe.id.toString().startsWith('seasonal_')) {
+                // This is a real recipe, render it normally with full dependency tree
+                const data = gatherRecipeData(recipe);
+                const html = `
+                    ${renderRecipeHeader(recipe, data)}
+                    ${renderRecipeFlow(recipe, data)}
+                    ${renderManualSection(recipe, data)}
+                    ${renderCostSummary(recipe, data)}
+                    ${renderRecipeActions(recipe, data)}
+                `;
+                container.innerHTML = html;
+                renderDependencyTree(recipe);
+            } else {
+                // This is a synthetic shop/pickup item
+                renderSeasonalItemDetail(recipe, container);
+                renderSeasonalDependencyTree(recipe);
+            }
+            return;
+        }
+
         const data = gatherRecipeData(recipe);
 
         const html = `
@@ -1157,6 +1307,196 @@ window.ResourceModule = (function () {
 
         // Automatically render dependency tree
         renderDependencyTree(recipe);
+    }
+
+    function renderSeasonalItemDetail(recipe, container) {
+        const itemId = recipe._seasonalItemId || recipe.item_id;
+        const item = IslandEngine.getItemInfo(itemId);
+        const isPickup = recipe._isPickup;
+        const isShop = recipe._isShop;
+        const allRecipeIds = recipe._allRecipes || [];
+        const hasRecipes = allRecipeIds.length > 0;
+
+        let sourceInfo = '';
+        if (isPickup) {
+            sourceInfo = `
+                <div class="seasonal-source pickup">
+                    <span class="material-symbols-outlined">hiking</span>
+                    <span>채집템 (맵에서 채집)</span>
+                </div>
+            `;
+        } else if (isShop) {
+            const shopData = state.shopPurchaseData[itemId];
+            if (shopData) {
+                const [requiredItemId, cost, packSize] = shopData;
+                const costItem = IslandEngine.getItemInfo(requiredItemId);
+                sourceInfo = `
+                    <div class="seasonal-source shop">
+                        <span class="material-symbols-outlined">store</span>
+                        <span>상점 구매: ${cost} ${costItem.name} (${packSize}개 팩)</span>
+                    </div>
+                `;
+            }
+        }
+
+        if (hasRecipes) {
+            sourceInfo += `
+                <div class="seasonal-source recipe">
+                    <span class="material-symbols-outlined">restaurant</span>
+                    <span>제작 가능 (${allRecipeIds.length}개 레시피)</span>
+                </div>
+            `;
+        }
+
+        const html = `
+            <div class="recipe-detail-header">
+                <div class="recipe-icon-large">
+                    ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
+                </div>
+                <div class="recipe-title-section">
+                    <h3>${item.name}</h3>
+                    <div class="recipe-meta-badges">
+                        <span class="recipe-category">시즌템 (Seasonal)</span>
+                        <span class="stat-badge rarity-${item.rarity || 1}">★ ${item.rarity || 1}</span>
+                    </div>
+                    <p class="item-description">${item.desc || '시즌 한정 아이템입니다.'}</p>
+                </div>
+            </div>
+
+            <div class="seasonal-sources">
+                <h4 class="flow-title">📍 획득 방법</h4>
+                ${sourceInfo}
+            </div>
+
+            ${hasRecipes ? `
+                <div class="seasonal-recipes">
+                    <h4 class="flow-title">🔨 제작 레시피</h4>
+                    <div class="seasonal-recipe-list">
+                        ${allRecipeIds.map(recipeId => {
+                            const originalRecipe = findRecipeById(recipeId);
+                            if (!originalRecipe) return '';
+                            const recipeItem = IslandEngine.getItemInfo(originalRecipe.item_id);
+                            const categoryId = findRecipeCategoryById(recipeId);
+                            return `
+                                <div class="seasonal-recipe-card" data-recipe-id="${recipeId}">
+                                    <div class="recipe-icon">
+                                        ${recipeItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${recipeItem.icon.split('/').pop()}.png" alt="${recipeItem.name}">` : '📦'}
+                                    </div>
+                                    <div class="recipe-info">
+                                        <div class="recipe-name">${originalRecipe.name || recipeItem.name}</div>
+                                        <div class="recipe-meta">
+                                            <span>${categoryNames[categoryId] || '알 수 없음'}</span>
+                                            <span>⏱ ${IslandEngine.formatTime(originalRecipe.workload)}</span>
+                                        </div>
+                                    </div>
+                                    <span class="material-symbols-outlined">arrow_forward</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            ` : ''}
+        `;
+
+        container.innerHTML = html;
+    }
+
+    function renderSeasonalDependencyTree(recipe) {
+        const container = document.getElementById('dependency-chain');
+        if (!container) return;
+
+        const itemId = recipe._seasonalItemId || recipe.item_id;
+        const item = IslandEngine.getItemInfo(itemId);
+
+        // Check what recipes produce this item
+        const producedByRecipes = state.dependencyGraph.producedBy[itemId] || [];
+        
+        // Check what recipes use this item
+        const usedInRecipes = state.dependencyGraph.usedBy[itemId] || [];
+
+        const html = `
+            <div class="tree-header">
+                <h3>
+                    <span class="material-symbols-outlined">account_tree</span>
+                    아이템 관계도
+                </h3>
+            </div>
+
+            ${producedByRecipes.length > 0 ? `
+                <div class="tree-section upstream-section">
+                    <h4 class="tree-section-title upstream">
+                        <span class="material-symbols-outlined">arrow_upward</span>
+                        이 아이템을 생산하는 레시피 (${producedByRecipes.length})
+                    </h4>
+                    <div class="seasonal-usage-list">
+                        ${producedByRecipes.map(recipeId => {
+                            const producerRecipe = findRecipeById(recipeId);
+                            if (!producerRecipe) return '';
+                            const producerItem = IslandEngine.getItemInfo(producerRecipe.item_id);
+                            const categoryId = findRecipeCategoryById(recipeId);
+                            return `
+                                <div class="tree-node-card upstream" data-recipe-id="${recipeId}">
+                                    <div class="tree-node-icon">
+                                        ${producerItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${producerItem.icon.split('/').pop()}.png" alt="${producerItem.name}">` : '📦'}
+                                    </div>
+                                    <div class="tree-node-info">
+                                        <div class="tree-node-name">${producerRecipe.name || producerItem.name}</div>
+                                        <div class="tree-node-meta">
+                                            <span>${categoryNames[categoryId] || '알 수 없음'}</span>
+                                            <span>⏱ ${IslandEngine.formatTime(producerRecipe.workload)}</span>
+                                            <span>⚡ ${producerRecipe.ship_exp}</span>
+                                        </div>
+                                    </div>
+                                    <span class="tree-node-arrow material-symbols-outlined">arrow_forward</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            ` : ''}
+
+            ${usedInRecipes.length > 0 ? `
+                <div class="tree-section downstream-section">
+                    <h4 class="tree-section-title downstream">
+                        <span class="material-symbols-outlined">arrow_downward</span>
+                        이 아이템을 사용하는 레시피 (${usedInRecipes.length})
+                    </h4>
+                    <div class="seasonal-usage-list">
+                        ${usedInRecipes.map(recipeId => {
+                            const usageRecipe = findRecipeById(recipeId);
+                            if (!usageRecipe) return '';
+                            const usageItem = IslandEngine.getItemInfo(usageRecipe.item_id);
+                            const categoryId = findRecipeCategoryById(recipeId);
+                            return `
+                                <div class="tree-node-card downstream" data-recipe-id="${recipeId}">
+                                    <div class="tree-node-icon">
+                                        ${usageItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${usageItem.icon.split('/').pop()}.png" alt="${usageItem.name}">` : '📦'}
+                                    </div>
+                                    <div class="tree-node-info">
+                                        <div class="tree-node-name">${usageRecipe.name || usageItem.name}</div>
+                                        <div class="tree-node-meta">
+                                            <span>${categoryNames[categoryId] || '알 수 없음'}</span>
+                                            <span>⏱ ${IslandEngine.formatTime(usageRecipe.workload)}</span>
+                                            <span>⚡ ${usageRecipe.ship_exp}</span>
+                                        </div>
+                                    </div>
+                                    <span class="tree-node-arrow material-symbols-outlined">arrow_forward</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            ` : ''}
+
+            ${producedByRecipes.length === 0 && usedInRecipes.length === 0 ? `
+                <div class="empty-state">
+                    <span class="material-symbols-outlined">inventory</span>
+                    <p>이 아이템과 연결된 레시피가 없습니다.</p>
+                </div>
+            ` : ''}
+        `;
+
+        container.innerHTML = html;
     }
 
     function renderMaterialList(materials) {
@@ -1433,12 +1773,65 @@ window.ResourceModule = (function () {
             const card = e.target.closest('.recipe-card');
             if (!card) return;
 
-            const recipeId = parseInt(card.dataset.recipeId);
-            const recipe = findRecipeById(recipeId);
+            const recipeId = card.dataset.recipeId;
+            // Try to find recipe by string ID first (for seasonal synthetic recipes)
+            let recipe = state.recipeIndex[recipeId];
+            // If not found, try parsing as integer (for normal numeric IDs)
+            if (!recipe) {
+                recipe = findRecipeById(parseInt(recipeId));
+            }
+            // If still not found, search in seasonal category
+            if (!recipe && state.selectedCategory === '시즌템') {
+                recipe = state.recipes['시즌템']?.find(r => r.id === recipeId);
+            }
             if (recipe) {
                 state.selectedRecipe = recipe;
                 renderRecipeList();
                 renderRecipeDetail(recipe);
+            }
+        });
+
+        // Seasonal recipe card clicks (delegated from detail panel)
+        document.addEventListener('click', (e) => {
+            const seasonalCard = e.target.closest('.seasonal-recipe-card');
+            if (seasonalCard && seasonalCard.dataset.recipeId) {
+                const recipeId = parseInt(seasonalCard.dataset.recipeId);
+                const recipe = findRecipeById(recipeId);
+                if (recipe) {
+                    const category = findRecipeCategoryById(recipeId);
+                    if (category && category !== state.selectedCategory) {
+                        state.selectedCategory = category;
+                        const categorySelect = document.getElementById('recipe-category-select');
+                        if (categorySelect) {
+                            categorySelect.value = category;
+                        }
+                        renderRecipeList();
+                    }
+                    state.selectedRecipe = recipe;
+                    renderRecipeList();
+                    renderRecipeDetail(recipe);
+                }
+            }
+
+            // Handle clicks on usage list items
+            const usageCard = e.target.closest('.seasonal-usage-list .tree-node-card');
+            if (usageCard && usageCard.dataset.recipeId) {
+                const recipeId = parseInt(usageCard.dataset.recipeId);
+                const recipe = findRecipeById(recipeId);
+                if (recipe) {
+                    const category = findRecipeCategoryById(recipeId);
+                    if (category && category !== state.selectedCategory) {
+                        state.selectedCategory = category;
+                        const categorySelect = document.getElementById('recipe-category-select');
+                        if (categorySelect) {
+                            categorySelect.value = category;
+                        }
+                        renderRecipeList();
+                    }
+                    state.selectedRecipe = recipe;
+                    renderRecipeList();
+                    renderRecipeDetail(recipe);
+                }
             }
         });
     }
@@ -1448,10 +1841,18 @@ window.ResourceModule = (function () {
     // ============================================
 
     function selectRecipe(recipeId) {
-        const recipe = findRecipeById(recipeId);
+        // Try to find recipe by ID (string or number)
+        let recipe = state.recipeIndex[recipeId];
+        if (!recipe && typeof recipeId === 'number') {
+            recipe = findRecipeById(recipeId);
+        }
+        // Search in seasonal category if not found
+        if (!recipe) {
+            recipe = state.recipes['시즌템']?.find(r => r.id === recipeId);
+        }
         if (!recipe) return;
 
-        const category = findRecipeCategoryById(recipeId);
+        const category = findRecipeCategoryById(recipeId) || (recipe._isSeasonalView ? '시즌템' : null);
 
         // Switch to the correct category if needed
         if (category && category !== state.selectedCategory) {
@@ -1779,7 +2180,14 @@ window.ResourceModule = (function () {
         showUpstream,
         showDownstream,
         closeModal,
-        selectRecipeFromModal
+        selectRecipeFromModal,
+        // Exposed for Season Calculator
+        getRecipeById: findRecipeById,
+        getRecipeCategoryById: findRecipeCategoryById,
+        buildUpstreamTree,
+        getDependencyGraph: () => state.dependencyGraph,
+        getRecipes: () => state.recipes,
+        getRecipeIndex: () => state.recipeIndex
     };
 
 })();

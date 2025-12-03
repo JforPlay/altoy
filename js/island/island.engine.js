@@ -16,7 +16,8 @@ window.IslandEngine = (function () {
             technology: null,
             quest: null,
             resource: null,
-            restaurant: null
+            restaurant: null,
+            seasonCalc: null
         },
         sharedData: {
             items: null,  // Shared across all modules
@@ -41,14 +42,15 @@ window.IslandEngine = (function () {
                 initModule('technology', window.TechnologyModule),
                 initModule('quest', window.QuestModule),
                 initModule('resource', window.ResourceModule),
-                initModule('restaurant', window.RestaurantModule)
+                initModule('restaurant', window.RestaurantModule),
+                initModule('seasonCalc', window.SeasonCalcModule)
             ];
 
             const results = await Promise.allSettled(moduleInits);
 
             // Log any failures
             results.forEach((result, i) => {
-                const moduleNames = ['character', 'technology', 'quest', 'resource', 'restaurant'];
+                const moduleNames = ['character', 'technology', 'quest', 'resource', 'restaurant', 'seasonCalc'];
                 if (result.status === 'rejected') {
                     console.error(`[Island] ${moduleNames[i]} module failed to initialize:`, result.reason);
                     showError(`${moduleNames[i]} 모듈을 불러오는데 실패했습니다.`);
@@ -263,13 +265,9 @@ window.IslandEngine = (function () {
             const producers = dependencyGraph.producedBy[itemId] || [];
             const shopPurchase = shopPurchaseData[itemId];
 
-            // DEBUG
-            console.log(`[TreeBuild] Processing input item ${itemId}, qty: ${scaledQuantity}, producers: ${producers.length}, shopPurchase: ${!!shopPurchase}`);
-
             // Priority: Prefer crafting over shop purchase if item can be produced
             if (producers.length > 0) {
                 // Item is produced by recipes - recurse into recipe
-                console.log(`[TreeBuild] Item ${itemId} can be crafted, recursing into recipe`);
                 producers.forEach(producerId => {
                     const childRecipe = recipeIndex[producerId];
                     if (!childRecipe) return;
@@ -301,12 +299,9 @@ window.IslandEngine = (function () {
                 const totalCost = costPerItem * scaledQuantity;
                 const packsNeeded = Math.ceil(scaledQuantity / packSize);
 
-                console.log(`[TreeBuild] Item ${itemId} is shop-buyable, requires item ${requiredItemId}, totalCost: ${totalCost}`);
-
                 // Check if the required resource can be crafted
                 if (requiredItemId !== GOLD_ITEM_ID && dependencyGraph.producedBy[requiredItemId]) {
                     // Required resource is craftable - recurse into crafting it
-                    console.log(`[TreeBuild] Required resource ${requiredItemId} can be crafted, recursing`);
                     const childProducers = dependencyGraph.producedBy[requiredItemId];
                     childProducers.forEach(producerId => {
                         const childRecipe = recipeIndex[producerId];
@@ -341,7 +336,6 @@ window.IslandEngine = (function () {
                     });
                 } else {
                     // Required resource is gold or not craftable - add as shop purchase
-                    console.log(`[TreeBuild] Adding shop purchase: item ${itemId} costs ${totalCost} of item ${requiredItemId} (gold=${requiredItemId === GOLD_ITEM_ID})`);
                     dependencies.push({
                         itemId,
                         itemInfo: getItemInfo(itemId),
@@ -359,8 +353,6 @@ window.IslandEngine = (function () {
                         }
                     });
                 }
-            } else {
-                console.log(`[TreeBuild] Item ${itemId} is neither craftable nor shop-buyable - skipping`);
             }
         });
 
@@ -388,14 +380,9 @@ window.IslandEngine = (function () {
             if (child.isShopPurchase && child.shopCost) {
                 const { itemId, totalCost, itemInfo } = child.shopCost;
 
-                // DEBUG
-                console.log(`[TreeCost] Found shop purchase: ${itemInfo.name} (ID: ${itemId}) costs ${totalCost} of item ${itemId}`);
-
                 if (itemId === GOLD_ITEM_ID) {
-                    console.log(`[TreeCost] Adding ${totalCost} gold`);
                     gold += totalCost;
                 } else {
-                    console.log(`[TreeCost] Adding ${totalCost} of resource ${itemInfo.name}`);
                     if (!resources[itemId]) {
                         resources[itemId] = {
                             name: itemInfo.name,
@@ -423,6 +410,41 @@ window.IslandEngine = (function () {
         return { gold, resources };
     }
 
+    /**
+     * Calculate total season points from a dependency tree
+     * Returns cumulative points: item's own pt_num + all ingredient costs
+     * This represents the total effective points value including the item itself
+     */
+    function calculateTreePoints(tree, direction = 'dependencies') {
+        if (!tree) return 0;
+
+        let totalPoints = 0;
+
+        const children = tree[direction] || tree.usages || [];
+        children.forEach(child => {
+            // For each ingredient, get its CUMULATIVE value (own pt + its ingredients)
+            if (child.itemId) {
+                const itemInfo = getItemInfo(child.itemId);
+                const quantity = child.quantityNeeded || child.quantity || 0;
+                
+                if (itemInfo) {
+                    // Add this item's own pt_num value
+                    if (itemInfo.pt_num > 0) {
+                        totalPoints += itemInfo.pt_num * quantity;
+                    }
+                    
+                    // Add the cumulative cost of its ingredients
+                    totalPoints += calculateTreePoints(child, direction);
+                }
+            } else {
+                // No itemId, just recurse
+                totalPoints += calculateTreePoints(child, direction);
+            }
+        });
+
+        return totalPoints;
+    }
+
     // ============================================
     // PUBLIC API
     // ============================================
@@ -440,6 +462,7 @@ window.IslandEngine = (function () {
         createSearchIndex,
         buildRecipeDependencyTree,
         calculateTreeCost,
+        calculateTreePoints,
         GOLD_ITEM_ID,
         state: () => state // For debugging
     };

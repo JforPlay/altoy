@@ -39,9 +39,9 @@ window.RestaurantModule = (function () {
     };
 
     const EVENT_BONUSES = {
-        manjuu_tour: { name: '만쥬 투어 그룹', bonus: 0.10 },
+        manjuu_tour: { name: '단체 관광객 만쥬', bonus: 0.10 },
         health_day: { name: '건강의 날', bonus: 0.20 },
-        food_review: { name: '요리 리뷰', bonus: 0.30 }
+        food_review: { name: '메탈 블러드 사절 방문', bonus: 0.30 }
     };
 
     const RARITY_BACKGROUNDS = {
@@ -243,13 +243,14 @@ window.RestaurantModule = (function () {
         }
 
         // Build dependency tree using shared utility
+        // Use auto mode (commission_cost/commission_product) for all restaurant cost calculations
         const tree = IslandEngine.buildRecipeDependencyTree(
             formulaId,
             state.recipeIndex,
             state.recipeCategoryIndex,
             state.dependencyGraph,
             state.shopPurchaseData,
-            { useManualMode: true, quantityMultiplier: 1 }
+            { useManualMode: false, quantityMultiplier: 1 }
         );
 
         if (!tree) {
@@ -582,7 +583,7 @@ window.RestaurantModule = (function () {
                         <span class="profit-value">${profitData.baseSellPrice.toLocaleString()}</span>
                     </div>
                     <div class="profit-row">
-                        <span class="profit-label">제작 비용 (골드)</span>
+                        <span class="profit-label">제작 비용 (골드) <span style="font-size: 0.85em; opacity: 0.7;">(자동 생산)</span></span>
                         <span class="profit-value cost">${profitData.cost.toLocaleString()}</span>
                     </div>
                     ${Object.keys(profitData.costBreakdown.resources || {}).length > 0 ? `
