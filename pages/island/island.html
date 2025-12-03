@@ -8,6 +8,7 @@ head: |
     <link rel="stylesheet" href="css/island/island.quest.style.css">
     <link rel="stylesheet" href="css/island/island.resource.style.css">
     <link rel="stylesheet" href="css/island/island.restaurant.style.css">
+    <link rel="stylesheet" href="css/island/island.season-calc.style.css">
 body_class: dark-mode
 ---
 
@@ -42,6 +43,10 @@ body_class: dark-mode
         <button class="tab-button" data-tab="restaurant">
             <span class="material-symbols-outlined">restaurant</span>
             레스토랑
+        </button>
+        <button class="tab-button" data-tab="season-calc">
+            <span class="material-symbols-outlined">calculate</span>
+            시즌 계산기
         </button>
     </nav>
 
@@ -246,6 +251,43 @@ body_class: dark-mode
                 </div>
             </div>
         </section>
+
+        <!-- SEASON CALCULATOR TAB -->
+        <section class="tab-content" id="tab-season-calc">
+            <!-- Season Pass Display (Top) -->
+            <div id="season-calc-pass">
+                <div class="loading-state">
+                    <span class="material-symbols-outlined rotating">progress_activity</span>
+                    <p>시즌 패스 불러오는 중...</p>
+                </div>
+            </div>
+
+            <!-- Total Display (Below Pass) -->
+            <div id="season-calc-total">
+                <div class="loading-state">
+                    <span class="material-symbols-outlined rotating">progress_activity</span>
+                    <p>총합 계산 중...</p>
+                </div>
+            </div>
+
+            <!-- Controls Bar (Below Total) -->
+            <div id="season-calc-controls">
+                <div class="loading-state">
+                    <span class="material-symbols-outlined rotating">progress_activity</span>
+                    <p>계산기 불러오는 중...</p>
+                </div>
+            </div>
+
+            <!-- Item Grid -->
+            <div class="season-calc-layout">
+                <div class="season-calc-grid" id="season-calc-grid">
+                    <div class="loading-state">
+                        <span class="material-symbols-outlined rotating">progress_activity</span>
+                        <p>아이템 불러오는 중...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </div>
 
@@ -271,4 +313,5 @@ body_class: dark-mode
 <script src="js/island/island.quest.engine.js"></script>
 <script src="js/island/island.resource.engine.js"></script>
 <script src="js/island/island.restaurant.engine.js"></script>
+<script src="js/island/island.season-calc.engine.js"></script>
 <script src="js/island/island.script.js"></script>
