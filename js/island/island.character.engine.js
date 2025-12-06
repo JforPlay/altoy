@@ -63,12 +63,86 @@ window.CharacterModule = (function () {
             // Render character list
             renderCharacterList();
 
+            // Setup event delegation (once)
+            setupEventDelegation();
+
             return true;
         } catch (error) {
             console.error('[Island Character] Failed to initialize:', error);
             IslandEngine.showError('캐릭터 데이터를 불러오는데 실패했습니다. 페이지를 새로고침해주세요.');
             throw error;
         }
+    }
+
+    // ============================================
+    // EVENT DELEGATION (Fixed Memory Leaks)
+    // ============================================
+
+    /**
+     * Setup event delegation for character detail panel
+     * Uses a single listener instead of multiple listeners per render
+     */
+    function setupEventDelegation() {
+        const detailContainer = document.getElementById('character-detail');
+        if (!detailContainer) return;
+
+        // Use event delegation for all interactive elements in detail panel
+        detailContainer.addEventListener('input', (e) => {
+            // Handle level slider
+            if (e.target.classList.contains('level-slider')) {
+                const char = state.characters[state.selectedCharacterId];
+                if (!char) return;
+
+                state.selectedLevel = parseInt(e.target.value);
+                updateStatsDisplay(char);
+                updateLevelDisplay();
+                updateSkillDisplay(char);
+                updatePowerDisplay(char);
+            }
+        });
+
+        detailContainer.addEventListener('click', (e) => {
+            const char = state.characters[state.selectedCharacterId];
+            if (!char) return;
+
+            // Handle enhancement buttons
+            if (e.target.closest('.enhancement-btn')) {
+                const btn = e.target.closest('.enhancement-btn');
+                state.selectedEnhancement = parseInt(btn.dataset.enhancement);
+                updateEnhancementDisplay();
+                updateStatsDisplay(char);
+                return;
+            }
+
+            // Handle skill level buttons
+            if (e.target.closest('.skill-level-btn')) {
+                const btn = e.target.closest('.skill-level-btn');
+                state.selectedSkillLevel = parseInt(btn.dataset.skillLevel);
+                updateSkillDisplay(char);
+                return;
+            }
+
+            // Handle help icon toggle
+            if (e.target.closest('#stats-help-icon')) {
+                e.stopPropagation();
+                const helpTooltip = document.getElementById('stats-help-tooltip');
+                if (helpTooltip) {
+                    helpTooltip.classList.toggle('visible');
+                }
+                return;
+            }
+
+            // Close help tooltip when clicking elsewhere in detail panel
+            const helpIcon = document.getElementById('stats-help-icon');
+            const helpTooltip = document.getElementById('stats-help-tooltip');
+            if (helpIcon && helpTooltip && helpTooltip.classList.contains('visible')) {
+                if (!helpIcon.contains(e.target) && !helpTooltip.contains(e.target)) {
+                    helpTooltip.classList.remove('visible');
+                }
+            }
+        });
+
+        console.log('[Island Character] Event delegation set up');
     }
 
     // ============================================
@@ -241,53 +315,7 @@ window.CharacterModule = (function () {
             ${renderSkinSection(char)}
         `;
 
-        // Attach level slider handler
-        const slider = container.querySelector('.level-slider');
-        if (slider) {
-            slider.addEventListener('input', (e) => {
-                state.selectedLevel = parseInt(e.target.value);
-                updateStatsDisplay(char);
-                updateLevelDisplay();
-                updateSkillDisplay(char);
-                updatePowerDisplay(char);
-            });
-        }
-
-        // Attach enhancement button handlers
-        const enhancementButtons = container.querySelectorAll('.enhancement-btn');
-        enhancementButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                state.selectedEnhancement = parseInt(btn.dataset.enhancement);
-                updateEnhancementDisplay();
-                updateStatsDisplay(char);
-            });
-        });
-
-        // Attach help icon handler
-        const helpIcon = container.querySelector('#stats-help-icon');
-        const helpTooltip = container.querySelector('#stats-help-tooltip');
-        if (helpIcon && helpTooltip) {
-            helpIcon.addEventListener('click', (e) => {
-                e.stopPropagation();
-                helpTooltip.classList.toggle('visible');
-            });
-
-            // Close tooltip when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!helpIcon.contains(e.target) && !helpTooltip.contains(e.target)) {
-                    helpTooltip.classList.remove('visible');
-                }
-            });
-        }
-
-        // Attach skill level button handlers
-        const skillLevelButtons = container.querySelectorAll('.skill-level-btn');
-        skillLevelButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                state.selectedSkillLevel = parseInt(btn.dataset.skillLevel);
-                updateSkillDisplay(char);
-            });
-        });
+        // Event delegation is set up once in init() - no need to add listeners here
     }
 
     /**

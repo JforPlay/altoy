@@ -14,9 +14,10 @@ window.SeasonCalcModule = (function () {
         ptItems: [],            // Items with pt_num > 0
         userQuantities: {},     // User input quantities { itemId: quantity }
         ownedPoints: 0,         // User's already owned season points
-        sortBy: 'pt_desc',      // pt_desc, pt_asc, gain_desc, gain_asc, name_asc, name_desc
+        sortBy: 'pt_desc',      // pt_desc, pt_asc, gain_desc, gain_asc, gain_per_min_desc, gain_per_min_asc, name_asc, name_desc
         seasonData: null,       // Season pass data from island_season.json
-        seasonPassCollapsed: true // Track if season pass is collapsed
+        seasonPassCollapsed: true, // Track if season pass is collapsed
+        recipeIndex: null       // Recipe index for calculations
     };
 
     // ============================================
@@ -31,6 +32,9 @@ window.SeasonCalcModule = (function () {
             if (sharedData && sharedData.items) {
                 state.items = sharedData.items;
             }
+
+            // Note: We don't get recipeIndex here because ResourceModule might not be initialized yet
+            // It will be loaded lazily in renderItemGrid() when needed
 
             // Filter items with pt_num > 0
             state.ptItems = Object.values(state.items)
@@ -252,6 +256,8 @@ window.SeasonCalcModule = (function () {
                         <option value="pt_asc" ${state.sortBy === 'pt_asc' ? 'selected' : ''}>포인트 낮은순</option>
                         <option value="gain_desc" ${state.sortBy === 'gain_desc' ? 'selected' : ''}>순이익 높은순</option>
                         <option value="gain_asc" ${state.sortBy === 'gain_asc' ? 'selected' : ''}>순이익 낮은순</option>
+                        <option value="gain_per_min_desc" ${state.sortBy === 'gain_per_min_desc' ? 'selected' : ''}>순이익/분 높은순</option>
+                        <option value="gain_per_min_asc" ${state.sortBy === 'gain_per_min_asc' ? 'selected' : ''}>순이익/분 낮은순</option>
                         <option value="name_asc" ${state.sortBy === 'name_asc' ? 'selected' : ''}>이름순 (ㄱ-ㅎ)</option>
                         <option value="name_desc" ${state.sortBy === 'name_desc' ? 'selected' : ''}>이름순 (ㅎ-ㄱ)</option>
                     </select>
@@ -379,38 +385,68 @@ window.SeasonCalcModule = (function () {
         const container = document.getElementById('season-calc-grid');
         if (!container) return;
 
+        // Lazily load recipe index from ResourceModule when first rendering
+        if (!state.recipeIndex && window.ResourceModule) {
+            state.recipeIndex = window.ResourceModule.getRecipeIndex();
+            if (state.recipeIndex) {
+                console.log('[SeasonCalc] Loaded recipe index:', Object.keys(state.recipeIndex).length, 'recipes');
+            } else {
+                console.warn('[SeasonCalc] Recipe index is still null after trying to load from ResourceModule');
+            }
+        }
+        
+        // Check if recipe index is actually populated (not just an empty object)
+        if (!state.recipeIndex || Object.keys(state.recipeIndex).length === 0) {
+            console.warn('[SeasonCalc] Recipe index is empty, ResourceModule may not be initialized yet. Showing items without net gain calculations.');
+        }
+
         // Pre-calculate net gains for all items to enable sorting
         const itemsWithGains = state.ptItems.map(item => {
-            let effectivePtCost = 0;
             let netPtGain = 0;
-            const hasRecipe = hasRecipeForItem(item.id);
+            let netPtGainPerMin = 0;
+            let hasRecipe = false;
             
-            if (hasRecipe && window.ResourceModule) {
+            // Check if we have all required data
+            if (window.ResourceModule && state.recipeIndex) {
                 try {
                     const dependencyGraph = window.ResourceModule.getDependencyGraph();
+                    if (!dependencyGraph || !dependencyGraph.producedBy) {
+                        return { ...item, _netPtGain: 0, _netPtGainPerMin: 0, _hasRecipe: false };
+                    }
+                    
                     const producerRecipeIds = dependencyGraph.producedBy[item.id] || [];
                     
                     if (producerRecipeIds.length > 0) {
+                        hasRecipe = true;
                         const recipeId = producerRecipeIds[0];
                         const upstreamTree = window.ResourceModule.buildUpstreamTree(recipeId, { useManualMode: false });
+                        const recipe = state.recipeIndex[recipeId];
                         
-                        if (upstreamTree) {
-                            const cumulativeIngredientPt = IslandEngine.calculateTreePoints(upstreamTree);
-                            const recipe = state.recipeIndex ? state.recipeIndex[recipeId] : null;
-                            const outputQuantity = (recipe && recipe.commission_product && recipe.commission_product.length > 0)
+                        if (upstreamTree && recipe) {
+                            const outputQuantity = (recipe.commission_product && recipe.commission_product.length > 0)
                                 ? recipe.commission_product[0][1]
                                 : 1;
                             
-                            effectivePtCost = cumulativeIngredientPt / outputQuantity;
-                            netPtGain = item.pt_num - effectivePtCost;
+                            // Calculate net gain per item
+                            const accumulatedGain = IslandEngine.calculateTreeNetGain(upstreamTree, 'dependencies');
+                            const ingredientPtCost = IslandEngine.calculateTreePoints(upstreamTree, 'dependencies');
+                            const currentGain = item.pt_num * outputQuantity - ingredientPtCost;
+                            const totalGain = accumulatedGain + currentGain;
+                            netPtGain = totalGain / outputQuantity;
+
+                            // Calculate net gain per minute
+                            const cumulativeTime = window.ResourceModule.calculateCumulativeTime(recipeId, upstreamTree);
+                            const cumulativeTimeInMinutes = cumulativeTime / 600; // DECISECONDS_PER_MINUTE = 600
+                            netPtGainPerMin = cumulativeTimeInMinutes > 0 ? totalGain / cumulativeTimeInMinutes : 0;
                         }
                     }
                 } catch (error) {
                     // Silent fail for pre-calculation
+                    console.warn(`[SeasonCalc] Error calculating gains for item ${item.id}:`, error);
                 }
             }
             
-            return { ...item, _effectivePtCost: effectivePtCost, _netPtGain: netPtGain };
+            return { ...item, _netPtGain: netPtGain, _netPtGainPerMin: netPtGainPerMin, _hasRecipe: hasRecipe };
         });
 
         // Sort items based on current sort order
@@ -424,6 +460,10 @@ window.SeasonCalcModule = (function () {
                     return (b._netPtGain || 0) - (a._netPtGain || 0);
                 case 'gain_asc':
                     return (a._netPtGain || 0) - (b._netPtGain || 0);
+                case 'gain_per_min_desc':
+                    return (b._netPtGainPerMin || 0) - (a._netPtGainPerMin || 0);
+                case 'gain_per_min_asc':
+                    return (a._netPtGainPerMin || 0) - (b._netPtGainPerMin || 0);
                 case 'name_asc':
                     return a.name.localeCompare(b.name, 'ko');
                 case 'name_desc':
@@ -438,10 +478,9 @@ window.SeasonCalcModule = (function () {
             const points = calculateItemPoints(item.id);
             
             // Reuse pre-calculated values
-            const effectivePtCost = item._effectivePtCost || 0;
             const netPtGain = item._netPtGain || 0;
-            const netGainPercentage = effectivePtCost > 0 ? (netPtGain / effectivePtCost) * 100 : 0;
-            const hasRecipe = effectivePtCost > 0 || netPtGain !== 0;
+            const netPtGainPerMin = item._netPtGainPerMin || 0;
+            const hasRecipe = item._hasRecipe || false;
             
             const iconSrc = item.icon 
                 ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png`
@@ -465,18 +504,18 @@ window.SeasonCalcModule = (function () {
                             <div class="calc-item-pt">
                                 <span class="material-symbols-outlined">grade</span>
                                 ${item.pt_num} pt
-                                ${hasRecipe ? 
-                                    `<span class="calc-item-net-pt" title="개당 재료 비용 (${item.pt_num} + ${effectivePtCost.toFixed(3)} 재료 = ${(item.pt_num + effectivePtCost).toFixed(3)} 실제)">(+${effectivePtCost.toFixed(3)} 재료 / ×1개)</span>` 
-                                    : ''}
                             </div>
                             ${hasRecipe ? `
                                 <div class="calc-item-net-gain">
-                                    <span class="calc-net-gain-label">pt 순이익:</span>
+                                    <span class="calc-net-gain-label">총 순수익:</span>
                                     <span class="calc-net-gain-value ${netPtGain >= 0 ? 'positive' : 'negative'}">
                                         ${netPtGain >= 0 ? '+' : ''}${netPtGain.toFixed(2)} pt
                                     </span>
-                                    <span class="calc-net-gain-percentage ${netGainPercentage >= 0 ? 'positive' : 'negative'}">
-                                        (${netGainPercentage >= 0 ? '+' : ''}${netGainPercentage.toFixed(1)}%)
+                                </div>
+                                <div class="calc-item-net-gain">
+                                    <span class="calc-net-gain-label">순수익/분:</span>
+                                    <span class="calc-net-gain-value ${netPtGainPerMin >= 0 ? 'positive' : 'negative'}">
+                                        ${netPtGainPerMin >= 0 ? '+' : ''}${netPtGainPerMin.toFixed(2)} pt/min
                                     </span>
                                 </div>
                             ` : ''}
@@ -613,11 +652,27 @@ window.SeasonCalcModule = (function () {
     // PUBLIC API
     // ============================================
 
+    function onTabActivated() {
+        // Always try to reload recipe index when tab becomes active
+        // This ensures we have the latest data even if ResourceModule loaded after SeasonCalc
+        if (window.ResourceModule) {
+            const newRecipeIndex = window.ResourceModule.getRecipeIndex();
+            if (newRecipeIndex && Object.keys(newRecipeIndex).length > 0) {
+                state.recipeIndex = newRecipeIndex;
+                console.log('[SeasonCalc] onTabActivated - Refreshed recipe index:', Object.keys(state.recipeIndex).length, 'recipes');
+            }
+        }
+        
+        // Re-render the grid to ensure recipe data is loaded and calculations are up to date
+        renderItemGrid();
+    }
+
     return {
         init,
         calculateTotalPoints,
         clearAllQuantities,
-        toggleSeasonPassCollapse
+        toggleSeasonPassCollapse,
+        onTabActivated
     };
 
 })();

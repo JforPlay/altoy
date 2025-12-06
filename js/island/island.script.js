@@ -22,6 +22,16 @@
         // Initialize island engine
         await IslandEngine.init();
 
+        // Small delay to ensure all module async operations complete
+        setTimeout(() => {
+            // Trigger tab activation for season-calc if it's the active tab
+            // This ensures recipe data is loaded after all modules are initialized
+            const activeTab = document.querySelector('.tab-button.active');
+            if (activeTab && activeTab.dataset.tab === 'season-calc' && window.SeasonCalcModule) {
+                window.SeasonCalcModule.onTabActivated();
+            }
+        }, 100);
+
         console.log('[Island Page] Initialization complete');
     });
 
@@ -46,6 +56,11 @@
                     const contentId = content.id.replace('tab-', '');
                     content.classList.toggle('active', contentId === targetTab);
                 });
+
+                // Notify modules when their tab is activated
+                if (targetTab === 'season-calc' && window.SeasonCalcModule) {
+                    window.SeasonCalcModule.onTabActivated();
+                }
 
                 // Save active tab to localStorage
                 try {
