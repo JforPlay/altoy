@@ -501,7 +501,6 @@ body {
 }
 
 .island-badge-sm { padding: 0.25rem 0.5rem; font-size: var(--island-text-xs); }
-.island-badge-lg { padding: 0.5rem 1rem; font-size: var(--island-text-md); }
 
 /* Status badges */
 .island-badge-primary {
@@ -596,9 +595,6 @@ body {
     gap: var(--island-gap-sm);
 }
 
-.island-btn-sm { padding: 0.5rem 0.75rem; font-size: var(--island-text-sm); }
-.island-btn-lg { padding: 1rem 1.5rem; font-size: var(--island-text-lg); }
-
 .island-btn:hover {
     background: var(--island-surface-hover);
     border-color: var(--island-accent);
@@ -658,11 +654,6 @@ body {
     transition: var(--island-transition);
 }
 
-.island-icon-sm { width: 40px; height: 40px; }
-.island-icon-md { width: 60px; height: 60px; }
-.island-icon-lg { width: 80px; height: 80px; }
-.island-icon-xl { width: 120px; height: 120px; }
-
 /* ==========================================================================
    16. UNIFIED PANEL SYSTEM
    ========================================================================== */
@@ -675,27 +666,12 @@ body {
     overflow-y: auto;
 }
 
-.island-list-panel-compact { padding: var(--island-spacing-md); }
-
 .island-detail-panel {
     background: var(--island-surface);
     border-radius: var(--island-radius-xl);
     padding: var(--island-spacing-xl);
     box-shadow: var(--island-shadow-md);
     min-height: 500px;
-}
-
-.island-detail-panel-sticky {
-    position: sticky;
-    top: var(--island-spacing-xl);
-}
-
-.island-detail-panel-floating {
-    position: fixed;
-    top: 50%;
-    right: var(--island-spacing-xl);
-    transform: translateY(-50%);
-    z-index: var(--island-z-floating);
 }
 
 /* ==========================================================================

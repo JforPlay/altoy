@@ -13,8 +13,10 @@ window.ResourceModule = (function () {
         MANUAL_TIME_MULTIPLIER: 0.7,      // 30% time reduction for manual mode
         MAX_TREE_DEPTH: 5,                // Maximum recursion depth for dependency trees
         DECISECONDS_PER_HOUR: 36000,      // Conversion factor: deciseconds to hours
+        DECISECONDS_PER_MINUTE: 600,      // Conversion factor: deciseconds to minutes
         DEBOUNCE_DELAY: 300,              // Milliseconds to wait before search
-        GOLD_ITEM_ID: 1                   // Item ID for gold currency
+        GOLD_ITEM_ID: 1,                  // Item ID for gold currency
+        MAX_CACHE_SIZE: 50                // Maximum number of cached dependency trees (prevents memory leaks)
     };
 
     // ============================================
@@ -64,20 +66,24 @@ window.ResourceModule = (function () {
 
             state.recipes = recipesData;
 
-            // Process shop data
-            buildShopDataIndex(shopData);
+            // Process shop data using shared function
+            state.shopPurchaseData = IslandEngine.buildShopDataIndex(shopData);
 
-            // Build recipe and category indices for O(1) lookups
-            buildRecipeIndices();
+            // Build recipe and category indices using shared function
+            const { recipeIndex, recipeCategoryIndex } = IslandEngine.buildRecipeIndices(state.recipes);
+            state.recipeIndex = recipeIndex;
+            state.recipeCategoryIndex = recipeCategoryIndex;
 
-            // Build dependency graph
-            buildDependencyGraph();
+            // Build dependency graph using shared function
+            state.dependencyGraph = IslandEngine.buildDependencyGraph(state.recipes);
 
             // Build seasonal items category (must be after dependency graph)
             buildSeasonalItemsCategory();
 
             // Rebuild recipe indices to include seasonal items
-            buildRecipeIndices();
+            const updatedIndices = IslandEngine.buildRecipeIndices(state.recipes);
+            state.recipeIndex = updatedIndices.recipeIndex;
+            state.recipeCategoryIndex = updatedIndices.recipeCategoryIndex;
 
             // Render UI
             renderCategoryFilter();
@@ -93,29 +99,7 @@ window.ResourceModule = (function () {
         }
     }
 
-    function buildShopDataIndex(shopData) {
-        // Convert shop data to lookup map
-        // Shop entry IDs (keys) are like 411000, but recipes reference actual item IDs like 1000
-        // Structure: items: [[ignore, actualItemId, packSize]], resource_consume: [ignore, requiredItemId, cost]
-        Object.entries(shopData).forEach(([shopEntryId, shopItem]) => {
-            // Only check if item has the required fields
-            if (shopItem.items && shopItem.resource_consume) {
-                // Parse items array: [ignore, actualItemId, packSize]
-                const items = shopItem.items;
-                if (items.length > 0) {
-                    const actualItemId = items[0][1];  // Second element = actual item ID (e.g., 1000 from shop entry 411000)
-                    const packSize = items[0][2];      // Third element = pack size
-
-                    // Parse resource_consume: [ignore, requiredItemId, cost]
-                    const requiredItemId = shopItem.resource_consume[1];  // Second element = required resource
-                    const cost = shopItem.resource_consume[2];            // Third element = cost
-
-                    // Index by ACTUAL ITEM ID (what recipes use), not shop entry ID
-                    state.shopPurchaseData[actualItemId] = [requiredItemId, cost, packSize];
-                }
-            }
-        });
-    }
+    // buildShopDataIndex moved to island.engine.js (shared utility)
 
     function buildSeasonalItemsCategory() {
         // Filter items with IDs 4000-4999 from item data
@@ -131,13 +115,13 @@ window.ResourceModule = (function () {
 
         seasonalItems.forEach(itemId => {
             const itemInfo = IslandEngine.getItemInfo(itemId);
-            
+
             // Check if this item is produced by any recipe
             const producingRecipes = state.dependencyGraph.producedBy[itemId] || [];
-            
+
             // Check if this item can be purchased from shop
             const isInShop = state.shopPurchaseData[itemId] !== undefined;
-            
+
             // If not in shop and not produced by recipes, it's a pickup item
             const isPickup = !isInShop && producingRecipes.length === 0;
 
@@ -184,51 +168,49 @@ window.ResourceModule = (function () {
         state.recipes['시즌템'] = seasonalRecipes;
     }
 
-    function buildRecipeIndices() {
-        state.recipeIndex = {};
-        state.recipeCategoryIndex = {};
-
-        Object.entries(state.recipes).forEach(([categoryId, recipes]) => {
-            recipes.forEach(recipe => {
-                state.recipeIndex[recipe.id] = recipe;
-                state.recipeCategoryIndex[recipe.id] = categoryId;
-            });
-        });
-    }
+    // buildRecipeIndices moved to island.engine.js (shared utility)
 
     // ============================================
-    // CACHE MANAGEMENT
+    // CACHE MANAGEMENT (Fixed Memory Leaks)
     // ============================================
 
+    /**
+     * Clear all cached dependency trees
+     */
     function clearTreeCache() {
         state.treeCache = {};
+        console.log('[Resource] Cache cleared');
+    }
+
+    /**
+     * Add entry to cache with LRU eviction
+     * Prevents unbounded memory growth by limiting cache size
+     */
+    function addToCache(key, value) {
+        const cacheKeys = Object.keys(state.treeCache);
+
+        // If cache is full, remove oldest entry (first key)
+        if (cacheKeys.length >= CONSTANTS.MAX_CACHE_SIZE) {
+            const oldestKey = cacheKeys[0];
+            delete state.treeCache[oldestKey];
+            console.log(`[Resource] Cache limit reached (${CONSTANTS.MAX_CACHE_SIZE}), evicted oldest entry`);
+        }
+
+        state.treeCache[key] = value;
+    }
+
+    /**
+     * Get entry from cache
+     */
+    function getFromCache(key) {
+        return state.treeCache[key];
     }
 
     // ============================================
     // DEPENDENCY GRAPH
     // ============================================
 
-    function buildDependencyGraph() {
-        Object.entries(state.recipes).forEach(([category, recipes]) => {
-            recipes.forEach(recipe => {
-                // Track what this recipe produces
-                (recipe.commission_product || []).forEach(([itemId]) => {
-                    if (!state.dependencyGraph.producedBy[itemId]) {
-                        state.dependencyGraph.producedBy[itemId] = [];
-                    }
-                    state.dependencyGraph.producedBy[itemId].push(recipe.id);
-                });
-
-                // Track what this recipe uses
-                (recipe.commission_cost || []).forEach(([itemId]) => {
-                    if (!state.dependencyGraph.usedBy[itemId]) {
-                        state.dependencyGraph.usedBy[itemId] = [];
-                    }
-                    state.dependencyGraph.usedBy[itemId].push(recipe.id);
-                });
-            });
-        });
-    }
+    // buildDependencyGraph moved to island.engine.js (shared utility)
 
     function buildUpstreamTree(recipeId, options = {}) {
         const {
@@ -242,8 +224,9 @@ window.ResourceModule = (function () {
         // Check cache for root-level calls (quantityMultiplier = 1)
         if (useCache && quantityMultiplier === 1 && visited.size === 0) {
             const cacheKey = `upstream_${recipeId}_${useManualMode}`;
-            if (state.treeCache[cacheKey]) {
-                return state.treeCache[cacheKey];
+            const cached = getFromCache(cacheKey);
+            if (cached) {
+                return cached;
             }
         }
 
@@ -368,10 +351,10 @@ window.ResourceModule = (function () {
             isManualMode: useManualMode && isCategory1 && recipe.cost?.length > 0
         };
 
-        // Cache root-level results
+        // Cache root-level results with size limit
         if (useCache && quantityMultiplier === 1 && visited.size === 1) {
             const cacheKey = `upstream_${recipeId}_${useManualMode}`;
-            state.treeCache[cacheKey] = result;
+            addToCache(cacheKey, result);
         }
 
         return result;
@@ -387,8 +370,9 @@ window.ResourceModule = (function () {
         // Check cache for root-level calls
         if (useCache && visited.size === 0) {
             const cacheKey = `downstream_${recipeId}`;
-            if (state.treeCache[cacheKey]) {
-                return state.treeCache[cacheKey];
+            const cached = getFromCache(cacheKey);
+            if (cached) {
+                return cached;
             }
         }
         if (visited.has(recipeId) || maxDepth === 0) return null;
@@ -426,10 +410,10 @@ window.ResourceModule = (function () {
             usages
         };
 
-        // Cache root-level results
+        // Cache root-level results with size limit
         if (useCache && visited.size === 1) {
             const cacheKey = `downstream_${recipeId}`;
-            state.treeCache[cacheKey] = result;
+            addToCache(cacheKey, result);
         }
 
         return result;
@@ -876,12 +860,29 @@ window.ResourceModule = (function () {
         // Calculate gold consumption using shared utility
         const goldConsumption = IslandEngine.calculateTreeCost(upstreamTree);
 
-        // Calculate season points consumption using shared utility
+        // Calculate season points for ingredients only (new approach)
         const seasonPointsConsumption = IslandEngine.calculateTreePoints(upstreamTree);
+
+        // Debug: log tree structure for 우유
+        if (recipe.item_id === 2603) {
+            console.log('[Resource Engine] 우유 upstreamTree:', upstreamTree);
+            console.log('[Resource Engine] 우유 dependencies:', JSON.stringify(upstreamTree.dependencies.map(d => ({
+                itemId: d.itemId,
+                itemName: d.itemInfo?.name,
+                quantityNeeded: d.quantityNeeded,
+                hasRecipe: !!d.recipe,
+                hasShopPurchaseContext: !!d.shopPurchaseContext,
+                shopPurchaseContext: d.shopPurchaseContext
+            })), null, 2));
+        }
+
+        // Calculate net gain accumulated from entire tree
+        const netGainTotal = IslandEngine.calculateTreeNetGain(upstreamTree);
 
         // Calculate manual gold consumption
         let manualGoldConsumption = { gold: 0, resources: {} };
         let manualSeasonPointsConsumption = 0;
+        let manualNetGainTotal = 0;
         let upstreamTreeManual = null;
 
         // Only calculate manual mode for category 1
@@ -896,6 +897,7 @@ window.ResourceModule = (function () {
                 { useManualMode: true }
             );
             manualSeasonPointsConsumption = IslandEngine.calculateTreePoints(upstreamTreeManual);
+            manualNetGainTotal = IslandEngine.calculateTreeNetGain(upstreamTreeManual);
         }
 
         // Calculate normalized costs with cumulative time
@@ -914,6 +916,14 @@ window.ResourceModule = (function () {
         let cumulativeTimeManual = 0;
         let ptPerItemManual = 0;
         let ptPerItemAuto = 0;
+        let netGainPerItemManual = 0;
+        let netGainPerItemAuto = 0;
+        let currentRecipeGainPerItemAuto = 0;
+        let currentRecipeGainPerItemManual = 0;
+        let currentRecipeGainPerMinAuto = 0;
+        let currentRecipeGainPerMinManual = 0;
+        let netGainPerMinAuto = 0;
+        let netGainPerMinManual = 0;
         
         if (showDualCost && manualGoldConsumption.gold > 0) {
             cumulativeTimeManual = calculateCumulativeTimeManual(recipe);
@@ -929,9 +939,61 @@ window.ResourceModule = (function () {
             // Calculate per-item season points for both modes
             ptPerItemManual = manualSeasonPointsConsumption / manualOutputQuantity;
             ptPerItemAuto = seasonPointsConsumption / outputQuantity;
-        }
 
-        return {
+            // Calculate current recipe's own net gain (before adding accumulated gains from children)
+            currentRecipeGainPerItemAuto = item.pt_num - ptPerItemAuto;
+            currentRecipeGainPerItemManual = item.pt_num - ptPerItemManual;
+
+            // Calculate per-item net gain for both modes
+            // Net gain = current recipe gain + accumulated gains from lower levels
+            const accumulatedGainPerItemAuto = netGainTotal / outputQuantity;
+            const accumulatedGainPerItemManual = manualNetGainTotal / manualOutputQuantity;
+
+            netGainPerItemAuto = currentRecipeGainPerItemAuto + accumulatedGainPerItemAuto;
+            netGainPerItemManual = currentRecipeGainPerItemManual + accumulatedGainPerItemManual;
+
+            // Calculate per-minute pt gains
+            const recipeTimeInMinutesAuto = recipe.workload / CONSTANTS.DECISECONDS_PER_MINUTE;
+            const recipeTimeInMinutesManual = (recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER) / CONSTANTS.DECISECONDS_PER_MINUTE;
+            const cumulativeTimeAutoInMinutes = cumulativeTimeAuto / CONSTANTS.DECISECONDS_PER_MINUTE;
+            const cumulativeTimeManualInMinutes = cumulativeTimeManual / CONSTANTS.DECISECONDS_PER_MINUTE;
+
+            currentRecipeGainPerMinAuto = recipeTimeInMinutesAuto > 0 ? (currentRecipeGainPerItemAuto * outputQuantity) / recipeTimeInMinutesAuto : 0;
+            currentRecipeGainPerMinManual = recipeTimeInMinutesManual > 0 ? (currentRecipeGainPerItemManual * manualOutputQuantity) / recipeTimeInMinutesManual : 0;
+            netGainPerMinAuto = cumulativeTimeAutoInMinutes > 0 ? (netGainPerItemAuto * outputQuantity) / cumulativeTimeAutoInMinutes : 0;
+            netGainPerMinManual = cumulativeTimeManualInMinutes > 0 ? (netGainPerItemManual * manualOutputQuantity) / cumulativeTimeManualInMinutes : 0;
+        } else {
+            // For non-dual cost modes, calculate net gain per item
+            ptPerItemAuto = seasonPointsConsumption / outputQuantity;
+
+            // Calculate current recipe's own net gain
+            currentRecipeGainPerItemAuto = item.pt_num - ptPerItemAuto;
+
+            // Net gain = current recipe gain + accumulated gains from lower levels
+            const accumulatedGainPerItem = netGainTotal / outputQuantity;
+            netGainPerItemAuto = currentRecipeGainPerItemAuto + accumulatedGainPerItem;
+
+            // Calculate per-minute pt gains
+            const recipeTimeInMinutesAuto = recipe.workload / CONSTANTS.DECISECONDS_PER_MINUTE;
+            const cumulativeTimeAutoInMinutes = cumulativeTimeAuto / CONSTANTS.DECISECONDS_PER_MINUTE;
+
+            currentRecipeGainPerMinAuto = recipeTimeInMinutesAuto > 0 ? (currentRecipeGainPerItemAuto * outputQuantity) / recipeTimeInMinutesAuto : 0;
+            netGainPerMinAuto = cumulativeTimeAutoInMinutes > 0 ? (netGainPerItemAuto * outputQuantity) / cumulativeTimeAutoInMinutes : 0;
+            
+            // Debug logging for 아이스 커피
+            if (item.id === 3005) {
+                console.log('[Resource Engine] 아이스 커피 calculation:', {
+                    itemPtNum: item.pt_num,
+                    seasonPointsConsumption,
+                    outputQuantity,
+                    ptPerItemAuto,
+                    currentRecipeGainPerItemAuto,
+                    netGainTotal,
+                    accumulatedGainPerItem,
+                    netGainPerItemAuto
+                });
+            }
+        }        return {
             item,
             category,
             isCategory1,
@@ -946,13 +1008,25 @@ window.ResourceModule = (function () {
             manualGoldConsumption,
             seasonPointsConsumption,
             manualSeasonPointsConsumption,
+            netGainTotal,
+            manualNetGainTotal,
+            currentRecipeGainPerItemAuto,
+            currentRecipeGainPerItemManual,
+            netGainPerItemManual,
+            netGainPerItemAuto,
+            currentRecipeGainPerMinAuto,
+            currentRecipeGainPerMinManual,
+            netGainPerMinAuto,
+            netGainPerMinManual,
             ptPerItemManual,
             ptPerItemAuto,
             outputQuantity,
             costPerItemAuto,
             costPerHourAuto,
             costPerItemManual,
-            costPerHourManual
+            costPerHourManual,
+            cumulativeTimeAuto,
+            cumulativeTimeManual
         };
     }
 
@@ -971,6 +1045,7 @@ window.ResourceModule = (function () {
                         <span class="recipe-category">${category}</span>
                         <span class="stat-badge exp">⚡ ${recipe.ship_exp} EXP</span>
                         <span class="stat-badge stamina">🔋 ${recipe.stamina_cost} Stamina</span>
+                        <span class="stat-badge points">🎯 ${item.pt_num} pt</span>
                     </div>
                 </div>
                 <div class="recipe-header-actions">
@@ -1100,6 +1175,14 @@ window.ResourceModule = (function () {
             manualGoldConsumption,
             seasonPointsConsumption,
             manualSeasonPointsConsumption,
+            currentRecipeGainPerItemAuto,
+            currentRecipeGainPerItemManual,
+            netGainPerItemManual,
+            netGainPerItemAuto,
+            currentRecipeGainPerMinAuto,
+            currentRecipeGainPerMinManual,
+            netGainPerMinAuto,
+            netGainPerMinManual,
             ptPerItemManual,
             ptPerItemAuto,
             costPerItemAuto,
@@ -1110,10 +1193,15 @@ window.ResourceModule = (function () {
         } = data;
 
         const hasAnyCosts = goldConsumption.gold > 0 ||
-                           manualGoldConsumption.gold > 0 ||
-                           Object.keys(goldConsumption.resources).length > 0;
+            manualGoldConsumption.gold > 0 ||
+            Object.keys(goldConsumption.resources).length > 0;
+        
+        const hasSeasonPoints = seasonPointsConsumption > 0 || 
+            manualSeasonPointsConsumption > 0 ||
+            netGainPerItemAuto !== 0 ||
+            netGainPerItemManual !== 0;
 
-        if (!hasAnyCosts) return '';
+        if (!hasAnyCosts && !hasSeasonPoints) return '';
 
         // Dual cost mode (category 1 only)
         if (showDualCost) {
@@ -1133,27 +1221,49 @@ window.ResourceModule = (function () {
                                         <span class="cost-name">총 생산단가</span>
                                         <span class="cost-amount">×${manualGoldConsumption.gold.toLocaleString()}</span>
                                     </div>
-                                    ${manualSeasonPointsConsumption > 0 ? `
-                                        <div class="cost-item points">
-                                            <span class="cost-icon">🎯</span>
-                                            <span class="cost-name">개당 시즌 pt 비용</span>
-                                            <span class="cost-amount">×${ptPerItemManual.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
-                                        </div>
-                                    ` : ''}
                                     <div class="cost-item normalized">
                                         <span class="cost-icon">📊</span>
                                         <span class="cost-name">개당 생산단가</span>
-                                        <span class="cost-amount">${costPerItemManual.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} G/ea</span>
+                                        <span class="cost-amount">${costPerItemManual.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} G/ea</span>
                                     </div>
                                     <div class="cost-item normalized">
                                         <span class="cost-icon">⏱️</span>
                                         <span class="cost-name">시간당 생산단가</span>
-                                        <span class="cost-amount">${costPerHourManual.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} G/hr</span>
+                                        <span class="cost-amount">${costPerHourManual.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} G/hr</span>
                                     </div>
+                                    ${manualSeasonPointsConsumption > 0 ? `
+                                        <div class="cost-item points">
+                                            <span class="cost-icon">🎯</span>
+                                            <span class="cost-name">재료들의 pt값</span>
+                                            <span class="cost-amount">${ptPerItemManual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
+                                        </div>
+                                        <div class="cost-item">
+                                            <span class="cost-icon">📈</span>
+                                            <span class="cost-name">현재 레시피의 pt이득</span>
+                                            <span class="cost-amount">${currentRecipeGainPerItemManual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
+                                        </div>
+                                        <div class="cost-item">
+                                            <span class="cost-icon">⚡</span>
+                                            <span class="cost-name">현재 레시피 pt이득/분</span>
+                                            <span class="cost-amount">${currentRecipeGainPerMinManual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt/min</span>
+                                        </div>
+                                    ` : ''}
+                                    ${netGainPerItemManual !== 0 ? `
+                                        <div class="cost-item net-gain">
+                                            <span class="cost-icon">💰</span>
+                                            <span class="cost-name">총 순수익pt</span>
+                                            <span class="cost-amount ${netGainPerItemManual >= 0 ? 'positive' : 'negative'}">${netGainPerItemManual >= 0 ? '+' : ''}${netGainPerItemManual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
+                                        </div>
+                                        <div class="cost-item net-gain">
+                                            <span class="cost-icon">⏱️</span>
+                                            <span class="cost-name">총 순수익pt/분</span>
+                                            <span class="cost-amount ${netGainPerMinManual >= 0 ? 'positive' : 'negative'}">${netGainPerMinManual >= 0 ? '+' : ''}${netGainPerMinManual.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt/min</span>
+                                        </div>
+                                    ` : ''}
                                 </div>
                             </div>
                         ` : ''}
-                        ${goldConsumption.gold > 0 ? `
+                        ${goldConsumption.gold > 0 || seasonPointsConsumption > 0 || netGainPerItemAuto !== 0 ? `
                             <div class="cost-column auto-cost">
                                 <h5 class="cost-column-title">🤖 자동 위임</h5>
                                 <div class="cost-items">
@@ -1162,23 +1272,45 @@ window.ResourceModule = (function () {
                                         <span class="cost-name">총 생산단가</span>
                                         <span class="cost-amount">×${goldConsumption.gold.toLocaleString()}</span>
                                     </div>
-                                    ${seasonPointsConsumption > 0 ? `
-                                        <div class="cost-item points">
-                                            <span class="cost-icon">🎯</span>
-                                            <span class="cost-name">개당 시즌 pt 비용</span>
-                                            <span class="cost-amount">×${ptPerItemAuto.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
-                                        </div>
-                                    ` : ''}
                                     <div class="cost-item normalized">
                                         <span class="cost-icon">📊</span>
                                         <span class="cost-name">개당 생산단가</span>
-                                        <span class="cost-amount">${costPerItemAuto.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} G/ea</span>
+                                        <span class="cost-amount">${costPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} G/ea</span>
                                     </div>
                                     <div class="cost-item normalized">
                                         <span class="cost-icon">⏱️</span>
                                         <span class="cost-name">시간당 생산단가</span>
-                                        <span class="cost-amount">${costPerHourAuto.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} G/hr</span>
+                                        <span class="cost-amount">${costPerHourAuto.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} G/hr</span>
                                     </div>
+                                    ${seasonPointsConsumption > 0 ? `
+                                        <div class="cost-item points">
+                                            <span class="cost-icon">🎯</span>
+                                            <span class="cost-name">재료들의 pt값</span>
+                                            <span class="cost-amount">${ptPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
+                                        </div>
+                                        <div class="cost-item">
+                                            <span class="cost-icon">📈</span>
+                                            <span class="cost-name">현재 레시피의 pt이득</span>
+                                            <span class="cost-amount">${currentRecipeGainPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
+                                        </div>
+                                        <div class="cost-item">
+                                            <span class="cost-icon">⚡</span>
+                                            <span class="cost-name">현재 레시피 pt이득/분</span>
+                                            <span class="cost-amount">${currentRecipeGainPerMinAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt/min</span>
+                                        </div>
+                                    ` : ''}
+                                    ${netGainPerItemAuto !== 0 ? `
+                                        <div class="cost-item net-gain">
+                                            <span class="cost-icon">💰</span>
+                                            <span class="cost-name">총 순수익pt</span>
+                                            <span class="cost-amount ${netGainPerItemAuto >= 0 ? 'positive' : 'negative'}">${netGainPerItemAuto >= 0 ? '+' : ''}${netGainPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
+                                        </div>
+                                        <div class="cost-item net-gain">
+                                            <span class="cost-icon">⏱️</span>
+                                            <span class="cost-name">총 순수익pt/분</span>
+                                            <span class="cost-amount ${netGainPerMinAuto >= 0 ? 'positive' : 'negative'}">${netGainPerMinAuto >= 0 ? '+' : ''}${netGainPerMinAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt/min</span>
+                                        </div>
+                                    ` : ''}
                                 </div>
                             </div>
                         ` : ''}
@@ -1218,22 +1350,44 @@ window.ResourceModule = (function () {
                             <span class="cost-name">총 생산단가</span>
                             <span class="cost-amount">×${goldConsumption.gold.toLocaleString()}</span>
                         </div>
-                        ${seasonPointsConsumption > 0 ? `
-                            <div class="cost-item points">
-                                <span class="cost-icon">🎯</span>
-                                <span class="cost-name">시즌 pt 비용 (×1개 생산 기준)</span>
-                                <span class="cost-amount">×${seasonPointsConsumption.toLocaleString()}</span>
-                            </div>
-                        ` : ''}
                         <div class="cost-item normalized">
                             <span class="cost-icon">📊</span>
                             <span class="cost-name">개당 생산단가 (×${outputQuantity}개 생산)</span>
-                            <span class="cost-amount">${costPerItemAuto.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} G/ea</span>
+                            <span class="cost-amount">${costPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} G/ea</span>
                         </div>
                         <div class="cost-item normalized">
                             <span class="cost-icon">⏱️</span>
                             <span class="cost-name">시간당 생산단가</span>
-                            <span class="cost-amount">${costPerHourAuto.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1})} G/hr</span>
+                            <span class="cost-amount">${costPerHourAuto.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} G/hr</span>
+                        </div>
+                    ` : ''}
+                    ${seasonPointsConsumption > 0 ? `
+                        <div class="cost-item points">
+                            <span class="cost-icon">🎯</span>
+                            <span class="cost-name">재료들의 pt 값 (×1개 생산 기준)</span>
+                            <span class="cost-amount">${ptPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
+                        </div>
+                        <div class="cost-item">
+                            <span class="cost-icon">📈</span>
+                            <span class="cost-name">현재 레시피의 pt 이득 (×1개 생산 기준)</span>
+                            <span class="cost-amount">${currentRecipeGainPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
+                        </div>
+                        <div class="cost-item">
+                            <span class="cost-icon">⚡</span>
+                            <span class="cost-name">현재 레시피 pt 이득/분</span>
+                            <span class="cost-amount">${currentRecipeGainPerMinAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt/min</span>
+                        </div>
+                    ` : ''}
+                    ${netGainPerItemAuto !== 0 ? `
+                        <div class="cost-item net-gain">
+                            <span class="cost-icon">💰</span>
+                            <span class="cost-name">총 순수익pt (×1개 생산 기준)</span>
+                            <span class="cost-amount ${netGainPerItemAuto >= 0 ? 'positive' : 'negative'}">${netGainPerItemAuto >= 0 ? '+' : ''}${netGainPerItemAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt</span>
+                        </div>
+                        <div class="cost-item net-gain">
+                            <span class="cost-icon">⏱️</span>
+                            <span class="cost-name">총 순수익pt/분</span>
+                            <span class="cost-amount ${netGainPerMinAuto >= 0 ? 'positive' : 'negative'}">${netGainPerMinAuto >= 0 ? '+' : ''}${netGainPerMinAuto.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} pt/min</span>
                         </div>
                     ` : ''}
                     ${Object.entries(goldConsumption.resources).map(([itemId, data]) => `
@@ -1373,11 +1527,11 @@ window.ResourceModule = (function () {
                     <h4 class="flow-title">🔨 제작 레시피</h4>
                     <div class="seasonal-recipe-list">
                         ${allRecipeIds.map(recipeId => {
-                            const originalRecipe = findRecipeById(recipeId);
-                            if (!originalRecipe) return '';
-                            const recipeItem = IslandEngine.getItemInfo(originalRecipe.item_id);
-                            const categoryId = findRecipeCategoryById(recipeId);
-                            return `
+            const originalRecipe = findRecipeById(recipeId);
+            if (!originalRecipe) return '';
+            const recipeItem = IslandEngine.getItemInfo(originalRecipe.item_id);
+            const categoryId = findRecipeCategoryById(recipeId);
+            return `
                                 <div class="seasonal-recipe-card" data-recipe-id="${recipeId}">
                                     <div class="recipe-icon">
                                         ${recipeItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${recipeItem.icon.split('/').pop()}.png" alt="${recipeItem.name}">` : '📦'}
@@ -1392,7 +1546,7 @@ window.ResourceModule = (function () {
                                     <span class="material-symbols-outlined">arrow_forward</span>
                                 </div>
                             `;
-                        }).join('')}
+        }).join('')}
                     </div>
                 </div>
             ` : ''}
@@ -1410,7 +1564,7 @@ window.ResourceModule = (function () {
 
         // Check what recipes produce this item
         const producedByRecipes = state.dependencyGraph.producedBy[itemId] || [];
-        
+
         // Check what recipes use this item
         const usedInRecipes = state.dependencyGraph.usedBy[itemId] || [];
 
@@ -1430,11 +1584,11 @@ window.ResourceModule = (function () {
                     </h4>
                     <div class="seasonal-usage-list">
                         ${producedByRecipes.map(recipeId => {
-                            const producerRecipe = findRecipeById(recipeId);
-                            if (!producerRecipe) return '';
-                            const producerItem = IslandEngine.getItemInfo(producerRecipe.item_id);
-                            const categoryId = findRecipeCategoryById(recipeId);
-                            return `
+            const producerRecipe = findRecipeById(recipeId);
+            if (!producerRecipe) return '';
+            const producerItem = IslandEngine.getItemInfo(producerRecipe.item_id);
+            const categoryId = findRecipeCategoryById(recipeId);
+            return `
                                 <div class="tree-node-card upstream" data-recipe-id="${recipeId}">
                                     <div class="tree-node-icon">
                                         ${producerItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${producerItem.icon.split('/').pop()}.png" alt="${producerItem.name}">` : '📦'}
@@ -1450,7 +1604,7 @@ window.ResourceModule = (function () {
                                     <span class="tree-node-arrow material-symbols-outlined">arrow_forward</span>
                                 </div>
                             `;
-                        }).join('')}
+        }).join('')}
                     </div>
                 </div>
             ` : ''}
@@ -1463,11 +1617,11 @@ window.ResourceModule = (function () {
                     </h4>
                     <div class="seasonal-usage-list">
                         ${usedInRecipes.map(recipeId => {
-                            const usageRecipe = findRecipeById(recipeId);
-                            if (!usageRecipe) return '';
-                            const usageItem = IslandEngine.getItemInfo(usageRecipe.item_id);
-                            const categoryId = findRecipeCategoryById(recipeId);
-                            return `
+            const usageRecipe = findRecipeById(recipeId);
+            if (!usageRecipe) return '';
+            const usageItem = IslandEngine.getItemInfo(usageRecipe.item_id);
+            const categoryId = findRecipeCategoryById(recipeId);
+            return `
                                 <div class="tree-node-card downstream" data-recipe-id="${recipeId}">
                                     <div class="tree-node-icon">
                                         ${usageItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${usageItem.icon.split('/').pop()}.png" alt="${usageItem.name}">` : '📦'}
@@ -1483,7 +1637,7 @@ window.ResourceModule = (function () {
                                     <span class="tree-node-arrow material-symbols-outlined">arrow_forward</span>
                                 </div>
                             `;
-                        }).join('')}
+        }).join('')}
                     </div>
                 </div>
             ` : ''}
@@ -1665,9 +1819,9 @@ window.ResourceModule = (function () {
                                     <span class="shop-cost-label">${isGoldPurchase ? '💰' : '📦'}</span>
                                     <span class="shop-cost-value">
                                         ${hasPacks
-                                            ? `${shopCost.costPerItem.toFixed(1)} ${costItem.name}/ea × ${node.quantity} = ${shopCost.totalCost.toFixed(1)} (${shopCost.packsNeeded} pack${shopCost.packsNeeded > 1 ? 's' : ''})`
-                                            : `${shopCost.unitCost} ${costItem.name}/ea × ${node.quantity} = ${shopCost.totalCost.toFixed(1)}`
-                                        }
+                        ? `${shopCost.costPerItem.toFixed(1)} ${costItem.name}/ea × ${node.quantity} = ${shopCost.totalCost.toFixed(1)} (${shopCost.packsNeeded} pack${shopCost.packsNeeded > 1 ? 's' : ''})`
+                        : `${shopCost.unitCost} ${costItem.name}/ea × ${node.quantity} = ${shopCost.totalCost.toFixed(1)}`
+                    }
                                     </span>
                                 </div>
                             </div>
@@ -2185,6 +2339,7 @@ window.ResourceModule = (function () {
         getRecipeById: findRecipeById,
         getRecipeCategoryById: findRecipeCategoryById,
         buildUpstreamTree,
+        calculateCumulativeTime,
         getDependencyGraph: () => state.dependencyGraph,
         getRecipes: () => state.recipes,
         getRecipeIndex: () => state.recipeIndex

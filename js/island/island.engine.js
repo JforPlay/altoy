@@ -411,9 +411,9 @@ window.IslandEngine = (function () {
     }
 
     /**
-     * Calculate total season points from a dependency tree
-     * Returns cumulative points: item's own pt_num + all ingredient costs
-     * This represents the total effective points value including the item itself
+     * Calculate ingredient points from a dependency tree (non-recursive for direct ingredients only)
+     * Returns only the pt_num of direct ingredients * quantity
+     * Does NOT include the recipe output item's pt_num
      */
     function calculateTreePoints(tree, direction = 'dependencies') {
         if (!tree) return 0;
@@ -422,27 +422,201 @@ window.IslandEngine = (function () {
 
         const children = tree[direction] || tree.usages || [];
         children.forEach(child => {
-            // For each ingredient, get its CUMULATIVE value (own pt + its ingredients)
+            // For each ingredient, get its pt_num value
             if (child.itemId) {
                 const itemInfo = getItemInfo(child.itemId);
                 const quantity = child.quantityNeeded || child.quantity || 0;
                 
-                if (itemInfo) {
-                    // Add this item's own pt_num value
-                    if (itemInfo.pt_num > 0) {
-                        totalPoints += itemInfo.pt_num * quantity;
-                    }
-                    
-                    // Add the cumulative cost of its ingredients
-                    totalPoints += calculateTreePoints(child, direction);
+                // If this crafted item is used for a shop purchase, use the purchased item's pt_num
+                if (child.shopPurchaseContext) {
+                    const shopItem = child.shopPurchaseContext.purchasedItemInfo;
+                    const shopItemPtNum = shopItem.pt_num || 0;
+                    const shopItemQuantity = child.shopPurchaseContext.purchasedQuantity;
+                    // Use the purchased item's pt_num value, not the crafted item's
+                    totalPoints += shopItemPtNum * shopItemQuantity;
+                } else if (itemInfo && itemInfo.pt_num > 0) {
+                    // Regular case: add this item's own pt_num value * quantity
+                    totalPoints += itemInfo.pt_num * quantity;
                 }
-            } else {
-                // No itemId, just recurse
-                totalPoints += calculateTreePoints(child, direction);
             }
         });
 
         return totalPoints;
+    }
+
+    /**
+     * Calculate accumulated net gain from a dependency tree
+     * For each child: adds (child's total net gain per unit) × quantity needed
+     * The child's total net gain already includes their descendants
+     * 
+     * Special handling for category 5 (seasonal) recipes:
+     * - Category 2 (gathering/pickup) items have net gain = pt_num (no cost)
+     * - To avoid double-counting, skip accumulated gain for cat2 items used by cat5 recipes
+     */
+    function calculateTreeNetGain(tree, direction = 'dependencies', parentRecipeCategory = null) {
+        if (!tree) return 0;
+
+        let totalAccumulatedGain = 0;
+        
+        // Determine current recipe's category
+        const currentRecipeCategory = tree.category || parentRecipeCategory;
+
+        const children = tree[direction] || tree.usages || [];
+        children.forEach(child => {
+            if (child.itemId) {
+                const itemInfo = getItemInfo(child.itemId);
+                const quantity = child.quantityNeeded || child.quantity || 0;
+                
+                if (itemInfo && child.recipe) {
+                    // Child is crafted - calculate its net gain
+                    const childRecipe = child.recipe;
+                    const childRecipeCategory = child.category;
+                    const childOutput = (childRecipe.commission_product || []).find(([id]) => id === child.itemId);
+                    const childOutputQuantity = childOutput ? childOutput[1] : 1;
+                    const childMultiplier = child.quantityMultiplier || 1;
+                    
+                    // Get child's ORIGINAL ingredient pt cost (from the recipe's commission_cost, not scaled)
+                    const originalIngredients = childRecipe.commission_cost || [];
+                    let originalIngredientPtCost = 0;
+                    originalIngredients.forEach(([ingredientId, ingredientQuantity]) => {
+                        const ingredientInfo = getItemInfo(ingredientId);
+                        if (ingredientInfo && ingredientInfo.pt_num) {
+                            originalIngredientPtCost += ingredientInfo.pt_num * ingredientQuantity;
+                        }
+                    });
+                    
+                    // Calculate child's current recipe gain per unit (based on original recipe)
+                    const childCostPerUnit = originalIngredientPtCost / childOutputQuantity;
+                    const childCurrentGain = itemInfo.pt_num - childCostPerUnit;
+                    
+                    // Recursively get child's accumulated gains from THEIR children
+                    const childAccumulatedGain = calculateTreeNetGain(child, direction, childRecipeCategory);
+                    
+                    // Special case: Category 2 pickup items (no ingredients)
+                    // Category 2 items with no ingredients are pickups (gathered/collected)
+                    // Their pt_num is already counted in calculateTreePoints as ingredient cost
+                    // Their "net gain" would be pt_num - 0 = pt_num, which double-counts the points
+                    // To avoid double-counting, skip the entire contribution from cat2 pickup items
+                    const isCat2Pickup = childRecipeCategory === '2' && originalIngredientPtCost === 0;
+                    
+                    let contribution = 0;
+                    
+                    if (!isCat2Pickup) {
+                        // Child's total net gain per unit = their current gain + their accumulated gain per unit
+                        // Account for quantityMultiplier since childAccumulatedGain is already scaled
+                        const totalChildOutput = childOutputQuantity * childMultiplier;
+                        const accumulatedGainPerUnit = childAccumulatedGain / totalChildOutput;
+                        const childTotalNetGainPerUnit = childCurrentGain + accumulatedGainPerUnit;
+                        
+                        // Calculate contribution from crafting this item
+                        contribution = childTotalNetGainPerUnit * quantity;
+                    }
+                    
+                    // If this crafted item is used for a shop purchase, add the exchange gain
+                    if (child.shopPurchaseContext) {
+                        const shopItem = child.shopPurchaseContext.purchasedItemInfo;
+                        const shopItemPtNum = shopItem.pt_num || 0;
+                        const craftedItemPtNumCost = itemInfo.pt_num * quantity;
+                        const shopItemQuantity = child.shopPurchaseContext.purchasedQuantity;
+                        const shopItemTotalPtNum = shopItemPtNum * shopItemQuantity;
+                        
+                        // Exchange gain: shop item's pt_num value - crafted item's pt_num cost
+                        const exchangeGain = shopItemTotalPtNum - craftedItemPtNumCost;
+                        contribution += exchangeGain;
+                    }
+                    
+                    // Add to total
+                    totalAccumulatedGain += contribution;
+                } else if (itemInfo && child.shopPurchaseContext) {
+                    // Child is shop-purchased item WITHOUT a recipe (shouldn't happen with current logic)
+                    // The craftable item's net gain should be accumulated
+                    const childAccumulatedGain = calculateTreeNetGain(child, direction, currentRecipeCategory);
+                    totalAccumulatedGain += childAccumulatedGain;
+                }
+            }
+        });
+
+        return totalAccumulatedGain;
+    }
+
+    // ============================================
+    // SHARED DATA STRUCTURE BUILDERS
+    // ============================================
+
+    /**
+     * Build dependency graph from recipes
+     * Used by resource and restaurant modules
+     */
+    function buildDependencyGraph(recipes) {
+        const graph = {
+            producedBy: {},  // itemId -> recipe ids that produce it
+            usedBy: {}       // itemId -> recipe ids that use it
+        };
+
+        Object.entries(recipes).forEach(([category, recipeList]) => {
+            recipeList.forEach(recipe => {
+                // Track what this recipe produces
+                (recipe.commission_product || []).forEach(([itemId]) => {
+                    if (!graph.producedBy[itemId]) {
+                        graph.producedBy[itemId] = [];
+                    }
+                    graph.producedBy[itemId].push(recipe.id);
+                });
+
+                // Track what this recipe uses
+                (recipe.commission_cost || []).forEach(([itemId]) => {
+                    if (!graph.usedBy[itemId]) {
+                        graph.usedBy[itemId] = [];
+                    }
+                    graph.usedBy[itemId].push(recipe.id);
+                });
+            });
+        });
+
+        return graph;
+    }
+
+    /**
+     * Build shop data index from shop goods data
+     * Used by resource and restaurant modules
+     */
+    function buildShopDataIndex(shopData) {
+        const shopIndex = {};
+
+        Object.entries(shopData).forEach(([shopEntryId, shopItem]) => {
+            if (shopItem.items && shopItem.resource_consume) {
+                const items = shopItem.items;
+                if (items.length > 0) {
+                    const actualItemId = items[0][1];  // Second element = actual item ID
+                    const packSize = items[0][2];      // Third element = pack size
+                    const requiredItemId = shopItem.resource_consume[1];  // Required resource
+                    const cost = shopItem.resource_consume[2];            // Cost
+
+                    // Index by ACTUAL ITEM ID (what recipes use), not shop entry ID
+                    shopIndex[actualItemId] = [requiredItemId, cost, packSize];
+                }
+            }
+        });
+
+        return shopIndex;
+    }
+
+    /**
+     * Build recipe indices for O(1) lookups
+     * Used by resource, restaurant, and season-calc modules
+     */
+    function buildRecipeIndices(recipes) {
+        const recipeIndex = {};
+        const recipeCategoryIndex = {};
+
+        Object.entries(recipes).forEach(([categoryId, recipeList]) => {
+            recipeList.forEach(recipe => {
+                recipeIndex[recipe.id] = recipe;
+                recipeCategoryIndex[recipe.id] = categoryId;
+            });
+        });
+
+        return { recipeIndex, recipeCategoryIndex };
     }
 
     // ============================================
@@ -463,6 +637,10 @@ window.IslandEngine = (function () {
         buildRecipeDependencyTree,
         calculateTreeCost,
         calculateTreePoints,
+        calculateTreeNetGain,
+        buildDependencyGraph,
+        buildShopDataIndex,
+        buildRecipeIndices,
         GOLD_ITEM_ID,
         state: () => state // For debugging
     };

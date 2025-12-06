@@ -68,6 +68,9 @@ window.TechnologyModule = (function () {
             renderCategoryFilter();
             renderTechnologyTree();
 
+            // Setup event delegation (once)
+            setupEventDelegation();
+
             return true;
         } catch (error) {
             console.error('[Island Technology] Failed to initialize:', error);
@@ -76,6 +79,104 @@ window.TechnologyModule = (function () {
         }
     }
 
+    // ============================================
+    // EVENT DELEGATION (Fixed Memory Leaks)
+    // ============================================
+
+    /**
+     * Setup event delegation for technology module
+     * Handles all clicks and drag interactions in one place
+     */
+    function setupEventDelegation() {
+        // Handle category filter clicks
+        const filterContainer = document.getElementById('tech-category-filter');
+        if (filterContainer) {
+            filterContainer.addEventListener('click', (e) => {
+                const btn = e.target.closest('.category-filter-btn');
+                if (btn) {
+                    const category = btn.dataset.category;
+                    filterByCategory(category === 'all' ? 'all' : parseInt(category));
+                }
+            });
+        }
+
+        // Handle tree interactions (clicks and dragging)
+        const treeContainer = document.getElementById('tech-tree-container');
+        if (treeContainer) {
+            let isDragging = false;
+            let startX, startY, scrollLeft, scrollTop;
+
+            // Drag to scroll functionality
+            treeContainer.addEventListener('mousedown', (e) => {
+                // Don't drag if clicking on interactive elements
+                if (e.target.closest('[data-tech-id]') ||
+                    e.target.closest('[data-toggle-tech-id]') ||
+                    e.target.closest('button')) {
+                    return;
+                }
+
+                isDragging = true;
+                startX = e.pageX - treeContainer.offsetLeft;
+                startY = e.pageY - treeContainer.offsetTop;
+                scrollLeft = treeContainer.scrollLeft;
+                scrollTop = treeContainer.scrollTop;
+                treeContainer.style.cursor = 'grabbing';
+            });
+
+            treeContainer.addEventListener('mouseleave', () => {
+                isDragging = false;
+                treeContainer.style.cursor = 'grab';
+            });
+
+            treeContainer.addEventListener('mouseup', () => {
+                isDragging = false;
+                treeContainer.style.cursor = 'grab';
+            });
+
+            treeContainer.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.pageX - treeContainer.offsetLeft;
+                const y = e.pageY - treeContainer.offsetTop;
+                const walkX = (x - startX) * 1.5;
+                const walkY = (y - startY) * 1.5;
+                treeContainer.scrollLeft = scrollLeft - walkX;
+                treeContainer.scrollTop = scrollTop - walkY;
+            });
+
+            // Handle tech card and toggle clicks
+            treeContainer.addEventListener('click', (e) => {
+                // Handle completion toggle
+                const toggle = e.target.closest('[data-toggle-tech-id]');
+                if (toggle) {
+                    e.stopPropagation();
+                    const techId = toggle.dataset.toggleTechId;
+                    toggleTechCompletion(techId);
+                    return;
+                }
+
+                // Handle tech card selection
+                const techCard = e.target.closest('[data-tech-id]');
+                if (techCard) {
+                    const techId = techCard.dataset.techId;
+                    selectTechnology(techId);
+                    return;
+                }
+            });
+        }
+
+        // Handle detail panel close button
+        const detailContainer = document.getElementById('tech-detail');
+        if (detailContainer) {
+            detailContainer.addEventListener('click', (e) => {
+                if (e.target.closest('#tech-detail-close')) {
+                    closeTechnologyDetail();
+                }
+            });
+        }
+
+        console.log('[Island Technology] Event delegation set up');
+    }
 
     // ============================================
     // SEARCH FUNCTIONALITY
@@ -229,13 +330,7 @@ window.TechnologyModule = (function () {
             </button>
         `).join('');
 
-        // Attach event handlers
-        container.querySelectorAll('.category-filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const category = btn.dataset.category;
-                filterByCategory(category === 'all' ? 'all' : parseInt(category));
-            });
-        });
+        // Event delegation handles clicks - no listeners needed here
     }
 
     /**
@@ -335,11 +430,7 @@ window.TechnologyModule = (function () {
         // Render resource totals separately (outside the scrolling container)
         renderResourceTotalsContainer(techs);
 
-        // Attach click handlers
-        attachTechCardHandlers(container);
-
-        // Setup drag-to-pan
-        setupDragToPan(container);
+        // Event delegation handles all interactions - no listeners needed here
     }
 
     /**
@@ -456,11 +547,7 @@ window.TechnologyModule = (function () {
         // Render resource totals separately (outside the scrolling container)
         renderResourceTotalsContainer(techs);
 
-        // Attach click handlers
-        attachTechCardHandlers(container);
-
-        // Setup drag-to-pan
-        setupDragToPan(container);
+        // Event delegation handles all interactions - no listeners needed here
     }
 
     /**
@@ -778,11 +865,7 @@ window.TechnologyModule = (function () {
             </div>
         `;
 
-        // Attach close button handler
-        const closeBtn = document.getElementById('tech-detail-close');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', closeTechnologyDetail);
-        }
+        // Event delegation handles close button - no listener needed here
     }
 
     /**

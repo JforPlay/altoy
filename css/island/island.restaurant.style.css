@@ -267,6 +267,99 @@
 }
 
 /* ==========================================================================
+   2b. SHIPGIRL SELECTORS
+   ========================================================================== */
+
+.shipgirl-selector-container {
+    background: var(--island-surface);
+    border-radius: var(--island-radius-lg);
+    padding: var(--island-spacing-md);
+    box-shadow: var(--island-shadow-md);
+}
+
+.shipgirl-selector {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.shipgirl-selector.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.shipgirl-selector-label {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-xs);
+    margin-bottom: var(--island-spacing-sm);
+    font-size: var(--island-text-md);
+    font-weight: 600;
+    color: var(--island-text-primary);
+}
+
+.shipgirl-selector-label .material-symbols-outlined {
+    font-size: var(--island-icon-md);
+    color: var(--island-accent);
+}
+
+.gold-only-badge {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--island-radius-sm);
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #1a1d23;
+    margin-left: auto;
+}
+
+.shipgirl-attributes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--island-gap-sm);
+}
+
+.attribute-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.attribute-label {
+    font-size: var(--island-text-xs);
+    font-weight: 600;
+    color: var(--island-text-secondary);
+    padding-left: 0.25rem;
+}
+
+.attribute-select {
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: var(--island-radius-md);
+    padding: var(--island-spacing-sm) var(--island-spacing-md);
+    font-size: var(--island-text-sm);
+    font-weight: 600;
+    color: var(--island-text-primary);
+    cursor: pointer;
+    transition: var(--island-transition);
+}
+
+.attribute-select:hover:not(:disabled) {
+    border-color: var(--island-accent);
+    background: var(--island-surface);
+}
+
+.attribute-select:focus {
+    outline: none;
+    border-color: var(--island-accent);
+    box-shadow: 0 0 0 3px rgba(var(--island-accent-rgb), 0.1);
+}
+
+.attribute-select:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* ==========================================================================
    3. MENU LIST
    ========================================================================== */
 
@@ -365,6 +458,15 @@
     color: var(--island-text-tertiary);
 }
 
+.recipe-time {
+    font-size: var(--island-text-xs);
+    color: var(--island-accent);
+    font-weight: 600;
+    background: rgba(var(--island-accent-rgb), 0.1);
+    padding: 0.125rem 0.375rem;
+    border-radius: var(--island-radius-sm);
+}
+
 .rarity-badge {
     font-size: var(--island-text-xs);
     font-weight: 700;
@@ -417,6 +519,24 @@
 
 .profit-value.cost {
     color: var(--island-danger);
+}
+
+.profit-value.sales-count {
+    color: var(--island-accent);
+    font-weight: 700;
+}
+
+.profit-row.total-profit {
+    background: linear-gradient(to right, rgba(var(--island-accent-rgb), 0.05), rgba(var(--island-accent-rgb), 0.1));
+    margin: var(--island-spacing-xs) -var(--island-spacing-xs);
+    padding: var(--island-spacing-sm) var(--island-spacing-xs);
+    border-radius: var(--island-radius-md);
+}
+
+.profit-value.total-value {
+    color: var(--island-success);
+    font-size: var(--island-text-lg);
+    font-weight: 700;
 }
 
 .profit-value small {
@@ -526,7 +646,7 @@
 
 .rank-comparison-row {
     display: grid;
-    grid-template-columns: auto 1fr 1fr;
+    grid-template-columns: auto 1fr 1fr 0.8fr 1fr;
     align-items: center;
     gap: var(--island-spacing-md);
     padding: var(--island-spacing-sm);
@@ -600,6 +720,20 @@
     font-size: 0.7rem;
     font-weight: 600;
     margin-left: 0.25rem;
+}
+
+.rank-sales-count {
+    font-size: var(--island-text-xs);
+    font-weight: 600;
+    color: var(--island-text-tertiary);
+    text-align: right;
+}
+
+.rank-total-profit {
+    font-size: var(--island-text-sm);
+    font-weight: 700;
+    color: var(--island-success);
+    text-align: right;
 }
 
 /* Cost Breakdown List */
@@ -679,6 +813,11 @@
     .restaurant-menu-list {
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     }
+
+    .rank-comparison-row {
+        grid-template-columns: auto 1fr 1fr 0.8fr 1fr;
+        font-size: var(--island-text-xs);
+    }
 }
 
 @media (max-width: 768px) {
@@ -700,8 +839,9 @@
     }
 
     .rank-comparison-row {
-        grid-template-columns: auto 1fr 1fr;
+        grid-template-columns: auto 0.8fr 0.8fr 0.6fr 0.8fr;
         font-size: var(--island-text-xs);
+        gap: var(--island-spacing-xs);
     }
 }
 

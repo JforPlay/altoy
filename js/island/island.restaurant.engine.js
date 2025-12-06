@@ -24,6 +24,34 @@ window.RestaurantModule = (function () {
         diamond: '다이아몬드'
     };
 
+    const ATTRIBUTE_NAMES = [
+        '재배',      // 1
+        '채집',      // 2
+        '사육',      // 3
+        '요리',      // 4
+        '경영',      // 5
+        '제조'       // 6
+    ];
+
+    const ATTRIBUTE_RANK_VALUES = {
+        'E': 0.05,
+        'D': 0.16,
+        'C': 0.30,
+        'B': 0.42,
+        'A': 0.56,
+        'S': 0.72,
+        'SS': 0.84,
+        'SSS': 1.00
+    };
+
+    // Sales calculation coefficients from game data (divided by 100)
+    const SALES_COEFFICIENTS = {
+        argA: 0.60,
+        argB: 2.40,
+        argC: 0,
+        saleConst: 1.60
+    };
+
     const RANK_ICONS = {
         bronze: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rank_tong.png',
         silver: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rank_yin.png',
@@ -36,6 +64,20 @@ window.RestaurantModule = (function () {
         silver: '#c0c0c0',
         gold: '#ffd700',
         diamond: '#b9f2ff'
+    };
+
+    const RANK_RANDOM_RANGES = {
+        bronze: { min: -1, max: 0 },
+        silver: { min: -1, max: 1 },
+        gold: { min: -1, max: 2 },
+        diamond: { min: -1, max: 2 }
+    };
+
+    const RANK_MAX_SALES = {
+        bronze: 5,
+        silver: 6,
+        gold: 6,
+        diamond: 6
     };
 
     const EVENT_BONUSES = {
@@ -53,6 +95,8 @@ window.RestaurantModule = (function () {
 
     const STORAGE_KEY_RANK = 'island-restaurant-rank';
     const STORAGE_KEY_EVENTS = 'island-restaurant-events';
+    const STORAGE_KEY_SHIPGIRL1 = 'island-restaurant-shipgirl1';
+    const STORAGE_KEY_SHIPGIRL2 = 'island-restaurant-shipgirl2';
 
     // ============================================
     // STATE
@@ -73,7 +117,10 @@ window.RestaurantModule = (function () {
         selectedRank: 'silver',
         activeEvents: new Set(),
         menuIndex: {},           // { formulaId: [{ restaurantId, itemId }] }
-        highlightFormulaId: null
+        highlightFormulaId: null,
+        uniqueSubAttributes: [], // [1, 2, 3, 4, 5, 6] - unique sub_attribute IDs from all menus
+        shipgirl1Attr: { main: 'E' },  // Main (경영) + dynamic sub-attributes added in init
+        shipgirl2Attr: { main: 'E' }   // Only active when rank >= gold
     };
 
     // ============================================
@@ -103,9 +150,18 @@ window.RestaurantModule = (function () {
 
             // Build data structures for tree-based cost calculation
             buildMenuIndex();
-            buildShopDataIndex(shopData);
-            buildRecipeIndices();
-            buildDependencyGraph();
+            state.shopPurchaseData = IslandEngine.buildShopDataIndex(shopData);
+            const { recipeIndex, recipeCategoryIndex } = IslandEngine.buildRecipeIndices(state.recipes);
+            state.recipeIndex = recipeIndex;
+            state.recipeCategoryIndex = recipeCategoryIndex;
+            state.dependencyGraph = IslandEngine.buildDependencyGraph(state.recipes);
+            findUniqueSubAttributes();
+
+            // Initialize default attribute values for all sub-attributes
+            state.uniqueSubAttributes.forEach(attrId => {
+                if (!state.shipgirl1Attr[attrId]) state.shipgirl1Attr[attrId] = 'E';
+                if (!state.shipgirl2Attr[attrId]) state.shipgirl2Attr[attrId] = 'E';
+            });
 
             // Load saved preferences
             loadPreferences();
@@ -120,6 +176,7 @@ window.RestaurantModule = (function () {
             renderRestaurantTabs();
             renderRankSelector();
             renderEventToggles();
+            renderShipgirlSelectors();
             renderMenuList();
 
             return true;
@@ -150,54 +207,31 @@ window.RestaurantModule = (function () {
         });
     }
 
-    function buildShopDataIndex(shopData) {
-        Object.entries(shopData).forEach(([shopEntryId, shopItem]) => {
-            if (shopItem.items && shopItem.resource_consume) {
-                const items = shopItem.items;
-                if (items.length > 0) {
-                    const actualItemId = items[0][1];
-                    const packSize = items[0][2];
-                    const requiredItemId = shopItem.resource_consume[1];
-                    const cost = shopItem.resource_consume[2];
+    // buildShopDataIndex moved to island.engine.js (shared utility)
 
-                    state.shopPurchaseData[actualItemId] = [requiredItemId, cost, packSize];
+    // buildRecipeIndices moved to island.engine.js (shared utility)
+
+    // buildDependencyGraph moved to island.engine.js (shared utility)
+
+    function findUniqueSubAttributes() {
+        const subAttributeSet = new Set();
+        
+        // Iterate through all restaurants and their menu items
+        Object.values(state.restaurants).forEach(restaurant => {
+            (restaurant.item_id || []).forEach(([itemId]) => {
+                const item = state.items[itemId];
+                if (item && item.sub_attribute && item.sub_attribute.length > 0) {
+                    const subAttrId = item.sub_attribute[0];
+                    if (subAttrId >= 1 && subAttrId <= 6) {
+                        subAttributeSet.add(subAttrId);
+                    }
                 }
-            }
-        });
-    }
-
-    function buildRecipeIndices() {
-        state.recipeIndex = {};
-        state.recipeCategoryIndex = {};
-
-        Object.entries(state.recipes).forEach(([categoryId, recipes]) => {
-            recipes.forEach(recipe => {
-                state.recipeIndex[recipe.id] = recipe;
-                state.recipeCategoryIndex[recipe.id] = categoryId;
             });
         });
-    }
 
-    function buildDependencyGraph() {
-        Object.entries(state.recipes).forEach(([category, recipes]) => {
-            recipes.forEach(recipe => {
-                // Track what this recipe produces
-                (recipe.commission_product || []).forEach(([itemId]) => {
-                    if (!state.dependencyGraph.producedBy[itemId]) {
-                        state.dependencyGraph.producedBy[itemId] = [];
-                    }
-                    state.dependencyGraph.producedBy[itemId].push(recipe.id);
-                });
-
-                // Track what this recipe uses
-                (recipe.commission_cost || []).forEach(([itemId]) => {
-                    if (!state.dependencyGraph.usedBy[itemId]) {
-                        state.dependencyGraph.usedBy[itemId] = [];
-                    }
-                    state.dependencyGraph.usedBy[itemId].push(recipe.id);
-                });
-            });
-        });
+        // Convert to sorted array
+        state.uniqueSubAttributes = Array.from(subAttributeSet).sort((a, b) => a - b);
+        console.log('[Restaurant] Unique sub-attributes found:', state.uniqueSubAttributes);
     }
 
     // ============================================
@@ -215,6 +249,16 @@ window.RestaurantModule = (function () {
             if (savedEvents) {
                 state.activeEvents = new Set(JSON.parse(savedEvents));
             }
+
+            const savedShipgirl1 = localStorage.getItem(STORAGE_KEY_SHIPGIRL1);
+            if (savedShipgirl1) {
+                state.shipgirl1Attr = JSON.parse(savedShipgirl1);
+            }
+
+            const savedShipgirl2 = localStorage.getItem(STORAGE_KEY_SHIPGIRL2);
+            if (savedShipgirl2) {
+                state.shipgirl2Attr = JSON.parse(savedShipgirl2);
+            }
         } catch (error) {
             console.error('[Restaurant] Failed to load preferences:', error);
         }
@@ -224,6 +268,8 @@ window.RestaurantModule = (function () {
         try {
             localStorage.setItem(STORAGE_KEY_RANK, state.selectedRank);
             localStorage.setItem(STORAGE_KEY_EVENTS, JSON.stringify(Array.from(state.activeEvents)));
+            localStorage.setItem(STORAGE_KEY_SHIPGIRL1, JSON.stringify(state.shipgirl1Attr));
+            localStorage.setItem(STORAGE_KEY_SHIPGIRL2, JSON.stringify(state.shipgirl2Attr));
         } catch (error) {
             console.error('[Restaurant] Failed to save preferences:', error);
         }
@@ -274,7 +320,7 @@ window.RestaurantModule = (function () {
         const costData = calculateMenuCost(formulaId);
         const goldCost = costData.gold || 0;
 
-        // Apply rank coefficient
+        // Apply rank coefficient (only used for rank factor in sales calculation, not price)
         const rankCoeff = RANK_COEFFICIENTS[rank] || 1.0;
 
         // Calculate total event bonus
@@ -285,10 +331,13 @@ window.RestaurantModule = (function () {
             }
         });
 
-        // Final selling price = base * rank_coeff * (1 + event_bonus)
-        const finalSellPrice = baseSellPrice * rankCoeff * (1 + eventBonus);
+        // Final selling price = base * (1 + event_bonus) - NOT affected by rank
+        const finalSellPrice = baseSellPrice * (1 + eventBonus);
         const profit = finalSellPrice - goldCost;
         const profitMargin = finalSellPrice > 0 ? (profit / finalSellPrice) * 100 : 0;
+
+        // Calculate sales count
+        const salesCount = calculateSalesCount(itemId, rank, events);
 
         return {
             itemId,
@@ -300,8 +349,91 @@ window.RestaurantModule = (function () {
             eventBonus,
             finalSellPrice: Math.round(finalSellPrice),
             profit: Math.round(profit),
-            profitMargin: profitMargin.toFixed(1)
+            profitMargin: profitMargin.toFixed(1),
+            salesCount: salesCount
         };
+    }
+
+    /**
+     * Calculate base sales count for a menu item
+     * Based on: manage_influence, main/sub attributes, rank factor, event influence
+     */
+    function calculateSalesCount(itemId, rank = 'silver', events = []) {
+        const item = state.items[itemId];
+        if (!item) return 0;
+
+        const manageInfluence = item.manage_influence || 0;
+        const subAttributeId = item.sub_attribute && item.sub_attribute.length > 0 ? item.sub_attribute[0] : 0;
+        const subAttributeValue = item.sub_attribute && item.sub_attribute.length > 1 ? item.sub_attribute[1] : 0;
+
+        // Get event influence (0.1, 0.2, or 0.3)
+        let eventInfluence = 0;
+        events.forEach(eventKey => {
+            if (eventKey === 'manjuu_tour') eventInfluence = 0.1;
+            else if (eventKey === 'health_day') eventInfluence = 0.2;
+            else if (eventKey === 'food_review') eventInfluence = 0.3;
+        });
+
+        // Get rank factor
+        const rankFactor = RANK_COEFFICIENTS[rank] || 1.0;
+
+        // Calculate main attribute factor (경영 = management, id 5)
+        const mainAttrFactor = getMainAttrFactor();
+
+        // Calculate sub attribute factor
+        const subAttrFactor = getSubAttrFactor(subAttributeId);
+
+        // Formula: floor((manage_influence/100 + eventInfluence) * (argA + mainAttrFactor) * (argB + subAttrFactor * sub_attribute_value/100) * (argC + rankFactor) / saleConst)
+        const baseCount = Math.floor(
+            (manageInfluence / 100 + eventInfluence) *
+            (SALES_COEFFICIENTS.argA + mainAttrFactor) *
+            (SALES_COEFFICIENTS.argB + subAttrFactor * subAttributeValue / 100) *
+            (SALES_COEFFICIENTS.argC + rankFactor) /
+            SALES_COEFFICIENTS.saleConst
+        );
+
+        // Apply random range
+        const randomRange = RANK_RANDOM_RANGES[rank] || { min: 0, max: 0 };
+        const maxSalesCap = RANK_MAX_SALES[rank] || 6;
+        const minSales = Math.min(maxSalesCap, Math.max(1, baseCount + randomRange.min));
+        const maxSales = Math.min(maxSalesCap, Math.max(1, baseCount + randomRange.max));
+
+        return { min: minSales, max: maxSales, base: baseCount };
+    }
+
+    /**
+     * Get main attribute factor from shipgirls (경영 attribute)
+     */
+    function getMainAttrFactor() {
+        let factor = ATTRIBUTE_RANK_VALUES[state.shipgirl1Attr.main] || 0;
+        
+        // Shipgirl 2 is only active when rank is gold or higher
+        if (state.selectedRank === 'gold' || state.selectedRank === 'diamond') {
+            factor += ATTRIBUTE_RANK_VALUES[state.shipgirl2Attr.main] || 0;
+        }
+        
+        return factor;
+    }
+
+    /**
+     * Get sub attribute factor from shipgirls
+     */
+    function getSubAttrFactor(subAttributeId) {
+        if (!subAttributeId || subAttributeId < 1 || subAttributeId > 6) return 0;
+
+        // If sub-attribute is 경영 (5), use main attribute value
+        if (subAttributeId === 5) {
+            return getMainAttrFactor();
+        }
+
+        let factor = ATTRIBUTE_RANK_VALUES[state.shipgirl1Attr[subAttributeId]] || 0;
+        
+        // Shipgirl 2 is only active when rank is gold or higher
+        if (state.selectedRank === 'gold' || state.selectedRank === 'diamond') {
+            factor += ATTRIBUTE_RANK_VALUES[state.shipgirl2Attr[subAttributeId]] || 0;
+        }
+        
+        return factor;
     }
 
     // ============================================
@@ -432,6 +564,9 @@ window.RestaurantModule = (function () {
             btn.classList.toggle('active', btn.dataset.rank === rank);
         });
 
+        // Re-render shipgirl selectors (to enable/disable shipgirl 2)
+        renderShipgirlSelectors();
+
         // Recalculate and re-render menu list
         renderMenuList();
     }
@@ -484,6 +619,104 @@ window.RestaurantModule = (function () {
         savePreferences();
 
         // Recalculate and re-render menu list
+        renderMenuList();
+    }
+
+    // ============================================
+    // SHIPGIRL SELECTORS
+    // ============================================
+
+    function renderShipgirlSelectors() {
+        // Render shipgirl 1 (always visible)
+        renderShipgirlSelector(1, 'shipgirl-1-selector', state.shipgirl1Attr);
+        
+        // Render shipgirl 2 (only for gold+ ranks)
+        renderShipgirlSelector(2, 'shipgirl-2-selector', state.shipgirl2Attr);
+    }
+
+    function renderShipgirlSelector(shipgirlNum, containerId, attrState) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const isShipgirl2 = shipgirlNum === 2;
+        const isDisabled = isShipgirl2 && (state.selectedRank !== 'gold' && state.selectedRank !== 'diamond');
+
+        const rankOptions = Object.keys(ATTRIBUTE_RANK_VALUES);
+
+        // Build sub-attribute selectors HTML
+        const subAttributeSelectors = state.uniqueSubAttributes.map(attrId => {
+            const attrName = ATTRIBUTE_NAMES[attrId - 1]; // attrId is 1-indexed
+            const attrKey = attrId; // Use attribute ID as key
+            
+            // If this is attribute 5 (경영), reuse main attribute value
+            if (attrId === 5) {
+                return ''; // Skip 경영 as it's already the main attribute
+            }
+
+            return `
+                <div class="attribute-selector">
+                    <label class="attribute-label">${attrName} (부 속성)</label>
+                    <select class="attribute-select sub-attr" data-shipgirl="${shipgirlNum}" data-attr-id="${attrId}" ${isDisabled ? 'disabled' : ''}>
+                        ${rankOptions.map(rank => `
+                            <option value="${rank}" ${attrState[attrKey] === rank ? 'selected' : ''}>
+                                ${rank} (${ATTRIBUTE_RANK_VALUES[rank].toFixed(2)})
+                            </option>
+                        `).join('')}
+                    </select>
+                </div>
+            `;
+        }).join('');
+
+        const html = `
+            <div class="shipgirl-selector ${isDisabled ? 'disabled' : ''}">
+                <div class="shipgirl-selector-label">
+                    <span class="material-symbols-outlined">person</span>
+                    <span>판매 함순이 ${shipgirlNum}</span>
+                    ${isShipgirl2 ? '<span class="gold-only-badge">골드 이상</span>' : ''}
+                </div>
+                <div class="shipgirl-attributes">
+                    <div class="attribute-selector">
+                        <label class="attribute-label">경영 (주 속성)</label>
+                        <select class="attribute-select main-attr" data-shipgirl="${shipgirlNum}" ${isDisabled ? 'disabled' : ''}>
+                            ${rankOptions.map(rank => `
+                                <option value="${rank}" ${attrState.main === rank ? 'selected' : ''}>
+                                    ${rank} (${ATTRIBUTE_RANK_VALUES[rank].toFixed(2)})
+                                </option>
+                            `).join('')}
+                        </select>
+                    </div>
+                    ${subAttributeSelectors}
+                </div>
+            </div>
+        `;
+
+        container.innerHTML = html;
+
+        // Attach event listeners
+        if (!isDisabled) {
+            const mainSelect = container.querySelector('.main-attr');
+            mainSelect.addEventListener('change', (e) => {
+                updateShipgirlAttribute(shipgirlNum, 'main', e.target.value);
+            });
+
+            const subSelects = container.querySelectorAll('.sub-attr');
+            subSelects.forEach(select => {
+                select.addEventListener('change', (e) => {
+                    const attrId = parseInt(e.target.dataset.attrId);
+                    updateShipgirlAttribute(shipgirlNum, attrId, e.target.value);
+                });
+            });
+        }
+    }
+
+    function updateShipgirlAttribute(shipgirlNum, attrKey, rank) {
+        if (shipgirlNum === 1) {
+            state.shipgirl1Attr[attrKey] = rank;
+        } else if (shipgirlNum === 2) {
+            state.shipgirl2Attr[attrKey] = rank;
+        }
+
+        savePreferences();
         renderMenuList();
     }
 
@@ -542,7 +775,11 @@ window.RestaurantModule = (function () {
         }
 
         const item = state.items[itemId];
+        const recipe = state.recipeIndex[formulaId];
         const profitClass = profitData.profit > 0 ? 'positive' : profitData.profit < 0 ? 'negative' : 'neutral';
+        
+        // Format recipe time (workload is in deciseconds: 1 decisecond = 0.1 seconds)
+        const recipeTime = recipe && recipe.workload ? IslandEngine.formatTime(recipe.workload) : '';
         
         // Determine margin class based on percentage ranges
         const margin = parseFloat(profitData.profitMargin);
@@ -572,6 +809,7 @@ window.RestaurantModule = (function () {
                         <div class="menu-meta">
                             <span class="menu-id">ID: ${itemId}</span>
                             <span class="rarity-badge rarity-${item.rarity || 1}">★${item.rarity || 1}</span>
+                            ${recipeTime ? `<span class="recipe-time">⏱ ${recipeTime}</span>` : ''}
                         </div>
                     </div>
                 </div>
@@ -596,15 +834,23 @@ window.RestaurantModule = (function () {
                         <span class="profit-label">최종 판매가</span>
                         <span class="profit-value">${profitData.finalSellPrice.toLocaleString()}</span>
                     </div>
+                    <div class="profit-row">
+                        <span class="profit-label">판매 횟수</span>
+                        <span class="profit-value sales-count">${profitData.salesCount.min === profitData.salesCount.max ? profitData.salesCount.min.toLocaleString() : `${profitData.salesCount.min.toLocaleString()} ~ ${profitData.salesCount.max.toLocaleString()}`}</span>
+                    </div>
                     <div class="profit-row profit-${profitClass}">
                         <span class="profit-label">
-                            <strong>순이익</strong>
+                            <strong>순이익 (개당)</strong>
                             ${activeEvents.length > 0 ? '<span class="event-active-indicator">🎉</span>' : ''}
                         </span>
                         <span class="profit-value">
                             <strong>${profitData.profit >= 0 ? '+' : ''}${profitData.profit.toLocaleString()}</strong>
                             <small class="${marginClass}">(${profitData.profitMargin}%)</small>
                         </span>
+                    </div>
+                    <div class="profit-row highlight total-profit">
+                        <span class="profit-label"><strong>총 예상수익</strong></span>
+                        <span class="profit-value total-value">${profitData.salesCount.min === profitData.salesCount.max ? (profitData.profit * profitData.salesCount.min).toLocaleString() : `${(profitData.profit * profitData.salesCount.min).toLocaleString()} ~ ${(profitData.profit * profitData.salesCount.max).toLocaleString()}`}</span>
                     </div>
                 </div>
 
@@ -657,6 +903,8 @@ window.RestaurantModule = (function () {
                                         ${data.profit >= 0 ? '+' : ''}${data.profit.toLocaleString()}
                                         <small class="${compMarginClass}">(${data.profitMargin}%)</small>
                                     </div>
+                                    <div class="rank-sales-count">${data.salesCount.min === data.salesCount.max ? data.salesCount.min.toLocaleString() : `${data.salesCount.min.toLocaleString()}~${data.salesCount.max.toLocaleString()}`}회</div>
+                                    <div class="rank-total-profit">${data.salesCount.min === data.salesCount.max ? (data.profit * data.salesCount.min).toLocaleString() : `${(data.profit * data.salesCount.min).toLocaleString()}~${(data.profit * data.salesCount.max).toLocaleString()}`}</div>
                                 </div>
                             `;
                         }).join('')}

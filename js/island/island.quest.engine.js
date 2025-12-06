@@ -152,21 +152,56 @@ window.QuestModule = (function () {
             });
         }
 
-        // Dropdown functionality
-        const dropdown = document.getElementById('quest-type-dropdown');
-        const dropdownMenu = document.getElementById('quest-type-menu');
+        // Event delegation for quest filter and dropdown
+        const filterContainer = document.getElementById('quest-type-filter');
+        if (filterContainer) {
+            filterContainer.addEventListener('click', (e) => {
+                // Handle dropdown toggle
+                if (e.target.closest('#quest-type-dropdown')) {
+                    e.stopPropagation();
+                    const dropdownMenu = document.getElementById('quest-type-menu');
+                    if (dropdownMenu) {
+                        dropdownMenu.classList.toggle('visible');
+                    }
+                    return;
+                }
 
-        if (dropdown && dropdownMenu) {
-            dropdown.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dropdownMenu.classList.toggle('visible');
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', () => {
-                dropdownMenu.classList.remove('visible');
+                // Handle quest type option selection
+                const option = e.target.closest('.quest-type-option');
+                if (option) {
+                    e.stopPropagation();
+                    setFilter(option.dataset.type);
+                    return;
+                }
             });
         }
+
+        // Event delegation for quest card clicks
+        const questList = document.getElementById('quest-list');
+        if (questList) {
+            questList.addEventListener('click', (e) => {
+                const questCard = e.target.closest('.quest-card');
+                if (questCard) {
+                    const questId = questCard.dataset.questId;
+                    selectQuest(questId);
+                }
+            });
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdownMenu = document.getElementById('quest-type-menu');
+            const dropdown = document.getElementById('quest-type-dropdown');
+
+            if (dropdownMenu && dropdown &&
+                dropdownMenu.classList.contains('visible') &&
+                !dropdown.contains(e.target) &&
+                !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.remove('visible');
+            }
+        });
+
+        console.log('[Quest Module] Event delegation set up');
     }
 
     // ============================================
@@ -264,13 +299,7 @@ window.QuestModule = (function () {
 
         container.innerHTML = html;
 
-        // Add click listeners to options
-        container.querySelectorAll('.quest-type-option').forEach(option => {
-            option.addEventListener('click', (e) => {
-                e.stopPropagation();
-                setFilter(option.dataset.type);
-            });
-        });
+        // Event delegation handles clicks - no listeners needed here
     }
 
     /**
@@ -314,13 +343,7 @@ window.QuestModule = (function () {
 
         container.innerHTML = html;
 
-        // Add click listeners
-        container.querySelectorAll('.quest-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const questId = card.dataset.questId;
-                selectQuest(questId);
-            });
-        });
+        // Event delegation handles clicks - no listeners needed here
     }
 
     /**
