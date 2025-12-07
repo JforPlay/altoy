@@ -17,7 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================================================
     // DATA STORAGE
     // ============================================================================
-    let postsData = {};              // Main posts data from juustagram_data.json
+    let postsData = {};              // Main posts data (initially lite, then full if needed for list)
+    let fullPostsData = null;        // Full detailed post data
+    let fullPostsPromise = null;     // Promise for background loading
     let shipgirlDataMap = {};        // Shipgirl metadata (names, icons) from ship_group_data.json
     let shipgroupTemplateMap = {};   // Template data for usernames from external API
 
@@ -37,12 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================================================
     /**
      * Fetch all required data sources in parallel:
-     * 1. juustagram_data.json - Post content, images, comments
+     * 1. juustagram_lite.json - Lite post content for gallery
      * 2. ship_group_data.json - Shipgirl names and icons
      * 3. External API - Username templates from AzurLaneTools
      */
     Promise.all([
-        fetch('data/juustagram_data.json').then(res => res.json()),
+        fetch('data/juustagram_lite.json').then(res => res.json()),
         fetch('data/ship_group_data.json').then(res => res.json()),
         fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/CN/ShareCfg/activity_ins_ship_group_template.json').then(res => res.json())
     ])
@@ -57,11 +59,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Populate gallery with all posts (no filters applied initially)
             populateGallery();
+
+            // Start loading full data in background
+            fullPostsPromise = loadFullPosts();
         })
         .catch(error => {
             console.error('Error fetching data:', error);
             galleryView.innerHTML = `<p>데이터를 불러오는 데 실패했습니다. 모든 .json 파일이 있는지 확인해주세요.</p>`;
         });
+
+    async function loadFullPosts() {
+        try {
+            console.log("Starting background load of full Juustagram data...");
+            const response = await fetch('data/juustagram_data.json');
+            if (response.ok) {
+                fullPostsData = await response.json();
+                console.log("Full Juustagram data loaded successfully.");
+                return fullPostsData;
+            }
+        } catch (error) {
+            console.warn("Background loading of full data failed:", error);
+        }
+        return null;
+    }
 
     // ============================================================================
     // HELPER FUNCTIONS
@@ -274,8 +294,19 @@ document.addEventListener('DOMContentLoaded', () => {
      *
      * @param {number|string} postId - The ID of the post to display
      */
-    function displayPost(postId) {
-        const post = postsData[postId];
+    async function displayPost(postId) {
+        // Ensure full data is loaded for details
+        if (!fullPostsData) {
+            postDisplayContainer.innerHTML = '<div style="text-align:center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> 상세 내용 로딩 중...</div>';
+            try {
+                await fullPostsPromise;
+            } catch (e) {
+                postDisplayContainer.innerHTML = '<p>상세 내용을 불러오는데 실패했습니다.</p>';
+                return;
+            }
+        }
+
+        const post = fullPostsData ? fullPostsData[postId] : postsData[postId];
 
         // Handle invalid post ID
         if (!post) {

@@ -71,14 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return a.localeCompare(b, 'ko');
     };
 
-    const debounce = (func, delay) => {
-        let timeoutId;
-        return (...args) => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => func.apply(this, args), delay);
-        };
-    };
-
     const showLoadingSkeleton = () => {
         loadingSkeleton.classList.remove('hidden');
     };

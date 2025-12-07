@@ -183,14 +183,6 @@ class SimulationEngine {
         setTimeout(() => p.remove(), 5000);
     }
 
-    debounce(func, delay) {
-        let timeoutId;
-        return function (...args) {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => func.apply(this, args), delay);
-        };
-    }
-
     convertToMs(value, timeUnitIsFrames = false) {
         return timeUnitIsFrames ? value * (1000 / this.targetFps) : value * 1000;
     }

@@ -1,5 +1,7 @@
 // ===== Application State =====
 let shipgirlData = [];
+let fullShipData = null; // Store full detailed data
+let fullShipDataPromise = null; // Promise for background loading
 let filteredData = [];
 let currentShip = null;
 let currentLevel = 100;
@@ -49,10 +51,29 @@ const UNAFFECTED_STATS = ['speed', 'luck'];
 
 // ===== Data Loading =====
 async function loadData() {
-    const response = await fetch('data/ship_info_data.json');
+    // Load lite data for fast initial render
+    const response = await fetch('data/ship_info_lite.json');
     if (!response.ok) throw new Error('Failed to fetch data');
     shipgirlData = await response.json();
     filteredData = [...shipgirlData];
+
+    // Start loading full data in background
+    fullShipDataPromise = loadFullData();
+}
+
+async function loadFullData() {
+    try {
+        console.log("Starting background load of full ship data...");
+        const response = await fetch('data/ship_info_data.json');
+        if (response.ok) {
+            fullShipData = await response.json();
+            console.log("Full ship data loaded successfully.");
+            return fullShipData;
+        }
+    } catch (error) {
+        console.warn("Background loading of full data failed:", error);
+    }
+    return null;
 }
 
 async function loadNationalityData() {
@@ -544,8 +565,28 @@ function showMainView() {
     window.scrollTo(0, 0);
 }
 
-function showDetailView(shipName) {
-    const ship = shipgirlData.find(s => s.name === shipName);
+async function showDetailView(shipName) {
+    // If full data isn't loaded yet, wait for it
+    if (!fullShipData) {
+        loading.style.display = 'block';
+        try {
+            await fullShipDataPromise;
+        } catch (e) {
+            showError("상세 데이터를 불러오는데 실패했습니다.");
+            showMainView();
+            loading.style.display = 'none';
+            return;
+        }
+        loading.style.display = 'none';
+    }
+
+    if (!fullShipData) {
+         showError("상세 데이터 로드 실패.");
+         showMainView();
+         return;
+    }
+
+    const ship = fullShipData.find(s => s.name === shipName);
 
     if (!ship) {
         showError('함순이을 찾을 수 없습니다');

@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // --- Event Listeners ---
-    window.addEventListener('resize', simEngine.debounce(() => {
+    window.addEventListener('resize', debounce(() => {
         simEngine.updateLayoutAndScale(playerAreaDiv);
     }, 150));
 

@@ -101,17 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         // =========================================================================
-        // UTILITY METHODS
-        // =========================================================================
-        debounce(func, wait) {
-            let timeout;
-            return (...args) => {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        },
-
-        // =========================================================================
         // INITIALIZATION
         // =========================================================================
         init(config) {
@@ -157,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- Listeners for Static Page Elements ---
             // Debounce search to avoid rebuilding grid on every keystroke
             if (el.searchBar) {
-                const debouncedSearch = this.debounce((value) => this.populateEventGrid(value), 300);
+                const debouncedSearch = debounce((value) => this.populateEventGrid(value), 300);
                 el.searchBar.addEventListener('input', (e) => debouncedSearch(e.target.value));
             }
             el.backToEventBtn?.addEventListener('click', (e) => {

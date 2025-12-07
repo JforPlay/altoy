@@ -59,17 +59,6 @@ const showNotification = (message, type = "info") => {
 };
 
 /**
- * Debounce function for performance optimization
- */
-const debounce = (func, delay) => {
-  let timeoutId;
-  return (...args) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => func.apply(this, args), delay);
-  };
-};
-
-/**
  * Create SVG placeholder for broken images
  */
 const createImageErrorHandler = () => {

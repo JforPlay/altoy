@@ -303,8 +303,11 @@ body > header {
 
 .post-image {
     width: 100%;
+    min-height: 200px; /* Reduce CLS */
+    background-color: var(--hover-bg);
     border-radius: 8px;
     margin-bottom: 15px;
+    object-fit: contain;
 }
 
 .post-message {
