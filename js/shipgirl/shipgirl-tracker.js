@@ -64,17 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             'data/shipgirl/fleet_tech_template.json'
         ];
         try {
-            // Fetch all files simultaneously.
-            const responses = await Promise.all(dataPaths.map(path => fetch(path)));
-            // Check if all responses are successful.
-            for (const res of responses) {
-                if (!res.ok) {
-                    throw new Error(`Failed to fetch ${res.url}: ${res.statusText}`);
-                }
-            }
-            // Parse JSON from all responses and assign to global variables.
+            // Fetch and parse all files simultaneously using global fetchJSON
             [fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData] = await Promise.all(
-                responses.map(res => res.json())
+                dataPaths.map(path => fetchJSON(path))
             );
         } catch (error) {
             // Log the error and display a message to the user if fetching fails.

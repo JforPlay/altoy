@@ -52,9 +52,7 @@ const UNAFFECTED_STATS = ['speed', 'luck'];
 // ===== Data Loading =====
 async function loadData() {
     // Load lite data for fast initial render
-    const response = await fetch('data/ship_info_lite.json');
-    if (!response.ok) throw new Error('Failed to fetch data');
-    shipgirlData = await response.json();
+    shipgirlData = await fetchJSON('data/ship_info_lite.json');
     filteredData = [...shipgirlData];
 
     // Start loading full data in background
@@ -64,12 +62,9 @@ async function loadData() {
 async function loadFullData() {
     try {
         console.log("Starting background load of full ship data...");
-        const response = await fetch('data/ship_info_data.json');
-        if (response.ok) {
-            fullShipData = await response.json();
-            console.log("Full ship data loaded successfully.");
-            return fullShipData;
-        }
+        fullShipData = await fetchJSON('data/ship_info_data.json');
+        console.log("Full ship data loaded successfully.");
+        return fullShipData;
     } catch (error) {
         console.warn("Background loading of full data failed:", error);
     }
@@ -77,79 +72,71 @@ async function loadFullData() {
 }
 
 async function loadNationalityData() {
-    const response = await fetch('data/mapping/nationality_mapping.json');
-    if (!response.ok) throw new Error('Failed to fetch nationality data');
-    nationalityData = await response.json();
+    nationalityData = await fetchJSON('data/mapping/nationality_mapping.json');
 }
 
 async function loadAttrTypeData() {
-    const response = await fetch('data/mapping/attr_type_mapping.json');
-    if (!response.ok) throw new Error('Failed to fetch attribute type data');
-    attrTypeData = await response.json();
+    attrTypeData = await fetchJSON('data/mapping/attr_type_mapping.json');
 }
 
 async function loadShipTypeData() {
-    const response = await fetch('data/mapping/ship_type_mapping.json');
-    if (!response.ok) throw new Error('Failed to fetch ship type data');
-    shipTypeData = await response.json();
+    shipTypeData = await fetchJSON('data/mapping/ship_type_mapping.json');
 }
 
 async function loadSkillIconData() {
     try {
-        const response = await fetch('data/skill_icon_mapping.json');
-        if (response.ok) {
-            skillIconData = await response.json();
-            console.log('Loaded local skill icon data:', Object.keys(skillIconData).length, 'icons');
-            return;
-        }
+        skillIconData = await fetchJSON('data/skill_icon_mapping.json');
+        console.log('Loaded local skill icon data:', Object.keys(skillIconData).length, 'icons');
+        return;
     } catch (error) {
         console.warn('Local skill icon data not found, fetching from remote...');
     }
 
-    const response = await fetch('https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/skill_icon.json');
-    if (!response.ok) throw new Error('Failed to fetch skill icon data');
-    skillIconData = await response.json();
-    console.log('Loaded remote skill icon data:', Object.keys(skillIconData).length, 'icons');
+    try {
+        skillIconData = await fetchJSON('https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/skill_icon.json');
+        console.log('Loaded remote skill icon data:', Object.keys(skillIconData).length, 'icons');
+    } catch (error) {
+        console.error('Failed to fetch skill icon data from remote:', error);
+    }
 }
 
 async function loadSkillDataTemplate() {
     try {
-        const response = await fetch('data/sim/skill_data_template.json');
-        if (response.ok) {
-            const data = await response.json();
-
-            if (Array.isArray(data)) {
-                skillDataTemplate = Object.fromEntries(
-                    data.map(skill => [skill.id, skill])
-                );
-            } else if (typeof data === 'object') {
-                skillDataTemplate = data;
-            } else {
-                throw new Error('Invalid skill data format');
-            }
-
-            console.log('Loaded local skill data template:', Object.keys(skillDataTemplate).length, 'skills');
-            return;
+        const data = await fetchJSON('data/sim/skill_data_template.json');
+        
+        if (Array.isArray(data)) {
+            skillDataTemplate = Object.fromEntries(
+                data.map(skill => [skill.id, skill])
+            );
+        } else if (typeof data === 'object') {
+            skillDataTemplate = data;
+        } else {
+            throw new Error('Invalid skill data format');
         }
+
+        console.log('Loaded local skill data template:', Object.keys(skillDataTemplate).length, 'skills');
+        return;
     } catch (error) {
         console.warn('Local skill data not found, fetching from remote...', error);
     }
 
-    const response = await fetch('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/skill_data_template.json');
-    if (!response.ok) throw new Error('Failed to fetch skill data template');
-    const data = await response.json();
+    try {
+        const data = await fetchJSON('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/skill_data_template.json');
+        
+        if (Array.isArray(data)) {
+            skillDataTemplate = Object.fromEntries(
+                data.map(skill => [skill.id, skill])
+            );
+        } else if (typeof data === 'object') {
+            skillDataTemplate = data;
+        } else {
+            throw new Error('Invalid skill data format from remote');
+        }
 
-    if (Array.isArray(data)) {
-        skillDataTemplate = Object.fromEntries(
-            data.map(skill => [skill.id, skill])
-        );
-    } else if (typeof data === 'object') {
-        skillDataTemplate = data;
-    } else {
-        throw new Error('Invalid skill data format from remote');
+        console.log('Loaded remote skill data template:', Object.keys(skillDataTemplate).length, 'skills');
+    } catch (error) {
+        console.error('Failed to fetch skill data template from remote:', error);
     }
-
-    console.log('Loaded remote skill data template:', Object.keys(skillDataTemplate).length, 'skills');
 }
 
 // ===== Initialization =====
@@ -183,7 +170,7 @@ async function init() {
         window.addEventListener('popstate', handleRoute);
     } catch (error) {
         loading.style.display = 'none';
-        showError('데이터 로드 실패: ' + error.message);
+        showToast(message, 'error');
         console.error('Initialization error:', error);
     }
 }
@@ -257,13 +244,7 @@ function getShipType(type) {
     return `함종 ${type}`;
 }
 
-function showError(message) {
-    errorDiv.textContent = message;
-    errorDiv.style.display = 'block';
-    setTimeout(() => {
-        errorDiv.style.display = 'none';
-    }, 5000);
-}
+// showError replaced by global showToast
 
 // ===== Event Listeners =====
 function setupEventListeners() {

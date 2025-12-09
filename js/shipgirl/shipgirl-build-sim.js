@@ -124,14 +124,12 @@
     async function loadData() {
         try {
             // Load base pools
-            const response = await fetch('data/shipgirl/ship_build_sim_data.json');
-            const data = await response.json();
+            const data = await fetchJSON('data/shipgirl/ship_build_sim_data.json');
             state.poolData = JSON.parse(JSON.stringify(data));
             state.originalPoolData = JSON.parse(JSON.stringify(data));
 
             // Load pickup pools
-            const pickupResponse = await fetch('data/shipgirl/ship_build_sim_pickup_data.json');
-            state.pickupData = await pickupResponse.json();
+            state.pickupData = await fetchJSON('data/shipgirl/ship_build_sim_pickup_data.json');
 
             // Initialize custom ships
             state.customShips = { '1': [], '2': [], '3': [], 'pickup': [] };
@@ -1093,8 +1091,7 @@
         searchInput.disabled = true;
 
         try {
-            const response = await fetch('data/ship_info_data.json');
-            const fullData = await response.json();
+            const fullData = await fetchJSON('data/ship_info_data.json');
 
             // Extract only what we need
             state.shipDatabase = fullData
