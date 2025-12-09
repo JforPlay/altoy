@@ -31,34 +31,6 @@ const FIREBASE_CONFIG = {
 // ====================================
 
 /**
- * Display notification message to user
- */
-const showNotification = (message, type = "info") => {
-  const notification = document.createElement("div");
-  notification.className = `notification notification-${type}`;
-  notification.textContent = message;
-  notification.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px 20px;
-    background: ${type === 'error' ? '#e74c3c' : type === 'success' ? '#27ae60' : '#3498db'};
-    color: white;
-    border-radius: 5px;
-    z-index: 10000;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    animation: slideIn 0.3s ease-out;
-    font-weight: 500;
-  `;
-  document.body.appendChild(notification);
-
-  setTimeout(() => {
-    notification.style.animation = "slideOut 0.3s ease-out";
-    setTimeout(() => notification.remove(), 300);
-  }, 3000);
-};
-
-/**
  * Create SVG placeholder for broken images
  */
 const createImageErrorHandler = () => {
@@ -73,30 +45,11 @@ const createImageErrorHandler = () => {
 };
 
 // ====================================
-// ANIMATION STYLES
-// ====================================
-
-const addAnimationStyles = () => {
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes slideIn {
-      from { transform: translateX(400px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideOut {
-      from { transform: translateX(0); opacity: 1; }
-      to { transform: translateX(400px); opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
-};
-
-// ====================================
 // DOM READY - MAIN INITIALIZATION
 // ====================================
 
 document.addEventListener("DOMContentLoaded", async () => {
-  addAnimationStyles();
+  // Toast styles are now loaded via global CSS
 
   // ====================================
   // DOM ELEMENTS
@@ -190,7 +143,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("✅ Signed in anonymously:", currentUserId);
   } catch (error) {
     console.error("❌ Anonymous sign-in failed:", error);
-    showNotification("인증에 실패했습니다. 페이지를 새로고침하세요.", "error");
+    showToast("인증에 실패했습니다. 페이지를 새로고침하세요.", "error");
     return;
   }
 
@@ -218,7 +171,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       localStorage.setItem("cache_version", CACHE_VERSION);
-      showNotification("데이터가 업데이트되었습니다.", "info");
+      showToast("데이터가 업데이트되었습니다.", "info");
     }
   };
 
@@ -529,7 +482,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const userId = currentUserId;
 
     if (userVotesCache.has(clientId) || localStorage.getItem(`voted_${clientId}`) === "true") {
-      showNotification("이미 이 스킨에 투표하셨습니다!", "error");
+      showToast("이미 이 스킨에 투표하셨습니다!", "error");
       return;
     }
 
@@ -635,12 +588,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       populateLeaderboard(newLeaderboard);
 
       updateDataAgeIndicator();
-      showNotification(`✅ ${skinName}에 ${rating}점 투표 완료!`, "success");
+      showToast(`✅ ${skinName}에 ${rating}점 투표 완료!`, "success");
 
     } catch (error) {
       if (error.message === "ALREADY_VOTED") {
         console.warn("⚠️ User already voted");
-        showNotification("이미 이 스킨에 투표하셨습니다!", "error");
+        showToast("이미 이 스킨에 투표하셨습니다!", "error");
 
         userVotesCache.add(clientId);
         localStorage.setItem(`voted_${clientId}`, "true");
@@ -652,7 +605,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       } else {
         console.error("❌ Transaction failed:", error);
-        showNotification("투표를 저장하는 데 실패했습니다. 다시 시도해 주세요.", "error");
+        showToast("투표를 저장하는 데 실패했습니다. 다시 시도해 주세요.", "error");
 
         if (error.code) {
           connectionStatus.lastError = error;
@@ -729,13 +682,13 @@ document.addEventListener("DOMContentLoaded", async () => {
           updateDataAgeIndicator();
 
           if (error.code === 'resource-exhausted') {
-            showNotification("⚠️ Firestore 일일 한도 초과. 내일 다시 시도하세요.", "error");
+            showToast("⚠️ Firestore 일일 한도 초과. 내일 다시 시도하세요.", "error");
           } else if (error.code === 'permission-denied') {
-            showNotification("🔒 권한 오류. 페이지를 새로고침하세요.", "error");
+            showToast("🔒 권한 오류. 페이지를 새로고침하세요.", "error");
           } else if (error.code === 'unavailable') {
-            showNotification("📡 서버 연결 불안정. 잠시 후 재시도합니다.", "error");
+            showToast("📡 서버 연결 불안정. 잠시 후 재시도합니다.", "error");
           } else {
-            showNotification(`실시간 동기화 오류: ${error.message}`, "error");
+            showToast(`실시간 동기화 오류: ${error.message}`, "error");
           }
 
           const retryDelay = Math.min(5000 * Math.pow(2, connectionStatus.errorCount - 1), 60000);
@@ -1325,7 +1278,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (timeSinceLastRefresh < REFRESH_COOLDOWN_MS) {
       const remainingSeconds = Math.ceil((REFRESH_COOLDOWN_MS - timeSinceLastRefresh) / 1000);
-      showNotification(`⏳ ${remainingSeconds}초 후에 다시 시도하세요`, "error");
+      showToast(`⏳ ${remainingSeconds}초 후에 다시 시도하세요`, "error");
       return;
     }
 
@@ -1335,7 +1288,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       refreshDataBtn.innerHTML = '<i class="fas fa-sync-alt"></i>';
     }
 
-    showNotification("투표 데이터 업데이트 중...", "info");
+    showToast("투표 데이터 업데이트 중...", "info");
 
     try {
       lastRefreshTime = now;
@@ -1352,7 +1305,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       populateLeaderboard(newLeaderboard);
       updateDataAgeIndicator();
 
-      showNotification("✅ 최신 데이터로 업데이트되었습니다!", "success");
+      showToast("✅ 최신 데이터로 업데이트되었습니다!", "success");
 
       if (refreshDataBtn) {
         refreshDataBtn.classList.remove('loading');
@@ -1369,13 +1322,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       updateDataAgeIndicator();
 
       if (error.code === 'resource-exhausted') {
-        showNotification("⚠️ Firestore 일일 한도 초과. 내일 다시 시도하세요.", "error");
+        showToast("⚠️ Firestore 일일 한도 초과. 내일 다시 시도하세요.", "error");
       } else if (error.code === 'permission-denied') {
-        showNotification("🔒 권한 오류가 발생했습니다.", "error");
+        showToast("🔒 권한 오류가 발생했습니다.", "error");
       } else if (error.code === 'unavailable') {
-        showNotification("📡 서버에 연결할 수 없습니다.", "error");
+        showToast("📡 서버에 연결할 수 없습니다.", "error");
       } else {
-        showNotification(`데이터 새로고침 실패: ${error.message}`, "error");
+        showToast(`데이터 새로고침 실패: ${error.message}`, "error");
       }
 
       lastRefreshTime = 0;
@@ -1507,8 +1460,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initializeCacheVersion();
 
   // Load skin data and initialize app
-  fetch("data/skin/skin_voiceline_data.json")
-    .then((response) => response.json())
+  fetchJSON("data/skin/skin_voiceline_data.json")
     .then(async (jsonData) => {
       // Process skin data
       allSkins = Object.keys(jsonData).map((key) => ({ id: key, ...jsonData[key] }))
@@ -1543,7 +1495,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           allPollDataCache = await fetchAllPollData();
         } catch (error) {
           console.error("Failed to fetch initial data:", error);
-          showNotification("초기 데이터 로드 실패. 새로고침 버튼을 눌러주세요.", "error");
+          showToast("초기 데이터 로드 실패. 새로고침 버튼을 눌러주세요.", "error");
         }
       }
 
@@ -1570,7 +1522,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     })
     .catch((error) => {
       console.error("Error loading skin data:", error);
-      showNotification("스킨 데이터 로드 실패", "error");
+      showToast("스킨 데이터 로드 실패", "error");
     });
 
   // ====================================

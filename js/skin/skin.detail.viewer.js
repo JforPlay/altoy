@@ -703,8 +703,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===== Data Loading =====
-    fetch('data/skin/skin_voiceline_data.json')
-        .then(response => response.json())
+    // TODO: optimization - This file is ~20MB. Consider splitting or lazy loading by character.
+    fetchJSON('data/skin/skin_voiceline_data.json')
         .then(jsonData => {
             if (!jsonData || Object.keys(jsonData).length === 0) {
                 throw new Error('JSON data is empty or invalid.');

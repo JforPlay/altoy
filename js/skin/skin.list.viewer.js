@@ -12,15 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         buttons: {
             clearAll: document.getElementById('clear-all-btn'),
-            info: document.getElementById('info-button'),
+            // info button handled globally
             filterToggle: document.getElementById('filter-toggle-btn')
             // scrollToTop handled globally by global.script.js
         },
         progressBar: document.getElementById('progress-bar'),
-        popup: {
-            container: document.getElementById('info-popup'),
-            closeBtn: document.getElementById('info-popup').querySelector('.close-popup-btn')
-        },
+        // popup handled globally
         sections: {
             new: document.getElementById('new-skins-section'),
             limited: document.getElementById('limited-skins-section'),
@@ -74,23 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // === UTILITY FUNCTIONS ===
-    const debounce = (func, delay) => {
-        return (...args) => {
-            clearTimeout(activeTimers.debounce);
-            activeTimers.debounce = setTimeout(() => func.apply(this, args), delay);
-        };
-    };
-
-    const throttle = (func, limit) => {
-        let inThrottle;
-        return (...args) => {
-            if (!inThrottle) {
-                func.apply(this, args);
-                inThrottle = true;
-                activeTimers.throttle = setTimeout(() => inThrottle = false, limit);
-            }
-        };
-    };
+    // debounce and throttle are now provided by js/utils.js
 
     const showFilteringState = () => {
         // Only show progress bar if filtering takes longer than 150ms
@@ -467,11 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     showLoadingState();
 
-    fetch('data/skin/skin_voiceline_data_subset.json')
-        .then(res => {
-            if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-            return res.json();
-        })
+    fetchJSON('data/skin/skin_voiceline_data_subset.json')
         .then(skinJson => {
             allSkins = skinJson;
             isLoading = false;
