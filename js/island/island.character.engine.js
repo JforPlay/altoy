@@ -39,10 +39,10 @@ window.CharacterModule = (function () {
 
             // Load module-specific data in parallel
             const [charactersData, attData, levelData, iconData] = await Promise.all([
-                IslandEngine.fetchJSON('data/island/characters.json'),
-                IslandEngine.fetchJSON('data/island/island_chara_att.json'),
-                IslandEngine.fetchJSON('data/island/island_chara_level.json'),
-                IslandEngine.fetchJSON('data/island/character_icon.json')
+                fetchJSON('data/island/characters.json'),
+                fetchJSON('data/island/island_chara_att.json'),
+                fetchJSON('data/island/island_chara_level.json'),
+                fetchJSON('data/island/character_icon.json')
             ]);
 
             state.characters = charactersData;
@@ -955,25 +955,3 @@ window.CharacterModule = (function () {
     };
 
 })();
-
-// Add animations to global styles
-const characterModuleStyle = document.createElement('style');
-characterModuleStyle.textContent = `
-    @keyframes flash {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; transform: scale(1.1); }
-    }
-
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.15); }
-    }
-
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        25% { transform: translateY(-6px); }
-        50% { transform: translateY(0); }
-        75% { transform: translateY(-3px); }
-    }
-`;
-document.head.appendChild(characterModuleStyle);

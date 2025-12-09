@@ -52,7 +52,7 @@ window.TechnologyModule = (function () {
             }
 
             // Load module-specific data
-            const techData = await IslandEngine.fetchJSON('data/island/technology.json');
+            const techData = await fetchJSON('data/island/technology.json');
             state.technologies = techData;
 
             // Load completion state from localStorage
@@ -583,12 +583,22 @@ window.TechnologyModule = (function () {
     function renderConnections(connections, maxX, maxY, xCoordMap) {
         if (connections.length === 0) return '';
 
-        // Use rem values converted to px (assuming 16px base font size)
-        // These should match the CSS grid values
-        const baseFontSize = 16;
-        const nodeWidth = 18.75 * baseFontSize; // 18.75rem = 300px
-        const nodeHeight = 2.1 * baseFontSize; // 2.1rem = 33.6px
-        const gap = 2 * baseFontSize; // 2rem = 32px
+        // Dynamically get the base font size (1rem in pixels)
+        // Default to 16 if calculation fails
+        let baseFontSize = 16;
+        try {
+            baseFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        } catch (e) {
+            console.warn('[Island Technology] Failed to calculate base font size, using default 16px');
+        }
+
+        // Use rem values converted to px matching CSS grid values
+        // Node width: 300px (18.75rem)
+        // Node height: ~33.6px (2.1rem)
+        // Gap: 32px (2rem)
+        const nodeWidth = 18.75 * baseFontSize; 
+        const nodeHeight = 2.1 * baseFontSize; 
+        const gap = 2 * baseFontSize; 
 
         let svg = `<svg class="skill-tree-connections" style="grid-column: 1 / -1; grid-row: 1 / -1;">`;
 
@@ -949,7 +959,7 @@ window.TechnologyModule = (function () {
     function renderFormulaDetails(formula) {
         if (!formula) return '';
 
-        const workloadTime = IslandEngine.formatTime(formula.workload);
+        const workloadTime = formatTime(formula.workload);
         const costs = formula.cost || [];
 
         return `

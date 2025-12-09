@@ -135,18 +135,14 @@ window.RestaurantModule = (function () {
             }
 
             // Load module-specific data
-            const [restaurantData, recipeData, shopData] = await Promise.all([
-                IslandEngine.fetchJSON('data/island/island_manage_restaurant.json'),
-                IslandEngine.fetchJSON('data/island/recipes.json'),
-                IslandEngine.fetchJSON('data/island/island_shop_goods.json')
+            const [restaurantData, recipesData, shopData] = await Promise.all([
+                fetchJSON('data/island/island_manage_restaurant.json'),
+                fetchJSON('data/island/recipes.json'),
+                fetchJSON('data/island/island_shop_goods.json')
             ]);
 
-            // Filter out "all" field from restaurant data
-            state.restaurants = Object.fromEntries(
-                Object.entries(restaurantData).filter(([key]) => key !== 'all')
-            );
-            
-            state.recipes = recipeData;
+            state.restaurants = restaurantData;
+            state.recipes = recipesData;
 
             // Build data structures for tree-based cost calculation
             buildMenuIndex();
@@ -167,7 +163,10 @@ window.RestaurantModule = (function () {
             loadPreferences();
 
             // Select first restaurant by default
-            const firstRestaurantId = Object.keys(state.restaurants)[0];
+            const firstRestaurantId = Object.keys(state.restaurants)
+                .filter(id => id !== 'all')
+                .sort((a, b) => parseInt(a) - parseInt(b))[0];
+            
             if (firstRestaurantId) {
                 state.selectedRestaurant = firstRestaurantId;
             }
@@ -485,6 +484,7 @@ window.RestaurantModule = (function () {
         if (!container) return;
 
         const restaurants = Object.entries(state.restaurants)
+            .filter(([id]) => id !== 'all')
             .sort(([a], [b]) => parseInt(a) - parseInt(b));
 
         const html = restaurants.map(([id, restaurant]) => `
@@ -779,7 +779,7 @@ window.RestaurantModule = (function () {
         const profitClass = profitData.profit > 0 ? 'positive' : profitData.profit < 0 ? 'negative' : 'neutral';
         
         // Format recipe time (workload is in deciseconds: 1 decisecond = 0.1 seconds)
-        const recipeTime = recipe && recipe.workload ? IslandEngine.formatTime(recipe.workload) : '';
+        const recipeTime = recipe && recipe.workload ? formatTime(recipe.workload) : '';
         
         // Determine margin class based on percentage ranges
         const margin = parseFloat(profitData.profitMargin);

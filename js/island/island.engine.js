@@ -25,6 +25,15 @@ window.IslandEngine = (function () {
         }
     };
 
+    const TAB_MODULE_MAP = {
+        'characters': { key: 'character', module: () => window.CharacterModule },
+        'technology': { key: 'technology', module: () => window.TechnologyModule },
+        'quests': { key: 'quest', module: () => window.QuestModule },
+        'resources': { key: 'resource', module: () => window.ResourceModule },
+        'restaurant': { key: 'restaurant', module: () => window.RestaurantModule },
+        'season-calc': { key: 'seasonCalc', module: () => window.SeasonCalcModule }
+    };
+
     // ============================================
     // INITIALIZATION
     // ============================================
@@ -35,29 +44,7 @@ window.IslandEngine = (function () {
         try {
             // Load shared data first
             await loadSharedData();
-
-            // Initialize all modules with error handling
-            const moduleInits = [
-                initModule('character', window.CharacterModule),
-                initModule('technology', window.TechnologyModule),
-                initModule('quest', window.QuestModule),
-                initModule('resource', window.ResourceModule),
-                initModule('restaurant', window.RestaurantModule),
-                initModule('seasonCalc', window.SeasonCalcModule)
-            ];
-
-            const results = await Promise.allSettled(moduleInits);
-
-            // Log any failures
-            results.forEach((result, i) => {
-                const moduleNames = ['character', 'technology', 'quest', 'resource', 'restaurant', 'seasonCalc'];
-                if (result.status === 'rejected') {
-                    console.error(`[Island] ${moduleNames[i]} module failed to initialize:`, result.reason);
-                    showError(`${moduleNames[i]} 모듈을 불러오는데 실패했습니다.`);
-                }
-            });
-
-            console.log('[Island] Core engine initialized');
+            console.log('[Island] Core engine initialized (Lazy loading modules)');
         } catch (error) {
             console.error('[Island] Critical initialization failure:', error);
             showError('페이지를 불러오는데 실패했습니다. 페이지를 새로고침해주세요.');
@@ -65,6 +52,8 @@ window.IslandEngine = (function () {
     }
 
     async function loadSharedData() {
+        if (state.sharedData.loaded) return;
+
         console.log('[Island] Loading shared data...');
 
         try {
@@ -76,6 +65,31 @@ window.IslandEngine = (function () {
         } catch (error) {
             console.error('[Island] Failed to load shared data:', error);
             throw error;
+        }
+    }
+
+    async function loadModule(tabName) {
+        const config = TAB_MODULE_MAP[tabName];
+        if (!config) return;
+
+        const { key, module: getModule } = config;
+        
+        // Return if already initialized
+        if (state.modules[key]) return;
+
+        const module = getModule();
+        if (!module) {
+            console.warn(`[Island] Module for ${tabName} not found`);
+            return;
+        }
+
+        try {
+            // Ensure shared data is loaded
+            await loadSharedData();
+            await initModule(key, module);
+        } catch (error) {
+            console.error(`[Island] Failed to lazy load ${tabName}:`, error);
+            showError(`${tabName} 모듈을 불러오는데 실패했습니다.`);
         }
     }
 
@@ -104,6 +118,9 @@ window.IslandEngine = (function () {
     function switchTab(tabName) {
         state.activeTab = tabName;
         console.log(`[Island] Switched to tab: ${tabName}`);
+        
+        // Lazy load the module for this tab
+        loadModule(tabName);
     }
 
     /**
@@ -145,14 +162,6 @@ window.IslandEngine = (function () {
     // UTILITY FUNCTIONS
     // ============================================
 
-    async function fetchJSON(url) {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
-        }
-        return response.json();
-    }
-
     function getSharedData() {
         return state.sharedData;
     }
@@ -193,22 +202,6 @@ window.IslandEngine = (function () {
             icon: null,
             rarity: 1
         };
-    }
-
-    function formatTime(deciseconds) {
-        if (!deciseconds) return '0s';
-
-        const totalSeconds = deciseconds / 10;
-        const hours = Math.floor(totalSeconds / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = Math.floor(totalSeconds % 60);
-
-        const parts = [];
-        if (hours > 0) parts.push(`${hours}h`);
-        if (minutes > 0) parts.push(`${minutes}m`);
-        if (seconds > 0 || parts.length === 0) parts.push(`${seconds}s`);
-
-        return parts.join(' ');
     }
 
     function createSearchIndex(data, config) {
@@ -628,12 +621,11 @@ window.IslandEngine = (function () {
         switchTab,
         activateTab,
         getActiveTab,
-        fetchJSON,
-        getSharedData,
+        loadModule, // Added for explicit lazy loading
+        getSharedData, // No fetchJSON here, using global
         showError,
         getItemInfo,
-        formatTime,
-        createSearchIndex,
+        createSearchIndex, // formatTime removed, using global
         buildRecipeDependencyTree,
         calculateTreeCost,
         calculateTreePoints,

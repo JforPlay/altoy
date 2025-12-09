@@ -33,6 +33,15 @@ window.SeasonCalcModule = (function () {
                 state.items = sharedData.items;
             }
 
+            // Ensure ResourceModule is loaded for recipe calculations
+            if (window.IslandEngine && window.IslandEngine.loadModule) {
+                try {
+                    await window.IslandEngine.loadModule('resources');
+                } catch (e) {
+                    console.warn('[SeasonCalc] Failed to load resources module:', e);
+                }
+            }
+
             // Note: We don't get recipeIndex here because ResourceModule might not be initialized yet
             // It will be loaded lazily in renderItemGrid() when needed
 
@@ -73,11 +82,23 @@ window.SeasonCalcModule = (function () {
 
     async function loadSeasonData() {
         try {
-            const seasonData = await IslandEngine.fetchJSON('data/island/island_season.json');
-            // Get the first (and currently only) season
-            const seasonId = seasonData.all[0];
-            state.seasonData = seasonData[seasonId];
-            console.log(`[SeasonCalc] Loaded season: ${state.seasonData.name}`);
+            // Load module-specific data
+            const rawData = await fetchJSON('data/island/island_season.json');
+            
+            // The JSON structure has keys like "1", "2" and an "all" array.
+            // We want the latest season or specific season.
+            let seasonId = 1;
+            if (rawData.all && Array.isArray(rawData.all) && rawData.all.length > 0) {
+                seasonId = rawData.all[rawData.all.length - 1];
+            }
+
+            state.seasonData = rawData[seasonId];
+
+            if (!state.seasonData) {
+                throw new Error(`Season data for ID ${seasonId} not found`);
+            }
+
+            console.log(`[Island Season] Loaded season data for season ${seasonId}`);
         } catch (e) {
             console.warn('[SeasonCalc] Could not load season data:', e);
             state.seasonData = null;

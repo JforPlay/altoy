@@ -89,7 +89,7 @@ window.QuestModule = (function () {
     async function loadQuestData() {
         console.log('[Quest Module] Loading quest data...');
 
-        const tasksData = await window.IslandEngine.fetchJSON('data/island/tasks.json');
+        const tasksData = await fetchJSON('data/island/tasks.json');
 
         // Convert tasks object to array with IDs
         state.allQuests = Object.entries(tasksData).map(([id, quest]) => ({

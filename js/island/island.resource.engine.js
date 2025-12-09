@@ -58,10 +58,10 @@ window.ResourceModule = (function () {
                 state.items = sharedData.items;
             }
 
-            // Load module-specific data files
+            // Load module-specific data
             const [recipesData, shopData] = await Promise.all([
-                IslandEngine.fetchJSON('data/island/recipes.json'),
-                IslandEngine.fetchJSON('data/island/island_shop_goods.json')
+                fetchJSON('data/island/recipes.json'),
+                fetchJSON('data/island/island_shop_goods.json')
             ]);
 
             state.recipes = recipesData;
@@ -815,7 +815,7 @@ window.ResourceModule = (function () {
                                             </div>                    <div class="recipe-info">
                         <div class="recipe-name">${recipe.name || item.name}</div>
                         <div class="recipe-meta">
-                            <span class="recipe-time">⏱ ${IslandEngine.formatTime(recipe.workload)}</span>
+                            <span class="recipe-time">⏱ ${formatTime(recipe.workload)}</span>
                             <span class="recipe-exp">⚡ ${recipe.ship_exp}</span>
                         </div>
                     </div>
@@ -1073,7 +1073,7 @@ window.ResourceModule = (function () {
                         <span class="material-symbols-outlined">arrow_forward</span>
                     </div>
                     <div class="flow-stats">
-                        <span class="flow-stat">⏱ ${IslandEngine.formatTime(recipe.workload)}</span>
+                        <span class="flow-stat">⏱ ${formatTime(recipe.workload)}</span>
                         <span class="flow-stat">🔄 ×${recipe.production_limit}</span>
                     </div>
                 </div>
@@ -1092,7 +1092,7 @@ window.ResourceModule = (function () {
         if (isCategory1 && recipe.cost?.length) {
             return `
                 <div class="manual-drop-section category1-manual">
-                    <h4 class="manual-drop-title">💎 수동 생산 <span class="manual-time">(${IslandEngine.formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)})</span></h4>
+                    <h4 class="manual-drop-title">💎 수동 생산 <span class="manual-time">(${formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)})</span></h4>
                     <div class="recipe-flow manual-flow">
                         <div class="flow-section input-section">
                             <h4 class="flow-title">📥 요구재료 (수동)</h4>
@@ -1104,7 +1104,7 @@ window.ResourceModule = (function () {
                                 <span class="material-symbols-outlined">arrow_forward</span>
                             </div>
                             <div class="flow-stats">
-                                <span class="flow-stat">⏱ ${IslandEngine.formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)}</span>
+                                <span class="flow-stat">⏱ ${formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)}</span>
                             </div>
                         </div>
 
@@ -1120,7 +1120,7 @@ window.ResourceModule = (function () {
         if (isCategory3 && recipe.cost?.length) {
             return `
                 <div class="manual-drop-section category3-manual">
-                    <h4 class="manual-drop-title">💎 수동 사육 <span class="manual-time">(${IslandEngine.formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)})</span></h4>
+                    <h4 class="manual-drop-title">💎 수동 사육 <span class="manual-time">(${formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)})</span></h4>
                     <div class="recipe-flow manual-flow">
                         <div class="flow-section input-section">
                             <h4 class="flow-title">📥 요구재료 (수동)</h4>
@@ -1132,7 +1132,7 @@ window.ResourceModule = (function () {
                                 <span class="material-symbols-outlined">arrow_forward</span>
                             </div>
                             <div class="flow-stats">
-                                <span class="flow-stat">⏱ ${IslandEngine.formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)}</span>
+                                <span class="flow-stat">⏱ ${formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)}</span>
                             </div>
                         </div>
 
@@ -1148,7 +1148,7 @@ window.ResourceModule = (function () {
         if (isCategory2 && recipe.drop_display?.length) {
             return `
                 <div class="manual-drop-section category2-manual">
-                    <h4 class="manual-drop-title">💎 수동 채집 <span class="manual-time">(${IslandEngine.formatTime(recipe.workload)})</span></h4>
+                    <h4 class="manual-drop-title">💎 수동 채집 <span class="manual-time">(${formatTime(recipe.workload)})</span></h4>
                     ${renderMaterialListVertical(recipe.drop_display)}
                 </div>
             `;
@@ -1157,7 +1157,7 @@ window.ResourceModule = (function () {
         if (!isCategory1 && !isCategory2 && recipe.drop_display?.length) {
             return `
                 <div class="manual-drop-section">
-                    <h4 class="manual-drop-title">💎 수동 채집 <span class="manual-time">(${IslandEngine.formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)})</span></h4>
+                    <h4 class="manual-drop-title">💎 수동 채집 <span class="manual-time">(${formatTime(recipe.workload * CONSTANTS.MANUAL_TIME_MULTIPLIER)})</span></h4>
                     ${renderMaterialListVertical(recipe.drop_display)}
                 </div>
             `;
@@ -1540,7 +1540,7 @@ window.ResourceModule = (function () {
                                         <div class="recipe-name">${originalRecipe.name || recipeItem.name}</div>
                                         <div class="recipe-meta">
                                             <span>${categoryNames[categoryId] || '알 수 없음'}</span>
-                                            <span>⏱ ${IslandEngine.formatTime(originalRecipe.workload)}</span>
+                                            <span>⏱ ${formatTime(originalRecipe.workload)}</span>
                                         </div>
                                     </div>
                                     <span class="material-symbols-outlined">arrow_forward</span>
@@ -1597,7 +1597,7 @@ window.ResourceModule = (function () {
                                         <div class="tree-node-name">${producerRecipe.name || producerItem.name}</div>
                                         <div class="tree-node-meta">
                                             <span>${categoryNames[categoryId] || '알 수 없음'}</span>
-                                            <span>⏱ ${IslandEngine.formatTime(producerRecipe.workload)}</span>
+                                            <span>⏱ ${formatTime(producerRecipe.workload)}</span>
                                             <span>⚡ ${producerRecipe.ship_exp}</span>
                                         </div>
                                     </div>
@@ -1630,7 +1630,7 @@ window.ResourceModule = (function () {
                                         <div class="tree-node-name">${usageRecipe.name || usageItem.name}</div>
                                         <div class="tree-node-meta">
                                             <span>${categoryNames[categoryId] || '알 수 없음'}</span>
-                                            <span>⏱ ${IslandEngine.formatTime(usageRecipe.workload)}</span>
+                                            <span>⏱ ${formatTime(usageRecipe.workload)}</span>
                                             <span>⚡ ${usageRecipe.ship_exp}</span>
                                         </div>
                                     </div>
@@ -1850,7 +1850,7 @@ window.ResourceModule = (function () {
                             </div>
                             ${node.itemInfo ? `<div class="tree-node-via">→ ${node.itemInfo.name}</div>` : ''}
                             <div class="tree-node-meta">
-                                <span>⏱ ${IslandEngine.formatTime(workloadTime)}</span>
+                                <span>⏱ ${formatTime(workloadTime)}</span>
                                 <span>⚡ ${node.recipe.ship_exp}</span>
                             </div>
                         </div>
@@ -2141,7 +2141,7 @@ window.ResourceModule = (function () {
                                             <div class="modal-recipe-info">
                                                 <div class="modal-recipe-name">${recipe.name || recipeItem.name}</div>
                                                 <div class="modal-recipe-meta">
-                                                    <span>⏱ ${IslandEngine.formatTime(recipe.workload)}</span>
+                                                    <span>⏱ ${formatTime(recipe.workload)}</span>
                                                     <span>⚡ ${recipe.ship_exp}</span>
                                                     <span class="modal-recipe-category">${categoryNames[findRecipeCategoryById(recipe.id)] || '알 수 없음'}</span>
                                                 </div>
@@ -2211,7 +2211,7 @@ window.ResourceModule = (function () {
                         <div class="forest-tree__content" onclick="event.stopPropagation(); ResourceModule.selectRecipeFromTree(${node.recipe.id});">
                             ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}" class="forest-tree__icon"/>` : '<span class="forest-tree__icon">•</span>'}
                             <span class="forest-tree__text">${node.recipe.name || item.name}</span>
-                            <span class="forest-tree__meta">⏱${IslandEngine.formatTime(node.recipe.workload)}</span>
+                            <span class="forest-tree__meta">⏱${formatTime(node.recipe.workload)}</span>
                         </div>
                     `;
 
@@ -2250,7 +2250,7 @@ window.ResourceModule = (function () {
                             ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}" />` : '•'}
                             <span class="forest-chip-name">${recipe.name || item.name}</span>
                             <span class="forest-root-meta">
-                                ${categoryNames[categoryId] || '카테고리'} · ⏱${IslandEngine.formatTime(recipe.workload)} · ⚡${recipe.ship_exp} ·  Dependencies: ${Math.max(stats.count - 1, 0)}
+                                ${categoryNames[categoryId] || '카테고리'} · ⏱${formatTime(recipe.workload)} · ⚡${recipe.ship_exp} ·  Dependencies: ${Math.max(stats.count - 1, 0)}
                             </span>
                         </div>
                     </summary>
