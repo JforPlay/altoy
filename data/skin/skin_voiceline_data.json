@@ -43691,7 +43691,7 @@
         "클뜯 id":105174,
         "클뜯 함순이 id":10517,
         "함순이 이름":"뉴저지",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"블랙 프렐류드",
         "영문 함순이 + 스킨 이름":"Black Blur Prelude",
         "스킨 타입":"Race Queen",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/105174\/painting.png",
@@ -43700,36 +43700,75 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/105174\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/105174\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/105174\/shipyard.png",
-        "설명":null,
+        "설명":"드디어 왔네, 허니! 레이스 전에 내가 특별한 초스피드의 축복을 내려줄게~! 자, 허니~ 이쪽으로 와~ 쪽♪",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"허니, 저 코스 좀 봐! 햇빛을 받아서 반짝반짝 빛나는 게 무슨 챔피언 로드 같지~?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/105174\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"차 안 냉장고에 새로운 맛의 아이스크림을 넣어뒀어! 허니, 얼른 먹어 봐~!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/105174\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"레이스가 끝나면 허니랑 같이 드라이브 가고 싶어~ 이번에는 내가 운전할 차례야♪ 두근두근하면서도 안전한 드라이브를 약속할게♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/105174\/main3.ogg"
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
+        "상세확인":{
+            "voiceline":"다들 벌써 분위기가 뜨겁네~! 허니도 슬슬 몸 좀 푸는 게 어때? 그 전에 응원하는 의미로…… 쪽♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/105174\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"드디어 왔네, 허니! 레이스 전에 내가 특별한 초스피드의 축복을 내려줄게~! 자, 허니~ 이쪽으로 와~ 쪽♪",
+            "voicelink":null
+        },
         "의뢰 완료":null,
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "사랑":{
+            "voiceline":"허니가 와줘서 그런지 경기장 공기까지 뜨거워졌네~! 그래도 가장 뜨거운 건 허니 때문에 빠르게 뛰고 있는 내 심장이야♡ 자, 이번에는 허니 차례! 승리를 약속하는 키스… 해줄래?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/105174\/feeling5.ogg"
+        },
+        "터치3":{
+            "voiceline":"왜? 키스를 더 받고 싶어? 아하하, 그럴 줄 알았어~♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/105174\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"우리 허니, 역시 딱 맞춰서 도착! 후훗♪ 역시 내 응원, 효과 만점이지~?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/105174\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"여기야, 허니♪ 에헤헤, 이 자리가 딱 좋아! 허니를 누구보다 먼저 발견할 수 있고, 에어컨 바람도 잘 나와서 정말 기분 좋아!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/105174\/login.ogg"
+        },
         "실패":null,
         "우편":null,
         "임무":null,
         "임무완료":null,
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"출발 준비는 됐어? 그럼 한 번 더… 허니한테 응원의 키스를~♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/105174\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"어휴, 못 말린다니까…… 트렁크가 아무리 넓다고 해도……\/\/\/",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/105174\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"드디어 왔네, 허니! 레이스 전에 내가 특별한 초스피드의 축복을 내려줄게~! 자, 허니~ 이쪽으로 와~ 쪽♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/105174\/unlock.ogg"
+        },
         "강화성공":null,
         "vote":null,
-        "승리":null,
+        "승리":{
+            "voiceline":"블랙 드래곤, 가장 먼저 골인!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/105174\/win_mvp.ogg"
+        },
         "전투개시_ex":null,
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
@@ -43763,13 +43802,13 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
-        "입수 영상":"X",
-        "재화":null,
-        "기간":null,
+        "스킨 타입 - 한글":"극속광열",
+        "상점 id":71234.0,
+        "상점 카테고리 id":14.0,
+        "스킨 태그":"L2D+, 배경",
+        "입수 영상":"O",
+        "재화":1260.0,
+        "기간":"한정 (2025\/12\/31)",
         "진영":"USS",
         "레어도":"UR",
         "ex_chat_status":0
@@ -50981,7 +51020,7 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/feeling5.ogg"
         },
         "터치3":{
-            "voiceline":"",
+            "voiceline":"으… 으읏… 아! 따, 딱히 이상한 소리 낸 거 아니에요! 네!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/headtouch.ogg"
         },
         "모항귀환":{
@@ -51044,26 +51083,50 @@
         "전투개시_ex":null,
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
-        "사랑_ex":null,
-        "터치3_ex":null,
+        "사랑_ex":{
+            "voiceline":"지휘관님의 사랑과 신뢰, 제대로 느끼고 있어요…… 그때 지휘관님이 내리신 결정이 옳았다는 걸, 제 평생을 걸고 증명해 보일게요. 네. 저는 지휘관님께 있어서 가장 소중한 에식스니까요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/feeling5_ex.ogg"
+        },
+        "터치3_ex":{
+            "voiceline":"조금만 더… 이대로 곁에 있어 주셨으면 해요……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/headtouch_ex.ogg"
+        },
         "모항귀환_ex":null,
         "hp 경고_ex":null,
-        "로그인_ex":null,
+        "로그인_ex":{
+            "voiceline":"지휘관님, 귀환을 환영합니다! ……어, 어라? 너무 딱딱했나요? 이, 이건… 음… 지휘관님께서 돌아오셨으니 최대한 정중하게 맞이해드리고 싶어서……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/login_ex.ogg"
+        },
         "실패_ex":null,
         "우편_ex":null,
         "임무_ex":null,
         "임무완료_ex":null,
         "스킬_ex":null,
-        "터치1_ex":null,
-        "터치2_ex":null,
+        "터치1_ex":{
+            "voiceline":"어, 잡담인가요? 맡겨주세요! ……네? 이번엔 출격인가요……?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/touch_ex.ogg"
+        },
+        "터치2_ex":{
+            "voiceline":"기, 기습을 하시다니……?!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/touch2_ex.ogg"
+        },
         "입수시_ex":null,
         "강화성공_ex":null,
         "승리_ex":null,
         "함대 특수대사":null,
         "메인1_ex":null,
-        "메인4_ex":null,
-        "메인5_ex":null,
-        "메인6_ex":null,
+        "메인4_ex":{
+            "voiceline":"……언젠가 에식스도 후배들의 동경을 받는 존재가 된다면… 그건 분명 지휘관님이 「동경 받을 수 있는 용기」를 주셨기 때문일 거예요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/main4_ex.ogg"
+        },
+        "메인5_ex":{
+            "voiceline":"지휘관님과 함께 이렇게 평온한 오후를 보내는 것도 좋네요…… 후후, 괜찮으시면 커피라도 내려 드릴까요?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/main5_ex.ogg"
+        },
+        "메인6_ex":{
+            "voiceline":"…아, 지난 작전 기록을 보고 있었어요. …아니, 전술 분석을 하려던 게 아니라, 영상 속에 지휘관님의 모습이 있어서, 그만… 눈을 뗄 수 없게 되어서요……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/main6_ex.ogg"
+        },
         "메인4":null,
         "메인5":null,
         "메인6":null,
@@ -51083,7 +51146,7 @@
         "기간":null,
         "진영":"USS",
         "레어도":"SSR",
-        "ex_chat_status":0
+        "ex_chat_status":1
     },
     {
         "클뜯 id":107091,
@@ -51872,7 +51935,7 @@
         "클뜯 id":107097,
         "클뜯 함순이 id":10709,
         "함순이 이름":"에식스",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"스타트 라인 스플래시",
         "영문 함순이 + 스킨 이름":"Start Line Splash",
         "스킨 타입":"Race Queen",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/107097\/painting.png",
@@ -51881,36 +51944,72 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/107097\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/107097\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/107097\/shipyard.png",
-        "설명":null,
+        "설명":"레이스 전 세차는 제게 맡겨주세요! …어떤가요? 이 윤기… 틀림없이 모든 관중의 눈길을 사로잡을 거예요!",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"…으앗?! 보닛이 뜨거워…! 지휘관님, 물 좀 틀어주시겠어요? 바로 식혀야 해요…!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107097\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"지휘관님이 우승하실 수 있도록 할 수 있는 건 다 할 작정이에요! 파트너로서 끝까지 함께 할게요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107097\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"뜨거워… 으… 호스 물로 잠깐만 식혀도 괜찮죠…? 앗?! 자, 잠깐! 수압이 너무 세요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107097\/main3.ogg"
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
+        "상세확인":{
+            "voiceline":"이제 곧 레이스가 시작되는데… 지휘관님도 긴장되세요? 잠깐 가볍게 세차라도 할까요? …그러면 차 안이 시원해질지도 몰라요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107097\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"레이스 전 세차는 제게 맡겨주세요! …어떤가요? 이 윤기… 틀림없이 모든 관중의 눈길을 사로잡을 거예요!",
+            "voicelink":null
+        },
         "의뢰 완료":null,
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
+        "사랑":{
+            "voiceline":"이 뜨거운 분위기… 저랑 지휘관님은 정말 호흡이 척척 맞네요! 그렇지만, 음… 조금 너무 뜨겁달까…… 지휘관님, 같이 샤워라도 하면서 식히지 않으실래요?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107097\/feeling5.ogg"
+        },
         "터치3":null,
-        "모항귀환":null,
+        "모항귀환":{
+            "voiceline":"대단해…… 또 기록을 경신하셨네요! 지휘관님, 고생 많으셨어요! 물이라도 좀 가져다드릴까요?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107097\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"지휘관님~! 여기예요, 여기! 차량이랑 에식스, 모두 준비 완료예요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107097\/login.ogg"
+        },
         "실패":null,
         "우편":null,
         "임무":null,
         "임무완료":null,
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"이제 곧 레이스가 시작돼요! 어서 타세요, 지휘관님!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107097\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"지휘관님?! 그러다 슈트가 다 젖겠어요……!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107097\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"레이스 전 세차는 제게 맡겨주세요! …어떤가요? 이 윤기… 틀림없이 모든 관중의 눈길을 사로잡을 거예요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107097\/unlock.ogg"
+        },
         "강화성공":null,
         "vote":null,
-        "승리":null,
+        "승리":{
+            "voiceline":"지휘관님이랑 같이 꾸준히 노력한 덕분에 이렇게 좋은 성적을 거둘 수 있었어요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107097\/win_mvp.ogg"
+        },
         "전투개시_ex":null,
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
@@ -51944,13 +52043,13 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
-        "입수 영상":"X",
-        "재화":null,
-        "기간":null,
+        "스킨 타입 - 한글":"극속광열",
+        "상점 id":71236.0,
+        "상점 카테고리 id":14.0,
+        "스킨 태그":"쁘띠모션, 배경",
+        "입수 영상":"O",
+        "재화":980.0,
+        "기간":"한정 (2025\/12\/31)",
         "진영":"USS",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -178867,7 +178966,7 @@
         "스킨 태그":"L2D, 배경",
         "입수 영상":"X",
         "재화":1180.0,
-        "기간":"한정 (2025\/04\/23)",
+        "기간":"상시",
         "진영":"IJN",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -213308,26 +213407,47 @@
         "전투개시_ex":null,
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
-        "사랑_ex":null,
+        "사랑_ex":{
+            "voiceline":"끝도 없는 기다림 속에서, 수천수백 번이나 혹한의 끝을 바라보면서… 모든 절망과 고통, 외로움이 사라지는 순간을 기다렸어…… 그리고 드디어 내 소원이 이뤄졌어…… 네가 내 곁에 있어 준 덕분에.",
+            "voicelink":null
+        },
         "터치3_ex":null,
         "모항귀환_ex":null,
         "hp 경고_ex":null,
-        "로그인_ex":null,
+        "로그인_ex":{
+            "voiceline":"지휘관, 드디어 왔네. ……기다리고 있으면 역시 언젠가는 보답받는 법이구나.",
+            "voicelink":null
+        },
         "실패_ex":null,
         "우편_ex":null,
         "임무_ex":null,
         "임무완료_ex":null,
         "스킬_ex":null,
-        "터치1_ex":null,
-        "터치2_ex":null,
+        "터치1_ex":{
+            "voiceline":"네 체온… 따뜻해.",
+            "voicelink":null
+        },
+        "터치2_ex":{
+            "voiceline":"……그렇게 못 참겠어? 지금 이 순간, 설마 내가 같은 마음이 될 줄이야……",
+            "voicelink":null
+        },
         "입수시_ex":null,
         "강화성공_ex":null,
         "승리_ex":null,
         "함대 특수대사":null,
         "메인1_ex":null,
-        "메인4_ex":null,
-        "메인5_ex":null,
-        "메인6_ex":null,
+        "메인4_ex":{
+            "voiceline":"외로움을 참는 건 자신 있는데…… 지금은 네가 없는 시간이 1분 1초라도 너무 길게 느껴져……",
+            "voicelink":null
+        },
+        "메인5_ex":{
+            "voiceline":"가끔 멀리 나갈 때면 문득 생각나. 날 기다리는 사람이 있다는 걸…… 그러면 시간이 갑자기 빨리 흐르는 것 같아.",
+            "voicelink":null
+        },
+        "메인6_ex":{
+            "voiceline":"나한테 지휘관은 얼음을 녹이는 아침 태양 같아…… 조금만 더 가까이 갈 수 있게 해줘.",
+            "voicelink":null
+        },
         "메인4":null,
         "메인5":null,
         "메인6":null,
@@ -213347,7 +213467,7 @@
         "기간":null,
         "진영":"KMS",
         "레어도":"SSR",
-        "ex_chat_status":0
+        "ex_chat_status":1
     },
     {
         "클뜯 id":405021,
@@ -213835,7 +213955,7 @@
         "클뜯 id":405025,
         "클뜯 함순이 id":40502,
         "함순이 이름":"티르피츠",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"트래킹 어웨이트",
         "영문 함순이 + 스킨 이름":"Pit Stop Standby",
         "스킨 타입":"Race Queen",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/405025\/painting.png",
@@ -213844,36 +213964,72 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/405025\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/405025\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/405025\/shipyard.png",
-        "설명":null,
+        "설명":"지휘관, 신기록 세운 거 축하해. ……이 영광만으로 내가 기다린 시간을 충분히 보상받은 기분이야. 차량 점검은 안심하고 나한테 맡겨.",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"새 타이어로 바꾸면 실력을 온전히 발휘할 수 있을 거야. 잠깐만 기다려… 곧 끝나.",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"같이 레이스에 나가자고 했던 네 초대는 내 마음속 추위를 녹여줬어…… 벌써 그날이 그립네.",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"후우, 만만치가 않네. 응? 도와준다고? 그럼, 네 두 손을 빌려 줘. 그리고 내가 괜찮다고 할 때까지… 절대 놓지 마.",
+            "voicelink":null
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
+        "상세확인":{
+            "voiceline":"네게 가장 강력한 조력자가 되어줄 테니, 마음껏 달려.",
+            "voicelink":null
+        },
+        "드랍 설명":{
+            "voiceline":"지휘관, 신기록 세운 거 축하해. ……이 영광만으로 내가 기다린 시간을 충분히 보상받은 기분이야. 차량 점검은 안심하고 나한테 맡겨.",
+            "voicelink":null
+        },
         "의뢰 완료":null,
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
+        "사랑":{
+            "voiceline":"슬슬 본 게임이네. 네가 새로운 영광을 손에 넣든, 좌절을 맛보든… 난 여기서 네 다음 출발을 기다리고 있을게.",
+            "voicelink":null
+        },
         "터치3":null,
-        "모항귀환":null,
+        "모항귀환":{
+            "voiceline":"랩 타임이 점점 좋아지고 있네. 나도 더 빨리 움직여야겠어.",
+            "voicelink":null
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"지휘관, 차량은 여기 세워. 다음 타이어 준비도 끝났으니, 교체는 내가 도와줄게.",
+            "voicelink":null
+        },
         "실패":null,
         "우편":null,
         "임무":null,
         "임무완료":null,
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"걱정하지 마. 그저 타이어를 나르는 것뿐이니까. 잘할 수 있어.",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"적어도 트레이닝이 끝난 다음에……",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"지휘관, 신기록 세운 거 축하해. ……이 영광만으로 내가 기다린 시간을 충분히 보상받은 기분이야. 차량 점검은 안심하고 나한테 맡겨.",
+            "voicelink":null
+        },
         "강화성공":null,
         "vote":null,
-        "승리":null,
+        "승리":{
+            "voiceline":"후후, 이 영광은 모든 힘을 쏟아낸 지휘관의 것… 나는 그저 해야 할 일을 한 것뿐이지.",
+            "voicelink":null
+        },
         "전투개시_ex":null,
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
@@ -213907,10 +214063,10 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
+        "스킨 타입 - 한글":"극속광열",
+        "상점 id":0.0,
+        "상점 카테고리 id":14.0,
+        "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":null,
         "기간":null,
@@ -268480,7 +268636,7 @@
         "클뜯 id":799023,
         "클뜯 함순이 id":79902,
         "함순이 이름":"아드미랄 나히모프",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"치어링 튜너?",
         "영문 함순이 + 스킨 이름":"Cheerleading Mechanic?",
         "스킨 타입":"Race Queen",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/799023\/painting.png",
@@ -268489,36 +268645,81 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/799023\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/799023\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/799023\/shipyard.png",
-        "설명":null,
+        "설명":"1등, 좋아. 지휘관, 우승 축하해. 나히모프의 응원 덕분이라면 기쁘겠어…… 나히모프의 정비 덕분이기도 하다고? 응, 그것도 그거대로 꽤 기쁘네…",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"응원에 정비까지 다 하려니까 힘들긴 하지만, 지휘관이랑 함께 있는 시간이 두 배가 된다고 생각하면… 오히려 기뻐.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"치열한 레이스 후에는 역시 펑 하고 한 병 따야 제맛이지. 그럼, 나히모프가…… 응? 보드카인 줄 알았다고?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"더 효과적으로 지휘관을 응원할 수 있는 포즈? …이렇게? 지휘관, 방금 그걸로 혹시 두근거렸어?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/main3.ogg"
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
-        "의뢰 완료":null,
+        "상세확인":{
+            "voiceline":"지휘관을 응원하는 복장이니까 「기능성」을 가장 우선시했어. 어떤 기능성이냐고? 음… 그건… 지휘관에게 「실용적」이라는 의미에서랄까…?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"1등, 좋아. 지휘관, 우승 축하해. 나히모프의 응원 덕분이라면 기쁘겠어…… 나히모프의 정비 덕분이기도 하다고? 응, 그것도 그거대로 꽤 기쁘네…",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"의뢰 물자가 도착했어. 전자동으로 점검하는 프로그램을 돌려뒀으니까 지휘관은 확인만 하면 돼.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/expedition.ogg"
+        },
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "사랑":{
+            "voiceline":"지휘관, 이거 봐. 다음 레이스 계획인데, 이런 흐름이어도 괜찮아? 응, 최적의 성능을 낼 수 있는 코스 루트를 계산하는 프로그램을 만들었으니, 분명 지휘관에게 도움이 될…… 너, 너무 가까워… 개다래나무…… 지휘관도… 너무 가까워……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/feeling5.ogg"
+        },
+        "터치3":{
+            "voiceline":"지휘관은 맨날 나히모프의 귀를 만지고 싶어 하네. 냐앙~♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"하아… 지휘관, 고생 많았어. 촬영? 응, 바로 준비할 테니까 원할 때 언제든 셔터 눌러.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
-        "실패":null,
+        "로그인":{
+            "voiceline":"후… 지휘관, 어서 와. 차량 점검은 이미 끝났어. 언제든 좋은 컨디션으로 피트에서 나갈 수 있어.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/login.ogg"
+        },
+        "실패":{
+            "voiceline":"차량에 트러블이…… 나히모프, 본업으로 돌아가야 해…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/lose.ogg"
+        },
         "우편":null,
         "임무":null,
         "임무완료":null,
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"커넥터만큼은 아니지만, 이 의상 소재도 꽤 섬세하거든…?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"음, 으음…… 지휘관 냄새…… 안 돼……냐앙~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"1등, 좋아. 지휘관, 우승 축하해. 나히모프의 응원 덕분이라면 기쁘겠어…… 나히모프의 정비 덕분이기도 하다고? 응, 그것도 그거대로 꽤 기쁘네…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/unlock.ogg"
+        },
         "강화성공":null,
         "vote":null,
-        "승리":null,
+        "승리":{
+            "voiceline":"신형 장비 실전 테스트, 완료. 다음엔 지휘관의 차량에도 장착해 봐야지.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/win_mvp.ogg"
+        },
         "전투개시_ex":null,
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
@@ -268542,7 +268743,10 @@
         "메인4_ex":null,
         "메인5_ex":null,
         "메인6_ex":null,
-        "메인4":null,
+        "메인4":{
+            "voiceline":"하아… 연료 냄새로도 숨길 수 없는… 개다래나무 냄새… 킁킁…… 냐, 냐앙~♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/799023\/main4.ogg"
+        },
         "메인5":null,
         "메인6":null,
         "메인2_ex":null,
@@ -268552,13 +268756,13 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
-        "입수 영상":"X",
-        "재화":null,
-        "기간":null,
+        "스킨 타입 - 한글":"극속광열",
+        "상점 id":71235.0,
+        "상점 카테고리 id":14.0,
+        "스킨 태그":"쁘띠모션, 배경",
+        "입수 영상":"O",
+        "재화":980.0,
+        "기간":"한정 (2025\/12\/31)",
         "진영":"SN",
         "레어도":"UR",
         "ex_chat_status":0

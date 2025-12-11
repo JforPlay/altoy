@@ -1203,6 +1203,10 @@
         "name": "달빛 아래 Let's Dance!",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105173/icon.png"
     },
+    "105174": {
+        "name": "블랙 프렐류드",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105174/icon.png"
+    },
     "105178": {
         "name": "스노우블라이드 러브",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105178/icon.png"
@@ -1422,6 +1426,10 @@
     "107096": {
         "name": "코스 88의 바람",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107096/icon.png"
+    },
+    "107097": {
+        "name": "스타트 라인 스플래시",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107097/icon.png"
     },
     "107099": {
         "name": "에식스·改",
@@ -5959,6 +5967,10 @@
         "name": "빼어난 빙화",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405024/icon.png"
     },
+    "405025": {
+        "name": "트래킹 어웨이트",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405025/icon.png"
+    },
     "405030": {
         "name": "울리히 폰 후텐",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405030/icon.png"
@@ -7434,6 +7446,10 @@
     "799022": {
         "name": "프레시 그린",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/799022/icon.png"
+    },
+    "799023": {
+        "name": "치어링 튜너?",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/799023/icon.png"
     },
     "799030": {
         "name": "드미트리 돈스코이",

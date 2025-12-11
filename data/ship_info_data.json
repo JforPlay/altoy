@@ -143372,7 +143372,7 @@
             "weapon_true": true
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500010/shipyard.png",
-        "timer": null,
+        "timer": "01:08:20",
         "light": false,
         "medium": false,
         "heavy": false,
@@ -143547,7 +143547,7 @@
             "weapon_true": true
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500020/shipyard.png",
-        "timer": null,
+        "timer": "02:13:50",
         "light": false,
         "medium": false,
         "heavy": false,
@@ -143714,7 +143714,7 @@
             "weapon_true": false
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500030/shipyard.png",
-        "timer": null,
+        "timer": "03:05:10",
         "light": false,
         "medium": false,
         "heavy": false,
@@ -144216,7 +144216,7 @@
             "weapon_true": false
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500060/shipyard.png",
-        "timer": null,
+        "timer": "02:50:40",
         "light": false,
         "medium": false,
         "heavy": false,
