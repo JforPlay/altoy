@@ -270,6 +270,24 @@ body_class: dark-mode
                     </div>
                 </div>
             </div>
+
+            <!-- Meal Planner Floating Bar -->
+            <div id="meal-planner-bar" class="planner-bar hidden">
+                <div class="planner-info">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span id="planner-count">0</span>개 메뉴 선택됨
+                </div>
+                <div class="planner-actions">
+                    <button id="planner-reset-btn" class="planner-btn reset">
+                        <span class="material-symbols-outlined">restart_alt</span>
+                        초기화
+                    </button>
+                    <button id="planner-calc-btn" class="planner-btn calculate">
+                        <span class="material-symbols-outlined">calculate</span>
+                        재료 계산
+                    </button>
+                </div>
+            </div>
         </section>
 
         <!-- SEASON CALCULATOR TAB -->
@@ -323,6 +341,48 @@ body_class: dark-mode
         </div>
         <div class="modal-content" id="modal-content">
             <!-- Dynamic content -->
+        </div>
+    </div>
+</div>
+
+<!-- Meal Planner Result Modal -->
+<div id="planner-modal" class="recipe-modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-container planner-modal-container">
+        <div class="modal-header">
+            <h3>
+                <span class="material-symbols-outlined">receipt_long</span>
+                일일 메뉴 원자재 계산기
+            </h3>
+            <button class="modal-close-btn" id="planner-modal-close">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="modal-content" id="planner-modal-content">
+            <!-- Dynamic content -->
+        </div>
+    </div>
+</div>
+
+<!-- Generic Confirmation Modal -->
+<div id="confirm-modal" class="recipe-modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-container confirm-modal-container">
+        <div class="modal-header">
+            <h3>
+                <span class="material-symbols-outlined">warning</span>
+                확인
+            </h3>
+            <button class="modal-close-btn" id="confirm-modal-close">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="modal-content">
+            <p id="confirm-message" class="confirm-message">진행하시겠습니까?</p>
+            <div class="confirm-actions">
+                <button id="confirm-btn-cancel" class="planner-btn reset">취소</button>
+                <button id="confirm-btn-ok" class="planner-btn calculate">확인</button>
+            </div>
         </div>
     </div>
 </div>

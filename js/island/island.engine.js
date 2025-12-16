@@ -47,7 +47,7 @@ window.IslandEngine = (function () {
             console.log('[Island] Core engine initialized (Lazy loading modules)');
         } catch (error) {
             console.error('[Island] Critical initialization failure:', error);
-            showError('페이지를 불러오는데 실패했습니다. 페이지를 새로고침해주세요.');
+            showToast('페이지를 불러오는데 실패했습니다. 페이지를 새로고침해주세요.', 'error');
         }
     }
 
@@ -89,7 +89,7 @@ window.IslandEngine = (function () {
             await initModule(key, module);
         } catch (error) {
             console.error(`[Island] Failed to lazy load ${tabName}:`, error);
-            showError(`${tabName} 모듈을 불러오는데 실패했습니다.`);
+            showToast(`${tabName} 모듈을 불러오는데 실패했습니다.`, 'error');
         }
     }
 
@@ -166,25 +166,27 @@ window.IslandEngine = (function () {
         return state.sharedData;
     }
 
-    function showError(message) {
-        console.error('[Island]', message);
-
-        // Create or update error toast
-        let errorToast = document.getElementById('island-error-toast');
-        if (!errorToast) {
-            errorToast = document.createElement('div');
-            errorToast.id = 'island-error-toast';
-            errorToast.className = 'island-error-toast';
-            document.body.appendChild(errorToast);
+    function showToast(message, type = 'info', duration = 3000) {
+        let toastContainer = document.querySelector('.global-toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.className = 'global-toast-container';
+            document.body.appendChild(toastContainer);
         }
 
-        errorToast.textContent = message;
-        errorToast.classList.add('show');
+        const toast = document.createElement('div');
+        toast.className = `global-toast toast-${type}`;
+        toast.innerHTML = `<span class="material-symbols-outlined">${type === 'success' ? 'check_circle' : type === 'error' ? 'error' : 'info'}</span><span>${message}</span>`;
+        toastContainer.prepend(toast); // Add to top of stack
 
-        // Auto-hide after 5 seconds
         setTimeout(() => {
-            errorToast.classList.remove('show');
-        }, 5000);
+            toast.classList.add('show');
+        }, 10); // Small delay to allow CSS transition
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            toast.addEventListener('transitionend', () => toast.remove());
+        }, duration);
     }
 
     function getItemInfo(itemId) {
@@ -234,7 +236,8 @@ window.IslandEngine = (function () {
             useManualMode = false,
             quantityMultiplier = 1,
             maxDepth = MAX_TREE_DEPTH,
-            visited = new Set()
+            visited = new Set(),
+            shouldStopRecursion = null // Function(recipeId, recipeCategory) -> boolean
         } = options;
 
         if (visited.has(recipeId) || maxDepth === 0) return null;
@@ -244,6 +247,19 @@ window.IslandEngine = (function () {
         if (!recipe) return null;
 
         const recipeCategory = recipeCategoryIndex[recipeId];
+        
+        // Check stop condition
+        if (shouldStopRecursion && shouldStopRecursion(recipeId, recipeCategory)) {
+            return {
+                recipe,
+                recipeId: recipe.id,
+                category: recipeCategory,
+                quantityMultiplier: quantityMultiplier,
+                dependencies: [], // No dependencies, leaf node
+                isStopNode: true
+            };
+        }
+
         const isCategory1 = recipeCategory === '1';
 
         // Determine which input field to use
@@ -274,7 +290,8 @@ window.IslandEngine = (function () {
                         useManualMode,
                         quantityMultiplier: childMultiplier,
                         maxDepth: maxDepth - 1,
-                        visited: childVisited
+                        visited: childVisited,
+                        shouldStopRecursion
                     });
                     if (child) {
                         dependencies.push({
@@ -309,7 +326,8 @@ window.IslandEngine = (function () {
                             useManualMode,
                             quantityMultiplier: childMultiplier,
                             maxDepth: maxDepth - 1,
-                            visited: childVisited
+                            visited: childVisited,
+                            shouldStopRecursion
                         });
                         if (child) {
                             dependencies.push({
@@ -623,7 +641,7 @@ window.IslandEngine = (function () {
         getActiveTab,
         loadModule, // Added for explicit lazy loading
         getSharedData, // No fetchJSON here, using global
-        showError,
+        showToast,
         getItemInfo,
         createSearchIndex, // formatTime removed, using global
         buildRecipeDependencyTree,

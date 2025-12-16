@@ -27,14 +27,13 @@
         const initialTab = activeTabBtn ? activeTabBtn.dataset.tab : 'characters';
         await IslandEngine.loadModule(initialTab);
 
-        // Small delay to ensure all module async operations complete
-        setTimeout(() => {
-            // Trigger tab activation for season-calc if it's the active tab
-            // This ensures recipe data is loaded after all modules are initialized
-            if (initialTab === 'season-calc' && window.SeasonCalcModule) {
+        // Use requestAnimationFrame to ensure the DOM is ready for the season-calc module
+        // This avoids race conditions where the tab content isn't fully rendered yet
+        if (initialTab === 'season-calc' && window.SeasonCalcModule) {
+            requestAnimationFrame(() => {
                 window.SeasonCalcModule.onTabActivated();
-            }
-        }, 100);
+            });
+        }
 
         console.log('[Island Page] Initialization complete');
     });
