@@ -8,6 +8,8 @@ URL_RECORD_TEMPLATE = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneD
 LOCAL_STORY_PATH = "story.json"
 URL_NAME_CODE = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json"
 LOCAL_SHIPGIRL_DATA_PATH = "./output/story-viewer/shipgirl_data.json"
+LOCAL_DUNGEON_PATH = "dungeon.json"
+FIELDS_TO_REMOVE = ["hidePaintObj", "typewriter", "portrait", "expression", "painting"]
 
 def fetch_json_data(url):
     """Fetches JSON data from a given URL."""
@@ -19,6 +21,56 @@ def load_local_json_data(filepath):
     """Loads JSON data from a local file path."""
     with open(filepath, 'r', encoding='utf-8') as f:
         return json.load(f)
+
+def clean_script_fields(scripts, fields_to_remove):
+    """Removes noisy fields from script items."""
+    for script_item in scripts:
+        if isinstance(script_item, dict):
+            for field in fields_to_remove:
+                script_item.pop(field, None)
+
+def get_story_from_story_json(story_key, story_data):
+    """Return cleaned story payload from story.json if present."""
+    payload = story_data.get(str(story_key).lower())
+    if payload and isinstance(payload, dict) and 'scripts' in payload:
+        clean_script_fields(payload['scripts'], FIELDS_TO_REMOVE)
+    return payload
+
+def collect_dungeon_story_ids(dungeon_data, story_key):
+    """Collect story IDs from a dungeon entry (beginStoy + wave trigger ids)."""
+    ids = []
+    dungeon_entry = dungeon_data.get(str(story_key))
+    if not dungeon_entry or not isinstance(dungeon_entry, dict):
+        return ids
+
+    begin_story = dungeon_entry.get("beginStoy")
+    if begin_story and isinstance(begin_story, str):
+        ids.append(begin_story)
+
+    stages = dungeon_entry.get("stages", [])
+    for stage in stages:
+        if not isinstance(stage, dict):
+            continue
+        for wave in stage.get("waves", []):
+            if (
+                isinstance(wave, dict)
+                and isinstance(wave.get("triggerParams"), dict)
+                and "id" in wave["triggerParams"]
+            ):
+                ids.append(str(wave["triggerParams"]["id"]))
+    return ids
+
+def build_story_from_dungeon(dungeon_data, story_data, story_key):
+    """Assemble combined scripts from a dungeon definition."""
+    ids = collect_dungeon_story_ids(dungeon_data, story_key)
+    combined_scripts = []
+    for sid in ids:
+        payload = get_story_from_story_json(sid, story_data)
+        if payload and isinstance(payload, dict):
+            combined_scripts.extend(payload.get("scripts", []))
+    if combined_scripts:
+        return {"scripts": combined_scripts}
+    return None
 
 # Helper function for recursive name code replacement and shipgirl ID lookup
 def replace_name_codes_recursive(data, name_code_dict, shipgirl_data):
@@ -68,6 +120,7 @@ try:
     record_group_data = fetch_json_data(URL_RECORD_GROUP)
     record_template_data = fetch_json_data(URL_RECORD_TEMPLATE)
     story_data = load_local_json_data(LOCAL_STORY_PATH)
+    dungeon_data = load_local_json_data(LOCAL_DUNGEON_PATH)
     name_code_data = fetch_json_data(URL_NAME_CODE) # Fetch name_code data
     shipgirl_data = load_local_json_data(LOCAL_SHIPGIRL_DATA_PATH) # Load local shipgirl_data
 
@@ -77,6 +130,25 @@ try:
 
 
     processed_record_data = {}
+
+    def process_template_entry(template_key, template_info):
+        """Return a processed template dict with story data attached."""
+        if not isinstance(template_info, dict):
+            return None
+
+        entry = json.loads(json.dumps(template_info))  # deep copy to avoid mutating source
+
+        story_key = entry.get("story")
+        if story_key:
+            fetched_story_data = get_story_from_story_json(story_key, story_data)
+            if not fetched_story_data:
+                fetched_story_data = build_story_from_dungeon(dungeon_data, story_data, story_key)
+
+            entry["story"] = fetched_story_data if fetched_story_data else f"Story data not found for key: {story_key}"
+        else:
+            entry["story"] = "Invalid or missing 'story' field"
+
+        return entry
 
     # Iterate through world_collection_record_group.json
     for group_key, group_info in record_group_data.items():
@@ -92,21 +164,8 @@ try:
                 # Use child_id as the key to fetch info from world_collection_record_template.json
                 child_id_str = str(child_id) # Ensure key is string for lookup
                 if child_id_str in record_template_data:
-                    template_info = record_template_data[child_id_str]
-
-                    # Fetch story data using the "story" field
-                    story_key = template_info.get("story")
-                    if story_key and isinstance(story_key, str):
-                        # Convert story_key to lowercase before fetching from story_data
-                        fetched_story_data = story_data.get(story_key.lower())
-                        if fetched_story_data:
-                            template_info["story"] = fetched_story_data # Replace story field with fetched data
-                        else:
-                            template_info["story"] = f"Story data not found for key: {story_key}" # Indicate if story data is missing
-                    else:
-                        template_info["story"] = "Invalid or missing 'story' field" # Indicate if story key is invalid
-
-                    processed_child_list.append(template_info)
+                    processed_entry = process_template_entry(child_id_str, record_template_data[child_id_str])
+                    processed_child_list.append(processed_entry if processed_entry else f"Invalid template for ID: {child_id}")
                 else:
                     # If ID not found in template, add a placeholder or the original ID
                     processed_child_list.append(f"ID not found in template: {child_id}") # Or just child_id
