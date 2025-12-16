@@ -141,6 +141,7 @@ window.SkinExpression = (function () {
                             <i class="fas fa-smile"></i> 표정 선택 
                             <span class="expression-hint">(메인/확대 일러스트가 함께 변경됩니다)</span>
                         </div>
+                        <div class="expression-note">일러스트 클릭 후 확대 상태에서 저장해야 표정이 같이 저장됩니다</div>
                     </div>
                     <div class="expression-selector">
             `;
