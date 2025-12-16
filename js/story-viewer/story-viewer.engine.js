@@ -304,14 +304,28 @@ document.addEventListener('DOMContentLoaded', () => {
             filteredEvents.forEach(([key, event]) => {
                 // This new line robustly finds the ID whether it's the key or a property inside the object.
                 const eventId = event.id || key;
+                const specialLink = this.config.getEventLink ? this.config.getEventLink(event) : null;
+                const subtitle = specialLink
+                    ? '대형작전 스토리 뷰어에서 확인하세요'
+                    : (event.description || `Chapter: ${event.name.replace(/[^0-9]/g, '')}`);
 
                 const card = this.createCard(
                     event.name,
-                    event.description || `Chapter: ${event.name.replace(/[^0-9]/g, '')}`,
+                    subtitle,
                     event.icon,
                     this.config.getEventIconPath(event),
-                    () => this.selectEvent(eventId) // Pass the correct eventId
+                    () => {
+                        if (specialLink) {
+                            window.location.href = specialLink;
+                            return;
+                        }
+                        this.selectEvent(eventId); // Pass the correct eventId
+                    }
                 );
+
+                if (specialLink) {
+                    card.classList.add('world-story-link');
+                }
                 this.elements.eventGrid.appendChild(card);
             });
         },
@@ -483,8 +497,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // =========================================================================
         // STORY PLAYER LOGIC
         // =========================================================================
-        startStory(memory, updateUrl = true) {
-            const story = this.config.getMemoryStory(memory);
+        async startStory(memory, updateUrl = true) {
+            let story;
+            try {
+                const result = this.config.getMemoryStory(memory);
+                if (result instanceof Promise) {
+                    // Show loading state (reuse fade overlay or a specific spinner if available)
+                    if (this.elements.fadeOverlay) this.elements.fadeOverlay.classList.add('visible'); 
+                    story = await result;
+                    if (this.elements.fadeOverlay) this.elements.fadeOverlay.classList.remove('visible');
+                } else {
+                    story = result;
+                }
+            } catch (error) {
+                console.error("Failed to load story:", error);
+                this.showError("Failed to load story data.");
+                if (this.elements.fadeOverlay) this.elements.fadeOverlay.classList.remove('visible');
+                return;
+            }
+
             if (!story?.scripts) {
                 this.showError("This story is not available.");
                 return;
@@ -605,17 +636,17 @@ document.addEventListener('DOMContentLoaded', () => {
             el.optionsBox.innerHTML = '';
             el.dialogueBox.classList.add('hidden');
             el.infoScreen.classList.add('hidden');
+            el.infoScreenText.innerHTML = '';
 
             this.updateBackground();
             if (line.effects) this.handleEffect(line.effects);
             if (line.stopbgm) { this.handleBgm(null); }
             else if (line.bgm) { this.handleBgm(line.bgm); }
 
-            const infoText = line.sequence?.[0]?.[0] || line.signDate?.[0];
+            const hasSequenceContent = this.renderSequenceContent(line);
 
-            if (infoText && infoText.trim() !== "") {
-                el.infoScreen.classList.remove('hidden');
-                el.infoScreenText.textContent = infoText;
+            if (hasSequenceContent) {
+                // Sequence overlay is rendered by renderSequenceContent
             } else if (line.say) {
                 el.dialogueBox.classList.remove('hidden');
 
@@ -717,6 +748,73 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.scriptIndex = currentLineIndex; // stay put; UI will show end after render
                 this.renderScriptLine();
             }
+        },
+
+        renderSequenceContent(line) {
+            const sequences = this.extractSequenceLines(line);
+            if (sequences.length === 0) return false;
+
+            const el = this.elements;
+            el.infoScreenText.innerHTML = '';
+
+            sequences.forEach(sequenceLine => {
+                const lineEl = document.createElement('span');
+                lineEl.className = 'sequence-line';
+                lineEl.textContent = sequenceLine.text;
+                if (sequenceLine.scale !== 1) {
+                    lineEl.style.setProperty('--sequence-scale', sequenceLine.scale);
+                } else {
+                    lineEl.style.removeProperty('--sequence-scale');
+                }
+                el.infoScreenText.appendChild(lineEl);
+            });
+
+            el.infoScreen.classList.remove('hidden');
+            return true;
+        },
+
+        extractSequenceLines(line) {
+            if (!line) return [];
+
+            const collected = [];
+
+            if (Array.isArray(line.sequence) && line.sequence.length > 0) {
+                line.sequence.forEach(entry => {
+                    const rawText = Array.isArray(entry) ? entry[0] : entry;
+                    const formatted = this.formatSequenceLine(rawText);
+                    if (formatted.text) collected.push(formatted);
+                });
+            } else if (typeof line.sequence === 'string') {
+                const formatted = this.formatSequenceLine(line.sequence);
+                if (formatted.text) collected.push(formatted);
+            } else if (Array.isArray(line.signDate) && line.signDate[0]) {
+                const formatted = this.formatSequenceLine(line.signDate[0]);
+                if (formatted.text) collected.push(formatted);
+            }
+
+            return collected;
+        },
+
+        formatSequenceLine(rawText) {
+            if (!rawText || typeof rawText !== 'string') return { text: '', scale: 1 };
+
+            const sizeMatch = rawText.match(/<size=([0-9]+)>/i);
+            let scale = 1;
+            if (sizeMatch) {
+                const sizeValue = parseFloat(sizeMatch[1]);
+                if (!isNaN(sizeValue)) {
+                    const normalized = sizeValue / 50;
+                    scale = Math.min(Math.max(normalized, 0.7), 1.6);
+                }
+            }
+
+            const cleanedText = rawText
+                .replace(/<size=\d+>/gi, '')
+                .replace(/<\/size>/gi, '')
+                .replace(/<\/?[^>]+>/g, '')
+                .trim();
+
+            return { text: cleanedText, scale };
         },
 
 

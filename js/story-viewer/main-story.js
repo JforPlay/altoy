@@ -33,6 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Defines the base path for event icons
         getEventIconPath: (eventData) => `${StoryViewer.BASE_URL}memorystoryline/`,
+
+        // Redirect events that live in the world-story viewer
+        getEventLink: (eventData) => {
+            const name = (eventData?.name || '').replace(/\s+/g, '');
+            if (name.includes('대형작전')) {
+                const prefix = window.location.pathname.split('/pages/story-viewer/')[0];
+                const normalizedPrefix = prefix.endsWith('/') && prefix.length > 1
+                    ? prefix.slice(0, -1)
+                    : prefix;
+                return `${normalizedPrefix}/pages/story-viewer/world-story.html`;
+            }
+            return null;
+        },
     };
 
     // Initialize the common viewer with this specific configuration
