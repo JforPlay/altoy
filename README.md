@@ -1,5 +1,5 @@
 # Azur Lane KR Toy (ALtoy)
-- Last updated 2025/12/4 (KR: DATE A LIVE 신규 콜라보 이벤트)
+- Last updated 2025/12/16 (KR: 만월이 밝아오기 전에 복각 이벤트)
 - This repo is the source to build the github pages to view story/skin/info text in kr.
 - ALtoy is a non-profit fan project for the game Azur Lane.
 
