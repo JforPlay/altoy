@@ -1898,7 +1898,7 @@ window.RestaurantModule = (function () {
         });
 
         Object.values(groups).forEach(list => {
-            list.sort((a, b) => (b.rarity || 0) - (a.rarity || 0));
+            list.sort((a, b) => (parseInt(a.id) || 0) - (parseInt(b.id) || 0));
         });
 
         return Object.keys(groups).sort().reduce((acc, key) => {
