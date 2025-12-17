@@ -1684,15 +1684,12 @@ window.RestaurantModule = (function () {
     /**
      * Copy preset from source slot to target slot
      */
-    async function copyPresetFrom(restaurantId, sourceIndex, targetIndex) {
+    function copyPresetFrom(restaurantId, sourceIndex, targetIndex) {
         const sourcePreset = state.plannerPresets[restaurantId] && state.plannerPresets[restaurantId][sourceIndex];
         if (!sourcePreset) {
             IslandEngine.showToast('소스 프리셋이 없습니다.', 'error');
             return;
         }
-
-        const confirmed = await showConfirm(`슬롯 ${sourceIndex}의 프리셋을 슬롯 ${targetIndex}로 복사할까요?`);
-        if (!confirmed) return;
 
         if (!state.plannerPresets[restaurantId]) {
             state.plannerPresets[restaurantId] = {};
