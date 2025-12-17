@@ -1362,6 +1362,89 @@
     border-radius: 3px;
 }
 
+/* Copy Preset Modal */
+.copy-preset-description {
+    text-align: center;
+    color: var(--island-text-secondary);
+    font-size: var(--island-text-md);
+    margin-bottom: var(--island-spacing-md);
+    padding: var(--island-spacing-sm);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--island-radius-md);
+}
+
+.copy-preset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: var(--island-spacing-md);
+    padding: var(--island-spacing-sm);
+}
+
+.copy-preset-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--island-gap-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.copy-preset-option.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.copy-preset-option:not(.disabled):hover .copy-preset-slot {
+    border-color: var(--island-accent);
+    background: var(--island-surface);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(var(--island-accent-rgb), 0.3);
+}
+
+.copy-preset-slot {
+    width: 100px;
+    height: 100px;
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: var(--island-radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.copy-preset-slot .preset-slot-num {
+    position: absolute;
+    top: 4px;
+    left: 6px;
+    font-size: 0.75rem;
+    color: var(--island-text-tertiary);
+    font-weight: 800;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0.25rem 0.4rem;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+.copy-preset-slot .preset-mini-grid {
+    width: 80px;
+    height: 80px;
+}
+
+.copy-preset-slot .preset-empty-dash {
+    font-size: 2rem;
+}
+
+.copy-preset-label {
+    font-size: var(--island-text-sm);
+    font-weight: 600;
+    color: var(--island-text-secondary);
+    text-align: center;
+}
+
 @media (max-width: 768px) {
     .menu-modal-slots {
         grid-template-columns: repeat(2, 1fr);
@@ -1369,6 +1452,10 @@
 
     .menu-modal-options {
         grid-template-columns: 1fr;
+    }
+
+    .copy-preset-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -1850,16 +1937,26 @@
 .planner-global-input.modern {
     background: transparent;
     border: none;
-    padding: 0.25rem 0.4rem;
-    width: 50px;
+    padding: 0.25rem 0.3rem;
+    width: 38px;
     text-align: center;
     color: var(--island-text-primary);
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: none;
 }
 
 .planner-global-input.modern:focus {
     outline: none;
+}
+
+/* Hide number input spinners */
+.planner-global-input.modern::-webkit-outer-spin-button,
+.planner-global-input.modern::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Card Body - Compact */

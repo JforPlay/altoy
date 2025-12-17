@@ -101,7 +101,7 @@ window.RestaurantModule = (function () {
     const STORAGE_KEY_PLANNER_PRESETS = 'island-restaurant-planner-presets-v2';
 
     const PLANNER_SLOTS_PER_RESTAURANT = 4;
-    const PLANNER_PRESET_COUNT = 3;
+    const PLANNER_PRESET_COUNT = 5;
 
     // ============================================ 
     // STATE
@@ -1279,6 +1279,12 @@ window.RestaurantModule = (function () {
                             <button class="preset-action-btn load" data-action="load" data-restaurant-id="${restaurantId}" title="선택한 슬롯 불러오기">
                                 <span class="material-symbols-outlined">upload</span>
                             </button>
+                            <button class="preset-action-btn copy" data-action="copy" data-restaurant-id="${restaurantId}" title="다른 슬롯에서 복사">
+                                <span class="material-symbols-outlined">content_copy</span>
+                            </button>
+                            <button class="preset-action-btn clear" data-action="clear" data-restaurant-id="${restaurantId}" title="선택한 슬롯 비우기">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1296,12 +1302,12 @@ window.RestaurantModule = (function () {
         const selectedMenu = menuOptions.find(opt => `${opt.formulaId}` === `${slot.formulaId}`);
         const rarityBg = selectedMenu ? RARITY_BACKGROUNDS[selectedMenu.rarity || 1] : '';
 
-        // Custom Slot UI - Click opens modal
+        // Custom Slot UI - Click opens modal with slot index
         return `
             <div class="planner-slot-custom ${selectedMenu ? 'filled' : 'empty'}"
                  data-restaurant-id="${restaurantId}"
                  data-slot-index="${slotIndex}"
-                 onclick="RestaurantModule.openMenuSelectionModal('${restaurantId}')">
+                 onclick="RestaurantModule.openMenuSelectionModal('${restaurantId}', ${slotIndex})">
 
                 <div class="slot-content">
                     ${selectedMenu ? `
@@ -1323,8 +1329,10 @@ window.RestaurantModule = (function () {
     /**
      * Opens a modal for selecting menus for all slots in a restaurant
      * Shows ingredient preview for each menu
+     * @param {string} restaurantId - The ID of the restaurant
+     * @param {number} initialSlotIndex - The slot index to pre-select (defaults to 0)
      */
-    function openMenuSelectionModal(restaurantId) {
+    function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
         const restaurant = state.restaurants[restaurantId];
         const plan = getPlannerEntry(restaurantId);
         const menuOptions = getMenuOptions(restaurantId);
@@ -1346,7 +1354,7 @@ window.RestaurantModule = (function () {
                             ${plan.slots.map((slot, idx) => {
             const selected = menuOptions.find(opt => `${opt.formulaId}` === `${slot.formulaId}`);
             return `
-                                    <div class="menu-modal-slot ${selected ? 'selected' : ''} ${idx === 0 ? 'active' : ''}"
+                                    <div class="menu-modal-slot ${selected ? 'selected' : ''} ${idx === initialSlotIndex ? 'active' : ''}"
                                          onclick="RestaurantModule.selectSlotForModal(${idx})">
                                         <div class="slot-number">슬롯 ${idx + 1}</div>
                                         <div class="slot-current">
@@ -1360,7 +1368,7 @@ window.RestaurantModule = (function () {
         }).join('')}
                         </div>
                         <div class="menu-modal-current-slot">
-                            현재 선택 중: <strong>슬롯 1</strong>
+                            현재 선택 중: <strong>슬롯 ${initialSlotIndex + 1}</strong>
                         </div>
                         <div class="menu-modal-options">
                             <div class="menu-option-item" onclick="RestaurantModule.selectMenusFromModal('${restaurantId}', null)">
@@ -1402,7 +1410,7 @@ window.RestaurantModule = (function () {
 
         document.body.insertAdjacentHTML('beforeend', modalHtml);
         state.currentMenuModalRestaurant = restaurantId;
-        state.currentMenuModalSlot = 0;
+        state.currentMenuModalSlot = initialSlotIndex;
     }
 
     function getMenuIngredientPreview(formulaId) {
@@ -1572,7 +1580,7 @@ window.RestaurantModule = (function () {
         // Deprecated/Removed functionality
     }
 
-    function handlePresetAction(action, restaurantId, presetIndex) {
+    async function handlePresetAction(action, restaurantId, presetIndex) {
         const entry = getPlannerEntry(restaurantId);
         if (!state.plannerPresets[restaurantId]) {
             state.plannerPresets[restaurantId] = {};
@@ -1595,9 +1603,111 @@ window.RestaurantModule = (function () {
             refreshPlannerBuilder();
             renderPlannerResultsSection();
             IslandEngine.showToast(`프리셋 ${presetIndex}을(를) 불러왔습니다.`, 'success');
+        } else if (action === 'clear') {
+            const confirmed = await showConfirm(`프리셋 ${presetIndex}을(를) 비울까요? 저장된 내용이 삭제됩니다.`);
+            if (!confirmed) return;
+
+            delete state.plannerPresets[restaurantId][presetIndex];
+            savePlannerPresets();
+            refreshPlannerBuilder();
+            IslandEngine.showToast(`프리셋 ${presetIndex}을(를) 비웠습니다.`, 'info');
+        } else if (action === 'copy') {
+            openCopyPresetModal(restaurantId, presetIndex);
         }
 
         updatePlannerUI();
+    }
+
+    /**
+     * Opens a modal to select a source preset slot to copy from
+     */
+    function openCopyPresetModal(restaurantId, targetPresetIndex) {
+        const restaurant = state.restaurants[restaurantId];
+        const menuOptionsMap = new Map(getMenuOptions(restaurantId).map(opt => [String(opt.formulaId), opt.icon]));
+
+        const presetOptions = Array.from({ length: PLANNER_PRESET_COUNT }, (_, idx) => {
+            const sourceIndex = idx + 1;
+            if (sourceIndex === targetPresetIndex) return null; // Can't copy to itself
+
+            const presetData = state.plannerPresets[restaurantId] && state.plannerPresets[restaurantId][sourceIndex];
+            const hasData = !!presetData;
+
+            const icons = presetData ? presetData.slots.map(s => {
+                if (!s.formulaId) return null;
+                return menuOptionsMap.get(String(s.formulaId));
+            }).filter(Boolean) : [];
+
+            const iconsHtml = icons.length > 0
+                ? `<div class="preset-mini-grid">${icons.slice(0, 4).map(icon => `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${icon}">`).join('')}</div>`
+                : `<div class="preset-empty-dash">-</div>`;
+
+            return `
+                <div class="copy-preset-option ${!hasData ? 'disabled' : ''}" ${hasData ? `onclick="RestaurantModule.copyPresetFrom('${restaurantId}', ${sourceIndex}, ${targetPresetIndex})"` : ''}>
+                    <div class="copy-preset-slot ${hasData ? 'filled' : 'empty'}">
+                        <div class="preset-slot-num">${sourceIndex}</div>
+                        ${iconsHtml}
+                    </div>
+                    <div class="copy-preset-label">슬롯 ${sourceIndex} ${!hasData ? '(비어있음)' : ''}</div>
+                </div>
+            `;
+        }).filter(Boolean).join('');
+
+        const modalHtml = `
+            <div class="menu-selection-modal-overlay" onclick="RestaurantModule.closeCopyPresetModal()">
+                <div class="menu-selection-modal copy-preset-modal" onclick="event.stopPropagation()">
+                    <div class="menu-modal-header">
+                        <h3>
+                            <span class="material-symbols-outlined">content_copy</span>
+                            프리셋 복사
+                        </h3>
+                        <button class="modal-close-btn" onclick="RestaurantModule.closeCopyPresetModal()">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                    <div class="menu-modal-body">
+                        <p class="copy-preset-description">${restaurant.name} - 슬롯 ${targetPresetIndex}로 복사할 프리셋을 선택하세요</p>
+                        <div class="copy-preset-grid">
+                            ${presetOptions}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Insert modal into DOM
+        const existingModal = document.querySelector('.menu-selection-modal-overlay');
+        if (existingModal) existingModal.remove();
+
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }
+
+    /**
+     * Copy preset from source slot to target slot
+     */
+    async function copyPresetFrom(restaurantId, sourceIndex, targetIndex) {
+        const sourcePreset = state.plannerPresets[restaurantId] && state.plannerPresets[restaurantId][sourceIndex];
+        if (!sourcePreset) {
+            IslandEngine.showToast('소스 프리셋이 없습니다.', 'error');
+            return;
+        }
+
+        const confirmed = await showConfirm(`슬롯 ${sourceIndex}의 프리셋을 슬롯 ${targetIndex}로 복사할까요?`);
+        if (!confirmed) return;
+
+        if (!state.plannerPresets[restaurantId]) {
+            state.plannerPresets[restaurantId] = {};
+        }
+
+        state.plannerPresets[restaurantId][targetIndex] = clonePlannerEntry(sourcePreset);
+        savePlannerPresets();
+        closeCopyPresetModal();
+        refreshPlannerBuilder();
+        IslandEngine.showToast(`슬롯 ${sourceIndex}에서 슬롯 ${targetIndex}로 복사했습니다.`, 'success');
+    }
+
+    function closeCopyPresetModal() {
+        const modal = document.querySelector('.menu-selection-modal-overlay');
+        if (modal) modal.remove();
     }
 
     function clonePlannerEntry(entry) {
@@ -1816,15 +1926,20 @@ window.RestaurantModule = (function () {
             calculatedQuantities[item.id] = item.quantity;
         });
 
-        const specialBottom = ["한가로운 목장", "지도에서 채집"];
+        // Define explicit order for raw material locations (with and without spaces to handle variations)
+        const locationOrder = ["비옥한 농지", "향기로운 과수원", "초록색 모밭", "한가로운 목장", "지도에서 채집"];
         const locations = Object.keys(masterGroups).sort((a, b) => {
-            const indexA = specialBottom.indexOf(a);
-            const indexB = specialBottom.indexOf(b);
+            const indexA = locationOrder.indexOf(a);
+            const indexB = locationOrder.indexOf(b);
 
-            if (indexA !== -1 && indexB !== -1) return indexA - indexB; // Both in bottom list
-            if (indexA !== -1) return 1; // A is bottom
-            if (indexB !== -1) return -1; // B is bottom
-            return a.localeCompare(b); // Standard sort
+            // Both in order list: sort by their position
+            if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+            // Only A in order list: A comes first
+            if (indexA !== -1) return -1;
+            // Only B in order list: B comes first
+            if (indexB !== -1) return 1;
+            // Neither in order list: alphabetical sort
+            return a.localeCompare(b);
         });
 
         const groupHtml = locations.length === 0 ? '<div class="planner-empty-state"><p>데이터를 불러오는 중입니다...</p></div>' : locations.map(location => `
@@ -1925,6 +2040,8 @@ window.RestaurantModule = (function () {
         selectPresetSlot,
         selectRestaurant,
         closePlannerModal, // Export for HTML onClick
+        copyPresetFrom,
+        closeCopyPresetModal,
         state: () => state // For debugging
     };
 
