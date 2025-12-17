@@ -271,23 +271,17 @@ body_class: dark-mode
                 </div>
             </div>
 
-            <!-- Meal Planner Floating Bar -->
-            <div id="meal-planner-bar" class="planner-bar hidden">
-                <div class="planner-info">
-                    <span class="material-symbols-outlined">shopping_cart</span>
-                    <span id="planner-count">0</span>개 메뉴 선택됨
-                </div>
-                <div class="planner-actions">
-                    <button id="planner-reset-btn" class="planner-btn reset">
-                        <span class="material-symbols-outlined">restart_alt</span>
-                        초기화
-                    </button>
-                    <button id="planner-calc-btn" class="planner-btn calculate">
-                        <span class="material-symbols-outlined">calculate</span>
-                        재료 계산
-                    </button>
-                </div>
+            <!-- Planner View Container (New) -->
+            <div id="restaurant-planner-view" class="hidden">
+                <!-- Dynamic Content injected here -->
             </div>
+
+            <!-- Meal Planner Floating Bar (Deprecated/Removed) -->
+            <!--
+            <div id="meal-planner-bar" class="planner-bar">
+                ...
+            </div>
+            -->
         </section>
 
         <!-- SEASON CALCULATOR TAB -->
@@ -351,8 +345,8 @@ body_class: dark-mode
     <div class="modal-container planner-modal-container">
         <div class="modal-header">
             <h3>
-                <span class="material-symbols-outlined">receipt_long</span>
-                일일 메뉴 원자재 계산기
+                <span class="material-symbols-outlined">event_note</span>
+                일일 식단 계획표
             </h3>
             <button class="modal-close-btn" id="planner-modal-close">
                 <span class="material-symbols-outlined">close</span>

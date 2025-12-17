@@ -166,28 +166,7 @@ window.IslandEngine = (function () {
         return state.sharedData;
     }
 
-    function showToast(message, type = 'info', duration = 3000) {
-        let toastContainer = document.querySelector('.global-toast-container');
-        if (!toastContainer) {
-            toastContainer = document.createElement('div');
-            toastContainer.className = 'global-toast-container';
-            document.body.appendChild(toastContainer);
-        }
 
-        const toast = document.createElement('div');
-        toast.className = `global-toast toast-${type}`;
-        toast.innerHTML = `<span class="material-symbols-outlined">${type === 'success' ? 'check_circle' : type === 'error' ? 'error' : 'info'}</span><span>${message}</span>`;
-        toastContainer.prepend(toast); // Add to top of stack
-
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 10); // Small delay to allow CSS transition
-
-        setTimeout(() => {
-            toast.classList.remove('show');
-            toast.addEventListener('transitionend', () => toast.remove());
-        }, duration);
-    }
 
     function getItemInfo(itemId) {
         if (!state.sharedData.items) {
@@ -364,6 +343,15 @@ window.IslandEngine = (function () {
                         }
                     });
                 }
+            } else {
+                // Raw material / Leaf node
+                dependencies.push({
+                    itemId,
+                    itemInfo: getItemInfo(itemId),
+                    quantityNeeded: scaledQuantity,
+                    isStopNode: true,
+                    dependencies: []
+                });
             }
         });
 

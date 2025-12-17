@@ -97,15 +97,20 @@ window.RestaurantModule = (function () {
     const STORAGE_KEY_EVENTS = 'island-restaurant-events';
     const STORAGE_KEY_SHIPGIRL1 = 'island-restaurant-shipgirl1';
     const STORAGE_KEY_SHIPGIRL2 = 'island-restaurant-shipgirl2';
+    const STORAGE_KEY_PLANNER_PLAN = 'island-restaurant-planner-plan-v2';
+    const STORAGE_KEY_PLANNER_PRESETS = 'island-restaurant-planner-presets-v2';
+
+    const PLANNER_SLOTS_PER_RESTAURANT = 4;
+    const PLANNER_PRESET_COUNT = 3;
 
     // ============================================ 
     // STATE
     // ============================================ 
 
     const state = {
-        restaurants: {}, 
-        items: {}, 
-        recipes: {}, 
+        restaurants: {},
+        items: {},
+        recipes: {},
         shopPurchaseData: {},    // { item_id: [required_item_id, cost, pack_size] }
         recipeIndex: {},         // { recipeId: recipe } for O(1) lookup
         recipeCategoryIndex: {}, // { recipeId: categoryId } for O(1) lookup
@@ -121,9 +126,19 @@ window.RestaurantModule = (function () {
         uniqueSubAttributes: [], // [1, 2, 3, 4, 5, 6] - unique sub_attribute IDs from all menus
         shipgirl1Attr: { main: 'E' },  // Main (경영) + dynamic sub-attributes added in init
         shipgirl2Attr: { main: 'E' },  // Only active when rank >= gold
-        
+
         // Meal Planner State
-        plannerState: {} // { [restaurantId]: { [formulaId]: quantity } }
+        plannerPlan: {},      // { [restaurantId]: { globalCount: number, slots: [{ formulaId }] } }
+        plannerPresets: {},   // { [restaurantId]: { [presetIndex]: { globalCount, slots: [] } } }
+        plannerDirty: true,
+        lastPlannerResults: null,
+        masterIngredients: {}, // { location: [ { id, name, icon, rarity } ] }
+        ui: {
+            presetSelections: {} // { restaurantId: selectedPresetIndex (1-5) }
+        },
+        // Caches
+        costCache: {},
+        salesCache: {}
     };
 
     // ============================================ 
@@ -156,6 +171,9 @@ window.RestaurantModule = (function () {
             state.dependencyGraph = IslandEngine.buildDependencyGraph(state.recipes);
             findUniqueSubAttributes();
 
+            // Pre-calculate master ingredient list
+            buildMasterIngredientList();
+
             // Initialize default attribute values for all sub-attributes
             state.uniqueSubAttributes.forEach(attrId => {
                 if (!state.shipgirl1Attr[attrId]) state.shipgirl1Attr[attrId] = 'E';
@@ -164,12 +182,12 @@ window.RestaurantModule = (function () {
 
             // Load saved preferences
             loadPreferences();
+            loadPlannerState();
 
             // Select first restaurant by default
-            const firstRestaurantId = Object.keys(state.restaurants)
-                .filter(id => id !== 'all')
-                .sort((a, b) => parseInt(a) - parseInt(b))[0];
-            
+            const restaurantIds = getRestaurantIds();
+            const firstRestaurantId = restaurantIds[0];
+
             if (firstRestaurantId) {
                 state.selectedRestaurant = firstRestaurantId;
             }
@@ -181,6 +199,7 @@ window.RestaurantModule = (function () {
             renderShipgirlSelectors();
             renderMenuList();
             setupPlannerUI();
+            updatePlannerUI();
 
             return true;
         } catch (error) {
@@ -210,9 +229,15 @@ window.RestaurantModule = (function () {
         });
     }
 
+    function getRestaurantIds() {
+        return Object.keys(state.restaurants)
+            .filter(id => id !== 'all')
+            .sort((a, b) => parseInt(a) - parseInt(b));
+    }
+
     function findUniqueSubAttributes() {
         const subAttributeSet = new Set();
-        
+
         // Iterate through all restaurants and their menu items
         Object.values(state.restaurants).forEach(restaurant => {
             (restaurant.item_id || []).forEach(([itemId]) => {
@@ -228,6 +253,36 @@ window.RestaurantModule = (function () {
 
         // Convert to sorted array
         state.uniqueSubAttributes = Array.from(subAttributeSet).sort((a, b) => a - b);
+    }
+
+    function buildMasterIngredientList() {
+        const allIngredients = {}; // Map itemId -> info
+
+        // Iterate all menus in all restaurants
+        Object.values(state.restaurants).forEach(restaurant => {
+            if (!restaurant.item_id) return;
+            restaurant.item_id.forEach(([_, formulaId]) => {
+                const tree = IslandEngine.buildRecipeDependencyTree(
+                    formulaId,
+                    state.recipeIndex,
+                    state.recipeCategoryIndex,
+                    state.dependencyGraph,
+                    state.shopPurchaseData,
+                    {
+                        useManualMode: false,
+                        quantityMultiplier: 1,
+                        shouldStopRecursion: (rId, rCat) => rCat === '1' || rCat === '2'
+                    }
+                );
+
+                if (tree) {
+                    aggregateIngredients(tree, allIngredients, true); // true = dry run
+                }
+            });
+        });
+
+        // Group by location
+        state.masterIngredients = groupIngredientsByLocation(allIngredients);
     }
 
     // ============================================ 
@@ -266,9 +321,111 @@ window.RestaurantModule = (function () {
             localStorage.setItem(STORAGE_KEY_EVENTS, JSON.stringify(Array.from(state.activeEvents)));
             localStorage.setItem(STORAGE_KEY_SHIPGIRL1, JSON.stringify(state.shipgirl1Attr));
             localStorage.setItem(STORAGE_KEY_SHIPGIRL2, JSON.stringify(state.shipgirl2Attr));
+            
+            // Clear sales cache as preferences affecting calculation have changed
+            state.salesCache = {};
         } catch (error) {
             console.error('[Restaurant] Failed to save preferences:', error);
         }
+    }
+
+    // ============================================ 
+    // PLANNER STATE HELPERS
+    // ============================================ 
+
+    function buildEmptyPlannerEntry() {
+        return {
+            globalCount: 1,
+            slots: Array.from({ length: PLANNER_SLOTS_PER_RESTAURANT }, () => ({ formulaId: '' }))
+        };
+    }
+
+    function normalizePlannerEntry(entry) {
+        const base = buildEmptyPlannerEntry();
+        if (!entry) return base;
+
+        const normalized = {
+            globalCount: Number.isFinite(entry.globalCount) ? entry.globalCount : base.globalCount,
+            slots: Array.from({ length: PLANNER_SLOTS_PER_RESTAURANT }, (_, idx) => {
+                const slot = entry.slots && entry.slots[idx] ? entry.slots[idx] : {};
+                return {
+                    formulaId: slot.formulaId || ''
+                };
+            })
+        };
+
+        return normalized;
+    }
+
+    function createDefaultPlannerPlan() {
+        const plan = {};
+        getRestaurantIds().forEach(id => {
+            plan[id] = buildEmptyPlannerEntry();
+        });
+        return plan;
+    }
+
+    function createDefaultPlannerPresets() {
+        const presets = {};
+        getRestaurantIds().forEach(id => {
+            presets[id] = {};
+        });
+        return presets;
+    }
+
+    function loadPlannerState() {
+        state.plannerPlan = createDefaultPlannerPlan();
+        state.plannerPresets = createDefaultPlannerPresets();
+
+        try {
+            const savedPlan = localStorage.getItem(STORAGE_KEY_PLANNER_PLAN);
+            if (savedPlan) {
+                const parsed = JSON.parse(savedPlan);
+                getRestaurantIds().forEach(id => {
+                    state.plannerPlan[id] = normalizePlannerEntry(parsed[id]);
+                });
+            }
+
+            const savedPresets = localStorage.getItem(STORAGE_KEY_PLANNER_PRESETS);
+            if (savedPresets) {
+                const parsed = JSON.parse(savedPresets);
+                getRestaurantIds().forEach(id => {
+                    state.plannerPresets[id] = {};
+                    if (parsed[id]) {
+                        for (let i = 1; i <= PLANNER_PRESET_COUNT; i++) {
+                            if (parsed[id][i]) {
+                                state.plannerPresets[id][i] = normalizePlannerEntry(parsed[id][i]);
+                            }
+                        }
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('[Restaurant] Failed to load planner state:', error);
+        }
+    }
+
+    function savePlannerPlan() {
+        try {
+            localStorage.setItem(STORAGE_KEY_PLANNER_PLAN, JSON.stringify(state.plannerPlan));
+        } catch (error) {
+            console.error('[Restaurant] Failed to save planner plan:', error);
+        }
+    }
+
+    function savePlannerPresets() {
+        try {
+            localStorage.setItem(STORAGE_KEY_PLANNER_PRESETS, JSON.stringify(state.plannerPresets));
+        } catch (error) {
+            console.error('[Restaurant] Failed to save planner presets:', error);
+        }
+    }
+
+    function getPlannerEntry(restaurantId) {
+        if (!state.plannerPlan[restaurantId]) {
+            state.plannerPlan[restaurantId] = buildEmptyPlannerEntry();
+        }
+        return state.plannerPlan[restaurantId];
     }
 
     // ============================================ 
@@ -278,6 +435,11 @@ window.RestaurantModule = (function () {
     function calculateMenuCost(formulaId) {
         if (!formulaId) {
             return { gold: 0, resources: {} };
+        }
+
+        // Check cache
+        if (state.costCache[formulaId]) {
+            return state.costCache[formulaId];
         }
 
         const tree = IslandEngine.buildRecipeDependencyTree(
@@ -294,6 +456,10 @@ window.RestaurantModule = (function () {
         }
 
         const costs = IslandEngine.calculateTreeCost(tree);
+        
+        // Save to cache
+        state.costCache[formulaId] = costs;
+        
         return costs;
     }
 
@@ -336,6 +502,12 @@ window.RestaurantModule = (function () {
     }
 
     function calculateSalesCount(itemId, rank = 'silver', events = []) {
+        // Check cache
+        const cacheKey = `${itemId}_${rank}`;
+        if (state.salesCache[cacheKey]) {
+            return state.salesCache[cacheKey];
+        }
+
         const item = state.items[itemId];
         if (!item) return 0;
 
@@ -367,7 +539,12 @@ window.RestaurantModule = (function () {
         const minSales = Math.min(maxSalesCap, Math.max(1, baseCount + randomRange.min));
         const maxSales = Math.min(maxSalesCap, Math.max(1, baseCount + randomRange.max));
 
-        return { min: minSales, max: maxSales, base: baseCount };
+        const result = { min: minSales, max: maxSales, base: baseCount };
+        
+        // Save to cache
+        state.salesCache[cacheKey] = result;
+        
+        return result;
     }
 
     function getMainAttrFactor() {
@@ -440,30 +617,59 @@ window.RestaurantModule = (function () {
             .filter(([id]) => id !== 'all')
             .sort(([a], [b]) => parseInt(a) - parseInt(b));
 
-        const html = restaurants.map(([id, restaurant]) => `
+        const tabsHtml = restaurants.map(([id, restaurant]) => `
             <button class="restaurant-tab ${state.selectedRestaurant === id ? 'active' : ''}"
-                    data-restaurant-id="${id}">
+                    data-restaurant-id="${id}" onclick="RestaurantModule.selectRestaurant('${id}')">
                 <span class="material-symbols-outlined">restaurant</span>
                 <span class="restaurant-tab-name">${restaurant.name}</span>
             </button>
         `).join('');
 
-        container.innerHTML = html;
+        const plannerTabHtml = `
+            <button class="restaurant-tab planner-tab ${state.selectedRestaurant === 'planner' ? 'active' : ''}"
+                    data-restaurant-id="planner" onclick="RestaurantModule.selectRestaurant('planner')">
+                <span class="material-symbols-outlined">event_note</span>
+                <span class="restaurant-tab-name">메뉴 계산기</span>
+            </button>
+        `;
 
-        container.querySelectorAll('.restaurant-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                selectRestaurant(tab.dataset.restaurantId);
-            });
-        });
+        container.innerHTML = tabsHtml + plannerTabHtml;
     }
 
     function selectRestaurant(restaurantId) {
         state.selectedRestaurant = restaurantId;
+
+        // Update Tabs UI
         document.querySelectorAll('.restaurant-tab').forEach(tab => {
             tab.classList.toggle('active', tab.dataset.restaurantId === restaurantId);
         });
-        renderMenuList();
-        updatePlannerUI(); // Update UI for planner counts
+
+        const plannerView = document.getElementById('restaurant-planner-view');
+        const menuList = document.getElementById('restaurant-menu-list');
+        const menuContainer = document.querySelector('.restaurant-menu-container');
+        const controls = document.querySelector('.restaurant-controls');
+
+        // Also hide/show floating bar if it exists (though we deprecate it)
+        const floatingBar = document.getElementById('meal-planner-bar');
+
+        if (restaurantId === 'planner') {
+            plannerView?.classList.remove('hidden');
+            menuList?.classList.add('hidden');
+            menuContainer?.classList.add('hidden');
+            controls?.classList.add('hidden');
+            floatingBar?.classList.add('hidden');
+
+            renderPlannerMainView();
+        } else {
+            plannerView?.classList.add('hidden');
+            menuList?.classList.remove('hidden');
+            menuContainer?.classList.remove('hidden');
+            controls?.classList.remove('hidden');
+            // floatingBar?.classList.remove('hidden'); // Optional: show floating bar? Or rely on Planner tab
+
+            renderMenuList();
+            updatePlannerUI();
+        }
     }
 
     // ============================================ 
@@ -674,28 +880,6 @@ window.RestaurantModule = (function () {
 
         container.innerHTML = html;
 
-        // Add event listeners for planner controls
-        container.querySelectorAll('.planner-qty-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const formulaId = btn.dataset.formulaId;
-                const restaurantId = btn.dataset.restaurantId;
-                const action = btn.dataset.action; // 'increase' or 'decrease'
-                updatePlannerQuantity(restaurantId, formulaId, action === 'increase' ? 1 : -1);
-            });
-        });
-
-        container.querySelectorAll('.planner-qty-input').forEach(input => {
-            input.addEventListener('change', (e) => {
-                e.stopPropagation();
-                const formulaId = input.dataset.formulaId;
-                const restaurantId = input.dataset.restaurantId;
-                const newValue = parseInt(e.target.value) || 0;
-                setPlannerQuantity(restaurantId, formulaId, newValue);
-            });
-            input.addEventListener('click', (e) => e.stopPropagation());
-        });
-
         if (state.highlightFormulaId) {
             focusMenuCard(state.highlightFormulaId);
             state.highlightFormulaId = null;
@@ -727,9 +911,8 @@ window.RestaurantModule = (function () {
         });
 
         const rarityBackground = RARITY_BACKGROUNDS[item.rarity] || '';
-        
+
         // Planner quantity
-        const plannerQty = (state.plannerState[restaurantId] && state.plannerState[restaurantId][formulaId]) || 0;
 
         return `
             <div class="menu-card" data-item-id="${itemId}" data-formula-id="${formulaId}">
@@ -745,16 +928,6 @@ window.RestaurantModule = (function () {
                             <span class="rarity-badge rarity-${item.rarity || 1}">★${item.rarity || 1}</span>
                             ${recipeTime ? `<span class="recipe-time">⏱ ${recipeTime}</span>` : ''}
                         </div>
-                    </div>
-                </div>
-
-                <!-- Planner Control -->
-                <div class="menu-planner-control">
-                    <label>일일 생산량:</label>
-                    <div class="planner-qty-control">
-                        <button class="planner-qty-btn decrease" data-action="decrease" data-formula-id="${formulaId}" data-restaurant-id="${restaurantId}"><span class="material-symbols-outlined">remove</span></button>
-                        <input type="number" class="planner-qty-input" data-formula-id="${formulaId}" data-restaurant-id="${restaurantId}" value="${plannerQty}" min="0" max="999">
-                        <button class="planner-qty-btn increase" data-action="increase" data-formula-id="${formulaId}" data-restaurant-id="${restaurantId}"><span class="material-symbols-outlined">add</span></button>
                     </div>
                 </div>
 
@@ -825,16 +998,16 @@ window.RestaurantModule = (function () {
                     </summary>
                     <div class="rank-comparison-table">
                         ${allRankProfits.map(data => {
-                            const isCurrent = data.rank === state.selectedRank;
-                            const profitClass = data.profit > 0 ? 'positive' : data.profit < 0 ? 'negative' : 'neutral';
-                            const compMargin = parseFloat(data.profitMargin);
-                            let compMarginClass = 'margin-very-low';
-                            if (compMargin >= 91) compMarginClass = 'margin-excellent';
-                            else if (compMargin >= 81) compMarginClass = 'margin-great';
-                            else if (compMargin >= 71) compMarginClass = 'margin-good';
-                            else if (compMargin >= 61) compMarginClass = 'margin-fair';
+            const isCurrent = data.rank === state.selectedRank;
+            const profitClass = data.profit > 0 ? 'positive' : data.profit < 0 ? 'negative' : 'neutral';
+            const compMargin = parseFloat(data.profitMargin);
+            let compMarginClass = 'margin-very-low';
+            if (compMargin >= 91) compMarginClass = 'margin-excellent';
+            else if (compMargin >= 81) compMarginClass = 'margin-great';
+            else if (compMargin >= 71) compMarginClass = 'margin-good';
+            else if (compMargin >= 61) compMarginClass = 'margin-fair';
 
-                            return `
+            return `
                                 <div class="rank-comparison-row ${isCurrent ? 'current' : ''}">
                                     <div class="rank-label" style="color: ${RANK_COLORS[data.rank]}">
                                         <span class="material-symbols-outlined">grade</span>
@@ -850,7 +1023,7 @@ window.RestaurantModule = (function () {
                                     <div class="rank-total-profit">${data.salesCount.min === data.salesCount.max ? (data.profit * data.salesCount.min).toLocaleString() : `${(data.profit * data.salesCount.min).toLocaleString()}~${(data.profit * data.salesCount.max).toLocaleString()}`}</div>
                                 </div>
                             `;
-                        }).join('')}
+        }).join('')}
                     </div>
                 </details>
                 <div class="menu-actions">
@@ -863,23 +1036,29 @@ window.RestaurantModule = (function () {
         `;
     }
 
-    // ============================================ 
+
+    // ============================================
     // PLANNER LOGIC
-    // ============================================ 
+    // ============================================
+    /**
+     * Planner System Overview:
+     * - Each restaurant has 4 menu slots that can be filled with recipes
+     * - Each restaurant has a global quantity multiplier (applies to all slots)
+     * - Users can save/load up to 5 presets per restaurant
+     * - Real-time calculation shows required ingredients as users make selections
+     * - Ingredients are grouped by acquisition location for easy reference
+     */
 
     let confirmResolve = null;
 
     function setupPlannerUI() {
-        const resetBtn = document.getElementById('planner-reset-btn');
-        const calcBtn = document.getElementById('planner-calc-btn');
+        const openBtn = document.getElementById('planner-open-btn');
         const closeBtn = document.getElementById('planner-modal-close');
-        
-        if (resetBtn) resetBtn.addEventListener('click', resetPlanner);
-        if (calcBtn) calcBtn.addEventListener('click', calculateDailyPlan);
-        if (closeBtn) closeBtn.addEventListener('click', closePlannerModal);
-        
-        // Also close modal when clicking overlay
         const modal = document.getElementById('planner-modal');
+
+        if (openBtn) openBtn.addEventListener('click', openPlannerModal);
+        if (closeBtn) closeBtn.addEventListener('click', closePlannerModal);
+
         if (modal) {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal || e.target.classList.contains('modal-overlay')) {
@@ -888,7 +1067,10 @@ window.RestaurantModule = (function () {
             });
         }
 
-        // Confirm Modal Setup
+        setupConfirmModal();
+    }
+
+    function setupConfirmModal() {
         const confirmModal = document.getElementById('confirm-modal');
         const confirmClose = document.getElementById('confirm-modal-close');
         const confirmCancel = document.getElementById('confirm-btn-cancel');
@@ -906,13 +1088,810 @@ window.RestaurantModule = (function () {
             confirmClose?.addEventListener('click', () => closeConfirm(false));
             confirmCancel?.addEventListener('click', () => closeConfirm(false));
             confirmOk?.addEventListener('click', () => closeConfirm(true));
-            
+
             confirmModal.addEventListener('click', (e) => {
                 if (e.target === confirmModal || e.target.classList.contains('modal-overlay')) {
                     closeConfirm(false);
                 }
             });
         }
+    }
+
+    function openPlannerModal() {
+        renderPlannerModal();
+        const modal = document.getElementById('planner-modal');
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function renderPlannerModal() {
+        const content = document.getElementById('planner-modal-content');
+        if (!content) return;
+
+        const builderHTML = renderPlannerBuilder();
+        const resultsHTML = renderPlannerResultsContent();
+
+        content.innerHTML = `
+            <div class="planner-modal-body">
+                <div class="planner-builder" id="planner-builder">
+                    ${builderHTML}
+                </div>
+                <div class="planner-results" id="planner-results">
+                    ${resultsHTML}
+                </div>
+            </div>
+            <div class="planner-modal-actions">
+                <button id="planner-reset-btn" class="planner-btn reset">
+                    <span class="material-symbols-outlined">restart_alt</span>
+                    초기화
+                </button>
+                <div class="planner-actions-spacer"></div>
+                <button id="planner-calc-btn" class="planner-btn calculate">
+                    <span class="material-symbols-outlined">calculate</span>
+                    재료 계산
+                </button>
+            </div>
+        `;
+
+        bindPlannerBuilderEvents();
+
+        const resetBtn = document.getElementById('planner-reset-btn');
+        const calcBtn = document.getElementById('planner-calc-btn');
+
+        resetBtn?.addEventListener('click', resetPlanner);
+        calcBtn?.addEventListener('click', calculateDailyPlan);
+    }
+
+    function renderPlannerMainView() {
+        const container = document.getElementById('restaurant-planner-view');
+        if (!container) return;
+
+        const builderHTML = renderPlannerBuilder();
+        const resultsHTML = renderPlannerResultsContent();
+
+        container.innerHTML = `
+            <div class="planner-layout-grid">
+                <!-- Left: Builder (Restaurant Rows) -->
+                <div class="planner-builder-section" id="planner-builder">
+                    ${builderHTML}
+                    <div class="planner-actions-bar">
+                        <button id="planner-reset-btn" class="planner-btn reset">
+                            <span class="material-symbols-outlined">restart_alt</span>
+                            초기화
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right: Results (Ingredients) -->
+                <div class="planner-results-section" id="planner-results">
+                    ${resultsHTML}
+                </div>
+            </div>
+        `;
+
+        bindPlannerBuilderEvents();
+
+        document.getElementById('planner-reset-btn')?.addEventListener('click', resetPlanner);
+
+        // Initial auto-calculation
+        calculateDailyPlan(false);
+    }
+
+    function refreshPlannerBuilder() {
+        const builder = document.getElementById('planner-builder');
+        if (!builder) return;
+        builder.innerHTML = renderPlannerBuilder();
+        bindPlannerBuilderEvents();
+    }
+
+    function renderPlannerBuilder() {
+        const restaurantIds = getRestaurantIds();
+        if (restaurantIds.length === 0) {
+            return '<div class="empty-state"><p>레스토랑 데이터가 없습니다.</p></div>';
+        }
+
+        return restaurantIds.map(renderPlannerRestaurantCard).join('');
+    }
+
+    /**
+     * Renders a single restaurant card in the planner view
+     * @param {string} restaurantId - The ID of the restaurant to render
+     * @returns {string} HTML string for the restaurant card
+     */
+    function renderPlannerRestaurantCard(restaurantId) {
+        const restaurant = state.restaurants[restaurantId];
+        const plan = getPlannerEntry(restaurantId);
+        const menuOptions = getMenuOptions(restaurantId);
+        const menuOptionsMap = new Map(menuOptions.map(opt => [String(opt.formulaId), opt.icon]));
+
+        // Ensure UI state for preset selection (defaults to slot 1)
+        if (!state.ui) state.ui = { presetSelections: {} };
+        if (!state.ui.presetSelections[restaurantId]) state.ui.presetSelections[restaurantId] = 1;
+        const selectedPreset = state.ui.presetSelections[restaurantId];
+
+        const presetVisuals = Array.from({ length: PLANNER_PRESET_COUNT }, (_, idx) => {
+            const presetIndex = idx + 1;
+            const presetData = state.plannerPresets[restaurantId] && state.plannerPresets[restaurantId][presetIndex];
+            const isSelected = presetIndex === selectedPreset;
+            const hasData = !!presetData;
+
+            const icons = presetData ? presetData.slots.map(s => {
+                if (!s.formulaId) return null;
+                return menuOptionsMap.get(String(s.formulaId));
+            }).filter(Boolean) : [];
+
+            const iconsHtml = icons.length > 0
+                ? `<div class="preset-mini-grid">${icons.slice(0, 4).map(icon => `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${icon}">`).join('')}</div>`
+                : `<div class="preset-empty-dash">-</div>`;
+
+            return `
+                <div class="preset-visual-slot ${isSelected ? 'selected' : ''} ${hasData ? 'filled' : 'empty'}"
+                     onclick="RestaurantModule.selectPresetSlot('${restaurantId}', ${presetIndex})">
+                    <div class="preset-slot-num">${presetIndex}</div>
+                    ${iconsHtml}
+                </div>
+            `;
+        }).join('');
+
+        const slotsHTML = plan.slots.map((slot, idx) => renderPlannerSlot(restaurantId, idx, slot, menuOptions)).join('');
+
+        return `
+            <div class="planner-modern-card">
+                <div class="card-header">
+                    <div class="header-left">
+                        <span class="material-symbols-outlined icon">storefront</span>
+                        <span class="restaurant-name">${restaurant ? restaurant.name : `레스토랑 ${restaurantId}`}</span>
+                    </div>
+                    <div class="header-right">
+                        <div class="global-qty-wrapper">
+                             <span class="qty-label">생산 수량</span>
+                             <div class="qty-control-group">
+                                 <button class="qty-btn qty-btn-minus" data-restaurant-id="${restaurantId}" onclick="RestaurantModule.adjustGlobalQty('${restaurantId}', -1)">
+                                     <span class="material-symbols-outlined">remove</span>
+                                 </button>
+                                 <input type="number" class="planner-global-input modern" data-restaurant-id="${restaurantId}" min="0" max="999" value="${plan.globalCount}">
+                                 <button class="qty-btn qty-btn-plus" data-restaurant-id="${restaurantId}" onclick="RestaurantModule.adjustGlobalQty('${restaurantId}', 1)">
+                                     <span class="material-symbols-outlined">add</span>
+                                 </button>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="planner-slot-grid horizontal-4 modern">
+                        ${slotsHTML}
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="preset-control-group">
+                         <div class="preset-label-group">
+                             <div class="preset-label">프리셋</div>
+                             <div class="preset-current-indicator">선택: ${selectedPreset}</div>
+                         </div>
+                         <div class="planner-preset-visual-row">
+                            ${presetVisuals}
+                        </div>
+                        <div class="planner-preset-actions">
+                            <button class="preset-action-btn save" data-action="save" data-restaurant-id="${restaurantId}" title="선택한 슬롯에 저장">
+                                <span class="material-symbols-outlined">download</span>
+                            </button>
+                            <button class="preset-action-btn load" data-action="load" data-restaurant-id="${restaurantId}" title="선택한 슬롯 불러오기">
+                                <span class="material-symbols-outlined">upload</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function selectPresetSlot(restaurantId, presetIndex) {
+        if (!state.ui) state.ui = { presetSelections: {} };
+        state.ui.presetSelections[restaurantId] = presetIndex;
+        refreshPlannerBuilder();
+    }
+
+    function renderPlannerSlot(restaurantId, slotIndex, slot, menuOptions) {
+        const selectedMenu = menuOptions.find(opt => `${opt.formulaId}` === `${slot.formulaId}`);
+        const rarityBg = selectedMenu ? RARITY_BACKGROUNDS[selectedMenu.rarity || 1] : '';
+
+        // Custom Slot UI - Click opens modal
+        return `
+            <div class="planner-slot-custom ${selectedMenu ? 'filled' : 'empty'}"
+                 data-restaurant-id="${restaurantId}"
+                 data-slot-index="${slotIndex}"
+                 onclick="RestaurantModule.openMenuSelectionModal('${restaurantId}')">
+
+                <div class="slot-content">
+                    ${selectedMenu ? `
+                        <div class="slot-icon" style="background-image: url('${rarityBg}')">
+                            <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${selectedMenu.icon}" alt="${selectedMenu.name}">
+                        </div>
+                        <div class="slot-name">${selectedMenu.name}</div>
+                    ` : `
+                        <div class="slot-placeholder">
+                            <span class="material-symbols-outlined">add</span>
+                            <span>메뉴 선택</span>
+                        </div>
+                    `}
+                </div>
+            </div>
+        `;
+    }
+
+    /**
+     * Opens a modal for selecting menus for all slots in a restaurant
+     * Shows ingredient preview for each menu
+     */
+    function openMenuSelectionModal(restaurantId) {
+        const restaurant = state.restaurants[restaurantId];
+        const plan = getPlannerEntry(restaurantId);
+        const menuOptions = getMenuOptions(restaurantId);
+
+        const modalHtml = `
+            <div class="menu-selection-modal-overlay" onclick="RestaurantModule.closeMenuSelectionModal()">
+                <div class="menu-selection-modal" onclick="event.stopPropagation()">
+                    <div class="menu-modal-header">
+                        <h3>
+                            <span class="material-symbols-outlined">restaurant</span>
+                            ${restaurant.name} - 메뉴 선택
+                        </h3>
+                        <button class="modal-close-btn" onclick="RestaurantModule.closeMenuSelectionModal()">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                    <div class="menu-modal-body">
+                        <div class="menu-modal-slots">
+                            ${plan.slots.map((slot, idx) => {
+            const selected = menuOptions.find(opt => `${opt.formulaId}` === `${slot.formulaId}`);
+            return `
+                                    <div class="menu-modal-slot ${selected ? 'selected' : ''} ${idx === 0 ? 'active' : ''}"
+                                         onclick="RestaurantModule.selectSlotForModal(${idx})">
+                                        <div class="slot-number">슬롯 ${idx + 1}</div>
+                                        <div class="slot-current">
+                                            ${selected ? `
+                                                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${selected.icon}" alt="${selected.name}">
+                                                <span>${selected.name}</span>
+                                            ` : '<span class="empty-text">없음</span>'}
+                                        </div>
+                                    </div>
+                                `;
+        }).join('')}
+                        </div>
+                        <div class="menu-modal-current-slot">
+                            현재 선택 중: <strong>슬롯 1</strong>
+                        </div>
+                        <div class="menu-modal-options">
+                            <div class="menu-option-item" onclick="RestaurantModule.selectMenusFromModal('${restaurantId}', null)">
+                                <div class="menu-option-icon empty-icon">
+                                    <span class="material-symbols-outlined">close</span>
+                                </div>
+                                <div class="menu-option-name">선택 해제</div>
+                            </div>
+                            ${menuOptions.map(opt => {
+            const ingredients = getMenuIngredientPreview(opt.formulaId);
+            return `
+                                    <div class="menu-option-item" onclick="RestaurantModule.selectMenusFromModal('${restaurantId}', '${opt.formulaId}')">
+                                        <div class="menu-option-icon" style="background-image: url('${RARITY_BACKGROUNDS[opt.rarity || 1]}')">
+                                            <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${opt.icon}" alt="${opt.name}">
+                                        </div>
+                                        <div class="menu-option-details">
+                                            <div class="menu-option-name">${opt.name}</div>
+                                            ${ingredients.length > 0 ? `
+                                                <div class="menu-option-ingredients">
+                                                    ${ingredients.slice(0, 6).map(ing => `
+                                                        <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${ing.icon}" alt="${ing.name}" data-name="${ing.name}">
+                                                    `).join('')}
+                                                    ${ingredients.length > 6 ? `<span class="more-count">+${ingredients.length - 6}</span>` : ''}
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                `;
+        }).join('')}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Insert modal into DOM
+        const existingModal = document.querySelector('.menu-selection-modal-overlay');
+        if (existingModal) existingModal.remove();
+
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        state.currentMenuModalRestaurant = restaurantId;
+        state.currentMenuModalSlot = 0;
+    }
+
+    function getMenuIngredientPreview(formulaId) {
+        const tree = IslandEngine.buildRecipeDependencyTree(
+            formulaId,
+            state.recipeIndex,
+            state.recipeCategoryIndex,
+            state.dependencyGraph,
+            state.shopPurchaseData,
+            { useManualMode: false, quantityMultiplier: 1, shouldStopRecursion: (rId, rCat) => rCat === '1' || rCat === '2' }
+        );
+
+        const ingredients = {};
+        if (tree) {
+            aggregateIngredients(tree, ingredients, true);
+        }
+
+        return Object.values(ingredients).map(ing => ({
+            name: ing.name,
+            icon: ing.icon ? ing.icon.split('/').pop() + '.png' : ''
+        }));
+    }
+
+    function selectSlotForModal(slotIndex) {
+        state.currentMenuModalSlot = slotIndex;
+        // Update UI to show selected slot
+        document.querySelectorAll('.menu-modal-slot').forEach((el, idx) => {
+            if (idx === slotIndex) {
+                el.classList.add('active');
+            } else {
+                el.classList.remove('active');
+            }
+        });
+
+        // Update current slot indicator
+        const indicator = document.querySelector('.menu-modal-current-slot strong');
+        if (indicator) {
+            indicator.textContent = `슬롯 ${slotIndex + 1}`;
+        }
+    }
+
+    function selectMenusFromModal(restaurantId, formulaId) {
+        const slot = state.currentMenuModalSlot !== undefined ? state.currentMenuModalSlot : 0;
+        const entry = getPlannerEntry(restaurantId);
+
+        if (formulaId === null) {
+            // Clear selection
+            entry.slots[slot].formulaId = '';
+        } else {
+            // Set selection
+            entry.slots[slot].formulaId = formulaId;
+        }
+
+        state.plannerDirty = true;
+        savePlannerPlan();
+
+        // Just refresh the modal content without closing
+        refreshModalSlots(restaurantId);
+
+        updatePlannerUI();
+        calculateDailyPlan(false);
+    }
+
+    function refreshModalSlots(restaurantId) {
+        const plan = getPlannerEntry(restaurantId);
+        const menuOptions = getMenuOptions(restaurantId);
+
+        document.querySelectorAll('.menu-modal-slot').forEach((slotEl, idx) => {
+            const slot = plan.slots[idx];
+            const selected = menuOptions.find(opt => `${opt.formulaId}` === `${slot.formulaId}`);
+            const slotCurrent = slotEl.querySelector('.slot-current');
+
+            if (selected) {
+                slotEl.classList.add('selected');
+                slotCurrent.innerHTML = `
+                    <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${selected.icon}" alt="${selected.name}">
+                    <span>${selected.name}</span>
+                `;
+            } else {
+                slotEl.classList.remove('selected');
+                slotCurrent.innerHTML = '<span class="empty-text">없음</span>';
+            }
+        });
+    }
+
+    function closeMenuSelectionModal() {
+        const modal = document.querySelector('.menu-selection-modal-overlay');
+        if (modal) modal.remove();
+        state.currentMenuModalRestaurant = null;
+        state.currentMenuModalSlot = 0;
+        refreshPlannerBuilder();
+    }
+
+    function getMenuOptions(restaurantId) {
+        const restaurant = state.restaurants[restaurantId];
+        if (!restaurant) return [];
+        return (restaurant.item_id || []).map(([itemId, formulaId]) => {
+            const item = state.items[itemId];
+            return {
+                itemId,
+                formulaId,
+                name: item ? item.name : `Menu ${itemId}`,
+                rarity: item ? item.rarity : 1,
+                icon: item && item.icon ? item.icon.split('/').pop() + '.png' : ''
+            };
+        });
+    }
+
+    function adjustGlobalQty(restaurantId, delta) {
+        const entry = getPlannerEntry(restaurantId);
+        const newValue = Math.max(0, Math.min(999, entry.globalCount + delta));
+        entry.globalCount = newValue;
+
+        // Update input value
+        const input = document.querySelector(`.planner-global-input[data-restaurant-id="${restaurantId}"]`);
+        if (input) input.value = newValue;
+
+        state.plannerDirty = true;
+        savePlannerPlan();
+        updatePlannerUI();
+        calculateDailyPlan(false);
+    }
+
+    function bindPlannerBuilderEvents() {
+        const container = document.getElementById('planner-builder') || document;
+
+        container.querySelectorAll('.planner-global-input').forEach(input => {
+            input.addEventListener('input', (e) => {
+                const restaurantId = e.target.dataset.restaurantId;
+                const value = Math.max(0, parseInt(e.target.value, 10) || 0);
+                const entry = getPlannerEntry(restaurantId);
+                entry.globalCount = value;
+                state.plannerDirty = true;
+                savePlannerPlan();
+                updatePlannerUI();
+                calculateDailyPlan(false); // Real-time calculation (silent)
+            });
+        });
+
+        container.querySelectorAll('.preset-action-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const restaurantId = e.currentTarget.dataset.restaurantId;
+                const action = e.currentTarget.dataset.action;
+                const presetIndex = (state.ui && state.ui.presetSelections && state.ui.presetSelections[restaurantId]) || 0;
+                handlePresetAction(action, restaurantId, presetIndex);
+            });
+        });
+    }
+
+    function handleSlotSelection(restaurantId, slotIndex, formulaId) {
+        const entry = getPlannerEntry(restaurantId);
+        const slot = entry.slots[slotIndex] || { formulaId: '' };
+        slot.formulaId = formulaId;
+        entry.slots[slotIndex] = slot;
+        state.plannerDirty = true;
+        savePlannerPlan();
+        updatePlannerUI();
+        refreshPlannerBuilder(); // Re-render to show selection
+        calculateDailyPlan(false); // Real-time calculation (silent)
+    }
+
+    function handleSlotCountChange(restaurantId, slotIndex, qty) {
+        // Deprecated/Removed functionality but kept signature if needed or just remove
+    }
+
+    function applyGlobalCount(restaurantId) {
+        // Deprecated/Removed functionality
+    }
+
+    function handlePresetAction(action, restaurantId, presetIndex) {
+        const entry = getPlannerEntry(restaurantId);
+        if (!state.plannerPresets[restaurantId]) {
+            state.plannerPresets[restaurantId] = {};
+        }
+
+        if (action === 'save') {
+            state.plannerPresets[restaurantId][presetIndex] = clonePlannerEntry(entry);
+            savePlannerPresets();
+            refreshPlannerBuilder(); // Immediately update UI to show saved preset
+            IslandEngine.showToast(`${state.restaurants[restaurantId]?.name || restaurantId}의 프리셋 ${presetIndex}이(가) 저장되었습니다.`, 'success');
+        } else if (action === 'load') {
+            const preset = state.plannerPresets[restaurantId][presetIndex];
+            if (!preset) {
+                IslandEngine.showToast('이 슬롯에 저장된 프리셋이 없습니다.', 'info');
+                return;
+            }
+            state.plannerPlan[restaurantId] = clonePlannerEntry(preset);
+            state.plannerDirty = true;
+            savePlannerPlan();
+            refreshPlannerBuilder();
+            renderPlannerResultsSection();
+            IslandEngine.showToast(`프리셋 ${presetIndex}을(를) 불러왔습니다.`, 'success');
+        }
+
+        updatePlannerUI();
+    }
+
+    function clonePlannerEntry(entry) {
+        return {
+            globalCount: entry.globalCount,
+            slots: entry.slots.map(slot => ({
+                formulaId: slot.formulaId || '',
+                count: slot.count || 0
+            }))
+        };
+    }
+
+    async function resetPlanner() {
+        const confirmed = await showConfirm('현재 플래너 선택을 모두 초기화할까요?');
+        if (!confirmed) return;
+
+        state.plannerPlan = createDefaultPlannerPlan();
+        state.lastPlannerResults = null;
+        state.plannerDirty = true;
+        savePlannerPlan();
+
+        updatePlannerUI();
+        renderPlannerResultsSection();
+        const modal = document.getElementById('planner-modal');
+        if (modal && !modal.classList.contains('hidden')) {
+            renderPlannerModal();
+        }
+
+        IslandEngine.showToast('플래너가 초기화되었습니다.', 'info');
+    }
+
+    function updatePlannerUI() {
+        const summaryEl = document.getElementById('planner-selection-summary');
+        if (!summaryEl) return;
+
+        let filledSlots = 0;
+        let totalQty = 0;
+
+        Object.values(state.plannerPlan).forEach(entry => {
+            entry.slots.forEach(slot => {
+                if (slot.formulaId) {
+                    filledSlots += 1;
+                    totalQty += Number(slot.count) || 0;
+                }
+            });
+        });
+
+        if (filledSlots === 0) {
+            summaryEl.textContent = '선택된 메뉴 없음';
+        } else {
+            summaryEl.textContent = `${filledSlots}개 메뉴 선택됨, 총 ${totalQty.toLocaleString()}개 생산`;
+        }
+    }
+
+    function calculateDailyPlan(arg) {
+        const silent = arg === false;
+        const selections = getPlannerSelections();
+        if (selections.length === 0) {
+            if (!silent) IslandEngine.showToast('선택된 메뉴가 없습니다.', 'info');
+            return;
+        }
+
+        const ingredients = {}; // { itemId: { name, icon, quantity, location } }
+
+        selections.forEach(selection => {
+            const qty = Math.max(0, parseInt(selection.qty, 10) || 0);
+            if (!selection.formulaId || qty <= 0) return;
+
+            const stopCondition = (recipeId, recipeCategory) => {
+                return recipeCategory === '1' || recipeCategory === '2';
+            };
+
+            const tree = IslandEngine.buildRecipeDependencyTree(
+                selection.formulaId,
+                state.recipeIndex,
+                state.recipeCategoryIndex,
+                state.dependencyGraph,
+                state.shopPurchaseData,
+                {
+                    useManualMode: false,
+                    quantityMultiplier: qty,
+                    shouldStopRecursion: stopCondition
+                }
+            );
+
+            if (tree) {
+                aggregateIngredients(tree, ingredients);
+            }
+        });
+
+        const selectionSummary = buildSelectionSummary(selections);
+        const groupedIngredients = groupIngredientsByLocation(ingredients);
+
+        state.lastPlannerResults = {
+            groupedIngredients,
+            selectionSummary
+        };
+        state.plannerDirty = false;
+
+        renderPlannerResultsSection();
+        if (!silent) IslandEngine.showToast('원자재 계산을 완료했습니다.', 'success');
+    }
+
+    function getPlannerSelections() {
+        const selections = [];
+        Object.entries(state.plannerPlan).forEach(([restaurantId, entry]) => {
+            const globalQty = parseInt(entry.globalCount, 10) || 0;
+            entry.slots.forEach((slot, idx) => {
+                if (slot.formulaId && globalQty > 0) {
+                    selections.push({
+                        restaurantId,
+                        slotIndex: idx,
+                        formulaId: slot.formulaId,
+                        qty: globalQty
+                    });
+                }
+            });
+        });
+        return selections;
+    }
+
+    function buildSelectionSummary(selections) {
+        const summary = {};
+        selections.forEach(sel => {
+            const recipe = state.recipeIndex[sel.formulaId];
+            let itemId = null;
+            let itemName = `Formula ${sel.formulaId}`;
+            let rarity = 1;
+
+            if (recipe && recipe.commission_product && recipe.commission_product.length > 0) {
+                itemId = recipe.commission_product[0][0];
+                const item = state.items[itemId];
+                if (item) {
+                    itemName = item.name;
+                    rarity = item.rarity;
+                }
+            }
+
+            if (!summary[sel.restaurantId]) summary[sel.restaurantId] = [];
+            summary[sel.restaurantId].push({
+                formulaId: sel.formulaId,
+                qty: sel.qty,
+                itemId,
+                itemName,
+                rarity
+            });
+        });
+        return summary;
+    }
+
+    function aggregateIngredients(node, resultObj) {
+        if (node.isStopNode || node.isShopPurchase) {
+            const itemId = node.itemId;
+            const itemInfo = node.itemInfo || IslandEngine.getItemInfo(itemId) || state.items[itemId] || {};
+            const qty = node.quantityNeeded || node.quantity || 0;
+
+            if (!resultObj[itemId]) {
+                resultObj[itemId] = {
+                    id: itemId,
+                    name: itemInfo.name,
+                    icon: itemInfo.icon,
+                    quantity: 0,
+                    rarity: itemInfo.rarity,
+                    location: getIngredientLocation(itemId)
+                };
+            }
+            resultObj[itemId].quantity += qty;
+            return;
+        }
+
+        if (node.dependencies && node.dependencies.length > 0) {
+            node.dependencies.forEach(dep => aggregateIngredients(dep, resultObj));
+        }
+    }
+
+    function getIngredientLocation(itemId) {
+        const itemInfo = state.items[itemId];
+        if (itemInfo && Array.isArray(itemInfo.jump_page) && itemInfo.jump_page.length > 0) {
+            const label = itemInfo.jump_page[0] && itemInfo.jump_page[0][0];
+            if (label) return label;
+        }
+        return '기타';
+    }
+
+    function groupIngredientsByLocation(ingredients) {
+        const groups = {};
+        Object.values(ingredients).forEach(item => {
+            const location = item.location || '기타';
+            if (!groups[location]) groups[location] = [];
+            groups[location].push(item);
+        });
+
+        Object.values(groups).forEach(list => {
+            list.sort((a, b) => (b.rarity || 0) - (a.rarity || 0));
+        });
+
+        return Object.keys(groups).sort().reduce((acc, key) => {
+            acc[key] = groups[key];
+            return acc;
+        }, {});
+    }
+
+    function renderPlannerResultsSection() {
+        const container = document.getElementById('planner-results');
+        if (!container) return;
+        container.innerHTML = renderPlannerResultsContent();
+    }
+
+    function renderPlannerResultsContent() {
+        const masterGroups = state.masterIngredients || {};
+        const calculatedGroups = (state.lastPlannerResults && state.lastPlannerResults.groupedIngredients) || {};
+
+        // Build a lookup for calculated quantities
+        const calculatedQuantities = {};
+        Object.values(calculatedGroups).flat().forEach(item => {
+            calculatedQuantities[item.id] = item.quantity;
+        });
+
+        const specialBottom = ["한가로운 목장", "지도에서 채집"];
+        const locations = Object.keys(masterGroups).sort((a, b) => {
+            const indexA = specialBottom.indexOf(a);
+            const indexB = specialBottom.indexOf(b);
+
+            if (indexA !== -1 && indexB !== -1) return indexA - indexB; // Both in bottom list
+            if (indexA !== -1) return 1; // A is bottom
+            if (indexB !== -1) return -1; // B is bottom
+            return a.localeCompare(b); // Standard sort
+        });
+
+        const groupHtml = locations.length === 0 ? '<div class="planner-empty-state"><p>데이터를 불러오는 중입니다...</p></div>' : locations.map(location => `
+            <div class="planner-result-group-card">
+                <div class="group-header">
+                    <span class="material-symbols-outlined">map</span>
+                    <span>${location}</span>
+                </div>
+                <div class="planner-ingredient-grid compact">
+                    ${masterGroups[location].map(item => {
+            const qty = calculatedQuantities[item.id] || 0;
+            const isActive = qty > 0;
+            return `
+                        <div class="ingredient-card mini rarity-${item.rarity || 1} ${isActive ? 'active' : ''}" data-name="${item.name}">
+                            <div class="ingredient-icon">
+                                ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '<span class="material-symbols-outlined">inventory_2</span>'}
+                                ${isActive ? `<span class="ingredient-qty">${Math.ceil(qty).toLocaleString()}</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+        }).join('')}
+                </div>
+            </div>
+        `).join('');
+
+        return `
+            <h4 class="planner-section-title">필요 원자재</h4>
+            ${groupHtml}
+        `;
+    }
+
+    function renderSelectionSummary(selectionSummary) {
+        const restaurantIds = Object.keys(selectionSummary);
+        if (restaurantIds.length === 0) {
+            return '<div class="planner-empty-state"><p>선택된 메뉴가 없습니다.</p></div>';
+        }
+
+        return `
+            <div class="planner-meal-summary">
+                <h4>선택한 메뉴</h4>
+                <div class="planner-meal-list">
+                    ${restaurantIds.map(restaurantId => {
+            const restaurantName = state.restaurants[restaurantId]?.name || `Restaurant ${restaurantId}`;
+            const menus = selectionSummary[restaurantId];
+            const itemsHtml = menus.map(menu => `
+                            <li class="planner-meal-item">
+                                <span class="planner-meal-qty">${menu.qty}x</span>
+                                <span class="planner-meal-name rarity-${menu.rarity}">${menu.itemName}</span>
+                            </li>
+                        `).join('');
+            return `
+                            <div class="planner-restaurant-group">
+                                <div class="planner-restaurant-name">${restaurantName}</div>
+                                <ul class="planner-meal-items">
+                                    ${itemsHtml}
+                                </ul>
+                            </div>
+                        `;
+        }).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function closePlannerModal() {
+        const modal = document.getElementById('planner-modal');
+        if (modal) modal.classList.add('hidden');
     }
 
     function showConfirm(message) {
@@ -929,231 +1908,6 @@ window.RestaurantModule = (function () {
             modal.classList.remove('hidden');
         });
     }
-
-    function updatePlannerQuantity(restaurantId, formulaId, delta) {
-        if (!state.plannerState[restaurantId]) state.plannerState[restaurantId] = {};
-        
-        const currentQty = state.plannerState[restaurantId][formulaId] || 0;
-        const newQty = Math.max(0, currentQty + delta);
-        
-        setPlannerQuantity(restaurantId, formulaId, newQty);
-    }
-
-    function setPlannerQuantity(restaurantId, formulaId, qty) {
-        if (!state.plannerState[restaurantId]) state.plannerState[restaurantId] = {};
-        
-        if (qty <= 0) {
-            delete state.plannerState[restaurantId][formulaId];
-            if (Object.keys(state.plannerState[restaurantId]).length === 0) {
-                delete state.plannerState[restaurantId];
-            }
-        } else {
-            state.plannerState[restaurantId][formulaId] = qty;
-        }
-        
-        // Update input field if it exists in current view
-        const input = document.querySelector(`.planner-qty-input[data-formula-id="${formulaId}"][data-restaurant-id="${restaurantId}"]`);
-        if (input) {
-            input.value = qty > 0 ? qty : 0;
-        }
-        
-        updatePlannerUI();
-    }
-
-    async function resetPlanner() {
-        const confirmed = await showConfirm('식단 계획을 모두 초기화하시겠습니까?');
-        if (!confirmed) return;
-        
-        state.plannerState = {};
-        
-        // Reset all inputs in current view
-        document.querySelectorAll('.planner-qty-input').forEach(input => {
-            input.value = 0;
-        });
-        
-        updatePlannerUI();
-        IslandEngine.showToast('식단 계획이 초기화되었습니다.', 'info');
-    }
-
-    function updatePlannerUI() {
-        const bar = document.getElementById('meal-planner-bar');
-        const countSpan = document.getElementById('planner-count');
-        
-        if (!bar || !countSpan) return;
-        
-        let totalItems = 0;
-        Object.values(state.plannerState).forEach(restaurantMenus => {
-            Object.values(restaurantMenus).forEach(qty => {
-                totalItems += qty;
-            });
-        });
-        
-        countSpan.textContent = totalItems.toLocaleString();
-        
-        if (totalItems > 0) {
-            bar.classList.remove('hidden');
-        } else {
-            bar.classList.add('hidden');
-        }
-    }
-
-    function calculateDailyPlan() {
-        const ingredients = {}; // { itemId: { name, icon, quantity, breakdown: [] } }
-
-        // Iterate through all selected items in planner
-        Object.entries(state.plannerState).forEach(([restaurantId, menus]) => {
-            Object.entries(menus).forEach(([formulaId, qty]) => {
-                if (qty <= 0) return;
-
-                // Stop recursion at Category 1 (Farming) or Category 2 (Gathering/Mining)
-                // This ensures we list "Corn" instead of "Corn Seeds", or "Iron Ore" instead of digging further
-                const stopCondition = (recipeId, recipeCategory) => {
-                    return recipeCategory === '1' || recipeCategory === '2'; 
-                }; 
-
-                const tree = IslandEngine.buildRecipeDependencyTree(
-                    formulaId,
-                    state.recipeIndex,
-                    state.recipeCategoryIndex,
-                    state.dependencyGraph,
-                    state.shopPurchaseData,
-                    {
-                        useManualMode: false,
-                        quantityMultiplier: qty,
-                        shouldStopRecursion: stopCondition
-                    }
-                );
-
-                if (tree) {
-                    aggregateIngredients(tree, ingredients);
-                }
-            });
-        });
-
-        showPlannerResults(ingredients);
-        IslandEngine.showToast('원자재 계산이 완료되었습니다!', 'success');
-    }
-
-    function aggregateIngredients(node, resultObj) {
-        // If it's a stop node (Category 1/2 product) or shop purchase
-        if (node.isStopNode || node.isShopPurchase) {
-            const itemId = node.itemId;
-            const itemInfo = node.itemInfo || IslandEngine.getItemInfo(itemId);
-            const qty = node.quantityNeeded || node.quantity || 0;
-
-            if (!resultObj[itemId]) {
-                resultObj[itemId] = {
-                    id: itemId,
-                    name: itemInfo.name,
-                    icon: itemInfo.icon,
-                    quantity: 0,
-                    rarity: itemInfo.rarity
-                };
-            }
-            resultObj[itemId].quantity += qty;
-            return;
-        }
-
-        // Recurse dependencies
-        if (node.dependencies && node.dependencies.length > 0) {
-            node.dependencies.forEach(dep => aggregateIngredients(dep, resultObj));
-        } else if (node.shopCost) { 
-             // Handle shop cost if present (fallback for shop items not caught by isShopPurchase if structure differs)
-             // ... existing structure usually sets isShopPurchase=true
-        }
-    }
-
-    function showPlannerResults(ingredients) {
-        const modal = document.getElementById('planner-modal');
-        const content = document.getElementById('planner-modal-content');
-        if (!modal || !content) return;
-
-        const ingredientList = Object.values(ingredients).sort((a, b) => b.rarity - a.rarity);
-
-        // Generate Meal Summary
-        let mealSummaryHTML = '';
-        const restaurantIds = Object.keys(state.plannerState);
-        
-        if (restaurantIds.length > 0) {
-            mealSummaryHTML += '<div class="planner-meal-summary">';
-            mealSummaryHTML += '<h4>선택된 메뉴</h4>';
-            mealSummaryHTML += '<div class="planner-meal-list">';
-            
-            restaurantIds.forEach(restaurantId => {
-                const restaurant = state.restaurants[restaurantId];
-                const menus = state.plannerState[restaurantId];
-                const restaurantName = restaurant ? restaurant.name : `Restaurant ${restaurantId}`;
-                
-                mealSummaryHTML += `<div class="planner-restaurant-group">`;
-                mealSummaryHTML += `<div class="planner-restaurant-name">${restaurantName}</div>`;
-                mealSummaryHTML += `<ul class="planner-meal-items">`;
-                
-                Object.entries(menus).forEach(([formulaId, qty]) => {
-                    if (qty <= 0) return;
-                    
-                    // Find itemId from menuIndex or iterate restaurant data if needed.
-                    // Ideally we should have stored itemId in plannerState, but formulaId is unique enough.
-                    // We can look up the recipe to find the output item.
-                    const recipe = state.recipeIndex[formulaId];
-                    let itemName = `Formula ${formulaId}`;
-                    let itemIcon = null;
-                    let itemRarity = 1;
-
-                    if (recipe && recipe.commission_product && recipe.commission_product.length > 0) {
-                        const itemId = recipe.commission_product[0][0]; // Assuming 1st product is main
-                        const item = state.items[itemId];
-                        if (item) {
-                            itemName = item.name;
-                            itemIcon = item.icon;
-                            itemRarity = item.rarity;
-                        }
-                    }
-
-                    mealSummaryHTML += `
-                        <li class="planner-meal-item">
-                            <span class="planner-meal-qty">${qty}x</span>
-                            <span class="planner-meal-name rarity-${itemRarity}">${itemName}</span>
-                        </li>
-                    `;
-                });
-                
-                mealSummaryHTML += `</ul>`;
-                mealSummaryHTML += `</div>`;
-            });
-            
-            mealSummaryHTML += '</div></div>';
-        }
-
-        if (ingredientList.length === 0) {
-            content.innerHTML = `<div class="empty-state"><p>필요한 재료가 없습니다.</p></div>`;
-            IslandEngine.showToast('필요한 재료가 없습니다. 메뉴와 수량을 확인해주세요.', 'info');
-        } else {
-            const html = `
-                ${mealSummaryHTML}
-                <h4 class="planner-section-title">필요 원자재</h4>
-                <div class="planner-ingredient-grid">
-                    ${ingredientList.map(item => `
-                        <div class="ingredient-card rarity-${item.rarity || 1}">
-                            <div class="ingredient-icon">
-                                ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '<span class="material-symbols-outlined">inventory_2</span>'}
-                                <span class="ingredient-qty">${Math.ceil(item.quantity).toLocaleString()}</span>
-                            </div>
-                            <div class="ingredient-name">${item.name}</div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            content.innerHTML = html;
-        }
-
-        modal.classList.remove('hidden');
-    }
-
-    function closePlannerModal() {
-        const modal = document.getElementById('planner-modal');
-        if (modal) modal.classList.add('hidden');
-    }
-
     // ============================================ 
     // PUBLIC API
     // ============================================ 
@@ -1163,6 +1917,13 @@ window.RestaurantModule = (function () {
         navigateToMenu,
         getRestaurantsForRecipe,
         viewRecipe,
+        openMenuSelectionModal,
+        selectMenusFromModal,
+        selectSlotForModal,
+        closeMenuSelectionModal,
+        adjustGlobalQty,
+        selectPresetSlot,
+        selectRestaurant,
         closePlannerModal, // Export for HTML onClick
         state: () => state // For debugging
     };
