@@ -28735,75 +28735,317 @@
     "604": {
         "id": 604,
         "ship_group": 1150002,
-        "message": "Translation Source Missing",
+        "message": "(파파고)2세대 버튼 개발 중",
         "name": "Tobiichi Origami",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/251120_zhezhijmbNgBii4OqiKZvM.png",
         "shipgirl_names": [
-            1150002
+            1150002,
+            20139,
+            70109
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "70109": "(파파고)1세대가 어떻게 실패했는지 물어봐도 될까요?"
+            },
+            "2": {
+                "1150002": "(파파고)알 수 없는 신호의 간섭, 도청 장치──아니, 실패한 것은 소녀의 직감이었다."
+            },
+            "3": {
+                "70109": "(파파고)에... 즉, 그 미지의 장치는 오리가미의 1세대 도청 버튼이었던 것입니다! ?"
+            },
+            "4": {
+                "70109": "(파파고)죄송합니다. 지금 바로 간섭을 끄겠습니다!"
+            },
+            "5": {
+                "1150002": "(파파고)쉽게 간섭받을 수 있다는 것은 2세대 개발이 필요하다는 뜻이다."
+            },
+            "6": {
+                "70109": "(파파고)그럼 나도 도와줄게~!"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "20139": "(파파고)아무리 봐도 이건 밀수품이다!"
+            },
+            "2": {
+                "1150002": "(파파고)나를 막을 건가요?"
+            },
+            "3": {
+                "20139": "(파파고)나도 놀고 싶어!"
+            },
+            "4": {
+                "20139": "(파파고)내 말은... 내가 직접 감독할 거란 말이야!"
+            },
+            "5": {
+                "1150002": "(파파고)다음에는 꼭"
+            }
+        },
+        "op_option1": "(파파고)이 버튼을 왜 만들까요?",
+        "op_reply1": "(파파고)이는 기밀 사항입니다.",
+        "reply1_shipgirl": 1150002,
+        "op_option2": "(파파고)귀하의 연구개발에 성공을 기원합니다!",
+        "op_reply2": "(파파고)나에게 맡겨라",
+        "reply2_shipgirl": 1150002
     },
     "605": {
         "id": 605,
         "ship_group": 1150005,
-        "message": "Translation Source Missing",
+        "message": "(파파고)앗 여기도 귀여운 고양이들이 많아요~",
         "name": "Kurumi Tokisaki ",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/251120_kuangsan4JdXmsogDGS7QQ4F.png",
         "shipgirl_names": [
+            90501,
+            90502,
+            60108,
+            80501,
             1150005
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "80501": "(파파고)최고의 즐거움"
+            },
+            "2": {
+                "90501": "(파파고)...이 시끄러운 꼬마들이 알고보니 여기 있었군요"
+            },
+            "3": {
+                "90502": "(파파고)하하, 이 아이들에게 관심이 많으시군요~"
+            },
+            "4": {
+                "90501": "(파파고)방금 우연히 발견했어요!"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "60108": "(파파고)광산씨, 마오마오와 사진 좀 찍어도 될까요?"
+            },
+            "2": {
+                "1150005": "(파파고)우리가 할 수 있는 일은 아무것도 없습니다. 그러면 제가 특별한 경우를 도와드리겠습니다. 그럼 어떻게 쏠 건가요?"
+            },
+            "3": {
+                "60108": "(파파고)...뭐?"
+            },
+            "4": {
+                "1150005": "(파파고)예를 들어, 몇 마리의 고양이를 찍고 싶은지, 어떤 구도를 원하는지 생각해 보세요."
+            },
+            "5": {
+                "60108": "(파파고)……아?"
+            },
+            "6": {
+                "1150005": "(파파고)아니면 고양이를 함께 쓰다듬고 함께 셀카를 찍을 수도 있나요?"
+            },
+            "7": {
+                "60108": "(파파고)...매우 감사합니다?"
+            }
+        },
+        "op_option1": "(파파고)그럼 이 사진을 찍은 사람은...?",
+        "op_reply1": "(파파고)누구지... 추측하고 싶나요?",
+        "reply1_shipgirl": 1150005,
+        "op_option2": "(파파고)저를 추가해주실 수 있나요?",
+        "op_reply2": "(파파고)그럼 내가 당신을 위해 길을 안내하겠습니다. 이것은 특별한 대접입니다.",
+        "reply2_shipgirl": 1150005
     },
     "606": {
         "id": 606,
         "ship_group": 1150004,
-        "message": "Translation Source Missing",
+        "message": "(파파고)너무 무섭지만... 꼭 필요한 운동이에요!",
         "name": "Yoshino",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/251120_sisinaiFVXwNUI6FDTZPDY6.png",
         "shipgirl_names": [
-            1150004
+            19905,
+            30181,
+            40143,
+            1150004,
+            40123,
+            40124,
+            10205
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "10205": "(파파고)요시노씨...무엇을 보고 계시나요?"
+            },
+            "2": {
+                "30181": "(파파고)제가 추천하는 영화입니다."
+            },
+            "3": {
+                "40123": "(파파고)그렇다면 당신은 용기를 내기 위해 공포 영화를 이용하고 있습니까?"
+            },
+            "4": {
+                "30181": "(파파고)오늘 보고 있는 것은 단지 보급형 수준이며 Xia는 나중에 점점 더 추천할 것입니다."
+            },
+            "5": {
+                "1150004": "(파파고)나...열심히 일할게!"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "19905": "(파파고)심연을 직시할 용기가 생겼으니 지금 이 순간의 떨림을 즐겨보세요~"
+            },
+            "2": {
+                "40124": "(파파고)이것은 또한 당신의 변신의 시작이 될 것입니다... 마왕은 당신의 용기를 칭찬합니다!"
+            },
+            "3": {
+                "40143": "(파파고)안심하세요, 우리의 보호 아래, 그 혼란스러운 것들이 당신의 영혼을 해치지 않을 것입니다"
+            },
+            "4": {
+                "1150004": "(파파고)아...응? 감사해요……?"
+            }
+        },
+        "op_option1": "(파파고)같이 볼까?",
+        "op_reply1": "(파파고)\"어머, 당신 정말 대담한데요?\"",
+        "reply1_shipgirl": 1150004,
+        "op_option2": "(파파고)요시노, 아주 강해!",
+        "op_reply2": "(파파고)감사합니다. 최선을 다하겠습니다...!",
+        "reply2_shipgirl": 1150004
     },
     "607": {
         "id": 607,
         "ship_group": 1150003,
-        "message": "Translation Source Missing",
+        "message": "(파파고)왜...오늘 점심은 구내식당에 고수가 나올텐데...",
         "name": "Itsuka Kotori",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/251120_qinliGW1YDtkvM5jXW64E.png",
         "shipgirl_names": [
-            1150003
+            40113,
+            1150003,
+            69903
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "69903": "(파파고)식탁에서 고수를 먹는 역사는 아주 오래전부터 시작됩니다!"
+            },
+            "2": {
+                "69903": "(파파고)학명이 Coriandrum sativum인 고수풀은 대륙간해 중부에서 유래하며 3,000년 이상 재배되어 왔습니다."
+            },
+            "3": {
+                "69903": "(파파고)예로부터 사용되어 온 맛있는 향신료입니다!"
+            },
+            "4": {
+                "1150003": "(파파고)...미스 쿠니베르티는 고수를 먹는 데 익숙합니까?"
+            },
+            "5": {
+                "69903": "(파파고)…아하하하하…"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "40113": "(파파고)고수풀을 가루로 만들어서 섞어주셔도 됩니다!"
+            },
+            "2": {
+                "40113": "(파파고)아니면 소스로 만들까요? 이렇게 하면 고수가 안보이네요~"
+            },
+            "3": {
+                "1150003": "(파파고)그게 더 무섭지 않아? !"
+            }
+        },
+        "op_option1": "(파파고)나는 고수를 먹는다. 먹는 것을 도와줄게!",
+        "op_reply1": "(파파고)...! 정말? 그럼... 귀찮게 할게...",
+        "reply1_shipgirl": 1150003,
+        "op_option2": "(파파고)고수 없이 주문하고 교환할 수 있나요?",
+        "op_reply2": "(파파고)...! 감사해요. 불편을 끼쳐드려 죄송합니다...",
+        "reply2_shipgirl": 1150003
     },
     "608": {
         "id": 608,
         "ship_group": 1150006,
-        "message": "Translation Source Missing",
+        "message": "(파파고)젠장...하지만 여기서는 절대 포기할 수 없어요! \\n\"동의합니다. 적이 아무리 강력하더라도 바우는 결코 움츠러들지 않을 것입니다.\"",
         "name": "Yamai Kguya Yamai Yuzuru",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/251120_bawufXDbvLSfTS69gNWN.png",
+        "shipgirl_names": [
+            10601,
+            30105,
+            31201,
+            1150006
+        ],
+        "reply_group1": {
+            "1": {
+                "10601": "(파파고)1승1패, 다음은 결정전~!"
+            },
+            "2": {
+                "1150006": "(파파고)젠장... 두 번째 라운드의 아야나미은(는) 첫 번째 라운드와 완전히 다릅니다...!"
+            },
+            "3": {
+                "1150006": "(파파고)\"전율. 그녀가 이렇게 강력한 힘을 숨길 줄은 몰랐다.\""
+            },
+            "4": {
+                "30105": "(파파고)3라운드에는 여기로 오세요...!"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "31201": "(파파고)구성이 성공 또는 실패를 결정합니다! 두 분 모두 고성능 게임기로의 변경을 고려하고 싶으신가요?"
+            },
+            "2": {
+                "31201": "(파파고)5분 카운트다운이 끝나기 전, 20% 할인 혜택을 누리실 수 있어요~!"
+            },
+            "3": {
+                "1150006": "(파파고)20% 할인... 좀 신나는 것 같죠?"
+            },
+            "4": {
+                "1150006": "(파파고)\"생각. 매력적인 제안인데...\""
+            }
+        },
+        "op_option1": "(파파고)결정적인 게임에 참여하세요!",
+        "op_reply1": "(파파고)모든 수단을 동원해 전력을 다해 나가세요!",
+        "reply1_shipgirl": 1150006,
+        "op_option2": "(파파고)당신은 이길 수 있습니까?",
+        "op_reply2": "(파파고)\"동의합니다. 이를 통해 바우의 진정한 강함을 알게 될 것입니다.\"",
+        "reply2_shipgirl": 1150006
+    },
+    "609": {
+        "id": 609,
+        "ship_group": 1150001,
+        "message": "(파파고)배를 든든하게 채워줄 초대형 주먹밥!",
+        "name": "Yatogami Tōka",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/251120_shixiangjMFzYCWWn5CzxEk9.png",
+        "shipgirl_names": [
+            50209,
+            1150001,
+            20401,
+            50105,
+            40123
+        ],
+        "reply_group1": {
+            "1": {
+                "20401": "(파파고)얼마나 든든한 무게인가"
+            },
+            "2": {
+                "1150001": "(파파고)하하, 그렇죠!"
+            },
+            "3": {
+                "40123": "(파파고)이 주먹밥은 저와 라피 아야나미 자벨린 4명만이 먹을 수 있을 것 같습니다..."
+            },
+            "4": {
+                "1150001": "(파파고)억지로 할 필요는 없어 자신에게 맞는 것이 가장 좋습니다"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "50105": "(파파고)이렇게 큰 주먹밥이 실제로 만들어지다니... 나쁘지 않은 기술이네요"
+            },
+            "2": {
+                "1150001": "(파파고)칭찬해주셔서 감사합니다, 롱우 선생님!"
+            },
+            "3": {
+                "50209": "(파파고)나도 그럴 수 있겠지~ 부엌 좀 빌릴 수 있을까~?"
+            },
+            "4": {
+                "50105": "(파파고)아니요"
+            }
+        },
+        "op_option1": "(파파고)맛있어 보여요!",
+        "op_reply1": "(파파고)당장 지휘관한테 보내줄게!",
+        "reply1_shipgirl": 1150001,
+        "op_option2": "(파파고)여러분의 노고에 감사드립니다. 얼굴을 닦는 것을 잊지 마십시오.",
+        "op_reply2": "(파파고)음! 고마워요, 사령관님!",
+        "reply2_shipgirl": 1150001
+    },
+    "610": {
+        "id": 610,
+        "ship_group": 10235,
+        "message": "Translation Source Missing",
+        "name": "Pasadena",
         "picture_persist": "",
         "shipgirl_names": [
-            1150006
+            10235
         ],
         "op_option1": "Translation Source Missing",
         "op_reply1": "Translation Source Missing",
@@ -28812,14 +29054,62 @@
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
     },
-    "609": {
-        "id": 609,
-        "ship_group": 1150001,
+    "611": {
+        "id": 611,
+        "ship_group": 10110,
         "message": "Translation Source Missing",
-        "name": "Yatogami Tōka",
+        "name": "William D. Porter",
         "picture_persist": "",
         "shipgirl_names": [
-            1150001
+            10110
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "612": {
+        "id": 612,
+        "ship_group": 10716,
+        "message": "Translation Source Missing",
+        "name": "Lexington II",
+        "picture_persist": "",
+        "shipgirl_names": [
+            10716
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "613": {
+        "id": 613,
+        "ship_group": 10725,
+        "message": "Translation Source Missing",
+        "name": "Cowpens",
+        "picture_persist": "",
+        "shipgirl_names": [
+            10725
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "614": {
+        "id": 614,
+        "ship_group": 10155,
+        "message": "Translation Source Missing",
+        "name": "Clarence K. Bronson",
+        "picture_persist": "",
+        "shipgirl_names": [
+            10155
         ],
         "op_option1": "Translation Source Missing",
         "op_reply1": "Translation Source Missing",

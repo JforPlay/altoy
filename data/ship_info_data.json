@@ -54,7 +54,10 @@
             "주간 임무"
         ],
         "name": "범용형 부린",
-        "gift_dislike": "",
+        "gift_dislike": [
+            180007,
+            180006
+        ],
         "skin_id": 100000,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/100000/shipyard.png",
         "timer": null,
@@ -14657,6 +14660,19 @@
             180005
         ],
         "skin_id": 103080,
+        "sp_weapon": {
+            "icon": "14940",
+            "name": "귀여움에 주의",
+            "skill_upgrade": [
+                [
+                    0,
+                    1011470
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "hit",
+            "weapon_true": false
+        },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103080/shipyard.png",
         "timer": null,
         "light": false,
@@ -45821,6 +45837,19 @@
             180002
         ],
         "skin_id": 207050,
+        "sp_weapon": {
+            "icon": "14880",
+            "name": "레이디의 상징(아마도)",
+            "skill_upgrade": [
+                [
+                    0,
+                    1012570
+                ]
+            ],
+            "attribute_1": "air",
+            "attribute_2": "reload",
+            "weapon_true": false
+        },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207050/shipyard.png",
         "timer": "04:30:00",
         "light": false,
@@ -62090,6 +62119,19 @@
             180005
         ],
         "skin_id": 302210,
+        "sp_weapon": {
+            "icon": "14900",
+            "name": "길상추진",
+            "skill_upgrade": [
+                [
+                    0,
+                    1012840
+                ]
+            ],
+            "attribute_1": "torpedo",
+            "attribute_2": "hit",
+            "weapon_true": true
+        },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302210/shipyard.png",
         "timer": "01:20:00",
         "light": false,
@@ -83985,6 +84027,19 @@
             180006
         ],
         "skin_id": 403090,
+        "sp_weapon": {
+            "icon": "14920",
+            "name": "아이젠 군",
+            "skill_upgrade": [
+                [
+                    0,
+                    1013910
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "dodge",
+            "weapon_true": false
+        },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403090/shipyard.png",
         "timer": "02:05:00",
         "light": false,
@@ -101842,6 +101897,19 @@
             180005
         ],
         "skin_id": 605060,
+        "sp_weapon": {
+            "icon": "14960",
+            "name": "월계의 시륜",
+            "skill_upgrade": [
+                [
+                    0,
+                    1012640
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "hit",
+            "weapon_true": true
+        },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605060/shipyard.png",
         "timer": "04:15:00",
         "light": false,
@@ -130908,6 +130976,178 @@
         "skin_id": 9707070,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9707070/shipyard.png",
         "timer": "03:50:00",
+        "light": false,
+        "medium": false,
+        "heavy": false,
+        "limited": false
+    },
+    {
+        "id": 30054,
+        "gid": 970708,
+        "sid": 9707081,
+        "nationality": 97,
+        "type": 7,
+        "rarity": "SSR",
+        "armor": 2,
+        "base": {
+            "9707081": {
+                "health": 1114,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 67,
+                "aviation": 82,
+                "reload": 48,
+                "accuracy": 25,
+                "evasion": 9,
+                "speed": 30,
+                "luck": 39,
+                "asw": 0
+            },
+            "9707082": {
+                "health": 1386,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 83,
+                "aviation": 102,
+                "reload": 48,
+                "accuracy": 25,
+                "evasion": 9,
+                "speed": 30,
+                "luck": 39,
+                "asw": 0
+            },
+            "9707083": {
+                "health": 1929,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 116,
+                "aviation": 143,
+                "reload": 48,
+                "accuracy": 25,
+                "evasion": 9,
+                "speed": 30,
+                "luck": 39,
+                "asw": 0
+            },
+            "9707084": {
+                "health": 2744,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 165,
+                "aviation": 204,
+                "reload": 48,
+                "accuracy": 25,
+                "evasion": 9,
+                "speed": 30,
+                "luck": 39,
+                "asw": 0
+            }
+        },
+        "growth": {
+            "9707081": {
+                "health": 21233,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 848,
+                "aviation": 1011,
+                "reload": 332,
+                "accuracy": 402,
+                "evasion": 291,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "9707082": {
+                "health": 21233,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 848,
+                "aviation": 1011,
+                "reload": 332,
+                "accuracy": 402,
+                "evasion": 291,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "9707083": {
+                "health": 21233,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 848,
+                "aviation": 1011,
+                "reload": 332,
+                "accuracy": 402,
+                "evasion": 291,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "9707084": {
+                "health": 21233,
+                "firepower": 0,
+                "torpedo": 0,
+                "antiair": 848,
+                "aviation": 1011,
+                "reload": 332,
+                "accuracy": 402,
+                "evasion": 291,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            }
+        },
+        "enhance": {
+            "health": 1087,
+            "antiair": 65,
+            "accuracy": 24,
+            "evasion": 9,
+            "aviation": 81,
+            "reload": 36
+        },
+        "skill": {
+            "802001": {
+                "id": 802001,
+                "parent": 802001,
+                "upgrade": 802002,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": false
+            },
+            "802002": {
+                "id": 802002,
+                "parent": 802001,
+                "upgrade": null,
+                "downgrade": 802001,
+                "requirement": "Limit Break 3",
+                "weapon_true": false
+            },
+            "801970": {
+                "id": 801970,
+                "parent": 801970,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "801980": {
+                "id": 801980,
+                "parent": 801980,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "801990": {
+                "id": 801990,
+                "parent": 801990,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            }
+        },
+        "timer": null,
         "light": false,
         "medium": false,
         "heavy": false,
