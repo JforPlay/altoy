@@ -10,17 +10,15 @@
  */
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Define character groups for the gallery
-    const CHARACTER_GROUPS = {
-        "2019 Hall of Fame": ["에기르", "체셔", "뉴저지"],
-        "2021 Hall of Fame": ["벨파스트", "모나크", "엔터프라이즈"]
-    };
+    // This will be populated dynamically after data loads
+    let CHARACTER_GROUPS = {};
 
     const hofConfig = {
         viewerType: 'hof',
 
         dataPaths: [
             'data/story-viewer/hof_kr.json',
+            'data/story-viewer/hof_kr_dummy.json',
             'data/story-viewer/shipgirl_data.json'
         ],
 
@@ -29,11 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // HOF data structure: { "characterName": { kr_name, icon, scripts } }
             // We need to transform it to match the engine's expected structure
             const rawHofData = dataArray[0];
-            viewer.shipgirlData = dataArray[1];
+            const rawDummyData = dataArray[1];
+            viewer.shipgirlData = dataArray[2];
 
             // Transform HOF data to match engine expectations
             // Each character becomes an "event" with one "memory"
             viewer.storylineData = {};
+
+            // Process regular HoF data
             for (const [characterKey, characterData] of Object.entries(rawHofData)) {
                 viewer.storylineData[characterKey] = {
                     id: characterKey,
@@ -49,6 +50,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     }]
                 };
             }
+
+            // Process dummy data with a prefix to distinguish them
+            const dummyCharacterNames = [];
+            for (const [characterKey, characterData] of Object.entries(rawDummyData)) {
+                const dummyKey = `dummy_${characterKey}`;
+                viewer.storylineData[dummyKey] = {
+                    id: dummyKey,
+                    name: characterData.kr_name,
+                    icon: characterData.icon,
+                    // Create a single memory entry containing the story
+                    memory_id: [{
+                        id: dummyKey,
+                        name: characterData.kr_name,
+                        story: {
+                            scripts: characterData.scripts  // Wrap scripts in an object
+                        }
+                    }]
+                };
+                dummyCharacterNames.push(dummyKey);
+            }
+
+            // Define character groups for the gallery (now with dynamic dummy data)
+            CHARACTER_GROUPS = {
+                "2019 Hall of Fame": ["에기르", "체셔", "뉴저지"],
+                "2021 Hall of Fame": ["벨파스트", "모나크", "엔터프라이즈"],
+                "2023 Hall of Fame (찐빠)": dummyCharacterNames
+            };
         },
 
         // For HOF, each "event" only has one memory (the character's story)
@@ -79,6 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const [groupTitle, characterNames] of Object.entries(CHARACTER_GROUPS)) {
             const groupWrapper = document.createElement('div');
             groupWrapper.className = 'hof-gallery-group';
+
+            // Add special class for dummy/flawed section
+            if (groupTitle.includes('찐빠')) {
+                groupWrapper.classList.add('dummy-section');
+            }
 
             const titleElement = document.createElement('h2');
             titleElement.className = 'hof-group-title';

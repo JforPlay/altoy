@@ -1,5 +1,7 @@
 {
-    "renqiankeleiqi": {
+    "앵커리지": {
+        "kr_name": "앵커리지",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199030/icon.png",
         "fadeOut": 1.5,
         "id": "RENQIANKELEIQI",
         "mode": 2,
@@ -901,7 +903,9 @@
             }
         ]
     },
-    "renqiqiershazhi": {
+    "키어사지": {
+        "kr_name": "키어사지",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199040/icon.png",
         "fadeOut": 1.5,
         "id": "RENQIQIERSHAZHI",
         "mode": 2,
@@ -1555,7 +1559,9 @@
             }
         ]
     },
-    "renqiyanusi": {
+    "재너스": {
+        "kr_name": "재너스",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201350/icon.png",
         "fadeOut": 1.5,
         "id": "RENQIYANUSI",
         "mode": 2,
