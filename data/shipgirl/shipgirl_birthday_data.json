@@ -7107,15 +7107,63 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500050/icon.png"
     },
     {
-        "ID": "Z156",
-        "룽섭 이름": "야마이 카구야 · 야마이 유즈루",
+        "ID": "715",
+        "룽섭 이름": "렉싱턴Ⅱ",
+        "레어도": "UR",
+        "함종": "항모",
+        "진영": "유니온",
+        "연": "1942",
+        "월": "9",
+        "일": "26",
+        "group_id": "10716",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107160/icon.png"
+    },
+    {
+        "ID": "716",
+        "룽섭 이름": "카우펜스",
         "레어도": "SSR",
-        "함종": "경순",
-        "진영": "데어라",
-        "연": null,
-        "월": "10",
+        "함종": "경항모",
+        "진영": "유니온",
+        "연": "1943",
+        "월": "1",
+        "일": "17",
+        "group_id": "10725",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107250/icon.png"
+    },
+    {
+        "ID": "12",
+        "룽섭 이름": "윌리엄 D 포터",
+        "레어도": "UR",
+        "함종": "구축",
+        "진영": "유니온",
+        "연": "1942",
+        "월": "9",
+        "일": "27",
+        "group_id": "10110",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101100/icon.png"
+    },
+    {
+        "ID": "718",
+        "룽섭 이름": "클래런스 K 브론슨",
+        "레어도": "SR",
+        "함종": "구축",
+        "진영": "유니온",
+        "연": "1943",
+        "월": "4",
         "일": "18",
-        "group_id": "1150006",
-        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500060/icon.png"
+        "group_id": "10155",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101550/icon.png"
+    },
+    {
+        "ID": "719",
+        "룽섭 이름": "패서디나",
+        "레어도": "SR",
+        "함종": "경순",
+        "진영": "유니온",
+        "연": "1943",
+        "월": "12",
+        "일": "28",
+        "group_id": "10235",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102350/icon.png"
     }
 ]
