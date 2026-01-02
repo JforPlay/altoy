@@ -4,6 +4,17 @@ let shipgirlData = {};
 let shipgirlNameMap = new Map(); // Optimized lookup by name
 let filteredEvents = [];
 
+// Normalize Roman numerals to handle data inconsistencies
+function normalizeRomanNumerals(str) {
+    if (!str) return str;
+    return str
+        .replace(/II/g, 'Ⅱ')   // ASCII II → Roman numeral 2
+        .replace(/III/g, 'Ⅲ')  // ASCII III → Roman numeral 3
+        .replace(/IV/g, 'Ⅳ')   // ASCII IV → Roman numeral 4
+        .replace(/V/g, 'Ⅴ')     // ASCII V → Roman numeral 5
+        .trim();
+}
+
 // DOM elements
 const searchInput = document.getElementById('searchInput');
 const clearBtn = document.getElementById('clearBtn');
@@ -41,18 +52,20 @@ async function loadData() {
                 if (shipgirl.id) {
                     shipgirlData[shipgirl.id.toString()] = shipgirl;
                 }
-                // Build name-based lookup map for O(1) access
+                // Build name-based lookup map for O(1) access with normalized names
                 if (shipgirl.name) {
-                    shipgirlNameMap.set(shipgirl.name.trim(), shipgirl);
+                    const normalizedName = normalizeRomanNumerals(shipgirl.name.trim());
+                    shipgirlNameMap.set(normalizedName, shipgirl);
                 }
             });
         } else {
             // If it's already an object, use it directly
             shipgirlData = shipgirlRawData;
-            // Build name map from object
+            // Build name map from object with normalized names
             Object.values(shipgirlData).forEach(shipgirl => {
                 if (shipgirl.name) {
-                    shipgirlNameMap.set(shipgirl.name.trim(), shipgirl);
+                    const normalizedName = normalizeRomanNumerals(shipgirl.name.trim());
+                    shipgirlNameMap.set(normalizedName, shipgirl);
                 }
             });
         }
@@ -139,7 +152,7 @@ function clearSearch() {
 
 // Filter events based on all criteria
 function filterEvents() {
-    const searchQuery = searchInput.value.trim().toLowerCase();
+    const searchQuery = normalizeRomanNumerals(searchInput.value.trim()).toLowerCase();
     const selectedCategory = categoryFilter.value;
     const selectedFaction = factionFilter.value;
     const selectedMudak = mudakFilter.value;
@@ -153,10 +166,10 @@ function filterEvents() {
             return false;
         }
 
-        // Search filter (event name or shipgirl names)
+        // Search filter (event name or shipgirl names) - normalize for consistent matching
         if (searchQuery) {
-            const eventName = (event.이벤트명 || '').toLowerCase();
-            const shipgirls = (event.함순이 || '').toLowerCase();
+            const eventName = normalizeRomanNumerals(event.이벤트명 || '').toLowerCase();
+            const shipgirls = normalizeRomanNumerals(event.함순이 || '').toLowerCase();
 
             if (!eventName.includes(searchQuery) && !shipgirls.includes(searchQuery)) {
                 return false;
@@ -290,11 +303,13 @@ function createShipgirlsSection(shipgirlsStr) {
     }
 
     const icons = shipgirlNames.map(name => {
+        const normalizedName = normalizeRomanNumerals(name.trim());
         const shipgirl = findShipgirlByName(name);
 
         if (shipgirl) {
             const rarityClass = getRarityClass(shipgirl.rarity);
-            const shipgirlUrl = `pages/shipgirl/shipgirl-info.html?ship=${encodeURIComponent(name)}`;
+            // Use normalized name for consistent URLs
+            const shipgirlUrl = `pages/shipgirl/shipgirl-info.html?ship=${encodeURIComponent(normalizedName)}`;
             return `
                 <a href="${shipgirlUrl}" class="shipgirl-icon-link">
                     <div class="shipgirl-icon ${rarityClass}">
@@ -305,8 +320,8 @@ function createShipgirlsSection(shipgirlsStr) {
                 </a>
             `;
         } else {
-            // If icon not found, show text only with link
-            const shipgirlUrl = `pages/shipgirl/shipgirl-info.html?ship=${encodeURIComponent(name)}`;
+            // If icon not found, show text only with link using normalized name
+            const shipgirlUrl = `pages/shipgirl/shipgirl-info.html?ship=${encodeURIComponent(normalizedName)}`;
             return `
                 <a href="${shipgirlUrl}" class="shipgirl-icon-link">
                     <div class="shipgirl-icon rarity-unknown">
@@ -343,8 +358,8 @@ function getRarityClass(rarity) {
 // Find shipgirl by name in shipgirl_data
 // Optimized with Map for O(1) lookup instead of O(n) iteration
 function findShipgirlByName(name) {
-    const cleanName = name.trim();
-    return shipgirlNameMap.get(cleanName) || null;
+    const normalizedName = normalizeRomanNumerals(name.trim());
+    return shipgirlNameMap.get(normalizedName) || null;
 }
 
 // Info popup and scroll-to-top are handled globally by global.script.js
