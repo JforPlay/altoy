@@ -15,9 +15,9 @@ let skillIconData = {};
 let skillDataTemplate = {};
 let viewMode = 'grid';
 
-// Construction-specific filters
-let currentConstructionType = 'all';
-let currentTimerFilter = 'all';
+// Construction-specific filters (disabled - data removed from ship_info_data.json)
+// let currentConstructionType = 'all';
+// let currentTimerFilter = 'all';
 
 // ===== DOM Elements =====
 const mainView = document.getElementById('mainView');
@@ -253,7 +253,8 @@ function setupEventListeners() {
     document.getElementById('shipTypeFilter').addEventListener('change', filterShipgirls);
     document.getElementById('nationalityFilter').addEventListener('change', filterShipgirls);
 
-    // Construction filter
+    // Construction filter (disabled - data removed from ship_info_data.json)
+    /*
     const constructionFilter = document.getElementById('constructionFilter');
     if (constructionFilter) {
         constructionFilter.addEventListener('change', (e) => {
@@ -261,6 +262,7 @@ function setupEventListeners() {
             filterShipgirls();
         });
     }
+    */
 
     // Info popup is handled globally by global.script.js
 
@@ -341,13 +343,13 @@ function filterShipgirls() {
         const matchesShipType = !selectedShipType || String(ship.type) === selectedShipType;
         const matchesNationality = !selectedNationality || String(ship.nationality) === selectedNationality;
 
-        // Construction type filter
-        const matchesConstruction = currentConstructionType === 'all' || ship[currentConstructionType] === true;
+        // Construction type filter (disabled - data removed from ship_info_data.json)
+        // const matchesConstruction = currentConstructionType === 'all' || ship[currentConstructionType] === true;
 
-        // Timer filter
-        const matchesTimer = currentTimerFilter === 'all' || ship.timer === currentTimerFilter;
+        // Timer filter (disabled - data removed from ship_info_data.json)
+        // const matchesTimer = currentTimerFilter === 'all' || ship.timer === currentTimerFilter;
 
-        return matchesSearch && matchesRarity && matchesShipType && matchesNationality && matchesConstruction && matchesTimer;
+        return matchesSearch && matchesRarity && matchesShipType && matchesNationality;
     });
 
     renderShipgirls();
@@ -388,7 +390,8 @@ function createGridCard(ship) {
 
     const hasValidIcon = shipTypeInfo.icon && shipTypeInfo.icon !== 'undefined';
 
-    // Construction badges for overlay
+    // Construction badges and timer (disabled - data removed from ship_info_data.json)
+    /*
     let constructionBadges = '';
     if (ship.limited) {
         constructionBadges += '<span class="construction-badge limited-badge">★ 한정</span>';
@@ -402,14 +405,13 @@ function createGridCard(ship) {
     if (ship.heavy) {
         constructionBadges += '<span class="construction-badge">특형</span>';
     }
-
     const timerDisplay = ship.timer ? `<span class="timer-badge">${formatTimer(ship.timer)}</span>` : '';
+    */
 
     return `
         <div class="shipgirl-card">
             <img src="${ship.shipyard || ''}" alt="${ship.name || '알 수 없음'}" class="shipgirl-image"
                  onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22250%22 height=%22200%22%3E%3Crect fill=%22%23ddd%22 width=%22250%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22%3E이미지 없음%3C/text%3E%3C/svg%3E'">
-            ${constructionBadges ? `<div class="construction-badges-overlay">${constructionBadges}</div>` : ''}
             <div class="shipgirl-info">
                 <div class="shipgirl-name">${ship.name || '이름 없음'}</div>
                 <div class="shipgirl-meta">
@@ -420,7 +422,6 @@ function createGridCard(ship) {
         }
                     <span class="rarity-badge rarity-${ship.rarity}">${ship.rarity}</span>
                 </div>
-                ${timerDisplay}
             </div>
         </div>
     `;
@@ -439,7 +440,8 @@ function createListCard(ship) {
 
     const hasValidIcon = shipTypeInfo.icon && shipTypeInfo.icon !== 'undefined';
 
-    // Construction badges for inline display
+    // Construction badges and timer (disabled - data removed from ship_info_data.json)
+    /*
     let constructionBadges = '';
     if (ship.limited) {
         constructionBadges += '<span class="construction-badge limited-badge">★ 한정</span>';
@@ -453,8 +455,8 @@ function createListCard(ship) {
     if (ship.heavy) {
         constructionBadges += '<span class="construction-badge">특형</span>';
     }
-
     const timerDisplay = ship.timer ? `<span class="timer-badge">${formatTimer(ship.timer)}</span>` : '';
+    */
 
     return `
         <div class="shipgirl-card">
@@ -463,8 +465,6 @@ function createListCard(ship) {
             <div class="shipgirl-info">
                 <div class="left-info">
                     <div class="shipgirl-name">${ship.name || '이름 없음'}</div>
-                    ${constructionBadges}
-                    ${timerDisplay}
                 </div>
                 <div class="shipgirl-meta">
                     <span class="nationality-code" title="${nationalityInfo.name}">${nationalityInfo.code || nationalityInfo.name}</span>
@@ -479,7 +479,8 @@ function createListCard(ship) {
     `;
 }
 
-// Format timer for display
+// Format timer for display (disabled - data removed from ship_info_data.json)
+/*
 function formatTimer(timer) {
     if (!timer || timer === '건조시간 없음') return timer;
     const parts = timer.split(':');
@@ -496,6 +497,7 @@ function formatTimer(timer) {
     }
     return `${hours}시간 ${minutes}분 ${seconds}초`;
 }
+*/
 
 // Update filter statistics
 function updateFilterStats() {
