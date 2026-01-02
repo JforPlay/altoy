@@ -1101,6 +1101,8 @@ body.dark-mode .stat-enhance {
 
   .shipgirl-grid.list-view .shipgirl-name {
     white-space: normal;
+    word-break: keep-all; /* Prevent breaking Korean text and Roman numerals */
+    overflow-wrap: break-word; /* Only break if absolutely necessary */
     width: 100%;
   }
 

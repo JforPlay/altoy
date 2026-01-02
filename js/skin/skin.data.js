@@ -31,8 +31,8 @@ window.SkinData = (function () {
             state.skinData = Object.values(skinDataMap);
             state.expressionManifest = manifest || {};
 
-            // Prepare Fuse
-            state.allCharacterNames = [...new Set(state.skinData.map(row => row['함순이 이름']))]
+            // Prepare Fuse - normalize all character names
+            state.allCharacterNames = [...new Set(state.skinData.map(row => normalizeRomanNumerals(row['함순이 이름'])))]
                 .filter(Boolean)
                 .sort(customSort);
             
@@ -69,9 +69,21 @@ window.SkinData = (function () {
         return state.characterFuse.search(query);
     }
 
+    // Normalize to Roman numerals to handle data inconsistencies
+    function normalizeRomanNumerals(str) {
+        if (!str) return str;
+        return str
+            .replace(/II/g, 'Ⅱ')   // ASCII II → Roman numeral 2
+            .replace(/III/g, 'Ⅲ')  // ASCII III → Roman numeral 3
+            .replace(/IV/g, 'Ⅳ')   // ASCII IV → Roman numeral 4
+            .replace(/V/g, 'Ⅴ')     // ASCII V → Roman numeral 5
+            .trim();
+    }
+
     function getSkinsForCharacter(charName) {
+        const normalized = normalizeRomanNumerals(charName);
         return state.skinData
-            .filter(row => row['함순이 이름'] === charName)
+            .filter(row => normalizeRomanNumerals(row['함순이 이름']) === normalized)
             .map(skin => skin['한글 함순이 + 스킨 이름']);
     }
 

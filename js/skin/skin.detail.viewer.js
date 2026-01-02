@@ -252,9 +252,58 @@ document.addEventListener('DOMContentLoaded', async () => {
         const params = new URLSearchParams(window.location.search);
         const char = params.get('character');
         const skin = params.get('skin');
-        if (char && SkinData.getAllCharacterNames().includes(char)) {
-            handleCharacterSelect(char, false);
-            if (skin) handleSkinSelect(skin);
+
+        console.log('URL params - character:', char, 'skin:', skin);
+
+        if (char) {
+            // Normalize and find exact or fuzzy match
+            const normalizedChar = char.trim();
+            const allNames = SkinData.getAllCharacterNames();
+
+            console.log('Looking for character:', normalizedChar);
+            console.log('Exact match exists:', allNames.includes(normalizedChar));
+
+            // Try exact match first (case-sensitive)
+            if (allNames.includes(normalizedChar)) {
+                console.log('Exact match found, selecting character');
+                handleCharacterSelect(normalizedChar, false);
+
+                // If skin parameter exists, try to select it
+                if (skin) {
+                    const skins = SkinData.getSkinsForCharacter(normalizedChar);
+                    console.log('Available skins:', skins);
+
+                    // Try exact match first
+                    if (skins.includes(skin)) {
+                        handleSkinSelect(skin);
+                    } else {
+                        // If no exact match, select the first skin (usually the default skin)
+                        if (skins.length > 0) {
+                            console.log('Skin not found, selecting first skin:', skins[0]);
+                            handleSkinSelect(skins[0]);
+                        }
+                    }
+                }
+            } else {
+                // Try fuzzy search as fallback
+                console.log('No exact match, trying fuzzy search');
+                const results = SkinData.searchCharacters(normalizedChar);
+                console.log('Fuzzy search results:', results);
+
+                if (results.length > 0 && results[0].score < 0.3) {
+                    // If we have a good match (low score = good match)
+                    const matchedName = results[0].item.name;
+                    console.log('Fuzzy match found:', matchedName, 'score:', results[0].score);
+                    handleCharacterSelect(matchedName, false);
+
+                    if (skin) {
+                        const skins = SkinData.getSkinsForCharacter(matchedName);
+                        if (skins.length > 0) {
+                            handleSkinSelect(skins[0]);
+                        }
+                    }
+                }
+            }
         }
     }
 });

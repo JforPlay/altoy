@@ -641,8 +641,7 @@ function renderDetailHeader(ship, nationalityInfo) {
                     ${hasRetrofit ? '<span class="retrofit-available-badge">개조 가능</span>' : ''}
                 </h2>
                 <div class="skin-link-container">
-                        <a href="pages/skin/skin-detail-viewer.html?character=${encodeURIComponent(ship.name)}&skin=${encodeURIComponent(ship.name)}" 
-                           class="skin-viewer-button">
+                        <a href="pages/skin/skin-detail-viewer.html?character=${encodeURIComponent(ship.name)}&skin=${encodeURIComponent(ship.name)}" class="skin-viewer-button">
                             🎨 스킨/대사 보러가기
                         </a>
                     </div>
