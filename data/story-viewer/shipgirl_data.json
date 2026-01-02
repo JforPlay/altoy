@@ -83,9 +83,21 @@
         "name": "모리",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101080/icon.png"
     },
+    "101089": {
+        "name": "모리·改",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101089/icon.png"
+    },
     "101090": {
         "name": "플레처",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101090/icon.png"
+    },
+    "101100": {
+        "name": "윌리엄 D 포터",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101100/icon.png"
+    },
+    "101101": {
+        "name": "전대미문의 메이드 서비스",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101101/icon.png"
     },
     "101110": {
         "name": "찰스 오스본",
@@ -439,6 +451,10 @@
         "name": "다시 찾아온 여름의 전쟁",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101501/icon.png"
     },
+    "101502": {
+        "name": "허먼의 맛있는 마법",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101502/icon.png"
+    },
     "101510": {
         "name": "라피Ⅱ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101510/icon.png"
@@ -466,6 +482,14 @@
     "101531": {
         "name": "괴인 실험체 M01",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101531/icon.png"
+    },
+    "101550": {
+        "name": "클래런스 K 브론슨",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101550/icon.png"
+    },
+    "101551": {
+        "name": "스페셜 커넥션?",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101551/icon.png"
     },
     "102010": {
         "name": "오마하",
@@ -723,6 +747,10 @@
         "name": "도착지는 바람 따라",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102233/icon.png"
     },
+    "102234": {
+        "name": "Briar Maid",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102234/icon.png"
+    },
     "102240": {
         "name": "클리블랜드(μ장비)",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102240/icon.png"
@@ -834,6 +862,14 @@
     "102341": {
         "name": "밤에도 계속 되는 가십 타임!",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102341/icon.png"
+    },
+    "102350": {
+        "name": "패서디나",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102350/icon.png"
+    },
+    "102351": {
+        "name": "서프라이징 게임",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102351/icon.png"
     },
     "103010": {
         "name": "펜사콜라",
@@ -1443,6 +1479,14 @@
         "name": "밝은 하늘의 인어",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107101/icon.png"
     },
+    "107102": {
+        "name": "온기를 나누는 저녁",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107102/icon.png"
+    },
+    "107103": {
+        "name": "온기를 나누는 저녁",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107103/icon.png"
+    },
     "107110": {
         "name": "인트레피드 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107110/icon.png"
@@ -1478,6 +1522,14 @@
     "107142": {
         "name": "선샤인 프린세스",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107142/icon.png"
+    },
+    "107160": {
+        "name": "렉싱턴II",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107160/icon.png"
+    },
+    "107161": {
+        "name": "사근사근한 메이드",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107161/icon.png"
     },
     "107170": {
         "name": "벙커힐 ",
@@ -1526,6 +1578,14 @@
     "107233": {
         "name": "루돌프의 선물",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107233/icon.png"
+    },
+    "107250": {
+        "name": "카우펜스",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107250/icon.png"
+    },
+    "107251": {
+        "name": "밀키 케어",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107251/icon.png"
     },
     "107270": {
         "name": "랭글리Ⅱ",
@@ -6007,6 +6067,10 @@
         "name": "청명한 뷘트슈틸레",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405051/icon.png"
     },
+    "405052": {
+        "name": "광휘와 마음의 게디히트",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405052/icon.png"
+    },
     "405060": {
         "name": "꼬마 프리드리히",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/405060/icon.png"
@@ -8560,7 +8624,7 @@
         "icon": null
     },
     "900322": {
-        "name": "본험리차드",
+        "name": "본험 리차드",
         "icon": null
     },
     "900323": {
@@ -9028,7 +9092,7 @@
         "icon": null
     },
     "900479": {
-        "name": "미스 R",
+        "name": "본험 리차드",
         "icon": null
     },
     "900480": {
@@ -9177,6 +9241,18 @@
     },
     "900532": {
         "name": "별의 괴수?",
+        "icon": null
+    },
+    "900533": {
+        "name": "아마하라 료코",
+        "icon": null
+    },
+    "900534": {
+        "name": "본험 리차드",
+        "icon": null
+    },
+    "900535": {
+        "name": "마리아",
         "icon": null
     },
     "901010": {
@@ -9671,6 +9747,10 @@
         "name": "보이시·META",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702080/icon.png"
     },
+    "9702090": {
+        "name": "클리블랜드·META",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702090/icon.png"
+    },
     "9703010": {
         "name": "트렌토·META",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9703010/icon.png"
@@ -9798,6 +9878,10 @@
     "9707070": {
         "name": "글로리어스·META",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9707070/icon.png"
+    },
+    "9707080": {
+        "name": "요크타운·META",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9707080/icon.png"
     },
     "9708010": {
         "name": "U-556·META",

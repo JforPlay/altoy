@@ -22210,6 +22210,112 @@
     "id": 17273,
     "reload_max": 1534
   },
+  "17280": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "angle": 90,
+    "attack_attribute": 0,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      1500
+    ],
+    "bullet_ID": [],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 1,
+    "effect_move": 1,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-main",
+    "id": 17280,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0.5,
+    "reload_max": 1787,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "plane",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 10
+  },
+  "17281": {
+    "base": 17280,
+    "id": 17281,
+    "reload_max": 1755
+  },
+  "17282": {
+    "base": 17280,
+    "id": 17282,
+    "reload_max": 1724
+  },
+  "17283": {
+    "base": 17280,
+    "id": 17283,
+    "reload_max": 1693
+  },
+  "17284": {
+    "base": 17280,
+    "id": 17284,
+    "reload_max": 1662
+  },
+  "17285": {
+    "base": 17280,
+    "id": 17285,
+    "reload_max": 1630
+  },
+  "17286": {
+    "base": 17280,
+    "id": 17286,
+    "reload_max": 1599
+  },
+  "17287": {
+    "base": 17280,
+    "id": 17287,
+    "reload_max": 1568
+  },
+  "17288": {
+    "base": 17280,
+    "id": 17288,
+    "reload_max": 1537
+  },
+  "17289": {
+    "base": 17280,
+    "id": 17289,
+    "reload_max": 1505
+  },
+  "17290": {
+    "base": 17280,
+    "id": 17290,
+    "reload_max": 1474
+  },
+  "17291": {
+    "base": 17280,
+    "id": 17291,
+    "reload_max": 1474
+  },
+  "17292": {
+    "base": 17280,
+    "id": 17292,
+    "reload_max": 1474
+  },
+  "17293": {
+    "base": 17280,
+    "id": 17293,
+    "reload_max": 1474
+  },
   "17300": {
     "action_index": "attack",
     "aim_type": 1,
@@ -25935,6 +26041,112 @@
     "base": 19300,
     "id": 19313,
     "reload_max": 1984
+  },
+  "19320": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "angle": 90,
+    "attack_attribute": 0,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      1500
+    ],
+    "bullet_ID": [],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 1,
+    "effect_move": 1,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-main",
+    "id": 19320,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0.5,
+    "reload_max": 1787,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "plane",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 10
+  },
+  "19321": {
+    "base": 19320,
+    "id": 19321,
+    "reload_max": 1755
+  },
+  "19322": {
+    "base": 19320,
+    "id": 19322,
+    "reload_max": 1724
+  },
+  "19323": {
+    "base": 19320,
+    "id": 19323,
+    "reload_max": 1693
+  },
+  "19324": {
+    "base": 19320,
+    "id": 19324,
+    "reload_max": 1662
+  },
+  "19325": {
+    "base": 19320,
+    "id": 19325,
+    "reload_max": 1630
+  },
+  "19326": {
+    "base": 19320,
+    "id": 19326,
+    "reload_max": 1599
+  },
+  "19327": {
+    "base": 19320,
+    "id": 19327,
+    "reload_max": 1568
+  },
+  "19328": {
+    "base": 19320,
+    "id": 19328,
+    "reload_max": 1537
+  },
+  "19329": {
+    "base": 19320,
+    "id": 19329,
+    "reload_max": 1505
+  },
+  "19330": {
+    "base": 19320,
+    "id": 19330,
+    "reload_max": 1474
+  },
+  "19331": {
+    "base": 19320,
+    "id": 19331,
+    "reload_max": 1474
+  },
+  "19332": {
+    "base": 19320,
+    "id": 19332,
+    "reload_max": 1474
+  },
+  "19333": {
+    "base": 19320,
+    "id": 19333,
+    "reload_max": 1474
   },
   "21000": {
     "action_index": "attack",
@@ -72743,6 +72955,114 @@
     "damage": 448,
     "id": 52373
   },
+  "52380": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 22,
+    "attack_attribute": 4,
+    "attack_attribute_ratio": 80,
+    "auto_aftercast": 0,
+    "axis_angle": 22,
+    "barrage_ID": [
+      2121
+    ],
+    "bullet_ID": [
+      2145
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 161,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 52380,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 500,
+    "recover_time": 0,
+    "reload_max": 9500,
+    "search_condition": [
+      1
+    ],
+    "search_type": 2,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 2
+  },
+  "52381": {
+    "base": 52380,
+    "damage": 185,
+    "id": 52381
+  },
+  "52382": {
+    "base": 52380,
+    "damage": 209,
+    "id": 52382
+  },
+  "52383": {
+    "base": 52380,
+    "damage": 233,
+    "id": 52383
+  },
+  "52384": {
+    "base": 52380,
+    "damage": 257,
+    "id": 52384
+  },
+  "52385": {
+    "base": 52380,
+    "damage": 281,
+    "id": 52385
+  },
+  "52386": {
+    "base": 52380,
+    "damage": 305,
+    "id": 52386
+  },
+  "52387": {
+    "base": 52380,
+    "damage": 329,
+    "id": 52387
+  },
+  "52388": {
+    "base": 52380,
+    "damage": 353,
+    "id": 52388
+  },
+  "52389": {
+    "base": 52380,
+    "damage": 377,
+    "id": 52389
+  },
+  "52390": {
+    "base": 52380,
+    "damage": 402,
+    "id": 52390
+  },
+  "52391": {
+    "base": 52380,
+    "damage": 418,
+    "id": 52391
+  },
+  "52392": {
+    "base": 52380,
+    "damage": 442,
+    "id": 52392
+  },
+  "52393": {
+    "base": 52380,
+    "damage": 474,
+    "id": 52393
+  },
   "52400": {
     "action_index": "",
     "aim_type": 1,
@@ -77423,6 +77743,114 @@
     "base": 53420,
     "damage": 330,
     "id": 53433
+  },
+  "53440": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 22,
+    "attack_attribute": 4,
+    "attack_attribute_ratio": 80,
+    "auto_aftercast": 0,
+    "axis_angle": 22,
+    "barrage_ID": [
+      2121
+    ],
+    "bullet_ID": [
+      2146
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 161,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 53440,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 500,
+    "recover_time": 0,
+    "reload_max": 9500,
+    "search_condition": [
+      1
+    ],
+    "search_type": 2,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 2
+  },
+  "53441": {
+    "base": 53440,
+    "damage": 185,
+    "id": 53441
+  },
+  "53442": {
+    "base": 53440,
+    "damage": 209,
+    "id": 53442
+  },
+  "53443": {
+    "base": 53440,
+    "damage": 233,
+    "id": 53443
+  },
+  "53444": {
+    "base": 53440,
+    "damage": 257,
+    "id": 53444
+  },
+  "53445": {
+    "base": 53440,
+    "damage": 281,
+    "id": 53445
+  },
+  "53446": {
+    "base": 53440,
+    "damage": 305,
+    "id": 53446
+  },
+  "53447": {
+    "base": 53440,
+    "damage": 329,
+    "id": 53447
+  },
+  "53448": {
+    "base": 53440,
+    "damage": 353,
+    "id": 53448
+  },
+  "53449": {
+    "base": 53440,
+    "damage": 377,
+    "id": 53449
+  },
+  "53450": {
+    "base": 53440,
+    "damage": 402,
+    "id": 53450
+  },
+  "53451": {
+    "base": 53440,
+    "damage": 418,
+    "id": 53451
+  },
+  "53452": {
+    "base": 53440,
+    "damage": 442,
+    "id": 53452
+  },
+  "53453": {
+    "base": 53440,
+    "damage": 474,
+    "id": 53453
   },
   "54000": {
     "action_index": "",
@@ -91624,6 +92052,71 @@
     "base": 61161,
     "id": 61163
   },
+  "61171": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "angle": 30,
+    "attack_attribute": 0,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      1511,
+      1510,
+      1511
+    ],
+    "bullet_ID": [
+      17300,
+      19100,
+      18100
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 18,
+    "effect_move": 1,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/air-atk",
+    "id": 61171,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0.5,
+    "reload_max": 1750,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "plane",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 99
+  },
+  "61172": {
+    "barrage_ID": [
+      1511,
+      1511,
+      1511
+    ],
+    "base": 61171,
+    "id": 61172
+  },
+  "61173": {
+    "barrage_ID": [
+      1512,
+      1512,
+      1512
+    ],
+    "base": 61171,
+    "id": 61173
+  },
   "61501": {
     "action_index": "attack",
     "aim_type": 1,
@@ -94800,6 +95293,64 @@
     ],
     "damage": 1,
     "id": 61792
+  },
+  "61801": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "angle": 360,
+    "attack_attribute": 1,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      170923,
+      1425
+    ],
+    "bullet_ID": [
+      170922,
+      170923
+    ],
+    "charge_param": "",
+    "corrected": 125,
+    "damage": 1,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "CLFire",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-155mm",
+    "id": 61801,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 50,
+    "recover_time": 0.5,
+    "reload_max": 400,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 2
+  },
+  "61802": {
+    "barrage_ID": [
+      170923,
+      1425
+    ],
+    "base": 61801,
+    "bullet_ID": [
+      170922,
+      170923
+    ],
+    "damage": 1,
+    "id": 61802
   },
   "62001": {
     "action_index": "attack_main",
@@ -287851,6 +288402,1828 @@
     "damage": 40,
     "id": 169660
   },
+  "169661": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "angle": 360,
+    "attack_attribute": 1,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      82206,
+      82207,
+      82208,
+      82209,
+      82210,
+      82211,
+      82212,
+      82213
+    ],
+    "bullet_ID": [
+      161204,
+      161204,
+      161205,
+      161205,
+      161206,
+      161206,
+      161207,
+      161207
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 7,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "CLFire",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-155mm",
+    "id": 169661,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 120,
+    "recover_time": 0,
+    "reload_max": 5000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 1
+  },
+  "169662": {
+    "base": 169661,
+    "damage": 9,
+    "id": 169662
+  },
+  "169663": {
+    "base": 169661,
+    "damage": 11,
+    "id": 169663
+  },
+  "169664": {
+    "base": 169661,
+    "damage": 13,
+    "id": 169664
+  },
+  "169665": {
+    "base": 169661,
+    "damage": 15,
+    "id": 169665
+  },
+  "169666": {
+    "base": 169661,
+    "damage": 17,
+    "id": 169666
+  },
+  "169667": {
+    "base": 169661,
+    "damage": 19,
+    "id": 169667
+  },
+  "169668": {
+    "base": 169661,
+    "damage": 21,
+    "id": 169668
+  },
+  "169669": {
+    "base": 169661,
+    "damage": 23,
+    "id": 169669
+  },
+  "169670": {
+    "base": 169661,
+    "damage": 25,
+    "id": 169670
+  },
+  "169671": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "angle": 90,
+    "attack_attribute": 0,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      12010
+    ],
+    "bullet_ID": [
+      169671
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 77,
+    "effect_move": 1,
+    "expose": 10,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-main",
+    "id": 169671,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0.5,
+    "reload_max": 2060,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "plane",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 10
+  },
+  "169672": {
+    "base": 169671,
+    "bullet_ID": [
+      169672
+    ],
+    "damage": 87,
+    "id": 169672
+  },
+  "169673": {
+    "base": 169671,
+    "bullet_ID": [
+      169673
+    ],
+    "damage": 97,
+    "id": 169673
+  },
+  "169674": {
+    "base": 169671,
+    "bullet_ID": [
+      169674
+    ],
+    "damage": 107,
+    "id": 169674
+  },
+  "169675": {
+    "base": 169671,
+    "bullet_ID": [
+      169675
+    ],
+    "damage": 117,
+    "id": 169675
+  },
+  "169676": {
+    "base": 169671,
+    "bullet_ID": [
+      169676
+    ],
+    "damage": 127,
+    "id": 169676
+  },
+  "169677": {
+    "base": 169671,
+    "bullet_ID": [
+      169677
+    ],
+    "damage": 138,
+    "id": 169677
+  },
+  "169678": {
+    "base": 169671,
+    "bullet_ID": [
+      169678
+    ],
+    "damage": 149,
+    "id": 169678
+  },
+  "169679": {
+    "base": 169671,
+    "bullet_ID": [
+      169679
+    ],
+    "damage": 160,
+    "id": 169679
+  },
+  "169680": {
+    "base": 169671,
+    "bullet_ID": [
+      169680
+    ],
+    "damage": 171,
+    "id": 169680
+  },
+  "169681": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 13,
+    "attack_attribute": 4,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 13,
+    "barrage_ID": [
+      2120
+    ],
+    "bullet_ID": [
+      2125
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 133,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 169681,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 500,
+    "recover_time": 0,
+    "reload_max": 10000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 2,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 2
+  },
+  "169682": {
+    "base": 169681,
+    "damage": 150,
+    "id": 169682
+  },
+  "169683": {
+    "base": 169681,
+    "damage": 167,
+    "id": 169683
+  },
+  "169684": {
+    "base": 169681,
+    "damage": 184,
+    "id": 169684
+  },
+  "169685": {
+    "base": 169681,
+    "damage": 203,
+    "id": 169685
+  },
+  "169686": {
+    "base": 169681,
+    "damage": 220,
+    "id": 169686
+  },
+  "169687": {
+    "base": 169681,
+    "damage": 238,
+    "id": 169687
+  },
+  "169688": {
+    "base": 169681,
+    "damage": 256,
+    "id": 169688
+  },
+  "169689": {
+    "base": 169681,
+    "damage": 274,
+    "id": 169689
+  },
+  "169690": {
+    "base": 169681,
+    "damage": 291,
+    "id": 169690
+  },
+  "169691": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 25,
+    "attack_attribute": 4,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 25,
+    "barrage_ID": [
+      2121
+    ],
+    "bullet_ID": [
+      2121
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 50,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 169691,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 500,
+    "recover_time": 0,
+    "reload_max": 10000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 2,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 2
+  },
+  "169692": {
+    "base": 169691,
+    "damage": 56,
+    "id": 169692
+  },
+  "169693": {
+    "base": 169691,
+    "damage": 63,
+    "id": 169693
+  },
+  "169694": {
+    "base": 169691,
+    "damage": 69,
+    "id": 169694
+  },
+  "169695": {
+    "base": 169691,
+    "damage": 75,
+    "id": 169695
+  },
+  "169696": {
+    "base": 169691,
+    "damage": 81,
+    "id": 169696
+  },
+  "169697": {
+    "base": 169691,
+    "damage": 89,
+    "id": 169697
+  },
+  "169698": {
+    "base": 169691,
+    "damage": 96,
+    "id": 169698
+  },
+  "169699": {
+    "base": 169691,
+    "damage": 104,
+    "id": 169699
+  },
+  "169700": {
+    "base": 169691,
+    "damage": 111,
+    "id": 169700
+  },
+  "169701": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "angle": 90,
+    "attack_attribute": 0,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      1500
+    ],
+    "bullet_ID": [
+      169701
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 1,
+    "effect_move": 1,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-main",
+    "id": 169701,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0.5,
+    "reload_max": 2344,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "plane",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 10
+  },
+  "169702": {
+    "base": 169701,
+    "bullet_ID": [
+      169702
+    ],
+    "id": 169702,
+    "reload_max": 2308
+  },
+  "169703": {
+    "base": 169701,
+    "bullet_ID": [
+      169703
+    ],
+    "id": 169703,
+    "reload_max": 2272
+  },
+  "169704": {
+    "base": 169701,
+    "bullet_ID": [
+      169704
+    ],
+    "id": 169704,
+    "reload_max": 2236
+  },
+  "169705": {
+    "base": 169701,
+    "bullet_ID": [
+      169705
+    ],
+    "id": 169705,
+    "reload_max": 2200
+  },
+  "169706": {
+    "barrage_ID": [
+      1501
+    ],
+    "base": 169701,
+    "bullet_ID": [
+      169706
+    ],
+    "id": 169706,
+    "reload_max": 2164
+  },
+  "169707": {
+    "barrage_ID": [
+      1501
+    ],
+    "base": 169701,
+    "bullet_ID": [
+      169707
+    ],
+    "id": 169707,
+    "reload_max": 2128
+  },
+  "169708": {
+    "barrage_ID": [
+      1501
+    ],
+    "base": 169701,
+    "bullet_ID": [
+      169708
+    ],
+    "id": 169708,
+    "reload_max": 2092
+  },
+  "169709": {
+    "barrage_ID": [
+      1501
+    ],
+    "base": 169701,
+    "bullet_ID": [
+      169709
+    ],
+    "id": 169709,
+    "reload_max": 2056
+  },
+  "169710": {
+    "barrage_ID": [
+      1501
+    ],
+    "base": 169701,
+    "bullet_ID": [
+      169710
+    ],
+    "id": 169710,
+    "reload_max": 2020
+  },
+  "169711": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 45,
+    "attack_attribute": 4,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": -10,
+    "barrage_ID": [
+      82214
+    ],
+    "bullet_ID": [
+      161208
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 55,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 169711,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 80,
+    "recover_time": 0,
+    "reload_max": 9500,
+    "search_condition": [
+      1
+    ],
+    "search_type": 2,
+    "shakescreen": 0,
+    "spawn_bound": "torpedo",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 3
+  },
+  "169712": {
+    "base": 169711,
+    "damage": 60,
+    "id": 169712
+  },
+  "169713": {
+    "base": 169711,
+    "damage": 65,
+    "id": 169713
+  },
+  "169714": {
+    "base": 169711,
+    "damage": 70,
+    "id": 169714
+  },
+  "169715": {
+    "base": 169711,
+    "damage": 75,
+    "id": 169715
+  },
+  "169716": {
+    "base": 169711,
+    "damage": 80,
+    "id": 169716
+  },
+  "169717": {
+    "base": 169711,
+    "damage": 85,
+    "id": 169717
+  },
+  "169718": {
+    "base": 169711,
+    "damage": 90,
+    "id": 169718
+  },
+  "169719": {
+    "base": 169711,
+    "damage": 95,
+    "id": 169719
+  },
+  "169720": {
+    "base": 169711,
+    "damage": 100,
+    "id": 169720
+  },
+  "169721": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "angle": 360,
+    "attack_attribute": 1,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      82217,
+      82218,
+      82219
+    ],
+    "bullet_ID": [
+      161210,
+      161209,
+      161210
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 10,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "CLFire",
+    "fire_fx_loop_type": 3,
+    "fire_sfx": "battle/cannon-155mm",
+    "id": 169721,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 120,
+    "recover_time": 0,
+    "reload_max": 5000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 1
+  },
+  "169722": {
+    "base": 169721,
+    "damage": 11,
+    "id": 169722
+  },
+  "169723": {
+    "base": 169721,
+    "damage": 12,
+    "id": 169723
+  },
+  "169724": {
+    "base": 169721,
+    "damage": 13,
+    "id": 169724
+  },
+  "169725": {
+    "base": 169721,
+    "damage": 14,
+    "id": 169725
+  },
+  "169726": {
+    "base": 169721,
+    "damage": 15,
+    "id": 169726
+  },
+  "169727": {
+    "base": 169721,
+    "damage": 16,
+    "id": 169727
+  },
+  "169728": {
+    "base": 169721,
+    "damage": 17,
+    "id": 169728
+  },
+  "169729": {
+    "base": 169721,
+    "damage": 18,
+    "id": 169729
+  },
+  "169730": {
+    "base": 169721,
+    "damage": 20,
+    "id": 169730
+  },
+  "169731": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "angle": 360,
+    "attack_attribute": 1,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      82215
+    ],
+    "bullet_ID": [
+      161312
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 5,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "CLFire",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-155mm",
+    "id": 169731,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 50,
+    "recover_time": 0.5,
+    "reload_max": 3000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 1
+  },
+  "169732": {
+    "base": 169731,
+    "damage": 10,
+    "id": 169732
+  },
+  "169733": {
+    "base": 169731,
+    "damage": 15,
+    "id": 169733
+  },
+  "169734": {
+    "base": 169731,
+    "damage": 20,
+    "id": 169734
+  },
+  "169735": {
+    "base": 169731,
+    "damage": 25,
+    "id": 169735
+  },
+  "169736": {
+    "base": 169731,
+    "damage": 30,
+    "id": 169736
+  },
+  "169737": {
+    "base": 169731,
+    "damage": 35,
+    "id": 169737
+  },
+  "169738": {
+    "base": 169731,
+    "damage": 40,
+    "id": 169738
+  },
+  "169739": {
+    "base": 169731,
+    "damage": 45,
+    "id": 169739
+  },
+  "169740": {
+    "base": 169731,
+    "damage": 50,
+    "id": 169740
+  },
+  "169741": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 120,
+    "attack_attribute": 2,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      82216
+    ],
+    "bullet_ID": [
+      161313
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 17,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 169741,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0,
+    "reload_max": 3000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "torpedo",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 3
+  },
+  "169742": {
+    "base": 169741,
+    "damage": 20,
+    "id": 169742
+  },
+  "169743": {
+    "base": 169741,
+    "damage": 23,
+    "id": 169743
+  },
+  "169744": {
+    "base": 169741,
+    "damage": 25,
+    "id": 169744
+  },
+  "169745": {
+    "base": 169741,
+    "damage": 27,
+    "id": 169745
+  },
+  "169746": {
+    "base": 169741,
+    "damage": 30,
+    "id": 169746
+  },
+  "169747": {
+    "base": 169741,
+    "damage": 33,
+    "id": 169747
+  },
+  "169748": {
+    "base": 169741,
+    "damage": 35,
+    "id": 169748
+  },
+  "169749": {
+    "base": 169741,
+    "damage": 37,
+    "id": 169749
+  },
+  "169750": {
+    "base": 169741,
+    "damage": 40,
+    "id": 169750
+  },
+  "169761": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 90,
+    "attack_attribute": 4,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      12008
+    ],
+    "bullet_ID": [
+      169761
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 58,
+    "effect_move": 1,
+    "expose": 10,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/air-atk",
+    "id": 169761,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 1,
+    "reload_max": 3000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "plane",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 11
+  },
+  "169762": {
+    "base": 169761,
+    "bullet_ID": [
+      169762
+    ],
+    "damage": 74,
+    "id": 169762
+  },
+  "169763": {
+    "base": 169761,
+    "bullet_ID": [
+      169763
+    ],
+    "damage": 92,
+    "id": 169763
+  },
+  "169764": {
+    "base": 169761,
+    "bullet_ID": [
+      169764
+    ],
+    "damage": 107,
+    "id": 169764
+  },
+  "169765": {
+    "base": 169761,
+    "bullet_ID": [
+      169765
+    ],
+    "damage": 123,
+    "id": 169765
+  },
+  "169766": {
+    "base": 169761,
+    "bullet_ID": [
+      169766
+    ],
+    "damage": 141,
+    "id": 169766
+  },
+  "169767": {
+    "base": 169761,
+    "bullet_ID": [
+      169767
+    ],
+    "damage": 157,
+    "id": 169767
+  },
+  "169768": {
+    "base": 169761,
+    "bullet_ID": [
+      169768
+    ],
+    "damage": 175,
+    "id": 169768
+  },
+  "169769": {
+    "base": 169761,
+    "bullet_ID": [
+      169769
+    ],
+    "damage": 191,
+    "id": 169769
+  },
+  "169770": {
+    "base": 169761,
+    "bullet_ID": [
+      169770
+    ],
+    "damage": 207,
+    "id": 169770
+  },
+  "169771": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 90,
+    "attack_attribute": 4,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      12008
+    ],
+    "bullet_ID": [
+      169771
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 58,
+    "effect_move": 1,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/air-atk",
+    "id": 169771,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 1,
+    "reload_max": 3000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "plane",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 11
+  },
+  "169772": {
+    "base": 169771,
+    "bullet_ID": [
+      169772
+    ],
+    "damage": 74,
+    "id": 169772
+  },
+  "169773": {
+    "base": 169771,
+    "bullet_ID": [
+      169773
+    ],
+    "damage": 92,
+    "id": 169773
+  },
+  "169774": {
+    "base": 169771,
+    "bullet_ID": [
+      169774
+    ],
+    "damage": 107,
+    "id": 169774
+  },
+  "169775": {
+    "base": 169771,
+    "bullet_ID": [
+      169775
+    ],
+    "damage": 123,
+    "id": 169775
+  },
+  "169776": {
+    "base": 169771,
+    "bullet_ID": [
+      169776
+    ],
+    "damage": 141,
+    "id": 169776
+  },
+  "169777": {
+    "base": 169771,
+    "bullet_ID": [
+      169777
+    ],
+    "damage": 157,
+    "id": 169777
+  },
+  "169778": {
+    "base": 169771,
+    "bullet_ID": [
+      169778
+    ],
+    "damage": 175,
+    "id": 169778
+  },
+  "169779": {
+    "base": 169771,
+    "bullet_ID": [
+      169779
+    ],
+    "damage": 191,
+    "id": 169779
+  },
+  "169780": {
+    "base": 169771,
+    "bullet_ID": [
+      169780
+    ],
+    "damage": 207,
+    "id": 169780
+  },
+  "169781": {
+    "action_index": "",
+    "aim_type": 0,
+    "angle": 24,
+    "attack_attribute": 4,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      82220,
+      82221
+    ],
+    "bullet_ID": [
+      2111,
+      2111
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 58,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 169781,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0,
+    "reload_max": 9500,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "torpedo",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 3
+  },
+  "169782": {
+    "base": 169781,
+    "damage": 74,
+    "id": 169782
+  },
+  "169783": {
+    "base": 169781,
+    "damage": 92,
+    "id": 169783
+  },
+  "169784": {
+    "base": 169781,
+    "damage": 107,
+    "id": 169784
+  },
+  "169785": {
+    "base": 169781,
+    "damage": 123,
+    "id": 169785
+  },
+  "169786": {
+    "base": 169781,
+    "damage": 141,
+    "id": 169786
+  },
+  "169787": {
+    "base": 169781,
+    "damage": 157,
+    "id": 169787
+  },
+  "169788": {
+    "base": 169781,
+    "damage": 175,
+    "id": 169788
+  },
+  "169789": {
+    "base": 169781,
+    "damage": 191,
+    "id": 169789
+  },
+  "169790": {
+    "base": 169781,
+    "damage": 207,
+    "id": 169790
+  },
+  "169791": {
+    "action_index": "",
+    "aim_type": 0,
+    "angle": 24,
+    "attack_attribute": 4,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      82222,
+      82223
+    ],
+    "bullet_ID": [
+      2111,
+      2111
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 58,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 169791,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0,
+    "reload_max": 9500,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "torpedo",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 3
+  },
+  "169792": {
+    "base": 169791,
+    "damage": 74,
+    "id": 169792
+  },
+  "169793": {
+    "base": 169791,
+    "damage": 92,
+    "id": 169793
+  },
+  "169794": {
+    "base": 169791,
+    "damage": 107,
+    "id": 169794
+  },
+  "169795": {
+    "base": 169791,
+    "damage": 123,
+    "id": 169795
+  },
+  "169796": {
+    "base": 169791,
+    "damage": 141,
+    "id": 169796
+  },
+  "169797": {
+    "base": 169791,
+    "damage": 157,
+    "id": 169797
+  },
+  "169798": {
+    "base": 169791,
+    "damage": 175,
+    "id": 169798
+  },
+  "169799": {
+    "base": 169791,
+    "damage": 191,
+    "id": 169799
+  },
+  "169800": {
+    "base": 169791,
+    "damage": 207,
+    "id": 169800
+  },
+  "169801": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "angle": 360,
+    "attack_attribute": 1,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      170903,
+      170904,
+      170905,
+      170906
+    ],
+    "bullet_ID": [
+      170902,
+      170902,
+      170902,
+      170902
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 12,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "CLFire",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-155mm",
+    "id": 169801,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 150,
+    "recover_time": 0,
+    "reload_max": 3000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 1
+  },
+  "169802": {
+    "base": 169801,
+    "damage": 14,
+    "id": 169802
+  },
+  "169803": {
+    "base": 169801,
+    "damage": 16,
+    "id": 169803
+  },
+  "169804": {
+    "base": 169801,
+    "damage": 18,
+    "id": 169804
+  },
+  "169805": {
+    "base": 169801,
+    "damage": 20,
+    "id": 169805
+  },
+  "169806": {
+    "base": 169801,
+    "damage": 22,
+    "id": 169806
+  },
+  "169807": {
+    "base": 169801,
+    "damage": 24,
+    "id": 169807
+  },
+  "169808": {
+    "base": 169801,
+    "damage": 26,
+    "id": 169808
+  },
+  "169809": {
+    "base": 169801,
+    "damage": 28,
+    "id": 169809
+  },
+  "169810": {
+    "base": 169801,
+    "damage": 30,
+    "id": 169810
+  },
+  "169811": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "angle": 90,
+    "attack_attribute": 0,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      1511
+    ],
+    "bullet_ID": [
+      169811
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 1,
+    "effect_move": 1,
+    "expose": 10,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/air-atk",
+    "id": 169811,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0.5,
+    "reload_max": 2344,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "plane",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 10
+  },
+  "169812": {
+    "base": 169811,
+    "bullet_ID": [
+      169812
+    ],
+    "id": 169812,
+    "reload_max": 2308
+  },
+  "169813": {
+    "base": 169811,
+    "bullet_ID": [
+      169813
+    ],
+    "id": 169813,
+    "reload_max": 2272
+  },
+  "169814": {
+    "barrage_ID": [
+      1512
+    ],
+    "base": 169811,
+    "bullet_ID": [
+      169814
+    ],
+    "id": 169814,
+    "reload_max": 2236
+  },
+  "169815": {
+    "barrage_ID": [
+      1512
+    ],
+    "base": 169811,
+    "bullet_ID": [
+      169815
+    ],
+    "id": 169815,
+    "reload_max": 2200
+  },
+  "169816": {
+    "barrage_ID": [
+      1512
+    ],
+    "base": 169811,
+    "bullet_ID": [
+      169816
+    ],
+    "id": 169816,
+    "reload_max": 2164
+  },
+  "169817": {
+    "barrage_ID": [
+      1513
+    ],
+    "base": 169811,
+    "bullet_ID": [
+      169817
+    ],
+    "id": 169817,
+    "reload_max": 2128
+  },
+  "169818": {
+    "barrage_ID": [
+      1513
+    ],
+    "base": 169811,
+    "bullet_ID": [
+      169818
+    ],
+    "id": 169818,
+    "reload_max": 2092
+  },
+  "169819": {
+    "barrage_ID": [
+      1513
+    ],
+    "base": 169811,
+    "bullet_ID": [
+      169819
+    ],
+    "id": 169819,
+    "reload_max": 2056
+  },
+  "169820": {
+    "barrage_ID": [
+      1513
+    ],
+    "base": 169811,
+    "bullet_ID": [
+      169820
+    ],
+    "id": 169820,
+    "reload_max": 2020
+  },
+  "169821": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 45,
+    "attack_attribute": 4,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": -10,
+    "barrage_ID": [
+      2222
+    ],
+    "bullet_ID": [
+      169821
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 65,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 169821,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 80,
+    "recover_time": 0,
+    "reload_max": 9500,
+    "search_condition": [
+      1
+    ],
+    "search_type": 2,
+    "shakescreen": 0,
+    "spawn_bound": "torpedo",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 3
+  },
+  "169822": {
+    "base": 169821,
+    "damage": 70,
+    "id": 169822
+  },
+  "169823": {
+    "base": 169821,
+    "damage": 75,
+    "id": 169823
+  },
+  "169824": {
+    "base": 169821,
+    "damage": 80,
+    "id": 169824
+  },
+  "169825": {
+    "base": 169821,
+    "damage": 85,
+    "id": 169825
+  },
+  "169826": {
+    "base": 169821,
+    "damage": 90,
+    "id": 169826
+  },
+  "169827": {
+    "base": 169821,
+    "damage": 95,
+    "id": 169827
+  },
+  "169828": {
+    "base": 169821,
+    "damage": 100,
+    "id": 169828
+  },
+  "169829": {
+    "base": 169821,
+    "damage": 105,
+    "id": 169829
+  },
+  "169830": {
+    "base": 169821,
+    "damage": 110,
+    "id": 169830
+  },
+  "169831": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "angle": 30,
+    "attack_attribute": 0,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      12008
+    ],
+    "bullet_ID": [
+      169831
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 1,
+    "effect_move": 1,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/air-atk",
+    "id": 169831,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0.5,
+    "reload_max": 1879,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "plane",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 10
+  },
+  "169832": {
+    "base": 169831,
+    "bullet_ID": [
+      169832
+    ],
+    "id": 169832,
+    "reload_max": 1855
+  },
+  "169833": {
+    "base": 169831,
+    "bullet_ID": [
+      169833
+    ],
+    "id": 169833,
+    "reload_max": 1831
+  },
+  "169834": {
+    "base": 169831,
+    "bullet_ID": [
+      169834
+    ],
+    "id": 169834,
+    "reload_max": 1807
+  },
+  "169835": {
+    "base": 169831,
+    "bullet_ID": [
+      169835
+    ],
+    "id": 169835,
+    "reload_max": 1783
+  },
+  "169836": {
+    "base": 169831,
+    "bullet_ID": [
+      169836
+    ],
+    "id": 169836,
+    "reload_max": 1759
+  },
+  "169837": {
+    "barrage_ID": [
+      12009
+    ],
+    "base": 169831,
+    "bullet_ID": [
+      169837
+    ],
+    "id": 169837,
+    "reload_max": 1735
+  },
+  "169838": {
+    "barrage_ID": [
+      12009
+    ],
+    "base": 169831,
+    "bullet_ID": [
+      169838
+    ],
+    "id": 169838,
+    "reload_max": 1711
+  },
+  "169839": {
+    "barrage_ID": [
+      12009
+    ],
+    "base": 169831,
+    "bullet_ID": [
+      169839
+    ],
+    "id": 169839,
+    "reload_max": 1687
+  },
+  "169840": {
+    "barrage_ID": [
+      12009
+    ],
+    "base": 169831,
+    "bullet_ID": [
+      169840
+    ],
+    "id": 169840,
+    "reload_max": 1663
+  },
+  "169841": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 22,
+    "attack_attribute": 4,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 22,
+    "barrage_ID": [
+      2121
+    ],
+    "bullet_ID": [
+      2122
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 48,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 169841,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 500,
+    "recover_time": 0,
+    "reload_max": 9500,
+    "search_condition": [
+      1
+    ],
+    "search_type": 2,
+    "shakescreen": 0,
+    "spawn_bound": "torpedo",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 2
+  },
+  "169842": {
+    "base": 169841,
+    "damage": 68,
+    "id": 169842
+  },
+  "169843": {
+    "base": 169841,
+    "damage": 86,
+    "id": 169843
+  },
+  "169844": {
+    "base": 169841,
+    "damage": 106,
+    "id": 169844
+  },
+  "169845": {
+    "base": 169841,
+    "damage": 124,
+    "id": 169845
+  },
+  "169846": {
+    "base": 169841,
+    "damage": 144,
+    "id": 169846
+  },
+  "169847": {
+    "base": 169841,
+    "damage": 164,
+    "id": 169847
+  },
+  "169848": {
+    "base": 169841,
+    "damage": 182,
+    "id": 169848
+  },
+  "169849": {
+    "base": 169841,
+    "damage": 202,
+    "id": 169849
+  },
+  "169850": {
+    "base": 169841,
+    "damage": 220,
+    "id": 169850
+  },
   "169851": {
     "action_index": "attack",
     "aim_type": 1,
@@ -295821,6 +298194,151 @@
     "damage": 20,
     "id": 170902
   },
+  "170911": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "angle": 360,
+    "attack_attribute": 1,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      170907,
+      170908
+    ],
+    "bullet_ID": [
+      170903,
+      170903
+    ],
+    "charge_param": "",
+    "corrected": 125,
+    "damage": 15,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "CLFire",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-155mm",
+    "id": 170911,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 50,
+    "recover_time": 0.5,
+    "reload_max": 400,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 2
+  },
+  "170912": {
+    "barrage_ID": [
+      170909,
+      170910
+    ],
+    "base": 170911,
+    "damage": 30,
+    "id": 170912
+  },
+  "170921": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "angle": 360,
+    "attack_attribute": 1,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      170922
+    ],
+    "bullet_ID": [
+      170921
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 26,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "CLFire",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-155mm",
+    "id": 170921,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 150,
+    "recover_time": 0.5,
+    "reload_max": 400,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 1
+  },
+  "170922": {
+    "base": 170921,
+    "damage": 36,
+    "id": 170922
+  },
+  "170923": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "angle": 360,
+    "attack_attribute": 2,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      1425
+    ],
+    "bullet_ID": [
+      170923
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 65,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "CAFire",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-main",
+    "id": 170923,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 150,
+    "recover_time": 0.5,
+    "reload_max": 3000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 3
+  },
   "180000": {
     "action_index": "attack",
     "aim_type": 1,
@@ -296745,6 +299263,469 @@
     "suppress": 1,
     "torpedo_ammo": 0,
     "type": 1
+  },
+  "180021": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 360,
+    "attack_attribute": 5,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      1
+    ],
+    "bullet_ID": [
+      164841
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 70,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 180021,
+    "initial_over_heat": 1,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 12,
+    "range": 15,
+    "recover_time": 0.5,
+    "reload_max": 540,
+    "search_condition": [
+      2
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 25
+  },
+  "180022": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "angle": 120,
+    "attack_attribute": 2,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      1
+    ],
+    "bullet_ID": [
+      164842
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 55,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "CAFire",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-main",
+    "id": 180022,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0.5,
+    "reload_max": 400,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 3
+  },
+  "180023": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 90,
+    "attack_attribute": 2,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      1500
+    ],
+    "bullet_ID": [
+      1
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 1,
+    "effect_move": 1,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/air-atk",
+    "id": 180023,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0,
+    "reload_max": 3000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "plane",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 11
+  },
+  "180024": {
+    "action_index": "",
+    "aim_type": 1,
+    "angle": 45,
+    "attack_attribute": 2,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": -10,
+    "barrage_ID": [
+      168226
+    ],
+    "bullet_ID": [
+      164844
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 85,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 180024,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 80,
+    "recover_time": 0,
+    "reload_max": 9500,
+    "search_condition": [
+      1
+    ],
+    "search_type": 2,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 1,
+    "torpedo_ammo": 0,
+    "type": 3
+  },
+  "183001": {
+    "action_index": "",
+    "aim_type": 0,
+    "angle": 60,
+    "attack_attribute": 2,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      5
+    ],
+    "bullet_ID": [
+      164843
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 10,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 183001,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 90,
+    "recover_time": 0,
+    "reload_max": 3000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "torpedo",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 3
+  },
+  "183002": {
+    "base": 183001,
+    "damage": 25,
+    "id": 183002
+  },
+  "183003": {
+    "base": 183001,
+    "damage": 30,
+    "id": 183003
+  },
+  "183004": {
+    "base": 183001,
+    "damage": 35,
+    "id": 183004
+  },
+  "183005": {
+    "base": 183001,
+    "damage": 40,
+    "id": 183005
+  },
+  "183006": {
+    "base": 183001,
+    "damage": 45,
+    "id": 183006
+  },
+  "183007": {
+    "base": 183001,
+    "damage": 50,
+    "id": 183007
+  },
+  "183008": {
+    "base": 183001,
+    "damage": 55,
+    "id": 183008
+  },
+  "183009": {
+    "base": 183001,
+    "damage": 60,
+    "id": 183009
+  },
+  "183010": {
+    "base": 183001,
+    "damage": 65,
+    "id": 183010
+  },
+  "183011": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "angle": 60,
+    "attack_attribute": 1,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      168225
+    ],
+    "bullet_ID": [
+      164851
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 23,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "",
+    "id": 183011,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 60,
+    "recover_time": 0,
+    "reload_max": 3000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 2
+  },
+  "183012": {
+    "base": 183011,
+    "bullet_ID": [
+      164852
+    ],
+    "damage": 26,
+    "id": 183012
+  },
+  "183013": {
+    "base": 183011,
+    "bullet_ID": [
+      164853
+    ],
+    "damage": 29,
+    "id": 183013
+  },
+  "183014": {
+    "base": 183011,
+    "bullet_ID": [
+      164854
+    ],
+    "damage": 32,
+    "id": 183014
+  },
+  "183015": {
+    "base": 183011,
+    "bullet_ID": [
+      164855
+    ],
+    "damage": 35,
+    "id": 183015
+  },
+  "183016": {
+    "base": 183011,
+    "bullet_ID": [
+      164856
+    ],
+    "damage": 38,
+    "id": 183016
+  },
+  "183017": {
+    "base": 183011,
+    "bullet_ID": [
+      164857
+    ],
+    "damage": 41,
+    "id": 183017
+  },
+  "183018": {
+    "base": 183011,
+    "bullet_ID": [
+      164858
+    ],
+    "damage": 44,
+    "id": 183018
+  },
+  "183019": {
+    "base": 183011,
+    "bullet_ID": [
+      164859
+    ],
+    "damage": 47,
+    "id": 183019
+  },
+  "183020": {
+    "base": 183011,
+    "bullet_ID": [
+      164860
+    ],
+    "damage": 50,
+    "id": 183020
+  },
+  "183021": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "angle": 360,
+    "attack_attribute": 1,
+    "attack_attribute_ratio": 100,
+    "auto_aftercast": 0,
+    "axis_angle": 0,
+    "barrage_ID": [
+      170922
+    ],
+    "bullet_ID": [
+      164861
+    ],
+    "charge_param": "",
+    "corrected": 100,
+    "damage": 23,
+    "effect_move": 0,
+    "expose": 0,
+    "fire_fx": "CLFire",
+    "fire_fx_loop_type": 1,
+    "fire_sfx": "battle/cannon-155mm",
+    "id": 183021,
+    "initial_over_heat": 0,
+    "min_range": 0,
+    "oxy_type": [
+      1
+    ],
+    "precast_param": [],
+    "queue": 1,
+    "range": 150,
+    "recover_time": 0.5,
+    "reload_max": 3000,
+    "search_condition": [
+      1
+    ],
+    "search_type": 1,
+    "shakescreen": 0,
+    "spawn_bound": "cannon",
+    "suppress": 0,
+    "torpedo_ammo": 0,
+    "type": 1
+  },
+  "183022": {
+    "base": 183021,
+    "damage": 26,
+    "id": 183022
+  },
+  "183023": {
+    "base": 183021,
+    "damage": 29,
+    "id": 183023
+  },
+  "183024": {
+    "base": 183021,
+    "damage": 32,
+    "id": 183024
+  },
+  "183025": {
+    "base": 183021,
+    "damage": 35,
+    "id": 183025
+  },
+  "183026": {
+    "base": 183021,
+    "damage": 38,
+    "id": 183026
+  },
+  "183027": {
+    "base": 183021,
+    "damage": 41,
+    "id": 183027
+  },
+  "183028": {
+    "base": 183021,
+    "damage": 44,
+    "id": 183028
+  },
+  "183029": {
+    "base": 183021,
+    "damage": 47,
+    "id": 183029
+  },
+  "183030": {
+    "base": 183021,
+    "damage": 50,
+    "id": 183030
   },
   "190000": {
     "action_index": "",
@@ -980693,6 +983674,1445 @@
     "reload_max": 300,
     "suppress": 1
   },
+  "2983000": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663001,
+      29663003
+    ],
+    "base": 1002,
+    "damage": 1,
+    "id": 2983000,
+    "queue": 5,
+    "range": 120,
+    "recover_time": 0,
+    "reload_max": 150
+  },
+  "2983001": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663001,
+      29663003
+    ],
+    "base": 1002,
+    "damage": 1,
+    "id": 2983001,
+    "queue": 5,
+    "range": 120,
+    "recover_time": 0,
+    "reload_max": 150
+  },
+  "2983002": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663001,
+      29663003
+    ],
+    "base": 1002,
+    "damage": 1,
+    "id": 2983002,
+    "queue": 5,
+    "range": 120,
+    "recover_time": 0,
+    "reload_max": 150
+  },
+  "2983003": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663001,
+      29663003
+    ],
+    "base": 1002,
+    "damage": 1,
+    "id": 2983003,
+    "queue": 5,
+    "range": 120,
+    "recover_time": 0,
+    "reload_max": 150
+  },
+  "2983004": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663001,
+      29663003
+    ],
+    "base": 1002,
+    "damage": 1,
+    "id": 2983004,
+    "queue": 5,
+    "range": 120,
+    "recover_time": 0,
+    "reload_max": 150
+  },
+  "2983005": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663002,
+      29663004
+    ],
+    "base": 1002,
+    "damage": 1,
+    "id": 2983005,
+    "queue": 6,
+    "range": 120,
+    "recover_time": 0,
+    "reload_max": 150
+  },
+  "2983006": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663002,
+      29663004
+    ],
+    "base": 1002,
+    "damage": 1,
+    "id": 2983006,
+    "queue": 6,
+    "range": 120,
+    "recover_time": 0,
+    "reload_max": 150
+  },
+  "2983007": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663002,
+      29663004
+    ],
+    "base": 1002,
+    "damage": 1,
+    "id": 2983007,
+    "queue": 6,
+    "range": 120,
+    "recover_time": 0,
+    "reload_max": 150
+  },
+  "2983008": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663002,
+      29663004
+    ],
+    "base": 1002,
+    "damage": 1,
+    "id": 2983008,
+    "queue": 6,
+    "range": 120,
+    "recover_time": 0,
+    "reload_max": 150
+  },
+  "2983009": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663002,
+      29663004
+    ],
+    "base": 1002,
+    "damage": 1,
+    "id": 2983009,
+    "queue": 6,
+    "range": 120,
+    "recover_time": 0,
+    "reload_max": 150
+  },
+  "2983010": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663005
+    ],
+    "base": 1001,
+    "bullet_ID": [
+      29663001
+    ],
+    "damage": 12,
+    "id": 2983010,
+    "queue": 2,
+    "range": 80,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "2983011": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663005
+    ],
+    "base": 1001,
+    "bullet_ID": [
+      29663001
+    ],
+    "damage": 16,
+    "id": 2983011,
+    "queue": 2,
+    "range": 80,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "2983012": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663005
+    ],
+    "base": 1001,
+    "bullet_ID": [
+      29663001
+    ],
+    "damage": 20,
+    "id": 2983012,
+    "queue": 2,
+    "range": 80,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "2983013": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663005
+    ],
+    "base": 1001,
+    "bullet_ID": [
+      29663001
+    ],
+    "damage": 24,
+    "id": 2983013,
+    "queue": 2,
+    "range": 80,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "2983014": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663005
+    ],
+    "base": 1001,
+    "bullet_ID": [
+      29663001
+    ],
+    "damage": 28,
+    "id": 2983014,
+    "queue": 2,
+    "range": 80,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "2983015": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663006,
+      29663007
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663002,
+      29663002
+    ],
+    "damage": 6,
+    "id": 2983015,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "2983016": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663006,
+      29663007
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663002,
+      29663002
+    ],
+    "damage": 7,
+    "id": 2983016,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "2983017": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663006,
+      29663007
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663002,
+      29663002
+    ],
+    "damage": 8,
+    "id": 2983017,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "2983018": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663006,
+      29663007
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663002,
+      29663002
+    ],
+    "damage": 9,
+    "id": 2983018,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "2983019": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663006,
+      29663007
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663002,
+      29663002
+    ],
+    "damage": 10,
+    "id": 2983019,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "2983020": {
+    "action_index": "",
+    "aim_type": 0,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663010
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663005
+    ],
+    "damage": 18,
+    "id": 2983020,
+    "queue": 1,
+    "range": 10,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983021": {
+    "action_index": "",
+    "aim_type": 0,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663010
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663005
+    ],
+    "damage": 20,
+    "id": 2983021,
+    "queue": 1,
+    "range": 10,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983022": {
+    "action_index": "",
+    "aim_type": 0,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663010
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663005
+    ],
+    "damage": 22,
+    "id": 2983022,
+    "queue": 1,
+    "range": 10,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983023": {
+    "action_index": "",
+    "aim_type": 0,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663010
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663005
+    ],
+    "damage": 24,
+    "id": 2983023,
+    "queue": 1,
+    "range": 10,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983024": {
+    "action_index": "",
+    "aim_type": 0,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      29663010
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663005
+    ],
+    "damage": 26,
+    "id": 2983024,
+    "queue": 1,
+    "range": 10,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983025": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663011
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663006
+    ],
+    "damage": 1,
+    "id": 2983025,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983026": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663011
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663006
+    ],
+    "damage": 1,
+    "id": 2983026,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983027": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663011
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663006
+    ],
+    "damage": 2,
+    "id": 2983027,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983028": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663011
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663006
+    ],
+    "damage": 3,
+    "id": 2983028,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983029": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663011
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663006
+    ],
+    "damage": 4,
+    "id": 2983029,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983030": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663014,
+      29663015
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663010,
+      29663011
+    ],
+    "damage": 1,
+    "id": 2983030,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983031": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663014,
+      29663015
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663010,
+      29663011
+    ],
+    "damage": 1,
+    "id": 2983031,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983032": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663014,
+      29663015
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663010,
+      29663011
+    ],
+    "damage": 2,
+    "id": 2983032,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983033": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663014,
+      29663015
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663010,
+      29663011
+    ],
+    "damage": 3,
+    "id": 2983033,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983034": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663014,
+      29663015
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663010,
+      29663011
+    ],
+    "damage": 4,
+    "id": 2983034,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983035": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663019
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663016
+    ],
+    "damage": 1,
+    "id": 2983035,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983036": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663019
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663016
+    ],
+    "damage": 1,
+    "id": 2983036,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983037": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663019
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663016
+    ],
+    "damage": 2,
+    "id": 2983037,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983038": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663019
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663016
+    ],
+    "damage": 3,
+    "id": 2983038,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983039": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663019
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663016
+    ],
+    "damage": 4,
+    "id": 2983039,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983040": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663024,
+      29663025
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663020,
+      29663021
+    ],
+    "damage": 1,
+    "id": 2983040,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983041": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663024,
+      29663025
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663020,
+      29663021
+    ],
+    "damage": 1,
+    "id": 2983041,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983042": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663024,
+      29663025
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663020,
+      29663021
+    ],
+    "damage": 2,
+    "id": 2983042,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983043": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663024,
+      29663025
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663020,
+      29663021
+    ],
+    "damage": 3,
+    "id": 2983043,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983044": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663024,
+      29663025
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663020,
+      29663021
+    ],
+    "damage": 4,
+    "id": 2983044,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983045": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663028
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663024
+    ],
+    "damage": 1,
+    "id": 2983045,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983046": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663028
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663024
+    ],
+    "damage": 1,
+    "id": 2983046,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983047": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663028
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663024
+    ],
+    "damage": 2,
+    "id": 2983047,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983048": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663028
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663024
+    ],
+    "damage": 3,
+    "id": 2983048,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983049": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663028
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663024
+    ],
+    "damage": 4,
+    "id": 2983049,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983050": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663029,
+      29663030
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663025,
+      29663026
+    ],
+    "damage": 1,
+    "id": 2983050,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983051": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663029,
+      29663030
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663025,
+      29663026
+    ],
+    "damage": 1,
+    "id": 2983051,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983052": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663029,
+      29663030
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663025,
+      29663026
+    ],
+    "damage": 2,
+    "id": 2983052,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983053": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663029,
+      29663030
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663025,
+      29663026
+    ],
+    "damage": 3,
+    "id": 2983053,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983054": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663029,
+      29663030
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663025,
+      29663026
+    ],
+    "damage": 4,
+    "id": 2983054,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983055": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663035
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663032
+    ],
+    "damage": 1,
+    "id": 2983055,
+    "queue": 3,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983056": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663035
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663032
+    ],
+    "damage": 1,
+    "id": 2983056,
+    "queue": 3,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983057": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663035
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663032
+    ],
+    "damage": 2,
+    "id": 2983057,
+    "queue": 3,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983058": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663035
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663032
+    ],
+    "damage": 3,
+    "id": 2983058,
+    "queue": 3,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983059": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663035
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663032
+    ],
+    "damage": 4,
+    "id": 2983059,
+    "queue": 3,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983060": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663039
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663039
+    ],
+    "damage": 1,
+    "id": 2983060,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983061": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663039
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663039
+    ],
+    "damage": 1,
+    "id": 2983061,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983062": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663039
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663039
+    ],
+    "damage": 2,
+    "id": 2983062,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983063": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663039
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663039
+    ],
+    "damage": 3,
+    "id": 2983063,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983064": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663039
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663039
+    ],
+    "damage": 4,
+    "id": 2983064,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983065": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663059,
+      29663060
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663042,
+      29663043
+    ],
+    "damage": 1,
+    "id": 2983065,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983066": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663059,
+      29663060
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663042,
+      29663043
+    ],
+    "damage": 1,
+    "id": 2983066,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983067": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663059,
+      29663060
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663042,
+      29663043
+    ],
+    "damage": 2,
+    "id": 2983067,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983068": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663059,
+      29663060
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663042,
+      29663043
+    ],
+    "damage": 3,
+    "id": 2983068,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983069": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663059,
+      29663060
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663042,
+      29663043
+    ],
+    "damage": 4,
+    "id": 2983069,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983070": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663054,
+      29663056
+    ],
+    "damage": 1,
+    "id": 2983070,
+    "queue": 3,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983071": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663054,
+      29663056
+    ],
+    "damage": 1,
+    "id": 2983071,
+    "queue": 3,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983072": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663054,
+      29663056
+    ],
+    "damage": 2,
+    "id": 2983072,
+    "queue": 3,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983073": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663054,
+      29663056
+    ],
+    "damage": 3,
+    "id": 2983073,
+    "queue": 3,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983074": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663054,
+      29663056
+    ],
+    "damage": 4,
+    "id": 2983074,
+    "queue": 3,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983075": {
+    "aim_type": 0,
+    "barrage_ID": [
+      29663071
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663063
+    ],
+    "damage": 12,
+    "id": 2983075,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983076": {
+    "aim_type": 0,
+    "barrage_ID": [
+      29663071
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663063
+    ],
+    "damage": 12,
+    "id": 2983076,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983077": {
+    "aim_type": 0,
+    "barrage_ID": [
+      29663071
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663063
+    ],
+    "damage": 12,
+    "id": 2983077,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983078": {
+    "aim_type": 0,
+    "barrage_ID": [
+      29663071
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663063
+    ],
+    "damage": 12,
+    "id": 2983078,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983079": {
+    "aim_type": 0,
+    "barrage_ID": [
+      29663071
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      29663063
+    ],
+    "damage": 12,
+    "id": 2983079,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983080": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      29663070
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      29663062
+    ],
+    "damage": 2,
+    "id": 2983080,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "2983085": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      29663070
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      29663062
+    ],
+    "damage": 2,
+    "id": 2983085,
+    "queue": 2,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
   "3001101": {
     "action_index": "attack",
     "aim_type": 1,
@@ -1142813,6 +1147233,4954 @@
     "damage": 25,
     "id": 3335019,
     "queue": 2,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3340001": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345275
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345169
+    ],
+    "damage": 6,
+    "id": 3340001,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3340002": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345282,
+      3345283,
+      3345284,
+      3345285,
+      3345286
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345176,
+      3345176,
+      3345176,
+      3345176,
+      3345176
+    ],
+    "damage": 8,
+    "id": 3340002,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3340003": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022303,
+      3022304,
+      3022305,
+      3022306,
+      3022307,
+      3022308,
+      3022309,
+      3022310
+    ],
+    "damage": 12,
+    "id": 3340003,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3340004": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      350201,
+      350201,
+      350202,
+      350202,
+      350202,
+      350203,
+      350203,
+      350203,
+      350203,
+      350204,
+      350204,
+      350204,
+      350204,
+      350204,
+      350206,
+      350206,
+      350206,
+      350206,
+      350206,
+      350206
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022311,
+      3022312,
+      3022313,
+      3022314,
+      3022315,
+      3022316,
+      3022317,
+      3022318,
+      3022319,
+      3022320,
+      3022321,
+      3022322,
+      3022323,
+      3022324,
+      3022325,
+      3022326,
+      3022327,
+      3022328,
+      3022329,
+      3022330
+    ],
+    "damage": 12,
+    "id": 3340004,
+    "precast_param": {
+      "alertTime": 2,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3340005": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340001
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345189
+    ],
+    "damage": 14,
+    "id": 3340005,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 29
+  },
+  "3340006": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345290,
+      3345291,
+      3345195,
+      3345196
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345190,
+      3345194,
+      3345198,
+      3345199
+    ],
+    "damage": 8,
+    "id": 3340006,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3340101": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340101,
+      3340102
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340101,
+      3340101
+    ],
+    "damage": 6,
+    "id": 3340101,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3340102": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340103,
+      3340104,
+      3340105,
+      3340106,
+      3340107
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340114,
+      3340115,
+      3340116,
+      3340117,
+      3340118
+    ],
+    "damage": 8,
+    "id": 3340102,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3340103": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340108
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340119
+    ],
+    "damage": 12,
+    "id": 3340103,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3340104": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3340109,
+      3340110
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340120,
+      3340121
+    ],
+    "damage": 6,
+    "id": 3340104,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3340105": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340118
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340136
+    ],
+    "damage": 6,
+    "id": 3340105,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3340106": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340120,
+      3340121,
+      3340122,
+      3340123,
+      3340124
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3159005,
+      3159005,
+      3159006,
+      3159006,
+      3320510
+    ],
+    "damage": 2,
+    "id": 3340106,
+    "precast_param": [],
+    "queue": 3,
+    "reload_max": 300,
+    "suppress": 1
+  },
+  "3340201": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340201,
+      3340202,
+      3340203,
+      3340204,
+      3340205,
+      3340206,
+      3340207,
+      3340208,
+      3340209
+    ],
+    "damage": 12,
+    "id": 3340201,
+    "precast_param": {
+      "alertTime": 1.25,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 5,
+    "reload_max": 1500,
+    "suppress": 1,
+    "type": 19
+  },
+  "3340202": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340214,
+      3340215,
+      3340216,
+      3340217,
+      3340218,
+      3340219,
+      3340220,
+      3340221,
+      3340222,
+      3340223,
+      3340224
+    ],
+    "damage": 12,
+    "id": 3340202,
+    "min_range": 85,
+    "precast_param": {
+      "alertTime": 1.25,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 6,
+    "range": 150,
+    "reload_max": 1500,
+    "suppress": 1,
+    "type": 19
+  },
+  "3340203": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3243202,
+      3243203,
+      3243204,
+      3243205
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340225,
+      3340225,
+      3340225,
+      3340225
+    ],
+    "damage": 8,
+    "id": 3340203,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3340204": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3243206,
+      3243207
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340227,
+      3340227
+    ],
+    "damage": 8,
+    "id": 3340204,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3340205": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3243209,
+      3243210
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340235,
+      3340235
+    ],
+    "damage": 6,
+    "id": 3340205,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3340206": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3243212,
+      3243213
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340237,
+      3340237
+    ],
+    "damage": 6,
+    "id": 3340206,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3340207": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3243216,
+      3243217
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340240,
+      3340240
+    ],
+    "damage": 6,
+    "id": 3340207,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3340208": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340203,
+      3340204,
+      3340205,
+      3340206,
+      3340207
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3320510,
+      3320510,
+      3320510,
+      3320510,
+      3320510
+    ],
+    "damage": 2,
+    "id": 3340208,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3340209": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340201,
+      3340202
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340243,
+      3340243
+    ],
+    "damage": 6,
+    "id": 3340209,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3340301": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340301
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3234001
+    ],
+    "damage": 10,
+    "id": 3340301,
+    "precast_param": {
+      "alertTime": 1,
+      "fx": "none",
+      "time": 0.1
+    },
+    "queue": 1,
+    "reload_max": 900,
+    "suppress": 1,
+    "type": 19
+  },
+  "3340302": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340302,
+      3340303
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3234031,
+      3234032
+    ],
+    "damage": 6,
+    "id": 3340302,
+    "queue": 2,
+    "reload_max": 750,
+    "suppress": 1
+  },
+  "3340303": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3340304,
+      3340305
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3234027,
+      3234027
+    ],
+    "damage": 6,
+    "id": 3340303,
+    "queue": 3,
+    "reload_max": 300,
+    "suppress": 0
+  },
+  "3340304": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340306
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3239033
+    ],
+    "damage": 6,
+    "id": 3340304,
+    "queue": 3,
+    "reload_max": 300,
+    "suppress": 1
+  },
+  "3341001": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341001,
+      3341002,
+      3341003,
+      3341004
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3218011,
+      3218011,
+      3218011,
+      3218011
+    ],
+    "damage": 3,
+    "id": 3341001,
+    "precast_param": [],
+    "queue": 5,
+    "reload_max": 900,
+    "suppress": 1
+  },
+  "3341002": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341005
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341001
+    ],
+    "damage": 9,
+    "id": 3341002,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341003": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341011
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341004
+    ],
+    "damage": 14,
+    "id": 3341003,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3341004": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341012,
+      3341013
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341005,
+      3341016
+    ],
+    "damage": 7,
+    "id": 3341004,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341005": {
+    "action_index": "attack",
+    "barrage_ID": [
+      3341024
+    ],
+    "base": 1002,
+    "id": 3341005,
+    "queue": 2,
+    "reload_max": 200
+  },
+  "3341006": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3279031
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3279025
+    ],
+    "damage": 9,
+    "id": 3341006,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341007": {
+    "action_index": "",
+    "aim_type": 0,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3271102
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3279027
+    ],
+    "damage": 16,
+    "id": 3341007,
+    "queue": 2,
+    "range": 30,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341008": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341025,
+      3341026
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341027,
+      3341027
+    ],
+    "damage": 7,
+    "id": 3341008,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341009": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341043
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3119034
+    ],
+    "damage": 3,
+    "id": 3341009,
+    "precast_param": [],
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341010": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341039,
+      3341040,
+      3341041,
+      3341042
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3218011,
+      3218011,
+      3218011,
+      3218011
+    ],
+    "damage": 3,
+    "id": 3341010,
+    "precast_param": [],
+    "queue": 5,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341101": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345229
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345124
+    ],
+    "damage": 1,
+    "id": 3341101,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341102": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345231
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345126
+    ],
+    "damage": 9,
+    "id": 3341102,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341103": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345231
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345138
+    ],
+    "damage": 9,
+    "id": 3341103,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341104": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345230
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345125
+    ],
+    "damage": 1,
+    "id": 3341104,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341105": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341101,
+      3341102
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345141,
+      3345142
+    ],
+    "damage": 7,
+    "id": 3341105,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341106": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345250
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345145
+    ],
+    "damage": 9,
+    "id": 3341106,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341107": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345252,
+      3345253,
+      3345254,
+      3345255,
+      3345256,
+      3345257,
+      3345258,
+      3345259,
+      3345260,
+      3345261,
+      3345262,
+      3345263
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148
+    ],
+    "damage": 7,
+    "id": 3341107,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341108": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341103,
+      3341104
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345149,
+      3345159
+    ],
+    "damage": 7,
+    "id": 3341108,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341201": {
+    "action_index": "attack",
+    "barrage_ID": [
+      3341201
+    ],
+    "base": 1002,
+    "id": 3341201,
+    "queue": 5,
+    "reload_max": 200
+  },
+  "3341202": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3279031
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341201
+    ],
+    "damage": 9,
+    "id": 3341202,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341203": {
+    "action_index": "",
+    "aim_type": 0,
+    "angle": 180,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3201222
+    ],
+    "base": 1001,
+    "bullet_ID": [
+      3341203
+    ],
+    "damage": 16,
+    "id": 3341203,
+    "queue": 2,
+    "range": 10,
+    "reload_max": 200,
+    "suppress": 0
+  },
+  "3341204": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341202
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341204
+    ],
+    "damage": 7,
+    "id": 3341204,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341205": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341203
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341207
+    ],
+    "damage": 7,
+    "id": 3341205,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341206": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341205
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341210
+    ],
+    "damage": 7,
+    "id": 3341206,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341207": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341207
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341213
+    ],
+    "damage": 7,
+    "id": 3341207,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341208": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341208,
+      3341209
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341221,
+      3341222
+    ],
+    "damage": 7,
+    "id": 3341208,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341209": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3320518,
+      3320519,
+      3320520
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3320514,
+      3320515,
+      3320517
+    ],
+    "damage": 3,
+    "id": 3341209,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341210": {
+    "action_index": "attack",
+    "barrage_ID": [
+      3341211
+    ],
+    "base": 1002,
+    "id": 3341210,
+    "queue": 2,
+    "reload_max": 200
+  },
+  "3341211": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3341212,
+      3341213
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341223,
+      3341224
+    ],
+    "damage": 9,
+    "id": 3341211,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341212": {
+    "action_index": "",
+    "aim_type": 0,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3341214
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3279027
+    ],
+    "damage": 16,
+    "id": 3341212,
+    "queue": 2,
+    "range": 30,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341301": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341301
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345169
+    ],
+    "damage": 7,
+    "id": 3341301,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341302": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341302
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345176
+    ],
+    "damage": 9,
+    "id": 3341302,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341303": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022303,
+      3022304,
+      3022305,
+      3022306,
+      3022307,
+      3022308,
+      3022309,
+      3022310
+    ],
+    "damage": 12,
+    "id": 3341303,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 3,
+    "reload_max": 900,
+    "suppress": 1,
+    "type": 19
+  },
+  "3341304": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341303
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345189
+    ],
+    "damage": 14,
+    "id": 3341304,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 29
+  },
+  "3341305": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341304
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340119
+    ],
+    "damage": 10,
+    "id": 3341305,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3341306": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341305,
+      3341306
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340120,
+      3340121
+    ],
+    "damage": 7,
+    "id": 3341306,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3341307": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341307
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340136
+    ],
+    "damage": 9,
+    "id": 3341307,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341308": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340120,
+      3340121,
+      3340122,
+      3340123,
+      3340124
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3159005,
+      3159005,
+      3159006,
+      3159006,
+      3320510
+    ],
+    "damage": 3,
+    "id": 3341308,
+    "precast_param": [],
+    "queue": 4,
+    "reload_max": 900,
+    "suppress": 1
+  },
+  "3341309": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340201,
+      3340202,
+      3340203,
+      3340204,
+      3340205,
+      3340206,
+      3340207,
+      3340208,
+      3340209
+    ],
+    "damage": 12,
+    "id": 3341309,
+    "precast_param": {
+      "alertTime": 1.25,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 1,
+    "reload_max": 750,
+    "suppress": 1,
+    "type": 19
+  },
+  "3341310": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3309034,
+      3309034,
+      3309034,
+      3309034,
+      3309034,
+      3309034
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341301,
+      3341302,
+      3341303,
+      3341304,
+      3341305,
+      3341306
+    ],
+    "damage": 20,
+    "id": 3341310,
+    "min_range": 85,
+    "precast_param": {
+      "alertTime": 1,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 1,
+    "range": 150,
+    "reload_max": 1500,
+    "suppress": 1,
+    "type": 19
+  },
+  "3341311": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341308,
+      3341309,
+      3341310,
+      3341311
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340225,
+      3340225,
+      3340225,
+      3340225
+    ],
+    "damage": 9,
+    "id": 3341311,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341312": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341312,
+      3341313
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340227,
+      3340227
+    ],
+    "damage": 9,
+    "id": 3341312,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3341313": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341314,
+      3341315
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340240,
+      3340240
+    ],
+    "damage": 7,
+    "id": 3341313,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3342001": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345275
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345169
+    ],
+    "damage": 8,
+    "id": 3342001,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3342002": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345282,
+      3345283,
+      3345284,
+      3345285,
+      3345286
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345176,
+      3345176,
+      3345176,
+      3345176,
+      3345176
+    ],
+    "damage": 10,
+    "id": 3342002,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3342003": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022303,
+      3022304,
+      3022305,
+      3022306,
+      3022307,
+      3022308,
+      3022309,
+      3022310
+    ],
+    "damage": 14,
+    "id": 3342003,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3342004": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      350201,
+      350201,
+      350202,
+      350202,
+      350202,
+      350203,
+      350203,
+      350203,
+      350203,
+      350204,
+      350204,
+      350204,
+      350204,
+      350204,
+      350206,
+      350206,
+      350206,
+      350206,
+      350206,
+      350206
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022311,
+      3022312,
+      3022313,
+      3022314,
+      3022315,
+      3022316,
+      3022317,
+      3022318,
+      3022319,
+      3022320,
+      3022321,
+      3022322,
+      3022323,
+      3022324,
+      3022325,
+      3022326,
+      3022327,
+      3022328,
+      3022329,
+      3022330
+    ],
+    "damage": 14,
+    "id": 3342004,
+    "precast_param": {
+      "alertTime": 2,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3342005": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340001
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345189
+    ],
+    "damage": 16,
+    "id": 3342005,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 29
+  },
+  "3342006": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345290,
+      3345291,
+      3345195,
+      3345196
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345190,
+      3345194,
+      3345198,
+      3345199
+    ],
+    "damage": 10,
+    "id": 3342006,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3342101": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340101,
+      3340102
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340101,
+      3340101
+    ],
+    "damage": 8,
+    "id": 3342101,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3342102": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340103,
+      3340104,
+      3340105,
+      3340106,
+      3340107
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340114,
+      3340115,
+      3340116,
+      3340117,
+      3340118
+    ],
+    "damage": 10,
+    "id": 3342102,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3342103": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340108
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340119
+    ],
+    "damage": 14,
+    "id": 3342103,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3342104": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3340109,
+      3340110
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340120,
+      3340121
+    ],
+    "damage": 8,
+    "id": 3342104,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3342105": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340118
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340136
+    ],
+    "damage": 8,
+    "id": 3342105,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3342106": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340120,
+      3340121,
+      3340122,
+      3340123,
+      3340124
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3159005,
+      3159005,
+      3159006,
+      3159006,
+      3320510
+    ],
+    "damage": 4,
+    "id": 3342106,
+    "precast_param": [],
+    "queue": 3,
+    "reload_max": 300,
+    "suppress": 1
+  },
+  "3342201": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340201,
+      3340202,
+      3340203,
+      3340204,
+      3340205,
+      3340206,
+      3340207,
+      3340208,
+      3340209
+    ],
+    "damage": 14,
+    "id": 3342201,
+    "precast_param": {
+      "alertTime": 1.25,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 5,
+    "reload_max": 1500,
+    "suppress": 1,
+    "type": 19
+  },
+  "3342202": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340214,
+      3340215,
+      3340216,
+      3340217,
+      3340218,
+      3340219,
+      3340220,
+      3340221,
+      3340222,
+      3340223,
+      3340224
+    ],
+    "damage": 22,
+    "id": 3342202,
+    "min_range": 85,
+    "precast_param": {
+      "alertTime": 1.25,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 6,
+    "range": 150,
+    "reload_max": 1500,
+    "suppress": 1,
+    "type": 19
+  },
+  "3342203": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3243202,
+      3243203,
+      3243204,
+      3243205
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340225,
+      3340225,
+      3340225,
+      3340225
+    ],
+    "damage": 10,
+    "id": 3342203,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3342204": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3243206,
+      3243207
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340227,
+      3340227
+    ],
+    "damage": 10,
+    "id": 3342204,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3342205": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3243209,
+      3243210
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340235,
+      3340235
+    ],
+    "damage": 14,
+    "id": 3342205,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3342206": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3243212,
+      3243213
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340237,
+      3340237
+    ],
+    "damage": 14,
+    "id": 3342206,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3342207": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3243216,
+      3243217
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340240,
+      3340240
+    ],
+    "damage": 14,
+    "id": 3342207,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3342208": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340203,
+      3340204,
+      3340205,
+      3340206,
+      3340207
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3320510,
+      3320510,
+      3320510,
+      3320510,
+      3320510
+    ],
+    "damage": 4,
+    "id": 3342208,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3342209": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340201,
+      3340202
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340243,
+      3340243
+    ],
+    "damage": 8,
+    "id": 3342209,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3342301": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340301
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3234001
+    ],
+    "damage": 10,
+    "id": 3342301,
+    "precast_param": {
+      "alertTime": 1,
+      "fx": "none",
+      "time": 0.1
+    },
+    "queue": 1,
+    "reload_max": 900,
+    "suppress": 1,
+    "type": 19
+  },
+  "3342302": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340302,
+      3340303
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3234031,
+      3234032
+    ],
+    "damage": 8,
+    "id": 3342302,
+    "queue": 2,
+    "reload_max": 750,
+    "suppress": 1
+  },
+  "3342303": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3340304,
+      3340305
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3234027,
+      3234027
+    ],
+    "damage": 8,
+    "id": 3342303,
+    "queue": 3,
+    "reload_max": 300,
+    "suppress": 0
+  },
+  "3342304": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340306
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3239033
+    ],
+    "damage": 8,
+    "id": 3342304,
+    "queue": 3,
+    "reload_max": 300,
+    "suppress": 1
+  },
+  "3343001": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341001,
+      3341002,
+      3341003,
+      3341004
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3218011,
+      3218011,
+      3218011,
+      3218011
+    ],
+    "damage": 5,
+    "id": 3343001,
+    "precast_param": [],
+    "queue": 5,
+    "reload_max": 900,
+    "suppress": 1
+  },
+  "3343002": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341005
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341001
+    ],
+    "damage": 12,
+    "id": 3343002,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343003": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341011
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341004
+    ],
+    "damage": 14,
+    "id": 3343003,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3343004": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341012,
+      3341013
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341005,
+      3341016
+    ],
+    "damage": 10,
+    "id": 3343004,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343005": {
+    "action_index": "attack",
+    "barrage_ID": [
+      3341024
+    ],
+    "base": 1002,
+    "id": 3343005,
+    "queue": 2,
+    "reload_max": 200
+  },
+  "3343006": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3279031
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3279025
+    ],
+    "damage": 12,
+    "id": 3343006,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343007": {
+    "action_index": "",
+    "aim_type": 0,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3271102
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3279027
+    ],
+    "damage": 16,
+    "id": 3343007,
+    "queue": 2,
+    "range": 30,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343008": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341025,
+      3341026
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341027,
+      3341027
+    ],
+    "damage": 10,
+    "id": 3343008,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343009": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341043
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3119034
+    ],
+    "damage": 5,
+    "id": 3343009,
+    "precast_param": [],
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343010": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341039,
+      3341040,
+      3341041,
+      3341042
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3218011,
+      3218011,
+      3218011,
+      3218011
+    ],
+    "damage": 5,
+    "id": 3343010,
+    "precast_param": [],
+    "queue": 5,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343101": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345229
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345124
+    ],
+    "damage": 1,
+    "id": 3343101,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343102": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345231
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345126
+    ],
+    "damage": 12,
+    "id": 3343102,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343103": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345231
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345138
+    ],
+    "damage": 12,
+    "id": 3343103,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343104": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345230
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345125
+    ],
+    "damage": 1,
+    "id": 3343104,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343105": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341101,
+      3341102
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345141,
+      3345142
+    ],
+    "damage": 10,
+    "id": 3343105,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343106": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345250
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345145
+    ],
+    "damage": 12,
+    "id": 3343106,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343107": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345252,
+      3345253,
+      3345254,
+      3345255,
+      3345256,
+      3345257,
+      3345258,
+      3345259,
+      3345260,
+      3345261,
+      3345262,
+      3345263
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148
+    ],
+    "damage": 10,
+    "id": 3343107,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343108": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341103,
+      3341104
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345149,
+      3345159
+    ],
+    "damage": 10,
+    "id": 3343108,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343201": {
+    "action_index": "attack",
+    "barrage_ID": [
+      3341201
+    ],
+    "base": 1002,
+    "id": 3343201,
+    "queue": 5,
+    "reload_max": 200
+  },
+  "3343202": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3279031
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341201
+    ],
+    "damage": 12,
+    "id": 3343202,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343203": {
+    "action_index": "",
+    "aim_type": 0,
+    "angle": 180,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3201222
+    ],
+    "base": 1001,
+    "bullet_ID": [
+      3341203
+    ],
+    "damage": 16,
+    "id": 3343203,
+    "queue": 2,
+    "range": 10,
+    "reload_max": 200,
+    "suppress": 0
+  },
+  "3343204": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341202
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341204
+    ],
+    "damage": 10,
+    "id": 3343204,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343205": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341203
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341207
+    ],
+    "damage": 10,
+    "id": 3343205,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343206": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341205
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341210
+    ],
+    "damage": 10,
+    "id": 3343206,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343207": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341207
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341213
+    ],
+    "damage": 10,
+    "id": 3343207,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343208": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341208,
+      3341209
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341221,
+      3341222
+    ],
+    "damage": 12,
+    "id": 3343208,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343209": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3320518,
+      3320519,
+      3320520
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3320514,
+      3320515,
+      3320517
+    ],
+    "damage": 5,
+    "id": 3343209,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343210": {
+    "action_index": "attack",
+    "barrage_ID": [
+      3341211
+    ],
+    "base": 1002,
+    "id": 3343210,
+    "queue": 2,
+    "reload_max": 200
+  },
+  "3343211": {
+    "action_index": "",
+    "aim_type": 1,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3341212,
+      3341213
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341223,
+      3341224
+    ],
+    "damage": 12,
+    "id": 3343211,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343212": {
+    "action_index": "",
+    "aim_type": 0,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3341214
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3279027
+    ],
+    "damage": 16,
+    "id": 3343212,
+    "queue": 2,
+    "range": 30,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343301": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341301
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345169
+    ],
+    "damage": 10,
+    "id": 3343301,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343302": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341302
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345176
+    ],
+    "damage": 10,
+    "id": 3343302,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343303": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022303,
+      3022304,
+      3022305,
+      3022306,
+      3022307,
+      3022308,
+      3022309,
+      3022310
+    ],
+    "damage": 12,
+    "id": 3343303,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 3,
+    "reload_max": 900,
+    "suppress": 1,
+    "type": 19
+  },
+  "3343304": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341303
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345189
+    ],
+    "damage": 13,
+    "id": 3343304,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 29
+  },
+  "3343305": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341304
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340119
+    ],
+    "damage": 12,
+    "id": 3343305,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3343306": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341305,
+      3341306
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340120,
+      3340121
+    ],
+    "damage": 10,
+    "id": 3343306,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3343307": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341307
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340136
+    ],
+    "damage": 10,
+    "id": 3343307,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343308": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340120,
+      3340121,
+      3340122,
+      3340123,
+      3340124
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3159005,
+      3159005,
+      3159006,
+      3159006,
+      3320510
+    ],
+    "damage": 4,
+    "id": 3343308,
+    "precast_param": [],
+    "queue": 4,
+    "reload_max": 900,
+    "suppress": 1
+  },
+  "3343309": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340201,
+      3340202,
+      3340203,
+      3340204,
+      3340205,
+      3340206,
+      3340207,
+      3340208,
+      3340209
+    ],
+    "damage": 12,
+    "id": 3343309,
+    "precast_param": {
+      "alertTime": 1.25,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 1,
+    "reload_max": 750,
+    "suppress": 1,
+    "type": 19
+  },
+  "3343310": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3309034,
+      3309034,
+      3309034,
+      3309034,
+      3309034,
+      3309034
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341301,
+      3341302,
+      3341303,
+      3341304,
+      3341305,
+      3341306
+    ],
+    "damage": 4,
+    "id": 3343310,
+    "min_range": 85,
+    "precast_param": {
+      "alertTime": 1,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 1,
+    "range": 150,
+    "reload_max": 1500,
+    "suppress": 1,
+    "type": 19
+  },
+  "3343311": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341308,
+      3341309,
+      3341310,
+      3341311
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340225,
+      3340225,
+      3340225,
+      3340225
+    ],
+    "damage": 10,
+    "id": 3343311,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343312": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341312,
+      3341313
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340227,
+      3340227
+    ],
+    "damage": 10,
+    "id": 3343312,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3343313": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341314,
+      3341315
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340240,
+      3340240
+    ],
+    "damage": 10,
+    "id": 3343313,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344001": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345201,
+      3345202,
+      3345203,
+      3345204
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345101,
+      3345102,
+      3345103,
+      3345104
+    ],
+    "damage": 12,
+    "id": 3344001,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344002": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "attack_attribute": 2,
+    "barrage_ID": [
+      3345212
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345111
+    ],
+    "damage": 12,
+    "id": 3344002,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3344003": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345214,
+      3345215
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3345114,
+      3345114
+    ],
+    "damage": 6,
+    "id": 3344003,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344004": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345216,
+      3345217,
+      3345218,
+      3345219
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345115,
+      3345115,
+      3345115,
+      3345115
+    ],
+    "damage": 12,
+    "id": 3344004,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344005": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345221
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345117
+    ],
+    "damage": 12,
+    "id": 3344005,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344006": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345228
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345121
+    ],
+    "damage": 6,
+    "id": 3344006,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 28
+  },
+  "3344007": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345229
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345124
+    ],
+    "damage": 1,
+    "id": 3344007,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344008": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345231
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345126
+    ],
+    "damage": 14,
+    "id": 3344008,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3344009": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345231
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345138
+    ],
+    "damage": 12,
+    "id": 3344009,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3344010": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345230
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345125
+    ],
+    "damage": 1,
+    "id": 3344010,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344011": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341101,
+      3341102
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345141,
+      3345142
+    ],
+    "damage": 12,
+    "id": 3344011,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344012": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345250
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345145
+    ],
+    "damage": 14,
+    "id": 3344012,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344013": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345252,
+      3345253,
+      3345254,
+      3345255,
+      3345256,
+      3345257,
+      3345258,
+      3345259,
+      3345260,
+      3345261,
+      3345262,
+      3345263
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148
+    ],
+    "damage": 12,
+    "id": 3344013,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344014": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341103,
+      3341104
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345149,
+      3345159
+    ],
+    "damage": 12,
+    "id": 3344014,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3344015": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345275
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345169
+    ],
+    "damage": 12,
+    "id": 3344015,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344016": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345282,
+      3345283,
+      3345284,
+      3345285,
+      3345286
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345176,
+      3345176,
+      3345176,
+      3345176,
+      3345176
+    ],
+    "damage": 14,
+    "id": 3344016,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3344017": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022303,
+      3022304,
+      3022305,
+      3022306,
+      3022307,
+      3022308,
+      3022309,
+      3022310
+    ],
+    "damage": 14,
+    "id": 3344017,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3344018": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      350201,
+      350201,
+      350202,
+      350202,
+      350202,
+      350203,
+      350203,
+      350203,
+      350203,
+      350204,
+      350204,
+      350204,
+      350204,
+      350204,
+      350206,
+      350206,
+      350206,
+      350206,
+      350206,
+      350206
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022311,
+      3022312,
+      3022313,
+      3022314,
+      3022315,
+      3022316,
+      3022317,
+      3022318,
+      3022319,
+      3022320,
+      3022321,
+      3022322,
+      3022323,
+      3022324,
+      3022325,
+      3022326,
+      3022327,
+      3022328,
+      3022329,
+      3022330
+    ],
+    "damage": 14,
+    "id": 3344018,
+    "precast_param": {
+      "alertTime": 2,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3344019": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345288,
+      3345289
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345189,
+      3345189
+    ],
+    "damage": 16,
+    "id": 3344019,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 29
+  },
+  "3344020": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345290,
+      3345291,
+      3345195,
+      3345196
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345190,
+      3345194,
+      3345198,
+      3345199
+    ],
+    "damage": 12,
+    "id": 3344020,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3344301": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341301
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345169
+    ],
+    "damage": 12,
+    "id": 3344301,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344302": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341302
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345176
+    ],
+    "damage": 14,
+    "id": 3344302,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3344303": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022303,
+      3022304,
+      3022305,
+      3022306,
+      3022307,
+      3022308,
+      3022309,
+      3022310
+    ],
+    "damage": 12,
+    "id": 3344303,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 3,
+    "reload_max": 900,
+    "suppress": 1,
+    "type": 19
+  },
+  "3344304": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341303
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345189
+    ],
+    "damage": 14,
+    "id": 3344304,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 29
+  },
+  "3344305": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341304
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340119
+    ],
+    "damage": 12,
+    "id": 3344305,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3344306": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341305,
+      3341306
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340120,
+      3340121
+    ],
+    "damage": 12,
+    "id": 3344306,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3344307": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341307
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340136
+    ],
+    "damage": 12,
+    "id": 3344307,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3344308": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3340120,
+      3340121,
+      3340122,
+      3340123,
+      3340124
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3159005,
+      3159005,
+      3159006,
+      3159006,
+      3320510
+    ],
+    "damage": 5,
+    "id": 3344308,
+    "precast_param": [],
+    "queue": 4,
+    "reload_max": 900,
+    "suppress": 1
+  },
+  "3344309": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340201,
+      3340202,
+      3340203,
+      3340204,
+      3340205,
+      3340206,
+      3340207,
+      3340208,
+      3340209
+    ],
+    "damage": 14,
+    "id": 3344309,
+    "precast_param": {
+      "alertTime": 1.25,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 1,
+    "reload_max": 750,
+    "suppress": 1,
+    "type": 19
+  },
+  "3344310": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3309034,
+      3309034,
+      3309034,
+      3309034,
+      3309034,
+      3309034
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3341301,
+      3341302,
+      3341303,
+      3341304,
+      3341305,
+      3341306
+    ],
+    "damage": 22,
+    "id": 3344310,
+    "min_range": 85,
+    "precast_param": {
+      "alertTime": 1,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 1,
+    "range": 150,
+    "reload_max": 1500,
+    "suppress": 1,
+    "type": 19
+  },
+  "3344311": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341308,
+      3341309,
+      3341310,
+      3341311
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340225,
+      3340225,
+      3340225,
+      3340225
+    ],
+    "damage": 12,
+    "id": 3344311,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3344312": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3341312,
+      3341313
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340227,
+      3340227
+    ],
+    "damage": 12,
+    "id": 3344312,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3344313": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3341314,
+      3341315
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3340240,
+      3340240
+    ],
+    "damage": 12,
+    "id": 3344313,
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345101": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345201,
+      3345202,
+      3345203,
+      3345204
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345101,
+      3345102,
+      3345103,
+      3345104
+    ],
+    "damage": 12,
+    "id": 3345101,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345102": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "attack_attribute": 2,
+    "barrage_ID": [
+      3345212
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345111
+    ],
+    "damage": 30,
+    "id": 3345102,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3345103": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345214,
+      3345215
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3345114,
+      3345114
+    ],
+    "damage": 20,
+    "id": 3345103,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345104": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345216,
+      3345217,
+      3345218,
+      3345219
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345115,
+      3345115,
+      3345115,
+      3345115
+    ],
+    "damage": 10,
+    "id": 3345104,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345105": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345221
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345117
+    ],
+    "damage": 15,
+    "id": 3345105,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345106": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345228
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345121
+    ],
+    "damage": 30,
+    "id": 3345106,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 28
+  },
+  "3345107": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345229
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345124
+    ],
+    "damage": 1,
+    "id": 3345107,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345108": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345231
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345126
+    ],
+    "damage": 20,
+    "id": 3345108,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3345109": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345231
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345138
+    ],
+    "damage": 10,
+    "id": 3345109,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3345110": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345230
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345125
+    ],
+    "damage": 1,
+    "id": 3345110,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345111": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345247,
+      3345248
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345141,
+      3345142
+    ],
+    "damage": 12,
+    "id": 3345111,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345112": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345250
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345145
+    ],
+    "damage": 50,
+    "id": 3345112,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345113": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345252,
+      3345253,
+      3345254,
+      3345255,
+      3345256,
+      3345257,
+      3345258,
+      3345259,
+      3345260,
+      3345261,
+      3345262,
+      3345263
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148,
+      3345148
+    ],
+    "damage": 50,
+    "id": 3345113,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345114": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345273,
+      3345274
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345149,
+      3345159
+    ],
+    "damage": 20,
+    "id": 3345114,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3345115": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345275
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345169
+    ],
+    "damage": 15,
+    "id": 3345115,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345116": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345282,
+      3345283,
+      3345284,
+      3345285,
+      3345286
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345176,
+      3345176,
+      3345176,
+      3345176,
+      3345176
+    ],
+    "damage": 15,
+    "id": 3345116,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3345117": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022303,
+      3022304,
+      3022305,
+      3022306,
+      3022307,
+      3022308,
+      3022309,
+      3022310
+    ],
+    "damage": 50,
+    "id": 3345117,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3345118": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      350201,
+      350201,
+      350202,
+      350202,
+      350202,
+      350203,
+      350203,
+      350203,
+      350203,
+      350204,
+      350204,
+      350204,
+      350204,
+      350204,
+      350206,
+      350206,
+      350206,
+      350206,
+      350206,
+      350206
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022311,
+      3022312,
+      3022313,
+      3022314,
+      3022315,
+      3022316,
+      3022317,
+      3022318,
+      3022319,
+      3022320,
+      3022321,
+      3022322,
+      3022323,
+      3022324,
+      3022325,
+      3022326,
+      3022327,
+      3022328,
+      3022329,
+      3022330
+    ],
+    "damage": 50,
+    "id": 3345118,
+    "precast_param": {
+      "alertTime": 2,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3345119": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345288,
+      3345289
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345189,
+      3345189
+    ],
+    "damage": 100,
+    "id": 3345119,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 29
+  },
+  "3345120": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345290,
+      3345291,
+      3345195,
+      3345196
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345190,
+      3345194,
+      3345198,
+      3345199
+    ],
+    "damage": 12,
+    "id": 3345120,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3345201": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345201,
+      3345202,
+      3345203,
+      3345204
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345201,
+      3345202,
+      3345203,
+      3345204
+    ],
+    "damage": 40,
+    "id": 3345201,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345202": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "attack_attribute": 2,
+    "barrage_ID": [
+      3345212
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345211
+    ],
+    "damage": 100,
+    "id": 3345202,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3345203": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345214,
+      3345215
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3345214,
+      3345214
+    ],
+    "damage": 50,
+    "id": 3345203,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345204": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345216,
+      3345217,
+      3345218,
+      3345219
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345215,
+      3345215,
+      3345215,
+      3345215
+    ],
+    "damage": 50,
+    "id": 3345204,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345205": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345221
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345217
+    ],
+    "damage": 50,
+    "id": 3345205,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345206": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345228
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345221
+    ],
+    "damage": 80,
+    "id": 3345206,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 28
+  },
+  "3345207": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345229
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345224
+    ],
+    "damage": 1,
+    "id": 3345207,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345208": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345231
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345226
+    ],
+    "damage": 60,
+    "id": 3345208,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3345209": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345231
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345238
+    ],
+    "damage": 40,
+    "id": 3345209,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3345210": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345230
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345225
+    ],
+    "damage": 1,
+    "id": 3345210,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345211": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345247,
+      3345248
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345241,
+      3345242
+    ],
+    "damage": 40,
+    "id": 3345211,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345212": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345250
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345245
+    ],
+    "damage": 120,
+    "id": 3345212,
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345213": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345252,
+      3345253,
+      3345254,
+      3345255,
+      3345256,
+      3345257,
+      3345258,
+      3345259,
+      3345260,
+      3345261,
+      3345262,
+      3345263
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345248,
+      3345248,
+      3345248,
+      3345248,
+      3345248,
+      3345248,
+      3345248,
+      3345248,
+      3345248,
+      3345248,
+      3345248,
+      3345248
+    ],
+    "damage": 120,
+    "id": 3345213,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345214": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345273,
+      3345274
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345249,
+      3345259
+    ],
+    "damage": 50,
+    "id": 3345214,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3345215": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3345275
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345269
+    ],
+    "damage": 40,
+    "id": 3345215,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3345216": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345282,
+      3345283,
+      3345284,
+      3345285,
+      3345286
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345276,
+      3345276,
+      3345276,
+      3345276,
+      3345276
+    ],
+    "damage": 40,
+    "id": 3345216,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3345217": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287,
+      3345287
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022303,
+      3022304,
+      3022305,
+      3022306,
+      3022307,
+      3022308,
+      3022309,
+      3022310
+    ],
+    "damage": 150,
+    "id": 3345217,
+    "precast_param": {
+      "alertTime": 1.5,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 3,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3345218": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      350201,
+      350201,
+      350202,
+      350202,
+      350202,
+      350203,
+      350203,
+      350203,
+      350203,
+      350204,
+      350204,
+      350204,
+      350204,
+      350204,
+      350206,
+      350206,
+      350206,
+      350206,
+      350206,
+      350206
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3022311,
+      3022312,
+      3022313,
+      3022314,
+      3022315,
+      3022316,
+      3022317,
+      3022318,
+      3022319,
+      3022320,
+      3022321,
+      3022322,
+      3022323,
+      3022324,
+      3022325,
+      3022326,
+      3022327,
+      3022328,
+      3022329,
+      3022330
+    ],
+    "damage": 200,
+    "id": 3345218,
+    "precast_param": {
+      "alertTime": 2,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 4,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 19
+  },
+  "3345219": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345288,
+      3345289
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345289,
+      3345289
+    ],
+    "damage": 200,
+    "id": 3345219,
+    "queue": 1,
+    "reload_max": 6000,
+    "suppress": 1,
+    "type": 29
+  },
+  "3345220": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3345290,
+      3345291,
+      3345295,
+      3345296
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3345290,
+      3345294,
+      3345298,
+      3345299
+    ],
+    "damage": 30,
+    "id": 3345220,
+    "queue": 2,
+    "reload_max": 6000,
+    "suppress": 1
+  },
+  "3346001": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3346001
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3246014
+    ],
+    "damage": 1,
+    "id": 3346001,
+    "precast_param": [],
+    "queue": 1,
+    "reload_max": 750,
+    "suppress": 0
+  },
+  "3346002": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3346002
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346001
+    ],
+    "damage": 3,
+    "id": 3346002,
+    "queue": 2,
+    "reload_max": 300,
+    "suppress": 0
+  },
+  "3346003": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3346003,
+      3346004
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346003,
+      3346003
+    ],
+    "damage": 2,
+    "id": 3346003,
+    "queue": 1,
+    "reload_max": 500,
+    "suppress": 0
+  },
+  "3346004": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3346005
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346004
+    ],
+    "damage": 3,
+    "id": 3346004,
+    "queue": 2,
+    "reload_max": 300,
+    "suppress": 1
+  },
+  "3346005": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3346006
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346005
+    ],
+    "damage": 4,
+    "id": 3346005,
+    "precast_param": {
+      "alertTime": 1.25,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 1,
+    "reload_max": 450,
+    "suppress": 1,
+    "type": 19
+  },
+  "3346006": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3346007,
+      3346008
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346006,
+      3346007
+    ],
+    "damage": 2,
+    "id": 3346006,
+    "queue": 2,
+    "reload_max": 600,
+    "suppress": 0
+  },
+  "3346007": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3346011,
+      3346012
+    ],
+    "base": 1001,
+    "bullet_ID": [
+      3346009,
+      3346010
+    ],
+    "damage": 4,
+    "id": 3346007,
+    "queue": 1,
+    "reload_max": 600,
+    "suppress": 1
+  },
+  "3346008": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3346013
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346011
+    ],
+    "damage": 3,
+    "id": 3346008,
+    "queue": 2,
+    "reload_max": 300,
+    "suppress": 1
+  },
+  "3346101": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3346001
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3246014
+    ],
+    "damage": 2,
+    "id": 3346101,
+    "precast_param": [],
+    "queue": 1,
+    "reload_max": 750,
+    "suppress": 0
+  },
+  "3346102": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3346002
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346001
+    ],
+    "damage": 5,
+    "id": 3346102,
+    "queue": 2,
+    "reload_max": 300,
+    "suppress": 0
+  },
+  "3346103": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3346003,
+      3346004
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346003,
+      3346003
+    ],
+    "damage": 4,
+    "id": 3346103,
+    "queue": 1,
+    "reload_max": 500,
+    "suppress": 0
+  },
+  "3346104": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3346005
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346004
+    ],
+    "damage": 5,
+    "id": 3346104,
+    "queue": 2,
+    "reload_max": 300,
+    "suppress": 1
+  },
+  "3346105": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3346006
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346005
+    ],
+    "damage": 6,
+    "id": 3346105,
+    "precast_param": {
+      "alertTime": 1.25,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 1,
+    "reload_max": 450,
+    "suppress": 1,
+    "type": 19
+  },
+  "3346106": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3346007,
+      3346008
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346006,
+      3346007
+    ],
+    "damage": 4,
+    "id": 3346106,
+    "queue": 2,
+    "reload_max": 600,
+    "suppress": 0
+  },
+  "3346107": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3346011,
+      3346012
+    ],
+    "base": 1001,
+    "bullet_ID": [
+      3346009,
+      3346010
+    ],
+    "damage": 6,
+    "id": 3346107,
+    "queue": 1,
+    "reload_max": 600,
+    "suppress": 1
+  },
+  "3346108": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3346013
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346011
+    ],
+    "damage": 6,
+    "id": 3346108,
+    "queue": 2,
+    "reload_max": 300,
+    "suppress": 1
+  },
+  "3346201": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3346001
+    ],
+    "base": 1003,
+    "bullet_ID": [
+      3246014
+    ],
+    "damage": 2,
+    "id": 3346201,
+    "precast_param": [],
+    "queue": 1,
+    "reload_max": 750,
+    "suppress": 0
+  },
+  "3346202": {
+    "action_index": "attack",
+    "aim_type": 0,
+    "barrage_ID": [
+      3346002
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346001
+    ],
+    "damage": 5,
+    "id": 3346202,
+    "queue": 2,
+    "reload_max": 300,
+    "suppress": 0
+  },
+  "3346203": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3346003,
+      3346004
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346003,
+      3346003
+    ],
+    "damage": 4,
+    "id": 3346203,
+    "queue": 1,
+    "reload_max": 500,
+    "suppress": 0
+  },
+  "3346204": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3346005
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346004
+    ],
+    "damage": 5,
+    "id": 3346204,
+    "queue": 2,
+    "reload_max": 300,
+    "suppress": 1
+  },
+  "3346205": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3346006
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346005
+    ],
+    "damage": 6,
+    "id": 3346205,
+    "precast_param": {
+      "alertTime": 1.25,
+      "fx": "none",
+      "time": 0.01
+    },
+    "queue": 1,
+    "reload_max": 450,
+    "suppress": 1,
+    "type": 19
+  },
+  "3346206": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3346007,
+      3346008
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346006,
+      3346007
+    ],
+    "damage": 4,
+    "id": 3346206,
+    "queue": 2,
+    "reload_max": 600,
+    "suppress": 0
+  },
+  "3346207": {
+    "action_index": "attack",
+    "aim_type": 1,
+    "barrage_ID": [
+      3346011,
+      3346012
+    ],
+    "base": 1001,
+    "bullet_ID": [
+      3346009,
+      3346010
+    ],
+    "damage": 6,
+    "id": 3346207,
+    "queue": 1,
+    "reload_max": 600,
+    "suppress": 1
+  },
+  "3346208": {
+    "action_index": "",
+    "aim_type": 1,
+    "barrage_ID": [
+      3346013
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3346011
+    ],
+    "damage": 6,
+    "id": 3346208,
+    "queue": 2,
+    "reload_max": 300,
+    "suppress": 1
+  },
+  "3347001": {
+    "aim_type": 0,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      12008
+    ],
+    "base": 1002,
+    "damage": 40,
+    "id": 3347001,
+    "queue": 1,
+    "range": 120,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3347002": {
+    "action_index": "",
+    "aim_type": 0,
+    "attack_attribute": 4,
+    "barrage_ID": [
+      3347004,
+      3347004,
+      3347004,
+      3347004,
+      3347004,
+      3347004
+    ],
+    "base": 1000,
+    "bullet_ID": [
+      3125104,
+      3125105,
+      3125106,
+      3125107,
+      3125108,
+      3125109
+    ],
+    "damage": 200,
+    "id": 3347002,
+    "queue": 1,
+    "range": 1,
+    "reload_max": 6000,
+    "suppress": 0
+  },
+  "3347003": {
+    "action_index": "",
+    "aim_type": 0,
+    "barrage_ID": [
+      3347001
+    ],
+    "base": 1009,
+    "bullet_ID": [
+      3347001
+    ],
+    "damage": 5000,
+    "id": 3347003,
+    "queue": 1,
     "reload_max": 6000,
     "suppress": 0
   },

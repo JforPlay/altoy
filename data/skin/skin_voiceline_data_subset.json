@@ -294,6 +294,20 @@
         "isNew":false
     },
     {
+        "클뜯 id":101089,
+        "함순이 이름":"모리",
+        "한글 함순이 + 스킨 이름":"모리·改",
+        "스킨 타입 - 한글":"개조",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/101089\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"USS",
+        "레어도":"SR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":101090,
         "함순이 이름":"플레처",
         "한글 함순이 + 스킨 이름":"플레처",
@@ -304,6 +318,34 @@
         "레어도":"R",
         "재화":null,
         "기간":null,
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":101100,
+        "함순이 이름":"윌리엄 D 포터",
+        "한글 함순이 + 스킨 이름":"윌리엄 D 포터",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/101100\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"USS",
+        "레어도":"UR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
+        "클뜯 id":101101,
+        "함순이 이름":"윌리엄 D 포터",
+        "한글 함순이 + 스킨 이름":"전대미문의 메이드 서비스",
+        "스킨 타입 - 한글":"메이드 타임",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/101101\/shipyard.png",
+        "스킨 태그":"중파 일러, 배경",
+        "진영":"USS",
+        "레어도":"UR",
+        "재화":1030.0,
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -1577,7 +1619,21 @@
         "진영":"USS",
         "레어도":"SR",
         "재화":780.0,
-        "기간":"한정 (2025\/01\/22)",
+        "기간":"상시",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":101502,
+        "함순이 이름":"허먼Ⅱ",
+        "한글 함순이 + 스킨 이름":"허먼의 맛있는 마법",
+        "스킨 타입 - 한글":"메이드 타임",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/101502\/shipyard.png",
+        "스킨 태그":"배경",
+        "진영":"USS",
+        "레어도":"SR",
+        "재화":null,
+        "기간":null,
         "ex_chat_status":0,
         "isNew":false
     },
@@ -1605,7 +1661,7 @@
         "진영":"USS",
         "레어도":"UR",
         "재화":1180.0,
-        "기간":"한정 (2025\/08\/27)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -1676,6 +1732,34 @@
         "레어도":"SR",
         "재화":780.0,
         "기간":"한정 (2025\/04\/23)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":101550,
+        "함순이 이름":"클래런스 K 브론슨",
+        "한글 함순이 + 스킨 이름":"클래런스 K 브론슨",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/101550\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"USS",
+        "레어도":"SR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
+        "클뜯 id":101551,
+        "함순이 이름":"클래런스 K 브론슨",
+        "한글 함순이 + 스킨 이름":"스페셜 커넥션?",
+        "스킨 타입 - 한글":"메이드 타임",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/101551\/shipyard.png",
+        "스킨 태그":"배경",
+        "진영":"USS",
+        "레어도":"SR",
+        "재화":780.0,
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -2053,7 +2137,7 @@
         "진영":"USS",
         "레어도":"SR",
         "재화":1080.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -2576,6 +2660,20 @@
         "isNew":false
     },
     {
+        "클뜯 id":102234,
+        "함순이 이름":"버밍햄",
+        "한글 함순이 + 스킨 이름":"Briar Maid",
+        "스킨 타입 - 한글":"메이드 타임",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/102234\/shipyard.png",
+        "스킨 태그":"배경",
+        "진영":"USS",
+        "레어도":"SR",
+        "재화":780.0,
+        "기간":"한정 (2026\/01\/21)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":102240,
         "함순이 이름":"클리블랜드(μ장비)",
         "한글 함순이 + 스킨 이름":"클리블랜드(μ장비)",
@@ -2893,7 +2991,7 @@
         "진영":"USS",
         "레어도":"SSR",
         "재화":880.0,
-        "기간":"한정 (2025\/08\/27)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -2964,6 +3062,34 @@
         "레어도":"SSR",
         "재화":880.0,
         "기간":"한정 (2025\/04\/23)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":102350,
+        "함순이 이름":"패서디나",
+        "한글 함순이 + 스킨 이름":"패서디나",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/102350\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"USS",
+        "레어도":"SR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
+        "클뜯 id":102351,
+        "함순이 이름":"패서디나",
+        "한글 함순이 + 스킨 이름":"서프라이징 게임",
+        "스킨 타입 - 한글":"메이드 타임",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/102351\/shipyard.png",
+        "스킨 태그":"쁘띠모션, 배경",
+        "진영":"USS",
+        "레어도":"SR",
+        "재화":880.0,
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -3649,7 +3775,7 @@
         "진영":"USS",
         "레어도":"SSR",
         "재화":1180.0,
-        "기간":"한정 (2025\/01\/22)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -3691,7 +3817,7 @@
         "진영":"USS",
         "레어도":"SR",
         "재화":880.0,
-        "기간":"한정 (2025\/08\/27)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -3761,7 +3887,7 @@
         "진영":"USS",
         "레어도":"SSR",
         "재화":980.0,
-        "기간":"한정 (2025\/08\/27)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -5147,7 +5273,35 @@
         "진영":"USS",
         "레어도":"UR",
         "재화":980.0,
-        "기간":"한정 (2025\/01\/22)",
+        "기간":"상시",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":107102,
+        "함순이 이름":"요크타운Ⅱ",
+        "한글 함순이 + 스킨 이름":"온기를 나누는 저녁 (듀얼, L2D, 배경)",
+        "스킨 타입 - 한글":"카니발",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/107102\/shipyard.png",
+        "스킨 태그":"듀얼, L2D, 배경",
+        "진영":"USS",
+        "레어도":"UR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":107103,
+        "함순이 이름":"요크타운Ⅱ",
+        "한글 함순이 + 스킨 이름":"온기를 나누는 저녁 (듀얼, 쁘띠모션, 배경)",
+        "스킨 타입 - 한글":"카니발",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/107103\/shipyard.png",
+        "스킨 태그":"듀얼, 쁘띠모션, 배경",
+        "진영":"USS",
+        "레어도":"UR",
+        "재화":1680.0,
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -5203,7 +5357,7 @@
         "진영":"USS",
         "레어도":"SSR",
         "재화":980.0,
-        "기간":"한정 (2025\/01\/22)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -5274,6 +5428,34 @@
         "레어도":"SSR",
         "재화":880.0,
         "기간":"상시",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":107160,
+        "함순이 이름":"렉싱턴II",
+        "한글 함순이 + 스킨 이름":"렉싱턴II",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/107160\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"USS",
+        "레어도":"UR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
+        "클뜯 id":107161,
+        "함순이 이름":"렉싱턴II",
+        "한글 함순이 + 스킨 이름":"사근사근한 메이드",
+        "스킨 타입 - 한글":"메이드 타임",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/107161\/shipyard.png",
+        "스킨 태그":"L2D, 배경",
+        "진영":"USS",
+        "레어도":"UR",
+        "재화":1180.0,
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -5446,6 +5628,34 @@
         "isNew":false
     },
     {
+        "클뜯 id":107250,
+        "함순이 이름":"카우펜스",
+        "한글 함순이 + 스킨 이름":"카우펜스",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/107250\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"USS",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":1,
+        "isNew":false
+    },
+    {
+        "클뜯 id":107251,
+        "함순이 이름":"카우펜스",
+        "한글 함순이 + 스킨 이름":"밀키 케어",
+        "스킨 타입 - 한글":"메이드 타임",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/107251\/shipyard.png",
+        "스킨 태그":"L2D, 배경",
+        "진영":"USS",
+        "레어도":"SSR",
+        "재화":1180.0,
+        "기간":"한정 (2026\/01\/21)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":107270,
         "함순이 이름":"랭글리Ⅱ",
         "한글 함순이 + 스킨 이름":"랭글리Ⅱ",
@@ -5469,7 +5679,7 @@
         "진영":"USS",
         "레어도":"SR",
         "재화":780.0,
-        "기간":"한정 (2025\/01\/22)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -5525,7 +5735,7 @@
         "진영":"USS",
         "레어도":"SR",
         "재화":780.0,
-        "기간":"한정 (2025\/08\/27)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -5833,7 +6043,7 @@
         "진영":"USS",
         "레어도":"SSR",
         "재화":880.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -5917,7 +6127,7 @@
         "진영":"USS",
         "레어도":"UR",
         "재화":1180.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -6199,6 +6409,20 @@
         "재화":null,
         "기간":null,
         "ex_chat_status":1,
+        "isNew":false
+    },
+    {
+        "클뜯 id":199061,
+        "함순이 이름":"캔자스",
+        "한글 함순이 + 스킨 이름":null,
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/199061\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"USS",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":0,
         "isNew":false
     },
     {
@@ -7247,7 +7471,7 @@
         "진영":"HMS",
         "레어도":"SSR",
         "재화":880.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -10873,7 +11097,7 @@
         "진영":"HMS",
         "레어도":"SSR",
         "재화":980.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":1,
         "isNew":false
     },
@@ -18825,7 +19049,7 @@
         "진영":"KMS",
         "레어도":"SR",
         "재화":780.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -18853,7 +19077,7 @@
         "진영":"KMS",
         "레어도":"SR",
         "재화":780.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -19343,7 +19567,7 @@
         "진영":"KMS",
         "레어도":"SR",
         "재화":780.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -19553,7 +19777,7 @@
         "진영":"KMS",
         "레어도":"UR",
         "재화":980.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -19582,6 +19806,20 @@
         "레어도":"SSR",
         "재화":880.0,
         "기간":"한정 (2025\/07\/09)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":401992,
+        "함순이 이름":"오토 폰 알벤슬레벤",
+        "한글 함순이 + 스킨 이름":null,
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/401992\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"KMS",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
         "ex_chat_status":0,
         "isNew":false
     },
@@ -19945,7 +20183,7 @@
         "진영":"KMS",
         "레어도":"SSR",
         "재화":980.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -20128,6 +20366,20 @@
         "레어도":"SSR",
         "재화":980.0,
         "기간":"한정 (2025\/04\/02)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":403037,
+        "함순이 이름":"프린츠 오이겐",
+        "한글 함순이 + 스킨 이름":null,
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/403037\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"KMS",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
         "ex_chat_status":0,
         "isNew":false
     },
@@ -20869,7 +21121,7 @@
         "진영":"KMS",
         "레어도":"SSR",
         "재화":1180.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -21094,6 +21346,20 @@
         "레어도":"UR",
         "재화":980.0,
         "기간":"한정 (2025\/07\/09)",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":405052,
+        "함순이 이름":"비스마르크 Zwei",
+        "한글 함순이 + 스킨 이름":"광휘와 마음의 게디히트",
+        "스킨 타입 - 한글":"사복",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/405052\/shipyard.png",
+        "스킨 태그":"쁘띠모션, 배경",
+        "진영":"KMS",
+        "레어도":"UR",
+        "재화":null,
+        "기간":null,
         "ex_chat_status":0,
         "isNew":false
     },
@@ -21387,7 +21653,7 @@
         "진영":"KMS",
         "레어도":"UR",
         "재화":1180.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -22199,7 +22465,7 @@
         "진영":"KMS",
         "레어도":"UR",
         "재화":1180.0,
-        "기간":"한정 (2025\/01\/15)",
+        "기간":"한정 (2026\/01\/21)",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -22355,6 +22621,20 @@
         "재화":null,
         "기간":null,
         "ex_chat_status":1,
+        "isNew":false
+    },
+    {
+        "클뜯 id":499101,
+        "함순이 이름":"메클렌부르크",
+        "한글 함순이 + 스킨 이름":null,
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/499101\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"KMS",
+        "레어도":"UR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":0,
         "isNew":false
     },
     {
@@ -24724,6 +25004,20 @@
         "isNew":false
     },
     {
+        "클뜯 id":699031,
+        "함순이 이름":"비토리오 쿠니베르티",
+        "한글 함순이 + 스킨 이름":null,
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/699031\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"RN",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":701020,
         "함순이 이름":"그로즈니",
         "한글 함순이 + 스킨 이름":"그로즈니",
@@ -25424,6 +25718,20 @@
         "isNew":false
     },
     {
+        "클뜯 id":702052,
+        "함순이 이름":"쿠이비셰프",
+        "한글 함순이 + 스킨 이름":null,
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/702052\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"SN",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":702060,
         "함순이 이름":"무르만스크",
         "한글 함순이 + 스킨 이름":"무르만스크",
@@ -26096,6 +26404,20 @@
         "isNew":false
     },
     {
+        "클뜯 id":799031,
+        "함순이 이름":"드미트리 돈스코이",
+        "한글 함순이 + 스킨 이름":null,
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/799031\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"SN",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":801010,
         "함순이 이름":"르 트리옹팡",
         "한글 함순이 + 스킨 이름":"르 트리옹팡",
@@ -26540,6 +26862,34 @@
         "레어도":"SSR",
         "재화":900.0,
         "기간":"상시",
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":802032,
+        "함순이 이름":"기샹",
+        "한글 함순이 + 스킨 이름":null,
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/802032\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"FFNF",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":802033,
+        "함순이 이름":"기샹",
+        "한글 함순이 + 스킨 이름":null,
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":null,
+        "스킨 태그":"X",
+        "진영":"FFNF",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
         "ex_chat_status":0,
         "isNew":false
     },
@@ -28126,6 +28476,20 @@
         "isNew":false
     },
     {
+        "클뜯 id":1199011,
+        "함순이 이름":"하우덴 리우",
+        "한글 함순이 + 스킨 이름":null,
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/1199011\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":11,
+        "레어도":"UR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":9600010,
         "함순이 이름":"로열 포춘",
         "한글 함순이 + 스킨 이름":"로열 포춘",
@@ -28840,6 +29204,20 @@
         "isNew":false
     },
     {
+        "클뜯 id":9702090,
+        "함순이 이름":"클리블랜드·META",
+        "한글 함순이 + 스킨 이름":"클리블랜드·META",
+        "스킨 타입 - 한글":null,
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/9702090\/shipyard.png",
+        "스킨 태그":"X",
+        "진영":"META",
+        "레어도":"SSR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
         "클뜯 id":9703010,
         "함순이 이름":"트렌토·META",
         "한글 함순이 + 스킨 이름":"트렌토·META",
@@ -29289,8 +29667,8 @@
     },
     {
         "클뜯 id":9707080,
-        "함순이 이름":null,
-        "한글 함순이 + 스킨 이름":null,
+        "함순이 이름":"요크타운·META",
+        "한글 함순이 + 스킨 이름":"요크타운·META",
         "스킨 타입 - 한글":null,
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/9707080\/shipyard.png",
         "스킨 태그":"X",

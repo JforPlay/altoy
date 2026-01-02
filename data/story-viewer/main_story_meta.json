@@ -1685,14 +1685,62 @@
     },
     "92": {
         "id": 92,
-        "name": "기대해 주세요",
-        "description": "기대해 주세요",
+        "name": "아름다운 세계에게",
+        "description": "「세이렌과의 전투가 끝났다」\n「재결성 회의도 드디어 끝났다」\n「아름다운 세계」\n「아름다운 세계」",
+        "summary": "",
+        "shipnation": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            10,
+            11
+        ],
+        "bgm": "login",
+        "link_event": [
+            91,
+            93
+        ],
+        "chapter": 4,
+        "column": 57,
+        "row": 0,
+        "icon": "ChapterFour_11"
+    },
+    "93": {
+        "id": 93,
+        "name": "창공에 울리는 소리",
+        "description": "「과거는 완벽하지 않고, 미래에는 난관이 기다리고 있다.」\n「하지만 지금」\n「우리는 단결하여 함께 앞으로 나아가려 한다.」\n「과거, 현재, 미래의 모든 동료들이여.」\n「함께 이 장대한 악장을 연주하자——」",
+        "summary": "",
+        "shipnation": [
+            97,
+            2,
+            1,
+            4,
+            6,
+            7
+        ],
+        "bgm": "story-weimu-link",
+        "link_event": [
+            94
+        ],
+        "chapter": 4,
+        "column": 58,
+        "row": 0,
+        "icon": "ChapterFour_12"
+    },
+    "94": {
+        "id": 94,
+        "name": "기대해주세요",
+        "description": "기대해주세요",
         "summary": "",
         "shipnation": 0,
         "bgm": "",
         "link_event": "",
         "chapter": 0,
-        "column": 57,
+        "column": 59,
         "row": 0,
         "icon": ""
     }
