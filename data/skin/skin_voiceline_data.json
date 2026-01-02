@@ -309825,7 +309825,7 @@
                 "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/10100010\/couple_encourage1.ogg"
             },
             {
-                "voiceline":"['느와르', '블랑', '벨'] : 좋~아, 다 함께 가자고~!",
+                "voiceline":"['느와르', '블랑', '벨(콜라보)'] : 좋~아, 다 함께 가자고~!",
                 "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/10100010\/couple_encourage2.ogg"
             }
         ],
@@ -310002,7 +310002,7 @@
                 "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/10100020\/couple_encourage1.ogg"
             },
             {
-                "voiceline":"['넵튠(콜라보)', '블랑', '벨'] : 각오는 되어있겠죠?",
+                "voiceline":"['넵튠(콜라보)', '블랑', '벨(콜라보)'] : 각오는 되어있겠죠?",
                 "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/10100020\/couple_encourage2.ogg"
             }
         ],
@@ -310175,7 +310175,7 @@
         "승리_ex":null,
         "함대 특수대사":[
             {
-                "voiceline":"['벨'] : 젠장… 그 출렁출렁 거리는 걸 쿠션 대신 써주지!",
+                "voiceline":"['벨(콜라보)'] : 젠장… 그 출렁출렁 거리는 걸 쿠션 대신 써주지!",
                 "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/10100030\/couple_encourage1.ogg"
             },
             {
@@ -310211,8 +310211,8 @@
     {
         "클뜯 id":10100040,
         "클뜯 함순이 id":1010004,
-        "함순이 이름":"벨",
-        "한글 함순이 + 스킨 이름":"벨",
+        "함순이 이름":"벨(콜라보)",
+        "한글 함순이 + 스킨 이름":"벨(콜라보)",
         "영문 함순이 + 스킨 이름":"Vert",
         "스킨 타입":"Default",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/10100040\/painting.png",
