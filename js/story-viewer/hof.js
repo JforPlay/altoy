@@ -73,9 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Define character groups for the gallery (now with dynamic dummy data)
             CHARACTER_GROUPS = {
-                "2019 Hall of Fame": ["에기르", "체셔", "뉴저지"],
-                "2021 Hall of Fame": ["벨파스트", "모나크", "엔터프라이즈"],
-                "2023 Hall of Fame (찐빠)": dummyCharacterNames
+                "2019 Hall of Fame": ["벨파스트", "모나크", "엔터프라이즈"],
+                "2021 Hall of Fame": ["에기르", "체셔", "뉴저지"],
+                "2023 Hall of Fame": ["힌덴부르크", "임플래커블", "다이호"],
+                "2023 Hall of Fame (찐빠 - 보관용)": dummyCharacterNames
             };
         },
 
@@ -108,8 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const groupWrapper = document.createElement('div');
             groupWrapper.className = 'hof-gallery-group';
 
-            // Add special class for dummy/flawed section
-            if (groupTitle.includes('찐빠')) {
+            // Add special class for dummy/draft section
+            if (groupTitle.includes('찐빠') || groupTitle.includes('초안')) {
                 groupWrapper.classList.add('dummy-section');
             }
 
