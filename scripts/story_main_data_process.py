@@ -148,23 +148,24 @@ class DataProcessor:
         template_data = self.memory_template_data.get(str(mem_id))
         if not template_data:
             return f"ID not found in memory_template: {mem_id}"
-            
+
         story_key = template_data.get("story")
         if not story_key or not isinstance(story_key, str):
             return f"Invalid or missing 'story' field for ID {mem_id} in memory_template: {story_key}"
-        
+
         # Try to get story data directly
         story_data = self.get_story_data_by_key(story_key, fields_to_remove)
-        if story_data:
+        # Check if it's valid story data (has 'scripts' field) and not dungeon config
+        if story_data and 'scripts' in story_data:
             template_data["story"] = story_data
             return template_data
-        
-        # Try dungeon stories
+
+        # Try dungeon stories (or if story_data was dungeon config without scripts)
         dungeon_story_data = self.process_dungeon_stories(story_key, fields_to_remove)
         if dungeon_story_data:
             template_data["story"] = dungeon_story_data
             return template_data
-        
+
         # No story data found
         template_data["story"] = f"던전 스토리 ID를 story.json에서 찾을 수 없습니다: {story_key}"
         return template_data
