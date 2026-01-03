@@ -671,6 +671,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     el.actorPortrait.classList.toggle('hidden', !actorInfo.icon);
                 }
 
+                // Apply nameColor if specified
+                if (line.nameColor) {
+                    el.actorName.style.color = line.nameColor;
+                } else {
+                    // Reset to default color if no nameColor is specified
+                    el.actorName.style.color = '';
+                }
+
                 // Apply shadow effect if actorShadow flag is set
                 el.actorPortrait.classList.toggle('actor-shadow', line.actorShadow === true);
 
