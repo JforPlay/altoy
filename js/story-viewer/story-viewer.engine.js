@@ -875,7 +875,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // --- Step 3: Handle special cases (Commander, Narrator) ---
-            if (line.actor === 0 || line.portrait === 'zhihuiguan') {
+            // Only apply commander default if no custom actorName was provided
+            if ((line.actor === 0 || line.portrait === 'zhihuiguan') && !line.actorName) {
                 actorInfo = { id: 0, name: '지휘관', icon: this.COMMANDER_ICON_PATH };
             } else if (this.config.viewerType === 'world' && line.say && !line.actor && !line.actorName) {
                 actorInfo.name = (line.say.includes('·') || line.say.includes('————')) ? 'Narrator' : '지휘관';
