@@ -50,13 +50,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === CONSTANTS ===
     // Normalize Roman numerals to handle data inconsistencies (consistent with skin.data.js)
+    // Order matters: longer patterns must be replaced first to avoid partial matches
     const normalizeRomanNumerals = (str) => {
         if (!str) return str;
         return str
-            .replace(/II/g, 'Ⅱ')   // ASCII II → Roman numeral 2
-            .replace(/III/g, 'Ⅲ')  // ASCII III → Roman numeral 3
-            .replace(/IV/g, 'Ⅳ')   // ASCII IV → Roman numeral 4
-            .replace(/V/g, 'Ⅴ')    // ASCII V → Roman numeral 5
+            .replace(/VIII/g, 'Ⅷ')  // ASCII VIII → Roman numeral 8
+            .replace(/VII/g, 'Ⅶ')   // ASCII VII → Roman numeral 7
+            .replace(/VI/g, 'Ⅵ')    // ASCII VI → Roman numeral 6
+            .replace(/III/g, 'Ⅲ')   // ASCII III → Roman numeral 3
+            .replace(/II/g, 'Ⅱ')    // ASCII II → Roman numeral 2
+            .replace(/IV/g, 'Ⅳ')    // ASCII IV → Roman numeral 4
+            .replace(/IX/g, 'Ⅸ')    // ASCII IX → Roman numeral 9
+            .replace(/X/g, 'Ⅹ')     // ASCII X → Roman numeral 10
+            .replace(/V/g, 'Ⅴ')     // ASCII V → Roman numeral 5
             .trim();
     };
 

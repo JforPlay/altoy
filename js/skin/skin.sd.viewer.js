@@ -403,14 +403,7 @@ function onDragEnd(e) {
     dragTarget = null;
 }
 
-// In console, run this to see all bones:
-window.inspectBones = function() {
-    if (!currentSpine) return;
-    const bones = currentSpine.skeleton.bones;
-    bones.forEach(b => {
-        console.log(`Bone: ${b.data.name}, worldX: ${b.worldX.toFixed(1)}, worldY: ${b.worldY.toFixed(1)}`);
-    });
-}
+
 
 // Controls
 document.getElementById('scale').addEventListener('input', (e) => {
