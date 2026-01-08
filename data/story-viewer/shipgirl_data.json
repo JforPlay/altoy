@@ -1831,6 +1831,10 @@
         "name": "캔자스",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199060/icon.png"
     },
+    "199061": {
+        "name": "미드나이트 레저",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199061/icon.png"
+    },
     "201010": {
         "name": "아마존",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201010/icon.png"
@@ -5635,6 +5639,10 @@
         "name": "함선과 함정",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401991/icon.png"
     },
+    "401992": {
+        "name": "덜렁이 메이드의 대위기!?",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401992/icon.png"
+    },
     "402010": {
         "name": "쾨니히스베르크",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402010/icon.png"
@@ -5790,6 +5798,10 @@
     "403036": {
         "name": "브릴리언트 터치다운",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403036/icon.png"
+    },
+    "403037": {
+        "name": "취기와 밀당 사이",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/403037/icon.png"
     },
     "403038": {
         "name": "운명의 교향곡",
@@ -6442,6 +6454,10 @@
     "499100": {
         "name": "메클렌부르크",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499100/icon.png"
+    },
+    "499101": {
+        "name": "낙인의 헥세라이",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499101/icon.png"
     },
     "501010": {
         "name": "안샨 ",
@@ -7127,6 +7143,10 @@
         "name": "비토리오 쿠니베르티",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/699030/icon.png"
     },
+    "699031": {
+        "name": "냥냥 습성 연구",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/699031/icon.png"
+    },
     "701020": {
         "name": "그로즈니 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701020/icon.png"
@@ -7327,6 +7347,10 @@
         "name": "은빛 현의 향도병",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702051/icon.png"
     },
+    "702052": {
+        "name": "레이니 블루",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702052/icon.png"
+    },
     "702060": {
         "name": "무르만스크",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702060/icon.png"
@@ -7519,6 +7543,10 @@
         "name": "드미트리 돈스코이",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/799030/icon.png"
     },
+    "799031": {
+        "name": "깡총깡총 룸서비스",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/799031/icon.png"
+    },
     "801010": {
         "name": "르 트리옹팡 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801010/icon.png"
@@ -7646,6 +7674,14 @@
     "802031": {
         "name": "빙판 위의 소르시에르",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802031/icon.png"
+    },
+    "802032": {
+        "name": "밀크 & 키스",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802032/icon.png"
+    },
+    "802033": {
+        "name": "Milk&Kiss",
+        "icon": null
     },
     "802040": {
         "name": "뒤게 트루앵",
@@ -9542,6 +9578,10 @@
     "1199010": {
         "name": "하우덴 리우",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/1199010/icon.png"
+    },
+    "1199011": {
+        "name": "자애로운 씻겨주기",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/1199011/icon.png"
     },
     "9600010": {
         "name": "로열 포춘",

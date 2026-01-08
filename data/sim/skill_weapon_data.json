@@ -26159,6 +26159,15 @@
                     "targetAniEffect": "",
                     "target_choise": "TargetSelf",
                     "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 13575
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
                 }
             ]
         },
@@ -26194,6 +26203,15 @@
                 {
                     "arg_list": {
                         "buff_id": 13573
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 13575
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",
