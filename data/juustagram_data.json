@@ -75,12 +75,12 @@
                 "40301": "분, 분위기에 맞춰준 것뿐이야! 맞춰준 거!"
             }
         },
-        "op_option1": "굉장히 재밌어 보이네.",
-        "op_reply1": "지휘관님~ 아카기와 궁합 보지 않으실래요~? 물론… 완벽한 궁합 외의 가능성은… 존재하지 않겠지만요. 후후.",
-        "reply1_shipgirl": 30701,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "op_option1": "즐겁다고 생각하면 됐어.",
+        "op_reply1": "‘즐거움’에 관한 지시가 필요.",
+        "reply1_shipgirl": 99901,
+        "op_option2": "모래성 쌓기를 해보는 건?",
+        "op_reply2": "가스코뉴, ‘모래성 쌓기’ 를 시작——",
+        "reply2_shipgirl": 99901
     },
     "3": {
         "id": 3,
@@ -122,9 +122,9 @@
                 "40301": "동정하지 말란 말이야아아아아……"
             }
         },
-        "op_option1": "정말 맛있어 보이네.",
-        "op_reply1": "지휘관님, 잠시만요. 아카기가 바로 갈게요~!",
-        "reply1_shipgirl": 30701,
+        "op_option1": "멋지게 잘했잖아!",
+        "op_reply1": "가스코뉴, ‘즐거움’이라는 것을 약간은 이해함.",
+        "reply1_shipgirl": 99901,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
@@ -162,12 +162,12 @@
                 "40301": "자매 관계는 여전히 좋군…"
             }
         },
-        "op_option1": "연습, 힘내.",
-        "op_reply1": "지휘관님이 격려해 주시다니, 아카기… 힘이 나는 것 같아요♥",
-        "reply1_shipgirl": 30701,
-        "op_option2": "연습을 보러 가지 못해서 미안해.",
-        "op_reply2": "지휘관님, 잠시만 기다려주세요. 연습을 마치고 아카기가 바로 갈게요~♥",
-        "reply2_shipgirl": 30701
+        "op_option1": "불량 식품…",
+        "op_reply1": "아하하… 가끔 먹으면 괜찮겠…지!",
+        "reply1_shipgirl": 10209,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "5": {
         "id": 5,
@@ -197,12 +197,12 @@
                 "30701": "별을 격추한다니… 우후후… 정말 로맨틱한 생각이네요. 싫지 않아요."
             }
         },
-        "op_option1": "즐겁다고 생각하면 됐어.",
-        "op_reply1": "‘즐거움’에 관한 지시가 필요.",
-        "reply1_shipgirl": 99901,
-        "op_option2": "모래성 쌓기를 해보는 건?",
-        "op_reply2": "가스코뉴, ‘모래성 쌓기’ 를 시작——",
-        "reply2_shipgirl": 99901
+        "op_option1": "아카시 에게 별 모양 장식을 준비하라고 하자…",
+        "op_reply1": "…주인님, 낭만이라는 것이 없군요.",
+        "reply1_shipgirl": 20208,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "6": {
         "id": 6,
@@ -241,9 +241,9 @@
                 "30701": "…우후후, 좋은 색이네요~"
             }
         },
-        "op_option1": "멋지게 잘했잖아!",
-        "op_reply1": "가스코뉴, ‘즐거움’이라는 것을 약간은 이해함.",
-        "reply1_shipgirl": 99901,
+        "op_option1": "기타리스트 히퍼라니 멋있잖아!",
+        "op_reply1": "하아?!",
+        "reply1_shipgirl": 40301,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
@@ -290,12 +290,12 @@
                 "10209": "아하하, 이렇게 말하지만 아카기도 열심히 하니까~"
             }
         },
-        "op_option1": "가스코뉴의 노래는 이미 듣기 좋은걸.",
-        "op_reply1": "듣기 좋다… ‘감정’을 가진 것과 동일하지 않은 개념. 혼란……",
-        "reply1_shipgirl": 99901,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "op_option1": "연습, 힘내.",
+        "op_reply1": "지휘관님이 격려해 주시다니, 아카기… 힘이 나는 것 같아요♥",
+        "reply1_shipgirl": 30701,
+        "op_option2": "연습을 보러 가지 못해서 미안해.",
+        "op_reply2": "지휘관님, 잠시만 기다려주세요. 연습을 마치고 아카기가 바로 갈게요~♥",
+        "reply2_shipgirl": 30701
     },
     "8": {
         "id": 8,
@@ -337,12 +337,12 @@
                 "10209": "하하, 칭찬 고마워~"
             }
         },
-        "op_option1": "이대로도 괜찮아.",
-        "op_reply1": "‘이대로도’의 의미에 해석이 필요. ",
-        "reply1_shipgirl": 99901,
-        "op_option2": "가스코뉴는 어떤 모습이든지 상관없이, 모두 최고야. ",
-        "op_reply2": "...혼란 업그레이드 ",
-        "reply2_shipgirl": 99901
+        "op_option1": "효과가 있을 것 같은 느낌이…",
+        "op_reply1": "정말?!",
+        "reply1_shipgirl": 10209,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "9": {
         "id": 9,
@@ -374,9 +374,9 @@
                 "40301": "알, 알고 있다고! 같이 엽습하고 있잖아!"
             }
         },
-        "op_option1": "불량 식품…",
-        "op_reply1": "아하하… 가끔 먹으면 괜찮겠…지!",
-        "reply1_shipgirl": 10209,
+        "op_option1": "셰필드의 연주를 직접 들을 수 있으면 좋겠는걸.",
+        "op_reply1": "그렇게 듣고 싶어 하시니 준비를 하겠습니다. 우연히 불행해지는 저주의 곡이라던가… 장난입니다.",
+        "reply1_shipgirl": 20208,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
@@ -414,9 +414,9 @@
                 "10209": "아하하… 음료에 호불호가 굉장히 강하네, 모두들~ 산소 콜라 한잔하고 가라앉히는 건 어때~?"
             }
         },
-        "op_option1": "화, 화훼 마스터 클리블랜드!",
-        "op_reply1": "지휘관 말처럼 그렇게 과장할 만한 건 아니지만… 하하…",
-        "reply1_shipgirl": 10209,
+        "op_option1": "블랙커피 파야?",
+        "op_reply1": "그, 그런거야!",
+        "reply1_shipgirl": 40301,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
@@ -451,9 +451,9 @@
                 "40301": "인정하고 싶진 않지만, 클리블랜드의 말이 맞지…"
             }
         },
-        "op_option1": "효과가 있을 것 같은 느낌이…",
-        "op_reply1": "정말?!",
-        "reply1_shipgirl": 10209,
+        "op_option1": "가스코뉴의 노래는 이미 듣기 좋은걸.",
+        "op_reply1": "듣기 좋다… ‘감정’을 가진 것과 동일하지 않은 개념. 혼란……",
+        "reply1_shipgirl": 99901,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
@@ -494,12 +494,12 @@
                 "40301": "사쿠라 엠파이어의 ‘뽑기’인가… 다음번에 가서 해볼까…"
             }
         },
-        "op_option1": "클리블랜드는… 최고야!",
-        "op_reply1": "그… 그렇게 부끄러운 말은 역시 그만둬! ",
-        "reply1_shipgirl": 10209,
-        "op_option2": "청춘의 땀...은 최고야! ",
-        "op_reply2": "헤헤, 지휘관도 이런 열정의 느낌을 아는구나! ",
-        "reply2_shipgirl": 10209
+        "op_option1": "굉장히 재밌어 보이네.",
+        "op_reply1": "지휘관님~ 아카기와 궁합 보지 않으실래요~? 물론… 완벽한 궁합 외의 가능성은… 존재하지 않겠지만요. 후후.",
+        "reply1_shipgirl": 30701,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "13": {
         "id": 13,
@@ -534,12 +534,12 @@
                 "40304": "종종 이렇게 모이는 것도 필요한 것 같네… 슈피도 즐거운 모양이고. 마음에 들어!"
             }
         },
-        "op_option1": "얼른 멈춰!",
-        "op_reply1": "칫…",
-        "reply1_shipgirl": 20208,
-        "op_option2": "자세히 분석해줘. ",
-        "op_reply2": "네...? 지휘관님도 관심이 있으신가요? ",
-        "reply2_shipgirl": 20208
+        "op_option1": "소세지… 맛있어 보인다.",
+        "op_reply1": "흥, 흥... 만약 지휘관이 정말 너어~무 가입을 원한다면, 생각해볼 수 없는 것도 아니지!",
+        "reply1_shipgirl": 40301,
+        "op_option2": "Prost!",
+        "op_reply2": "흥, 흥... 만약 지휘관이 정말 너어~무 가입을 원한다면, 생각해볼 수 없는 것도 아니지!",
+        "reply2_shipgirl": 40301
     },
     "14": {
         "id": 14,
@@ -581,9 +581,9 @@
                 "40301": "보, 보통은 좋아하지!"
             }
         },
-        "op_option1": "아카시 에게 별 모양 장식을 준비하라고 하자…",
-        "op_reply1": "…주인님, 낭만이라는 것이 없군요.",
-        "reply1_shipgirl": 20208,
+        "op_option1": "화, 화훼 마스터 클리블랜드!",
+        "op_reply1": "지휘관 말처럼 그렇게 과장할 만한 건 아니지만… 하하…",
+        "reply1_shipgirl": 10209,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
@@ -616,12 +616,12 @@
                 "40301": "……스톱!!"
             }
         },
-        "op_option1": "셰필드, 화이팅!",
-        "op_reply1": "말하지 않아도 힘낼 겁니다……",
+        "op_option1": "얼른 멈춰!",
+        "op_reply1": "칫…",
         "reply1_shipgirl": 20208,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "op_option2": "자세히 분석해줘. ",
+        "op_reply2": "네...? 지휘관님도 관심이 있으신가요? ",
+        "reply2_shipgirl": 20208
     },
     "16": {
         "id": 16,
@@ -653,12 +653,12 @@
                 "40301": "오이겐!!!!"
             }
         },
-        "op_option1": "셰필드의 연주를 직접 들을 수 있으면 좋겠는걸.",
-        "op_reply1": "그렇게 듣고 싶어 하시니 준비를 하겠습니다. 우연히 불행해지는 저주의 곡이라던가… 장난입니다.",
-        "reply1_shipgirl": 20208,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "op_option1": "귀여워!",
+        "op_reply1": "! ",
+        "reply1_shipgirl": 40301,
+        "op_option2": "음, 나도 한 벌 살까... ",
+        "op_reply2": "에엑!??",
+        "reply2_shipgirl": 40301
     },
     "17": {
         "id": 17,
@@ -700,12 +700,12 @@
                 "40301": "역시… 자매 관계는 여전히 좋군…"
             }
         },
-        "op_option1": "기타리스트 히퍼라니 멋있잖아!",
-        "op_reply1": "하아?!",
-        "reply1_shipgirl": 40301,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "op_option1": "클리블랜드는… 최고야!",
+        "op_reply1": "그… 그렇게 부끄러운 말은 역시 그만둬! ",
+        "reply1_shipgirl": 10209,
+        "op_option2": "청춘의 땀...은 최고야! ",
+        "op_reply2": "헤헤, 지휘관도 이런 열정의 느낌을 아는구나! ",
+        "reply2_shipgirl": 10209
     },
     "18": {
         "id": 18,
@@ -738,12 +738,12 @@
                 "10209": "아하하… 이거 약간… 내 지식의 맹점을 건드린 것 같은데… 헬레나에게 가르쳐달라고 해볼까……"
             }
         },
-        "op_option1": "소세지… 맛있어 보인다.",
-        "op_reply1": "흥, 흥... 만약 지휘관이 정말 너어~무 가입을 원한다면, 생각해볼 수 없는 것도 아니지!",
-        "reply1_shipgirl": 40301,
-        "op_option2": "Prost!",
-        "op_reply2": "흥, 흥... 만약 지휘관이 정말 너어~무 가입을 원한다면, 생각해볼 수 없는 것도 아니지!",
-        "reply2_shipgirl": 40301
+        "op_option1": "이대로도 괜찮아.",
+        "op_reply1": "‘이대로도’의 의미에 해석이 필요. ",
+        "reply1_shipgirl": 99901,
+        "op_option2": "가스코뉴는 어떤 모습이든지 상관없이, 모두 최고야. ",
+        "op_reply2": "...혼란 업그레이드 ",
+        "reply2_shipgirl": 99901
     },
     "19": {
         "id": 19,
@@ -779,12 +779,12 @@
                 "30701": "저같이 마음 넓은 사람은 후배의 망언을 마음에 담아두지 않는답니다~ 하지만… 지휘관님에게 ‘해충’이 헛소리를 한다면… 우후후~"
             }
         },
-        "op_option1": "귀여워!",
-        "op_reply1": "! ",
-        "reply1_shipgirl": 40301,
-        "op_option2": "음, 나도 한 벌 살까... ",
-        "op_reply2": "에엑!??",
-        "reply2_shipgirl": 40301
+        "op_option1": "정말 맛있어 보이네.",
+        "op_reply1": "지휘관님, 잠시만요. 아카기가 바로 갈게요~!",
+        "reply1_shipgirl": 30701,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "20": {
         "id": 20,
@@ -816,9 +816,9 @@
                 "20208": "벨파스트…네, 힘내겠습니다."
             }
         },
-        "op_option1": "블랙커피 파야?",
-        "op_reply1": "그, 그런거야!",
-        "reply1_shipgirl": 40301,
+        "op_option1": "셰필드, 화이팅!",
+        "op_reply1": "말하지 않아도 힘낼 겁니다……",
+        "reply1_shipgirl": 20208,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
@@ -856,12 +856,12 @@
                 "30514": "그, 그런 부도 있어?"
             }
         },
-        "op_option1": "새해 복 많이 받아!",
-        "op_reply1": "사쿠라 엠파이어와 함대를 위해 더 노력하자.",
-        "reply1_shipgirl": 30505,
-        "op_option2": "에? 이 계정은 나가토의? 그리고 다른 사람들도……",
-        "op_reply2": "나가토님과 무츠님, 그리고 저 카와카제 가 함께 관리하고 있습니다.",
-        "reply2_shipgirl": 30505
+        "op_option1": "난로는 최강!",
+        "op_reply1": "지휘실에는 안 놔줘. 일을 못할 거잖아!",
+        "reply1_shipgirl": 30514,
+        "op_option2": "최고는 라디에이터지…!",
+        "op_reply2": "그것도 좋지만… 그래도 나는 난로가 더 좋은걸.",
+        "reply2_shipgirl": 30514
     },
     "22": {
         "id": 22,
@@ -902,11 +902,11 @@
                 "30505": "합동 훈련에서의 저력을 함대에서도 보기를 바라! 기대하고 있다고!"
             }
         },
-        "op_option1": "여기도 세뱃돈을 준비했어.",
-        "op_reply1": "나를 어린애 취급하는 거냐! 필요 없다!",
+        "op_option1": "새해 복 많이 받아!",
+        "op_reply1": "사쿠라 엠파이어와 함대를 위해 더 노력하자.",
         "reply1_shipgirl": 30505,
-        "op_option2": "즐거워 보이네.",
-        "op_reply2": "나는 나가토란 말이다! 세뱃돈 따위로 즐거워하지 않아!",
+        "op_option2": "에? 이 계정은 나가토의? 그리고 다른 사람들도……",
+        "op_reply2": "나가토님과 무츠님, 그리고 저 카와카제 가 함께 관리하고 있습니다.",
         "reply2_shipgirl": 30505
     },
     "23": {
@@ -948,12 +948,12 @@
                 "30105": "후부키… 미안하다…예요."
             }
         },
-        "op_option1": "그래서? 어디에 돈을 내면 되지?",
-        "op_reply1": "사쿠라 엠파이어의 키리시마에게 연락주세요. 감사합니다! 하하하",
-        "reply1_shipgirl": 30404,
-        "op_option2": "계정이 해킹당했어…?",
-        "op_reply2": "아냐! 모른 척 한 거라고! 하하하",
-        "reply2_shipgirl": 30404
+        "op_option1": "신경 쓰지 마!",
+        "op_reply1": "미안하다…예요. 한 번 더 해볼게요.",
+        "reply1_shipgirl": 30105,
+        "op_option2": "시라누이에게 또 받을 수 있으니까, 괜찮아!",
+        "op_reply2": "지휘관님, 고맙다…예요.",
+        "reply2_shipgirl": 30105
     },
     "24": {
         "id": 24,
@@ -990,12 +990,12 @@
                 "30110": "목 막히지 않게 조심!"
             }
         },
-        "op_option1": "신경 쓰지 마!",
-        "op_reply1": "미안하다…예요. 한 번 더 해볼게요.",
-        "reply1_shipgirl": 30105,
-        "op_option2": "시라누이에게 또 받을 수 있으니까, 괜찮아!",
-        "op_reply2": "지휘관님, 고맙다…예요.",
-        "reply2_shipgirl": 30105
+        "op_option1": "왔다━━━(Дﾟ(○=(ﾟ∀ﾟ)=○)Дﾟ)━━━!!!",
+        "op_reply1": "지휘관━━(ﾟдﾟ；)))━━!!??",
+        "reply1_shipgirl": 30110,
+        "op_option2": "맛있어 보여!",
+        "op_reply2": "히비키의 음식 채널, 엿보지 마! 헤헤~",
+        "reply2_shipgirl": 30110
     },
     "25": {
         "id": 25,
@@ -1037,12 +1037,12 @@
                 "30221": "조금 남겨줄까? 평소에 장비 점검을 해줬던 답례로."
             }
         },
-        "op_option1": "달, 달인의 서예법!",
-        "op_reply1": "후후, 칭찬 고마워.",
-        "reply1_shipgirl": 49902,
-        "op_option2": "오오……!",
-        "op_reply2": "방에 걸고 싶다면 말해줘. 직접 가져다줄 테니까.",
-        "reply2_shipgirl": 49902
+        "op_option1": "또 이 시기가 왔네.",
+        "op_reply1": "그래서 메밀국수…인가.",
+        "reply1_shipgirl": 30221,
+        "op_option2": "새해 복 많이 받아!",
+        "op_reply2": "지휘관도 새해 복 많이 받아!",
+        "reply2_shipgirl": 30221
     },
     "26": {
         "id": 26,
@@ -1071,12 +1071,12 @@
                 "20603": "유니콘, 벨파스트에게도 도움을 많이 받았어… 고마워!"
             }
         },
-        "op_option1": "어떻게?",
-        "op_reply1": "왠지는 모르겠지만, 조금… 가볍달까?",
-        "reply1_shipgirl": 30607,
-        "op_option2": "누군가 손을 댔어?",
-        "op_reply2": "에엣?! 얼른 가서 볼게!",
-        "reply2_shipgirl": 30607
+        "op_option1": "귀여워!",
+        "op_reply1": "에헤헤…… 오빠… 보내줄까?",
+        "reply1_shipgirl": 20603,
+        "op_option2": "일러스트리어스…?",
+        "op_reply2": "응… 혼자 사진 찍는 건… 무서워서… 일러스트리어스 언니랑…… 같이……",
+        "reply2_shipgirl": 20603
     },
     "27": {
         "id": 27,
@@ -1115,12 +1115,12 @@
                 "40301": "이, 이건 무슨 조합?!"
             }
         },
-        "op_option1": "행운을 빌어!",
-        "op_reply1": "축복받았다! (사실 엄청 즐거워!",
-        "reply1_shipgirl": 40135,
-        "op_option2": "이스트 글림의 것과 같은 건가?",
-        "op_reply2": "유니온이랑 비슷하지. 지휘관도 해봤구나……",
-        "reply2_shipgirl": 40135
+        "op_option1": "달, 달인의 서예법!",
+        "op_reply1": "후후, 칭찬 고마워.",
+        "reply1_shipgirl": 49902,
+        "op_option2": "오오……!",
+        "op_reply2": "방에 걸고 싶다면 말해줘. 직접 가져다줄 테니까.",
+        "reply2_shipgirl": 49902
     },
     "28": {
         "id": 28,
@@ -1152,12 +1152,12 @@
                 "30607": "?? 이게 무슨 일…?"
             }
         },
-        "op_option1": "귀여워!",
-        "op_reply1": "에헤헤…… 오빠… 보내줄까?",
-        "reply1_shipgirl": 20603,
-        "op_option2": "일러스트리어스…?",
-        "op_reply2": "응… 혼자 사진 찍는 건… 무서워서… 일러스트리어스 언니랑…… 같이……",
-        "reply2_shipgirl": 20603
+        "op_option1": "여기도 세뱃돈을 준비했어.",
+        "op_reply1": "나를 어린애 취급하는 거냐! 필요 없다!",
+        "reply1_shipgirl": 30505,
+        "op_option2": "즐거워 보이네.",
+        "op_reply2": "나는 나가토란 말이다! 세뱃돈 따위로 즐거워하지 않아!",
+        "reply2_shipgirl": 30505
     },
     "29": {
         "id": 29,
@@ -1186,12 +1186,12 @@
                 "30404": "있을 리가 없잖아, 콘고 언니. 장난일 뿐이야. 하하하."
             }
         },
-        "op_option1": "귀여워!",
-        "op_reply1": "에헤헤… 오빠, 고마워…!",
-        "reply1_shipgirl": 20603,
-        "op_option2": "유쨩 대단해!",
-        "op_reply2": "에헤헤… 유쨩… 많은 걸 할 수 있다구…?",
-        "reply2_shipgirl": 20603
+        "op_option1": "그래서? 어디에 돈을 내면 되지?",
+        "op_reply1": "사쿠라 엠파이어의 키리시마에게 연락주세요. 감사합니다! 하하하",
+        "reply1_shipgirl": 30404,
+        "op_option2": "계정이 해킹당했어…?",
+        "op_reply2": "아냐! 모른 척 한 거라고! 하하하",
+        "reply2_shipgirl": 30404
     },
     "30": {
         "id": 30,
@@ -1227,12 +1227,12 @@
                 "30605": "아… 설마 아카시, 만들 때 또 재료를 아낀 건가……"
             }
         },
-        "op_option1": "또 이 시기가 왔네.",
-        "op_reply1": "그래서 메밀국수…인가.",
-        "reply1_shipgirl": 30221,
-        "op_option2": "새해 복 많이 받아!",
-        "op_reply2": "지휘관도 새해 복 많이 받아!",
-        "reply2_shipgirl": 30221
+        "op_option1": "어떻게?",
+        "op_reply1": "왠지는 모르겠지만, 조금… 가볍달까?",
+        "reply1_shipgirl": 30607,
+        "op_option2": "누군가 손을 댔어?",
+        "op_reply2": "에엣?! 얼른 가서 볼게!",
+        "reply2_shipgirl": 30607
     },
     "31": {
         "id": 31,
@@ -1271,12 +1271,12 @@
                 "40135": "Z23이 나보다 나은 건 없을 텐데?!"
             }
         },
-        "op_option1": "즐거워!",
-        "op_reply1": "지휘관님도 같이 가실래요? 아, 물론 휴일에!",
-        "reply1_shipgirl": 20207,
-        "op_option2": "사우스햄튼이 직접 만든 거야?",
-        "op_reply2": "아니요. 아카시의 가게에서 샀죠~",
-        "reply2_shipgirl": 20207
+        "op_option1": "행운을 빌어!",
+        "op_reply1": "축복받았다! (사실 엄청 즐거워!",
+        "reply1_shipgirl": 40135,
+        "op_option2": "이스트 글림의 것과 같은 건가?",
+        "op_reply2": "유니온이랑 비슷하지. 지휘관도 해봤구나……",
+        "reply2_shipgirl": 40135
     },
     "32": {
         "id": 32,
@@ -1302,12 +1302,12 @@
                 "30307": "의외로 아픈데… 카스미 … 너무 진심 아니야?"
             }
         },
-        "op_option1": "누가 찍은 거지…?",
-        "op_reply1": "나와 마음이 맞는 친구가? 신경 쓰지 마.",
-        "reply1_shipgirl": 20702,
-        "op_option2": "누구를 찍으려고 한 거지…?",
-        "op_reply2": "내가 지키고 싶은 동료일 뿐이야. 흑심 같은 건 없다고!",
-        "reply2_shipgirl": 20702
+        "op_option1": "둥실이… 어딨어……?",
+        "op_reply1": "지휘관… 안 보여?",
+        "reply1_shipgirl": 30181,
+        "op_option2": "재밌어 보이네!",
+        "op_reply2": "지휘관이랑 같이 하면 더 재밌을 거야……",
+        "reply2_shipgirl": 30181
     },
     "33": {
         "id": 33,
@@ -1340,12 +1340,12 @@
                 "30208": "에? 벌써 이런 시간?"
             }
         },
-        "op_option1": "왔다━━━(Дﾟ(○=(ﾟ∀ﾟ)=○)Дﾟ)━━━!!!",
-        "op_reply1": "지휘관━━(ﾟдﾟ；)))━━!!??",
-        "reply1_shipgirl": 30110,
-        "op_option2": "맛있어 보여!",
-        "op_reply2": "히비키의 음식 채널, 엿보지 마! 헤헤~",
-        "reply2_shipgirl": 30110
+        "op_option1": "멋있네.",
+        "op_reply1": "어라? 지휘관도 이해했구나? 오래간만에 이해해주는 사람을 만났네.",
+        "reply1_shipgirl": 30208,
+        "op_option2": "이름은… <눈의 귀신>?",
+        "op_reply2": "나라면… <베링의 망령>이라던가… 생각이… 너무 나갔나.",
+        "reply2_shipgirl": 30208
     },
     "34": {
         "id": 34,
@@ -1379,12 +1379,12 @@
                 "10209": "복수하지 마!"
             }
         },
-        "op_option1": "멋있네.",
-        "op_reply1": "어라? 지휘관도 이해했구나? 오래간만에 이해해주는 사람을 만났네.",
-        "reply1_shipgirl": 30208,
-        "op_option2": "이름은… <눈의 귀신>?",
-        "op_reply2": "나라면… <베링의 망령>이라던가… 생각이… 너무 나갔나.",
-        "reply2_shipgirl": 30208
+        "op_option1": "왜 이런 사진을 올리는 건데…?",
+        "op_reply1": "이 굴욕적인 패배를 잊지 않기 위해서…! 절대 벌칙 같은 거 아니니까!",
+        "reply1_shipgirl": 10209,
+        "op_option2": "파이팅!",
+        "op_reply2": "땡큐! 나중에 대련해줘!",
+        "reply2_shipgirl": 10209
     },
     "35": {
         "id": 35,
@@ -1413,12 +1413,12 @@
                 "20603": "?? 유쨩은 장난감인데…?"
             }
         },
-        "op_option1": "왜 이런 사진을 올리는 건데…?",
-        "op_reply1": "이 굴욕적인 패배를 잊지 않기 위해서…! 절대 벌칙 같은 거 아니니까!",
-        "reply1_shipgirl": 10209,
-        "op_option2": "파이팅!",
-        "op_reply2": "땡큐! 나중에 대련해줘!",
-        "reply2_shipgirl": 10209
+        "op_option1": "귀여워!",
+        "op_reply1": "에헤헤… 오빠, 고마워…!",
+        "reply1_shipgirl": 20603,
+        "op_option2": "유쨩 대단해!",
+        "op_reply2": "에헤헤… 유쨩… 많은 걸 할 수 있다구…?",
+        "reply2_shipgirl": 20603
     },
     "36": {
         "id": 36,
@@ -1450,12 +1450,12 @@
                 "20207": "좋아! 꼭이야!"
             }
         },
-        "op_option1": "난로는 최강!",
-        "op_reply1": "지휘실에는 안 놔줘. 일을 못할 거잖아!",
-        "reply1_shipgirl": 30514,
-        "op_option2": "최고는 라디에이터지…!",
-        "op_reply2": "그것도 좋지만… 그래도 나는 난로가 더 좋은걸.",
-        "reply2_shipgirl": 30514
+        "op_option1": "즐거워!",
+        "op_reply1": "지휘관님도 같이 가실래요? 아, 물론 휴일에!",
+        "reply1_shipgirl": 20207,
+        "op_option2": "사우스햄튼이 직접 만든 거야?",
+        "op_reply2": "아니요. 아카시의 가게에서 샀죠~",
+        "reply2_shipgirl": 20207
     },
     "37": {
         "id": 37,
@@ -1484,12 +1484,12 @@
                 "20702": "괜찮아, 괜찮아. 고마워~"
             }
         },
-        "op_option1": "둥실이… 어딨어……?",
-        "op_reply1": "지휘관… 안 보여?",
-        "reply1_shipgirl": 30181,
-        "op_option2": "재밌어 보이네!",
-        "op_reply2": "지휘관이랑 같이 하면 더 재밌을 거야……",
-        "reply2_shipgirl": 30181
+        "op_option1": "누가 찍은 거지…?",
+        "op_reply1": "나와 마음이 맞는 친구가? 신경 쓰지 마.",
+        "reply1_shipgirl": 20702,
+        "op_option2": "누구를 찍으려고 한 거지…?",
+        "op_reply2": "내가 지키고 싶은 동료일 뿐이야. 흑심 같은 건 없다고!",
+        "reply2_shipgirl": 20702
     },
     "38": {
         "id": 38,
@@ -1534,12 +1534,12 @@
                 "20121": "음…"
             }
         },
-        "op_option1": "야구 재밌어 보이네",
-        "op_reply1": "에헤헤… 다음번에는 지휘관도 같이하자?",
-        "reply1_shipgirl": 10209,
-        "op_option2": "오오… 4번 타자!",
-        "op_reply2": "하하, 운이 좋았어, 운이~",
-        "reply2_shipgirl": 10209
+        "op_option1": "안, 안 다쳤어?!",
+        "op_reply1": "으… 깜짝 놀랐지만 괜찮아…",
+        "reply1_shipgirl": 20121,
+        "op_option2": "계란 프라이… 먹을 수 있을까?",
+        "op_reply2": "조… 조금 탔지만… 지휘관, 먹어볼래? 뒷 일은 책임 안 질 거지만!",
+        "reply2_shipgirl": 20121
     },
     "39": {
         "id": 39,
@@ -1584,12 +1584,12 @@
                 "40304": "흥, 역시나 웃긴 자매들이군."
             }
         },
-        "op_option1": "괜찮아?!",
-        "op_reply1": "아아아아… 지휘관님도 아카기의 걱정을! 지휘관님의 사랑 덕분에 아카기… 벌써 다 나았답니다!",
-        "reply1_shipgirl": 30701,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "op_option1": "날씨 좋네.",
+        "op_reply1": "헛소리 그만하고 와서 줄이나 잡아!",
+        "reply1_shipgirl": 40304,
+        "op_option2": "그런 걸로 움직이는 거냐고…",
+        "op_reply2": "이 녀석 똑똑하거든. 너도 열심히 공부해야지, 하등 생물? 후후.",
+        "reply2_shipgirl": 40304
     },
     "40": {
         "id": 40,
@@ -1618,12 +1618,12 @@
                 "31201": "그러니까 숨긴 거 아니다냥!"
             }
         },
-        "op_option1": "내가 뭐라도 해줄까?",
-        "op_reply1": "그럴 힘이 있으면 지휘관은 모항의 일에 신경 쓰는 게 좋겠어.",
-        "reply1_shipgirl": 10706,
-        "op_option2": "맛있어…?",
-        "op_reply2": "맛은 상관없어. 먹을 수만 있으면 되니까.",
-        "reply2_shipgirl": 10706
+        "op_option1": "대회는 언제 시작이야?!",
+        "op_reply1": "이, 이러면 재밌을 거라고 생각했는데…",
+        "reply1_shipgirl": 20101,
+        "op_option2": "아카시, 사재기야?!",
+        "op_reply2": "아니다냥!",
+        "reply2_shipgirl": 31201
     },
     "41": {
         "id": 41,
@@ -1661,12 +1661,12 @@
                 "10209": "아…! 망했다! 설마…?!"
             }
         },
-        "op_option1": "메, 메이드는 영양학 공부도 해야 하는 건가?!",
-        "op_reply1": "여러분의 건강을 책임지는 것도 메이드의 의무입니다.",
-        "reply1_shipgirl": 20212,
-        "op_option2": "고기는?",
-        "op_reply2": "중요한 영양소는 모두 들어 있습니다.",
-        "reply2_shipgirl": 20212
+        "op_option1": "야구 재밌어 보이네",
+        "op_reply1": "에헤헤… 다음번에는 지휘관도 같이하자?",
+        "reply1_shipgirl": 10209,
+        "op_option2": "오오… 4번 타자!",
+        "op_reply2": "하하, 운이 좋았어, 운이~",
+        "reply2_shipgirl": 10209
     },
     "42": {
         "id": 42,
@@ -1714,12 +1714,12 @@
                 "10209": "미… 미안합니다!!"
             }
         },
-        "op_option1": "날씨 좋네.",
-        "op_reply1": "헛소리 그만하고 와서 줄이나 잡아!",
-        "reply1_shipgirl": 40304,
-        "op_option2": "그런 걸로 움직이는 거냐고…",
-        "op_reply2": "이 녀석 똑똑하거든. 너도 열심히 공부해야지, 하등 생물? 후후.",
-        "reply2_shipgirl": 40304
+        "op_option1": "괜찮아?!",
+        "op_reply1": "아아아아… 지휘관님도 아카기의 걱정을! 지휘관님의 사랑 덕분에 아카기… 벌써 다 나았답니다!",
+        "reply1_shipgirl": 30701,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "43": {
         "id": 43,
@@ -1755,12 +1755,12 @@
                 "20603": "응…! 유쨩이야! 안 닮았…어?"
             }
         },
-        "op_option1": "술인가… 좋네",
-        "op_reply1": "지휘관도 같이 마실래? 고민 있으면 들어줄 테니까. 하하.",
-        "reply1_shipgirl": 40303,
-        "op_option2": "카가… 고민이라도 있어?",
-        "op_reply2": "아니, 그냥 잠시… 해이해졌을 뿐이야…",
-        "reply2_shipgirl": 30702
+        "op_option1": "대단해!",
+        "op_reply1": "에헤헤… 오빠, 고마워…",
+        "reply1_shipgirl": 20603,
+        "op_option2": "새, 새로운 예술인가?!",
+        "op_reply2": "에헤헤… 유쨩을 보고 조각했는걸…",
+        "reply2_shipgirl": 20603
     },
     "44": {
         "id": 44,
@@ -1789,12 +1789,12 @@
                 "10601": "나, 나타났다?! 매드 사이언티스트!"
             }
         },
-        "op_option1": "사탕 먹을래? 가진 게 좀 있는데.",
-        "op_reply1": "우와! 지히간, 고마워!",
-        "reply1_shipgirl": 30132,
-        "op_option2": "사탕 열리는 날, 기다릴게.",
-        "op_reply2": "에헤헤~ 지히간도 나눠줄게!",
-        "reply2_shipgirl": 30132
+        "op_option1": "충, 충전이 필요한가?",
+        "op_reply1": "엘드릿지, 충전 필요 없어.",
+        "reply1_shipgirl": 10126,
+        "op_option2": "꿈속에서도 게임이냐…",
+        "op_reply2": "에헤헤~ 나는 뼛속까지 게이머니까!",
+        "reply2_shipgirl": 10601
     },
     "45": {
         "id": 45,
@@ -1823,12 +1823,12 @@
                 "10125": "으……"
             }
         },
-        "op_option1": "안, 안 다쳤어?!",
-        "op_reply1": "으… 깜짝 놀랐지만 괜찮아…",
-        "reply1_shipgirl": 20121,
-        "op_option2": "계란 프라이… 먹을 수 있을까?",
-        "op_reply2": "조… 조금 탔지만… 지휘관, 먹어볼래? 뒷 일은 책임 안 질 거지만!",
-        "reply2_shipgirl": 20121
+        "op_option1": "수, 수고했어!",
+        "op_reply1": "그, 그런 거지!",
+        "reply1_shipgirl": 10125,
+        "op_option2": "새 친구가 많이 생겼네. 잘 됐다.",
+        "op_reply2": "‘새 친구가 사귀고 싶다’라고 말한 적 없거든!",
+        "reply2_shipgirl": 10125
     },
     "46": {
         "id": 46,
@@ -1863,12 +1863,12 @@
                 "10117": "이 느낌… 라피 알고 있어…!"
             }
         },
-        "op_option1": "아크로열… RIP(토닥",
-        "op_reply1": "분명… 사진 찍는 걸 도와주고 싶었을 뿐이었는데… OTL",
-        "reply1_shipgirl": 20702,
-        "op_option2": "벨파스트… 괜찮겠지?",
-        "op_reply2": "괜, 괜찮아… 긴장해서 그래…",
-        "reply2_shipgirl": 20218
+        "op_option1": "노스 유니온… 대단해…!",
+        "op_reply1": "지휘관도 보드카 한 잔 어때? 후후~",
+        "reply1_shipgirl": 70201,
+        "op_option2": "Z23… 수고했어…",
+        "op_reply2": "정, 정말 놀랐습니다…",
+        "reply2_shipgirl": 40123
     },
     "47": {
         "id": 47,
@@ -1904,12 +1904,12 @@
                 "30511": "오, 오오… 메이드가 하는 말이라 묘한 설득력이… 그럼 부탁하지."
             }
         },
-        "op_option1": "감동적인 장면…!",
-        "op_reply1": "으으… 지휘관… 살려줘……",
-        "reply1_shipgirl": 30705,
-        "op_option2": "역시 아카시 아니면 베스탈을 부르는 편이…",
-        "op_reply2": "제발, 꼭!",
-        "reply2_shipgirl": 30705
+        "op_option1": "미카사 선배의 박물관… 또 난리가 났구나……",
+        "op_reply1": "OTL…",
+        "reply1_shipgirl": 30511,
+        "op_option2": "나도 도와줄까…?",
+        "op_reply2": "시, 시리우스에게 벌을 주세요!",
+        "reply2_shipgirl": 20220
     },
     "48": {
         "id": 48,
@@ -1938,12 +1938,12 @@
                 "30707": "…그 물벼락, 네 짓이었구나?!"
             }
         },
-        "op_option1": "쿵, 쿵후…?!",
-        "op_reply1": "후후, 핑하이와 닝하이의 연습일 뿐이랍니다.",
-        "reply1_shipgirl": 50201,
-        "op_option2": "갑자기 콜라 마시고 싶어졌다…",
-        "op_reply2": "핑하이도 배고파!",
-        "reply2_shipgirl": 50203
+        "op_option1": "온천… 좋겠다.",
+        "op_reply1": "지휘관님도 같이 온천 하시겠어요?! 다이호는 언제나 기다리고 있답니다❤",
+        "reply1_shipgirl": 30707,
+        "op_option2": "전, 전기… 들어가면 안 되는 거 아닌가…",
+        "op_reply2": "찌릿찌릿… 편하지?",
+        "reply2_shipgirl": 10126
     },
     "49": {
         "id": 49,
@@ -1975,12 +1975,12 @@
                 "10707": "장, 장난이야…"
             }
         },
-        "op_option1": "미카사 선배의 박물관… 또 난리가 났구나……",
-        "op_reply1": "OTL…",
-        "reply1_shipgirl": 30511,
-        "op_option2": "나도 도와줄까…?",
-        "op_reply2": "시, 시리우스에게 벌을 주세요!",
-        "reply2_shipgirl": 20220
+        "op_option1": "에식스에게 이런 특기가?!",
+        "op_reply1": "열, 열심히 노력해 볼게!",
+        "reply1_shipgirl": 10709,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "아니, 이건 노력으로는 안 되는 일이야…",
+        "reply2_shipgirl": 10706
     },
     "50": {
         "id": 50,
@@ -2028,12 +2028,12 @@
                 "50202": "먹는 것밖에 모르지! 기념품 사가지고 갈게. 기다려줘!"
             }
         },
-        "op_option1": "도이칠란트… 괜찮았어?",
-        "op_reply1": "흥, 내가 놀란 것이 즐겁지? 이 하등 생물. 별일 없었다.",
-        "reply1_shipgirl": 40304,
-        "op_option2": "오이겐… 사진은 어떻게 찍은거야?",
-        "op_reply2": "후후~ 재밌는 걸 놓칠 수 없으니까.",
-        "reply2_shipgirl": 40303
+        "op_option1": "쿵, 쿵후…?!",
+        "op_reply1": "후후, 핑하이와 닝하이의 연습일 뿐이랍니다.",
+        "reply1_shipgirl": 50201,
+        "op_option2": "갑자기 콜라 마시고 싶어졌다…",
+        "op_reply2": "핑하이도 배고파!",
+        "reply2_shipgirl": 50203
     },
     "51": {
         "id": 51,
@@ -2069,12 +2069,12 @@
                 "30132": "무슨 소린지 모르겠어… 그래도 무츠키 힘낼게!"
             }
         },
-        "op_option1": "노스 유니온… 대단해…!",
-        "op_reply1": "지휘관도 보드카 한 잔 어때? 후후~",
-        "reply1_shipgirl": 70201,
-        "op_option2": "Z23… 수고했어…",
-        "op_reply2": "정, 정말 놀랐습니다…",
-        "reply2_shipgirl": 40123
+        "op_option1": "사탕 먹을래? 가진 게 좀 있는데.",
+        "op_reply1": "우와! 지히간, 고마워!",
+        "reply1_shipgirl": 30132,
+        "op_option2": "사탕 열리는 날, 기다릴게.",
+        "op_reply2": "에헤헤~ 지히간도 나눠줄게!",
+        "reply2_shipgirl": 30132
     },
     "52": {
         "id": 52,
@@ -2122,12 +2122,12 @@
                 "30706": "언, 언니... 그건 아닌것 같아..."
             }
         },
-        "op_option1": "길을 잃는다라… 키리시마가 있으면 문제없겠지…",
-        "op_reply1": "혼, 혼자라도 길은 잃지 않으니까! 아마도…",
-        "reply1_shipgirl": 30109,
-        "op_option2": "오오! 산책! 운동! 엄청 개운하지!",
-        "op_reply2": "하하~ 지휘관도 같이 운동할래?",
-        "reply2_shipgirl": 30404
+        "op_option1": "술인가… 좋네",
+        "op_reply1": "지휘관도 같이 마실래? 고민 있으면 들어줄 테니까. 하하.",
+        "reply1_shipgirl": 40303,
+        "op_option2": "카가… 고민이라도 있어?",
+        "op_reply2": "아니, 그냥 잠시… 해이해졌을 뿐이야…",
+        "reply2_shipgirl": 30702
     },
     "53": {
         "id": 53,
@@ -2174,12 +2174,12 @@
                 "10706": "벨파스트?"
             }
         },
-        "op_option1": "수정 기술 최고…!",
-        "op_reply1": "이런 건 아카시에게는 식은 죽 먹기다냥!",
-        "reply1_shipgirl": 31201,
-        "op_option2": "할인 없구나…",
-        "op_reply2": "지, 지휘관의 성의인데 할인을 할 수 있을 리가 없지 않냥!",
-        "reply2_shipgirl": 31201
+        "op_option1": "내가 뭐라도 해줄까?",
+        "op_reply1": "그럴 힘이 있으면 지휘관은 모항의 일에 신경 쓰는 게 좋겠어.",
+        "reply1_shipgirl": 10706,
+        "op_option2": "맛있어…?",
+        "op_reply2": "맛은 상관없어. 먹을 수만 있으면 되니까.",
+        "reply2_shipgirl": 10706
     },
     "54": {
         "id": 54,
@@ -2235,12 +2235,12 @@
                 "10706": "미안, 그건 나도 잘 모르겠다..."
             }
         },
-        "op_option1": "온천… 좋겠다.",
-        "op_reply1": "지휘관님도 같이 온천 하시겠어요?! 다이호는 언제나 기다리고 있답니다❤",
-        "reply1_shipgirl": 30707,
-        "op_option2": "전, 전기… 들어가면 안 되는 거 아닌가…",
-        "op_reply2": "찌릿찌릿… 편하지?",
-        "reply2_shipgirl": 10126
+        "op_option1": "메, 메이드는 영양학 공부도 해야 하는 건가?!",
+        "op_reply1": "여러분의 건강을 책임지는 것도 메이드의 의무입니다.",
+        "reply1_shipgirl": 20212,
+        "op_option2": "고기는?",
+        "op_reply2": "중요한 영양소는 모두 들어 있습니다.",
+        "reply2_shipgirl": 20212
     },
     "55": {
         "id": 55,
@@ -2281,12 +2281,12 @@
                 "30702": "언, 언니…!"
             }
         },
-        "op_option1": "대단해!",
-        "op_reply1": "에헤헤… 오빠, 고마워…",
-        "reply1_shipgirl": 20603,
-        "op_option2": "새, 새로운 예술인가?!",
-        "op_reply2": "에헤헤… 유쨩을 보고 조각했는걸…",
-        "reply2_shipgirl": 20603
+        "op_option1": "감동적인 장면…!",
+        "op_reply1": "으으… 지휘관… 살려줘……",
+        "reply1_shipgirl": 30705,
+        "op_option2": "역시 아카시 아니면 베스탈을 부르는 편이…",
+        "op_reply2": "제발, 꼭!",
+        "reply2_shipgirl": 30705
     },
     "56": {
         "id": 56,
@@ -2328,12 +2328,12 @@
                 "20702": "아! 벨파스트마저 이런 말을?!"
             }
         },
-        "op_option1": "수, 수고했어!",
-        "op_reply1": "그, 그런 거지!",
-        "reply1_shipgirl": 10125,
-        "op_option2": "새 친구가 많이 생겼네. 잘 됐다.",
-        "op_reply2": "‘새 친구가 사귀고 싶다’라고 말한 적 없거든!",
-        "reply2_shipgirl": 10125
+        "op_option1": "아크로열… RIP(토닥",
+        "op_reply1": "분명… 사진 찍는 걸 도와주고 싶었을 뿐이었는데… OTL",
+        "reply1_shipgirl": 20702,
+        "op_option2": "벨파스트… 괜찮겠지?",
+        "op_reply2": "괜, 괜찮아… 긴장해서 그래…",
+        "reply2_shipgirl": 20218
     },
     "57": {
         "id": 57,
@@ -2376,12 +2376,12 @@
                 "40303": "우후후~ 이렇게 재밌는 모습을 놓칠 리가. 그 뒤에 도이칠란트의 표정을 찍지 못한게… 조금 유감인걸."
             }
         },
-        "op_option1": "저기 뒤에 있는 건… 아크로열?",
-        "op_reply1": "구축함들이 모여있는 모습… 최고!",
-        "reply1_shipgirl": 20702,
-        "op_option2": "웃음이 절로 나오는 모습이네.",
-        "op_reply2": "사, 사진 찍어주는 건 쉬운 일이 아니었어…",
-        "reply2_shipgirl": 40123
+        "op_option1": "도이칠란트… 괜찮았어?",
+        "op_reply1": "흥, 내가 놀란 것이 즐겁지? 이 하등 생물. 별일 없었다.",
+        "reply1_shipgirl": 40304,
+        "op_option2": "오이겐… 사진은 어떻게 찍은거야?",
+        "op_reply2": "후후~ 재밌는 걸 놓칠 수 없으니까.",
+        "reply2_shipgirl": 40303
     },
     "58": {
         "id": 58,
@@ -2410,11 +2410,11 @@
                 "31201": "장, 장사 힘들다냥!"
             }
         },
-        "op_option1": "대회는 언제 시작이야?!",
-        "op_reply1": "이, 이러면 재밌을 거라고 생각했는데…",
-        "reply1_shipgirl": 20101,
-        "op_option2": "아카시, 사재기야?!",
-        "op_reply2": "아니다냥!",
+        "op_option1": "수정 기술 최고…!",
+        "op_reply1": "이런 건 아카시에게는 식은 죽 먹기다냥!",
+        "reply1_shipgirl": 31201,
+        "op_option2": "할인 없구나…",
+        "op_reply2": "지, 지휘관의 성의인데 할인을 할 수 있을 리가 없지 않냥!",
         "reply2_shipgirl": 31201
     },
     "59": {
@@ -2451,12 +2451,12 @@
                 "30109": "흠, 흠흠… 키리시마 곁에 있으면 길 같은 건 잃지 않아!"
             }
         },
-        "op_option1": "충, 충전이 필요한가?",
-        "op_reply1": "엘드릿지, 충전 필요 없어.",
-        "reply1_shipgirl": 10126,
-        "op_option2": "꿈속에서도 게임이냐…",
-        "op_reply2": "에헤헤~ 나는 뼛속까지 게이머니까!",
-        "reply2_shipgirl": 10601
+        "op_option1": "길을 잃는다라… 키리시마가 있으면 문제없겠지…",
+        "op_reply1": "혼, 혼자라도 길은 잃지 않으니까! 아마도…",
+        "reply1_shipgirl": 30109,
+        "op_option2": "오오! 산책! 운동! 엄청 개운하지!",
+        "op_reply2": "하하~ 지휘관도 같이 운동할래?",
+        "reply2_shipgirl": 30404
     },
     "60": {
         "id": 60,
@@ -2491,12 +2491,12 @@
                 "20603": "으… 역시 조금 부끄러워……"
             }
         },
-        "op_option1": "에식스에게 이런 특기가?!",
-        "op_reply1": "열, 열심히 노력해 볼게!",
-        "reply1_shipgirl": 10709,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "아니, 이건 노력으로는 안 되는 일이야…",
-        "reply2_shipgirl": 10706
+        "op_option1": "저기 뒤에 있는 건… 아크로열?",
+        "op_reply1": "구축함들이 모여있는 모습… 최고!",
+        "reply1_shipgirl": 20702,
+        "op_option2": "웃음이 절로 나오는 모습이네.",
+        "op_reply2": "사, 사진 찍어주는 건 쉬운 일이 아니었어…",
+        "reply2_shipgirl": 40123
     },
     "61": {
         "id": 61,
@@ -3625,12 +3625,12 @@
                 "40301": "똑같은 단어인데 왜 론 입에서 나오니까 무서운지…"
             }
         },
-        "op_option1": "나도 먹고 싶어.",
-        "op_reply1": "윽… 지휘관님까지 놀리지 마세요…",
-        "reply1_shipgirl": 40123,
-        "op_option2": "그래서 무슨 단련이었어?",
-        "op_reply2": "윽… 달리기라던가……",
-        "reply2_shipgirl": 40123
+        "op_option1": "새 푸딩 사줄까…?",
+        "op_reply1": "어머~ 지휘관님 최고~♥ 그러면 범인을 찾아서 살짝 '돌봐'주기만 해야겠네요……",
+        "reply1_shipgirl": 49901,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "87": {
         "id": 87,
@@ -3678,12 +3678,12 @@
                 "40123": "다음 번에… 같이 먹어요!"
             }
         },
-        "op_option1": "새 푸딩 사줄까…?",
-        "op_reply1": "어머~ 지휘관님 최고~♥ 그러면 범인을 찾아서 살짝 '돌봐'주기만 해야겠네요……",
-        "reply1_shipgirl": 49901,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "op_option1": "나도 먹고 싶어.",
+        "op_reply1": "윽… 지휘관님까지 놀리지 마세요…",
+        "reply1_shipgirl": 40123,
+        "op_option2": "그래서 무슨 단련이었어?",
+        "op_reply2": "윽… 달리기라던가……",
+        "reply2_shipgirl": 40123
     },
     "88": {
         "id": 88,
@@ -3725,12 +3725,12 @@
                 "20211": "......에?"
             }
         },
-        "op_option1": "“메이드”의 자질이 있군요.",
-        "op_reply1": "하하, 원래부터 메이드였거든?",
-        "reply1_shipgirl": 20227,
-        "op_option2": "마치 메이드장 같이 보여.",
-        "op_reply2": "그럴리가요! 벨파스트 씨에 비하면 전 한참 멀었어요...",
-        "reply2_shipgirl": 20227
+        "op_option1": "맛있어 보인다",
+        "op_reply1": "여기 좀 더 있는데, 지휘관도 좀 줄까?",
+        "reply1_shipgirl": 20509,
+        "op_option2": "귀여워 보인다",
+        "op_reply2": "다음에... 지휘관 모양으로도 만들어봐!",
+        "reply2_shipgirl": 20509
     },
     "89": {
         "id": 89,
@@ -3812,12 +3812,12 @@
                 "20211": "그, 그렇지?"
             }
         },
-        "op_option1": "역시 거칠고 사나운 카리스마!",
-        "op_reply1": "흐흥, 내 카리스마에 벌벌 떨고 있지? 하인!",
-        "reply1_shipgirl": 20510,
-        "op_option2": "이 큰 파도... 괜찮겠지?",
-        "op_reply2": "난 엘리자베스급의 밸리언트라고! 이까짓 바람과 파도 쯤이야!",
-        "reply2_shipgirl": 20510
+        "op_option1": "“메이드”의 자질이 있군요.",
+        "op_reply1": "하하, 원래부터 메이드였거든?",
+        "reply1_shipgirl": 20227,
+        "op_option2": "마치 메이드장 같이 보여.",
+        "op_reply2": "그럴리가요! 벨파스트 씨에 비하면 전 한참 멀었어요...",
+        "reply2_shipgirl": 20227
     },
     "91": {
         "id": 91,
@@ -3868,12 +3868,12 @@
                 "20502": "밸리언트... 그래도 안전에 주의해. 폐하께서는... 같이 동조하고 싶다는 충동을 버리시지요......"
             }
         },
-        "op_option1": "갑자기 잠수도 배우고 싶어졌어",
-        "op_reply1": "지휘관도 함께하면 더 재밌을텐데~",
-        "reply1_shipgirl": 20133,
-        "op_option2": "물 속의 풍경도 괜찮은 것 같은데",
-        "op_reply2": "맞아~ 지휘관도 기회되면 꼭 한 번 봐봐.",
-        "reply2_shipgirl": 20133
+        "op_option1": "역시 거칠고 사나운 카리스마!",
+        "op_reply1": "흐흥, 내 카리스마에 벌벌 떨고 있지? 하인!",
+        "reply1_shipgirl": 20510,
+        "op_option2": "이 큰 파도... 괜찮겠지?",
+        "op_reply2": "난 엘리자베스급의 밸리언트라고! 이까짓 바람과 파도 쯤이야!",
+        "reply2_shipgirl": 20510
     },
     "92": {
         "id": 92,
@@ -3918,12 +3918,12 @@
                 "20133": "아하하... 그럼 다 같이 놀자!"
             }
         },
-        "op_option1": "눈썰미가 좋군.",
-        "op_reply1": "이글을 말하는 건가... 아니면 나?",
-        "reply1_shipgirl": 20701,
-        "op_option2": "이 독수리는 낯이 익어",
-        "op_reply2": "응...? 지휘관 알아?",
-        "reply2_shipgirl": 20701
+        "op_option1": "갑자기 잠수도 배우고 싶어졌어",
+        "op_reply1": "지휘관도 함께하면 더 재밌을텐데~",
+        "reply1_shipgirl": 20133,
+        "op_option2": "물 속의 풍경도 괜찮은 것 같은데",
+        "op_reply2": "맞아~ 지휘관도 기회되면 꼭 한 번 봐봐.",
+        "reply2_shipgirl": 20133
     },
     "93": {
         "id": 93,
@@ -3962,12 +3962,12 @@
                 "20701": "아하하... 그런 것 같네... 그렇지 않은 것 같기도......"
             }
         },
-        "op_option1": "맛있어 보인다",
-        "op_reply1": "여기 좀 더 있는데, 지휘관도 좀 줄까?",
-        "reply1_shipgirl": 20509,
-        "op_option2": "귀여워 보인다",
-        "op_reply2": "다음에... 지휘관 모양으로도 만들어봐!",
-        "reply2_shipgirl": 20509
+        "op_option1": "눈썰미가 좋군.",
+        "op_reply1": "이글을 말하는 건가... 아니면 나?",
+        "reply1_shipgirl": 20701,
+        "op_option2": "이 독수리는 낯이 익어",
+        "op_reply2": "응...? 지휘관 알아?",
+        "reply2_shipgirl": 20701
     },
     "94": {
         "id": 94,
@@ -4017,12 +4017,12 @@
                 "30201": "........에?"
             }
         },
-        "op_option1": "사이 좋네.",
-        "op_reply1": "모두들 어깨를 나란히 하고 싸우는 전우 아닌가~",
-        "reply1_shipgirl": 20509,
-        "op_option2": "맞아!",
-        "op_reply2": "지휘관도 그렇게 생각할 거야!",
-        "reply2_shipgirl": 20509
+        "op_option1": "재밌겠다",
+        "op_reply1": "... 다음에 지휘관한테 시켜줘봐",
+        "reply1_shipgirl": 20606,
+        "op_option2": "역시... 장난감이겠지?",
+        "op_reply2": "아니, 시험 장비야...!",
+        "reply2_shipgirl": 20606
     },
     "95": {
         "id": 95,
@@ -4071,12 +4071,12 @@
                 "20211": "사양하겠어!"
             }
         },
-        "op_option1": "재밌겠다",
-        "op_reply1": "... 다음에 지휘관한테 시켜줘봐",
-        "reply1_shipgirl": 20606,
-        "op_option2": "역시... 장난감이겠지?",
-        "op_reply2": "아니, 시험 장비야...!",
-        "reply2_shipgirl": 20606
+        "op_option1": "운동 좀 해야하나......",
+        "op_reply1": "지휘관도 있어!? 그럼 내가 지도 건의를 줄 수 있어!",
+        "reply1_shipgirl": 20701,
+        "op_option2": "엄청 힘들 것 같다......",
+        "op_reply2": "운동 끝나면 오히려 편안해 지지, 지휘관도 와서 해봐!",
+        "reply2_shipgirl": 20701
     },
     "96": {
         "id": 96,
@@ -4119,12 +4119,12 @@
                 "20227": "그럴 일 없어요, 제가 말한 것 모두 사실이에요~"
             }
         },
-        "op_option1": "운동 좀 해야하나......",
-        "op_reply1": "지휘관도 있어!? 그럼 내가 지도 건의를 줄 수 있어!",
-        "reply1_shipgirl": 20701,
-        "op_option2": "엄청 힘들 것 같다......",
-        "op_reply2": "운동 끝나면 오히려 편안해 지지, 지휘관도 와서 해봐!",
-        "reply2_shipgirl": 20701
+        "op_option1": "다음에 나도 도울게.",
+        "op_reply1": "어떻게 지휘관의 소중한 시간을 차지할 수 있겠어요! 하지만, 지휘관과 쇼핑도... 괜찮겠네요, 하하",
+        "reply1_shipgirl": 20227,
+        "op_option2": "저녁 식사를 기대해도 좋겠네",
+        "op_reply2": "기대해 주세요. 지휘관을 실망시키지 않도록 노력할게요~",
+        "reply2_shipgirl": 20227
     },
     "97": {
         "id": 97,
@@ -4167,12 +4167,12 @@
                 "20606": "노력의 방향이 좀 틀어진거 아닌가...?"
             }
         },
-        "op_option1": "다음에 나도 도울게.",
-        "op_reply1": "어떻게 지휘관의 소중한 시간을 차지할 수 있겠어요! 하지만, 지휘관과 쇼핑도... 괜찮겠네요, 하하",
-        "reply1_shipgirl": 20227,
-        "op_option2": "저녁 식사를 기대해도 좋겠네",
-        "op_reply2": "기대해 주세요. 지휘관을 실망시키지 않도록 노력할게요~",
-        "reply2_shipgirl": 20227
+        "op_option1": "기세 좋은데",
+        "op_reply1": "헤헤~ 정말 그럴 수 있다면 좋겠네......",
+        "reply1_shipgirl": 20133,
+        "op_option2": "어차피 구축함이야",
+        "op_reply2": "그것도 그래... 아하하......",
+        "reply2_shipgirl": 20133
     },
     "98": {
         "id": 98,
@@ -4218,12 +4218,12 @@
                 "20701": "진짜 공포스러운 당분이다..."
             }
         },
-        "op_option1": "기세 좋은데",
-        "op_reply1": "헤헤~ 정말 그럴 수 있다면 좋겠네......",
-        "reply1_shipgirl": 20133,
-        "op_option2": "어차피 구축함이야",
-        "op_reply2": "그것도 그래... 아하하......",
-        "reply2_shipgirl": 20133
+        "op_option1": "다음에 같이 한판해",
+        "op_reply1": "흥...! 언젠가 나의 대단함을 보여주지!",
+        "reply1_shipgirl": 20510,
+        "op_option2": "다음에 도와줄까?",
+        "op_reply2": "흥...! 나 혼자서도 이길 수 있어! 하인의 도움은 필요 없어!",
+        "reply2_shipgirl": 20510
     },
     "99": {
         "id": 99,
@@ -4273,12 +4273,12 @@
                 "29902": "... 알았다."
             }
         },
-        "op_option1": "다음에 같이 한판해",
-        "op_reply1": "흥...! 언젠가 나의 대단함을 보여주지!",
-        "reply1_shipgirl": 20510,
-        "op_option2": "다음에 도와줄까?",
-        "op_reply2": "흥...! 나 혼자서도 이길 수 있어! 하인의 도움은 필요 없어!",
-        "reply2_shipgirl": 20510
+        "op_option1": "사이 좋네.",
+        "op_reply1": "모두들 어깨를 나란히 하고 싸우는 전우 아닌가~",
+        "reply1_shipgirl": 20509,
+        "op_option2": "맞아!",
+        "op_reply2": "지휘관도 그렇게 생각할 거야!",
+        "reply2_shipgirl": 20509
     },
     "100": {
         "id": 100,
@@ -4328,12 +4328,12 @@
                 "80501": "그랬군요... 세 분이었네요. 쪽지로 설명해주셔서 감사합니다, 미카사님."
             }
         },
-        "op_option1": "사쿠라 엠파이어... 아이스크림?",
-        "op_reply1": "그래요~ \\\"엄청난\\\" 것 같아요.",
-        "reply1_shipgirl": 29901,
-        "op_option2": "넵튠이 만든 아이스크림 먹고 싶다.",
-        "op_reply2": "헤헤, 그럼~ 지휘관님은 무엇을 대가로 지불할 건가요? 농담이에요~",
-        "reply2_shipgirl": 29901
+        "op_option1": "사이가 참 좋네...",
+        "op_reply1": "이것 역시 지휘관의 공로 덕분이다.",
+        "reply1_shipgirl": 30511,
+        "op_option2": "제야...?",
+        "op_reply2": "당시 찍은 사진을 우연히 꺼내봤다...",
+        "reply2_shipgirl": 30511
     },
     "101": {
         "id": 101,
@@ -4373,12 +4373,12 @@
                 "29901": "히히, 시간이 정해지면 같이 오세요."
             }
         },
-        "op_option1": "표정 완전 진지하네!?",
-        "op_reply1": "\\\"고기 굽기는 바로 전투입니다!\\\" by 에식스.",
-        "reply1_shipgirl": 10738,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "op_option1": "사쿠라 엠파이어... 아이스크림?",
+        "op_reply1": "그래요~ \\\"엄청난\\\" 것 같아요.",
+        "reply1_shipgirl": 29901,
+        "op_option2": "넵튠이 만든 아이스크림 먹고 싶다.",
+        "op_reply2": "헤헤, 그럼~ 지휘관님은 무엇을 대가로 지불할 건가요? 농담이에요~",
+        "reply2_shipgirl": 29901
     },
     "102": {
         "id": 102,
@@ -4410,12 +4410,12 @@
                 "30706": "고기 굽는 장군!?"
             }
         },
-        "op_option1": "진짜 놀랍다...",
-        "op_reply1": "자, 잠깐 허둥댔는데, 효과가 나타났어요...",
-        "reply1_shipgirl": 10709,
-        "op_option2": "고기 구울 땐 타이밍이 중요해",
-        "op_reply2": "맞아요! 지휘관님도 아시는 군요!",
-        "reply2_shipgirl": 10709
+        "op_option1": "표정 완전 진지하네!?",
+        "op_reply1": "\\\"고기 굽기는 바로 전투입니다!\\\" by 에식스.",
+        "reply1_shipgirl": 10738,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "103": {
         "id": 103,
@@ -4457,12 +4457,12 @@
                 "10738": "원칙 문제에서는 절대 물러서지 않는군요, 역시 에식스네요, 음."
             }
         },
-        "op_option1": "위험해... 어떤 부위에 독 있어.",
-        "op_reply1": "하지만 정말 맛있어, 너도 그렇게 생각하지, 지휘관~?",
-        "reply1_shipgirl": 10213,
-        "op_option2": "클리블랜드... 설마 바로 먹을 생각은 아니지?",
-        "op_reply2": "그냥 재미로 내놓은 거야!",
-        "reply2_shipgirl": 10209
+        "op_option1": "진짜 놀랍다...",
+        "op_reply1": "자, 잠깐 허둥댔는데, 효과가 나타났어요...",
+        "reply1_shipgirl": 10709,
+        "op_option2": "고기 구울 땐 타이밍이 중요해",
+        "op_reply2": "맞아요! 지휘관님도 아시는 군요!",
+        "reply2_shipgirl": 10709
     },
     "104": {
         "id": 104,
@@ -4504,12 +4504,12 @@
                 "30213": "그, 그런가요... 그럼 다행이네요..."
             }
         },
-        "op_option1": "사이가 참 좋네...",
-        "op_reply1": "이것 역시 지휘관의 공로 덕분이다.",
-        "reply1_shipgirl": 30511,
-        "op_option2": "제야...?",
-        "op_reply2": "당시 찍은 사진을 우연히 꺼내봤다...",
-        "reply2_shipgirl": 30511
+        "op_option1": "위험해... 어떤 부위에 독 있어.",
+        "op_reply1": "하지만 정말 맛있어, 너도 그렇게 생각하지, 지휘관~?",
+        "reply1_shipgirl": 10213,
+        "op_option2": "클리블랜드... 설마 바로 먹을 생각은 아니지?",
+        "op_reply2": "그냥 재미로 내놓은 거야!",
+        "reply2_shipgirl": 10209
     },
     "105": {
         "id": 105,
@@ -6558,12 +6558,12 @@
                 "1060002": "오~!"
             }
         },
-        "op_option1": "나이스!",
-        "op_reply1": "감사해요~",
-        "reply1_shipgirl": 1060007,
-        "op_option2": "모니카 정말 열심인데",
-        "op_reply2": "어떤 대결이든 최선을 다해야죠~",
-        "reply2_shipgirl": 1060007
+        "op_option1": "원본과 정말 닮았어",
+        "op_reply1": "\\\"모델\\\"한테 쌓여있잖아~",
+        "reply1_shipgirl": 1060002,
+        "op_option2": "마리랑 호노카는 사이가 정말 좋네",
+        "op_reply2": "헤헤, 우리는 좋은 친구야~",
+        "reply2_shipgirl": 1060001
     },
     "149": {
         "id": 149,
@@ -6602,12 +6602,12 @@
                 "20110": "어? 어~~~?!"
             }
         },
-        "op_option1": "빨리 손 떼—— !",
-        "op_reply1": "허허, 그냥 ‘보기만’ 하는 거니까 걱정 안 해도 돼.",
-        "reply1_shipgirl": 1060006,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "op_option1": "나이스!",
+        "op_reply1": "감사해요~",
+        "reply1_shipgirl": 1060007,
+        "op_option2": "모니카 정말 열심인데",
+        "op_reply2": "어떤 대결이든 최선을 다해야죠~",
+        "reply2_shipgirl": 1060007
     },
     "150": {
         "id": 150,
@@ -6640,12 +6640,12 @@
                 "30701": "후후, 꼭 한입에 드세요~"
             }
         },
-        "op_option1": "원본과 정말 닮았어",
-        "op_reply1": "\\\"모델\\\"한테 쌓여있잖아~",
-        "reply1_shipgirl": 1060002,
-        "op_option2": "마리랑 호노카는 사이가 정말 좋네",
-        "op_reply2": "헤헤, 우리는 좋은 친구야~",
-        "reply2_shipgirl": 1060001
+        "op_option1": "빨리 손 떼—— !",
+        "op_reply1": "허허, 그냥 ‘보기만’ 하는 거니까 걱정 안 해도 돼.",
+        "reply1_shipgirl": 1060006,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "151": {
         "id": 151,
@@ -6692,12 +6692,12 @@
                 "1060007": "비록 아직 \\\"견습\\\"의 신분이지만, 그래도 전문적인 \\\"딜러\\\"랍니다. 하하~"
             }
         },
-        "op_option1": "정말 \\\"닌자\\\" 느낌이 들어",
-        "op_reply1": "지휘관의 말에 더 쑥스러워졌어. 아하하…",
-        "reply1_shipgirl": 1060003,
-        "op_option2": "새로운 친구를 사귀었네",
-        "op_reply2": "맞아요!",
-        "reply2_shipgirl": 30127
+        "op_option1": "다음 번엔 꼭 이긴다.",
+        "op_reply1": "히히~ 지휘관님의 도전은 언제나 환영합니다~",
+        "reply1_shipgirl": 1060007,
+        "op_option2": "모니카 역시 대단해",
+        "op_reply2": "하하~ 지휘관님은 좀 더 노력해야겠어요~",
+        "reply2_shipgirl": 1060007
     },
     "152": {
         "id": 152,
@@ -6795,12 +6795,12 @@
                 "30109": "찬성이외다!"
             }
         },
-        "op_option1": "연습을 참관해도 될까?",
-        "op_reply1": "몰래 보겠다면, 똑바로 보세요, 바보 멍멍이!",
-        "reply1_shipgirl": 1060005,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "op_option1": "정말 \\\"닌자\\\" 느낌이 들어",
+        "op_reply1": "지휘관의 말에 더 쑥스러워졌어. 아하하…",
+        "reply1_shipgirl": 1060003,
+        "op_option2": "새로운 친구를 사귀었네",
+        "op_reply2": "맞아요!",
+        "reply2_shipgirl": 30127
     },
     "154": {
         "id": 154,
@@ -6841,12 +6841,12 @@
                 "1060002": "사쿠라 엠파이어의 무녀분들과 함께 연습할 수 있어 기뻤어요~"
             }
         },
-        "op_option1": "다음 번엔 꼭 이긴다.",
-        "op_reply1": "히히~ 지휘관님의 도전은 언제나 환영합니다~",
-        "reply1_shipgirl": 1060007,
-        "op_option2": "모니카 역시 대단해",
-        "op_reply2": "하하~ 지휘관님은 좀 더 노력해야겠어요~",
-        "reply2_shipgirl": 1060007
+        "op_option1": "역시 호노카야.",
+        "op_reply1": "히히~ 너무 칭찬하시면, 호노카 부끄러워요~",
+        "reply1_shipgirl": 1060002,
+        "op_option2": "다들 모두 사이가 좋네.",
+        "op_reply2": "네! 사쿠라 엠파이어 분들은 모두 좋은 분이세요!",
+        "reply2_shipgirl": 1060002
     },
     "155": {
         "id": 155,
@@ -6884,12 +6884,12 @@
                 "1060005": "흠, 배우라고는 하지만, 연습을 할 때는 역시 부끄러워…"
             }
         },
-        "op_option1": "셀카를 되게 잘 찍네",
-        "op_reply1": "허허, 수많은 \\\"연습\\\"을 통해 얻은 결과물이야~",
-        "reply1_shipgirl": 1060006,
-        "op_option2": "하늘은 낭만적이야",
-        "op_reply2": "허허, \\\"자유로운 비상\\\"을 경험하게 해달라고?",
-        "reply2_shipgirl": 1060006
+        "op_option1": "연습을 참관해도 될까?",
+        "op_reply1": "몰래 보겠다면, 똑바로 보세요, 바보 멍멍이!",
+        "reply1_shipgirl": 1060005,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "156": {
         "id": 156,
@@ -6928,12 +6928,12 @@
                 "1060006": "보드카…는, 이국적인 술이지. 마셔 볼 만해."
             }
         },
-        "op_option1": "요즘 좋은 일이 생긴 거 같아.",
-        "op_reply1": "지휘관님의 덕담을 받겠습니다~",
-        "reply1_shipgirl": 1060003,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "op_option1": "셀카를 되게 잘 찍네",
+        "op_reply1": "허허, 수많은 \\\"연습\\\"을 통해 얻은 결과물이야~",
+        "reply1_shipgirl": 1060006,
+        "op_option2": "하늘은 낭만적이야",
+        "op_reply2": "허허, \\\"자유로운 비상\\\"을 경험하게 해달라고?",
+        "reply2_shipgirl": 1060006
     },
     "157": {
         "id": 157,
@@ -6974,12 +6974,12 @@
                 "1060003": "괜찮아요! 안 좋은 날이 있었다면, 분명 좋은 날이 올 거라 믿어요~"
             }
         },
-        "op_option1": "역시 호노카야.",
-        "op_reply1": "히히~ 너무 칭찬하시면, 호노카 부끄러워요~",
-        "reply1_shipgirl": 1060002,
-        "op_option2": "다들 모두 사이가 좋네.",
-        "op_reply2": "네! 사쿠라 엠파이어 분들은 모두 좋은 분이세요!",
-        "reply2_shipgirl": 1060002
+        "op_option1": "요즘 좋은 일이 생긴 거 같아.",
+        "op_reply1": "지휘관님의 덕담을 받겠습니다~",
+        "reply1_shipgirl": 1060003,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "158": {
         "id": 158,
@@ -8687,12 +8687,12 @@
                 "50101": "저저저, 전 그냥 같이 어울릴려고 한 거죠! 보고 있지 않으면 또 무슨 일을 벌일지 누가 알겠어요!"
             }
         },
-        "op_option1": "탕위안 정말 맛있지.",
-        "op_reply1": "맞아. 이스트 글림의 음식, 만만치 않더군.",
-        "reply1_shipgirl": 89902,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "op_option1": "분위기 좋네",
+        "op_reply1": "춘절에는 떠들썩해야지~",
+        "reply1_shipgirl": 50103,
+        "op_option2": "정말 예쁘다",
+        "op_reply2": "헤헤, 푸슌의 신작품 괜찮지~?",
+        "reply2_shipgirl": 50102
     },
     "195": {
         "id": 195,
@@ -8730,12 +8730,12 @@
                 "89902": "이렇게 빛을 더해야, 이에 대한 경의를 표할 수 있지."
             }
         },
-        "op_option1": "분위기 좋네",
-        "op_reply1": "춘절에는 떠들썩해야지~",
-        "reply1_shipgirl": 50103,
-        "op_option2": "정말 예쁘다",
-        "op_reply2": "헤헤, 푸슌의 신작품 괜찮지~?",
-        "reply2_shipgirl": 50102
+        "op_option1": "탕위안 정말 맛있지.",
+        "op_reply1": "맞아. 이스트 글림의 음식, 만만치 않더군.",
+        "reply1_shipgirl": 89902,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "196": {
         "id": 196,
@@ -9639,12 +9639,12 @@
                 "10738": "항상 뭔가 잘못된 기분이지만… 또 그렇게 잘못된 것 같지는 않아요……"
             }
         },
-        "op_option1": "로봇의 혼이 타오르고 있어!",
-        "op_reply1": "지휘관님도 낭만을 아는 사람이시군요…!",
-        "reply1_shipgirl": 10147,
-        "op_option2": "탈 수 있어?",
-        "op_reply2": "아마… 안되겠죠?",
-        "reply2_shipgirl": 10147
+        "op_option1": "쇼핑 즐겁게 했네",
+        "op_reply1": "정말 즐거웠지. 후훗~",
+        "reply1_shipgirl": 10714,
+        "op_option2": "다음에 쇼핑백 들어줄게.",
+        "op_reply2": "어머~ 이렇게 데이트 신청을 하는 건가~?",
+        "reply2_shipgirl": 10714
     },
     "216": {
         "id": 216,
@@ -9682,12 +9682,12 @@
                 "10517": "하하~ 그걸 발견하다니~ 하지만 영화에 너무 몰입해서 다 먹기도 전에 녹아버렸어~"
             }
         },
-        "op_option1": "보이시 노래 듣기 좋아",
-        "op_reply1": "지휘관도 노래 잘하더라…!",
-        "reply1_shipgirl": 10229,
-        "op_option2": "저기 스낵도 맛있었어",
-        "op_reply2": "맞아~ 감자튀김 맛있어~",
-        "reply2_shipgirl": 10229
+        "op_option1": "다음에 또 보자!",
+        "op_reply1": "좋아!",
+        "reply1_shipgirl": 10517,
+        "op_option2": "아이스크림 녹아서 끈적거려…",
+        "op_reply2": "미안해, 지휘관~~~",
+        "reply2_shipgirl": 10517
     },
     "217": {
         "id": 217,
@@ -9883,12 +9883,12 @@
                 "10212": "그그그그렇게 오래 연습한 건 아니야!! 그냥 약간일 뿐이지…"
             }
         },
-        "op_option1": "쇼핑 즐겁게 했네",
-        "op_reply1": "정말 즐거웠지. 후훗~",
-        "reply1_shipgirl": 10714,
-        "op_option2": "다음에 쇼핑백 들어줄게.",
-        "op_reply2": "어머~ 이렇게 데이트 신청을 하는 건가~?",
-        "reply2_shipgirl": 10714
+        "op_option1": "보이시 노래 듣기 좋아",
+        "op_reply1": "지휘관도 노래 잘하더라…!",
+        "reply1_shipgirl": 10229,
+        "op_option2": "저기 스낵도 맛있었어",
+        "op_reply2": "맞아~ 감자튀김 맛있어~",
+        "reply2_shipgirl": 10229
     },
     "221": {
         "id": 221,
@@ -9935,12 +9935,12 @@
                 "10147": "괘, 괜찮으시다면… 무조건…!"
             }
         },
-        "op_option1": "다음에 또 보자!",
-        "op_reply1": "좋아!",
-        "reply1_shipgirl": 10517,
-        "op_option2": "아이스크림 녹아서 끈적거려…",
-        "op_reply2": "미안해, 지휘관~~~",
-        "reply2_shipgirl": 10517
+        "op_option1": "로봇의 혼이 타오르고 있어!",
+        "op_reply1": "지휘관님도 낭만을 아는 사람이시군요…!",
+        "reply1_shipgirl": 10147,
+        "op_option2": "탈 수 있어?",
+        "op_reply2": "아마… 안되겠죠?",
+        "reply2_shipgirl": 10147
     },
     "222": {
         "id": 222,
@@ -16689,9 +16689,9 @@
                 "40123": "이건 훈련이지. 재밌는 운동회가 아닌데…."
             }
         },
-        "op_option1": "공연 기대할게.",
-        "op_reply1": "유니콘이랑 유쨩… 모두 힘내볼게!",
-        "reply1_shipgirl": 20603,
+        "op_option1": "다들 잘했어!",
+        "op_reply1": "흥흥, 이 기회에 날 많이 칭찬해달라구!",
+        "reply1_shipgirl": 40199,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
@@ -16735,9 +16735,9 @@
                 "20603": "그, 그건 아직 비밀이야…!"
             }
         },
-        "op_option1": "좋은 텐션이네.",
-        "op_reply1": "그렇지? 역시 지휘관이야, 센스 있다니까!",
-        "reply1_shipgirl": 40309,
+        "op_option1": "공연 기대할게.",
+        "op_reply1": "유니콘이랑 유쨩… 모두 힘내볼게!",
+        "reply1_shipgirl": 20603,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
@@ -16779,9 +16779,9 @@
                 "40503": "리허설도 이 정도인데 본 공연은… 어떨지 기대되는군."
             }
         },
-        "op_option1": "당근과 모자…?",
-        "op_reply1": "응… 지휘관 대신이랄까?",
-        "reply1_shipgirl": 10117,
+        "op_option1": "좋은 텐션이네.",
+        "op_reply1": "그렇지? 역시 지휘관이야, 센스 있다니까!",
+        "reply1_shipgirl": 40309,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
@@ -16832,9 +16832,9 @@
                 "20121": "에!?"
             }
         },
-        "op_option1": "먹는 모습을 보니까 전부 맛있을 것 같네.",
-        "op_reply1": "후후, 확실히 맛있답니다.",
-        "reply1_shipgirl": 30405,
+        "op_option1": "당근과 모자…?",
+        "op_reply1": "응… 지휘관 대신이랄까?",
+        "reply1_shipgirl": 10117,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
@@ -16881,9 +16881,9 @@
                 "80108": "좋아!"
             }
         },
-        "op_option1": "손에 그건….",
-        "op_reply1": "후후~ 지휘관과의 합주 기대할게.",
-        "reply1_shipgirl": 70203,
+        "op_option1": "먹는 모습을 보니까 전부 맛있을 것 같네.",
+        "op_reply1": "후후, 확실히 맛있답니다.",
+        "reply1_shipgirl": 30405,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
@@ -16923,9 +16923,9 @@
                 "70203": "음악만으론 부족하지 않을까?"
             }
         },
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
+        "op_option1": "손에 그건….",
+        "op_reply1": "후후~ 지휘관과의 합주 기대할게.",
+        "reply1_shipgirl": 70203,
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
