@@ -49,6 +49,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const allSkinContainers = Object.values(DOM.containers);
 
     // === CONSTANTS ===
+    // Normalize Roman numerals to handle data inconsistencies (consistent with skin.data.js)
+    const normalizeRomanNumerals = (str) => {
+        if (!str) return str;
+        return str
+            .replace(/II/g, 'Ⅱ')   // ASCII II → Roman numeral 2
+            .replace(/III/g, 'Ⅲ')  // ASCII III → Roman numeral 3
+            .replace(/IV/g, 'Ⅳ')   // ASCII IV → Roman numeral 4
+            .replace(/V/g, 'Ⅴ')    // ASCII V → Roman numeral 5
+            .trim();
+    };
+
     const FILTER_PARAMS = {
         TYPE: 'type',
         TAG: 'tag',
@@ -261,8 +272,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // === RENDERER ===
     const Renderer = {
         _createSkinBox(skin) {
-            const characterName = encodeURIComponent(skin['함순이 이름']);
-            const skinName = encodeURIComponent(skin['한글 함순이 + 스킨 이름']);
+            // Normalize Roman numerals for consistent URL handling (matches skin.data.js behavior)
+            const characterName = encodeURIComponent(normalizeRomanNumerals(skin['함순이 이름']));
+            const skinName = encodeURIComponent(normalizeRomanNumerals(skin['한글 함순이 + 스킨 이름']));
             const linkUrl = `pages/skin/skin-detail-viewer.html?character=${characterName}&skin=${skinName}`;
 
             const link = document.createElement('a');
