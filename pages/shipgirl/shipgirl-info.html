@@ -16,14 +16,20 @@ head: <link rel="stylesheet" href="css/shipgirl/shipgirl-info.css">
                         <i class="fas fa-info-circle"></i>
                     </button>
                 </div>
-                <div class="stats-container">
-                    <div class="stat-item">
-                        <span class="stat-label">총 함순이:</span>
-                        <span class="stat-value" id="totalShips">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">표시 중:</span>
-                        <span class="stat-value" id="filteredShips">0</span>
+                <div class="header-stats-row">
+                    <button class="map-browser-btn" id="mapBrowserBtn" title="드랍 지역별 함순이 보기">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>드랍 지역</span>
+                    </button>
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <span class="stat-label">총 함순이:</span>
+                            <span class="stat-value" id="totalShips">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">표시 중:</span>
+                            <span class="stat-value" id="filteredShips">0</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -135,6 +141,55 @@ head: <link rel="stylesheet" href="css/shipgirl/shipgirl-info.css">
                 </div>
                 <div id="mapsContent" class="maps-content">
                     <!-- Maps will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Browser Modal (Reverse lookup: Map -> Ships) -->
+    <div id="mapBrowserModal" class="maps-modal" style="display: none;">
+        <div class="maps-modal-content map-browser-modal-content">
+            <div class="maps-modal-header">
+                <h2>드랍 지역별 함순이</h2>
+                <button class="maps-modal-close" id="closeMapBrowserModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="maps-modal-body">
+                <div class="map-browser-filters">
+                    <div class="filter-row">
+                        <select id="mapBrowserAreaFilter" class="map-browser-filter">
+                            <option value="all">모든 지역</option>
+                        </select>
+                        <select id="mapBrowserMapFilter" class="map-browser-filter">
+                            <option value="all">모든 맵</option>
+                        </select>
+                        <select id="mapBrowserTypeFilter" class="map-browser-filter">
+                            <option value="all">모든 타입</option>
+                            <option value="0">일반</option>
+                            <option value="1">보스</option>
+                        </select>
+                    </div>
+                    <div class="filter-row">
+                        <select id="mapBrowserRarityFilter" class="map-browser-filter">
+                            <option value="all">모든 등급</option>
+                            <option value="N">N</option>
+                            <option value="R">R</option>
+                            <option value="SR">SR</option>
+                            <option value="SSR">SSR</option>
+                            <option value="UR">UR</option>
+                        </select>
+                        <select id="mapBrowserShipTypeFilter" class="map-browser-filter">
+                            <option value="all">모든 함종</option>
+                        </select>
+                        <select id="mapBrowserNationalityFilter" class="map-browser-filter">
+                            <option value="all">모든 진영</option>
+                        </select>
+                    </div>
+                    <input type="text" id="mapBrowserSearchInput" placeholder="함순이 이름 검색..." class="map-browser-search">
+                </div>
+                <div id="mapBrowserContent" class="map-browser-content">
+                    <!-- Map browser content will be populated here -->
                 </div>
             </div>
         </div>
