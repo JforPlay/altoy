@@ -23,7 +23,7 @@ class AzurLaneDataProcessor:
 
     # API URLs
     URLS = {
-        "skin_list": "https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/skin_list.json",
+        "skin_list": "skin_list.json",
         "kr_skin_template": "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/ship_skin_template.json",
         "name_code": "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json",
         "activity_ins_template": "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/CN/ShareCfg/activity_ins_template.json",
@@ -45,10 +45,10 @@ class AzurLaneDataProcessor:
     @staticmethod
     def fetch_json_data(url: str) -> Dict[str, Any]:
         """
-        Fetches JSON data from a given URL.
+        Fetches JSON data from a given URL or local file.
 
         Args:
-            url: The URL to fetch data from
+            url: The URL or file path to fetch data from
 
         Returns:
             Dictionary containing the JSON data
@@ -57,9 +57,14 @@ class AzurLaneDataProcessor:
             requests.exceptions.RequestException: If the request fails
         """
         try:
-            response = requests.get(url)
-            response.raise_for_status()
-            return response.json()
+            if url.startswith('http://') or url.startswith('https://'):
+                response = requests.get(url)
+                response.raise_for_status()
+                return response.json()
+            else:
+                # Handle local file
+                with open(url, 'r', encoding='utf-8') as f:
+                    return json.load(f)
         except requests.exceptions.RequestException as e:
             print(f"Error fetching data from {url}: {e}")
             raise

@@ -6,7 +6,7 @@ from typing import Dict, List, Any, Optional
 
 # Constants
 URL_KR_SKIN_TEMPLATE = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/ship_skin_template.json"
-URL_SKIN_LIST = "https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/skin_list.json"
+URL_SKIN_LIST = "skin_list.json"
 URL_STORYLINE = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/memory_storyline.json"
 URL_MEMORY_GROUP = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/memory_group.json"
 URL_MEMORY_TEMPLATE = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/memory_template.json"
@@ -30,10 +30,15 @@ class DataProcessor:
         self.memory_group_data = {}
     
     def fetch_json_data(self, url: str) -> Dict[str, Any]:
-        """Fetches JSON data from a given URL."""
-        response = requests.get(url)
-        response.raise_for_status()
-        return response.json()
+        """Fetches JSON data from a given URL or local file."""
+        if url.startswith('http://') or url.startswith('https://'):
+            response = requests.get(url)
+            response.raise_for_status()
+            return response.json()
+        else:
+            # Handle local file
+            with open(url, 'r', encoding='utf-8') as f:
+                return json.load(f)
 
     def load_local_json_data(self, filepath: str) -> Dict[str, Any]:
         """Loads JSON data from a local file path."""

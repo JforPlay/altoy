@@ -7,11 +7,24 @@ STRICT_NAME_OVERRIDES = {
     "30507": "카가(전함)",
     "20232": "엔터프라이즈(경순)",
     "1010001": "넵튠(콜라보)",
+    "1010004": "벨(콜라보)",
     "1060003": "카스미(콜라보)",
     "1100005": "후부키(콜라보)"
 }
 
+def fetch_json_data(url):
+    """Fetch JSON data from URL or local file."""
+    if url.startswith('http://') or url.startswith('https://'):
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+    else:
+        # Handle local file
+        with open(url, 'r', encoding='utf-8') as f:
+            return json.load(f)
+
 def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_url, skill_url, buff_url, ship_drops_file, output_filename):
+# def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_url, skill_url, buff_url, output_filename):
     """
     Fetches ship data from multiple sources, filters and merges it,
     and saves the final result to a file.
@@ -24,34 +37,27 @@ def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_u
     try:
         # --- PART 1 & 2: Fetching Data ---
         print("Fetching all data sources...")
-        response_ships = requests.get(ship_url); response_ships.raise_for_status()
-        all_ships_data = response_ships.json()
+        all_ships_data = fetch_json_data(ship_url)
 
-        response_groups = requests.get(group_url); response_groups.raise_for_status()
-        group_data = response_groups.json()
+        group_data = fetch_json_data(group_url)
         description_map = {v["group_type"]: [item[0] for item in v.get("description", []) if isinstance(item, list) and item]
                            for k, v in group_data.items() if "group_type" in v}
         
-        response_stats = requests.get(stats_url); response_stats.raise_for_status()
-        stats_data = response_stats.json()
+        stats_data = fetch_json_data(stats_url)
         stats_keys_to_fetch = ["name", "gift_dislike", "rarity", "skin_id"]
         stats_map = {int(sid): {key: stats.get(key) for key in stats_keys_to_fetch} for sid, stats in stats_data.items()}
         
-        response_sp_weapon = requests.get(sp_weapon_url); response_sp_weapon.raise_for_status()
-        sp_weapon_data = response_sp_weapon.json()
+        sp_weapon_data = fetch_json_data(sp_weapon_url)
         sp_weapon_keys_to_fetch = ["icon", "name", "skill_upgrade", "attribute_1", "attribute_2"]
         sp_weapon_map = {v["unique"]: {key: v.get(key) for key in sp_weapon_keys_to_fetch}
                          for k, v in sp_weapon_data.items() if "unique" in v}
 
-        response_transform = requests.get(transform_url); response_transform.raise_for_status()
-        transform_data = response_transform.json()
+        transform_data = fetch_json_data(transform_url)
         transform_map = {int(k): v["skill_id"] for k, v in transform_data.items() if "skill_id" in v}
 
-        response_skill_effects = requests.get(skill_url); response_skill_effects.raise_for_status()
-        skill_effects_data = response_skill_effects.json()
+        skill_effects_data = fetch_json_data(skill_url)
         
-        response_buffs = requests.get(buff_url); response_buffs.raise_for_status()
-        buff_effects_data = response_buffs.json()
+        buff_effects_data = fetch_json_data(buff_url)
 
         # Load ship_drops.json for timer data
         print("Loading ship_drops.json for construction timer data...")
@@ -86,11 +92,16 @@ def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_u
                     ship['retrofit']['skill_id'] = transform_map[ship['retrofit']['skill']]
 
             # Name processing
-            ship['name'] = ship['name'].strip()
-            # print(gid)
-            if str(gid) in STRICT_NAME_OVERRIDES:
-                ship['name'] = STRICT_NAME_OVERRIDES[str(gid)]
-                print(f"Applied strict name override for GID {gid}: {ship['name']}")
+            if 'name' in ship:
+                ship['name'] = ship['name'].strip()
+                # print(gid)
+                if str(gid) in STRICT_NAME_OVERRIDES:
+                    ship['name'] = STRICT_NAME_OVERRIDES[str(gid)]
+                    print(f"Applied strict name override for GID {gid}: {ship['name']}")
+
+            #######################
+            # Disabled for NOW
+            #######################
 
             # --- Add construction-specific fields ---
             # Add timer from ship_drops.json
@@ -203,7 +214,7 @@ def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_u
 
 # --- Main execution ---
 if __name__ == "__main__":
-    SHIP_URL = "https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/ship.json"
+    SHIP_URL = "ship.json"
     GROUP_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/ship_data_group.json"
     STATS_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/sharecfgdata/ship_data_statistics.json"
     SP_WEAPON_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/sharecfgdata/spweapon_data_statistics.json"
@@ -214,3 +225,4 @@ if __name__ == "__main__":
     OUTPUT_FILE = "./output/ship_info_data.json"
 
     process_ship_data(SHIP_URL, GROUP_URL, STATS_URL, SP_WEAPON_URL, TRANSFORM_URL, SKILL_URL, BUFF_URL, SHIP_DROPS_FILE, OUTPUT_FILE)
+    # process_ship_data(SHIP_URL, GROUP_URL, STATS_URL, SP_WEAPON_URL, TRANSFORM_URL, SKILL_URL, BUFF_URL, OUTPUT_FILE)

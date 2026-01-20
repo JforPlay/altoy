@@ -1,11 +1,15 @@
 import requests
 import json
+import re
 from collections import defaultdict
 
 # --- 1. Define URLs ---
-main_file_url = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/EN/ShareCfg/island_chara_template.json"
-skill_file_url = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/EN/ShareCfg/island_chara_skill.json"
-skin_file_url = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/EN/ShareCfg/island_skin_template.json"
+main_file_url = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/island_chara_template.json"
+skill_file_url = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/island_chara_skill.json"
+skin_file_url = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/island_skin_template.json"
+
+# New: name_code.json URL
+name_code_url = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json"
 
 try:
     # --- 2. Fetch all data ---
@@ -13,16 +17,19 @@ try:
     main_response = requests.get(main_file_url)
     skill_response = requests.get(skill_file_url)
     skin_response = requests.get(skin_file_url)
-    
+    name_code_response = requests.get(name_code_url)
+
     # Raise an error if any request failed
     main_response.raise_for_status()
     skill_response.raise_for_status()
     skin_response.raise_for_status()
-    
+    name_code_response.raise_for_status()
+
     # Parse the JSON content into Python dictionaries
     main_data = main_response.json()
     skill_data = skill_response.json()
     skin_data = skin_response.json()
+    name_code_data = name_code_response.json()
     print("All data fetched and parsed successfully.")
 
     # --- 3. Build a skin lookup map for efficiency ---
@@ -32,12 +39,9 @@ try:
     # Iterate over all values in the skin_data dictionary
     for skin_info in skin_data.values():
         
-        # --- THIS IS THE FIX ---
-        # Check if the 'skin_info' item is a dictionary. 
-        # If it's not (e.g., it's the 'all' list), skip it.
+        # Skip non-dict entries like "all"
         if not isinstance(skin_info, dict):
             continue
-        # --- END OF FIX ---
         
         # Get the ship_group ID, which we'll use to match
         ship_group_id = skin_info.get("ship_group")
@@ -46,11 +50,15 @@ try:
             
     print(f"Skin map built. Found skins for {len(skin_map)} ship groups.")
 
+    # --- 3.5 Prepare regex for namecode pattern ---
+    # Matches strings like "{namecode:199}"
+    namecode_pattern = re.compile(r"{namecode:(\d+)}")
 
     # --- 4. Process the main character data ---
     print("Processing main character data...")
     processed_skills = 0
     characters_with_skins = 0
+    replaced_namecodes = 0
     
     # Iterate through the main data (the sub-dictionaries)
     for chara_id_key, chara_template in main_data.items():
@@ -59,9 +67,22 @@ try:
         if not isinstance(chara_template, dict):
             continue
 
+        # === Part 0: Resolve namecode-based names to Korean ===
+        raw_name = chara_template.get("name")
+        if isinstance(raw_name, str):
+            m = namecode_pattern.fullmatch(raw_name.strip())
+            if m:
+                code_id = m.group(1)  # "XXX" in {namecode:XXX}
+                name_entry = name_code_data.get(code_id)
+                if isinstance(name_entry, dict):
+                    # Prefer "code" (looks like the Korean display name),
+                    # fall back to "name" if needed.
+                    new_name = name_entry.get("code") or name_entry.get("name")
+                    if new_name:
+                        chara_template["name"] = new_name
+                        replaced_namecodes += 1
+
         # === Part 1: Process Skill ID (from previous request) ===
-        # This part was correct because it accesses skill_data by a specific key,
-        # not by iterating over .values()
         if "skill_id" in chara_template and chara_template["skill_id"]:
             skill_id = chara_template["skill_id"]
             skill_key = str(skill_id)
@@ -90,6 +111,7 @@ try:
     print(f"Processing complete.")
     print(f"  - Replaced {processed_skills} skill_id fields.")
     print(f"  - Added skin lists for {characters_with_skins} characters.")
+    print(f"  - Replaced {replaced_namecodes} name fields from {{namecode:XXX}} to Korean names.")
 
     # --- 5. Display or save the result ---
     
@@ -97,7 +119,7 @@ try:
     sample_id = "10117"
     print(f"\n--- Sample of processed data (ID: {sample_id}) ---")
     if sample_id in main_data:
-        print(json.dumps(main_data[sample_id], indent=2))
+        print(json.dumps(main_data[sample_id], indent=2, ensure_ascii=False))
     else:
         print(f"Sample ID {sample_id} not found.")
 

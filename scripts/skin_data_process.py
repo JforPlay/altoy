@@ -15,13 +15,13 @@ class AzurLaneDataProcessor:
     
     # API URLs
     URLS = {
-        'skin_list': "https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/skin_list.json",
+        'skin_list': "skin_list.json",
         'kr_skin_template': "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/ship_skin_template.json",
         'words': "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/sharecfgdata/ship_skin_words.json",
         'words_extra': "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/ship_skin_words_extra.json",
         'name_code': "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json",
         'shop_template': "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/sharecfgdata/shop_template.json",
-        'ship_data': "https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/ship.json",
+        'ship_data': "ship.json",
         'voicelink': "https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/voicelink.json"
     }
     
@@ -102,6 +102,7 @@ class AzurLaneDataProcessor:
         30507: "카가(전함)",
         20232: "엔터프라이즈(경순)",
         1010001: "넵튠(콜라보)",
+        1010004: "벨(콜라보)",
         1060003: "카스미(콜라보)",
         1100005: "후부키(콜라보)"
     }
@@ -111,11 +112,16 @@ class AzurLaneDataProcessor:
         self.processed_data = []
         
     def fetch_json_data(self, url: str) -> Dict[str, Any]:
-        """Fetch JSON data from URL with error handling."""
+        """Fetch JSON data from URL or local file with error handling."""
         try:
-            response = requests.get(url, timeout=30)
-            response.raise_for_status()
-            return response.json()
+            if url.startswith('http://') or url.startswith('https://'):
+                response = requests.get(url, timeout=30)
+                response.raise_for_status()
+                return response.json()
+            else:
+                # Handle local file
+                with open(url, 'r', encoding='utf-8') as f:
+                    return json.load(f)
         except requests.exceptions.RequestException as e:
             logger.error(f"Error fetching data from {url}: {e}")
             raise

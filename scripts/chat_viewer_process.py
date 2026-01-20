@@ -11,12 +11,12 @@ class AzurLaneChatProcessor:
     
     # Base URLs for data sources
     BASE_URLS = {
-        'skin_list': "https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/skin_list.json",
+        'skin_list': "skin_list.json",
         'kr_skin_template': "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/ship_skin_template.json",
         'name_code': "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json",
         'fleet_tech_ship': "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/fleet_tech_ship_template.json",
         'ship_data_group': "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/ship_data_group.json",
-        'ship_data': "https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/ship.json",
+        'ship_data': "ship.json",
         'dorm3d_chat_group': "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/dorm3d_ins_chat_group.json",
         'dorm3d_chat_language': "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/dorm3d_ins_chat_language.json",
         'dorm3d_ship_group': "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/dorm3d_ins_ship_group_template.json",
@@ -39,6 +39,7 @@ class AzurLaneChatProcessor:
         "30507": "카가(전함)",
         "20232": "엔터프라이즈(경순)",
         "1010001": "넵튠(콜라보)",
+        "1010004": "벨(콜라보)",
         "1060003": "카스미(콜라보)",
         "1100005": "후부키(콜라보)"
     }
@@ -48,11 +49,16 @@ class AzurLaneChatProcessor:
         self.name_code_dict: Dict[str, str] = {}
     
     def fetch_json_data(self, url: str) -> Dict[str, Any]:
-        """Fetches JSON data from a given URL."""
+        """Fetches JSON data from a given URL or local file."""
         try:
-            response = requests.get(url, timeout=30)
-            response.raise_for_status()
-            return response.json()
+            if url.startswith('http://') or url.startswith('https://'):
+                response = requests.get(url, timeout=30)
+                response.raise_for_status()
+                return response.json()
+            else:
+                # Handle local file
+                with open(url, 'r', encoding='utf-8') as f:
+                    return json.load(f)
         except requests.exceptions.RequestException as e:
             print(f"Error fetching data from {url}: {e}")
             raise

@@ -3,8 +3,8 @@ import json
 from collections import defaultdict
 
 # URLs for the JSON files
-TECH_TEMPLATE_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/EN/ShareCfg/island_technology_template.json"
-FORMULA_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/EN/ShareCfg/island_formula.json"
+TECH_TEMPLATE_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/island_technology_template.json"
+FORMULA_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/island_formula.json"
 OUTPUT_FILENAME = "./output/island/recipes.json"
 
 

@@ -3,8 +3,8 @@ import json
 import sys
 
 # --- Configuration ---
-TASK_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/EN/ShareCfg/island_task.json"
-TARGET_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/EN/ShareCfg/island_task_target.json"
+TASK_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/island_task.json"
+TARGET_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/island_task_target.json"
 OUTPUT_FILE = "./output/island/tasks.json"
 
 def fetch_json_data(url):

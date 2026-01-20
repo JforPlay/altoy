@@ -3,8 +3,8 @@ import requests
 import sys
 
 # URLs for the raw JSON data on GitHub
-TEMPLATE_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/EN/ShareCfg/island_technology_template.json"
-FORMULA_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/EN/ShareCfg/island_formula.json"
+TEMPLATE_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/island_technology_template.json"
+FORMULA_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/KR/ShareCfg/island_formula.json"
 OUTPUT_FILENAME = "./output/island/technology.json"
 
 def fetch_json_data(url):
