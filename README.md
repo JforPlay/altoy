@@ -10,5 +10,6 @@ All assets/data used in this repo is a property/copyright of Manjuu, Xiamen Yong
 In addition, the json data within this repo are also crafted based on the assets of the game, Azur Lane.
 
 ## Related Resources
-- https://github.com/Fernando2603/AzurLane/tree/main
-- https://github.com/AzurLaneTools/AzurLaneData
+- https://github.com/Fernando2603/AzurLane/tree/main : for images
+- https://github.com/AzurLaneTools/AzurLaneData : for kr data
+- https://github.com/MrLar/AzurLaneData : for ship drop data
