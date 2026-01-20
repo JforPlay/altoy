@@ -147930,6 +147930,93 @@
         "ex_chat_status":0
     },
     {
+        "클뜯 id":301940,
+        "클뜯 함순이 id":30194,
+        "함순이 이름":null,
+        "한글 함순이 + 스킨 이름":null,
+        "영문 함순이 + 스킨 이름":"Fujinami",
+        "스킨 타입":"Default",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/301940\/painting.png",
+        "확대 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/301940\/painting_n.png",
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/301940\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/301940\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/301940\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/301940\/shipyard.png",
+        "설명":null,
+        "자기소개":null,
+        "메인1":null,
+        "메인2":null,
+        "메인3":null,
+        "전투개시":null,
+        "상세확인":null,
+        "드랍 설명":null,
+        "의뢰 완료":null,
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":null,
+        "터치3":null,
+        "모항귀환":null,
+        "hp 경고":null,
+        "로그인":null,
+        "실패":null,
+        "우편":null,
+        "임무":null,
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":null,
+        "터치2":null,
+        "입수시":null,
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":null,
+        "상점 id":null,
+        "상점 카테고리 id":null,
+        "스킨 태그":"X",
+        "입수 영상":"X",
+        "재화":null,
+        "기간":null,
+        "진영":"IJN",
+        "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
         "클뜯 id":302010,
         "클뜯 함순이 id":30201,
         "함순이 이름":"유바리",
@@ -334848,6 +334935,1785 @@
         "기간":"한정 (2025\/12\/10)",
         "진영":115,
         "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":10300010,
+        "클뜯 함순이 id":1030001,
+        "함순이 이름":"쿠온",
+        "한글 함순이 + 스킨 이름":"쿠온",
+        "영문 함순이 + 스킨 이름":"쿠온",
+        "스킨 타입":"Default",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300010\/painting.png",
+        "확대 일러":null,
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300010\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300010\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300010\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300010\/shipyard.png",
+        "설명":"처음 뵙겠습니다, 일까나? 나는 쿠온, 오늘부터 신세를 지게 되었으니 잘 부탁해. 신세 지는 이상, 일은 확실히 할 테니까 기대해 줘.",
+        "자기소개":{
+            "voiceline":"나는 쿠온, 여행의 약사랄까? 상처나 병으로 곤란한 상황일 땐 언제든지 말해줘. 잘 듣는 약을…… 응? 태어난 곳이 어느 나라냐고? 아하하, 그건 비밀, 이라구.",
+            "voicelink":null
+        },
+        "메인1":{
+            "voiceline":"이 항구에는 많은 나라 사람들이 모여있네. 만나는 사람마다 다양한 이야기를 들려줘서 질리지 않아. 야마토에 있었던 때가 생각나네~",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"서류…… 윽, 두통이…… 복통도. 미안 좀 쉬다가 와도 되지? 아야야…두통 때문에 머리가 깨질 것 같아~",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"지휘관, 아까부터 손이 멈춰있는 것 같은데……농땡이 치고 있는 건 아니지?(꼬리 붕붕)",
+            "voicelink":null
+        },
+        "전투개시":{
+            "voiceline":"자 그럼 전력으로 간다!",
+            "voicelink":null
+        },
+        "상세확인":{
+            "voiceline":"나를 알고 싶다고? 그럼 서로를 잘 알기 위해 대화를 해야겠네.",
+            "voicelink":null
+        },
+        "드랍 설명":{
+            "voiceline":"처음 뵙겠습니다, 일까나? 나는 쿠온, 오늘부터 신세를 지게 되었으니 잘 부탁해. 신세 지는 이상, 일은 확실히 할 테니까 기대해 줘.",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"일을 나갔던 아이들이 돌아왔어. 이럴 땐 지휘관답게 맞아 줘야겠지.",
+            "voicelink":null
+        },
+        "실망":{
+            "voiceline":"못난 아이일수록 귀엽다고는 하지만……이렇게까지 못나면 받아주기 어렵지 않으려나. 혼.내.줘.야, 겠지. (꼬리로 으드득…)",
+            "voicelink":null
+        },
+        "낯섦":{
+            "voiceline":"아, 지휘관 어서 와. 차를 만들 테니 잠깐 기다려. 찐 모로로도 있는데, 먹을래?",
+            "voicelink":null
+        },
+        "호감":{
+            "voiceline":"뭐랄까, 지휘관은 남 같지가 않아. 예를 들면…… 그래, 크로우와 함께 있단 느낌? 약간 짓궂은 부분도 닮았달까?",
+            "voicelink":null
+        },
+        "기쁨":{
+            "voiceline":"설교가 많다고? 당연하지. 좋아하는 사람은 제대로 하길 바라니까…… 우르토리 어머니도 이런 기분이었을까나?",
+            "voicelink":null
+        },
+        "사랑":{
+            "voiceline":"맞아…… 지휘관은 아버지를 닮았어. 어쩐지 남 같지 않다고 느꼈어. 다정하면서 강하고, 언제나 나를 생각해주는……그래, 아버지와 똑같아!",
+            "voicelink":null
+        },
+        "터치3":{
+            "voiceline":"우왓……! 아니, 아무것도 아냐…… 잠깐 어머니들 생각이 났을 뿐. 특히 카뮤 언니와 아루루 언니…으흑",
+            "voicelink":null
+        },
+        "모항귀환":{
+            "voiceline":"어서 와, 오늘도 수고했어. 다음 일을 하기 전에 잠깐 한숨 돌리는 것도 괜찮지 않아?",
+            "voicelink":null
+        },
+        "hp 경고":{
+            "voiceline":"아직, 이런 곳에서 끝날 수는 없……을까나.",
+            "voicelink":null
+        },
+        "로그인":{
+            "voiceline":"안녕, 지휘관. 잘 잤어? 자, 오늘도 힘내서 일해볼까!",
+            "voicelink":null
+        },
+        "실패":{
+            "voiceline":"내가 적을 유인할 테니…… 지휘관은 모두를 데리고 도망쳐!",
+            "voicelink":null
+        },
+        "우편":{
+            "voiceline":"우편이 도착했어. 읽어두지 않으면 까먹을지도?",
+            "voicelink":null
+        },
+        "임무":{
+            "voiceline":"임무가 좀 쌓여있는걸? \"일하지 않는 자 먹지도 말라\"는 말 들어본 적 있을까나? 지휘관.",
+            "voicelink":null
+        },
+        "임무완료":{
+            "voiceline":"임무 수고했어. 일한 뒤에 먹는 밥은 엄청 맛있다구.",
+            "voicelink":null
+        },
+        "서약":{
+            "voiceline":"멀리 떨어진 세계에서 온 나를, 당신은 가족으로서 받아들여 주었어. 소중하게 여겨 주었지…… 그러니, 그 마음에 나도 답하겠어.",
+            "voicelink":null
+        },
+        "스킬":{
+            "voiceline":"내 모든 것을 쏟아내겠어! 이것이…… 전력의 일격!",
+            "voicelink":null
+        },
+        "터치1":{
+            "voiceline":"아~ 피곤해~ 일이 끝나면 목욕이라도 하고 싶네…… 에? 숙소에 있다고? 게다가 넓다고!? 지휘관, 잠깐 다녀와도 될까!?",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"히익!? 가, 갑자기 뭐하는 거야?! 아무 말도 없이 여자의 꼬리를 만지다니…… 반성 해야겠지! (꼬리로 꽈악~)",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"처음 뵙겠습니다, 일까나? 나는 쿠온, 오늘부터 신세를 지게 되었으니 잘 부탁해. 신세 지는 이상, 일은 확실히 할 테니까 기대해 줘.",
+            "voicelink":null
+        },
+        "강화성공":{
+            "voiceline":"이걸로 좀 더 힘낼 수 있어!",
+            "voicelink":null
+        },
+        "vote":null,
+        "승리":{
+            "voiceline":"내가 제일 잘했다고? 아니, 이 승리는 모두의 덕분이야.",
+            "voicelink":null
+        },
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":null,
+        "상점 id":0.0,
+        "상점 카테고리 id":0.0,
+        "스킨 태그":"X",
+        "입수 영상":"X",
+        "재화":null,
+        "기간":null,
+        "진영":"UM (utawarerumono)",
+        "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":10300011,
+        "클뜯 함순이 id":1030001,
+        "함순이 이름":"쿠온",
+        "한글 함순이 + 스킨 이름":"쿠온 (칭송받는 자)",
+        "영문 함순이 + 스킨 이름":"쿠온 (칭송받는 자)",
+        "스킨 타입":"Others",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300011\/painting.png",
+        "확대 일러":null,
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300011\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300011\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300011\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300011\/shipyard.png",
+        "설명":"쿠온. 그게 나의 이름.",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"더 많은 곳을 거닐고, 본 적도 없는 걸 보고 다니고, 그 향기를, 그 바람을 느끼고 싶어.",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"더, 더욱 더 다양한 세계를 보고 싶어. 왠지 그러고 싶은 느낌이 들어……그러니까 이렇게 여행을 계속하는 걸까나.",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"좋아하는 게 생기는 건 젊을 때 뿐이니까, 자유롭게 살아보는 것도 좋겠지.",
+            "voicelink":null
+        },
+        "전투개시":{
+            "voiceline":"금방 돌아올 테니까, 잔치 준비라도 해놓고 기다리라고.",
+            "voicelink":null
+        },
+        "상세확인":null,
+        "드랍 설명":{
+            "voiceline":"쿠온. 그게 나의 이름.",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"흐흥~ 별 문제 없으려나♪",
+            "voicelink":null
+        },
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"난 이제, 과거에 얽매이지 않아. 앞을 향해 살아가겠어.",
+            "voicelink":null
+        },
+        "터치3":null,
+        "모항귀환":{
+            "voiceline":"늘 수고가 많네. 오늘은 느긋하게 쉬는 걸까나……",
+            "voicelink":null
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"좋은 아침, 일어났어?",
+            "voicelink":null
+        },
+        "실패":null,
+        "우편":{
+            "voiceline":"잠깐, 시험삼아 이 글을 읽어봐줄 수 있을까나?",
+            "voicelink":null
+        },
+        "임무":null,
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"저, 정말이지, 놀래주지 말라구.",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"……무, 무슨 말이 하고 싶은 걸까나?",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"쿠온. 그게 나의 이름.",
+            "voicelink":null
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"기타",
+        "상점 id":70118.0,
+        "상점 카테고리 id":9999.0,
+        "스킨 태그":"배경",
+        "입수 영상":"X",
+        "재화":880.0,
+        "기간":"한정 (2018\/12\/12)",
+        "진영":"UM (utawarerumono)",
+        "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":10300020,
+        "클뜯 함순이 id":1030002,
+        "함순이 이름":"네코네",
+        "한글 함순이 + 스킨 이름":"네코네",
+        "영문 함순이 + 스킨 이름":"네코네",
+        "스킨 타입":"Default",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300020\/painting.png",
+        "확대 일러":null,
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300020\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300020\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300020\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300020\/shipyard.png",
+        "설명":"바람을 건너온 자 우콘의 여동생이자 참모, 네코네가 부임한 거에요. 지휘관의 실력을 확인해보도록 하는 거에요. ",
+        "자기소개":{
+            "voiceline":"나는 네코네. 야마토를 대표하는 자로 칭송받은 우근위대장 오슈…… 아아앗, 그게 아니라, 방랑자 우콘의 여동생인 거에요!",
+            "voicelink":null
+        },
+        "메인1":{
+            "voiceline":"이 세계에는 신기한 것이 참 많아요. 시간이 나면 유적 같은 걸 조사하러 가보고 싶네요…… 엥, 바다 외엔 아무것도 없다구요!?",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"이 항구에는 왜 여자들만 가득한 걸까요. 지휘관의 부하도 여자들뿐…… 이렇다면 그 사람하고 별 차이 없는 거에요.",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"포탑, 어뢰, 함재기…… 우리들의 세계에는 존재하지 않는 병기들이 한가득, 매우 흥미로운 거에요. 고대의 위업과 통하는 게 느껴지는 거에요.",
+            "voicelink":null
+        },
+        "전투개시":{
+            "voiceline":"전쟁에 초조해하는 것은 금물, 먼저 상대의 반응을 살피는 거예요",
+            "voicelink":null
+        },
+        "상세확인":{
+            "voiceline":"친목을 다지고 싶다구요? 뭐, 조금만이라면 괜찮은 거에요.",
+            "voicelink":null
+        },
+        "드랍 설명":{
+            "voiceline":"바람을 건너온 자 우콘의 여동생이자 참모, 네코네가 부임한 거에요. 지휘관의 실력을 확인해보도록 하는 거에요.",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"의뢰를 갔던 사람들이 귀환했어요. 지휘관으로서 성과를 확인하는 게 좋을 거에요.",
+            "voicelink":null
+        },
+        "실망":{
+            "voiceline":"당신 같이 어리석은 인간, 오라버니나 그 사람과 비교하는 것조차 우스운 거에요.",
+            "voicelink":null
+        },
+        "낯섦":{
+            "voiceline":"……일은 잘하는 것 같네요. 그 부분은 인정해주겠어요. 하지만 이 정도는 해주는 게 당연한 거에요.",
+            "voicelink":null
+        },
+        "호감":{
+            "voiceline":"흠흠……꽤 하는군요. 이렇게나 잘할 줄이야……지휘관을 다시 보게 된 거에요. 물론 오라버니의 발끝에도 미치지 못하지만, 그 사람 정도로는 인정해줄 수 있는 거에요.",
+            "voicelink":null
+        },
+        "기쁨":{
+            "voiceline":"……언니가 지휘관씨와 같이 있는 이유를 알 것 같아요. 당신 또한 많은 사람을 끌어당기는 신비로운 매력을 갖고 있네요.",
+            "voicelink":null
+        },
+        "사랑":{
+            "voiceline":"당신이 이렇게나 재기가 넘치는 사람이었다니…… 기회가 있으면 꼭 오라버니께 소개해주고 싶은 거에요. 당신이 있으면 마음이 정말 든든한 거에요.",
+            "voicelink":null
+        },
+        "터치3":{
+            "voiceline":"우왓!? 머리 토닥토닥은 그만두는 게 좋을 거에요. 아이 취급하지 말라는 거에요.",
+            "voicelink":null
+        },
+        "모항귀환":{
+            "voiceline":"무사히 귀환, 다행이네요. 따, 딱히 지휘관을 걱정하거나 한 건 아닌 거에요.",
+            "voicelink":null
+        },
+        "hp 경고":{
+            "voiceline":"이젠, 겨우 서 있는 게 한계인 거에요……",
+            "voicelink":null
+        },
+        "로그인":{
+            "voiceline":"드디어 왔네요…… 일이 산처럼 쌓여있어요. 빨리 처리하셨으면 하는 거에요.",
+            "voicelink":null
+        },
+        "실패":{
+            "voiceline":"또, 이렇게 되다니…… 오라버니, 죄송해요……",
+            "voicelink":null
+        },
+        "우편":{
+            "voiceline":"우편이 도착한 거에요. 급한 일일지도 몰라요.",
+            "voicelink":null
+        },
+        "임무":{
+            "voiceline":"지휘관, 임무가 쌓일 것 같아요. 빨리 정리하는 게 좋을 거에요.",
+            "voicelink":null
+        },
+        "임무완료":{
+            "voiceline":"임무 완료 보수인 거에요.",
+            "voicelink":null
+        },
+        "서약":{
+            "voiceline":"차, 착각하지 말아 줬으면 하는 거에요. 이건 계약인 거에요…… 이 세계에 있는 이상, 당신을 오라버니처럼 공경하겠다고 하는…… 단지 그것뿐인 거에요.",
+            "voicelink":null
+        },
+        "스킬":{
+            "voiceline":"하늘에 비술이 있고, 내게는 계책이 있나니……이것이 학문의 진수인 거에요!",
+            "voicelink":null
+        },
+        "터치1":{
+            "voiceline":"뭐죠? 휴식 시간은 아직 안 온 거에요. 일을 진행해주세요.",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"윽!? 어딜 만지는 거에요, 변태! 불결한 거에요, 경멸하는 거에요! 언니에게 이를 거야!",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"바람을 건너온 자 우콘의 여동생이자 참모, 네코네가 부임한 거에요. 지휘관의 실력을 확인해보도록 하는 거에요.",
+            "voicelink":null
+        },
+        "강화성공":{
+            "voiceline":"강해졌어요…커지기도 했……을 거에요!",
+            "voicelink":null
+        },
+        "vote":null,
+        "승리":{
+            "voiceline":"전쟁이란 지략으로 승리를 얻는 것, 힘만으로는 안 되는 거에요.",
+            "voicelink":null
+        },
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":null,
+        "상점 id":0.0,
+        "상점 카테고리 id":0.0,
+        "스킨 태그":"X",
+        "입수 영상":"X",
+        "재화":null,
+        "기간":null,
+        "진영":"UM (utawarerumono)",
+        "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":10300021,
+        "클뜯 함순이 id":1030002,
+        "함순이 이름":"네코네",
+        "한글 함순이 + 스킨 이름":"네코네 (칭송받는 자)",
+        "영문 함순이 + 스킨 이름":"네코네 (칭송받는 자)",
+        "스킨 타입":"Others",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300021\/painting.png",
+        "확대 일러":null,
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300021\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300021\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300021\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300021\/shipyard.png",
+        "설명":"앗, 네, 네……처음 뵙겠……습니다…….에요.",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"……아까부터 뭘 힐끔힐끔 보고 있는 건가요?",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"불평을 입에 담지 말라, 일하지 않는 자 먹지도 말라, 인 거에요.",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"저는 단지, 제 몫을 다하고 싶을 뿐이에요. 그것 말고는 더 바라는 것 따윈……",
+            "voicelink":null
+        },
+        "전투개시":{
+            "voiceline":"병귀신속이에요. 서두르지 않으면 안 되는 거에요.",
+            "voicelink":null
+        },
+        "상세확인":null,
+        "드랍 설명":{
+            "voiceline":"앗, 네, 네……처음 뵙겠……습니다…….에요.",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"네, 지금 돌아온 거에요. ",
+            "voicelink":null
+        },
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"같이 있어줘서……기뻤던 거에요.",
+            "voicelink":null
+        },
+        "터치3":null,
+        "모항귀환":{
+            "voiceline":"업무에 수고가 많으신 거에요.",
+            "voicelink":null
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"……안녕하세요, 에요.",
+            "voicelink":null
+        },
+        "실패":null,
+        "우편":{
+            "voiceline":"차를 가져다드리는 거에요.",
+            "voicelink":null
+        },
+        "임무":null,
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"저기, 슬슬 찌르는 걸 그만두어 주었으면 하는 거에요.",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"……뭘 생각하는진 모르겠지만, 어쨌든 정좌하는 거에요.",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"앗, 네, 네……처음 뵙겠……습니다…….에요.",
+            "voicelink":null
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"기타",
+        "상점 id":70119.0,
+        "상점 카테고리 id":9999.0,
+        "스킨 태그":"배경",
+        "입수 영상":"X",
+        "재화":880.0,
+        "기간":"한정 (2018\/12\/12)",
+        "진영":"UM (utawarerumono)",
+        "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":10300030,
+        "클뜯 함순이 id":1030003,
+        "함순이 이름":"루루티에",
+        "한글 함순이 + 스킨 이름":"루루티에",
+        "영문 함순이 + 스킨 이름":"루루티에",
+        "스킨 타입":"Default",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300030\/painting.png",
+        "확대 일러":null,
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300030\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300030\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300030\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300030\/shipyard.png",
+        "설명":"처음 뵙겠습니다…… 루루티에라고 합니다. 사정이 있어 이렇게 신세를 지게 되었습니다. 부, 부족한 몸이지만…… 아무쪼록 잘 부탁드립니다.",
+        "자기소개":{
+            "voiceline":"쿠쥬우리를 다스리는 낙토의 오젠의 막내 공주, 루루티에라고 합니다. 취미는 요리와 독서로…… 네? 어떤 책을 읽느냐고요? 그, 그건 그러니까……(머뭇머뭇)",
+            "voicelink":null
+        },
+        "메인1":{
+            "voiceline":"이 세계는 저희 세계에 없는 것으로 가득합니다. 식재료나 요리 등 흥미가 끊길 일이 없네요. 나중에 식당에 가봐도 괜찮을까요?",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"만쥬라고 부르나요, 이 동글동글한 새는? 귀엽네요. 저도 코코포라고 하는 호로론 새를 기르고 있답니다.",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"한가하시면 잠깐 나갔다 와도 될까요? 음 그러니까, 이쪽 세계의 서점에 가보고 싶어서……",
+            "voicelink":null
+        },
+        "전투개시":{
+            "voiceline":"저도…… 싸울 수 있어요!",
+            "voicelink":null
+        },
+        "상세확인":{
+            "voiceline":"저기…… 제게 용건이 있으신가요?",
+            "voicelink":null
+        },
+        "드랍 설명":{
+            "voiceline":"처음 뵙겠습니다…… 루루티에라고 합니다. 사정이 있어 이렇게 신세를 지게 되었습니다. 부, 부족한 몸이지만…… 아무쪼록 잘 부탁드립니다.",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"의뢰를 담당하신 분들이 돌아오신 것 같네요. 마중 다녀오겠습니다.",
+            "voicelink":null
+        },
+        "실망":{
+            "voiceline":"죄송합니다…… 저로서는 지휘관님의 기대에 부응하지 못하겠네요……",
+            "voicelink":null
+        },
+        "낯섦":{
+            "voiceline":"아, 지휘관님. 딱 좋은 타이밍에 오셨네요…… 여기 식재료로 요리를 만들어 봤습니다. 괜찮으시다면 간을 봐주실 수 있으실까요?",
+            "voicelink":null
+        },
+        "호감":{
+            "voiceline":"지휘관님은 그…… 동성인 친구분이 계신가요? 그분과는 친밀하신가요? 뜨거운 우정으로 이어져 있으신가요? 그렇다면 좀 더 자세한 이야기를……!",
+            "voicelink":null
+        },
+        "기쁨":{
+            "voiceline":"여기에 있다 보면, 백루각에 있었던 시절이 떠오릅니다. 그 사람을 중심으로 모두가 있고…… 지휘관님이 이따금 그 사람과 겹쳐 보이는 것 같은 기분이 든답니다.",
+            "voicelink":null
+        },
+        "사랑":{
+            "voiceline":"지휘관님은 강하신 분이네요. 많은 사람을 통솔하며 큰일을 이루고자 하고 있어요……저도 함께 따라가고 싶어요.",
+            "voicelink":null
+        },
+        "터치3":{
+            "voiceline":"저기, 이런 접촉은 좀 더 어린아이에게 해줘야 하는 건 아닌가요……?",
+            "voicelink":null
+        },
+        "모항귀환":{
+            "voiceline":"수고하셨습니다, 지휘관님. 식사 준비가 되어 있답니다.",
+            "voicelink":null
+        },
+        "hp 경고":{
+            "voiceline":"아직, 할 수 있어…… 아직, 싸울 수 있습니다!",
+            "voicelink":null
+        },
+        "로그인":{
+            "voiceline":"안녕하세요, 지휘관님. 업무 준비, 다 되어 있습니다.",
+            "voicelink":null
+        },
+        "실패":{
+            "voiceline":"죄, 죄송합니다. 제가 발목을 붙잡는 바람에……",
+            "voicelink":null
+        },
+        "우편":{
+            "voiceline":"우편이 도착했습니다. 가져다 드릴까요?",
+            "voicelink":null
+        },
+        "임무":{
+            "voiceline":"오늘의 임무, 확인하시겠어요?",
+            "voicelink":null
+        },
+        "임무완료":{
+            "voiceline":"임무를 완료하셨습니다. 수고하셨어요.",
+            "voicelink":null
+        },
+        "서약":{
+            "voiceline":"이것을……저에게? 하지만…… 아니, 아무것도 아니에요. 이 세계에서 지휘관님을 모실 것을 맹세하겠습니다. 그러니, 이것은……그 증거이군요.",
+            "voicelink":null
+        },
+        "스킬":{
+            "voiceline":"더는…… 도망가지 않겠어요!",
+            "voicelink":null
+        },
+        "터치1":{
+            "voiceline":"지휘관님, 배가 고프신가요? 남은 식재료로 만든 것이라도 괜찮으시다면, 바로 준비해 드릴까요?",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"후에!? ……이, 이런 건…… 안된다고 생각해요! 제대로 부부의 연을 맺은 다음이 아니면……",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"처음 뵙겠습니다…… 루루티에라고 합니다. 사정이 있어 이렇게 신세를 지게 되었습니다. 부, 부족한 몸이지만…… 아무쪼록 잘 부탁드립니다.",
+            "voicelink":null
+        },
+        "강화성공":{
+            "voiceline":"배려, 감사드립니다.",
+            "voicelink":null
+        },
+        "vote":null,
+        "승리":{
+            "voiceline":"제가 일등? 그럴리가…… 어떡하지 코코포, 일등이래!",
+            "voicelink":null
+        },
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":null,
+        "상점 id":0.0,
+        "상점 카테고리 id":0.0,
+        "스킨 태그":"X",
+        "입수 영상":"X",
+        "재화":null,
+        "기간":null,
+        "진영":"UM (utawarerumono)",
+        "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":10300031,
+        "클뜯 함순이 id":1030003,
+        "함순이 이름":"루루티에",
+        "한글 함순이 + 스킨 이름":"루루티에 (칭송받는 자)",
+        "영문 함순이 + 스킨 이름":"루루티에 (칭송받는 자)",
+        "스킨 타입":"Others",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300031\/painting.png",
+        "확대 일러":null,
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300031\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300031\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300031\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300031\/shipyard.png",
+        "설명":"루루티에입니다. 잘 부탁드립니다.",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"친구라니……뭘 하면 좋을지……",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"쉿~ 부탁이야 코코포……조용히 있어줘.",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"좀 더, 생각하는대로 행동했으면 좋았을텐데……그런 후회는 이제 하고싶지 않아요.",
+            "voicelink":null
+        },
+        "전투개시":{
+            "voiceline":"싸우겠습니다……상대가 그 누구라해도, 싸워보이겠습니다.",
+            "voicelink":null
+        },
+        "상세확인":null,
+        "드랍 설명":{
+            "voiceline":"루루티에입니다. 잘 부탁드립니다.",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"많이 기다리셨습니다……",
+            "voicelink":null
+        },
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"이제 누군가를 잃는 것은……싫습니다.",
+            "voicelink":null
+        },
+        "터치3":null,
+        "모항귀환":{
+            "voiceline":"수고하셨어요…차라도 좀 드시죠……",
+            "voicelink":null
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"자, 잘 부탁드립니다……",
+            "voicelink":null
+        },
+        "실패":null,
+        "우편":{
+            "voiceline":"앗, 저기, 여기……",
+            "voicelink":null
+        },
+        "임무":null,
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"혹시 괜찮으시다면……악수를 해주신다면……",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"죄송합니다, 무슨 일 있으신가요?",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"루루티에입니다. 잘 부탁드립니다.",
+            "voicelink":null
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"기타",
+        "상점 id":70122.0,
+        "상점 카테고리 id":9999.0,
+        "스킨 태그":"배경",
+        "입수 영상":"X",
+        "재화":880.0,
+        "기간":"한정 (2018\/12\/12)",
+        "진영":"UM (utawarerumono)",
+        "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":10300040,
+        "클뜯 함순이 id":1030004,
+        "함순이 이름":"우루루",
+        "한글 함순이 + 스킨 이름":"우루루",
+        "영문 함순이 + 스킨 이름":"우루루",
+        "스킨 타입":"Default",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300040\/painting.png",
+        "확대 일러":null,
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300040\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300040\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300040\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300040\/shipyard.png",
+        "설명":"우루루",
+        "자기소개":{
+            "voiceline":"사슬의 무녀, 우루루…… 주인님의 육인형.",
+            "voicelink":null
+        },
+        "메인1":{
+            "voiceline":"주인님 없다……",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"……그녀들 있다.",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"심심.",
+            "voicelink":null
+        },
+        "전투개시":{
+            "voiceline":"온비타이카얀의 가호가 있기를……",
+            "voicelink":null
+        },
+        "상세확인":{
+            "voiceline":"자세히.",
+            "voicelink":null
+        },
+        "드랍 설명":{
+            "voiceline":"우루루",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"돌아왔다.",
+            "voicelink":null
+        },
+        "실망":{
+            "voiceline":"실망했다…… 우리에게는 주인님뿐.",
+            "voicelink":null
+        },
+        "낯섦":{
+            "voiceline":"하인의 소양, 지휘관님을 보살피는 것.",
+            "voicelink":null
+        },
+        "호감":{
+            "voiceline":"좋은 아침부터 \"잘 자\"까지 함께.",
+            "voicelink":null
+        },
+        "기쁨":{
+            "voiceline":"호감도 상승 중.",
+            "voicelink":null
+        },
+        "사랑":{
+            "voiceline":"연모하고 있습니다, 지휘관님.",
+            "voicelink":null
+        },
+        "터치3":{
+            "voiceline":"접촉 금지.",
+            "voicelink":null
+        },
+        "모항귀환":{
+            "voiceline":"어서 와.",
+            "voicelink":null
+        },
+        "hp 경고":{
+            "voiceline":"죽을 수 없어……",
+            "voicelink":null
+        },
+        "로그인":{
+            "voiceline":"안녕.",
+            "voicelink":null
+        },
+        "실패":{
+            "voiceline":"졌다……",
+            "voicelink":null
+        },
+        "우편":{
+            "voiceline":"우편 도착했다.",
+            "voicelink":null
+        },
+        "임무":{
+            "voiceline":"임무 쌓였다.",
+            "voicelink":null
+        },
+        "임무완료":{
+            "voiceline":"임무 끝.",
+            "voicelink":null
+        },
+        "서약":{
+            "voiceline":"맹약의 맹세를 이곳에……",
+            "voicelink":null
+        },
+        "스킬":{
+            "voiceline":"주인님을 위해…… 힘을, 해방합니다.",
+            "voicelink":null
+        },
+        "터치1":{
+            "voiceline":"친구.",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"잠자리 시중을 희망? 그건 안돼.",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"우루루",
+            "voicelink":null
+        },
+        "강화성공":{
+            "voiceline":"강화 성공.",
+            "voicelink":null
+        },
+        "vote":null,
+        "승리":{
+            "voiceline":"이겼다.",
+            "voicelink":null
+        },
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":null,
+        "상점 id":0.0,
+        "상점 카테고리 id":0.0,
+        "스킨 태그":"X",
+        "입수 영상":"X",
+        "재화":null,
+        "기간":null,
+        "진영":"UM (utawarerumono)",
+        "레어도":"SR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":10300041,
+        "클뜯 함순이 id":1030004,
+        "함순이 이름":"우루루",
+        "한글 함순이 + 스킨 이름":"우루루 (칭송받는 자)",
+        "영문 함순이 + 스킨 이름":"우루루 (칭송받는 자)",
+        "스킨 타입":"Others",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300041\/painting.png",
+        "확대 일러":null,
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300041\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300041\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300041\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300041\/shipyard.png",
+        "설명":"우루루. 여기에 맹세의 증표를. 지휘관님께, 영원한 충성을.",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"바다, 푸른 하늘, 총애, 그게 낭만.",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"원하는 대로.",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"반드시, 기대에 부응해 보이겠습니다. 모든 건 주인님을 위해.",
+            "voicelink":null
+        },
+        "전투개시":{
+            "voiceline":"부디, 명령을.",
+            "voicelink":null
+        },
+        "상세확인":null,
+        "드랍 설명":{
+            "voiceline":"우루루. 여기에 맹세의 증표를. 지휘관님께, 영원한 충성을.",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"문제 없어.",
+            "voicelink":null
+        },
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"가득차는 행복함.",
+            "voicelink":null
+        },
+        "터치3":null,
+        "모항귀환":{
+            "voiceline":"수고했어.",
+            "voicelink":null
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"좋은 아침.",
+            "voicelink":null
+        },
+        "실패":null,
+        "우편":{
+            "voiceline":"자.",
+            "voicelink":null
+        },
+        "임무":null,
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"불렀어?",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"이게 바로 주인님의 애…욕.",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"우루루. 여기에 맹세의 증표를. 지휘관님께, 영원한 충성을.",
+            "voicelink":null
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"기타",
+        "상점 id":70120.0,
+        "상점 카테고리 id":9999.0,
+        "스킨 태그":"배경",
+        "입수 영상":"X",
+        "재화":780.0,
+        "기간":"한정 (2018\/12\/12)",
+        "진영":"UM (utawarerumono)",
+        "레어도":"SR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":10300050,
+        "클뜯 함순이 id":1030005,
+        "함순이 이름":"사라나",
+        "한글 함순이 + 스킨 이름":"사라나",
+        "영문 함순이 + 스킨 이름":"사라나",
+        "스킨 타입":"Default",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300050\/painting.png",
+        "확대 일러":null,
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300050\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300050\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300050\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300050\/shipyard.png",
+        "설명":"사슬의 무녀 사라나…… 주인님의 명을 따라 여기 왔습니다. 오늘부터 지휘관님을 섬기겠습니다.",
+        "자기소개":{
+            "voiceline":"사슬의 무녀 사라나입니다. 이 몸은 뼈 하나까지 주인님의 육인형, 주인님을 섬기는 것이 존재 이유…… 하지만, 이 잠깐의 시간 동안만은 지휘관님을 모시도록 하겠습니다.",
+            "voicelink":null
+        },
+        "메인1":{
+            "voiceline":"아무래도 주인님이 없으니 너무 무료하군요. 항상 하인으로서의 업무를 정리한 후에는 주인님께서 이런 일이나 저런 일들을……",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"주인님이 부재중인데도 저 여자들은 여기에 있다니…… 도리에 어긋난다고 생각합니다. 지휘관님, 주인님도 여기에 불러주십시오.",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"처리할 업무는 이제 없는지요? 그렇다면 주인님 곁으로 돌아가겠습니다…… 농담입니다.",
+            "voicelink":null
+        },
+        "전투개시":{
+            "voiceline":"온비타이카얀의 가호가 있기를……",
+            "voicelink":null
+        },
+        "상세확인":{
+            "voiceline":"원하신다면 상세하게 말씀드리겠습니다.",
+            "voicelink":null
+        },
+        "드랍 설명":{
+            "voiceline":"사슬의 무녀 사라나…… 주인님의 명을 따라 여기 왔습니다. 오늘부터 지휘관님을 섬기겠습니다.",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"의뢰를 맡아 떠나셨던 분들이 돌아오셨습니다.",
+            "voicelink":null
+        },
+        "실망":{
+            "voiceline":"역시, 우리가 섬길 사람은 주인님뿐……",
+            "voicelink":null
+        },
+        "낯섦":{
+            "voiceline":"주인님께 봉사하기 위해, 다양한 교양을 익혔습니다. 가사, 세탁, 주술…… 부디 명하여 주십시오.",
+            "voicelink":null
+        },
+        "호감":{
+            "voiceline":"하인된 자로서, 언제 무슨 일이 있어도 곁을 지키도록 하겠습니다. 무엇이든 용무가 있으시면 말씀해주십시오.",
+            "voicelink":null
+        },
+        "기쁨":{
+            "voiceline":"저희에게는 주인님만이 절대적……이지만, 지휘관님의 존재도 또한 저버릴 수 없을 정도로 커져 버렸습니다.",
+            "voicelink":null
+        },
+        "사랑":{
+            "voiceline":"주인님 이외의 남성에게, 이렇게까지 마음이 움직인 된 것은 처음입니다. 잠자리 봉사는 무리지만 곁에서 같이 잠드는 것 정도라면…… 어떻습니까?",
+            "voicelink":null
+        },
+        "터치3":{
+            "voiceline":"죄송합니다. 이 몸, 이 마음, 이 영혼, 그 한 조각까지도 주인님께 바친 몸…… 접촉은 삼가 부탁드립니다.",
+            "voicelink":null
+        },
+        "모항귀환":{
+            "voiceline":"어서 오세요, 지휘관님. 목욕부터 하시겠습니까? 식사부터 하시겠습니까? 그 이상의 봉사는 주인님 한정입니다.",
+            "voicelink":null
+        },
+        "hp 경고":{
+            "voiceline":"주인님의 허가 없이, 쓰러질 수는 없습니다……",
+            "voicelink":null
+        },
+        "로그인":{
+            "voiceline":"기다리고 있었습니다 지휘관님. 오늘도 아무쪼록 지도 부탁드립니다.",
+            "voicelink":null
+        },
+        "실패":{
+            "voiceline":"대단히 죄송합니다. 반드시 만회하도록 하겠습니다.",
+            "voicelink":null
+        },
+        "우편":{
+            "voiceline":"우편이 도착했습니다. 아무쪼록 읽어보시길.",
+            "voicelink":null
+        },
+        "임무":{
+            "voiceline":"임무가 밀려 있습니다. 어떻게 하시겠습니까?",
+            "voicelink":null
+        },
+        "임무완료":{
+            "voiceline":"임무를 완료했습니다. 수고하셨습니다.",
+            "voicelink":null
+        },
+        "서약":{
+            "voiceline":"저희는 주인님을 섬기기 위해 태어났습니다. 하지만 이 시간, 이 세계에서만은 당신에게 충성을 맹세할 것을 여기서 약속드립니다.",
+            "voicelink":null
+        },
+        "스킬":{
+            "voiceline":"주인님을 위해…… 힘을, 해방합니다.",
+            "voicelink":null
+        },
+        "터치1":{
+            "voiceline":"쿠온 일행과의 관계 말씀입니까? 함께 주인님을 섬기는 육인형…… 이라고 해서 혼난 적이 있기에, 일단 친구라고 해두겠습니다.",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"잠자리 봉사는 주인님의 허락이 없으면 할 수 없게 되어있습니다. 정 그렇게 하고 싶으시다면, 주인님께 물어봐 주십시오.",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"사슬의 무녀 사라나…… 주인님의 명을 따라 여기 왔습니다. 오늘부터 지휘관님을 섬기겠습니다.",
+            "voicelink":null
+        },
+        "강화성공":{
+            "voiceline":"신경 써주셔서 감사드립니다.",
+            "voicelink":null
+        },
+        "vote":null,
+        "승리":{
+            "voiceline":"지휘관님을 번거롭게 할 정도는 아니었습니다.",
+            "voicelink":null
+        },
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":null,
+        "상점 id":0.0,
+        "상점 카테고리 id":0.0,
+        "스킨 태그":"X",
+        "입수 영상":"X",
+        "재화":null,
+        "기간":null,
+        "진영":"UM (utawarerumono)",
+        "레어도":"SR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":10300051,
+        "클뜯 함순이 id":1030005,
+        "함순이 이름":"사라나",
+        "한글 함순이 + 스킨 이름":"사라나 (칭송받는 자)",
+        "영문 함순이 + 스킨 이름":"사라나 (칭송받는 자)",
+        "스킨 타입":"Others",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300051\/painting.png",
+        "확대 일러":null,
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300051\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300051\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300051\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300051\/shipyard.png",
+        "설명":"옆은 언니 우루루, 전 사라나라고 합니다. 저희들의 모든 것을 바치는 증표를 여기에. 주인님께, 영원한 충성을.",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"마음으로 모시는 게, 저희의 존재하는 이유입니다.",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"저희가 있을 곳은, 주인님의 곁이니까요.",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"주인님이 상대해주시지 않으면……외로워서 죽어버리고 말 거에요.",
+            "voicelink":null
+        },
+        "전투개시":{
+            "voiceline":"저희가 지켜드리겠습니다.",
+            "voicelink":null
+        },
+        "상세확인":null,
+        "드랍 설명":{
+            "voiceline":"옆은 언니 우루루, 전 사라나라고 합니다. 저희들의 모든 것을 바치는 증표를 여기에. 주인님께, 영원한 충성을.",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"기다리셨습니다, 주인님.",
+            "voicelink":null
+        },
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"저희는 주인님과 일심동체. 언제 어떤 일이 있어도 떨어질 일은 없습니다.",
+            "voicelink":null
+        },
+        "터치3":null,
+        "모항귀환":{
+            "voiceline":"주인님께선 많이 피곤해 보이십니다. 저희에게 맡겨주세요.",
+            "voicelink":null
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"좋은 아침입니다. 일어나실 시간입니다.",
+            "voicelink":null
+        },
+        "실패":null,
+        "우편":{
+            "voiceline":"물자의 확인이 끝났습니다. 술수가 걸려있는 흔적은 없었습니다.",
+            "voicelink":null
+        },
+        "임무":null,
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"사라나, 여기 대령했습니다.",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"바라시는 거라면, 무슨 일이든 받아들이겠습니다. 언제든지 삼가 기다리고 있겠습니다.",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"옆은 언니 우루루, 전 사라나라고 합니다. 저희들의 모든 것을 바치는 증표를 여기에. 주인님께, 영원한 충성을.",
+            "voicelink":null
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"기타",
+        "상점 id":70121.0,
+        "상점 카테고리 id":9999.0,
+        "스킨 태그":"배경",
+        "입수 영상":"X",
+        "재화":780.0,
+        "기간":"한정 (2018\/12\/12)",
+        "진영":"UM (utawarerumono)",
+        "레어도":"SR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":10300060,
+        "클뜯 함순이 id":1030006,
+        "함순이 이름":"후미뤼르",
+        "한글 함순이 + 스킨 이름":"후미뤼르",
+        "영문 함순이 + 스킨 이름":"후미뤼르",
+        "스킨 타입":"Default",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300060\/painting.png",
+        "확대 일러":null,
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300060\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300060\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300060\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300060\/shipyard.png",
+        "설명":"처음 뵙겠습니다, 지휘관님. 전 후미뤼르이라고 합니다. 저기, 여기에 쿠온이 있다는 말을 듣고 왔는데요……있는 거죠?",
+        "자기소개":{
+            "voiceline":"제 이름은 후미뤼르. 투스쿨에서 온 직물 도매상의 외동딸입니다. 쿠온과는 옛날부터 매우 친한 사이로, 쿠온의 언니 역할을 하고 있습니다.",
+            "voicelink":null
+        },
+        "메인1":{
+            "voiceline":"이 서류는 여기에……(출렁출렁) 이 서류는 저기에……(출렁출렁) 어? 왜 그러시죠 지휘관님? 가만히 있었으면 좋겠다고요?",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"저, 이래 보여도 전장에서는 제 역할을 하고 있다고요. 우르토리 어머님들께 단련을 받았거든요…… 이것도 다, 쿠온을 지키기 위해서입니다.",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"어머나, 지휘관님. 졸리시나요? 우후후, 무리하시지 마시고 조금 쉬시는 건 어떠세요?",
+            "voicelink":null
+        },
+        "전투개시":{
+            "voiceline":"조금은 언니다운 모습을 보여줘야……",
+            "voicelink":null
+        },
+        "상세확인":{
+            "voiceline":"저보다는 쿠온에 대해서 이야기하는 것이 어때요?",
+            "voicelink":null
+        },
+        "드랍 설명":{
+            "voiceline":"처음 뵙겠습니다, 지휘관님. 전 후미뤼르이라고 합니다. 저기, 여기에 쿠온이 있다는 말을 듣고 왔는데요……있는 거죠?",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"보내셨던 아이들이 돌아왔어요. 지휘관님, 수고했다고 격려해주셔요.",
+            "voicelink":null
+        },
+        "실망":{
+            "voiceline":"…아, 죄송합니다. 눈치채지 못하고 있었어요.",
+            "voicelink":null
+        },
+        "낯섦":{
+            "voiceline":"쿠온~ 쿠온~? 아아, 지휘관님, 혹시 쿠온 못 보셨나요?",
+            "voicelink":null
+        },
+        "호감":{
+            "voiceline":"투스쿨에서도 베나위님을 도와드렸던 적이 있었지만……일거리가 많아 힘드시겠어요. 제가 도울 수 있는 거라면 말씀해주셔요.",
+            "voicelink":null
+        },
+        "기쁨":{
+            "voiceline":"쿠온이 여기 있는 이상 저도 곁에서 모시고 싶다고, 처음에는 그것뿐이었지만…… 이렇게 오래 있다 보면 역시 정이 들기 마련이네요.",
+            "voicelink":null
+        },
+        "사랑":{
+            "voiceline":"저는 투스쿨의 여자, 위찰네미티아의 무녀. 그리고, 쿠온님을 모시는 자. 두 명의 주군을 섬기는 것은 바람직하지 않다고 생각하지만…… 이 기분은……",
+            "voicelink":null
+        },
+        "터치3":null,
+        "모항귀환":{
+            "voiceline":"어서오세요 지휘관님. 식사와 목욕 준비가 되어 있답니다.",
+            "voicelink":null
+        },
+        "hp 경고":{
+            "voiceline":"아직, 물러나기에는 너무 일러요……!",
+            "voicelink":null
+        },
+        "로그인":{
+            "voiceline":"안녕하세요 지휘관님. 우선은 어떤 일부터 손을 대시겠어요?",
+            "voicelink":null
+        },
+        "실패":{
+            "voiceline":"이런 모습…… 쿠온에게 보일 순 없어요.",
+            "voicelink":null
+        },
+        "우편":{
+            "voiceline":"전서가 와 있답니다. 한 번 살펴보시는 것이 좋지 않을까요?",
+            "voicelink":null
+        },
+        "임무":{
+            "voiceline":"아직 진행하지 않은 일거리가 있는 것 같네요. 어떻게 하시겠어요?",
+            "voicelink":null
+        },
+        "임무완료":{
+            "voiceline":"임무 열심히 하셨네요. 훌륭해요 훌륭해. (쓰담쓰담)",
+            "voicelink":null
+        },
+        "서약":{
+            "voiceline":"저쪽 세계와 이쪽 세계의 이치에는 차이가 있다는 점…… 그것까지 고려하시고 이 맹약을 맺으시려는 것이겠죠? 알겠습니다…… 영원히 섬길 것을 여기 맹세하겠습니다.",
+            "voicelink":null
+        },
+        "스킬":{
+            "voiceline":"위찰네미티아의 이름을 걸고, 당신들을 벌하겠어요.",
+            "voicelink":null
+        },
+        "터치1":{
+            "voiceline":"어머, 제 모습이 뭔가 이상한가요? 그러고 보니… 때때로 '경국지색'이라고 불렸는데, 어떤 의미인가요?",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"아무리 지휘관님이라고 해도, 아무렇지도 않게 여성의 피부를 만지면 안 된답니다? 떽! 이라구요.",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"처음 뵙겠습니다, 지휘관님. 전 후미뤼르이라고 합니다. 저기, 여기에 쿠온이 있다는 말을 듣고 왔는데요……있는 거죠?",
+            "voicelink":null
+        },
+        "강화성공":{
+            "voiceline":"이제 좀 더 제대로 쿠온을 지킬 수 있겠네요.",
+            "voicelink":null
+        },
+        "vote":null,
+        "승리":{
+            "voiceline":"적당히 봐 드리지 못해서…… 죄송해요.",
+            "voicelink":null
+        },
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":null,
+        "상점 id":0.0,
+        "상점 카테고리 id":0.0,
+        "스킨 태그":"X",
+        "입수 영상":"X",
+        "재화":null,
+        "기간":null,
+        "진영":"UM (utawarerumono)",
+        "레어도":"SR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":10300061,
+        "클뜯 함순이 id":1030006,
+        "함순이 이름":"후미뤼르",
+        "한글 함순이 + 스킨 이름":"후미뤼르 (칭송받는 자)",
+        "영문 함순이 + 스킨 이름":"후미뤼르 (칭송받는 자)",
+        "스킨 타입":"Others",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300061\/painting.png",
+        "확대 일러":null,
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300061\/chibi.png",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300061\/icon.png",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300061\/qicon.png",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/missingno\/\/10300061\/shipyard.png",
+        "설명":"저는 후미뤼르라고 합니다. 이번에 이렇게 뵙게 되어, 대단히 영광입니다.",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"네. 쿠온에 관한 거라면 아무리 사사로운 거라 해도 신경써버리게 되네요.",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"부디……부디 저들에게, 온카미 위찰네미티아의 자비가 있기를……",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"어머, 그렇게 염려하지 않으셔도 된답니다, 쿠온을 위해 있는 힘껏, 열심히 할 테니까요.",
+            "voicelink":null
+        },
+        "전투개시":{
+            "voiceline":"그럼, 바로 준비해야겠네요.",
+            "voicelink":null
+        },
+        "상세확인":null,
+        "드랍 설명":{
+            "voiceline":"저는 후미뤼르라고 합니다. 이번에 이렇게 뵙게 되어, 대단히 영광입니다.",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"어머, 마침 좋을 때 오셨네요……",
+            "voicelink":null
+        },
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"이렇게 가득찬 마음……취할 것만 같아요……",
+            "voicelink":null
+        },
+        "터치3":null,
+        "모항귀환":{
+            "voiceline":"흠뻑 더러워졌어요. 돌아가면 세탁하느라 고생 좀 하겠는걸요.",
+            "voicelink":null
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"기다리고 있었습니다. 꽤 시간이 걸리신 것 같네요.",
+            "voicelink":null
+        },
+        "실패":null,
+        "우편":{
+            "voiceline":"별 말씀을요.",
+            "voicelink":null
+        },
+        "임무":null,
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"후후훗, 뭔가 재밌어 보이네요.",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"어머, 저랑……말씀이세요?",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"저는 후미뤼르라고 합니다. 이번에 이렇게 뵙게 되어, 대단히 영광입니다.",
+            "voicelink":null
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인1_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인4_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"기타",
+        "상점 id":70123.0,
+        "상점 카테고리 id":9999.0,
+        "스킨 태그":"배경",
+        "입수 영상":"X",
+        "재화":780.0,
+        "기간":"한정 (2018\/12\/12)",
+        "진영":"UM (utawarerumono)",
+        "레어도":"SR",
         "ex_chat_status":0
     }
 ]
