@@ -64,7 +64,7 @@ def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_u
         with open(ship_drops_file, 'r', encoding='utf-8') as f:
             ship_drops_data = json.load(f)
         ship_drops_map = {
-            details['id']: details.get('timer')
+            details['id']: details
             for _, details in ship_drops_data.items() if 'id' in details
         }
 
@@ -104,18 +104,38 @@ def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_u
             #######################
 
             # --- Add construction-specific fields ---
+            # Get ship_drops data for this ship
+            ship_drop_data = ship_drops_map.get(ship_id, {})
+            
             # Add timer from ship_drops.json
-            ship['timer'] = ship_drops_map.get(ship_id)
+            ship['timer'] = ship_drop_data.get('timer')
 
-            # Parse construction types from description
+            # Parse construction types from description or use ship_drops data
             description_text = "".join(ship.get("description", []))
-            ship['light'] = "소형함 건조" in description_text
-            ship['medium'] = "중형함 건조" in description_text
-            ship['heavy'] = "특형함 건조" in description_text
+            
+            # Use ship_drops data if available, otherwise parse from description
+            if 'light' in ship_drop_data:
+                ship['light'] = ship_drop_data['light']
+            else:
+                ship['light'] = "소형함 건조" in description_text
+            
+            if 'medium' in ship_drop_data:
+                ship['medium'] = ship_drop_data['medium']
+            else:
+                ship['medium'] = "중형함 건조" in description_text
+            
+            if 'heavy' in ship_drop_data:
+                ship['heavy'] = ship_drop_data['heavy']
+            else:
+                ship['heavy'] = "특형함 건조" in description_text
 
             # Check for "limited" status
             is_limited_event = "한정" in description_text
             ship['limited'] = is_limited_event and not (ship['light'] or ship['medium'] or ship['heavy'])
+            
+            # Add map field if it exists and is not empty
+            if 'map' in ship_drop_data and ship_drop_data['map']:
+                ship['map'] = ship_drop_data['map']
 
             # --- PART 4: Advanced 'weapon_true' Check ---
             skill_locations = []

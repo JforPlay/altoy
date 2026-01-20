@@ -1487,7 +1487,7 @@
         "skin_id": 101080,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101080/shipyard.png",
         "timer": "00:25:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -6282,10 +6282,10 @@
         "skin_id": 101430,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/101430/shipyard.png",
         "timer": "00:28:00",
-        "light": true,
+        "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 444,
@@ -8349,7 +8349,7 @@
         "timer": "01:05:00",
         "light": true,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -8514,7 +8514,7 @@
         "timer": "01:05:00",
         "light": true,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -15755,7 +15755,7 @@
         "timer": "02:30:00",
         "light": false,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -16281,7 +16281,7 @@
         "timer": "01:56:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -16637,7 +16637,7 @@
         "timer": "02:00:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -16980,7 +16980,7 @@
         "timer": "02:00:00",
         "light": false,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -17820,7 +17820,7 @@
         "timer": "04:00:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -18002,7 +18002,7 @@
         "timer": "04:00:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -18151,7 +18151,7 @@
         "timer": "04:10:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -18313,7 +18313,7 @@
         "timer": "04:10:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -18461,7 +18461,7 @@
         "timer": "04:20:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -18609,7 +18609,7 @@
         "timer": "04:20:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -20624,7 +20624,7 @@
         "timer": "02:15:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -20823,7 +20823,7 @@
         "timer": "02:20:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -21160,7 +21160,7 @@
         "timer": "02:00:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -21316,7 +21316,7 @@
         "timer": "03:40:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -21519,7 +21519,7 @@
         "timer": "03:40:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -21701,7 +21701,7 @@
         "timer": "02:40:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -21870,7 +21870,7 @@
         "timer": "04:20:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -22018,7 +22018,7 @@
         "timer": "04:20:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -22174,7 +22174,7 @@
         "timer": "04:20:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -22560,7 +22560,7 @@
         "timer": "04:25:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -22893,8 +22893,8 @@
         "timer": "04:25:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 572,
@@ -23056,7 +23056,7 @@
         "timer": "04:25:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -23373,8 +23373,8 @@
         "timer": "04:25:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 715,
@@ -26042,8 +26042,8 @@
         "timer": "00:25:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 519,
@@ -26214,8 +26214,8 @@
         "timer": "00:23:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 620,
@@ -26727,9 +26727,9 @@
         "skin_id": 112010,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/112010/shipyard.png",
         "timer": "02:00:00",
-        "light": false,
+        "light": true,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -33782,7 +33782,7 @@
         "timer": "01:15:00",
         "light": true,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -37555,7 +37555,7 @@
         "skin_id": 202240,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202240/shipyard.png",
         "timer": null,
-        "light": true,
+        "light": false,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -38069,10 +38069,10 @@
         "skin_id": 202270,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202270/shipyard.png",
         "timer": "00:55:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 476,
@@ -40777,7 +40777,7 @@
         "timer": "01:30:00",
         "light": false,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -40994,7 +40994,7 @@
         "timer": "01:45:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -41377,7 +41377,7 @@
         "timer": "01:30:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -41867,7 +41867,7 @@
         "timer": "04:10:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -42015,7 +42015,7 @@
         "timer": "04:10:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -42176,7 +42176,7 @@
         "timer": "05:50:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -42330,8 +42330,8 @@
         "timer": "04:10:00",
         "light": false,
         "medium": false,
-        "heavy": false,
-        "limited": true
+        "heavy": true,
+        "limited": false
     },
     {
         "id": 130,
@@ -42478,7 +42478,7 @@
         "timer": "04:10:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -42711,7 +42711,7 @@
         "timer": "04:10:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -42927,7 +42927,7 @@
         "timer": "04:40:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -43712,8 +43712,8 @@
         "timer": "04:50:00",
         "light": false,
         "medium": false,
-        "heavy": false,
-        "limited": true
+        "heavy": true,
+        "limited": false
     },
     {
         "id": 464,
@@ -43866,8 +43866,8 @@
         "timer": "04:10:00",
         "light": false,
         "medium": false,
-        "heavy": false,
-        "limited": true
+        "heavy": true,
+        "limited": false
     },
     {
         "id": 554,
@@ -44021,7 +44021,7 @@
         "timer": "04:10:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -44683,7 +44683,7 @@
         "timer": "02:10:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -45053,7 +45053,7 @@
         "timer": "02:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -45220,7 +45220,7 @@
         "timer": "03:00:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -45388,8 +45388,8 @@
         "timer": "02:20:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 462,
@@ -45713,7 +45713,7 @@
         "timer": "03:00:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -45876,8 +45876,8 @@
         "timer": "02:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 143,
@@ -46222,7 +46222,7 @@
         "timer": "04:00:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -46383,7 +46383,7 @@
         "timer": "04:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -46551,7 +46551,7 @@
         "timer": "04:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -46896,7 +46896,7 @@
         "timer": "03:50:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -47530,8 +47530,8 @@
         "timer": "04:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 589,
@@ -47994,7 +47994,7 @@
         "timer": "01:00:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -48142,7 +48142,7 @@
         "timer": "01:00:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -48288,7 +48288,7 @@
         "timer": "01:05:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -51581,7 +51581,7 @@
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301160/shipyard.png",
         "timer": "00:27:00",
-        "light": true,
+        "light": false,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -52011,7 +52011,7 @@
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301180/shipyard.png",
         "timer": null,
-        "light": true,
+        "light": false,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -55806,7 +55806,7 @@
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301490/shipyard.png",
         "timer": "00:25:00",
-        "light": true,
+        "light": false,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -57537,7 +57537,7 @@
         "skin_id": 301640,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301640/shipyard.png",
         "timer": "00:28:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -58200,10 +58200,10 @@
         "skin_id": 301790,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301790/shipyard.png",
         "timer": "00:20:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 370,
@@ -59623,10 +59623,10 @@
         "skin_id": 301880,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301880/shipyard.png",
         "timer": "00:29:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 607,
@@ -62071,7 +62071,7 @@
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302100/shipyard.png",
         "timer": "01:48:00",
-        "light": true,
+        "light": false,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -62243,7 +62243,7 @@
         "skin_id": 302110,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302110/shipyard.png",
         "timer": "01:48:00",
-        "light": true,
+        "light": false,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -63340,10 +63340,10 @@
         "skin_id": 302230,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302230/shipyard.png",
         "timer": "01:20:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 635,
@@ -64590,7 +64590,7 @@
         "timer": "01:30:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -64753,7 +64753,7 @@
         "timer": "01:30:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -64925,7 +64925,7 @@
         "timer": "02:05:00",
         "light": false,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -65635,8 +65635,8 @@
         "timer": "01:55:00",
         "light": false,
         "medium": false,
-        "heavy": false,
-        "limited": true
+        "heavy": true,
+        "limited": false
     },
     {
         "id": 200,
@@ -66538,7 +66538,7 @@
         "timer": "01:48:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -67346,7 +67346,7 @@
         "timer": "04:10:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -67640,7 +67640,7 @@
         "timer": "04:10:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -67961,7 +67961,7 @@
         "timer": "04:05:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -68116,8 +68116,8 @@
         "timer": "04:25:00",
         "light": false,
         "medium": false,
-        "heavy": false,
-        "limited": true
+        "heavy": true,
+        "limited": false
     },
     {
         "id": 636,
@@ -68901,7 +68901,7 @@
         "timer": "04:25:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -69117,7 +69117,7 @@
         "timer": "04:25:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -69900,8 +69900,8 @@
         "timer": "05:15:00",
         "light": false,
         "medium": false,
-        "heavy": false,
-        "limited": true
+        "heavy": true,
+        "limited": false
     },
     {
         "id": 320,
@@ -70212,7 +70212,7 @@
         "timer": "04:20:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -71948,8 +71948,8 @@
         "timer": "02:15:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 471,
@@ -72108,8 +72108,8 @@
         "timer": "02:15:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 224,
@@ -73290,8 +73290,8 @@
         "timer": "04:45:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 231,
@@ -73609,7 +73609,7 @@
         "timer": "04:35:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -74083,7 +74083,7 @@
         "timer": "04:20:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -74899,7 +74899,7 @@
         "timer": "00:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -75070,7 +75070,7 @@
         "timer": "00:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -75246,7 +75246,7 @@
         "timer": "00:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -75417,7 +75417,7 @@
         "timer": "00:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -75588,7 +75588,7 @@
         "timer": "00:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -75759,7 +75759,7 @@
         "timer": "00:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -75935,7 +75935,7 @@
         "skin_id": 312010,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/312010/shipyard.png",
         "timer": "01:35:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -76110,7 +76110,7 @@
         "timer": "00:34:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -76453,8 +76453,8 @@
         "timer": "01:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 20003,
@@ -81961,7 +81961,7 @@
         "timer": "01:10:00",
         "light": true,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -82173,7 +82173,7 @@
         "timer": "01:10:00",
         "light": true,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -82437,7 +82437,7 @@
         "timer": "01:10:00",
         "light": true,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -82645,9 +82645,9 @@
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402040/shipyard.png",
         "timer": "01:20:00",
-        "light": false,
+        "light": true,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -82816,10 +82816,10 @@
         "skin_id": 402050,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402050/shipyard.png",
         "timer": "01:20:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 525,
@@ -84386,7 +84386,7 @@
         "timer": "01:55:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -85079,8 +85079,8 @@
         "timer": "02:05:00",
         "light": false,
         "medium": false,
-        "heavy": false,
-        "limited": true
+        "heavy": true,
+        "limited": false
     },
     {
         "id": 527,
@@ -85251,7 +85251,7 @@
         "timer": "02:05:00",
         "light": false,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -85423,7 +85423,7 @@
         "timer": "01:55:00",
         "light": false,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -86764,7 +86764,7 @@
         "timer": "04:35:00",
         "light": false,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -86928,7 +86928,7 @@
         "timer": "04:35:00",
         "light": false,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -88703,7 +88703,7 @@
         "timer": "02:20:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -89025,7 +89025,7 @@
         "timer": "04:35:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -89181,7 +89181,7 @@
         "timer": "04:30:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -89703,7 +89703,7 @@
         "timer": "00:12:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -89888,7 +89888,7 @@
         "timer": "00:11:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -90612,7 +90612,7 @@
         "timer": "00:12:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -90783,7 +90783,7 @@
         "timer": "00:11:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -94824,10 +94824,10 @@
         "skin_id": 501030,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501030/shipyard.png",
         "timer": "00:32:00",
-        "light": true,
+        "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 256,
@@ -95789,7 +95789,7 @@
         "skin_id": 501080,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501080/shipyard.png",
         "timer": "00:33:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -97692,7 +97692,7 @@
         "skin_id": 502100,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502100/shipyard.png",
         "timer": "00:40:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -97863,7 +97863,7 @@
         "skin_id": 503010,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503010/shipyard.png",
         "timer": "01:30:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -98020,7 +98020,7 @@
         "timer": "04:10:00",
         "light": false,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -98234,8 +98234,8 @@
         "timer": "02:00:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 579,
@@ -100027,10 +100027,10 @@
         "skin_id": 601080,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601080/shipyard.png",
         "timer": "00:32:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 563,
@@ -100912,10 +100912,10 @@
         "skin_id": 602020,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602020/shipyard.png",
         "timer": "01:26:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 681,
@@ -101778,8 +101778,8 @@
         "timer": "01:54:00",
         "light": false,
         "medium": false,
-        "heavy": false,
-        "limited": true
+        "heavy": true,
+        "limited": false
     },
     {
         "id": 560,
@@ -101949,8 +101949,8 @@
         "timer": "01:54:00",
         "light": false,
         "medium": false,
-        "heavy": false,
-        "limited": true
+        "heavy": true,
+        "limited": false
     },
     {
         "id": 597,
@@ -102282,8 +102282,8 @@
         "timer": "05:15:00",
         "light": false,
         "medium": false,
-        "heavy": false,
-        "limited": true
+        "heavy": true,
+        "limited": false
     },
     {
         "id": 410,
@@ -102612,8 +102612,8 @@
         "timer": "05:15:00",
         "light": false,
         "medium": false,
-        "heavy": false,
-        "limited": true
+        "heavy": true,
+        "limited": false
     },
     {
         "id": 411,
@@ -103428,8 +103428,8 @@
         "timer": "04:35:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 540,
@@ -103583,8 +103583,8 @@
         "timer": "05:15:00",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 503,
@@ -107559,10 +107559,10 @@
         "skin_id": 702050,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702050/shipyard.png",
         "timer": "01:26:00",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 498,
@@ -108257,7 +108257,7 @@
         "timer": "02:00:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -108921,7 +108921,7 @@
         "timer": "06:23:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -109089,7 +109089,7 @@
         "timer": "06:23:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -109244,7 +109244,7 @@
         "timer": "04:10:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -109869,8 +109869,8 @@
         "timer": "04:47:53",
         "light": false,
         "medium": false,
-        "heavy": true,
-        "limited": false
+        "heavy": false,
+        "limited": true
     },
     {
         "id": 539,
@@ -113639,7 +113639,7 @@
         "timer": "05:50:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -114611,7 +114611,7 @@
         "timer": "00:35:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -117873,7 +117873,7 @@
         "timer": "01:45:00",
         "light": false,
         "medium": false,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -118058,7 +118058,7 @@
         "timer": "01:55:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -118404,7 +118404,7 @@
         "timer": "04:05:00",
         "light": false,
         "medium": true,
-        "heavy": false,
+        "heavy": true,
         "limited": false
     },
     {
@@ -119204,7 +119204,7 @@
         "timer": "04:35:00",
         "light": false,
         "medium": false,
-        "heavy": true,
+        "heavy": false,
         "limited": false
     },
     {
@@ -120460,8 +120460,8 @@
         "timer": "04:26:21",
         "light": false,
         "medium": false,
-        "heavy": false,
-        "limited": true
+        "heavy": true,
+        "limited": false
     },
     {
         "id": 610,
@@ -120641,10 +120641,10 @@
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600030/shipyard.png",
         "timer": "01:26:18",
-        "light": false,
+        "light": true,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 611,
