@@ -43,7 +43,6 @@ head: <link rel="stylesheet" href="css/shipgirl/shipgirl-info.css">
                 <select id="nationalityFilter">
                     <option value="">모든 진영</option>
                 </select>
-                <!-- Construction filter disabled - data removed from ship_info_data.json
                 <select id="constructionFilter">
                     <option value="all">모든 건조</option>
                     <option value="light">소형 건조</option>
@@ -51,7 +50,6 @@ head: <link rel="stylesheet" href="css/shipgirl/shipgirl-info.css">
                     <option value="heavy">특형 건조</option>
                     <option value="limited">한정 건조</option>
                 </select>
-                -->
                 <div class="view-toggle">
                     <button class="view-toggle-btn active" id="gridViewBtn" title="그리드 보기">
                         ⊞
@@ -83,7 +81,8 @@ head: <link rel="stylesheet" href="css/shipgirl/shipgirl-info.css">
                                 • 이름 검색: 함순이 이름으로 검색할 수 있습니다<br>
                                 • 등급: N, R, SR, SSR, UR 등급으로 필터링<br>
                                 • 함종: 구축함, 경순양함, 중순양함 등으로 필터링<br>
-                                • 진영: 각 진영별로 필터링
+                                • 진영: 각 진영별로 필터링<br>
+                                • 건조: 소형/중형/특형/한정 건조로 필터링
                             </p>
                         </div>
                     </div>
@@ -117,6 +116,29 @@ head: <link rel="stylesheet" href="css/shipgirl/shipgirl-info.css">
 
     <!-- Loading indicator -->
     <div id="loading" class="loading">로딩 중...</div>
+
+    <!-- Maps Modal -->
+    <div id="mapsModal" class="maps-modal" style="display: none;">
+        <div class="maps-modal-content">
+            <div class="maps-modal-header">
+                <h2 id="mapsModalTitle">드랍 지역</h2>
+                <button class="maps-modal-close" id="closeMapsModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="maps-modal-body">
+                <div class="maps-search-container">
+                    <input type="text" id="mapsSearchInput" placeholder="지역 검색 (e.g., 13-3, 13지, 16-2)...">
+                    <button id="clearMapsSearch" class="clear-search-btn" style="display: none;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="mapsContent" class="maps-content">
+                    <!-- Maps will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="js/shipgirl/shipgirl-info.js"></script>
