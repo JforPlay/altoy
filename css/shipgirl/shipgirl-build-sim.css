@@ -80,8 +80,14 @@ body {
 /* Pool Selector */
 .pool-selector {
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 1.5rem;
     margin-bottom: 2rem;
+}
+
+.pool-group {
+    display: flex;
+    gap: 1rem;
     flex-wrap: wrap;
 }
 
@@ -1277,7 +1283,7 @@ section h3 {
         padding: 1.5rem 1rem;
     }
 
-    .pool-selector {
+    .pool-group {
         flex-direction: column;
     }
 

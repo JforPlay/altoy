@@ -1,0 +1,66 @@
+{
+    "banners": [
+        {
+            "build_id": 4,
+            "build_name": "기간 한정",
+            "banner_type": 2,
+            "shipgirls": {
+                "1150001": {
+                    "name": "야토가미 토카",
+                    "rarity": "SSR",
+                    "nationality": 115,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500010/shipyard.png"
+                },
+                "1150002": {
+                    "name": "토비이치 오리가미",
+                    "rarity": "SSR",
+                    "nationality": 115,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500020/shipyard.png"
+                },
+                "1150003": {
+                    "name": "이츠카 코토리",
+                    "rarity": "SSR",
+                    "nationality": 115,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500030/shipyard.png"
+                },
+                "1150006": {
+                    "name": "야마이 카구야·야마이 유즈루",
+                    "rarity": "SSR",
+                    "nationality": 115,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500060/shipyard.png"
+                }
+            }
+        },
+        {
+            "build_id": 10,
+            "build_name": "기간 한정",
+            "banner_type": 2,
+            "shipgirls": {
+                "10716": {
+                    "name": "렉싱턴Ⅱ",
+                    "rarity": "UR",
+                    "nationality": 1,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107160/shipyard.png"
+                },
+                "10725": {
+                    "name": "카우펜스",
+                    "rarity": "SSR",
+                    "nationality": 1,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107250/shipyard.png"
+                },
+                "970209": {
+                    "name": "클리블랜드·META",
+                    "rarity": "SSR",
+                    "nationality": 97,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702090/shipyard.png"
+                },
+                "10235": {
+                    "name": "패서디나",
+                    "rarity": "SR",
+                    "nationality": 1,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102350/shipyard.png"
+                }
+            }
+        }
+    ]
+}

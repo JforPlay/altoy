@@ -110,10 +110,56 @@
         };
     });
 
+    // Get pool probability dynamically (supports pickup pools)
+    function getPoolProbability(poolId) {
+        // Check if already calculated
+        if (POOL_PROBABILITIES[poolId]) {
+            return POOL_PROBABILITIES[poolId];
+        }
+
+        // For pickup pools, get base pool probabilities
+        if (poolId.startsWith('pickup-')) {
+            const pickupConfig = state.pickupData[poolId];
+            if (pickupConfig) {
+                const basePoolId = pickupConfig.basePool;
+                return POOL_PROBABILITIES[basePoolId];
+            }
+        }
+
+        // Default fallback
+        return POOL_PROBABILITIES['3'];
+    }
+
+    // Get build cost dynamically (supports pickup pools)
+    function getBuildCost(poolId) {
+        // Check if already defined
+        if (BUILD_COSTS[poolId]) {
+            return BUILD_COSTS[poolId];
+        }
+
+        // For pickup pools, get base pool costs
+        if (poolId.startsWith('pickup-')) {
+            const pickupConfig = state.pickupData[poolId];
+            if (pickupConfig) {
+                const basePoolId = pickupConfig.basePool;
+                return BUILD_COSTS[basePoolId];
+            }
+        }
+
+        // Default fallback to heavy
+        return BUILD_COSTS['3'];
+    }
+
     // Initialize
     async function init() {
         await loadData();
+        renderPoolButtons(); // Render dynamic pool buttons after data is loaded
         setupEventListeners();
+        
+        // Set default pool - use the first pickup pool if available
+        const firstPickupPool = Object.keys(state.pickupData || {})[0] || 'pickup-4';
+        state.currentPool = firstPickupPool;
+        
         updateProbabilityChart();
         updateShipSelect();
         renderShipGrid();
@@ -128,11 +174,15 @@
             state.poolData = JSON.parse(JSON.stringify(data));
             state.originalPoolData = JSON.parse(JSON.stringify(data));
 
-            // Load pickup pools
-            state.pickupData = await fetchJSON('data/shipgirl/ship_build_sim_pickup_data.json');
+            // Load limited build shipgirls data
+            const limitedBuildData = await fetchJSON('data/shipgirl/limited_build_shipgirls.json');
+            state.pickupData = parsePickupDataFromLimitedBuilds(limitedBuildData);
 
-            // Initialize custom ships
-            state.customShips = { '1': [], '2': [], '3': [], 'pickup': [] };
+            // Initialize custom ships for all pools including pickup pools
+            state.customShips = { '1': [], '2': [], '3': [] };
+            Object.keys(state.pickupData).forEach(poolId => {
+                state.customShips[poolId] = [];
+            });
 
             // Initialize despair pools (empty until user selects ships)
             state.poolData['despair-1'] = {};
@@ -142,8 +192,8 @@
             state.originalPoolData['despair-2'] = {};
             state.originalPoolData['despair-3'] = {};
 
-            // Build pickup pool
-            buildPickupPool();
+            // Build all pickup pools
+            buildAllPickupPools();
 
             console.log('Build data loaded successfully');
         } catch (error) {
@@ -151,20 +201,72 @@
         }
     }
 
-    // Build pickup pool from base pool + pickup ships
-    function buildPickupPool() {
+    // Parse pickup data from limited_build_shipgirls.json
+    function parsePickupDataFromLimitedBuilds(limitedBuildData) {
+        const pickupData = {};
+
+        if (!limitedBuildData.banners) return pickupData;
+
+        limitedBuildData.banners.forEach(banner => {
+            const buildId = banner.build_id;
+            const bannerType = banner.banner_type;
+            const shipgirls = banner.shipgirls;
+
+            // Use banner_type directly as the base pool
+            const basePool = String(bannerType);
+
+            // Parse shipgirls and extract pickup rates from rate_tip if needed
+            const ships = {};
+            Object.entries(shipgirls).forEach(([shipId, shipData]) => {
+                // For now, use standard pickup rates based on rarity
+                // UR: 1.2%, SSR: 2.0%, SR: 2.5%
+                let pickupRate;
+                if (shipData.rarity === 'UR') {
+                    pickupRate = 1.2;
+                } else if (shipData.rarity === 'SSR') {
+                    pickupRate = 2.0;
+                } else if (shipData.rarity === 'SR') {
+                    pickupRate = 2.5;
+                } else {
+                    pickupRate = 2.0; // default
+                }
+
+                ships[shipData.name] = {
+                    name: shipData.name,
+                    rarity: shipData.rarity,
+                    icon: shipData.icon,
+                    pickupRate: pickupRate,
+                    shipId: shipId
+                };
+            });
+
+            if (Object.keys(ships).length > 0) {
+                pickupData[`pickup-${buildId}`] = {
+                    basePool: basePool,
+                    poolId: buildId,
+                    buildName: banner.build_name,
+                    ships: ships
+                };
+            }
+        });
+
+        return pickupData;
+    }
+
+    // Build all pickup pools from parsed data
+    function buildAllPickupPools() {
         if (!state.pickupData) return;
 
-        // Get the first pickup pool (currently only one in the data)
-        const pickupPoolKeys = Object.keys(state.pickupData);
-        if (pickupPoolKeys.length === 0) return;
+        Object.entries(state.pickupData).forEach(([pickupPoolId, poolConfig]) => {
+            buildPickupPool(pickupPoolId, poolConfig.basePool, poolConfig.ships);
+        });
+    }
 
-        const basePoolId = pickupPoolKeys[0]; // "3" for Heavy
-        const pickupShips = state.pickupData[basePoolId];
-
+    // Build a single pickup pool from base pool + pickup ships
+    function buildPickupPool(pickupPoolId, basePoolId, pickupShips) {
         // Start with base pool
-        state.poolData['pickup'] = JSON.parse(JSON.stringify(state.originalPoolData[basePoolId]));
-        state.originalPoolData['pickup'] = JSON.parse(JSON.stringify(state.originalPoolData[basePoolId]));
+        state.poolData[pickupPoolId] = JSON.parse(JSON.stringify(state.originalPoolData[basePoolId]));
+        state.originalPoolData[pickupPoolId] = JSON.parse(JSON.stringify(state.originalPoolData[basePoolId]));
 
         // Group pickup ships by rarity
         const pickupByRarity = {};
@@ -178,47 +280,162 @@
         // Calculate probabilities
         Object.keys(pickupByRarity).forEach(rarity => {
             const rarityPickupShips = pickupByRarity[rarity];
-            const totalPickupRate = rarityPickupShips.reduce((sum, ship) => sum + ship.pickup, 0);
-            const baseRarityProb = POOL_PROBABILITIES[basePoolId][rarity];
 
             if (rarity === 'UR') {
                 // UR: Pickup UR gets all the UR chance, remove all other URs
-                const existingURs = Object.keys(state.poolData['pickup']).filter(id => {
-                    const ship = state.poolData['pickup'][id];
+                const existingURs = Object.keys(state.poolData[pickupPoolId]).filter(id => {
+                    const ship = state.poolData[pickupPoolId][id];
                     return ship.rarity === 'UR';
                 });
 
                 // Remove all existing URs from pool
                 existingURs.forEach(id => {
-                    delete state.poolData['pickup'][id];
+                    delete state.poolData[pickupPoolId][id];
                 });
 
                 // Add pickup UR with full UR probability
                 rarityPickupShips.forEach(ship => {
-                    const shipId = ship.name; // Use name as ID for pickup ships
-                    state.poolData['pickup'][shipId] = {
+                    // Use shipId from the data if available, otherwise find by name
+                    const shipId = ship.shipId || ship.name;
+                    
+                    state.poolData[pickupPoolId][shipId] = {
                         name: ship.name,
                         rarity: ship.rarity,
-                        icon: ship.icon,
+                        icon: ship.icon || 'assets/img/default-ship.png',
                         isPickup: true,
-                        pickupRate: ship.pickup
+                        pickupRate: ship.pickupRate
                     };
                 });
             } else {
-                // SSR/SR: Add pickup ships with exact probability
-                // Remaining ships in that rarity share the reduced pool
+                // SSR/SR: Add pickup ships with exact probability or mark existing as pickup
                 rarityPickupShips.forEach(ship => {
-                    const shipId = ship.name;
-                    state.poolData['pickup'][shipId] = {
-                        name: ship.name,
-                        rarity: ship.rarity,
-                        icon: ship.icon,
-                        isPickup: true,
-                        pickupRate: ship.pickup
-                    };
+                    // Try to find existing ship by name first
+                    const foundShip = findShipInPoolByName(basePoolId, ship.name);
+                    
+                    if (foundShip) {
+                        // Mark existing ship as pickup
+                        state.poolData[pickupPoolId][foundShip.id].isPickup = true;
+                        state.poolData[pickupPoolId][foundShip.id].pickupRate = ship.pickupRate;
+                        // Update icon if provided in pickup data
+                        if (ship.icon) {
+                            state.poolData[pickupPoolId][foundShip.id].icon = ship.icon;
+                        }
+                    } else {
+                        // Add new ship with provided data
+                        const shipId = ship.shipId || ship.name;
+                        state.poolData[pickupPoolId][shipId] = {
+                            name: ship.name,
+                            rarity: ship.rarity,
+                            icon: ship.icon || 'assets/img/default-ship.png',
+                            isPickup: true,
+                            pickupRate: ship.pickupRate
+                        };
+                    }
                 });
             }
         });
+    }
+
+    // Find ship in pool data by name
+    function findShipInPoolByName(poolId, shipName) {
+        if (!state.originalPoolData[poolId]) return null;
+        
+        for (const [id, ship] of Object.entries(state.originalPoolData[poolId])) {
+            if (ship.name === shipName) {
+                return { id, ...ship };
+            }
+        }
+        return null;
+    }
+
+    // Helper to get ship icon from ship database
+    function getShipIcon(shipName) {
+        // Try to find ship in the main ship database when loaded
+        if (state.shipDatabase) {
+            const ship = Object.values(state.shipDatabase).find(s => s.name === shipName);
+            if (ship && ship.icon) return ship.icon;
+        }
+        
+        // Fallback to default
+        return 'assets/img/default-ship.png';
+    }
+
+    // Render pool buttons dynamically
+    function renderPoolButtons() {
+        const poolSelector = document.querySelector('.pool-selector');
+        poolSelector.innerHTML = ''; // Clear existing buttons
+
+        // Create groups
+        const standardGroup = document.createElement('div');
+        standardGroup.className = 'pool-group';
+        
+        const limitedGroup = document.createElement('div');
+        limitedGroup.className = 'pool-group';
+        
+        const despairGroup = document.createElement('div');
+        despairGroup.className = 'pool-group';
+
+        // Static pool buttons (standard)
+        const staticPools = [
+            { pool: '1', icon: '💧', name: '소형함 건조' },
+            { pool: '2', icon: '⚓', name: '중형함 건조' },
+            { pool: '3', icon: '🔱', name: '특형함 건조' }
+        ];
+
+        staticPools.forEach(({ pool, icon, name }) => {
+            const btn = createPoolButton(pool, icon, name, false);
+            standardGroup.appendChild(btn);
+        });
+
+        // Pickup pool buttons (dynamically from data)
+        if (state.pickupData) {
+            Object.entries(state.pickupData).forEach(([pickupPoolId, poolConfig]) => {
+                const poolIdNumber = poolConfig.poolId;
+                const btn = createPoolButton(pickupPoolId, '⭐', `한정 건조 #${poolIdNumber}`, false);
+                limitedGroup.appendChild(btn);
+            });
+        }
+
+        // Despair pool buttons
+        const despairPools = [
+            { pool: 'despair-1', basePool: '1', icon: '⚡', name: '절망 건조 - 소형함' },
+            { pool: 'despair-2', basePool: '2', icon: '⚡', name: '절망 건조 - 중형함' },
+            { pool: 'despair-3', basePool: '3', icon: '⚡', name: '절망 건조 - 특형함' }
+        ];
+
+        despairPools.forEach(({ pool, basePool, icon, name }) => {
+            const btn = createPoolButton(pool, icon, name, false, basePool);
+            despairGroup.appendChild(btn);
+        });
+
+        // Append groups to pool selector
+        poolSelector.appendChild(standardGroup);
+        poolSelector.appendChild(limitedGroup);
+        poolSelector.appendChild(despairGroup);
+
+        // Activate first pickup pool by default
+        const firstPickupPool = Object.keys(state.pickupData || {})[0];
+        if (firstPickupPool) {
+            const firstBtn = poolSelector.querySelector(`[data-pool="${firstPickupPool}"]`);
+            if (firstBtn) firstBtn.classList.add('active');
+        }
+    }
+
+    // Create a pool button element
+    function createPoolButton(pool, icon, name, isPickup = false, basePool = null) {
+        const btn = document.createElement('button');
+        btn.className = 'pool-btn';
+        btn.dataset.pool = pool;
+        
+        if (isPickup) btn.dataset.isPickup = 'true';
+        if (basePool) btn.dataset.basePool = basePool;
+
+        btn.innerHTML = `
+            <span class="pool-icon">${icon}</span>
+            <span class="pool-name">${name}</span>
+        `;
+
+        return btn;
     }
 
     // Despair Pool Functions
@@ -543,7 +760,7 @@
 
     // Get effective probabilities for current pool (considering despair pool pickups)
     function getEffectiveProbabilities(poolId) {
-        const baseProbs = POOL_PROBABILITIES[poolId];
+        const baseProbs = getPoolProbability(poolId);
 
         // For despair pools, calculate actual probabilities based on selected ships
         if (poolId.startsWith('despair-') && state.despairSelections[poolId]) {
@@ -1232,7 +1449,7 @@
             const totalPickupRate = rarityCustomShips.reduce((sum, s) => sum + s.pickupRate, 0);
 
             // Get base rarity probability
-            const baseRarityProb = POOL_PROBABILITIES[poolId][rarity];
+            const baseRarityProb = getPoolProbability(poolId)[rarity];
 
             if (totalPickupRate >= baseRarityProb) {
                 alert(`경고: ${rarity} 등급의 픽업 확률 합계(${totalPickupRate}%)가 해당 등급 전체 확률(${baseRarityProb}%)을 초과합니다. 다른 함선의 확률이 0이 됩니다.`);
