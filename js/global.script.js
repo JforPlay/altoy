@@ -50,6 +50,7 @@ const LINKS = {
     SKIN_LIST: 'pages/skin/skin-list-viewer.html',
     SKIN_POLL: 'pages/skin/skin-poll.html',
     SKIN_SD: 'pages/skin/skin-sd-viewer.html',
+    SKIN_EXPRESSION: 'pages/skin/expression-viewer.html',
 
     // Chat & Social
     JUUSTAGRAM: 'pages/juustagram.html',
