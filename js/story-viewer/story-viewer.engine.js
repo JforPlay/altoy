@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         storylineSummaryData: {}, // Only used by world viewer
         shipgirlData: {},
         shipgirlNameMap: {},
+        expressionManifest: {}, // Painting/expression data for characters
         currentEventId: null,
         currentMemoryId: null,
         currentStoryScript: [],
@@ -94,11 +95,15 @@ document.addEventListener('DOMContentLoaded', () => {
             volumeSlider: document.getElementById('volume-slider'),
             bgmNameSpan: document.getElementById('bgm-name'),
             progressIndicator: document.getElementById('progress-indicator'),
+            paintingLayer: document.getElementById('painting-layer'),
             // Cached elements (populated on first access)
             storyBackground: null,
             playPauseIcon: null,
             muteIcon: null,
         },
+
+        // Painting state
+        activePaintings: new Map(), // Track active paintings by actor ID
 
         // =========================================================================
         // INITIALIZATION
@@ -134,6 +139,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             for (const id in this.shipgirlData) {
                 this.shipgirlNameMap[this.shipgirlData[id].name] = id;
+            }
+
+            // Load expression manifest for painting/expression data
+            try {
+                const expressionRes = await fetch('data/skin/expression_manifest.json');
+                if (expressionRes.ok) {
+                    this.expressionManifest = await expressionRes.json();
+                }
+            } catch (e) {
+                console.warn('Could not load expression manifest:', e);
             }
         },
 
@@ -532,6 +547,9 @@ document.addEventListener('DOMContentLoaded', () => {
             this.activeOptionFlag = null;
             this.lastOptionIndex = -1;
 
+            // Clear any existing paintings from previous story
+            this.clearPaintings();
+
 
             // Reset caches for new story
             this.cachedBackground = {
@@ -643,6 +661,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (line.stopbgm) { this.handleBgm(null); }
             else if (line.bgm) { this.handleBgm(line.bgm); }
 
+            // Handle painting rendering
+            if (line.actor !== undefined || line.actorName !== undefined) {
+                this.renderPainting(line);
+            }
+
             const hasSequenceContent = this.renderSequenceContent(line);
 
             if (hasSequenceContent) {
@@ -667,8 +690,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (actorInfo.id !== this.lastActorId) {
                     el.actorName.textContent = displayedName;
-                    el.actorPortrait.innerHTML = actorInfo.icon ? `<img src="${actorInfo.icon}" alt="${actorInfo.name}">` : '';
-                    el.actorPortrait.classList.toggle('hidden', !actorInfo.icon);
+
+                    // Use expression portrait only for numeric actor IDs
+                    let portraitIcon = actorInfo.icon;
+                    if (typeof line.actor === 'number' && line.actor > 0) {
+                        const expressionData = this.getExpressionData(line.actor);
+                        if (expressionData) {
+                            const expression = line.expression !== undefined ? String(line.expression) : '0';
+                            portraitIcon = expressionData.faceUrlTemplate.replace('{faceId}', expression);
+                        }
+                    }
+
+                    if (portraitIcon) {
+                        const img = document.createElement('img');
+                        img.src = portraitIcon;
+                        img.alt = actorInfo.name;
+                        // Fallback to default icon if expression portrait fails
+                        img.onerror = () => {
+                            if (actorInfo.icon && img.src !== actorInfo.icon) {
+                                img.src = actorInfo.icon;
+                            } else {
+                                el.actorPortrait.classList.add('hidden');
+                            }
+                        };
+                        el.actorPortrait.innerHTML = '';
+                        el.actorPortrait.appendChild(img);
+                        el.actorPortrait.classList.remove('hidden');
+                    } else {
+                        el.actorPortrait.innerHTML = '';
+                        el.actorPortrait.classList.add('hidden');
+                    }
                 }
 
                 // Apply nameColor if specified
@@ -970,6 +1021,236 @@ document.addEventListener('DOMContentLoaded', () => {
                 backgroundElement.style.backgroundColor = 'transparent';
                 backgroundElement.style.backgroundImage = backgroundImageUrl || 'none';
             }
+        },
+
+        // =========================================================================
+        // PAINTING & EXPRESSION RENDERING
+        // =========================================================================
+
+        /**
+         * Get expression data for a character ID
+         * Checks both regular painting and painting_n (zoomed) variants
+         */
+        getExpressionData(actorId) {
+            if (!actorId || !this.expressionManifest) return null;
+
+            const idStr = String(actorId);
+
+            // First try painting_n (zoomed version, used in story mode)
+            const paintingN = this.expressionManifest[`${idStr}_n`];
+            if (paintingN) {
+                return {
+                    ...paintingN,
+                    type: 'painting_n',
+                    baseUrl: `${this.BASE_URL}output_expressions/${idStr}/painting_n.png`,
+                    faceUrlTemplate: `${this.BASE_URL}output_expressions/${idStr}/painting_n_face_{faceId}.png`
+                };
+            }
+
+            // Fall back to regular painting
+            const painting = this.expressionManifest[idStr];
+            if (painting) {
+                return {
+                    ...painting,
+                    type: 'painting',
+                    baseUrl: `${this.BASE_URL}output_expressions/${idStr}/painting.png`,
+                    faceUrlTemplate: `${this.BASE_URL}output_expressions/${idStr}/painting_face_{faceId}.png`
+                };
+            }
+
+            return null;
+        },
+
+        /**
+         * Render a character painting with expression overlay
+         */
+        renderPainting(line) {
+            if (!this.elements.paintingLayer) return;
+
+            // Get actor ID - must be numeric for painting
+            let actorId = line.actor;
+            if (typeof actorId !== 'number') {
+                // Try to parse actorName as number
+                if (line.actorName && !isNaN(parseInt(line.actorName, 10))) {
+                    actorId = parseInt(line.actorName, 10);
+                } else {
+                    // No valid actor - clear all paintings
+                    this.clearPaintings();
+                    return;
+                }
+            }
+
+            const expressionData = this.getExpressionData(actorId);
+            if (!expressionData) {
+                // No expression data - clear all paintings
+                this.clearPaintings();
+                return;
+            }
+
+            // Check if this painting is already displayed (same speaker continues)
+            const existingPainting = this.activePaintings.get(actorId);
+            if (existingPainting) {
+                const expression = line.expression !== undefined ? String(line.expression) : '0';
+                const hasNoise = line.paintingNoise === true;
+
+                // Update expression if changed
+                if (existingPainting.expression !== expression) {
+                    this.updatePaintingExpression(existingPainting.element, expressionData, expression);
+                    existingPainting.expression = expression;
+                }
+                // Update noise effect
+                existingPainting.element.classList.toggle('painting-noise', hasNoise);
+                // Ensure it's active
+                existingPainting.element.classList.remove('inactive');
+                existingPainting.element.classList.add('active');
+                return; // Keep existing painting, don't re-render
+            }
+
+            // Different speaker - clear existing paintings first
+            this.clearPaintings();
+
+            const side = line.side !== undefined ? line.side : 2; // Default to center
+            const dir = line.dir !== undefined ? line.dir : 1; // Default to facing right
+            const expression = line.expression !== undefined ? String(line.expression) : '0';
+            const hasNoise = line.paintingNoise === true;
+            const paintingAlpha = line.painting?.alpha !== undefined ? line.painting.alpha : 1;
+
+            // Create new painting container
+            const container = document.createElement('div');
+            container.className = 'painting-container';
+            container.dataset.side = side;
+            container.dataset.dir = dir;
+            container.dataset.actorId = actorId;
+
+            if (hasNoise) container.classList.add('painting-noise');
+
+            // Handle fade-in animation
+            const fadeTime = line.painting?.time;
+            if (fadeTime && fadeTime > 0) {
+                container.style.opacity = '0';
+                container.style.transition = `opacity ${fadeTime}s ease-in`;
+                // Trigger fade-in after next frame
+                requestAnimationFrame(() => {
+                    container.style.opacity = paintingAlpha < 1 ? paintingAlpha : '1';
+                });
+            } else if (paintingAlpha < 1) {
+                container.style.opacity = paintingAlpha;
+            }
+
+            // Create image wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = 'painting-image-wrapper';
+
+            // Create base image
+            const baseImg = document.createElement('img');
+            baseImg.className = 'painting-base';
+            baseImg.src = expressionData.baseUrl;
+            baseImg.alt = '';
+            baseImg.loading = 'eager';
+
+            wrapper.appendChild(baseImg);
+
+            // Create face overlay if expression data has face info
+            if (expressionData.faces && expressionData.faces.length > 0) {
+                const faceImg = document.createElement('img');
+                faceImg.className = 'painting-face-overlay';
+
+                // Use the requested expression directly (story script knows which faces exist)
+                const faceId = expression;
+                const defaultFaceId = expressionData.faces[0] || '0';
+                faceImg.src = expressionData.faceUrlTemplate.replace('{faceId}', faceId);
+                faceImg.alt = '';
+                faceImg.loading = 'eager';
+
+                // Fallback to default face if requested expression fails
+                faceImg.onerror = () => {
+                    const defaultSrc = expressionData.faceUrlTemplate.replace('{faceId}', defaultFaceId);
+                    if (faceImg.src !== defaultSrc) {
+                        faceImg.src = defaultSrc;
+                    } else {
+                        // Default face also failed, hide overlay
+                        faceImg.style.display = 'none';
+                    }
+                };
+
+                // Apply face positioning after base image loads
+                baseImg.onload = () => {
+                    this.applyFaceOverlayPosition(faceImg, expressionData, baseImg);
+                };
+
+                wrapper.appendChild(faceImg);
+            }
+
+            container.appendChild(wrapper);
+            container.classList.add('active');
+
+            // Add to layer
+            this.elements.paintingLayer.appendChild(container);
+
+            // Track this painting
+            this.activePaintings.set(actorId, {
+                element: container,
+                expression: expression,
+                side: side
+            });
+        },
+
+        /**
+         * Apply face overlay positioning based on expression data
+         */
+        applyFaceOverlayPosition(faceImg, expressionData, baseImg) {
+            if (!expressionData.box || !expressionData.size) return;
+
+            const [x, y, w, h] = expressionData.box;
+            const [imgW, imgH] = expressionData.size;
+
+            // Calculate the scaling factor based on rendered image size
+            const renderedWidth = baseImg.offsetWidth;
+            const renderedHeight = baseImg.offsetHeight;
+            const scaleX = renderedWidth / imgW;
+            const scaleY = renderedHeight / imgH;
+
+            faceImg.style.left = `${x * scaleX}px`;
+            faceImg.style.top = `${y * scaleY}px`;
+            faceImg.style.width = `${w * scaleX}px`;
+            faceImg.style.height = `${h * scaleY}px`;
+        },
+
+        /**
+         * Update expression on existing painting
+         */
+        updatePaintingExpression(container, expressionData, newExpression) {
+            const faceImg = container.querySelector('.painting-face-overlay');
+            if (!faceImg) return;
+
+            // Show face overlay (in case it was hidden due to previous error)
+            faceImg.style.display = '';
+
+            // Use the requested expression directly
+            const newSrc = expressionData.faceUrlTemplate.replace('{faceId}', newExpression);
+            const defaultFaceId = expressionData.faces?.[0] || '0';
+            const defaultSrc = expressionData.faceUrlTemplate.replace('{faceId}', defaultFaceId);
+
+            faceImg.src = newSrc;
+
+            // Fallback to default face if requested expression fails
+            faceImg.onerror = () => {
+                if (faceImg.src !== defaultSrc) {
+                    faceImg.src = defaultSrc;
+                } else {
+                    faceImg.style.display = 'none';
+                }
+            };
+        },
+
+        /**
+         * Clear all paintings (called when starting new story)
+         */
+        clearPaintings() {
+            if (this.elements.paintingLayer) {
+                this.elements.paintingLayer.innerHTML = '';
+            }
+            this.activePaintings.clear();
         },
 
         // to determine if there is any non-option flag ahead that can be displayed
