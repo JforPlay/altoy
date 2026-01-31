@@ -7165,5 +7165,17 @@
         "일": "28",
         "group_id": "10235",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102350/icon.png"
+    },
+    {
+        "ID": "723",
+        "룽섭 이름": "후지나미",
+        "레어도": "SSR",
+        "함종": "구축",
+        "진영": "중앵",
+        "연": "1943",
+        "월": "4",
+        "일": "20",
+        "group_id": "30194",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301940/icon.png"
     }
 ]
