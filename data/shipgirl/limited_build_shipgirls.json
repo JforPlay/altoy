@@ -36,29 +36,29 @@
             "build_name": "기간 한정",
             "banner_type": 2,
             "shipgirls": {
-                "10716": {
-                    "name": "렉싱턴Ⅱ",
+                "11802": {
+                    "name": "괌",
                     "rarity": "UR",
                     "nationality": 1,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107160/shipyard.png"
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/118020/shipyard.png"
                 },
-                "10725": {
-                    "name": "카우펜스",
+                "10401": {
+                    "name": "컨스텔레이션",
                     "rarity": "SSR",
                     "nationality": 1,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107250/shipyard.png"
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/104010/shipyard.png"
                 },
-                "970209": {
-                    "name": "클리블랜드·META",
+                "10808": {
+                    "name": "플래셔",
                     "rarity": "SSR",
-                    "nationality": 97,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702090/shipyard.png"
+                    "nationality": 1,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108080/shipyard.png"
                 },
-                "10235": {
-                    "name": "패서디나",
+                "10730": {
+                    "name": "샌 재신토",
                     "rarity": "SR",
                     "nationality": 1,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/102350/shipyard.png"
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107300/shipyard.png"
                 }
             }
         }
