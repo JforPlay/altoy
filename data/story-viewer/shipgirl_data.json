@@ -4123,6 +4123,10 @@
         "name": "닌자 타에카제의 급강하 수련!",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301921/icon.png"
     },
+    "301940": {
+        "name": "{namecode:310}",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301940/icon.png"
+    },
     "302010": {
         "name": "유바리",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302010/icon.png"
@@ -9289,6 +9293,14 @@
     },
     "900535": {
         "name": "마리아",
+        "icon": null
+    },
+    "900536": {
+        "name": "马可波罗 王座",
+        "icon": null
+    },
+    "900538": {
+        "name": "아비터·채리엇·Ⅶ",
         "icon": null
     },
     "901010": {

@@ -18585,6 +18585,215 @@
             ]
         }
     },
+    "151970": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "후지나미",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301940/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/151970.png",
+        "skill_id": 151970,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183031
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183051
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 151974
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183040
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183060
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 151974
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
+    "30571": {
+        "requirement": "Limit Break 1",
+        "weapon_true": true,
+        "name": "후지나미",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301940/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/30570.png",
+        "skill_id": 30571,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170931
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170933
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170931
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170933
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30572": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "후지나미",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301940/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/30570.png",
+        "skill_id": 30572,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170932
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170934
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170932
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170934
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
     "22161": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
@@ -35391,9 +35600,9 @@
     "25041": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "에마누엘레 페사노",
+        "name": null,
         "position": "전열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601090/shipyard.png",
+        "shipyard": null,
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
         "skill_id": 25041,
         "aniEffect": {
@@ -35436,9 +35645,9 @@
     "25042": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "에마누엘레 페사노",
+        "name": null,
         "position": "전열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601090/shipyard.png",
+        "shipyard": null,
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
         "skill_id": 25042,
         "aniEffect": {
@@ -36341,9 +36550,9 @@
     "28271": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "바르톨로메오 콜레오니",
+        "name": null,
         "position": "전열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602030/shipyard.png",
+        "shipyard": null,
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
         "skill_id": 28271,
         "aniEffect": {
@@ -36386,9 +36595,9 @@
     "28272": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "바르톨로메오 콜레오니",
+        "name": null,
         "position": "전열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602030/shipyard.png",
+        "shipyard": null,
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
         "skill_id": 28272,
         "aniEffect": {
