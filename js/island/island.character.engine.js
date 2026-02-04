@@ -495,7 +495,7 @@ window.CharacterModule = (function () {
             }
         }
 
-        return Math.round(value);
+        return Math.floor(value);
     }
 
     /**
