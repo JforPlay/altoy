@@ -7848,6 +7848,130 @@
             ]
         }
     },
+    "1019160": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/19160.png",
+        "name": "조지아",
+        "weapon_true": true,
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199020/shipyard.png",
+        "skill_id": 1019160,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 1019163
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 68121
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 68121
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 1.2,
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 68141
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 183101
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 1019163
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 68130
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 68130
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 1.2,
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 68150
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 183110
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
     "19450": {
         "requirement": "Default",
         "weapon_true": true,
@@ -34515,9 +34639,9 @@
     "28241": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "하이롱",
+        "name": null,
         "position": "전열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502100/shipyard.png",
+        "shipyard": null,
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
         "skill_id": 28241,
         "aniEffect": {
@@ -34560,9 +34684,9 @@
     "28242": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "하이롱",
+        "name": null,
         "position": "전열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502100/shipyard.png",
+        "shipyard": null,
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
         "skill_id": 28242,
         "aniEffect": {
@@ -35600,9 +35724,9 @@
     "25041": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": null,
+        "name": "우골리노 비발디",
         "position": "전열",
-        "shipyard": null,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601120/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
         "skill_id": 25041,
         "aniEffect": {
@@ -35645,9 +35769,9 @@
     "25042": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": null,
+        "name": "우골리노 비발디",
         "position": "전열",
-        "shipyard": null,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601120/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
         "skill_id": 25042,
         "aniEffect": {
@@ -36213,6 +36337,67 @@
             ]
         }
     },
+    "152030": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "우골리노 비발디",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601120/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/152030.png",
+        "skill_id": 152030,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183141
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183151
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183150
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183160
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
     "29701": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
@@ -36550,9 +36735,9 @@
     "28271": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": null,
+        "name": "알베르토 디 주사노",
         "position": "전열",
-        "shipyard": null,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
         "skill_id": 28271,
         "aniEffect": {
@@ -36595,9 +36780,9 @@
     "28272": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": null,
+        "name": "알베르토 디 주사노",
         "position": "전열",
-        "shipyard": null,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602040/shipyard.png",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
         "skill_id": 28272,
         "aniEffect": {
@@ -36648,6 +36833,49 @@
                     "arg_list": {
                         "emitter": "BattleBulletEmitter",
                         "weapon_id": 75113
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "152040": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "알베르토 디 주사노",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602040/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/152040.png",
+        "skill_id": 152040,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183161
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183170
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",
@@ -37669,6 +37897,177 @@
                     "targetAniEffect": "",
                     "target_choise": "TargetHarmRandomByWeight",
                     "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "152000": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "프란체스코 카라치올로",
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605090/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/152000.png",
+        "skill_id": 152000,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183111
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183121
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSameToLastEffect",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183120
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183130
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSameToLastEffect",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "152010": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "attached_weapon_skill_id": [
+            {
+                "id": 152011
+            }
+        ],
+        "name": "프란체스코 카라치올로",
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605090/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/152010.png",
+        "skill_id": 152010,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 152011
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetSelf"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183131
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmNearest",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "maxHPRatio": 0.01
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillHeal"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152012
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetSelf"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 152011
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetSelf"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183140
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmNearest",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "maxHPRatio": 0.05
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillHeal"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 152012
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetSelf"
+                    ],
+                    "type": "BattleSkillAddBuff"
                 }
             ]
         }
@@ -49944,6 +50343,131 @@
                     "casterAniEffect": "",
                     "targetAniEffect": "",
                     "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "802071": {
+        "requirement": "Limit Break 1",
+        "weapon_true": true,
+        "name": "카라비니에레·META",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701110/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/802070.png",
+        "skill_id": 802071,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170951
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170951
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "802072": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "카라비니에레·META",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701110/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/802070.png",
+        "skill_id": 802072,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170952
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170952
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "802050": {
+        "requirement": "Default",
+        "weapon_true": true,
+        "name": "카라비니에레·META",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701110/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/802050.png",
+        "skill_id": 802050,
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183211
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183220
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
                     "type": "BattleSkillFire"
                 }
             ]

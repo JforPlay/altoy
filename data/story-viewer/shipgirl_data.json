@@ -1263,6 +1263,10 @@
         "name": "금란 단자",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105201/icon.png"
     },
+    "105202": {
+        "name": "모든 것은 오직 당신에게만",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105202/icon.png"
+    },
     "106010": {
         "name": "롱 아일랜드",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/106010/icon.png"
@@ -3695,6 +3699,10 @@
         "name": "덜렁거리는 달토끼",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301294/icon.png"
     },
+    "301295": {
+        "name": "토끼토끼는 움직이지 않아",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301295/icon.png"
+    },
     "301300": {
         "name": "카미카제",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301300/icon.png"
@@ -4127,6 +4135,10 @@
         "name": "{namecode:310}",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301940/icon.png"
     },
+    "301941": {
+        "name": "당신만을 위한 시크릿 코디",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301941/icon.png"
+    },
     "302010": {
         "name": "유바리",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302010/icon.png"
@@ -4446,6 +4458,10 @@
     "303116": {
         "name": "파마함술 -신호-",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303116/icon.png"
+    },
+    "303117": {
+        "name": "무인의 「심법」 소양",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303117/icon.png"
     },
     "303118": {
         "name": "신호의 풍화",
@@ -5627,6 +5643,10 @@
         "name": "어린이 필터",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401471/icon.png"
     },
+    "401472": {
+        "name": "타자★홈런",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401472/icon.png"
+    },
     "401520": {
         "name": "Z52",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/401520/icon.png"
@@ -6755,6 +6775,10 @@
         "name": "오늘 밤만을 위한 치장",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503012/icon.png"
     },
+    "503013": {
+        "name": "밤샘으로 완성한 명품",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503013/icon.png"
+    },
     "504010": {
         "name": "환창",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/504010/icon.png"
@@ -6915,6 +6939,14 @@
         "name": "포엣 스태빌리티",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601111/icon.png"
     },
+    "601120": {
+        "name": "우골리노 비발디",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601120/icon.png"
+    },
+    "601121": {
+        "name": "서프라이즈 고져스 프라이즈!",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601121/icon.png"
+    },
     "602010": {
         "name": "두카 델리 아브루치",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602010/icon.png"
@@ -6938,6 +6970,14 @@
     "602031": {
         "name": "여제의 연애 공략",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602031/icon.png"
+    },
+    "602040": {
+        "name": "알베르토 디 주사노",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602040/icon.png"
+    },
+    "602041": {
+        "name": "화려한 해프닝",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602041/icon.png"
     },
     "603010": {
         "name": "트렌토 ",
@@ -7078,6 +7118,14 @@
     "605081": {
         "name": "사랑과 미의 비밀 소장품",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605081/icon.png"
+    },
+    "605090": {
+        "name": "프란체스코 카라치올로",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605090/icon.png"
+    },
+    "605091": {
+        "name": "스포트라이트 속의 자백",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605091/icon.png"
     },
     "607010": {
         "name": "아퀼라",
@@ -9766,6 +9814,10 @@
     "9701100": {
         "name": "듀이·META",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701100/icon.png"
+    },
+    "9701110": {
+        "name": "카라비니에레·META",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701110/icon.png"
     },
     "9702010": {
         "name": "헬레나·META",

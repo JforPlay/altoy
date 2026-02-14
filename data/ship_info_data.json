@@ -32254,6 +32254,19 @@
             180005
         ],
         "skin_id": 199020,
+        "sp_weapon": {
+            "icon": "15020",
+            "name": "조지아 빔!",
+            "skill_upgrade": [
+                [
+                    0,
+                    1019160
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "hit",
+            "weapon_true": true
+        },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/199020/shipyard.png",
         "timer": null,
         "light": false,
@@ -39203,7 +39216,8 @@
             }
         },
         "description": [
-            "한정 이벤트: 잿빛 폐허"
+            "이벤트: 잿빛 폐허",
+            "연습 상점(랜덤 출현)"
         ],
         "name": "히어로",
         "gift_dislike": [
@@ -39216,7 +39230,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 630,
@@ -45626,7 +45640,8 @@
             }
         },
         "description": [
-            "한정 이벤트: 잿빛 폐허"
+            "이벤트: 잿빛 폐허",
+            "소형함 건조"
         ],
         "name": "스킬라",
         "gift_dislike": [
@@ -45639,7 +45654,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 631,
@@ -51349,7 +51364,8 @@
             }
         },
         "description": [
-            "한정 이벤트: 잿빛 폐허"
+            "이벤트: 잿빛 폐허",
+            "대형함 건조"
         ],
         "name": "로열 오크",
         "gift_dislike": [
@@ -51362,7 +51378,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 138,
@@ -52063,7 +52079,8 @@
             }
         },
         "description": [
-            "한정 이벤트: 잿빛 폐허"
+            "이벤트: 잿빛 폐허",
+            "특형함 건조"
         ],
         "name": "아거스",
         "gift_dislike": [
@@ -52076,7 +52093,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 142,
@@ -54341,7 +54358,9 @@
             }
         },
         "description": [
-            "한정 이벤트: 잿빛 폐허"
+            "이벤트: 잿빛 폐허",
+            "대형함 건조, 특형함 건조",
+            "상설 UR 함선 교환"
         ],
         "name": "임플래커블",
         "gift_dislike": [
@@ -54354,7 +54373,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 459,
@@ -57030,6 +57049,19 @@
             180006
         ],
         "skin_id": 301020,
+        "sp_weapon": {
+            "icon": "15040",
+            "name": "하얀 눈덩이 토끼",
+            "skill_upgrade": [
+                [
+                    0,
+                    1014660
+                ]
+            ],
+            "attribute_1": "torpedo",
+            "attribute_2": "dodge",
+            "weapon_true": false
+        },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301020/shipyard.png",
         "timer": "00:23:00",
         "light": false,
@@ -105955,6 +105987,31 @@
         "type": 2,
         "rarity": "SR",
         "armor": 2,
+        "retrofit": {
+            "id": 502044,
+            "level": 85,
+            "bonus": {
+                "health": 210,
+                "reload": 5,
+                "equipment_proficiency_1": 0.15,
+                "firepower": 55,
+                "equipment_proficiency_3": 0.05,
+                "antiair": 15,
+                "evasion": 35
+            },
+            "skill": 49312,
+            "skin": 502049,
+            "armor": 2,
+            "hexagon": [
+                "B",
+                "C",
+                "E",
+                "B",
+                "B",
+                "C"
+            ],
+            "weapon_true": false
+        },
         "base": {
             "502041": {
                 "health": 426,
@@ -106100,6 +106157,14 @@
                 "downgrade": 24131,
                 "requirement": "Limit Break 3",
                 "weapon_true": true
+            },
+            "49312": {
+                "id": 49312,
+                "parent": 49312,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Retrofit",
+                "weapon_true": false
             }
         },
         "description": [
@@ -106141,6 +106206,31 @@
         "type": 2,
         "rarity": "SR",
         "armor": 2,
+        "retrofit": {
+            "id": 502054,
+            "level": 85,
+            "bonus": {
+                "health": 210,
+                "reload": 5,
+                "equipment_proficiency_1": 0.15,
+                "firepower": 55,
+                "equipment_proficiency_3": 0.05,
+                "antiair": 15,
+                "evasion": 35
+            },
+            "skill": 49412,
+            "skin": 502059,
+            "armor": 2,
+            "hexagon": [
+                "B",
+                "C",
+                "E",
+                "B",
+                "B",
+                "C"
+            ],
+            "weapon_true": false
+        },
         "base": {
             "502051": {
                 "health": 442,
@@ -106286,6 +106376,14 @@
                 "downgrade": 24131,
                 "requirement": "Limit Break 3",
                 "weapon_true": true
+            },
+            "49412": {
+                "id": 49412,
+                "parent": 49412,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Retrofit",
+                "weapon_true": false
             }
         },
         "description": [
@@ -107005,6 +107103,167 @@
         "limited": false
     },
     {
+        "id": 726,
+        "gid": 50212,
+        "sid": 502121,
+        "nationality": 5,
+        "type": 2,
+        "rarity": "SR",
+        "armor": 2,
+        "base": {
+            "502121": {
+                "health": 513,
+                "firepower": 17,
+                "torpedo": 47,
+                "antiair": 29,
+                "aviation": 0,
+                "reload": 57,
+                "accuracy": 54,
+                "evasion": 25,
+                "speed": 20.75,
+                "luck": 45,
+                "asw": 18
+            },
+            "502122": {
+                "health": 638,
+                "firepower": 21,
+                "torpedo": 59,
+                "antiair": 36,
+                "aviation": 0,
+                "reload": 57,
+                "accuracy": 54,
+                "evasion": 25,
+                "speed": 20.75,
+                "luck": 45,
+                "asw": 23
+            },
+            "502123": {
+                "health": 888,
+                "firepower": 29,
+                "torpedo": 82,
+                "antiair": 50,
+                "aviation": 0,
+                "reload": 57,
+                "accuracy": 54,
+                "evasion": 25,
+                "speed": 20.75,
+                "luck": 45,
+                "asw": 32
+            },
+            "502124": {
+                "health": 1263,
+                "firepower": 42,
+                "torpedo": 116,
+                "antiair": 72,
+                "aviation": 0,
+                "reload": 57,
+                "accuracy": 54,
+                "evasion": 25,
+                "speed": 20.75,
+                "luck": 45,
+                "asw": 45
+            }
+        },
+        "growth": {
+            "502121": {
+                "health": 12716,
+                "firepower": 233,
+                "torpedo": 643,
+                "antiair": 638,
+                "aviation": 0,
+                "reload": 400,
+                "accuracy": 793,
+                "evasion": 451,
+                "speed": 0,
+                "luck": 0,
+                "asw": 226
+            },
+            "502122": {
+                "health": 12716,
+                "firepower": 233,
+                "torpedo": 643,
+                "antiair": 638,
+                "aviation": 0,
+                "reload": 400,
+                "accuracy": 793,
+                "evasion": 451,
+                "speed": 0,
+                "luck": 0,
+                "asw": 226
+            },
+            "502123": {
+                "health": 12716,
+                "firepower": 233,
+                "torpedo": 643,
+                "antiair": 638,
+                "aviation": 0,
+                "reload": 400,
+                "accuracy": 793,
+                "evasion": 451,
+                "speed": 0,
+                "luck": 0,
+                "asw": 226
+            },
+            "502124": {
+                "health": 12716,
+                "firepower": 233,
+                "torpedo": 643,
+                "antiair": 638,
+                "aviation": 0,
+                "reload": 400,
+                "accuracy": 793,
+                "evasion": 451,
+                "speed": 0,
+                "luck": 0,
+                "asw": 226
+            }
+        },
+        "enhance": {
+            "firepower": 17,
+            "torpedo": 46,
+            "reload": 43
+        },
+        "skill": {
+            "151980": {
+                "id": 151980,
+                "parent": 151980,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "151990": {
+                "id": 151990,
+                "parent": 151990,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "28241": {
+                "id": 28241,
+                "parent": 28241,
+                "upgrade": 28242,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": true
+            },
+            "28242": {
+                "id": 28242,
+                "parent": 28241,
+                "upgrade": null,
+                "downgrade": 28241,
+                "requirement": "Limit Break 3",
+                "weapon_true": true
+            }
+        },
+        "timer": null,
+        "light": false,
+        "medium": false,
+        "heavy": false,
+        "limited": false
+    },
+    {
         "id": 674,
         "gid": 50301,
         "sid": 503011,
@@ -107171,6 +107430,167 @@
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503010/shipyard.png",
         "timer": "01:30:00",
         "light": true,
+        "medium": false,
+        "heavy": false,
+        "limited": false
+    },
+    {
+        "id": 725,
+        "gid": 50302,
+        "sid": 503021,
+        "nationality": 5,
+        "type": 3,
+        "rarity": "SSR",
+        "armor": 2,
+        "base": {
+            "503021": {
+                "health": 835,
+                "firepower": 35,
+                "torpedo": 56,
+                "antiair": 47,
+                "aviation": 0,
+                "reload": 68,
+                "accuracy": 55,
+                "evasion": 23,
+                "speed": 22.4,
+                "luck": 54,
+                "asw": 0
+            },
+            "503022": {
+                "health": 1039,
+                "firepower": 44,
+                "torpedo": 70,
+                "antiair": 59,
+                "aviation": 0,
+                "reload": 68,
+                "accuracy": 55,
+                "evasion": 23,
+                "speed": 22.4,
+                "luck": 54,
+                "asw": 0
+            },
+            "503023": {
+                "health": 1446,
+                "firepower": 61,
+                "torpedo": 97,
+                "antiair": 82,
+                "aviation": 0,
+                "reload": 68,
+                "accuracy": 55,
+                "evasion": 23,
+                "speed": 22.4,
+                "luck": 54,
+                "asw": 0
+            },
+            "503024": {
+                "health": 2057,
+                "firepower": 87,
+                "torpedo": 139,
+                "antiair": 116,
+                "aviation": 0,
+                "reload": 68,
+                "accuracy": 55,
+                "evasion": 23,
+                "speed": 22.4,
+                "luck": 54,
+                "asw": 0
+            }
+        },
+        "growth": {
+            "503021": {
+                "health": 20713,
+                "firepower": 485,
+                "torpedo": 747,
+                "antiair": 1027,
+                "aviation": 0,
+                "reload": 470,
+                "accuracy": 816,
+                "evasion": 413,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "503022": {
+                "health": 20713,
+                "firepower": 485,
+                "torpedo": 747,
+                "antiair": 1027,
+                "aviation": 0,
+                "reload": 470,
+                "accuracy": 816,
+                "evasion": 413,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "503023": {
+                "health": 20713,
+                "firepower": 485,
+                "torpedo": 747,
+                "antiair": 1027,
+                "aviation": 0,
+                "reload": 470,
+                "accuracy": 816,
+                "evasion": 413,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "503024": {
+                "health": 20713,
+                "firepower": 485,
+                "torpedo": 747,
+                "antiair": 1027,
+                "aviation": 0,
+                "reload": 470,
+                "accuracy": 816,
+                "evasion": 413,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            }
+        },
+        "enhance": {
+            "firepower": 35,
+            "torpedo": 55,
+            "reload": 50
+        },
+        "skill": {
+            "152080": {
+                "id": 152080,
+                "parent": 152080,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "152090": {
+                "id": 152090,
+                "parent": 152090,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "250221": {
+                "id": 250221,
+                "parent": 250221,
+                "upgrade": 250222,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": false
+            },
+            "250222": {
+                "id": 250222,
+                "parent": 250221,
+                "upgrade": null,
+                "downgrade": 250221,
+                "requirement": "Limit Break 3",
+                "weapon_true": false
+            }
+        },
+        "timer": null,
+        "light": false,
         "medium": false,
         "heavy": false,
         "limited": false
@@ -109988,7 +110408,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "25041": {
                 "id": 25041,
@@ -110007,6 +110427,16 @@
                 "weapon_true": true
             }
         },
+        "description": [
+            "이벤트: 명암과 패션, 촬영 진행 중! "
+        ],
+        "name": "우골리노 비발디",
+        "gift_dislike": [
+            180004,
+            180007
+        ],
+        "skin_id": 601120,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601120/shipyard.png",
         "timer": null,
         "light": false,
         "medium": false,
@@ -110684,7 +111114,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "152050": {
                 "id": 152050,
@@ -110711,6 +111141,16 @@
                 "weapon_true": true
             }
         },
+        "description": [
+            "이벤트: 명암과 패션, 촬영 진행 중! "
+        ],
+        "name": "알베르토 디 주사노",
+        "gift_dislike": [
+            180009,
+            180004
+        ],
+        "skin_id": 602040,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602040/shipyard.png",
         "timer": null,
         "light": false,
         "medium": false,
@@ -113024,7 +113464,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "152010": {
                 "id": 152010,
@@ -113032,9 +113472,24 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 152011
+                    }
+                ]
             }
         },
+        "description": [
+            "이벤트: 명암과 패션, 촬영 진행 중! "
+        ],
+        "name": "프란체스코 카라치올로",
+        "gift_dislike": [
+            180009,
+            180005
+        ],
+        "skin_id": 605090,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605090/shipyard.png",
         "timer": null,
         "light": false,
         "medium": false,
@@ -134670,7 +135125,7 @@
                 "upgrade": 802072,
                 "downgrade": null,
                 "requirement": "Limit Break 1",
-                "weapon_true": false
+                "weapon_true": true
             },
             "802072": {
                 "id": 802072,
@@ -134678,7 +135133,7 @@
                 "upgrade": null,
                 "downgrade": 802071,
                 "requirement": "Limit Break 3",
-                "weapon_true": false
+                "weapon_true": true
             },
             "802050": {
                 "id": 802050,
@@ -134686,7 +135141,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "802060": {
                 "id": 802060,
@@ -134697,6 +135152,16 @@
                 "weapon_true": false
             }
         },
+        "description": [
+            "META 연구실·정보 동기화"
+        ],
+        "name": "카라비니에레·META",
+        "gift_dislike": [
+            180008,
+            180009
+        ],
+        "skin_id": 9701110,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9701110/shipyard.png",
         "timer": null,
         "light": false,
         "medium": false,

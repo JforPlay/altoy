@@ -29580,5 +29580,85 @@
         "op_option2": "Translation Source Missing",
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
+    },
+    "625": {
+        "id": 625,
+        "ship_group": 50302,
+        "message": "Translation Source Missing",
+        "name": "Chang Wu",
+        "picture_persist": "",
+        "shipgirl_names": [
+            50302
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "626": {
+        "id": 626,
+        "ship_group": 50212,
+        "message": "Translation Source Missing",
+        "name": "Hai Chou",
+        "picture_persist": "",
+        "shipgirl_names": [
+            50212
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "627": {
+        "id": 627,
+        "ship_group": 30708,
+        "message": "Translation Source Missing",
+        "name": "Shinano",
+        "picture_persist": "",
+        "shipgirl_names": [
+            30708
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "628": {
+        "id": 628,
+        "ship_group": 50107,
+        "message": "Translation Source Missing",
+        "name": "Fei Yuen",
+        "picture_persist": "",
+        "shipgirl_names": [
+            50107
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "629": {
+        "id": 629,
+        "ship_group": 49902,
+        "message": "Translation Source Missing",
+        "name": "SymphonicStigma",
+        "picture_persist": "",
+        "shipgirl_names": [
+            49902
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     }
 }
