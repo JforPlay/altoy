@@ -1,0 +1,964 @@
+/* ============================================================================
+   CHAT VIEWER - COMMON STYLES
+   Shared styles for both Dorm3D and Juustagram chat viewers
+   ============================================================================ */
+
+/* --- CSS Variables & Theme System --- */
+:root {
+  /* Dark Mode (Default) */
+  --bg-primary: #36393f;
+  --bg-secondary: #2f3136;
+  --bg-tertiary: #292b2f;
+  --border-color: #40444b;
+  --border-hover: #7289da;
+
+  --text-primary: #dcddde;
+  --text-secondary: #b9bbbe;
+  --text-muted: #a3a6aa;
+  --text-heading: #ffffff;
+
+  --accent-primary: #5865f2;
+  --accent-hover: #4752c4;
+  --accent-light: #7289da;
+  --accent-danger: #f04747;
+  --accent-danger-hover: #d84040;
+
+  --player-bg: #7289da;
+  --player-text: #ffffff;
+  --character-bg: #40444b;
+  --red-envelope: #da373c;
+
+  --shadow-light: rgba(0, 0, 0, 0.1);
+  --shadow-medium: rgba(0, 0, 0, 0.2);
+
+  /* Accessibility */
+  --animation-duration: 0.3s;
+}
+
+/* Light Mode */
+body:not(.dark-mode) {
+  --bg-primary: #f5f5f5;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f0f0f0;
+  --border-color: #e0e0e0;
+  --border-hover: #5865f2;
+
+  --text-primary: #1a1a1a;
+  --text-secondary: #666;
+  --text-muted: #888;
+  --text-heading: #1a1a1a;
+
+  --accent-primary: #5865f2;
+  --accent-hover: #4752c4;
+  --accent-light: #5865f2;
+  --accent-danger: #f44336;
+  --accent-danger-hover: #d32f2f;
+
+  --player-bg: #bbdefb;
+  --player-text: #0d47a1;
+  --character-bg: #f0f0f0;
+  --red-envelope: #da373c;
+
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --shadow-medium: rgba(0, 0, 0, 0.1);
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --animation-duration: 0.01ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- General Body & Typography --- */
+body {
+  background-color: var(--bg-primary);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-primary);
+  margin: 0;
+  padding: 1.25rem;
+  transition: background-color var(--animation-duration) ease,
+    color var(--animation-duration) ease;
+
+  /* Modern CSS improvements */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.main-header {
+  margin-bottom: 1.875rem;
+  text-align: center;
+}
+
+.main-header h1 {
+  margin-bottom: 0.3125rem;
+  color: var(--text-heading);
+  transition: color var(--animation-duration) ease;
+}
+
+.main-header h2,
+.main-header h3 {
+  color: var(--text-heading);
+  text-align: center;
+  transition: color var(--animation-duration) ease;
+}
+
+.main-header p {
+  color: var(--text-secondary);
+  text-align: center;
+  margin: 0;
+  transition: color var(--animation-duration) ease;
+}
+
+/* .hidden utility class defined in global.style.css */
+
+/* ============================================================================
+   CHARACTER SELECTION SECTION
+   ============================================================================ */
+
+#character-selection-section {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 1.25rem 1.5625rem;
+  border-radius: 0.625rem;
+  margin: 0 auto 1.875rem auto;
+  max-width: 56.25rem;
+  box-sizing: border-box;
+  transition: background-color var(--animation-duration) ease,
+    border-color var(--animation-duration) ease,
+    max-height var(--animation-duration) ease;
+}
+
+/* Collapsed state - shows only when character is selected */
+#character-selection-section.collapsed {
+  padding: 0.9375rem 1.5625rem;
+}
+
+#character-selection-section.collapsed .character-grid {
+  max-height: 0;
+  overflow: hidden;
+  margin-top: 0;
+  transition: max-height 0.3s ease, margin-top 0.3s ease;
+}
+
+#character-selection-section:not(.collapsed) .character-grid {
+  max-height: 31.25rem;
+  margin-top: 0.9375rem;
+  padding-top: 0.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: max-height 0.3s ease, margin-top 0.3s ease;
+
+  /* Smooth scrollbar */
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar styling for character grid */
+#character-selection-section .character-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+#character-selection-section .character-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#character-selection-section .character-grid::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 0.625rem;
+}
+
+#character-selection-section .character-grid::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-muted);
+}
+
+#character-selection-section h2,
+#character-selection-section h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#character-selection-section h3 {
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+#character-selection-section h3:hover {
+  color: var(--accent-light);
+}
+
+/* Toggle indicator */
+#character-selection-section h3::after {
+  content: "▼";
+  font-size: 0.8em;
+  transition: transform 0.3s ease;
+}
+
+#character-selection-section.collapsed h3::after {
+  transform: rotate(-90deg);
+}
+
+/* Selected character display in collapsed state */
+.selected-character-display {
+  display: none;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  font-weight: normal;
+  margin-left: 0.9375rem;
+}
+
+#character-selection-section.collapsed .selected-character-display {
+  display: inline;
+}
+
+/* Character Grid Layouts */
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(clamp(6.875rem, 15vw, 9.375rem), 1fr)
+  );
+  gap: 1.25rem;
+}
+
+/* Juus variant - more compact grid */
+.character-grid.juus {
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(clamp(6.25rem, 12vw, 8.125rem), 1fr)
+  );
+  gap: 0.9375rem;
+}
+
+/* Loading/Error States */
+.character-grid.loading,
+.character-grid.error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 9.375rem;
+  gap: 0.9375rem;
+}
+
+.loading-message {
+  text-align: center;
+  color: var(--text-secondary);
+  transition: color var(--animation-duration) ease;
+}
+
+.loading-message.error {
+  color: var(--accent-danger);
+}
+
+
+/* ============================================================================
+   CHARACTER CARDS
+   ============================================================================ */
+
+.character-card {
+  background-color: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 0.625rem;
+  padding: 0.9375rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease,
+    background-color var(--animation-duration) ease, box-shadow 0.2s ease;
+}
+
+.character-card:hover {
+  transform: translateY(-0.3125rem);
+  border-color: var(--border-hover);
+  box-shadow: 0 0.25rem 0.75rem var(--shadow-light);
+}
+
+.character-card:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.character-card.selected {
+  border-color: var(--accent-primary);
+  background-color: var(--bg-tertiary);
+  box-shadow: 0 0 0.75rem var(--shadow-medium);
+}
+
+body:not(.dark-mode) .character-card.selected {
+  background-color: #e3f2fd;
+}
+
+.character-card img {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  margin-bottom: 0.625rem;
+  background-color: var(--bg-tertiary);
+  object-fit: cover;
+  transition: background-color var(--animation-duration) ease;
+}
+
+.character-card .char-name {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: var(--text-heading);
+  margin: 0 0 0.3125rem 0;
+  transition: color var(--animation-duration) ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.character-card .ship-name {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  margin: 0;
+  transition: color var(--animation-duration) ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+/* Juus variant - more compact cards */
+.character-grid.juus .character-card {
+  padding: 0.625rem;
+  border-radius: 0.5rem;
+}
+
+.character-grid.juus .character-card img {
+  width: 3.75rem;
+  height: 3.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.character-grid.juus .character-card .char-name {
+  font-size: 0.85em;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.2;
+}
+
+.character-grid.juus .character-card .ship-name {
+  font-size: 0.75em;
+  line-height: 1.2;
+}
+
+/* ============================================================================
+   STORY CONTROLS
+   ============================================================================ */
+
+.story-controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.9375rem;
+  align-items: start;
+  padding: 1.25rem 1.5625rem 0.9375rem 1.5625rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.story-controls-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9375rem;
+}
+
+.story-select-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.story-select-label {
+  font-weight: bold;
+  color: var(--text-heading);
+  flex-shrink: 0;
+  transition: color var(--animation-duration) ease;
+}
+
+#story-dropdown {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.3125rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color var(--animation-duration) ease,
+    border-color var(--animation-duration) ease,
+    color var(--animation-duration) ease;
+}
+
+#story-dropdown:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-color: var(--accent-primary);
+}
+
+.flavor-text-box {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 0.9375rem;
+  text-align: center;
+  min-height: 1.5rem;
+  transition: background-color var(--animation-duration) ease,
+    border-color var(--animation-duration) ease;
+}
+
+body:not(.dark-mode) .flavor-text-box {
+  background-color: #f9f9f9;
+}
+
+.flavor-text-box p {
+  margin: 0;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--text-secondary);
+  transition: color var(--animation-duration) ease;
+}
+
+.flavor-text-box strong {
+  font-weight: bold;
+  color: var(--text-heading);
+  margin-right: 0.5rem;
+  font-style: normal;
+  transition: color var(--animation-duration) ease;
+}
+
+.restart-button {
+  background-color: var(--accent-danger);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.3125rem;
+  padding: 0.75rem 1.125rem;
+  font-size: 0.9em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  height: 3rem;
+}
+
+.restart-button:hover {
+  background-color: var(--accent-danger-hover);
+}
+
+.restart-button:focus-visible {
+  outline: 2px solid var(--accent-danger);
+  outline-offset: 2px;
+}
+
+.restart-button:active {
+  transform: scale(0.98);
+}
+
+/* ============================================================================
+   STORY DISPLAY - CHAT MESSAGES
+   ============================================================================ */
+
+#story-display-section {
+  max-width: 56.25rem;
+  margin: 0 auto;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.625rem;
+  box-sizing: border-box;
+  transition: background-color var(--animation-duration) ease,
+    border-color var(--animation-duration) ease;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 17.5rem);
+}
+
+.story-container {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9375rem;
+  padding: 1.25rem 1.5625rem;
+  overflow-y: auto;
+  flex: 1;
+
+  /* Modern scrolling improvements */
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+/* Modern scrollbar styling */
+.story-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.story-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.story-container::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 0.625rem;
+}
+
+.story-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-muted);
+}
+
+/* Character message wrapper with portrait */
+.character-line-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.625rem;
+  max-width: 80%;
+  align-self: flex-start;
+  opacity: 0;
+  transform: translateY(1.25rem);
+  animation: bubble-fade-in 0.4s forwards;
+}
+
+.character-line-wrapper .portrait {
+  width: 2.8125rem;
+  height: 2.8125rem;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  flex-shrink: 0;
+  object-fit: cover;
+  transition: border-color var(--animation-duration) ease;
+}
+
+/* Message bubbles */
+.message-bubble {
+  padding: 0.75rem 0.9375rem;
+  border-radius: 0.5rem;
+  max-width: 75%;
+  line-height: 1.4;
+  box-sizing: border-box;
+  transition: background-color var(--animation-duration) ease,
+    color var(--animation-duration) ease;
+}
+
+.player,
+.narrator {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  animation: bubble-fade-in 0.4s forwards;
+}
+
+@keyframes bubble-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-bubble p {
+  margin: 0;
+  word-break: break-word;
+}
+
+.speaker-name {
+  font-weight: bold;
+  margin-bottom: 0.3125rem;
+  color: var(--text-heading);
+  transition: color var(--animation-duration) ease;
+}
+
+.speaker-id {
+  color: var(--text-muted);
+  font-size: 0.8em;
+  font-weight: normal;
+  margin-left: 0.25rem;
+  transition: color var(--animation-duration) ease;
+}
+
+/* Message types */
+.character {
+  background-color: var(--character-bg);
+}
+
+body:not(.dark-mode) .character {
+  color: var(--text-primary);
+}
+
+.player {
+  background-color: var(--player-bg);
+  align-self: flex-end;
+  max-width: 75%;
+  color: var(--player-text);
+}
+
+.narrator {
+  background-color: transparent;
+  font-style: italic;
+  color: var(--text-muted);
+  text-align: center;
+  align-self: center;
+  max-width: 90%;
+}
+
+/* ============================================================================
+   PLAYER CHOICES & OPTIONS
+   ============================================================================ */
+
+.options-container {
+  max-width: 100%;
+  padding: 0.9375rem 1.5625rem 1.25rem 1.5625rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.625rem;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.choice-button {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.3125rem;
+  padding: 0.75rem 1.125rem;
+  font-size: 1em;
+  cursor: pointer;
+  text-align: right;
+  transition: background-color 0.2s, transform 0.1s;
+  max-width: 80%;
+}
+
+.choice-button:hover {
+  background-color: var(--accent-hover);
+}
+
+.choice-button:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.choice-button:active {
+  transform: scale(0.98);
+}
+
+/* Selected choice styling */
+.message-bubble.selected-choice {
+  font-size: 0.85em;
+  opacity: 0.7;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--accent-primary);
+  border: 1px solid var(--accent-hover);
+  color: #ffffff;
+}
+
+body:not(.dark-mode) .message-bubble.selected-choice {
+  background-color: #c5cae9;
+  border-color: var(--accent-primary);
+  color: #1a237e;
+  opacity: 0.8;
+}
+
+/* End of conversation message */
+.end-of-conversation {
+  text-align: center;
+  padding: 1.25rem;
+  margin: 1.25rem 0;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
+  border-radius: 0.625rem;
+  border: 2px dashed var(--border-color);
+  transition: background-color var(--animation-duration) ease,
+    border-color var(--animation-duration) ease,
+    color var(--animation-duration) ease;
+}
+
+body:not(.dark-mode) .end-of-conversation {
+  background-color: #f9f9f9;
+}
+
+/* ============================================================================
+   SPECIAL MESSAGE TYPES
+   ============================================================================ */
+
+/* Stickers/Emojis */
+.sticker-container {
+  align-self: flex-start;
+  max-width: 9.375rem;
+}
+
+.player .sticker-container {
+  align-self: flex-end;
+}
+
+.sticker-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* System Messages */
+.system-message {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9em;
+  font-style: italic;
+  padding: 0.5rem;
+  background-color: var(--bg-tertiary);
+  border-radius: 0.5rem;
+  align-self: center;
+  width: 90%;
+  transition: background-color var(--animation-duration) ease,
+    color var(--animation-duration) ease;
+}
+
+/* Red Envelope (Lunar New Year) */
+.red-envelope-bubble {
+  background-color: var(--red-envelope);
+  color: #ffffff;
+  padding: 0.9375rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: center;
+  width: 15.625rem;
+  box-shadow: 0 0.25rem 0.375rem var(--shadow-medium);
+  transition: transform 0.2s;
+}
+
+.red-envelope-bubble:hover {
+  transform: scale(1.05);
+}
+
+.red-envelope-bubble::before {
+  content: "🧧";
+  font-size: 2em;
+  display: block;
+}
+
+/* ============================================================================
+   SPECIAL EFFECTS
+   ============================================================================ */
+
+.shake-effect {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  body {
+    padding: 0.3125rem;
+  }
+
+  /* Header */
+  .main-header h1 {
+    font-size: 1.3em;
+    margin-bottom: 0.625rem;
+  }
+
+  #character-selection-section {
+    margin-bottom: 0.75rem;
+    padding: 0.9375rem 1.125rem;
+  }
+
+  #character-selection-section h3 {
+    font-size: 0.95em;
+  }
+
+  #character-selection-section:not(.collapsed) .character-grid {
+    max-height: 21.875rem;
+    gap: 0.5rem;
+  }
+
+  .selected-character-display {
+    font-size: 0.85em;
+  }
+
+  /* Story Controls - More Compact */
+  .story-controls {
+    grid-template-columns: 1fr;
+    padding: 0.625rem 0.75rem 0.5rem 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .story-select-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.3125rem;
+  }
+
+  .story-select-label {
+    font-size: 0.85em;
+    margin-bottom: 0.1875rem;
+  }
+
+  #story-dropdown {
+    padding: 0.5rem 0.625rem;
+    font-size: 0.9em;
+  }
+
+  .flavor-text-box {
+    padding: 0.5rem 0.625rem;
+    font-size: 0.8em;
+    line-height: 1.4;
+  }
+
+  .flavor-text-box strong {
+    font-size: 0.9em;
+  }
+
+  .restart-button {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85em;
+    height: auto;
+  }
+
+  /* Character Cards - Smaller */
+  .character-grid {
+    grid-template-columns: repeat(auto-fill, minmax(5.625rem, 1fr));
+    gap: 0.5rem;
+  }
+
+  .character-grid.juus {
+    grid-template-columns: repeat(auto-fill, minmax(4.6875rem, 1fr));
+    gap: 0.375rem;
+  }
+
+  .character-card {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  .character-card img {
+    width: 3.125rem;
+    height: 3.125rem;
+    margin-bottom: 0.375rem;
+  }
+
+  .character-card .char-name {
+    font-size: 0.8em;
+    line-height: 1.2;
+  }
+
+  .character-card .ship-name {
+    font-size: 0.7em;
+    line-height: 1.1;
+  }
+
+  /* Chat Messages - Smaller but readable */
+  #story-display-section {
+    max-height: calc(100vh - 7.5rem);
+    margin-bottom: 0.625rem;
+  }
+
+  .story-container {
+    padding: 0.625rem 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .character-line-wrapper {
+    gap: 0.5rem;
+  }
+
+  .character-line-wrapper .portrait {
+    width: 2rem;
+    height: 2rem;
+    border-width: 1.5px;
+  }
+
+  .message-bubble {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.9em;
+    line-height: 1.5;
+    max-width: 85%;
+    border-radius: 0.75rem;
+  }
+
+  .speaker-name {
+    font-size: 0.85em;
+    margin-bottom: 0.1875rem;
+  }
+
+  .speaker-id {
+    font-size: 0.75em;
+  }
+
+  .player {
+    max-width: 80%;
+  }
+
+  /* Options - Smaller */
+  .options-container {
+    padding: 0.5rem 0.75rem 0.625rem 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .choice-button {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.9em;
+    max-width: 85%;
+  }
+
+  .message-bubble.selected-choice {
+    font-size: 0.8em;
+    padding: 0.375rem 0.625rem;
+  }
+
+  /* Special Messages */
+  .system-message {
+    font-size: 0.8em;
+    padding: 0.375rem;
+  }
+
+  .sticker-container {
+    max-width: 7.5rem;
+  }
+
+  .end-of-conversation {
+    font-size: 0.95em;
+    padding: 0.9375rem;
+  }
+
+  .red-envelope-bubble {
+    width: 12.5rem;
+    font-size: 0.9em;
+    padding: 0.75rem;
+  }
+
+  .red-envelope-bubble::before {
+    font-size: 1.5em;
+  }
+}

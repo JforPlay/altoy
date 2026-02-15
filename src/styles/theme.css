@@ -1,0 +1,73 @@
+/* ==========================================================================
+   SHARED THEME VARIABLES
+   ==========================================================================
+
+   Centralized design tokens used across multiple pages.
+   Import this file in page-specific CSS instead of redefining variables.
+
+   Usage:
+     @import url('./theme.css');     (from styles/ root)
+     @import url('../theme.css');    (from styles/subdirectory)
+   ========================================================================== */
+
+/* --- Grayscale Theme (Default) --- */
+:root {
+  /* Background */
+  --bg-gradient-start: #e8e8e8;
+  --bg-gradient-end: #d0d0d0;
+
+  /* Surface colors */
+  --card-bg: #ffffff;
+  --section-bg: #f8f8f8;
+  --item-bg: #ffffff;
+
+  /* Text */
+  --text-primary: #2a2a2a;
+  --text-secondary: #6b6b6b;
+
+  /* Accent */
+  --primary-color: #4a4a4a;
+  --accent-gradient-start: #6a6a6a;
+  --accent-gradient-end: #4a4a4a;
+
+  /* Borders & Shadows */
+  --border-color: #d4d4d4;
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --shadow-hover: rgba(0, 0, 0, 0.12);
+
+  /* Form inputs */
+  --input-bg: #ffffff;
+  --input-border: #d4d4d4;
+  --input-focus: #5a5a5a;
+}
+
+/* --- Dark Mode --- */
+body.dark-mode {
+  /* Background */
+  --bg-gradient-start: #1a1a1a;
+  --bg-gradient-end: #0a0a0a;
+
+  /* Surface colors */
+  --card-bg: #2a2a2a;
+  --section-bg: #1f1f1f;
+  --item-bg: #2a2a2a;
+
+  /* Text */
+  --text-primary: #e8e8e8;
+  --text-secondary: #a8a8a8;
+
+  /* Accent */
+  --primary-color: #c0c0c0;
+  --accent-gradient-start: #5a5a5a;
+  --accent-gradient-end: #3a3a3a;
+
+  /* Borders & Shadows */
+  --border-color: #3a3a3a;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --shadow-hover: rgba(0, 0, 0, 0.6);
+
+  /* Form inputs */
+  --input-bg: #1f1f1f;
+  --input-border: #3a3a3a;
+  --input-focus: #6a6a6a;
+}

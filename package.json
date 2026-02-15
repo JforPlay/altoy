@@ -1,0 +1,21 @@
+{
+  "name": "altoy",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "ALtoy - Azur Lane KR fan-made web viewer",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "data:split": "node scripts/split_story_data.mjs && node scripts/split_skin_data.mjs && node scripts/split_simulator_data.mjs",
+    "build": "npm run data:split && astro build && node scripts/minify.mjs",
+    "build:no-minify": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^4.16.0"
+  },
+  "devDependencies": {
+    "terser": "^5.46.0"
+  }
+}

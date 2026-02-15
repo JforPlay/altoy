@@ -1,0 +1,39 @@
+---
+/**
+ * Valentine Letter Viewer
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/skin/skin.common.css';
+import '../../styles/misc/valentine.css';
+---
+
+<Layout title="발렌타인 편지">
+    <div class="valentine-container">
+        <div class="shipgirl-panel">
+            <div class="search-box">
+                <input type="text" id="search" placeholder="이름 검색..." autocomplete="off">
+            </div>
+            <div class="shipgirl-count" id="shipgirl-count"></div>
+            <div class="shipgirl-list" id="shipgirl-list"></div>
+        </div>
+        <div class="letter-panel">
+            <div class="letter-header" id="letter-header">
+                <div class="letter-header-placeholder">?</div>
+                <span class="letter-header-name">함선을 선택해 주세요</span>
+            </div>
+            <div class="year-tabs" id="year-tabs"></div>
+            <div class="letter-empty" id="letter-placeholder">
+                <span class="material-symbols-outlined">mail</span>
+                <p>목록에서 함선을 선택하면 발렌타인 편지를 볼 수 있습니다.</p>
+            </div>
+            <div class="letter-content-wrapper hidden" id="letter-content-wrapper">
+                <div class="letter-card" id="letter-card">
+                    <span class="letter-year-label" id="letter-year-label"></span>
+                    <div class="letter-text" id="letter-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script is:inline type="module" src="/altoy/scripts/misc/valentine.js"></script>
+</Layout>

@@ -1,0 +1,423 @@
+/* ==========================================================================
+   Valentine Letter Viewer Styles
+   Uses the same design system as skin.common.css / expression-viewer
+   ========================================================================== */
+
+/* --- Valentine-specific variables (reuse skin.common tokens) --- */
+:root {
+  --val-accent: #e8587a;
+  --val-accent-hover: #d14467;
+  --val-accent-light: rgba(232, 88, 122, 0.15);
+}
+
+body:not(.dark-mode) {
+  --val-accent: #d14d6a;
+  --val-accent-hover: #b8405a;
+  --val-accent-light: rgba(209, 77, 106, 0.1);
+}
+
+/* --- Main Container --- */
+.valentine-container {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: var(--spacing-lg);
+  max-width: 75rem;
+  margin: auto;
+  padding: var(--spacing-lg);
+  min-height: 70vh;
+  color: var(--text-secondary);
+}
+
+/* --- Left Panel: Shipgirl List --- */
+.shipgirl-panel {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 250px);
+}
+
+.search-box {
+  padding: var(--spacing-md);
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.search-box input {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+  box-sizing: border-box;
+  outline: none;
+}
+
+.search-box input::placeholder {
+  color: var(--text-dim);
+}
+
+.search-box input:focus {
+  border-color: var(--val-accent);
+  box-shadow: 0 0 0 3px rgba(232, 88, 122, 0.2);
+}
+
+.shipgirl-count {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.shipgirl-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.shipgirl-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.shipgirl-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.shipgirl-list::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.shipgirl-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 2px solid transparent;
+}
+
+.shipgirl-item:hover {
+  background: var(--bg-input);
+  border-color: var(--primary-color);
+  transform: translateX(4px);
+}
+
+.shipgirl-item.active {
+  background: var(--val-accent-light);
+  border-color: var(--val-accent);
+}
+
+.shipgirl-item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--bg-tertiary);
+  flex-shrink: 0;
+}
+
+.shipgirl-item-placeholder {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.shipgirl-item-name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+/* --- Right Panel: Letter Display --- */
+.letter-panel {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.letter-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.letter-header-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--bg-elevated);
+  flex-shrink: 0;
+  border: 2px solid var(--border-color);
+}
+
+.letter-header-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  border: 2px solid var(--border-color);
+}
+
+.letter-header-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* --- Year Tabs --- */
+.year-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.year-tab {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.year-tab:hover {
+  color: var(--text-primary);
+  background: var(--bg-input);
+}
+
+.year-tab.active {
+  background: var(--val-accent);
+  color: #fff;
+}
+
+/* --- Letter Content Area --- */
+.letter-content-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-lg);
+  background: var(--bg-tertiary);
+}
+
+.letter-content-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.letter-content-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.letter-content-wrapper::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.letter-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.letter-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--val-accent), var(--primary-color));
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.letter-year-label {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--val-accent);
+  background: var(--val-accent-light);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-md);
+  letter-spacing: 0.03em;
+}
+
+.letter-text {
+  line-height: 2;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* --- Empty / Placeholder State --- */
+.letter-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl);
+}
+
+.letter-empty .material-symbols-outlined {
+  font-size: 4rem;
+  opacity: 0.3;
+}
+
+.letter-empty p {
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+/* --- Light Mode Overrides --- */
+body:not(.dark-mode) .shipgirl-item {
+  border-color: transparent;
+}
+
+body:not(.dark-mode) .shipgirl-item:hover {
+  background: #f8f9fa;
+  border-color: var(--primary-color);
+}
+
+body:not(.dark-mode) .shipgirl-item.active {
+  background: rgba(209, 77, 106, 0.08);
+  border-color: var(--val-accent);
+}
+
+body:not(.dark-mode) .search-box input {
+  background-color: #fff;
+  border-color: var(--border-color);
+}
+
+body:not(.dark-mode) .search-box input:focus {
+  border-color: var(--val-accent);
+  box-shadow: 0 0 0 3px rgba(209, 77, 106, 0.1);
+}
+
+body:not(.dark-mode) .letter-card {
+  background: #fff;
+  border-color: var(--border-color);
+  box-shadow: var(--shadow-md);
+}
+
+body:not(.dark-mode) .letter-content-wrapper {
+  background: #f0f0f0;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .valentine-container {
+    grid-template-columns: 280px 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .valentine-container {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm);
+    min-height: auto;
+  }
+
+  .shipgirl-panel {
+    max-height: 300px;
+  }
+
+  .letter-panel {
+    min-height: 500px;
+  }
+
+  .letter-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .letter-header-icon, .letter-header-placeholder {
+    width: 40px;
+    height: 40px;
+  }
+
+  .letter-header-name {
+    font-size: 1.0625rem;
+  }
+
+  .year-tabs {
+    padding: var(--spacing-xs) var(--spacing-md);
+  }
+
+  .letter-content-wrapper {
+    padding: var(--spacing-md);
+  }
+
+  .letter-card {
+    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+  }
+
+  .letter-text {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .shipgirl-item-icon, .shipgirl-item-placeholder {
+    width: 32px;
+    height: 32px;
+  }
+
+  .letter-header-icon, .letter-header-placeholder {
+    width: 36px;
+    height: 36px;
+  }
+}

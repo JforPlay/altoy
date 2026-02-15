@@ -1,0 +1,47 @@
+---
+/**
+ * Juustagram Viewer
+ * Converted from pages/juustagram.html
+ */
+import Layout from '../layouts/Layout.astro';
+import '../styles/juustagram.css';
+---
+
+<Layout title="벽람항로 쥬스타그램 뷰어">
+    <header>
+        <h1>벽람항로 쥬스타그램 뷰어</h1>
+    </header>
+
+    <div class="filters-container">
+        <div class="filter-wrapper">
+            <label for="author-search">작성자 필터:</label>
+            <div class="dropdown-container">
+                <input type="text" id="author-search" placeholder="작성자 검색..." autocomplete="off">
+                <div class="dropdown-content" id="author-dropdown"></div>
+            </div>
+        </div>
+
+        <div class="filter-wrapper">
+            <label for="mentioned-search">언급된 함순이 필터:</label>
+            <div class="dropdown-container">
+                <input type="text" id="mentioned-search" placeholder="함순이 검색..." autocomplete="off">
+                <div class="dropdown-content" id="mentioned-dropdown"></div>
+            </div>
+        </div>
+
+        <button id="clear-filters-btn">필터 초기화</button>
+    </div>
+
+    <div class="main-container">
+        <div id="post-display-wrapper">
+            <div id="post-display" class="post-display-container">
+                <p>갤러리에서 이미지를 선택하여 게시물을 확인하세요.</p>
+            </div>
+        </div>
+
+        <div id="gallery-view" class="gallery-container">
+        </div>
+    </div>
+
+    <script is:inline type="module" src="/altoy/scripts/juustagram.js"></script>
+</Layout>

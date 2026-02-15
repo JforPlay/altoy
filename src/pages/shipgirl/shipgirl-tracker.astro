@@ -1,0 +1,35 @@
+---
+/**
+ * Shipgirl Tracker
+ * Converted from pages/shipgirl/shipgirl-tracker.html
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/shipgirl/shipgirl-tracker.css';
+---
+
+<Layout title="벽람 점수 트래커">
+    <header>
+        <h1>기술/진영점수 계산기</h1>
+        <div id="score-display-area">
+            <div id="fleet-tech-container"></div>
+            <div id="stat-tech-container"></div>
+        </div>
+    </header>
+    <main>
+        <div id="filter-bar"></div>
+        <div id="ship-list-container"></div>
+    </main>
+
+    <div id="confirmation-modal">
+        <div class="modal-content">
+            <p id="modal-text">Are you sure?</p>
+            <div class="modal-actions">
+                <button id="modal-confirm-btn">당장 진행시켜</button>
+                <button id="modal-cancel-btn">잘못 눌렀어요</button>
+            </div>
+        </div>
+    </div>
+
+    <script is:inline type="module" src="/altoy/scripts/shipgirl/shipgirl-tracker-utils.js"></script>
+    <script is:inline type="module" src="/altoy/scripts/shipgirl/shipgirl-tracker.js"></script>
+</Layout>

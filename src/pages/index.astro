@@ -1,0 +1,272 @@
+---
+/**
+ * Main landing page
+ * Converted from index.html
+ */
+import Layout from '../layouts/Layout.astro';
+import '../styles/mainpage.style.css';
+---
+
+<Layout title="메인 - 벽람 장난감">
+    <main class="home-container">
+        <!-- Hero Carousel Section -->
+        <section class="hero-carousel">
+            <div class="carousel-track">
+
+                <!-- Slide 1: Skin Gallery -->
+                <div class="carousel-slide" data-slide="2">
+                    <div class="slide-background">
+                        <img src="https://azurlane.netojuu.com/images/thumb/0/02/Bg_2025.12.25_1.png/800px-Bg_2025.12.25_1.png?20251226003755" alt="Gallery Background"
+                            loading="lazy">
+                        <div class="slide-overlay"></div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="slide-badge">
+                            <span class="material-symbols-outlined">apparel</span> 1000+
+                        </div>
+                        <h2 class="slide-title">스킨 모음집</h2>
+                        <p class="slide-description">
+                            1000개 이상의 스킨을 필터링하고 각종 일러스트들을 감상하세요
+                        </p>
+                        <a data-link="SKIN_LIST" class="slide-cta">
+                            <span>스킨 보러가기</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Slide 2: island planner -->
+                <div class="carousel-slide active" data-slide="0">
+                    <div class="slide-background">
+                        <img src="https://pbs.twimg.com/media/G1M6AgMbAAAzihc?format=jpg&name=small"
+                            alt="sim Background" loading="lazy">
+                        <div class="slide-overlay"></div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="slide-badge">New Update</div>
+                        <h2 class="slide-title">벽뜌땨 계획 페이지 오픈</h2>
+                        <p class="slide-description">
+                            벽타듀를 즐기는데 필요한 정보들을 확인해보세요<br>
+                        </p>
+                        <a data-link="ISLAND" class="slide-cta">
+                            <span>보러가기</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Juustagram -->
+                <div class="carousel-slide" data-slide="1">
+                    <div class="slide-background">
+                        <img src="https://line3-patch-blhx.bilibiligame.net/pic/251218_boteB8R5oh3g1KImYkrV.png" alt="Juustagram Background"
+                            loading="lazy">
+                        <div class="slide-overlay"></div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="slide-badge">HOT</div>
+                        <h2 class="slide-title">쥬스타그램</h2>
+                        <p class="slide-description">
+                            함순이들의 일상이 담긴 SNS를 엿보고<br>
+                            숨겨진 이야기를 발견해보세요
+                        </p>
+                        <a data-link="JUUSTAGRAM" class="slide-cta">
+                            <span>둘러보기</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- Carousel Controls -->
+            <button class="carousel-nav prev" aria-label="Previous slide">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="carousel-nav next" aria-label="Next slide">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <!-- Carousel Indicators -->
+            <div class="carousel-indicators">
+                <button class="indicator active" data-slide="0" aria-label="Go to slide 1"></button>
+                <button class="indicator" data-slide="1" aria-label="Go to slide 2"></button>
+                <button class="indicator" data-slide="2" aria-label="Go to slide 3"></button>
+            </div>
+        </section>
+
+        <!-- Info and Events Section -->
+        <section class="info-and-events-section">
+            <!-- Event Carousel Section -->
+            <div class="event-carousel-container">
+                <div class="event-carousel-header">
+                    <h2>
+                        <i class="fas fa-calendar-star"></i>
+                        진행중인 이벤트
+                    </h2>
+                    <div class="event-carousel-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        로딩 중...
+                    </div>
+                </div>
+                <div class="event-carousel">
+                    <div class="event-carousel-track">
+                        <!-- Banners will be loaded here dynamically -->
+                    </div>
+                    <button class="event-carousel-nav prev" aria-label="Previous event">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="event-carousel-nav next" aria-label="Next event">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="event-carousel-indicators"></div>
+                </div>
+            </div>
+
+            <!-- Patch Notes Section -->
+            <div class="patch-notes-container">
+                <div class="patch-notes-header">
+                    <h3>
+                        <i class="fas fa-bullhorn"></i>
+                        안내사항
+                    </h3>
+                </div>
+                <div class="bento-card patch-notes-card">
+                    <div class="patch-notes-content">
+                        <ul>
+                            <li><strong>대대적인 엔진 개편 / 데이터 로딩 최적화 </strong></li>
+                            <li><strong>발렌타인 대사집 추가 </strong></li>
+                            <li><strong>검색기능 추가 </strong></li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <span class="card-meta">최신 업데이트: 2026-2-15</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bento Grid -->
+        <div class="bento-grid">
+            <!-- Large: Skin Poll -->
+            <a data-link="SKIN_POLL" class="bento-card large featured">
+                <div class="card-header">
+                    <div class="card-icon-large">
+                        <i class="fa-solid fa-square-poll-vertical"></i>
+                    </div>
+                    <h3>스킨 선호도 투표</h3>
+                </div>
+                <p>개편 후 새롭게 오픈한 벽챈 스킨선호도 조사!<br>인기 스킨을 확인하고 투표하세요</p>
+                <div class="card-footer">
+                    <span class="card-meta">실시간 동기화 / 서버 상태표시 기능추가</span>
+                </div>
+            </a>
+
+            <!-- Medium Cards -->
+            <a data-link="EVENT_TIMELINE" class="bento-card medium">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-timeline"></i>
+                    </div>
+                    <h3>역대 이벤트 보기</h3>
+                </div>
+                <p>각종 필터링 + 함순이 리스트와 함께 <br>역대 이벤트를 확인해보세요</p>
+            </a>
+
+            <a data-link="MAIN_STORY" class="bento-card medium">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-book-open-reader"></i>
+                    </div>
+                    <h3>메인스토리 뷰어</h3>
+                </div>
+                <p>타임라인형 뷰어 + 브금/배경들과 함께 <br>
+                    메인스토리를 감상해보세요</p>
+            </a>
+
+            <!-- Small Cards -->
+            <a data-link="CHAT_JUUS" class="bento-card small">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-comments-dollar"></i>
+                    </div>
+                    <h3>JUUS 뷰어</h3>
+                </div>
+            </a>
+
+            <a data-link="EXTERNAL_GODROOKLYN" class="bento-card small featured">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-square-rss"></i>
+                    </div>
+                    <h3>최신스토리 + 다른이벤스들 보기</h3>
+                </div>
+            </a>
+
+            <a data-link="COMIC_VIEWER" class="bento-card small">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-images"></i>
+                    </div>
+                    <h3>인게임 만화들 보러가기</h3>
+                </div>
+            </a>
+
+            <a data-link="EXTERNAL_BUG_REPORT" class="bento-card small">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-bug"></i>
+                    </div>
+                    <h3>버그 제보 / 건의사항은 여기로</h3>
+                </div>
+            </a>
+
+            <!-- External Links Section (Auto new row) -->
+            <div class="external-links-section">
+                <a data-link="EXTERNAL_HEARING" target="_blank" class="bento-card small external-link">
+                    <span class="external-badge">외부</span>
+                    <div class="card-header">
+                        <i class="fas fa-gavel external-link-icon"></i>
+                        <div class="external-link-label">함순이 청문회 웹버전</div>
+                    </div>
+                    <div class="external-link-desc">함순이들의 스킬정보 / 간단평을 볼 수 있습니다</div>
+                </a>
+                <a data-link="EXTERNAL_EQUIPMENT" target="_blank" class="bento-card small external-link">
+                    <span class="external-badge">외부</span>
+                    <div class="card-header">
+                        <i class="fa-solid fa-wrench external-link-icon"></i>
+                        <div class="external-link-label">장비 설명회 웹버전</div>
+                    </div>
+                    <div class="external-link-desc">벽람 모든 장비들의 상세스펙 / 코멘트를 볼 수 있습니다</div>
+                </a>
+                <div class="bento-card small external-link dual-external">
+                    <span class="external-badge">외부</span>
+                    <div class="dual-links-container">
+                        <a data-link="EXTERNAL_ARCA_AZUR" target="_blank" class="dual-link-item">
+                            <img src="/altoy/assets/icon/arca.svg" alt="Arca" class="dual-link-svg-icon">
+                            <div class="dual-link-content">
+                                <div class="dual-link-label">벽챈 바로가기</div>
+                            </div>
+                        </a>
+                        <a data-link="EXTERNAL_ARCA_MANJUU" target="_blank" class="dual-link-item">
+                            <img src="/altoy/assets/icon/arca.svg" alt="Arca" class="dual-link-svg-icon">
+                            <div class="dual-link-content">
+                                <div class="dual-link-label">맍챈 바로가기</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <a data-link="EXTERNAL_GITHUB" target="_blank" class="bento-card small external-link">
+                    <span class="external-badge">외부</span>
+                    <div class="card-header">
+                        <i class="fab fa-github external-link-icon"></i>
+                        <div class="external-link-label">원본 소스코드 보러가기</div>
+                    </div>
+                    <div class="external-link-desc">원본 소스코드 보러가기</div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script is:inline type="module" src="/altoy/scripts/mainpage.script.js"></script>
+</Layout>

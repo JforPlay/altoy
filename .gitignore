@@ -1,9 +1,22 @@
+# IDE / OS
 .vscode/
-.DS_Store/
+.DS_Store
+
+# Jekyll (legacy)
 _site/
 .jekyll-cache/
 _config.yml
-scripts/output/
-deprecated/
-package-lock.json
+
+# Astro build output
+dist/
+.astro/
+
+# Dependencies
 node_modules/
+package-lock.json
+
+# Scripts output
+scripts/output/
+
+# Deprecated
+deprecated/

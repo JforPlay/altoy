@@ -1,0 +1,191 @@
+---
+/**
+ * Shipgirl Build Simulator
+ * Converted from pages/shipgirl/shipgirl-build-sim.html
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/shipgirl/shipgirl-build-sim.css';
+---
+
+<Layout title="건조 확률보기">
+    <main class="container">
+        <header class="page-header">
+            <h1>배너별 건조 확률보기</h1>
+            <p class="subtitle">건조 확률을 확인하고 시뮬레이션을 해보세요</p>
+        </header>
+
+        <section class="pool-selector"></section>
+
+        <section class="pool-section">
+            <div class="section-header" id="pool-section-header">
+                <h2>건조 목록</h2>
+                <button class="collapse-btn" id="pool-collapse-btn">
+                    <span class="material-symbols-outlined">expand_less</span>
+                </button>
+            </div>
+
+            <div class="collapsible-content" id="pool-content">
+                <div class="ship-adder">
+                    <h3>픽업 함선 추가</h3>
+                    <div class="adder-controls">
+                        <div class="search-container">
+                            <input type="text" id="ship-search-input" class="ship-search-input" placeholder="함선 이름 검색...">
+                            <div class="ship-dropdown" id="ship-dropdown" style="display: none;"></div>
+                        </div>
+                        <div class="pickup-input-group">
+                            <label for="pickup-rate">픽업 확률 (%):</label>
+                            <input type="number" id="pickup-rate" class="pickup-rate-input" min="0" max="100" step="0.01" value="2.0" placeholder="2.0">
+                        </div>
+                        <button class="add-ship-btn" id="add-ship-btn" disabled>
+                            <span class="material-symbols-outlined">add_circle</span>
+                            <span>추가</span>
+                        </button>
+                        <button class="reset-pool-btn" id="reset-pool-btn">
+                            <span class="material-symbols-outlined">refresh</span>
+                            <span>풀 초기화</span>
+                        </button>
+                    </div>
+                    <div class="added-ships-list" id="added-ships-list"></div>
+                </div>
+
+                <div class="pool-filters">
+                    <div class="filter-group">
+                        <label>등급 필터:</label>
+                        <div class="rarity-filters">
+                            <button class="rarity-filter active" data-rarity="all">전체</button>
+                            <button class="rarity-filter" data-rarity="UR">UR</button>
+                            <button class="rarity-filter" data-rarity="SSR">SSR</button>
+                            <button class="rarity-filter" data-rarity="SR">SR</button>
+                            <button class="rarity-filter" data-rarity="R">R</button>
+                            <button class="rarity-filter" data-rarity="N">N</button>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <input type="text" id="ship-search" class="ship-search" placeholder="함선 이름 검색...">
+                    </div>
+                </div>
+
+                <div class="ship-grid" id="ship-grid"></div>
+                <div class="ship-count">총 <span id="ship-count">0</span>척</div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <h2>건조 확률</h2>
+            <div class="probability-chart-compact">
+                <div class="stacked-bar" id="stacked-probability-bar"></div>
+                <div class="probability-legend" id="probability-legend"></div>
+            </div>
+
+            <div class="ship-probability">
+                <h3>함선별 확률 계산</h3>
+                <div class="probability-calculator">
+                    <select id="ship-select" class="ship-select">
+                        <option value="">함선을 선택하세요</option>
+                    </select>
+                    <div class="probability-result">
+                        <div class="result-item">
+                            <span class="result-label">단일 건조 확률:</span>
+                            <span class="result-value" id="single-prob">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">10회 건조 시 1회 이상:</span>
+                            <span class="result-value" id="ten-prob">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">100회 건조 시 1회 이상:</span>
+                            <span class="result-value" id="hundred-prob">-</span>
+                        </div>
+                    </div>
+
+                    <div class="probability-graph-container" id="graph-container" style="display: none;">
+                        <h4>누적 확률 그래프</h4>
+                        <canvas id="probability-graph"></canvas>
+                        <div class="graph-legend">
+                            <span class="legend-item">
+                                <span class="legend-dot"></span>
+                                <span>1회 이상 획득 확률</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="simulator-section">
+            <h2>건조 시뮬레이터</h2>
+            <div class="simulator-controls">
+                <button class="sim-btn primary-btn" id="build-one">
+                    <span class="btn-icon">🎲</span>
+                    <span>1회 건조</span>
+                </button>
+                <button class="sim-btn secondary-btn" id="build-ten">
+                    <span class="btn-icon">🎲</span>
+                    <span>10회 건조</span>
+                </button>
+                <button class="sim-btn tertiary-btn" id="reset-stats">
+                    <span class="btn-icon">🔄</span>
+                    <span>통계 초기화</span>
+                </button>
+            </div>
+
+            <div class="build-results" id="build-results">
+                <div class="placeholder">건조 버튼을 눌러 시작하세요</div>
+            </div>
+
+            <div class="build-statistics">
+                <h3>건조 통계</h3>
+                <div class="stats-grid">
+                    <div class="stat-card"><span class="stat-label">총 건조 횟수</span><span class="stat-value" id="stat-total">0</span></div>
+                    <div class="stat-card ur-stat"><span class="stat-label">UR</span><span class="stat-value" id="stat-ur">0</span></div>
+                    <div class="stat-card ssr-stat"><span class="stat-label">SSR</span><span class="stat-value" id="stat-ssr">0</span></div>
+                    <div class="stat-card sr-stat"><span class="stat-label">SR</span><span class="stat-value" id="stat-sr">0</span></div>
+                    <div class="stat-card r-stat"><span class="stat-label">R</span><span class="stat-value" id="stat-r">0</span></div>
+                    <div class="stat-card n-stat"><span class="stat-label">N</span><span class="stat-value" id="stat-n">0</span></div>
+                </div>
+
+                <h3>소모 자원</h3>
+                <div class="resource-stats">
+                    <div class="resource-card">
+                        <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/props/nengyuanshi.png" alt="큐브" class="resource-icon">
+                        <div class="resource-info"><span class="resource-label">큐브</span><span class="resource-value" id="stat-cubes">0</span></div>
+                    </div>
+                    <div class="resource-card">
+                        <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/props/gold.png" alt="물자" class="resource-icon">
+                        <div class="resource-info"><span class="resource-label">물자</span><span class="resource-value" id="stat-money">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="despair-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>절망 건조 픽업 함선 선택</h2>
+                <button class="modal-close" id="modal-close"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="selection-info">
+                    <p>UR/SSR/SR 함선 중 <strong>정확히 2척</strong>을 선택하세요 (UR은 최대 1척)</p>
+                    <div class="selection-status">
+                        <span>선택: <span id="selected-count">0</span> / 2</span>
+                        <span>UR: <span id="selected-ur-count">0</span> / 1</span>
+                    </div>
+                </div>
+                <div class="rarity-tabs">
+                    <button class="rarity-tab active" data-rarity="UR">UR</button>
+                    <button class="rarity-tab" data-rarity="SSR">SSR</button>
+                    <button class="rarity-tab" data-rarity="SR">SR</button>
+                </div>
+                <div class="modal-ship-grid" id="modal-ship-grid"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel-btn" id="modal-cancel">취소</button>
+                <button class="modal-btn confirm-btn" id="modal-confirm" disabled>확인</button>
+            </div>
+        </div>
+    </div>
+
+    <script is:inline type="module" src="/altoy/scripts/shipgirl/shipgirl-build-sim.js"></script>
+</Layout>

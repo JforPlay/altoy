@@ -1,0 +1,188 @@
+/**
+ * Shipgirl Info Module - Data Loading & Utilities
+ * Handles data loading functions and skill/attribute utility functions
+ */
+
+import { fetchJSON, fetchJSONWithCache } from '../utils.js';
+
+'use strict';
+
+// ============================================
+// STATE REFERENCE (set via setup)
+// ============================================
+let state;
+
+export function setup(stateRef) {
+    state = stateRef;
+}
+
+// ===== Data Loading =====
+export async function loadData() {
+    // Load lite data for fast initial render
+    state.shipgirlData = await fetchJSON('data/ship_info_lite.json');
+    state.filteredData = [...state.shipgirlData];
+
+    // Start loading full data in background
+    state.fullShipDataPromise = loadFullData();
+}
+
+export async function loadFullData() {
+    try {
+        console.log("Starting background load of full ship data...");
+        state.fullShipData = await fetchJSONWithCache('data/ship_info_data.json');
+        console.log("Full ship data loaded successfully.");
+        return state.fullShipData;
+    } catch (error) {
+        console.warn("Background loading of full data failed:", error);
+    }
+    return null;
+}
+
+export async function loadNationalityData() {
+    state.nationalityData = await fetchJSON('data/mapping/nationality_mapping.json');
+}
+
+export async function loadAttrTypeData() {
+    state.attrTypeData = await fetchJSON('data/mapping/attr_type_mapping.json');
+}
+
+export async function loadShipTypeData() {
+    state.shipTypeData = await fetchJSON('data/mapping/ship_type_mapping.json');
+}
+
+export async function loadSkillIconData() {
+    try {
+        state.skillIconData = await fetchJSON('data/skill_icon_mapping.json');
+        console.log('Loaded local skill icon data:', Object.keys(state.skillIconData).length, 'icons');
+        return;
+    } catch (error) {
+        console.warn('Local skill icon data not found, fetching from remote...');
+    }
+
+    try {
+        state.skillIconData = await fetchJSON('https://raw.githubusercontent.com/Fernando2603/AzurLane/refs/heads/main/skill_icon.json');
+        console.log('Loaded remote skill icon data:', Object.keys(state.skillIconData).length, 'icons');
+    } catch (error) {
+        console.error('Failed to fetch skill icon data from remote:', error);
+    }
+}
+
+export async function loadSkillDataTemplate() {
+    try {
+        const data = await fetchJSON('data/sim/skill_data_template.json');
+
+        if (Array.isArray(data)) {
+            state.skillDataTemplate = Object.fromEntries(
+                data.map(skill => [skill.id, skill])
+            );
+        } else if (typeof data === 'object') {
+            state.skillDataTemplate = data;
+        } else {
+            throw new Error('Invalid skill data format');
+        }
+
+        console.log('Loaded local skill data template:', Object.keys(state.skillDataTemplate).length, 'skills');
+        return;
+    } catch (error) {
+        console.warn('Local skill data not found, fetching from remote...', error);
+    }
+
+    try {
+        const data = await fetchJSON('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/skill_data_template.json');
+
+        if (Array.isArray(data)) {
+            state.skillDataTemplate = Object.fromEntries(
+                data.map(skill => [skill.id, skill])
+            );
+        } else if (typeof data === 'object') {
+            state.skillDataTemplate = data;
+        } else {
+            throw new Error('Invalid skill data format from remote');
+        }
+
+        console.log('Loaded remote skill data template:', Object.keys(state.skillDataTemplate).length, 'skills');
+    } catch (error) {
+        console.error('Failed to fetch skill data template from remote:', error);
+    }
+}
+
+// ===== Skill Helper Functions =====
+
+export function getSkillIconUrl(skillId) {
+    const iconUrl = state.skillIconData[String(skillId)];
+    if (!iconUrl) {
+        console.log('No icon found for skill:', skillId);
+        return null;
+    }
+    console.log('Skill icon URL:', skillId, '->', iconUrl);
+    return iconUrl;
+}
+
+export function processSkillDescription(desc, descGetAdd) {
+    if (!desc) return '설명 없음';
+    if (!descGetAdd || descGetAdd.length === 0) return desc;
+
+    let processed = desc;
+    descGetAdd.forEach((params, index) => {
+        const placeholder = `$${index + 1}`;
+        const value = Array.isArray(params) ? params.join('/') : params;
+        processed = processed.replace(new RegExp(`\\${placeholder}`, 'g'), value);
+    });
+
+    return processed;
+}
+
+export function getSkillInfo(skillId) {
+    const skill = state.skillDataTemplate[String(skillId)];
+
+    if (!skill) {
+        console.warn('Skill not found:', skillId);
+        return {
+            name: `스킬 ${skillId}`,
+            description: '정보 없음',
+            iconUrl: getSkillIconUrl(skillId)
+        };
+    }
+
+    return {
+        name: skill.name || `스킬 ${skillId}`,
+        description: processSkillDescription(skill.desc, skill.desc_get_add),
+        iconUrl: getSkillIconUrl(skillId)
+    };
+}
+
+// ===== Helper Functions =====
+export function getAttrKoreanName(attrName) {
+    if (!attrName) return '';
+    const lowerAttrName = attrName.toLowerCase();
+
+    // Try to find by 'name' first, then by 'name2'
+    const attr = Object.values(state.attrTypeData).find(a =>
+        a.name === lowerAttrName || a.name2 === lowerAttrName
+    );
+
+    return attr ? attr.condition : attrName;
+}
+
+export function getShipType(type) {
+    const shipType = state.shipTypeData[String(type)];
+    if (shipType) {
+        return `
+            ${shipType.icon ? `<img src="${shipType.icon}" alt="${shipType.type_name}" style="height: 20px; vertical-align: middle; margin-right: 5px;">` : ''}
+            ${shipType.type_name}
+        `;
+    }
+    return `함종 ${type}`;
+}
+
+export function createAttrMapping() {
+    const mapping = {};
+    Object.values(state.attrTypeData).forEach(attr => {
+        mapping[attr.name] = attr;
+        // Also map name2 if it exists
+        if (attr.name2) {
+            mapping[attr.name2] = attr;
+        }
+    });
+    return mapping;
+}

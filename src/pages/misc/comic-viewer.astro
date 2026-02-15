@@ -1,0 +1,25 @@
+---
+/**
+ * Comic Viewer
+ * Converted from pages/misc/comic-viewer.html
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/misc/comic-viewer.css';
+---
+
+<Layout title="벽람항로 만화">
+    <header>
+        <h1>벽람항로 만화보기</h1>
+        <button id="sort-button">기간정렬 : 1호부터</button>
+    </header>
+    <main>
+        <div id="gallery" class="gallery-container"></div>
+    </main>
+
+    <div id="lightbox" class="lightbox">
+        <span class="close-button">&times;</span>
+        <img id="lightbox-img" class="lightbox-content" src="" alt="Enlarged Manga Image">
+    </div>
+
+    <script is:inline type="module" src="/altoy/scripts/misc/comic-viewer.js"></script>
+</Layout>

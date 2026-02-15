@@ -1,0 +1,366 @@
+---
+/**
+ * Base Layout for all pages
+ * Converted from _layouts/default.html
+ */
+interface Props {
+    title?: string;
+    bodyClass?: string;
+    description?: string;
+}
+
+const {
+    title = "벽람 장난감",
+    bodyClass = "",
+    description = "ALtoy - Azur Lane KR fan-made web viewer"
+} = Astro.props;
+
+// Import global styles
+import '../styles/global.style.css';
+---
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content={description}>
+    <title>{title}</title>
+    <link rel="icon" href="/altoy/assets/icon/favicon.ico" type="image/x-icon">
+
+    <!-- Preconnect to external origins for faster loading -->
+    <link rel="preconnect" href="https://raw.githubusercontent.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Cloudflare Web Analytics -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "a34273493b4d4973a33713a7b1273213"}'></script>
+
+    <!-- Page-specific head content -->
+    <slot name="head" />
+</head>
+
+<body class={bodyClass}>
+    <!-- Navigation -->
+    <slot name="nav">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="/altoy/" class="nav-logo">
+                    <img src="/altoy/assets/img/체루.png" alt="Site Portrait" class="nav-portrait">
+                    <span class="material-symbols-outlined">home</span>
+                </a>
+
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <span class="material-symbols-outlined theme-icon-sun">light_mode</span>
+                    <span class="material-symbols-outlined theme-icon-moon">dark_mode</span>
+                </button>
+
+                <ul class="nav-menu">
+                    <!-- Category #1: Ships/Skins -->
+                    <li class="nav-item mega-dropdown">
+                        <a href="#" class="nav-links">함순이/스킨/대사</a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-content">
+                                <div class="mega-menu-column">
+                                    <h3 class="mega-menu-title">함순이 정보</h3>
+                                    <a href="/altoy/shipgirl/shipgirl-info/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">database</span>
+                                        <div>
+                                            <strong>함순이 DB</strong>
+                                            <small>함순이 상세 정보</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/shipgirl/shipgirl-build-sim/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">casino</span>
+                                        <div>
+                                            <strong>함순이 건조확률 보기</strong>
+                                            <small>배너별 건조확률 상세확인</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/shipgirl/shipgirl-birthday/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">cake</span>
+                                        <div>
+                                            <strong>함순이 생일</strong>
+                                            <small>함순이 생일 확인하기</small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="mega-menu-column">
+                                    <h3 class="mega-menu-title">스킨 & 대사</h3>
+                                    <a href="/altoy/skin/skin-detail-viewer/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">image</span>
+                                        <div>
+                                            <strong>일러/대사</strong>
+                                            <small>선택된 스킨의 일러스트 및 대사보기/재생</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/skin/skin-list-viewer/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">photo_library</span>
+                                        <div>
+                                            <strong>스킨 모음집</strong>
+                                            <small>여러 스킨들을 필터링/판매중 정보와 같이보기</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/skin/skin-poll/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">poll</span>
+                                        <div>
+                                            <strong>스킨 투표</strong>
+                                            <small>벽챈 스킨선호도 실시간으로 보기</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/skin/expression-viewer/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">face</span>
+                                        <div>
+                                            <strong>기타 캐릭터 일러 뷰어</strong>
+                                            <small>적 및 특수상황에서의 함순이들의 표정 일러스트 뷰어</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- Category #2: Tools -->
+                    <li class="nav-item mega-dropdown">
+                        <a href="#" class="nav-links">정보/도구모음</a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-content">
+                                <div class="mega-menu-column">
+                                    <h3 class="mega-menu-title">각종 계산기/도구</h3>
+                                    <a href="/altoy/island/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">forest</span>
+                                        <div>
+                                            <strong>아일랜드 계획 관리</strong>
+                                            <small>벽타듀 캐릭터, 기술, 퀘스트 관리</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/event-timeline/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">event</span>
+                                        <div>
+                                            <strong>룽섭 일정보기</strong>
+                                            <small>과거 룽섭 이벤트 일정들을 검색과 함께 확인</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/shipgirl/shipgirl-tracker/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">calculate</span>
+                                        <div>
+                                            <strong>육성 계산기</strong>
+                                            <small>기술/진영점수 계산</small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="mega-menu-column">
+                                    <h3 class="mega-menu-title">기타 도구모음</h3>
+                                    <a href="/altoy/skin/skin-sd-viewer/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">construction</span>
+                                        <div>
+                                            <strong>설비스킨</strong>
+                                            <small>장비(설비) 스킨 뷰어</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/simulators/sim-weapon/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">sports_esports</span>
+                                        <div>
+                                            <strong>탄막 시뮬레이터 - BETA</strong>
+                                            <small>아직 개발중 (현재는 직접 탄막만 제대로 구현)</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- Category #3: Stories -->
+                    <li class="nav-item mega-dropdown">
+                        <a href="#" class="nav-links">스토리보기</a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-content">
+                                <div class="mega-menu-column">
+                                    <h3 class="mega-menu-title">메인스토리 보기</h3>
+                                    <a href="/altoy/story-viewer/main-story/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">menu_book</span>
+                                        <div>
+                                            <strong>메인스토리</strong>
+                                            <small>메인스토리 뷰어</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/story-viewer/main-storyline/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">timeline</span>
+                                        <div>
+                                            <strong>메인스토리 타임라인</strong>
+                                            <small>타임라인으로 스토리 흐름보기</small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="mega-menu-column">
+                                    <h3 class="mega-menu-title">대작전스토리 보기</h3>
+                                    <a href="/altoy/story-viewer/world-story/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">public</span>
+                                        <div>
+                                            <strong>대작전스토리</strong>
+                                            <small>대작전스토리 뷰어</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/story-viewer/world-file/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">folder</span>
+                                        <div>
+                                            <strong>대작전 파일</strong>
+                                            <small>파일해역에서 해금되는 파일들 모아보기</small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="mega-menu-column">
+                                    <h3 class="mega-menu-title">기타 스토리 컨텐츠</h3>
+                                    <a href="/altoy/story-viewer/tb-story/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">woman</span>
+                                        <div>
+                                            <strong>TB 키우기</strong>
+                                            <small>통베 회상/수집/엔딩 보기</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/story-viewer/navi-story/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">girl</span>
+                                        <div>
+                                            <strong>네비 키우기</strong>
+                                            <small>네비게이터 회상/수집/엔딩 보기</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/story-viewer/secretary-story/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">diagnosis</span>
+                                        <div>
+                                            <strong>비서함 스토리</strong>
+                                            <small>모항 비서함 클릭시 발생하는 스토리 모음</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/story-viewer/hof/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">emoji_events</span>
+                                        <div>
+                                            <strong>명예의 전당</strong>
+                                            <small>룽섭 명전 스토리들 모음</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- Category #4: In-game Content -->
+                    <li class="nav-item mega-dropdown">
+                        <a href="#" class="nav-links">인게임 컨텐츠</a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-content">
+                                <div class="mega-menu-column">
+                                    <h3 class="mega-menu-title">소셜 컨텐츠</h3>
+                                    <a href="/altoy/juustagram/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">photo_camera</span>
+                                        <div>
+                                            <strong>JUUSTAGRAM</strong>
+                                            <small>쥬스타그램을 글/댓작성자 검색과 같이보기</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/chat-viewer/juus/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">chat</span>
+                                        <div>
+                                            <strong>JUUS 보기</strong>
+                                            <small>대화형뷰어로 함순이 쥬톡보기</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/chat-viewer/dorm3d/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">view_in_ar</span>
+                                        <div>
+                                            <strong>3D숙소 JUUS</strong>
+                                            <small>대화형뷰어로 3D숙소 쥬톡보기</small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="mega-menu-column">
+                                    <h3 class="mega-menu-title">인게임 일러스트들</h3>
+                                    <a href="/altoy/misc/loadingbg/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">wallpaper</span>
+                                        <div>
+                                            <strong>로딩일러</strong>
+                                            <small>인게임 로딩일러스트 모음</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/misc/comic-viewer/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">auto_stories</span>
+                                        <div>
+                                            <strong>만화 보기</strong>
+                                            <small>인게임 만화모음</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/misc/gallerypic/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">collections</span>
+                                        <div>
+                                            <strong>삽화 보기</strong>
+                                            <small>인게임 삽화모음</small>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="mega-menu-column">
+                                    <h3 class="mega-menu-title">그 외 컨텐츠</h3>
+                                    <a href="/altoy/misc/bgm-player/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">music_note</span>
+                                        <div>
+                                            <strong>BGM 듣기</strong>
+                                            <small>배경음악 플레이어</small>
+                                        </div>
+                                    </a>
+                                    <a href="/altoy/misc/valentine/" class="mega-menu-link">
+                                        <span class="material-symbols-outlined">mail</span>
+                                        <div>
+                                            <strong>발렌타인 편지</strong>
+                                            <small>함순이별 발렌타인 편지 모음</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="menu-icon">
+                    <span class="material-symbols-outlined">menu</span>
+                </div>
+            </div>
+        </nav>
+    </slot>
+
+    <!-- Global libraries (must load before page scripts) -->
+    <script is:inline src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
+    <script is:inline type="module" src="/altoy/scripts/utils.js"></script>
+    <script is:inline type="module" src="/altoy/scripts/global.script.js"></script>
+
+    <!-- Main content -->
+    <slot />
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p><strong><i>ALtoy</i></strong> is a non-profit fan project for the mobile game <strong>Azur Lane</strong><br>
+        &copy; <span id="copyright-year"></span> All assets/images/music in the project are the property of Manjuu, Yongshi, Yostar, and the Korean publisher X.D. Global and creators respectively.</p>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <button id="scroll-to-top" class="scroll-to-top hidden" aria-label="맨 위로 가기">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Copyright year script + Service Worker registration -->
+    <script is:inline>
+        document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
+        // Register Service Worker for offline caching
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/altoy/sw.js')
+                    .catch(err => console.warn('SW registration failed:', err));
+            });
+        }
+    </script>
+</body>
+</html>
