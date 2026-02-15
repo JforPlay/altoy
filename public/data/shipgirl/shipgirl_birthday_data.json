@@ -7177,5 +7177,53 @@
         "일": "20",
         "group_id": "30194",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301940/icon.png"
+    },
+    {
+        "ID": "720",
+        "룽섭 이름": "프란체스코 카라치올로",
+        "레어도": "SSR",
+        "함종": "전함",
+        "진영": "사르데냐",
+        "연": "1920",
+        "월": "5",
+        "일": "12",
+        "group_id": "60509",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605090/icon.png"
+    },
+    {
+        "ID": "721",
+        "룽섭 이름": "알베르토 디 주사노",
+        "레어도": "SR",
+        "함종": "경순",
+        "진영": "사르데냐",
+        "연": "1930",
+        "월": "4",
+        "일": "27",
+        "group_id": "60204",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602040/icon.png"
+    },
+    {
+        "ID": "722",
+        "룽섭 이름": "우골리노 비발디",
+        "레어도": "SR",
+        "함종": "구축",
+        "진영": "사르데냐",
+        "연": "1929",
+        "월": "9",
+        "일": "1",
+        "group_id": "60112",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/601120/icon.png"
+    },
+    {
+        "ID": "726",
+        "룽섭 이름": "하이초?",
+        "레어도": "SR",
+        "함종": "경순",
+        "진영": "동황",
+        "연": "1897",
+        "월": "12",
+        "일": "11",
+        "group_id": "",
+        "icon": ""
     }
 ]
