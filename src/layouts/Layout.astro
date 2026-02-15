@@ -60,6 +60,11 @@ import '../styles/global.style.css';
                     <span class="material-symbols-outlined theme-icon-moon">dark_mode</span>
                 </button>
 
+                <button class="global-search-trigger" aria-label="검색 (Ctrl+K)">
+                    <span class="material-symbols-outlined">search</span>
+                    <kbd class="search-shortcut-hint">Ctrl K</kbd>
+                </button>
+
                 <ul class="nav-menu">
                     <!-- Category #1: Ships/Skins -->
                     <li class="nav-item mega-dropdown">
@@ -335,9 +340,30 @@ import '../styles/global.style.css';
     <script is:inline src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
     <script is:inline type="module" src="/altoy/scripts/utils.js"></script>
     <script is:inline type="module" src="/altoy/scripts/global.script.js"></script>
+    <script is:inline type="module" src="/altoy/scripts/global-search.js"></script>
 
     <!-- Main content -->
     <slot />
+
+    <!-- Global Search Modal -->
+    <div id="global-search-modal" class="global-search-overlay" aria-hidden="true">
+        <div class="global-search-container">
+            <div class="global-search-header">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text" id="global-search-input"
+                       placeholder="함순이 이름 또는 페이지 검색..." autocomplete="off">
+                <kbd class="global-search-esc">ESC</kbd>
+            </div>
+            <div id="global-search-results" class="global-search-results">
+                <div class="global-search-empty">검색어를 입력하세요</div>
+            </div>
+            <div class="global-search-footer">
+                <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> 이동</span>
+                <span><kbd>Enter</kbd> 열기</span>
+                <span><kbd>ESC</kbd> 닫기</span>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="site-footer">
