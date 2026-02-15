@@ -92,6 +92,11 @@ function init() {
         }
     });
 
+    // Close button (mobile)
+    document.querySelectorAll('.global-search-close').forEach(btn => {
+        btn.addEventListener('click', closeSearch);
+    });
+
     // Backdrop click to close
     overlay.addEventListener('click', (e) => {
         if (e.target === overlay) closeSearch();
