@@ -3,7 +3,7 @@
  * Handles planner UI, presets, menu selection modals, and results rendering
  */
 
-import { showElement, hideElement } from '../utils.js';
+import { showElement, hideElement, getStorageItem, setStorageItem } from '../utils.js';
 import {
     aggregateIngredients,
     groupIngredientsByLocation
@@ -96,7 +96,7 @@ export function loadPlannerState() {
     state.plannerPresets = createDefaultPlannerPresets();
 
     try {
-        const savedPlan = localStorage.getItem(STORAGE_KEY_PLANNER_PLAN);
+        const savedPlan = getStorageItem(STORAGE_KEY_PLANNER_PLAN, null);
         if (savedPlan) {
             const parsed = JSON.parse(savedPlan);
             getRestaurantIds().forEach(id => {
@@ -104,7 +104,7 @@ export function loadPlannerState() {
             });
         }
 
-        const savedPresets = localStorage.getItem(STORAGE_KEY_PLANNER_PRESETS);
+        const savedPresets = getStorageItem(STORAGE_KEY_PLANNER_PRESETS, null);
         if (savedPresets) {
             const parsed = JSON.parse(savedPresets);
             getRestaurantIds().forEach(id => {
@@ -125,7 +125,7 @@ export function loadPlannerState() {
 
 function savePlannerPlan() {
     try {
-        localStorage.setItem(STORAGE_KEY_PLANNER_PLAN, JSON.stringify(state.plannerPlan));
+        setStorageItem(STORAGE_KEY_PLANNER_PLAN, JSON.stringify(state.plannerPlan));
     } catch (error) {
         console.error('[Restaurant] Failed to save planner plan:', error);
     }
@@ -133,7 +133,7 @@ function savePlannerPlan() {
 
 function savePlannerPresets() {
     try {
-        localStorage.setItem(STORAGE_KEY_PLANNER_PRESETS, JSON.stringify(state.plannerPresets));
+        setStorageItem(STORAGE_KEY_PLANNER_PRESETS, JSON.stringify(state.plannerPresets));
     } catch (error) {
         console.error('[Restaurant] Failed to save planner presets:', error);
     }

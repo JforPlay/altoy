@@ -25,6 +25,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- State ---
     let currentSkillLevel = '1';
+    let pendingFireTimers = [];
+
+    function scheduleFireTimer(fn, delay) {
+        const id = setTimeout(() => {
+            pendingFireTimers = pendingFireTimers.filter(t => t !== id);
+            fn();
+        }, delay);
+        pendingFireTimers.push(id);
+    }
 
     // --- Engine Initialization ---
     const simEngine = new SimulationEngine({
@@ -110,6 +119,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     fireButton.addEventListener('click', async () => {
+        pendingFireTimers.forEach(id => clearTimeout(id));
+        pendingFireTimers = [];
         simEngine.clearBullets();
         const selectedSkillId = choicesInstance.getValue(true);
         if (selectedSkillId && selectedSkillId !== 'none') await fireSkill(selectedSkillId);
@@ -132,6 +143,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         let lastTime = performance.now();
         let frameCount = 0;
+        let fpsAnimId = null;
 
         function updateFPS() {
             const now = performance.now();
@@ -143,9 +155,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                 frameCount = 0;
                 lastTime = now;
             }
-            requestAnimationFrame(updateFPS);
+            fpsAnimId = requestAnimationFrame(updateFPS);
         }
-        updateFPS();
+        fpsAnimId = requestAnimationFrame(updateFPS);
+
+        // Pause/resume FPS counter when page visibility changes
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (fpsAnimId) {
+                    cancelAnimationFrame(fpsAnimId);
+                    fpsAnimId = null;
+                }
+            } else if (!fpsAnimId) {
+                lastTime = performance.now();
+                frameCount = 0;
+                fpsAnimId = requestAnimationFrame(updateFPS);
+            }
+        });
     }
 
     function convertToMs(value, timeUnitIsFrames = false) {
@@ -234,7 +260,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // iterates over weaponInfo objects
         weaponSimData.getWeaponIdsFromSkill(skillId, currentSkillLevel).forEach((weaponInfo, index) =>
-            setTimeout(() => fireWeapon(weaponInfo, skillPosition), index * 100)
+            scheduleFireTimer(() => fireWeapon(weaponInfo, skillPosition), index * 100)
         );
     }
 
@@ -307,7 +333,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         for (let i = 0; i < primalRepeatCount; i++) {
             const bulletFireTime = waveStartTime + totalPrimalDelay;
-            setTimeout(() => {
+            scheduleFireTimer(() => {
                 fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction);
             }, convertToMs(bulletFireTime));
 
@@ -322,7 +348,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         for (let i = 0; i < primalRepeatCount; i++) {
             const bulletFireTime = waveStartTime + (i * constantInterval);
-            setTimeout(() => {
+            scheduleFireTimer(() => {
                 fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction);
             }, convertToMs(bulletFireTime));
         }
@@ -330,7 +356,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function fireWaveImmediate(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1) {
         const primalRepeatCount = (barrage.primal_repeat || 0) + 1;
-        setTimeout(() => {
+        scheduleFireTimer(() => {
             for (let i = 0; i < primalRepeatCount; i++) {
                 fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction);
             }

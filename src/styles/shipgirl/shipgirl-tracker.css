@@ -1,6 +1,41 @@
 /* --- Color Scheme Variables --- */
-/* Dark Mode (Default) */
-:root,
+/* Light mode defaults */
+:root {
+  --primary-bg: #f0f2f5;
+  --secondary-bg: #ffffff;
+  --tertiary-bg: #f5f6f7;
+  --primary-text: #1c1e21;
+  --secondary-text: #606770;
+  --accent-color: #1877f2;
+  --accent-hover: #166fe5;
+  --border-color: #dddfe2;
+  --card-bg: #ffffff;
+  --card-border: #e4e6eb;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --success-color: #2ecc71;
+  --error-color: #e74c3c;
+  --warning-color: #f39c12;
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Rarity colors (mode-independent constants) */
+  --rarity-n: #b0bec5;
+  --rarity-r: #6495ed;
+  --rarity-sr: #ba68c8;
+  --rarity-ssr: #ffd54f;
+  --rarity-ssr-text: #5d4037;
+  --rarity-ur-gradient: linear-gradient(
+    45deg,
+    #fdeebb,
+    #ffc8b2,
+    #ffb7c5,
+    #dcb5ff,
+    #fdeebb
+  );
+  --rarity-ur-text: #4a4a4a;
+}
+
+/* Dark mode overrides */
 body.dark-mode {
   --primary-bg: #1a1a1a;
   --secondary-bg: #2c2c2c;
@@ -18,42 +53,6 @@ body.dark-mode {
   --warning-color: #f39c12;
   --hover-bg: rgba(255, 255, 255, 0.05);
   --modal-overlay: rgba(0, 0, 0, 0.7);
-
-  /* Rarity colors - unified */
-  --rarity-n: #b0bec5;
-  --rarity-r: #6495ed;
-  --rarity-sr: #ba68c8;
-  --rarity-ssr: #ffd54f;
-  --rarity-ssr-text: #5d4037;
-  --rarity-ur-gradient: linear-gradient(
-    45deg,
-    #fdeebb,
-    #ffc8b2,
-    #ffb7c5,
-    #dcb5ff,
-    #fdeebb
-  );
-  --rarity-ur-text: #4a4a4a;
-}
-
-/* Light Mode */
-body:not(.dark-mode) {
-  --primary-bg: #f0f2f5;
-  --secondary-bg: #ffffff;
-  --tertiary-bg: #f5f6f7;
-  --primary-text: #1c1e21;
-  --secondary-text: #606770;
-  --accent-color: #1877f2;
-  --accent-hover: #166fe5;
-  --border-color: #dddfe2;
-  --card-bg: #ffffff;
-  --card-border: #e4e6eb;
-  --shadow-color: rgba(0, 0, 0, 0.1);
-  --success-color: #2ecc71;
-  --error-color: #e74c3c;
-  --warning-color: #f39c12;
-  --hover-bg: rgba(0, 0, 0, 0.05);
-  --modal-overlay: rgba(0, 0, 0, 0.5);
 }
 
 /* --- General Body & Header Styles --- */
@@ -1549,7 +1548,7 @@ body:not(.dark-mode) .goal-select-dropdown option:checked {
 }
 
 .goal-card.complete {
-  border-left-color: #27ae60;
+  border-left-color: var(--success-color);
   background: linear-gradient(
     135deg,
     var(--card-bg) 0%,
@@ -1635,7 +1634,7 @@ body:not(.dark-mode) .goal-select-dropdown option:checked {
 }
 
 .goal-rarity.rarity-DR {
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  background: linear-gradient(135deg, var(--error-color), #c0392b);
   color: white;
 }
 
@@ -1676,7 +1675,7 @@ body:not(.dark-mode) .goal-select-dropdown option:checked {
 }
 
 .goal-progress-fill.complete {
-  background: linear-gradient(90deg, #27ae60, #2ecc71);
+  background: linear-gradient(90deg, var(--success-color), #2ecc71);
 }
 
 .goal-progress-text {
@@ -1689,11 +1688,11 @@ body:not(.dark-mode) .goal-select-dropdown option:checked {
 }
 
 .goal-progress-text.complete {
-  color: #27ae60;
+  color: var(--success-color);
 }
 
 .goal-progress-text .checkmark {
-  color: #27ae60;
+  color: var(--success-color);
   font-size: 1rem;
 }
 
@@ -1706,11 +1705,11 @@ body:not(.dark-mode) .goal-select-dropdown option:checked {
     rgba(39, 174, 96, 0.1),
     rgba(46, 204, 113, 0.1)
   );
-  border: 1px solid #27ae60;
+  border: 1px solid var(--success-color);
   border-radius: 6px;
   text-align: center;
   font-weight: 700;
-  color: #27ae60;
+  color: var(--success-color);
   font-size: 0.9rem;
 }
 

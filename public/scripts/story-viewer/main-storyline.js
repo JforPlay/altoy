@@ -1,4 +1,4 @@
-import { debounce, fetchJSON, hideElement, showElement, resolveUrl } from '../utils.js';
+import { debounce, fetchJSON, hideElement, showElement, resolveUrl, openModal, closeModal as utilsCloseModal, setupModal } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
@@ -343,8 +343,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const itemData = allData[itemId];
             if (!itemData || !itemData.link_event || String(itemData.link_event).length === 0) return;
 
-            // Use cached DOM element if available
-            const startNode = domElementsCache.get(itemId) || document.querySelector(`.timeline-item[data-id='${itemId}']`);
+            // Use cached DOM element; populate cache on miss
+            let startNode = domElementsCache.get(itemId);
+            if (!startNode) {
+                startNode = document.querySelector(`.timeline-item[data-id='${itemId}']`);
+                if (startNode) domElementsCache.set(itemId, startNode);
+            }
             if (!startNode) return;
 
             const startX = startNode.offsetLeft + startNode.offsetWidth / 2;
@@ -356,8 +360,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const targetData = allData[targetId];
                 if (!targetData || !visibleItemIds.includes(targetId)) return;
 
-                // Use cached DOM element if available
-                const endNode = domElementsCache.get(targetId) || document.querySelector(`.timeline-item[data-id='${targetId}']`);
+                // Use cached DOM element; populate cache on miss
+                let endNode = domElementsCache.get(targetId);
+                if (!endNode) {
+                    endNode = document.querySelector(`.timeline-item[data-id='${targetId}']`);
+                    if (endNode) domElementsCache.set(targetId, endNode);
+                }
                 if (!endNode) return;
 
                 const endX = endNode.offsetLeft + endNode.offsetWidth / 2;
@@ -408,20 +416,30 @@ document.addEventListener('DOMContentLoaded', () => {
             elements.modalBgm.src = "";
         }
 
-        elements.modal.style.display = 'block';
+        openModal('details-modal');
     });
 
     const closeModal = () => {
-        elements.modal.style.display = 'none';
-        if (elements.modalBgm.src) {
-            elements.modalBgm.pause();
-            elements.modalBgm.currentTime = 0;
-        }
+        utilsCloseModal('details-modal', {
+            onClose: () => {
+                if (elements.modalBgm.src) {
+                    elements.modalBgm.pause();
+                    elements.modalBgm.currentTime = 0;
+                }
+            }
+        });
     };
 
-    elements.closeButton.addEventListener('click', closeModal);
-    window.addEventListener('click', (event) => {
-        if (event.target === elements.modal) closeModal();
+    setupModal('details-modal', {
+        closeButtonSelector: '.close-button',
+        closeOnBackdrop: true,
+        closeOnEscape: false, // ESC handled in keyboard navigation section
+        onClose: () => {
+            if (elements.modalBgm.src) {
+                elements.modalBgm.pause();
+                elements.modalBgm.currentTime = 0;
+            }
+        }
     });
 
     function updateIndicator() {
@@ -518,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupKeyboardNavigation() {
         document.addEventListener('keydown', (e) => {
             // ESC to close modal
-            if (e.key === 'Escape' && elements.modal.style.display === 'block') {
+            if (e.key === 'Escape' && elements.modal.classList.contains('active')) {
                 closeModal();
             }
 

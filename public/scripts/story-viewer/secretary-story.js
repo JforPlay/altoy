@@ -2,14 +2,16 @@
    Secretary Story Viewer – Page Script (engine-agnostic)
    ============================================================ */
 
+import { getStorageItem, setStorageItem, createSearchIndex } from '../utils.js';
+
 const COMPLETION_STORAGE_KEY = 'secretaryStoryCompletion';
 
 function getCompletionData() {
-  const data = localStorage.getItem(COMPLETION_STORAGE_KEY);
+  const data = getStorageItem(COMPLETION_STORAGE_KEY, null);
   return data ? JSON.parse(data) : {};
 }
 function setCompletionData(data) {
-  localStorage.setItem(COMPLETION_STORAGE_KEY, JSON.stringify(data));
+  setStorageItem(COMPLETION_STORAGE_KEY, JSON.stringify(data));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -151,15 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
   ------------------------------------------------------------ */
   function setupSearch() {
     const source = Object.values(window.StoryViewer.storylineData || {});
-    if (typeof Fuse === 'undefined') {
-      console.warn('Fuse.js was not found; search will be disabled.');
-      return;
-    }
-    const fuse = new Fuse(source, {
-      keys: ['name'],
-      threshold: 0.4,
-      includeMatches: true
-    });
+    const fuse = createSearchIndex(source, { keys: ['name'], threshold: 0.4 });
+    if (!fuse) return;
 
     const searchBar = document.getElementById('search-bar');
     const searchResults = document.getElementById('search-results');

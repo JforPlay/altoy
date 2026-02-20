@@ -1,4 +1,4 @@
-import { debounce, fetchJSONWithCache, getAllUrlParams, showToast } from '../utils.js';
+import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, getStorageItem, setStorageItem, showToast, createSearchIndex } from '../utils.js';
 
 /* ====================================
    SKIN POLL - MAIN SCRIPT
@@ -103,12 +103,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let currentUserId = null;
 
   // Fuse.js options for character search
-  const fuseOptions = {
-    includeScore: true,
-    includeMatches: true,
-    threshold: 0.4,
-    keys: ['name']
-  };
+  const fuseOptions = { keys: ['name'], threshold: 0.4 };
 
   // Refresh cooldown state
   let refreshCooldownTimer = null;
@@ -157,7 +152,7 @@ document.addEventListener("DOMContentLoaded", async () => {
    * Check and update cache version
    */
   const initializeCacheVersion = () => {
-    const currentVersion = localStorage.getItem("cache_version");
+    const currentVersion = getStorageItem("cache_version", null);
     if (currentVersion !== CACHE_VERSION) {
       console.log("🔄 Cache version updated. Clearing old data...");
 
@@ -172,7 +167,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       });
 
-      localStorage.setItem("cache_version", CACHE_VERSION);
+      setStorageItem("cache_version", CACHE_VERSION);
       showToast("데이터가 업데이트되었습니다.", "info");
     }
   };
@@ -182,12 +177,12 @@ document.addEventListener("DOMContentLoaded", async () => {
    */
   const savePollDataToCache = (pollData) => {
     try {
-      localStorage.setItem(`${CACHE_VERSION}_pollDataCache`, JSON.stringify({
+      setStorageItem(`${CACHE_VERSION}_pollDataCache`, JSON.stringify({
         data: pollData,
         timestamp: Date.now(),
         version: CACHE_VERSION
       }));
-      localStorage.setItem(`${CACHE_VERSION}_pollDataTimestamp`, String(Date.now()));
+      setStorageItem(`${CACHE_VERSION}_pollDataTimestamp`, String(Date.now()));
       console.log(`💾 Saved ${Object.keys(pollData).length} poll entries to cache`);
     } catch (e) {
       console.warn("Cache save failed:", e);
@@ -199,7 +194,7 @@ document.addEventListener("DOMContentLoaded", async () => {
    */
   const loadPollDataFromCache = () => {
     try {
-      const cached = localStorage.getItem(`${CACHE_VERSION}_pollDataCache`);
+      const cached = getStorageItem(`${CACHE_VERSION}_pollDataCache`, null);
       if (!cached) return { data: null, timestamp: null };
 
       const { data, timestamp, version } = JSON.parse(cached);
@@ -228,7 +223,7 @@ document.addEventListener("DOMContentLoaded", async () => {
    */
   const saveLeaderboardToCache = (leaderboard, totalVotes) => {
     try {
-      localStorage.setItem(`${CACHE_VERSION}_leaderboardCache`, JSON.stringify({
+      setStorageItem(`${CACHE_VERSION}_leaderboardCache`, JSON.stringify({
         leaderboard,
         totalVotes,
         timestamp: Date.now(),
@@ -244,7 +239,7 @@ document.addEventListener("DOMContentLoaded", async () => {
    */
   const loadLeaderboardFromCache = () => {
     try {
-      const cached = localStorage.getItem(`${CACHE_VERSION}_leaderboardCache`);
+      const cached = getStorageItem(`${CACHE_VERSION}_leaderboardCache`, null);
       if (!cached) return null;
 
       const { leaderboard, totalVotes, timestamp, version } = JSON.parse(cached);
@@ -266,7 +261,7 @@ document.addEventListener("DOMContentLoaded", async () => {
    */
   const saveUserVotesToCache = (votesSet) => {
     try {
-      localStorage.setItem(`${CACHE_VERSION}_userVotesCache`, JSON.stringify({
+      setStorageItem(`${CACHE_VERSION}_userVotesCache`, JSON.stringify({
         votes: Array.from(votesSet),
         timestamp: Date.now(),
         userId: currentUserId,
@@ -282,7 +277,7 @@ document.addEventListener("DOMContentLoaded", async () => {
    */
   const loadUserVotesFromCache = () => {
     try {
-      const cached = localStorage.getItem(`${CACHE_VERSION}_userVotesCache`);
+      const cached = getStorageItem(`${CACHE_VERSION}_userVotesCache`, null);
       if (!cached) return null;
 
       const { votes, timestamp, userId, version } = JSON.parse(cached);
@@ -307,7 +302,7 @@ document.addEventListener("DOMContentLoaded", async () => {
    * Update data age indicator with connection status
    */
   const updateDataAgeIndicator = () => {
-    const cacheTimestamp = localStorage.getItem(`${CACHE_VERSION}_pollDataTimestamp`);
+    const cacheTimestamp = getStorageItem(`${CACHE_VERSION}_pollDataTimestamp`, null);
     const indicator = document.getElementById('data-age-indicator');
 
     if (!indicator) return;
@@ -483,7 +478,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const submitVote = async (clientId, rating, skinName, characterName, displaySkinId) => {
     const userId = currentUserId;
 
-    if (userVotesCache.has(clientId) || localStorage.getItem(`voted_${clientId}`) === "true") {
+    if (userVotesCache.has(clientId) || getStorageItem(`voted_${clientId}`, null) === "true") {
       showToast("이미 이 스킨에 투표하셨습니다!", "error");
       return;
     }
@@ -544,8 +539,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log("✅ Vote saved (3 writes)");
 
       // Update local state
-      localStorage.setItem(`voted_${clientId}`, "true");
-      localStorage.setItem(`rating_${clientId}`, String(rating));
+      setStorageItem(`voted_${clientId}`, "true");
+      setStorageItem(`rating_${clientId}`, String(rating));
       userVotesCache.add(clientId);
       saveUserVotesToCache(userVotesCache);
 
@@ -598,7 +593,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         showToast("이미 이 스킨에 투표하셨습니다!", "error");
 
         userVotesCache.add(clientId);
-        localStorage.setItem(`voted_${clientId}`, "true");
+        setStorageItem(`voted_${clientId}`, "true");
 
         const ratingArea = document.querySelector(`.rating-area[data-client-id="${clientId}"]`);
         if (ratingArea) {
@@ -861,10 +856,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       pollBox.className = "poll-box";
       pollBox.id = `poll-box-${skinId}`;
 
-      const hasVotedLocal = localStorage.getItem(`voted_${clientId}`) === "true";
+      const hasVotedLocal = getStorageItem(`voted_${clientId}`, null) === "true";
       const hasVotedFirestore = userVotesCache.has(clientId);
       const hasVoted = hasVotedLocal || hasVotedFirestore;
-      const votedRating = hasVoted ? localStorage.getItem(`rating_${clientId}`) : null;
+      const votedRating = hasVoted ? getStorageItem(`rating_${clientId}`, null) : null;
 
       pollBox.innerHTML = `
         <img src="${skin["깔끔한 일러"]}"
@@ -1060,16 +1055,15 @@ document.addEventListener("DOMContentLoaded", async () => {
    * Update URL with current filter state
    */
   const updateURLWithFilters = () => {
-    const params = new URLSearchParams();
-    if (characterNameSearch.value) params.set('character', characterNameSearch.value);
-    if (skinTypeSelect.value !== 'all') params.set('type', skinTypeSelect.value);
-    if (factionSelect.value !== 'all') params.set('faction', factionSelect.value);
-    if (tagSelect.value !== 'all') params.set('tag', tagSelect.value);
-    if (sortSelect.value !== 'default') params.set('sort', sortSelect.value);
     const selectedRarities = cachedRarityCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
-    if (selectedRarities.length < 5) params.set('rarities', selectedRarities.join(','));
-    const newUrl = `${window.location.pathname}?${params.toString()}`;
-    history.pushState({}, '', newUrl);
+    setUrlParams({
+      character: characterNameSearch.value || null,
+      type: skinTypeSelect.value !== 'all' ? skinTypeSelect.value : null,
+      faction: factionSelect.value !== 'all' ? factionSelect.value : null,
+      tag: tagSelect.value !== 'all' ? tagSelect.value : null,
+      sort: sortSelect.value !== 'default' ? sortSelect.value : null,
+      rarities: selectedRarities.length < 5 ? selectedRarities.join(',') : null,
+    }, { replace: false, clear: true });
   };
 
   /**
@@ -1478,7 +1472,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Initialize Fuse.js for character search
       const characterDataForFuse = allCharacterNames.map(name => ({ name }));
-      characterFuse = new Fuse(characterDataForFuse, fuseOptions);
+      characterFuse = createSearchIndex(characterDataForFuse, fuseOptions);
 
       // Setup character search dropdown with Fuse.js
       setupDropdown(characterNameSearch, characterDropdownContent, () => characterFuse, handleCharacterSelect);

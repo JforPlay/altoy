@@ -2,7 +2,7 @@
  * Island Core Engine
  * Handles shared functionality and module coordination
  */
-import { fetchJSON, showToast } from '../utils.js';
+import { fetchJSON, showToast, setStorageItem, createSearchIndex } from '../utils.js';
 
 'use strict';
 
@@ -128,11 +128,7 @@ function switchTab(tabName) {
  */
 function activateTab(tabName) {
     // Persist selection for consistency with manual clicks
-    try {
-        localStorage.setItem('island-active-tab', tabName);
-    } catch (e) {
-        console.warn('[Island] Could not persist tab state:', e);
-    }
+    setStorageItem('island-active-tab', tabName);
 
     const tabButton = document.querySelector(`.tab-button[data-tab="${tabName}"]`);
     if (tabButton) {
@@ -191,15 +187,9 @@ function getItemInfo(itemId) {
 }
 
 function createIslandSearchIndex(data, config) {
-    if (!window.Fuse) {
-        console.error('[Island] Fuse.js not loaded');
-        return null;
-    }
-
-    return new Fuse(data, {
+    return createSearchIndex(data, {
         keys: config.keys || ['searchText'],
         threshold: config.threshold || 0.3,
-        includeScore: config.includeScore !== undefined ? config.includeScore : true,
         ...config
     });
 }

@@ -117,11 +117,9 @@ function setupScrollToTop(buttonId = 'scroll-to-top') {
     // Show/hide button based on scroll position
     const toggleButton = () => {
         if (window.scrollY > 300) {
-            scrollToTopBtn.classList.remove('hidden');
-            scrollToTopBtn.classList.add('visible'); // Ensure visible class is added for compatibility
+            showElement(scrollToTopBtn, true);
         } else {
-            scrollToTopBtn.classList.add('hidden');
-            scrollToTopBtn.classList.remove('visible');
+            hideElement(scrollToTopBtn, true);
         }
     };
 
@@ -420,6 +418,66 @@ async function purgeOldCache(maxAge = 7 * 24 * 60 * 60 * 1000) {
 }
 
 // ============================================
+// STORAGE UTILITIES
+// ============================================
+
+/**
+ * Safely get item from localStorage.
+ * Handles private browsing mode and permission errors.
+ * @param {string} key - Storage key
+ * @param {string} defaultValue - Default if unavailable
+ * @returns {string} Stored value or default
+ */
+function getStorageItem(key, defaultValue) {
+    try {
+        return localStorage.getItem(key) || defaultValue;
+    } catch (e) {
+        console.warn('localStorage unavailable:', e);
+        return defaultValue;
+    }
+}
+
+/**
+ * Safely set item in localStorage.
+ * Handles private browsing mode and permission errors.
+ * @param {string} key - Storage key
+ * @param {string} value - Value to store
+ */
+function setStorageItem(key, value) {
+    try {
+        localStorage.setItem(key, value);
+    } catch (e) {
+        console.warn('localStorage unavailable:', e);
+    }
+}
+
+// ============================================
+// STRING NORMALIZATION UTILITIES
+// ============================================
+
+/**
+ * Normalize ASCII Roman numerals (I-X) to Unicode equivalents.
+ * Used for consistent shipgirl name matching across data sources.
+ * Order matters: longer patterns must be replaced first to avoid partial matches.
+ * @param {string} str - The string to normalize
+ * @returns {string} - Normalized string with Unicode Roman numerals
+ */
+function normalizeRomanNumerals(str) {
+    if (!str) return str;
+    return str
+        .replace(/VIII/g, 'Ⅷ')  // ASCII VIII → Roman numeral 8
+        .replace(/VII/g, 'Ⅶ')   // ASCII VII → Roman numeral 7
+        .replace(/VI/g, 'Ⅵ')    // ASCII VI → Roman numeral 6
+        .replace(/III/g, 'Ⅲ')   // ASCII III → Roman numeral 3
+        .replace(/II/g, 'Ⅱ')    // ASCII II → Roman numeral 2
+        .replace(/IV/g, 'Ⅳ')    // ASCII IV → Roman numeral 4
+        .replace(/IX/g, 'Ⅸ')    // ASCII IX → Roman numeral 9
+        .replace(/X/g, 'Ⅹ')     // ASCII X → Roman numeral 10
+        .replace(/V/g, 'Ⅴ')     // ASCII V → Roman numeral 5
+        .trim();
+}
+
+// ============================================
 // URL PARAMETER UTILITIES
 // ============================================
 
@@ -436,11 +494,15 @@ function getUrlParam(key, defaultValue = null) {
 
 /**
  * Set URL parameters without page reload
- * @param {Object} params - Key-value pairs to set
- * @param {boolean} replace - Use replaceState instead of pushState (default: true)
+ * @param {Object} params - Key-value pairs to set (null/undefined/'' removes the key)
+ * @param {boolean|Object} options - true/false for replaceState (legacy), or options object
+ * @param {boolean} [options.replace=true] - Use replaceState instead of pushState
+ * @param {boolean} [options.clear=false] - Start from empty params (ignore current URL params)
  */
-function setUrlParams(params, replace = true) {
-    const urlParams = new URLSearchParams(window.location.search);
+function setUrlParams(params, options = true) {
+    const opts = typeof options === 'boolean' ? { replace: options } : options;
+    const { replace = true, clear = false } = opts;
+    const urlParams = clear ? new URLSearchParams() : new URLSearchParams(window.location.search);
     Object.entries(params).forEach(([key, value]) => {
         if (value === null || value === undefined || value === '') {
             urlParams.delete(key);
@@ -571,29 +633,31 @@ function closeModal(modalId, options = {}) {
  * @param {string} options.closeButtonSelector - Selector for close button (default: '.close-button, .modal-close')
  * @param {boolean} options.closeOnBackdrop - Close when clicking backdrop (default: true)
  * @param {boolean} options.closeOnEscape - Close on ESC key (default: true)
+ * @param {Function} options.onClose - Callback when modal closes (passed to closeModal)
  */
 function setupModal(modalId, options = {}) {
     const {
         closeButtonSelector = '.close-button, .modal-close',
         closeOnBackdrop = true,
-        closeOnEscape = true
+        closeOnEscape = true,
+        onClose = null
     } = options;
 
     const modal = document.getElementById(modalId);
     if (!modal) return;
 
+    const doClose = () => closeModal(modalId, { onClose });
+
     // Close button handler
     const closeButtons = modal.querySelectorAll(closeButtonSelector);
     closeButtons.forEach(btn => {
-        btn.addEventListener('click', () => closeModal(modalId));
+        btn.addEventListener('click', doClose);
     });
 
     // Backdrop click handler
     if (closeOnBackdrop) {
         modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal(modalId);
-            }
+            if (e.target === modal) doClose();
         });
     }
 
@@ -601,7 +665,7 @@ function setupModal(modalId, options = {}) {
     if (closeOnEscape) {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeModal(modalId);
+                doClose();
             }
         });
     }
@@ -627,6 +691,7 @@ function createSearchIndex(data, options = {}) {
     const defaultOptions = {
         threshold: 0.3,
         includeScore: true,
+        includeMatches: true,
         ignoreLocation: true,
         ...options
     };
@@ -730,6 +795,13 @@ export {
     openModal,
     closeModal,
     setupModal,
+
+    // Storage utilities
+    getStorageItem,
+    setStorageItem,
+
+    // String normalization
+    normalizeRomanNumerals,
 
     // Search utilities
     createSearchIndex,

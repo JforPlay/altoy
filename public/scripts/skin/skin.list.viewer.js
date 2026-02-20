@@ -1,4 +1,4 @@
-import { debounce, fetchJSON, getAllUrlParams, resolveUrl } from '../utils.js';
+import { debounce, fetchJSON, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // === DOM ELEMENT REFERENCES ===
@@ -39,35 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let allSkins = [];
     let fuse;
     let isLoading = false;
-    const fuseOptions = {
-        includeScore: true,
-        includeMatches: true,
-        threshold: 0.4,
-        keys: ['name']
-    };
+    const fuseOptions = { keys: ['name'], threshold: 0.4 };
 
     // === CACHED QUERIES ===
     const cachedRarityCheckboxes = Array.from(DOM.filters.rarities.querySelectorAll('input'));
     const allSkinContainers = Object.values(DOM.containers);
 
     // === CONSTANTS ===
-    // Normalize Roman numerals to handle data inconsistencies (consistent with skin.data.js)
-    // Order matters: longer patterns must be replaced first to avoid partial matches
-    const normalizeRomanNumerals = (str) => {
-        if (!str) return str;
-        return str
-            .replace(/VIII/g, 'Ⅷ')  // ASCII VIII → Roman numeral 8
-            .replace(/VII/g, 'Ⅶ')   // ASCII VII → Roman numeral 7
-            .replace(/VI/g, 'Ⅵ')    // ASCII VI → Roman numeral 6
-            .replace(/III/g, 'Ⅲ')   // ASCII III → Roman numeral 3
-            .replace(/II/g, 'Ⅱ')    // ASCII II → Roman numeral 2
-            .replace(/IV/g, 'Ⅳ')    // ASCII IV → Roman numeral 4
-            .replace(/IX/g, 'Ⅸ')    // ASCII IX → Roman numeral 9
-            .replace(/X/g, 'Ⅹ')     // ASCII X → Roman numeral 10
-            .replace(/V/g, 'Ⅴ')     // ASCII V → Roman numeral 5
-            .trim();
-    };
-
     const FILTER_PARAMS = {
         TYPE: 'type',
         TAG: 'tag',
@@ -132,18 +110,16 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         update() {
-            const params = new URLSearchParams();
             const filters = this.getFilters();
-
-            if (filters.type !== 'all') params.set(FILTER_PARAMS.TYPE, filters.type);
-            if (filters.tag !== 'all') params.set(FILTER_PARAMS.TAG, filters.tag);
-            if (filters.period !== 'all') params.set(FILTER_PARAMS.PERIOD, filters.period);
-            if (filters.faction !== 'all') params.set(FILTER_PARAMS.FACTION, filters.faction);
-            if (filters.rarities.length < 5) params.set(FILTER_PARAMS.RARITIES, filters.rarities.join(','));
-            if (filters.ex) params.set(FILTER_PARAMS.EX, 'true');
-            if (filters.search) params.set(FILTER_PARAMS.SEARCH, filters.search);
-
-            history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+            setUrlParams({
+                [FILTER_PARAMS.TYPE]: filters.type !== 'all' ? filters.type : null,
+                [FILTER_PARAMS.TAG]: filters.tag !== 'all' ? filters.tag : null,
+                [FILTER_PARAMS.PERIOD]: filters.period !== 'all' ? filters.period : null,
+                [FILTER_PARAMS.FACTION]: filters.faction !== 'all' ? filters.faction : null,
+                [FILTER_PARAMS.RARITIES]: filters.rarities.length < 5 ? filters.rarities.join(',') : null,
+                [FILTER_PARAMS.EX]: filters.ex ? 'true' : null,
+                [FILTER_PARAMS.SEARCH]: filters.search || null,
+            }, { clear: true });
         },
 
         apply() {
@@ -474,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
             isLoading = false;
 
             const uniqueShipNames = [...new Set(allSkins.map(skin => skin['함순이 이름']))].sort();
-            fuse = new Fuse(uniqueShipNames.map(name => ({ name })), fuseOptions);
+            fuse = createSearchIndex(uniqueShipNames.map(name => ({ name })), fuseOptions);
 
             URLState.apply();
         })

@@ -2,8 +2,9 @@
    CSS VARIABLES & THEME CONFIGURATION
    ===================================================== */
 
+/* Light mode defaults + constants */
 :root {
-  /* Color Palette */
+  /* Color Palette (mode-independent constants) */
   --primary: #0071eb;
   --primary-dark: #0056b3;
   --primary-light: #4da3ff;
@@ -11,10 +12,38 @@
 
   /* Layout */
   --container-max-width: 1200px;
+
+  /* Light Theme colors */
+  --bg-gradient-start: #ffffff;
+  --bg-gradient-mid: #f5f5f5;
+  --bg-gradient-end: #e8e8e8;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --card-bg: rgba(255, 255, 255, 0.6);
+  --card-bg-hover: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(0, 0, 0, 0.15);
+  --card-border-hover: rgba(0, 113, 235, 0.4);
+  --navbar-bg: rgba(255, 255, 255, 0.95);
+  --navbar-bg-scrolled: rgba(255, 255, 255, 0.98);
+  --navbar-border: rgba(0, 0, 0, 0.1);
+  --dropdown-bg: rgba(255, 255, 255, 0.98);
+  --dropdown-border: rgba(0, 0, 0, 0.15);
+  --link-bg: rgba(0, 0, 0, 0.05);
+  --link-border: rgba(0, 0, 0, 0.1);
+  --link-bg-hover: rgba(0, 113, 235, 0.1);
+  --link-border-hover: rgba(0, 113, 235, 0.3);
+  --external-badge-bg: rgba(0, 113, 235, 0.15);
+  --external-badge-border: rgba(0, 113, 235, 0.35);
+  --dual-link-bg: rgba(0, 0, 0, 0.04);
+  --dual-link-border: rgba(0, 0, 0, 0.12);
+  --dual-link-bg-hover: rgba(0, 113, 235, 0.12);
+  --dual-link-border-hover: rgba(0, 113, 235, 0.35);
+
+  --carousel-img-filter: saturate(0.5) contrast(0.85);
+  --carousel-img-filter-active: saturate(0.6) contrast(0.9);
 }
 
-/* Dark Theme (Default) */
-body,
+/* Dark Theme */
 body.dark-mode {
   --bg-gradient-start: #000000;
   --bg-gradient-mid: #141414;
@@ -43,37 +72,6 @@ body.dark-mode {
 
   --carousel-img-filter: brightness(0.6);
   --carousel-img-filter-active: brightness(0.7);
-}
-
-/* Light Theme */
-body:not(.dark-mode) {
-  --bg-gradient-start: #ffffff;
-  --bg-gradient-mid: #f5f5f5;
-  --bg-gradient-end: #e8e8e8;
-  --text-primary: #1a1a1a;
-  --text-secondary: #666666;
-  --card-bg: rgba(255, 255, 255, 0.6);
-  --card-bg-hover: rgba(255, 255, 255, 0.9);
-  --card-border: rgba(0, 0, 0, 0.15);
-  --card-border-hover: rgba(0, 113, 235, 0.4);
-  --navbar-bg: rgba(255, 255, 255, 0.95);
-  --navbar-bg-scrolled: rgba(255, 255, 255, 0.98);
-  --navbar-border: rgba(0, 0, 0, 0.1);
-  --dropdown-bg: rgba(255, 255, 255, 0.98);
-  --dropdown-border: rgba(0, 0, 0, 0.15);
-  --link-bg: rgba(0, 0, 0, 0.05);
-  --link-border: rgba(0, 0, 0, 0.1);
-  --link-bg-hover: rgba(0, 113, 235, 0.1);
-  --link-border-hover: rgba(0, 113, 235, 0.3);
-  --external-badge-bg: rgba(0, 113, 235, 0.15);
-  --external-badge-border: rgba(0, 113, 235, 0.35);
-  --dual-link-bg: rgba(0, 0, 0, 0.04);
-  --dual-link-border: rgba(0, 0, 0, 0.12);
-  --dual-link-bg-hover: rgba(0, 113, 235, 0.12);
-  --dual-link-border-hover: rgba(0, 113, 235, 0.35);
-
-  --carousel-img-filter: saturate(0.5) contrast(0.85);
-  --carousel-img-filter-active: saturate(0.6) contrast(0.9);
 }
 
 /* =====================================================

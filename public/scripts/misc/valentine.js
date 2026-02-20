@@ -1,21 +1,10 @@
-import { debounce, fetchJSON, resolveUrl, getUrlParam, setUrlParams, showElement, hideElement, createSearchIndex } from '../utils.js';
+import { debounce, fetchJSON, resolveUrl, getUrlParam, setUrlParams, showElement, hideElement, createSearchIndex, normalizeRomanNumerals } from '../utils.js';
 
 let valentineData = [];
 let shipgirlNameMap = new Map();
 let searchIndex = null;
 let selectedShipgirl = null;
 let selectedYear = null;
-
-// Normalize Roman numerals for matching (same as event-timeline.js)
-function normalizeRomanNumerals(str) {
-    if (!str) return str;
-    return str
-        .replace(/III/g, '\u2162')
-        .replace(/II/g, '\u2161')
-        .replace(/IV/g, '\u2163')
-        .replace(/V/g, '\u2164')
-        .trim();
-}
 
 // DOM elements
 const searchInput = document.getElementById('search');

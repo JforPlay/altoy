@@ -3,7 +3,7 @@
  * Keeps state, imports from sub-modules, sets up event listeners, filtering, rendering, and routing
  */
 
-import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl } from '../utils.js';
+import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorageItem, setStorageItem } from '../utils.js';
 import {
     setup as setupData,
     loadData, loadNationalityData, loadAttrTypeData,
@@ -156,7 +156,7 @@ function setupEventListeners() {
             shipgirls.className = 'shipgirl-grid';
             gridViewBtn.classList.add('active');
             listViewBtn.classList.remove('active');
-            localStorage.setItem('shipgirl-view-mode', 'grid');
+            setStorageItem('shipgirl-view-mode', 'grid');
             renderShipgirls(); // Re-render with grid layout
         });
 
@@ -165,11 +165,11 @@ function setupEventListeners() {
             shipgirls.className = 'shipgirl-grid list-view';
             listViewBtn.classList.add('active');
             gridViewBtn.classList.remove('active');
-            localStorage.setItem('shipgirl-view-mode', 'list');
+            setStorageItem('shipgirl-view-mode', 'list');
             renderShipgirls(); // Re-render with list layout
         });
 
-        const savedView = localStorage.getItem('shipgirl-view-mode') || 'grid';
+        const savedView = getStorageItem('shipgirl-view-mode', 'grid');
         if (savedView === 'list') {
             listViewBtn.click();
         }

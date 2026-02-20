@@ -1,4 +1,4 @@
-import { debounce, fetchJSON, getUrlParam, hideElement, showElement } from '../utils.js';
+import { debounce, fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, createSearchIndex, setupModal } from '../utils.js';
 
 /**
  * Expression Viewer
@@ -39,12 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             state.data = await fetchJSON('data/skin/expression_viewer_data.json');
 
             // Initialize Fuse.js for search
-            state.fuse = new Fuse(state.data, {
-                includeScore: true,
-                includeMatches: true,
-                threshold: 0.4,
-                keys: ['name', 'id']
-            });
+            state.fuse = createSearchIndex(state.data, { keys: ['name', 'id'], threshold: 0.4 });
 
             // Update UI
             elements.totalCount.textContent = state.data.length;
@@ -85,14 +80,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             setTimeout(() => elements.searchDropdown.style.display = 'none', 200);
         });
 
-        // Lightbox
-        elements.lightboxClose.addEventListener('click', closeLightbox);
-        elements.lightboxModal.addEventListener('click', (e) => {
-            if (e.target === elements.lightboxModal) closeLightbox();
-        });
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && elements.lightboxModal.classList.contains('active')) {
-                closeLightbox();
+        // Lightbox close handlers (close button, backdrop, ESC)
+        setupModal('lightbox-modal', {
+            closeButtonSelector: '.lightbox-close',
+            closeOnBackdrop: true,
+            closeOnEscape: true,
+            onClose: () => {
+                elements.lightboxModal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('no-scroll');
             }
         });
 
@@ -374,17 +369,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.body.classList.add('no-scroll');
     }
 
-    function closeLightbox() {
-        elements.lightboxModal.classList.remove('active');
-        elements.lightboxModal.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('no-scroll');
-    }
+    // closeLightbox handled by setupModal('lightbox-modal') onClose callback
 
     function updateURL(id) {
-        const params = new URLSearchParams();
-        params.set('id', id);
-        const newUrl = `${window.location.pathname}?${params.toString()}`;
-        history.pushState(null, '', newUrl);
+        setUrlParams({ id }, { replace: false, clear: true });
     }
 
     function applyURLParams() {

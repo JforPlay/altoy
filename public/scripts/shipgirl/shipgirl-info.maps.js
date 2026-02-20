@@ -3,7 +3,7 @@
  * Handles maps modal, map browser modal, and all map-related functions
  */
 
-import { showToast } from '../utils.js';
+import { showToast, openModal, closeModal, setupModal } from '../utils.js';
 
 'use strict';
 
@@ -56,8 +56,7 @@ export async function showMapsModal(shipName) {
     renderMaps(ship.maps);
 
     // Show modal
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    openModal('mapsModal');
 }
 
 function renderMaps(mapsData, searchTerm = '') {
@@ -132,42 +131,26 @@ export function getMapTypeName(type) {
 }
 
 function closeMapsModal() {
-    const modal = document.getElementById('mapsModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-
-    // Clear search
-    const searchInput = document.getElementById('mapsSearchInput');
-    if (searchInput) {
-        searchInput.value = '';
-    }
-    document.getElementById('clearMapsSearch').style.display = 'none';
+    closeModal('mapsModal', {
+        onClose: () => {
+            const searchInput = document.getElementById('mapsSearchInput');
+            if (searchInput) searchInput.value = '';
+            document.getElementById('clearMapsSearch').style.display = 'none';
+        }
+    });
 }
 
 export function setupMapsModalListeners() {
-    const modal = document.getElementById('mapsModal');
-    const closeBtn = document.getElementById('closeMapsModal');
     const searchInput = document.getElementById('mapsSearchInput');
     const clearSearchBtn = document.getElementById('clearMapsSearch');
 
-    // Close button
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeMapsModal);
-    }
-
-    // Click outside to close
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeMapsModal();
-            }
-        });
-    }
-
-    // Escape key to close
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.style.display === 'flex') {
-            closeMapsModal();
+    setupModal('mapsModal', {
+        closeButtonSelector: '#closeMapsModal',
+        closeOnBackdrop: true,
+        closeOnEscape: true,
+        onClose: () => {
+            if (searchInput) searchInput.value = '';
+            if (clearSearchBtn) clearSearchBtn.style.display = 'none';
         }
     });
 
@@ -231,9 +214,7 @@ async function openMapBrowserModal() {
     renderMapBrowserContent();
 
     // Show modal
-    const modal = document.getElementById('mapBrowserModal');
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    openModal('mapBrowserModal');
 }
 
 function buildMapBrowserData() {
@@ -444,50 +425,42 @@ function createMapBrowserShipCard(ship) {
 }
 
 function closeMapBrowserModal() {
-    const modal = document.getElementById('mapBrowserModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-
-    // Reset filters
-    mapBrowserFilters = {
-        area: 'all',
-        map: 'all',
-        type: 'all',
-        rarity: 'all',
-        shipType: 'all',
-        nationality: 'all',
-        search: ''
-    };
+    closeModal('mapBrowserModal', {
+        onClose: () => {
+            mapBrowserFilters = {
+                area: 'all',
+                map: 'all',
+                type: 'all',
+                rarity: 'all',
+                shipType: 'all',
+                nationality: 'all',
+                search: ''
+            };
+        }
+    });
 }
 
 export function setupMapBrowserListeners() {
     const openBtn = document.getElementById('mapBrowserBtn');
-    const closeBtn = document.getElementById('closeMapBrowserModal');
-    const modal = document.getElementById('mapBrowserModal');
 
-    // Open button
     if (openBtn) {
         openBtn.addEventListener('click', openMapBrowserModal);
     }
 
-    // Close button
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeMapBrowserModal);
-    }
-
-    // Click outside to close
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeMapBrowserModal();
-            }
-        });
-    }
-
-    // Escape key to close
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.style.display === 'flex') {
-            closeMapBrowserModal();
+    setupModal('mapBrowserModal', {
+        closeButtonSelector: '#closeMapBrowserModal',
+        closeOnBackdrop: true,
+        closeOnEscape: true,
+        onClose: () => {
+            mapBrowserFilters = {
+                area: 'all',
+                map: 'all',
+                type: 'all',
+                rarity: 'all',
+                shipType: 'all',
+                nationality: 'all',
+                search: ''
+            };
         }
     });
 

@@ -1,4 +1,4 @@
-import { debounce, getUrlParam, hideElement, showElement, toggleElement, resolveUrl } from '../utils.js';
+import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl } from '../utils.js';
 import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames } from './skin.data.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlHtml, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
@@ -247,11 +247,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function updateURLWithFilters() {
-        const params = new URLSearchParams();
-        if (elements.charInput.value) params.set('character', elements.charInput.value);
-        if (elements.skinInput.value) params.set('skin', elements.skinInput.value);
-        const newUrl = `${window.location.pathname}?${params.toString()}`;
-        history.replaceState(null, '', newUrl);
+        setUrlParams({
+            character: elements.charInput.value || null,
+            skin: elements.skinInput.value || null
+        }, { clear: true });
     }
 
     function applyFiltersFromURL() {

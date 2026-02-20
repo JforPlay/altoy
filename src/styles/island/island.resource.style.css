@@ -268,8 +268,8 @@
 }
 
 .stat-badge.exp {
-    border-color: #f39c12;
-    color: #f39c12;
+    border-color: var(--island-warning);
+    color: var(--island-warning);
 }
 
 .stat-badge.stamina {
@@ -425,10 +425,10 @@
 .material-item-vertical.rarity-3 .material-icon { border-color: #9b59b6; }
 
 .material-item.rarity-4 .material-icon,
-.material-item-vertical.rarity-4 .material-icon { border-color: #f39c12; }
+.material-item-vertical.rarity-4 .material-icon { border-color: var(--island-warning); }
 
 .material-item.rarity-5 .material-icon,
-.material-item-vertical.rarity-5 .material-icon { border-color: #e74c3c; }
+.material-item-vertical.rarity-5 .material-icon { border-color: var(--island-danger); }
 
 /* Manual Drop Section */
 .manual-drop-section {
@@ -441,7 +441,7 @@
 }
 
 .manual-drop-section.category1-manual {
-    border-left-color: #27ae60;
+    border-left-color: var(--island-success);
 }
 
 .manual-drop-section.category2-manual {
@@ -808,7 +808,7 @@
 }
 
 .tree-node-card.manual-mode {
-    border-left: 4px solid #27ae60;
+    border-left: 4px solid var(--island-success);
     background: linear-gradient(to right, rgba(39, 174, 96, 0.05) 0%, var(--island-surface) 50%);
 }
 
@@ -1148,7 +1148,7 @@
 .modal-close-btn {
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    background: linear-gradient(135deg, var(--island-danger) 0%, var(--island-danger-hover) 100%);
     border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
     color: #ffffff;
@@ -1161,7 +1161,7 @@
 }
 
 .modal-close-btn:hover {
-    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+    background: linear-gradient(135deg, var(--island-danger-hover) 0%, #a93226 100%);
     transform: scale(1.1) rotate(90deg);
     box-shadow: 0 6px 16px rgba(231, 76, 60, 0.5);
 }
@@ -1444,7 +1444,7 @@
 }
 
 .cost-item.gold {
-    border-left: 2px solid #f39c12;
+    border-left: 2px solid var(--island-warning);
 }
 
 .cost-item.points {
@@ -1456,12 +1456,12 @@
 }
 
 .cost-item.net-gain .cost-amount.positive {
-    color: #27ae60;
+    color: var(--island-success);
     font-weight: 700;
 }
 
 .cost-item.net-gain .cost-amount.negative {
-    color: #e74c3c;
+    color: var(--island-danger);
     font-weight: 700;
 }
 
@@ -1546,7 +1546,7 @@
 }
 
 .cost-column.manual-cost {
-    border-left: 4px solid #27ae60;
+    border-left: 4px solid var(--island-success);
 }
 
 .cost-column.auto-cost {
@@ -1564,7 +1564,7 @@
 }
 
 .cost-column.manual-cost .cost-column-title {
-    color: #27ae60;
+    color: var(--island-success);
 }
 
 .cost-column.auto-cost .cost-column-title {
@@ -1629,7 +1629,7 @@
 .shop-badge {
     display: inline-block;
     background: rgba(243, 156, 18, 0.15);
-    color: #f39c12;
+    color: var(--island-warning);
     border: 1px solid rgba(243, 156, 18, 0.3);
     padding: 0.125rem 0.375rem;
     border-radius: 3px;
@@ -2038,17 +2038,17 @@
 }
 
 .forest-category[data-category="1"] .forest-category-header .material-symbols-outlined {
-    color: #27ae60;
+    color: var(--island-success);
     filter: drop-shadow(0 2px 4px rgba(39, 174, 96, 0.3));
 }
 
 .forest-category[data-category="1"] .forest-category-count {
-    color: #27ae60;
+    color: var(--island-success);
     background: rgba(39, 174, 96, 0.15);
 }
 
 .forest-category[data-category="1"] .forest-tree-wrapper {
-    border-left-color: #27ae60;
+    border-left-color: var(--island-success);
 }
 
 .forest-category[data-category="1"] .forest-tree__group::before {
@@ -2152,17 +2152,17 @@
 }
 
 .forest-category[data-category="4"] .forest-category-header .material-symbols-outlined {
-    color: #f39c12;
+    color: var(--island-warning);
     filter: drop-shadow(0 2px 4px rgba(243, 156, 18, 0.3));
 }
 
 .forest-category[data-category="4"] .forest-category-count {
-    color: #f39c12;
+    color: var(--island-warning);
     background: rgba(243, 156, 18, 0.15);
 }
 
 .forest-category[data-category="4"] .forest-tree-wrapper {
-    border-left-color: #f39c12;
+    border-left-color: var(--island-warning);
 }
 
 .forest-category[data-category="4"] .forest-tree__group::before {
@@ -2190,17 +2190,17 @@
 }
 
 .forest-category[data-category="6"] .forest-category-header .material-symbols-outlined {
-    color: #e74c3c;
+    color: var(--island-danger);
     filter: drop-shadow(0 2px 4px rgba(231, 76, 60, 0.3));
 }
 
 .forest-category[data-category="6"] .forest-category-count {
-    color: #e74c3c;
+    color: var(--island-danger);
     background: rgba(231, 76, 60, 0.15);
 }
 
 .forest-category[data-category="6"] .forest-tree-wrapper {
-    border-left-color: #e74c3c;
+    border-left-color: var(--island-danger);
 }
 
 .forest-category[data-category="6"] .forest-tree__group::before {
@@ -2239,7 +2239,7 @@
 }
 
 .seasonal-source.pickup {
-    border-left: 4px solid #f39c12;
+    border-left: 4px solid var(--island-warning);
 }
 
 .seasonal-source.shop {
@@ -2247,7 +2247,7 @@
 }
 
 .seasonal-source.recipe {
-    border-left: 4px solid #27ae60;
+    border-left: 4px solid var(--island-success);
 }
 
 .seasonal-sources {

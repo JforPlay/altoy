@@ -3,7 +3,7 @@
  * Calculate season points from items and track ingredient contributions
  */
 
-import { fetchJSON } from '../utils.js';
+import { fetchJSON, getStorageItem, setStorageItem } from '../utils.js';
 
 'use strict';
 
@@ -108,7 +108,7 @@ async function loadSeasonData() {
 
 function loadUserQuantities() {
     try {
-        const saved = localStorage.getItem('island-season-quantities');
+        const saved = getStorageItem('island-season-quantities', null);
         if (saved) {
             state.userQuantities = JSON.parse(saved);
         }
@@ -120,7 +120,7 @@ function loadUserQuantities() {
 
 function loadOwnedPoints() {
     try {
-        const saved = localStorage.getItem('island-season-owned-points');
+        const saved = getStorageItem('island-season-owned-points', null);
         if (saved) {
             state.ownedPoints = parseInt(saved) || 0;
         }
@@ -132,7 +132,7 @@ function loadOwnedPoints() {
 
 function loadSeasonPassCollapseState() {
     try {
-        const saved = localStorage.getItem('island-season-pass-collapsed');
+        const saved = getStorageItem('island-season-pass-collapsed', null);
         if (saved) {
             state.seasonPassCollapsed = saved === 'true';
         }
@@ -144,7 +144,7 @@ function loadSeasonPassCollapseState() {
 
 function saveUserQuantities() {
     try {
-        localStorage.setItem('island-season-quantities', JSON.stringify(state.userQuantities));
+        setStorageItem('island-season-quantities', JSON.stringify(state.userQuantities));
     } catch (e) {
         console.warn('[SeasonCalc] Could not save quantities:', e);
     }
@@ -152,7 +152,7 @@ function saveUserQuantities() {
 
 function saveOwnedPoints() {
     try {
-        localStorage.setItem('island-season-owned-points', state.ownedPoints.toString());
+        setStorageItem('island-season-owned-points', state.ownedPoints.toString());
     } catch (e) {
         console.warn('[SeasonCalc] Could not save owned points:', e);
     }
@@ -160,7 +160,7 @@ function saveOwnedPoints() {
 
 function saveSeasonPassCollapseState() {
     try {
-        localStorage.setItem('island-season-pass-collapsed', state.seasonPassCollapsed.toString());
+        setStorageItem('island-season-pass-collapsed', state.seasonPassCollapsed.toString());
     } catch (e) {
         console.warn('[SeasonCalc] Could not save collapse state:', e);
     }

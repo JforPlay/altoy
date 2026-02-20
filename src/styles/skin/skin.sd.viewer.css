@@ -111,7 +111,7 @@ body {
   cursor: pointer;
   width: 100%;
   margin-top: 8px;
-  transition: transform 0.2s;
+  transition: transform var(--transition-base);
 }
 
 .container button:hover:not(:disabled) {
@@ -161,7 +161,7 @@ body {
   background: #f8f9fa;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background var(--transition-base);
   font-size: 12px;
 }
 
@@ -204,7 +204,7 @@ body {
 }
 
 .container .file-status.loaded {
-  color: #28a745;
+  color: var(--success-color);
   font-weight: 600;
 }
 
@@ -228,7 +228,7 @@ body:not(.dark-mode) {
 }
 
 body:not(.dark-mode) .container {
-  background: #ffffff;
+  background: var(--bg-secondary);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 }
 
@@ -238,31 +238,31 @@ body:not(.dark-mode) .container h1 {
 
 body:not(.dark-mode) .viewer-box,
 body:not(.dark-mode) .controls {
-  background: #f8f9fa;
+  background: var(--bg-tertiary);
 }
 
 body:not(.dark-mode) .viewer-box h2 {
-  color: #555555;
+  color: var(--text-muted);
 }
 
 body:not(.dark-mode) #spineContainer {
-  background: white;
-  border: 3px solid #e0e0e0;
+  background: var(--bg-secondary);
+  border: 3px solid var(--border-color);
 }
 
 body:not(.dark-mode) .control-group label {
-  color: #555555;
+  color: var(--text-muted);
 }
 
 body:not(.dark-mode) input[type="file"],
 body:not(.dark-mode) select {
-  background: white;
-  border: 2px solid #e0e0e0;
-  color: #333333;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  color: var(--text-secondary);
 }
 
 body:not(.dark-mode) .range-value {
-  color: #666666;
+  color: var(--text-muted);
 }
 
 body:not(.dark-mode) button {
@@ -271,8 +271,8 @@ body:not(.dark-mode) button {
 }
 
 body:not(.dark-mode) #displayModeBtns button {
-  background: #e0e0e0;
-  color: #333333;
+  background: var(--border-color);
+  color: var(--text-secondary);
 }
 
 body:not(.dark-mode) #displayModeBtns button.active {
@@ -282,14 +282,14 @@ body:not(.dark-mode) #displayModeBtns button.active {
 
 body:not(.dark-mode) .animation-list,
 body:not(.dark-mode) .skin-list {
-  background: white;
-  border: 2px solid #e0e0e0;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
 }
 
 body:not(.dark-mode) .animation-item,
 body:not(.dark-mode) .skin-item {
-  background: #f8f9fa;
-  color: #333333;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
 }
 
 body:not(.dark-mode) .animation-item:hover,
@@ -304,9 +304,9 @@ body:not(.dark-mode) .skin-item.active {
 }
 
 body:not(.dark-mode) .file-status {
-  color: #666666;
+  color: var(--text-muted);
 }
 
 body:not(.dark-mode) .file-status.loaded {
-  color: #28a745;
+  color: var(--success-color);
 }

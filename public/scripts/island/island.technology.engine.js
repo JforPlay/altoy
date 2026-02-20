@@ -3,7 +3,7 @@
  * Handles technology tree data loading, rendering, and visualization
  */
 
-import { fetchJSON, formatTime } from '../utils.js';
+import { fetchJSON, formatTime, getStorageItem, setStorageItem } from '../utils.js';
 
 // ============================================
 // STATE
@@ -223,7 +223,7 @@ const STORAGE_KEY_TECH_COMPLETION = 'island-tech-completion';
  */
 function loadCompletionState() {
     try {
-        const saved = localStorage.getItem(STORAGE_KEY_TECH_COMPLETION);
+        const saved = getStorageItem(STORAGE_KEY_TECH_COMPLETION, null);
         state.completedTechs = saved ? JSON.parse(saved) : {};
         console.log(`[Island Technology] Loaded ${Object.keys(state.completedTechs).length} completed techs from storage`);
     } catch (error) {
@@ -237,7 +237,7 @@ function loadCompletionState() {
  */
 function saveCompletionState() {
     try {
-        localStorage.setItem(STORAGE_KEY_TECH_COMPLETION, JSON.stringify(state.completedTechs));
+        setStorageItem(STORAGE_KEY_TECH_COMPLETION, JSON.stringify(state.completedTechs));
         console.log('[Island Technology] Saved completion state');
     } catch (error) {
         console.error('[Island Technology] Failed to save completion state:', error);

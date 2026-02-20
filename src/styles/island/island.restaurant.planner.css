@@ -1,0 +1,844 @@
+/* ==========================================================================
+   ISLAND RESTAURANT - PLANNER STYLES
+   Planner main view, layout, results, and planner-specific responsive design
+   ========================================================================== */
+
+/* ==========================================================================
+   8. PLANNER MAIN VIEW & LAYOUT
+   ========================================================================== */
+
+/* Planner Tab Style */
+.restaurant-tab.planner-tab {
+    position: relative;
+    border-color: var(--island-accent);
+    background: linear-gradient(135deg, rgba(var(--island-accent-rgb), 0.1), rgba(var(--island-accent-rgb), 0.05));
+}
+
+.restaurant-tab.planner-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--island-accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.restaurant-tab.planner-tab:hover {
+    background: linear-gradient(135deg, rgba(var(--island-accent-rgb), 0.2), rgba(var(--island-accent-rgb), 0.1));
+}
+
+.restaurant-tab.planner-tab:hover::before {
+    opacity: 0.5;
+}
+
+.restaurant-tab.planner-tab.active {
+    background: var(--island-accent);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(var(--island-accent-rgb), 0.3);
+}
+
+.restaurant-tab.planner-tab.active::before {
+    opacity: 1;
+}
+
+/* Planner Main View Layout */
+.planner-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--island-spacing-lg);
+    max-width: 100%;
+}
+
+@media (min-width: 1000px) {
+    .planner-layout-grid {
+        grid-template-columns: 1fr 420px;
+        align-items: start;
+    }
+}
+
+.planner-builder-section {
+    width: 100%;
+}
+
+/* Planner Actions Bar */
+.planner-actions-bar {
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--island-spacing-sm) 0;
+    margin-top: var(--island-spacing-md);
+}
+
+/* Modern Card Layout - Compact */
+.planner-modern-card {
+    background: var(--island-surface);
+    border: 1px solid var(--island-border);
+    border-radius: var(--island-radius-lg);
+    margin-bottom: var(--island-spacing-md);
+    overflow: visible;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.planner-modern-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-color: rgba(var(--island-accent-rgb), 0.3);
+}
+
+/* Card Header - Compact */
+.card-header {
+    background: linear-gradient(to bottom, rgba(255,255,255,0.03), transparent);
+    padding: var(--island-spacing-sm) var(--island-spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--island-border);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-sm);
+}
+
+.header-left .icon {
+    font-size: 1.15rem;
+    color: var(--island-accent);
+}
+
+.header-left .restaurant-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--island-text-primary);
+    letter-spacing: -0.01em;
+}
+
+.header-right {
+    display: flex;
+    gap: var(--island-gap-sm);
+    align-items: center;
+}
+
+.global-qty-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-xs);
+}
+
+.global-qty-wrapper .qty-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--island-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-right: 0.25rem;
+}
+
+.qty-control-group {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--island-bg);
+    border: 1px solid var(--island-border);
+    border-radius: var(--island-radius-sm);
+    overflow: hidden;
+}
+
+.qty-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: rgba(0,0,0,0.2);
+    color: var(--island-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.qty-btn:hover {
+    background: var(--island-accent);
+    color: #fff;
+}
+
+.qty-btn .material-symbols-outlined {
+    font-size: 1.25rem;
+}
+
+.qty-btn-minus {
+    border-right: 1px solid var(--island-border);
+}
+
+.qty-btn-plus {
+    border-left: 1px solid var(--island-border);
+}
+
+.planner-global-input.modern {
+    background: transparent;
+    border: none;
+    padding: 0.25rem 0.3rem;
+    width: 38px;
+    text-align: center;
+    color: var(--island-text-primary);
+    font-weight: 700;
+    font-size: 0.85rem;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: none;
+}
+
+.planner-global-input.modern:focus {
+    outline: none;
+}
+
+/* Hide number input spinners */
+.planner-global-input.modern::-webkit-outer-spin-button,
+.planner-global-input.modern::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Card Body - Compact */
+.card-body {
+    padding: var(--island-spacing-md);
+}
+
+.planner-slot-grid.modern {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--island-spacing-sm);
+}
+
+/* Card Footer - Compact */
+.card-footer {
+    background: linear-gradient(to top, rgba(255,255,255,0.02), transparent);
+    padding: var(--island-spacing-xs) var(--island-spacing-md);
+    border-top: 1px solid var(--island-border);
+}
+
+/* Preset Controls - Compact */
+.preset-control-group {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-sm);
+}
+
+.preset-label-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 50px;
+}
+
+.preset-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--island-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.preset-current-indicator {
+    font-size: 0.65rem;
+    color: var(--island-accent);
+    font-weight: 600;
+    line-height: 1;
+}
+
+.planner-preset-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 0.25rem;
+}
+
+.preset-action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--island-radius-sm);
+    border: 1px solid var(--island-border);
+    background: var(--island-bg);
+    color: var(--island-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.preset-action-btn::before {
+    content: attr(title);
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.95);
+    color: #fff;
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--island-radius-sm);
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 10001;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.preset-action-btn:hover::before {
+    opacity: 1;
+}
+
+/* Ensure parent doesn't clip tooltips */
+.card-footer {
+    overflow: visible;
+}
+
+.preset-control-group {
+    overflow: visible;
+}
+
+.preset-action-btn:hover {
+    background: var(--island-accent);
+    color: #fff;
+    border-color: var(--island-accent);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(var(--island-accent-rgb), 0.2);
+}
+
+.preset-action-btn .material-symbols-outlined {
+    font-size: 1.2rem;
+}
+
+/* Visual Preset Selector - Larger & More Visible */
+.planner-preset-visual-row {
+    display: flex;
+    gap: var(--island-gap-sm);
+}
+
+.preset-visual-slot {
+    width: 80px;
+    height: 80px;
+    background: var(--island-bg);
+    border: 2px solid var(--island-border);
+    border-radius: var(--island-radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.preset-visual-slot:hover {
+    background: var(--island-surface);
+    border-color: var(--island-accent);
+}
+
+.preset-visual-slot.selected {
+    border-color: var(--island-accent);
+    background: linear-gradient(135deg, rgba(var(--island-accent-rgb), 0.2), rgba(var(--island-accent-rgb), 0.05));
+    box-shadow: 0 0 0 3px rgba(var(--island-accent-rgb), 0.25);
+    z-index: 1;
+}
+
+.preset-slot-num {
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    font-size: 0.65rem;
+    color: var(--island-text-tertiary);
+    font-weight: 800;
+    line-height: 1;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0.2rem 0.35rem;
+    border-radius: 3px;
+    z-index: 2;
+}
+
+.preset-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 64px;
+    height: 64px;
+    gap: 3px;
+}
+
+.preset-mini-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 3px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preset-empty-dash {
+    color: var(--island-text-tertiary);
+    font-size: 1.75rem;
+    line-height: 1;
+    opacity: 0.3;
+    font-weight: 200;
+}
+
+.preset-visual-slot:hover .preset-empty-dash {
+    opacity: 0.6;
+    color: var(--island-accent);
+}
+
+/* Results Group Card */
+.planner-result-group-card {
+    background: var(--island-surface);
+    border-radius: var(--island-radius-lg);
+    padding: var(--island-spacing-md);
+    margin-bottom: var(--island-spacing-md);
+    border: 1px solid var(--island-border);
+    transition: all 0.2s;
+}
+
+.group-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--island-spacing-md);
+    color: var(--island-text-secondary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 0.5rem;
+}
+
+.planner-ingredient-grid.compact {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+    gap: 0.5rem;
+}
+
+.ingredient-card.mini {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 6px;
+    background: transparent;
+    border: 1px solid transparent;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ingredient-card.mini.active {
+    background: rgba(var(--island-accent-rgb), 0.1);
+    border-color: var(--island-accent);
+}
+
+.ingredient-card.mini .ingredient-icon {
+    width: 100%;
+    height: 100%;
+}
+
+.ingredient-card.mini .ingredient-qty {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background: var(--island-accent);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0 0.2rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.2);
+    z-index: 10;
+}
+
+/* Ingredient Name Tooltip (First Definition) */
+.ingredient-card.mini:hover {
+    z-index: 100;
+}
+
+.ingredient-card.mini::before {
+    content: attr(data-name);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.95);
+    color: #fff;
+    padding: 0.4rem 0.7rem;
+    border-radius: var(--island-radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.ingredient-card.mini:hover::before {
+    opacity: 1;
+}
+
+.ingredient-card.mini::after {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgba(0, 0, 0, 0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 1000;
+}
+
+.ingredient-card.mini:hover::after {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   9. PLANNER RESULTS SECTION
+   ========================================================================== */
+
+.planner-results-section {
+    position: sticky;
+    top: var(--island-spacing-md);
+    overflow: visible;
+}
+
+.planner-stale-note {
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.15), rgba(255, 152, 0, 0.05));
+    border: 2px solid rgba(255, 152, 0, 0.4);
+    border-radius: var(--island-radius-lg);
+    padding: var(--island-spacing-md);
+    margin-bottom: var(--island-spacing-lg);
+    font-size: var(--island-text-sm);
+    font-weight: 600;
+    color: #ff9800;
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-sm);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.planner-stale-note::before {
+    content: '⚠';
+    font-size: 1.25rem;
+}
+
+.planner-section-title {
+    margin: var(--island-spacing-lg) 0 var(--island-spacing-md) 0;
+    color: var(--island-text-primary);
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-bottom: 2px solid var(--island-border);
+    padding-bottom: var(--island-spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-sm);
+}
+
+.planner-section-title::before {
+    content: '▸';
+    color: var(--island-accent);
+    font-weight: 900;
+}
+
+.planner-result-group-card {
+    background: var(--island-surface);
+    border-radius: var(--island-radius-md);
+    padding: var(--island-spacing-sm) var(--island-spacing-md);
+    margin-bottom: var(--island-spacing-sm);
+    border: 1px solid var(--island-border);
+    overflow: visible;
+}
+
+.planner-result-group-card:hover {
+    border-color: rgba(var(--island-accent-rgb), 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.group-header {
+    display: flex;
+    align-items: center;
+    gap: var(--island-gap-sm);
+    margin-bottom: var(--island-spacing-sm);
+    color: var(--island-text-primary);
+    font-weight: 700;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--island-border);
+    padding-bottom: 0.25rem;
+}
+
+.group-header .material-symbols-outlined {
+    color: var(--island-accent);
+    font-size: 1.25rem;
+}
+
+.planner-ingredient-grid.compact {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+    gap: var(--island-gap-sm);
+    width: 100%;
+    overflow: visible;
+}
+
+.planner-result-group-card {
+    overflow: visible;
+}
+
+.ingredient-card.mini {
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border-radius: var(--island-radius-md);
+    background: var(--island-bg);
+    border: 2px solid transparent;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: 0.4;
+    flex-shrink: 0;
+}
+
+.ingredient-card.mini.active {
+    background: var(--island-surface);
+    border-color: var(--island-accent);
+    opacity: 1;
+    box-shadow: 0 2px 8px rgba(var(--island-accent-rgb), 0.25);
+}
+
+.ingredient-card.mini:hover {
+    opacity: 1;
+    z-index: 100;
+}
+
+/* Ingredient Name Tooltip */
+.ingredient-card.mini::before {
+    content: attr(data-name);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.95);
+    color: #fff;
+    padding: 0.4rem 0.7rem;
+    border-radius: var(--island-radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.ingredient-card.mini:hover::before {
+    opacity: 1;
+}
+
+.ingredient-card.mini::after {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgba(0, 0, 0, 0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 1000;
+}
+
+.ingredient-card.mini:hover::after {
+    opacity: 1;
+}
+
+.ingredient-card.mini .ingredient-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ingredient-card.mini .ingredient-icon img {
+    width: 48px !important;
+    height: 48px !important;
+    max-width: 48px;
+    max-height: 48px;
+    object-fit: contain;
+}
+
+.ingredient-card.mini .ingredient-qty {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background: var(--island-accent);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.1rem 0.25rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    border: 2px solid var(--island-bg);
+    z-index: 11;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* ==========================================================================
+   10. RESPONSIVE DESIGN IMPROVEMENTS
+   ========================================================================== */
+
+@media (max-width: 1000px) {
+    .planner-results-section {
+        position: static;
+    }
+}
+
+@media (max-width: 1000px) {
+    .planner-slot-grid.modern {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .planner-layout-grid {
+        gap: var(--island-spacing-lg);
+    }
+
+    .card-body {
+        padding: var(--island-spacing-lg);
+    }
+}
+
+@media (max-width: 768px) {
+    .planner-slot-grid.modern {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--island-spacing-sm);
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--island-gap-sm);
+        padding: var(--island-spacing-xs) var(--island-spacing-sm);
+    }
+
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .preset-control-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--island-gap-sm);
+    }
+
+    .planner-preset-visual-row {
+        flex: 1;
+    }
+
+    .preset-visual-slot {
+        width: 32px;
+        height: 32px;
+    }
+
+    .planner-ingredient-grid.compact {
+        grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+    }
+
+    .ingredient-card.mini {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .planner-layout-grid {
+        gap: var(--island-spacing-sm);
+    }
+
+    .planner-slot-grid.modern {
+        grid-template-columns: 1fr;
+    }
+
+    .card-header,
+    .card-body,
+    .card-footer {
+        padding: var(--island-spacing-xs) var(--island-spacing-sm);
+    }
+
+    .header-left .restaurant-name {
+        font-size: 0.85rem;
+    }
+
+    .global-qty-wrapper {
+        padding: 0.25rem 0.4rem;
+    }
+
+    .planner-global-input.modern {
+        width: 45px;
+        padding: 0.2rem 0.3rem;
+        font-size: 0.75rem;
+    }
+
+    .preset-visual-slot {
+        width: 30px;
+        height: 30px;
+    }
+
+    .preset-mini-grid {
+        width: 20px;
+        height: 20px;
+    }
+
+    .preset-action-btn {
+        width: 32px;
+        height: 32px;
+    }
+
+    .preset-action-btn .material-symbols-outlined {
+        font-size: 1rem;
+    }
+
+    .picker-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .picker-item.empty-choice {
+        grid-column: span 1;
+    }
+
+    .planner-ingredient-grid.compact {
+        grid-template-columns: repeat(auto-fit, minmax(42px, 1fr));
+    }
+
+    .ingredient-card.mini {
+        width: 42px;
+        height: 42px;
+    }
+}
+
+/* ==========================================================================
+   END OF PLANNER STYLES
+   ========================================================================== */

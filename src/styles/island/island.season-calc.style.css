@@ -113,8 +113,8 @@
 }
 
 .calc-clear-btn:hover {
-    border-color: #e74c3c;
-    color: #e74c3c;
+    border-color: var(--island-danger);
+    color: var(--island-danger);
     background: rgba(231, 76, 60, 0.05);
 }
 
@@ -341,11 +341,11 @@
 }
 
 .calc-net-gain-value.positive {
-    color: #27ae60;
+    color: var(--island-success);
 }
 
 .calc-net-gain-value.negative {
-    color: #e74c3c;
+    color: var(--island-danger);
 }
 
 .calc-net-gain-percentage {
@@ -354,11 +354,11 @@
 }
 
 .calc-net-gain-percentage.positive {
-    color: #27ae60;
+    color: var(--island-success);
 }
 
 .calc-net-gain-percentage.negative {
-    color: #e74c3c;
+    color: var(--island-danger);
 }
 
 /* Actions Row */
@@ -722,7 +722,7 @@
 }
 
 .season-tier.high-value {
-    border-color: #f39c12;
+    border-color: var(--island-warning);
     background: linear-gradient(135deg, rgba(243, 156, 18, 0.1) 0%, rgba(243, 156, 18, 0.05) 100%);
 }
 
@@ -766,7 +766,7 @@
 
 .season-tier-badge .material-symbols-outlined {
     font-size: 1rem;
-    color: #f39c12;
+    color: var(--island-warning);
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
@@ -797,7 +797,7 @@
 }
 
 .season-tier.high-value .season-tier-icon {
-    border-color: #f39c12;
+    border-color: var(--island-warning);
 }
 
 .season-tier-icon img {

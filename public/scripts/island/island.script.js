@@ -4,6 +4,7 @@
  */
 
 import { init, loadModule, switchTab } from './island.engine.js';
+import { getStorageItem, setStorageItem } from '../utils.js';
 
 // ============================================
 // INITIALIZATION
@@ -70,27 +71,19 @@ function setupTabNavigation() {
             }
 
             // Save active tab to localStorage
-            try {
-                localStorage.setItem('island-active-tab', targetTab);
-            } catch (e) {
-                console.warn('[Island] Could not save tab state:', e);
-            }
+            setStorageItem('island-active-tab', targetTab);
 
             console.log(`[Island] Switched to tab: ${targetTab}`);
         });
     });
 
     // Restore last active tab
-    try {
-        const savedTab = localStorage.getItem('island-active-tab');
-        if (savedTab) {
-            const savedButton = document.querySelector(`.tab-button[data-tab="${savedTab}"]`);
-            if (savedButton) {
-                savedButton.click();
-            }
+    const savedTab = getStorageItem('island-active-tab', null);
+    if (savedTab) {
+        const savedButton = document.querySelector(`.tab-button[data-tab="${savedTab}"]`);
+        if (savedButton) {
+            savedButton.click();
         }
-    } catch (e) {
-        console.warn('[Island] Could not restore tab state:', e);
     }
 }
 

@@ -1,4 +1,4 @@
-import { fetchJSON, resolveUrl } from '../utils.js';
+import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex } from '../utils.js';
 /* ==========================================================================
    Shipgirl Birthday Calendar Script (enhanced, structure-preserving)
    - Adds Day view (일간), mini-month header in Day view
@@ -88,9 +88,9 @@ import { fetchJSON, resolveUrl } from '../utils.js';
     // ---------- Data load & cache (unchanged behavior, path preserved) ----------
     function getCachedData() {
         try {
-            const timestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
+            const timestamp = getStorageItem(CACHE_TIMESTAMP_KEY, null);
             if (timestamp && Date.now() - parseInt(timestamp) < CACHE_DURATION) {
-                const cached = localStorage.getItem(CACHE_KEY);
+                const cached = getStorageItem(CACHE_KEY, null);
                 return cached ? JSON.parse(cached) : null;
             }
         } catch (e) { console.warn('캐시 읽기 실패:', e); }
@@ -98,8 +98,8 @@ import { fetchJSON, resolveUrl } from '../utils.js';
     }
     function cacheData(data) {
         try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-            localStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
+            setStorageItem(CACHE_KEY, JSON.stringify(data));
+            setStorageItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
         } catch (e) { console.warn('캐시 저장 실패:', e); }
     }
 
@@ -150,9 +150,7 @@ import { fetchJSON, resolveUrl } from '../utils.js';
     }
 
     function initializeSearch() {
-        const fuseOptions = { keys: ['name', 'type', 'faction'], threshold: 0.3, includeScore: true, includeMatches: true };
-        // eslint-disable-next-line no-undef
-        state.fuse = new Fuse(state.events, fuseOptions);
+        state.fuse = createSearchIndex(state.events, { keys: ['name', 'type', 'faction'] });
         searchInput.addEventListener('input', handleSearch, { passive: true });
         searchInput.addEventListener('focus', handleSearch, { passive: true });
         document.addEventListener('click', (e) => {

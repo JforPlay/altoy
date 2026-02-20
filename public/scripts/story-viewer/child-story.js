@@ -1,4 +1,4 @@
-import { fetchJSON, getUrlParam, hideElement, showElement, toggleElement } from '../utils.js';
+import { fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, toggleElement } from '../utils.js';
 
 /**
  * tab-story.js
@@ -542,18 +542,14 @@ function createTabStoryViewer(config) {
         // URL & STATE MANAGEMENT
         // =========================================================================
         updateUrl(category, storyId, clear = false) {
-            const url = new URL(window.location);
             if (clear) {
                 history.pushState({}, '', window.location.pathname);
                 return;
             }
-            url.searchParams.delete('category');
-            url.searchParams.delete('story');
-
-            if (category) url.searchParams.set('category', category);
-            if (storyId) url.searchParams.set('story', storyId);
-
-            history.pushState({ category, storyId }, '', url.pathname + url.search);
+            setUrlParams({
+                category: category || null,
+                story: storyId || null
+            }, { replace: false });
         },
 
         handleUrlParameters() {

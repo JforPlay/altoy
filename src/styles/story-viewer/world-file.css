@@ -1,3 +1,5 @@
+@import url('./story-viewer.common.css');
+
 /* ======================================= */
 /* Basic Reset and Body Styles             */
 /* ======================================= */
@@ -14,8 +16,8 @@ html {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   height: 100%;
-  background-color: #f0f2f5;
-  color: #333;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   overflow: hidden;
 }
 
@@ -94,8 +96,8 @@ header h1 {
 }
 
 .gallery-item.active {
-  border-color: #3498db;
-  box-shadow: 0 0 10px #3498db;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
 }
 
 .gallery-item-name {
@@ -127,7 +129,7 @@ header h1 {
   flex-grow: 1;
   padding: 20px 40px;
   overflow-y: auto;
-  background-color: #ffffff;
+  background-color: var(--card-bg);
   position: relative;
   transition: background-color 0.3s, color 0.3s;
 }
@@ -145,7 +147,7 @@ header h1 {
 .content-paragraph {
   margin-bottom: 40px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border-color);
   transition: border-bottom-color 0.3s;
 }
 
@@ -195,9 +197,9 @@ header h1 {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   background-color: #f0f0f0;
-  color: #333;
+  color: var(--text-color);
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
@@ -213,14 +215,14 @@ header h1 {
 /* Dark Mode Styles                        */
 /* ======================================= */
 body.dark-mode #content-container {
-  background-color: #1e1e1e;
-  color: #d4d4d4;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 body.dark-mode #font-controls button {
-  background-color: #333;
-  border-color: #555;
-  color: #d4d4d4;
+  background-color: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-color);
 }
 
 body.dark-mode #font-controls button:hover {
@@ -228,15 +230,15 @@ body.dark-mode #font-controls button:hover {
 }
 
 body.dark-mode .content-paragraph {
-  border-bottom-color: #444;
+  border-bottom-color: var(--border-color);
 }
 
 body.dark-mode .content-paragraph h2 {
-  color: #58a6ff;
+  color: var(--accent-color);
 }
 
 body.dark-mode .content-paragraph h3 {
-  color: #8b949e;
+  color: var(--subtitle-color);
 }
 
 /* ======================================= */

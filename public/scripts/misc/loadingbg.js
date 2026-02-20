@@ -1,4 +1,4 @@
-import { hideElement } from '../utils.js';
+import { hideElement, openModal, closeModal, setupModal } from '../utils.js';
 // Configuration
 const GITHUB_REPO = 'JforPlay/data_for_toy';
 const FOLDER_PATH = 'loadingbg';
@@ -99,13 +99,11 @@ searchInput.addEventListener('input', (e) => {
 function openLightbox(index) {
     currentImageIndex = index;
     updateLightboxImage();
-    lightbox.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    openModal('lightbox');
 }
 
 function closeLightbox() {
-    lightbox.classList.remove('active');
-    document.body.style.overflow = '';
+    closeModal('lightbox');
 }
 
 function updateLightboxImage() {
@@ -126,32 +124,19 @@ function showPrevImage() {
 }
 
 // Event listeners
-document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+setupModal('lightbox', {
+    closeButtonSelector: '.lightbox-close',
+    closeOnBackdrop: true,
+    closeOnEscape: true
+});
 document.querySelector('.lightbox-next').addEventListener('click', showNextImage);
 document.querySelector('.lightbox-prev').addEventListener('click', showPrevImage);
 
-// Close lightbox on background click
-lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) {
-        closeLightbox();
-    }
-});
-
-// Keyboard navigation
+// Arrow key navigation for lightbox
 document.addEventListener('keydown', (e) => {
     if (!lightbox.classList.contains('active')) return;
-    
-    switch(e.key) {
-        case 'Escape':
-            closeLightbox();
-            break;
-        case 'ArrowLeft':
-            showPrevImage();
-            break;
-        case 'ArrowRight':
-            showNextImage();
-            break;
-    }
+    if (e.key === 'ArrowLeft') showPrevImage();
+    else if (e.key === 'ArrowRight') showNextImage();
 });
 
 // Initialize

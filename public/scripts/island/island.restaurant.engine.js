@@ -3,7 +3,7 @@
  * Manages restaurant menus, profit calculations, and event bonuses
  */
 
-import { fetchJSON, showElement, hideElement, formatTime } from '../utils.js';
+import { fetchJSON, showElement, hideElement, formatTime, getStorageItem, setStorageItem } from '../utils.js';
 import {
     RANK_COEFFICIENTS, RANK_NAMES, ATTRIBUTE_NAMES, ATTRIBUTE_RANK_VALUES,
     EVENT_BONUSES,
@@ -245,22 +245,22 @@ function buildMasterIngredientList() {
 
 function loadPreferences() {
     try {
-        const savedRank = localStorage.getItem(STORAGE_KEY_RANK);
+        const savedRank = getStorageItem(STORAGE_KEY_RANK, null);
         if (savedRank && RANK_COEFFICIENTS[savedRank]) {
             state.selectedRank = savedRank;
         }
 
-        const savedEvents = localStorage.getItem(STORAGE_KEY_EVENTS);
+        const savedEvents = getStorageItem(STORAGE_KEY_EVENTS, null);
         if (savedEvents) {
             state.activeEvents = new Set(JSON.parse(savedEvents));
         }
 
-        const savedShipgirl1 = localStorage.getItem(STORAGE_KEY_SHIPGIRL1);
+        const savedShipgirl1 = getStorageItem(STORAGE_KEY_SHIPGIRL1, null);
         if (savedShipgirl1) {
             state.shipgirl1Attr = JSON.parse(savedShipgirl1);
         }
 
-        const savedShipgirl2 = localStorage.getItem(STORAGE_KEY_SHIPGIRL2);
+        const savedShipgirl2 = getStorageItem(STORAGE_KEY_SHIPGIRL2, null);
         if (savedShipgirl2) {
             state.shipgirl2Attr = JSON.parse(savedShipgirl2);
         }
@@ -271,10 +271,10 @@ function loadPreferences() {
 
 function savePreferences() {
     try {
-        localStorage.setItem(STORAGE_KEY_RANK, state.selectedRank);
-        localStorage.setItem(STORAGE_KEY_EVENTS, JSON.stringify(Array.from(state.activeEvents)));
-        localStorage.setItem(STORAGE_KEY_SHIPGIRL1, JSON.stringify(state.shipgirl1Attr));
-        localStorage.setItem(STORAGE_KEY_SHIPGIRL2, JSON.stringify(state.shipgirl2Attr));
+        setStorageItem(STORAGE_KEY_RANK, state.selectedRank);
+        setStorageItem(STORAGE_KEY_EVENTS, JSON.stringify(Array.from(state.activeEvents)));
+        setStorageItem(STORAGE_KEY_SHIPGIRL1, JSON.stringify(state.shipgirl1Attr));
+        setStorageItem(STORAGE_KEY_SHIPGIRL2, JSON.stringify(state.shipgirl2Attr));
 
         // Clear sales cache as preferences affecting calculation have changed
         state.salesCache = {};

@@ -1,4 +1,4 @@
-import { hideElement } from './utils.js';
+import { hideElement, getStorageItem, setStorageItem } from './utils.js';
 // =====================================================
 // MAINPAGE SCRIPT - MERGED & OPTIMIZED
 // Combines hero carousel, event carousel, and card animations
@@ -323,7 +323,7 @@ const EventCarousel = (function () {
     // Cache management
     function getCachedData() {
         try {
-            const cached = localStorage.getItem(CACHE_KEY);
+            const cached = getStorageItem(CACHE_KEY, null);
             if (!cached) return null;
 
             const { data, timestamp } = JSON.parse(cached);
@@ -343,7 +343,7 @@ const EventCarousel = (function () {
 
     function setCachedData(data) {
         try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify({
+            setStorageItem(CACHE_KEY, JSON.stringify({
                 data,
                 timestamp: Date.now()
             }));

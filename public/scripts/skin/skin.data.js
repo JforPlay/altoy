@@ -4,7 +4,7 @@
  * Uses lazy loading: loads lightweight index on init, fetches full character data on demand.
  * @namespace SkinData
  */
-import { fetchJSONWithCache } from '../utils.js';
+import { fetchJSONWithCache, normalizeRomanNumerals, createSearchIndex } from '../utils.js';
 
 /** @type {{skinIndex: Object, skinDataCache: Object<string, Array>, expressionManifest: Object, characterFuse: Fuse|null, allCharacterNames: string[]}} */
 const state = {
@@ -15,12 +15,6 @@ const state = {
     allCharacterNames: []
 };
 
-const fuseOptions = {
-    includeScore: true,
-    includeMatches: true,
-    threshold: 0.4,
-    keys: ['name']
-};
 
 async function init() {
     try {
@@ -44,7 +38,7 @@ async function init() {
             .sort(customSort);
 
         const fuseList = state.allCharacterNames.map(name => ({ name }));
-        state.characterFuse = new Fuse(fuseList, fuseOptions);
+        state.characterFuse = createSearchIndex(fuseList, { keys: ['name'], threshold: 0.4 });
 
         return true;
     } catch (e) {
@@ -105,22 +99,6 @@ function searchCharacters(query) {
     return state.characterFuse.search(query);
 }
 
-// Normalize to Roman numerals to handle data inconsistencies
-// Order matters: longer patterns must be replaced first to avoid partial matches
-function normalizeRomanNumerals(str) {
-    if (!str) return str;
-    return str
-        .replace(/VIII/g, 'Ⅷ')  // ASCII VIII → Roman numeral 8
-        .replace(/VII/g, 'Ⅶ')   // ASCII VII → Roman numeral 7
-        .replace(/VI/g, 'Ⅵ')    // ASCII VI → Roman numeral 6
-        .replace(/III/g, 'Ⅲ')   // ASCII III → Roman numeral 3
-        .replace(/II/g, 'Ⅱ')    // ASCII II → Roman numeral 2
-        .replace(/IV/g, 'Ⅳ')    // ASCII IV → Roman numeral 4
-        .replace(/IX/g, 'Ⅸ')    // ASCII IX → Roman numeral 9
-        .replace(/X/g, 'Ⅹ')     // ASCII X → Roman numeral 10
-        .replace(/V/g, 'Ⅴ')     // ASCII V → Roman numeral 5
-        .trim();
-}
 
 /**
  * Get skin names for a character. Returns from index (no fetch needed).

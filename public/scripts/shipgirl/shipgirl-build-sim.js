@@ -1,4 +1,4 @@
-import { fetchJSON, fetchJSONWithCache, resolveUrl } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem } from '../utils.js';
 // Build Simulator Script
 (function () {
     'use strict';
@@ -152,15 +152,24 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl } from '../utils.js';
     }
 
     // Initialize
+    // Cached DOM references for frequently-accessed elements
+    let shipSelectEl = null;
+    let probabilityGraphEl = null;
+
     async function init() {
         await loadData();
         renderPoolButtons(); // Render dynamic pool buttons after data is loaded
+
+        // Cache frequently-accessed DOM elements
+        shipSelectEl = document.getElementById('ship-select');
+        probabilityGraphEl = document.getElementById('probability-graph');
+
         setupEventListeners();
-        
+
         // Set default pool - use the first pickup pool if available
         const firstPickupPool = Object.keys(state.pickupData || {})[0] || 'pickup-4';
         state.currentPool = firstPickupPool;
-        
+
         updateProbabilityChart();
         updateShipSelect();
         renderShipGrid();
@@ -621,7 +630,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl } from '../utils.js';
         document.getElementById('reset-stats').addEventListener('click', resetStats);
 
         // Ship select for probability
-        document.getElementById('ship-select').addEventListener('change', updateShipProbability);
+        shipSelectEl.addEventListener('change', updateShipProbability);
 
         // Filters
         document.querySelectorAll('.rarity-filter').forEach(btn => {
@@ -684,8 +693,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl } from '../utils.js';
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(() => {
-                const select = document.getElementById('ship-select');
-                if (select.value) {
+                if (shipSelectEl.value) {
                     updateShipProbability();
                 }
             }, 250);
@@ -693,9 +701,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl } from '../utils.js';
 
         // Redraw graph on theme change
         const observer = new MutationObserver(() => {
-            const canvas = document.getElementById('probability-graph');
-            if (canvas && canvas.dataset.shipName) {
-                renderGraph(canvas, null);
+            if (probabilityGraphEl && probabilityGraphEl.dataset.shipName) {
+                renderGraph(probabilityGraphEl, null);
             }
         });
         observer.observe(document.documentElement, {
@@ -824,7 +831,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl } from '../utils.js';
 
     // Update Ship Select Dropdown
     function updateShipSelect() {
-        const select = document.getElementById('ship-select');
+        const select = shipSelectEl;
         const ships = state.poolData[state.currentPool] || {};
 
         select.innerHTML = '<option value="">함선을 선택하세요</option>';
@@ -873,7 +880,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl } from '../utils.js';
 
     // Update Ship Probability
     function updateShipProbability() {
-        const select = document.getElementById('ship-select');
+        const select = shipSelectEl;
         const shipId = select.value;
 
         if (!shipId) {
@@ -931,7 +938,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl } from '../utils.js';
 
     // Draw Probability Graph
     function drawProbabilityGraph(probability, shipName) {
-        const canvas = document.getElementById('probability-graph');
+        const canvas = probabilityGraphEl;
         const ctx = canvas.getContext('2d');
 
         // Set canvas size for high DPI
@@ -1766,7 +1773,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl } from '../utils.js';
     // Save Statistics to LocalStorage
     function saveStats() {
         try {
-            localStorage.setItem('buildSimulatorStats', JSON.stringify(state.buildStats));
+            setStorageItem('buildSimulatorStats', JSON.stringify(state.buildStats));
         } catch (error) {
             console.error('Failed to save stats:', error);
         }
@@ -1775,7 +1782,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl } from '../utils.js';
     // Load Statistics from LocalStorage
     function loadSavedStats() {
         try {
-            const saved = localStorage.getItem('buildSimulatorStats');
+            const saved = getStorageItem('buildSimulatorStats', null);
             if (saved) {
                 const savedStats = JSON.parse(saved);
 

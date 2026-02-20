@@ -49,17 +49,16 @@ body {
   font-family: "Noto Sans KR", "Roboto", sans-serif;
 }
 
-body,
+:root {
+  --footer-bg: rgba(0, 0, 0, 0.02);
+  --footer-border: rgba(0, 0, 0, 0.05);
+  --footer-text: rgba(0, 0, 0, 0.6);
+}
+
 body.dark-mode {
   --footer-bg: rgba(255, 255, 255, 0.02);
   --footer-border: rgba(255, 255, 255, 0.05);
   --footer-text: rgba(255, 255, 255, 0.6);
-}
-
-body:not(.dark-mode) {
-  --footer-bg: rgba(0, 0, 0, 0.02);
-  --footer-border: rgba(0, 0, 0, 0.05);
-  --footer-text: rgba(0, 0, 0, 0.6);
 }
 
 /* ==========================================================================

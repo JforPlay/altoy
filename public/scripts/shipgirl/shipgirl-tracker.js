@@ -1,4 +1,4 @@
-import { debounce, fetchJSON } from '../utils.js';
+import { debounce, fetchJSON, getStorageItem, setStorageItem } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 document.addEventListener('DOMContentLoaded', () => {
     let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData;
@@ -553,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Gets or sets the selected goal ship name.
      */
     function getSelectedGoal() {
-        const saved = localStorage.getItem(GOAL_KEY);
+        const saved = getStorageItem(GOAL_KEY, null);
         if (saved && fleetTechGoalData[saved]) {
             return saved;
         }
@@ -562,7 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setSelectedGoal(shipName) {
-        localStorage.setItem(GOAL_KEY, shipName);
+        setStorageItem(GOAL_KEY, shipName);
     }
 
     /**
@@ -1353,7 +1353,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Saves the current progress (checked boxes) to localStorage.
      */
     function autoSaveProgress() {
-        const progress = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
+        const progress = JSON.parse(getStorageItem(SAVE_KEY, null) || '{}');
         document.querySelectorAll('.ship-card').forEach(card => {
             let state = 0;
             if (card.querySelector('[data-type="get"]')?.checked) state |= 1;
@@ -1365,7 +1365,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 delete progress[card.dataset.shipId];
             }
         });
-        localStorage.setItem(SAVE_KEY, JSON.stringify(progress));
+        setStorageItem(SAVE_KEY, JSON.stringify(progress));
     }
 
     /**
@@ -1394,7 +1394,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Loads progress from localStorage and applies it.
      */
     function loadProgress() {
-        const savedProgress = localStorage.getItem(SAVE_KEY);
+        const savedProgress = getStorageItem(SAVE_KEY, null);
         if (!savedProgress) return;
         try {
             const progress = JSON.parse(savedProgress);
@@ -1482,7 +1482,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isTypeFilterActive = checkedTypes.length > 0;
         const isRarityFilterActive = checkedRarities.length > 0;
 
-        const savedProgress = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
+        const savedProgress = JSON.parse(getStorageItem(SAVE_KEY, null) || '{}');
 
         filteredShipIds = Object.keys(fullShipData).filter(shipId => {
             const ship = fullShipData[shipId];

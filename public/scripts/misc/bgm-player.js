@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let sortedAlbumIds = [];
     let animationId = null;
     let canvasContext = null;
+    let cachedAlbumItems = [];
 
     // Set default volume to 10%
     audioEl.volume = 0.1;
@@ -49,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }).join('');
 
-        const availableAlbumItems = albumListEl.querySelectorAll('.album-item');
-        availableAlbumItems.forEach(item => {
+        cachedAlbumItems = Array.from(albumListEl.querySelectorAll('.album-item'));
+        cachedAlbumItems.forEach(item => {
             item.addEventListener('click', () => {
                 item.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             });
@@ -94,24 +95,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateCarousel() {
-        const availableAlbumItems = albumListEl.querySelectorAll('.album-item');
-        if (availableAlbumItems.length === 0) return;
+        if (cachedAlbumItems.length === 0) return;
 
         const containerRect = albumListEl.getBoundingClientRect();
         const containerCenter = containerRect.left + containerRect.width / 2;
-        let closestAlbumId = null;
+        let closestItem = null;
         let minDistance = Infinity;
 
-        availableAlbumItems.forEach(item => item.classList.remove('active'));
+        cachedAlbumItems.forEach(item => {
+            item.classList.remove('active');
 
-        availableAlbumItems.forEach(item => {
             const itemRect = item.getBoundingClientRect();
             const itemCenter = itemRect.left + itemRect.width / 2;
             const distance = Math.abs(containerCenter - itemCenter);
-            
+
             const maxDistance = containerRect.width / 2;
             const normalizedDistance = Math.min(distance / maxDistance, 1);
-            
+
             // Smoother scaling curve
             const scale = 1.5 - (normalizedDistance * 0.9);
             const rotation = ((itemCenter - containerCenter) / containerRect.width) * 30;
@@ -123,19 +123,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (distance < minDistance) {
                 minDistance = distance;
-                closestAlbumId = item.dataset.albumId;
+                closestItem = item;
             }
         });
-        
-        if (closestAlbumId) {
-            const closestItem = albumListEl.querySelector(`.album-item[data-album-id='${closestAlbumId}']`);
-            if (closestItem) closestItem.classList.add('active');
-        }
 
-        if (closestAlbumId && closestAlbumId !== currentAlbumId) {
-            currentAlbumId = closestAlbumId;
-            displayAlbumDetails(currentAlbumId);
-            updateNavigationButtons();
+        if (closestItem) {
+            closestItem.classList.add('active');
+            const closestAlbumId = closestItem.dataset.albumId;
+            if (closestAlbumId && closestAlbumId !== currentAlbumId) {
+                currentAlbumId = closestAlbumId;
+                displayAlbumDetails(currentAlbumId);
+                updateNavigationButtons();
+            }
         }
     }
 
@@ -313,6 +312,18 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => {
         if (canvasContext) {
             resizeCanvas();
+        }
+    });
+
+    // Pause/resume visualizer when page visibility changes
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        } else if (canvasContext && !animationId) {
+            drawVisualizer();
         }
     });
 

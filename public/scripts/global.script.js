@@ -1,38 +1,4 @@
-import { throttle, setupScrollToTop } from './utils.js';
-
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
-
-/**
- * Safely get item from localStorage
- * Handles private browsing mode and permission errors
- * @param {string} key - Storage key
- * @param {string} defaultValue - Default if unavailable
- * @returns {string} Stored value or default
- */
-function getStorageItem(key, defaultValue) {
-    try {
-        return localStorage.getItem(key) || defaultValue;
-    } catch (e) {
-        console.warn('[Nav] localStorage unavailable:', e);
-        return defaultValue;
-    }
-}
-
-/**
- * Safely set item in localStorage
- * Handles private browsing mode and permission errors
- * @param {string} key - Storage key
- * @param {string} value - Value to store
- */
-function setStorageItem(key, value) {
-    try {
-        localStorage.setItem(key, value);
-    } catch (e) {
-        console.warn('[Nav] localStorage unavailable:', e);
-    }
-}
+import { throttle, setupScrollToTop, getStorageItem, setStorageItem } from './utils.js';
 
 // ============================================
 // CENTRALIZED LINK CONFIGURATION

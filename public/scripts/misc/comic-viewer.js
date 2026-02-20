@@ -1,3 +1,4 @@
+import { openModal, closeModal, setupModal } from '../utils.js';
 document.addEventListener("DOMContentLoaded", async function() {
     const gallery = document.getElementById('gallery');
     const sortButton = document.getElementById('sort-button');
@@ -51,10 +52,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
         img.addEventListener('click', function() {
-            lightbox.style.display = 'block';
-            lightbox.classList.add('fade-in');
             lightboxImg.src = this.src;
-            document.body.style.overflow = 'hidden';
+            openModal('lightbox');
         });
 
         img.onload = function() {
@@ -117,16 +116,12 @@ document.addEventListener("DOMContentLoaded", async function() {
         renderGallery();
     });
 
-    // Lightbox Close Functionality - using centralized close pattern
-    const closeLightbox = () => {
-        lightbox.style.display = 'none';
-        lightbox.classList.remove('fade-in');
-        document.body.style.overflow = '';
-    };
-
-    closeButton.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', (e) => e.target === lightbox && closeLightbox());
-    document.addEventListener('keydown', (e) => e.key === 'Escape' && lightbox.style.display === 'block' && closeLightbox());
+    // Lightbox close handlers (close button, backdrop click, ESC)
+    setupModal('lightbox', {
+        closeButtonSelector: '.close-button',
+        closeOnBackdrop: true,
+        closeOnEscape: true
+    });
 
     // --- Initial Setup ---
     imageFiles = await fetchImageFiles(); // Fetch files dynamically

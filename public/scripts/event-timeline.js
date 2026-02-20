@@ -1,20 +1,9 @@
-import { debounce, fetchJSON, resolveUrl } from './utils.js';
+import { debounce, fetchJSON, resolveUrl, normalizeRomanNumerals } from './utils.js';
 // Global data storage
 let eventData = [];
 let shipgirlData = {};
 let shipgirlNameMap = new Map(); // Optimized lookup by name
 let filteredEvents = [];
-
-// Normalize Roman numerals to handle data inconsistencies
-function normalizeRomanNumerals(str) {
-    if (!str) return str;
-    return str
-        .replace(/II/g, 'Ⅱ')   // ASCII II → Roman numeral 2
-        .replace(/III/g, 'Ⅲ')  // ASCII III → Roman numeral 3
-        .replace(/IV/g, 'Ⅳ')   // ASCII IV → Roman numeral 4
-        .replace(/V/g, 'Ⅴ')     // ASCII V → Roman numeral 5
-        .trim();
-}
 
 // DOM elements
 const searchInput = document.getElementById('searchInput');

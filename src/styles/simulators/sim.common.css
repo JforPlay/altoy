@@ -1,3 +1,5 @@
+@import url('../theme.css');
+
 /* Modern Reset and Base Styles */
 * {
   margin: 0;
@@ -170,7 +172,7 @@ button {
   cursor: pointer;
   border: none;
   border-radius: 10px;
-  transition: all 0.3s ease;
+  transition: all var(--transition-slow);
   position: relative;
   overflow: hidden;
   text-transform: uppercase;
@@ -298,7 +300,7 @@ button:active {
   background: rgba(255, 255, 255, 0.03);
   border-radius: 8px;
   border-left: 3px solid rgba(102, 126, 234, 0.5);
-  transition: all 0.3s ease;
+  transition: all var(--transition-slow);
 }
 
 #stats-content p:hover {
@@ -340,7 +342,7 @@ button:active {
   );
   border-radius: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-slow);
   border: 2px solid rgba(102, 126, 234, 0.3);
   width: 100%;
 }
@@ -393,7 +395,7 @@ button:active {
   border-radius: 16px;
   border: 3px solid rgba(102, 126, 234, 0.5);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  transition: all 0.3s ease;
+  transition: all var(--transition-slow);
 }
 
 .skill-icon-container img:hover {
@@ -414,7 +416,7 @@ button:active {
   color: #fff;
   border: 2px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
+  transition: all var(--transition-slow);
   position: relative;
   overflow: hidden;
 }
@@ -467,7 +469,7 @@ button:active {
   padding: 1 16px; /* Adjust padding */
   font-size: 16px;
   height: 48px; /* Replace min-height with height */
-  transition: all 0.3s ease;
+  transition: all var(--transition-slow);
   backdrop-filter: blur(10px);
   display: flex;
   align-items: center;

@@ -1,9 +1,8 @@
-import { fetchJSON, hideElement, showElement } from '../utils.js';
+import { fetchJSON, openModal, setupModal } from '../utils.js';
 document.addEventListener('DOMContentLoaded', () => {
     const gallery = document.getElementById('gallery');
     const modal = document.getElementById('modal');
     const modalImage = document.getElementById('modal-image');
-    const closeModal = document.getElementById('close');
 
     const baseImageUrl = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/gallerypic/';
 
@@ -52,18 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const item = e.target.closest('.gallery-item');
         if (item) {
             modalImage.src = item.dataset.fullSrc;
-            showElement(modal);
+            openModal('modal');
         }
     });
 
-    // Close modal with cleanup
-    const closeGalleryModal = () => {
-        hideElement(modal);
-        modalImage.src = ''; // Clear src to stop image loading if modal is closed early
-    };
-
-    // Event listeners for closing the modal
-    closeModal.addEventListener('click', closeGalleryModal);
-    modal.addEventListener('click', (e) => e.target === modal && closeGalleryModal());
-    document.addEventListener('keydown', (e) => e.key === 'Escape' && !modal.classList.contains('hidden') && closeGalleryModal());
+    // Setup modal close handlers (close button, backdrop, ESC)
+    setupModal('modal', {
+        closeButtonSelector: '#close',
+        closeOnBackdrop: true,
+        closeOnEscape: true,
+        onClose: () => { modalImage.src = ''; }
+    });
 });

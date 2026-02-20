@@ -1,3 +1,5 @@
+@import url('../theme.css');
+
 /* ============================================
    GALLERYPIC CUSTOM STYLES
    Note: Tailwind is used for primary styling.
@@ -10,13 +12,13 @@
 
 /* Base body styling with smooth transitions */
 body {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color var(--transition-slow), color var(--transition-slow);
 }
 
 /* Dark mode theme */
 body.dark-mode {
-  background-color: #1a1a1a;
-  color: #e0e0e0;
+  background-color: var(--bg-gradient-start);
+  color: var(--text-primary);
 }
 
 /* ============================================
@@ -25,43 +27,32 @@ body.dark-mode {
 
 /* Header title styling */
 h1 {
-  transition: color 0.3s ease;
+  transition: color var(--transition-slow);
 }
 
 /* Dark mode header text */
 body.dark-mode h1 {
-  color: #e0e0e0;
+  color: var(--text-primary);
 }
 
 /* ============================================
    GALLERY ITEMS
    ============================================ */
 
-/* Gallery item container - light mode */
+/* Gallery item container */
 .gallery-item {
   overflow: hidden;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   cursor: pointer;
-  background-color: #fff;
+  background-color: var(--card-bg);
 }
 
-/* Gallery item container - dark mode */
-body.dark-mode .gallery-item {
-  background-color: #2d2d2d;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-/* Gallery item hover effect - light mode */
+/* Gallery item hover effect */
 .gallery-item:hover {
   transform: scale(1.05);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Gallery item hover effect - dark mode */
-body.dark-mode .gallery-item:hover {
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Gallery item image styling */
@@ -85,5 +76,5 @@ body.dark-mode .gallery-item:hover {
 
 /* Modal content - dark mode */
 body.dark-mode .modal-content {
-  background-color: #2d2d2d;
+  background-color: var(--card-bg);
 }

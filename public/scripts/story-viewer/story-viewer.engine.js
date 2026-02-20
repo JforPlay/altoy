@@ -1,4 +1,4 @@
-import { debounce, fetchJSONWithCache, getUrlParam, hideElement, showElement, toggleElement, resolveUrl } from '../utils.js';
+import { debounce, fetchJSONWithCache, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl } from '../utils.js';
 
 /**
  * story-viewer-common.js
@@ -240,20 +240,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // URL & VIEW MANAGEMENT
         // =========================================================================
         updateUrl(eventId, storyId, clear = false) {
-            const url = new URL(window.location);
             if (clear) {
-                // Pushes state to the base path of the current page, clearing query params
                 history.pushState({}, '', window.location.pathname);
                 return;
             }
-            url.searchParams.delete('eventid');
-            url.searchParams.delete('story');
-
-            if (eventId) url.searchParams.set('eventid', eventId);
-            if (storyId) url.searchParams.set('story', storyId);
-
-            // Use pathname and search to keep the full path
-            history.pushState({ eventId, storyId }, '', url.pathname + url.search);
+            setUrlParams({
+                eventid: eventId || null,
+                story: storyId || null
+            }, { replace: false });
         },
 
         async handleUrlParameters() {
