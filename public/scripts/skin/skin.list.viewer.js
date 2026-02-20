@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const selectedRarities = new Set(filters.rarities);
 
                 const filteredSkins = allSkins.filter(skin => {
-                    if (searchTerm && !skin['함순이 이름'].toLowerCase().includes(searchTerm)) return false;
+                    if (searchTerm && !skin['함순이 이름']?.toLowerCase().includes(searchTerm)) return false;
                     if (filters.ex && skin['ex_chat_status'] !== 1) return false;
                     if (!this._checkSkinType(skin, filters.type)) return false;
                     if (filters.faction !== 'all' && skin['진영'] !== filters.faction) return false;
