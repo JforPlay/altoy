@@ -1,3 +1,5 @@
+@import url('../theme.css');
+
 /* ==========================================================================
    Valentine Letter Viewer Styles
    Uses the same design system as skin.common.css / expression-viewer
@@ -5,15 +7,15 @@
 
 /* --- Valentine-specific variables (reuse skin.common tokens) --- */
 :root {
-  --val-accent: #e8587a;
-  --val-accent-hover: #d14467;
-  --val-accent-light: rgba(232, 88, 122, 0.15);
-}
-
-body:not(.dark-mode) {
   --val-accent: #d14d6a;
   --val-accent-hover: #b8405a;
   --val-accent-light: rgba(209, 77, 106, 0.1);
+}
+
+body.dark-mode {
+  --val-accent: #e8587a;
+  --val-accent-hover: #d14467;
+  --val-accent-light: rgba(232, 88, 122, 0.15);
 }
 
 /* --- Main Container --- */
@@ -50,12 +52,16 @@ body:not(.dark-mode) {
   padding: var(--spacing-sm) var(--spacing-md);
   border: 2px solid var(--border-color);
   border-radius: var(--radius-md);
-  background-color: var(--bg-input);
+  background-color: #fff;
   color: var(--text-primary);
   font-size: 1rem;
   transition: all var(--transition-fast);
   box-sizing: border-box;
   outline: none;
+}
+
+body.dark-mode .search-box input {
+  background-color: var(--bg-input);
 }
 
 .search-box input::placeholder {
@@ -64,6 +70,10 @@ body:not(.dark-mode) {
 
 .search-box input:focus {
   border-color: var(--val-accent);
+  box-shadow: 0 0 0 3px rgba(209, 77, 106, 0.1);
+}
+
+body.dark-mode .search-box input:focus {
   box-shadow: 0 0 0 3px rgba(232, 88, 122, 0.2);
 }
 
@@ -111,14 +121,22 @@ body:not(.dark-mode) {
 }
 
 .shipgirl-item:hover {
-  background: var(--bg-input);
+  background: #f8f9fa;
   border-color: var(--primary-color);
   transform: translateX(4px);
 }
 
 .shipgirl-item.active {
-  background: var(--val-accent-light);
+  background: rgba(209, 77, 106, 0.08);
   border-color: var(--val-accent);
+}
+
+body.dark-mode .shipgirl-item:hover {
+  background: var(--bg-input);
+}
+
+body.dark-mode .shipgirl-item.active {
+  background: var(--val-accent-light);
 }
 
 .shipgirl-item-icon {
@@ -241,6 +259,10 @@ body:not(.dark-mode) {
   flex: 1;
   overflow-y: auto;
   padding: var(--spacing-lg);
+  background: #f0f0f0;
+}
+
+body.dark-mode .letter-content-wrapper {
   background: var(--bg-tertiary);
 }
 
@@ -258,7 +280,7 @@ body:not(.dark-mode) {
 }
 
 .letter-card {
-  background: var(--bg-secondary);
+  background: #fff;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-lg);
@@ -266,6 +288,10 @@ body:not(.dark-mode) {
   position: relative;
   max-width: 640px;
   margin: 0 auto;
+}
+
+body.dark-mode .letter-card {
+  background: var(--bg-secondary);
 }
 
 .letter-card::before {
@@ -320,41 +346,6 @@ body:not(.dark-mode) {
 .letter-empty p {
   font-size: 1.125rem;
   margin: 0;
-}
-
-/* --- Light Mode Overrides --- */
-body:not(.dark-mode) .shipgirl-item {
-  border-color: transparent;
-}
-
-body:not(.dark-mode) .shipgirl-item:hover {
-  background: #f8f9fa;
-  border-color: var(--primary-color);
-}
-
-body:not(.dark-mode) .shipgirl-item.active {
-  background: rgba(209, 77, 106, 0.08);
-  border-color: var(--val-accent);
-}
-
-body:not(.dark-mode) .search-box input {
-  background-color: #fff;
-  border-color: var(--border-color);
-}
-
-body:not(.dark-mode) .search-box input:focus {
-  border-color: var(--val-accent);
-  box-shadow: 0 0 0 3px rgba(209, 77, 106, 0.1);
-}
-
-body:not(.dark-mode) .letter-card {
-  background: #fff;
-  border-color: var(--border-color);
-  box-shadow: var(--shadow-md);
-}
-
-body:not(.dark-mode) .letter-content-wrapper {
-  background: #f0f0f0;
 }
 
 /* --- Responsive --- */

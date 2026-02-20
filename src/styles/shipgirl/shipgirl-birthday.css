@@ -10,20 +10,6 @@
 /* Theme variables with sensible defaults.  These values are overridden by
    global.style.css via the dark-mode class on body. */
 :root {
-  --calendar-bg: #1b1f2a;
-  --calendar-alt-bg: #232836;
-  --calendar-border: #2d3346;
-  --calendar-text: #e0e6f1;
-  --calendar-muted: #a0a6b7;
-  --calendar-primary: #4f8cff;
-  --calendar-accent: #8c6dff;
-  --calendar-event-bg: rgba(79, 140, 255, 0.1);
-  --calendar-event-border: #4f8cff;
-  --calendar-page-bg: #0f1419;
-  --calendar-shadow: rgba(0, 0, 0, 0.3);
-}
-
-body:not(.dark-mode) {
   --calendar-bg: #ffffff;
   --calendar-alt-bg: #f7f8fa;
   --calendar-border: #e0e0e0;
@@ -35,6 +21,20 @@ body:not(.dark-mode) {
   --calendar-event-border: #2563eb;
   --calendar-page-bg: #f0f2f5;
   --calendar-shadow: rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode {
+  --calendar-bg: #1b1f2a;
+  --calendar-alt-bg: #232836;
+  --calendar-border: #2d3346;
+  --calendar-text: #e0e6f1;
+  --calendar-muted: #a0a6b7;
+  --calendar-primary: #4f8cff;
+  --calendar-accent: #8c6dff;
+  --calendar-event-bg: rgba(79, 140, 255, 0.1);
+  --calendar-event-border: #4f8cff;
+  --calendar-page-bg: #0f1419;
+  --calendar-shadow: rgba(0, 0, 0, 0.3);
 }
 
 /* Page background styling */

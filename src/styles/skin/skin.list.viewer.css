@@ -36,13 +36,15 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--bg-input);
+  border: 1px solid var(--border-color);
   height: 100%;
   transition: border-color var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .skin-box-link:hover .skin-box {
   border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0, 113, 235, 0.12);
 }
 
 .skin-image-wrapper {
@@ -85,7 +87,7 @@
 }
 
 .info-line strong {
-  color: #8e9297;
+  color: #666666;
 }
 
 .new-badge {
@@ -157,27 +159,28 @@
 }
 
 #search-input::placeholder {
-  color: #8e9297;
+  color: #999999;
 }
 
 .autocomplete-items {
   position: absolute;
-  border: 1px solid var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-top: none;
   z-index: 99;
   top: 100%;
   left: 0;
   right: 0;
-  background-color: var(--bg-input);
+  background-color: #ffffff;
   max-height: 12.5rem;
   overflow-y: auto;
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  box-shadow: var(--shadow-md);
 }
 
 .autocomplete-items div {
   padding: 0.625rem;
   cursor: pointer;
-  border-bottom: 1px solid var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
   text-align: left;
 }
 
@@ -186,7 +189,7 @@
 }
 
 .autocomplete-items div:hover {
-  background-color: var(--primary-color);
+  background-color: rgba(0, 113, 235, 0.1);
 }
 
 .autocomplete-items div mark {
@@ -307,37 +310,37 @@
 }
 
 /* =================================================================
-   LIGHT MODE OVERRIDES
+   DARK MODE OVERRIDES
    ================================================================= */
 
-body:not(.dark-mode) .info-line strong {
-  color: #666666;
+body.dark-mode .info-line strong {
+  color: #8e9297;
 }
 
-body:not(.dark-mode) #search-input::placeholder {
-  color: #999999;
+body.dark-mode #search-input::placeholder {
+  color: #8e9297;
 }
 
-body:not(.dark-mode) .autocomplete-items {
-  background-color: #ffffff;
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-md);
+body.dark-mode .autocomplete-items {
+  background-color: var(--bg-input);
+  border: 1px solid var(--bg-secondary);
+  box-shadow: none;
 }
 
-body:not(.dark-mode) .autocomplete-items div {
-  border-bottom: 1px solid var(--border-color);
+body.dark-mode .autocomplete-items div {
+  border-bottom: 1px solid var(--bg-secondary);
 }
 
-body:not(.dark-mode) .autocomplete-items div:hover {
-  background-color: rgba(0, 113, 235, 0.1);
+body.dark-mode .autocomplete-items div:hover {
+  background-color: var(--primary-color);
 }
 
-/* Skin Cards - Better visibility in light mode */
-body:not(.dark-mode) .skin-box {
-  border: 1px solid var(--border-color);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+/* Skin Cards - Dark mode adjustments */
+body.dark-mode .skin-box {
+  border: 1px solid var(--bg-input);
+  box-shadow: none;
 }
 
-body:not(.dark-mode) .skin-box-link:hover .skin-box {
-  box-shadow: 0 4px 12px rgba(0, 113, 235, 0.12);
+body.dark-mode .skin-box-link:hover .skin-box {
+  box-shadow: none;
 }

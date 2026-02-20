@@ -66,7 +66,7 @@
     padding-right: 3rem;
     border: 2px solid var(--border-color);
     border-radius: var(--radius-md);
-    background-color: var(--bg-input);
+    background-color: #fff;
     color: var(--text-primary);
     font-size: 1rem;
     transition: all var(--transition-fast);
@@ -76,7 +76,7 @@
 .dropdown-container input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.2);
+    box-shadow: 0 0 0 3px rgba(0, 113, 235, 0.1);
 }
 
 .dropdown-container input::placeholder {
@@ -100,7 +100,7 @@
     right: 0;
     max-height: 350px;
     overflow-y: auto;
-    background: var(--bg-elevated);
+    background: #fff;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-lg);
@@ -120,7 +120,7 @@
 }
 
 .dropdown-content a:hover {
-    background: var(--bg-input);
+    background: #f5f5f5;
     color: var(--text-primary);
 }
 
@@ -222,21 +222,21 @@
     flex-direction: column;
     gap: var(--spacing-xs);
     padding: var(--spacing-sm) var(--spacing-md);
-    background: var(--bg-elevated);
+    background: #f8f9fa;
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: all var(--transition-fast);
-    border: 2px solid transparent;
+    border: 1px solid var(--border-color);
 }
 
 .character-card:hover {
-    background: var(--bg-input);
+    background: #fff;
     border-color: var(--primary-color);
     transform: translateX(4px);
 }
 
 .character-card.active {
-    background: linear-gradient(135deg, rgba(114, 137, 218, 0.2), rgba(67, 181, 129, 0.1));
+    background: linear-gradient(135deg, rgba(0, 113, 235, 0.1), rgba(39, 174, 96, 0.05));
     border-color: var(--accent-color);
 }
 
@@ -453,7 +453,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--bg-tertiary);
+    background: #f0f0f0;
 }
 
 .face-overlay-container {
@@ -476,6 +476,7 @@
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-lg);
     transition: transform var(--transition-base);
+    border: 2px solid var(--border-color);
 }
 
 .face-overlay-container:hover img.base-image {
@@ -518,7 +519,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(255, 255, 255, 0.95);
     z-index: 2000;
     display: none;
     align-items: center;
@@ -673,50 +674,46 @@
 }
 
 /* =================================================================
-   LIGHT MODE OVERRIDES
+   DARK MODE OVERRIDES
    ================================================================= */
 
-body:not(.dark-mode) .lightbox-modal {
-    background: rgba(255, 255, 255, 0.95);
+body.dark-mode .lightbox-modal {
+    background: rgba(0, 0, 0, 0.95);
 }
 
-body:not(.dark-mode) .character-card {
-    background: #f8f9fa;
-    border: 1px solid var(--border-color);
+body.dark-mode .character-card {
+    background: var(--bg-elevated);
+    border: 2px solid transparent;
 }
 
-body:not(.dark-mode) .character-card:hover {
-    background: #fff;
-    border-color: var(--primary-color);
+body.dark-mode .character-card:hover {
+    background: var(--bg-input);
 }
 
-body:not(.dark-mode) .character-card.active {
-    background: linear-gradient(135deg, rgba(0, 113, 235, 0.1), rgba(39, 174, 96, 0.05));
+body.dark-mode .character-card.active {
+    background: linear-gradient(135deg, rgba(114, 137, 218, 0.2), rgba(67, 181, 129, 0.1));
 }
 
-body:not(.dark-mode) .face-overlay-container img.base-image {
-    border: 2px solid var(--border-color);
+body.dark-mode .face-overlay-container img.base-image {
+    border: none;
 }
 
-body:not(.dark-mode) .image-display {
-    background: #f0f0f0;
+body.dark-mode .image-display {
+    background: var(--bg-tertiary);
 }
 
-body:not(.dark-mode) .dropdown-container input {
-    background-color: #fff;
-    border-color: var(--border-color);
+body.dark-mode .dropdown-container input {
+    background-color: var(--bg-input);
 }
 
-body:not(.dark-mode) .dropdown-container input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 113, 235, 0.1);
+body.dark-mode .dropdown-container input:focus {
+    box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.2);
 }
 
-body:not(.dark-mode) .dropdown-content {
-    background: #fff;
-    border-color: var(--border-color);
+body.dark-mode .dropdown-content {
+    background: var(--bg-elevated);
 }
 
-body:not(.dark-mode) .dropdown-content a:hover {
-    background: #f5f5f5;
+body.dark-mode .dropdown-content a:hover {
+    background: var(--bg-input);
 }

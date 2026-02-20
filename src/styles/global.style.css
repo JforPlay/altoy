@@ -21,6 +21,7 @@
    Be careful when changing selectors or cascade order.
    ========================================================================== */
 
+@import url('theme.css');
 @import url('toast.css');
 @import url('global-search.css');
 
@@ -605,7 +606,7 @@ body.dark-mode .theme-icon-moon {
   bottom: 2rem;
   right: 2rem;
   z-index: 999;
-  background: linear-gradient(135deg, #7289da, #43b581);
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
   color: white;
   border: none;
   width: 3.5rem;
@@ -673,7 +674,7 @@ body.dark-mode .theme-icon-moon {
 .info-button {
   background: none;
   border: none;
-  color: #7289da;
+  color: var(--accent-blue);
   font-size: 1.5rem;
   cursor: pointer;
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -699,7 +700,7 @@ body.dark-mode .theme-icon-moon {
 
 #info-button:focus,
 .info-button:focus {
-  outline: 2px solid #7289da;
+  outline: 2px solid var(--accent-blue);
   outline-offset: 2px;
 }
 
@@ -714,7 +715,7 @@ body.dark-mode .theme-icon-moon {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(8px);
   z-index: 1000;
   display: flex;
@@ -733,8 +734,8 @@ body.dark-mode .theme-icon-moon {
 }
 
 .info-popup-content {
-  background: #2f3136;
-  border: 1px solid #4f545c;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
   border-radius: 1rem;
   max-width: 37.5rem;
   width: 90%;
@@ -761,8 +762,8 @@ body.dark-mode .theme-icon-moon {
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 1px solid #4f545c;
-  background: linear-gradient(135deg, #202225 0%, #2f3136 100%);
+  border-bottom: 1px solid var(--surface-border);
+  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
   border-radius: 1rem 1rem 0 0;
   position: sticky;
   top: 0;
@@ -772,13 +773,13 @@ body.dark-mode .theme-icon-moon {
 .popup-header h2 {
   margin: 0;
   font-size: 1.25rem;
-  color: #8ea1e1;
+  color: var(--accent-blue);
 }
 
 .close-popup-btn {
-  background: #3d4148;
-  border: 1px solid #4f545c;
-  color: #b9bbbe;
+  background: var(--surface-elevated);
+  border: 1px solid var(--surface-border);
+  color: var(--text-on-surface);
   font-size: 1.25rem;
   cursor: pointer;
   padding: 0.5rem;
@@ -793,8 +794,8 @@ body.dark-mode .theme-icon-moon {
 
 .close-popup-btn:hover {
   color: #ffffff;
-  background: #f04747;
-  border-color: #f04747;
+  background: var(--danger-color);
+  border-color: var(--danger-color);
   transform: rotate(90deg);
 }
 
@@ -806,52 +807,21 @@ body.dark-mode .theme-icon-moon {
 .info-popup-content p {
   margin: 0 0 0.75rem 0;
   line-height: 1.6;
-  color: #b9bbbe;
+  color: var(--text-on-surface);
 }
 
 .info-popup-content strong {
-  color: #ffffff;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
-/* Light Mode Info Popup */
-body:not(.dark-mode) .info-popup {
-  background: rgba(0, 0, 0, 0.5);
+/* Dark Mode Info Popup Overrides */
+body.dark-mode .info-popup {
+  background: rgba(0, 0, 0, 0.8);
 }
 
-body:not(.dark-mode) .info-popup-content {
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
-}
-
-body:not(.dark-mode) .popup-header {
-  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
-  border-bottom: 1px solid #e0e0e0;
-}
-
-body:not(.dark-mode) .popup-header h2 {
-  color: #0071eb;
-}
-
-body:not(.dark-mode) .close-popup-btn {
-  background: #f5f5f5;
-  border: 1px solid #d0d0d0;
-  color: #666666;
-}
-
-body:not(.dark-mode) .close-popup-btn:hover {
-  color: #ffffff;
-  background: #f04747;
-  border-color: #f04747;
-}
-
-body:not(.dark-mode) .info-popup-content p {
-  color: #4a4a4a;
-}
-
-body:not(.dark-mode) .info-popup-content strong {
-  color: #1a1a1a;
+body.dark-mode .popup-header {
+  background: linear-gradient(135deg, #202225 0%, #2f3136 100%);
 }
 
 /* --- Dropdown Container (for Fuse.js search) ---
@@ -866,9 +836,9 @@ body:not(.dark-mode) .info-popup-content strong {
 .dropdown-container input {
   font-size: 1rem;
   padding: 0.75rem 2.5rem 0.75rem 1rem;
-  border: 2px solid #4f545c;
-  background-color: #3d4148;
-  color: #dcddde;
+  border: 2px solid var(--surface-border);
+  background-color: var(--surface-elevated);
+  color: var(--text-primary);
   border-radius: 0.5rem;
   width: 100%;
   box-sizing: border-box;
@@ -878,12 +848,12 @@ body:not(.dark-mode) .info-popup-content strong {
 
 .dropdown-container input:hover {
   border-color: #5c6067;
-  background-color: #2f3136;
+  background-color: var(--surface-card);
 }
 
 .dropdown-container input:focus {
   outline: none;
-  border-color: #7289da;
+  border-color: var(--accent-blue);
   box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.2);
   transform: translateY(-1px);
 }
@@ -894,7 +864,7 @@ body:not(.dark-mode) .info-popup-content strong {
 }
 
 .dropdown-container input::placeholder {
-  color: #8e9297;
+  color: var(--text-secondary);
 }
 
 .dropdown-icon {
@@ -902,26 +872,26 @@ body:not(.dark-mode) .info-popup-content strong {
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #b9bbbe;
+  color: var(--text-on-surface);
   pointer-events: none;
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dropdown-container input:focus + .dropdown-icon {
   transform: translateY(-50%) rotate(180deg);
-  color: #7289da;
+  color: var(--accent-blue);
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #3d4148;
+  background-color: var(--surface-elevated);
   width: 100%;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
   z-index: 100;
   max-height: 18.75rem;
   overflow-y: auto;
-  border: 1px solid #4f545c;
+  border: 1px solid var(--surface-border);
   border-radius: 0.5rem;
   margin-top: 0.5rem;
   animation: dropdown-slide-in 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -939,7 +909,7 @@ body:not(.dark-mode) .info-popup-content strong {
 }
 
 .dropdown-content a {
-  color: #dcddde;
+  color: var(--text-primary);
   padding: 0.875rem 1rem;
   text-decoration: none;
   display: block;
@@ -956,86 +926,28 @@ body:not(.dark-mode) .info-popup-content strong {
     transparent 100%
   );
   color: #ffffff;
-  border-left-color: #7289da;
+  border-left-color: var(--accent-blue);
   padding-left: 1.25rem;
 }
 
 .dropdown-content a:focus {
-  outline: 2px solid #7289da;
+  outline: 2px solid var(--accent-blue);
   outline-offset: -2px;
 }
 
 .dropdown-content .no-results {
-  color: #72767d;
+  color: var(--text-secondary);
   padding: 1.5rem;
   text-align: center;
   font-style: italic;
 }
 
 .dropdown-content a mark {
-  background-color: #7289da;
+  background-color: var(--accent-blue);
   color: white;
   padding: 0.125rem 0.25rem;
   border-radius: 0.25rem;
   font-weight: 600;
-}
-
-/* Light Mode Dropdown */
-body:not(.dark-mode) .dropdown-container input {
-  border: 2px solid #d0d0d0;
-  background-color: #ffffff;
-  color: #1a1a1a;
-}
-
-body:not(.dark-mode) .dropdown-container input:hover {
-  border-color: #b0b0b0;
-  background-color: #f8f9fa;
-}
-
-body:not(.dark-mode) .dropdown-container input:focus {
-  border-color: #0071eb;
-  box-shadow: 0 0 0 3px rgba(0, 113, 235, 0.1);
-}
-
-body:not(.dark-mode) .dropdown-container input::placeholder {
-  color: #999999;
-}
-
-body:not(.dark-mode) .dropdown-icon {
-  color: #666666;
-}
-
-body:not(.dark-mode) .dropdown-container input:focus + .dropdown-icon {
-  color: #0071eb;
-}
-
-body:not(.dark-mode) .dropdown-content {
-  background-color: #ffffff;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  border: 1px solid #e0e0e0;
-}
-
-body:not(.dark-mode) .dropdown-content a {
-  color: #1a1a1a;
-}
-
-body:not(.dark-mode) .dropdown-content a:hover {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 113, 235, 0.08) 0%,
-    transparent 100%
-  );
-  color: #0071eb;
-  border-left-color: #0071eb;
-}
-
-body:not(.dark-mode) .dropdown-content .no-results {
-  color: #999999;
-}
-
-body:not(.dark-mode) .dropdown-content a mark {
-  background-color: #0071eb;
-  color: white;
 }
 
 /* ==========================================================================
@@ -1068,15 +980,15 @@ body:not(.dark-mode) .dropdown-content a mark {
   gap: 1rem;
   margin-bottom: 1.5rem;
   padding: 1rem;
-  background: #3d4148;
+  background: var(--surface-elevated);
   border-radius: 0.5rem;
-  border-left: 3px solid #7289da;
+  border-left: 3px solid var(--accent-blue);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .info-step:hover {
   transform: translateX(4px);
-  border-left-color: #43b581;
+  border-left-color: var(--accent-green);
 }
 
 /* Step badge (works for both numbers and icons) */
@@ -1084,7 +996,7 @@ body:not(.dark-mode) .dropdown-content a mark {
   flex-shrink: 0;
   width: 2.5rem;
   height: 2.5rem;
-  background: linear-gradient(135deg, #7289da, #5b6eae);
+  background: linear-gradient(135deg, var(--accent-blue), #5b6eae);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -1104,41 +1016,17 @@ body:not(.dark-mode) .dropdown-content a mark {
 .info-content h3 {
   text-align: left;
   margin-bottom: 0.5rem;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1rem;
   font-weight: 600;
 }
 
 .info-content p {
   margin: 0;
-  color: #b9bbbe;
+  color: var(--text-on-surface);
   font-size: 0.9375rem;
   text-align: left;
   line-height: 1.6;
-}
-
-/* Light Mode Step Components */
-body:not(.dark-mode) .info-step {
-  background: #f8f9fa;
-  border-left: 3px solid #0071eb;
-}
-
-body:not(.dark-mode) .info-step:hover {
-  border-left-color: #43b581;
-  background: #ffffff;
-}
-
-body:not(.dark-mode) .info-icon {
-  background: linear-gradient(135deg, #0071eb, #4da3ff);
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 113, 235, 0.2);
-}
-
-body:not(.dark-mode) .info-content h3 {
-  color: #1a1a1a;
-}
-
-body:not(.dark-mode) .info-content p {
-  color: #4a4a4a;
 }
 
 /* ==========================================================================
@@ -1156,7 +1044,7 @@ body:not(.dark-mode) .info-content p {
   gap: 1rem;
   padding: 1rem;
   background: rgba(250, 166, 26, 0.1);
-  border: 1px solid #faa61a;
+  border: 1px solid var(--warning-color);
   border-radius: 0.5rem;
   margin-top: 1.5rem;
   text-align: left;
@@ -1164,7 +1052,7 @@ body:not(.dark-mode) .info-content p {
 }
 
 .warning-box i {
-  color: #faa61a;
+  color: var(--warning-color);
   font-size: 1.5rem;
   flex-shrink: 0;
   margin-top: 0.125rem;
@@ -1176,7 +1064,7 @@ body:not(.dark-mode) .info-content p {
 }
 
 .warning-box strong {
-  color: #faa61a;
+  color: var(--warning-color);
   display: block;
   margin-bottom: 0.5rem;
   text-align: left;
@@ -1188,25 +1076,16 @@ body:not(.dark-mode) .info-content p {
   font-size: 0.9375rem;
   line-height: 1.5;
   text-align: left;
-  color: #dcddde;
+  color: var(--text-primary);
 }
 
-/* Light Mode Warning Box */
-body:not(.dark-mode) .warning-box {
-  background: rgba(250, 166, 26, 0.08);
-  border: 1px solid rgba(250, 166, 26, 0.5);
-}
-
+/* Light Mode Warning Box - darker yellow for readability on light bg */
 body:not(.dark-mode) .warning-box i {
   color: #d68910;
 }
 
 body:not(.dark-mode) .warning-box strong {
   color: #d68910;
-}
-
-body:not(.dark-mode) .warning-box p {
-  color: #4a4a4a;
 }
 
 /* ==========================================================================

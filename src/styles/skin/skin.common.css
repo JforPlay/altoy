@@ -1,3 +1,5 @@
+@import url('../theme.css');
+
 /* =================================================================
    MODERN COMMON STYLES - Shared across all skin pages
    Used by: skin-detail-viewer, skin-list-viewer, skin-poll
@@ -144,8 +146,8 @@ label {
 .card {
   background: linear-gradient(
     135deg,
-    var(--bg-secondary) 0%,
-    var(--bg-elevated) 100%
+    #ffffff 0%,
+    #fafafa 100%
   );
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -167,9 +169,10 @@ label {
   justify-content: center;
   gap: var(--spacing-lg);
   padding: var(--spacing-lg);
-  background-color: var(--bg-secondary);
+  background-color: #ffffff;
   border-radius: var(--radius-md);
   margin: var(--spacing-lg) 0;
+  border: 1px solid var(--border-color);
 }
 
 .filter-group {
@@ -188,8 +191,8 @@ label {
   font-size: 1rem;
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--radius-sm);
-  border: 2px solid var(--bg-secondary);
-  background-color: var(--bg-input);
+  border: 2px solid var(--border-color);
+  background-color: #ffffff;
   color: var(--text-secondary);
   transition: border-color var(--transition-fast);
 }
@@ -197,6 +200,7 @@ label {
 .filter-group select:focus {
   outline: none;
   border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 113, 235, 0.1);
 }
 
 /* Filter toggle button (mobile) */
@@ -234,8 +238,9 @@ label {
   gap: var(--spacing-md);
   padding: var(--spacing-xs) var(--spacing-sm);
   justify-content: center;
-  background-color: var(--bg-input);
+  background-color: #fafafa;
   border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
 }
 
 .checkbox-group label {
@@ -250,7 +255,7 @@ label {
 /* --- Clear/Reset Buttons --- */
 .clear-btn,
 .reset-button {
-  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-secondary));
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -267,7 +272,7 @@ label {
 
 .clear-btn:hover,
 .reset-button:hover {
-  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-elevated));
+  background: linear-gradient(135deg, #f8f9fa, #ffffff);
   border-color: var(--primary-color);
   color: var(--primary-color);
   transform: translateY(-2px);
@@ -302,7 +307,7 @@ label {
 }
 
 .skeleton-card {
-  background: var(--bg-secondary);
+  background: #ffffff;
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
@@ -313,9 +318,9 @@ label {
 .skeleton-element {
   background: linear-gradient(
     90deg,
-    var(--bg-tertiary) 25%,
-    var(--bg-elevated) 50%,
-    var(--bg-tertiary) 75%
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
   );
   background-size: 200% 100%;
   border-radius: var(--radius-sm);
@@ -355,7 +360,7 @@ label {
   width: 1.5rem;
   height: 1.5rem;
   vertical-align: middle;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
 }
 
 /* .hidden utility class defined in global.style.css */
@@ -429,75 +434,63 @@ label {
 }
 
 /* =================================================================
-   LIGHT MODE - COMPONENT OVERRIDES
+   DARK MODE - COMPONENT OVERRIDES
    ================================================================= */
 
-/* Light mode component-specific overrides */
-body:not(.dark-mode) .card {
+body.dark-mode .card {
   background: linear-gradient(
     135deg,
-    #ffffff 0%,
-    #fafafa 100%
+    var(--bg-secondary) 0%,
+    var(--bg-elevated) 100%
   );
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-md);
 }
 
-body:not(.dark-mode) .card:hover {
-  box-shadow: var(--shadow-lg);
+body.dark-mode .filter-container {
+  background-color: var(--bg-secondary);
+  border: none;
 }
 
-body:not(.dark-mode) .filter-container {
-  background-color: #ffffff;
-  border: 1px solid var(--border-color);
+body.dark-mode .checkbox-group {
+  background-color: var(--bg-input);
+  border: none;
 }
 
-body:not(.dark-mode) .checkbox-group {
-  background-color: #fafafa;
-  border: 1px solid var(--border-color);
+body.dark-mode .filter-group select {
+  background-color: var(--bg-input);
+  border: 2px solid var(--bg-secondary);
 }
 
-body:not(.dark-mode) .filter-group select {
-  background-color: #ffffff;
-  border: 2px solid var(--border-color);
+body.dark-mode .filter-group select:focus {
+  box-shadow: none;
 }
 
-body:not(.dark-mode) .filter-group select:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(0, 113, 235, 0.1);
+body.dark-mode .clear-btn,
+body.dark-mode .reset-button {
+  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-secondary));
 }
 
-body:not(.dark-mode) .clear-btn,
-body:not(.dark-mode) .reset-button {
-  background: linear-gradient(135deg, #ffffff, #f8f9fa);
-  border: 1px solid var(--border-color);
+body.dark-mode .clear-btn:hover,
+body.dark-mode .reset-button:hover {
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-elevated));
 }
 
-body:not(.dark-mode) .clear-btn:hover,
-body:not(.dark-mode) .reset-button:hover {
-  background: linear-gradient(135deg, #f8f9fa, #ffffff);
-  border-color: var(--primary-color);
-  color: var(--primary-color);
+body.dark-mode .skeleton-card {
+  background: var(--bg-secondary);
 }
 
-body:not(.dark-mode) .skeleton-card {
-  background: #ffffff;
-  border: 1px solid var(--border-color);
-}
-
-body:not(.dark-mode) .skeleton-line,
-body:not(.dark-mode) .skeleton-element {
+body.dark-mode .skeleton-line,
+body.dark-mode .skeleton-element {
   background: linear-gradient(
     90deg,
-    #f0f0f0 25%,
-    #e0e0e0 50%,
-    #f0f0f0 75%
+    var(--bg-tertiary) 25%,
+    var(--bg-elevated) 50%,
+    var(--bg-tertiary) 75%
   );
   background-size: 200% 100%;
 }
 
-body:not(.dark-mode) .gem-icon {
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+body.dark-mode .gem-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 /* --- Print Styles --- */
