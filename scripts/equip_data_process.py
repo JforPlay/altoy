@@ -124,6 +124,7 @@ def resolve_inheritance(stats: Dict) -> Dict[int, Dict]:
 def filter_usable(families: Dict[int, Dict]) -> Dict[int, Dict]:
     """Filter out unusable equipment (name='0', rarity <= 1, no valid icon, untranslated names)."""
     HANGUL_RE = re.compile(r'[\uac00-\ud7af]')
+    CJK_RE = re.compile(r'[\u4e00-\u9fff]')
     filtered = {}
     for base_id, family in families.items():
         base = family["base"]
@@ -136,8 +137,8 @@ def filter_usable(families: Dict[int, Dict]) -> Dict[int, Dict]:
             continue
         if not icon or icon == "1" or icon == "0":
             continue
-        # Skip untranslated entries (no Korean characters in name)
-        if not HANGUL_RE.search(name):
+        # Skip untranslated entries (Chinese characters present, no Korean)
+        if CJK_RE.search(name) and not HANGUL_RE.search(name):
             continue
 
         filtered[base_id] = family

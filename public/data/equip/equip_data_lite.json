@@ -875,6 +875,51 @@
         "compare_group": 5
     },
     {
+        "id": 960,
+        "name": "FuMO 25",
+        "icon": "960",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 4,
+        "nation_name": "메탈 블러드",
+        "nation_code": "KMS",
+        "speciality": "없음",
+        "label": [
+            "KMS",
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "hit",
+                "name": "명중",
+                "value": "11"
+            },
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": 8
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "hit",
+                "name": "명중",
+                "value": "35"
+            },
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": 32
+            }
+        ],
+        "compare_group": 5
+    },
+    {
         "id": 980,
         "name": "기밀 문서·일지 잔본",
         "icon": "980",
@@ -24063,6 +24108,42 @@
         "compare_group": 4
     },
     {
+        "id": 48040,
+        "name": "Ju-87 D-4",
+        "icon": "48040",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 8,
+        "type_name": "뇌격기",
+        "type_name2": "뇌격기",
+        "nationality": 4,
+        "nation_name": "메탈 블러드",
+        "nation_code": "KMS",
+        "speciality": "뇌격",
+        "label": [
+            "KMS",
+            "CV",
+            "TB"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 45
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 45
+            }
+        ],
+        "compare_group": 4
+    },
+    {
         "id": 49000,
         "name": "Ju-87C 급강하폭격기",
         "icon": "49000",
@@ -25452,6 +25533,78 @@
         "compare_group": 1
     },
     {
+        "id": 85760,
+        "name": "R-5",
+        "icon": "85760",
+        "rarity": 3,
+        "rarity_name": "R",
+        "type": 9,
+        "type_name": "폭격기",
+        "type_name2": "폭격기",
+        "nationality": 7,
+        "nation_name": "노스 유니온",
+        "nation_code": "SN",
+        "speciality": "<[BOMB]>",
+        "label": [
+            "SN",
+            "CV",
+            "DB"
+        ],
+        "tech": 0,
+        "level_count": 8,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 12
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 12
+            }
+        ],
+        "compare_group": 4
+    },
+    {
+        "id": 85780,
+        "name": "LBSh",
+        "icon": "85780",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 9,
+        "type_name": "폭격기",
+        "type_name2": "폭격기",
+        "nationality": 7,
+        "nation_name": "노스 유니온",
+        "nation_code": "SN",
+        "speciality": "<[BOMB]>",
+        "label": [
+            "SN",
+            "CV",
+            "DB"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "compare_group": 4
+    },
+    {
         "id": 89000,
         "name": "랜덤 워드 생성기",
         "icon": "89000",
@@ -26575,6 +26728,50 @@
                 "key": "cannon",
                 "name": "포격",
                 "value": "70"
+            }
+        ],
+        "compare_group": 5
+    },
+    {
+        "id": 89560,
+        "name": "Ｎ／Ａ",
+        "icon": "89560",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 109,
+        "nation_name": "라이자 아틀리에",
+        "nation_code": "RYZA",
+        "speciality": "<[NA]>",
+        "label": [
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": "18"
+            },
+            {
+                "key": "hit",
+                "name": "명중",
+                "value": 4
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": "53"
+            },
+            {
+                "key": "hit",
+                "name": "명중",
+                "value": 11
             }
         ],
         "compare_group": 5
@@ -28407,6 +28604,150 @@
         "compare_group": 1
     },
     {
+        "id": 91180,
+        "name": "FBA 19",
+        "icon": "51160",
+        "rarity": 3,
+        "rarity_name": "R",
+        "type": 12,
+        "type_name": "수상기",
+        "type_name2": "수상기",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "폭격",
+        "label": [
+            "FFNF",
+            "ST",
+            "SCOUT"
+        ],
+        "tech": 2,
+        "level_count": 7,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 12
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 12
+            }
+        ],
+        "compare_group": 5
+    },
+    {
+        "id": 91200,
+        "name": "FBA 19",
+        "icon": "51160",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 12,
+        "type_name": "수상기",
+        "type_name2": "수상기",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "폭격",
+        "label": [
+            "FFNF",
+            "ST",
+            "SCOUT"
+        ],
+        "tech": 3,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "compare_group": 5
+    },
+    {
+        "id": 91220,
+        "name": "D.790",
+        "icon": "51220",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 7,
+        "type_name": "전투기",
+        "type_name2": "전투기",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "항공",
+        "label": [
+            "FFNF",
+            "CV",
+            "FT"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "compare_group": 4
+    },
+    {
+        "id": 91240,
+        "name": "BR.810",
+        "icon": "51240",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 8,
+        "type_name": "뇌격기",
+        "type_name2": "뇌격기",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "뇌격",
+        "label": [
+            "FFNF",
+            "CV",
+            "TB"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 45
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 45
+            }
+        ],
+        "compare_group": 4
+    },
+    {
         "id": 91260,
         "name": "아이리스 천사의 날개",
         "icon": "51260",
@@ -28485,6 +28826,186 @@
             }
         ],
         "compare_group": 5
+    },
+    {
+        "id": 91300,
+        "name": "PL.10",
+        "icon": "51300",
+        "rarity": 3,
+        "rarity_name": "R",
+        "type": 8,
+        "type_name": "뇌격기",
+        "type_name2": "뇌격기",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "<[TRP]>",
+        "label": [
+            "FFNF",
+            "CV",
+            "TB"
+        ],
+        "tech": 0,
+        "level_count": 8,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 12
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 12
+            }
+        ],
+        "compare_group": 4
+    },
+    {
+        "id": 91320,
+        "name": "V-156-F",
+        "icon": "51320",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 9,
+        "type_name": "폭격기",
+        "type_name2": "폭격기",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "<[BOMB]>",
+        "label": [
+            "FFNF",
+            "CV",
+            "DB"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "compare_group": 4
+    },
+    {
+        "id": 91340,
+        "name": "LN.401",
+        "icon": "51340",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 9,
+        "type_name": "폭격기",
+        "type_name2": "폭격기",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "<[BOMB]>",
+        "label": [
+            "FFNF",
+            "CV",
+            "DB"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 45
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 45
+            }
+        ],
+        "compare_group": 4
+    },
+    {
+        "id": 91360,
+        "name": "Late.299",
+        "icon": "51360",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 8,
+        "type_name": "뇌격기",
+        "type_name2": "뇌격기",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "<[TRP]>",
+        "label": [
+            "FFNF",
+            "CV",
+            "TB"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 25
+            }
+        ],
+        "compare_group": 4
+    },
+    {
+        "id": 91380,
+        "name": "LGL.32",
+        "icon": "51380",
+        "rarity": 3,
+        "rarity_name": "R",
+        "type": 7,
+        "type_name": "전투기",
+        "type_name2": "전투기",
+        "nationality": 8,
+        "nation_name": "아이리스 리브레",
+        "nation_code": "FFNF",
+        "speciality": "<[AIR]>",
+        "label": [
+            "FFNF",
+            "CV",
+            "FT"
+        ],
+        "tech": 0,
+        "level_count": 8,
+        "attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 12
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "air",
+                "name": "항공",
+                "value": 12
+            }
+        ],
+        "compare_group": 4
     },
     {
         "id": 95000,
@@ -29866,6 +30387,43 @@
                 "key": "antiaircraft",
                 "name": "대공",
                 "value": 15
+            }
+        ],
+        "compare_group": 1
+    },
+    {
+        "id": 96000,
+        "name": "SY-1",
+        "icon": "56000",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 20,
+        "type_name": "미사일",
+        "type_name2": "미사일",
+        "nationality": 5,
+        "nation_name": "이스트 글림",
+        "nation_code": "ROC",
+        "speciality": "유도",
+        "label": [
+            "PRAN",
+            "DD",
+            "WP",
+            "QUAD"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "torpedo",
+                "name": "뇌장",
+                "value": 45
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "torpedo",
+                "name": "뇌장",
+                "value": 45
             }
         ],
         "compare_group": 1
