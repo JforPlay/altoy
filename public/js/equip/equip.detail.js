@@ -10,7 +10,7 @@ import {
     getWeaponName, getAircraftTemplate
 } from './equip.data.js';
 
-/** Ammo type ID → Korean name mapping */
+/** Ammo type name mapping (matches equip.ammo field / equip_ammo_type_X i18n keys) */
 const AMMO_TYPE_NAMES = {
     1: '철갑탄',
     2: '고폭탄',
@@ -120,8 +120,12 @@ function renderDetail(equip) {
         `;
     }
 
-    // Damage info
-    if (level.damage) {
+    // Weapon info (damage + ammo type)
+    const ammoName = equip.ammo != null && equip.ammo !== 10 ? AMMO_TYPE_NAMES[equip.ammo] : null;
+    if (level.damage || ammoName) {
+        let weaponRows = '';
+        if (level.damage) weaponRows += `<tr><th>데미지</th><td id="damageValue">${replaceEquipCodes(level.damage)}</td></tr>`;
+        if (ammoName) weaponRows += `<tr><th>탄종</th><td>${ammoName}</td></tr>`;
         html += `
             <div class="stats-section">
                 <div class="stats-section-title">
@@ -130,7 +134,7 @@ function renderDetail(equip) {
                 </div>
                 <table class="stats-table">
                     <tbody id="weaponTableBody">
-                        <tr><th>데미지</th><td id="damageValue">${replaceEquipCodes(level.damage)}</td></tr>
+                        ${weaponRows}
                     </tbody>
                 </table>
             </div>
@@ -413,12 +417,6 @@ function renderWeaponParamsRows(wp) {
     for (const bid of bulletIds) {
         const bullet = getBulletTemplate(bid);
         if (!bullet) continue;
-
-        // Ammo type
-        if (bullet.ammo_type != null) {
-            const ammoName = AMMO_TYPE_NAMES[bullet.ammo_type] || bullet.ammo_type;
-            rows += `<tr><th>탄종</th><td>${ammoName}</td></tr>`;
-        }
 
         // Armor modifiers (damage_type)
         const dt = bullet.damage_type;
