@@ -75,6 +75,16 @@ export async function loadBulletTemplateData() {
     return null;
 }
 
+export async function loadAircraftTemplateData() {
+    try {
+        state.aircraftTemplateData = await fetchJSONWithCache('data/sim/aircraft_template.json', { maxAge: 86400000 });
+        return state.aircraftTemplateData;
+    } catch (error) {
+        console.warn('Failed to load aircraft template data:', error);
+    }
+    return null;
+}
+
 export async function loadSkillData() {
     try {
         state.skillData = await fetchJSONWithCache('data/sim/skill_data_template.json', { maxAge: 86400000 });
@@ -194,6 +204,36 @@ export function getWeaponProperty(weaponId) {
 export function getBulletTemplate(bulletId) {
     if (!state.bulletTemplateData) return null;
     return state.bulletTemplateData[String(bulletId)] || null;
+}
+
+/** Get aircraft template by aircraft ID */
+export function getAircraftTemplate(aircraftId) {
+    if (!state.aircraftTemplateData) return null;
+    return state.aircraftTemplateData[String(aircraftId)] || null;
+}
+
+/** Load weapon name data (maps weapon_property IDs to Korean names) */
+export async function loadWeaponNameData() {
+    try {
+        state.weaponNameData = await fetchJSONWithCache('data/equip/weapon_name.json', { maxAge: 86400000 });
+        return state.weaponNameData;
+    } catch (error) {
+        console.warn('Failed to load weapon name data:', error);
+    }
+    return null;
+}
+
+/** Get weapon name by weapon ID (resolves base references) */
+export function getWeaponName(weaponId) {
+    if (!state.weaponNameData) return null;
+    const entry = state.weaponNameData[String(weaponId)];
+    if (!entry) return null;
+    if (entry.name) return entry.name;
+    if (entry.base) {
+        const base = state.weaponNameData[String(entry.base)];
+        return base ? base.name : null;
+    }
+    return null;
 }
 
 /** Get skill data by skill ID */

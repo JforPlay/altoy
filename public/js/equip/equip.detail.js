@@ -6,8 +6,24 @@
 import { showToast } from '../utils.js';
 import {
     getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics,
-    replaceEquipCodes, getWeaponProperty, getBulletTemplate, getSkillData
+    replaceEquipCodes, getWeaponProperty, getBulletTemplate, getSkillData,
+    getWeaponName, getAircraftTemplate
 } from './equip.data.js';
+
+/** Ammo type ID → Korean name mapping */
+const AMMO_TYPE_NAMES = {
+    1: '철갑탄',
+    2: '고폭탄',
+    3: '통상탄',
+    4: '음향 유도',
+    5: '통상',
+    6: '삼식탄',
+    7: '반철갑탄(SAP탄)',
+    8: '자성식',
+    9: '격발식',
+    10: '없음',
+    11: '미사일',
+};
 
 let state;
 /** Cached canvas from the last rendered icon (used for download) */
@@ -120,6 +136,9 @@ function renderDetail(equip) {
             </div>
         `;
     }
+
+    // Aircraft parameters (for aircraft equip types)
+    html += renderAircraftParams(equip, level);
 
     // Weapon parameters (from weapon_property.json via weapon_id)
     html += renderWeaponParams(equip, level);
@@ -277,21 +296,90 @@ function getMergedWeaponProperty(baseWpId, currentWpId) {
     return merged;
 }
 
-/** Get merged weapon properties for all weapon_ids in a level */
+/** Equipment types that use aircraft_template for bullet resolution */
+const AIRCRAFT_TYPES = new Set([7, 8, 9, 12, 15]);
+
+/** Get merged weapon properties for all weapon_ids in a level.
+ *  For aircraft types (7,8,9,12,15): weapon_id → aircraft_template → weapon_ID → weapon_property
+ *  For others: weapon_id → weapon_property directly */
 function getMergedWeaponProperties(equip, level) {
     const weaponIds = level.weapon_id;
     if (!weaponIds || !weaponIds.length) return [];
 
     const baseIds = equip.levels[0].weapon_id || [];
 
+    if (AIRCRAFT_TYPES.has(equip.type)) {
+        // Aircraft path: each weapon_id maps to aircraft_template → weapon_ID list
+        // Deduplicate by base weapon ID since multiple aircraft slots can share weapons
+        const results = [];
+        const seen = new Set();
+        for (let i = 0; i < weaponIds.length; i++) {
+            const aircraft = getAircraftTemplate(weaponIds[i]);
+            if (!aircraft || !aircraft.weapon_ID) continue;
+            const baseAircraft = getAircraftTemplate(baseIds[i] || baseIds[0]);
+            const baseAcWeaponIds = baseAircraft ? (baseAircraft.weapon_ID || []) : [];
+            for (let j = 0; j < aircraft.weapon_ID.length; j++) {
+                const acWid = aircraft.weapon_ID[j];
+                const acBaseWid = baseAcWeaponIds[j] || baseAcWeaponIds[0];
+                if (seen.has(acBaseWid)) continue;
+                seen.add(acBaseWid);
+                const merged = getMergedWeaponProperty(acBaseWid, acWid);
+                if (merged) {
+                    merged._weaponId = acWid;
+                    results.push(merged);
+                }
+            }
+        }
+        return results;
+    }
+
+    // Standard path
     return weaponIds.map((wid, i) => {
         const baseWpId = baseIds[i] || baseIds[0];
-        return getMergedWeaponProperty(baseWpId, wid);
+        const merged = getMergedWeaponProperty(baseWpId, wid);
+        if (merged) merged._weaponId = wid;
+        return merged;
     }).filter(Boolean);
+}
+
+function renderAircraftParams(equip, level) {
+    if (!AIRCRAFT_TYPES.has(equip.type)) return '';
+
+    const weaponIds = level.weapon_id;
+    if (!weaponIds || !weaponIds.length) return '';
+
+    // Use the first aircraft_template entry for the aircraft-level stats
+    const aircraft = getAircraftTemplate(weaponIds[0]);
+    if (!aircraft) return '';
+
+    let rows = '';
+    if (aircraft.speed != null) rows += `<tr><th>항속</th><td>${aircraft.speed}</td></tr>`;
+    if (aircraft.dodge != null) rows += `<tr><th>회피</th><td>${aircraft.dodge}</td></tr>`;
+    if (aircraft.dodge_limit != null) rows += `<tr><th>회피한계</th><td>${aircraft.dodge_limit}</td></tr>`;
+    if (aircraft.crash_DMG != null) rows += `<tr><th>충돌 데미지</th><td>${aircraft.crash_DMG}</td></tr>`;
+
+    if (!rows) return '';
+
+    return `
+        <div class="stats-section">
+            <div class="stats-section-title">
+                <span class="material-symbols-outlined">flight</span>
+                기체 파라미터
+            </div>
+            <table class="stats-table">
+                <tbody id="aircraftParamsBody">${rows}</tbody>
+            </table>
+        </div>
+    `;
 }
 
 function renderWeaponParamsRows(wp) {
     let rows = '';
+
+    // Damage
+    if (wp.damage != null) {
+        rows += `<tr><th>화력</th><td>${wp.damage}</td></tr>`;
+    }
 
     // Range
     if (wp.range) {
@@ -312,7 +400,7 @@ function renderWeaponParamsRows(wp) {
     // Reload (reload_max / 150, floor to 2 decimals)
     if (wp.reload_max != null) {
         const reload = Math.floor((wp.reload_max / 150) * 100) / 100;
-        rows += `<tr><th>사속</th><td>${reload}s</td></tr>`;
+        rows += `<tr><th>무기 사속</th><td>${reload}s</td></tr>`;
     }
 
     // Attack attribute ratio
@@ -328,7 +416,8 @@ function renderWeaponParamsRows(wp) {
 
         // Ammo type
         if (bullet.ammo_type != null) {
-            rows += `<tr><th>탄종</th><td>${bullet.ammo_type}</td></tr>`;
+            const ammoName = AMMO_TYPE_NAMES[bullet.ammo_type] || bullet.ammo_type;
+            rows += `<tr><th>탄종</th><td>${ammoName}</td></tr>`;
         }
 
         // Armor modifiers (damage_type)
@@ -368,7 +457,9 @@ function renderWeaponParams(equip, level) {
         for (let i = 0; i < weapons.length; i++) {
             const wpRows = renderWeaponParamsRows(weapons[i]);
             if (wpRows) {
-                allRows += `<tr><th colspan="2" class="weapon-group-header">무기 ${i + 1}</th></tr>`;
+                const wName = getWeaponName(weapons[i]._weaponId);
+                const header = wName || `무기 ${i + 1}`;
+                allRows += `<tr><th colspan="2" class="weapon-group-header">${header}</th></tr>`;
                 allRows += wpRows;
             }
         }
@@ -427,6 +518,16 @@ function renderSkillSection(level) {
     `;
 }
 
+/** Get the weapon_property for the primary (first) weapon_id of a level.
+ *  Always uses weapon_id → weapon_property directly (not through aircraft chain). */
+function getPrimaryWeaponProperty(equip, level) {
+    const weaponIds = level.weapon_id;
+    if (!weaponIds || !weaponIds.length) return null;
+
+    const baseWid = (equip.levels[0].weapon_id || [])[0];
+    return getMergedWeaponProperty(baseWid, weaponIds[0]);
+}
+
 function renderStatsRows(equip, level) {
     let rows = equip.attr_info.map(attr => {
         const value = level[`attr_${attr.index}_value`] || 0;
@@ -435,6 +536,13 @@ function renderStatsRows(equip, level) {
             <td>${value}</td>
         </tr>`;
     }).join('');
+
+    // Reload speed from the primary weapon
+    const reloadWp = getPrimaryWeaponProperty(equip, level);
+    if (reloadWp && reloadWp.reload_max != null) {
+        const reload = Math.floor((reloadWp.reload_max / 150) * 100) / 100;
+        rows += `<tr><th>사속</th><td>${reload}s</td></tr>`;
+    }
 
     // Check for anti_siren in statistics data
     const stats = getLevelStatistics(level.id);
@@ -515,6 +623,7 @@ function updateLevelDisplay(equip) {
         scrapBody.innerHTML = renderScrapRows(level);
     }
 
+    updateDynamicSection('aircraftParamsBody', renderAircraftParams(equip, level));
     updateDynamicSection('weaponParamsBody', renderWeaponParams(equip, level));
     updateDynamicSection('skillTableBody', renderSkillSection(level));
 }

@@ -12,7 +12,7 @@ import {
     setup as setupData,
     loadLiteData, loadFullData, loadStatisticsData, loadEquipTypeData,
     loadNationalityData, loadShipTypeData, loadEquipCodeData,
-    loadWeaponPropertyData, loadBulletTemplateData, loadSkillData,
+    loadWeaponPropertyData, loadBulletTemplateData, loadSkillData, loadWeaponNameData, loadAircraftTemplateData,
     loadUpgradeTemplateData, isInUpgradeTree,
     getEquipIconUrl, getRarityBgUrl, getUniqueTypes, getUniqueNationalities, getUniqueLabels,
     getFullEquipData
@@ -126,6 +126,8 @@ async function init() {
         loadWeaponPropertyData();
         loadBulletTemplateData();
         loadSkillData();
+        loadWeaponNameData();
+        loadAircraftTemplateData();
         loadUpgradeTemplateData();
 
         loading.style.display = 'none';
