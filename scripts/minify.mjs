@@ -1,12 +1,12 @@
 /**
- * Post-build script to minify JavaScript files in dist/scripts
+ * Post-build script to minify JavaScript files in dist/js
  * Run after `astro build` to minify all JS files
  */
 import { readdir, readFile, writeFile, stat } from 'fs/promises';
 import { join } from 'path';
 import { minify } from 'terser';
 
-const DIST_SCRIPTS = './dist/scripts';
+const DIST_SCRIPTS = './dist/js';
 
 // Terser options for optimal minification
 const terserOptions = {

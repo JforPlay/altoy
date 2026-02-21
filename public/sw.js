@@ -9,8 +9,8 @@ const DATA_CACHE = `altoy-data-${CACHE_VERSION}`;
 
 // Static assets to pre-cache on install
 const PRECACHE_ASSETS = [
-    '/altoy/scripts/utils.js',
-    '/altoy/scripts/global.script.js'
+    '/altoy/js/utils.js',
+    '/altoy/js/global.script.js'
 ];
 
 // Install: pre-cache critical static assets
