@@ -1,0 +1,109 @@
+---
+/**
+ * Equipment Viewer
+ * Browse, search, filter, and compare Azur Lane equipment data
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/equip/equip.style.css';
+import '../../styles/equip/equip.detail.css';
+import '../../styles/equip/equip.compare.css';
+---
+
+<Layout title="장비 DB">
+    <div id="app">
+        <!-- ===== List View ===== -->
+        <div id="mainView" class="view">
+            <header class="equip-header">
+                <div class="header-top">
+                    <div class="header-title-container">
+                        <span class="material-symbols-outlined">settings</span>
+                        <h1>장비 DB</h1>
+                    </div>
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <span class="stat-label">총 장비:</span>
+                            <span class="stat-value" id="totalCount">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">표시 중:</span>
+                            <span class="stat-value" id="filteredCount">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="search-filter-container">
+                    <input type="text" id="searchInput" placeholder="장비 이름 검색...">
+                    <div class="rarity-chips-container" id="rarityChips">
+                        <button class="rarity-chip rarity-chip-2" data-rarity="2">N</button>
+                        <button class="rarity-chip rarity-chip-3" data-rarity="3">R</button>
+                        <button class="rarity-chip rarity-chip-4" data-rarity="4">SR</button>
+                        <button class="rarity-chip rarity-chip-5" data-rarity="5">SSR</button>
+                        <button class="rarity-chip rarity-chip-6" data-rarity="6">UR</button>
+                    </div>
+                    <select id="typeFilter">
+                        <option value="">모든 장비</option>
+                    </select>
+                    <select id="nationalityFilter">
+                        <option value="">모든 진영</option>
+                    </select>
+                </div>
+                <div class="label-chips-container" id="labelChips"></div>
+            </header>
+            <div id="equipGrid" class="equip-grid"></div>
+        </div>
+
+        <div id="loading" class="loading">로딩 중...</div>
+
+        <!-- ===== Detail Side Panel ===== -->
+        <div id="detailBackdrop" class="equip-panel-backdrop"></div>
+        <aside id="detailPanel" class="equip-detail-panel">
+            <div class="equip-detail-panel-header">
+                <span class="panel-title">장비 상세</span>
+                <button id="detailPanelClose" class="panel-close-btn">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div id="detailPanelContent" class="equip-detail-panel-body"></div>
+            <div class="equip-detail-panel-footer">
+                <a id="detailResearchLink" class="detail-action-btn" href="#" style="display:none; text-decoration:none;">
+                    <span class="material-symbols-outlined">science</span>
+                    연구 트리
+                </a>
+                <button id="detailCompareBtn" class="detail-action-btn">
+                    <span class="material-symbols-outlined">compare_arrows</span>
+                    비교하기
+                </button>
+                <button id="detailDownloadBtn" class="detail-action-btn">
+                    <span class="material-symbols-outlined">download</span>
+                    아이콘 저장
+                </button>
+            </div>
+        </aside>
+
+        <!-- ===== Compare Mode Floating Bar ===== -->
+        <div id="compareModeBar" class="compare-mode-bar" style="display:none;">
+            <div class="compare-mode-info">
+                <span class="material-symbols-outlined">compare_arrows</span>
+                <span id="compareModeText">비교할 장비를 선택하세요</span>
+            </div>
+            <button id="compareModeCancel" class="compare-mode-cancel">
+                <span class="material-symbols-outlined">close</span>
+                취소
+            </button>
+        </div>
+
+        <!-- ===== Compare Modal ===== -->
+        <div id="compareModal" class="equip-compare-modal" style="display:none;">
+            <div class="equip-compare-modal-content">
+                <div class="compare-modal-header">
+                    <span class="compare-modal-title">장비 비교</span>
+                    <button class="modal-close compare-modal-close">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div id="compareModalBody" class="compare-modal-body"></div>
+            </div>
+        </div>
+    </div>
+
+    <script is:inline type="module" src="/altoy/js/equip/equip.viewer.js"></script>
+</Layout>

@@ -1,0 +1,464 @@
+@import url('../theme.css');
+
+/* ============================================
+   Equipment Viewer - Detail Side Panel
+   Transform-based slide-in panel from right
+   ============================================ */
+
+/* ===== Backdrop ===== */
+.equip-panel-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 997;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+
+.equip-panel-backdrop.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ===== Side Panel ===== */
+.equip-detail-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 450px;
+    height: 100%;
+    background: var(--card-bg);
+    border-left: 1px solid var(--border-color);
+    box-shadow: var(--shadow-xl);
+    z-index: 998;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform var(--transition-base);
+}
+
+.equip-detail-panel.open {
+    transform: translateX(0);
+}
+
+/* ===== Panel Header ===== */
+.equip-detail-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--card-bg);
+    flex-shrink: 0;
+}
+
+.panel-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.panel-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.panel-close-btn:hover {
+    background: var(--section-bg);
+    color: var(--text-primary);
+}
+
+/* ===== Panel Body (Scrollable) ===== */
+.equip-detail-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+/* ===== Panel Footer ===== */
+.equip-detail-panel-footer {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--border-color);
+    background: var(--card-bg);
+    flex-shrink: 0;
+}
+
+.detail-action-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.detail-action-btn:hover {
+    background: var(--section-bg);
+    border-color: var(--primary-color);
+}
+
+.detail-action-btn .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
+/* ===== Compact Detail Content (inside panel) ===== */
+.panel-detail-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.panel-detail-icon-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 0.75rem;
+}
+
+.panel-detail-icon-wrapper canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-lg);
+}
+
+.panel-detail-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.375rem;
+}
+
+.panel-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.panel-detail-meta .equip-type-badge {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.4rem;
+}
+
+.panel-detail-meta .equip-rarity-badge {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.4rem;
+}
+
+.panel-detail-nation-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.panel-detail-nation-badge img {
+    width: 18px;
+    height: 18px;
+}
+
+.panel-detail-speciality {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.375rem;
+}
+
+.panel-detail-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.panel-detail-label-tag {
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--radius-full);
+    background: var(--section-bg);
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    border: 1px solid var(--border-color);
+}
+
+.panel-detail-descrip {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    padding: 0.5rem;
+    background: var(--section-bg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+/* ===== Panel Level Selector ===== */
+.level-selector-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.level-selector-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.level-selector-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.level-display {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    padding: 0.15rem 0.4rem;
+    background: var(--section-bg);
+    border-radius: var(--radius-sm);
+}
+
+.level-slider {
+    width: 100%;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--border-color);
+    border-radius: 3px;
+    outline: none;
+}
+
+.level-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+}
+
+.level-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: none;
+    box-shadow: var(--shadow-sm);
+}
+
+/* ===== Panel Stats Table ===== */
+.stats-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.stats-section-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.stats-section-title .material-symbols-outlined {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.stats-table th,
+.stats-table td {
+    padding: 0.375rem 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.8rem;
+}
+
+.stats-table th {
+    color: var(--text-secondary);
+    font-weight: 500;
+    width: 50%;
+    white-space: nowrap;
+}
+
+.stats-table td {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.stats-table tr:last-child th,
+.stats-table tr:last-child td {
+    border-bottom: none;
+}
+
+.stat-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 0.25rem;
+}
+
+.weapon-group-header {
+    background: var(--section-bg);
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+/* ===== Ship Types Section ===== */
+.ship-types-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.ship-type-group {
+    margin-bottom: 0.5rem;
+}
+
+.ship-type-group:last-child {
+    margin-bottom: 0;
+}
+
+.ship-type-group-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.ship-type-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.ship-type-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--radius-sm);
+    background: var(--section-bg);
+    border: 1px solid var(--border-color);
+    font-size: 0.7rem;
+    color: var(--text-primary);
+}
+
+.ship-type-chip img {
+    width: 16px;
+    height: 16px;
+}
+
+/* ===== Upgrade Costs ===== */
+.upgrade-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.upgrade-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+.upgrade-table th,
+.upgrade-table td {
+    padding: 0.375rem 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.upgrade-table th {
+    color: var(--text-secondary);
+    font-weight: 500;
+    background: var(--section-bg);
+}
+
+.upgrade-table td {
+    color: var(--text-primary);
+}
+
+.upgrade-table tr:last-child td {
+    border-bottom: none;
+}
+
+.upgrade-table .current-level {
+    background: rgba(74, 74, 74, 0.08);
+    font-weight: 600;
+}
+
+body.dark-mode .upgrade-table .current-level {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* ===== Prop Item Chips ===== */
+.prop-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.prop-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .equip-detail-panel {
+        width: 100%;
+    }
+}

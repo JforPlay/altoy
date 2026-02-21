@@ -1,0 +1,60 @@
+---
+/**
+ * Equipment Research Tree
+ * Browse gear lab research/upgrade trees by nationality and equipment type
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/equip/equip.upgrade.css';
+---
+
+<Layout title="장비 연구">
+    <div class="equip-upgrade-page">
+        <header class="upgrade-header">
+            <div class="header-title-container">
+                <span class="material-symbols-outlined">science</span>
+                <h1>장비 연구</h1>
+            </div>
+            <div class="header-actions">
+                <button class="mat-browse-btn" id="matBrowseBtn">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                    재료 목록
+                </button>
+            </div>
+        </header>
+
+        <!-- Category1 tabs (nationality) -->
+        <nav class="cat1-tabs" id="cat1Tabs"></nav>
+
+        <!-- Category2 tabs (equip type) -->
+        <nav class="cat2-tabs" id="cat2Tabs"></nav>
+
+        <!-- Tree viewport -->
+        <div class="tree-viewport" id="treeViewport">
+            <div class="tree-container" id="treeContainer"></div>
+        </div>
+
+        <!-- Equip info panel -->
+        <div class="upgrade-info-panel" id="upgradeInfo"></div>
+
+        <div id="loading" class="loading">로딩 중...</div>
+    </div>
+
+    <!-- Material Filter Modal -->
+    <div class="mat-modal-overlay" id="matModal">
+        <div class="mat-modal">
+            <div class="mat-modal-header" id="matModalHeader">
+                <span class="material-symbols-outlined" style="font-size: 1.5rem; color: var(--primary-color);">inventory_2</span>
+                <div class="mat-modal-header-info">
+                    <h2 class="mat-modal-title" id="matModalTitle">연구 재료 목록</h2>
+                    <div class="mat-modal-subtitle" id="matModalSubtitle">재료를 선택하면 해당 재료가 필요한 장비를 확인할 수 있습니다</div>
+                </div>
+                <button class="mat-modal-close" id="matModalClose">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="mat-modal-body" id="matModalBody"></div>
+        </div>
+    </div>
+
+    <script is:inline type="module" src="/altoy/js/equip/equip.upgrade.js"></script>
+</Layout>

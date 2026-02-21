@@ -19,7 +19,7 @@ export class BulletEngine {
         // NEW: Time tracking for entire engine
         this.frameTime = 1000 / this.targetFps; // Target time per frame in ms
         this.frameTimeSec = 1 / this.targetFps; // Target time per frame in seconds
-        
+
         this.perspective = {
             enabled: false,
             minScale: 0.8,
@@ -138,11 +138,11 @@ export class BulletEngine {
             shouldRemove: false,
             framesLived: 0,
             distanceTraveled: 0,
-            
+
             // **NEW: Time tracking**
             timeElapsed: 0, // Total time in seconds
             lastFrameTime: performance.now(), // Timestamp of last frame
-            
+
             range: bulletInfo.range + (Math.random() * 2 - 1) * (bulletInfo.range_offset || 0),
             // **MODIFIED: Calculate lifetime in seconds instead of frames**
             lifetime_seconds: (() => {
@@ -150,7 +150,7 @@ export class BulletEngine {
                 const lingerTime = bulletInfo.extra_param?.lastTime || 0;
                 return baseLifetime + lingerTime + (1 / this.targetFps);
             })(),
-            
+
             getBehavior: function (name) {
                 return this.behaviors.get(name);
             }
@@ -164,14 +164,14 @@ export class BulletEngine {
             const now = performance.now();
             const deltaTimeMs = now - bullet.lastFrameTime;
             bullet.lastFrameTime = now;
-            
+
             // **FIX: Prevent zero/negative delta on first frame or tab switching**
             const safeDeltaTimeMs = Math.max(deltaTimeMs, 1);
-            
+
             // Calculate delta multiplier (normalizes to target FPS)
             const deltaMultiplier = safeDeltaTimeMs / this.frameTime;
             const deltaTimeSec = safeDeltaTimeMs / 1000;
-            
+
             // Update counters
             bullet.framesLived++;
             bullet.timeElapsed += deltaTimeSec;
