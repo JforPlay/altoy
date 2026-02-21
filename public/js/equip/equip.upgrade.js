@@ -376,6 +376,7 @@ function getMaterialIndex() {
     for (const [equipId, info] of Object.entries(upgradeData)) {
         if (!info || !info.material_consume) continue;
         const equip = liteMap[parseInt(equipId)];
+        if (!equip) continue; // Skip filtered-out equipment (no name/icon)
         for (const [propId, qty] of info.material_consume) {
             if (!matIndex[propId]) matIndex[propId] = [];
             matIndex[propId].push({

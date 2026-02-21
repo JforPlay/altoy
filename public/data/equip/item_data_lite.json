@@ -1,1 +1,137 @@
-{"18101":{"name":"일반 강재","icon":"Props/18101","rarity":2},"18102":{"name":"고급 강재","icon":"Props/18102","rarity":3},"18103":{"name":"특수 강재","icon":"Props/18103","rarity":4},"18104":{"name":"일반 전자 부품","icon":"Props/18104","rarity":2},"18105":{"name":"공업용 전자 부품","icon":"Props/18105","rarity":3},"18106":{"name":"군용 전자 부품","icon":"Props/18106","rarity":4},"18107":{"name":"일반 폭약","icon":"Props/18107","rarity":2},"18108":{"name":"B 폭약","icon":"Props/18108","rarity":3},"18109":{"name":"HBX 폭약","icon":"Props/18109","rarity":4},"18110":{"name":"천연 고무","icon":"Props/18110","rarity":2},"18111":{"name":"범용 합성 고무","icon":"Props/18111","rarity":3},"18112":{"name":"플루오린 고무","icon":"Props/18112","rarity":4},"18113":{"name":"구리 주괴","icon":"Props/18113","rarity":3},"18114":{"name":"초전도 구리","icon":"Props/18114","rarity":4},"18115":{"name":"알루미늄 합금","icon":"Props/18115","rarity":3},"18116":{"name":"타이타늄 합금","icon":"Props/18116","rarity":4},"18117":{"name":"함포 개발 도면 SSR형","icon":"Props/18117","rarity":4},"18118":{"name":"함포 개발 도면 UR형","icon":"Props/18118","rarity":5},"18119":{"name":"어뢰 개발 도면 SSR형","icon":"Props/18119","rarity":4},"18120":{"name":"어뢰 개발 도면 UR형","icon":"Props/18120","rarity":5},"18121":{"name":"대공포 개발 도면 SSR형","icon":"Props/18121","rarity":4},"18122":{"name":"대공포 개발 도면 UR형","icon":"Props/18122","rarity":5},"18123":{"name":"함재기 개발 도면 SSR형","icon":"Props/18123","rarity":4},"18124":{"name":"함재기 개발 도면 UR형","icon":"Props/18124","rarity":5},"18125":{"name":"일반 실험 계획","icon":"Props/18125","rarity":3},"18126":{"name":"기밀 실험 계획","icon":"Props/18126","rarity":4},"18127":{"name":"극비 실험 계획","icon":"Props/18127","rarity":5}}
+{
+    "18101": {
+        "name": "일반 강재",
+        "icon": "Props/18101",
+        "rarity": 2
+    },
+    "18102": {
+        "name": "고급 강재",
+        "icon": "Props/18102",
+        "rarity": 3
+    },
+    "18103": {
+        "name": "특수 강재",
+        "icon": "Props/18103",
+        "rarity": 4
+    },
+    "18104": {
+        "name": "일반 전자 부품",
+        "icon": "Props/18104",
+        "rarity": 2
+    },
+    "18105": {
+        "name": "공업용 전자 부품",
+        "icon": "Props/18105",
+        "rarity": 3
+    },
+    "18106": {
+        "name": "군용 전자 부품",
+        "icon": "Props/18106",
+        "rarity": 4
+    },
+    "18107": {
+        "name": "일반 폭약",
+        "icon": "Props/18107",
+        "rarity": 2
+    },
+    "18108": {
+        "name": "B 폭약",
+        "icon": "Props/18108",
+        "rarity": 3
+    },
+    "18109": {
+        "name": "HBX 폭약",
+        "icon": "Props/18109",
+        "rarity": 4
+    },
+    "18110": {
+        "name": "천연 고무",
+        "icon": "Props/18110",
+        "rarity": 2
+    },
+    "18111": {
+        "name": "범용 합성 고무",
+        "icon": "Props/18111",
+        "rarity": 3
+    },
+    "18112": {
+        "name": "플루오린 고무",
+        "icon": "Props/18112",
+        "rarity": 4
+    },
+    "18113": {
+        "name": "구리 주괴",
+        "icon": "Props/18113",
+        "rarity": 3
+    },
+    "18114": {
+        "name": "초전도 구리",
+        "icon": "Props/18114",
+        "rarity": 4
+    },
+    "18115": {
+        "name": "알루미늄 합금",
+        "icon": "Props/18115",
+        "rarity": 3
+    },
+    "18116": {
+        "name": "타이타늄 합금",
+        "icon": "Props/18116",
+        "rarity": 4
+    },
+    "18117": {
+        "name": "함포 개발 도면 SSR형",
+        "icon": "Props/18117",
+        "rarity": 4
+    },
+    "18118": {
+        "name": "함포 개발 도면 UR형",
+        "icon": "Props/18118",
+        "rarity": 5
+    },
+    "18119": {
+        "name": "어뢰 개발 도면 SSR형",
+        "icon": "Props/18119",
+        "rarity": 4
+    },
+    "18120": {
+        "name": "어뢰 개발 도면 UR형",
+        "icon": "Props/18120",
+        "rarity": 5
+    },
+    "18121": {
+        "name": "대공포 개발 도면 SSR형",
+        "icon": "Props/18121",
+        "rarity": 4
+    },
+    "18122": {
+        "name": "대공포 개발 도면 UR형",
+        "icon": "Props/18122",
+        "rarity": 5
+    },
+    "18123": {
+        "name": "함재기 개발 도면 SSR형",
+        "icon": "Props/18123",
+        "rarity": 4
+    },
+    "18124": {
+        "name": "함재기 개발 도면 UR형",
+        "icon": "Props/18124",
+        "rarity": 5
+    },
+    "18125": {
+        "name": "일반 실험 계획",
+        "icon": "Props/18125",
+        "rarity": 3
+    },
+    "18126": {
+        "name": "기밀 실험 계획",
+        "icon": "Props/18126",
+        "rarity": 4
+    },
+    "18127": {
+        "name": "극비 실험 계획",
+        "icon": "Props/18127",
+        "rarity": 5
+    }
+}
