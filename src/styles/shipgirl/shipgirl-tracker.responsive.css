@@ -1,4 +1,8 @@
-/* --- Responsive Design --- */
+/* ==========================================================================
+   SHIPGIRL TRACKER — RESPONSIVE
+   Breakpoints for toolbar, drawer, modals, cards
+   ========================================================================== */
+
 @media (min-width: 1400px) {
   #ship-list-container {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -14,54 +18,39 @@
 }
 
 @media (max-width: 768px) {
-  #filter-toggle-btn {
-    width: calc(100% - 2rem);
-    margin: 1rem auto 0.5rem auto;
-    position: sticky;
+  /* Toolbar stacks */
+  .st-toolbar {
+    flex-direction: column;
+    gap: var(--spacing-sm);
     top: 55px;
   }
 
-  header {
-    padding: 1.5rem 1rem;
+  .st-toolbar-left {
+    flex-direction: column;
+    width: 100%;
   }
 
-  h1 {
-    font-size: 1.6rem;
-    margin-bottom: 1rem;
+  .st-search-wrapper {
+    max-width: 100%;
   }
 
-  /* On mobile, the filter bar should start collapsed */
-  #filter-bar {
-    position: sticky;
-    top: 110px; /* Below navbar + filter toggle on mobile */
+  .st-toolbar-right {
+    width: 100%;
+    justify-content: flex-end;
   }
 
-  /* Smaller filter elements on mobile */
-  .filter-group-label {
-    font-size: 0.8rem;
+  /* Drawer full width */
+  .st-drawer {
+    width: 100%;
   }
 
-  .checkbox-filter-item label {
-    font-size: 0.75rem;
-    padding: 5px 10px;
+  /* Modal full width */
+  .st-modal-content {
+    width: 95% !important;
+    max-width: 95% !important;
   }
 
-  .filter-icon {
-    width: 14px;
-    height: 14px;
-  }
-
-  #search-bar,
-  .dropdown-filter-group select {
-    font-size: 0.8rem;
-    padding: 7px 10px;
-  }
-
-  .bulk-check-btn {
-    font-size: 0.7rem;
-    padding: 6px 10px;
-  }
-
+  /* Cards */
   #ship-list-container {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 10px;
@@ -106,17 +95,39 @@
     height: 14px;
   }
 
-  h1 {
-    font-size: 1.5rem;
-  }
-
   .score-table-wrapper {
     flex: 1 1 100%;
   }
 
-  .modal-content {
-    width: 95%;
-    padding: 1.5rem;
+  /* Goal card responsive */
+  .goal-card-detailed {
+    flex-direction: column-reverse;
+    gap: 1rem;
+  }
+
+  .goal-card-image-wrapper {
+    width: 120px;
+    height: 120px;
+    align-self: center;
+  }
+
+  .goal-dropdown-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .goal-select-dropdown {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .goal-quick-buttons {
+    gap: 0.4rem;
+  }
+
+  .goal-quick-button {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.65rem;
   }
 }
 
@@ -182,19 +193,32 @@
     height: 13px;
   }
 
-  main {
-    padding: 0.5rem;
-  }
-
-  header {
-    padding: 1rem;
-  }
-
   .top-filters-wrapper {
     gap: 12px;
   }
 
   .dropdown-filter-group select {
     min-width: 100%;
+  }
+
+  .goal-card {
+    padding: 0.75rem;
+  }
+
+  .goal-ship-name {
+    font-size: 1rem;
+  }
+
+  .goal-req-label,
+  .goal-progress-text {
+    font-size: 0.8rem;
+  }
+
+  .goal-dropdown-label {
+    font-size: 0.9rem;
+  }
+
+  .goal-quick-label {
+    font-size: 0.8rem;
   }
 }

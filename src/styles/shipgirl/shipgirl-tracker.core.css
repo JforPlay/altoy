@@ -1,50 +1,11 @@
 @import url('../theme.css');
 
-/* --- Color Scheme Variables --- */
-/* Light mode defaults */
-:root {
-  --primary-bg: #f0f2f5;
-  --secondary-bg: #ffffff;
-  --tertiary-bg: #f5f6f7;
-  --primary-text: #1c1e21;
-  --secondary-text: #606770;
-  --accent-color: #1877f2;
-  --accent-hover: #166fe5;
-  --border-color: #dddfe2;
-  --card-bg: #ffffff;
-  --card-border: #e4e6eb;
-  --shadow-color: rgba(0, 0, 0, 0.1);
-  --success-color: #2ecc71;
-  --error-color: #e74c3c;
-  --warning-color: #f39c12;
-  --hover-bg: rgba(0, 0, 0, 0.05);
-  --modal-overlay: rgba(0, 0, 0, 0.5);
+/* ==========================================================================
+   SHIPGIRL TRACKER — CORE
+   Toolbar, search, modals, chips, hidden utility
+   ========================================================================== */
 
-  /* Rarity colors — inherited from theme.css except local UR text override */
-  --rarity-ur-text: #4a4a4a;
-}
-
-/* Dark mode overrides */
-body.dark-mode {
-  --primary-bg: #1a1a1a;
-  --secondary-bg: #2c2c2c;
-  --tertiary-bg: #3a3a3a;
-  --primary-text: #e0e0e0;
-  --secondary-text: #a0a0a0;
-  --accent-color: #4a90e2;
-  --accent-hover: #5aa1f2;
-  --border-color: #444;
-  --card-bg: #242424;
-  --card-border: #333;
-  --shadow-color: rgba(0, 0, 0, 0.5);
-  --success-color: #27ae60;
-  --error-color: #e74c3c;
-  --warning-color: #f39c12;
-  --hover-bg: rgba(255, 255, 255, 0.05);
-  --modal-overlay: rgba(0, 0, 0, 0.7);
-}
-
-/* --- General Body & Header Styles --- */
+/* --- General --- */
 
 * {
   box-sizing: border-box;
@@ -55,93 +16,273 @@ body.dark-mode {
 body {
   font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto,
     "Helvetica Neue", Arial, sans-serif;
-  background-color: var(--primary-bg);
-  color: var(--primary-text);
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  color: var(--text-primary);
   line-height: 1.6;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
 }
 
-header {
-  background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--tertiary-bg) 100%);
-  padding: 2rem 2rem 1.5rem 2rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  transition: background 0.3s ease;
-  position: relative;
-  border-bottom: none;
-}
+/* --- Toolbar --- */
 
-header::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 95%;
+.st-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  margin: var(--spacing-md) auto;
   max-width: 1400px;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--accent-color) 20%,
-    var(--accent-hover) 50%,
-    var(--accent-color) 80%,
-    transparent 100%
-  );
-  opacity: 0.5;
+  width: calc(100% - 2rem);
+  flex-wrap: wrap;
+  position: sticky;
+  top: 65px;
+  z-index: 100;
+  border: 1px solid var(--border-color);
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-h1 {
-  text-align: center;
-  font-size: 2rem;
+.st-toolbar-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  min-width: 0;
+}
+
+.st-toolbar-right {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.st-title {
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.5px;
+  color: var(--primary-color);
+  white-space: nowrap;
+  letter-spacing: -0.3px;
+}
+
+/* --- Search --- */
+
+.st-search-wrapper {
   position: relative;
-  padding-bottom: 0.75rem;
+  flex: 1;
+  max-width: 300px;
+  min-width: 140px;
 }
 
-h1::after {
-  content: "";
+.st-search-icon {
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150px;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--accent-color) 50%,
-    transparent 100%
-  );
-  border-radius: 2px;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  pointer-events: none;
 }
 
-main {
-  padding: 1rem;
+.st-search-input {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  font-size: 0.85rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.st-search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-alpha-10);
+}
+
+.st-search-input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* --- Toolbar Buttons --- */
+
+.st-toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  white-space: nowrap;
+}
+
+.st-toolbar-btn:hover {
+  background: var(--overlay-lightest);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.st-toolbar-btn .material-symbols-outlined {
+  font-size: 1.15rem;
+}
+
+/* --- Badge --- */
+
+.st-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--primary-color);
+  border-radius: 9px;
+  line-height: 1;
+}
+
+/* --- Filter Chips Row --- */
+
+.st-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: var(--spacing-xs) var(--spacing-md);
+  max-width: 1400px;
+  width: calc(100% - 2rem);
+  margin: 0 auto;
+}
+
+.st-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary-color);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.st-chip:hover {
+  opacity: 0.85;
+}
+
+.st-chip .material-symbols-outlined {
+  font-size: 0.9rem;
+}
+
+/* --- Hidden Utility --- */
+
+.hidden {
+  display: none !important;
+}
+
+/* --- Modal (shared) --- */
+
+.st-modal {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-heavy);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 300;
+  padding: var(--spacing-md);
+}
+
+.st-modal-content {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  max-height: 85vh;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  width: 100%;
+}
+
+.st-modal-lg {
+  max-width: 700px;
+}
+
+.st-modal-md {
+  max-width: 550px;
+}
+
+.st-modal-sm {
+  max-width: 420px;
+}
+
+.st-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  background: var(--card-bg);
+  z-index: 1;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.st-modal-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.st-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.st-modal-close:hover {
+  background: var(--overlay-lightest);
+  color: var(--text-primary);
+}
+
+.st-modal-body {
+  padding: var(--spacing-md);
 }
 
 /* --- Dark Mode Overrides --- */
-body.dark-mode header {
-  background: linear-gradient(
-    135deg,
-    var(--secondary-bg) 0%,
-    var(--tertiary-bg) 100%
-  );
-  box-shadow: 0 4px 16px var(--shadow-color);
+
+body.dark-mode .st-toolbar {
+  box-shadow: var(--shadow-lg);
 }
 
-body.dark-mode header::after {
-  opacity: 0.6;
+body.dark-mode .st-toolbar-btn {
+  background: var(--highlight-subtle);
 }
 
-body.dark-mode h1 {
-  background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+body.dark-mode .st-toolbar-btn:hover {
+  background: var(--highlight-soft);
+}
+
+body.dark-mode .st-modal-content {
+  box-shadow: var(--shadow-xl);
 }

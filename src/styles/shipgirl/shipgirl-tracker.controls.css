@@ -1,4 +1,10 @@
-/* --- Tracker Section --- */
+/* ==========================================================================
+   SHIPGIRL TRACKER — CONTROLS
+   Tracker section (ship card checkboxes), confirmation modal actions
+   ========================================================================== */
+
+/* --- Tracker Section (inside ship cards) --- */
+
 .tracker-section {
   width: 100%;
   margin-top: auto;
@@ -13,12 +19,12 @@
   padding: 4px 6px;
   border-radius: 4px;
   margin-bottom: 3px;
-  background-color: var(--tertiary-bg);
-  transition: background-color 0.2s;
+  background-color: var(--section-bg);
+  transition: background-color var(--transition-fast);
 }
 
 .tracker-item:hover {
-  background-color: var(--card-border);
+  background-color: var(--border-color);
 }
 
 .tracker-item label {
@@ -32,235 +38,27 @@
   cursor: pointer;
   width: 16px;
   height: 16px;
-  accent-color: var(--accent-color);
+  accent-color: var(--primary-color);
   flex-shrink: 0;
 }
 
-/* --- Toggle Buttons (Unified) --- */
-#score-toggle-btn,
-#filter-toggle-btn,
-#goal-tracker-toggle-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--primary-text);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-}
-
-#score-toggle-btn {
-  justify-content: center;
-  width: fit-content;
-  min-width: 200px;
-  margin: 1.5rem auto 0 auto;
-  background-color: var(--tertiary-bg);
-}
-
-#filter-toggle-btn {
-  justify-content: space-between;
-  width: calc(100% - 2rem);
-  max-width: 1400px;
-  margin: 1rem auto 0.5rem auto;
-  background-color: var(--secondary-bg);
-  position: sticky;
-  top: 65px;
-  z-index: 100;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-#goal-tracker-toggle-btn {
-  justify-content: space-between;
-  width: calc(100% - 2rem);
-  max-width: 1400px;
-  margin: 0.75rem auto 0.5rem auto;
-  padding: 10px 20px;
-  font-size: 0.9rem;
-  background: linear-gradient(
-    135deg,
-    var(--secondary-bg) 0%,
-    var(--tertiary-bg) 100%
-  );
-  border: 2px solid var(--border-color);
-  box-shadow: 0 2px 8px var(--shadow-color);
-}
-
-/* Unified hover state */
-#score-toggle-btn:hover,
-#filter-toggle-btn:hover,
-#goal-tracker-toggle-btn:hover {
-  background-color: var(--tertiary-bg);
-  border-color: var(--accent-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
-}
-
-#score-toggle-btn:hover {
-  transform: translateY(-2px);
-}
-
-/* Unified chevron behavior */
-.chevron {
-  transition: transform 0.3s ease;
-  display: inline-block;
-}
-
-#score-toggle-btn .chevron {
-  font-size: 1rem;
-}
-
-#filter-toggle-btn .chevron {
-  font-size: 1rem;
-  margin-left: auto;
-}
-
-#goal-tracker-toggle-btn .chevron {
-  font-size: 1rem;
-}
-
-#score-toggle-btn.collapsed .chevron {
-  transform: rotate(0deg);
-}
-
-#filter-toggle-btn.active .chevron {
-  transform: rotate(180deg);
-}
-
-/* --- Action Controls --- */
-.action-controls-container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  padding: 0.75rem;
-  background-color: var(--tertiary-bg);
-  border-radius: 8px;
-  border: 1px solid var(--card-border);
-}
-
-.bulk-check-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  flex: 1;
-}
-
-#reset-filters-btn,
-.bulk-check-btn {
-  padding: 8px 16px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-#reset-filters-btn:hover,
-.bulk-check-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-#reset-filters-btn:active,
-.bulk-check-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-#reset-filters-btn {
-  background: linear-gradient(135deg, var(--warning-color) 0%, #e67e22 100%);
-}
-
-#reset-filters-btn:hover {
-  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-}
-
-.bulk-check-btn {
-  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
-  font-size: 0.75rem;
-  padding: 7px 14px;
-}
-
-.bulk-check-btn:hover {
-  background: linear-gradient(135deg, #9b59b6 0%, #a569bd 100%);
-}
-
-.bulk-deselect-btn {
-  background: linear-gradient(135deg, var(--error-color) 0%, var(--danger-hover) 100%);
-}
-
-.bulk-deselect-btn:hover {
-  background: linear-gradient(135deg, var(--danger-hover) 0%, #a93226 100%);
-}
-
-/* --- Confirmation Modal --- */
-#confirmation-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--modal-overlay);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0s 0.3s;
-}
-
-#confirmation-modal.visible {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.3s ease;
-}
-
-.modal-content {
-  background-color: var(--secondary-bg);
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  width: 90%;
-  max-width: 450px;
-  transform: scale(0.9);
-  transition: transform 0.3s ease;
-  border: 1px solid var(--border-color);
-}
-
-#confirmation-modal.visible .modal-content {
-  transform: scale(1);
-}
-
-.modal-content p {
-  margin: 0 0 1.5rem 0;
-  font-size: 1.1rem;
-  color: var(--primary-text);
-  line-height: 1.5;
-}
+/* --- Confirmation Modal Actions --- */
 
 .modal-actions {
   display: flex;
   justify-content: center;
   gap: 15px;
+  margin-top: var(--spacing-md);
 }
 
 .modal-actions button {
   border: none;
   padding: 12px 28px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
+  transition: background-color var(--transition-fast), transform 0.1s;
 }
 
 .modal-actions button:active {
@@ -269,7 +67,7 @@
 
 #modal-confirm-btn {
   background-color: var(--success-color);
-  color: white;
+  color: #fff;
 }
 
 #modal-confirm-btn:hover {
@@ -277,8 +75,8 @@
 }
 
 #modal-cancel-btn {
-  background-color: var(--error-color);
-  color: white;
+  background-color: var(--danger-color);
+  color: #fff;
 }
 
 #modal-cancel-btn:hover {
@@ -286,38 +84,11 @@
 }
 
 /* --- Dark Mode Overrides --- */
+
 body.dark-mode .tracker-item {
-  background-color: var(--tertiary-bg);
+  background-color: var(--highlight-subtle);
 }
 
 body.dark-mode .tracker-item:hover {
   background-color: var(--border-color);
-}
-
-body.dark-mode #score-toggle-btn,
-body.dark-mode #filter-toggle-btn,
-body.dark-mode #goal-tracker-toggle-btn {
-  box-shadow: none;
-}
-
-body.dark-mode #score-toggle-btn:hover,
-body.dark-mode #filter-toggle-btn:hover,
-body.dark-mode #goal-tracker-toggle-btn:hover {
-  background-color: var(--hover-bg);
-  border-color: var(--accent-color);
-  box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-body.dark-mode #filter-toggle-btn {
-  background-color: var(--secondary-bg);
-  box-shadow: 0 2px 8px var(--shadow-color);
-}
-
-body.dark-mode .action-controls-container {
-  background-color: var(--card-bg);
-  border-color: var(--border-color);
-}
-
-body.dark-mode .modal-content {
-  box-shadow: 0 8px 24px var(--shadow-color);
 }

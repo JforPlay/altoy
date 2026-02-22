@@ -1,31 +1,18 @@
-/* --- Score Display --- */
-#score-display-area {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  max-width: 1400px;
-  margin: 1.5rem auto 0;
-  /* GPU-accelerated transitions */
-  transform-origin: top;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  will-change: transform, opacity;
-  overflow: hidden;
-}
+/* ==========================================================================
+   SHIPGIRL TRACKER — SCORES
+   Score tables rendered inside #score-modal-body
+   ========================================================================== */
 
-#score-display-area.collapsed {
-  display: none;
-}
+/* --- Score Table Wrapper --- */
 
 .score-table-wrapper {
-  background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--tertiary-bg) 100%);
+  background: linear-gradient(135deg, var(--section-bg) 0%, var(--card-bg) 100%);
   padding: 1.25rem;
-  border-radius: 12px;
-  border: 2px solid var(--card-border);
-  flex: 1 1 400px;
-  min-width: 300px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  transition: all 0.2s ease;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  margin-bottom: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
   position: relative;
   overflow: hidden;
 }
@@ -39,17 +26,16 @@
   height: 3px;
   background: linear-gradient(
     90deg,
-    var(--accent-color) 0%,
-    var(--accent-hover) 50%,
-    var(--accent-color) 100%
+    var(--primary-color) 0%,
+    var(--text-secondary) 50%,
+    var(--primary-color) 100%
   );
-  opacity: 0.6;
+  opacity: 0.4;
 }
 
 .score-table-wrapper:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-  border-color: var(--accent-color);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-color);
 }
 
 .score-table-wrapper h2 {
@@ -57,7 +43,7 @@
   text-align: center;
   margin-bottom: 1rem;
   margin-top: 0.5rem;
-  color: var(--accent-color);
+  color: var(--primary-color);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -73,9 +59,11 @@
   transform: translateX(-50%);
   width: 60px;
   height: 2px;
-  background: var(--accent-color);
+  background: var(--primary-color);
   border-radius: 2px;
 }
+
+/* --- Score Table --- */
 
 .score-table {
   width: 100%;
@@ -91,7 +79,7 @@
 }
 
 .score-table th {
-  background-color: var(--tertiary-bg);
+  background-color: var(--section-bg);
   font-weight: 600;
 }
 
@@ -102,25 +90,26 @@
 .score-table .header-col {
   font-weight: 600;
   text-align: left;
-  background-color: var(--tertiary-bg);
+  background-color: var(--section-bg);
 }
 
 /* --- Dark Mode Overrides --- */
+
 body.dark-mode .score-table-wrapper {
   background: linear-gradient(
     135deg,
     var(--card-bg) 0%,
-    var(--secondary-bg) 100%
+    var(--section-bg) 100%
   );
-  box-shadow: 0 3px 10px var(--shadow-color);
+  box-shadow: var(--shadow-md);
   border-color: var(--border-color);
 }
 
 body.dark-mode .score-table-wrapper::before {
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 body.dark-mode .score-table-wrapper:hover {
-  box-shadow: 0 6px 16px var(--shadow-color);
-  border-color: var(--accent-color);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
 }
