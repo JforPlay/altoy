@@ -1859,6 +1859,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            // Cross-tab sync: update when another tab changes progress
+            window.addEventListener('storage', (e) => {
+                if (e.key !== SAVE_KEY) return;
+                try {
+                    const newProgress = JSON.parse(e.newValue || '{}');
+                    applyProgress(newProgress);
+                    calculateAndDisplayScores();
+                } catch (err) {
+                    console.error('Failed to sync progress from storage event:', err);
+                }
+            });
+
         } catch (error) {
             // fetchData errors stop initialization
         }

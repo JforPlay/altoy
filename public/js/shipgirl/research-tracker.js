@@ -240,8 +240,9 @@ document.addEventListener('DOMContentLoaded', () => {
         panelFragment.appendChild(renderResearchShips(factionName));
         contentContainer.appendChild(panelFragment);
 
-        // Below panel: filter bar + source groups
+        // Below panel: owned ships + filter bar + source groups
         const extraFragment = document.createDocumentFragment();
+        extraFragment.appendChild(renderOwnedShips(natId));
         extraFragment.appendChild(renderFilterBar());
         extraFragment.appendChild(renderSourceGroups(natId));
         extraContainer.appendChild(extraFragment);
@@ -447,6 +448,94 @@ document.addEventListener('DOMContentLoaded', () => {
         return section;
     }
 
+    function renderOwnedShips(natId) {
+        const section = document.createElement('div');
+        section.className = 'rt-group rt-owned-group';
+
+        // Collect all owned ships in this faction
+        const ownedShips = [];
+        for (const [gid, ship] of Object.entries(shipData)) {
+            if (ship.nationality !== natId) continue;
+            if (!(progress[gid] & 1)) continue;
+            ownedShips.push({ ...ship, gid });
+        }
+
+        const rarityOrder = { UR: 0, SSR: 1, SR: 2, R: 3, N: 4 };
+        ownedShips.sort((a, b) => {
+            const ra = rarityOrder[a.rarity] ?? 5;
+            const rb = rarityOrder[b.rarity] ?? 5;
+            if (ra !== rb) return ra - rb;
+            return a.name.localeCompare(b.name);
+        });
+
+        // Calculate earned points
+        let earnedPts = 0;
+        for (const ship of ownedShips) {
+            const pts = getShipTechPoints(ship.gid);
+            earnedPts += pts.earned;
+        }
+
+        const header = document.createElement('button');
+        header.className = 'rt-group-header';
+        header.innerHTML = `
+            <span class="rt-group-label">
+                <span class="material-symbols-outlined">inventory_2</span>
+                보유 함순이 현황
+                <span class="rt-group-count">${ownedShips.length}척</span>
+                <span class="rt-group-pts">${earnedPts}pts</span>
+            </span>
+            <span class="material-symbols-outlined rt-group-chevron">expand_more</span>
+        `;
+
+        const body = document.createElement('div');
+        body.className = 'rt-group-body';
+
+        if (ownedShips.length === 0) {
+            body.innerHTML = '<p class="rt-placeholder">보유 중인 함순이가 없습니다.</p>';
+        } else {
+            const grid = document.createElement('div');
+            grid.className = 'rt-owned-grid';
+            for (const ship of ownedShips) {
+                grid.appendChild(createOwnedShipItem(ship));
+            }
+            body.appendChild(grid);
+        }
+
+        header.addEventListener('click', () => {
+            const isOpen = section.classList.toggle('open');
+            header.querySelector('.rt-group-chevron').textContent = isOpen ? 'expand_less' : 'expand_more';
+        });
+
+        // Collapsed by default — do NOT add 'open' class
+
+        section.appendChild(header);
+        section.appendChild(body);
+        return section;
+    }
+
+    function createOwnedShipItem(ship) {
+        const item = document.createElement('div');
+        item.className = `rt-owned-item rarity-border-${ship.rarity.toLowerCase()}`;
+
+        const typeInfo = shipTypeData[ship.type];
+        const typeIcon = typeInfo ? typeInfo.icon : '';
+        const typeName = typeInfo ? typeInfo.type_name : '';
+
+        const pts = getShipTechPoints(ship.gid);
+
+        item.innerHTML = `
+            ${createImg(ship.icon, ship.name, { className: 'rt-owned-icon', fallback: IMG_FALLBACKS.CARD })}
+            <span class="rt-owned-name">${ship.name}</span>
+            <span class="rt-owned-meta">
+                ${typeIcon ? `<img src="${typeIcon}" alt="${typeName}" class="rt-card-type-icon">` : ''}
+                <span class="rt-card-rarity rarity-${ship.rarity.toLowerCase()}">${ship.rarity}</span>
+            </span>
+            <span class="rt-owned-pts">${pts.earned}/${pts.total}</span>
+        `;
+
+        return item;
+    }
+
     function renderSourceGroups(natId) {
         const section = document.createElement('div');
         section.className = 'rt-source-groups';
@@ -579,7 +668,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function applyProgress() {
-        contentContainer.querySelectorAll('.rt-ship-card').forEach(card => {
+        extraContainer.querySelectorAll('.rt-ship-card').forEach(card => {
             const shipId = card.dataset.shipId;
             const state = progress[shipId] || 0;
             const getBox = card.querySelector('[data-type="get"]');
@@ -610,7 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Update group counts
-        extraContainer.querySelectorAll('.rt-group').forEach(group => {
+        extraContainer.querySelectorAll('.rt-group:not(.rt-owned-group)').forEach(group => {
             const visible = group.querySelectorAll('.rt-ship-card:not(.filter-hidden)').length;
             const countEl = group.querySelector('.rt-group-count');
             if (countEl) countEl.textContent = `${visible}척`;
@@ -678,6 +767,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     const newResearch = renderResearchShips(activeFaction);
                     oldResearch.replaceWith(newResearch);
                 }
+                const oldOwned = extraContainer.querySelector('.rt-owned-group');
+                if (oldOwned) {
+                    const newOwned = renderOwnedShips(natId);
+                    if (oldOwned.classList.contains('open')) {
+                        newOwned.classList.add('open');
+                    }
+                    oldOwned.replaceWith(newOwned);
+                }
             }
         }
 
@@ -685,4 +782,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     loadData();
+
+    window.addEventListener('storage', (e) => {
+        if (e.key !== SAVE_KEY) return;
+        try {
+            progress = JSON.parse(e.newValue || '{}');
+            if (activeFaction) {
+                renderFactionContent(activeFaction);
+            }
+        } catch (err) {
+            console.error('Failed to sync progress from storage event:', err);
+        }
+    });
 });

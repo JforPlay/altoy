@@ -519,6 +519,64 @@ body.dark-mode .rt-tab-icon {
     padding: var(--spacing-md);
 }
 
+/* === Owned Ships Compact List === */
+.rt-owned-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.rt-owned-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background: var(--section-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 4px 8px;
+    flex: 1 1 220px;
+    max-width: 320px;
+    font-size: 0.8125rem;
+    transition: box-shadow var(--transition-fast);
+}
+
+.rt-owned-item:hover {
+    box-shadow: var(--shadow-sm);
+}
+
+.rt-owned-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-xs);
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.rt-owned-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+}
+
+.rt-owned-meta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.rt-owned-pts {
+    font-size: 0.75rem;
+    color: var(--accent-blue);
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
 /* === Ship Card Grid === */
 .rt-ship-grid {
     display: flex;
@@ -729,5 +787,10 @@ body.dark-mode .rt-tab-icon {
     .rt-check input[type="checkbox"] {
         width: 20px;
         height: 20px;
+    }
+
+    .rt-owned-item {
+        flex: 1 1 100%;
+        max-width: 100%;
     }
 }
