@@ -45,6 +45,7 @@
 
   .sp-weapon-icon-container {
     width: 100%;
+    height: auto;
   }
 
   .stats-grid {

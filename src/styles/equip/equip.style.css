@@ -65,6 +65,9 @@ body {
 .stat-value {
     font-weight: 600;
     color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    min-width: 2.5em;
+    text-align: right;
 }
 
 /* ===== Search & Filters ===== */
@@ -151,6 +154,7 @@ body {
     flex-wrap: wrap;
     gap: 0.375rem;
     margin-bottom: 1rem;
+    min-height: 1.75rem;
 }
 
 .label-chip {

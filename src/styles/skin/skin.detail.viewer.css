@@ -168,6 +168,7 @@
   width: 100%;
   aspect-ratio: 22 / 14;
   position: relative;
+  display: block;
 }
 
 .gallery-bottom-panel {
@@ -842,7 +843,7 @@ body.dark-mode .volume-slider {
 /* --- Face Expression Overlay --- */
 .face-overlay-container {
     position: relative;
-    display: inline-block;
+    display: block;
     width: 100%;
     height: auto;
     line-height: 0; /* Remove inline gaps that could offset overlay */

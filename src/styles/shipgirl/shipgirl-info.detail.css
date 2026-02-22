@@ -80,6 +80,7 @@ body.dark-mode .back-button:hover {
 .detail-image img {
   max-width: 20rem;
   width: 100%;
+  aspect-ratio: 3 / 4;
   border-radius: 0.625rem;
   box-shadow: 0 4px 10px var(--shadow-color);
   transition: box-shadow 0.3s;
@@ -177,6 +178,7 @@ body.dark-mode .back-button:hover {
 .gift-icon {
   width: 2.625rem;
   height: 2.625rem;
+  flex-shrink: 0;
   border-radius: 0.375rem;
   display: flex;
   align-items: center;
@@ -184,6 +186,7 @@ body.dark-mode .back-button:hover {
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
   box-shadow: 0 2px 6px var(--shadow-color);
+  overflow: hidden;
 }
 
 .gift-icon.liked {

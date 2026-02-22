@@ -28,6 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
         /^연구 ?도크/,
     ];
 
+    const FACTION_ABBR = {
+        '로열 네이비': 'HMS',
+        '사쿠라 엠파이어': 'IJN',
+        '메탈 블러드': 'KMS',
+        '이글 유니온': 'USS',
+        '이스트 글림': 'ROC',
+        '사르데냐': 'RN',
+        '아이리스 리브레': 'FFNF',
+        '비시아 성좌': 'MNF',
+        '노스 유니온': 'SN',
+    };
+
     const SOURCE_GROUPS = [
         {
             key: 'map',
@@ -37,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             key: 'build',
-            label: '건조',
+            label: '상시 건조',
             icon: 'construction',
             test: d => /건조/.test(d) && !/한정/.test(d) && !/이벤트/.test(d) && !/기간/.test(d)
         },
@@ -70,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tabsContainer = document.getElementById('faction-tabs');
     const contentContainer = document.getElementById('faction-content');
-    const filtersContainer = document.getElementById('rt-filters');
+    const extraContainer = document.getElementById('faction-extra');
 
     async function loadData() {
         try {
@@ -102,6 +114,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         return [...groups];
+    }
+
+    function getFirstSourceGroup(ship) {
+        if (!ship.description || !Array.isArray(ship.description)) return null;
+        for (const d of ship.description) {
+            for (const sg of SOURCE_GROUPS) {
+                if (sg.test(d)) return sg.key;
+            }
+        }
+        return null;
     }
 
     function getShipTechPoints(shipId) {
@@ -185,9 +207,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const tab = document.createElement('button');
             tab.className = 'rt-tab';
             tab.dataset.faction = factionName;
+            const abbr = FACTION_ABBR[factionName];
+            const nameHtml = `<span class="rt-tab-name">${factionName}</span>${abbr ? `<span class="rt-tab-abbr">(${abbr})</span>` : ''}`;
             tab.innerHTML = natInfo
-                ? `<img src="${natInfo.image}" alt="${factionName}" class="rt-tab-icon"><span>${factionName}</span>`
-                : `<span>${factionName}</span>`;
+                ? `<img src="${natInfo.image}" alt="${factionName}" class="rt-tab-icon">${nameHtml}`
+                : nameHtml;
             tab.addEventListener('click', () => switchTab(factionName));
             tabsContainer.appendChild(tab);
         }
@@ -203,19 +227,88 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderFactionContent(factionName) {
         contentContainer.innerHTML = '';
+        extraContainer.innerHTML = '';
         const natId = getNationalityIdByName(factionName);
         if (natId === null) {
             contentContainer.innerHTML = '<p class="rt-error">진영 정보를 찾을 수 없습니다.</p>';
             return;
         }
 
-        const fragment = document.createDocumentFragment();
-        fragment.appendChild(renderFactionSummary(factionName, natId));
-        fragment.appendChild(renderResearchShips(factionName));
-        fragment.appendChild(renderSourceGroups(natId));
-        contentContainer.appendChild(fragment);
+        // Panel body: summary + research ships
+        const panelFragment = document.createDocumentFragment();
+        panelFragment.appendChild(renderFactionSummary(factionName, natId));
+        panelFragment.appendChild(renderResearchShips(factionName));
+        contentContainer.appendChild(panelFragment);
+
+        // Below panel: filter bar + source groups
+        const extraFragment = document.createDocumentFragment();
+        extraFragment.appendChild(renderFilterBar());
+        extraFragment.appendChild(renderSourceGroups(natId));
+        extraContainer.appendChild(extraFragment);
+
         applyProgress();
         applyFilters();
+    }
+
+    function renderFilterBar() {
+        const bar = document.createElement('div');
+        bar.className = 'rt-filters';
+
+        const rarities = ['ur', 'ssr', 'sr', 'r', 'n'];
+        const rarityBtns = rarities.map(r => {
+            const active = activeRarities.has(r) ? ' active' : '';
+            return `<button class="rt-rarity-btn${active}" data-rarity="${r}"><span class="rt-btn-check">&#10003;</span> ${r.toUpperCase()}</button>`;
+        }).join('');
+
+        const statuses = [
+            { key: 'missing', label: '미획득' },
+            { key: 'owned', label: '획득' }
+        ];
+        const statusBtns = statuses.map(s => {
+            const active = activeStatuses.has(s.key) ? ' active' : '';
+            return `<button class="rt-status-btn${active}" data-status="${s.key}"><span class="rt-btn-check">&#10003;</span> ${s.label}</button>`;
+        }).join('');
+
+        bar.innerHTML = `
+            <div class="rt-filters-title">
+                <span class="material-symbols-outlined">tune</span>
+                필터
+            </div>
+            <div class="rt-filters-row">
+                <div class="rt-filter-group">
+                    <span class="rt-filter-label">레어도</span>
+                    <div class="rt-rarity-toggles">${rarityBtns}</div>
+                </div>
+                <div class="rt-filter-group">
+                    <span class="rt-filter-label">상태</span>
+                    <div class="rt-status-toggles">${statusBtns}</div>
+                </div>
+            </div>
+        `;
+
+        // Event delegation for filter clicks
+        bar.addEventListener('click', (e) => {
+            const rarityBtn = e.target.closest('.rt-rarity-btn');
+            const statusBtn = e.target.closest('.rt-status-btn');
+
+            if (rarityBtn) {
+                const rarity = rarityBtn.dataset.rarity;
+                rarityBtn.classList.toggle('active');
+                if (activeRarities.has(rarity)) activeRarities.delete(rarity);
+                else activeRarities.add(rarity);
+                applyFilters();
+            }
+
+            if (statusBtn) {
+                const status = statusBtn.dataset.status;
+                statusBtn.classList.toggle('active');
+                if (activeStatuses.has(status)) activeStatuses.delete(status);
+                else activeStatuses.add(status);
+                applyFilters();
+            }
+        });
+
+        return bar;
     }
 
     function renderFactionSummary(factionName, natId) {
@@ -328,6 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="rt-research-card-info">
                         <div class="rt-research-name">${name}</div>
                         <span class="rt-research-rarity ${rarityClass}">${goal.rarity_type}</span>
+                        ${goal.project ? `<span class="rt-research-project">${goal.project}기</span>` : ''}
                     </div>
                 </div>
                 <div class="rt-research-reqs">
@@ -364,10 +458,9 @@ document.addEventListener('DOMContentLoaded', () => {
             grouped[sg.key] = [];
         }
         for (const ship of ships) {
-            const groups = getSourceGroups(ship);
-            for (const g of groups) {
-                if (grouped[g]) grouped[g].push(ship);
-            }
+            // Assign to first matching group only
+            const firstGroup = getFirstSourceGroup(ship);
+            if (firstGroup && grouped[firstGroup]) grouped[firstGroup].push(ship);
         }
 
         const rarityOrder = { UR: 0, SSR: 1, SR: 2, R: 3, N: 4 };
@@ -508,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function applyFilters() {
-        contentContainer.querySelectorAll('.rt-ship-card').forEach(card => {
+        extraContainer.querySelectorAll('.rt-ship-card').forEach(card => {
             const rarity = card.dataset.rarity;
             const isOwned = !!(progress[card.dataset.shipId] & 1);
             const status = isOwned ? 'owned' : 'missing';
@@ -516,39 +609,17 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.toggle('filter-hidden', !show);
         });
 
-        // Update group counts and hide empty groups
-        contentContainer.querySelectorAll('.rt-group').forEach(group => {
+        // Update group counts
+        extraContainer.querySelectorAll('.rt-group').forEach(group => {
             const visible = group.querySelectorAll('.rt-ship-card:not(.filter-hidden)').length;
             const countEl = group.querySelector('.rt-group-count');
             if (countEl) countEl.textContent = `${visible}척`;
         });
     }
 
-    // Filter button listeners
-    filtersContainer.addEventListener('click', (e) => {
-        const rarityBtn = e.target.closest('.rt-rarity-btn');
-        const statusBtn = e.target.closest('.rt-status-btn');
-
-        if (rarityBtn) {
-            const rarity = rarityBtn.dataset.rarity;
-            rarityBtn.classList.toggle('active');
-            if (activeRarities.has(rarity)) activeRarities.delete(rarity);
-            else activeRarities.add(rarity);
-            applyFilters();
-        }
-
-        if (statusBtn) {
-            const status = statusBtn.dataset.status;
-            statusBtn.classList.toggle('active');
-            if (activeStatuses.has(status)) activeStatuses.delete(status);
-            else activeStatuses.add(status);
-            applyFilters();
-        }
-    });
-
     const debouncedSave = debounce(saveProgress, 300);
 
-    contentContainer.addEventListener('change', (e) => {
+    extraContainer.addEventListener('change', (e) => {
         if (!e.target.matches('.rt-card-tracker input[type="checkbox"]')) return;
         const checkbox = e.target;
         const card = checkbox.closest('.rt-ship-card');
@@ -581,7 +652,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.toggle('completed', state === 7);
 
         // Sync all other cards for the same ship
-        contentContainer.querySelectorAll(`.rt-ship-card[data-ship-id="${shipId}"]`).forEach(other => {
+        extraContainer.querySelectorAll(`.rt-ship-card[data-ship-id="${shipId}"]`).forEach(other => {
             if (other === card) return;
             const g = other.querySelector('[data-type="get"]');
             const l = other.querySelector('[data-type="level"]');

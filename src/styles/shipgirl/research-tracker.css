@@ -15,20 +15,42 @@ body {
 }
 
 .rt-header {
-    text-align: center;
-    padding: var(--spacing-lg) 0 var(--spacing-md);
+    background: var(--card-bg);
+    padding: 1.25rem;
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 4px 6px var(--shadow-color);
+    transition: background var(--transition-base), box-shadow var(--transition-base);
+}
+
+.rt-header-top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.rt-header-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.rt-header-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
 }
 
 .rt-header h1 {
-    font-size: 1.5rem;
-    color: var(--text-primary);
+    color: var(--primary-color);
     margin: 0;
+    font-size: 1.75rem;
+    transition: color var(--transition-base);
 }
 
 .rt-subtitle {
     color: var(--text-secondary);
     font-size: 0.875rem;
-    margin: var(--spacing-xs) 0 0;
+    margin: 0;
 }
 
 .rt-loading,
@@ -42,26 +64,39 @@ body {
     color: var(--danger-color);
 }
 
+/* === Faction Panel === */
+.rt-faction-panel {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin-bottom: var(--spacing-md);
+}
+
+.rt-panel-body {
+    padding: var(--spacing-md);
+}
+
 /* === Tabs === */
 .rt-tabs {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--spacing-xs);
-    overflow-x: auto;
-    padding: var(--spacing-sm) 0;
+    padding: var(--spacing-sm) var(--spacing-md) 0;
+    background: var(--section-bg);
     border-bottom: 1px solid var(--border-color);
-    scrollbar-width: thin;
-    -webkit-overflow-scrolling: touch;
 }
 
 .rt-tab {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: var(--spacing-xs);
+    gap: 2px;
     padding: var(--spacing-sm) var(--spacing-md);
-    border: 1px solid var(--border-color);
+    border: 1px solid transparent;
     border-bottom: none;
     border-radius: var(--radius-md) var(--radius-md) 0 0;
-    background: var(--section-bg);
+    background: transparent;
     color: var(--text-secondary);
     cursor: pointer;
     white-space: nowrap;
@@ -77,8 +112,10 @@ body {
 .rt-tab.active {
     background: var(--card-bg);
     color: var(--text-primary);
+    border-color: var(--border-color);
     border-bottom-color: var(--card-bg);
     font-weight: 700;
+    margin-bottom: -1px;
 }
 
 .rt-tab-icon {
@@ -87,12 +124,50 @@ body {
     object-fit: contain;
 }
 
+body.dark-mode .rt-tab-icon {
+    filter: brightness(0) invert(1);
+}
+
+.rt-tab-name {
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+.rt-tab-abbr {
+    font-size: 0.625rem;
+    color: var(--text-secondary);
+    line-height: 1;
+}
+
 /* === Filters === */
 .rt-filters {
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin: var(--spacing-md) 0;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+}
+
+.rt-filters-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.rt-filters-title .material-symbols-outlined {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+}
+
+.rt-filters-row {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
-    padding: var(--spacing-sm) 0;
     flex-wrap: wrap;
 }
 
@@ -115,36 +190,63 @@ body {
     gap: 4px;
 }
 
+.rt-btn-check {
+    display: none;
+    font-size: 0.625rem;
+}
+
 .rt-rarity-btn,
 .rt-status-btn {
+    display: flex;
+    align-items: center;
+    gap: 3px;
     padding: 4px 10px;
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-sm);
     background: var(--section-bg);
     color: var(--text-secondary);
     font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+    opacity: 0.45;
+    text-decoration: line-through;
+    transition: all var(--transition-fast);
 }
 
 .rt-rarity-btn:hover,
 .rt-status-btn:hover {
-    background: var(--surface-elevated);
+    opacity: 0.7;
 }
 
+/* Active state */
 .rt-rarity-btn.active,
 .rt-status-btn.active {
-    background: var(--primary-color);
+    opacity: 1;
+    text-decoration: none;
     color: var(--rarity-sr-text);
-    border-color: var(--primary-color);
+    border-color: transparent;
 }
 
-.rt-rarity-btn[data-rarity="ur"].active { background: var(--rarity-ur); border-color: var(--rarity-ur); }
-.rt-rarity-btn[data-rarity="ssr"].active { background: var(--rarity-ssr); border-color: var(--rarity-ssr); }
-.rt-rarity-btn[data-rarity="sr"].active { background: var(--rarity-sr); border-color: var(--rarity-sr); }
-.rt-rarity-btn[data-rarity="r"].active { background: var(--rarity-r); border-color: var(--rarity-r); }
-.rt-rarity-btn[data-rarity="n"].active { background: var(--rarity-n); border-color: var(--rarity-n); }
+.rt-rarity-btn.active .rt-btn-check,
+.rt-status-btn.active .rt-btn-check {
+    display: inline;
+}
+
+/* Rarity-specific active colors */
+.rt-rarity-btn[data-rarity="ur"].active { background: var(--rarity-ur); }
+.rt-rarity-btn[data-rarity="ssr"].active { background: var(--rarity-ssr); }
+.rt-rarity-btn[data-rarity="sr"].active { background: var(--rarity-sr); }
+.rt-rarity-btn[data-rarity="r"].active { background: var(--rarity-r); }
+.rt-rarity-btn[data-rarity="n"].active { background: var(--rarity-n); }
+
+/* Status-specific active colors */
+.rt-status-btn[data-status="missing"].active {
+    background: var(--warning-color);
+}
+
+.rt-status-btn[data-status="owned"].active {
+    background: var(--success-color);
+}
 
 .rt-ship-card.filter-hidden {
     display: none;
@@ -152,11 +254,9 @@ body {
 
 /* === Faction Summary === */
 .rt-summary {
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-md);
-    margin: var(--spacing-md) 0;
-    box-shadow: var(--shadow-sm);
+    padding: 0 0 var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-md);
 }
 
 .rt-summary-header {
@@ -187,7 +287,7 @@ body {
     position: relative;
     height: 12px;
     background: var(--surface-elevated);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-xs);
     overflow: visible;
     margin-top: var(--spacing-sm);
 }
@@ -195,7 +295,7 @@ body {
 .rt-progress-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-xs);
     transition: width var(--transition-base);
     min-width: 2px;
 }
@@ -203,10 +303,10 @@ body {
 .rt-progress-marker {
     position: absolute;
     top: -3px;
-    width: 6px;
+    width: 4px;
     height: 18px;
     background: var(--text-secondary);
-    border-radius: var(--radius-xs);
+    border-radius: 1px;
     transform: translateX(-50%);
     opacity: 0.4;
 }
@@ -241,13 +341,12 @@ body {
 }
 
 .rt-research-card {
-    background: var(--card-bg);
+    background: var(--section-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: var(--spacing-sm) var(--spacing-md);
     min-width: 200px;
     flex: 1 1 200px;
-    box-shadow: var(--shadow-sm);
 }
 
 .rt-research-card.pr {
@@ -300,6 +399,11 @@ body {
 .rt-research-rarity.dr {
     background: var(--rarity-ur);
     color: var(--rarity-sr-text);
+}
+
+.rt-research-project {
+    font-size: 0.6875rem;
+    color: var(--text-secondary);
 }
 
 .rt-research-reqs {
@@ -576,7 +680,8 @@ body {
         font-size: 0.75rem;
     }
 
-    .rt-tab span {
+    .rt-tab-name,
+    .rt-tab-abbr {
         display: none;
     }
 
@@ -585,11 +690,12 @@ body {
         height: 24px;
     }
 
-    .rt-tab.active span {
-        display: inline;
+    .rt-tab.active .rt-tab-name,
+    .rt-tab.active .rt-tab-abbr {
+        display: block;
     }
 
-    .rt-filters {
+    .rt-filters-row {
         gap: var(--spacing-sm);
     }
 

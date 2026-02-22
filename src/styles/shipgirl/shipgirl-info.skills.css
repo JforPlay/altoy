@@ -33,6 +33,7 @@
 .skill-icon {
   width: 2.5rem;
   height: 2.5rem;
+  flex-shrink: 0;
   object-fit: contain;
   border-radius: 0.3125rem;
   background: var(--item-bg);
@@ -165,6 +166,8 @@
 
 .sp-weapon-icon-container {
   flex-shrink: 0;
+  width: 6.5rem;
+  height: 6.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -175,8 +178,8 @@
 }
 
 .sp-weapon-icon {
-  width: 5rem;
-  height: 5rem;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   border-radius: 0.375rem;
 }

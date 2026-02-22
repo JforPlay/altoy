@@ -18,7 +18,7 @@ const PAGE_CATALOG = [
     // Tools
     { name: '아일랜드 계획 관리', description: '벽타듀 캐릭터, 기술, 퀘스트 관리', icon: 'forest', path: LINKS.ISLAND, category: '도구' },
     { name: '룽섭 일정보기', description: '과거 룽섭 이벤트 일정들을 검색과 함께 확인', icon: 'event', path: LINKS.EVENT_TIMELINE, category: '도구' },
-    { name: '육성 계산기', description: '기술/진영점수 계산', icon: 'calculate', path: LINKS.SHIPGIRL_TRACKER, category: '도구' },
+    { name: '함순이 육성트래커', description: '기술/진영점수 계산', icon: 'calculate', path: LINKS.SHIPGIRL_TRACKER, category: '도구' },
     { name: '설비스킨', description: '장비(설비) 스킨 뷰어', icon: 'construction', path: LINKS.SKIN_SD, category: '도구' },
     { name: '탄막 시뮬레이터', description: '아직 개발중 (현재는 직접 탄막만 제대로 구현)', icon: 'sports_esports', path: LINKS.SIM_WEAPON, category: '도구' },
 

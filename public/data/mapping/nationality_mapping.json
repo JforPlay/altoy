@@ -184,5 +184,19 @@
         "name": "유미아 아틀리에",
         "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
         "prefix": []
+    },
+    "114": {
+        "id": 114,
+        "code": "DanMachiV",
+        "name": "던만추",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
+    },
+    "115": {
+        "id": 115,
+        "code": "DateALiveV",
+        "name": "데어라",
+        "image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/100.png",
+        "prefix": []
     }
 }

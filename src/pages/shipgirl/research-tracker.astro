@@ -6,35 +6,66 @@ import '../../styles/shipgirl/research-tracker.css';
 <Layout title="개발함 트래커">
     <div class="rt-page">
         <header class="rt-header">
-            <h1>개발함 트래커</h1>
-            <p class="rt-subtitle">상시 획득 가능 함선 기술점수 추적</p>
+            <div class="rt-header-top">
+                <div class="rt-header-title">
+                    <span class="material-symbols-outlined rt-header-icon">science</span>
+                    <h1>개발함 트래커</h1>
+                    <button class="info-button" id="info-button" title="사용법 보기">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+                <p class="rt-subtitle">상시 획득 가능 함순이 진영점수 트래커</p>
+            </div>
         </header>
 
-        <nav class="rt-tabs" id="faction-tabs"></nav>
-
-        <div class="rt-filters" id="rt-filters">
-            <div class="rt-filter-group">
-                <span class="rt-filter-label">레어도</span>
-                <div class="rt-rarity-toggles">
-                    <button class="rt-rarity-btn active" data-rarity="ur">UR</button>
-                    <button class="rt-rarity-btn active" data-rarity="ssr">SSR</button>
-                    <button class="rt-rarity-btn active" data-rarity="sr">SR</button>
-                    <button class="rt-rarity-btn active" data-rarity="r">R</button>
-                    <button class="rt-rarity-btn active" data-rarity="n">N</button>
+        <div id="info-popup" class="info-popup" role="dialog" aria-labelledby="popup-title" aria-hidden="true">
+            <div class="info-popup-content">
+                <div class="popup-header">
+                    <h2 id="popup-title">사용법</h2>
+                    <button class="close-popup-btn" aria-label="닫기">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-            </div>
-            <div class="rt-filter-group">
-                <span class="rt-filter-label">상태</span>
-                <div class="rt-status-toggles">
-                    <button class="rt-status-btn active" data-status="missing">미획득</button>
-                    <button class="rt-status-btn active" data-status="owned">획득</button>
+                <div class="popup-body">
+                    <div class="info-step">
+                        <div class="info-icon"><span class="material-symbols-outlined">flag</span></div>
+                        <div class="info-content">
+                            <h3>진영 탭</h3>
+                            <p>상단 탭에서 진영을 선택하면 해당 진영의 기술점수 현황과 개발함 목록을 확인할 수 있습니다.</p>
+                        </div>
+                    </div>
+                    <div class="info-step">
+                        <div class="info-icon"><span class="material-symbols-outlined">check_box</span></div>
+                        <div class="info-content">
+                            <h3>진행도 체크</h3>
+                            <p>각 함순이 카드에서 입수 / 120달성 / 풀돌 체크박스를 체크하면 기술점수가 자동으로 계산됩니다. 진행 상황은 자동 저장되며, 기존 함순이 트래커와 공유됩니다.</p>
+                        </div>
+                    </div>
+                    <div class="info-step">
+                        <div class="info-icon"><span class="material-symbols-outlined">tune</span></div>
+                        <div class="info-content">
+                            <h3>필터</h3>
+                            <p>레어도(UR~N)와 획득 상태(미획득/획득)로 함순이 목록을 필터링할 수 있습니다.</p>
+                        </div>
+                    </div>
+                    <div class="info-step">
+                        <div class="info-icon"><span class="material-symbols-outlined">science</span></div>
+                        <div class="info-content">
+                            <h3>개발함 해금</h3>
+                            <p>진영점수가 개발함의 필요 점수에 도달하면 해금 완료로 표시됩니다. 일부 개발함은 2개 진영의 점수가 모두 필요합니다.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="rt-content" id="faction-content">
-            <div class="rt-loading">데이터를 불러오는 중...</div>
+        <div class="rt-faction-panel">
+            <nav class="rt-tabs" id="faction-tabs"></nav>
+            <div class="rt-panel-body" id="faction-content">
+                <div class="rt-loading">데이터를 불러오는 중...</div>
+            </div>
         </div>
+        <div id="faction-extra"></div>
     </div>
 
     <script is:inline type="module" src="/altoy/js/shipgirl/research-tracker.js"></script>

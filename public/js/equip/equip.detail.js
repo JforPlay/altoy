@@ -346,14 +346,32 @@ function getMergedWeaponProperties(equip, level) {
     }).filter(Boolean);
 }
 
+/** Merge base and current aircraft template properties, skipping null overrides */
+function getMergedAircraftTemplate(baseAcId, currentAcId) {
+    const baseAc = baseAcId ? getAircraftTemplate(baseAcId) : null;
+    const currentAc = currentAcId ? getAircraftTemplate(currentAcId) : null;
+
+    if (!baseAc && !currentAc) return null;
+    if (!baseAc) return currentAc;
+    if (!currentAc) return baseAc;
+
+    const merged = { ...baseAc };
+    for (const [key, val] of Object.entries(currentAc)) {
+        if (val != null) merged[key] = val;
+    }
+    return merged;
+}
+
 function renderAircraftParams(equip, level) {
     if (!AIRCRAFT_TYPES.has(equip.type)) return '';
 
-    const weaponIds = level.weapon_id;
-    if (!weaponIds || !weaponIds.length) return '';
+    const baseIds = equip.levels[0].weapon_id || [];
+    if (!baseIds.length) return '';
 
-    // Use the first aircraft_template entry for the aircraft-level stats
-    const aircraft = getAircraftTemplate(weaponIds[0]);
+    const weaponIds = level.weapon_id || baseIds;
+
+    // Use the first aircraft_template entry for the aircraft-level stats, merged with base
+    const aircraft = getMergedAircraftTemplate(baseIds[0], weaponIds[0]);
     if (!aircraft) return '';
 
     let rows = '';

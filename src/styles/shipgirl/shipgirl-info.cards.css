@@ -27,6 +27,7 @@
   object-fit: cover;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   border-bottom: 2px solid var(--border-color);
+  display: block;
 }
 
 .shipgirl-info {
@@ -61,7 +62,8 @@
 
 .ship-type-icon {
   height: 0.875rem;
-  width: auto;
+  width: 0.875rem;
+  flex-shrink: 0;
   object-fit: contain;
 }
 
