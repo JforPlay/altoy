@@ -14,20 +14,88 @@ import '../../styles/shipgirl/shipgirl-tracker.goal.css';
 ---
 
 <Layout title="벽람 점수 트래커">
-    <header>
-        <h1>기술/진영점수 계산기</h1>
-        <div id="score-display-area">
-            <div id="fleet-tech-container"></div>
-            <div id="stat-tech-container"></div>
+    <!-- Toolbar -->
+    <div class="st-toolbar">
+        <div class="st-toolbar-left">
+            <h1 class="st-title">기술/진영점수 계산기</h1>
+            <div class="st-search-wrapper">
+                <span class="material-symbols-outlined st-search-icon">search</span>
+                <input type="text" id="search-bar" class="st-search-input" placeholder="이름으로 검색..." autocomplete="off">
+                <div class="dropdown-content" id="search-dropdown"></div>
+            </div>
         </div>
-    </header>
-    <main>
-        <div id="filter-bar"></div>
-        <div id="ship-list-container"></div>
-    </main>
+        <div class="st-toolbar-right">
+            <button class="st-toolbar-btn" id="filter-drawer-btn">
+                <span class="material-symbols-outlined">tune</span>
+                <span>필터</span>
+                <span class="st-badge hidden" id="filter-badge">0</span>
+            </button>
+            <button class="st-toolbar-btn" id="score-modal-btn">
+                <span class="material-symbols-outlined">leaderboard</span>
+                <span>점수판</span>
+            </button>
+            <button class="st-toolbar-btn" id="goal-modal-btn">
+                <span class="material-symbols-outlined">flag</span>
+                <span>목표</span>
+            </button>
+        </div>
+    </div>
 
-    <div id="confirmation-modal">
-        <div class="modal-content">
+    <!-- Active filter chips -->
+    <div class="st-chips-row hidden" id="filter-chips"></div>
+
+    <!-- Ship list -->
+    <div id="ship-list-container"></div>
+
+    <!-- Filter Drawer (right side) -->
+    <div class="st-drawer-backdrop hidden" id="filter-drawer-backdrop"></div>
+    <aside class="st-drawer" id="filter-drawer">
+        <div class="st-drawer-header">
+            <h2>필터</h2>
+            <button class="st-drawer-close" aria-label="닫기">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="st-drawer-body" id="filter-drawer-body">
+            <!-- Filter controls rendered by JS -->
+        </div>
+    </aside>
+
+    <!-- Score Modal -->
+    <div class="st-modal hidden" id="score-modal">
+        <div class="st-modal-content st-modal-lg">
+            <div class="st-modal-header">
+                <h2>점수 현황</h2>
+                <button class="st-modal-close modal-close" aria-label="닫기">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="st-modal-body" id="score-modal-body">
+                <div id="fleet-tech-container"></div>
+                <div id="stat-tech-container"></div>
+                <div id="faction-tech-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Goal Modal -->
+    <div class="st-modal hidden" id="goal-modal">
+        <div class="st-modal-content st-modal-md">
+            <div class="st-modal-header">
+                <h2>목표 달성 현황</h2>
+                <button class="st-modal-close modal-close" aria-label="닫기">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="st-modal-body" id="goal-modal-body">
+                <!-- Goal tracker rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="st-modal hidden" id="confirmation-modal">
+        <div class="st-modal-content st-modal-sm">
             <p id="modal-text">Are you sure?</p>
             <div class="modal-actions">
                 <button id="modal-confirm-btn">당장 진행시켜</button>
