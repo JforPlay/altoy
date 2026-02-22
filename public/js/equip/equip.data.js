@@ -12,6 +12,9 @@ export function setup(stateRef) {
     state = stateRef;
 }
 
+// Data version — bump to invalidate IndexedDB cache after data updates
+const DATA_VERSION = 2;
+
 // ===== Data Loading =====
 
 export async function loadLiteData() {
@@ -21,7 +24,7 @@ export async function loadLiteData() {
 
 export async function loadFullData() {
     try {
-        state.fullEquipData = await fetchJSONWithCache('data/equip/equip_data_full.json', { maxAge: 86400000 });
+        state.fullEquipData = await fetchJSONWithCache(`data/equip/equip_data_full.json?v=${DATA_VERSION}`, { maxAge: 86400000 });
         return state.fullEquipData;
     } catch (error) {
         console.warn('Failed to load full equipment data:', error);
