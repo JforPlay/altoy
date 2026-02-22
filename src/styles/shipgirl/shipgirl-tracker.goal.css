@@ -251,12 +251,12 @@ body.dark-mode .goal-select-dropdown optgroup {
 }
 
 .goal-rarity.rarity-PR {
-  background: linear-gradient(135deg, #3498db, #2980b9);
+  background: linear-gradient(135deg, var(--info-color), #2980b9);
   color: white;
 }
 
 .goal-rarity.rarity-DR {
-  background: linear-gradient(135deg, var(--error-color), #c0392b);
+  background: linear-gradient(135deg, var(--error-color), var(--danger-hover));
   color: white;
 }
 
@@ -297,7 +297,7 @@ body.dark-mode .goal-select-dropdown optgroup {
 }
 
 .goal-progress-fill.complete {
-  background: linear-gradient(90deg, var(--success-color), #2ecc71);
+  background: linear-gradient(90deg, var(--success-color), var(--island-success));
 }
 
 .goal-progress-text {
@@ -409,7 +409,7 @@ body.dark-mode .goal-select-dropdown optgroup {
 
 .faction-level.max-level {
   background: linear-gradient(135deg, #ffd700, #ffed4e);
-  color: #5d4037;
+  color: var(--rarity-ssr-text);
 }
 
 .faction-progress {

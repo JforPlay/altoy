@@ -139,11 +139,11 @@ body {
     color: var(--text-primary);
 }
 
-.rarity-chip.active.rarity-chip-6 { background: #ffb3d9; color: #4a0028; border-color: #e91e8c; }
+.rarity-chip.active.rarity-chip-6 { background: var(--rarity-ur-light); color: var(--rarity-ur-text); border-color: var(--rarity-ur); }
 .rarity-chip.active.rarity-chip-5 { background: #ffd666; color: #3d2e00; border-color: #e8a320; }
 .rarity-chip.active.rarity-chip-4 { background: #d3adf7; color: #2d1541; border-color: #b066d4; }
 .rarity-chip.active.rarity-chip-3 { background: #91caff; color: #0d2137; border-color: #3c9be8; }
-.rarity-chip.active.rarity-chip-2 { background: #bfbfbf; color: #2a2a2a; border-color: #8a8a8a; }
+.rarity-chip.active.rarity-chip-2 { background: #bfbfbf; color: var(--text-primary); border-color: #8a8a8a; }
 
 /* ===== Label Tag Chips ===== */
 .label-chips-container {
@@ -246,7 +246,7 @@ body {
 }
 
 /* Rarity border accent */
-.equip-card.rarity-6 { border-left: 3px solid #e91e8c; }
+.equip-card.rarity-6 { border-left: 3px solid var(--rarity-ur); }
 .equip-card.rarity-5 { border-left: 3px solid #e8a320; }
 .equip-card.rarity-4 { border-left: 3px solid #b066d4; }
 .equip-card.rarity-3 { border-left: 3px solid #3c9be8; }
@@ -322,11 +322,11 @@ body {
     white-space: nowrap;
 }
 
-.equip-rarity-badge.rarity-6 { background: #ffb3d9; color: #4a0028; }
+.equip-rarity-badge.rarity-6 { background: var(--rarity-ur-light); color: var(--rarity-ur-text); }
 .equip-rarity-badge.rarity-5 { background: #ffd666; color: #3d2e00; }
 .equip-rarity-badge.rarity-4 { background: #d3adf7; color: #2d1541; }
 .equip-rarity-badge.rarity-3 { background: #91caff; color: #0d2137; }
-.equip-rarity-badge.rarity-2 { background: #bfbfbf; color: #2a2a2a; }
+.equip-rarity-badge.rarity-2 { background: #bfbfbf; color: var(--text-primary); }
 
 .equip-nation-code {
     font-size: 0.7rem;

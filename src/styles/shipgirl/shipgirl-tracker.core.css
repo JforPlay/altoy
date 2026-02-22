@@ -1,0 +1,147 @@
+@import url('../theme.css');
+
+/* --- Color Scheme Variables --- */
+/* Light mode defaults */
+:root {
+  --primary-bg: #f0f2f5;
+  --secondary-bg: #ffffff;
+  --tertiary-bg: #f5f6f7;
+  --primary-text: #1c1e21;
+  --secondary-text: #606770;
+  --accent-color: #1877f2;
+  --accent-hover: #166fe5;
+  --border-color: #dddfe2;
+  --card-bg: #ffffff;
+  --card-border: #e4e6eb;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --success-color: #2ecc71;
+  --error-color: #e74c3c;
+  --warning-color: #f39c12;
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Rarity colors — inherited from theme.css except local UR text override */
+  --rarity-ur-text: #4a4a4a;
+}
+
+/* Dark mode overrides */
+body.dark-mode {
+  --primary-bg: #1a1a1a;
+  --secondary-bg: #2c2c2c;
+  --tertiary-bg: #3a3a3a;
+  --primary-text: #e0e0e0;
+  --secondary-text: #a0a0a0;
+  --accent-color: #4a90e2;
+  --accent-hover: #5aa1f2;
+  --border-color: #444;
+  --card-bg: #242424;
+  --card-border: #333;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --success-color: #27ae60;
+  --error-color: #e74c3c;
+  --warning-color: #f39c12;
+  --hover-bg: rgba(255, 255, 255, 0.05);
+  --modal-overlay: rgba(0, 0, 0, 0.7);
+}
+
+/* --- General Body & Header Styles --- */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--primary-bg);
+  color: var(--primary-text);
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+header {
+  background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--tertiary-bg) 100%);
+  padding: 2rem 2rem 1.5rem 2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: background 0.3s ease;
+  position: relative;
+  border-bottom: none;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  max-width: 1400px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent-color) 20%,
+    var(--accent-hover) 50%,
+    var(--accent-color) 80%,
+    transparent 100%
+  );
+  opacity: 0.5;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent-color) 50%,
+    transparent 100%
+  );
+  border-radius: 2px;
+}
+
+main {
+  padding: 1rem;
+}
+
+/* --- Dark Mode Overrides --- */
+body.dark-mode header {
+  background: linear-gradient(
+    135deg,
+    var(--secondary-bg) 0%,
+    var(--tertiary-bg) 100%
+  );
+  box-shadow: 0 4px 16px var(--shadow-color);
+}
+
+body.dark-mode header::after {
+  opacity: 0.6;
+}
+
+body.dark-mode h1 {
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

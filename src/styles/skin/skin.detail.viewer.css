@@ -568,7 +568,7 @@
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--highlight-strong);
   transform: translate(-50%, -50%);
   transition: width var(--transition-base), height var(--transition-base);
 }
@@ -631,7 +631,7 @@
 .volume-slider {
   width: 6rem;
   height: 0.375rem;
-  background: #d0d0d0;
+  background: var(--border-light);
   outline: none;
   border-radius: 999px;
   -webkit-appearance: none;
@@ -810,11 +810,11 @@ body.dark-mode .lightbox-modal {
 
 /* Voice Line Table - Darker backgrounds for dark mode */
 body.dark-mode .voice-line-table tbody tr:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: var(--overlay-medium);
 }
 
 body.dark-mode .voice-line-table tbody tr:hover {
-  background-color: rgba(114, 137, 218, 0.1);
+  background-color: var(--primary-alpha-10);
 }
 
 /* Image Gallery - Dark mode adjustments */

@@ -48,6 +48,22 @@
   --input-border: #d4d4d4;
   --input-focus: #5a5a5a;
 
+  /* Overlay alpha (black transparency for shadows, backdrops, dimming) */
+  --overlay-lightest:  rgba(0, 0, 0, 0.05);
+  --overlay-lighter:   rgba(0, 0, 0, 0.08);
+  --overlay-light:     rgba(0, 0, 0, 0.1);
+  --overlay-medium:    rgba(0, 0, 0, 0.2);
+  --overlay-strong:    rgba(0, 0, 0, 0.3);
+  --overlay-heavy:     rgba(0, 0, 0, 0.5);
+  --overlay-intense:   rgba(0, 0, 0, 0.7);
+  --overlay-opaque:    rgba(0, 0, 0, 0.9);
+
+  /* Highlight alpha (white transparency for dark-mode surfaces, glass effects) */
+  --highlight-subtle:  rgba(255, 255, 255, 0.05);
+  --highlight-soft:    rgba(255, 255, 255, 0.1);
+  --highlight-medium:  rgba(255, 255, 255, 0.2);
+  --highlight-strong:  rgba(255, 255, 255, 0.3);
+
   /* Border Radius */
   --radius-xs: 0.125rem;
   --radius-sm: 0.25rem;
@@ -79,6 +95,31 @@
   /* Accent Colors */
   --accent-blue: #0071eb;
   --accent-green: #43b581;
+
+  /* Rarity Colors */
+  --rarity-ur:        #e91e8c;
+  --rarity-ur-light:  #ffb3d9;
+  --rarity-ur-bg:     linear-gradient(135deg, #fdeebb, #ffc8b2, #ffb7c5, #dcb5ff, #fdeebb);
+  --rarity-ur-text:   #4a0028;
+  --rarity-ssr:       #ffd54f;
+  --rarity-ssr-text:  #5d4037;
+  --rarity-sr:        #ba68c8;
+  --rarity-sr-text:   #ffffff;
+  --rarity-r:         #6495ed;
+  --rarity-r-text:    #ffffff;
+  --rarity-n:         #b0bec5;
+  --rarity-n-text:    #37474f;
+
+  /* Primary color alpha variants */
+  --primary-alpha-10: rgba(0, 113, 235, 0.1);
+  --primary-alpha-15: rgba(0, 113, 235, 0.15);
+  --primary-alpha-20: rgba(0, 113, 235, 0.2);
+  --primary-alpha-30: rgba(0, 113, 235, 0.3);
+
+  /* Island semantic colors */
+  --island-stamina:   #3498db;
+  --island-points:    #9b59b6;
+  --island-success:   #2ecc71;
 
   /* Surface Colors (for popups, dropdowns, cards) */
   --surface-card: #ffffff;
@@ -131,6 +172,31 @@ body.dark-mode {
   /* Accent Colors */
   --accent-blue: #7289da;
   --accent-green: #43b581;
+
+  /* Rarity Colors (same in both modes — game-canonical) */
+  --rarity-ur:        #e91e8c;
+  --rarity-ur-light:  #ffb3d9;
+  --rarity-ur-bg:     linear-gradient(135deg, #fdeebb, #ffc8b2, #ffb7c5, #dcb5ff, #fdeebb);
+  --rarity-ur-text:   #4a0028;
+  --rarity-ssr:       #ffd54f;
+  --rarity-ssr-text:  #5d4037;
+  --rarity-sr:        #ba68c8;
+  --rarity-sr-text:   #ffffff;
+  --rarity-r:         #6495ed;
+  --rarity-r-text:    #ffffff;
+  --rarity-n:         #b0bec5;
+  --rarity-n-text:    #37474f;
+
+  /* Primary color alpha variants (use dark mode accent-blue base: #7289da) */
+  --primary-alpha-10: rgba(114, 137, 218, 0.1);
+  --primary-alpha-15: rgba(114, 137, 218, 0.15);
+  --primary-alpha-20: rgba(114, 137, 218, 0.2);
+  --primary-alpha-30: rgba(114, 137, 218, 0.3);
+
+  /* Island semantic colors (same in both modes) */
+  --island-stamina:   #3498db;
+  --island-points:    #9b59b6;
+  --island-success:   #2ecc71;
 
   /* Surface Colors (for popups, dropdowns, cards) */
   --surface-card: #2f3136;

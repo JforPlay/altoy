@@ -12,7 +12,7 @@
   position: fixed;
   inset: 0;
   z-index: 1001;
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--overlay-heavy);
   backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
@@ -32,10 +32,10 @@
 .global-search-container {
   width: 100%;
   max-width: 600px;
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
+  background: var(--card-bg);
+  border: 1px solid var(--surface-border);
   border-radius: 12px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 48px var(--overlay-medium);
   overflow: hidden;
   transform: scale(0.96) translateY(-8px);
   transition: transform var(--transition-base);
@@ -51,11 +51,11 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.875rem 1rem;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--surface-border);
 }
 
 .global-search-header > .material-symbols-outlined {
-  color: #666666;
+  color: var(--text-secondary);
   font-size: 1.25rem;
   flex-shrink: 0;
 }
@@ -65,21 +65,21 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #1a1a1a;
+  color: var(--text-primary);
   font-size: 1rem;
   font-family: inherit;
   min-width: 0;
 }
 
 #global-search-input::placeholder {
-  color: #999999;
+  color: var(--text-secondary);
 }
 
 .global-search-esc {
-  background: #f0f0f0;
-  border: 1px solid #d0d0d0;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  color: #666666;
+  color: var(--text-secondary);
   font-size: 0.7rem;
   font-family: inherit;
   padding: 2px 6px;
@@ -91,7 +91,7 @@
   display: none;
   background: none;
   border: none;
-  color: #666666;
+  color: var(--text-secondary);
   cursor: pointer;
   padding: 0.25rem;
   border-radius: 6px;
@@ -102,8 +102,8 @@
 }
 
 .global-search-close:hover {
-  color: #1a1a1a;
-  background: rgba(0, 0, 0, 0.06);
+  color: var(--text-primary);
+  background: var(--overlay-lightest);
 }
 
 .global-search-close .material-symbols-outlined {
@@ -122,7 +122,7 @@
 }
 
 .global-search-results::-webkit-scrollbar-thumb {
-  background: #d0d0d0;
+  background: var(--border-color);
   border-radius: 3px;
 }
 
@@ -133,14 +133,14 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #999999;
+  color: var(--text-secondary);
 }
 
 /* Empty / no results state */
 .global-search-empty {
   padding: 2rem 1rem;
   text-align: center;
-  color: #999999;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -151,7 +151,7 @@
   gap: 0.75rem;
   padding: 0.625rem 0.75rem;
   border-radius: 8px;
-  color: #1a1a1a;
+  color: var(--text-primary);
   text-decoration: none;
   cursor: pointer;
   transition: background var(--transition-fast);
@@ -159,11 +159,11 @@
 
 .global-search-item:hover,
 .global-search-item.active {
-  background: rgba(0, 113, 235, 0.08);
+  background: var(--primary-alpha-10);
 }
 
 .global-search-item.active {
-  outline: 2px solid rgba(0, 113, 235, 0.3);
+  outline: 2px solid var(--primary-alpha-30);
   outline-offset: -2px;
 }
 
@@ -174,9 +174,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.04);
+  background: var(--overlay-lightest);
   border-radius: 6px;
-  color: #666666;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
@@ -188,7 +188,7 @@
 .global-search-item-name {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #1a1a1a;
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -196,7 +196,7 @@
 
 .global-search-item-desc {
   font-size: 0.75rem;
-  color: #999999;
+  color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -210,8 +210,8 @@
   letter-spacing: 0.5px;
   padding: 2px 6px;
   border-radius: var(--radius-sm);
-  background: rgba(0, 0, 0, 0.04);
-  color: #888888;
+  background: var(--overlay-lightest);
+  color: var(--text-secondary);
 }
 
 /* --- Ship result item --- */
@@ -221,7 +221,7 @@
   gap: 0.75rem;
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
-  color: #1a1a1a;
+  color: var(--text-primary);
   text-decoration: none;
   cursor: default;
   transition: background var(--transition-fast);
@@ -229,7 +229,7 @@
 
 .global-search-ship:hover,
 .global-search-ship.active {
-  background: rgba(0, 113, 235, 0.06);
+  background: var(--primary-alpha-10);
 }
 
 .global-search-ship.active {
@@ -243,7 +243,7 @@
   height: 40px;
   border-radius: 6px;
   object-fit: cover;
-  background: #f0f0f0;
+  background: var(--surface-elevated);
 }
 
 .global-search-ship-info {
@@ -254,7 +254,7 @@
 .global-search-ship-name {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #1a1a1a;
+  color: var(--text-primary);
 }
 
 /* Rarity badge */
@@ -311,15 +311,15 @@
   width: 30px;
   height: 30px;
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.04);
-  color: #666666;
+  background: var(--overlay-lightest);
+  color: var(--text-secondary);
   text-decoration: none;
   transition: all var(--transition-fast);
 }
 
 .global-search-ship-link:hover {
-  background: rgba(0, 113, 235, 0.15);
-  color: #0071eb;
+  background: var(--primary-alpha-15);
+  color: var(--accent-blue);
 }
 
 .global-search-ship-link .material-symbols-outlined {
@@ -331,26 +331,26 @@
   display: flex;
   gap: 1.25rem;
   padding: 0.625rem 1rem;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--surface-border);
   font-size: 0.7rem;
-  color: #999999;
+  color: var(--text-secondary);
 }
 
 .global-search-footer kbd {
-  background: #f0f0f0;
-  border: 1px solid #d0d0d0;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-color);
   border-radius: 3px;
   padding: 1px 5px;
   font-family: inherit;
   font-size: 0.65rem;
-  color: #666666;
+  color: var(--text-secondary);
   margin: 0 2px;
 }
 
 /* --- Navbar search trigger button --- */
 .global-search-trigger {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--highlight-subtle);
+  border: 1px solid var(--highlight-soft);
   border-radius: 10px;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
@@ -364,7 +364,7 @@
 }
 
 .global-search-trigger:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--highlight-soft);
   transform: scale(1.05);
 }
 
@@ -373,8 +373,8 @@
 }
 
 .search-shortcut-hint {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--highlight-soft);
+  border: 1px solid var(--highlight-soft);
   border-radius: var(--radius-sm);
   padding: 1px 6px;
   font-size: 0.65rem;
@@ -384,19 +384,19 @@
 
 /* Light mode navbar trigger */
 .navbar.navbar-light .global-search-trigger {
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.08);
-  color: #2a2a2a;
+  background: var(--overlay-lightest);
+  border-color: var(--overlay-lighter);
+  color: var(--text-primary);
 }
 
 .navbar.navbar-light .global-search-trigger:hover {
-  background: rgba(0, 0, 0, 0.08);
+  background: var(--overlay-lighter);
 }
 
 .navbar.navbar-light .search-shortcut-hint {
-  background: rgba(0, 0, 0, 0.06);
-  border-color: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.5);
+  background: var(--overlay-lightest);
+  border-color: var(--overlay-light);
+  color: var(--overlay-heavy);
 }
 
 /* ==========================================================================
@@ -404,17 +404,17 @@
    ========================================================================== */
 
 body.dark-mode .global-search-overlay {
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--overlay-intense);
 }
 
 body.dark-mode .global-search-container {
-  background: #2f3136;
-  border-color: #4f545c;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  background: var(--surface-card);
+  border-color: var(--surface-border);
+  box-shadow: 0 16px 48px var(--overlay-heavy);
 }
 
 body.dark-mode .global-search-header {
-  border-bottom-color: #4f545c;
+  border-bottom-color: var(--surface-border);
 }
 
 body.dark-mode .global-search-header > .material-symbols-outlined {
@@ -430,8 +430,8 @@ body.dark-mode #global-search-input::placeholder {
 }
 
 body.dark-mode .global-search-esc {
-  background: #3d4148;
-  border-color: #4f545c;
+  background: var(--surface-elevated);
+  border-color: var(--surface-border);
   color: #8e9297;
 }
 
@@ -441,11 +441,11 @@ body.dark-mode .global-search-close {
 
 body.dark-mode .global-search-close:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--highlight-soft);
 }
 
 body.dark-mode .global-search-results::-webkit-scrollbar-thumb {
-  background: #4f545c;
+  background: var(--surface-border);
 }
 
 body.dark-mode .global-search-section {
@@ -462,7 +462,7 @@ body.dark-mode .global-search-item {
 
 body.dark-mode .global-search-item:hover,
 body.dark-mode .global-search-item.active {
-  background: rgba(114, 137, 218, 0.15);
+  background: var(--primary-alpha-15);
 }
 
 body.dark-mode .global-search-item.active {
@@ -470,7 +470,7 @@ body.dark-mode .global-search-item.active {
 }
 
 body.dark-mode .global-search-item-icon {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--highlight-subtle);
   color: #b9bbbe;
 }
 
@@ -483,7 +483,7 @@ body.dark-mode .global-search-item-desc {
 }
 
 body.dark-mode .global-search-item-badge {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--highlight-subtle);
   color: #8e9297;
 }
 
@@ -493,11 +493,11 @@ body.dark-mode .global-search-ship {
 
 body.dark-mode .global-search-ship:hover,
 body.dark-mode .global-search-ship.active {
-  background: rgba(114, 137, 218, 0.1);
+  background: var(--primary-alpha-10);
 }
 
 body.dark-mode .global-search-ship-icon {
-  background: #3d4148;
+  background: var(--surface-elevated);
 }
 
 body.dark-mode .global-search-ship-name {
@@ -505,23 +505,23 @@ body.dark-mode .global-search-ship-name {
 }
 
 body.dark-mode .global-search-ship-link {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--highlight-subtle);
   color: #b9bbbe;
 }
 
 body.dark-mode .global-search-ship-link:hover {
-  background: rgba(114, 137, 218, 0.3);
+  background: var(--primary-alpha-30);
   color: #ffffff;
 }
 
 body.dark-mode .global-search-footer {
-  border-top-color: #4f545c;
+  border-top-color: var(--surface-border);
   color: #72767d;
 }
 
 body.dark-mode .global-search-footer kbd {
-  background: #3d4148;
-  border-color: #4f545c;
+  background: var(--surface-elevated);
+  border-color: var(--surface-border);
   color: #8e9297;
 }
 

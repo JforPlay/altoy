@@ -1,0 +1,106 @@
+/* ==========================================================================
+   ISLAND RESOURCE STYLES
+   Recipe browser with dependency chain visualization
+   ========================================================================== */
+
+/* ==========================================================================
+   1. RESOURCE LAYOUT (3-COLUMN)
+   ========================================================================== */
+
+.resource-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr 400px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* ==========================================================================
+   2. FILTER CONTROLS
+   ========================================================================== */
+
+.resource-filter-controls {
+    display: grid;
+    grid-template-columns: 220px 1fr auto;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.category-select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    border-radius: 8px;
+    color: var(--island-text-primary);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--island-transition);
+    appearance: none;
+}
+
+.category-select:hover,
+.category-select:focus {
+    border-color: var(--island-accent);
+    outline: none;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    padding-right: 2.5rem;
+    background: var(--island-surface);
+    border: 2px solid var(--island-border);
+    border-radius: 8px;
+    color: var(--island-text-primary);
+    font-size: 0.9375rem;
+    transition: var(--island-transition);
+}
+
+.search-input:focus {
+    border-color: var(--island-accent);
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: var(--island-text-tertiary);
+}
+
+.filter-action {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tree-btn {
+    height: 100%;
+    padding: 0.85rem 1.1rem;
+    gap: 0.4rem;
+}
+
+.dropdown-container {
+    position: relative;
+}
+
+.dropdown-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--island-text-tertiary);
+    pointer-events: none;
+    font-size: 1.25rem;
+}
+
+/* Cross-cutting image rules */
+.recipe-icon img,
+.recipe-icon-large img,
+.material-icon img,
+.tree-node-icon img,
+.modal-item-icon img,
+.modal-recipe-icon img,
+.cost-item .cost-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}

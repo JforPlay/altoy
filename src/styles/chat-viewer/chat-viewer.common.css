@@ -291,7 +291,7 @@ body {
 
 .character-card.selected {
   border-color: var(--accent-primary);
-  background-color: #e3f2fd;
+  background-color: rgba(88, 101, 242, 0.08);
   box-shadow: 0 0 0.75rem var(--shadow-medium);
 }
 
@@ -407,7 +407,7 @@ body.dark-mode .character-card.selected {
 }
 
 .flavor-text-box {
-  background-color: #f9f9f9;
+  background-color: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   padding: 0.9375rem;
@@ -649,9 +649,9 @@ body.dark-mode .flavor-text-box {
   opacity: 0.8;
   margin: 0.5rem 0;
   padding: 0.5rem 0.75rem;
-  background-color: #c5cae9;
+  background-color: rgba(88, 101, 242, 0.15);
   border: 1px solid var(--accent-primary);
-  color: #1a237e;
+  color: var(--text-primary);
 }
 
 body.dark-mode .message-bubble.selected-choice {
@@ -669,7 +669,7 @@ body.dark-mode .message-bubble.selected-choice {
   font-size: 1.1em;
   font-weight: bold;
   color: var(--text-secondary);
-  background-color: #f9f9f9;
+  background-color: var(--bg-tertiary);
   border-radius: 0.625rem;
   border: 2px dashed var(--border-color);
   transition: background-color var(--animation-duration) ease,

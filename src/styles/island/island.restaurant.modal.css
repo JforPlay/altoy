@@ -54,7 +54,7 @@
     justify-content: center;
     background-size: cover;
     background-position: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--highlight-soft);
 }
 
 .slot-icon img {
@@ -107,7 +107,7 @@
 .menu-selection-modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--overlay-intense);
     backdrop-filter: blur(4px);
     z-index: 10000;
     display: flex;
@@ -152,7 +152,7 @@
     align-items: center;
     padding: var(--island-spacing-md) var(--island-spacing-lg);
     border-bottom: 2px solid var(--island-border);
-    background: linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
+    background: linear-gradient(to bottom, var(--highlight-subtle), transparent);
 }
 
 .menu-modal-header h3 {
@@ -203,7 +203,7 @@
     grid-template-columns: repeat(4, 1fr);
     gap: var(--island-gap-sm);
     padding: var(--island-spacing-sm);
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--overlay-medium);
     border-radius: var(--island-radius-md);
 }
 
@@ -241,7 +241,7 @@
     text-align: center;
     font-size: 0.85rem;
     color: var(--island-text-secondary);
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--overlay-light);
     border-radius: var(--island-radius-sm);
     border: 1px solid var(--island-border);
 }
@@ -319,7 +319,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--highlight-soft);
 }
 
 .menu-option-icon img {
@@ -366,8 +366,8 @@
     height: 28px;
     object-fit: contain;
     border-radius: 4px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--overlay-medium);
+    border: 1px solid var(--highlight-soft);
     position: relative;
     transition: opacity 0.2s;
 }
@@ -383,7 +383,7 @@
     bottom: calc(100% + 8px);
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.95);
+    background: var(--overlay-opaque);
     color: #fff;
     padding: 0.4rem 0.7rem;
     border-radius: var(--island-radius-sm);
@@ -411,7 +411,7 @@
     height: 0;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-top: 6px solid rgba(0, 0, 0, 0.95);
+    border-top: 6px solid var(--overlay-opaque);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s;
@@ -427,7 +427,7 @@
     font-weight: 700;
     color: var(--island-text-tertiary);
     padding: 0.1rem 0.3rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--highlight-subtle);
     border-radius: 3px;
 }
 
@@ -438,7 +438,7 @@
     font-size: var(--island-text-md);
     margin-bottom: var(--island-spacing-md);
     padding: var(--island-spacing-sm);
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--overlay-medium);
     border-radius: var(--island-radius-md);
 }
 
@@ -492,7 +492,7 @@
     font-size: 0.75rem;
     color: var(--island-text-tertiary);
     font-weight: 800;
-    background: rgba(0, 0, 0, 0.8);
+    background: var(--overlay-opaque);
     padding: 0.25rem 0.4rem;
     border-radius: 4px;
     z-index: 2;
@@ -556,14 +556,14 @@
     background: var(--planner-surface);
     border-radius: var(--island-radius-lg);
     padding: var(--island-spacing-md);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--highlight-soft);
 }
 
 .planner-meal-summary h4 {
     margin: 0 0 var(--island-spacing-md) 0;
     color: var(--island-accent);
     font-size: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--highlight-soft);
     padding-bottom: 0.5rem;
 }
 
@@ -574,7 +574,7 @@
 }
 
 .planner-restaurant-group {
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--overlay-medium);
     border-radius: var(--island-radius-md);
     padding: var(--island-spacing-sm);
 }
@@ -610,7 +610,7 @@
     margin: 0 0 1rem 0;
     color: var(--island-accent);
     font-size: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--highlight-soft);
     padding-bottom: 0.5rem;
 }
 
@@ -625,7 +625,7 @@
 
 /* Custom scrollbar for dark theme modal */
 .planner-ingredient-grid::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--highlight-medium);
 }
 
 .planner-ingredient-grid::-webkit-scrollbar-track {
@@ -634,7 +634,7 @@
 
 .ingredient-card {
     background: var(--planner-surface);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--highlight-soft);
     border-radius: var(--island-radius-md);
     padding: var(--island-spacing-sm);
     display: flex;
@@ -647,7 +647,7 @@
 
 .ingredient-card:hover {
     background: var(--planner-surface-hover);
-    border-color: rgba(255, 255, 255, 0.3);
+    border-color: var(--highlight-strong);
 }
 
 .ingredient-icon {

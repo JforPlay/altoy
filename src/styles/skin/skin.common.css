@@ -14,8 +14,6 @@
   --primary-light: #4da3ff;
   --accent-color: #27ae60;
   --accent-hover: #229954;
-  --danger-color: #e74c3c;
-  --danger-hover: #c0392b;
   --warning-color: #f39c12;
 
   /* Background Colors */
@@ -57,7 +55,6 @@ body.dark-mode {
   --accent-hover: #3ca374;
   --danger-color: #f04747;
   --danger-hover: #d84040;
-  --warning-color: #faa61a;
 
   /* Background Colors */
   --bg-primary: #36393f;
@@ -146,8 +143,8 @@ label {
 .card {
   background: linear-gradient(
     135deg,
-    #ffffff 0%,
-    #fafafa 100%
+    var(--bg-elevated) 0%,
+    var(--bg-tertiary) 100%
   );
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -169,7 +166,7 @@ label {
   justify-content: center;
   gap: var(--spacing-lg);
   padding: var(--spacing-lg);
-  background-color: #ffffff;
+  background-color: var(--bg-elevated);
   border-radius: var(--radius-md);
   margin: var(--spacing-lg) 0;
   border: 1px solid var(--border-color);
@@ -192,7 +189,7 @@ label {
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--radius-sm);
   border: 2px solid var(--border-color);
-  background-color: #ffffff;
+  background-color: var(--bg-input);
   color: var(--text-secondary);
   transition: border-color var(--transition-fast);
 }
@@ -238,7 +235,7 @@ label {
   gap: var(--spacing-md);
   padding: var(--spacing-xs) var(--spacing-sm);
   justify-content: center;
-  background-color: #fafafa;
+  background-color: var(--bg-tertiary);
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
 }
@@ -255,7 +252,7 @@ label {
 /* --- Clear/Reset Buttons --- */
 .clear-btn,
 .reset-button {
-  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-tertiary));
   color: var(--text-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -272,7 +269,7 @@ label {
 
 .clear-btn:hover,
 .reset-button:hover {
-  background: linear-gradient(135deg, #f8f9fa, #ffffff);
+  background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-elevated));
   border-color: var(--primary-color);
   color: var(--primary-color);
   transform: translateY(-2px);
@@ -307,7 +304,7 @@ label {
 }
 
 .skeleton-card {
-  background: #ffffff;
+  background: var(--bg-elevated);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
@@ -318,9 +315,9 @@ label {
 .skeleton-element {
   background: linear-gradient(
     90deg,
-    #f0f0f0 25%,
-    #e0e0e0 50%,
-    #f0f0f0 75%
+    var(--bg-primary) 25%,
+    var(--border-color) 50%,
+    var(--bg-primary) 75%
   );
   background-size: 200% 100%;
   border-radius: var(--radius-sm);
@@ -360,7 +357,7 @@ label {
   width: 1.5rem;
   height: 1.5rem;
   vertical-align: middle;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(0 2px 4px var(--overlay-light));
 }
 
 /* .hidden utility class defined in global.style.css */
@@ -490,7 +487,7 @@ body.dark-mode .skeleton-element {
 }
 
 body.dark-mode .gem-icon {
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 2px 4px var(--overlay-strong));
 }
 
 /* --- Print Styles --- */

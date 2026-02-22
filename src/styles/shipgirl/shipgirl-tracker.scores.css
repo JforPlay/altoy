@@ -1,0 +1,126 @@
+/* --- Score Display --- */
+#score-display-area {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 1.5rem auto 0;
+  /* GPU-accelerated transitions */
+  transform-origin: top;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  will-change: transform, opacity;
+  overflow: hidden;
+}
+
+#score-display-area.collapsed {
+  display: none;
+}
+
+.score-table-wrapper {
+  background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--tertiary-bg) 100%);
+  padding: 1.25rem;
+  border-radius: 12px;
+  border: 2px solid var(--card-border);
+  flex: 1 1 400px;
+  min-width: 300px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.score-table-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--accent-color) 0%,
+    var(--accent-hover) 50%,
+    var(--accent-color) 100%
+  );
+  opacity: 0.6;
+}
+
+.score-table-wrapper:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  border-color: var(--accent-color);
+}
+
+.score-table-wrapper h2 {
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  color: var(--accent-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.score-table-wrapper h2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: var(--accent-color);
+  border-radius: 2px;
+}
+
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.score-table th,
+.score-table td {
+  padding: 8px 12px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+
+.score-table th {
+  background-color: var(--tertiary-bg);
+  font-weight: 600;
+}
+
+.score-table td {
+  background-color: var(--card-bg);
+}
+
+.score-table .header-col {
+  font-weight: 600;
+  text-align: left;
+  background-color: var(--tertiary-bg);
+}
+
+/* --- Dark Mode Overrides --- */
+body.dark-mode .score-table-wrapper {
+  background: linear-gradient(
+    135deg,
+    var(--card-bg) 0%,
+    var(--secondary-bg) 100%
+  );
+  box-shadow: 0 3px 10px var(--shadow-color);
+  border-color: var(--border-color);
+}
+
+body.dark-mode .score-table-wrapper::before {
+  opacity: 0.7;
+}
+
+body.dark-mode .score-table-wrapper:hover {
+  box-shadow: 0 6px 16px var(--shadow-color);
+  border-color: var(--accent-color);
+}

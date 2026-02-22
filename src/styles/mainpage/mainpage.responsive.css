@@ -1,0 +1,361 @@
+/* =====================================================
+   RESPONSIVE DESIGN - TABLET
+   ===================================================== */
+
+@media (max-width: 1024px) {
+  .hero-carousel {
+    height: 350px;
+  }
+
+  .slide-content {
+    bottom: 3.5rem;
+    padding-left: calc(1.5rem + 44px + 0.8rem);
+    padding-right: calc(1.5rem + 44px + 0.8rem);
+    max-width: 450px;
+  }
+
+  .slide-title {
+    font-size: 1.9em;
+  }
+
+  .slide-description {
+    font-size: 0.95em;
+  }
+
+  .carousel-nav {
+    width: 44px;
+    height: 44px;
+  }
+
+  .bento-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .external-links-section {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .bento-card.external-link {
+    grid-column: span 2;
+  }
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN - MOBILE
+   ===================================================== */
+
+@media (max-width: 768px) {
+  /* Navbar Mobile */
+  .navbar {
+    width: calc(100% - 2rem);
+    padding: 0.75rem;
+    top: 1rem;
+  }
+
+  .navbar.scrolled {
+    top: 0.5rem;
+  }
+
+  /* Ensure body has top padding on mobile too */
+  body {
+    padding-top: 1rem;
+  }
+
+  .nav-container {
+    width: 100%;
+    padding: 0;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  /* Mobile Mega Menus - only customize mega-menu, let global.style.css handle nav-menu */
+  .mega-menu {
+    position: static;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: var(--primary-alpha-10);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    border-top: 1px solid var(--primary-alpha-15);
+    box-shadow: none;
+    border-radius: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+  }
+
+  body.dark-mode .mega-menu {
+    background: rgba(0, 113, 235, 0.05);
+  }
+
+  .mega-dropdown.active .mega-menu {
+    max-height: 800px;
+  }
+
+  .mega-menu-content {
+    flex-direction: column;
+    padding: 0.5rem 0;
+    gap: 0;
+  }
+
+  .mega-menu-title {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.65rem;
+    margin: 0.5rem 0 0.25rem 0;
+  }
+
+  .mega-menu-link {
+    padding: 0.75rem 1.5rem;
+    padding-left: 2.5rem;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .mega-menu-link:hover {
+    transform: none;
+    padding-left: 2.75rem;
+  }
+
+  /* Container & Content */
+  .home-container {
+    padding: 1rem;
+    padding-top: 100px;
+    padding-bottom: 2rem;
+  }
+
+  /* Hero Carousel Mobile */
+  .hero-carousel {
+    height: 280px;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .slide-content {
+    bottom: 3.5rem;
+    padding-left: calc(0.8rem + 40px + 0.6rem);
+    padding-right: calc(0.8rem + 40px + 0.6rem);
+    max-width: none;
+  }
+
+  .slide-badge {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.7em;
+    margin-bottom: 0.5rem;
+  }
+
+  .slide-title {
+    font-size: 1.3em;
+    margin-bottom: 0.4rem;
+  }
+
+  .slide-description {
+    font-size: 0.8em;
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
+  }
+
+  .slide-cta {
+    padding: 0.65rem 1.3rem;
+    font-size: 0.85em;
+  }
+
+  .carousel-nav {
+    width: 40px;
+    height: 40px;
+    background: var(--overlay-opaque);
+  }
+
+  .carousel-nav.prev {
+    left: 0.8rem;
+  }
+
+  .carousel-nav.next {
+    right: 0.8rem;
+  }
+
+  .carousel-nav i {
+    font-size: 1.4em;
+  }
+
+  .carousel-indicators {
+    bottom: 1rem;
+    gap: 0.5rem;
+  }
+
+  .indicator {
+    width: 8px;
+    height: 8px;
+  }
+
+  .indicator.active {
+    width: 24px;
+  }
+
+  /* Bento Grid Mobile */
+  .bento-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+
+  .external-links-section {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+
+  .bento-card.large,
+  .bento-card.medium,
+  .bento-card.small {
+    grid-column: span 1;
+  }
+
+  .bento-card.external-link {
+    grid-column: span 1;
+    grid-row: auto;
+  }
+
+  /* Dual Links Mobile */
+  .dual-links-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .dual-link-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 1rem;
+    gap: 0.8rem;
+  }
+
+  .dual-link-svg-icon {
+    width: 1.4em;
+    height: 1.4em;
+    flex-shrink: 0;
+  }
+
+  .dual-link-content {
+    align-items: flex-start;
+  }
+
+  .dual-link-desc {
+    text-align: left;
+  }
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN - SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 480px) {
+  .hero-carousel {
+    height: 260px;
+  }
+
+  .slide-content {
+    bottom: 3.2rem;
+    padding-left: calc(0.6rem + 36px + 0.5rem);
+    padding-right: calc(0.6rem + 36px + 0.5rem);
+  }
+
+  .slide-title {
+    font-size: 1.2em;
+    margin-bottom: 0.3rem;
+  }
+
+  .slide-description {
+    font-size: 0.75em;
+    margin-bottom: 0.6rem;
+  }
+
+  .slide-cta {
+    padding: 0.6rem 1.1rem;
+    font-size: 0.8em;
+  }
+
+  .carousel-nav {
+    width: 36px;
+    height: 36px;
+  }
+
+  .carousel-nav.prev {
+    left: 0.6rem;
+  }
+
+  .carousel-nav.next {
+    right: 0.6rem;
+  }
+}
+
+/* =====================================================
+   RESPONSIVE - INFO AND EVENTS & EVENT CAROUSEL
+   ===================================================== */
+
+@media (max-width: 768px) {
+  .info-and-events-section {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+
+  .patch-notes-container,
+  .event-carousel-container {
+    grid-column: span 1;
+  }
+
+  .event-carousel {
+    height: 160px;
+  }
+
+  .event-carousel-header h2 {
+    font-size: 1.2em;
+  }
+
+  .event-carousel-nav {
+    width: 36px;
+    height: 36px;
+  }
+
+  .event-carousel-nav.prev {
+    left: 0.5rem;
+  }
+
+  .event-carousel-nav.next {
+    right: 0.5rem;
+  }
+
+  .event-banner-overlay {
+    padding: 1rem;
+    font-size: 0.9em;
+  }
+
+  .event-banner img {
+    height: 80%;
+  }
+}
+
+@media (max-width: 480px) {
+  .event-carousel {
+    height: 140px;
+  }
+
+  .event-carousel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    /* gap: 0.5rem; */
+  }
+}
+
+/* =====================================================
+   ACCESSIBILITY
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+}

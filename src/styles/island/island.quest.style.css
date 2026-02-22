@@ -137,7 +137,7 @@
 }
 
 .quest-type-option.active .option-count {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--highlight-medium);
     color: #ffffff;
 }
 

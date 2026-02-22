@@ -1,3 +1,5 @@
+@import url('../theme.css');
+
 /* =============================================================================
    STORY VIEWER COMMON STYLES
    Shared styles for all story viewer pages (main story and world events)
@@ -109,7 +111,7 @@ body {
   top: 4.375rem; /* Below navbar */
   left: 50%;
   transform: translateX(-50%);
-  background-color: #e74c3c;
+  background-color: var(--danger-color);
   color: white;
   padding: 1rem 2rem;
   border-radius: 0.5rem;
@@ -722,7 +724,7 @@ body {
   font-weight: 600;
   text-align: center;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  background: rgba(0, 0, 0, 0.55);
+  background: var(--overlay-heavy);
   padding: 1.25rem 1.75rem;
   border-radius: 0.75rem;
   max-width: 80%;
@@ -1009,7 +1011,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--overlay-intense);
   z-index: 2000;
   display: flex;
   justify-content: center;

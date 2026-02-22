@@ -7,6 +7,8 @@
    that change with the site's light/dark theme, ensuring visual harmony.
    ========================================================================== */
 
+@import url('../theme.css');
+
 /* Theme variables with sensible defaults.  These values are overridden by
    global.style.css via the dark-mode class on body. */
 :root {
@@ -350,7 +352,7 @@ body.calendar-page {
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay-heavy);
   backdrop-filter: blur(4px);
   z-index: 997;
   opacity: 0;
@@ -771,7 +773,7 @@ body.calendar-page {
 }
 .badge[data-rarity="UR"] { color: #ff7ad9; border-color: #ff7ad9; }
 .badge[data-rarity="SSR"] { color: #ffbf47; border-color: #ffbf47; }
-.badge[data-rarity="SR"] { color: #ba68c8; border-color: #ba68c8; }
+.badge[data-rarity="SR"] { color: var(--rarity-sr); border-color: var(--rarity-sr); }
 .badge[data-rarity="R"]  { color: #7ad1ff; border-color: #7ad1ff; }
 .badge[data-rarity="N"]  { color: #c0c8d8; border-color: #c0c8d8; }
 
@@ -889,12 +891,12 @@ body.calendar-page {
 }
 
 .rarity-sr .event-icon {
-  border-color: #ba68c8;
+  border-color: var(--rarity-sr);
   box-shadow: 0 0 15px rgba(186, 104, 200, 0.7);
 }
 
 .rarity-ssr .event-icon {
-  border-color: #ffd54f;
+  border-color: var(--rarity-ssr);
   box-shadow: 0 0 18px rgba(255, 213, 79, 0.8);
 }
 

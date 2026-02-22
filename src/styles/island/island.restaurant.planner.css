@@ -150,7 +150,7 @@
     width: 32px;
     height: 32px;
     border: none;
-    background: rgba(0,0,0,0.2);
+    background: var(--overlay-medium);
     color: var(--island-text-secondary);
     display: flex;
     align-items: center;
@@ -275,7 +275,7 @@
     top: calc(100% + 6px);
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.95);
+    background: var(--overlay-opaque);
     color: #fff;
     padding: 0.4rem 0.6rem;
     border-radius: var(--island-radius-sm);
@@ -355,7 +355,7 @@
     color: var(--island-text-tertiary);
     font-weight: 800;
     line-height: 1;
-    background: rgba(0, 0, 0, 0.8);
+    background: var(--overlay-opaque);
     padding: 0.2rem 0.35rem;
     border-radius: 3px;
     z-index: 2;
@@ -374,8 +374,8 @@
     height: 100%;
     object-fit: contain;
     border-radius: 3px;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--overlay-strong);
+    border: 1px solid var(--highlight-soft);
 }
 
 .preset-empty-dash {
@@ -409,7 +409,7 @@
     color: var(--island-text-secondary);
     font-weight: 700;
     font-size: 0.9rem;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid var(--highlight-subtle);
     padding-bottom: 0.5rem;
 }
 
@@ -453,7 +453,7 @@
     padding: 0 0.2rem;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid var(--highlight-medium);
     z-index: 10;
 }
 
@@ -468,7 +468,7 @@
     bottom: calc(100% + 8px);
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.95);
+    background: var(--overlay-opaque);
     color: #fff;
     padding: 0.4rem 0.7rem;
     border-radius: var(--island-radius-sm);
@@ -496,7 +496,7 @@
     height: 0;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-top: 6px solid rgba(0, 0, 0, 0.95);
+    border-top: 6px solid var(--overlay-opaque);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s;
@@ -633,7 +633,7 @@
     bottom: calc(100% + 8px);
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.95);
+    background: var(--overlay-opaque);
     color: #fff;
     padding: 0.4rem 0.7rem;
     border-radius: var(--island-radius-sm);
@@ -661,7 +661,7 @@
     height: 0;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-top: 6px solid rgba(0, 0, 0, 0.95);
+    border-top: 6px solid var(--overlay-opaque);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s;

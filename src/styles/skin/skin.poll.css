@@ -61,9 +61,9 @@
   font-size: 0.9em;
   margin: 0;
   padding: 0.5rem 1rem;
-  background-color: #fcfcfc;
+  background-color: var(--bg-tertiary);
   border: 1px solid var(--border-color);
-  color: #000000;
+  color: var(--text-primary);
   border-radius: var(--radius-sm);
   display: inline-flex;
   align-items: center;
@@ -73,7 +73,7 @@
 }
 
 body.dark-mode .data-age-indicator {
-  background-color: rgba(47, 49, 54, 0.5);
+  background-color: var(--overlay-heavy);
   border: none;
   color: inherit;
 }
@@ -184,7 +184,7 @@ body.dark-mode .refresh-button-compact:disabled {
 }
 
 body.dark-mode #image-popup {
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: var(--overlay-opaque);
 }
 
 #image-popup.visible {
@@ -222,7 +222,7 @@ body.dark-mode #image-popup {
 }
 
 body.dark-mode .popup-skin-info {
-  background-color: rgba(47, 49, 54, 0.95);
+  background-color: var(--overlay-opaque);
   border: none;
   box-shadow: none;
 }
@@ -351,7 +351,7 @@ body.dark-mode .popup-skin-info {
 
 .leaderboard-score .total-votes {
   font-size: 0.75em;
-  color: #8e9297;
+  color: var(--text-dim);
 }
 
 /* --- Poll Container & Cards --- */
@@ -430,7 +430,7 @@ body.dark-mode .poll-box:hover {
 }
 
 .info-line strong {
-  color: #8e9297;
+  color: var(--text-dim);
 }
 
 .info-line:last-of-type {
@@ -577,7 +577,7 @@ body.dark-mode .poll-box:hover {
 
 /* --- Light-mode-only style additions (elements styled from skin.common.css in dark mode) --- */
 .vote-count-number {
-  color: #0071eb;
+  color: var(--primary-color);
 }
 
 .info-text {
@@ -593,11 +593,11 @@ body.dark-mode .poll-box:hover {
 }
 
 .stat-value {
-  color: #0071eb;
+  color: var(--primary-color);
 }
 
 .vote-date-label {
-  color: #666666;
+  color: var(--text-muted);
 }
 
 .vote-date {
@@ -605,11 +605,11 @@ body.dark-mode .poll-box:hover {
 }
 
 .toggle-stats-btn {
-  color: #0071eb;
+  color: var(--primary-color);
 }
 
 .toggle-stats-btn:hover {
-  color: #0056b3;
+  color: var(--primary-hover);
 }
 
 .toggle-stats-btn.active {
@@ -622,15 +622,15 @@ body.dark-mode .poll-box:hover {
 }
 
 .form-disclaimer {
-  color: #666666;
+  color: var(--text-muted);
 }
 
 .submit-vote-btn {
-  background-color: #0071eb;
+  background-color: var(--primary-color);
 }
 
 .submit-vote-btn:hover:not(:disabled) {
-  background-color: #0056b3;
+  background-color: var(--primary-hover);
 }
 
 .cancel-vote-btn {
@@ -687,7 +687,7 @@ body.dark-mode .poll-box:hover {
 }
 
 .notification-info {
-  background-color: #3498db;
+  background-color: var(--info-color);
 }
 
 .notification-success {

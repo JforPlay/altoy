@@ -1,0 +1,147 @@
+/* ==========================================================================
+   6. RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 1400px) {
+    .resource-layout {
+        grid-template-columns: 320px 1fr 350px;
+        gap: 1.25rem;
+    }
+
+    .recipe-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .resource-layout {
+        grid-template-columns: 300px 1fr;
+        gap: 1.5rem;
+    }
+
+    .dependency-chain {
+        display: none;
+    }
+
+    .material-list {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .resource-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .recipe-detail {
+        position: static;
+    }
+
+    .recipe-list {
+        max-height: 500px;
+    }
+
+    .resource-filter-controls {
+        grid-template-columns: 1fr;
+    }
+
+    /* Stack flow layout vertically on mobile */
+    .recipe-flow {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .flow-arrow {
+        flex-direction: row;
+        padding: 1rem 0;
+    }
+
+    .arrow-head {
+        transform: rotate(90deg);
+    }
+
+    .flow-stats {
+        flex-direction: row;
+    }
+
+    .material-list {
+        grid-template-columns: 1fr;
+    }
+
+    .recipe-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .recipe-detail {
+        padding: 1.5rem;
+    }
+
+    .recipe-detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .recipe-meta-badges {
+        width: 100%;
+    }
+
+    .recipe-flow {
+        padding: 1rem;
+    }
+
+    .manual-drop-section {
+        padding: 1rem;
+    }
+}
+
+/* Scrollbar styling now in island.style.css (unified) */
+/* Loading state styling now in island.style.css (unified) */
+
+/* Modal Responsive */
+@media (max-width: 768px) {
+    .recipe-modal {
+        padding: 1rem;
+    }
+
+    .modal-container {
+        max-height: 95vh;
+    }
+
+    .modal-header {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+    }
+
+    .modal-recipe-card {
+        flex-wrap: wrap;
+    }
+
+    .modal-select-btn {
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .modal-recipe-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* Responsive: Stack columns on smaller screens */
+@media (max-width: 768px) {
+    .cost-comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}

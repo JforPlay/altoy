@@ -1,3 +1,5 @@
+@import url('./theme.css');
+
 /* Global Toast Notification */
 .global-toast-container {
     position: fixed;
@@ -33,19 +35,19 @@
 }
 
 .global-toast.toast-success {
-    background: #2f3136;
-    border-left-color: #27ae60;
+    background: var(--surface-card);
+    border-left-color: var(--success-color);
 }
-.global-toast.toast-success i { color: #27ae60; }
+.global-toast.toast-success i { color: var(--success-color); }
 
 .global-toast.toast-error {
-    background: #2f3136;
-    border-left-color: #e74c3c;
+    background: var(--surface-card);
+    border-left-color: var(--danger-color);
 }
-.global-toast.toast-error i { color: #e74c3c; }
+.global-toast.toast-error i { color: var(--danger-color); }
 
 .global-toast.toast-info {
-    background: #2f3136;
-    border-left-color: #3498db;
+    background: var(--surface-card);
+    border-left-color: var(--info-color);
 }
-.global-toast.toast-info i { color: #3498db; }
+.global-toast.toast-info i { color: var(--info-color); }

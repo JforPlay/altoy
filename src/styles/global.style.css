@@ -122,12 +122,12 @@ body.dark-mode {
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid var(--highlight-medium);
   transition: border-color 0.2s ease;
 }
 
 .nav-logo:hover .nav-portrait {
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: var(--highlight-strong);
 }
 
 .nav-menu {
@@ -157,7 +157,7 @@ body.dark-mode {
 }
 
 .nav-links:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--highlight-soft);
   color: #ffffff;
 }
 
@@ -237,7 +237,7 @@ body.dark-mode {
 }
 
 .mega-menu-link:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--highlight-soft);
   transform: translateX(4px);
 }
 
@@ -286,7 +286,7 @@ body.dark-mode {
 
 /* Light Theme */
 .navbar.navbar-light {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+  background: linear-gradient(135deg, var(--card-bg) 0%, var(--section-bg) 100%);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
@@ -296,42 +296,42 @@ body.dark-mode {
 
 .navbar.navbar-light .nav-logo,
 .navbar.navbar-light .nav-links {
-  color: #2a2a2a;
+  color: var(--text-primary);
 }
 
 .navbar.navbar-light .nav-links:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--overlay-lightest);
   color: #1a1a1a;
 }
 
 .navbar.navbar-light .nav-portrait {
-  border-color: rgba(0, 0, 0, 0.1);
+  border-color: var(--overlay-light);
 }
 
 .navbar.navbar-light .nav-logo:hover .nav-portrait {
-  border-color: rgba(0, 0, 0, 0.3);
+  border-color: var(--overlay-strong);
 }
 
 .navbar.navbar-light .mega-menu {
-  background: #f5f5f5;
-  border-top: 2px solid #d0d0d0;
+  background: var(--surface-elevated);
+  border-top: 2px solid var(--border-color);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
 .navbar.navbar-light .mega-menu-title {
-  color: #666666;
+  color: var(--text-secondary);
 }
 
 .navbar.navbar-light .mega-menu-link {
-  color: #2a2a2a;
+  color: var(--text-primary);
 }
 
 .navbar.navbar-light .mega-menu-link:hover {
-  background: rgba(0, 0, 0, 0.06);
+  background: var(--overlay-lightest);
 }
 
 .navbar.navbar-light .mega-menu-link .material-symbols-outlined {
-  color: #666666;
+  color: var(--text-secondary);
 }
 
 .navbar.navbar-light .mega-menu-link:hover .material-symbols-outlined {
@@ -343,11 +343,11 @@ body.dark-mode {
 }
 
 .navbar.navbar-light .mega-menu-link small {
-  color: #707070;
+  color: var(--text-secondary);
 }
 
 .navbar.navbar-light .menu-icon {
-  color: #2a2a2a;
+  color: var(--text-primary);
 }
 
 /* Theme Toggle Button
@@ -360,8 +360,8 @@ body.dark-mode {
 }
 
 .theme-toggle {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--highlight-subtle);
+  border: 1px solid var(--highlight-soft);
   border-radius: 10px;
   padding: 0.5rem;
   cursor: pointer;
@@ -376,18 +376,18 @@ body.dark-mode {
 }
 
 .theme-toggle:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--highlight-soft);
   transform: scale(1.05);
 }
 
 .navbar.navbar-light .theme-toggle {
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.08);
-  color: #2a2a2a;
+  background: var(--overlay-lightest);
+  border-color: var(--overlay-lighter);
+  color: var(--text-primary);
 }
 
 .navbar.navbar-light .theme-toggle:hover {
-  background: rgba(0, 0, 0, 0.08);
+  background: var(--overlay-lighter);
 }
 
 /* Theme Icon Visibility */
@@ -429,7 +429,7 @@ body.dark-mode .theme-icon-moon {
 }
 
 .menu-icon:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--highlight-soft);
 }
 
 .menu-icon.active {
@@ -516,12 +516,12 @@ body.dark-mode .theme-icon-moon {
     width: 100%;
     box-shadow: none;
     border-top: none;
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--overlay-medium);
     margin-top: 0;
   }
 
   .navbar.navbar-light .mega-menu {
-    background: rgba(0, 0, 0, 0.03);
+    background: var(--overlay-lightest);
   }
 
   .mega-dropdown.active .mega-menu {
@@ -694,7 +694,7 @@ body.dark-mode .theme-icon-moon {
 #info-button:hover,
 .info-button:hover {
   color: #8ea1e1;
-  background: rgba(114, 137, 218, 0.1);
+  background: var(--primary-alpha-10);
   transform: scale(1.1) rotate(15deg);
 }
 
@@ -715,7 +715,7 @@ body.dark-mode .theme-icon-moon {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay-heavy);
   backdrop-filter: blur(8px);
   z-index: 1000;
   display: flex;
@@ -763,7 +763,7 @@ body.dark-mode .theme-icon-moon {
   align-items: center;
   padding: 1.5rem;
   border-bottom: 1px solid var(--surface-border);
-  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+  background: linear-gradient(135deg, var(--surface-elevated) 0%, var(--card-bg) 100%);
   border-radius: 1rem 1rem 0 0;
   position: sticky;
   top: 0;
@@ -817,11 +817,11 @@ body.dark-mode .theme-icon-moon {
 
 /* Dark Mode Info Popup Overrides */
 body.dark-mode .info-popup {
-  background: rgba(0, 0, 0, 0.8);
+  background: var(--overlay-opaque);
 }
 
 body.dark-mode .popup-header {
-  background: linear-gradient(135deg, #202225 0%, #2f3136 100%);
+  background: linear-gradient(135deg, var(--section-bg) 0%, var(--surface-card) 100%);
 }
 
 /* --- Dropdown Container (for Fuse.js search) ---
@@ -847,14 +847,14 @@ body.dark-mode .popup-header {
 }
 
 .dropdown-container input:hover {
-  border-color: #5c6067;
+  border-color: var(--text-secondary);
   background-color: var(--surface-card);
 }
 
 .dropdown-container input:focus {
   outline: none;
   border-color: var(--accent-blue);
-  box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.2);
+  box-shadow: 0 0 0 3px var(--primary-alpha-20);
   transform: translateY(-1px);
 }
 
@@ -922,7 +922,7 @@ body.dark-mode .popup-header {
 .dropdown-content a:hover {
   background: linear-gradient(
     90deg,
-    rgba(114, 137, 218, 0.2) 0%,
+    var(--primary-alpha-20) 0%,
     transparent 100%
   );
   color: #ffffff;
@@ -1106,8 +1106,8 @@ body:not(.dark-mode) .warning-box strong {
    ========================================================================== */
 
 .tooltip-toggle-button {
-  background: #e0e0e0;
-  color: #424242;
+  background: var(--surface-border);
+  color: var(--text-on-surface);
   border: none;
   width: 1.75rem;
   height: 1.75rem;
@@ -1121,8 +1121,8 @@ body:not(.dark-mode) .warning-box strong {
 }
 
 body.dark-mode .tooltip-toggle-button {
-  background: #616161;
-  color: #212121;
+  background: var(--surface-border);
+  color: var(--text-on-surface);
 }
 
 .tooltip-toggle-button .material-symbols-outlined {
@@ -1135,7 +1135,7 @@ body.dark-mode .tooltip-toggle-button {
 }
 
 body.dark-mode .tooltip-toggle-button:hover {
-  background: #757575;
+  background: var(--text-secondary);
 }
 
 .info-tooltip {

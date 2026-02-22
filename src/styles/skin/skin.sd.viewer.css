@@ -169,7 +169,7 @@ body {
 
 .container .animation-item:hover,
 .container .skin-item:hover {
-  background: #e9ecef;
+  background: var(--bg-primary);
 }
 
 .container .animation-item.active,

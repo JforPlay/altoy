@@ -1,0 +1,92 @@
+/* Responsive */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.8em;
+  }
+
+  .shipgirl-grid {
+    grid-template-columns: repeat(auto-fill, minmax(6.25rem, 1fr));
+  }
+
+  .shipgirl-grid.list-view .shipgirl-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.625rem;
+  }
+
+  .shipgirl-grid.list-view .left-info {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .shipgirl-grid.list-view .shipgirl-name {
+    white-space: normal;
+    word-break: keep-all; /* Prevent breaking Korean text and Roman numerals */
+    overflow-wrap: break-word; /* Only break if absolutely necessary */
+    width: 100%;
+  }
+
+  .shipgirl-grid.list-view .shipgirl-meta {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .detail-header {
+    flex-direction: column;
+  }
+
+  .detail-image img {
+    max-width: 100%;
+  }
+
+  .sp-weapon-header {
+    flex-direction: column;
+  }
+
+  .sp-weapon-icon-container {
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr); /* Enforce 2 columns on mobile */
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-title-container {
+    width: 100%;
+  }
+
+  header h1 {
+    font-size: 2em;
+  }
+
+  .stats-container {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .header-stats-row {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .map-browser-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
+
+  .construction-badge {
+    font-size: 0.65em;
+    padding: 0.125rem 0.375rem;
+  }
+
+}

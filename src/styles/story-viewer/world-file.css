@@ -92,7 +92,7 @@ header h1 {
 }
 
 .gallery-item:hover::before {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--overlay-strong);
 }
 
 .gallery-item.active {
@@ -105,7 +105,7 @@ header h1 {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--overlay-intense);
   color: white;
   padding: 8px;
   text-align: center;
@@ -119,7 +119,7 @@ header h1 {
 }
 
 .gallery-item:hover .gallery-item-name {
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: var(--overlay-opaque);
 }
 
 /* ======================================= */
