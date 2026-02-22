@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let filteredShipIds = [];
     const SAVE_KEY = 'shipgirlTrackerProgress';
     const GOAL_KEY = 'shipgirlTrackerSelectedGoal';
+    const FILTER_KEY = 'shipgirlTrackerFilters';
     const UNIQUE_ID_LENGTH = 9;
 
     // Cached DOM elements for performance
@@ -311,33 +312,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 const techId = `${groupId}00${level}`;
                 const techData = factionTechData[techId];
 
-                // pt field = required score to reach this level
                 if (techData && currentScore >= techData.pt) {
                     currentLevel = level;
                     activeTechData = techData;
                 } else {
-                    break; // Stop if score insufficient for next level
+                    break;
                 }
             }
 
-            // Only show factions with achieved levels
             if (activeTechData && currentLevel > 0) {
-                // Aggregate bonuses by attr_type
-                // add field format: [[ship_types], attr_type, value]
-                const bonusesByAttr = {};
+                // Build per-shipType per-attr bonus map
+                // add field format: [[ship_type_ids], attr_type, value]
+                // bonusByShipType: { shipTypeId: { attrType: value, ... }, ... }
+                const bonusByShipType = {};
 
                 activeTechData.add.forEach(([shipTypes, attrType, value]) => {
-                    if (!bonusesByAttr[attrType]) {
-                        bonusesByAttr[attrType] = {
-                            types: new Set(),
-                            value: 0
-                        };
-                    }
                     shipTypes.forEach(typeId => {
-                        const typeName = shipTypeData[typeId]?.name;
-                        if (typeName) bonusesByAttr[attrType].types.add(typeName);
+                        if (!bonusByShipType[typeId]) bonusByShipType[typeId] = {};
+                        bonusByShipType[typeId][attrType] = (bonusByShipType[typeId][attrType] || 0) + value;
                     });
-                    bonusesByAttr[attrType].value += value;
                 });
 
                 factionBonuses[groupId] = {
@@ -345,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     level: currentLevel,
                     score: currentScore,
                     nextLevelScore: factionTechData[`${groupId}00${currentLevel + 1}`]?.pt || null,
-                    bonuses: bonusesByAttr
+                    bonusByShipType
                 };
             }
         });
@@ -355,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Renders the faction tech bonuses display.
-     * The #faction-tech-container already exists in the score modal HTML.
+     * Layout: compact faction level cards at top, then one bonus table per faction.
      * @param {object} factionBonuses - Calculated faction bonuses.
      */
     function renderFactionTechBonuses(factionBonuses) {
@@ -365,75 +358,106 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = '';
         container.className = 'faction-tech-wrapper';
 
+        const factionEntries = Object.entries(factionBonuses).filter(([, d]) => d && d.level > 0);
+        if (factionEntries.length === 0) return;
+
         // Header
         const header = document.createElement('div');
         header.className = 'faction-tech-header';
         header.textContent = '진영 기술 보너스';
         container.appendChild(header);
 
-        // Grid container
-        const grid = document.createElement('div');
-        grid.className = 'faction-tech-grid';
+        // Compact faction level cards row
+        const levelRow = document.createElement('div');
+        levelRow.className = 'faction-level-row';
 
-        // Render each faction card
-        Object.entries(factionBonuses).forEach(([groupId, data]) => {
-            if (!data || data.level === 0) return;
-
+        factionEntries.forEach(([, data]) => {
             const card = document.createElement('div');
-            card.className = 'faction-tech-card';
+            card.className = 'faction-level-card';
 
-            // Card header
-            const cardHeader = document.createElement('div');
-            cardHeader.className = 'faction-tech-card-header';
+            const nameEl = document.createElement('span');
+            nameEl.className = 'faction-name';
+            nameEl.textContent = data.name;
 
-            const factionName = document.createElement('div');
-            factionName.className = 'faction-name';
-            factionName.textContent = data.name;
+            const levelEl = document.createElement('span');
+            levelEl.className = `faction-level${data.level === 9 ? ' max-level' : ''}`;
+            levelEl.textContent = `Lv ${data.level}`;
 
-            const levelBadge = document.createElement('div');
-            levelBadge.className = `faction-level${data.level === 9 ? ' max-level' : ''}`;
-            levelBadge.textContent = `Lv ${data.level}`;
+            card.appendChild(nameEl);
+            card.appendChild(levelEl);
 
-            cardHeader.appendChild(factionName);
-            cardHeader.appendChild(levelBadge);
-            card.appendChild(cardHeader);
-
-            // Progress to next level (if not max)
             if (data.nextLevelScore) {
-                const progress = document.createElement('div');
-                progress.className = 'faction-progress';
-                progress.textContent = `다음 레벨: ${data.score} / ${data.nextLevelScore}`;
-                card.appendChild(progress);
+                const progressEl = document.createElement('span');
+                progressEl.className = 'faction-progress';
+                progressEl.textContent = `${data.score} / ${data.nextLevelScore}`;
+                card.appendChild(progressEl);
+            } else {
+                const maxEl = document.createElement('span');
+                maxEl.className = 'faction-progress faction-max';
+                maxEl.textContent = 'MAX';
+                card.appendChild(maxEl);
             }
 
-            // Bonuses list
-            const bonusesList = document.createElement('div');
-            bonusesList.className = 'faction-bonuses';
+            levelRow.appendChild(card);
+        });
+        container.appendChild(levelRow);
 
-            Object.entries(data.bonuses).forEach(([attrType, bonusData]) => {
-                const bonusItem = document.createElement('div');
-                bonusItem.className = 'faction-bonus-item';
+        // Aggregate all factions into one combined table
+        const combined = {}; // { shipTypeId: { attrType: totalValue } }
+        const allAttrs = new Set();
 
-                const typesText = document.createElement('div');
-                typesText.className = 'bonus-types';
-                const attrName = attrTypeData[attrType]?.condition || `속성 ${attrType}`;
-                const shipTypesText = Array.from(bonusData.types).join(', ');
-                typesText.textContent = `${shipTypesText} ${attrName}`;
-
-                const valueText = document.createElement('div');
-                valueText.className = 'bonus-value';
-                valueText.textContent = `+${bonusData.value}`;
-
-                bonusItem.appendChild(typesText);
-                bonusItem.appendChild(valueText);
-                bonusesList.appendChild(bonusItem);
+        factionEntries.forEach(([, data]) => {
+            Object.entries(data.bonusByShipType).forEach(([typeId, attrs]) => {
+                if (!combined[typeId]) combined[typeId] = {};
+                Object.entries(attrs).forEach(([attrId, value]) => {
+                    combined[typeId][attrId] = (combined[typeId][attrId] || 0) + value;
+                    allAttrs.add(attrId);
+                });
             });
-
-            card.appendChild(bonusesList);
-            grid.appendChild(card);
         });
 
-        container.appendChild(grid);
+        if (Object.keys(combined).length === 0) return;
+
+        const sortedAttrs = Array.from(allAttrs).sort((a, b) => a - b);
+        const sortedShipTypes = Object.keys(combined).sort((a, b) => a - b);
+
+        const table = document.createElement('table');
+        table.className = 'score-table faction-bonus-table';
+
+        // Header: 함종 | attr columns
+        const thead = table.createTHead();
+        const headerRow = thead.insertRow();
+        const thShipType = document.createElement('th');
+        thShipType.textContent = '함종';
+        headerRow.appendChild(thShipType);
+        sortedAttrs.forEach(attrId => {
+            const th = document.createElement('th');
+            th.textContent = attrTypeData[attrId]?.condition || `속성 ${attrId}`;
+            headerRow.appendChild(th);
+        });
+
+        // Body: one row per ship type
+        const tbody = table.createTBody();
+        sortedShipTypes.forEach(typeId => {
+            const row = tbody.insertRow();
+            const typeCell = row.insertCell();
+            typeCell.className = 'header-col';
+            typeCell.textContent = shipTypeData[typeId]?.type_name || `타입 ${typeId}`;
+
+            sortedAttrs.forEach(attrId => {
+                const cell = row.insertCell();
+                const val = combined[typeId][attrId];
+                if (val) {
+                    cell.textContent = `+${val}`;
+                    cell.className = 'bonus-cell';
+                } else {
+                    cell.textContent = '-';
+                    cell.className = 'bonus-cell empty';
+                }
+            });
+        });
+
+        container.appendChild(table);
     }
 
     /**
@@ -476,22 +500,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Renders the stat tech score table.
-     * @param {object} scores - The calculated stat tech scores.
+     * Renders the stat tech score table (transposed: ship types as rows, attrs as columns).
+     * @param {object} scores - { attrId: { shipTypeId: { get, level } } }
      */
     function renderStatTechTable(scores) {
         const container = cachedElements.statTechContainer;
         if (!container) return;
         container.innerHTML = '';
 
-        const headers = new Set();
-        Object.values(scores).forEach(attrScores => Object.keys(attrScores).forEach(typeId => headers.add(typeId)));
-
-        if (headers.size === 0) {
-            return; // Don't render if there are no scores.
+        // Collect all ship types and attr types that have data
+        const shipTypeSet = new Set();
+        const attrSet = new Set();
+        for (const attrId in scores) {
+            for (const typeId in scores[attrId]) {
+                const s = scores[attrId][typeId];
+                if (s.get > 0 || s.level > 0) {
+                    shipTypeSet.add(typeId);
+                    attrSet.add(attrId);
+                }
+            }
         }
 
-        const sortedHeaders = Array.from(headers).sort((a, b) => a - b);
+        if (shipTypeSet.size === 0) return;
+
+        const sortedAttrs = Array.from(attrSet).sort((a, b) => a - b);
+        const sortedShipTypes = Array.from(shipTypeSet).sort((a, b) => a - b);
 
         const wrapper = document.createElement('div');
         wrapper.className = 'score-table-wrapper';
@@ -501,31 +534,40 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.appendChild(title);
 
         const table = document.createElement('table');
-        table.className = 'score-table';
+        table.className = 'score-table faction-bonus-table';
 
+        // Header: 함종 | attr columns
         const thead = table.createTHead();
         const headerRow = thead.insertRow();
-        headerRow.innerHTML = `<th>속성</th>${sortedHeaders.map(id => `<th>${shipTypeData[id]?.type_name || `Type ${id}`}</th>`).join('')}`;
+        const thType = document.createElement('th');
+        thType.textContent = '함종';
+        headerRow.appendChild(thType);
+        sortedAttrs.forEach(attrId => {
+            const th = document.createElement('th');
+            th.textContent = attrTypeData[attrId]?.condition || `스탯 ${attrId}`;
+            headerRow.appendChild(th);
+        });
 
+        // Body: one row per ship type
         const tbody = table.createTBody();
-        for (const attrId in scores) {
-            if (Object.keys(scores[attrId]).length > 0) {
-                const row = tbody.insertRow();
-                const cell1 = row.insertCell();
-                cell1.className = 'header-col';
-                cell1.textContent = attrTypeData[attrId]?.condition || `스탯 ${attrId}`;
+        sortedShipTypes.forEach(typeId => {
+            const row = tbody.insertRow();
+            const typeCell = row.insertCell();
+            typeCell.className = 'header-col';
+            typeCell.textContent = shipTypeData[typeId]?.type_name || `타입 ${typeId}`;
 
-                sortedHeaders.forEach(typeId => {
-                    const cell = row.insertCell();
-                    const cellScores = scores[attrId][typeId] || { get: 0, level: 0 };
-                    if (cellScores.get > 0 || cellScores.level > 0) {
-                        cell.textContent = `+${cellScores.get} / +${cellScores.level}`;
-                    } else {
-                        cell.textContent = '0';
-                    }
-                });
-            }
-        }
+            sortedAttrs.forEach(attrId => {
+                const cell = row.insertCell();
+                const s = scores[attrId]?.[typeId] || { get: 0, level: 0 };
+                if (s.get > 0 || s.level > 0) {
+                    cell.textContent = `+${s.get} / +${s.level}`;
+                    cell.className = 'bonus-cell';
+                } else {
+                    cell.textContent = '-';
+                    cell.className = 'bonus-cell empty';
+                }
+            });
+        });
 
         wrapper.appendChild(table);
         container.appendChild(wrapper);
@@ -1434,6 +1476,195 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // ========================================================================
+    //  FILTER CHIPS + PERSISTENCE
+    // ========================================================================
+
+    /**
+     * Updates the filter chips row below the toolbar to show active filters.
+     * Each chip is a removable pill that, when clicked, removes that filter.
+     */
+    function updateFilterChips() {
+        const chipsRow = document.getElementById('filter-chips');
+        if (!chipsRow) return;
+        chipsRow.innerHTML = '';
+        const chips = [];
+
+        // Rarity chips (only if NOT all selected)
+        const allRarityChips = document.querySelectorAll('#rarity-filter .st-rarity-chip');
+        const activeRarityChips = document.querySelectorAll('#rarity-filter .st-rarity-chip.active');
+        if (activeRarityChips.length > 0 && activeRarityChips.length < allRarityChips.length) {
+            activeRarityChips.forEach(c => chips.push({ label: c.value, type: 'rarity', value: c.value }));
+        }
+
+        // Nationality chips (only if specific ones selected, not "all")
+        const natAll = document.querySelector('#nationality-filter [data-filter-type="all"]');
+        if (natAll && !natAll.checked) {
+            document.querySelectorAll('#nationality-filter input[data-filter-type="individual"]:checked').forEach(cb => {
+                const label = cb.nextElementSibling?.textContent?.trim() || cb.value;
+                chips.push({ label, type: 'nationality', value: cb.value });
+            });
+        }
+
+        // Type chips
+        const typeAll = document.querySelector('#type-filter [data-filter-type="all"]');
+        if (typeAll && !typeAll.checked) {
+            document.querySelectorAll('#type-filter input[data-filter-type="individual"]:checked').forEach(cb => {
+                const label = cb.nextElementSibling?.textContent?.trim() || cb.value;
+                chips.push({ label, type: 'type', value: cb.value });
+            });
+        }
+
+        // Progress chip
+        const progressEl = document.getElementById('progress-filter');
+        if (progressEl && progressEl.value !== 'all') {
+            const text = progressEl.value === 'checked' ? '체크됨' : '미체크';
+            chips.push({ label: text, type: 'progress', value: progressEl.value });
+        }
+
+        // Get-attr chip
+        const getAttrEl = document.getElementById('get-attr-filter');
+        if (getAttrEl && getAttrEl.value !== 'all') {
+            const selectedOption = getAttrEl.options[getAttrEl.selectedIndex];
+            chips.push({ label: '입수: ' + selectedOption.textContent, type: 'get-attr', value: getAttrEl.value });
+        }
+
+        // Level-attr chip
+        const levelAttrEl = document.getElementById('level-attr-filter');
+        if (levelAttrEl && levelAttrEl.value !== 'all') {
+            const selectedOption = levelAttrEl.options[levelAttrEl.selectedIndex];
+            chips.push({ label: '120: ' + selectedOption.textContent, type: 'level-attr', value: levelAttrEl.value });
+        }
+
+        // Search chip
+        const searchVal = document.getElementById('search-bar')?.value?.trim();
+        if (searchVal) {
+            chips.push({ label: `"${searchVal}"`, type: 'search', value: searchVal });
+        }
+
+        // Update badge + render
+        const badge = document.getElementById('filter-badge');
+        if (chips.length === 0) {
+            chipsRow.classList.add('hidden');
+            if (badge) badge.classList.add('hidden');
+            return;
+        }
+
+        chipsRow.classList.remove('hidden');
+        if (badge) {
+            badge.textContent = chips.length;
+            badge.classList.remove('hidden');
+        }
+
+        const fragment = document.createDocumentFragment();
+        chips.forEach(chip => {
+            const el = document.createElement('button');
+            el.className = 'st-chip';
+            el.innerHTML = `${chip.label} <span class="material-symbols-outlined" style="font-size:14px">close</span>`;
+            el.addEventListener('click', () => removeFilterChip(chip));
+            fragment.appendChild(el);
+        });
+        chipsRow.appendChild(fragment);
+    }
+
+    /**
+     * Removes a single filter chip by resetting the corresponding filter control,
+     * then re-applies all filters.
+     * @param {object} chip - The chip descriptor { label, type, value }.
+     */
+    function removeFilterChip(chip) {
+        if (chip.type === 'rarity') {
+            const rarityChip = document.querySelector(`#rarity-filter .st-rarity-chip[value="${chip.value}"]`);
+            if (rarityChip) rarityChip.classList.remove('active');
+        } else if (chip.type === 'nationality') {
+            const cb = document.querySelector(`#nationality-filter input[value="${chip.value}"][data-filter-type="individual"]`);
+            if (cb) { cb.checked = false; handleFilterCheckboxLogic(cb); }
+        } else if (chip.type === 'type') {
+            const cb = document.querySelector(`#type-filter input[value="${chip.value}"][data-filter-type="individual"]`);
+            if (cb) { cb.checked = false; handleFilterCheckboxLogic(cb); }
+        } else if (chip.type === 'progress') {
+            const el = document.getElementById('progress-filter');
+            if (el) el.value = 'all';
+        } else if (chip.type === 'get-attr') {
+            const el = document.getElementById('get-attr-filter');
+            if (el) el.value = 'all';
+        } else if (chip.type === 'level-attr') {
+            const el = document.getElementById('level-attr-filter');
+            if (el) el.value = 'all';
+        } else if (chip.type === 'search') {
+            document.getElementById('search-bar').value = '';
+        }
+        applyFilters();
+    }
+
+    /**
+     * Saves current filter selections to localStorage for persistence across page reloads.
+     */
+    function saveFiltersToStorage() {
+        const filters = {
+            rarities: Array.from(document.querySelectorAll('#rarity-filter .st-rarity-chip.active')).map(c => c.value),
+            nationalities: Array.from(document.querySelectorAll('#nationality-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value),
+            types: Array.from(document.querySelectorAll('#type-filter input[data-filter-type="individual"]:checked')).map(cb => cb.value),
+            progress: document.getElementById('progress-filter')?.value || 'all',
+            getAttr: document.getElementById('get-attr-filter')?.value || 'all',
+            levelAttr: document.getElementById('level-attr-filter')?.value || 'all',
+        };
+        setStorageItem(FILTER_KEY, JSON.stringify(filters));
+    }
+
+    /**
+     * Loads saved filter selections from localStorage and applies them to filter controls.
+     * Should be called after populateDrawerFilters() and before applyFilters().
+     */
+    function loadFiltersFromStorage() {
+        const saved = getStorageItem(FILTER_KEY, null);
+        if (!saved) return;
+        try {
+            const filters = JSON.parse(saved);
+
+            // Apply rarity
+            if (filters.rarities && Array.isArray(filters.rarities)) {
+                document.querySelectorAll('#rarity-filter .st-rarity-chip').forEach(chip => {
+                    if (filters.rarities.includes(chip.value)) {
+                        chip.classList.add('active');
+                    } else {
+                        chip.classList.remove('active');
+                    }
+                });
+            }
+
+            // Apply nationality
+            if (filters.nationalities?.length > 0) {
+                const natAll = document.querySelector('#nationality-filter [data-filter-type="all"]');
+                if (natAll) natAll.checked = false;
+                filters.nationalities.forEach(val => {
+                    const cb = document.querySelector(`#nationality-filter input[value="${val}"][data-filter-type="individual"]`);
+                    if (cb) cb.checked = true;
+                });
+            }
+
+            // Apply types
+            if (filters.types?.length > 0) {
+                const typeAll = document.querySelector('#type-filter [data-filter-type="all"]');
+                if (typeAll) typeAll.checked = false;
+                filters.types.forEach(val => {
+                    const cb = document.querySelector(`#type-filter input[value="${val}"][data-filter-type="individual"]`);
+                    if (cb) cb.checked = true;
+                });
+            }
+
+            // Apply dropdowns
+            const progressEl = document.getElementById('progress-filter');
+            if (progressEl && filters.progress) progressEl.value = filters.progress;
+            const getAttrEl = document.getElementById('get-attr-filter');
+            if (getAttrEl && filters.getAttr) getAttrEl.value = filters.getAttr;
+            const levelAttrEl = document.getElementById('level-attr-filter');
+            if (levelAttrEl && filters.levelAttr) levelAttrEl.value = filters.levelAttr;
+        } catch (e) {
+            console.error('Failed to load saved filters:', e);
+        }
+    }
+
     /**
      * Applies all active filters to the ship list.
      */
@@ -1479,6 +1710,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         renderVisibleCards();
         calculateAndDisplayScores();
+        updateFilterChips();
+        saveFiltersToStorage();
     }
 
     /**
@@ -1608,8 +1841,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             setupConfirmationModal();
 
-            // Populate filters in drawer + render cards
+            // Populate filters in drawer, restore saved state, then render
             populateDrawerFilters();
+            loadFiltersFromStorage();
             renderAllCards();
             applyFilters();
 

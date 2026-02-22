@@ -14,10 +14,57 @@ import '../../styles/shipgirl/shipgirl-tracker.goal.css';
 ---
 
 <Layout title="벽람 점수 트래커">
+    <!-- Page Header -->
+    <header class="st-page-header">
+        <div class="header-top">
+            <div class="header-title-container">
+                <span class="material-symbols-outlined">calculate</span>
+                <h1>기술/진영점수 계산기</h1>
+                <button class="info-button" id="info-button" title="사용법 보기">
+                    <i class="fas fa-info-circle"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Info Popup -->
+    <div id="info-popup" class="info-popup" role="dialog" aria-labelledby="popup-title" aria-hidden="true">
+        <div class="info-popup-content">
+            <div class="popup-header">
+                <h2 id="popup-title">초간단 설명서</h2>
+                <button class="close-popup-btn" aria-label="닫기">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="popup-body">
+                <div class="info-step">
+                    <div class="info-icon"><i class="fas fa-check-square"></i></div>
+                    <div class="info-content">
+                        <h3>보유 체크</h3>
+                        <p>함순이 카드를 클릭해서 보유 여부를 체크할 수 있습니다. 체크한 함순이는 기술/진영 점수에 반영됩니다.</p>
+                    </div>
+                </div>
+                <div class="info-step">
+                    <div class="info-icon"><i class="fas fa-filter"></i></div>
+                    <div class="info-content">
+                        <h3>필터</h3>
+                        <p>상단 툴바의 <strong>필터</strong> 버튼으로 등급, 진영, 함종 등 다양한 조건으로 필터링할 수 있습니다.</p>
+                    </div>
+                </div>
+                <div class="info-step">
+                    <div class="info-icon"><i class="fas fa-chart-bar"></i></div>
+                    <div class="info-content">
+                        <h3>점수판 & 목표</h3>
+                        <p><strong>점수판</strong>에서 현재 기술/진영 점수를 확인하고, <strong>목표</strong>에서 달성 현황을 추적할 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toolbar -->
     <div class="st-toolbar">
         <div class="st-toolbar-left">
-            <h1 class="st-title">기술/진영점수 계산기</h1>
             <div class="st-search-wrapper">
                 <span class="material-symbols-outlined st-search-icon">search</span>
                 <input type="text" id="search-bar" class="st-search-input" placeholder="이름으로 검색..." autocomplete="off">
@@ -96,10 +143,18 @@ import '../../styles/shipgirl/shipgirl-tracker.goal.css';
     <!-- Confirmation Modal -->
     <div class="st-modal hidden" id="confirmation-modal">
         <div class="st-modal-content st-modal-sm">
-            <p id="modal-text">Are you sure?</p>
-            <div class="modal-actions">
-                <button id="modal-confirm-btn">당장 진행시켜</button>
-                <button id="modal-cancel-btn">잘못 눌렀어요</button>
+            <div class="st-modal-header">
+                <h2>확인</h2>
+                <button class="st-modal-close modal-close" aria-label="닫기">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="st-modal-body">
+                <p id="modal-text" class="confirm-message"></p>
+                <div class="modal-actions">
+                    <button id="modal-confirm-btn">당장 진행시켜</button>
+                    <button id="modal-cancel-btn">잘못 눌렀어요</button>
+                </div>
             </div>
         </div>
     </div>

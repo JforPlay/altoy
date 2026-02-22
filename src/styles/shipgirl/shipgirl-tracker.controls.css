@@ -42,27 +42,42 @@
   flex-shrink: 0;
 }
 
-/* --- Confirmation Modal Actions --- */
+/* --- Confirmation Modal --- */
+
+.confirm-message {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  text-align: center;
+  padding: var(--spacing-sm) 0;
+}
 
 .modal-actions {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 12px;
   margin-top: var(--spacing-md);
 }
 
 .modal-actions button {
   border: none;
-  padding: 12px 28px;
+  padding: 10px 24px;
   border-radius: var(--radius-md);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color var(--transition-fast), transform 0.1s;
+  transition: background-color var(--transition-fast), transform 0.1s, box-shadow var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.modal-actions button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .modal-actions button:active {
-  transform: scale(0.98);
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 #modal-confirm-btn {

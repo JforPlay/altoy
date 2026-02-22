@@ -93,7 +93,113 @@
   background-color: var(--section-bg);
 }
 
+/* --- Faction Tech Section --- */
+
+.faction-tech-wrapper {
+  margin-top: var(--spacing-md);
+}
+
+.faction-tech-header {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+/* Compact level cards row */
+
+.faction-level-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: var(--spacing-md);
+}
+
+.faction-level-card {
+  flex: 1 1 0;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
+  background: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast);
+}
+
+.faction-level-card:hover {
+  border-color: var(--primary-color);
+}
+
+.faction-level-card .faction-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.faction-level-card .faction-level {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--primary-color);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.faction-level-card .faction-level.max-level {
+  background: linear-gradient(135deg, #f39c12, #e74c3c);
+}
+
+.faction-level-card .faction-progress {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.faction-level-card .faction-max {
+  color: #f39c12;
+  font-weight: 700;
+}
+
+/* Bonus table (shared by faction tech + stat tech) */
+
+.faction-bonus-table {
+  font-size: 0.8rem;
+}
+
+.faction-bonus-table th {
+  font-size: 0.75rem;
+  padding: 6px 8px;
+  white-space: nowrap;
+}
+
+.faction-bonus-table td {
+  padding: 5px 8px;
+  font-size: 0.8rem;
+}
+
+.faction-bonus-table .bonus-cell {
+  font-weight: 600;
+  color: var(--success-color);
+}
+
+.faction-bonus-table .bonus-cell.empty {
+  color: var(--text-secondary);
+  opacity: 0.4;
+  font-weight: 400;
+}
+
 /* --- Dark Mode Overrides --- */
+
+body.dark-mode .faction-level-card {
+  background: var(--highlight-subtle);
+}
 
 body.dark-mode .score-table-wrapper {
   background: linear-gradient(

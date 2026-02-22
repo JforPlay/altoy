@@ -22,6 +22,50 @@ body {
   min-height: 100vh;
 }
 
+/* --- Page Header --- */
+
+.st-page-header {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.625rem;
+  margin: var(--spacing-md) auto 0;
+  max-width: 1400px;
+  width: calc(100% - 2rem);
+  box-shadow: 0 4px 6px var(--shadow-color);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.st-page-header .header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.9375rem;
+}
+
+.st-page-header .header-title-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.st-page-header .header-title-container .material-symbols-outlined {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.st-page-header h1 {
+  color: var(--primary-color);
+  margin: 0;
+  font-size: 2em;
+  transition: color 0.3s ease;
+}
+
+.st-page-header .header-title-container .info-button {
+  font-size: 1.5em;
+  margin-left: 0.5rem;
+}
+
 /* --- Toolbar --- */
 
 .st-toolbar {
@@ -32,7 +76,7 @@ body {
   background: var(--card-bg);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
-  margin: var(--spacing-md) auto;
+  margin: var(--spacing-xs) auto;
   max-width: 1400px;
   width: calc(100% - 2rem);
   flex-wrap: wrap;
@@ -54,14 +98,6 @@ body {
 .st-toolbar-right {
   display: flex;
   gap: var(--spacing-xs);
-}
-
-.st-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  white-space: nowrap;
-  letter-spacing: -0.3px;
 }
 
 /* --- Search --- */
@@ -212,10 +248,29 @@ body {
   overflow-y: auto;
   border: 1px solid var(--border-color);
   width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.st-modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.st-modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.st-modal-content::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.st-modal-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
 }
 
 .st-modal-lg {
-  max-width: 700px;
+  max-width: 900px;
 }
 
 .st-modal-md {
