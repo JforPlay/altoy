@@ -1,4 +1,4 @@
-import { debounce, fetchJSON, getStorageItem, setStorageItem } from '../utils.js';
+import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 document.addEventListener('DOMContentLoaded', () => {
     let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData;
@@ -12,13 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fleetTechContainer: null,
         statTechContainer: null,
         shipListContainer: null,
-        filterBar: null,
-        searchBar: null,
-        searchDropdown: null,
-        confirmationModal: null,
-        modalText: null,
-        modalConfirmBtn: null,
-        modalCancelBtn: null
+        filterDrawerBody: null
     };
 
     /**
@@ -28,11 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cachedElements.fleetTechContainer = document.getElementById('fleet-tech-container');
         cachedElements.statTechContainer = document.getElementById('stat-tech-container');
         cachedElements.shipListContainer = document.getElementById('ship-list-container');
-        cachedElements.filterBar = document.getElementById('filter-bar');
-        cachedElements.confirmationModal = document.getElementById('confirmation-modal');
-        cachedElements.modalText = document.getElementById('modal-text');
-        cachedElements.modalConfirmBtn = document.getElementById('modal-confirm-btn');
-        cachedElements.modalCancelBtn = document.getElementById('modal-cancel-btn');
+        cachedElements.filterDrawerBody = document.getElementById('filter-drawer-body');
     }
 
     // Use utilities from external file
@@ -83,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createShipCard(ship, shipId) {
         const card = document.createElement('div');
         card.className = 'ship-card';
-    
+
         // Store ship data as data attributes on the card element for easy access.
         card.dataset.shipId = shipId;
         card.dataset.nationality = ship.nationality;
@@ -93,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.dataset.ptGet = ship.pt_get ?? 0;
         card.dataset.ptLevel = ship.pt_level ?? 0;
         card.dataset.ptUpgrade = ship.pt_upgrage ?? 0;
-    
+
         // Add additional attributes if they exist.
         if (ship.add_get_attr) {
             card.dataset.addGetAttr = ship.add_get_attr;
@@ -105,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.dataset.addLevelShiptype = ship.add_level_shiptype.join(',');
             card.dataset.addLevelValue = ship.add_level_value;
         }
-    
+
         // Create and append the ship's icon.
         const icon = document.createElement('img');
         icon.src = ship.icon;
@@ -113,17 +103,17 @@ document.addEventListener('DOMContentLoaded', () => {
         icon.className = 'ship-icon';
         icon.loading = 'lazy'; // Lazy load images for better performance.
         card.appendChild(icon);
-    
+
         // Create and append the ship's name.
         const name = document.createElement('div');
         name.className = 'ship-name';
         name.textContent = ship.name;
         card.appendChild(name);
-    
+
         // Create the info section for nationality, type, and rarity.
         const infoSection = document.createElement('div');
         infoSection.className = 'info-section';
-    
+
         const nationInfo = nationalityData[ship.nationality];
         if (nationInfo) {
             const infoItem = document.createElement('div');
@@ -132,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             infoItem.innerHTML = `<img src="${nationInfo.image}" alt="${nationInfo.name}" class="info-icon"><span>${nationInfo.code || nationInfo.name}</span>`;
             infoSection.appendChild(infoItem);
         }
-    
+
         const primaryTypeInfo = shipTypeData[ship.type];
         if (primaryTypeInfo) {
             const infoItem = document.createElement('div');
@@ -141,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             infoItem.innerHTML = `<img src="${primaryTypeInfo.icon}" alt="${primaryTypeInfo.type_name}" class="info-icon"><span>${primaryTypeInfo.type_name}</span>`;
             infoSection.appendChild(infoItem);
         }
-    
+
         if (ship.rarity) {
             const infoItem = document.createElement('div');
             infoItem.className = 'info-item';
@@ -152,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             infoSection.appendChild(infoItem);
         }
         card.appendChild(infoSection);
-    
+
         // Create and append the description section if it exists.
         if (ship.description && ship.description.length > 0) {
             const descriptionSection = document.createElement('div');
@@ -171,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
             descriptionSection.appendChild(list);
             card.appendChild(descriptionSection);
         }
-    
+
         // Create the tracker section with checkboxes for progress.
         const trackerSection = document.createElement('div');
         trackerSection.className = 'tracker-section';
@@ -181,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (trackerSection.hasChildNodes()) {
             card.appendChild(trackerSection);
         }
-    
+
         return card;
     }
 
@@ -365,23 +355,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Renders the faction tech bonuses display.
+     * The #faction-tech-container already exists in the score modal HTML.
      * @param {object} factionBonuses - Calculated faction bonuses.
      */
     function renderFactionTechBonuses(factionBonuses) {
-        let container = document.getElementById('faction-tech-container');
-
-        // Create container if it doesn't exist
-        if (!container) {
-            const scoreArea = document.getElementById('score-display-area');
-            if (!scoreArea) return;
-
-            container = document.createElement('div');
-            container.id = 'faction-tech-container';
-            container.className = 'faction-tech-wrapper';
-            scoreArea.parentNode.insertBefore(container, scoreArea.nextSibling);
-        }
+        const container = document.getElementById('faction-tech-container');
+        if (!container) return;
 
         container.innerHTML = '';
+        container.className = 'faction-tech-wrapper';
 
         // Header
         const header = document.createElement('div');
@@ -566,39 +548,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Renders the goal tracker panel with hybrid selection UI.
+     * Renders the goal tracker content inside #goal-modal-body.
      */
     function renderGoalTracker() {
-        const mainElement = document.querySelector('main');
-        const filterBar = document.getElementById('filter-bar');
+        const goalModalBody = document.getElementById('goal-modal-body');
+        if (!goalModalBody) return;
 
-        // Remove existing goal tracker if present
-        const existingToggle = document.getElementById('goal-tracker-toggle-btn');
-        const existingTracker = document.getElementById('goal-tracker-panel');
-        if (existingToggle) existingToggle.remove();
-        if (existingTracker) existingTracker.remove();
-
-        // Create toggle button
-        const toggleButton = document.createElement('button');
-        toggleButton.id = 'goal-tracker-toggle-btn';
-        const toggleText = document.createElement('span');
-        toggleText.textContent = '목표 달성 현황 보기';
-        const toggleChevron = document.createElement('span');
-        toggleChevron.className = 'chevron';
-        toggleChevron.textContent = '▼';
-        toggleButton.appendChild(toggleText);
-        toggleButton.appendChild(toggleChevron);
-
-        // Create goal tracker container
-        const goalPanel = document.createElement('div');
-        goalPanel.id = 'goal-tracker-panel';
-        goalPanel.className = 'goal-tracker-panel collapsed';
-
-        toggleButton.addEventListener('click', () => {
-            const isCollapsed = goalPanel.classList.toggle('collapsed');
-            toggleText.textContent = isCollapsed ? '목표 달성 현황 보기' : '목표 달성 현황 숨기기';
-            toggleChevron.textContent = isCollapsed ? '▼' : '▲';
-        });
+        goalModalBody.innerHTML = '';
 
         // Create selection controls container
         const selectionContainer = document.createElement('div');
@@ -669,14 +625,9 @@ document.addEventListener('DOMContentLoaded', () => {
         detailContainer.id = 'goal-detail-container';
         detailContainer.className = 'goal-detail-container';
 
-        // Assemble panel
-        goalPanel.appendChild(selectionContainer);
-        goalPanel.appendChild(detailContainer);
-
-        // Insert into DOM after filter bar (filter bar should be sticky at top)
-        const shipListContainer = document.getElementById('ship-list-container');
-        mainElement.insertBefore(toggleButton, shipListContainer);
-        mainElement.insertBefore(goalPanel, shipListContainer);
+        // Assemble into modal body
+        goalModalBody.appendChild(selectionContainer);
+        goalModalBody.appendChild(detailContainer);
 
         // Initial render
         updateQuickButtons();
@@ -993,67 +944,182 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     }
 
+    // ========================================================================
+    //  DRAWER: open / close
+    // ========================================================================
+
+    function openDrawer() {
+        const drawer = document.getElementById('filter-drawer');
+        const backdrop = document.getElementById('filter-drawer-backdrop');
+        backdrop.classList.remove('hidden');
+        drawer.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+        const drawer = document.getElementById('filter-drawer');
+        const backdrop = document.getElementById('filter-drawer-backdrop');
+        drawer.classList.remove('open');
+        backdrop.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    // ========================================================================
+    //  FILTER DRAWER: populate controls
+    // ========================================================================
+
+    // Debounced filter apply (used throughout drawer)
+    const debouncedApplyFilters = debounce(applyFilters, 150);
+
     /**
-     * Populates the filter bar with all filter options.
+     * Populates the filter drawer body with all filter controls.
      */
-    function populateFilters() {
-        const filterBar = document.getElementById('filter-bar');
-        filterBar.innerHTML = '';
+    function populateDrawerFilters() {
+        const drawerBody = cachedElements.filterDrawerBody;
+        if (!drawerBody) return;
+        drawerBody.innerHTML = '';
 
-        const topFiltersWrapper = document.createElement('div');
-        topFiltersWrapper.className = 'top-filters-wrapper';
-        filterBar.appendChild(topFiltersWrapper);
+        // --- Rarity section ---
+        const raritySection = document.createElement('div');
+        raritySection.className = 'st-drawer-section';
+        raritySection.innerHTML = '<h3>등급</h3>';
 
-        const searchContainer = document.createElement('div');
-        searchContainer.className = 'search-container';
-        const searchLabel = document.createElement('label');
-        searchLabel.htmlFor = 'search-bar';
-        searchLabel.className = 'filter-group-label';
-        searchLabel.textContent = '함순이 검색';
-        searchContainer.appendChild(searchLabel);
+        const rarityChips = document.createElement('div');
+        rarityChips.className = 'st-rarity-chips';
+        rarityChips.id = 'rarity-filter';
 
-        const dropdownContainer = document.createElement('div');
-        dropdownContainer.className = 'dropdown-container';
-        const searchInput = document.createElement('input');
-        searchInput.type = 'text';
-        searchInput.id = 'search-bar';
-        searchInput.placeholder = '이름으로 검색...';
-        searchInput.autocomplete = 'off';
-        dropdownContainer.appendChild(searchInput);
+        const rarities = [...new Set(Object.values(fullShipData).map(s => s.rarity).filter(Boolean))];
+        const rarityOrder = ['UR', 'SSR', 'SR', 'R', 'N'];
+        rarities.sort((a, b) => rarityOrder.indexOf(a) - rarityOrder.indexOf(b));
 
-        const searchDropdown = document.createElement('div');
-        searchDropdown.className = 'dropdown-content';
-        searchDropdown.id = 'search-dropdown';
-        dropdownContainer.appendChild(searchDropdown);
-        searchContainer.appendChild(dropdownContainer);
-        topFiltersWrapper.appendChild(searchContainer);
-
-        const allShipNames = Object.values(fullShipData).map(ship => ship.name).filter(Boolean).sort((a, b) => a.localeCompare(b));
-        allShipNames.forEach(name => {
-            const a = document.createElement('a');
-            a.textContent = name;
-            a.addEventListener('click', () => {
-                searchInput.value = name;
-                searchDropdown.style.display = 'none';
-                applyFilters();
+        rarities.forEach(r => {
+            const chip = document.createElement('button');
+            chip.className = 'st-rarity-chip active';
+            chip.dataset.rarity = r.toLowerCase();
+            chip.dataset.filterType = 'individual';
+            chip.value = r;
+            chip.textContent = r;
+            chip.addEventListener('click', () => {
+                chip.classList.toggle('active');
+                debouncedApplyFilters();
             });
-            searchDropdown.appendChild(a);
+            rarityChips.appendChild(chip);
         });
 
-        const dropdownGroupWrapper = document.createElement('div');
-        dropdownGroupWrapper.className = 'dropdown-group-wrapper';
-        const dropdownGroupLabel = document.createElement('label');
-        dropdownGroupLabel.className = 'filter-group-label';
-        dropdownGroupLabel.textContent = '보기 옵션';
-        dropdownGroupWrapper.appendChild(dropdownGroupLabel);
+        raritySection.appendChild(rarityChips);
+        drawerBody.appendChild(raritySection);
+
+        // --- Nationality section ---
+        const nationalitySection = document.createElement('div');
+        nationalitySection.className = 'st-drawer-section';
+        nationalitySection.innerHTML = '<h3>진영</h3>';
+
+        const nationalityGroup = document.createElement('div');
+        nationalityGroup.id = 'nationality-filter';
+        nationalityGroup.className = 'filter-group';
+
+        const natWrapper = document.createElement('div');
+        natWrapper.className = 'filter-controls-wrapper';
+
+        // "All" toggle
+        const natAllId = 'nationality-filter-all';
+        const natAllItem = document.createElement('div');
+        natAllItem.className = 'checkbox-filter-item';
+        natAllItem.innerHTML = `<input type="checkbox" id="${natAllId}" value="all" data-filter-type="all" checked><label for="${natAllId}">전체</label>`;
+        natWrapper.appendChild(natAllItem);
+
+        // Individual nationality checkboxes
+        const natItems = Object.values(nationalityData);
+        natItems.sort((a, b) => a.id - b.id);
+        natItems.forEach(item => {
+            if (!item.id || !item.name) return;
+            const uniqueId = `nationality-filter-${item.id}`;
+            const checkboxItem = document.createElement('div');
+            checkboxItem.className = 'checkbox-filter-item';
+            const iconHTML = item.image ? `<img src="${item.image}" class="filter-icon">` : '';
+            checkboxItem.innerHTML = `<input type="checkbox" id="${uniqueId}" value="${item.id}" data-filter-type="individual"><label for="${uniqueId}">${iconHTML} ${item.name}</label>`;
+            natWrapper.appendChild(checkboxItem);
+        });
+
+        nationalityGroup.appendChild(natWrapper);
+        nationalitySection.appendChild(nationalityGroup);
+        drawerBody.appendChild(nationalitySection);
+
+        // --- Type section ---
+        const typeSection = document.createElement('div');
+        typeSection.className = 'st-drawer-section';
+        typeSection.innerHTML = '<h3>함종</h3>';
+
+        const typeGroup = document.createElement('div');
+        typeGroup.id = 'type-filter';
+        typeGroup.className = 'filter-group';
+
+        const typeWrapper = document.createElement('div');
+        typeWrapper.className = 'filter-controls-wrapper';
+
+        // "All" toggle
+        const typeAllId = 'type-filter-all';
+        const typeAllItem = document.createElement('div');
+        typeAllItem.className = 'checkbox-filter-item';
+        typeAllItem.innerHTML = `<input type="checkbox" id="${typeAllId}" value="all" data-filter-type="all" checked><label for="${typeAllId}">전체</label>`;
+        typeWrapper.appendChild(typeAllItem);
+
+        // Group by position
+        const groupedTypes = { '전열': [], '후열': [], '잠수': [] };
+        Object.values(shipTypeData).forEach(item => {
+            if (groupedTypes[item.position]) {
+                groupedTypes[item.position].push(item);
+            }
+        });
+
+        const positionOrder = ['전열', '후열', '잠수'];
+        positionOrder.forEach(position => {
+            const items = groupedTypes[position];
+            if (items.length === 0) return;
+            items.sort((a, b) => (a.type_name || '').localeCompare(b.type_name || ''));
+
+            const positionGroupWrapper = document.createElement('div');
+            positionGroupWrapper.className = 'filter-position-group';
+
+            if (position === '전열' || position === '후열') {
+                const groupAllId = `type-filter-${position}-all`;
+                const groupAllItem = document.createElement('div');
+                groupAllItem.className = 'checkbox-filter-item';
+                groupAllItem.innerHTML = `<input type="checkbox" id="${groupAllId}" data-filter-type="group-all" data-group-target="${position}"><label for="${groupAllId}">${position} 전체</label>`;
+                positionGroupWrapper.appendChild(groupAllItem);
+            }
+
+            items.forEach(item => {
+                if (item.type_name === '뇌순' || item.type_name === '항순') return;
+                const uniqueId = `type-filter-${item.ship_type}`;
+                const checkboxItem = document.createElement('div');
+                checkboxItem.className = 'checkbox-filter-item';
+                const iconHTML = item.icon ? `<img src="${item.icon}" class="filter-icon">` : '';
+                checkboxItem.innerHTML = `<input type="checkbox" id="${uniqueId}" value="${item.ship_type}" data-filter-type="individual" data-position="${position}"><label for="${uniqueId}">${iconHTML} ${item.type_name}</label>`;
+                positionGroupWrapper.appendChild(checkboxItem);
+            });
+
+            typeWrapper.appendChild(positionGroupWrapper);
+        });
+
+        typeGroup.appendChild(typeWrapper);
+        typeSection.appendChild(typeGroup);
+        drawerBody.appendChild(typeSection);
+
+        // --- Dropdown options section ---
+        const dropdownSection = document.createElement('div');
+        dropdownSection.className = 'st-drawer-section';
+        dropdownSection.innerHTML = '<h3>보기 옵션</h3>';
 
         const dropdownControlsContainer = document.createElement('div');
         dropdownControlsContainer.className = 'dropdown-controls-container';
+
         const dropdownFilters = [
             { id: 'progress-filter', label: '체크된 함순이들로 필터링', options: { all: '체크여부 - 전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' }, description: '체크박스 상태에 따라 함순이를 필터링합니다.' },
             { id: 'get-attr-filter', label: '입수 스탯으로 필터링', data: attrTypeData, allOptionText: '입수스탯 - 전체', description: '함순이 입수 시 제공하는 함대 기술 스탯으로 필터링합니다.' },
             { id: 'level-attr-filter', label: '120렙 스탯으로 필터링', data: attrTypeData, allOptionText: '120스탯 - 전체', description: '함순이 120레벨 달성 시 제공하는 함대 기술 스탯으로 필터링합니다.' }
         ];
+
         dropdownFilters.forEach(f => {
             const group = document.createElement('div');
             group.className = 'dropdown-filter-group';
@@ -1092,123 +1158,30 @@ document.addEventListener('DOMContentLoaded', () => {
             group.appendChild(select);
             dropdownControlsContainer.appendChild(group);
         });
-        dropdownGroupWrapper.appendChild(dropdownControlsContainer);
-        topFiltersWrapper.appendChild(dropdownGroupWrapper);
 
-        const rarities = [...new Set(Object.values(fullShipData).map(ship => ship.rarity).filter(Boolean))];
-        const rarityOrder = ['N', 'R', 'SR', 'SSR', 'UR'];
-        rarities.sort((a, b) => rarityOrder.indexOf(a) - rarityOrder.indexOf(b));
-        const rarityFilterData = rarities.map(r => ({ val: r, name: r }));
+        dropdownSection.appendChild(dropdownControlsContainer);
+        drawerBody.appendChild(dropdownSection);
 
-        const checkboxFilters = [
-            { id: 'nationality-filter', label: '진영 필터링 (펼치기/접기)', data: nationalityData, val: 'id', name: 'name', icon: 'image', sort: (a, b) => a.id - b.id },
-            { id: 'type-filter', label: '함종 필터링 (펼치기/접기)', data: shipTypeData, val: 'ship_type', name: 'type_name', icon: 'icon', sort: (a, b) => (a.type_name || '').localeCompare(b.type_name || '') },
-            { id: 'rarity-filter', label: '등급', data: rarityFilterData, val: 'val', name: 'name', icon: null, sort: (a, b) => rarityOrder.indexOf(a.name) - rarityOrder.indexOf(b.name) }
-        ];
+        // --- Bulk actions section ---
+        const bulkSection = document.createElement('div');
+        bulkSection.className = 'st-drawer-section';
+        bulkSection.innerHTML = '<h3>일괄 작업</h3>';
 
-        checkboxFilters.forEach(f => {
-            const group = document.createElement('div');
-            group.id = f.id;
-            group.className = 'filter-group';
+        const bulkLabel = document.createElement('div');
+        bulkLabel.className = 'filter-group-label';
+        bulkLabel.textContent = '목록에 보이는 모든 함순이들에게 적용';
+        bulkSection.appendChild(bulkLabel);
 
-            const isCollapsible = f.id === 'nationality-filter' || f.id === 'type-filter';
-            if (isCollapsible) {
-                const button = document.createElement('button');
-                button.className = 'filter-group-toggle collapsed';
-                button.innerHTML = `${f.label} <span class="chevron">▼</span>`;
-                group.appendChild(button);
-            } else {
-                const label = document.createElement('div');
-                label.className = 'filter-group-label';
-                label.textContent = f.label;
-                group.appendChild(label);
-            }
-            
-            const wrapper = document.createElement('div');
-            wrapper.className = 'filter-controls-wrapper';
-            if (isCollapsible) {
-                wrapper.classList.add('collapsible-content', 'collapsed');
-            }
+        const bulkWrapper = document.createElement('div');
+        bulkWrapper.className = 'st-bulk-actions';
 
-            if (f.id === 'type-filter') {
-                const allId = `${f.id}-all`;
-                const allItem = document.createElement('div');
-                allItem.className = 'checkbox-filter-item';
-                allItem.innerHTML = `<input type="checkbox" id="${allId}" value="all" data-filter-type="all" checked><label for="${allId}">전체</label>`;
-                wrapper.appendChild(allItem);
-
-                const groupedTypes = { '전열': [], '후열': [], '잠수': [] };
-                Object.values(f.data).forEach(item => {
-                    if (groupedTypes[item.position]) {
-                        groupedTypes[item.position].push(item);
-                    }
-                });
-
-                const positionOrder = ['전열', '후열', '잠수'];
-                positionOrder.forEach(position => {
-                    const items = groupedTypes[position];
-                    if (items.length === 0) return;
-                    items.sort(f.sort);
-                    const positionGroupWrapper = document.createElement('div');
-                    positionGroupWrapper.className = 'filter-position-group';
-                    if (position === '전열' || position === '후열') {
-                        const groupAllId = `${f.id}-${position}-all`;
-                        const groupAllItem = document.createElement('div');
-                        groupAllItem.className = 'checkbox-filter-item';
-                        groupAllItem.innerHTML = `<input type="checkbox" id="${groupAllId}" data-filter-type="group-all" data-group-target="${position}"><label for="${groupAllId}">${position} 전체</label>`;
-                        positionGroupWrapper.appendChild(groupAllItem);
-                    }
-                    items.forEach(item => {
-                        if (item.type_name === '뇌순' || item.type_name === '항순') return;
-                        const uniqueId = `${f.id}-${item[f.val]}`;
-                        const checkboxItem = document.createElement('div');
-                        checkboxItem.className = 'checkbox-filter-item';
-                        const iconHTML = f.icon ? `<img src="${item[f.icon]}" class="filter-icon">` : '';
-                        checkboxItem.innerHTML = `<input type="checkbox" id="${uniqueId}" value="${item[f.val]}" data-filter-type="individual" data-position="${position}"><label for="${uniqueId}">${iconHTML} ${item[f.name]}</label>`;
-                        positionGroupWrapper.appendChild(checkboxItem);
-                    });
-                    wrapper.appendChild(positionGroupWrapper);
-                });
-            } else {
-                const allId = `${f.id}-all`;
-                const allItem = document.createElement('div');
-                allItem.className = 'checkbox-filter-item';
-                allItem.innerHTML = `<input type="checkbox" id="${allId}" value="all" data-filter-type="all" checked><label for="${allId}">전체</label>`;
-                wrapper.appendChild(allItem);
-                const items = Array.isArray(f.data) ? f.data : Object.values(f.data);
-                items.sort(f.sort).forEach(item => {
-                    if (!item[f.val] || !item[f.name]) return;
-                    const uniqueId = `${f.id}-${item[f.val]}`;
-                    const checkboxItem = document.createElement('div');
-                    checkboxItem.className = 'checkbox-filter-item';
-                    const iconHTML = f.icon ? `<img src="${item[f.icon]}" class="filter-icon">` : '';
-                    const rarityClass = f.id === 'rarity-filter' ? `rarity-text rarity-${item[f.name]}` : '';
-                    checkboxItem.innerHTML = `<input type="checkbox" id="${uniqueId}" value="${item[f.val]}" data-filter-type="individual"><label for="${uniqueId}" class="${rarityClass}">${iconHTML} ${item[f.name]}</label>`;
-                    wrapper.appendChild(checkboxItem);
-                });
-            }
-            group.appendChild(wrapper);
-            filterBar.appendChild(group);
-        });
-
-        const actionContainer = document.createElement('div');
-        actionContainer.className = 'action-controls-container';
-
-        const bulkCheckContainer = document.createElement('div');
-        bulkCheckContainer.className = 'bulk-check-controls';
-        const bulkCheckLabel = document.createElement('div');
-        bulkCheckLabel.className = 'filter-group-label';
-        bulkCheckLabel.textContent = '일괄 체크 --> 주의) 목록에 보이는 모든 함순이들에게 적용';
-        bulkCheckContainer.appendChild(bulkCheckLabel);
-
-        const bulkCheckWrapper = document.createElement('div');
-        bulkCheckWrapper.className = 'filter-controls-wrapper';
         const bulkCheckActions = [
             { label: '모두 입수 체크', type: 'get', state: true },
             { label: '모두 120렙 체크', type: 'level', state: true },
             { label: '모두 풀돌 체크', type: 'upgrade', state: true },
             { label: '모두 체크 해제', type: 'all', state: false }
         ];
+
         bulkCheckActions.forEach(action => {
             const btn = document.createElement('button');
             btn.textContent = action.label;
@@ -1220,17 +1193,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 const message = `주의)) '${action.label}' 작업을 실행하시겠습니까? 필터링 적용된 목록의 함순이들에게 일괄적용됩니다.`;
                 showConfirmationModal(message, () => bulkCheck(action.type, action.state));
             };
-            bulkCheckWrapper.appendChild(btn);
+            bulkWrapper.appendChild(btn);
         });
-        bulkCheckContainer.appendChild(bulkCheckWrapper);
-        actionContainer.appendChild(bulkCheckContainer);
-        
+
+        bulkSection.appendChild(bulkWrapper);
+        drawerBody.appendChild(bulkSection);
+
+        // --- Reset button ---
         const resetButton = document.createElement('button');
         resetButton.id = 'reset-filters-btn';
+        resetButton.className = 'st-reset-btn';
         resetButton.textContent = '필터 초기화';
+        resetButton.addEventListener('click', resetFilters);
+        drawerBody.appendChild(resetButton);
 
-        actionContainer.appendChild(resetButton);
-        filterBar.appendChild(actionContainer);
+        // --- Event delegation for checkboxes and selects in drawer ---
+        drawerBody.addEventListener('change', (e) => {
+            const target = e.target;
+            if (target.tagName === 'SELECT') {
+                debouncedApplyFilters();
+            } else if (target.type === 'checkbox' && target.closest('.filter-group')) {
+                handleFilterCheckboxLogic(target);
+                debouncedApplyFilters();
+            }
+        });
     }
 
     /**
@@ -1292,48 +1278,28 @@ document.addEventListener('DOMContentLoaded', () => {
         autoSaveProgress();
     }
 
+    // ========================================================================
+    //  CONFIRMATION MODAL
+    // ========================================================================
+
     /**
      * Current confirmation callback for the modal.
      */
     let currentConfirmCallback = null;
 
     /**
-     * Closes the confirmation modal.
+     * Sets up the confirmation modal button handlers (called once during init).
      */
-    function closeConfirmationModal() {
-        if (cachedElements.confirmationModal) {
-            cachedElements.confirmationModal.classList.remove('visible');
+    function setupConfirmationModal() {
+        document.getElementById('modal-confirm-btn').addEventListener('click', () => {
+            if (currentConfirmCallback) currentConfirmCallback();
+            closeModal('confirmation-modal');
             currentConfirmCallback = null;
-        }
-    }
-
-    /**
-     * Handles the confirm button click in the modal.
-     */
-    function handleModalConfirm() {
-        if (currentConfirmCallback) {
-            currentConfirmCallback();
-        }
-        closeConfirmationModal();
-    }
-
-    /**
-     * Sets up modal event listeners (called once during initialization).
-     */
-    function setupModalEventListeners() {
-        if (cachedElements.modalConfirmBtn) {
-            cachedElements.modalConfirmBtn.addEventListener('click', handleModalConfirm);
-        }
-        if (cachedElements.modalCancelBtn) {
-            cachedElements.modalCancelBtn.addEventListener('click', closeConfirmationModal);
-        }
-        if (cachedElements.confirmationModal) {
-            cachedElements.confirmationModal.addEventListener('click', (e) => {
-                if (e.target === cachedElements.confirmationModal) {
-                    closeConfirmationModal();
-                }
-            });
-        }
+        });
+        document.getElementById('modal-cancel-btn').addEventListener('click', () => {
+            closeModal('confirmation-modal');
+            currentConfirmCallback = null;
+        });
     }
 
     /**
@@ -1342,11 +1308,12 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {function} onConfirm - The callback function to execute on confirmation.
      */
     function showConfirmationModal(message, onConfirm) {
-        if (!cachedElements.confirmationModal || !cachedElements.modalText) return;
+        const modalText = document.getElementById('modal-text');
+        if (!modalText) return;
 
-        cachedElements.modalText.textContent = message;
+        modalText.textContent = message;
         currentConfirmCallback = onConfirm;
-        cachedElements.confirmationModal.classList.add('visible');
+        openModal('confirmation-modal');
     }
 
     /**
@@ -1430,7 +1397,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     groupAllToggle.checked = individuals.every(cb => cb.checked);
                 }
             }
-            
+
         }
         const anyIndividualChecked = group.querySelector('[data-filter-type="individual"]:checked');
         if (anyIndividualChecked) {
@@ -1477,7 +1444,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const levelAttrFilter = document.getElementById('level-attr-filter').value;
         const checkedNations = Array.from(document.querySelectorAll('#nationality-filter input[data-filter-type="individual"]:checked')).map(cb => parseDatasetInt(cb.value));
         const checkedTypes = Array.from(document.querySelectorAll('#type-filter input[data-filter-type="individual"]:checked')).map(cb => parseDatasetInt(cb.value));
-        const checkedRarities = getCheckedFilterValues('#rarity-filter input[data-filter-type="individual"]:checked');
+
+        // Rarity: use chip-based approach instead of checkbox
+        const checkedRarities = Array.from(document.querySelectorAll('#rarity-filter .st-rarity-chip.active')).map(chip => chip.value);
+
         const isNationFilterActive = checkedNations.length > 0;
         const isTypeFilterActive = checkedTypes.length > 0;
         const isRarityFilterActive = checkedRarities.length > 0;
@@ -1515,13 +1485,55 @@ document.addEventListener('DOMContentLoaded', () => {
      * Resets all filters to their default state.
      */
     function resetFilters() {
+        // Reset search
         document.getElementById('search-bar').value = '';
-        document.querySelectorAll('#filter-bar input[type="checkbox"]').forEach(cb => {
+
+        // Reset rarity chips (all active)
+        document.querySelectorAll('.st-rarity-chip').forEach(c => c.classList.add('active'));
+
+        // Reset checkboxes in drawer
+        document.querySelectorAll('#filter-drawer-body input[type="checkbox"]').forEach(cb => {
             cb.checked = cb.dataset.filterType === 'all';
         });
-        document.querySelectorAll('#filter-bar [data-filter-type="group-all"]').forEach(cb => cb.checked = false);
-        document.querySelectorAll('#filter-bar select').forEach(s => s.selectedIndex = 0);
+        document.querySelectorAll('#filter-drawer-body [data-filter-type="group-all"]').forEach(cb => cb.checked = false);
+
+        // Reset selects
+        document.querySelectorAll('#filter-drawer-body select').forEach(s => s.selectedIndex = 0);
+
         applyFilters();
+    }
+
+    // ========================================================================
+    //  SEARCH
+    // ========================================================================
+
+    /**
+     * Sets up search input and dropdown.
+     */
+    function setupSearch() {
+        const searchInput = document.getElementById('search-bar');
+        const searchDropdown = document.getElementById('search-dropdown');
+
+        // Populate dropdown with all ship names
+        const allShipNames = Object.values(fullShipData).map(ship => ship.name).filter(Boolean).sort((a, b) => a.localeCompare(b));
+        allShipNames.forEach(name => {
+            const a = document.createElement('a');
+            a.textContent = name;
+            a.addEventListener('click', () => {
+                searchInput.value = name;
+                searchDropdown.style.display = 'none';
+                applyFilters();
+            });
+            searchDropdown.appendChild(a);
+        });
+
+        const debouncedSearch = debounce(() => {
+            filterSearchDropdown(searchInput, searchDropdown);
+            applyFilters();
+        }, 150);
+
+        searchInput.addEventListener('input', debouncedSearch);
+        setupDropdownToggle(searchInput, searchDropdown);
     }
 
     /**
@@ -1554,105 +1566,58 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ========================================================================
+    //  INITIALIZATION
+    // ========================================================================
+
     async function initialize() {
         try {
             await fetchData();
-
-            // Cache DOM elements for performance
             cacheDOMElements();
 
-            // Setup modal event listeners once
-            setupModalEventListeners();
-
-            const header = document.querySelector('header');
-            const scoreArea = document.getElementById('score-display-area');
-            const mainElement = document.querySelector('main');
-            const container = cachedElements.shipListContainer;
-            const filterBar = cachedElements.filterBar;
-
-            // Create and set up the score toggle button.
-            const scoreToggleButton = document.createElement('button');
-            scoreToggleButton.id = 'score-toggle-btn';
-            const scoreButtonText = document.createElement('span');
-            scoreButtonText.textContent = '점수판 보기';
-            const scoreChevron = document.createElement('span');
-            scoreChevron.className = 'chevron';
-            scoreChevron.textContent = '▼';
-            scoreToggleButton.appendChild(scoreButtonText);
-            scoreToggleButton.appendChild(scoreChevron);
-            scoreToggleButton.classList.add('collapsed');
-            scoreArea.classList.add('collapsed');
-            header.appendChild(scoreToggleButton);
-
-            scoreToggleButton.addEventListener('click', () => {
-                scoreArea.classList.toggle('collapsed');
-                const isCollapsed = scoreToggleButton.classList.toggle('collapsed');
-                scoreButtonText.textContent = isCollapsed ? '점수현황판 보기' : '점수현황판 숨기기';
-                scoreChevron.textContent = isCollapsed ? '▼' : '▲';
+            // Setup drawer
+            document.getElementById('filter-drawer-btn').addEventListener('click', openDrawer);
+            document.getElementById('filter-drawer-backdrop').addEventListener('click', closeDrawer);
+            document.querySelector('#filter-drawer .st-drawer-close').addEventListener('click', closeDrawer);
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const drawer = document.getElementById('filter-drawer');
+                    if (drawer.classList.contains('open')) closeDrawer();
+                }
             });
 
-            // Create and set up the filter toggle button.
-            const toggleButton = document.createElement('button');
-            toggleButton.id = 'filter-toggle-btn';
-            const buttonText = document.createElement('span');
-            buttonText.textContent = '필터 보기';
-            const chevron = document.createElement('span');
-            chevron.className = 'chevron';
-            chevron.textContent = '▼';
-            toggleButton.appendChild(buttonText);
-            toggleButton.appendChild(chevron);
-            // Start collapsed
-            filterBar.classList.add('filters-collapsed');
-            mainElement.insertBefore(toggleButton, filterBar);
-            toggleButton.addEventListener('click', () => {
-                const isActive = toggleButton.classList.toggle('active');
-                filterBar.classList.toggle('filters-collapsed');
-                buttonText.textContent = isActive ? '필터 숨기기' : '필터 보기';
-                chevron.textContent = isActive ? '▲' : '▼';
+            // Setup score modal
+            document.getElementById('score-modal-btn').addEventListener('click', () => {
+                calculateAndDisplayScores();
+                openModal('score-modal');
             });
+            setupModal('score-modal', { closeOnEscape: true, closeOnBackdrop: true });
 
-            // Populate filters and render initial ship list.
-            // Note: Order matters - filter bar is rendered first, then goal tracker below it
-            populateFilters();
+            // Setup goal modal
+            document.getElementById('goal-modal-btn').addEventListener('click', () => {
+                renderGoalTracker();
+                openModal('goal-modal');
+            });
+            setupModal('goal-modal', { closeOnEscape: true, closeOnBackdrop: true });
+
+            // Setup confirmation modal
+            setupModal('confirmation-modal', {
+                closeOnEscape: true,
+                closeOnBackdrop: true,
+                onClose: () => { currentConfirmCallback = null; }
+            });
+            setupConfirmationModal();
+
+            // Populate filters in drawer + render cards
+            populateDrawerFilters();
             renderAllCards();
             applyFilters();
-            renderGoalTracker();
 
-            // Set up event listeners for search and filters.
-            const searchInput = document.getElementById('search-bar');
-            const searchDropdown = document.getElementById('search-dropdown');
-            const debouncedSearchFilter = debounce(() => {
-                filterSearchDropdown(searchInput, searchDropdown);
-                applyFilters();
-            }, 150);
-            const debouncedApplyFilters = debounce(applyFilters, 150);
+            // Search setup
+            setupSearch();
 
-            searchInput.addEventListener('input', debouncedSearchFilter);
-            setupDropdownToggle(searchInput, searchDropdown);
-
-            document.getElementById('reset-filters-btn').addEventListener('click', resetFilters);
-
-            filterBar.addEventListener('click', (e) => {
-                const toggle = e.target.closest('.filter-group-toggle');
-                if (toggle) {
-                    const group = toggle.closest('.filter-group');
-                    const content = group.querySelector('.collapsible-content');
-                    toggle.classList.toggle('collapsed');
-                    content.classList.toggle('collapsed');
-                }
-            });
-
-            filterBar.addEventListener('change', (e) => {
-                const target = e.target;
-                if (target.id !== 'search-bar' && (target.tagName === 'SELECT' || (target.type === 'checkbox' && target.closest('.filter-group')))) {
-                    if (target.type === 'checkbox') {
-                        handleFilterCheckboxLogic(target);
-                    }
-                    debouncedApplyFilters();
-                }
-            });
-            // Event delegation for tracker checkboxes.
-            container.addEventListener('change', (e) => {
+            // Tracker checkbox delegation
+            cachedElements.shipListContainer.addEventListener('change', (e) => {
                 if (e.target.classList.contains('tracker-checkbox')) {
                     handleCheckboxLogic(e.target);
                     debouncedCalculateScores();
@@ -1661,7 +1626,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
         } catch (error) {
-            // Errors from fetchData are caught here, stopping initialization.
+            // fetchData errors stop initialization
         }
     }
 
