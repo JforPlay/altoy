@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/shipgirl/research-tracker.css';
+---
+
+<Layout title="개발함 트래커">
+    <div class="rt-page">
+        <header class="rt-header">
+            <h1>개발함 트래커</h1>
+            <p class="rt-subtitle">상시 획득 가능 함선 기술점수 추적</p>
+        </header>
+
+        <nav class="rt-tabs" id="faction-tabs"></nav>
+
+        <div class="rt-filters" id="rt-filters">
+            <div class="rt-filter-group">
+                <span class="rt-filter-label">레어도</span>
+                <div class="rt-rarity-toggles">
+                    <button class="rt-rarity-btn active" data-rarity="ur">UR</button>
+                    <button class="rt-rarity-btn active" data-rarity="ssr">SSR</button>
+                    <button class="rt-rarity-btn active" data-rarity="sr">SR</button>
+                    <button class="rt-rarity-btn active" data-rarity="r">R</button>
+                    <button class="rt-rarity-btn active" data-rarity="n">N</button>
+                </div>
+            </div>
+            <div class="rt-filter-group">
+                <span class="rt-filter-label">상태</span>
+                <div class="rt-status-toggles">
+                    <button class="rt-status-btn active" data-status="missing">미획득</button>
+                    <button class="rt-status-btn active" data-status="owned">획득</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="rt-content" id="faction-content">
+            <div class="rt-loading">데이터를 불러오는 중...</div>
+        </div>
+    </div>
+
+    <script is:inline type="module" src="/altoy/js/shipgirl/research-tracker.js"></script>
+</Layout>
