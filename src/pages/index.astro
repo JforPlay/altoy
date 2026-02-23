@@ -39,7 +39,47 @@ import '../styles/mainpage/mainpage.responsive.css';
                     </div>
                 </div>
 
-                <!-- Slide 2: island planner -->
+                <!-- Slide 2: Equip DB -->
+                <div class="carousel-slide" data-slide="3">
+                    <div class="slide-background">
+                        <img src="/altoy/assets/img/anchorage.jpg" alt="Equip DB Background"
+                            loading="lazy">
+                        <div class="slide-overlay"></div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="slide-badge">New Update</div>
+                        <h2 class="slide-title">장비 데이터베이스</h2>
+                        <p class="slide-description">
+                            모든 장비의 스펙을 비교하고 분석하세요
+                        </p>
+                        <a data-link="EQUIP_VIEWER" class="slide-cta">
+                            <span>장비 보러가기</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Research Tracker -->
+                <div class="carousel-slide" data-slide="4">
+                    <div class="slide-background">
+                        <img src="https://azurlane.netojuu.com/images/thumb/6/66/Bg_2025.07.10_1EN.png/800px-Bg_2025.07.10_1EN.png?20250710112955" alt="Research Tracker Background"
+                            loading="lazy">
+                        <div class="slide-overlay"></div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="slide-badge">New Update</div>
+                        <h2 class="slide-title">개발함 육성 트래커</h2>
+                        <p class="slide-description">
+                            개발함 육성 현황을 한눈에 관리하세요
+                        </p>
+                        <a data-link="RESEARCH_TRACKER" class="slide-cta">
+                            <span>트래커 보러가기</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Slide 4: island planner -->
                 <div class="carousel-slide active" data-slide="0">
                     <div class="slide-background">
                         <img src="https://pbs.twimg.com/media/G1M6AgMbAAAzihc?format=jpg&name=small"
@@ -47,7 +87,7 @@ import '../styles/mainpage/mainpage.responsive.css';
                         <div class="slide-overlay"></div>
                     </div>
                     <div class="slide-content">
-                        <div class="slide-badge">New Update</div>
+                        <div class="slide-badge">Featured</div>
                         <h2 class="slide-title">벽뜌땨 계획 페이지 오픈</h2>
                         <p class="slide-description">
                             벽타듀를 즐기는데 필요한 정보들을 확인해보세요<br>
@@ -59,7 +99,7 @@ import '../styles/mainpage/mainpage.responsive.css';
                     </div>
                 </div>
 
-                <!-- Slide 3: Juustagram -->
+                <!-- Slide 5: Juustagram -->
                 <div class="carousel-slide" data-slide="1">
                     <div class="slide-background">
                         <img src="https://line3-patch-blhx.bilibiligame.net/pic/251218_boteB8R5oh3g1KImYkrV.png" alt="Juustagram Background"
@@ -80,7 +120,6 @@ import '../styles/mainpage/mainpage.responsive.css';
                     </div>
                 </div>
 
-
             </div>
 
             <!-- Carousel Controls -->
@@ -96,11 +135,37 @@ import '../styles/mainpage/mainpage.responsive.css';
                 <button class="indicator active" data-slide="0" aria-label="Go to slide 1"></button>
                 <button class="indicator" data-slide="1" aria-label="Go to slide 2"></button>
                 <button class="indicator" data-slide="2" aria-label="Go to slide 3"></button>
+                <button class="indicator" data-slide="3" aria-label="Go to slide 4"></button>
+                <button class="indicator" data-slide="4" aria-label="Go to slide 5"></button>
             </div>
         </section>
 
         <!-- Info and Events Section -->
         <section class="info-and-events-section">
+            <!-- Birthday Section (spans 4 rows on left) -->
+            <div class="birthday-container">
+                <div class="birthday-header">
+                    <h3>
+                        <span class="material-symbols-outlined">cake</span>
+                        <span class="birthday-title-text">오늘의 생일함순이</span>
+                        <span class="birthday-date" id="birthdayDate"></span>
+                    </h3>
+                </div>
+                <div class="bento-card birthday-card">
+                    <div class="birthday-list" id="birthdayList">
+                        <div class="birthday-loading">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            로딩 중...
+                        </div>
+                    </div>
+                    <div class="card-footer birthday-footer">
+                        <a data-link="SHIPGIRL_BIRTHDAY" class="birthday-more-link">
+                            생일 캘린더 보기 <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <!-- Event Carousel Section -->
             <div class="event-carousel-container">
                 <div class="event-carousel-header">
@@ -148,14 +213,11 @@ import '../styles/mainpage/mainpage.responsive.css';
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Bento Grid -->
-        <div class="bento-grid">
-            <!-- Large: Skin Poll -->
-            <a data-link="SKIN_POLL" class="bento-card large featured">
+            <!-- Skin Poll (promoted from bento grid) -->
+            <a data-link="SKIN_POLL" class="bento-card medium featured">
                 <div class="card-header">
-                    <div class="card-icon-large">
+                    <div class="card-icon">
                         <i class="fa-solid fa-square-poll-vertical"></i>
                     </div>
                     <h3>스킨 선호도 투표</h3>
@@ -166,7 +228,7 @@ import '../styles/mainpage/mainpage.responsive.css';
                 </div>
             </a>
 
-            <!-- Medium Cards -->
+            <!-- Event Timeline (promoted from bento grid) -->
             <a data-link="EVENT_TIMELINE" class="bento-card medium">
                 <div class="card-header">
                     <div class="card-icon">
@@ -176,7 +238,10 @@ import '../styles/mainpage/mainpage.responsive.css';
                 </div>
                 <p>각종 필터링 + 함순이 리스트와 함께 <br>역대 이벤트를 확인해보세요</p>
             </a>
+        </section>
 
+        <!-- Bento Grid -->
+        <div class="bento-grid">
             <a data-link="MAIN_STORY" class="bento-card medium">
                 <div class="card-header">
                     <div class="card-icon">

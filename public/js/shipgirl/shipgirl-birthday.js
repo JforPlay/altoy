@@ -1,4 +1,4 @@
-import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex } from '../utils.js';
+import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex, getUrlParam, setUrlParams } from '../utils.js';
 /* ==========================================================================
    Shipgirl Birthday Calendar Script (enhanced, structure-preserving)
    - Adds Day view (일간), mini-month header in Day view
@@ -277,8 +277,50 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         upcomingList.appendChild(frag);
     }
 
+    // ---------- URL State ----------
+    const VALID_VIEWS = ['year', 'month', 'week', 'day'];
+
+    function readUrlState() {
+        const view = getUrlParam('view', '');
+        const year = parseInt(getUrlParam('year', ''));
+        const month = parseInt(getUrlParam('month', ''));
+        const day = parseInt(getUrlParam('day', ''));
+
+        if (VALID_VIEWS.includes(view)) {
+            state.currentView = view;
+        }
+
+        if (!isNaN(year)) {
+            const m = !isNaN(month) ? month - 1 : state.currentDate.getMonth();
+            const d = !isNaN(day) ? day : state.currentDate.getDate();
+            state.currentDate = new Date(year, m, d);
+        } else if (!isNaN(month)) {
+            const d = !isNaN(day) ? day : state.currentDate.getDate();
+            state.currentDate = new Date(state.currentDate.getFullYear(), month - 1, d);
+        } else if (!isNaN(day)) {
+            state.currentDate = new Date(state.currentDate.getFullYear(), state.currentDate.getMonth(), day);
+        }
+    }
+
+    function syncUrlState() {
+        const params = { view: state.currentView };
+        const d = state.currentDate;
+        if (state.currentView === 'day') {
+            params.year = d.getFullYear();
+            params.month = d.getMonth() + 1;
+            params.day = d.getDate();
+        } else if (state.currentView === 'month' || state.currentView === 'week') {
+            params.year = d.getFullYear();
+            params.month = d.getMonth() + 1;
+        } else {
+            params.year = d.getFullYear();
+        }
+        setUrlParams(params, { replace: true, clear: true });
+    }
+
     // ---------- Rendering (existing views preserved) ----------
     function renderView() {
+        syncUrlState();
         calendarContainer.classList.add('fade-out');
         setTimeout(() => {
             calendarContainer.innerHTML = '';
@@ -766,6 +808,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
 
     // ---------- Init ----------
     document.addEventListener('DOMContentLoaded', () => {
+        readUrlState();
         setupViewButtons();
         setupSidebar();
         loadData();

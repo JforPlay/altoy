@@ -1,4 +1,4 @@
-import { hideElement, getStorageItem, setStorageItem } from './utils.js';
+import { hideElement, getStorageItem, setStorageItem, fetchJSONWithCache } from './utils.js';
 // =====================================================
 // MAINPAGE SCRIPT - MERGED & OPTIMIZED
 // Combines hero carousel, event carousel, and card animations
@@ -462,6 +462,145 @@ const EventCarousel = (function () {
 })();
 
 // =====================================================
+// BIRTHDAY SECTION
+// =====================================================
+
+const BirthdaySection = (function () {
+    const birthdayList = document.getElementById('birthdayList');
+    if (!birthdayList) return { init() {} };
+
+    const titleText = document.querySelector('.birthday-title-text');
+    const moreLink = document.querySelector('.birthday-more-link');
+    const dateEl = document.getElementById('birthdayDate');
+
+    function getBasePath() {
+        return window.location.pathname.startsWith('/altoy') ? '/altoy' : '';
+    }
+
+    function getTodayBirthdays(data) {
+        const now = new Date();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        return data.filter(item =>
+            parseInt(item['월']) === month && parseInt(item['일']) === day
+        );
+    }
+
+    function getUpcomingBirthdays(data, limit = 5) {
+        const now = new Date();
+        now.setHours(0, 0, 0, 0);
+        const year = now.getFullYear();
+
+        return data.map(item => {
+            const month = parseInt(item['월']);
+            const day = parseInt(item['일']);
+            let nextDate = new Date(year, month - 1, day);
+            if (nextDate < now) nextDate = new Date(year + 1, month - 1, day);
+            return { ...item, nextDate };
+        })
+        .sort((a, b) => a.nextDate - b.nextDate)
+        .slice(0, limit);
+    }
+
+    function renderBirthdayItem(item, showDate) {
+        const base = getBasePath();
+        const name = item['룽섭 이름'];
+        const rarity = item['레어도'];
+        const icon = item.icon || '';
+
+        const a = document.createElement('a');
+        a.className = 'birthday-item';
+        a.href = `${base}/shipgirl/shipgirl-info/?ship=${encodeURIComponent(name)}`;
+
+        const img = document.createElement('img');
+        img.className = 'birthday-item-icon';
+        img.src = icon;
+        img.alt = name;
+        img.loading = 'lazy';
+        img.onerror = function () {
+            this.onerror = null;
+            this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"%3E%3Crect width="36" height="36" fill="%23ddd" rx="18"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="10" fill="%23999"%3E?%3C/text%3E%3C/svg%3E';
+        };
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'birthday-item-name';
+        nameSpan.textContent = showDate
+            ? `${name} (${parseInt(item['월'])}/${parseInt(item['일'])})`
+            : name;
+
+        const raritySpan = document.createElement('span');
+        raritySpan.className = 'birthday-item-rarity';
+        raritySpan.textContent = rarity || '';
+        if (rarity) raritySpan.setAttribute('data-rarity', rarity);
+
+        a.appendChild(img);
+        a.appendChild(nameSpan);
+        a.appendChild(raritySpan);
+
+        return a;
+    }
+
+    async function init() {
+        const now = new Date();
+        const base = getBasePath();
+
+        // Show today's date next to title
+        if (dateEl) {
+            dateEl.textContent = `${now.getMonth() + 1}월 ${now.getDate()}일`;
+        }
+
+        // Update calendar link to point to today's day view
+        if (moreLink) {
+            moreLink.href = `${base}/shipgirl/shipgirl-birthday/?view=day&year=${now.getFullYear()}&month=${now.getMonth() + 1}&day=${now.getDate()}`;
+        }
+
+        try {
+            const data = await fetchJSONWithCache('data/shipgirl/shipgirl_birthday_data.json', { maxAge: 86400000 });
+
+            const todayBirthdays = getTodayBirthdays(data);
+
+            birthdayList.innerHTML = '';
+
+            if (todayBirthdays.length > 0) {
+                const frag = document.createDocumentFragment();
+                todayBirthdays.forEach(item => {
+                    frag.appendChild(renderBirthdayItem(item, false));
+                });
+                birthdayList.appendChild(frag);
+            } else {
+                if (titleText) titleText.textContent = '다가오는 생일';
+
+                const upcoming = getUpcomingBirthdays(data, 5);
+                if (upcoming.length > 0) {
+                    const frag = document.createDocumentFragment();
+                    upcoming.forEach(item => {
+                        frag.appendChild(renderBirthdayItem(item, true));
+                    });
+                    birthdayList.appendChild(frag);
+                } else {
+                    birthdayList.innerHTML = `
+                        <div class="birthday-empty">
+                            <span class="material-symbols-outlined">sentiment_dissatisfied</span>
+                            <span>생일 데이터를 찾을 수 없습니다</span>
+                        </div>
+                    `;
+                }
+            }
+        } catch (err) {
+            console.error('[Birthday] Error loading data:', err);
+            birthdayList.innerHTML = `
+                <div class="birthday-empty">
+                    <span class="material-symbols-outlined">error</span>
+                    <span>생일 데이터를 불러올 수 없습니다</span>
+                </div>
+            `;
+        }
+    }
+
+    return { init };
+})();
+
+// =====================================================
 // CARD ANIMATIONS
 // =====================================================
 
@@ -487,6 +626,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize all components
     initHeroCarousel();
     EventCarousel.init();
+    BirthdaySection.init();
     initCardAnimations();
 
     // Cleanup on page unload

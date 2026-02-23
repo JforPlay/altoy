@@ -12,6 +12,7 @@ const LINKS = {
     SHIPGIRL_TRACKER: 'shipgirl/shipgirl-tracker/',
     SHIPGIRL_BUILD: 'shipgirl/shipgirl-build-sim/',
     SHIPGIRL_BIRTHDAY: 'shipgirl/shipgirl-birthday/',
+    RESEARCH_TRACKER: 'shipgirl/research-tracker/',
 
     // Skin
     SKIN_DETAIL: 'skin/skin-detail-viewer/',
@@ -44,6 +45,9 @@ const LINKS = {
 
     // Simulators
     SIM_WEAPON: 'simulators/sim-weapon/',
+
+    // Equip
+    EQUIP_VIEWER: 'equip/equip-viewer/',
 
     // Island
     ISLAND: 'island/',

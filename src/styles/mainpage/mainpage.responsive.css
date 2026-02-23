@@ -296,12 +296,24 @@
 @media (max-width: 768px) {
   .info-and-events-section {
     grid-template-columns: 1fr;
+    grid-template-rows: none;
     grid-auto-rows: auto;
   }
 
   .patch-notes-container,
-  .event-carousel-container {
+  .event-carousel-container,
+  .birthday-container {
     grid-column: span 1;
+    grid-row: auto;
+  }
+
+  .info-and-events-section .bento-card.medium {
+    grid-column: span 1;
+    grid-row: auto;
+  }
+
+  .birthday-list {
+    max-height: 160px;
   }
 
   .event-carousel {

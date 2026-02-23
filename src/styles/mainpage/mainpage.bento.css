@@ -7,11 +7,11 @@
   grid-template-columns: repeat(6, 1fr);
   gap: 1rem;
   margin-bottom: 1.5rem;
-  grid-auto-rows: 120px;
+  grid-template-rows: repeat(2, 120px) repeat(2, 90px);
 }
 
 .patch-notes-container {
-  grid-column: span 4;
+  grid-column: span 2;
   grid-row: span 2;
   display: flex;
   flex-direction: column;
@@ -75,6 +75,203 @@ body.dark-mode .patch-notes-content ul {
 
 .event-carousel {
   height: 100%;
+}
+
+/* =====================================================
+   BIRTHDAY SECTION
+   ===================================================== */
+
+.birthday-container {
+  grid-column: span 2;
+  grid-row: span 4;
+  display: flex;
+  flex-direction: column;
+}
+
+.birthday-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0 0.5rem;
+}
+
+.birthday-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.birthday-header h3 .material-symbols-outlined {
+  color: var(--primary);
+  font-size: 1.2em;
+}
+
+.birthday-date {
+  font-size: 0.55em;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-left: 0.25rem;
+}
+
+.birthday-card {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: visible;
+}
+
+.birthday-card::before {
+  pointer-events: none;
+}
+
+.birthday-list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-alpha-20) transparent;
+}
+
+.birthday-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.birthday-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.birthday-list::-webkit-scrollbar-thumb {
+  background: var(--primary-alpha-20);
+  border-radius: var(--radius-full);
+}
+
+.birthday-list::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-alpha-30);
+}
+
+.birthday-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+
+.birthday-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.birthday-item:hover {
+  background: var(--primary-alpha-10);
+}
+
+.birthday-item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--card-border);
+  flex-shrink: 0;
+}
+
+.birthday-item-name {
+  font-size: 0.9em;
+  font-weight: 600;
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.birthday-item-rarity {
+  font-size: 0.7em;
+  font-weight: 600;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-xs);
+  flex-shrink: 0;
+}
+
+.birthday-item-rarity[data-rarity="UR"] {
+  background: var(--rarity-ur-bg);
+  color: var(--rarity-ur-text);
+}
+
+.birthday-item-rarity[data-rarity="SSR"] {
+  background: var(--rarity-ssr);
+  color: var(--rarity-ssr-text);
+}
+
+.birthday-item-rarity[data-rarity="SR"] {
+  background: var(--rarity-sr);
+  color: var(--rarity-sr-text);
+}
+
+.birthday-item-rarity[data-rarity="R"] {
+  background: var(--rarity-r);
+  color: var(--rarity-r-text);
+}
+
+.birthday-item-rarity[data-rarity="N"] {
+  background: var(--rarity-n);
+  color: var(--rarity-n-text);
+}
+
+.birthday-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  text-align: center;
+}
+
+.birthday-empty .material-symbols-outlined {
+  font-size: 2em;
+  opacity: 0.5;
+}
+
+.birthday-footer {
+  border-top: 1px solid var(--card-border);
+  position: relative;
+  z-index: 1;
+}
+
+.birthday-more-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8em;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: gap var(--transition-fast);
+}
+
+.birthday-more-link:hover {
+  gap: 0.7rem;
 }
 
 /* =====================================================
