@@ -248,7 +248,8 @@
   margin: 0;
 }
 
-.event-carousel-header h2 i {
+.event-carousel-header h2 i,
+.event-carousel-header h2 .material-symbols-outlined {
   color: var(--primary);
   font-size: 1.2em;
 }
