@@ -143,13 +143,12 @@
   cursor: pointer;
   background: transparent;
   color: var(--text-secondary);
-  opacity: 0.5;
   text-decoration: line-through;
+  text-decoration-color: currentColor;
   transition: all var(--transition-fast);
 }
 
 .st-rarity-chip.active {
-  opacity: 1;
   text-decoration: none;
   color: #fff;
 }
@@ -168,11 +167,13 @@
 .st-rarity-chip[data-rarity="sr"].active {
   background: var(--rarity-sr);
   border-color: var(--rarity-sr);
+  color: var(--rarity-sr-text);
 }
 
 .st-rarity-chip[data-rarity="r"].active {
   background: var(--rarity-r);
   border-color: var(--rarity-r);
+  color: var(--rarity-r-text);
 }
 
 .st-rarity-chip[data-rarity="n"].active {

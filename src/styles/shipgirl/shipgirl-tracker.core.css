@@ -202,23 +202,31 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 10px;
-  font-size: 0.78rem;
+  padding: 4px 8px 4px 10px;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: #fff;
-  background: var(--primary-color);
-  border: none;
+  color: var(--primary-color);
+  background: var(--primary-alpha-10);
+  border: 1px solid var(--primary-alpha-20);
   border-radius: 999px;
   cursor: pointer;
-  transition: opacity var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 
 .st-chip:hover {
-  opacity: 0.85;
+  background: var(--primary-alpha-20);
+  border-color: var(--primary-color);
 }
 
 .st-chip .material-symbols-outlined {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  border-radius: 50%;
+  padding: 1px;
+  transition: background var(--transition-fast);
+}
+
+.st-chip:hover .material-symbols-outlined {
+  background: var(--primary-alpha-15);
 }
 
 /* --- Hidden Utility --- */

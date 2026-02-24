@@ -143,10 +143,10 @@ body {
 }
 
 .rarity-chip.active.rarity-chip-6 { background: var(--rarity-ur-light); color: var(--rarity-ur-text); border-color: var(--rarity-ur); }
-.rarity-chip.active.rarity-chip-5 { background: #ffd666; color: #3d2e00; border-color: #e8a320; }
-.rarity-chip.active.rarity-chip-4 { background: #d3adf7; color: #2d1541; border-color: #b066d4; }
-.rarity-chip.active.rarity-chip-3 { background: #91caff; color: #0d2137; border-color: #3c9be8; }
-.rarity-chip.active.rarity-chip-2 { background: #bfbfbf; color: var(--text-primary); border-color: #8a8a8a; }
+.rarity-chip.active.rarity-chip-5 { background: var(--rarity-ssr); color: var(--rarity-ssr-text); border-color: var(--rarity-ssr); }
+.rarity-chip.active.rarity-chip-4 { background: var(--rarity-sr); color: var(--rarity-sr-text); border-color: var(--rarity-sr); }
+.rarity-chip.active.rarity-chip-3 { background: var(--rarity-r); color: var(--rarity-r-text); border-color: var(--rarity-r); }
+.rarity-chip.active.rarity-chip-2 { background: var(--rarity-n); color: var(--rarity-n-text); border-color: var(--rarity-n); }
 
 /* ===== Label Tag Chips ===== */
 .label-chips-container {
