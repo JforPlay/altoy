@@ -3,7 +3,7 @@
  * Handles recipe browsing, dependency tracking, and chain visualization
  */
 
-import { fetchJSON, formatTime, openModal } from '../utils.js';
+import { fetchJSON, formatTime, openModal, closeModal } from '../utils.js';
 import {
     CONSTANTS,
     setup as setupTree,
@@ -478,8 +478,7 @@ function showRecipeForest() {
 }
 
 function closeDependencyModal() {
-    // Use global closeModal from utils.js
-    window.closeModal('dependency-modal');
+    closeModal('dependency-modal');
 }
 
 function selectRecipeFromModal(recipeId) {
