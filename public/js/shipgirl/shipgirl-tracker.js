@@ -1158,8 +1158,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const dropdownFilters = [
             { id: 'progress-filter', label: '체크된 함순이들로 필터링', options: { all: '체크여부 - 전체', checked: '하나라도 체크됨', unchecked: '체크 안됨' }, description: '체크박스 상태에 따라 함순이를 필터링합니다.' },
-            { id: 'get-attr-filter', label: '입수 스탯으로 필터링', data: attrTypeData, allOptionText: '입수스탯 - 전체', description: '함순이 입수 시 제공하는 함대 기술 스탯으로 필터링합니다.' },
-            { id: 'level-attr-filter', label: '120렙 스탯으로 필터링', data: attrTypeData, allOptionText: '120스탯 - 전체', description: '함순이 120레벨 달성 시 제공하는 함대 기술 스탯으로 필터링합니다.' }
+            { id: 'get-attr-filter', label: '입수 스탯으로 필터링', data: attrTypeData, allOptionText: '입수스탯 - 전체', prefix: '입수: ', description: '함순이 입수 시 제공하는 함대 기술 스탯으로 필터링합니다.' },
+            { id: 'level-attr-filter', label: '120렙 스탯으로 필터링', data: attrTypeData, allOptionText: '120스탯 - 전체', prefix: '120렙: ', description: '함순이 120레벨 달성 시 제공하는 함대 기술 스탯으로 필터링합니다.' }
         ];
 
         dropdownFilters.forEach(f => {
@@ -1193,7 +1193,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 for (const attrId in f.data) {
                     const option = document.createElement('option');
                     option.value = f.data[attrId].id;
-                    option.textContent = f.data[attrId].condition;
+                    option.textContent = (f.prefix || '') + f.data[attrId].condition;
                     select.appendChild(option);
                 }
             }
@@ -1202,7 +1202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         dropdownSection.appendChild(dropdownControlsContainer);
-        drawerBody.appendChild(dropdownSection);
+        drawerBody.insertBefore(dropdownSection, drawerBody.firstChild);
 
         // --- Bulk actions section ---
         const bulkSection = document.createElement('div');
@@ -1526,14 +1526,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const getAttrEl = document.getElementById('get-attr-filter');
         if (getAttrEl && getAttrEl.value !== 'all') {
             const selectedOption = getAttrEl.options[getAttrEl.selectedIndex];
-            chips.push({ label: '입수: ' + selectedOption.textContent, type: 'get-attr', value: getAttrEl.value });
+            chips.push({ label: selectedOption.textContent, type: 'get-attr', value: getAttrEl.value });
         }
 
         // Level-attr chip
         const levelAttrEl = document.getElementById('level-attr-filter');
         if (levelAttrEl && levelAttrEl.value !== 'all') {
             const selectedOption = levelAttrEl.options[levelAttrEl.selectedIndex];
-            chips.push({ label: '120: ' + selectedOption.textContent, type: 'level-attr', value: levelAttrEl.value });
+            chips.push({ label: selectedOption.textContent, type: 'level-attr', value: levelAttrEl.value });
         }
 
         // Search chip
