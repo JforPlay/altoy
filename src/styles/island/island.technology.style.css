@@ -811,6 +811,17 @@
     color: var(--island-accent);
 }
 
+.resource-totals-mode-toggle {
+    padding: 0.5rem 1rem;
+    font-size: var(--island-text-sm);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.resource-totals-mode-toggle .material-symbols-outlined {
+    font-size: var(--island-icon-sm);
+}
+
 .resource-totals-empty {
     font-size: 1rem;
     color: var(--island-text-secondary);

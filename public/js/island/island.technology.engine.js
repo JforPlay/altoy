@@ -14,7 +14,8 @@ const state = {
     activeCategory: 'all', // 'all' or 1-6
     fuseInstance: null,
     completedTechs: {}, // { techId: true/false }
-    resourceData: {} // Resource names from island_item_data_template.json
+    resourceData: {}, // Resource names from island_item_data_template.json
+    showCheckedTotals: false // false = unchecked (unfinished) techs, true = checked techs
 };
 
 // Category mapping
@@ -1021,16 +1022,16 @@ function renderFormulaDetails(formula) {
 // ============================================
 
 /**
- * Calculate resource totals for a list of techs (excluding completed ones)
+ * Calculate resource totals for a list of techs
+ * When showCheckedTotals=false: sums unchecked (unfinished) techs
+ * When showCheckedTotals=true: sums checked (completed) techs
  */
 function calculateResourceTotals(techs) {
     const totals = {};
 
     techs.forEach(tech => {
-        // Skip completed techs
-        if (state.completedTechs[tech.id]) {
-            return;
-        }
+        const isCompleted = !!state.completedTechs[tech.id];
+        if (isCompleted !== state.showCheckedTotals) return;
 
         // Add costs from formula
         if (tech.formula_id && tech.formula_id.cost) {
@@ -1054,6 +1055,14 @@ function renderResourceTotalsContainer(techs) {
     }
 
     resourceContainer.innerHTML = renderResourceTotals(techs);
+
+    const toggleBtn = resourceContainer.querySelector('.resource-totals-mode-toggle');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            state.showCheckedTotals = !state.showCheckedTotals;
+            renderResourceTotalsContainer(techs);
+        });
+    }
 }
 
 /**
@@ -1062,15 +1071,34 @@ function renderResourceTotalsContainer(techs) {
 function renderResourceTotals(techs) {
     const totals = calculateResourceTotals(techs);
     const resourceEntries = Object.entries(totals);
+    const titleText = state.showCheckedTotals
+        ? '체크한 연구 자원 총합'
+        : '체크 안된 (미완료) 연구 자원 총합';
+    const toggleLabel = state.showCheckedTotals
+        ? '자원 계산 방식 : 체크 기준'
+        : '자원 계산 방식 : 체크 안된 기준';
+    const toggleIcon = state.showCheckedTotals ? 'check_circle' : 'pending';
+    const emptyMessage = state.showCheckedTotals
+        ? '체크한 연구가 없습니다.'
+        : '모든 기술이 완료되었습니다!';
+
+    const toggleBtnHtml = `
+        <button class="resource-totals-mode-toggle island-btn">
+            <span class="material-symbols-outlined">${toggleIcon}</span>
+            ${toggleLabel}
+        </button>`;
 
     if (resourceEntries.length === 0) {
         return `
             <div class="resource-totals-container" id="resource-totals">
-                <h3 class="resource-totals-title">
-                    <span class="material-symbols-outlined">inventory_2</span>
-                    필요 자원 총합
-                </h3>
-                <p class="resource-totals-empty">모든 기술이 완료되었습니다!</p>
+                <div class="resource-totals-header">
+                    <h3 class="resource-totals-title">
+                        <span class="material-symbols-outlined">inventory_2</span>
+                        ${titleText}
+                        ${toggleBtnHtml}
+                    </h3>
+                </div>
+                <p class="resource-totals-empty">${emptyMessage}</p>
             </div>
         `;
     }
@@ -1084,7 +1112,8 @@ function renderResourceTotals(techs) {
             <div class="resource-totals-header">
                 <h3 class="resource-totals-title">
                     <span class="material-symbols-outlined">inventory_2</span>
-                    필요 자원 총합
+                    ${titleText}
+                    ${toggleBtnHtml}
                 </h3>
                 <div class="tech-progress">
                     <span class="tech-progress-text">${completedCount} / ${totalCount} 완료</span>
