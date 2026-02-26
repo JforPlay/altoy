@@ -38661,7 +38661,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":880.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"상시",
         "진영":"USS",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -46629,7 +46629,7 @@
         "클뜯 id":106015,
         "클뜯 함순이 id":10601,
         "함순이 이름":"롱 아일랜드",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"세뱃돈은 다다익선!",
         "영문 함순이 + 스킨 이름":"Bring On the Red Envelopes!",
         "스킨 타입":"Empery'S Fineries",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/106015\/painting.png",
@@ -46638,33 +46638,69 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/106015\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/106015\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/106015\/shipyard.png",
-        "설명":null,
+        "설명":"에헤헤~ 새해 복 많이 받아. 자, 세뱃돈 줘! ……응? 유령 씨한테 이미 줬다고? 세뱃돈은 많으면 많을수록 좋은 법이야~ 더 주면, 이 갓 만든 뜨끈뜨끈한 빠오즈를 지휘관 씨한테 줄게!",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"팥떡에 만두, 샤오롱바오…… 맛있는 먹거리가 사방에 널렸어! 이스트 글림의 야시장은 정말 최고야~!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/106015\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"떨어지면 어쩌려고 그러냐고……? 무슨 일이 생기면 유령 씨는 슬쩍 지휘관 씨한테 빙의해버리면 그만이야~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/106015\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"세뱃돈을 받으면 최신 게임부터 사야지……! 지휘관 씨, 유령 씨랑 같이 게임 하자~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/106015\/main3.ogg"
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
+        "상세확인":{
+            "voiceline":"아래 야시장을 구경하는 것보다, 유령 씨는 이렇게 지휘관 씨한테 착 달라붙어 있는 게 더 좋아~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/106015\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"에헤헤~ 새해 복 많이 받아. 자, 세뱃돈 줘! ……응? 유령 씨한테 이미 줬다고? 세뱃돈은 많으면 많을수록 좋은 법이야~ 더 주면, 이 갓 만든 뜨끈뜨끈한 빠오즈를 지휘관 씨한테 줄게!",
+            "voicelink":null
+        },
         "의뢰 완료":null,
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
+        "사랑":{
+            "voiceline":"지휘관 씨…… 혹시 유령 씨가 한입 베어 문 빠오즈가 먹고 싶은 거야? 농담이야~ 같이 먹자! 맛있는 건 아직 잔뜩 있으니까, 앞으로도 롱 아일랜드한테 잔뜩 먹여줘야 해? 지휘관 씨~♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/106015\/feeling5.ogg"
+        },
         "터치3":null,
-        "모항귀환":null,
+        "모항귀환":{
+            "voiceline":"지휘관 씨~, 세뱃돈 챙겨왔어~? 없으면…… 에헤헤, 유령 씨가 지휘관 씨한테 착 달라붙어서 장난칠 거야!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/106015\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"슬슬 야시장의 불꽃놀이가 시작될 거야! 지휘관 씨, 같이 보러 가자~!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/106015\/login.ogg"
+        },
         "실패":null,
         "우편":null,
         "임무":null,
-        "임무완료":null,
+        "임무완료":{
+            "voiceline":"임무 보상을 받았어~! 세뱃돈이 점점 쌓여가네~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/106015\/mission_complete.ogg"
+        },
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"지휘관 씨~, 세뱃돈 고마워~! ……빠오즈? 다 먹어버렸지롱! 에헤헤~♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/106015\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"지, 지휘관 씨… 빠오즈뿐만 아니라 롱 아일랜드까지 먹어버리려는 거야……?!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/106015\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"에헤헤~ 새해 복 많이 받아. 자, 세뱃돈 줘! ……응? 유령 씨한테 이미 줬다고? 세뱃돈은 많으면 많을수록 좋은 법이야~ 더 주면, 이 갓 만든 뜨끈뜨끈한 빠오즈를 지휘관 씨한테 줄게!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/106015\/unlock.ogg"
+        },
         "강화성공":null,
         "vote":null,
         "승리":null,
@@ -46701,11 +46737,11 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
-        "입수 영상":"X",
+        "스킨 타입 - 한글":"이스트 글림 스타일",
+        "상점 id":0.0,
+        "상점 카테고리 id":3.0,
+        "스킨 태그":"특수배경 (움짤)",
+        "입수 영상":"O",
         "재화":null,
         "기간":null,
         "진영":"USS",
@@ -52691,17 +52727,17 @@
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
         "사랑_ex":{
-            "voiceline":"지휘관님의 사랑과 신뢰, 제대로 느끼고 있어요…… 그때 지휘관님이 내리신 결정이 옳았다는 걸, 제 평생을 걸고 증명해 보일게요. 네. 저는 지휘관님께 있어서 가장 소중한 에식스니까요!",
+            "voiceline":"지휘관님의 사랑과 신뢰를 온몸으로 느끼고 있어요…… 그때 지휘관님이 옳은 선택을 하셨다는 걸, 제 평생을 바쳐 증명해 보일게요. 네. 저는 당신에게 하나뿐인 소중한 에식스니까요!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/feeling5_ex.ogg"
         },
         "터치3_ex":{
-            "voiceline":"조금만 더… 이대로 곁에 있어 주셨으면 해요……",
+            "voiceline":"조금만 더, 이대로 곁에 있어 주셨으면 해요……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/headtouch_ex.ogg"
         },
         "모항귀환_ex":null,
         "hp 경고_ex":null,
         "로그인_ex":{
-            "voiceline":"지휘관님, 귀환을 환영합니다! ……어, 어라? 너무 딱딱했나요? 이, 이건… 음… 지휘관님께서 돌아오셨으니 최대한 정중하게 맞이해드리고 싶어서……",
+            "voiceline":"지휘관님, 무사히 귀환하신 것을 축하드립니다! ……앗, 저도 모르게 너무 격식을 차려버렸네요. 그, 그러니까 이건, 지휘관님이 돌아오셨으니까 가능한 한 정중하게 맞이해 드리고 싶어서……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/login_ex.ogg"
         },
         "실패_ex":null,
@@ -52710,11 +52746,11 @@
         "임무완료_ex":null,
         "스킬_ex":null,
         "터치1_ex":{
-            "voiceline":"어, 잡담인가요? 맡겨주세요! ……네? 이번엔 출격인가요……?",
+            "voiceline":"…잡담인가요? 제게 맡겨 주세요! ——네? 이번엔 출격이라고요……?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/touch_ex.ogg"
         },
         "터치2_ex":{
-            "voiceline":"기, 기습을 하시다니……?!",
+            "voiceline":"기, 기습 공격을……?!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/touch2_ex.ogg"
         },
         "입수시_ex":null,
@@ -52724,17 +52760,17 @@
         "메인4":null,
         "메인1_ex":null,
         "메인5_ex":{
-            "voiceline":"지휘관님과 함께 이렇게 평온한 오후를 보내는 것도 좋네요…… 후후, 괜찮으시면 커피라도 내려 드릴까요?",
+            "voiceline":"지휘관님과 함께 평화로운 오후를 보내는 것도 참 좋네요…… 후훗, 괜찮으시면 제가 커피를 내려 드릴까요?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/main5_ex.ogg"
         },
         "메인6_ex":{
-            "voiceline":"…아, 지난 작전 기록을 보고 있었어요. …아니, 전술 분석을 하려던 게 아니라, 영상 속에 지휘관님의 모습이 있어서, 그만… 눈을 뗄 수 없게 되어서요……",
+            "voiceline":"…아, 지난 작전 기록을 보고 있었어요. 아니요, 전술 분석을 하던 건 아니고, 영상에 지휘관님 모습이 찍혀 있어서, 그게…… 저도 모르게 눈을 뗄 수가 없어서……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/main6_ex.ogg"
         },
         "메인7_ex":null,
         "메인8_ex":null,
         "메인4_ex":{
-            "voiceline":"……언젠가 에식스도 후배들의 동경을 받는 존재가 된다면… 그건 분명 지휘관님이 「동경 받을 수 있는 용기」를 주셨기 때문일 거예요.",
+            "voiceline":"언젠가 저도 후배들의 동경을 받는 존재가 된다면…… 그건 분명 지휘관님이 제게 '동경의 대상이 될 수 있다'는 용기를 주셨기 때문일 거예요.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/107090\/main4_ex.ogg"
         },
         "메인5":null,
@@ -65777,7 +65813,7 @@
         "스킨 태그":"쁘띠모션, 배경",
         "입수 영상":"X",
         "재화":980.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"한정 (2026\/03\/11)",
         "진영":"USS",
         "레어도":"UR",
         "ex_chat_status":0
@@ -170162,7 +170198,7 @@
         "스킨 태그":"쁘띠모션, 특수배경 (움짤)",
         "입수 영상":"X",
         "재화":1000.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"한정 (2026\/03\/11)",
         "진영":"IJN",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -182802,18 +182838,36 @@
         "전투개시_ex":null,
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
-        "사랑_ex":null,
-        "터치3_ex":null,
-        "모항귀환_ex":null,
+        "사랑_ex":{
+            "voiceline":"이 지경에 이르렀으니, 운명이라 할지라도 우리를 갈라놓을 수 없겠군…… 그대와 손을 맞잡고 함께 나아가는 행복…… 그 외에 아무것도 바랄 게 없어……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307080\/feeling5_ex.ogg"
+        },
+        "터치3_ex":{
+            "voiceline":"그, 그곳은… 조금 민감해서…… 으응……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307080\/headtouch_ex.ogg"
+        },
+        "모항귀환_ex":{
+            "voiceline":"손바닥에서 느껴지는 온기…… 그대인가……? 귀환을 축하한다……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307080\/home_ex.ogg"
+        },
         "hp 경고_ex":null,
-        "로그인_ex":null,
+        "로그인_ex":{
+            "voiceline":"상사의 문을 지나야 연모의 수고로움을 깨닫는 법…… 그대를 간절히 연모한다……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307080\/login_ex.ogg"
+        },
         "실패_ex":null,
         "우편_ex":null,
         "임무_ex":null,
         "임무완료_ex":null,
         "스킬_ex":null,
-        "터치1_ex":null,
-        "터치2_ex":null,
+        "터치1_ex":{
+            "voiceline":"응…… 이대로 그대를 품에 안고, 조금 더 숙면을 취해야지… Zzzz……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307080\/touch_ex.ogg"
+        },
+        "터치2_ex":{
+            "voiceline":"음…… 이처럼 다정하다니, 이 좋은 밤의 꿈이 흩어지지는 않겠군……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307080\/touch2_ex.ogg"
+        },
         "입수시_ex":null,
         "강화성공_ex":null,
         "승리_ex":null,
@@ -182824,9 +182878,18 @@
         },
         "메인1_ex":null,
         "메인5_ex":null,
-        "메인6_ex":null,
-        "메인7_ex":null,
-        "메인8_ex":null,
+        "메인6_ex":{
+            "voiceline":"아무리 좋은 것도 영원하진 않지…… 허나 그대와 지내는 시간은 비록 찰나일지라도 천 년의 세월보다 값지다……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307080\/main6_ex.ogg"
+        },
+        "메인7_ex":{
+            "voiceline":"지치거든 내 품 안에 몸을 맡겨라…… 그때는 그대와 함께 아름다운 꿈으로 여정을 떠나지……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307080\/main7_ex.ogg"
+        },
+        "메인8_ex":{
+            "voiceline":"그대가 맡긴 소임에 점차 익숙해지는군…… 그대와 함께라면 고난 또한 헤쳐 나갈 수 있으리……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307080\/main8_ex.ogg"
+        },
         "메인4_ex":null,
         "메인5":{
             "voiceline":"이 글자는… 음… 아, 방금 실수로 부딪힌 건가? 미안하다…",
@@ -182847,7 +182910,7 @@
         "기간":null,
         "진영":"IJN",
         "레어도":"UR",
-        "ex_chat_status":0
+        "ex_chat_status":1
     },
     {
         "클뜯 id":307081,
@@ -183354,7 +183417,7 @@
         "클뜯 id":307085,
         "클뜯 함순이 id":30708,
         "함순이 이름":"시나노 ",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"녹아드는 꿈속의 포옹",
         "영문 함순이 + 스킨 이름":"Embrace Upon A Melted Dream",
         "스킨 타입":"Empery'S Fineries",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/307085\/painting.png",
@@ -183363,33 +183426,66 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/307085\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/307085\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/307085\/shipyard.png",
-        "설명":null,
+        "설명":"후우…… 함께 이 기이하고도 절묘한 술을 즐기자고 약조했는데, 취기에 젖어버렸군…… 입술에 몇 방울밖에 남지 않았구나… 그대도… 함께 즐길 텐가…?",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"전례 없는 묘경…… 그대…… 반 걸음만 더 다가와 첩과 침상 위를 함께하며…… 꿈을 자아내 주겠는가……?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307085\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"후우…… 지금은 잠들 때가 아니지…… 그대가 선사한 산들바람 같은 감촉을 천천히 음미하마……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307085\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"취기가 돌아 감정은 고조되는군…… 마음 깊은 곳에서 솟구치는 환희의 정욕은…… 나의 것이자 그대의 것이기도……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307085\/main3.ogg"
+        },
         "전투개시":null,
         "상세확인":null,
-        "드랍 설명":null,
+        "드랍 설명":{
+            "voiceline":"후우…… 함께 이 기이하고도 절묘한 술을 즐기자고 약조했는데, 취기에 젖어버렸군…… 입술에 몇 방울밖에 남지 않았구나… 그대도… 함께 즐길 텐가…?",
+            "voicelink":null
+        },
         "의뢰 완료":null,
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "사랑":{
+            "voiceline":"현실보다 더욱 꿈결 같고, 몽환보다 강렬하군. 그대의 애정을 머리로는 알고 있었으나, 이토록 몸으로 직접 느끼니…… 나도 모르게 취해버리는군…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307085\/feeling5.ogg"
+        },
+        "터치3":{
+            "voiceline":"음…… 이곳이 마음에 든 그대의 기쁨이…… 이 몸에도 고스란히 느껴지는군……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307085\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"시나노, 그대를 애타게 기다렸다…… 그대의 갈망도 고동도, 바람을 타고 이 시나노의 마음으로 전해지는군……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307085\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"이 술을 함께 나누면, 그대와 오감을 공유하여 지각과 정념이 하나로 녹아들 터…… 아아, 이루 표현할 수 없을 만큼 기분이 좋구나……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307085\/login.ogg"
+        },
         "실패":null,
         "우편":null,
         "임무":null,
         "임무완료":null,
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"그대의 감촉이 이제 내 감촉과 하나가 되어……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307085\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"음…… 두 가지의 감미로움이 겹쳐져…… 마음이…… 읏…… 녹아내릴 것만 같군…… 아아……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307085\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"후우…… 함께 이 기이하고도 절묘한 술을 즐기자고 약조했는데, 취기에 젖어버렸군…… 입술에 몇 방울밖에 남지 않았구나… 그대도… 함께 즐길 텐가…?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/307085\/unlock.ogg"
+        },
         "강화성공":null,
         "vote":null,
         "승리":null,
@@ -183426,13 +183522,13 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
-        "입수 영상":"X",
-        "재화":null,
-        "기간":null,
+        "스킨 타입 - 한글":"이스트 글림 스타일",
+        "상점 id":71299.0,
+        "상점 카테고리 id":3.0,
+        "스킨 태그":"L2D",
+        "입수 영상":"O",
+        "재화":1100.0,
+        "기간":"한정 (2026\/03\/11)",
         "진영":"IJN",
         "레어도":"UR",
         "ex_chat_status":0
@@ -188647,12 +188743,12 @@
         },
         "전투개시_ex":null,
         "상세확인_ex":{
-            "voiceline":"같이 비행기 전람회 갔을 때 나만 신나서 계속 이것저것 떠들었는데… 지휘관은 혹시 지루했어……? 재, 재밌었다고? 지, 진짜…? 에헤헤~\/\/\/",
+            "voiceline":"같이 비행기 전시회에 갔을 때 나만 신나서 계속 떠들었던 것 같은데…… 지휘관, 지루하지 않았어……? 응? 즐거웠다고? 저, 정말? 에헤헤~\/\/\/",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/317010\/detail_ex.ogg"
         },
         "의뢰 완료_ex":null,
         "사랑_ex":{
-            "voiceline":"개개인의 힘이 아무리 미약해도 지휘관은 그걸 잘 살려서 놀라운 결과를 만들어내잖아! 그런 지휘관 옆에서 하나하나 최선을 다해 나갈 수 있다는 게… 나, 진짜 너무 행복해~",
+            "voiceline":"한 사람의 힘이 아무리 작아도, 지휘관은 그걸 활용해서 생각지도 못한 결과를 만들어내! 그런 지휘관 곁에서 하나하나 열심히 해나갈 수 있어서…… 나, 정말 행복해~",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/317010\/feeling5_ex.ogg"
         },
         "터치3_ex":{
@@ -188660,12 +188756,12 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/317010\/headtouch_ex.ogg"
         },
         "모항귀환_ex":{
-            "voiceline":"어서 와, 지휘관! 비행기 전람회 티켓을 구했어~ 시간 있으면 같이 보러 가자!",
+            "voiceline":"어서 와, 지휘관! 비행기 전시회 티켓을 구했어~. 시간 있으면 같이 보러 가자!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/317010\/home_ex.ogg"
         },
         "hp 경고_ex":null,
         "로그인_ex":{
-            "voiceline":"지휘관, 오늘 하늘도 파래서 정말 예쁘다! 같이 세이란 타고 하늘을 날고 싶어~",
+            "voiceline":"지휘관, 오늘 하늘도 파랗고 정말 예뻐! 같이 세이란을 타고 하늘을 날아다니고 싶어~",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/317010\/login_ex.ogg"
         },
         "실패_ex":null,
@@ -188674,11 +188770,11 @@
         "임무완료_ex":null,
         "스킬_ex":null,
         "터치1_ex":{
-            "voiceline":"영~차. 지휘관, 이 뿔 만져보고 싶어서 그러지? 만져도 돼~",
+            "voiceline":"영차. 지휘관, 이 뿔이 궁금했지? 만져봐도 괜찮아~",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/317010\/touch_ex.ogg"
         },
         "터치2_ex":{
-            "voiceline":"앗!? 지, 지휘관… 그렇게 갑자기 만지면 어떻게 해\/\/\/",
+            "voiceline":"꺅?! 지, 지휘관, 기습은 안 된다니까\/\/\/",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/317010\/touch2_ex.ogg"
         },
         "입수시_ex":null,
@@ -188688,17 +188784,17 @@
         "메인4":null,
         "메인1_ex":null,
         "메인5_ex":{
-            "voiceline":"지휘관은 어떤 색 좋아해? 앗, 나랑 같은 색깔…? 그, 그렇구나…… 에헤헤♪",
+            "voiceline":"지휘관은 어떤 색을 좋아해? 앗, 나랑 같은 색……? 그, 그렇구나…… 에헤헤♪",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/317010\/main5_ex.ogg"
         },
         "메인6_ex":{
-            "voiceline":"구름 속에 숨는 함재기, 바다에 숨는 잠항함… 다 기습에 좋은 애들이야~",
+            "voiceline":"구름 속에 숨는 함재기, 바닷속에 숨는 잠수정, 둘 다 기습을 노리기에 정말 좋아.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/317010\/main6_ex.ogg"
         },
         "메인7_ex":null,
         "메인8_ex":null,
         "메인4_ex":{
-            "voiceline":"평소엔 바다에서 하늘을 올려다보지만, 하늘에서 바다를 내려다보면 어떤 느낌일까……? 시원하게 탁 트여서 감동적이겠지?",
+            "voiceline":"평소에는 바다에서 하늘을 올려다보지만, 하늘에서 바다를 내려다보면 어떤 느낌일까…… 풍경이 좋아서 감동하려나?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/317010\/main4_ex.ogg"
         },
         "메인5":null,
@@ -193270,7 +193366,7 @@
         "스킨 태그":"L2D, 듀얼",
         "입수 영상":"O",
         "재화":1680.0,
-        "기간":"한정 (2025\/06\/25)",
+        "기간":"한정 (2026\/03\/11)",
         "진영":"IJN",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -198298,7 +198394,7 @@
         "클뜯 id":431234,
         "클뜯 함순이 id":40123,
         "함순이 이름":"Z23",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"기상의 묵희",
         "영문 함순이 + 스킨 이름":"Inky Antics",
         "스킨 타입":"Empery'S Fineries",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/431234\/painting.png",
@@ -198307,36 +198403,81 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/431234\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/431234\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/431234\/shipyard.png",
-        "설명":null,
+        "설명":"아, 지휘관님? 같이 글씨 연습하지 않으실래요? ……글씨라기보단 그림 같다고요? 마, 말씀도 참!",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"네? 진지하게 연습하는 모습이 귀엽다고요……? 어휴, 참…… 중요한 건 제가 아니라 제가 쓴 글씨라고요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"글씨는 정성을 들여 쓰는 게 중요해요. ……지휘관님도 어떠세요? 먹을 갈아 드릴 테니, 이쪽에 편히 앉으세요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"이스트 글림 사람들 말로는, 글을 쓸 때 마음을 가라앉히고 정신을 집중하면, 생각하는 게 자연스레 붓끝에 맺힌다는데… 아, 아차! 나도 모르게 지휘관님을 그려버렸어……!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/main3.ogg"
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
+        "상세확인":{
+            "voiceline":"이 의상이요? 재블린이랑 동료들이 골라준 거예요. 이걸 입으면 마음이 차분해진다고 하던데…… 방금은 엄청 집중한 것처럼 보였다고요? 저, 정말인가요?!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"아, 지휘관님? 같이 글씨 연습하지 않으실래요? ……글씨라기보단 그림 같다고요? 마, 말씀도 참!",
+            "voicelink":null
+        },
         "의뢰 완료":null,
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
         "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "터치3":{
+            "voiceline":"위로해 주시는 건가요……? 괘, 괜찮아요! 곧 잘하는 모습을 보여드릴게요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"지휘관님, 어서 오세요! 네? 제 글씨를 확인하고 싶다고요……? 조, 조금만 더 시간을 주세요! 금방 요령을 터득할 테니까요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
-        "실패":null,
+        "로그인":{
+            "voiceline":"지휘관님, 방금 그건…… 으흠! 잠깐 연습한 것뿐이에요! 이제부터가 진짜니까요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/login.ogg"
+        },
+        "실패":{
+            "voiceline":"으으…… 어렵네요……. 초보자용 교본을 읽는 것부터 시작해야겠어요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/lose.ogg"
+        },
         "우편":null,
-        "임무":null,
-        "임무완료":null,
+        "임무":{
+            "voiceline":"글씨 연습은 혼자서도 할 수 있으니까, 지휘관님은 아직 끝나지 않은 임무에 신경 써주세요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/mission.ogg"
+        },
+        "임무완료":{
+            "voiceline":"임무가 끝난 건가요? 음…… 저도 조금만 더 하면 돼요! ……아마도요?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/mission_complete.ogg"
+        },
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"여기, 틀렸다고요……? 으으…… 생각했던 것보다 훨씬 어렵네요……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"붓을 쓰는 법? ……자, 잠깐만요! 뭐 하는데 쓰시려고요?!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"아, 지휘관님? 같이 글씨 연습하지 않으실래요? ……글씨라기보단 그림 같다고요? 마, 말씀도 참!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/unlock.ogg"
+        },
         "강화성공":null,
         "vote":null,
-        "승리":null,
+        "승리":{
+            "voiceline":"분명 제가 잘 쓴다고 그랬죠?!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/431234\/win_mvp.ogg"
+        },
         "전투개시_ex":null,
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
@@ -198370,13 +198511,13 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
-        "입수 영상":"X",
-        "재화":null,
-        "기간":null,
+        "스킨 타입 - 한글":"이스트 글림 스타일",
+        "상점 id":71296.0,
+        "상점 카테고리 id":3.0,
+        "스킨 태그":"특수배경 (움짤)",
+        "입수 영상":"O",
+        "재화":800.0,
+        "기간":"한정 (2026\/03\/11)",
         "진영":"KMS",
         "레어도":"SR",
         "ex_chat_status":0
@@ -206274,7 +206415,7 @@
         "스킨 태그":"특수배경 (움짤)",
         "입수 영상":"X",
         "재화":800.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"상시",
         "진영":"KMS",
         "레어도":"SR",
         "ex_chat_status":0
@@ -217262,14 +217403,14 @@
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
         "사랑_ex":{
-            "voiceline":"끝도 없는 기다림 속에서, 수천수백 번이나 혹한의 끝을 바라보면서… 모든 절망과 고통, 외로움이 사라지는 순간을 기다렸어…… 그리고 드디어 내 소원이 이뤄졌어…… 네가 내 곁에 있어 준 덕분에.",
+            "voiceline":"끝이 보이지 않는 기다림 속에서, 수천 수백 번이나 고난의 끝을 바라보며 모든 절망과 고통, 외로움이 사라질 그 순간이 오기를 바랐어…… 그리고 지금, 마침내 나의 소원이 이루어졌어…… 지휘관이 곁에 있어서.",
             "voicelink":null
         },
         "터치3_ex":null,
         "모항귀환_ex":null,
         "hp 경고_ex":null,
         "로그인_ex":{
-            "voiceline":"지휘관, 드디어 왔네. ……기다리고 있으면 역시 언젠가는 보답받는 법이구나.",
+            "voiceline":"지휘관, 드디어 왔네. ……역시, 기다리면 반드시 보답받는 법이구나.",
             "voicelink":null
         },
         "실패_ex":null,
@@ -217278,11 +217419,11 @@
         "임무완료_ex":null,
         "스킬_ex":null,
         "터치1_ex":{
-            "voiceline":"네 체온… 따뜻해.",
+            "voiceline":"지휘관의 체온… 따뜻해.",
             "voicelink":null
         },
         "터치2_ex":{
-            "voiceline":"……그렇게 못 참겠어? 지금 이 순간, 설마 내가 같은 마음이 될 줄이야……",
+            "voiceline":"……그렇게 못 참겠어? 지금 이 순간에 설마 지휘관과 같은 마음이 될 줄이야……",
             "voicelink":null
         },
         "입수시_ex":null,
@@ -217292,17 +217433,17 @@
         "메인4":null,
         "메인1_ex":null,
         "메인5_ex":{
-            "voiceline":"가끔 멀리 나갈 때면 문득 생각나. 날 기다리는 사람이 있다는 걸…… 그러면 시간이 갑자기 빨리 흐르는 것 같아.",
+            "voiceline":"가끔 멀리 나갈 때면, 나를 기다려 주는 사람이 있다는 게 문득 생각나고는 해…… 그러면 시간의 흐름이 갑자기 빨라지는 기분이 들어.",
             "voicelink":null
         },
         "메인6_ex":{
-            "voiceline":"나한테 지휘관은 얼음을 녹이는 아침 태양 같아…… 조금만 더 가까이 갈 수 있게 해줘.",
+            "voiceline":"나에게 지휘관은 얼음을 녹이는 아침의 태양 같아…… 조금만 더, 곁으로 다가가게 해줘.",
             "voicelink":null
         },
         "메인7_ex":null,
         "메인8_ex":null,
         "메인4_ex":{
-            "voiceline":"외로움을 참는 건 자신 있는데…… 지금은 네가 없는 시간이 1분 1초라도 너무 길게 느껴져……",
+            "voiceline":"외로움을 참는 건 익숙하지만…… 이제는 지휘관이 없는 시간은 단 1분 1초라도 너무나 길게 느껴져……",
             "voicelink":null
         },
         "메인5":null,
@@ -221276,27 +221417,27 @@
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/407010\/shipyard.png",
         "설명":"항공모함 그라프 체펠린",
         "자기소개":{
-            "voiceline":"나는 체펠린……이 이름은 버려도 상관없지만, 부르기 쉽다면 날 이렇게 불러라. …소원 말인가, 세계를 멸하는 것이다……허나 지금은, 경의 부름에 응하도록 하지. 경은 이제 우리 전군의 일부가 되었으니 말이다.",
+            "voiceline":"나는 체펠린…… 이 이름은 버려도 상관없지만 부르기 쉽다면 그렇게 불러라. ……내 소망 말인가? 세계를 멸망시키는 것이지……하지만 지금은 경의 부름에 응하마. 경은 이제 우리 전군의 일부가 되었으니 말이다.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/profile.ogg"
         },
         "메인1":{
-            "voiceline":"높은 곳은 좋아한다. 모든 걸 내려다보며, 모든 것의 파멸을 눈에 담을 수 있으니 말이지……",
+            "voiceline":"높은 곳이 좋다. 모든 것을 내려다보며 모든 파멸을 볼 수 있으니……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/main1.ogg"
         },
         "메인2":{
-            "voiceline":"잃어버려도 되찾을 수 있는 건……처음부터 존재해선 안 된다. 그렇지 않나?",
+            "voiceline":"잃어도 되찾을 수 있는 건…… 처음부터 있어선 안 된다. 그리 생각하지 않나?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/main2.ogg"
         },
         "메인3":{
-            "voiceline":"인생이 결국 나눠 받은 카드로 게임을 하는 것뿐이라면, 더욱 게임 그 자체를 부숴버리고 싶어지진 않나?",
+            "voiceline":"그저 받은 카드로 게임을 하는 것만이 인생이라면, 차라리 게임 그 자체를 부숴 버리는 건 어떤가?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/main3.ogg"
         },
         "전투개시":{
-            "voiceline":"그럼 시작하지, 우리의 파괴를",
+            "voiceline":"그럼 시작하자, 우리의 전쟁을.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/battle.ogg"
         },
         "상세확인":{
-            "voiceline":"만약 신이 있다면, 그 녀석부터 묻어버리도록 하지……",
+            "voiceline":"만약 신이 있다면 그 녀석부터 묻어 버리도록 하지……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/detail.ogg"
         },
         "드랍 설명":{
@@ -221304,60 +221445,63 @@
             "voicelink":null
         },
         "의뢰 완료":{
-            "voiceline":"돌아왔나……흥, 항구에서 기뻐하고 있는 것 같군……",
+            "voiceline":"돌아왔는가…… 흥, 다들 기뻐하는 것 같군……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/expedition.ogg"
         },
         "실망":{
-            "voiceline":"경은 아니란 건가.",
+            "voiceline":"결국 경은 아니었군.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/feeling1.ogg"
         },
         "낯섦":{
-            "voiceline":"아아…이 얼마나 감미로운…하지만 감미로운 것은 단명하는 법…영원히 살아갈 수 있는 건 그저 차가운 증오뿐이다.",
+            "voiceline":"아아… 참으로 감미롭구나… 하지만 감미로운 것은 오래가지 않지… 영원히 살아갈 수 있는 것은 그저 차가운 증오뿐이다.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/feeling2.ogg"
         },
         "호감":{
-            "voiceline":"신을 향한 기도는 과연 의미가 있는가? 신이 대답해주는가? Nein, 신은 자비가 없기에 신이 될 수 있는 거다. ",
+            "voiceline":"신에게 바치는 기도는 과연 의미가 있는가? 신이 응답은 해주는가? Nein, 신은 자비가 없기에 신으로서 있을 수 있는 것이다.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/feeling3.ogg"
         },
         "기쁨":{
-            "voiceline":"운명을 믿을 생각은 없지만, 경과의 만남이 운명이라면……흥, 아이러니하군. 최악의 과거와 최선의 미래를 동시에 주다니……그럼 내 증오는 과연 어떤 의미를 갖게 되는 걸까……",
+            "voiceline":"운명을 믿지는 않지만, 경과 만난 것이 운명이라고 한다면…… 흠, 짓궂기도 하지. 최악의 과거와 최선의 미래를 동시에 쥐어 주다니…… 그렇다면 나의 증오는 과연 어떤 의미를 가지는 것일까……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/feeling4.ogg"
         },
         "사랑":{
-            "voiceline":"경이 있는 세상이라면 그리 시시하고 증오스럽지만은 않겠지. 안심하도록. 경이 세상의 적이 된다 해도, 내가 경의 편에 설 것이다. 오히려, 그날이 오길 기대하고 있다고. 후후후……",
+            "voiceline":"경이 있는 세상이라면 그리 시시해 하거나 증오할 것도 없겠지. 안심하거라. 경이 세상의 적이 된다 해도 내가 경의 편에 설 테니. 오히려 그런 날이 오는 게 기대되는군…… 후후후.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/feeling5.ogg"
         },
-        "터치3":null,
+        "터치3":{
+            "voiceline":"그 행동에는 대체 어떤 의미가……?",
+            "voicelink":null
+        },
         "모항귀환":{
-            "voiceline":"경들의 싸움도, 발버둥도, 전부 종언의 양식이 될 뿐…",
+            "voiceline":"경들이 벌인 싸움도, 발버둥도, 모두 종언의 양식이 될 뿐…",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/home.ogg"
         },
         "hp 경고":{
-            "voiceline":"철과 피의 냄새……",
+            "voiceline":"철과, 피 냄새……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/hp_warning.ogg"
         },
         "로그인":{
-            "voiceline":"검은 산양의 뿔피리는 이미 울려 퍼지고 있다. 초조해할 거 없어, 신중히 기다리는 게 좋아.",
+            "voiceline":"검은 산양의 뿔피리는 이미 울려퍼졌다. 초조해 하지 말고, 신중히 기다려라.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/login.ogg"
         },
         "실패":{
-            "voiceline":"다음에야말로 죽음보다 깊은 절망을 맛보게 해주지…",
+            "voiceline":"다음에야말로 죽음보다 깊은 절망을 맛보게 해주마…",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/lose.ogg"
         },
         "우편":{
-            "voiceline":"사람과 접하는 시간을 소중히 하는 게 좋아. 이제 그럴 시간도 없어질 테니.",
+            "voiceline":"다른 사람과 함께하는 시간을 소중히 해라. 머잖아 그럴 시간도 사라질 테니.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/mail.ogg"
         },
         "임무":{
-            "voiceline":"임무를 주는 자가, 과연 경이 진정 노력을 바칠 만한 존재일까?",
+            "voiceline":"임무를 주는 자… 과연 경이 진정으로 노력을 바칠 만한 존재일까?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/mission.ogg"
         },
         "임무완료":{
-            "voiceline":"임무의 보수……받아 두도록.",
+            "voiceline":"임무 보상…… 어서 받거라.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/mission_complete.ogg"
         },
         "서약":{
-            "voiceline":"흠? 경은 드디어 세상의 적이 될 결심을 한 것인가……뭐…? 나와 함께 하고 싶을 뿐, 이란 건가. 뭐 좋아, 우리 앞을 가로막는 모든 것들을 없애버린다. 그것 또한 재미있겠군.",
+            "voiceline":"흐음? 드디어 세상을 적으로 돌릴 결심을 한 것인가? 뭐…? 나와 함께 하고 싶을 뿐…이라고? 뭐, 좋다. 우리 앞을 가로막는 모든 것을 부숴 버리는 것 또한 재미있겠군.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/propose.ogg"
         },
         "스킬":{
@@ -221365,52 +221509,82 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/skill.ogg"
         },
         "터치1":{
-            "voiceline":"증오한다, 모든 것을.",
+            "voiceline":"증오한다… 모든 것을.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/touch.ogg"
         },
         "터치2":{
-            "voiceline":"후후후…과연 내가 선택한 자……좋은 배짱이군.",
+            "voiceline":"후후후… 과연 내가 선택한 자…… 좋은 배짱이군.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/touch2.ogg"
         },
         "입수시":{
-            "voiceline":"지휘관인가……나의 이름은 체펠린. 자, 조건이 모두 갖추어졌다. 그럼 막을 열도록 하지…… 종언의 교향곡을.",
+            "voiceline":"지휘관인가…… 내 이름은 체펠린. 자, 조건이 모두 갖추어졌다. 그럼 막을 열도록 하지…… 종언의 교향곡을.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/unlock.ogg"
         },
         "강화성공":{
-            "voiceline":"흥, 힘만으로 모든 게 정해진다면 좋으련만……",
+            "voiceline":"흠, 힘만으로 모든 것이 정해진다면 좋을 텐데……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/upgrade.ogg"
         },
         "vote":null,
         "승리":{
-            "voiceline":"적에게 걸맞은 곳은 무덤밖에 없으리니.",
+            "voiceline":"만약 신이 있다면 그 녀석부터 묻어 버리도록 하지……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/407010\/win_mvp.ogg"
         },
         "전투개시_ex":null,
-        "상세확인_ex":null,
+        "상세확인_ex":{
+            "voiceline":"신을 죽일 야심을 경 또한 품고 있다면…… 여정을 함께 하자. 정점에 오른 신들이라 해도, 우리의 적수는 되지 못할 테니.",
+            "voicelink":null
+        },
         "의뢰 완료_ex":null,
-        "사랑_ex":null,
-        "터치3_ex":null,
-        "모항귀환_ex":null,
+        "사랑_ex":{
+            "voiceline":"과거에 경은 「종말 뒤에는 탄생이 있다」고 말했지. ……솔직히 말해 「탄생」이 어떤 것인지는 잘 모르겠군. 하지만 경과 함께 그것을 지켜보고…… 또 완수할 생각이다.",
+            "voicelink":null
+        },
+        "터치3_ex":{
+            "voiceline":"경 나름의 치하라는 건가? 뭐 좋다…… 없는 것보다는 낫군……",
+            "voicelink":null
+        },
+        "모항귀환_ex":{
+            "voiceline":"지휘관, 우리 둘이 종말의 그림자에 뒤덮여 있을지라도 이것만은 결코 잊지 마라…… 경이 이루는 모든 것에는 의미가 있다는 것을.",
+            "voicelink":null
+        },
         "hp 경고_ex":null,
-        "로그인_ex":null,
+        "로그인_ex":{
+            "voiceline":"들어라. 종말의 종소리가 울려 퍼지고 있다. 내 품 안에서 눈을 감는 것이 경의 바람이라면―― 그러도록 허락하마.",
+            "voicelink":null
+        },
         "실패_ex":null,
         "우편_ex":null,
         "임무_ex":null,
         "임무완료_ex":null,
         "스킬_ex":null,
-        "터치1_ex":null,
-        "터치2_ex":null,
+        "터치1_ex":{
+            "voiceline":"어둠이 깊어질수록, 빛 또한 그 광채를 더할 테지……",
+            "voicelink":null
+        },
+        "터치2_ex":{
+            "voiceline":"경의 담력은 늘 내 상상을 웃도는군…… 싫지는 않다만.",
+            "voicelink":null
+        },
         "입수시_ex":null,
         "강화성공_ex":null,
         "승리_ex":null,
         "함대 특수대사":null,
         "메인4":null,
         "메인1_ex":null,
-        "메인5_ex":null,
-        "메인6_ex":null,
+        "메인5_ex":{
+            "voiceline":"이미 잃어버린 것은 어쩔 수 없지. 곁에 있어 주는 존재를 소중히 하는 것… 해야 할 일은 그것뿐이다.",
+            "voicelink":null
+        },
+        "메인6_ex":{
+            "voiceline":"이 세상은 결국 멸망을 기다리는 반상의 유희에 불과하지…… 하지만 장기말을 움직이는 것이 경이라면, 기꺼이 함께 파멸을 받아들이마.",
+            "voicelink":null
+        },
         "메인7_ex":null,
         "메인8_ex":null,
-        "메인4_ex":null,
+        "메인4_ex":{
+            "voiceline":"경도 위에서 군림하는 자로서, 나처럼 내려다보는 것을 좋아하는가? 흠, 경과는 같은 시야를 가진 듯하군.",
+            "voicelink":null
+        },
         "메인5":null,
         "메인6":null,
         "메인2_ex":null,
@@ -221427,7 +221601,7 @@
         "기간":null,
         "진영":"KMS",
         "레어도":"SSR",
-        "ex_chat_status":0
+        "ex_chat_status":1
     },
     {
         "클뜯 id":407011,
@@ -221547,7 +221721,7 @@
         "클뜯 id":407012,
         "클뜯 함순이 id":40701,
         "함순이 이름":"그라프 체펠린",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"만취의 붉은 빛",
         "영문 함순이 + 스킨 이름":"Intoxicating Crimson",
         "스킨 타입":"Empery'S Fineries",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/407012\/painting.png",
@@ -221556,33 +221730,66 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/407012\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/407012\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/407012\/shipyard.png",
-        "설명":null,
+        "설명":"드디어 왔군. ……경과 함께 이 아름다운 밤을 누릴 수 있다면, 설령 다음 순간 종말을 마주한다 해도 나는…… 상관없다.",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"제대로 안 입으면 감기 걸린다고? ……지금 이 차림을 두고 얇게 입은 거라고 하는 건가? 그렇다면 다른 자들은 대체……",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"왜 그리 멀리 떨어져 있지? 내 곁이 싫은 건가……? 좁다고? 조금만 참으면 될 것을…… 좀 더 가까이 오도록 해라.",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"이스트 글림의 술은 확실히 색다르군…… 치열하면서도 정직한 칼칼함…… 조금…… 목이 타는군…….",
+            "voicelink":null
+        },
         "전투개시":null,
         "상세확인":null,
-        "드랍 설명":null,
+        "드랍 설명":{
+            "voiceline":"드디어 왔군. ……경과 함께 이 아름다운 밤을 누릴 수 있다면, 설령 다음 순간 종말을 마주한다 해도 나는…… 상관없다.",
+            "voicelink":null
+        },
         "의뢰 완료":null,
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "사랑":{
+            "voiceline":"한때는 이 지루한 세계가 하루빨리 종말에 다다르길 바랐건만, 어느새 이 등불 아래에서 내가 돌아갈 곳을 찾고 말았군…… 경이라는 존재가 나의 미래에 한 줄기 기대를 품게 한 모양이다…",
+            "voicelink":null
+        },
+        "터치3":{
+            "voiceline":"음…… 내가 분명…… 취하지 않았다고 했을 텐데…… 뜨겁게 느껴지는 건…… 단순한 생리적 현상일 뿐이다……",
+            "voicelink":null
+        },
+        "모항귀환":{
+            "voiceline":"경이 마실 술도 챙겨두었다. 함께 마시지 않겠나? 취기가 오르면 누워서 쉬어도 좋다…… 물론 내 곁에서……",
+            "voicelink":null
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"밖이 절경이군. 만약 경이 이 풍경을 놓친다면, 나는…… 다시 한번 경을 초대하겠지.",
+            "voicelink":null
+        },
         "실패":null,
         "우편":null,
         "임무":null,
         "임무완료":null,
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"……정작 취한 건 경 아닌가? 설령 앞으로 수백 잔을 더 마신다 해도, 나는 누구보다 맑은 정신으로 종말을 맞이할 수 있다.",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"음…… 먼저 창문부터 닫아라……",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"드디어 왔군. ……경과 함께 이 아름다운 밤을 누릴 수 있다면, 설령 다음 순간 종말을 마주한다 해도 나는…… 상관없다.",
+            "voicelink":null
+        },
         "강화성공":null,
         "vote":null,
         "승리":null,
@@ -221619,13 +221826,13 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
-        "입수 영상":"X",
-        "재화":null,
-        "기간":null,
+        "스킨 타입 - 한글":"이스트 글림 스타일",
+        "상점 id":71297.0,
+        "상점 카테고리 id":3.0,
+        "스킨 태그":"배경",
+        "입수 영상":"O",
+        "재화":880.0,
+        "기간":"한정 (2026\/03\/11)",
         "진영":"KMS",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -229199,153 +229406,177 @@
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/499020\/shipyard.png",
         "설명":"전함 - 프리드리히 데어 그로세 ",
         "자기소개":{
-            "voiceline":"메탈 블러드 해군, 전함 프리드리히 데어 그로세, H급 전함의 계획형. 자, 꼬마야… 잠이 오지 않는다면, 자장가를 불러줄게.",
+            "voiceline":"메탈 블러드 해군, 전함 프리드리히 데어 그로세… H급 전함의 계획형이란다. 자, 꼬마야… 잠이 오지 않는다면 자장가를 들려줄게.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/profile.ogg"
         },
         "메인1":{
-            "voiceline":"전투 중에 억눌렀던 격정 같은 건, 이 곡을 들으며 발산하도록 하렴.",
+            "voiceline":"전투 중에 억눌렀던 격정 따위는 이 선율을 듣고 해방하렴.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/main1.ogg"
         },
         "메인2":{
-            "voiceline":"전장에서 내가 잔혹해 보인다고? 후후후… 칭찬으로 받아들일게.",
+            "voiceline":"전장의 내가 잔혹해 보인다고? 후후후… 칭찬으로 받아들여 줄게.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/main2.ogg"
         },
         "메인3":{
-            "voiceline":"날 화내게 해도, 제대로 사과한다면 용서해줄게.",
+            "voiceline":"나를 화나게 하더라도, 제대로 사과하면 용서해 줄게.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/main3.ogg"
         },
         "전투개시":{
-            "voiceline":"연주하라! 증오, 공포, 절망을……!",
+            "voiceline":"선율을 연주하라! 증오, 공포, 절망을——!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/battle.ogg"
         },
         "상세확인":{
-            "voiceline":"꼬마야, 절대적인 승리를 쟁취하려면, 절대적인 이성이 필요하단다.",
+            "voiceline":"꼬마야, 절대적인 승리를 얻기 위해선 절대적인 이성이 필요하단다.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/detail.ogg"
         },
         "드랍 설명":{
-            "voiceline":"전함 - 프리드리히 데어 그로세",
+            "voiceline":"전함 프리드리히 데어 그로세",
             "voicelink":null
         },
         "의뢰 완료":{
-            "voiceline":"의뢰 완수한 아이들은 제대로 마중 나가주지 않으면 못 써.",
+            "voiceline":"의뢰를 마치고 돌아온 아이들은 제대로 맞이해 줘야 한단다.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/expedition.ogg"
         },
         "실망":{
-            "voiceline":"제대로 반성, 하고 있니?",
+            "voiceline":"제대로 반성…하고 있는 걸까?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/feeling1.ogg"
         },
         "낯섦":{
-            "voiceline":"이 몸은 본디 이 세상에 있을 리가 없는 존재. 하지만 이렇게 서 있는 이상, 무언가의 이유… 합리성이 있는 게 틀림없어.",
+            "voiceline":"이 몸은 이 세상에 존재하지 않아야 할 존재. 하지만 이렇게 서 있는 걸 보면, 무언가의 이유… 합리성이 작용하고 있는 것이 틀림없겠지.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/feeling2.ogg"
         },
         "호감":{
-            "voiceline":"용기 따위 전장에선 쓸모없어. 라플라스의 악마에 보다 가까이 가는 자들에게만 승리의 여신이 미소 짓는 거야.",
+            "voiceline":"용기 따위 전장에선 도움이 되지 않아. 라플라스의 악마에 더 가까워지는 자에게만 승리의 여신이 미소 짓는 법이란다.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/feeling3.ogg"
         },
         "기쁨":{
-            "voiceline":"전투보다 이런 게 더 좋네. 꼬마야, 자, 아~ 하렴. 아~~",
+            "voiceline":"전투보다는 이런 게 더 좋구나. 꼬마야, 자… 아~ 해보렴. 아~~앙.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/feeling4.ogg"
         },
         "사랑":{
-            "voiceline":"좀 더 내게 응석 부리렴. 좀 더, 더…… 좀 더 말야……",
+            "voiceline":"좀 더 내게 어리광 부리렴. 좀 더, 좀 더…… 좀 더 말이야……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/feeling5.ogg"
         },
         "터치3":{
-            "voiceline":"",
+            "voiceline":"꼬마야, 내 관심을 끌고 싶은가 봐? 후후후…",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/headtouch.ogg"
         },
         "모항귀환":{
-            "voiceline":"어서 오렴. 어떤 보고라도 들어줄게.",
+            "voiceline":"다녀왔니? 어떤 보고든 들어줄 테니 말해보렴?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/home.ogg"
         },
         "hp 경고":{
-            "voiceline":"조금은 더 버텨줄게.",
+            "voiceline":"조금 더 참아줄게.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/hp_warning.ogg"
         },
         "로그인":{
-            "voiceline":"연주자들도 기다리다 지쳤단다! 자, 오늘 밤의 전투의 막을 올리자꾸나!",
+            "voiceline":"연주자들이 벌써 기다리고 있단다! 자, 오늘 밤의 막을 올려보렴!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/login.ogg"
         },
         "실패":{
-            "voiceline":"다음 연주를 기대해주시길……",
+            "voiceline":"다음 연주를 기대하렴……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/lose.ogg"
         },
         "우편":{
-            "voiceline":"우편 내용, 노래로 들려줄까?",
+            "voiceline":"우편 내용, 연주해 줄까?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/mail.ogg"
         },
         "임무":{
-            "voiceline":"꼬마가 갖고 싶은 거라면, 뭐든 손에 넣어줄게.",
+            "voiceline":"꼬마가 원하는 것이라면 무엇이든 손에 넣어 줄게.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/mission.ogg"
         },
         "임무완료":{
-            "voiceline":"그럼, 어떤 보상을 원하니?",
+            "voiceline":"그래, 어떤 보상을 원하니?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/mission_complete.ogg"
         },
         "서약":{
-            "voiceline":"슬픔도 기쁨도, 고통도 쾌락도, 이제부터는 전부 나누는 거야… 언제까지나, 항상, 영원히, 꼬마를 감싸줄게……",
+            "voiceline":"슬픈 일도 즐거운 일도, 아픔도 쾌감도, 이제부터는 전부 나누며… 꼬마를 계속, 계속, 계속 감싸 안아 줄게……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/propose.ogg"
         },
         "스킬":{
-            "voiceline":"Sinfonie Nr. 9… 합창하라!",
+            "voiceline":"교향곡 제9번… 합창하라!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/skill.ogg"
         },
         "터치1":{
-            "voiceline":"공포로 몸이 떨릴 때는, 내 뒤로 숨으렴.",
+            "voiceline":"공포로 몸이 떨릴 때는 내 뒤에 있으렴.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/touch.ogg"
         },
         "터치2":{
-            "voiceline":"꼭 어린애 같아…… 귀여워.",
+            "voiceline":"마치 어린아이 같구나… 귀엽기도 하지.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/touch2.ogg"
         },
         "입수시":{
-            "voiceline":"잘 찾아왔구나, 꼬마야. 무엇을 원하니? 부? 명예? 아니면 영원한 젊음?",
+            "voiceline":"어서 오렴… 나의 곁으로. 꼬마야, 무엇을 원하니? 부? 영예? 아니면 영원한 젊음?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/unlock.ogg"
         },
         "강화성공":{
-            "voiceline":"더 아름다운 선율을 연주할 수 있겠구나.",
+            "voiceline":"더욱 아름다운 선율을 연주할 수 있겠구나.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/upgrade.ogg"
         },
         "vote":null,
         "승리":{
-            "voiceline":"아쉽구나. 앙코르도 아직 시작 안 했거늘…",
+            "voiceline":"아쉽구나. 앙코르도 아직 시작하지 않았는데…",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/win_mvp.ogg"
         },
         "전투개시_ex":null,
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
-        "사랑_ex":null,
+        "사랑_ex":{
+            "voiceline":"이 정도로 벌써 만족한 거니? 후후후, 아직이란다…… 꼬마의 이기심과 갈망 모두 나에게 맡기렴. 이 가슴으로 무엇이든 받아줄 테니……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/feeling5_ex.ogg"
+        },
         "터치3_ex":null,
-        "모항귀환_ex":null,
+        "모항귀환_ex":{
+            "voiceline":"꽃, 음악… 그리고 포옹―― 우리 꼬마, 이런 개선식은 마음에 드니?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/home_ex.ogg"
+        },
         "hp 경고_ex":null,
-        "로그인_ex":null,
+        "로그인_ex":{
+            "voiceline":"새로운 하루가 밝았어…… 함께 새로운 서곡을 연주하자꾸나.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/login_ex.ogg"
+        },
         "실패_ex":null,
         "우편_ex":null,
         "임무_ex":null,
         "임무완료_ex":null,
         "스킬_ex":null,
-        "터치1_ex":null,
-        "터치2_ex":null,
+        "터치1_ex":{
+            "voiceline":"왜 그러니, 꼬마야. 어리광 부리고 싶은 거니?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/touch_ex.ogg"
+        },
+        "터치2_ex":{
+            "voiceline":"후후후…… 점점 익숙해지는 모양이구나. 읏… 기쁨을 주는 현 하나하나를 정확하게 퉁겨주다니…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/touch2_ex.ogg"
+        },
         "입수시_ex":null,
         "강화성공_ex":null,
         "승리_ex":null,
         "함대 특수대사":[
             {
-                "voiceline":"['Z46'] : 가끔은 나한테도 응석 부려줘.",
+                "voiceline":"['Z46'] : 가끔은 나에게도 어리광 부려주렴.",
                 "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/couple_encourage1.ogg"
             },
             {
-                "voiceline":"['티르피츠'] : 내가 지휘해선 당신들이 힘을 충분히 발휘하지 못하려나.",
+                "voiceline":"['티르피츠'] : 내 지휘로는 네 힘을 충분히 발휘할 수 없는 걸까?",
                 "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/couple_encourage2.ogg"
             }
         ],
         "메인4":null,
         "메인1_ex":null,
-        "메인5_ex":null,
-        "메인6_ex":null,
+        "메인5_ex":{
+            "voiceline":"내 앞에서는 더 어리광을 부려도 된단다. 내 분노는 오로지 적에게만 향할 테니까.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/main5_ex.ogg"
+        },
+        "메인6_ex":{
+            "voiceline":"부나 젊음은 매력적이지만, 결국은 우아한 허상이나 곧 끝날 일시적인 향연에 불과해…… 사랑스러운 꼬마… 당신만이 내가 온 마음을 다해 지킬 가장 귀한 보물이란다.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/main6_ex.ogg"
+        },
         "메인7_ex":null,
         "메인8_ex":null,
-        "메인4_ex":null,
+        "메인4_ex":{
+            "voiceline":"위대한 악곡은 흔히 이성과 열정이 서로를 돋보이게 하지…… 어느 쪽이 더 좋니? 사랑스러운 꼬마야.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499020\/main4_ex.ogg"
+        },
         "메인5":null,
         "메인6":null,
         "메인2_ex":null,
@@ -229362,7 +229593,7 @@
         "기간":null,
         "진영":"KMS",
         "레어도":"UR",
-        "ex_chat_status":0
+        "ex_chat_status":1
     },
     {
         "클뜯 id":499021,
@@ -229611,7 +229842,7 @@
         "클뜯 id":499023,
         "클뜯 함순이 id":49902,
         "함순이 이름":"프리드리히 데어 그로세",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"은은한 침실의 불꽃 (듀얼, L2D, 배경)",
         "영문 함순이 + 스킨 이름":"Boudoir's Lingering Flame",
         "스킨 타입":"Empery'S Fineries",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/499023\/painting.png",
@@ -229620,33 +229851,69 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/499023\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/499023\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/499023\/shipyard.png",
-        "설명":null,
+        "설명":"이스트 글림에서는 경사스러운 날에 「빨간 봉투」를 선물하는 풍습이 있다더구나…… 이리 오렴, 꼬마야. 이 특별한 시간만이 줄 수 있는 포상을 네게 줄 테니.",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"빨간 봉투 안에 뭐가 들었냐고? 후후후, 꼬마가 마음속 깊은 곳에서 갈구하던 것이라고 해둘게.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499023\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"오늘 밤 장식은 마음에 드니? 후후, 그렇다면 해야 할 말이 있을 텐데? 물론, 「고맙다」는 말 말고 다른 걸로.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499023\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"아아… 꼬마야, 함께 이 세레나데를 연주하자꾸나……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499023\/main3.ogg"
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
+        "상세확인":{
+            "voiceline":"비단 속옷은 역시 부드럽고 섬세하구나…… 후후후, 마음에 든다면 꼬마야, 네 손으로 직접 만져보려무나~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499023\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"이스트 글림에서는 경사스러운 날에 「빨간 봉투」를 선물하는 풍습이 있다더구나…… 이리 오렴, 꼬마야. 이 특별한 시간만이 줄 수 있는 포상을 네게 줄 테니.",
+            "voicelink":null
+        },
         "의뢰 완료":null,
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "사랑":{
+            "voiceline":"나의 소원? 사랑스러운 꼬마가 매일 즐겁고 행복한 나날을 보내며, 내 품 안에서 그 모든 갈증을 채우는 것…… 후훗, 하지만 말이야. 꼬마는 이미 그 소원을 이루어 주었단다.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499023\/feeling5.ogg"
+        },
+        "터치3":{
+            "voiceline":"포상은 여기에 없단다. 후후후……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499023\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"어서 오렴, 꼬마야. 조금만 더 있으면 너를 위한 빨간 봉투를 손에 넣을 수 있단다…… 자, 대담하게 손을 뻗어보렴.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499023\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"밖에서 즐거운 음악 소리가 들려오는구나…… 후후, 곁으로 오렴. 나와 함께 이 기쁨을 깊이 음미해 보렴.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499023\/login.ogg"
+        },
         "실패":null,
         "우편":null,
         "임무":null,
         "임무완료":null,
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"포상을 쟁취하는 과정 그 자체를 즐기자고? 후후, 좋아……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499023\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"그래, 거기란다…… 읏…… 네 성장에 축배를 들자꾸나, 사랑스러운 꼬마야.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499023\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"이스트 글림에서는 경사스러운 날에 「빨간 봉투」를 선물하는 풍습이 있다더구나…… 이리 오렴, 꼬마야. 이 특별한 시간만이 줄 수 있는 포상을 네게 줄 테니.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499023\/unlock.ogg"
+        },
         "강화성공":null,
         "vote":null,
         "승리":null,
@@ -229683,13 +229950,13 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
-        "입수 영상":"X",
-        "재화":null,
-        "기간":null,
+        "스킨 타입 - 한글":"이스트 글림 스타일",
+        "상점 id":71293.0,
+        "상점 카테고리 id":3.0,
+        "스킨 태그":"듀얼, L2D, 배경",
+        "입수 영상":"O",
+        "재화":1680.0,
+        "기간":"한정 (2026\/03\/11)",
         "진영":"KMS",
         "레어도":"UR",
         "ex_chat_status":0
@@ -229698,7 +229965,7 @@
         "클뜯 id":499024,
         "클뜯 함순이 id":49902,
         "함순이 이름":"프리드리히 데어 그로세",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"은은한 침실의 불꽃 (듀얼, 쁘띠모션, 배경)",
         "영문 함순이 + 스킨 이름":"Boudoir's Lingering Flame",
         "스킨 타입":"Empery'S Fineries",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/499024\/painting.png",
@@ -229707,33 +229974,69 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/499024\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/499024\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/499024\/shipyard.png",
-        "설명":null,
+        "설명":"꼬마야, 긴 밤 동안 너를 인도하며 네 성장하는 모습을 지켜볼 수 있어 정말 자랑스럽구나. 성숙한 자신에게 주는 선물이라 여기고, 이 결실을 새벽이 올 때까지 찬찬히 음미하렴……",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"방에 들어오면 얌전히 옷부터 벗으렴. 추우면 이 가슴에 기대려무나. 네게 있어 가장 포근한 온기는 바로 여기에 있단다, 꼬마야.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499024\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"꼬마의 페이스에 맞춰서, 천천히 이끌어 줄게……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499024\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"욕망 속에서도 이성의 고삐를 꽉 쥐고 있어야 극락에 젖어들 수 있는 법이란다. 나의 가르침에 몸을 맡기렴, 꼬마야.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499024\/main3.ogg"
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
+        "상세확인":{
+            "voiceline":"아아… 눈부신 성과를 거두었어도, 내 눈에 비친 꼬마는 언제까지나 사랑스러운 아이일 뿐이란다. 그래, 언제든 마음 가는 대로 응석 부리렴, 사랑스러운 꼬마야……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499024\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"꼬마야, 긴 밤 동안 너를 인도하며 네 성장하는 모습을 지켜볼 수 있어 정말 자랑스럽구나. 성숙한 자신에게 주는 선물이라 여기고, 이 결실을 새벽이 올 때까지 찬찬히 음미하렴……",
+            "voicelink":null
+        },
         "의뢰 완료":null,
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "사랑":{
+            "voiceline":"꼬마에게 쏟는 사랑이 멈출 줄 모르고 날이 갈수록 깊어만 가는구나. 사랑스러운 꼬마야, 바라는 게 있다면 말해보렴. 거절하기는커녕, 내가 더 간절히 기다리고 있을 테니까.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499024\/feeling5.ogg"
+        },
+        "터치3":{
+            "voiceline":"착한 아이구나… 내 머리카락이 조금 흐트러졌니?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499024\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"자장가라도 한 곡 불러주고 싶지만…… 아직 기운이 넘치는구나. 꼬마야, 네 그 의욕에는 확실히 보답해 줄게……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499024\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"꼬마야, 이번엔 무엇을 탐색하려는 거니? 그건 어떻게 행동으로 옮길 생각이니?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499024\/login.ogg"
+        },
         "실패":null,
         "우편":null,
         "임무":null,
         "임무완료":null,
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"잘 해냈구나. 조금만 더 힘내보렴.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499024\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"읏… 훌륭하구나, 꼬마야……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499024\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"꼬마야, 긴 밤 동안 너를 인도하며 네 성장하는 모습을 지켜볼 수 있어 정말 자랑스럽구나. 성숙한 자신에게 주는 선물이라 여기고, 이 결실을 새벽이 올 때까지 찬찬히 음미하렴……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/499024\/unlock.ogg"
+        },
         "강화성공":null,
         "vote":null,
         "승리":null,
@@ -229770,10 +230073,10 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
+        "스킨 타입 - 한글":"이스트 글림 스타일",
+        "상점 id":0.0,
+        "상점 카테고리 id":3.0,
+        "스킨 태그":"듀얼, 쁘띠모션, 배경",
         "입수 영상":"X",
         "재화":null,
         "기간":null,
@@ -235564,7 +235867,7 @@
         "스킨 태그":"L2D, 특수배경 (움짤)",
         "입수 영상":"X",
         "재화":1100.0,
-        "기간":"한정 (2025\/03\/12)",
+        "기간":"상시",
         "진영":"ROC",
         "레어도":"SR",
         "ex_chat_status":0
@@ -236023,7 +236326,7 @@
         "스킨 태그":"특수배경 (움짤), 쁘띠모션",
         "입수 영상":"X",
         "재화":900.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"상시",
         "진영":"ROC",
         "레어도":"SR",
         "ex_chat_status":0
@@ -236350,7 +236653,7 @@
         "스킨 태그":"특수배경 (움짤)",
         "입수 영상":"X",
         "재화":800.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"상시",
         "진영":"ROC",
         "레어도":"SR",
         "ex_chat_status":0
@@ -236359,7 +236662,7 @@
         "클뜯 id":501072,
         "클뜯 함순이 id":50107,
         "함순이 이름":"페이윈",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"페이윈 님의 설탕 포탄",
         "영문 함순이 + 스킨 이름":"Lady Yuen's Sugary Artillery",
         "스킨 타입":"Empery'S Fineries",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/501072\/painting.png",
@@ -236368,34 +236671,73 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/501072\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/501072\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/501072\/shipyard.png",
-        "설명":null,
+        "설명":"「모항 사람들 전부가 먹을 딸기 사탕을 만들라」고……? 으아아아앙, 이, 이런 힘든 일은 하기 싫단 말이야아… (훌쩍)",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"으흑…… 이제 대모험할 때 장난 안 칠게ㅡ! 뭐? 대모험 자체가 장난 아니냐고? 그, 그런 거 페이윈은 모르는 일이야아……!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/501072\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"이렇게 보니, 페이윈 님… 딸기 사탕 만들기에 재능 있는 거 아니야? 냄비는 시커멓게 탔고, 설탕물은 사방에 튀었고, 모양도 찌그러졌지만……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/501072\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"……그렇지, 딸기 사탕을 몰래 고추 사탕으로 바꿔치기하면…… 으앗?! 자, 장난칠 생각 같은 거 하나도 안 했어!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/501072\/main3.ogg"
+        },
         "전투개시":null,
         "상세확인":null,
-        "드랍 설명":null,
-        "의뢰 완료":null,
+        "드랍 설명":{
+            "voiceline":"「모항 사람들 전부가 먹을 딸기 사탕을 만들라」고……? 으아아아앙, 이, 이런 힘든 일은 하기 싫단 말이야아… (훌쩍)",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"의뢰팀 사람들이 돌아왔어! 페이윈 님이 리스트에 적어준, 전설의 엄~청 달콤한 딸기를 찾아왔으려나…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/501072\/expedition.ogg"
+        },
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "사랑":{
+            "voiceline":"에헤헤헤, 지휘관 곁에 있으면 사탕을 졸이는 시간조차 너무 즐겁…… 으아아아?! 아, 망했다! 타버리겠어!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/501072\/feeling5.ogg"
+        },
+        "터치3":{
+            "voiceline":"머리카락에 사탕이 붙었다고? 지휘관, 페이윈 대신 먹어봐! 어때? 달콤해?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/501072\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"자, 잠깐! 지금 페이윈 님은 딸기에 설탕물을 입히는 중이이란 말이야! 이번엔 절대로 실패 안 해… 으아앗?! 설탕물한테 당했다아아!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/501072\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"지휘관, 아~ 해봐. 페이윈 님이 직접 만든 딸기 사탕, 맛있지~! 에헤헤, 그럼 나랑 같이 잠깐만 땡땡이칠래?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/501072\/login.ogg"
+        },
         "실패":null,
         "우편":null,
         "임무":null,
         "임무완료":null,
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
-        "강화성공":null,
+        "터치1":{
+            "voiceline":"헤헤헤ㅡ 지휘관한테 설탕물을 발라버릴 테다!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/501072\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"기기기다려 지휘관! 지금 손에 사탕이 묻어서 끈적거린단 말이야! ……최, 최소한 손은 씻고 나서……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/501072\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"「모항 사람들 전부가 먹을 딸기 사탕을 만들라」고……? 으아아아앙, 이, 이런 힘든 일은 하기 싫단 말이야아… (훌쩍)",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/501072\/unlock.ogg"
+        },
+        "강화성공":{
+            "voiceline":"딸기 사탕을 더 만들 수 있겠다고?! 싫어어어ㅡ!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/501072\/upgrade.ogg"
+        },
         "vote":null,
         "승리":null,
         "전투개시_ex":null,
@@ -236431,13 +236773,13 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
-        "입수 영상":"X",
-        "재화":null,
-        "기간":null,
+        "스킨 타입 - 한글":"이스트 글림 스타일",
+        "상점 id":71298.0,
+        "상점 카테고리 id":3.0,
+        "스킨 태그":"배경",
+        "입수 영상":"O",
+        "재화":780.0,
+        "기간":"한정 (2026\/03\/11)",
         "진영":"ROC",
         "레어도":"SR",
         "ex_chat_status":0
@@ -236770,7 +237112,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":780.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"한정 (2026\/03\/11)",
         "진영":"ROC",
         "레어도":"SR",
         "ex_chat_status":0
@@ -237247,7 +237589,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":780.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"한정 (2026\/03\/11)",
         "진영":"ROC",
         "레어도":"SR",
         "ex_chat_status":0
@@ -240755,7 +241097,7 @@
         "클뜯 id":502049,
         "클뜯 함순이 id":50204,
         "함순이 이름":"잉 루이",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"잉 루이·改",
         "영문 함순이 + 스킨 이름":"Ying Swei (Retrofit)",
         "스킨 타입":"Retrofit",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502049\/painting.png",
@@ -240764,33 +241106,78 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502049\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502049\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502049\/shipyard.png",
-        "설명":null,
+        "설명":"잉 루이, 개조 완료예요♪ 지휘관님, 이전보다 조금은 강해진 것 같지 않나요? 아무튼 앞으로도 변함없이 잉 루이를 잘 부탁드릴게요♪",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"일에는 끝이 없는 법이죠. 잠시 붓을 내려두고 잉 루이가 내린 차 한 잔으로 숨을 돌려보시는 건 어떨까요?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"문방사우(文房四友)에 대해서라면 언제든 가르쳐 드릴 수 있어요. 붓놀림도 더 안정됐고, 가르치는 솜씨도 제법 늘었으니까요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"차오 호가 또 몰래 춤 연습을 하는 모양이네요. ……지휘관님, 같이 훔쳐보러 가지 않을래요? 우후후♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/main3.ogg"
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
+        "상세확인":{
+            "voiceline":"잉 루이가 더 듬직해진 것 같나요? 후후, 굳이 말로 하실 필요 없어요. ……지휘관님의 눈빛을 보니 이미 답을 알 것 같거든요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"잉 루이, 개조 완료예요♪ 지휘관님, 이전보다 조금은 강해진 것 같지 않나요? 아무튼 앞으로도 변함없이 잉 루이를 잘 부탁드릴게요♪",
+            "voicelink":null
+        },
         "의뢰 완료":null,
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "사랑":{
+            "voiceline":"전하고 싶은 마음이 너무 많아서, 어쩌면 지휘관님의 모든 여가 시간을 다 써버려야 할지도 모르겠네요. 후후, 지휘관님…… 어디서부터 시작할까요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/feeling5.ogg"
+        },
+        "터치3":{
+            "voiceline":"머리를 쓰다듬고 싶으세요? 물론 좋아요. 앞으로 보름 동안 잉 루이의 머리를 빗겨주실 수 있다면요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"지휘관님, 어서 오세요. 뭔가 재미난 소식이 있을 때는 이야기 잘 들어주는 잉 루이에게 꼭 들려주세요♪ 후후, 일단은 좀 쉬시고… 그 이야기는 다음에 하기로 해요~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"오늘도 정시에 도착하셨네요. 정말 땡땡이치고 싶으시다면…… 지금의 잉 루이는 지휘관님의 업무를 아주 효율적으로 도와드릴 수 있답니다.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/login.ogg"
+        },
         "실패":null,
-        "우편":null,
-        "임무":null,
-        "임무완료":null,
+        "우편":{
+            "voiceline":"우편이 도착했어요. 짧은 휴식도 슬슬 끝낼 때네요… 제가 먼저 정리해 드릴까요?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/mail.ogg"
+        },
+        "임무":{
+            "voiceline":"차오 호에게 들키기 전에 빨리 임무를 처리하죠. 안 그러면 또 엄마처럼 잔소리를 늘어놓을 테니까요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/mission.ogg"
+        },
+        "임무완료":{
+            "voiceline":"임무 완료예요. 이제 같이 밥 먹고, 목욕하고, 푹 자면 완벽할 것 같은데…… 지휘관님 생각은 어떠신가요? 후후후♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/mission_complete.ogg"
+        },
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"후후후, 벌써 끝인가요? 저는…… 좀 더 계속해도 좋을 것 같은데 말이죠~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"어머나, 지휘관님도 참, 또 빈틈을 보이셨네요? 후후, 그럼…… 이번 주말은 온전히 잉 루이와 함께 보내주시는 거죠?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"잉 루이, 개조 완료예요♪ 지휘관님, 이전보다 조금은 강해진 것 같지 않나요? 아무튼 앞으로도 변함없이 잉 루이를 잘 부탁드릴게요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502049\/unlock.ogg"
+        },
         "강화성공":null,
         "vote":null,
         "승리":null,
@@ -240827,9 +241214,9 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
+        "스킨 타입 - 한글":"개조",
+        "상점 id":0.0,
+        "상점 카테고리 id":9997.0,
         "스킨 태그":"X",
         "입수 영상":"X",
         "재화":null,
@@ -240967,38 +241354,41 @@
         },
         "전투개시_ex":null,
         "상세확인_ex":{
-            "voiceline":"차오 호급의 언니는 누구?... 정답입니다~ 차오 호가 바로 잉 루이의 언니지♪ 지휘관 잘 알고 있네~",
+            "voiceline":"차오 호급의 언니는 누구게? …정답! 이 차오 호가 바로 잉 루이의 언니지♪ 이제 좀 말이 통하네!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502050\/detail_ex.ogg"
         },
         "의뢰 완료_ex":null,
         "사랑_ex":{
-            "voiceline":"지휘관... 저기, 난 너의 반려자이기도 하지만, 한 사람의 언니이기도 해... 그러니까, 가능하다면, 내게 애, 애교를 부려줘... 그러니까 어떤 애교든 괜찮으니까, 뭐뭐뭐뭐뭐든 보여 줘!",
+            "voiceline":"지휘관, 그게, 난 네 반려자일 뿐만 아니라 누나이기도 하잖아… 마, 만약 원한다면 말이지! 어리광 부려줬으면 좋겠달까, 뭐랄까…… 그래! 어리광 부려! 얼마든 받아줄 테니까!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502050\/feeling5_ex.ogg"
         },
-        "터치3_ex":null,
+        "터치3_ex":{
+            "voiceline":"흥, 특별히 쓰다듬을 수 있게 허락해 줄게.",
+            "voicelink":null
+        },
         "모항귀환_ex":null,
         "hp 경고_ex":null,
         "로그인_ex":{
-            "voiceline":"왜 이렇게 늦게 오는 거야! 일부러 늦게 와서 걱정하게 하지 말란 말이야. 바보...",
+            "voiceline":"느, 늦었잖아… 왜 맨날 걱정하게 만드는 거야, 이 바보……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502050\/login_ex.ogg"
         },
         "실패_ex":null,
         "우편_ex":null,
         "임무_ex":{
-            "voiceline":"새로운 임무!... 왜, 왜 그래. 설마 내가 엄마처럼 다그쳐 주길 바라는 거야?",
+            "voiceline":"새로운 임무야! ……뭐, 뭐야. 설마 내가 하나하나 잔소리를 늘어놔야 하는 거야?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502050\/mission_ex.ogg"
         },
         "임무완료_ex":{
-            "voiceline":"이런 간단한 임무는 내게 식은 죽 먹기지~ 지휘관도 그렇게 생각하지?",
+            "voiceline":"이 정도 임무쯤은 식은 죽 먹기지! 너도 그렇게 생각하지?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502050\/mission_complete_ex.ogg"
         },
         "스킬_ex":null,
         "터치1_ex":{
-            "voiceline":"",
+            "voiceline":"……꺅?! 아, 아무리 지휘관과 그런 사이가 됐다고 해도 이런 건…… 역시 부끄럽단 말이야!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502050\/touch_ex.ogg"
         },
         "터치2_ex":{
-            "voiceline":"지, 지금 잉 루이랑 비교하는 거 아니지...",
+            "voiceline":"이, 잉 루이랑 비교하지 마……!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502050\/touch2_ex.ogg"
         },
         "입수시_ex":null,
@@ -241016,7 +241406,7 @@
         ],
         "메인4":null,
         "메인1_ex":{
-            "voiceline":"이 일을 나한테 맡긴다고? 좋, 좋아! 언니인 나에게 맡겨 줘!",
+            "voiceline":"이걸 나한테 맡긴다고? 아, 알았어! 언니가 해주지 못할 것도 없지!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502050\/main1_ex.ogg"
         },
         "메인5_ex":null,
@@ -241024,13 +241414,13 @@
         "메인7_ex":null,
         "메인8_ex":null,
         "메인4_ex":{
-            "voiceline":"피쉬 앤 칩스♪으흠, 로열에도 꽤 맛있는게 있잖아~",
+            "voiceline":"피시 앤 칩스♪ 뭐, 로열 네이비에도 맛있는 요리가 있긴 하네.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502050\/main4_ex.ogg"
         },
         "메인5":null,
         "메인6":null,
         "메인2_ex":{
-            "voiceline":"...... 왜 아까부터 멍하게 있어! 가, 가끔은 내게 말도 좀 걸어 봐! ... 걱, 걱정되잖아...",
+            "voiceline":"…………아까부터 왜 가만히 서 있기만 하는 거야! 가, 가끔은 말이라도 좀 걸어봐… 걱정되잖아……",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502050\/main2_ex.ogg"
         },
         "메인3_ex":{
@@ -241418,7 +241808,7 @@
         "클뜯 id":502059,
         "클뜯 함순이 id":50205,
         "함순이 이름":"차오 호",
-        "한글 함순이 + 스킨 이름":null,
+        "한글 함순이 + 스킨 이름":"차오 호·改",
         "영문 함순이 + 스킨 이름":"Chao Ho (Retrofit)",
         "스킨 타입":"Retrofit",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502059\/painting.png",
@@ -241427,33 +241817,75 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502059\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502059\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502059\/shipyard.png",
-        "설명":null,
+        "설명":"차오 호, 개조 완료야! 후훗! 실력도 언니로서의 위엄도, 지금의 나에게 빈틈 따위는 없어!",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"……? 그 눈빛은 뭐야? 설마 지휘관…… 후훗, 누나인 내 대단함을 깨달은 거야?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"저기 있지…… 힘든 일이 생기면 가끔은…… 가끔은 나한테 털어놔도 돼… 딱히 걱정돼서 그런 건 아니고, 업무에 지장이 생기는 게 싫을 뿐이야!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"지휘관, 서류를 이렇게 지저분하게 두면 안 되지! ……어휴, 알았어. 내가 치워줄게. 딱히 널 위한 건 아니야!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/main3.ogg"
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
+        "상세확인":{
+            "voiceline":"있잖아, 지휘관. 봐, 지금은 내가 걔보다 훨씬 언니 같지? ……훗, 이 정도면 잉 루이를 언니라고 생각하는 애는 없을 거야! ……우, 웃지 마!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"차오 호, 개조 완료야! 후훗! 실력도 언니로서의 위엄도, 지금의 나에게 빈틈 따위는 없어!",
+            "voicelink":null
+        },
         "의뢰 완료":null,
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "사랑":{
+            "voiceline":"새 의상도, 새로운 춤도, 전부 널 위한 거야…… 그래서 내 자부심을 걸고 반드시 완벽하게 해내야만 했어! ……너도 그 정도는 알지?! 엉망이라느니 뭐니 하며 놀리기라도 하면…… 절대로 용서 안 할 거야!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/feeling5.ogg"
+        },
+        "터치3":{
+            "voiceline":"어, 어쩔 수 없지…… 조금만 만져.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"응? 돌아왔어? ……딱히 기다린 건 아니야! 마침 연습이 끝났을 뿐이라고!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"흐응, 제시간에 왔네. 나쁘지 않아. 시간을 잘 지키는 지휘관을 누나로서 제대로 평가해줘야겠네.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/login.ogg"
+        },
         "실패":null,
         "우편":null,
-        "임무":null,
-        "임무완료":null,
+        "임무":{
+            "voiceline":"새로운 임무야! 내가 다 지켜볼 거고, 지휘관이 빨리 쉴 수 있게 감시도 해야 하니까, 얼른 끝내고 와!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/mission.ogg"
+        },
+        "임무완료":{
+            "voiceline":"식은 죽 먹기지! 지금 나, 진짜 믿음직스럽지 않아? 음, 뭐어…… 지휘관이 열심히 노력한 덕분이기도 하지만……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/mission_complete.ogg"
+        },
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"꺅?! 가, 갑자기 왜 그렇게 가까이 와……!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"꺅?! 뭐뭐, 뭐 하는 거야! 이 바보가! 지금 이런 짓이나 하고 있을 때가 아니잖아?!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"차오 호, 개조 완료야! 후훗! 실력도 언니로서의 위엄도, 지금의 나에게 빈틈 따위는 없어!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502059\/unlock.ogg"
+        },
         "강화성공":null,
         "vote":null,
         "승리":null,
@@ -241490,9 +241922,9 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
+        "스킨 타입 - 한글":"개조",
+        "상점 id":0.0,
+        "상점 카테고리 id":9997.0,
         "스킨 태그":"X",
         "입수 영상":"X",
         "재화":null,
@@ -242939,7 +243371,7 @@
         "스킨 태그":"특수배경 (움짤)",
         "입수 영상":"X",
         "재화":800.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"상시",
         "진영":"ROC",
         "레어도":"SR",
         "ex_chat_status":0
@@ -243401,7 +243833,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":780.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"한정 (2026\/03\/11)",
         "진영":"ROC",
         "레어도":"SR",
         "ex_chat_status":0
@@ -243409,8 +243841,8 @@
     {
         "클뜯 id":502120,
         "클뜯 함순이 id":50212,
-        "함순이 이름":null,
-        "한글 함순이 + 스킨 이름":null,
+        "함순이 이름":"하이처우",
+        "한글 함순이 + 스킨 이름":"하이처우",
         "영문 함순이 + 스킨 이름":"Hai Chou",
         "스킨 타입":"Default",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502120\/painting.png",
@@ -243419,62 +243851,178 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502120\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502120\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502120\/shipyard.png",
-        "설명":null,
-        "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
-        "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
-        "의뢰 완료":null,
-        "실망":null,
-        "낯섦":null,
-        "호감":null,
-        "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
-        "hp 경고":null,
-        "로그인":null,
-        "실패":null,
-        "우편":null,
-        "임무":null,
-        "임무완료":null,
-        "서약":null,
-        "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
-        "강화성공":null,
+        "설명":"하이롱급 방호순양함 - 하이처우",
+        "자기소개":{
+            "voiceline":"나는 하이처우, 조향사야. 내 후각은 비밀을 놓치지 않아… 예를 들면 지금 당신의 심장이 두근두근 뛰고 있다는 것… 그리고 당신 몸에서 달콤한 페로몬이 흘러나오고 있다는 것도…… 전부 독차지하고 싶네…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/profile.ogg"
+        },
+        "메인1":{
+            "voiceline":"오늘은 유난히 맛있어 보이는걸. 지휘관.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"치명적인 맹독이라도 마음을 사로잡는 향기로 바꿀 수 있어…… 지휘관, 이게 바로 조향사의 예술이야.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"자, 나를 따라… 향기로운 안개가 흩날리듯 숨을 들이마시고…… 천천히 내쉬어…… 내 냄새를, 마음으로 느껴……♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/main3.ogg"
+        },
+        "전투개시":{
+            "voiceline":"이 향기는 뼈마저 좀먹어버리지.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/battle.ogg"
+        },
+        "상세확인":{
+            "voiceline":"실크 마스크…? 아아, 불필요한 냄새를 차단해서 내 후각을 지키는 거야. 덕분에 벗으면, 더욱 당신 냄새에 집중할 수 있게 되지.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"하이롱급 방호순양함 - 하이처우",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"지휘관, 의뢰팀이 먼 곳의 냄새를 가지고 돌아왔어.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/expedition.ogg"
+        },
+        "실망":{
+            "voiceline":"이 실크 마스크는 불필요한 냄새뿐만 아니라, 선을 지나치게 넘는 사람도 걸러주지.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/feeling1.ogg"
+        },
+        "낯섦":{
+            "voiceline":"우리 둘의 냄새…… 완벽하게 섞이려면 아직 조금 시간이 필요하겠어.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/feeling2.ogg"
+        },
+        "호감":{
+            "voiceline":"실크 마스크를 벗은 내 모습이 당신의 상상과 다른지, 똑같은지…… 후후후, 똑똑히 봐. 이게 바로 내 숨김없는 모습이야……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/feeling3.ogg"
+        },
+        "기쁨":{
+            "voiceline":"킁킁…… 응… 당신이란 사람은…… 침향처럼 깊고 독특한 복합성을 지녔으면서도, 그 이면은 어찌나 이렇게 따스한지…… 정말… 중독될 것 같아…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/feeling4.ogg"
+        },
+        "사랑":{
+            "voiceline":"내 냄새는 이미 피부 구석구석까지 배어 있어…… 당신은 이제 도망칠 수 없어…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/feeling5.ogg"
+        },
+        "터치3":{
+            "voiceline":"지휘관… 자꾸 그러면… 나…… 후후후♥",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"스트레스는 지나치게 농축된 아로마 오일처럼 떫고 쓴 체취를 만들어…… 적당히 쉬면서 냄새를 부드러운 상태로 되돌려야 해.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/home.ogg"
+        },
+        "hp 경고":{
+            "voiceline":"드디어 흥미를 자극하는 「냄새」가 등장했네.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/hp_warning.ogg"
+        },
+        "로그인":{
+            "voiceline":"잘 왔어. 더 가까이…… 당신 냄새를 기억할 수 있도록.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/login.ogg"
+        },
+        "실패":{
+            "voiceline":"……화약 연기, 그리고 녹슨쇠… 씁쓸한 냄새야.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/lose.ogg"
+        },
+        "우편":{
+            "voiceline":"먼 곳에서 우편이 한 통 왔어. 지금 확인할까?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/mail.ogg"
+        },
+        "임무":{
+            "voiceline":"당신의 「조합」을 기다리는 임무가 있어. 지휘관.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/mission.ogg"
+        },
+        "임무완료":{
+            "voiceline":"임무 「조합」이 완료됐어. 이제 남은 건 보상을 「만끽」하는 것뿐이야.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/mission_complete.ogg"
+        },
+        "서약":{
+            "voiceline":"응… 조합한 향수뿐만 아니라, 「독」도 당신 몸에 묻히고 싶어져…… 응? 해독제…? 후후후, 물론 나지♡ 후우…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/propose.ogg"
+        },
+        "스킬":{
+            "voiceline":"빠져들어라……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/skill.ogg"
+        },
+        "터치1":{
+            "voiceline":"그거 알아? 당신 주변의 공기는 이미 내 향기로 가득 차 있다는 거♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"후후… 거긴 내가 즐겨 향을 시향하는 곳이야… 못 믿겠어? 당신 손가락 냄새를 맡아봐.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"이스트 글림 소속 조향사인 하이처우야. 당신 냄새…… 꽤 흥미롭네. 앞으로 사이좋게 지내자.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/unlock.ogg"
+        },
+        "강화성공":{
+            "voiceline":"아로마와 독의 경계는 성분의 극미한 차이에 있어.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/upgrade.ogg"
+        },
         "vote":null,
-        "승리":null,
+        "승리":{
+            "voiceline":"승리의 향기는 언제나 사람을 취하게 하지.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/win_mvp.ogg"
+        },
         "전투개시_ex":null,
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
-        "사랑_ex":null,
-        "터치3_ex":null,
-        "모항귀환_ex":null,
+        "사랑_ex":{
+            "voiceline":"꿈에서도 갈구하던 향기를 드디어 손에 넣은 것 같아…… 이 「사랑」을 테마로 한 향수는 당신의 향기를 베이스로 조합했어♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/feeling5_ex.ogg"
+        },
+        "터치3_ex":{
+            "voiceline":"새로운 아로마를 조합했어. 안기고 싶은 기분이 들게 해주는데…… 한번 시험해 볼래?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/headtouch_ex.ogg"
+        },
+        "모항귀환_ex":{
+            "voiceline":"킁킁… 화약 연기에 바닷바람, 그리고 피로의 향기…… 안심해. 곧 내 향기만 남게 될 테니까.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/home_ex.ogg"
+        },
         "hp 경고_ex":null,
-        "로그인_ex":null,
+        "로그인_ex":{
+            "voiceline":"당신의 향기를 읽어내는 것도 의외로 즐거워. ……흔들림 없는 모습이 눈에 덮힌 소나무 같아서, 한없이 침착한 카리스마만 느꼈는데… 다정할 때는 마치 베티버 같아…… 당신에 대해 잘 알고 있는 줄 알았는데… 아직도 새로운 향기를 맡게 해주다니……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/login_ex.ogg"
+        },
         "실패_ex":null,
         "우편_ex":null,
         "임무_ex":null,
         "임무완료_ex":null,
         "스킬_ex":null,
-        "터치1_ex":null,
-        "터치2_ex":null,
+        "터치1_ex":{
+            "voiceline":"이제는 내게서 벗어날 수 없어. 지휘관♥",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/touch_ex.ogg"
+        },
+        "터치2_ex":{
+            "voiceline":"음… 점점 더 달콤하고, 그윽해져…… 후후후, 지휘관의 손끝에서 나는 향기 말이야♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/touch2_ex.ogg"
+        },
         "입수시_ex":null,
         "강화성공_ex":null,
         "승리_ex":null,
-        "함대 특수대사":null,
+        "함대 특수대사":[
+            {
+                "voiceline":"['하이롱'] : 새로 조합한 향수는 어때?",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/couple_encourage1.ogg"
+            }
+        ],
         "메인4":null,
         "메인1_ex":null,
-        "메인5_ex":null,
-        "메인6_ex":null,
+        "메인5_ex":{
+            "voiceline":"지휘관, 더 가까이 와 줘. 당신의 감정에서 다른 향기가 나… 지금 느끼는 그 「곤혹」도 너무 맛있을 것 같아.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/main5_ex.ogg"
+        },
+        "메인6_ex":{
+            "voiceline":"이 새로운 향수에는 아껴둔 용연향을 사용했어. 가까이서 찬찬히 맡아볼래? 이 감도는 여운이 그 몸에 언제까지 머무를지……♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/main6_ex.ogg"
+        },
         "메인7_ex":null,
         "메인8_ex":null,
-        "메인4_ex":null,
+        "메인4_ex":{
+            "voiceline":"실크 마스크를 쓰고 있어도 당신의 숨결은 확실하게 구분할 수 있어…… 마치 겨울의 상고대처럼, 아플 정도로 진솔한 향기……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502120\/main4_ex.ogg"
+        },
         "메인5":null,
         "메인6":null,
         "메인2_ex":null,
@@ -243483,21 +244031,21 @@
         "메인10_ex":null,
         "메인7":null,
         "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
+        "상점 id":0.0,
+        "상점 카테고리 id":0.0,
         "스킨 태그":"X",
         "입수 영상":"X",
         "재화":null,
         "기간":null,
         "진영":"ROC",
         "레어도":"SR",
-        "ex_chat_status":0
+        "ex_chat_status":1
     },
     {
         "클뜯 id":502121,
         "클뜯 함순이 id":50212,
-        "함순이 이름":null,
-        "한글 함순이 + 스킨 이름":null,
+        "함순이 이름":"하이처우",
+        "한글 함순이 + 스킨 이름":"잠을 깨우는 진한 향기",
         "영문 함순이 + 스킨 이름":"Aroma of Awakening",
         "스킨 타입":"Empery'S Fineries",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502121\/painting.png",
@@ -243506,34 +244054,76 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502121\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502121\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502121\/shipyard.png",
-        "설명":null,
+        "설명":"깼어? 그 표정…… 방금 밀회로는 아직 만족하지 못한 거야?",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"그 눈빛, 잘 알아. 이 특제 향의 냄새에서…… 헤어나올 수 없는 모양이네♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"위험하지만 매혹적인 향이 난다고? 그 위험에 이끌린 걸까, 아니면 매혹에 사로잡혀 여기 남은 걸까?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"태연한 척해도, 얼굴에 다 드러나♪ 여기랑, 여기…… 내가 무슨 짓을 했는지 다 기억하고 있잖아.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/main3.ogg"
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
-        "의뢰 완료":null,
+        "상세확인":{
+            "voiceline":"침대 주름과 아직 가시지 않은 아로마의 여운이…… 방금까지 나눈 밀회를 조용히 말해 주고 있네. 지휘관♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"깼어? 그 표정…… 방금 밀회로는 아직 만족하지 못한 거야?",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"의뢰팀이 돌아왔어. 마음을 누그러뜨리는 향을 준비해 뒀으니, 보상으로 가져다 줘.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/expedition.ogg"
+        },
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "사랑":{
+            "voiceline":"당신의 사랑도 신뢰도…… 모두 내 소중한 영감이니, 누구에게도 넘겨주지 않아. 당신의 모든 걸 채워줄 수 있는 건 나뿐이야♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/feeling5.ogg"
+        },
+        "터치3":{
+            "voiceline":"……어머? 방금 정돈한 머리를…… 혹시 머리를 풀어내린 내가 더 매력적이라 그런 건가?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"피곤한 것 같네? ……아직 시간이 있으니까 조금 더 어울려 줄게… 자, 이쪽으로 와……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"몸에 밴 향기 때문에 다시 돌아온 거야? …응? 더 맡고 싶다…고? 후후, 그 바람… 이뤄줘버릴까……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/login.ogg"
+        },
         "실패":null,
         "우편":null,
         "임무":null,
         "임무완료":null,
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
-        "강화성공":null,
+        "터치1":{
+            "voiceline":"완전히 응석쟁이네? 이대로면 당신을 놓아주기 힘들어지겠어… 지휘관♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"그렇게 열정적으로 다가오니…… 한 번 더 응석 부리게 해 줄게♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"깼어? 그 표정…… 방금 밀회로는 아직 만족하지 못한 거야?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/unlock.ogg"
+        },
+        "강화성공":{
+            "voiceline":"이제…… 마음껏 즐길 수 있겠어.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502121\/upgrade.ogg"
+        },
         "vote":null,
         "승리":null,
         "전투개시_ex":null,
@@ -243569,13 +244159,13 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
-        "입수 영상":"X",
-        "재화":null,
-        "기간":null,
+        "스킨 타입 - 한글":"이스트 글림 스타일",
+        "상점 id":71295.0,
+        "상점 카테고리 id":3.0,
+        "스킨 태그":"쁘띠모션, 11, 배경",
+        "입수 영상":"O",
+        "재화":950.0,
+        "기간":"한정 (2026\/03\/11)",
         "진영":"ROC",
         "레어도":"SR",
         "ex_chat_status":0
@@ -243583,8 +244173,8 @@
     {
         "클뜯 id":502122,
         "클뜯 함순이 id":50212,
-        "함순이 이름":null,
-        "한글 함순이 + 스킨 이름":null,
+        "함순이 이름":"하이처우",
+        "한글 함순이 + 스킨 이름":"잠을 깨우는 진한 향기",
         "영문 함순이 + 스킨 이름":"Aroma of Awakening",
         "스킨 타입":"Empery'S Fineries",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502122\/painting.png",
@@ -243593,34 +244183,76 @@
         "아이콘 일러":null,
         "쥬스타 아이콘 일러":null,
         "깔끔한 일러":null,
-        "설명":null,
+        "설명":"깼어? 그 표정…… 방금 밀회로는 아직 만족하지 못한 거야?",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"그 눈빛, 잘 알아. 이 특제 향의 냄새에서…… 헤어나올 수 없는 모양이네♪",
+            "voicelink":null
+        },
+        "메인2":{
+            "voiceline":"위험하지만 매혹적인 향이 난다고? 그 위험에 이끌린 걸까, 아니면 매혹에 사로잡혀 여기 남은 걸까?",
+            "voicelink":null
+        },
+        "메인3":{
+            "voiceline":"태연한 척해도, 얼굴에 다 드러나♪ 여기랑, 여기…… 내가 무슨 짓을 했는지 다 기억하고 있잖아.",
+            "voicelink":null
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
-        "의뢰 완료":null,
+        "상세확인":{
+            "voiceline":"침대 주름과 아직 가시지 않은 아로마의 여운이…… 방금까지 나눈 밀회를 조용히 말해 주고 있네. 지휘관♡",
+            "voicelink":null
+        },
+        "드랍 설명":{
+            "voiceline":"깼어? 그 표정…… 방금 밀회로는 아직 만족하지 못한 거야?",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"의뢰팀이 돌아왔어. 마음을 누그러뜨리는 향을 준비해 뒀으니, 보상으로 가져다 줘.",
+            "voicelink":null
+        },
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "사랑":{
+            "voiceline":"당신의 사랑도 신뢰도…… 모두 내 소중한 영감이니, 누구에게도 넘겨주지 않아. 당신의 모든 걸 채워줄 수 있는 건 나뿐이야♡",
+            "voicelink":null
+        },
+        "터치3":{
+            "voiceline":"……어머? 방금 정돈한 머리를…… 혹시 머리를 풀어내린 내가 더 매력적이라 그런 건가?",
+            "voicelink":null
+        },
+        "모항귀환":{
+            "voiceline":"피곤한 것 같네? ……아직 시간이 있으니까 조금 더 어울려 줄게… 자, 이쪽으로 와……",
+            "voicelink":null
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"몸에 밴 향기 때문에 다시 돌아온 거야? …응? 더 맡고 싶다…고? 후후, 그 바람… 이뤄줘버릴까……",
+            "voicelink":null
+        },
         "실패":null,
         "우편":null,
         "임무":null,
         "임무완료":null,
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
-        "강화성공":null,
+        "터치1":{
+            "voiceline":"완전히 응석쟁이네? 이대로면 당신을 놓아주기 힘들어지겠어… 지휘관♡",
+            "voicelink":null
+        },
+        "터치2":{
+            "voiceline":"그렇게 열정적으로 다가오니…… 한 번 더 응석 부리게 해 줄게♡",
+            "voicelink":null
+        },
+        "입수시":{
+            "voiceline":"깼어? 그 표정…… 방금 밀회로는 아직 만족하지 못한 거야?",
+            "voicelink":null
+        },
+        "강화성공":{
+            "voiceline":"이제…… 마음껏 즐길 수 있겠어.",
+            "voicelink":null
+        },
         "vote":null,
         "승리":null,
         "전투개시_ex":null,
@@ -243656,10 +244288,10 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
+        "스킨 타입 - 한글":"이스트 글림 스타일",
+        "상점 id":0.0,
+        "상점 카테고리 id":3.0,
+        "스킨 태그":"쁘띠모션, 11, 배경",
         "입수 영상":"X",
         "재화":null,
         "기간":null,
@@ -244010,7 +244642,7 @@
         "스킨 태그":"듀얼, L2D, 배경",
         "입수 영상":"X",
         "재화":1680.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"한정 (2026\/03\/11)",
         "진영":"ROC",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -244276,8 +244908,8 @@
     {
         "클뜯 id":503020,
         "클뜯 함순이 id":50302,
-        "함순이 이름":null,
-        "한글 함순이 + 스킨 이름":null,
+        "함순이 이름":"장우",
+        "한글 함순이 + 스킨 이름":"장우",
         "영문 함순이 + 스킨 이름":"Chang Wu",
         "스킨 타입":"Default",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/503020\/painting.png",
@@ -244286,62 +244918,185 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/503020\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/503020\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/503020\/shipyard.png",
-        "설명":null,
-        "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
-        "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
-        "의뢰 완료":null,
-        "실망":null,
-        "낯섦":null,
-        "호감":null,
-        "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
-        "hp 경고":null,
-        "로그인":null,
-        "실패":null,
-        "우편":null,
-        "임무":null,
-        "임무완료":null,
-        "서약":null,
-        "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
-        "강화성공":null,
+        "설명":"6000톤급 순양함 계획안 - 장우",
+        "자기소개":{
+            "voiceline":"이스트 글림 소속 중순양함인 장우야. 지휘관, 당신 눈에 비친 나는…… 감상할 가치가 있는 아름다운 옥일까?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/profile.ogg"
+        },
+        "메인1":{
+            "voiceline":"지휘관, 옥 시장에 새로운 옥이 들어왔어. 같이 보러 가지 않을래? 마음에 드는 게 있으면 흥정은 내가 맡아줄게.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"지휘관, 이 옥구슬은 부드러우면서도 속에서부터 빛을 발하는 모습이 마치 집중할 때의 당신 눈동자 같아…… 아. 미안해. 방금 건 실언이었어…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"내가 모은 옥기(玉器)들은 천금을 호가하지만, 재물을 위해 가치를 모르는 이에게 넘길 생각은 없어. 그래서 말인데…… 지휘관, 옥을 가꿀 비용을… 마련해 줄 수 있을까?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/main3.ogg"
+        },
+        "전투개시":{
+            "voiceline":"이 전투 또한, 세공의 일부……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/battle.ogg"
+        },
+        "상세확인":{
+            "voiceline":"지휘관, 그 눈빛은…… 옥을 보고 있는 거야, 아니면 나를 보고 있는 거야?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"6000톤급 순양함 계획안 - 장우",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"돌아온 의뢰팀을 위해 백탕과 식량을 준비해 두었어. 보잘것없지만…… 마음이 더 중요하니까……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/expedition.ogg"
+        },
+        "실망":{
+            "voiceline":"옥석을 덮은 먼지는 털어낼 수 있지만, 한 번 잃은 사람의 마음은 어떻게 해야…… 이제 됐어…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/feeling1.ogg"
+        },
+        "낯섦":{
+            "voiceline":"미안…… 옥인은 좋은 옥을 발견하면 눈을 떼지 못하거든.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/feeling2.ogg"
+        },
+        "호감":{
+            "voiceline":"흔히 난옥(暖玉)은 촉촉하고 따뜻한 감촉이라던데…… 당신의 온기와 조금 닮았어.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/feeling3.ogg"
+        },
+        "기쁨":{
+            "voiceline":"지휘관 손의 온기를 떠올리며 이 옥을 마무리했어. 따뜻한 감촉을 제대로… 담아냈으려나?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/feeling4.ogg"
+        },
+        "사랑":{
+            "voiceline":"옥 원석을 빛내려면 뛰어난 옥인의 세공이 필요해. ……지휘관, 그거 알아? 당신은 이미 내 열정을 자극해 버렸다는 걸.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/feeling5.ogg"
+        },
+        "터치3":{
+            "voiceline":"그 손놀림…… 이 장우라는 차가운 옥에 당신의 온기를 전하려고…?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"피곤해? 그럼, 몸을 맡기고 잠깐 휴식을 취해…… 품속의 이 따뜻한 난옥(暖玉)이 지휘관의 피로를 조금이나마 덜어줄 수 있다면 좋겠는데.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/home.ogg"
+        },
+        "hp 경고":{
+            "voiceline":"부서지는 옥, 뼛속까지 스미는 한기……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/hp_warning.ogg"
+        },
+        "로그인":{
+            "voiceline":"차 향은 옅어졌지만, 새 옥에는 아직 온기가 남아 있어. ……마침 좋은 때에 왔네.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/login.ogg"
+        },
+        "실패":{
+            "voiceline":"옥석은 부서져도 다시 새길 수 있어… 이 실패도 마찬가지야.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/lose.ogg"
+        },
+        "우편":{
+            "voiceline":"우편? 내가 주문한 옥석이 도착한 건가……?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/mail.ogg"
+        },
+        "임무":{
+            "voiceline":"지휘관, 아직 당신의 「세공」을 기다리는 옥 원석이 남아 있어……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/mission.ogg"
+        },
+        "임무완료":{
+            "voiceline":"임무 완료야. 이번 건으로 얻는 보상은 분명 기대를 저버리지 않을 거야",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/mission_complete.ogg"
+        },
+        "서약":{
+            "voiceline":"계약은 성립됐어. 옥석이 아니라, 마음을 닦는 것―― 언제나 당신 곁에 머물며, 품속의 난옥처럼 당신을 계속 따뜻하게 해 줄게……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/propose.ogg"
+        },
+        "스킬":{
+            "voiceline":"세공으로 벼려낸 칼날, 빛나는 예리함.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/skill.ogg"
+        },
+        "터치1":{
+            "voiceline":"지휘관, 아름다운 옥을 감상하는 데에도 지켜야 할 격식이 있는 법이야……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"지휘관, 그…… 적당히 좀……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"나는 장우, 이스트 글림 소속의 옥인(玉人)이야. 수많은 옥석을 직접 세공해 온지라 내 안목에 나름 자부심을 품고 있었는데…… 이렇게 당신의 재능과 풍격을 직접 보니…… 진품이라 여겼던 것들이 결국은 그저 평범한 돌에 불과했다는 걸 깨닫게 됐어.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/unlock.ogg"
+        },
+        "강화성공":{
+            "voiceline":"이 몸의 예리함을 더 숨길 필요는 없겠지……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/upgrade.ogg"
+        },
         "vote":null,
-        "승리":null,
+        "승리":{
+            "voiceline":"하늘이 내린 아름다운 옥이라도, 세공하지 않으면 그 풍화는 끌어낼 수 없어.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/win_mvp.ogg"
+        },
         "전투개시_ex":null,
-        "상세확인_ex":null,
+        "상세확인_ex":{
+            "voiceline":"지휘관, 세공을 배우려면 우선 마음을 차분히 해야 해. 나를 따라 세공의 박자를 몸소 느껴 봐…… 그래, 아주 잘 하고…… 있어…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/detail_ex.ogg"
+        },
         "의뢰 완료_ex":null,
-        "사랑_ex":null,
-        "터치3_ex":null,
-        "모항귀환_ex":null,
+        "사랑_ex":{
+            "voiceline":"지휘관, 당신을 위해 만든 이 옥패를 봐…… 이걸 깎을 때는 머릿속이 온통 당신 모습으로 가득해서, 곡선 하나하나를 몇 번이고 손바닥으로 느끼며 고집스럽게 다듬고 또 다듬었어…… 이렇게 솔직한 내 모습…… 음…… 조금 상스러울까?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/feeling5_ex.ogg"
+        },
+        "터치3_ex":{
+            "voiceline":"당신의 온기…… 그 어떤 훌륭한 난옥(暖玉)보다도 마음이 놓여……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/headtouch_ex.ogg"
+        },
+        "모항귀환_ex":{
+            "voiceline":"돌아왔구나. ……조금 전까지만 해도 손끝에 한기가 서렸는데, 지금 당신의 품에 안기니 평소보다 훨씬 따뜻해…… 후후후.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/home_ex.ogg"
+        },
         "hp 경고_ex":null,
-        "로그인_ex":null,
+        "로그인_ex":{
+            "voiceline":"아름다운 옥에 영험한 기운이 깃드는 것은, 그 사람이 직접 그 옥을 정성껏 가꾸기 때문이야. 지휘관, 내가 이렇게 매일 당신을 바라보는 것 또한…… 옥을 가꾸는 과정이라 할 수 있을까?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/login_ex.ogg"
+        },
         "실패_ex":null,
         "우편_ex":null,
         "임무_ex":null,
         "임무완료_ex":null,
         "스킬_ex":null,
-        "터치1_ex":null,
-        "터치2_ex":null,
+        "터치1_ex":{
+            "voiceline":"조금만 더…… 내 곁에 머물러…… 주지 않을래?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/touch_ex.ogg"
+        },
+        "터치2_ex":{
+            "voiceline":"음…… 거기엔 옥이…… 없잖아……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/touch2_ex.ogg"
+        },
         "입수시_ex":null,
         "강화성공_ex":null,
         "승리_ex":null,
-        "함대 특수대사":null,
+        "함대 특수대사":[
+            {
+                "voiceline":"['지엔우'] : 장식은 소박해도 좋아. 옥패 하나면 충분하니까.",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/couple_encourage1.ogg"
+            },
+            {
+                "voiceline":"['딩안'] : 돈은 계획적으로 써야지… 하지만 마음에 드는 새 옥 앞에서는 도저히……",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/couple_encourage2.ogg"
+            }
+        ],
         "메인4":null,
         "메인1_ex":null,
-        "메인5_ex":null,
-        "메인6_ex":null,
+        "메인5_ex":{
+            "voiceline":"지휘관은 그저 여기 앉아만 있어도 돼. 그것만으로도…… 내게는 최고의 풍경이니까.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/main5_ex.ogg"
+        },
+        "메인6_ex":{
+            "voiceline":"옥이란 사랑으로 아껴줘야 다시 태어나는 법이야…… 지휘관, 나도…… 가끔은 아껴줄 수 있어?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/main6_ex.ogg"
+        },
         "메인7_ex":null,
         "메인8_ex":null,
-        "메인4_ex":null,
+        "메인4_ex":{
+            "voiceline":"난옥을 깎아보았는데, 지휘관…… 봐줄래? 자…… 좀 더 가까이서, 찬찬히 느껴봐……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503020\/main4_ex.ogg"
+        },
         "메인5":null,
         "메인6":null,
         "메인2_ex":null,
@@ -244350,21 +245105,21 @@
         "메인10_ex":null,
         "메인7":null,
         "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
+        "상점 id":0.0,
+        "상점 카테고리 id":0.0,
         "스킨 태그":"X",
         "입수 영상":"X",
         "재화":null,
         "기간":null,
         "진영":"ROC",
         "레어도":"SSR",
-        "ex_chat_status":0
+        "ex_chat_status":1
     },
     {
         "클뜯 id":503021,
         "클뜯 함순이 id":50302,
-        "함순이 이름":null,
-        "한글 함순이 + 스킨 이름":null,
+        "함순이 이름":"장우",
+        "한글 함순이 + 스킨 이름":"한 가지의 봄, 찬란히 피어나리",
         "영문 함순이 + 스킨 이름":"In Full Glory, Spring's Branch Blooms",
         "스킨 타입":"Empery'S Fineries",
         "전체 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/503021\/painting.png",
@@ -244373,33 +245128,72 @@
         "아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/503021\/icon.png",
         "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/503021\/qicon.png",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/503021\/shipyard.png",
-        "설명":null,
+        "설명":"여긴 조용하고, 매화 향기도 이렇게 기분 좋은데… 지휘관은 왜 들어오지 않는 걸까? 꽃들은 향기롭게 피어 있으니, 이제 남은 건 봄바람이 부는 것뿐……",
         "자기소개":null,
-        "메인1":null,
-        "메인2":null,
-        "메인3":null,
+        "메인1":{
+            "voiceline":"……침상 곁의 매화 가지와 내 머리카락…… 어느 쪽이 더 흐트러져 보여…?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503021\/main1.ogg"
+        },
+        "메인2":{
+            "voiceline":"지휘관, 눈앞의 이 봄빛은…… 천천히 음미할 가치가 있을까?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503021\/main2.ogg"
+        },
+        "메인3":{
+            "voiceline":"해질녘부터 깊은 밤까지, 줄곧 이 매화 가지를 지켰어. 당신이 오면 볼 수 있도록…… 그리고 나도……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503021\/main3.ogg"
+        },
         "전투개시":null,
-        "상세확인":null,
-        "드랍 설명":null,
-        "의뢰 완료":null,
+        "상세확인":{
+            "voiceline":"흩날리는 매화를 바라보며… 속세의 번잡함은 잊고, 잠시나마 함께 이 평온함을 즐기자……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503021\/detail.ogg"
+        },
+        "드랍 설명":{
+            "voiceline":"여긴 조용하고, 매화 향기도 이렇게 기분 좋은데… 지휘관은 왜 들어오지 않는 걸까? 꽃들은 향기롭게 피어 있으니, 이제 남은 건 봄바람이 부는 것뿐......",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"의뢰팀이 돌아왔어. 지휘관, 어서 마중 나가 줘. 봄빛으로 가득한 이곳도 부디 잊지 말아 주고……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503021\/expedition.ogg"
+        },
         "실망":null,
         "낯섦":null,
         "호감":null,
         "기쁨":null,
-        "사랑":null,
-        "터치3":null,
-        "모항귀환":null,
+        "사랑":{
+            "voiceline":"바닥에 떨어진 매화 꽃잎을 보고…… 지휘관은 소중히 아껴 줄까? 이 풍경을, 이 밤을, 그리고 이 마음을……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503021\/feeling5.ogg"
+        },
+        "터치3":{
+            "voiceline":"당신 손은 늘 따뜻해……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503021\/headtouch.ogg"
+        },
+        "모항귀환":{
+            "voiceline":"하늘이 어두워져서 슬슬 돌아올 거라 생각했어.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503021\/home.ogg"
+        },
         "hp 경고":null,
-        "로그인":null,
+        "로그인":{
+            "voiceline":"지휘관은 이 매화랑 나 중에…… 어느 쪽을 안고 싶어?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503021\/login.ogg"
+        },
         "실패":null,
         "우편":null,
         "임무":null,
         "임무완료":null,
         "서약":null,
         "스킬":null,
-        "터치1":null,
-        "터치2":null,
-        "입수시":null,
+        "터치1":{
+            "voiceline":"응? 방금 그 손놀림…… 옥을 어루만지고 싶은 거야?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503021\/touch.ogg"
+        },
+        "터치2":{
+            "voiceline":"아무리 감상하고 싶다고 해도… 이건…… 으읏……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503021\/touch2.ogg"
+        },
+        "입수시":{
+            "voiceline":"여긴 조용하고, 매화 향기도 이렇게 기분 좋은데… 지휘관은 왜 들어오지 않는 걸까? 꽃들은 향기롭게 피어 있으니, 이제 남은 건 봄바람이 부는 것뿐......",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/503021\/unlock.ogg"
+        },
         "강화성공":null,
         "vote":null,
         "승리":null,
@@ -244436,13 +245230,13 @@
         "메인9_ex":null,
         "메인10_ex":null,
         "메인7":null,
-        "스킨 타입 - 한글":null,
-        "상점 id":null,
-        "상점 카테고리 id":null,
-        "스킨 태그":"X",
-        "입수 영상":"X",
-        "재화":null,
-        "기간":null,
+        "스킨 타입 - 한글":"이스트 글림 스타일",
+        "상점 id":71294.0,
+        "상점 카테고리 id":3.0,
+        "스킨 태그":"L2D+, 특수배경 (움짤)",
+        "입수 영상":"O",
+        "재화":1280.0,
+        "기간":"한정 (2026\/03\/11)",
         "진영":"ROC",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -244769,7 +245563,7 @@
         "스킨 태그":"배경, 쁘띠모션",
         "입수 영상":"X",
         "재화":980.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"상시",
         "진영":"ROC",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -257278,7 +258072,7 @@
         },
         "hp 경고_ex":null,
         "로그인_ex":{
-            "voiceline":"소란은 가시지 않았지만… 내 마음은 그 어느때보다도 맑아. 지휘관, 당신의 빛이 나를 이끌고 있어.",
+            "voiceline":"소란은 가시지 않았지만… 내 마음은 지금껏 없을 만큼 맑아. 지휘관, 당신의 빛이 나를 이끌고 있어.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/605090\/login_ex.ogg"
         },
         "실패_ex":{
@@ -286460,7 +287254,7 @@
         "스킨 태그":"L2D, 특수배경 (움짤)",
         "입수 영상":"X",
         "재화":1200.0,
-        "기간":"한정 (2025\/02\/12)",
+        "기간":"한정 (2026\/03\/11)",
         "진영":"FFNF",
         "레어도":"UR",
         "ex_chat_status":0
@@ -303577,7 +304371,7 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/9600160\/main5_ex.ogg"
         },
         "메인6_ex":{
-            "voiceline":"지휘관, 여긴 이미 대대적으로 개조를 끝냈어. 반응형 함정에 사각 없는 감시 카메라도 있으니까, 나쁜 녀석들은 절대 못 들어와!",
+            "voiceline":"지휘관, 여긴 이미 대대적으로 개조를 끝냈어. 반응형 함정에 사각 없는 감시 카메라도 있으니까, 나쁜 녀석들은 절대 못 들어와♪",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/9600160\/main6_ex.ogg"
         },
         "메인7_ex":null,
@@ -335727,45 +336521,45 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/win_mvp.ogg"
         },
         "전투개시_ex":{
-            "voiceline":"네게 힘이 될 수 있도록 나도 열심히 할게!",
+            "voiceline":"힘이 될 수 있도록 나도 열심히 할게!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/battle_ex.ogg"
         },
         "상세확인_ex":{
-            "voiceline":"지휘관 군, 날 너무 방치하면 천벌이 내려올지도 몰라.",
+            "voiceline":"지휘관, 날 너무 방치하면 천벌이 내려올지도 몰라.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/detail_ex.ogg"
         },
         "의뢰 완료_ex":null,
         "사랑_ex":{
-            "voiceline":"지휘관 군, 내 말 잘 들어. 너무 무리하다가 날 홀로 남겨두지 마. 낯선 곳에 혼자 있는 건… 너무나도 외로우니까.",
+            "voiceline":"지휘관, 내 말 잘 듣거라. 무리하면서 날 홀로 남겨두지 마라. 낯선 곳에 혼자 있는 건… 너무도 외로우니까.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/feeling5_ex.ogg"
         },
         "터치3_ex":null,
         "모항귀환_ex":null,
         "hp 경고_ex":null,
         "로그인_ex":{
-            "voiceline":"아, 지휘관 군! 혹시 날 만나러 온 거야?",
+            "voiceline":"아, 지휘관! 혹시 날 만나러 온 거야?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/login_ex.ogg"
         },
         "실패_ex":null,
         "우편_ex":null,
         "임무_ex":{
-            "voiceline":"아직 임무가 남아 있는 거야? 내가 특별히 도와줄게.",
+            "voiceline":"아직 임무가 남아 있는 건가? 특별히 내가 도와줄게.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/mission_ex.ogg"
         },
         "임무완료_ex":{
-            "voiceline":"임무는 끝난 거야? 역시 지휘관 군이네. 특별히 칭찬해 줄게!",
+            "voiceline":"임무는 끝난 것이냐? 과연 지휘관답구나. 특별히 칭찬해 주마!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/mission_complete_ex.ogg"
         },
         "스킬_ex":null,
         "터치1_ex":null,
         "터치2_ex":{
-            "voiceline":"멈춰, 멈추라고! 지휘관 군, 안 된다면 안 돼!",
+            "voiceline":"멈춰, 멈추라고! 지휘관, 안 된다면 안 되는 거다!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/touch2_ex.ogg"
         },
         "입수시_ex":null,
         "강화성공_ex":null,
         "승리_ex":{
-            "voiceline":"나는 승리의 여신이라고!",
+            "voiceline":"나는 승리의 여신이니라!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/win_mvp_ex.ogg"
         },
         "함대 특수대사":[
@@ -335777,17 +336571,17 @@
         "메인4":null,
         "메인1_ex":null,
         "메인5_ex":{
-            "voiceline":"후후후… 어서 와. 차와 다과로 티타임을 즐겨 볼까, 지휘관 군!",
+            "voiceline":"후후… 잘 왔다. 차와 다과로 티타임을 즐기자꾸나, 지휘관.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/main5_ex.ogg"
         },
         "메인6_ex":{
-            "voiceline":"으으으으… 걱정 끼쳐서 미안… 난 신 실격이야… 사과의 의미라고 하긴 뭣하지만, 뭐 먹고 싶은 거 없어?",
+            "voiceline":"으으으으… 난 신 자격도 없어… 사과의 의미라고 하긴 뭣하지만, 뭐 먹고 싶은 건 없느냐?",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/main6_ex.ogg"
         },
         "메인7_ex":null,
         "메인8_ex":null,
         "메인4_ex":{
-            "voiceline":"음? 지휘관 군, 조금 피곤해? 그럼 특별히 내가 무릎 베개를 해줄게! 대신… 네 자는 얼굴을 마음껏 감상해 주겠어!",
+            "voiceline":"음? 지휘관, 조금 피곤해? 그럼 특별히 무릎 베개를 해주겠느니라! 대신… 네 자는 얼굴은 내가 마음껏 감상해 주마!",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11400010\/main4_ex.ogg"
         },
         "메인5":null,
@@ -336383,7 +337177,7 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11500010\/battle_ex.ogg"
         },
         "상세확인_ex":{
-            "voiceline":"음? 맛있는 걸 먹고 싶어서 곁에 붙어 있는 건 아니니 오해 마라. 그렇게 생각하다니 유감이군. 그나저나… 오늘 저녁은 뭐지?",
+            "voiceline":"음? 맛있는 걸 먹고 싶어서 곁에 붙어 있는 건 아니니 오해 마라. 그렇게 생각하다니 유감이군. 그나저나… 오늘 저녁은 뭐지",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11500010\/detail_ex.ogg"
         },
         "의뢰 완료_ex":null,
@@ -336747,7 +337541,7 @@
         "입수시_ex":null,
         "강화성공_ex":null,
         "승리_ex":{
-            "voiceline":"적의 기척 없음. 모두 함께 쟁취한 승리야.",
+            "voiceline":"적의 흔적 없음. 모두 함께 쟁취한 승리야.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11500020\/win_mvp_ex.ogg"
         },
         "함대 특수대사":[
@@ -337061,7 +337855,7 @@
         "실패_ex":null,
         "우편_ex":null,
         "임무_ex":{
-            "voiceline":"벌써 안 끝났어? 어휴, 어쩔 수 없지. 내가 도와줄게.",
+            "voiceline":"아직 안 끝났어? 어휴, 어쩔 수 없지. 내가 도와줄게.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11500030\/mission_ex.ogg"
         },
         "임무완료_ex":{
@@ -337101,7 +337895,7 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/11500030\/main6_ex.ogg"
         },
         "메인7_ex":{
-            "voiceline":"「①너를 위해서라면 뭐든지 할게!」, 「②원하는 걸 말해줘!」, 「③네 소원, 전부 이뤄줄게!」 ――자, 어떤 걸로 할래? 뭐? 다 비슷한 뜻 아니냐고? 후훗, 됐으니까 하나 골라봐. 실망시키지 않을 테니까.",
+            "voiceline":"「① 너를 위해서라면 뭐든지 할게!」, 「② 원하는 걸 말해줘!」, 「③ 네 소원, 전부 이뤄줄게!」 ――자, 어떤 걸로 할래? 뭐? 다 비슷한 뜻 아니냐고? 후훗, 됐으니까 하나 골라봐. 실망시키지 않을 테니까.",
             "voicelink":null
         },
         "메인8_ex":null,

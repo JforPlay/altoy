@@ -220,7 +220,7 @@ function renderCharacterList(characters = null) {
 function createCharacterCard(char) {
     const iconPath = state.characterIcons[char.name];
     const portraitUrl = iconPath
-        ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${iconPath}.png`
+        ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandshipicon/${iconPath}.png`
         : '';
 
     const isSelected = state.selectedCharacterId === String(char.id);
@@ -283,7 +283,7 @@ function renderCharacterDetail() {
     }
 
     const portraitUrl = char.unit_id
-        ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${char.unit_id}.png`
+        ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandcharicon/${char.unit_id}.png`
         : '';
 
     const currentPower = calculatePower(char, state.selectedLevel);
@@ -736,7 +736,7 @@ function renderSkillSection(char) {
 
     const skill = char.skill_id;
     const iconUrl = skill.icon
-        ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${skill.icon}.png`
+        ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandskillicon/${skill.icon}.png`
         : '';
 
     // Get current skill level value (1-10, index 0-9)
@@ -869,8 +869,8 @@ function renderSkinSection(char) {
     }
 
     const skinCards = char.skin.map(skin => {
-        const iconUrl = skin.icon_normal
-            ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/${skin.icon_normal}.png`
+        const iconUrl = skin.icon
+            ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islanddressicon/${skin.icon}.png`
             : '';
 
         return `
@@ -930,7 +930,7 @@ function renderSkillMaterial(material) {
             </label>
             <div class="skill-material-item">
                 <div class="skill-material-icon">
-                    ${item.icon ? createImg(`https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png`, item.name) : '<div class="icon-placeholder">📦</div>'}
+                    ${item.icon ? createImg(`https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png`, item.name) : '<div class="icon-placeholder">📦</div>'}
                 </div>
                 <div class="skill-material-info">
                     <div class="skill-material-name">${item.name}</div>

@@ -2188,6 +2188,76 @@
             0
         ]
     },
+    "120007": {
+        "auto_finish": 1,
+        "axis": [
+            28,
+            2
+        ],
+        "complete_character_id": "",
+        "complete_map_id": 1007,
+        "complete_tips": "<color=#1E8FFE>아일랜드 권한 인증 장치</color>로 동료를 가입시킬 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>아일랜드 권한 인증 장치</color>로 동료를 가입시킬 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 6,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    400000
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    400000
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7120007,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "인증 추가",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 720,
+            "stamina_cost": 144,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37120007,
+            "vfx_offset": "",
+            "workload": 432000
+        },
+        "id": 120007,
+        "island_level": 50,
+        "sys_unlock": [
+            [
+                3,
+                110310
+            ],
+            [
+                3,
+                120006
+            ]
+        ],
+        "tech_belong": 1,
+        "tech_chara": 1,
+        "tech_desc": "프린츠 오이겐의 아일랜드 권한 인증 장치를 생산한다. 더 많은 동료를 초대하자!",
+        "tech_icon": "tech_120001",
+        "tech_level": "1",
+        "tech_name": "인증 추가",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
     "130301": {
         "auto_finish": 1,
         "axis": [
@@ -6746,7 +6816,7 @@
         "auto_finish": 1,
         "axis": [
             1,
-            7
+            6
         ],
         "complete_character_id": [
             100500
@@ -6949,7 +7019,7 @@
     "410303": {
         "auto_finish": 1,
         "axis": [
-            10,
+            11,
             1
         ],
         "complete_character_id": [
@@ -7025,7 +7095,7 @@
     "410304": {
         "auto_finish": 1,
         "axis": [
-            13,
+            14,
             1
         ],
         "complete_character_id": [
@@ -7101,7 +7171,7 @@
     "410305": {
         "auto_finish": 1,
         "axis": [
-            16,
+            17,
             1
         ],
         "complete_character_id": [
@@ -7313,7 +7383,7 @@
     "420303": {
         "auto_finish": 1,
         "axis": [
-            10,
+            11,
             3
         ],
         "complete_character_id": [
@@ -7389,7 +7459,7 @@
     "420304": {
         "auto_finish": 1,
         "axis": [
-            16,
+            17,
             3
         ],
         "complete_character_id": [
@@ -7465,8 +7535,8 @@
     "430301": {
         "auto_finish": 1,
         "axis": [
-            4,
-            5
+            6,
+            4.5
         ],
         "complete_character_id": [
             100500
@@ -7533,8 +7603,8 @@
     "430302": {
         "auto_finish": 1,
         "axis": [
-            7,
-            5
+            9,
+            4.5
         ],
         "complete_character_id": [
             100500
@@ -7610,7 +7680,7 @@
         "auto_finish": 1,
         "axis": [
             13,
-            5
+            4.5
         ],
         "complete_character_id": [
             100500
@@ -7685,8 +7755,8 @@
     "430304": {
         "auto_finish": 1,
         "axis": [
-            16,
-            5
+            19,
+            4.5
         ],
         "complete_character_id": [
             100500
@@ -7761,8 +7831,8 @@
     "440301": {
         "auto_finish": 1,
         "axis": [
-            7,
-            7
+            4,
+            6
         ],
         "complete_character_id": [
             100500
@@ -7837,8 +7907,8 @@
     "440302": {
         "auto_finish": 1,
         "axis": [
-            10,
-            7
+            7,
+            6
         ],
         "complete_character_id": [
             100500
@@ -7913,8 +7983,8 @@
     "440303": {
         "auto_finish": 1,
         "axis": [
-            13,
-            7
+            10,
+            6
         ],
         "complete_character_id": [
             100500
@@ -7989,8 +8059,8 @@
     "440304": {
         "auto_finish": 1,
         "axis": [
-            16,
-            7
+            13,
+            6
         ],
         "complete_character_id": [
             100500
@@ -8066,7 +8136,7 @@
         "auto_finish": 1,
         "axis": [
             16,
-            9
+            6
         ],
         "complete_character_id": "",
         "complete_map_id": 1001,
@@ -8135,7 +8205,7 @@
         "auto_finish": 1,
         "axis": [
             19,
-            9
+            6
         ],
         "complete_character_id": "",
         "complete_map_id": 1004,
@@ -8200,6 +8270,942 @@
         "tech_icon": "tech_450301",
         "tech_level": "2",
         "tech_name": "꿀 채집지 +2",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "460001": {
+        "auto_finish": 1,
+        "axis": [
+            1,
+            8
+        ],
+        "complete_character_id": [
+            101800
+        ],
+        "complete_map_id": 1002,
+        "complete_tips": "<color=#1E8FFE>낚시 지점</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>낚시 지점</color>에서 확인할 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 3,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    7500
+                ],
+                [
+                    2801,
+                    10
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    7500
+                ],
+                [
+                    2801,
+                    10
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7460001,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "낚싯대 강화+",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 60,
+            "stamina_cost": 12,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37460001,
+            "vfx_offset": "",
+            "workload": 36000
+        },
+        "id": 460001,
+        "island_level": 18,
+        "sys_unlock": [
+            [
+                1,
+                20016001
+            ]
+        ],
+        "tech_belong": 4,
+        "tech_chara": 1,
+        "tech_desc": "낚싯대 레벨 상승! 이제부터는 더 희귀한 물고기를 낚을 수 있다!",
+        "tech_icon": "tech_460001",
+        "tech_level": "1",
+        "tech_name": "낚싯대 강화Ⅰ",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "460002": {
+        "auto_finish": 1,
+        "axis": [
+            4,
+            8
+        ],
+        "complete_character_id": [
+            101800
+        ],
+        "complete_map_id": 1002,
+        "complete_tips": "<color=#1E8FFE>낚시 지점</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>낚시 지점</color>에서 확인할 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 3,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    30000
+                ],
+                [
+                    2703,
+                    20
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    30000
+                ],
+                [
+                    2703,
+                    20
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7460002,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "낚싯대 강화+",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 300,
+            "stamina_cost": 60,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37460002,
+            "vfx_offset": "",
+            "workload": 180000
+        },
+        "id": 460002,
+        "island_level": 27,
+        "sys_unlock": [
+            [
+                3,
+                460001
+            ]
+        ],
+        "tech_belong": 4,
+        "tech_chara": 1,
+        "tech_desc": "낚싯대 레벨 상승! 이제부터는 더 희귀한 물고기를 낚을 수 있다!",
+        "tech_icon": "tech_460002",
+        "tech_level": "2",
+        "tech_name": "낚싯대 강화Ⅱ",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "460101": {
+        "auto_finish": 1,
+        "axis": [
+            7,
+            8
+        ],
+        "complete_character_id": [
+            101800
+        ],
+        "complete_map_id": 1002,
+        "complete_tips": "<color=#1E8FFE>가두리의 브리튼</color>에게 가면 동료를 <color=#1E8FFE>어패류 양식</color>에 배치할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>가두리의 브리튼</color>에게 가면 동료를 <color=#1E8FFE>어패류 양식</color>에 배치할 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 3,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    10000
+                ],
+                [
+                    2000,
+                    125
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    10000
+                ],
+                [
+                    2000,
+                    125
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7460101,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "양식 슬롯+",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 120,
+            "stamina_cost": 24,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37460101,
+            "vfx_offset": "",
+            "workload": 72000
+        },
+        "id": 460101,
+        "island_level": 20,
+        "sys_unlock": [
+            [
+                1,
+                20016003
+            ]
+        ],
+        "tech_belong": 4,
+        "tech_chara": 1,
+        "tech_desc": "가두리의 배치 슬롯을 늘려 어패류의 생산량 늘리기",
+        "tech_icon": "tech_460101",
+        "tech_level": "1",
+        "tech_name": "가두리 관리 슬롯 +Ⅰ",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "460102": {
+        "auto_finish": 1,
+        "axis": [
+            13,
+            8
+        ],
+        "complete_character_id": [
+            101800
+        ],
+        "complete_map_id": 1002,
+        "complete_tips": "<color=#1E8FFE>가두리의 브리튼</color>에게 가면 동료를 <color=#1E8FFE>어패류 양식</color>에 배치할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>가두리의 브리튼</color>에게 가면 동료를 <color=#1E8FFE>어패류 양식</color>에 배치할 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 3,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    50000
+                ],
+                [
+                    2802,
+                    14
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    50000
+                ],
+                [
+                    2802,
+                    14
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7460102,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "양식 슬롯+",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 360,
+            "stamina_cost": 72,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37460102,
+            "vfx_offset": "",
+            "workload": 216000
+        },
+        "id": 460102,
+        "island_level": 31,
+        "sys_unlock": [
+            [
+                3,
+                460301
+            ]
+        ],
+        "tech_belong": 4,
+        "tech_chara": 1,
+        "tech_desc": "가두리의 배치 슬롯을 늘려 어패류의 생산량 늘리기",
+        "tech_icon": "tech_460102",
+        "tech_level": "2",
+        "tech_name": "가두리 관리 슬롯 +Ⅱ",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "460201": {
+        "auto_finish": 1,
+        "axis": [
+            1,
+            9.5
+        ],
+        "complete_character_id": [
+            100800
+        ],
+        "complete_map_id": 1006,
+        "complete_tips": "<color=#1E8FFE>상업 지구의 아모마</color>가 있는 <color=#1E8FFE>유어 레스토랑</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>상업 지구의 아모마</color>가 있는 <color=#1E8FFE>유어 레스토랑</color>에서 확인할 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 3,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    3000
+                ],
+                [
+                    2521,
+                    5
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    3000
+                ],
+                [
+                    2521,
+                    5
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7460201,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "피시 앤 칩스",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 30,
+            "stamina_cost": 6,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37460201,
+            "vfx_offset": "",
+            "workload": 18000
+        },
+        "id": 460201,
+        "island_level": 12,
+        "sys_unlock": [
+            [
+                1,
+                10003020
+            ],
+            [
+                1,
+                20016003
+            ]
+        ],
+        "tech_belong": 4,
+        "tech_chara": 1,
+        "tech_desc": "피시 앤 칩스 레시피",
+        "tech_icon": "tech_460201",
+        "tech_level": "1",
+        "tech_name": "피시 앤 칩스",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "460202": {
+        "auto_finish": 1,
+        "axis": [
+            4,
+            9.5
+        ],
+        "complete_character_id": [
+            100800
+        ],
+        "complete_map_id": 1006,
+        "complete_tips": "<color=#1E8FFE>상업 지구의 아모마</color>가 있는 <color=#1E8FFE>유어 레스토랑</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>상업 지구의 아모마</color>가 있는 <color=#1E8FFE>유어 레스토랑</color>에서 확인할 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 3,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    7500
+                ],
+                [
+                    2522,
+                    5
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    7500
+                ],
+                [
+                    2522,
+                    5
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7460202,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "생선 양파찜",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 60,
+            "stamina_cost": 12,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37460202,
+            "vfx_offset": "",
+            "workload": 36000
+        },
+        "id": 460202,
+        "island_level": 18,
+        "sys_unlock": [
+            [
+                1,
+                10003020
+            ],
+            [
+                1,
+                20016003
+            ]
+        ],
+        "tech_belong": 4,
+        "tech_chara": 1,
+        "tech_desc": "생선 양파찜 레시피",
+        "tech_icon": "tech_460202",
+        "tech_level": "1",
+        "tech_name": "생선 양파찜",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "460203": {
+        "auto_finish": 1,
+        "axis": [
+            7,
+            9.5
+        ],
+        "complete_character_id": [
+            100800
+        ],
+        "complete_map_id": 1006,
+        "complete_tips": "<color=#1E8FFE>상업 지구의 아모마</color>가 있는 <color=#1E8FFE>유어 레스토랑</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>상업 지구의 아모마</color>가 있는 <color=#1E8FFE>유어 레스토랑</color>에서 확인할 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 3,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    10000
+                ],
+                [
+                    5005,
+                    10
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    10000
+                ],
+                [
+                    5005,
+                    10
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7460206,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "레몬 새우",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 120,
+            "stamina_cost": 24,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37460203,
+            "vfx_offset": "",
+            "workload": 72000
+        },
+        "id": 460203,
+        "island_level": 21,
+        "sys_unlock": [
+            [
+                1,
+                20016003
+            ],
+            [
+                3,
+                540001
+            ]
+        ],
+        "tech_belong": 4,
+        "tech_chara": 1,
+        "tech_desc": "상큼한 레몬 새우 레시피",
+        "tech_icon": "tech_460206",
+        "tech_level": "1",
+        "tech_name": "레몬 새우",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "460204": {
+        "auto_finish": 1,
+        "axis": [
+            10,
+            9.5
+        ],
+        "complete_character_id": [
+            100800
+        ],
+        "complete_map_id": 1006,
+        "complete_tips": "<color=#1E8FFE>상업 지구의 아모마</color>가 있는 <color=#1E8FFE>유어 레스토랑</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>상업 지구의 아모마</color>가 있는 <color=#1E8FFE>유어 레스토랑</color>에서 확인할 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 3,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    20000
+                ],
+                [
+                    5006,
+                    22
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    20000
+                ],
+                [
+                    5006,
+                    22
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7460205,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "가재 볶음",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 240,
+            "stamina_cost": 48,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37460204,
+            "vfx_offset": "",
+            "workload": 144000
+        },
+        "id": 460204,
+        "island_level": 25,
+        "sys_unlock": [
+            [
+                1,
+                20016003
+            ],
+            [
+                3,
+                540001
+            ]
+        ],
+        "tech_belong": 4,
+        "tech_chara": 1,
+        "tech_desc": "향긋한 가재 볶음 레시피",
+        "tech_icon": "tech_460205",
+        "tech_level": "1",
+        "tech_name": "가재 볶음",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "460205": {
+        "auto_finish": 1,
+        "axis": [
+            13,
+            9.5
+        ],
+        "complete_character_id": [
+            100800
+        ],
+        "complete_map_id": 1006,
+        "complete_tips": "<color=#1E8FFE>상업 지구의 아모마</color>가 있는 <color=#1E8FFE>유어 레스토랑</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>상업 지구의 아모마</color>가 있는 <color=#1E8FFE>유어 레스토랑</color>에서 확인할 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 3,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    40000
+                ],
+                [
+                    5101,
+                    11
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    40000
+                ],
+                [
+                    5101,
+                    11
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7460203,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "파에야",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 300,
+            "stamina_cost": 60,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37460205,
+            "vfx_offset": "",
+            "workload": 180000
+        },
+        "id": 460205,
+        "island_level": 29,
+        "sys_unlock": [
+            [
+                1,
+                20016003
+            ],
+            [
+                3,
+                530001
+            ]
+        ],
+        "tech_belong": 4,
+        "tech_chara": 1,
+        "tech_desc": "식재료 듬뿍 파에야 레시피",
+        "tech_icon": "tech_460203",
+        "tech_level": "1",
+        "tech_name": "파에야",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "460206": {
+        "auto_finish": 1,
+        "axis": [
+            16,
+            9.5
+        ],
+        "complete_character_id": [
+            100800
+        ],
+        "complete_map_id": 1006,
+        "complete_tips": "<color=#1E8FFE>상업 지구의 아모마</color>가 있는 <color=#1E8FFE>유어 레스토랑</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>상업 지구의 아모마</color>가 있는 <color=#1E8FFE>유어 레스토랑</color>에서 확인할 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 3,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    120000
+                ],
+                [
+                    5108,
+                    24
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    120000
+                ],
+                [
+                    5108,
+                    24
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7460204,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "불도장",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 480,
+            "stamina_cost": 96,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37460206,
+            "vfx_offset": "",
+            "workload": 288000
+        },
+        "id": 460206,
+        "island_level": 36,
+        "sys_unlock": [
+            [
+                1,
+                10003020
+            ],
+            [
+                1,
+                20016003
+            ]
+        ],
+        "tech_belong": 4,
+        "tech_chara": 1,
+        "tech_desc": "진한 국물의 불도장 레시피",
+        "tech_icon": "tech_460204",
+        "tech_level": "1",
+        "tech_name": "불도장",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "460301": {
+        "auto_finish": 1,
+        "axis": [
+            10,
+            8
+        ],
+        "complete_character_id": [
+            101800
+        ],
+        "complete_map_id": 1002,
+        "complete_tips": "<color=#1E8FFE>가두리의 브리튼</color>에게 가면 동료를 <color=#1E8FFE>어패류 양식</color>에 배치할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>가두리의 브리튼</color>에게 가면 동료를 <color=#1E8FFE>어패류 양식</color>에 배치할 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 3,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    40000
+                ],
+                [
+                    2001,
+                    500
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    40000
+                ],
+                [
+                    2001,
+                    500
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7460301,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "양식 속도+",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 300,
+            "stamina_cost": 60,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37460301,
+            "vfx_offset": "",
+            "workload": 180000
+        },
+        "id": 460301,
+        "island_level": 29,
+        "sys_unlock": [
+            [
+                3,
+                460101
+            ]
+        ],
+        "tech_belong": 4,
+        "tech_chara": 1,
+        "tech_desc": "가두리의 양식 효율을 향상시켜 자원 획득을 더 편리하게 하기",
+        "tech_icon": "tech_460301",
+        "tech_level": "1",
+        "tech_name": "물고기 양식 효율 +Ⅰ",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "460302": {
+        "auto_finish": 1,
+        "axis": [
+            16,
+            8
+        ],
+        "complete_character_id": [
+            101800
+        ],
+        "complete_map_id": 1002,
+        "complete_tips": "<color=#1E8FFE>가두리의 브리튼</color>에게 가면 동료를 <color=#1E8FFE>어패류 양식</color>에 배치할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>가두리의 브리튼</color>에게 가면 동료를 <color=#1E8FFE>어패류 양식</color>에 배치할 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 3,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    100000
+                ],
+                [
+                    2004,
+                    300
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    100000
+                ],
+                [
+                    2004,
+                    300
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7460302,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "양식 속도+",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 360,
+            "stamina_cost": 72,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37460302,
+            "vfx_offset": "",
+            "workload": 216000
+        },
+        "id": 460302,
+        "island_level": 34,
+        "sys_unlock": [
+            [
+                3,
+                460102
+            ]
+        ],
+        "tech_belong": 4,
+        "tech_chara": 1,
+        "tech_desc": "가두리의 양식 효율을 향상시켜 자원 획득을 더 편리하게 하기",
+        "tech_icon": "tech_460302",
+        "tech_level": "2",
+        "tech_name": "물고기 양식 효율 +Ⅱ",
         "tech_repeat": [
             0,
             0
@@ -10193,8 +11199,8 @@
             100800
         ],
         "complete_map_id": 1006,
-        "complete_tips": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>쥬쥬 간편식</color>에서 확인할 수 있습니다.",
-        "complete_title": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>쥬쥬 간편식</color>에서 확인할 수 있습니다.",
+        "complete_tips": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>츄츄 간편식</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>츄츄 간편식</color>에서 확인할 수 있습니다.",
         "formula_id": {
             "affected_vfx": "",
             "affected_vfx_offset": "",
@@ -10273,8 +11279,8 @@
             100800
         ],
         "complete_map_id": 1006,
-        "complete_tips": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>쥬쥬 간편식</color>에서 확인할 수 있습니다.",
-        "complete_title": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>쥬쥬 간편식</color>에서 확인할 수 있습니다.",
+        "complete_tips": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>츄츄 간편식</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>츄츄 간편식</color>에서 확인할 수 있습니다.",
         "formula_id": {
             "affected_vfx": "",
             "affected_vfx_offset": "",
@@ -10353,8 +11359,8 @@
             100800
         ],
         "complete_map_id": 1006,
-        "complete_tips": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>쥬쥬 간편식</color>에서 확인할 수 있습니다.",
-        "complete_title": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>쥬쥬 간편식</color>에서 확인할 수 있습니다.",
+        "complete_tips": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>츄츄 간편식</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>츄츄 간편식</color>에서 확인할 수 있습니다.",
         "formula_id": {
             "affected_vfx": "",
             "affected_vfx_offset": "",
@@ -10429,8 +11435,8 @@
             100800
         ],
         "complete_map_id": 1005,
-        "complete_tips": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>쥬쥬 간편식</color>에서 확인할 수 있습니다.",
-        "complete_title": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>쥬쥬 간편식</color>에서 확인할 수 있습니다.",
+        "complete_tips": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>츄츄 간편식</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>츄츄 간편식</color>에서 확인할 수 있습니다.",
         "formula_id": {
             "affected_vfx": "",
             "affected_vfx_offset": "",
@@ -10505,8 +11511,8 @@
             100800
         ],
         "complete_map_id": 1005,
-        "complete_tips": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>쥬쥬 간편식</color>에서 확인할 수 있습니다.",
-        "complete_title": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>쥬쥬 간편식</color>에서 확인할 수 있습니다.",
+        "complete_tips": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>츄츄 간편식</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>츄츄 간편식</color>에서 확인할 수 있습니다.",
         "formula_id": {
             "affected_vfx": "",
             "affected_vfx_offset": "",
@@ -10581,8 +11587,8 @@
             100800
         ],
         "complete_map_id": 1006,
-        "complete_tips": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
-        "complete_title": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
+        "complete_tips": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
         "formula_id": {
             "affected_vfx": "",
             "affected_vfx_offset": "",
@@ -10737,8 +11743,8 @@
             100800
         ],
         "complete_map_id": 1006,
-        "complete_tips": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
-        "complete_title": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
+        "complete_tips": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
         "formula_id": {
             "affected_vfx": "",
             "affected_vfx_offset": "",
@@ -10794,7 +11800,7 @@
         ],
         "tech_belong": 5,
         "tech_chara": 1,
-        "tech_desc": "단순하면서도 맛있는 닭고기와 감자 모둠 제작 가능.",
+        "tech_desc": "단순하면서도 맛있는 닭고기와 감자 모듬 제작 가능.",
         "tech_icon": "tech_540201",
         "tech_level": "1",
         "tech_name": "닭고기 감자 플래터",
@@ -10813,8 +11819,8 @@
             100800
         ],
         "complete_map_id": 1006,
-        "complete_tips": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
-        "complete_title": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
+        "complete_tips": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
         "formula_id": {
             "affected_vfx": "",
             "affected_vfx_offset": "",
@@ -10889,8 +11895,8 @@
             100800
         ],
         "complete_map_id": 1006,
-        "complete_tips": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
-        "complete_title": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
+        "complete_tips": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
         "formula_id": {
             "affected_vfx": "",
             "affected_vfx_offset": "",
@@ -10965,8 +11971,8 @@
             100800
         ],
         "complete_map_id": 1006,
-        "complete_tips": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
-        "complete_title": "<color=#1E8FFE>모항 상점가의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
+        "complete_tips": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>항구 상업 지구의 아모마</color>가 있는 <color=#1E8FFE>오징어 구이</color>에서 확인할 수 있습니다.",
         "formula_id": {
             "affected_vfx": "",
             "affected_vfx_offset": "",
@@ -12078,7 +13084,7 @@
     "630204": {
         "auto_finish": 1,
         "axis": [
-            19,
+            22,
             3
         ],
         "complete_character_id": [
@@ -12137,7 +13143,7 @@
         "sys_unlock": [
             [
                 3,
-                630203
+                630205
             ]
         ],
         "tech_belong": 6,
@@ -12146,6 +13152,82 @@
         "tech_icon": "tech_630201",
         "tech_level": "1",
         "tech_name": "서류 캐비닛",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
+    "630205": {
+        "auto_finish": 1,
+        "axis": [
+            19,
+            3
+        ],
+        "complete_character_id": [
+            100900
+        ],
+        "complete_map_id": 1007,
+        "complete_tips": "<color=#1E8FFE>기지 공장</color>의 로사와 이야기를 나누어 <color=#1E8FFE>목재 가공 설비</color>에서 제작 가능",
+        "complete_title": "<color=#1E8FFE>기지 공장</color>의 로사와 이야기를 나누어 <color=#1E8FFE>목재 가공 설비</color>에서 제작 가능",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 6,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    20000
+                ],
+                [
+                    5001,
+                    50
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    20000
+                ],
+                [
+                    5001,
+                    50
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7630205,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "장식용 그림 제작",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 60,
+            "stamina_cost": 12,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37630205,
+            "vfx_offset": "",
+            "workload": 144000
+        },
+        "id": 630205,
+        "island_level": 24,
+        "sys_unlock": [
+            [
+                3,
+                630203
+            ]
+        ],
+        "tech_belong": 6,
+        "tech_chara": 1,
+        "tech_desc": "예술적인 분위기를 더해주는 장식용 그림 제작 가능",
+        "tech_icon": "tech_630201",
+        "tech_level": "1",
+        "tech_name": "장식용 그림 제작",
         "tech_repeat": [
             0,
             0

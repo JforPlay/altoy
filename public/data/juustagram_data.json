@@ -29504,82 +29504,237 @@
     "620": {
         "id": 620,
         "ship_group": 30311,
-        "message": "Translation Source Missing",
+        "message": "(파파고)모델이라는 직업도 혹독한 훈련이죠...",
         "name": "Takao",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260122_gaoxiongUpOIqgkG4aLDNhof.png",
         "shipgirl_names": [
-            30311
+            30311,
+            20234,
+            20236,
+            10227,
+            70203,
+            20220,
+            50301
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "20220": "(파파고)가정부 훈련이든 모델 훈련이든 준비는 필수"
+            },
+            "2": {
+                "20234": "(파파고)준비하세요, 준비하세요, 준비하세요~"
+            },
+            "3": {
+                "20234": "(파파고)그럼 다음 연습 시작 전에 같이 사진도 찍고 재미있게 놀아요!"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "10227": "(파파고)이게 최신 패션 트렌드인가요? !"
+            },
+            "2": {
+                "50301": "(파파고)이 작품은 당신에게 적합하지 않습니다. 필요한 경우 몇 가지 세트를 디자인하는 데 도움을 드릴 수 있습니다."
+            },
+            "3": {
+                "10227": "(파파고)정말 감사합니다~!"
+            }
+        },
+        "reply_group3": {
+            "1": {
+                "20236": "(파파고)이 옷들.. 다 위험한 냄새가 나네요~"
+            },
+            "2": {
+                "30311": "(파파고)위험한 냄새...?"
+            },
+            "3": {
+                "70203": "(파파고)응, 응, 엄청 위험해~"
+            }
+        },
+        "op_option1": "(파파고)나는 당신과 함께 연습 할 것입니다",
+        "op_reply1": "(파파고)지휘관님이 여기 계시면 아무리 힘든 훈련도 문제 없을 거예요!",
+        "reply1_shipgirl": 30311,
+        "op_option2": "(파파고)일과 휴식의 균형, 휴식에 주의",
+        "op_reply2": "(파파고)걱정해주셔서 감사합니다, 사령관님. 그럼...나와 잠시 쉬어갈 수 있나요?",
+        "reply2_shipgirl": 30311
     },
     "621": {
         "id": 621,
         "ship_group": 60509,
-        "message": "Translation Source Missing",
+        "message": "(파파고)아마도 누군가를 그리워할 때...",
         "name": "Francesco Caracciolo",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260122_fulangxisikevCid4PrTkWhwiKOm.png",
         "shipgirl_names": [
+            60802,
+            19906,
+            60305,
+            40502,
+            60508,
             60509
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "60802": "(파파고)정말 현실적인 동상이네요! 라파엘의 신작인가요?"
+            },
+            "2": {
+                "60305": "(파파고)이런 우울한 조각상... 그야말로 기적이다"
+            },
+            "3": {
+                "60508": "(파파고)이렇게 사실적이고 감동적인 작품은 내 스타일이 아니다"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "40502": "(Translation Failed) 等待的滋味的确不好受，我懂"
+            },
+            "2": {
+                "60509": "(Translation Failed) 一天的时光，居然有如此漫长……"
+            },
+            "3": {
+                "19906": "(파파고)...그냥 쉬었어요... 하루가 이렇게 지나갔네요..."
+            }
+        },
+        "op_option1": "(파파고)이게 정말 조각상인가요?",
+        "op_reply1": "(파파고)답을 알고 싶으시다면 직접 방문해 보시기 바랍니다.",
+        "reply1_shipgirl": 60509,
+        "op_option2": "(파파고)나는 당신에게 간다",
+        "op_reply2": "(파파고)답변을 받고 나니 마음이 많이 편해졌네요...",
+        "reply2_shipgirl": 60509
     },
     "622": {
         "id": 622,
         "ship_group": 60204,
-        "message": "Translation Source Missing",
+        "message": "(파파고)24시간 동안 쉬지 않고 원을 그리며 도는 도전... 성공이 곧 다가옵니다!",
         "name": "Alberto di Giussano",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260122_aerbeituocu9FOhN9ovPuCbsd.png",
         "shipgirl_names": [
+            10208,
+            10233,
+            10210,
             60204
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "10233": "(파파고)돌다, 돌다, 돌다, 돌다, 돌다, 돌다, 돌다"
+            },
+            "2": {
+                "10208": "(파파고)텍스트가... 돌고 있어요... 너무 어지러워요"
+            },
+            "3": {
+                "10233": "(파파고)계산 중, 지금은 랩 104567입니다."
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "10210": "(파파고)재미있네요 저도 한번 해볼께요~"
+            },
+            "2": {
+                "10210": "(파파고)안녕 안녕 안녕? 아직도 거기 있어?"
+            },
+            "3": {
+                "10233": "(파파고)그녀는 기절했다"
+            }
+        },
+        "op_option1": "(파파고)돌리고, 돌리고, 돌리고, 돌리고, 돌리세요",
+        "op_reply1": "(파파고)처음엔 기절했어요... 지휘관님의 소식을 보자마자 갑자기 결의가 확 솟아오르더라구요! 계속하다!",
+        "reply1_shipgirl": 60204,
+        "op_option2": "(파파고)챌린지는 성공했습니다. 감사합니다!",
+        "op_reply2": "(파파고)매우 좋은……",
+        "reply2_shipgirl": 60204
     },
     "623": {
         "id": 623,
         "ship_group": 60112,
-        "message": "Translation Source Missing",
+        "message": "(파파고)정보가 상처받은 것 같아요...걱정하지 말고 제가 치료해드릴게요~",
         "name": "Ugolino Vivaldi",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260122_wugelini8xVFOH1XUvlNWg7Q.png",
         "shipgirl_names": [
-            60112
+            20135,
+            40109,
+            60112,
+            50102,
+            10234,
+            50109
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "20135": "(파파고)도움이 필요하면 야누스에게 전화하세요..."
+            },
+            "2": {
+                "60112": "(파파고)고마워요 야누스씨~"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "40109": "(파파고)너무 불쌍한데 왜 아파요...?"
+            },
+            "2": {
+                "50102": "(파파고)아주 먼 옛날부터 시작해야 해---"
+            },
+            "3": {
+                "50109": "(파파고)한 시간 전, 우리는 지하 모험에서 이 물질들을 성공적으로 구출했습니다!"
+            },
+            "4": {
+                "50109": "(파파고)그들은 테이블 다리 아래에 놓여 있었고 상황은 매우 위급했습니다!"
+            },
+            "5": {
+                "50102": "(파파고)나는 표지에 있는 단어를 간신히 알아볼 수 있었다... \"일급비밀!\" 홍콩 가십뉴스 편집본?"
+            },
+            "6": {
+                "10234": "(파파고)그럼 그게 그렇게 중요한 정보인 걸까요? ! 회복되면 꼭 알려주세요!"
+            }
+        },
+        "op_option1": "(파파고)데이터가 치료되었나요?",
+        "op_reply1": "(파파고)어-허! 기다린 후 지휘관에게 정보의 상태를 설명하는 시간~",
+        "reply1_shipgirl": 60112,
+        "op_option2": "(파파고)그리고 어젯밤에 작업한 파일도 살펴보시기 바랍니다.",
+        "op_reply2": "(파파고)알았어~ 그런데 먼저 지휘관부터 살펴볼까요? 바로 갈게요~",
+        "reply2_shipgirl": 60112
     },
     "624": {
         "id": 624,
         "ship_group": 10520,
-        "message": "Translation Source Missing",
+        "message": "(파파고)촬영하느라 너무 배고프다",
         "name": "Alabama",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260122_alabama7kziH7sMh44kShTP.png",
         "shipgirl_names": [
-            10520
+            10520,
+            11802,
+            90402,
+            10709
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "11802": "(파파고)정말 유혹적이네요! 다음에는 음식 라이브 방송도 할게요~"
+            },
+            "2": {
+                "10709": "(파파고)맛있는 버거 레스토랑을 추천해 드릴 수 있어요"
+            },
+            "3": {
+                "11802": "(파파고)좋습니다. 지금 예약하세요!"
+            },
+            "4": {
+                "10520": "(파파고)나 좀 데려가줘..."
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "90402": "(파파고)정말 에너지 보충이 필요한 시기입니다. 마침 내 작업실에 아직도 탄산음료 몇 병이 남아 있는데..."
+            },
+            "2": {
+                "10520": "(파파고)우연히 버거를 하나 더 샀습니다. 그 정도는 아닌데..."
+            },
+            "3": {
+                "90402": "(파파고)거래를 하라고?"
+            },
+            "4": {
+                "10520": "(파파고)거래를 하다"
+            }
+        },
+        "op_option1": "(파파고)버거 좋아 보인다",
+        "op_reply1": "(파파고)내가 할 수 있는 최선은... 반을 지휘관에게 주는 것뿐이다.",
+        "reply1_shipgirl": 10520,
+        "op_option2": "(파파고)소품 맛있나요?",
+        "op_reply2": "(파파고)맛있어요. 지휘관님, 와서 우리와 함께하지 않으시겠어요?",
+        "reply2_shipgirl": 10520
     },
     "625": {
         "id": 625,
@@ -29653,6 +29808,70 @@
         "picture_persist": "",
         "shipgirl_names": [
             49902
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "630": {
+        "id": 630,
+        "ship_group": 70303,
+        "message": "Translation Source Missing",
+        "name": "Moskva",
+        "picture_persist": "",
+        "shipgirl_names": [
+            70303
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "631": {
+        "id": 631,
+        "ship_group": 70113,
+        "message": "Translation Source Missing",
+        "name": "Ozornoy",
+        "picture_persist": "",
+        "shipgirl_names": [
+            70113
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "632": {
+        "id": 632,
+        "ship_group": 70209,
+        "message": "Translation Source Missing",
+        "name": "Krasny Kavkaz",
+        "picture_persist": "",
+        "shipgirl_names": [
+            70209
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "633": {
+        "id": 633,
+        "ship_group": 70210,
+        "message": "Translation Source Missing",
+        "name": "Bogatyr",
+        "picture_persist": "",
+        "shipgirl_names": [
+            70210
         ],
         "op_option1": "Translation Source Missing",
         "op_reply1": "Translation Source Missing",

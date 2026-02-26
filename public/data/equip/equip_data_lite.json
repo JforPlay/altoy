@@ -32598,5 +32598,120 @@
             }
         ],
         "compare_group": 5
+    },
+    {
+        "id": 150960,
+        "name": "옥션 초대장",
+        "icon": "150960",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 5,
+        "nation_name": "이스트 글림",
+        "nation_code": "ROC",
+        "speciality": "<[NA]>",
+        "label": [
+            "PRAN",
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": "10"
+            },
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": 100
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "value": "21"
+            },
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": 190
+            }
+        ],
+        "compare_group": 5
+    },
+    {
+        "id": 150980,
+        "name": "나비와 대나무의 유희",
+        "icon": "150980",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 5,
+        "nation_name": "이스트 글림",
+        "nation_code": "ROC",
+        "speciality": "<[NA]>",
+        "label": [
+            "PRAN",
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "200"
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "530"
+            }
+        ],
+        "compare_group": 5
+    },
+    {
+        "id": 151000,
+        "name": "나비와 매화의 유희",
+        "icon": "151000",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 5,
+        "nation_name": "이스트 글림",
+        "nation_code": "ROC",
+        "speciality": "<[NA]>",
+        "label": [
+            "PRAN",
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "200"
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "530"
+            }
+        ],
+        "compare_group": 5
     }
 ]

@@ -106010,6 +106010,7 @@
                 "B",
                 "C"
             ],
+            "skill_id": 152130,
             "weapon_true": false
         },
         "base": {
@@ -106229,6 +106230,7 @@
                 "B",
                 "C"
             ],
+            "skill_id": 152120,
             "weapon_true": false
         },
         "base": {
@@ -107230,7 +107232,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "151990": {
                 "id": 151990,
@@ -107257,6 +107259,16 @@
                 "weapon_true": true
             }
         },
+        "description": [
+            "이벤트: 신촌 주옥 명품회"
+        ],
+        "name": "하이처우",
+        "gift_dislike": [
+            180004,
+            180009
+        ],
+        "skin_id": 502120,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502120/shipyard.png",
         "timer": null,
         "light": false,
         "medium": false,
@@ -107570,7 +107582,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "250221": {
                 "id": 250221,
@@ -107578,7 +107590,7 @@
                 "upgrade": 250222,
                 "downgrade": null,
                 "requirement": "Limit Break 1",
-                "weapon_true": false
+                "weapon_true": true
             },
             "250222": {
                 "id": 250222,
@@ -107586,9 +107598,19 @@
                 "upgrade": null,
                 "downgrade": 250221,
                 "requirement": "Limit Break 3",
-                "weapon_true": false
+                "weapon_true": true
             }
         },
+        "description": [
+            "이벤트: 신촌 주옥 명품회"
+        ],
+        "name": "장우",
+        "gift_dislike": [
+            180009,
+            180004
+        ],
+        "skin_id": 503020,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503020/shipyard.png",
         "timer": null,
         "light": false,
         "medium": false,

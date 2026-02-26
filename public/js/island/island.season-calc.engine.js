@@ -345,10 +345,10 @@ function renderSeasonPass() {
         let iconSrc = '';
         if (tier.isFurniture) {
             // Furniture uses furniture_{id}.png
-            iconSrc = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/furniture_${tier.itemId}.png`;
+            iconSrc = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandfurnitureicon/furniture_${tier.itemId}.png`;
         } else if (tier.itemInfo.icon) {
             // Regular items use their icon path
-            iconSrc = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${tier.itemInfo.icon.split('/').pop()}.png`;
+            iconSrc = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${tier.itemInfo.icon.split('/').pop()}.png`;
         }
 
         return `
@@ -505,7 +505,7 @@ function renderItemGrid() {
         const hasRecipe = item._hasRecipe || false;
 
         const iconSrc = item.icon
-            ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png`
+            ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png`
             : '';
 
         return `

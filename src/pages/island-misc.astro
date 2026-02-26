@@ -1,0 +1,56 @@
+---
+/**
+ * Island Misc Asset Gallery
+ * Displays miscellaneous island assets from 5 categories
+ */
+import Layout from '../layouts/Layout.astro';
+import '../styles/island/island.style.css';
+import '../styles/island/island-misc.css';
+---
+
+<Layout title="벽뜌땨 잡동사니" bodyClass="dark-mode">
+    <div class="island-misc-header">
+        <h1>
+            <span class="material-symbols-outlined">collections</span>
+            벽뜌땨 잡동사니
+        </h1>
+        <p class="subtitle">아일랜드 기타 잡동사니 이미지 모아보기</p>
+    </div>
+
+    <div class="island-misc-container">
+        <details class="island-misc-section" open data-category="islanddressicon">
+            <summary>의상 아이콘<span class="section-count"></span></summary>
+            <div class="island-misc-gallery"></div>
+        </details>
+
+        <details class="island-misc-section" data-category="islandthemeicon">
+            <summary>테마 아이콘<span class="section-count"></span></summary>
+            <div class="island-misc-gallery"></div>
+        </details>
+
+        <details class="island-misc-section" data-category="islandrestevent">
+            <summary>레스토랑 이벤트<span class="section-count"></span></summary>
+            <div class="island-misc-gallery"></div>
+        </details>
+
+        <details class="island-misc-section" data-category="islandinvitation">
+            <summary>초대장<span class="section-count"></span></summary>
+            <div class="island-misc-gallery"></div>
+        </details>
+
+        <details class="island-misc-section" data-category="islanddrawawardicon">
+            <summary>뽑기 보상<span class="section-count"></span></summary>
+            <div class="island-misc-gallery"></div>
+        </details>
+    </div>
+
+    <div id="island-misc-lightbox" class="island-misc-lightbox">
+        <button class="lightbox-close">&times;</button>
+        <button class="lightbox-prev">&#10094;</button>
+        <button class="lightbox-next">&#10095;</button>
+        <img class="lightbox-img" src="" alt="">
+        <div class="lightbox-caption"></div>
+    </div>
+
+    <script is:inline type="module" src="/altoy/js/island/island-misc.js"></script>
+</Layout>

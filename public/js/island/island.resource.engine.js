@@ -398,7 +398,7 @@ function showDependencyModal(title, recipes, direction, sourceRecipe) {
                     <div class="modal-recipe-group">
                         <div class="modal-item-header">
                             <div class="modal-item-icon">
-                                ${itemInfo.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${itemInfo.icon.split('/').pop()}.png" alt="${itemInfo.name}">` : '📦'}
+                                ${itemInfo.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${itemInfo.icon.split('/').pop()}.png" alt="${itemInfo.name}">` : '📦'}
                             </div>
                             <div class="modal-item-info">
                                 <h4>${itemInfo.name}</h4>
@@ -411,7 +411,7 @@ function showDependencyModal(title, recipes, direction, sourceRecipe) {
             return `
                                     <div class="modal-recipe-card" data-recipe-id="${recipe.id}">
                                         <div class="modal-recipe-icon">
-                                            ${recipeItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${recipeItem.icon.split('/').pop()}.png" alt="${recipeItem.name}">` : '📦'}
+                                            ${recipeItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${recipeItem.icon.split('/').pop()}.png" alt="${recipeItem.name}">` : '📦'}
                                         </div>
                                         <div class="modal-recipe-info">
                                             <div class="modal-recipe-name">${recipe.name || recipeItem.name}</div>

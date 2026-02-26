@@ -28,10 +28,10 @@ import {
 // ============================================
 
 const RANK_ICONS = {
-    bronze: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rank_tong.png',
-    silver: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rank_yin.png',
-    gold: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rank_jin.png',
-    diamond: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rank_zuanshi.png'
+    bronze: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_tong.png',
+    silver: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_yin.png',
+    gold: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_jin.png',
+    diamond: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_zuanshi.png'
 };
 
 const RANK_COLORS = {
@@ -636,7 +636,7 @@ function createMenuCard(itemId, formulaId, restaurantId) {
             <!-- Header -->
             <div class="menu-card-header">
                 <div class="restaurant-menu-icon" style="background-image: url('${rarityBackground}')">
-                    ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '<span class="material-symbols-outlined">restaurant_menu</span>'}
+                    ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '<span class="material-symbols-outlined">restaurant_menu</span>'}
                 </div>
                 <div class="menu-info">
                     <h4 class="menu-name">${profitData.itemName}</h4>

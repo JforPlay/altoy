@@ -102,7 +102,7 @@ export function renderRecipeList() {
             <div class="recipe-card ${isSelected ? 'active' : ''}"
                  data-recipe-id="${recipe.id}">
                                         <div class="recipe-icon">
-                                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
+                                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
                                         </div>                    <div class="recipe-info">
                 <div class="recipe-name">${recipe.name || item.name}</div>
                 <div class="recipe-meta">
@@ -284,7 +284,7 @@ export function gatherRecipeData(recipe) {
                 netGainPerItemAuto
             });
         }
-    }    return {
+    } return {
         item,
         category,
         isCategory1,
@@ -328,7 +328,7 @@ export function renderRecipeHeader(recipe, data) {
     return `
         <div class="recipe-detail-header">
             <div class="recipe-icon-large">
-                ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
+                ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
             </div>
             <div class="recipe-title-section">
                 <h3>${recipe.name || item.name}</h3>
@@ -613,7 +613,7 @@ export function renderCostSummary(recipe, data) {
                             ${Object.entries(goldConsumption.resources).map(([itemId, data]) => `
                                 <div class="cost-item">
                                     <div class="cost-icon">
-                                        ${data.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${data.icon.split('/').pop()}.png" alt="${data.name}">` : '📦'}
+                                        ${data.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${data.icon.split('/').pop()}.png" alt="${data.name}">` : '📦'}
                                     </div>
                                     <span class="cost-name">${data.name}</span>
                                     <span class="cost-amount">×${data.amount.toLocaleString()}</span>
@@ -684,7 +684,7 @@ export function renderCostSummary(recipe, data) {
                 ${Object.entries(goldConsumption.resources).map(([itemId, data]) => `
                     <div class="cost-item">
                         <div class="cost-icon">
-                            ${data.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${data.icon.split('/').pop()}.png" alt="${data.name}">` : '📦'}
+                            ${data.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${data.icon.split('/').pop()}.png" alt="${data.name}">` : '📦'}
                         </div>
                         <span class="cost-name">${data.name}</span>
                         <span class="cost-amount">×${data.amount.toLocaleString()}</span>
@@ -796,7 +796,7 @@ export function renderSeasonalItemDetail(recipe, container) {
     const html = `
         <div class="recipe-detail-header">
             <div class="recipe-icon-large">
-                ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
+                ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
             </div>
             <div class="recipe-title-section">
                 <h3>${item.name}</h3>
@@ -825,7 +825,7 @@ export function renderSeasonalItemDetail(recipe, container) {
         return `
                             <div class="seasonal-recipe-card" data-recipe-id="${recipeId}">
                                 <div class="recipe-icon">
-                                    ${recipeItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${recipeItem.icon.split('/').pop()}.png" alt="${recipeItem.name}">` : '📦'}
+                                    ${recipeItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${recipeItem.icon.split('/').pop()}.png" alt="${recipeItem.name}">` : '📦'}
                                 </div>
                                 <div class="recipe-info">
                                     <div class="recipe-name">${originalRecipe.name || recipeItem.name}</div>
@@ -882,7 +882,7 @@ export function renderSeasonalDependencyTree(recipe) {
         return `
                             <div class="tree-node-card upstream" data-recipe-id="${recipeId}">
                                 <div class="tree-node-icon">
-                                    ${producerItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${producerItem.icon.split('/').pop()}.png" alt="${producerItem.name}">` : '📦'}
+                                    ${producerItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${producerItem.icon.split('/').pop()}.png" alt="${producerItem.name}">` : '📦'}
                                 </div>
                                 <div class="tree-node-info">
                                     <div class="tree-node-name">${producerRecipe.name || producerItem.name}</div>
@@ -915,7 +915,7 @@ export function renderSeasonalDependencyTree(recipe) {
         return `
                             <div class="tree-node-card downstream" data-recipe-id="${recipeId}">
                                 <div class="tree-node-icon">
-                                    ${usageItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${usageItem.icon.split('/').pop()}.png" alt="${usageItem.name}">` : '📦'}
+                                    ${usageItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${usageItem.icon.split('/').pop()}.png" alt="${usageItem.name}">` : '📦'}
                                 </div>
                                 <div class="tree-node-info">
                                     <div class="tree-node-name">${usageRecipe.name || usageItem.name}</div>
@@ -956,7 +956,7 @@ export function renderMaterialList(materials) {
         return `
                     <div class="material-item rarity-${item.rarity || 1}">
                         <div class="material-icon">
-                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
+                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
                         </div>
                         <div class="material-info">
                             <span class="material-name">${item.name}</span>
@@ -982,7 +982,7 @@ export function renderMaterialListVertical(materials) {
                     <div class="material-item-vertical rarity-${item.rarity || 1}">
                         <div class="material-top-row">
                             <div class="material-icon">
-                                ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
+                                ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
                             </div>
                             <span class="material-quantity">×${quantity}</span>
                         </div>
@@ -1099,7 +1099,7 @@ export function renderTreeNodesWithConnectors(nodes, depth, direction) {
                 <div class="tree-node depth-${depth} ${isLast ? 'last-child' : ''} shop-purchase" data-direction="${direction}">
                     <div class="tree-node-card shop ${direction}">
                         <div class="tree-node-icon">
-                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
+                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
                         </div>
                         <div class="tree-node-info">
                             <div class="tree-node-name">
@@ -1132,7 +1132,7 @@ export function renderTreeNodesWithConnectors(nodes, depth, direction) {
             <div class="tree-node depth-${depth} ${isLast ? 'last-child' : ''}" data-direction="${direction}">
                 <div class="tree-node-card ${direction} ${isManualMode ? 'manual-mode' : ''}" data-recipe-id="${node.recipe.id}" onclick="ResourceModule.selectRecipeFromTree(${node.recipe.id})">
                     <div class="tree-node-icon">
-                        ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
+                        ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '📦'}
                     </div>
                     <div class="tree-node-info">
                         <div class="tree-node-name">
@@ -1207,9 +1207,22 @@ export function renderForestDependencies(nodes, depth = 0) {
             return `
                     <div class="forest-tree__node">
                         <div class="forest-tree__content">
-                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}" class="forest-tree__icon"/>` : '<span class="forest-tree__icon">•</span>'}
+                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}" class="forest-tree__icon"/>` : '<span class="forest-tree__icon">•</span>'}
                             <span class="forest-tree__text">${item.name} (×${node.quantity})</span>
                             <span class="forest-tree__cost">— ${costItem?.name || '자원'} ×${node.shopCost?.totalCost?.toFixed?.(1) || '?'}</span>
+                        </div>
+                    </div>
+                `;
+        }
+
+        // Raw material / leaf node (no recipe, not a shop purchase)
+        if (!node.recipe) {
+            const item = node.itemInfo || window.IslandEngine.getItemInfo(node.itemId);
+            return `
+                    <div class="forest-tree__node">
+                        <div class="forest-tree__content">
+                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}" class="forest-tree__icon"/>` : '<span class="forest-tree__icon">•</span>'}
+                            <span class="forest-tree__text">${item.name} (×${node.quantityNeeded || 1})</span>
                         </div>
                     </div>
                 `;
@@ -1219,7 +1232,7 @@ export function renderForestDependencies(nodes, depth = 0) {
         const item = window.IslandEngine.getItemInfo(node.recipe.item_id);
         const chip = `
                     <div class="forest-tree__content" onclick="event.stopPropagation(); ResourceModule.selectRecipeFromTree(${node.recipe.id});">
-                        ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}" class="forest-tree__icon"/>` : '<span class="forest-tree__icon">•</span>'}
+                        ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}" class="forest-tree__icon"/>` : '<span class="forest-tree__icon">•</span>'}
                         <span class="forest-tree__text">${node.recipe.name || item.name}</span>
                         <span class="forest-tree__meta">⏱${formatTime(node.recipe.workload)}</span>
                     </div>
@@ -1257,7 +1270,7 @@ export function renderForestTree(recipe, categoryId) {
             <details class="forest-tree" open>
                 <summary class="forest-root">
                     <div class="forest-root-chip" onclick="event.stopPropagation(); ResourceModule.selectRecipeFromModal(${recipe.id});">
-                        ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}" />` : '•'}
+                        ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}" />` : '•'}
                         <span class="forest-chip-name">${recipe.name || item.name}</span>
                         <span class="forest-root-meta">
                             ${categoryNames[categoryId] || '카테고리'} · ⏱${formatTime(recipe.workload)} · ⚡${recipe.ship_exp} ·  Dependencies: ${Math.max(stats.count - 1, 0)}

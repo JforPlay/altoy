@@ -678,7 +678,7 @@ function createSkillTreeNode(tech, x, y, externalDeps = null, currentTechs = [])
             ${topLeftBadges}
             ${toggleButton}
             <div class="node-icon">
-                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${tech.tech_icon}.png" alt="${tech.tech_name}" />
+                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandtechnology/${tech.tech_icon}.png" alt="${tech.tech_name}" />
             </div>
             <div class="node-name">
                 <span class="node-level-badge">Lv.${tech.island_level}</span>
@@ -722,7 +722,7 @@ function createTechCard(tech, currentTechs = []) {
             ${lockBadge}
             ${toggleButton}
             <div class="tech-card-icon">
-                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${tech.tech_icon}.png" alt="${tech.tech_name}" />
+                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandtechnology/${tech.tech_icon}.png" alt="${tech.tech_name}" />
             </div>
             <div class="tech-card-content">
                 <h4 class="tech-card-name">
@@ -831,7 +831,7 @@ function renderTechnologyDetail(tech) {
             <!-- Header -->
             <div class="tech-detail-header">
                 <div class="tech-detail-icon">
-                    <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${tech.tech_icon}.png" alt="${tech.tech_name}" />
+                    <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandtechnology/${tech.tech_icon}.png" alt="${tech.tech_name}" />
                 </div>
                 <div class="tech-detail-title">
                     <h2>${tech.tech_name}</h2>
@@ -996,10 +996,10 @@ function renderFormulaDetails(formula) {
                     <h4>필요 자원</h4>
                     <div class="cost-list">
                         ${costs.map(([resourceId, amount]) => {
-                            const resource = state.resourceData[resourceId];
-                            const resourceName = resource?.name || `Resource #${resourceId}`;
-                            const resourceIcon = resource?.icon ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${resource.icon.split('/').pop()}.png` : '';
-                            return `
+        const resource = state.resourceData[resourceId];
+        const resourceName = resource?.name || `Resource #${resourceId}`;
+        const resourceIcon = resource?.icon ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${resource.icon.split('/').pop()}.png` : '';
+        return `
                             <div class="cost-item">
                                 <div class="cost-resource-display">
                                     ${resourceIcon ? `<img src="${resourceIcon}" alt="${resourceName}" class="cost-resource-icon">` : '<span class="material-symbols-outlined cost-resource-icon">inventory_2</span>'}
@@ -1008,7 +1008,7 @@ function renderFormulaDetails(formula) {
                                 <span class="cost-amount">×${amount}</span>
                             </div>
                         `;
-                        }).join('')}
+    }).join('')}
                     </div>
                 </div>
             ` : ''}
@@ -1095,12 +1095,12 @@ function renderResourceTotals(techs) {
             </div>
             <div class="resource-totals-grid">
                 ${resourceEntries.map(([resourceId, amount]) => {
-                    const resourceName = state.resourceData[resourceId]?.name || `Resource #${resourceId}`;
-                    const resourceIcon = state.resourceData[resourceId]?.icon || 'help';
-                    return `
+        const resourceName = state.resourceData[resourceId]?.name || `Resource #${resourceId}`;
+        const resourceIcon = state.resourceData[resourceId]?.icon || 'help';
+        return `
                         <div class="resource-total-item">
                             <div class="resource-total-icon">
-                                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${resourceIcon.split('/').pop()}.png" alt="${resourceName}" />
+                                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${resourceIcon.split('/').pop()}.png" alt="${resourceName}" />
                             </div>
                             <div class="resource-total-info">
                                 <span class="resource-total-name">${resourceName}</span>
@@ -1108,7 +1108,7 @@ function renderResourceTotals(techs) {
                             </div>
                         </div>
                     `;
-                }).join('')}
+    }).join('')}
             </div>
         </div>
     `;

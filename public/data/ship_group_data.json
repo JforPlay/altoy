@@ -15623,6 +15623,32 @@
         ],
         "rarity": "SR"
     },
+    "50212": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502120/icon.png",
+        "name": "하이처우",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            2
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 8,
+        "add_level_shiptype": [
+            2
+        ],
+        "add_level_value": 1,
+        "class": 50207,
+        "id": 50212,
+        "max_star": 5,
+        "pt_get": 8,
+        "pt_level": 12,
+        "pt_upgrage": 16,
+        "nationality": 5,
+        "type": 2,
+        "description": [
+            "이벤트: 신촌 주옥 명품회"
+        ],
+        "rarity": "SR"
+    },
     "50301": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503010/icon.png",
         "name": "지엔우",
@@ -15646,6 +15672,32 @@
         "type": 3,
         "description": [
             "이벤트: 봄맞이 패션 협주곡"
+        ],
+        "rarity": "SSR"
+    },
+    "50302": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503020/icon.png",
+        "name": "장우",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            3
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 8,
+        "add_level_shiptype": [
+            3
+        ],
+        "add_level_value": 1,
+        "class": 50302,
+        "id": 50302,
+        "max_star": 6,
+        "pt_get": 12,
+        "pt_level": 28,
+        "pt_upgrage": 38,
+        "nationality": 5,
+        "type": 3,
+        "description": [
+            "이벤트: 신촌 주옥 명품회"
         ],
         "rarity": "SSR"
     },

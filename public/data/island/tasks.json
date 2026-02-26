@@ -8928,7 +8928,7 @@
         "id": 20015002,
         "is_tech_task": 0,
         "link_task": [],
-        "map_complete_tips": 1003,
+        "map_complete_tips": 1002,
         "map_trigger_tips": 0,
         "name": "아일랜드 대개발",
         "navigation": 0,
@@ -8972,6 +8972,327 @@
         ],
         "unlock_time": "always"
     },
+    "20016001": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 2,
+        "count_offset": 0,
+        "id": 20016001,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "브리튼의 가두리",
+        "navigation": 1002,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                1501,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "가두리 완성!",
+        "target_id": {
+            "id": 200160011,
+            "jump_ui": "",
+            "name": "브리튼에게 물어보기",
+            "target_num": 1,
+            "target_param": [
+                8005
+            ],
+            "tips": "10020071",
+            "type": 1
+        },
+        "task_desc": "브리튼의 가두리가 완성됐다. 그녀를 만나러 가자.",
+        "trigger_data": 0,
+        "trigger_tips": 1,
+        "trigger_type": 2,
+        "type": 2,
+        "unlock_condition": [
+            [
+                2,
+                10001170
+            ]
+        ],
+        "unlock_time": "always"
+    },
+    "20016002": {
+        "com_page": "",
+        "com_perform": [
+            1,
+            "ISLANDSIDE01605"
+        ],
+        "complete_data": 10020071,
+        "complete_tips": "브리튼이 있는 곳으로 가기",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 20016002,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "낚시다!",
+        "navigation": 1002,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [],
+        "series": "",
+        "series_name": "가두리 완성!",
+        "target_id": {
+            "id": 200160012,
+            "jump_ui": "",
+            "name": "물고기 낚기",
+            "target_num": 1,
+            "target_param": "",
+            "tips": "10020078",
+            "type": 58
+        },
+        "task_desc": "브리튼을 위해 대어를 낚자!",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 2,
+        "unlock_condition": [
+            [
+                2,
+                20016001
+            ]
+        ],
+        "unlock_time": "always"
+    },
+    "20016003": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020068,
+        "complete_tips": "가두리 오픈",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 20016003,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "낚시다!",
+        "navigation": 1002,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [],
+        "series": "",
+        "series_name": "가두리 완성!",
+        "target_id": {
+            "id": 200160013,
+            "jump_ui": "18",
+            "name": "낚시 도감 확인",
+            "target_num": 1,
+            "target_param": [
+                3000032
+            ],
+            "tips": "",
+            "type": 34
+        },
+        "task_desc": "브리튼을 위해 대어를 낚자!",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 2,
+        "unlock_condition": [
+            [
+                2,
+                20016002
+            ]
+        ],
+        "unlock_time": "always"
+    },
+    "20016004": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 2,
+        "count_offset": 1,
+        "id": 20016004,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "브리튼의 가두리",
+        "navigation": 1002,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                1,
+                5000
+            ]
+        ],
+        "series": "",
+        "series_name": "가두리 완성!",
+        "target_id": {
+            "id": 200160041,
+            "jump_ui": "",
+            "name": "츄츄 가두리 확인",
+            "target_num": 1,
+            "target_param": [
+                8002
+            ],
+            "tips": "10020071",
+            "type": 1
+        },
+        "task_desc": "브리튼의 가두리가 완성됐다. 그녀를 만나러 가자.",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 2,
+        "unlock_condition": [
+            [
+                2,
+                20016003
+            ]
+        ],
+        "unlock_time": "always"
+    },
+    "20017001": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 2,
+        "count_offset": 1,
+        "id": 20017001,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "진주 시장 조사",
+        "navigation": 1002,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [],
+        "series": "",
+        "series_name": "진주 거래?",
+        "target_id": {
+            "id": 200170011,
+            "jump_ui": "",
+            "name": "피어리에게 물어보기",
+            "target_num": 1,
+            "target_param": [
+                5824
+            ],
+            "tips": "10020025",
+            "type": 1
+        },
+        "task_desc": "피어리가 진주 거래에 대해 연구하는 모양이다. 일단 이야기를 나눠보자.",
+        "trigger_data": 0,
+        "trigger_tips": 1,
+        "trigger_type": 2,
+        "type": 2,
+        "unlock_condition": [
+            [
+                2,
+                10003100
+            ]
+        ],
+        "unlock_time": "always"
+    },
+    "20017002": {
+        "com_page": "",
+        "com_perform": [
+            1,
+            "ISLANDSIDE01608"
+        ],
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 20017002,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "진주 시장 조사",
+        "navigation": 1002,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [],
+        "series": "",
+        "series_name": "같이 투자하자!",
+        "target_id": {
+            "id": 200170021,
+            "jump_ui": "",
+            "name": "아일랜드 개발 등급 올리기",
+            "target_num": 22,
+            "target_param": "",
+            "tips": "",
+            "type": 9
+        },
+        "task_desc": "피어리의 진주 거래가 아직 계속되는 듯하다. 상황을 보러 가자.",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 2,
+        "unlock_condition": [
+            [
+                2,
+                20017001
+            ]
+        ],
+        "unlock_time": "always"
+    },
+    "20017003": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 2,
+        "count_offset": 1,
+        "id": 20017003,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "진주 시장 조사",
+        "navigation": 1003,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                1,
+                10000
+            ]
+        ],
+        "series": "",
+        "series_name": "수수께끼의 상인?",
+        "target_id": {
+            "id": 200170031,
+            "jump_ui": "",
+            "name": "수수께끼의 상인 찾기",
+            "target_num": 1,
+            "target_param": [
+                10030018
+            ],
+            "tips": "10030018",
+            "type": 2
+        },
+        "task_desc": "누군가 진주를 매입하는 듯하다. 이야기를 들어보자.",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 2,
+        "unlock_condition": [
+            [
+                2,
+                20017002
+            ]
+        ],
+        "unlock_time": "always"
+    },
     "30000001": {
         "com_page": "",
         "com_perform": "",
@@ -9003,15 +9324,10 @@
             "name": "임의의 광물 채집",
             "target_num": 4,
             "target_param": [
-                401001,
-                401002,
-                401004,
-                401005,
-                401006,
-                401007
+                401
             ],
             "tips": "10040079",
-            "type": 6
+            "type": 49
         },
         "task_desc": "의뢰가 계속 미뤄지고 있어! 비축용 광석을 채집해줬으면 해!",
         "trigger_data": 0,
@@ -9061,13 +9377,10 @@
             "name": "임의의 목재 채집",
             "target_num": 4,
             "target_param": [
-                402001,
-                402002,
-                402003,
-                402004
+                402
             ],
             "tips": "10040080",
-            "type": 6
+            "type": 49
         },
         "task_desc": "숲속 나무들이 너무 빨리 자라서… 벌목 하는 걸 좀 도와주실 수 있나요?",
         "trigger_data": 0,
@@ -9170,198 +9483,10 @@
             "name": "임의의 연구 완료",
             "target_num": 1,
             "target_param": [
-                7100001,
-                7100002,
-                7100003,
-                7100004,
-                7110001,
-                7110002,
-                7110101,
-                7110102,
-                7110103,
-                7110301,
-                7110302,
-                7110303,
-                7110304,
-                7110305,
-                7110306,
-                7110307,
-                7110308,
-                7110309,
-                7110310,
-                7120001,
-                7120002,
-                7120003,
-                7120004,
-                7120005,
-                7120006,
-                7100301,
-                7100302,
-                7100303,
-                7100304,
-                7100305,
-                7100306,
-                7100307,
-                7100308,
-                7130301,
-                7130302,
-                7140101,
-                7210101,
-                7210102,
-                7210103,
-                7210104,
-                7210401,
-                7210201,
-                7210202,
-                7210203,
-                7210501,
-                7210502,
-                7210601,
-                7220101,
-                7220102,
-                7220103,
-                7220104,
-                7220201,
-                7220202,
-                7220203,
-                7220204,
-                7220401,
-                7220501,
-                7220502,
-                7220601,
-                7310001,
-                7310101,
-                7310102,
-                7310103,
-                7310104,
-                7310301,
-                7310302,
-                7310303,
-                7310304,
-                7310305,
-                7310306,
-                7310307,
-                7310308,
-                7310309,
-                7320101,
-                7320102,
-                7320301,
-                7320302,
-                7320303,
-                7320304,
-                7330101,
-                7330102,
-                7330103,
-                7330104,
-                7330301,
-                7330302,
-                7330303,
-                7310201,
-                7310202,
-                7320201,
-                7320202,
-                7320203,
-                7320204,
-                7320205,
-                7320206,
-                7330201,
-                7400001,
-                7410301,
-                7410302,
-                7410303,
-                7410304,
-                7410305,
-                7420301,
-                7420302,
-                7420303,
-                7420304,
-                7430301,
-                7430302,
-                7430303,
-                7430304,
-                7440301,
-                7440302,
-                7440303,
-                7440304,
-                7450301,
-                7450302,
-                7500211,
-                7500212,
-                7500213,
-                7500214,
-                7500215,
-                7500231,
-                7500232,
-                7500233,
-                7500234,
-                7500235,
-                7500236,
-                7500001,
-                7510101,
-                7510201,
-                7510202,
-                7510203,
-                7510204,
-                7520001,
-                7520101,
-                7520201,
-                7520202,
-                7520203,
-                7520204,
-                7520205,
-                7530001,
-                7530101,
-                7530201,
-                7530202,
-                7530203,
-                7530204,
-                7530205,
-                7530206,
-                7540001,
-                7540101,
-                7540201,
-                7540202,
-                7540204,
-                7540205,
-                7550201,
-                7550202,
-                7550203,
-                7550204,
-                7610101,
-                7610102,
-                7610103,
-                7610401,
-                7610402,
-                7610403,
-                7620101,
-                7630101,
-                7630201,
-                7630202,
-                7630203,
-                7630204,
-                7640001,
-                7640101,
-                7640201,
-                7640202,
-                7640203,
-                7640204,
-                7640205,
-                7650001,
-                7650101,
-                7650201,
-                7650202,
-                7650203,
-                7660001,
-                7660101,
-                7660201,
-                7660202,
-                7660203,
-                7660204,
-                7660205,
-                7660206
+                702
             ],
             "tips": "",
-            "type": 7
+            "type": 48
         },
         "task_desc": "아일랜드 개발에 기술 연구는 빼놓을 수 없지. 더 많은 기술을 개발해보자.",
         "trigger_data": 0,
@@ -10048,10 +10173,8 @@
                 5006
             ],
             [
-                [
-                    2,
-                    10001160
-                ]
+                2,
+                10001160
             ],
             [
                 3,
@@ -10154,10 +10277,8 @@
                 5006
             ],
             [
-                [
-                    2,
-                    10001160
-                ]
+                2,
+                10001160
             ],
             [
                 3,
@@ -10260,10 +10381,8 @@
                 5006
             ],
             [
-                [
-                    2,
-                    10001160
-                ]
+                2,
+                10001160
             ],
             [
                 3,
@@ -10366,10 +10485,8 @@
                 5006
             ],
             [
-                [
-                    2,
-                    10001160
-                ]
+                2,
+                10001160
             ],
             [
                 3,
@@ -10472,10 +10589,8 @@
                 5006
             ],
             [
-                [
-                    2,
-                    10001160
-                ]
+                2,
+                10001160
             ],
             [
                 3,
@@ -10578,10 +10693,8 @@
                 5006
             ],
             [
-                [
-                    2,
-                    10001160
-                ]
+                2,
+                10001160
             ],
             [
                 3,
@@ -10882,41 +10995,13 @@
             "name": "임의의 요리 제작",
             "target_num": 5,
             "target_param": [
-                601001,
-                601002,
-                601003,
-                601004,
-                601005,
-                602001,
-                602002,
-                602003,
-                602004,
-                602005,
-                602006,
-                603001,
-                603002,
-                603003,
-                603004,
-                603005,
-                603006,
-                604001,
-                604002,
-                604004,
-                604005,
-                604006,
-                901001,
-                901002,
-                901003,
-                901004,
-                901005,
-                901006,
-                9900003,
-                9900004,
-                9900007,
-                9900008
+                601,
+                602,
+                603,
+                604
             ],
             "tips": "",
-            "type": 7
+            "type": 48
         },
         "task_desc": "가게를 열어도 메뉴가 없으면 안 되지! 새로운 메뉴를 만들자!",
         "trigger_data": 0,
@@ -10966,16 +11051,10 @@
             "name": "임의의 유어 레스토랑 메뉴 만들기",
             "target_num": 3,
             "target_param": [
-                601001,
-                601002,
-                601003,
-                601004,
-                601005,
-                9900003,
-                9900004
+                601
             ],
             "tips": "10060002",
-            "type": 7
+            "type": 48
         },
         "task_desc": "유어 레스토랑, 성황리에 영업 중! 국자를 휘두르며 요리의 향기로 상업 지구를 가득 채우자!",
         "trigger_data": 0,
@@ -11025,17 +11104,10 @@
             "name": "임의의 백곰 음료 메뉴 만들기",
             "target_num": 3,
             "target_param": [
-                602001,
-                602002,
-                602003,
-                602004,
-                602005,
-                602006,
-                9900007,
-                9900008
+                602
             ],
             "tips": "10060002",
-            "type": 7
+            "type": 48
         },
         "task_desc": "대표 메뉴를 만들어 상업 지구의 손님들에게 최고의 달콤함을 선물하자!",
         "trigger_data": 0,
@@ -11089,15 +11161,10 @@
             "name": "임의의 쥬쥬 간편식 메뉴 만들기",
             "target_num": 3,
             "target_param": [
-                603001,
-                603002,
-                603003,
-                603004,
-                603005,
-                603006
+                603
             ],
             "tips": "10060002",
-            "type": 7
+            "type": 48
         },
         "task_desc": "러시 타임! 영양 가득한 간편식을 만들어 손님들의 기운을 복돋아 주자!",
         "trigger_data": 0,
@@ -11151,14 +11218,10 @@
             "name": "임의의 오징어 구이 메뉴 만들기",
             "target_num": 3,
             "target_param": [
-                604001,
-                604002,
-                604004,
-                604005,
-                604006
+                604
             ],
             "tips": "10060002",
-            "type": 7
+            "type": 48
         },
         "task_desc": "붉게 타오르는 숯불―― 드디어 숯불 요리를 즐길 시간이 왔다!",
         "trigger_data": 0,
@@ -11212,15 +11275,10 @@
             "name": "임의의 쥬카페 메뉴 만들기",
             "target_num": 3,
             "target_param": [
-                901001,
-                901002,
-                901003,
-                901004,
-                901005,
-                901006
+                901
             ],
             "tips": "10090008",
-            "type": 7
+            "type": 48
         },
         "task_desc": "쥬카페에서 손님들이 여유로운 시간을 즐기고 있다. 향긋한 커피로 손님들을 대접하자!",
         "trigger_data": 0,
@@ -11274,15 +11332,10 @@
             "name": "동료를 배치하여 광석 생산",
             "target_num": 30,
             "target_param": [
-                401001,
-                401002,
-                401004,
-                401005,
-                401006,
-                401007
+                401
             ],
             "tips": "10040022",
-            "type": 7
+            "type": 48
         },
         "task_desc": "지난 번에 모아둔 광물이 큰 도움이 되었다. 조금 더 채집해두는 편이 좋을 것 같다.",
         "trigger_data": 0,
@@ -11332,13 +11385,10 @@
             "name": "동료를 배치하여 목재 생산",
             "target_num": 30,
             "target_param": [
-                402001,
-                402002,
-                402003,
-                402004
+                402
             ],
             "tips": "10040002",
-            "type": 7
+            "type": 48
         },
         "task_desc": "지휘관님, 숲속에 나무가 또 자랐는데… 다시 벌목을 부탁드려도 될까요?",
         "trigger_data": 0,
@@ -11388,17 +11438,10 @@
             "name": "동료를 배치하여 농작물 생산",
             "target_num": 30,
             "target_param": [
-                101001,
-                101002,
-                101003,
-                101004,
-                101005,
-                101006,
-                101007,
-                101008
+                101
             ],
             "tips": "10010040",
-            "type": 7
+            "type": 48
         },
         "task_desc": "논밭이 아직 비옥하니, 작물을 더 심어도 될 것 같아요.",
         "trigger_data": 0,
@@ -11452,16 +11495,10 @@
             "name": "동료를 배치하여 묘포 작물 생산",
             "target_num": 30,
             "target_param": [
-                502001,
-                502002,
-                502003,
-                502004,
-                502005,
-                502006,
-                502007
+                502
             ],
             "tips": "10050003",
-            "type": 7
+            "type": 48
         },
         "task_desc": "지휘관, 라코니아가 너무 바빠서 손이 부족한데… 좀 도와줄 수 있어?",
         "trigger_data": 0,
@@ -11515,18 +11552,10 @@
             "name": "동료를 배치하여 과수원 나무 재배",
             "target_num": 30,
             "target_param": [
-                501001,
-                501002,
-                501003,
-                501004,
-                501005,
-                501006,
-                501007,
-                9900001,
-                9900002
+                501
             ],
             "tips": "10050002",
-            "type": 7
+            "type": 48
         },
         "task_desc": "과수원에 다양한 종류의 나무를 심어볼까 하는데, 어떤게 좋을지…",
         "trigger_data": 0,
@@ -11580,13 +11609,10 @@
             "name": "동료를 배치하여 목장 동물 돌보기",
             "target_num": 30,
             "target_param": [
-                101013,
-                101015,
-                101016,
-                101018
+                102
             ],
             "tips": "10010003",
-            "type": 7
+            "type": 48
         },
         "task_desc": "목장에 동물들이 점점 늘어나서, 메리가 감당할 수 없을지도…!",
         "trigger_data": 0,
@@ -11640,18 +11666,10 @@
             "name": "수공제품 생산",
             "target_num": 20,
             "target_param": [
-                701001,
-                701002,
-                701003,
-                701004,
-                701005,
-                701006,
-                701007,
-                9900005,
-                9900006
+                706
             ],
             "tips": "10070016",
-            "type": 7
+            "type": 48
         },
         "task_desc": "개발 구역을 발전시키려면 아직 수공업품이 필요하다. 설비를 방치하면 녹이 슬지도 모른다!",
         "trigger_data": 0,
@@ -11705,15 +11723,10 @@
             "name": "공산품 생산",
             "target_num": 20,
             "target_param": [
-                701008,
-                701009,
-                701010,
-                701011,
-                701012,
-                701013
+                704
             ],
             "tips": "10070014",
-            "type": 7
+            "type": 48
         },
         "task_desc": "개발 구역을 발전시키려면 아직 공업 제품이 필요하다. 설비를 방치하면 녹이 슬지도 모른다!",
         "trigger_data": 0,
@@ -11767,14 +11780,10 @@
             "name": "목제품 생산",
             "target_num": 20,
             "target_param": [
-                701014,
-                701015,
-                701016,
-                701017,
-                701018
+                703
             ],
             "tips": "10070013",
-            "type": 7
+            "type": 48
         },
         "task_desc": "개발 구역을 발전시키려면 아직 목제품이 필요하다. 설비를 방치하면 녹이 슬지도 모른다!",
         "trigger_data": 0,
@@ -11828,13 +11837,10 @@
             "name": "전자제품 생산",
             "target_num": 20,
             "target_param": [
-                701019,
-                701020,
-                701021,
-                701022
+                705
             ],
             "tips": "10070015",
-            "type": 7
+            "type": 48
         },
         "task_desc": "개발 구역을 발전시키려면 아직 전자 제품이 필요하다. 설비를 방치하면 녹이 슬지도 모른다!",
         "trigger_data": 0,
@@ -12204,6 +12210,80 @@
                     2026,
                     2,
                     26
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50000002": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 2,
+        "count_offset": 1,
+        "id": 50000002,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "새로운 시즌이 시작된다!",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                1,
+                2000
+            ]
+        ],
+        "series": "",
+        "series_name": "아일랜드 시즌",
+        "target_id": {
+            "id": 500000021,
+            "jump_ui": "",
+            "name": "피어리에게 물어보기",
+            "target_num": 1,
+            "target_param": [
+                5826
+            ],
+            "tips": "10020025",
+            "type": 1
+        },
+        "task_desc": "피어리가 새로운 시즌의 개발 계획을 세우고 있는 모양이다. 어떤 내용인지 물어보자!",
+        "trigger_data": 0,
+        "trigger_tips": 1,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                20015002
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
                 ],
                 [
                     12,
@@ -12784,6 +12864,586 @@
                     2026,
                     2,
                     26
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50001008": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50001008,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 채집 (1/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100001,
+                5
+            ],
+            [
+                41,
+                100101,
+                1
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50001008,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 채집",
+            "target_num": 8,
+            "target_param": [
+                990007
+            ],
+            "tips": "",
+            "type": 40
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50001009": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50001009,
+        "is_tech_task": 0,
+        "link_task": [
+            50001008
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 채집 (2/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100001,
+                6
+            ],
+            [
+                41,
+                100101,
+                2
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50001009,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 채집",
+            "target_num": 24,
+            "target_param": [
+                990007
+            ],
+            "tips": "",
+            "type": 40
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50001010": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50001010,
+        "is_tech_task": 0,
+        "link_task": [
+            50001009
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 채집 (3/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100001,
+                6
+            ],
+            [
+                41,
+                100102,
+                1
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50001010,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 채집",
+            "target_num": 48,
+            "target_param": [
+                990007
+            ],
+            "tips": "",
+            "type": 40
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50001011": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50001011,
+        "is_tech_task": 0,
+        "link_task": [
+            50001010
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 채집 (4/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                3
+            ],
+            [
+                41,
+                100102,
+                2
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50001011,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 채집",
+            "target_num": 96,
+            "target_param": [
+                990007
+            ],
+            "tips": "",
+            "type": 40
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50001012": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50001012,
+        "is_tech_task": 0,
+        "link_task": [
+            50001011
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 채집 (5/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                3
+            ],
+            [
+                41,
+                100103,
+                1
+            ],
+            [
+                41,
+                100011,
+                2
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50001012,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 채집",
+            "target_num": 120,
+            "target_param": [
+                990007
+            ],
+            "tips": "",
+            "type": 40
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50001013": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50001013,
+        "is_tech_task": 0,
+        "link_task": [
+            50001012
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 채집 (6/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                2
+            ],
+            [
+                41,
+                100103,
+                1
+            ],
+            [
+                41,
+                100021,
+                2
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50001013,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 채집",
+            "target_num": 160,
+            "target_param": [
+                990007
+            ],
+            "tips": "",
+            "type": 40
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50001014": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50001014,
+        "is_tech_task": 0,
+        "link_task": [
+            50001013
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 채집 (7/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                2
+            ],
+            [
+                41,
+                100103,
+                3
+            ],
+            [
+                41,
+                100031,
+                2
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50001014,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 채집",
+            "target_num": 240,
+            "target_param": [
+                990007
+            ],
+            "tips": "",
+            "type": 40
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
                 ],
                 [
                     12,
@@ -13422,6 +14082,635 @@
             ]
         ]
     },
+    "50002008": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50002008,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 제작 (1/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100001,
+                5
+            ],
+            [
+                41,
+                100101,
+                1
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50002008,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 제작",
+            "target_num": 40,
+            "target_param": [
+                4019,
+                4021,
+                4023,
+                4024,
+                4025,
+                4026,
+                4027,
+                4028
+            ],
+            "tips": "",
+            "type": 26
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50002009": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50002009,
+        "is_tech_task": 0,
+        "link_task": [
+            50002008
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 제작 (2/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100001,
+                6
+            ],
+            [
+                41,
+                100101,
+                2
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50002009,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 제작",
+            "target_num": 80,
+            "target_param": [
+                4019,
+                4021,
+                4023,
+                4024,
+                4025,
+                4026,
+                4027,
+                4028
+            ],
+            "tips": "",
+            "type": 26
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50002010": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50002010,
+        "is_tech_task": 0,
+        "link_task": [
+            50002009
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 제작 (3/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100001,
+                6
+            ],
+            [
+                41,
+                100102,
+                1
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50002010,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 제작",
+            "target_num": 100,
+            "target_param": [
+                4019,
+                4021,
+                4023,
+                4024,
+                4025,
+                4026,
+                4027,
+                4028
+            ],
+            "tips": "",
+            "type": 26
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50002011": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50002011,
+        "is_tech_task": 0,
+        "link_task": [
+            50002010
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 제작 (4/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                3
+            ],
+            [
+                41,
+                100102,
+                2
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50002011,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 제작",
+            "target_num": 200,
+            "target_param": [
+                4019,
+                4021,
+                4023,
+                4024,
+                4025,
+                4026,
+                4027,
+                4028
+            ],
+            "tips": "",
+            "type": 26
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50002012": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50002012,
+        "is_tech_task": 0,
+        "link_task": [
+            50002011
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 제작 (5/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                3
+            ],
+            [
+                41,
+                100103,
+                1
+            ],
+            [
+                41,
+                100041,
+                2
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50002012,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 제작",
+            "target_num": 400,
+            "target_param": [
+                4019,
+                4021,
+                4023,
+                4024,
+                4025,
+                4026,
+                4027,
+                4028
+            ],
+            "tips": "",
+            "type": 26
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50002013": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50002013,
+        "is_tech_task": 0,
+        "link_task": [
+            50002012
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 제작 (6/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                2
+            ],
+            [
+                41,
+                100103,
+                1
+            ],
+            [
+                41,
+                100051,
+                2
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50002013,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 제작",
+            "target_num": 600,
+            "target_param": [
+                4019,
+                4021,
+                4023,
+                4024,
+                4025,
+                4026,
+                4027,
+                4028
+            ],
+            "tips": "",
+            "type": 26
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50002014": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50002014,
+        "is_tech_task": 0,
+        "link_task": [
+            50002013
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 제작 (7/7)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                2
+            ],
+            [
+                41,
+                100103,
+                3
+            ],
+            [
+                41,
+                100061,
+                2
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50002014,
+            "jump_ui": "",
+            "name": "합계로 봄 특산품 제작",
+            "target_num": 800,
+            "target_param": [
+                4019,
+                4021,
+                4023,
+                4024,
+                4025,
+                4026,
+                4027,
+                4028
+            ],
+            "tips": "",
+            "type": 26
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
     "50003001": {
         "com_page": "",
         "com_perform": "",
@@ -13735,6 +15024,328 @@
                     2026,
                     2,
                     26
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50003005": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50003005,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 의뢰 (1/4)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100001,
+                6
+            ],
+            [
+                41,
+                100201,
+                1
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50003005,
+            "jump_ui": "",
+            "name": "봄 특산품 의뢰 처리",
+            "target_num": 1,
+            "target_param": [
+                990006
+            ],
+            "tips": "",
+            "type": 39
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50003006": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50003006,
+        "is_tech_task": 0,
+        "link_task": [
+            50003005
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 의뢰 (2/4)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                3
+            ],
+            [
+                41,
+                100201,
+                1
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50003006,
+            "jump_ui": "",
+            "name": "봄 특산품 의뢰 처리",
+            "target_num": 5,
+            "target_param": [
+                990006
+            ],
+            "tips": "",
+            "type": 39
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50003007": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50003007,
+        "is_tech_task": 0,
+        "link_task": [
+            50003006
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 의뢰 (3/4)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                3
+            ],
+            [
+                41,
+                100201,
+                3
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50003007,
+            "jump_ui": "",
+            "name": "봄 특산품 의뢰 처리",
+            "target_num": 10,
+            "target_param": [
+                990006
+            ],
+            "tips": "",
+            "type": 39
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
+                ],
+                [
+                    12,
+                    0,
+                    0
+                ]
+            ]
+        ]
+    },
+    "50003008": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 10020025,
+        "complete_tips": "피어리가 있는 곳으로 가기 (0/1)",
+        "complete_type": 1,
+        "count_offset": 1,
+        "id": 50003008,
+        "is_tech_task": 0,
+        "link_task": [
+            50003007
+        ],
+        "map_complete_tips": 1002,
+        "map_trigger_tips": 0,
+        "name": "봄 특산품 의뢰 (4/4)",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                2
+            ],
+            [
+                45,
+                101,
+                1
+            ]
+        ],
+        "series": "[봄 특산품 경영]",
+        "series_name": "한정 채집",
+        "target_id": {
+            "id": 50003008,
+            "jump_ui": "",
+            "name": "봄 특산품 의뢰 처리",
+            "target_num": 15,
+            "target_param": [
+                990006
+            ],
+            "tips": "",
+            "type": 39
+        },
+        "task_desc": "아일랜드가 봄을 맞아 지금만 볼 수 있는 채집물이 많이 있다는데… 지휘관님, 좀 도와주시겠어요? \n<채집 가능 특산품> \n<color=#3E7EFF><material=underline event=dropDesHandle args={41,4015}>봄 죽순</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4016}>냉이</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4017}>영춘화</material></color>, <color=#3E7EFF><material=underline event=dropDesHandle args={41,4018}>히아신스</material></color>",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 5,
+        "unlock_condition": [
+            [
+                2,
+                10002050
+            ]
+        ],
+        "unlock_time": [
+            [
+                [
+                    2026,
+                    2,
+                    5
+                ],
+                [
+                    12,
+                    0,
+                    1
+                ]
+            ],
+            [
+                [
+                    2026,
+                    5,
+                    7
                 ],
                 [
                     12,
@@ -16785,6 +18396,1533 @@
             "id": 80011030,
             "jump_ui": "",
             "name": "아일랜드 의뢰 300개 완료",
+            "target_num": 300,
+            "target_param": "",
+            "tips": "",
+            "type": 3
+        },
+        "task_desc": "개발의 책임을 지고 번영하는 미래를 실현하고 있다. \n아일랜드 의뢰 300회 완료",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001201": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001201,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "밭의 병참",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012001,
+            "jump_ui": "",
+            "name": "감자×500 제출",
+            "target_num": 500,
+            "target_param": [
+                2005
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "섬 개발을 뒷받침할 신뢰성 높은 주식을 비축하여, 안정적인 칼로리 공급 체계를 구축한다. \n감자×500 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001202": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001202,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "잠을 깨우는 한 잔",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012002,
+            "jump_ui": "",
+            "name": "커피콩×500 제출",
+            "target_num": 500,
+            "target_param": [
+                2009
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "향기로운 커피를 공급하여, 개발팀의 집중력과 작업 효율을 향상시키자. \n커피콩×500 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001203": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001203,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "채소 공급",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012003,
+            "jump_ui": "",
+            "name": "배추×500 제출",
+            "target_num": 500,
+            "target_param": [
+                2003
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "높은 보존성을 가진 채소를 대량으로 확보하여, 비타민의 안정적인 공급을 실현한다. \n배추×500 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001204": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001204,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "달콤한 디저트",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012004,
+            "jump_ui": "",
+            "name": "딸기×500 제출",
+            "target_num": 500,
+            "target_param": [
+                2011
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "달콤하고 신선한 딸기를 제공하여, 섬 주민의 식탁에 색채와 풍미를 더한다. \n딸기×500 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001205": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001205,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "방직 재료",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012005,
+            "jump_ui": "",
+            "name": "목화×500 제출",
+            "target_num": 500,
+            "target_param": [
+                2012
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "우수한 품질의 목화를 수송하여, 후방 지원 및 생활 쾌적도를 뒷받침하는 중요 물자로 삼는다. \n목화×500 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001206": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001206,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "과일 보급품",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012006,
+            "jump_ui": "",
+            "name": "사과×250 제출",
+            "target_num": 250,
+            "target_param": [
+                2016
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "아삭한 식감의 사과를 공급하여, 일상적인 건강 과일 수요를 충족한다. \n사과×250 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001207": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001207,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "상쾌한 활력",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012007,
+            "jump_ui": "",
+            "name": "레몬×250 제출",
+            "target_num": 250,
+            "target_param": [
+                2020
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "상큼한 산미가 매력인 레몬은 작업 중의 기분 전환에 크게 공헌한다. \n레몬×250 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001208": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001208,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "편리한 간식",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012008,
+            "jump_ui": "",
+            "name": "피시 앤 칩스×100 제출",
+            "target_num": 100,
+            "target_param": [
+                3114
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "간편하게 먹을 수 있는 요리지만, 신속하게 에너지를 공급하여 어려운 작업에 힘을 불어 넣는다. \n피시 앤 칩스×100 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001209": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001209,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "개운한 맛",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012009,
+            "jump_ui": "",
+            "name": "생선 양파찜×100 제출",
+            "target_num": 100,
+            "target_param": [
+                3116
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "담백한 생선찜을 공급하여, 우수한 단백질과 균형 잡힌 영양소를 제공한다. \n생선 양파찜×100 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001210": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001210,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "달콤한 동기부여",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012010,
+            "jump_ui": "",
+            "name": "딸기 꿀 프라페×100 제출",
+            "target_num": 100,
+            "target_param": [
+                3020
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "달콤한 딸기 음료는 행복감과 활력을 가져다준다. \n딸기 꿀 프라페×100 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001211": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001211,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "향으로 산뜻하게",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012011,
+            "jump_ui": "",
+            "name": "시트러스 커피×100 제출",
+            "target_num": 100,
+            "target_param": [
+                3008
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "시트러스 향이 물씬 풍기는 특제 커피는 업무에 영감을 불러일으킨다. \n시트러스 커피×100 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001212": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001212,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "담백한 요리",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012012,
+            "jump_ui": "",
+            "name": "레몬 새우×50 제출",
+            "target_num": 50,
+            "target_param": [
+                3115
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "산미로 식욕을 자극하는 레몬 새우는 피로를 완화하고 미각을 자극한다. \n레몬 새우×50 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001213": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001213,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "꿀맛 해산물",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012013,
+            "jump_ui": "",
+            "name": "파에야×25 제출",
+            "target_num": 25,
+            "target_param": [
+                3118
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "호화로운 해산물 요리는 팀원들을 격려하고 사기를 높이는 최고의 보상이다. \n파에야×25 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001214": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001214,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "매콤한 패션",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012014,
+            "jump_ui": "",
+            "name": "가재 볶음×25 제출",
+            "target_num": 25,
+            "target_param": [
+                3119
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "자극적인 맛의 가재 요리는 야간 작업의 동기부여에 불을 붙일 것이다. \n가재 볶음×25 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001215": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001215,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "예술적인 색채",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012015,
+            "jump_ui": "",
+            "name": "장식용 그림×25 제출",
+            "target_num": 25,
+            "target_param": [
+                3117
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "장식용 미술품은 주거 환경을 아름답게 장식하고, 섬의 문화적 분위기를 높인다. \n장식용 그림×25 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001216": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001216,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "모여라 진미",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100003,
+                1
+            ],
+            [
+                41,
+                100002,
+                2
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012016,
+            "jump_ui": "",
+            "name": "불도장×10 제출",
+            "target_num": 10,
+            "target_param": [
+                3120
+            ],
+            "tips": "",
+            "type": 4
+        },
+        "task_desc": "최고급 요리인 불도장은 중요한 기념일의 축하연이나 손님 접대에는 빼놓을 수 없는 요리다. \n불도장×10 제출",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001217": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001217,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "첫 수령",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012017,
+            "jump_ui": "",
+            "name": "일상 보급 1회 수령",
+            "target_num": 1,
+            "target_param": "",
+            "tips": "",
+            "type": 13
+        },
+        "task_desc": "처음으로 일상 보급을 수령하자. \n일상 보급 1회 수령",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001218": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001218,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "안정적인 납품",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ],
+            [
+                41,
+                100201,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012018,
+            "jump_ui": "",
+            "name": "일상 보급 5회 수령",
+            "target_num": 5,
+            "target_param": "",
+            "tips": "",
+            "type": 13
+        },
+        "task_desc": "세 번의 일상 보급으로 창고가 점점 풍족해지고 있다. \n일상 보급 5회 수령",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001219": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001219,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "일상적인 보급",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ],
+            [
+                41,
+                100201,
+                2
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012019,
+            "jump_ui": "",
+            "name": "일상 보급 10회 수령",
+            "target_num": 10,
+            "target_param": "",
+            "tips": "",
+            "type": 13
+        },
+        "task_desc": "일상 보급을 수령하는 게 어느새 하루의 일과가 되었다. \n일상 보급 10회 수령",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001220": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001220,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "고효율 납품",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ],
+            [
+                41,
+                100101,
+                5
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012020,
+            "jump_ui": "",
+            "name": "일상 보급 20회 수령",
+            "target_num": 20,
+            "target_param": "",
+            "tips": "",
+            "type": 13
+        },
+        "task_desc": "보급 수령을 보다 효율적이고 매끄럽게! \n일상 보급 20회 수령",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001221": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001221,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "여유로운 재고",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ],
+            [
+                41,
+                100102,
+                2
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012021,
+            "jump_ui": "",
+            "name": "일상 보급 30회 수령",
+            "target_num": 30,
+            "target_param": "",
+            "tips": "",
+            "type": 13
+        },
+        "task_desc": "든든한 비축 덕분에 마음이 여유롭다. \n일상 보급 30회 수령",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001222": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001222,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "비축은 영원하리",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ],
+            [
+                41,
+                100102,
+                3
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012022,
+            "jump_ui": "",
+            "name": "일상 보급 45회 수령",
+            "target_num": 45,
+            "target_param": "",
+            "tips": "",
+            "type": 13
+        },
+        "task_desc": "끊임없는 물자 보급이 아일랜드의 중요한 자원이 되어주고 있다. \n일상 보급 45회 수령",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001223": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001223,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "발전의 토대",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ],
+            [
+                41,
+                100103,
+                5
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012023,
+            "jump_ui": "",
+            "name": "일상 보급 60회 수령",
+            "target_num": 60,
+            "target_param": "",
+            "tips": "",
+            "type": 13
+        },
+        "task_desc": "하루하루 쌓인 보급이 아일랜드 개발의 기반을 이루고 있다. \n일상 보급 60회 수령",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001224": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001224,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "첫 의뢰",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012024,
+            "jump_ui": "",
+            "name": "아일랜드 의뢰 10개 처리",
+            "target_num": 10,
+            "target_param": "",
+            "tips": "",
+            "type": 3
+        },
+        "task_desc": "아일랜드 의뢰에 대해 조금이나마 이해하게 되었다. \n아일랜드 의뢰 10회 완료",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001225": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001225,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "안정적인 의뢰",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ],
+            [
+                41,
+                100201,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012025,
+            "jump_ui": "",
+            "name": "아일랜드 의뢰 30개 처리",
+            "target_num": 30,
+            "target_param": "",
+            "tips": "",
+            "type": 3
+        },
+        "task_desc": "안정적으로 의뢰가 이어지고 있다. \n아일랜드 의뢰 30회 완료",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001226": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001226,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "건실한 지원군",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ],
+            [
+                41,
+                100201,
+                2
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012026,
+            "jump_ui": "",
+            "name": "아일랜드 의뢰 50개 처리",
+            "target_num": 50,
+            "target_param": "",
+            "tips": "",
+            "type": 3
+        },
+        "task_desc": "아일랜드 개발에 있어서 빼놓을 수 없는 존재가 되었다. \n아일랜드 의뢰 50회 완료",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001227": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001227,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "의뢰 전문가",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ],
+            [
+                41,
+                100101,
+                5
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012027,
+            "jump_ui": "",
+            "name": "아일랜드 의뢰 100개 처리",
+            "target_num": 100,
+            "target_param": "",
+            "tips": "",
+            "type": 3
+        },
+        "task_desc": "동료들의 수요를 정확히 파악해 효율적으로 해결하고 있다. \n아일랜드 의뢰 100회 완료",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001228": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001228,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "발전의 기둥",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ],
+            [
+                41,
+                100102,
+                5
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012028,
+            "jump_ui": "",
+            "name": "아일랜드 의뢰 150개 처리",
+            "target_num": 150,
+            "target_param": "",
+            "tips": "",
+            "type": 3
+        },
+        "task_desc": "끊임없는 지원이야말로 개발을 이끄는 원동력. \n아일랜드 의뢰 150회 완료",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001229": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001229,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "발전의 중심",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ],
+            [
+                41,
+                100103,
+                5
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012029,
+            "jump_ui": "",
+            "name": "아일랜드 의뢰 200개 처리",
+            "target_num": 200,
+            "target_param": "",
+            "tips": "",
+            "type": 3
+        },
+        "task_desc": "모두가 가장 믿고 의지하는 존재가 되었다. \n아일랜드 의뢰 200회 완료",
+        "trigger_data": 0,
+        "trigger_tips": 0,
+        "trigger_type": 2,
+        "type": 8,
+        "unlock_condition": [],
+        "unlock_time": "always"
+    },
+    "80001230": {
+        "com_page": "",
+        "com_perform": "",
+        "complete_data": 0,
+        "complete_tips": "",
+        "complete_type": 3,
+        "count_offset": 1,
+        "id": 80001230,
+        "is_tech_task": 0,
+        "link_task": [],
+        "map_complete_tips": 0,
+        "map_trigger_tips": 0,
+        "name": "번영의 기반",
+        "navigation": 0,
+        "rec_perform": "",
+        "reward_exp": 0,
+        "reward_show": [
+            [
+                41,
+                100002,
+                1
+            ],
+            [
+                41,
+                100103,
+                5
+            ],
+            [
+                8,
+                170002,
+                1
+            ]
+        ],
+        "series": "",
+        "series_name": "",
+        "target_id": {
+            "id": 80012030,
+            "jump_ui": "",
+            "name": "아일랜드 의뢰 300개 처리",
             "target_num": 300,
             "target_param": "",
             "tips": "",

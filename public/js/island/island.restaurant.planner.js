@@ -328,7 +328,7 @@ function renderPlannerRestaurantCard(restaurantId) {
         }).filter(Boolean) : [];
 
         const iconsHtml = icons.length > 0
-            ? `<div class="preset-mini-grid">${icons.slice(0, 4).map(icon => `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${icon}">`).join('')}</div>`
+            ? `<div class="preset-mini-grid">${icons.slice(0, 4).map(icon => `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${icon}">`).join('')}</div>`
             : `<div class="preset-empty-dash">-</div>`;
 
         return `
@@ -420,7 +420,7 @@ function renderPlannerSlot(restaurantId, slotIndex, slot, menuOptions) {
             <div class="slot-content">
                 ${selectedMenu ? `
                     <div class="slot-icon" style="background-image: url('${rarityBg}')">
-                        <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${selectedMenu.icon}" alt="${selectedMenu.name}">
+                        <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${selectedMenu.icon}" alt="${selectedMenu.name}">
                     </div>
                     <div class="slot-name">${selectedMenu.name}</div>
                 ` : `
@@ -467,7 +467,7 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
                                     <div class="slot-number">슬롯 ${idx + 1}</div>
                                     <div class="slot-current">
                                         ${selected ? `
-                                            <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${selected.icon}" alt="${selected.name}">
+                                            <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${selected.icon}" alt="${selected.name}">
                                             <span>${selected.name}</span>
                                         ` : '<span class="empty-text">없음</span>'}
                                     </div>
@@ -497,7 +497,7 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
                                         ${ingredients.length > 0 ? `
                                             <div class="menu-option-ingredients">
                                                 ${ingredients.slice(0, 6).map(ing => `
-                                                    <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${ing.icon}" alt="${ing.name}" data-name="${ing.name}">
+                                                    <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${ing.icon}" alt="${ing.name}" data-name="${ing.name}">
                                                 `).join('')}
                                                 ${ingredients.length > 6 ? `<span class="more-count">+${ingredients.length - 6}</span>` : ''}
                                             </div>
@@ -594,7 +594,7 @@ function refreshModalSlots(restaurantId) {
         if (selected) {
             slotEl.classList.add('selected');
             slotCurrent.innerHTML = `
-                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${selected.icon}" alt="${selected.name}">
+                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${selected.icon}" alt="${selected.name}">
                 <span>${selected.name}</span>
             `;
         } else {
@@ -746,7 +746,7 @@ function openCopyPresetModal(restaurantId, targetPresetIndex) {
         }).filter(Boolean) : [];
 
         const iconsHtml = icons.length > 0
-            ? `<div class="preset-mini-grid">${icons.slice(0, 4).map(icon => `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${icon}">`).join('')}</div>`
+            ? `<div class="preset-mini-grid">${icons.slice(0, 4).map(icon => `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${icon}">`).join('')}</div>`
             : `<div class="preset-empty-dash">-</div>`;
 
         return `
@@ -1008,7 +1008,7 @@ function renderPlannerResultsContent() {
         return `
                     <div class="ingredient-card mini rarity-${item.rarity || 1} ${isActive ? 'active' : ''}" data-name="${item.name}">
                         <div class="ingredient-icon">
-                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '<span class="material-symbols-outlined">inventory_2</span>'}
+                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '<span class="material-symbols-outlined">inventory_2</span>'}
                             ${isActive ? `<span class="ingredient-qty">${Math.ceil(qty).toLocaleString()}</span>` : ''}
                         </div>
                     </div>
