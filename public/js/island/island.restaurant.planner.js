@@ -490,7 +490,7 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
         return `
                                 <div class="menu-option-item" onclick="RestaurantModule.selectMenusFromModal('${restaurantId}', '${opt.formulaId}')">
                                     <div class="menu-option-icon" style="background-image: url('${RARITY_BACKGROUNDS[opt.rarity || 1]}')">
-                                        <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/${opt.icon}" alt="${opt.name}">
+                                        <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${opt.icon}" alt="${opt.name}">
                                     </div>
                                     <div class="menu-option-details">
                                         <div class="menu-option-name">${opt.name}</div>
