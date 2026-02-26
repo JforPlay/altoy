@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const types = ship.add_get_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
                 const line = document.createElement('div');
                 line.className = 'stat-info-line';
-                line.innerHTML = `<span class="stat-label">입수</span><span class="stat-types" data-tooltip="${types}">${types}</span>${attrName} <span class="stat-value">+${ship.add_get_value}</span>`;
+                line.innerHTML = `<span class="stat-label">입수</span><span class="stat-types-wrap" data-tooltip="${types}" tabindex="0"><span class="stat-types">${types}</span></span>${attrName} <span class="stat-value">+${ship.add_get_value}</span>`;
                 statInfo.appendChild(line);
             }
             if (ship.add_level_attr) {
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const types = ship.add_level_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
                 const line = document.createElement('div');
                 line.className = 'stat-info-line';
-                line.innerHTML = `<span class="stat-label">120렙</span><span class="stat-types" data-tooltip="${types}">${types}</span>${attrName} <span class="stat-value">+${ship.add_level_value}</span>`;
+                line.innerHTML = `<span class="stat-label">120렙</span><span class="stat-types-wrap" data-tooltip="${types}" tabindex="0"><span class="stat-types">${types}</span></span>${attrName} <span class="stat-value">+${ship.add_level_value}</span>`;
                 statInfo.appendChild(line);
             }
             card.appendChild(statInfo);

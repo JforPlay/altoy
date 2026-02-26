@@ -161,13 +161,18 @@
   flex-shrink: 0;
 }
 
-.stat-types {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.stat-types-wrap {
   max-width: 7em;
   flex-shrink: 1;
   cursor: default;
+  outline: none;
+}
+
+.stat-types {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .stat-value {
