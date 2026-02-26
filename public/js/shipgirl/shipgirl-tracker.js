@@ -163,6 +163,29 @@ document.addEventListener('DOMContentLoaded', () => {
             card.appendChild(descriptionSection);
         }
 
+        // Create stat info section (입수/120렙 attr + shiptype + value)
+        if (ship.add_get_attr || ship.add_level_attr) {
+            const statInfo = document.createElement('div');
+            statInfo.className = 'stat-info';
+            if (ship.add_get_attr) {
+                const attrName = attrTypeData[ship.add_get_attr]?.condition || '';
+                const types = ship.add_get_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
+                const line = document.createElement('div');
+                line.className = 'stat-info-line';
+                line.innerHTML = `<span class="stat-label">입수</span><span class="stat-types" data-tooltip="${types}">${types}</span>${attrName} <span class="stat-value">+${ship.add_get_value}</span>`;
+                statInfo.appendChild(line);
+            }
+            if (ship.add_level_attr) {
+                const attrName = attrTypeData[ship.add_level_attr]?.condition || '';
+                const types = ship.add_level_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
+                const line = document.createElement('div');
+                line.className = 'stat-info-line';
+                line.innerHTML = `<span class="stat-label">120렙</span><span class="stat-types" data-tooltip="${types}">${types}</span>${attrName} <span class="stat-value">+${ship.add_level_value}</span>`;
+                statInfo.appendChild(line);
+            }
+            card.appendChild(statInfo);
+        }
+
         // Create the tracker section with checkboxes for progress.
         const trackerSection = document.createElement('div');
         trackerSection.className = 'tracker-section';
@@ -1051,10 +1074,22 @@ document.addEventListener('DOMContentLoaded', () => {
         raritySection.appendChild(rarityChips);
         drawerBody.appendChild(raritySection);
 
-        // --- Nationality section ---
+        // --- Nationality section (collapsible) ---
         const nationalitySection = document.createElement('div');
         nationalitySection.className = 'st-drawer-section';
-        nationalitySection.innerHTML = '<h3>진영</h3>';
+
+        const natToggle = document.createElement('button');
+        natToggle.className = 'filter-group-toggle';
+        natToggle.innerHTML = '<span class="chevron material-symbols-outlined">expand_more</span> 진영';
+        nationalitySection.appendChild(natToggle);
+
+        const natCollapsible = document.createElement('div');
+        natCollapsible.className = 'collapsible-content';
+
+        natToggle.addEventListener('click', () => {
+            natToggle.classList.toggle('collapsed');
+            natCollapsible.classList.toggle('collapsed');
+        });
 
         const nationalityGroup = document.createElement('div');
         nationalityGroup.id = 'nationality-filter';
@@ -1084,13 +1119,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         nationalityGroup.appendChild(natWrapper);
-        nationalitySection.appendChild(nationalityGroup);
+        natCollapsible.appendChild(nationalityGroup);
+        nationalitySection.appendChild(natCollapsible);
         drawerBody.appendChild(nationalitySection);
 
-        // --- Type section ---
+        // --- Type section (collapsible) ---
         const typeSection = document.createElement('div');
         typeSection.className = 'st-drawer-section';
-        typeSection.innerHTML = '<h3>함종</h3>';
+
+        const typeToggle = document.createElement('button');
+        typeToggle.className = 'filter-group-toggle';
+        typeToggle.innerHTML = '<span class="chevron material-symbols-outlined">expand_more</span> 함종';
+        typeSection.appendChild(typeToggle);
+
+        const typeCollapsible = document.createElement('div');
+        typeCollapsible.className = 'collapsible-content';
+
+        typeToggle.addEventListener('click', () => {
+            typeToggle.classList.toggle('collapsed');
+            typeCollapsible.classList.toggle('collapsed');
+        });
 
         const typeGroup = document.createElement('div');
         typeGroup.id = 'type-filter';
@@ -1145,7 +1193,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         typeGroup.appendChild(typeWrapper);
-        typeSection.appendChild(typeGroup);
+        typeCollapsible.appendChild(typeGroup);
+        typeSection.appendChild(typeCollapsible);
         drawerBody.appendChild(typeSection);
 
         // --- Dropdown options section ---

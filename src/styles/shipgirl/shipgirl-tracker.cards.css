@@ -137,6 +137,45 @@
   padding: 1px 0;
 }
 
+/* --- Stat Info (입수/120렙 attr on card) --- */
+.stat-info {
+  width: 100%;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  padding: 0.3rem 0.5rem;
+  margin-bottom: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-info-line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-label {
+  font-weight: 700;
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.stat-types {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 7em;
+  flex-shrink: 1;
+  cursor: default;
+}
+
+.stat-value {
+  font-weight: 700;
+  color: var(--success-color);
+  flex-shrink: 0;
+}
+
 /* --- Dark Mode Overrides --- */
 body.dark-mode .ship-card {
   box-shadow: 0 2px 4px var(--shadow-color);
