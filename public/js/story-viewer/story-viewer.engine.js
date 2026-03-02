@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             lastIndex: -1
         },
 
-        COMMANDER_ICON_PATH: resolveUrl('assets/icon/commander.png'),
+        COMMANDER_ICON_PATH: resolveUrl('assets/icon/commander.webp'),
         BASE_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/",
         BGM_URL_PREFIX: "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/",
 
@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (icon) {
                 let imageUrl = icon.startsWith('http') || icon.startsWith('data:image') || icon.includes('assets/')
                     ? icon
-                    : `${pathPrefix}${icon}.png`;
+                    : `${pathPrefix}${icon}.webp`;
                 thumbnailHtml = `<div class="card-thumbnail" style="background-image: url('${imageUrl}')"></div>`;
             } else {
                 thumbnailHtml = `<div class="card-thumbnail" style="background-color: #34495e;"></div>`;
@@ -579,7 +579,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Set default background for both viewer types if mask exists
             if (memory.mask) {
-                this.currentStoryDefaultBgUrl = `${this.BASE_URL}${memory.mask}.png`;
+                this.currentStoryDefaultBgUrl = `${this.BASE_URL}${memory.mask}.webp`;
             }
 
             const event = this.storylineData[this.currentEventId];
@@ -598,7 +598,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const imagesToPreload = new Set();
             if (this.currentStoryDefaultBgUrl) imagesToPreload.add(this.currentStoryDefaultBgUrl);
             const firstBgLine = this.currentStoryScript.find(line => line.bgName);
-            if (firstBgLine) imagesToPreload.add(`${this.BASE_URL}bg/${firstBgLine.bgName}.png`);
+            if (firstBgLine) imagesToPreload.add(`${this.BASE_URL}bg/${firstBgLine.bgName}.webp`);
             imagesToPreload.forEach(src => { new Image().src = src; });
 
             // Build navigation cache for fast lookups
@@ -1016,7 +1016,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const line = this.currentStoryScript[i];
                 if (line) {
                     if (line.blackBg === true) { isBlackBackground = true; break; }
-                    if (line.bgName) { backgroundImageUrl = `url('${this.BASE_URL}bg/${line.bgName}.png')`; break; }
+                    if (line.bgName) { backgroundImageUrl = `url('${this.BASE_URL}bg/${line.bgName}.webp')`; break; }
                 }
             }
 

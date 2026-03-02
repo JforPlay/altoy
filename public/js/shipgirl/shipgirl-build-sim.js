@@ -311,7 +311,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
                     state.poolData[pickupPoolId][shipId] = {
                         name: ship.name,
                         rarity: ship.rarity,
-                        icon: ship.icon || resolveUrl('assets/img/default-ship.png'),
+                        icon: ship.icon || resolveUrl('assets/img/default-ship.webp'),
                         isPickup: true,
                         pickupRate: ship.pickupRate
                     };
@@ -336,7 +336,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
                         state.poolData[pickupPoolId][shipId] = {
                             name: ship.name,
                             rarity: ship.rarity,
-                            icon: ship.icon || resolveUrl('assets/img/default-ship.png'),
+                            icon: ship.icon || resolveUrl('assets/img/default-ship.webp'),
                             isPickup: true,
                             pickupRate: ship.pickupRate
                         };
@@ -367,7 +367,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         }
         
         // Fallback to default
-        return resolveUrl('assets/img/default-ship.png');
+        return resolveUrl('assets/img/default-ship.webp');
     }
 
     // Render pool buttons dynamically
@@ -505,7 +505,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
             if (isSelected) card.classList.add('selected');
 
             card.innerHTML = `
-                <img src="${ship.icon}" alt="${ship.name}" class="modal-ship-icon" onerror="this.src='${resolveUrl('assets/img/default-ship.png')}'">
+                <img src="${ship.icon}" alt="${ship.name}" class="modal-ship-icon" onerror="this.src='${resolveUrl('assets/img/default-ship.webp')}'">
                 <div class="modal-ship-name">${ship.name}</div>
                 <div class="modal-ship-rarity ${ship.rarity.toLowerCase()}">${ship.rarity}</div>
                 ${isSelected ? '<div class="selected-check"><span class="material-symbols-outlined">check_circle</span></div>' : ''}

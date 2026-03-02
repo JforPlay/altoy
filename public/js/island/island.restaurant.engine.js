@@ -28,10 +28,10 @@ import {
 // ============================================
 
 const RANK_ICONS = {
-    bronze: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_tong.png',
-    silver: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_yin.png',
-    gold: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_jin.png',
-    diamond: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_zuanshi.png'
+    bronze: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_tong.webp',
+    silver: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_yin.webp',
+    gold: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_jin.webp',
+    diamond: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_zuanshi.webp'
 };
 
 const RANK_COLORS = {
@@ -42,10 +42,10 @@ const RANK_COLORS = {
 };
 
 const RARITY_BACKGROUNDS = {
-    1: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_gray.png',
-    2: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_blue.png',
-    3: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_purple.png',
-    4: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_orange.png'
+    1: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_gray.webp',
+    2: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_blue.webp',
+    3: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_purple.webp',
+    4: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_orange.webp'
 };
 
 const STORAGE_KEY_RANK = 'island-restaurant-rank';
@@ -636,7 +636,7 @@ function createMenuCard(itemId, formulaId, restaurantId) {
             <!-- Header -->
             <div class="menu-card-header">
                 <div class="restaurant-menu-icon" style="background-image: url('${rarityBackground}')">
-                    ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '<span class="material-symbols-outlined">restaurant_menu</span>'}
+                    ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '<span class="material-symbols-outlined">restaurant_menu</span>'}
                 </div>
                 <div class="menu-info">
                     <h4 class="menu-name">${profitData.itemName}</h4>

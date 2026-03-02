@@ -10,16 +10,16 @@ document.addEventListener('DOMContentLoaded', () => {
      * Maps Korean group chat names to their respective faction icons
      */
     const GROUP_CHAT_ICONS = {
-        "이글 유니온 채팅방": resolveUrl('assets/icon/uss.png'),
-        "공용 채팅방": resolveUrl('assets/icon/common.png'),
-        "템페스타 채팅방": resolveUrl('assets/icon/mot.png'),
-        "노스 유니온 채팅방": resolveUrl('assets/icon/sn.png'),
-        "이스트 글림 채팅방": resolveUrl('assets/icon/roc.png'),
-        "사르데냐 엠파이어 채팅방": resolveUrl('assets/icon/rn.png'),
-        "메탈 블러드 채팅방": resolveUrl('assets/icon/kms.png'),
-        "아이리스 채팅방": resolveUrl('assets/icon/ff.png'),
-        "사쿠라 엠파이어 채팅방": resolveUrl('assets/icon/ijn.png'),
-        "로열 네이비 채팅방": resolveUrl('assets/icon/hms.png')
+        "이글 유니온 채팅방": resolveUrl('assets/icon/uss.webp'),
+        "공용 채팅방": resolveUrl('assets/icon/common.webp'),
+        "템페스타 채팅방": resolveUrl('assets/icon/mot.webp'),
+        "노스 유니온 채팅방": resolveUrl('assets/icon/sn.webp'),
+        "이스트 글림 채팅방": resolveUrl('assets/icon/roc.webp'),
+        "사르데냐 엠파이어 채팅방": resolveUrl('assets/icon/rn.webp'),
+        "메탈 블러드 채팅방": resolveUrl('assets/icon/kms.webp'),
+        "아이리스 채팅방": resolveUrl('assets/icon/ff.webp'),
+        "사쿠라 엠파이어 채팅방": resolveUrl('assets/icon/ijn.webp'),
+        "로열 네이비 채팅방": resolveUrl('assets/icon/hms.webp')
     };
 
     new ChatViewerEngine({

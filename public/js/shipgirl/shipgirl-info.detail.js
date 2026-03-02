@@ -370,7 +370,7 @@ function renderSpWeaponSection(ship) {
     if (!ship.sp_weapon) return '';
 
     const spWeapon = ship.sp_weapon;
-    const iconUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/spweapon/${spWeapon.icon}.png`;
+    const iconUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/spweapon/${spWeapon.icon}.webp`;
 
     const skillUpgradeIds = (spWeapon.skill_upgrade || [])
         .filter(skillArray => Array.isArray(skillArray) && skillArray.length > 1)
@@ -503,7 +503,7 @@ function generateGiftIcons(dislikedGifts, type) {
     return targetGiftIds.map(giftId => {
         // Extract the last two digits from the ID to build the filename (e.g., 180005 -> 05)
         const fileNumber = String(giftId).slice(-2);
-        const imageUrl = `${baseUrl}gift${fileNumber}.png`;
+        const imageUrl = `${baseUrl}gift${fileNumber}.webp`;
 
         // Return the HTML for a single gift icon, now using an <img> tag
         return `

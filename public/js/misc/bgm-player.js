@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const albumId = Object.keys(albumsData).find(key => albumsData[key] === album);
             if (!album.cover) return ''; 
             
-            const imageUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/musiccover/${album.cover}.png`;
+            const imageUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/musiccover/${album.cover}.webp`;
 
             return `
                 <div class="album-item" data-album-id="${albumId}">

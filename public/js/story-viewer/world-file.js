@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const itemData = data[key];
             const galleryItem = document.createElement('div');
             galleryItem.className = 'gallery-item';
-            galleryItem.style.backgroundImage = `url('${resolveUrl(`assets/img/${itemData.id_2}.png`)}')`;
+            galleryItem.style.backgroundImage = `url('${resolveUrl(`assets/img/${itemData.id_2}.webp`)}')`;
 
             const itemName = document.createElement('div');
             itemName.className = 'gallery-item-name';

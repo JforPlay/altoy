@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderSkinInfoBox(skin) {
         let html = '';
-        if (skin['재화']) html += `<div class="info-item"><img src="${resolveUrl('assets/icon/60px-Ruby.png')}" class="gem-icon"><span class="info-value">${skin['재화']}</span></div>`;
+        if (skin['재화']) html += `<div class="info-item"><img src="${resolveUrl('assets/icon/60px-Ruby.webp')}" class="gem-icon"><span class="info-value">${skin['재화']}</span></div>`;
         if (skin['기간']) html += `<div class="info-item"><strong class="info-label">상시:</strong><span class="info-value">${skin['기간']}</span></div>`;
         if (skin['스킨 타입 - 한글']) html += `<div class="info-item"><strong class="info-label">타입:</strong><span class="info-value">${skin['스킨 타입 - 한글']}</span></div>`;
         if (skin['스킨 태그']) html += `<div class="info-item"><strong class="info-label">태그:</strong><span class="info-value">${skin['스킨 태그']}</span></div>`;

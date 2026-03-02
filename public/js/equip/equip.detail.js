@@ -575,7 +575,7 @@ function renderStatsRows(equip, level) {
 
 /** Get prop icon URL from property ID */
 function getPropIconUrl(propId) {
-    return `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/props/${propId}.png`;
+    return `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/props/${propId}.webp`;
 }
 
 /** Render a list of [propId, quantity] pairs as icon + quantity chips */

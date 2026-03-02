@@ -229,7 +229,7 @@ const EventCarousel = (function () {
         bannerDiv.className = 'event-banner';
 
         const img = document.createElement('img');
-        img.src = `${IMAGE_BASE_URL}${banner.pic}.png`;
+        img.src = `${IMAGE_BASE_URL}${banner.pic}.webp`;
         img.alt = `Event Banner ${banner.id}`;
         img.loading = 'lazy';
         img.onerror = function () {

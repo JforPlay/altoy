@@ -22,10 +22,10 @@ const PLANNER_SLOTS_PER_RESTAURANT = 4;
 const PLANNER_PRESET_COUNT = 5;
 
 const RARITY_BACKGROUNDS = {
-    1: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_gray.png',
-    2: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_blue.png',
-    3: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_purple.png',
-    4: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_orange.png'
+    1: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_gray.webp',
+    2: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_blue.webp',
+    3: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_purple.webp',
+    4: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_orange.webp'
 };
 
 // ============================================
@@ -538,7 +538,7 @@ function getMenuIngredientPreview(formulaId) {
 
     return Object.values(ingredients).map(ing => ({
         name: ing.name,
-        icon: ing.icon ? ing.icon.split('/').pop() + '.png' : ''
+        icon: ing.icon ? ing.icon.split('/').pop() + '.webp' : ''
     }));
 }
 
@@ -622,7 +622,7 @@ function getMenuOptions(restaurantId) {
             formulaId,
             name: item ? item.name : `Menu ${itemId}`,
             rarity: item ? item.rarity : 1,
-            icon: item && item.icon ? item.icon.split('/').pop() + '.png' : ''
+            icon: item && item.icon ? item.icon.split('/').pop() + '.webp' : ''
         };
     });
 }
@@ -1008,7 +1008,7 @@ function renderPlannerResultsContent() {
         return `
                     <div class="ingredient-card mini rarity-${item.rarity || 1} ${isActive ? 'active' : ''}" data-name="${item.name}">
                         <div class="ingredient-icon">
-                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.png" alt="${item.name}">` : '<span class="material-symbols-outlined">inventory_2</span>'}
+                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '<span class="material-symbols-outlined">inventory_2</span>'}
                             ${isActive ? `<span class="ingredient-qty">${Math.ceil(qty).toLocaleString()}</span>` : ''}
                         </div>
                     </div>

@@ -416,7 +416,7 @@ export class ChatViewerEngine {
      */
     displaySticker(script) {
         const isPlayer = script.ship_group === 0;
-        const stickerUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/emoji/${script.param}.png`;
+        const stickerUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/emoji/${script.param}.webp`;
 
         const container = document.createElement('div');
         container.className = 'sticker-container';

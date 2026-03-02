@@ -128,12 +128,12 @@ const EQUIP_BASE_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/
 /** Get equipment icon URL from icon ID */
 export function getEquipIconUrl(iconId) {
     if (!iconId || iconId === '1') return '';
-    return `${EQUIP_BASE_URL}/${iconId}.png`;
+    return `${EQUIP_BASE_URL}/${iconId}.webp`;
 }
 
 /** Get rarity background image URL (N=1, R=2, SR=3, SSR=4, UR=5) */
 export function getRarityBgUrl(rarity) {
-    return `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/weaponframes/bg${rarity - 1}.png`;
+    return `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/weaponframes/bg${rarity - 1}.webp`;
 }
 
 /** Get all unique equipment types from loaded data */

@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             photo: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/educateavatar/'
         },
 
-        placeholderImage: resolveUrl('assets/img/tb_placeholder.png'),
+        placeholderImage: resolveUrl('assets/img/tb_placeholder.webp'),
 
         categories: [
             {

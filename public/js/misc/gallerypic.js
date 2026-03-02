@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Format the name to match the repo's capitalization, e.g., "GalleryPic1"
                     const formattedName = imageName.replace('gallerypic', 'GalleryPic');
                     
-                    const thumbnailUrl = `${baseImageUrl}${formattedName}_t.png`;
-                    const fullImageUrl = `${baseImageUrl}${formattedName}.png`;
+                    const thumbnailUrl = `${baseImageUrl}${formattedName}_t.webp`;
+                    const fullImageUrl = `${baseImageUrl}${formattedName}.webp`;
 
                     // Create gallery item container
                     const galleryItem = document.createElement('div');

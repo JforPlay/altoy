@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             photo: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/neweducateicon/'
         },
 
-        placeholderImage: resolveUrl('assets/img/navi_placeholder.png'),
+        placeholderImage: resolveUrl('assets/img/navi_placeholder.webp'),
 
         categories: [
             {

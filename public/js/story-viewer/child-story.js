@@ -198,7 +198,7 @@ function createTabStoryViewer(config) {
                         title: title,
                         condition: mem.condition || '',
                         icon: icon,
-                        iconUrl: icon ? `${this.config.imageUrls.icon}${icon}.png` : null,
+                        iconUrl: icon ? `${this.config.imageUrls.icon}${icon}.webp` : null,
                         story: this.storyData[storyKey?.toLowerCase()] || { scripts: [] }
                     };
                 })
@@ -219,7 +219,7 @@ function createTabStoryViewer(config) {
                         title: title,
                         condition: '',
                         icon: icon,
-                        iconUrl: icon ? `${this.config.imageUrls.icon}${icon}.png` : null,
+                        iconUrl: icon ? `${this.config.imageUrls.icon}${icon}.webp` : null,
                         story: this.storyData[storyKey?.toLowerCase()] || { scripts: [] }
                     };
                 })
@@ -418,12 +418,12 @@ function createTabStoryViewer(config) {
             let imageUrl;
             if (this.config.type === 'navi') {
                 imageUrl = ending.pic_preview
-                    ? `${this.config.imageUrls.base}${ending.pic_preview}.png`
+                    ? `${this.config.imageUrls.base}${ending.pic_preview}.webp`
                     : this.config.placeholderImage;
             } else {
                 imageUrl = icon
-                    ? `${this.config.imageUrls.icon}${icon}.png`
-                    : (ending.pic_preview ? `${this.config.imageUrls.base}${ending.pic_preview}.png` : this.config.placeholderImage);
+                    ? `${this.config.imageUrls.icon}${icon}.webp`
+                    : (ending.pic_preview ? `${this.config.imageUrls.base}${ending.pic_preview}.webp` : this.config.placeholderImage);
             }
 
             card.innerHTML = `
@@ -450,7 +450,7 @@ function createTabStoryViewer(config) {
             card.dataset.title = item.title;
 
             const imageUrl = item.icon
-                ? `${this.config.imageUrls.icon}${item.icon}.png`
+                ? `${this.config.imageUrls.icon}${item.icon}.webp`
                 : this.config.placeholderImage;
 
             const category = this.config.categories.find(c => c.id === categoryId);
@@ -480,7 +480,7 @@ function createTabStoryViewer(config) {
             card.dataset.title = polaroid.title || '';
 
             const imageUrl = polaroid.pic
-                ? `${this.config.imageUrls.base}${polaroid.pic}.png`
+                ? `${this.config.imageUrls.base}${polaroid.pic}.webp`
                 : this.config.placeholderImage;
 
             card.innerHTML = `
@@ -512,7 +512,7 @@ function createTabStoryViewer(config) {
             const card = document.createElement('div');
             card.className = 'photo-card';
 
-            const imageUrl = `${this.config.imageUrls.photo || this.config.imageUrls.base}${filename}.png`;
+            const imageUrl = `${this.config.imageUrls.photo || this.config.imageUrls.base}${filename}.webp`;
 
             card.innerHTML = `<img src="${imageUrl}" alt="${filename}" loading="lazy">`;
 
@@ -623,7 +623,7 @@ function createTabStoryViewer(config) {
                 window.StoryViewer.cachedFullScript = null;
 
                 if (memory.story.mask) {
-                    window.StoryViewer.currentStoryDefaultBgUrl = `${window.StoryViewer.BASE_URL}${memory.story.mask}.png`;
+                    window.StoryViewer.currentStoryDefaultBgUrl = `${window.StoryViewer.BASE_URL}${memory.story.mask}.webp`;
                 }
 
                 const memories = eventData.child;
@@ -665,10 +665,10 @@ function createTabStoryViewer(config) {
         // =========================================================================
         showPolaroidDetail(polaroid) {
             const frontUrl = polaroid.pic
-                ? `${this.config.imageUrls.base}${polaroid.pic}.png`
+                ? `${this.config.imageUrls.base}${polaroid.pic}.webp`
                 : this.config.placeholderImage;
             const backUrl = polaroid.pic_2
-                ? `${this.config.imageUrls.base}${polaroid.pic_2}.png`
+                ? `${this.config.imageUrls.base}${polaroid.pic_2}.webp`
                 : this.config.placeholderImage;
 
             delete this.elements.polaroidImgFront.dataset.errorHandled;
@@ -811,7 +811,7 @@ function createTabStoryViewer(config) {
                     const firstBgLine = story.scripts.find(line => line.bgName);
                     if (firstBgLine) {
                         const img = new Image();
-                        img.src = `${window.StoryViewer?.BASE_URL || 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/'}bg/${firstBgLine.bgName}.png`;
+                        img.src = `${window.StoryViewer?.BASE_URL || 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/'}bg/${firstBgLine.bgName}.webp`;
                     }
                 }
             }

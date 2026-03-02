@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
             link.className = 'skin-box-link';
 
             const costHtml = skin['재화']
-                ? `<img src="${resolveUrl('assets/icon/60px-Ruby.png')}" class="gem-icon" alt="Gem"> ${skin['재화']}`
+                ? `<img src="${resolveUrl('assets/icon/60px-Ruby.webp')}" class="gem-icon" alt="Gem"> ${skin['재화']}`
                 : 'N/A';
 
             // Create image element with error handling

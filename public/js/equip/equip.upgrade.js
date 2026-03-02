@@ -262,7 +262,7 @@ function getItemName(propId) {
 }
 
 function getItemIconUrl(propId) {
-    return `${PROP_ICON_URL}/${propId}.png`;
+    return `${PROP_ICON_URL}/${propId}.webp`;
 }
 
 // ===== Equip Info Panel =====

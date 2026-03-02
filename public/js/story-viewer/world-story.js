@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const summaryCard = viewer.createCard(
                     `${summaryData.title} 줄거리`,
                     "하나즈키가 작성한 이 챕터의 전체적인 줄거리와 핵심 정보를 확인합니다.",
-                    resolveUrl('assets/img/hanazuki.png'),
+                    resolveUrl('assets/img/hanazuki.webp'),
                     null,
                     () => viewer.showSummaryModal(eventId)
                 );

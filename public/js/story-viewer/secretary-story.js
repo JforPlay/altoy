@@ -331,8 +331,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const icon =
           memory.story_icon === 'akashi'
-            ? 'https://raw.githubusercontent.com/JForPlay/data_for_toy/main/memoryicon/akashi.png'
-            : `https://raw.githubusercontent.com/JForPlay/data_for_toy/main/memoryicon/memory_${memory.story_icon}.png`;
+            ? 'https://raw.githubusercontent.com/JForPlay/data_for_toy/main/memoryicon/akashi.webp'
+            : `https://raw.githubusercontent.com/JForPlay/data_for_toy/main/memoryicon/memory_${memory.story_icon}.webp`;
 
         memories.push({
           id: memory.id || taskId,
