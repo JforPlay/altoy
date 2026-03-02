@@ -575,7 +575,7 @@ body.calendar-page {
 }
 
 .event-tooltip {
-    position: absolute;
+    position: fixed;
     background: var(--calendar-bg);
     border: 1px solid var(--calendar-border);
     color: var(--calendar-text);
