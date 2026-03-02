@@ -28,6 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
         /^연구 ?도크/,
     ];
 
+    const SHOP_PATTERNS = [
+        /^원형 상점 교환/,
+        /^군수 상점 교환/,
+        /^상점의 대함대 보급에서 획득/,
+        /^코어 상점/,
+        /^코어 교환/,
+        /^특별 ?보급/,
+        /^함대 상점 교환/,
+        /^훈장 상점 교환/,
+        /^훈장 교환/,
+    ];
+
     const FACTION_ABBR = {
         '로열 네이비': 'HMS',
         '사쿠라 엠파이어': 'IJN',
@@ -54,20 +66,27 @@ document.addEventListener('DOMContentLoaded', () => {
             test: d => /건조/.test(d) && !/한정/.test(d) && !/이벤트/.test(d) && !/기간/.test(d)
         },
         {
+            key: 'shop',
+            label: '상점 교환',
+            icon: 'shopping_cart',
+            test: d => SHOP_PATTERNS.some(p => p.test(d))
+        },
+        {
             key: 'other',
             label: '기타 획득',
             icon: 'storefront',
             test: d => {
                 if (/^메인 스테이지 해역/.test(d) || /^추천 획득 해역/.test(d)) return false;
                 if (/건조/.test(d) && !/한정/.test(d) && !/이벤트/.test(d) && !/기간/.test(d)) return false;
+                if (SHOP_PATTERNS.some(p => p.test(d))) return false;
                 return PERMANENT_PATTERNS.some(p => p.test(d));
             }
         },
         {
             key: 'archive',
-            label: '작전 문서',
+            label: '상시 편입된 이벤트 함순이',
             icon: 'menu_book',
-            test: d => /^작전 파일/.test(d) || /^작전 문서/.test(d)
+            test: d => isWarArchiveDescription(d)
         }
     ];
 
@@ -75,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let nationalityData = null;
     let shipTypeData = null;
     let fleetTechGoalData = null;
+    let warArchiveEventNames = null;
     let progress = {};
     let activeFaction = null;
     const activeRarities = new Set(['ur', 'ssr', 'sr', 'r', 'n']);
@@ -84,14 +104,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentContainer = document.getElementById('faction-content');
     const extraContainer = document.getElementById('faction-extra');
 
+    function extractEventName(desc) {
+        const match = desc.match(/^(?:한정\s*)?이벤트\s*[：:]\s*(.+)$/);
+        return match ? match[1].trim() : null;
+    }
+
+    function isWarArchiveDescription(desc) {
+        if (!warArchiveEventNames) return false;
+        const eventName = extractEventName(desc);
+        if (!eventName) return false;
+        if (warArchiveEventNames.has(eventName)) return true;
+        for (const archiveName of warArchiveEventNames) {
+            if (eventName.startsWith(archiveName)) return true;
+        }
+        return false;
+    }
+
+    function isWarArchiveShip(ship) {
+        if (!ship.description || !Array.isArray(ship.description)) return false;
+        return ship.description.some(d => isWarArchiveDescription(d));
+    }
+
     async function loadData() {
         try {
-            [shipData, nationalityData, shipTypeData, fleetTechGoalData] = await Promise.all([
+            let warArchiveData;
+            [shipData, nationalityData, shipTypeData, fleetTechGoalData, warArchiveData] = await Promise.all([
                 fetchJSONWithCache('data/ship_group_data.json'),
                 fetchJSONWithCache('data/mapping/nationality_mapping.json'),
                 fetchJSONWithCache('data/mapping/ship_type_mapping.json'),
                 fetchJSONWithCache('data/shipgirl/fleet_tech_goal.json'),
+                fetchJSONWithCache('data/shipgirl/war_archive.json'),
             ]);
+            warArchiveEventNames = new Set();
+            for (const category of Object.values(warArchiveData)) {
+                for (const eventName of Object.values(category)) {
+                    warArchiveEventNames.add(eventName);
+                }
+            }
             progress = JSON.parse(getStorageItem(SAVE_KEY, null) || '{}');
             init();
         } catch (error) {
@@ -102,28 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function isPermanentShip(ship) {
         if (!ship.description || !Array.isArray(ship.description)) return false;
-        return ship.description.some(d => PERMANENT_PATTERNS.some(p => p.test(d)));
-    }
-
-    function getSourceGroups(ship) {
-        if (!ship.description || !Array.isArray(ship.description)) return [];
-        const groups = new Set();
-        for (const d of ship.description) {
-            for (const sg of SOURCE_GROUPS) {
-                if (sg.test(d)) groups.add(sg.key);
-            }
-        }
-        return [...groups];
-    }
-
-    function getFirstSourceGroup(ship) {
-        if (!ship.description || !Array.isArray(ship.description)) return null;
-        for (const d of ship.description) {
-            for (const sg of SOURCE_GROUPS) {
-                if (sg.test(d)) return sg.key;
-            }
-        }
-        return null;
+        return ship.description.some(d => PERMANENT_PATTERNS.some(p => p.test(d)) || isWarArchiveDescription(d));
     }
 
     function getShipTechPoints(shipId) {
@@ -274,6 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="rt-filters-title">
                 <span class="material-symbols-outlined">tune</span>
                 필터
+                <span class="rt-filters-hint">체크해제로 목록에서 제거</span>
             </div>
             <div class="rt-filters-row">
                 <div class="rt-filter-group">
@@ -547,9 +576,23 @@ document.addEventListener('DOMContentLoaded', () => {
             grouped[sg.key] = [];
         }
         for (const ship of ships) {
-            // Assign to first matching group only
-            const firstGroup = getFirstSourceGroup(ship);
-            if (firstGroup && grouped[firstGroup]) grouped[firstGroup].push(ship);
+            // Assign to first matching non-archive group
+            let assigned = false;
+            for (const d of (ship.description || [])) {
+                if (assigned) break;
+                for (const sg of SOURCE_GROUPS) {
+                    if (sg.key === 'archive') continue;
+                    if (sg.test(d)) {
+                        grouped[sg.key].push(ship);
+                        assigned = true;
+                        break;
+                    }
+                }
+            }
+            // Archive: independently check (ships can appear in both their group and archive)
+            if (isWarArchiveShip(ship)) {
+                grouped['archive'].push(ship);
+            }
         }
 
         const rarityOrder = { UR: 0, SSR: 1, SR: 2, R: 3, N: 4 };
@@ -564,7 +607,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (const sg of SOURCE_GROUPS) {
             const groupShips = grouped[sg.key];
-            if (groupShips.length === 0 && sg.key !== 'archive') continue;
+            if (groupShips.length === 0) continue;
 
             const totalPts = groupShips.reduce((sum, s) => sum + (s.pt_get || 0) + (s.pt_level || 0) + (s.pt_upgrage || 0), 0);
 
@@ -586,16 +629,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const body = document.createElement('div');
             body.className = 'rt-group-body';
 
-            if (sg.key === 'archive' && groupShips.length === 0) {
-                body.innerHTML = '<p class="rt-placeholder">작전 문서 데이터는 추후 추가 예정입니다.</p>';
-            } else {
-                const grid = document.createElement('div');
-                grid.className = 'rt-ship-grid';
-                for (const ship of groupShips) {
-                    grid.appendChild(createShipCard(ship));
-                }
-                body.appendChild(grid);
+            const grid = document.createElement('div');
+            grid.className = 'rt-ship-grid';
+            for (const ship of groupShips) {
+                grid.appendChild(createShipCard(ship));
             }
+            body.appendChild(grid);
 
             header.addEventListener('click', () => {
                 const isOpen = group.classList.toggle('open');
@@ -629,9 +668,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const typeName = typeInfo ? typeInfo.type_name : '';
         const typeIcon = typeInfo ? typeInfo.icon : '';
 
-        // Build description list from permanent sources only
+        // Build description list from permanent sources + war archive
         const descHtml = (ship.description || [])
-            .filter(d => PERMANENT_PATTERNS.some(p => p.test(d)) || /^작전 (파일|문서)/.test(d))
+            .filter(d => PERMANENT_PATTERNS.some(p => p.test(d)) || isWarArchiveDescription(d))
             .map(d => `<li>${d}</li>`)
             .join('');
 
