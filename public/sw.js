@@ -3,7 +3,7 @@
 // Caches static assets and data for faster loads
 // ============================================
 
-const CACHE_VERSION = 'v2.7';
+const CACHE_VERSION = 'v2.8';
 const STATIC_CACHE = `altoy-static-${CACHE_VERSION}`;
 const DATA_CACHE = `altoy-data-${CACHE_VERSION}`;
 
@@ -37,8 +37,9 @@ self.addEventListener('activate', (event) => {
 });
 
 // Fetch strategy:
-// - Data files (JSON): Network first, fallback to cache (stale-while-revalidate)
-// - Static assets (JS/CSS/images): Cache first, fallback to network
+// - Data files (JSON): Stale-while-revalidate (serve cached, update in background)
+// - JS/CSS: Stale-while-revalidate (serve cached, update in background)
+// - Images/fonts: Cache first, fallback to network (content-addressed, rarely change)
 // - External resources: Network only (don't cache CDN/GitHub raw)
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
@@ -55,8 +56,14 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Static assets: cache first
-    if (url.pathname.match(/\.(js|css|png|jpg|jpeg|gif|svg|ico|woff2?)$/)) {
+    // JS/CSS: stale-while-revalidate (ensures updates propagate on next visit)
+    if (url.pathname.match(/\.(js|css)$/)) {
+        event.respondWith(staleWhileRevalidate(event.request, STATIC_CACHE));
+        return;
+    }
+
+    // Images/fonts: cache first (content rarely changes at same URL)
+    if (url.pathname.match(/\.(png|jpg|jpeg|gif|svg|ico|woff2?)$/)) {
         event.respondWith(cacheFirst(event.request, STATIC_CACHE));
         return;
     }
