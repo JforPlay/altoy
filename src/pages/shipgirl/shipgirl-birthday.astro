@@ -5,9 +5,10 @@
  */
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/shipgirl/shipgirl-birthday.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="함순이 생일" bodyClass="calendar-page">
+<Layout title="함순이 생일" bodyClass="calendar-page" {base}>
     <main class="birthday-container">
         <div class="calendar-controls">
             <button class="view-toggle active" data-view="year" title="연간 보기" aria-label="연간 보기로 전환">
@@ -94,5 +95,5 @@ import '../../styles/shipgirl/shipgirl-birthday.css';
         <div class="no-results">함순이를 찾을 수 없습니다</div>
     </template>
 
-    <script is:inline type="module" src="/altoy/js/shipgirl/shipgirl-birthday.js"></script>
+    <script is:inline type="module" src={`${base}/js/shipgirl/shipgirl-birthday.js`}></script>
 </Layout>

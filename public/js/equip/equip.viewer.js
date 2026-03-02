@@ -372,7 +372,7 @@ async function openDetailPanel(equipId) {
     const researchLink = document.getElementById('detailResearchLink');
     if (researchLink) {
         if (isInUpgradeTree(parseInt(equipId))) {
-            researchLink.href = `/altoy/equip/equip-upgrade?equip=${equipId}`;
+            researchLink.href = resolveUrl(`equip/equip-upgrade?equip=${equipId}`);
             researchLink.style.display = '';
         } else {
             researchLink.style.display = 'none';

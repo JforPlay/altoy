@@ -5,9 +5,10 @@
  */
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/misc/comic-viewer.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="벽람항로 만화">
+<Layout title="벽람항로 만화" {base}>
     <header>
         <h1>벽람항로 만화보기</h1>
         <button id="sort-button">기간정렬 : 1호부터</button>
@@ -21,5 +22,5 @@ import '../../styles/misc/comic-viewer.css';
         <img id="lightbox-img" class="lightbox-content" src="" alt="Enlarged Manga Image">
     </div>
 
-    <script is:inline type="module" src="/altoy/js/misc/comic-viewer.js"></script>
+    <script is:inline type="module" src={`${base}/js/misc/comic-viewer.js`}></script>
 </Layout>

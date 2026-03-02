@@ -22,9 +22,11 @@ import '../styles/island/island.restaurant.style.css';
 import '../styles/island/island.restaurant.modal.css';
 import '../styles/island/island.restaurant.planner.css';
 import '../styles/island/island.season-calc.style.css';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="Island" bodyClass="dark-mode">
+<Layout title="Island" bodyClass="dark-mode" {base}>
     <div class="island-container">
         <!-- Page Header -->
         <header class="island-header">
@@ -388,16 +390,16 @@ import '../styles/island/island.season-calc.style.css';
     </div>
 
     <!-- Island Scripts -->
-    <script is:inline type="module" src="/altoy/js/island/island.engine.js"></script>
-    <script is:inline type="module" src="/altoy/js/island/island.character.engine.js"></script>
-    <script is:inline type="module" src="/altoy/js/island/island.technology.engine.js"></script>
-    <script is:inline type="module" src="/altoy/js/island/island.quest.engine.js"></script>
-    <script is:inline type="module" src="/altoy/js/island/island.resource.tree.js"></script>
-    <script is:inline type="module" src="/altoy/js/island/island.resource.render.js"></script>
-    <script is:inline type="module" src="/altoy/js/island/island.resource.engine.js"></script>
-    <script is:inline type="module" src="/altoy/js/island/island.restaurant.calc.js"></script>
-    <script is:inline type="module" src="/altoy/js/island/island.restaurant.planner.js"></script>
-    <script is:inline type="module" src="/altoy/js/island/island.restaurant.engine.js"></script>
-    <script is:inline type="module" src="/altoy/js/island/island.season-calc.engine.js"></script>
-    <script is:inline type="module" src="/altoy/js/island/island.script.js"></script>
+    <script is:inline type="module" src={`${base}/js/island/island.engine.js`}></script>
+    <script is:inline type="module" src={`${base}/js/island/island.character.engine.js`}></script>
+    <script is:inline type="module" src={`${base}/js/island/island.technology.engine.js`}></script>
+    <script is:inline type="module" src={`${base}/js/island/island.quest.engine.js`}></script>
+    <script is:inline type="module" src={`${base}/js/island/island.resource.tree.js`}></script>
+    <script is:inline type="module" src={`${base}/js/island/island.resource.render.js`}></script>
+    <script is:inline type="module" src={`${base}/js/island/island.resource.engine.js`}></script>
+    <script is:inline type="module" src={`${base}/js/island/island.restaurant.calc.js`}></script>
+    <script is:inline type="module" src={`${base}/js/island/island.restaurant.planner.js`}></script>
+    <script is:inline type="module" src={`${base}/js/island/island.restaurant.engine.js`}></script>
+    <script is:inline type="module" src={`${base}/js/island/island.season-calc.engine.js`}></script>
+    <script is:inline type="module" src={`${base}/js/island/island.script.js`}></script>
 </Layout>

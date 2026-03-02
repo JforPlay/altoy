@@ -7,10 +7,13 @@ const CACHE_VERSION = 'v2.8';
 const STATIC_CACHE = `altoy-static-${CACHE_VERSION}`;
 const DATA_CACHE = `altoy-data-${CACHE_VERSION}`;
 
+// Derive base path from SW's own location (e.g. '/altoy' or '')
+const BASE = self.location.pathname.replace(/\/sw\.js$/, '');
+
 // Static assets to pre-cache on install
 const PRECACHE_ASSETS = [
-    '/altoy/js/utils.js',
-    '/altoy/js/global.script.js'
+    `${BASE}/js/utils.js`,
+    `${BASE}/js/global.script.js`
 ];
 
 // Install: pre-cache critical static assets

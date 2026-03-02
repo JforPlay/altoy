@@ -7,9 +7,10 @@ import Layout from '../../layouts/Layout.astro';
 import '../../styles/equip/equip.style.css';
 import '../../styles/equip/equip.detail.css';
 import '../../styles/equip/equip.compare.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="장비 DB">
+<Layout title="장비 DB" {base}>
     <div id="app">
         <!-- ===== List View ===== -->
         <div id="mainView" class="view">
@@ -105,5 +106,5 @@ import '../../styles/equip/equip.compare.css';
         </div>
     </div>
 
-    <script is:inline type="module" src="/altoy/js/equip/equip.viewer.js"></script>
+    <script is:inline type="module" src={`${base}/js/equip/equip.viewer.js`}></script>
 </Layout>

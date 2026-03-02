@@ -5,9 +5,10 @@
  */
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/misc/gallerypic.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="삽화 갤러리" bodyClass="bg-gray-100 font-sans">
+<Layout title="삽화 갤러리" bodyClass="bg-gray-100 font-sans" {base}>
     <Fragment slot="head">
         <script is:inline src="https://cdn.tailwindcss.com"></script>
     </Fragment>
@@ -25,5 +26,5 @@ import '../../styles/misc/gallerypic.css';
         </div>
     </div>
 
-    <script is:inline type="module" src="/altoy/js/misc/gallerypic.js"></script>
+    <script is:inline type="module" src={`${base}/js/misc/gallerypic.js`}></script>
 </Layout>

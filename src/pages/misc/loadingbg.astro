@@ -5,9 +5,10 @@
  */
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/misc/loadingbg.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="벽람항로 로딩 일러">
+<Layout title="벽람항로 로딩 일러" {base}>
     <div class="header">
         <h1 class="title">벽람 로딩일러 모음</h1>
     </div>
@@ -33,5 +34,5 @@ import '../../styles/misc/loadingbg.css';
         <p>이미지 로딩 중...</p>
     </div>
 
-    <script is:inline type="module" src="/altoy/js/misc/loadingbg.js"></script>
+    <script is:inline type="module" src={`${base}/js/misc/loadingbg.js`}></script>
 </Layout>

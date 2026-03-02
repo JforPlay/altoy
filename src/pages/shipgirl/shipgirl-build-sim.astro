@@ -5,9 +5,10 @@
  */
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/shipgirl/shipgirl-build-sim.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="건조 확률보기">
+<Layout title="건조 확률보기" {base}>
     <main class="container">
         <header class="page-header">
             <h1>배너별 건조 확률보기</h1>
@@ -187,5 +188,5 @@ import '../../styles/shipgirl/shipgirl-build-sim.css';
         </div>
     </div>
 
-    <script is:inline type="module" src="/altoy/js/shipgirl/shipgirl-build-sim.js"></script>
+    <script is:inline type="module" src={`${base}/js/shipgirl/shipgirl-build-sim.js`}></script>
 </Layout>

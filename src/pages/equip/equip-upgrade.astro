@@ -5,9 +5,10 @@
  */
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/equip/equip.upgrade.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="장비 연구">
+<Layout title="장비 연구" {base}>
     <div class="equip-upgrade-page">
         <header class="upgrade-header">
             <div class="header-title-container">
@@ -56,5 +57,5 @@ import '../../styles/equip/equip.upgrade.css';
         </div>
     </div>
 
-    <script is:inline type="module" src="/altoy/js/equip/equip.upgrade.js"></script>
+    <script is:inline type="module" src={`${base}/js/equip/equip.upgrade.js`}></script>
 </Layout>

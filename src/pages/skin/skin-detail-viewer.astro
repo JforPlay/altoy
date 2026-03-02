@@ -6,9 +6,10 @@
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/skin/skin.common.css';
 import '../../styles/skin/skin.detail.viewer.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="함순이 스킨/대사보기 (Modern UI)">
+<Layout title="함순이 스킨/대사보기 (Modern UI)" {base}>
     <div class="main-container">
         <header class="controls-header">
             <div class="title-wrapper">
@@ -102,8 +103,8 @@ import '../../styles/skin/skin.detail.viewer.css';
         <div class="lightbox-counter"></div>
     </div>
 
-    <script is:inline type="module" src="/altoy/js/skin/skin.audio.js"></script>
-    <script is:inline type="module" src="/altoy/js/skin/skin.expression.js"></script>
-    <script is:inline type="module" src="/altoy/js/skin/skin.data.js"></script>
-    <script is:inline type="module" src="/altoy/js/skin/skin.detail.viewer.js"></script>
+    <script is:inline type="module" src={`${base}/js/skin/skin.audio.js`}></script>
+    <script is:inline type="module" src={`${base}/js/skin/skin.expression.js`}></script>
+    <script is:inline type="module" src={`${base}/js/skin/skin.data.js`}></script>
+    <script is:inline type="module" src={`${base}/js/skin/skin.detail.viewer.js`}></script>
 </Layout>

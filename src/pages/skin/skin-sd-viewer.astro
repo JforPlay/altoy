@@ -6,9 +6,10 @@
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/skin/skin.common.css';
 import '../../styles/skin/skin.sd.viewer.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="벽람항로 설비스킨 뷰어">
+<Layout title="벽람항로 설비스킨 뷰어" {base}>
     <Fragment slot="head">
         <script is:inline src="https://cdn.jsdelivr.net/npm/pixi.js@5.3.12/dist/pixi.min.js"></script>
         <script is:inline src="https://cdn.jsdelivr.net/npm/pixi-spine@2.1.14/dist/pixi-spine.min.js"></script>
@@ -77,5 +78,5 @@ import '../../styles/skin/skin.sd.viewer.css';
         </div>
     </div>
 
-    <script is:inline type="module" src="/altoy/js/skin/skin.sd.viewer.js"></script>
+    <script is:inline type="module" src={`${base}/js/skin/skin.sd.viewer.js`}></script>
 </Layout>

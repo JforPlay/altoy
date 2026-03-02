@@ -6,9 +6,10 @@
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/skin/skin.common.css';
 import '../../styles/skin/expression.viewer.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="표정 일러스트 뷰어">
+<Layout title="표정 일러스트 뷰어" {base}>
     <div class="main-container">
         <header class="controls-header">
             <div class="title-wrapper">
@@ -100,5 +101,5 @@ import '../../styles/skin/expression.viewer.css';
         </div>
     </div>
 
-    <script is:inline type="module" src="/altoy/js/skin/expression.viewer.js"></script>
+    <script is:inline type="module" src={`${base}/js/skin/expression.viewer.js`}></script>
 </Layout>

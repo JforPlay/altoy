@@ -5,9 +5,10 @@
  */
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/story-viewer/story-viewer.common.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="벽람 대작전스토리">
+<Layout title="벽람 대작전스토리" {base}>
     <div id="error-container" class="error-container hidden"></div>
 
     <div id="event-selection-view">
@@ -100,6 +101,6 @@ import '../../styles/story-viewer/story-viewer.common.css';
         </div>
     </div>
 
-    <script is:inline type="module" src="/altoy/js/story-viewer/story-viewer.engine.js"></script>
-    <script is:inline type="module" src="/altoy/js/story-viewer/world-story.js"></script>
+    <script is:inline type="module" src={`${base}/js/story-viewer/story-viewer.engine.js`}></script>
+    <script is:inline type="module" src={`${base}/js/story-viewer/world-story.js`}></script>
 </Layout>

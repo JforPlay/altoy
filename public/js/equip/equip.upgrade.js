@@ -6,7 +6,7 @@
 import {
     fetchJSON, fetchJSONWithCache, debounce, getUrlParam, setUrlParams,
     getStorageItem, setStorageItem, setupScrollToTop,
-    openModal, closeModal, setupModal
+    openModal, closeModal, setupModal, resolveUrl
 } from '../utils.js';
 import { getEquipIconUrl, getRarityBgUrl } from './equip.data.js';
 
@@ -289,7 +289,7 @@ function renderEquipInfo(equipId) {
                     ${equip ? `<span class="info-rarity rarity-${equip.rarity}">${equip.rarity_name}</span>` : ''}
                 </div>
             </div>
-            <a class="info-link-btn" href="/altoy/equip/equip-viewer?equip=${equipId}" title="장비 DB에서 보기">
+            <a class="info-link-btn" href="${resolveUrl(`equip/equip-viewer?equip=${equipId}`)}" title="장비 DB에서 보기">
                 <span class="material-symbols-outlined">open_in_new</span>
             </a>
         </div>
@@ -549,7 +549,7 @@ function setupListeners() {
             if (inTree) {
                 selectNode(fromId);
             } else {
-                window.location.href = `/altoy/equip/equip-viewer?equip=${fromId}`;
+                window.location.href = resolveUrl(`equip/equip-viewer?equip=${fromId}`);
             }
             return;
         }

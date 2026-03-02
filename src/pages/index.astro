@@ -9,9 +9,11 @@ import '../styles/mainpage/mainpage.navbar.css';
 import '../styles/mainpage/mainpage.carousel.css';
 import '../styles/mainpage/mainpage.bento.css';
 import '../styles/mainpage/mainpage.responsive.css';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="메인 - 벽람 장난감">
+<Layout title="메인 - 벽람 장난감" {base}>
     <main class="home-container">
         <!-- Hero Carousel Section -->
         <section class="hero-carousel">
@@ -42,7 +44,7 @@ import '../styles/mainpage/mainpage.responsive.css';
                 <!-- Slide 2: Equip DB -->
                 <div class="carousel-slide" data-slide="3">
                     <div class="slide-background">
-                        <img src="/altoy/assets/img/anchorage.jpg" alt="Equip DB Background"
+                        <img src={`${base}/assets/img/anchorage.jpg`} alt="Equip DB Background"
                             loading="lazy">
                         <div class="slide-overlay"></div>
                     </div>
@@ -314,13 +316,13 @@ import '../styles/mainpage/mainpage.responsive.css';
                     <span class="external-badge">외부</span>
                     <div class="dual-links-container">
                         <a data-link="EXTERNAL_ARCA_AZUR" target="_blank" class="dual-link-item">
-                            <img src="/altoy/assets/icon/arca.svg" alt="Arca" class="dual-link-svg-icon">
+                            <img src={`${base}/assets/icon/arca.svg`} alt="Arca" class="dual-link-svg-icon">
                             <div class="dual-link-content">
                                 <div class="dual-link-label">벽챈 바로가기</div>
                             </div>
                         </a>
                         <a data-link="EXTERNAL_ARCA_MANJUU" target="_blank" class="dual-link-item">
-                            <img src="/altoy/assets/icon/arca.svg" alt="Arca" class="dual-link-svg-icon">
+                            <img src={`${base}/assets/icon/arca.svg`} alt="Arca" class="dual-link-svg-icon">
                             <div class="dual-link-content">
                                 <div class="dual-link-label">맍챈 바로가기</div>
                             </div>
@@ -339,5 +341,5 @@ import '../styles/mainpage/mainpage.responsive.css';
         </div>
     </main>
 
-    <script is:inline type="module" src="/altoy/js/mainpage.script.js"></script>
+    <script is:inline type="module" src={`${base}/js/mainpage.script.js`}></script>
 </Layout>

@@ -6,9 +6,11 @@
 import Layout from '../layouts/Layout.astro';
 import '../styles/island/island.style.css';
 import '../styles/island/island-misc.css';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="벽뜌땨 잡동사니" bodyClass="dark-mode">
+<Layout title="벽뜌땨 잡동사니" bodyClass="dark-mode" {base}>
     <div class="island-misc-header">
         <h1>
             <span class="material-symbols-outlined">collections</span>
@@ -52,5 +54,5 @@ import '../styles/island/island-misc.css';
         <div class="lightbox-caption"></div>
     </div>
 
-    <script is:inline type="module" src="/altoy/js/island/island-misc.js"></script>
+    <script is:inline type="module" src={`${base}/js/island/island-misc.js`}></script>
 </Layout>

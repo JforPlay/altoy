@@ -5,9 +5,11 @@
  */
 import Layout from '../layouts/Layout.astro';
 import '../styles/juustagram.css';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="벽람항로 쥬스타그램 뷰어">
+<Layout title="벽람항로 쥬스타그램 뷰어" {base}>
     <header>
         <h1>벽람항로 쥬스타그램 뷰어</h1>
     </header>
@@ -43,5 +45,5 @@ import '../styles/juustagram.css';
         </div>
     </div>
 
-    <script is:inline type="module" src="/altoy/js/juustagram.js"></script>
+    <script is:inline type="module" src={`${base}/js/juustagram.js`}></script>
 </Layout>

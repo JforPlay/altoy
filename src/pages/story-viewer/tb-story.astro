@@ -6,9 +6,10 @@
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/story-viewer/story-viewer.common.css';
 import '../../styles/story-viewer/child-story.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="TB 스토리 뷰어">
+<Layout title="TB 스토리 뷰어" {base}>
     <div id="error-container" class="error-container hidden"></div>
 
     <div id="tab-navigation-view">
@@ -166,7 +167,7 @@ import '../../styles/story-viewer/child-story.css';
     <div id="close-summary-modal-btn" class="hidden"></div>
     <div id="summary-modal-content" class="hidden"></div>
 
-    <script is:inline type="module" src="/altoy/js/story-viewer/story-viewer.engine.js"></script>
-    <script is:inline type="module" src="/altoy/js/story-viewer/child-story.js"></script>
-    <script is:inline type="module" src="/altoy/js/story-viewer/child-tb-init.js"></script>
+    <script is:inline type="module" src={`${base}/js/story-viewer/story-viewer.engine.js`}></script>
+    <script is:inline type="module" src={`${base}/js/story-viewer/child-story.js`}></script>
+    <script is:inline type="module" src={`${base}/js/story-viewer/child-tb-init.js`}></script>
 </Layout>

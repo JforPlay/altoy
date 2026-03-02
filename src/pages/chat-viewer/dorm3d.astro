@@ -5,9 +5,10 @@
  */
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/chat-viewer/chat-viewer.common.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="벽람항로 3D숙소 쥬톡보기">
+<Layout title="벽람항로 3D숙소 쥬톡보기" {base}>
     <header class="main-header">
         <h1>벽람항로 3D숙소 쥬톡</h1>
     </header>
@@ -42,6 +43,6 @@ import '../../styles/chat-viewer/chat-viewer.common.css';
         </section>
     </main>
 
-    <script is:inline type="module" src="/altoy/js/chat-viewer/dorm3d.js"></script>
-    <script is:inline type="module" src="/altoy/js/chat-viewer/chat-viewer.engine.js"></script>
+    <script is:inline type="module" src={`${base}/js/chat-viewer/dorm3d.js`}></script>
+    <script is:inline type="module" src={`${base}/js/chat-viewer/chat-viewer.engine.js`}></script>
 </Layout>

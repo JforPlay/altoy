@@ -5,14 +5,15 @@
  */
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/story-viewer/story-viewer.common.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="벽람 스토리뷰어">
+<Layout title="벽람 스토리뷰어" {base}>
     <div id="error-container" class="error-container hidden"></div>
 
     <div id="event-selection-view">
         <header class="viewer-header">
-            <a href="/altoy/story-viewer/main-storyline/" class="nav-button">스토리 타임라인</a>
+            <a href={`${base}/story-viewer/main-storyline/`} class="nav-button">스토리 타임라인</a>
             <h1 class="header-title">벽람항로 메인스토리 뷰어</h1>
             <div class="search-container">
                 <input type="text" id="search-bar" placeholder="이벤트 이름으로 검색...">
@@ -94,6 +95,6 @@ import '../../styles/story-viewer/story-viewer.common.css';
         </div>
     </div>
 
-    <script is:inline type="module" src="/altoy/js/story-viewer/story-viewer.engine.js"></script>
-    <script is:inline type="module" src="/altoy/js/story-viewer/main-story.js"></script>
+    <script is:inline type="module" src={`${base}/js/story-viewer/story-viewer.engine.js`}></script>
+    <script is:inline type="module" src={`${base}/js/story-viewer/main-story.js`}></script>
 </Layout>

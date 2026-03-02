@@ -5,9 +5,10 @@
  */
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/simulators/sim.common.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="스킬/장비 탄막 시뮬레이터">
+<Layout title="스킬/장비 탄막 시뮬레이터" {base}>
     <Fragment slot="head">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     </Fragment>
@@ -19,13 +20,13 @@ import '../../styles/simulators/sim.common.css';
             <div id="fps-display" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #0f0; padding: 5px 10px; font-family: monospace; z-index: 9999;">FPS: --</div>
             <div id="player-area"></div>
             <div id="vanguard">
-                <img src="/altoy/assets/img/vanguard_chibi.png" alt="vanguard">
+                <img src={`${base}/assets/img/vanguard_chibi.png`} alt="vanguard">
             </div>
             <div id="mainfleet">
-                <img src="/altoy/assets/img/mainfleet_chibi.png" alt="mainfleet">
+                <img src={`${base}/assets/img/mainfleet_chibi.png`} alt="mainfleet">
             </div>
             <div id="enemy">
-                <img src="/altoy/assets/img/enemy_chibi.png" alt="enemy">
+                <img src={`${base}/assets/img/enemy_chibi.png`} alt="enemy">
             </div>
             <div id="visual-log"></div>
         </div>
@@ -48,10 +49,10 @@ import '../../styles/simulators/sim.common.css';
     </div>
 
     <script is:inline src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    <script is:inline type="module" src="/altoy/js/simulators/sim.engine.oceanbg.js"></script>
-    <script is:inline type="module" src="/altoy/js/simulators/sim.engine.bullet.factory.js"></script>
-    <script is:inline type="module" src="/altoy/js/simulators/sim.engine.bullet.js"></script>
-    <script is:inline type="module" src="/altoy/js/simulators/sim.engine.common.js"></script>
-    <script is:inline type="module" src="/altoy/js/simulators/sim.weapon.data.js"></script>
-    <script is:inline type="module" src="/altoy/js/simulators/sim.weapon.main.js"></script>
+    <script is:inline type="module" src={`${base}/js/simulators/sim.engine.oceanbg.js`}></script>
+    <script is:inline type="module" src={`${base}/js/simulators/sim.engine.bullet.factory.js`}></script>
+    <script is:inline type="module" src={`${base}/js/simulators/sim.engine.bullet.js`}></script>
+    <script is:inline type="module" src={`${base}/js/simulators/sim.engine.common.js`}></script>
+    <script is:inline type="module" src={`${base}/js/simulators/sim.weapon.data.js`}></script>
+    <script is:inline type="module" src={`${base}/js/simulators/sim.weapon.main.js`}></script>
 </Layout>
