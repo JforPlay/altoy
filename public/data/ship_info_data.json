@@ -7039,7 +7039,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 374,
@@ -8210,7 +8210,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 508,
@@ -8383,7 +8383,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 509,
@@ -8556,7 +8556,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 515,
@@ -8905,7 +8905,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 533,
@@ -9254,7 +9254,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 615,
@@ -9604,7 +9604,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 684,
@@ -9775,7 +9775,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 718,
@@ -14746,7 +14746,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 420,
@@ -14918,7 +14918,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 428,
@@ -15272,7 +15272,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 448,
@@ -15436,7 +15436,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 514,
@@ -15607,7 +15607,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 609,
@@ -15969,7 +15969,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 657,
@@ -16139,7 +16139,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 683,
@@ -16309,7 +16309,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 719,
@@ -16479,7 +16479,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 39,
@@ -19255,7 +19255,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 512,
@@ -19426,7 +19426,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 50,
@@ -19611,7 +19611,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 443,
@@ -19782,7 +19782,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 478,
@@ -19954,7 +19954,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 575,
@@ -20125,7 +20125,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 619,
@@ -20465,7 +20465,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 693,
@@ -22695,7 +22695,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 61,
@@ -22918,7 +22918,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 62,
@@ -23141,7 +23141,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false,
+        "limited": true,
         "maps": [
             [],
             [],
@@ -23331,7 +23331,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 64,
@@ -23500,7 +23500,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 65,
@@ -23821,7 +23821,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 68,
@@ -23985,7 +23985,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 354,
@@ -24153,7 +24153,7 @@
         "light": false,
         "medium": true,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 401,
@@ -24322,7 +24322,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 70,
@@ -27210,7 +27210,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 357,
@@ -27449,7 +27449,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 574,
@@ -27619,7 +27619,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 442,
@@ -27945,7 +27945,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 682,
@@ -28099,7 +28099,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 511,
@@ -28424,7 +28424,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 380,
@@ -29133,7 +29133,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 573,
@@ -29769,7 +29769,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 516,
@@ -30803,7 +30803,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 513,
@@ -37550,7 +37550,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 306,
@@ -38051,7 +38051,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 326,
@@ -38379,7 +38379,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 460,
@@ -38886,7 +38886,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 569,
@@ -39058,7 +39058,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 585,
@@ -39401,7 +39401,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 689,
@@ -39751,7 +39751,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 104,
@@ -41141,7 +41141,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 112,
@@ -41313,7 +41313,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 113,
@@ -42813,7 +42813,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 335,
@@ -44614,7 +44614,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 476,
@@ -44793,7 +44793,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 495,
@@ -45482,7 +45482,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 584,
@@ -45654,7 +45654,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 631,
@@ -45825,7 +45825,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 690,
@@ -45996,7 +45996,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 692,
@@ -50281,7 +50281,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 135,
@@ -50441,7 +50441,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 136,
@@ -50596,7 +50596,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 461,
@@ -50750,7 +50750,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 464,
@@ -50904,7 +50904,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 554,
@@ -51059,7 +51059,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 137,
@@ -51223,7 +51223,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 582,
@@ -51378,7 +51378,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 138,
@@ -51540,7 +51540,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 140,
@@ -52093,7 +52093,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 142,
@@ -53005,7 +53005,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 578,
@@ -53864,7 +53864,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 147,
@@ -54041,7 +54041,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 148,
@@ -54209,7 +54209,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 581,
@@ -54373,7 +54373,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 459,
@@ -55161,7 +55161,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 149,
@@ -57067,7 +57067,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 154,
@@ -57455,7 +57455,280 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": false,
+        "maps": [
+            [],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ],
+            [
+                {
+                    "map": 1,
+                    "type": 0
+                },
+                {
+                    "map": 2,
+                    "type": 0
+                },
+                {
+                    "map": 3,
+                    "type": 0
+                },
+                {
+                    "map": 4,
+                    "type": 0
+                }
+            ]
+        ]
     },
     {
         "id": 159,
@@ -59135,7 +59408,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 167,
@@ -59853,7 +60126,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 171,
@@ -60981,7 +61254,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 178,
@@ -61153,7 +61426,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 268,
@@ -61334,7 +61607,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 269,
@@ -62697,7 +62970,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 278,
@@ -63248,7 +63521,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 287,
@@ -63605,7 +63878,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 293,
@@ -64134,7 +64407,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 297,
@@ -64299,7 +64572,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 316,
@@ -64825,7 +65098,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 319,
@@ -65194,7 +65467,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 332,
@@ -66041,7 +66314,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 370,
@@ -66446,7 +66719,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 449,
@@ -66956,7 +67229,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 507,
@@ -67293,7 +67566,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 567,
@@ -67464,7 +67737,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 607,
@@ -67977,7 +68250,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 704,
@@ -69324,7 +69597,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 186,
@@ -70040,7 +70313,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false,
+        "limited": true,
         "maps": [
             [],
             [],
@@ -70845,7 +71118,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 321,
@@ -71222,7 +71495,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 324,
@@ -71393,7 +71666,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 635,
@@ -71569,7 +71842,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 661,
@@ -71740,7 +72013,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 662,
@@ -72082,7 +72355,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 190,
@@ -73897,7 +74170,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false,
+        "limited": true,
         "maps": [
             [],
             [],
@@ -74291,7 +74564,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 202,
@@ -74865,7 +75138,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false,
+        "limited": true,
         "maps": [
             [],
             [],
@@ -75402,7 +75675,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 204,
@@ -75696,7 +75969,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false,
+        "limited": true,
         "maps": [
             [],
             [],
@@ -76643,7 +76916,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 208,
@@ -77349,7 +77622,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false,
+        "limited": true,
         "maps": [
             [],
             [],
@@ -77587,7 +77860,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 212,
@@ -77743,7 +78016,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 213,
@@ -78370,7 +78643,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 320,
@@ -78526,7 +78799,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 214,
@@ -78682,7 +78955,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 606,
@@ -78994,7 +79267,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 706,
@@ -79154,7 +79427,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 218,
@@ -80395,7 +80668,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 470,
@@ -81690,7 +81963,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 229,
@@ -81846,7 +82119,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 230,
@@ -82183,7 +82456,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 384,
@@ -82501,7 +82774,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 474,
@@ -82657,7 +82930,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 520,
@@ -82812,7 +83085,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 594,
@@ -83282,7 +83555,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 703,
@@ -83444,7 +83717,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 338,
@@ -84146,7 +84419,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 397,
@@ -84317,7 +84590,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 398,
@@ -84488,7 +84761,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 232,
@@ -84839,7 +85112,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 705,
@@ -87060,7 +87333,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 672,
@@ -87402,7 +87675,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 696,
@@ -88085,7 +88358,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 265,
@@ -88622,280 +88895,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false,
-        "maps": [
-            [],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ],
-            [
-                {
-                    "map": 1,
-                    "type": 0
-                },
-                {
-                    "map": 2,
-                    "type": 0
-                },
-                {
-                    "map": 3,
-                    "type": 0
-                },
-                {
-                    "map": 4,
-                    "type": 0
-                }
-            ]
-        ]
+        "limited": false
     },
     {
         "id": 487,
@@ -89238,7 +89238,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 466,
@@ -89415,7 +89415,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 488,
@@ -89764,7 +89764,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 388,
@@ -89928,7 +89928,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 651,
@@ -90285,7 +90285,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 649,
@@ -90456,7 +90456,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 670,
@@ -92145,7 +92145,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 525,
@@ -92330,7 +92330,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 547,
@@ -92508,7 +92508,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 548,
@@ -92680,7 +92680,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 592,
@@ -93027,7 +93027,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 242,
@@ -93213,7 +93213,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 243,
@@ -94063,7 +94063,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 479,
@@ -94419,7 +94419,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 527,
@@ -94591,7 +94591,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 546,
@@ -94763,7 +94763,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 549,
@@ -95274,7 +95274,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 634,
@@ -95445,7 +95445,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 697,
@@ -96104,7 +96104,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 544,
@@ -96268,7 +96268,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 566,
@@ -96578,7 +96578,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 694,
@@ -96733,7 +96733,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 250,
@@ -96905,7 +96905,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 251,
@@ -97239,7 +97239,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 545,
@@ -97395,7 +97395,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 593,
@@ -98043,7 +98043,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 591,
@@ -98365,7 +98365,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 385,
@@ -98859,7 +98859,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 341,
@@ -99228,7 +99228,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 344,
@@ -99595,7 +99595,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 387,
@@ -99768,7 +99768,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 399,
@@ -99952,7 +99952,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 400,
@@ -100123,7 +100123,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 416,
@@ -100483,7 +100483,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 484,
@@ -101168,7 +101168,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 695,
@@ -101345,7 +101345,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 20005,
@@ -108914,7 +108914,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 504,
@@ -109086,7 +109086,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 505,
@@ -109258,7 +109258,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 506,
@@ -109430,7 +109430,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 541,
@@ -109608,7 +109608,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 562,
@@ -109779,7 +109779,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 563,
@@ -110656,7 +110656,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 559,
@@ -110835,7 +110835,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 681,
@@ -111006,7 +111006,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 721,
@@ -111526,7 +111526,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 489,
@@ -111698,7 +111698,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 542,
@@ -111870,7 +111870,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 560,
@@ -112041,7 +112041,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 597,
@@ -112374,7 +112374,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 410,
@@ -112542,7 +112542,7 @@
         "light": false,
         "medium": true,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 561,
@@ -112704,7 +112704,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 411,
@@ -113041,7 +113041,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 595,
@@ -113357,7 +113357,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 720,
@@ -114361,7 +114361,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 20022,
@@ -115151,7 +115151,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 432,
@@ -115508,7 +115508,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 475,
@@ -115681,7 +115681,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 491,
@@ -116025,7 +116025,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 499,
@@ -116541,7 +116541,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 626,
@@ -116886,6 +116886,167 @@
         "limited": true
     },
     {
+        "id": 728,
+        "gid": 70113,
+        "sid": 701131,
+        "nationality": 7,
+        "type": 1,
+        "rarity": "SSR",
+        "armor": 1,
+        "base": {
+            "701131": {
+                "health": 379,
+                "firepower": 27,
+                "torpedo": 46,
+                "antiair": 35,
+                "aviation": 0,
+                "reload": 75,
+                "accuracy": 69,
+                "evasion": 64,
+                "speed": 43.8,
+                "luck": 80,
+                "asw": 52
+            },
+            "701132": {
+                "health": 471,
+                "firepower": 34,
+                "torpedo": 57,
+                "antiair": 44,
+                "aviation": 0,
+                "reload": 75,
+                "accuracy": 69,
+                "evasion": 64,
+                "speed": 43.8,
+                "luck": 80,
+                "asw": 65
+            },
+            "701133": {
+                "health": 656,
+                "firepower": 47,
+                "torpedo": 80,
+                "antiair": 61,
+                "aviation": 0,
+                "reload": 75,
+                "accuracy": 69,
+                "evasion": 64,
+                "speed": 43.8,
+                "luck": 80,
+                "asw": 90
+            },
+            "701134": {
+                "health": 933,
+                "firepower": 67,
+                "torpedo": 114,
+                "antiair": 86,
+                "aviation": 0,
+                "reload": 75,
+                "accuracy": 69,
+                "evasion": 64,
+                "speed": 43.8,
+                "luck": 80,
+                "asw": 129
+            }
+        },
+        "growth": {
+            "701131": {
+                "health": 10788,
+                "firepower": 373,
+                "torpedo": 636,
+                "antiair": 762,
+                "aviation": 0,
+                "reload": 523,
+                "accuracy": 1062,
+                "evasion": 1190,
+                "speed": 0,
+                "luck": 0,
+                "asw": 587
+            },
+            "701132": {
+                "health": 10788,
+                "firepower": 373,
+                "torpedo": 636,
+                "antiair": 762,
+                "aviation": 0,
+                "reload": 523,
+                "accuracy": 1062,
+                "evasion": 1190,
+                "speed": 0,
+                "luck": 0,
+                "asw": 587
+            },
+            "701133": {
+                "health": 10788,
+                "firepower": 373,
+                "torpedo": 636,
+                "antiair": 762,
+                "aviation": 0,
+                "reload": 523,
+                "accuracy": 1062,
+                "evasion": 1190,
+                "speed": 0,
+                "luck": 0,
+                "asw": 587
+            },
+            "701134": {
+                "health": 10788,
+                "firepower": 373,
+                "torpedo": 636,
+                "antiair": 762,
+                "aviation": 0,
+                "reload": 523,
+                "accuracy": 1062,
+                "evasion": 1190,
+                "speed": 0,
+                "luck": 0,
+                "asw": 587
+            }
+        },
+        "enhance": {
+            "firepower": 27,
+            "torpedo": 46,
+            "reload": 56
+        },
+        "skill": {
+            "152060": {
+                "id": 152060,
+                "parent": 152060,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "152070": {
+                "id": 152070,
+                "parent": 152070,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "30581": {
+                "id": 30581,
+                "parent": 30581,
+                "upgrade": 30582,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": false
+            },
+            "30582": {
+                "id": 30582,
+                "parent": 30581,
+                "upgrade": null,
+                "downgrade": 30581,
+                "requirement": "Limit Break 3",
+                "weapon_true": false
+            }
+        },
+        "timer": null,
+        "light": false,
+        "medium": false,
+        "heavy": false,
+        "limited": false
+    },
+    {
         "id": 262,
         "gid": 70201,
         "sid": 702011,
@@ -117061,7 +117222,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 434,
@@ -117286,7 +117447,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 436,
@@ -117470,7 +117631,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 435,
@@ -117642,7 +117803,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 577,
@@ -117984,7 +118145,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 588,
@@ -118334,6 +118495,328 @@
         "limited": false
     },
     {
+        "id": 729,
+        "gid": 70209,
+        "sid": 702091,
+        "nationality": 7,
+        "type": 2,
+        "rarity": "SR",
+        "armor": 1,
+        "base": {
+            "702091": {
+                "health": 654,
+                "firepower": 29,
+                "torpedo": 56,
+                "antiair": 32,
+                "aviation": 0,
+                "reload": 51,
+                "accuracy": 49,
+                "evasion": 28,
+                "speed": 29.5,
+                "luck": 85,
+                "asw": 13
+            },
+            "702092": {
+                "health": 814,
+                "firepower": 36,
+                "torpedo": 70,
+                "antiair": 40,
+                "aviation": 0,
+                "reload": 51,
+                "accuracy": 49,
+                "evasion": 28,
+                "speed": 29.5,
+                "luck": 85,
+                "asw": 16
+            },
+            "702093": {
+                "health": 1133,
+                "firepower": 50,
+                "torpedo": 97,
+                "antiair": 56,
+                "aviation": 0,
+                "reload": 51,
+                "accuracy": 49,
+                "evasion": 28,
+                "speed": 29.5,
+                "luck": 85,
+                "asw": 23
+            },
+            "702094": {
+                "health": 1611,
+                "firepower": 72,
+                "torpedo": 139,
+                "antiair": 80,
+                "aviation": 0,
+                "reload": 51,
+                "accuracy": 49,
+                "evasion": 28,
+                "speed": 29.5,
+                "luck": 85,
+                "asw": 33
+            }
+        },
+        "growth": {
+            "702091": {
+                "health": 17697,
+                "firepower": 401,
+                "torpedo": 747,
+                "antiair": 709,
+                "aviation": 0,
+                "reload": 356,
+                "accuracy": 734,
+                "evasion": 618,
+                "speed": 0,
+                "luck": 0,
+                "asw": 165
+            },
+            "702092": {
+                "health": 17697,
+                "firepower": 401,
+                "torpedo": 747,
+                "antiair": 709,
+                "aviation": 0,
+                "reload": 356,
+                "accuracy": 734,
+                "evasion": 618,
+                "speed": 0,
+                "luck": 0,
+                "asw": 165
+            },
+            "702093": {
+                "health": 17697,
+                "firepower": 401,
+                "torpedo": 747,
+                "antiair": 709,
+                "aviation": 0,
+                "reload": 356,
+                "accuracy": 734,
+                "evasion": 618,
+                "speed": 0,
+                "luck": 0,
+                "asw": 165
+            },
+            "702094": {
+                "health": 17697,
+                "firepower": 401,
+                "torpedo": 747,
+                "antiair": 709,
+                "aviation": 0,
+                "reload": 356,
+                "accuracy": 734,
+                "evasion": 618,
+                "speed": 0,
+                "luck": 0,
+                "asw": 165
+            }
+        },
+        "enhance": {
+            "firepower": 29,
+            "torpedo": 55,
+            "reload": 38
+        },
+        "skill": {
+            "152170": {
+                "id": 152170,
+                "parent": 152170,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "152180": {
+                "id": 152180,
+                "parent": 152180,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "26121": {
+                "id": 26121,
+                "parent": 26121,
+                "upgrade": 26122,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": false
+            },
+            "26122": {
+                "id": 26122,
+                "parent": 26121,
+                "upgrade": null,
+                "downgrade": 26121,
+                "requirement": "Limit Break 3",
+                "weapon_true": false
+            }
+        },
+        "timer": null,
+        "light": false,
+        "medium": false,
+        "heavy": false,
+        "limited": false
+    },
+    {
+        "id": 730,
+        "gid": 70210,
+        "sid": 702101,
+        "nationality": 7,
+        "type": 2,
+        "rarity": "SR",
+        "armor": 2,
+        "base": {
+            "702101": {
+                "health": 625,
+                "firepower": 23,
+                "torpedo": 40,
+                "antiair": 27,
+                "aviation": 0,
+                "reload": 68,
+                "accuracy": 57,
+                "evasion": 27,
+                "speed": 23,
+                "luck": 80,
+                "asw": 13
+            },
+            "702102": {
+                "health": 777,
+                "firepower": 29,
+                "torpedo": 50,
+                "antiair": 34,
+                "aviation": 0,
+                "reload": 68,
+                "accuracy": 57,
+                "evasion": 27,
+                "speed": 23,
+                "luck": 80,
+                "asw": 16
+            },
+            "702103": {
+                "health": 1082,
+                "firepower": 40,
+                "torpedo": 70,
+                "antiair": 47,
+                "aviation": 0,
+                "reload": 68,
+                "accuracy": 57,
+                "evasion": 27,
+                "speed": 23,
+                "luck": 80,
+                "asw": 23
+            },
+            "702104": {
+                "health": 1540,
+                "firepower": 57,
+                "torpedo": 99,
+                "antiair": 67,
+                "aviation": 0,
+                "reload": 68,
+                "accuracy": 57,
+                "evasion": 27,
+                "speed": 23,
+                "luck": 80,
+                "asw": 33
+            }
+        },
+        "growth": {
+            "702101": {
+                "health": 16911,
+                "firepower": 319,
+                "torpedo": 551,
+                "antiair": 593,
+                "aviation": 0,
+                "reload": 475,
+                "accuracy": 835,
+                "evasion": 570,
+                "speed": 0,
+                "luck": 0,
+                "asw": 165
+            },
+            "702102": {
+                "health": 16911,
+                "firepower": 319,
+                "torpedo": 551,
+                "antiair": 593,
+                "aviation": 0,
+                "reload": 475,
+                "accuracy": 835,
+                "evasion": 570,
+                "speed": 0,
+                "luck": 0,
+                "asw": 165
+            },
+            "702103": {
+                "health": 16911,
+                "firepower": 319,
+                "torpedo": 551,
+                "antiair": 593,
+                "aviation": 0,
+                "reload": 475,
+                "accuracy": 835,
+                "evasion": 570,
+                "speed": 0,
+                "luck": 0,
+                "asw": 165
+            },
+            "702104": {
+                "health": 16911,
+                "firepower": 319,
+                "torpedo": 551,
+                "antiair": 593,
+                "aviation": 0,
+                "reload": 475,
+                "accuracy": 835,
+                "evasion": 570,
+                "speed": 0,
+                "luck": 0,
+                "asw": 165
+            }
+        },
+        "enhance": {
+            "firepower": 23,
+            "torpedo": 39,
+            "reload": 51
+        },
+        "skill": {
+            "152100": {
+                "id": 152100,
+                "parent": 152100,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "152110": {
+                "id": 152110,
+                "parent": 152110,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "26111": {
+                "id": 26111,
+                "parent": 26111,
+                "upgrade": 26112,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": true
+            },
+            "26112": {
+                "id": 26112,
+                "parent": 26111,
+                "upgrade": null,
+                "downgrade": 26111,
+                "requirement": "Limit Break 3",
+                "weapon_true": true
+            }
+        },
+        "timer": null,
+        "light": false,
+        "medium": false,
+        "heavy": false,
+        "limited": false
+    },
+    {
         "id": 496,
         "gid": 70301,
         "sid": 703011,
@@ -118508,7 +118991,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 586,
@@ -118688,6 +119171,174 @@
         "medium": false,
         "heavy": false,
         "limited": true
+    },
+    {
+        "id": 727,
+        "gid": 70303,
+        "sid": 703031,
+        "nationality": 7,
+        "type": 3,
+        "rarity": "UR",
+        "armor": 2,
+        "base": {
+            "703031": {
+                "health": 1307,
+                "firepower": 54,
+                "torpedo": 0,
+                "antiair": 75,
+                "aviation": 0,
+                "reload": 76,
+                "accuracy": 53,
+                "evasion": 16,
+                "speed": 27.6,
+                "luck": 66,
+                "asw": 0
+            },
+            "703032": {
+                "health": 1626,
+                "firepower": 67,
+                "torpedo": 0,
+                "antiair": 93,
+                "aviation": 0,
+                "reload": 76,
+                "accuracy": 53,
+                "evasion": 16,
+                "speed": 27.6,
+                "luck": 66,
+                "asw": 0
+            },
+            "703033": {
+                "health": 2264,
+                "firepower": 94,
+                "torpedo": 0,
+                "antiair": 130,
+                "aviation": 0,
+                "reload": 76,
+                "accuracy": 53,
+                "evasion": 16,
+                "speed": 27.6,
+                "luck": 66,
+                "asw": 0
+            },
+            "703034": {
+                "health": 3220,
+                "firepower": 134,
+                "torpedo": 0,
+                "antiair": 185,
+                "aviation": 0,
+                "reload": 76,
+                "accuracy": 53,
+                "evasion": 16,
+                "speed": 27.6,
+                "luck": 66,
+                "asw": 0
+            }
+        },
+        "growth": {
+            "703031": {
+                "health": 33493,
+                "firepower": 726,
+                "torpedo": 0,
+                "antiair": 1551,
+                "aviation": 0,
+                "reload": 531,
+                "accuracy": 784,
+                "evasion": 485,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "703032": {
+                "health": 33493,
+                "firepower": 726,
+                "torpedo": 0,
+                "antiair": 1551,
+                "aviation": 0,
+                "reload": 531,
+                "accuracy": 784,
+                "evasion": 485,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "703033": {
+                "health": 33493,
+                "firepower": 726,
+                "torpedo": 0,
+                "antiair": 1551,
+                "aviation": 0,
+                "reload": 531,
+                "accuracy": 784,
+                "evasion": 485,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "703034": {
+                "health": 33493,
+                "firepower": 726,
+                "torpedo": 0,
+                "antiair": 1551,
+                "aviation": 0,
+                "reload": 531,
+                "accuracy": 784,
+                "evasion": 485,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            }
+        },
+        "enhance": {
+            "firepower": 53,
+            "reload": 57
+        },
+        "skill": {
+            "152140": {
+                "id": 152140,
+                "parent": 152140,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "152150": {
+                "id": 152150,
+                "parent": 152150,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "152160": {
+                "id": 152160,
+                "parent": 152160,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "30591": {
+                "id": 30591,
+                "parent": 30591,
+                "upgrade": 30592,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": false
+            },
+            "30592": {
+                "id": 30592,
+                "parent": 30591,
+                "upgrade": null,
+                "downgrade": 30591,
+                "requirement": "Limit Break 3",
+                "weapon_true": false
+            }
+        },
+        "timer": null,
+        "light": false,
+        "medium": false,
+        "heavy": false,
+        "limited": false
     },
     {
         "id": 437,
@@ -119172,7 +119823,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 441,
@@ -119340,7 +119991,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 536,
@@ -119495,7 +120146,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 587,
@@ -119957,7 +120608,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 538,
@@ -120289,7 +120940,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 20026,
@@ -121049,7 +121700,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 348,
@@ -121262,7 +121913,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 359,
@@ -121446,7 +122097,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 395,
@@ -121631,7 +122282,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 701,
@@ -121802,7 +122453,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 522,
@@ -121974,7 +122625,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 523,
@@ -122138,7 +122789,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 637,
@@ -122528,7 +123179,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 454,
@@ -122700,7 +123351,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 603,
@@ -123394,7 +124045,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 700,
@@ -123565,7 +124216,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 698,
@@ -123719,7 +124370,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 453,
@@ -123890,7 +124541,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 602,
@@ -124207,7 +124858,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 699,
@@ -124361,7 +125012,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 458,
@@ -124862,7 +125513,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 20006,
@@ -126048,7 +126699,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 457,
@@ -126212,7 +126863,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 601,
@@ -126546,7 +127197,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 646,
@@ -127082,7 +127733,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 481,
@@ -127438,7 +128089,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 653,
@@ -127609,7 +128260,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 456,
@@ -128309,7 +128960,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 654,
@@ -128480,7 +129131,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 352,
@@ -128655,7 +129306,7 @@
         "light": false,
         "medium": true,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 652,
@@ -128809,7 +129460,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 353,
@@ -128977,7 +129628,7 @@
         "light": false,
         "medium": true,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 604,
@@ -129295,7 +129946,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 555,
@@ -129455,7 +130106,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 20012,
@@ -130004,7 +130655,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 686,
@@ -130180,7 +130831,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 20042,
@@ -130711,7 +131362,7 @@
         "light": false,
         "medium": false,
         "heavy": true,
-        "limited": false
+        "limited": true
     },
     {
         "id": 610,
@@ -130894,7 +131545,7 @@
         "light": true,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 611,
@@ -131610,7 +132261,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 665,
@@ -131803,7 +132454,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 666,
@@ -131998,7 +132649,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 667,
@@ -132181,7 +132832,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 668,
@@ -132531,7 +133182,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 710,
@@ -132714,7 +133365,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 711,
@@ -132881,7 +133532,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 712,
@@ -133064,7 +133715,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 713,
@@ -136808,7 +137459,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 30013,
@@ -137714,7 +138365,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 30043,
@@ -138808,7 +139459,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 30050,
@@ -140441,7 +141092,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 30046,
@@ -140611,6 +141262,178 @@
         ],
         "skin_id": 9705090,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705090/shipyard.png",
+        "timer": null,
+        "light": false,
+        "medium": false,
+        "heavy": false,
+        "limited": false
+    },
+    {
+        "id": 30057,
+        "gid": 970510,
+        "sid": 9705101,
+        "nationality": 97,
+        "type": 5,
+        "rarity": "SSR",
+        "armor": 3,
+        "base": {
+            "9705101": {
+                "health": 1123,
+                "firepower": 71,
+                "torpedo": 0,
+                "antiair": 34,
+                "aviation": 0,
+                "reload": 57,
+                "accuracy": 15,
+                "evasion": 4,
+                "speed": 24,
+                "luck": 85,
+                "asw": 0
+            },
+            "9705102": {
+                "health": 1397,
+                "firepower": 89,
+                "torpedo": 0,
+                "antiair": 42,
+                "aviation": 0,
+                "reload": 57,
+                "accuracy": 15,
+                "evasion": 4,
+                "speed": 24,
+                "luck": 85,
+                "asw": 0
+            },
+            "9705103": {
+                "health": 1945,
+                "firepower": 124,
+                "torpedo": 0,
+                "antiair": 59,
+                "aviation": 0,
+                "reload": 57,
+                "accuracy": 15,
+                "evasion": 4,
+                "speed": 24,
+                "luck": 85,
+                "asw": 0
+            },
+            "9705104": {
+                "health": 2766,
+                "firepower": 177,
+                "torpedo": 0,
+                "antiair": 84,
+                "aviation": 0,
+                "reload": 57,
+                "accuracy": 15,
+                "evasion": 4,
+                "speed": 24,
+                "luck": 85,
+                "asw": 0
+            }
+        },
+        "growth": {
+            "9705101": {
+                "health": 21174,
+                "firepower": 857,
+                "torpedo": 0,
+                "antiair": 459,
+                "aviation": 0,
+                "reload": 395,
+                "accuracy": 237,
+                "evasion": 191,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "9705102": {
+                "health": 21174,
+                "firepower": 857,
+                "torpedo": 0,
+                "antiair": 459,
+                "aviation": 0,
+                "reload": 395,
+                "accuracy": 237,
+                "evasion": 191,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "9705103": {
+                "health": 21174,
+                "firepower": 857,
+                "torpedo": 0,
+                "antiair": 459,
+                "aviation": 0,
+                "reload": 395,
+                "accuracy": 237,
+                "evasion": 191,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            },
+            "9705104": {
+                "health": 21174,
+                "firepower": 857,
+                "torpedo": 0,
+                "antiair": 459,
+                "aviation": 0,
+                "reload": 395,
+                "accuracy": 237,
+                "evasion": 191,
+                "speed": 0,
+                "luck": 0,
+                "asw": 0
+            }
+        },
+        "enhance": {
+            "health": 1096,
+            "antiair": 33,
+            "accuracy": 15,
+            "evasion": 4,
+            "firepower": 70,
+            "reload": 42
+        },
+        "skill": {
+            "802101": {
+                "id": 802101,
+                "parent": 802101,
+                "upgrade": 802102,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": false
+            },
+            "802102": {
+                "id": 802102,
+                "parent": 802101,
+                "upgrade": null,
+                "downgrade": 802101,
+                "requirement": "Limit Break 3",
+                "weapon_true": false
+            },
+            "802080": {
+                "id": 802080,
+                "parent": 802080,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "802090": {
+                "id": 802090,
+                "parent": 802090,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "802100": {
+                "id": 802100,
+                "parent": 802100,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            }
+        },
         "timer": null,
         "light": false,
         "medium": false,
@@ -142074,7 +142897,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 30041,
@@ -142620,7 +143443,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 30054,
@@ -143658,7 +144481,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10003,
@@ -143805,7 +144628,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10004,
@@ -144114,7 +144937,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10006,
@@ -144269,7 +145092,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10007,
@@ -144424,7 +145247,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10008,
@@ -144578,7 +145401,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10041,
@@ -144893,7 +145716,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10043,
@@ -145047,7 +145870,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10044,
@@ -145202,7 +146025,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10051,
@@ -152878,7 +153701,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10112,
@@ -153046,7 +153869,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10113,
@@ -153214,7 +154037,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10114,
@@ -153381,7 +154204,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10115,
@@ -153553,7 +154376,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10116,
@@ -154229,7 +155052,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10132,
@@ -154397,7 +155220,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10133,
@@ -154564,7 +155387,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10134,
@@ -154732,7 +155555,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10141,
@@ -155267,7 +156090,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10152,
@@ -155442,7 +156265,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10153,
@@ -155609,7 +156432,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10154,
@@ -156111,7 +156934,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10031,
@@ -156214,7 +157037,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10032,
@@ -156317,7 +157140,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10033,
@@ -156420,7 +157243,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10034,
@@ -156522,7 +157345,7 @@
         "light": false,
         "medium": false,
         "heavy": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 10035,
