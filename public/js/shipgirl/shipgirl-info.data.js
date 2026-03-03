@@ -16,6 +16,9 @@ export function setup(stateRef) {
     state = stateRef;
 }
 
+// Data version — bump to invalidate IndexedDB cache after data updates
+const DATA_VERSION = 1;
+
 // ===== Data Loading =====
 export async function loadData() {
     // Load lite data for fast initial render
@@ -29,7 +32,7 @@ export async function loadData() {
 export async function loadFullData() {
     try {
         console.log("Starting background load of full ship data...");
-        state.fullShipData = await fetchJSONWithCache('data/ship_info_data.json');
+        state.fullShipData = await fetchJSONWithCache(`data/ship_info_data.json?v=${DATA_VERSION}`);
         console.log("Full ship data loaded successfully.");
         return state.fullShipData;
     } catch (error) {
