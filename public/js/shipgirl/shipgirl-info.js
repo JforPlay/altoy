@@ -268,10 +268,10 @@ function createGridCard(ship) {
     if (ship.light) {
         constructionBadges += '<span class="construction-badge">소형</span>';
     }
-    if (ship.medium) {
+    if (ship.heavy) {
         constructionBadges += '<span class="construction-badge">중형</span>';
     }
-    if (ship.heavy) {
+    if (ship.special) {
         constructionBadges += '<span class="construction-badge">특형</span>';
     }
 
@@ -321,10 +321,10 @@ function createListCard(ship) {
     if (ship.light) {
         constructionBadges += '<span class="construction-badge">소형</span>';
     }
-    if (ship.medium) {
+    if (ship.heavy) {
         constructionBadges += '<span class="construction-badge">중형</span>';
     }
-    if (ship.heavy) {
+    if (ship.special) {
         constructionBadges += '<span class="construction-badge">특형</span>';
     }
 

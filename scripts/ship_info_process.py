@@ -23,14 +23,14 @@ def fetch_json_data(url):
         with open(url, 'r', encoding='utf-8') as f:
             return json.load(f)
 
-def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_url, skill_url, buff_url, ship_drops_file, output_filename):
+def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_url, skill_url, buff_url, ship_drops_file, skin_list_file, output_filename):
 # def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_url, skill_url, buff_url, output_filename):
     """
     Fetches ship data from multiple sources, filters and merges it,
     and saves the final result to a file.
 
     Includes advanced logic to trace ALL weapon skills through buffs, capturing firing data.
-    Also includes construction-specific data (timer, light, medium, heavy, limited).
+    Also includes construction-specific data (timer, light, heavy, special, limited).
     """
     RARITY_MAPPING = {6: 'UR', 5: 'SSR', 4: 'SR', 3: 'R', 2: 'N'}
 
@@ -67,7 +67,18 @@ def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_u
             details['id']: details
             for _, details in ship_drops_data.items() if 'id' in details
         }
-
+        # KR server fix: ship 236 map drops are global-only, ship 155 has them on KR
+        if 236 in ship_drops_map and 155 in ship_drops_map:
+            ship_drops_map[236]['maps'], ship_drops_map[155]['maps'] = \
+                ship_drops_map[155].get('maps', []), ship_drops_map[236].get('maps', [])
+        # Load skin_list.json for shipyard URLs
+        print("Loading skin_list.json for shipyard URLs...")
+        with open(skin_list_file, 'r', encoding='utf-8') as f:
+            skin_list_data = json.load(f)
+        skin_shipyard_map = {
+            int(skin['id']): skin['shipyard']
+            for skin in skin_list_data if 'id' in skin and 'shipyard' in skin
+        }
         print("All external data fetched and mapped.")
 
         # --- PART 3: Filtering and Merging ---
@@ -86,7 +97,7 @@ def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_u
             if sid in stats_map: ship.update(stats_map[sid])
             if gid in sp_weapon_map: ship['sp_weapon'] = sp_weapon_map[gid]
             if ship.get('rarity') in RARITY_MAPPING: ship['rarity'] = RARITY_MAPPING[ship['rarity']]
-            if ship.get('skin_id'): ship['shipyard'] = f"https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/{ship['skin_id']}/shipyard.png"
+            if ship.get('skin_id') and ship['skin_id'] in skin_shipyard_map: ship['shipyard'] = skin_shipyard_map[ship['skin_id']]
             if 'retrofit' in ship and isinstance(ship.get('retrofit'), dict):
                 if ship['retrofit'].get('skill') in transform_map:
                     ship['retrofit']['skill_id'] = transform_map[ship['retrofit']['skill']]
@@ -119,23 +130,30 @@ def process_ship_data(ship_url, group_url, stats_url, sp_weapon_url, transform_u
             else:
                 ship['light'] = "소형함 건조" in description_text
             
-            if 'medium' in ship_drop_data:
-                ship['medium'] = ship_drop_data['medium']
-            else:
-                ship['medium'] = "중형함 건조" in description_text
-            
             if 'heavy' in ship_drop_data:
                 ship['heavy'] = ship_drop_data['heavy']
             else:
-                ship['heavy'] = "특형함 건조" in description_text
+                ship['heavy'] = "중형함 건조" in description_text
 
-            # Check for "limited" status
-            is_limited_event = "한정" in description_text
-            ship['limited'] = is_limited_event and not (ship['light'] or ship['medium'] or ship['heavy'])
+            if 'special' in ship_drop_data:
+                ship['special'] = ship_drop_data['special']
+            else:
+                ship['special'] = "특형함 건조" in description_text
+
+            # Check for "limited" status - use ship_drop_data if available
+            # Note: limited is null (not false) in ship_drops.json when not limited
+            if 'limited' in ship_drop_data:
+                is_in_construction = ship_drop_data.get('light', False) or ship_drop_data.get('heavy', False) or ship_drop_data.get('special', False)
+                has_other = bool(ship_drop_data.get('other', []))
+                has_wa_maps = 'wa_maps' in ship_drop_data
+                ship['limited'] = bool(ship_drop_data['limited']) and not is_in_construction and not has_other and not has_wa_maps
+            else:
+                is_limited_event = "한정" in description_text
+                ship['limited'] = is_limited_event and not (ship['light'] or ship['heavy'] or ship['special'])
             
             # Add map field if it exists and is not empty
-            if 'map' in ship_drop_data and ship_drop_data['map']:
-                ship['map'] = ship_drop_data['map']
+            if 'maps' in ship_drop_data and ship_drop_data['maps']:
+                ship['maps'] = ship_drop_data['maps']
 
             # --- PART 4: Advanced 'weapon_true' Check ---
             skill_locations = []
@@ -242,7 +260,8 @@ if __name__ == "__main__":
     SKILL_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/GameCfg/skill.json"
     BUFF_URL = "https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/GameCfg/buff.json"
     SHIP_DROPS_FILE = "./helper/ship_drops.json"
+    SKIN_LIST_FILE = "skin_list.json"
     OUTPUT_FILE = "./output/ship_info_data.json"
 
-    process_ship_data(SHIP_URL, GROUP_URL, STATS_URL, SP_WEAPON_URL, TRANSFORM_URL, SKILL_URL, BUFF_URL, SHIP_DROPS_FILE, OUTPUT_FILE)
+    process_ship_data(SHIP_URL, GROUP_URL, STATS_URL, SP_WEAPON_URL, TRANSFORM_URL, SKILL_URL, BUFF_URL, SHIP_DROPS_FILE, SKIN_LIST_FILE, OUTPUT_FILE)
     # process_ship_data(SHIP_URL, GROUP_URL, STATS_URL, SP_WEAPON_URL, TRANSFORM_URL, SKILL_URL, BUFF_URL, OUTPUT_FILE)

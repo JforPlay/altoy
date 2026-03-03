@@ -21,9 +21,10 @@ def generate_lite_data():
                 "shipyard": ship.get("shipyard"),
                 "limited": ship.get("limited"),
                 "light": ship.get("light"),
-                "medium": ship.get("medium"),
                 "heavy": ship.get("heavy"),
-                "timer": ship.get("timer")
+                "special": ship.get("special"),
+                "timer": ship.get("timer"),
+                "maps": ship.get("maps", []),
             }
             lite_ship_data.append(lite_ship)
 
