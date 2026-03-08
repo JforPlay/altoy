@@ -25,15 +25,17 @@ export class WeaponSimData {
             this.simEngine.logToScreen('Loading skill data...');
 
             // Load only skill data and chunk index upfront (much smaller than full data)
-            const [skillData, skillTemplateData, chunkIndex] = await Promise.all([
+            const [skillData, skillTemplateData, chunkIndex, aircraftData] = await Promise.all([
                 fetchJSONWithCache('data/sim/skill_weapon_data.json'),
                 fetchJSONWithCache('data/sim/skill_data_template.json'),
-                fetchJSONWithCache('data/sim/weapon_chunks/chunk_index.json')
+                fetchJSONWithCache('data/sim/weapon_chunks/chunk_index.json'),
+                fetchJSONWithCache('data/sim/aircraft_template.json')
             ]);
 
             this.allSkillData = skillData;
             this.skillTemplateData = skillTemplateData;
             this.chunkIndex = chunkIndex;
+            this.simEngine.allAircraftData = aircraftData;
 
             // Initialize empty barrage/bullet stores on the engine
             this.simEngine.setData({}, {});

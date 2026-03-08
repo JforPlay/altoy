@@ -8,15 +8,18 @@ export class BulletEngine {
         this.gSpeed = options.gSpeed || 1.5;
 
         // Config constants from BattleConfig
-        this.bulletSpeedConvert = 0.12; // manually changed to make it feel similar to in-game
+        // Game formula: velocity * (60/30 * 0.1) = velocity * 0.2
+        this.bulletSpeedConvert = 0.2;
         this.bulletHeight = 1;
-        this.heightOffsetRate = 1.5;
         this.gravity = -0.05;
+        // Game: BombDetonateHeight = 1.2 (gravity bullets detonate when altitude <= this)
+        this.bombDetonateHeight = 1.2;
 
         this.allBarrages = {};
         this.allBullets = {};
+        this.activeBullets = new Set();
 
-        // NEW: Time tracking for entire engine
+        // Time tracking for entire engine
         this.frameTime = 1000 / this.targetFps; // Target time per frame in ms
         this.frameTimeSec = 1 / this.targetFps; // Target time per frame in seconds
 
@@ -82,11 +85,11 @@ export class BulletEngine {
             startX, startY, angle, bulletInfo,
             transformChain = [], shrapnelCallback, parentBullet = null,
             inheritSpeed = null, airdropData = null, weaponPos = null,
-            enemyTarget = null, aimType = null
+            enemyTarget = null, aimType = null, barrageAngle = null
         } = options;
 
         if (isNaN(startX) || isNaN(startY) || isNaN(angle)) {
-            console.error('❌ Invalid bullet position:', { startX, startY, angle });
+            console.error('Invalid bullet position:', { startX, startY, angle });
             return;
         }
 
@@ -94,6 +97,17 @@ export class BulletEngine {
         const bulletElement = document.createElement('div');
         bulletElement.className = 'bullet';
         if (bulletInfo.modle_ID) bulletElement.classList.add(bulletInfo.modle_ID);
+        // Bullet type visual classes
+        const bulletTypeClasses = {
+            2: 'bomb-bullet',
+            3: 'torpedo-bullet',
+            4: 'shrapnel-bullet',
+            5: 'missile-bullet',
+            14: 'space-laser-bullet',
+            15: 'scale-bullet',
+        };
+        const typeClass = bulletTypeClasses[bulletInfo.type];
+        if (typeClass) bulletElement.classList.add(typeClass);
 
         const bulletWidth = bulletInfo.cld_box[0] * this.scale;
         const bulletHeight = bulletInfo.cld_box[1] * this.scale;
@@ -101,20 +115,41 @@ export class BulletEngine {
         const startGamePos = this.screenToGame(startX, startY);
         const initialPos = this.gameToScreen(startGamePos.x, startGamePos.y);
 
-        Object.assign(bulletElement.style, {
-            width: `${bulletWidth}px`,
-            height: `${bulletHeight}px`,
-            left: `${startX - bulletWidth / 2}px`,
-            top: `${startY - bulletHeight / 2}px`,
-            transform: `rotate(${angle}deg) scale(${initialPos.scale})`,
-            filter: initialPos.blur > 0 ? `blur(${initialPos.blur}px)` : 'none',
-            zIndex: Math.floor(initialPos.depth * 0.1) + 5,
-            opacity: 0.85
-        });
+        // Task 2.2: Beam bullets get special sizing and transform origin
+        const isBeam = bulletInfo.type === 10;
+        if (isBeam) {
+            bulletElement.classList.add('beam-bullet');
+            const beamLength = (bulletInfo.range || 50) * this.scale;
+            const beamHeight = Math.max(bulletInfo.cld_box?.[1] || 2, 2) * this.scale;
+            Object.assign(bulletElement.style, {
+                width: `${beamLength}px`,
+                height: `${beamHeight}px`,
+                left: `${startX}px`,
+                top: `${startY - beamHeight / 2}px`,
+                transformOrigin: '0% 50%',
+                transform: `rotate(${angle}deg)`,
+                filter: initialPos.blur > 0 ? `blur(${initialPos.blur}px)` : 'none',
+                zIndex: Math.floor(initialPos.depth * 0.1) + 5,
+                opacity: 0.85
+            });
+        } else {
+            Object.assign(bulletElement.style, {
+                width: `${bulletWidth}px`,
+                height: `${bulletHeight}px`,
+                left: `${startX - bulletWidth / 2}px`,
+                top: `${startY - bulletHeight / 2}px`,
+                transform: `rotate(${angle}deg) scale(${initialPos.scale})`,
+                filter: initialPos.blur > 0 ? `blur(${initialPos.blur}px)` : 'none',
+                zIndex: Math.floor(initialPos.depth * 0.1) + 5,
+                opacity: 0.85
+            });
+        }
         this.container.appendChild(bulletElement);
 
         // Initialize bullet state
-        let currentVelocity_perFrame = bulletInfo.velocity * this.gSpeed * this.bulletSpeedConvert;
+        // Task 1.1: velocity init without gSpeed (gSpeed applied as time-scale)
+        const effectiveVelocity = bulletInfo.velocity + (bulletInfo.extra_param?.torpedoSpeedExtra || 0);
+        let currentVelocity_perFrame = effectiveVelocity * this.bulletSpeedConvert;
         if (inheritSpeed !== null && inheritSpeed !== undefined) {
             currentVelocity_perFrame = inheritSpeed;
         }
@@ -124,6 +159,9 @@ export class BulletEngine {
         const bullet = {
             x: startGamePos.x,
             y: startGamePos.y,
+            // Task 1.2: Store spawn position for straight-line range check
+            spawnX: startGamePos.x,
+            spawnY: startGamePos.y,
             velocity: currentVelocity_perFrame,
             angleRad: angleInRadians,
             velocityX: currentVelocity_perFrame * Math.cos(angleInRadians),
@@ -131,25 +169,21 @@ export class BulletEngine {
             bulletInfo: bulletInfo,
             element: bulletElement,
             aimType: aimType,
+            // Task 1.13: Store barrageAngle for acceleration flip logic
+            barrageAngle: barrageAngle,
             transformChain: transformChain,
             airdropData: airdropData,
             weaponPos: weaponPos,
             enemyTarget: enemyTarget,
             shouldRemove: false,
             framesLived: 0,
-            distanceTraveled: 0,
 
-            // **NEW: Time tracking**
-            timeElapsed: 0, // Total time in seconds
-            lastFrameTime: performance.now(), // Timestamp of last frame
+            // Time tracking
+            timeElapsed: 0,
+            lastFrameTime: performance.now(),
 
-            range: bulletInfo.range + (Math.random() * 2 - 1) * (bulletInfo.range_offset || 0),
-            // **MODIFIED: Calculate lifetime in seconds instead of frames**
-            lifetime_seconds: (() => {
-                const baseLifetime = (bulletInfo.range / currentVelocity_perFrame) / this.targetFps;
-                const lingerTime = bulletInfo.extra_param?.lastTime || 0;
-                return baseLifetime + lingerTime + (1 / this.targetFps);
-            })(),
+            // Task 1.3: Range randomization uses half-width: range_offset * (random - 0.5)
+            range: bulletInfo.range + (bulletInfo.range_offset || 0) * (Math.random() - 0.5),
 
             getBehavior: function (name) {
                 return this.behaviors.get(name);
@@ -158,6 +192,7 @@ export class BulletEngine {
 
         bullet.behaviors = BehaviorFactory.createBehaviors(bullet, this);
         bullet.behaviors.forEach(behavior => behavior.initialize());
+        this.activeBullets.add(bullet);
 
         // Animation loop with delta time
         const animate = () => {
@@ -165,11 +200,11 @@ export class BulletEngine {
             const deltaTimeMs = now - bullet.lastFrameTime;
             bullet.lastFrameTime = now;
 
-            // **FIX: Prevent zero/negative delta on first frame or tab switching**
+            // Prevent zero/negative delta on first frame or tab switching
             const safeDeltaTimeMs = Math.max(deltaTimeMs, 1);
 
-            // Calculate delta multiplier (normalizes to target FPS)
-            const deltaMultiplier = safeDeltaTimeMs / this.frameTime;
+            // Task 1.1: Apply gSpeed as time-scale multiplier
+            const deltaMultiplier = (safeDeltaTimeMs / this.frameTime) * this.gSpeed;
             const deltaTimeSec = safeDeltaTimeMs / 1000;
 
             // Update counters
@@ -187,13 +222,21 @@ export class BulletEngine {
                 y: bullet.y,
                 apexReached: false,
                 altitude: 0,
-                distanceTraveled: bullet.distanceTraveled
+                // Task 1.2: Use distanceFromSpawn instead of distanceTraveled
+                distanceFromSpawn: 0
             };
 
-            // Update behaviors in order
+            // Task 1.12: Transform is now in main update order (before movement)
+            // Task 2.1/2.2: Added missile (after airdrop) and beam (before transform)
             const updateOrder = [
                 'gravity',
                 'airdrop',
+                'missile',
+                'beam',
+                'spaceLaser',
+                'gravitation',
+                'scale',
+                'transform',
                 'tracker',
                 'orbit',
                 'circle',
@@ -218,12 +261,13 @@ export class BulletEngine {
             bullet.y = frameData.y;
             bullet.velocity = Math.sqrt(bullet.velocityX ** 2 + bullet.velocityY ** 2);
 
-            // Update distance traveled (time-normalized)
-            const distanceMoved = bullet.velocity * deltaMultiplier;
-            bullet.distanceTraveled += distanceMoved;
-            frameData.distanceTraveled = bullet.distanceTraveled;
+            // Task 1.2: Calculate straight-line distance from spawn
+            const dx = bullet.x - bullet.spawnX;
+            const dy = bullet.y - bullet.spawnY;
+            bullet.distanceFromSpawn = Math.sqrt(dx * dx + dy * dy);
+            frameData.distanceFromSpawn = bullet.distanceFromSpawn;
 
-            // Update emission behaviors
+            // Update emission behaviors (shrapnel only; transform moved to main loop)
             const shrapnelBehavior = bullet.behaviors.get('shrapnel');
             if (shrapnelBehavior) {
                 const shrapnelResult = shrapnelBehavior.update(frameData);
@@ -235,28 +279,34 @@ export class BulletEngine {
                 }
             }
 
-            const transformBehavior = bullet.behaviors.get('transform');
-            if (transformBehavior) {
-                transformBehavior.update(frameData);
-            }
-
             // Render bullet
             const screenPos = this.gameToScreen(bullet.x, bullet.y);
             const scaledWidth = bulletWidth * screenPos.scale;
             const scaledHeight = bulletHeight * screenPos.scale;
 
-            if (bulletInfo.extra_param?.dontRotate !== true) {
-                let visualAngle;
-                if (bullet.aimType === 1 && bullet.enemyTarget) {
-                    const dy = bullet.enemyTarget.y - bullet.y;
-                    const dx = bullet.enemyTarget.x - bullet.x;
-                    visualAngle = Math.atan2(dy, dx) * 180 / Math.PI;
-                } else {
-                    visualAngle = Math.atan2(bullet.velocityY, bullet.velocityX) * 180 / Math.PI;
+            // Altitude visual offset: gravity/missile bullets arc above the ground plane
+            // In the game, altitude is the Y-axis (height). We render it as upward screen offset.
+            const altitudeOffset = (frameData.altitude || 0) * this.scale;
+
+            // Task 2.2: Beam-specific rendering (anchored position, sweep angle, lifetime)
+            const beamBehavior = bullet.behaviors.get('beam');
+            if (beamBehavior && beamBehavior.enabled) {
+                const beamScreenPos = this.gameToScreen(bullet.x, bullet.y);
+                const angleDeg = beamBehavior.currentAngle * 180 / Math.PI;
+                bulletElement.style.left = `${beamScreenPos.x}px`;
+                bulletElement.style.top = `${beamScreenPos.y - bulletHeight / 2}px`;
+                bulletElement.style.transform = `rotate(${angleDeg}deg)`;
+
+                // Beam lifetime check
+                if (bullet.timeElapsed >= beamBehavior.attackTime) {
+                    bullet.shouldRemove = true;
                 }
-                bulletElement.style.transform = `rotate(${visualAngle}deg) scale(${screenPos.scale})`;
+            } else if (bulletInfo.extra_param?.dontRotate !== true) {
+                // Task 1.10: velocity direction IS the correct visual angle (no special aim_type override)
+                const visualAngle = Math.atan2(bullet.velocityY, bullet.velocityX) * 180 / Math.PI;
+                bulletElement.style.transform = `rotate(${visualAngle}deg) scale(${screenPos.scale * (frameData.bulletScale || 1)})`;
             } else {
-                bulletElement.style.transform = `scale(${screenPos.scale})`;
+                bulletElement.style.transform = `scale(${screenPos.scale * (frameData.bulletScale || 1)})`;
             }
 
             if (this.perspective.enabled) {
@@ -264,10 +314,84 @@ export class BulletEngine {
                 bulletElement.style.zIndex = Math.floor(screenPos.depth * 0.1) + 5;
             }
 
-            bulletElement.style.left = `${screenPos.x - scaledWidth / 2}px`;
-            bulletElement.style.top = `${screenPos.y - scaledHeight / 2}px`;
+            // Task 2.2: Beam rendering already handled above; skip normal position update
+            if (!(beamBehavior && beamBehavior.enabled)) {
+                bulletElement.style.left = `${screenPos.x - scaledWidth / 2}px`;
+                // Altitude lifts the bullet visually (negative = upward on screen)
+                bulletElement.style.top = `${screenPos.y - scaledHeight / 2 - altitudeOffset}px`;
+            }
 
-            // Check expiration (TIME-BASED)
+            // Gravitation bullet rendering: pulsing area effect
+            const gravitationBehavior = bullet.behaviors.get('gravitation');
+            if (gravitationBehavior?.enabled && gravitationBehavior.state === 'ACTIVE') {
+                const elapsed = bullet.timeElapsed - gravitationBehavior.activeStartTime;
+                const alertPhase = elapsed < gravitationBehavior.alertDuration;
+                const pulsePhase = (elapsed % gravitationBehavior.hitInterval) / gravitationBehavior.hitInterval;
+
+                bulletElement.classList.add('gravitation-bullet');
+                if (!alertPhase) {
+                    bulletElement.classList.add('gravitation-active');
+                }
+                const baseSize = (bulletInfo.cld_box?.[0] || 5) * this.scale * 3;
+                const pulseScale = alertPhase ? 0.5 + elapsed / gravitationBehavior.alertDuration * 0.5 : 0.8 + pulsePhase * 0.2;
+                const size = baseSize * pulseScale;
+                Object.assign(bulletElement.style, {
+                    width: `${size}px`,
+                    height: `${size}px`,
+                    left: `${screenPos.x - size / 2}px`,
+                    top: `${screenPos.y - size / 2}px`,
+                    borderRadius: '50%'
+                });
+            }
+
+            // Space Laser rendering: vertical column
+            const spaceLaserBehavior = bullet.behaviors.get('spaceLaser');
+            if (spaceLaserBehavior?.enabled) {
+                bulletElement.classList.add('space-laser-bullet');
+                const columnWidth = spaceLaserBehavior.columnWidth * this.scale;
+                const containerHeight = this.container.offsetHeight;
+
+                if (spaceLaserBehavior.state === 'PRECAST') {
+                    bulletElement.classList.add('space-laser-precast');
+                    bulletElement.classList.remove('space-laser-active');
+                    Object.assign(bulletElement.style, {
+                        width: `${columnWidth * 0.3}px`,
+                        height: `${containerHeight}px`,
+                        left: `${screenPos.x - columnWidth * 0.15}px`,
+                        top: '0px',
+                        borderRadius: '0'
+                    });
+                } else if (spaceLaserBehavior.state === 'ATTACK') {
+                    bulletElement.classList.remove('space-laser-precast');
+                    bulletElement.classList.add('space-laser-active');
+                    Object.assign(bulletElement.style, {
+                        width: `${columnWidth}px`,
+                        height: `${containerHeight}px`,
+                        left: `${screenPos.x - columnWidth / 2}px`,
+                        top: '0px',
+                        borderRadius: '0'
+                    });
+                }
+            }
+
+            // Gravity bullet shadow: show ground position when airborne
+            if (altitudeOffset > 1) {
+                if (!bullet._shadowEl) {
+                    bullet._shadowEl = document.createElement('div');
+                    bullet._shadowEl.className = 'bullet-shadow';
+                    this.container.appendChild(bullet._shadowEl);
+                }
+                const shadowScale = Math.max(0.3, 1 - frameData.altitude * 0.05);
+                Object.assign(bullet._shadowEl.style, {
+                    left: `${screenPos.x - scaledWidth * shadowScale / 2}px`,
+                    top: `${screenPos.y - 1}px`,
+                    width: `${scaledWidth * shadowScale}px`,
+                    height: `${2}px`,
+                    opacity: `${shadowScale * 0.5}`
+                });
+            }
+
+            // Check expiration
             const isLingering = shrapnelBehavior?.isLingering;
             const hasLingeringCapability = shrapnelBehavior &&
                 shrapnelBehavior.rangeReached &&
@@ -275,27 +399,34 @@ export class BulletEngine {
                 shrapnelBehavior.lastTimeSec > 0 &&
                 shrapnelBehavior.splitShrapnels.length > 0;
 
-            // **MODIFIED: Use time-based expiration**
-            const lifetimeExpired = !isLingering && !hasLingeringCapability &&
-                bullet.lifetime_seconds > 0 &&
-                bullet.timeElapsed >= bullet.lifetime_seconds;
+            // Expiration: gravity bullets use height-based detonation, others use range
+            const gravityBehavior = bullet.behaviors.get('gravity');
+            const hasGravity = gravityBehavior?.hasGravity;
+            const hasGravitation = bullet.behaviors.get('gravitation')?.enabled;
+            const hasSpaceLaser = bullet.behaviors.get('spaceLaser')?.enabled;
+            let rangeExpired;
 
-            const rangeExpired = !isLingering && !hasLingeringCapability &&
-                frameData.distanceTraveled >= bullet.range;
+            if (hasGravitation || hasSpaceLaser) {
+                // Gravitation/SpaceLaser manage their own lifetime
+                rangeExpired = false;
+            } else if (hasGravity) {
+                // Game: gravity bullets detonate when altitude <= BombDetonateHeight
+                // altitude starts positive (rising), gravity pulls it negative (falling to ground)
+                rangeExpired = !isLingering && !hasLingeringCapability &&
+                    bullet.framesLived > 3 && frameData.altitude <= -this.bombDetonateHeight;
+            } else {
+                rangeExpired = !isLingering && !hasLingeringCapability &&
+                    bullet.distanceFromSpawn >= bullet.range;
+            }
 
             const isOutOfBounds = bullet.framesLived > 3 && (
                 (screenPos.x < -scaledWidth && bullet.velocityX <= 0) ||
                 (screenPos.x > this.container.offsetWidth + scaledWidth && bullet.velocityX >= 0) ||
-                (screenPos.y < -scaledHeight && bullet.velocityY <= 0) ||
-                (screenPos.y > this.container.offsetHeight + scaledHeight && bullet.velocityY >= 0)
+                (screenPos.y < -scaledHeight && bullet.velocityY >= 0) ||
+                (screenPos.y > this.container.offsetHeight + scaledHeight && bullet.velocityY <= 0)
             );
 
-            let shouldExpire = false;
-            if ((bulletInfo.pierce_count || 0) > 1) {
-                if (rangeExpired || isOutOfBounds) shouldExpire = true;
-            } else {
-                if (lifetimeExpired || rangeExpired || isOutOfBounds) shouldExpire = true;
-            }
+            const shouldExpire = rangeExpired || isOutOfBounds;
 
             if (bullet.shouldRemove || shouldExpire) {
                 if (shrapnelBehavior && !shrapnelBehavior.triggered &&
@@ -304,6 +435,8 @@ export class BulletEngine {
                 }
                 bullet.behaviors.forEach(b => b.destroy());
                 bulletElement.remove();
+                if (bullet._shadowEl) bullet._shadowEl.remove();
+                this.activeBullets.delete(bullet);
                 return;
             }
 
@@ -312,5 +445,9 @@ export class BulletEngine {
 
         requestAnimationFrame(animate);
         return bulletElement;
+    }
+
+    clearAllBullets() {
+        this.activeBullets.forEach(b => { b.shouldRemove = true; });
     }
 }

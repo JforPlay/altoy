@@ -16,6 +16,7 @@ export class SimulationEngine {
         // Data stores
         this.allBarrageData = {};
         this.allBulletData = {};
+        this.allAircraftData = {};
         
         // DOM elements
         this.visualLog = options.visualLog;
@@ -34,7 +35,7 @@ export class SimulationEngine {
         
         // Initialize ocean background if container exists
         if (this.container) {
-            this.oceanBackground = new OceanBackground(this.container);
+            this.oceanBackground = new OceanBackground(this.container, this.gameCoords);
         }
     }
 
@@ -255,6 +256,7 @@ export class SimulationEngine {
     }
 
     clearBullets() {
+        this.bulletEngine.clearAllBullets();
         document.querySelectorAll('.bullet').forEach(b => b.remove());
     }
 

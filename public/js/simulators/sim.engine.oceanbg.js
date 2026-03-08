@@ -4,18 +4,36 @@
  */
 
 export class OceanBackground {
-    constructor(container) {
+    constructor(container, gameCoords = null) {
         this.container = container;
-        
+
         // Ocean scene configuration from BattleConfig
         this.config = {
             diving_filter: { r: 0.03, g: 0.03, b: 0.23, a: 0.35 },
-            sky_layer: { speed: 0.3 },      
-            close_sea: { speed: 4 },         
-            mid_sea: { speed: 2 },           
-            long_sea: { speed: 0.8 }         
+            sky_layer: { speed: 0.3 },
+            close_sea: { speed: 4 },
+            mid_sea: { speed: 2 },
+            long_sea: { speed: 0.8 }
         };
-        
+
+        // Derive layer positions from game coordinates
+        // Game Y-axis: higher = farther from camera (horizon at top, foreground at bottom)
+        const area = gameCoords?.totalArea;
+        if (area) {
+            const fieldHeight = area.maxY - area.minY;
+            // Ship formations span Z=38-78 in game; map to screen percentages
+            // Screen top = maxY (horizon), screen bottom = minY (foreground)
+            this.layers = {
+                skyHeight: 3,                                                    // Thin horizon strip
+                farWaterTop: 3,                                                  // Starts at horizon
+                midWaterTop: Math.round(((area.maxY - 72) / fieldHeight) * 100), // Above top formation slot
+                closeWaterTop: Math.round(((area.maxY - 52) / fieldHeight) * 100), // Mid-field
+                foamTop: Math.round(((area.maxY - 40) / fieldHeight) * 100)      // Below bottom formation
+            };
+        } else {
+            this.layers = { skyHeight: 4, farWaterTop: 4, midWaterTop: 30, closeWaterTop: 55, foamTop: 70 };
+        }
+
         this.oceanContainer = null;
         this.init();
     }
@@ -59,6 +77,7 @@ export class OceanBackground {
     }
 
     createSkyLayer() {
+        const { skyHeight } = this.layers;
         const skyLayer = document.createElement('div');
         skyLayer.className = 'ocean-layer sky-layer';
         skyLayer.style.cssText = `
@@ -66,7 +85,7 @@ export class OceanBackground {
             top: 0;
             left: 0;
             width: 100%;
-            height: 4%;
+            height: ${skyHeight}%;
             background: url('data:image/svg+xml;base64,${this.generateSkyGradient()}') repeat-x;
             background-size: 200% 100%;
             animation: skyScroll ${60 / this.config.sky_layer.speed}s linear infinite;
@@ -77,24 +96,25 @@ export class OceanBackground {
     }
 
     createWaterGradient() {
+        const { skyHeight } = this.layers;
         const filter = this.config.diving_filter;
         const waterGradient = document.createElement('div');
         waterGradient.className = 'ocean-layer water-gradient';
         waterGradient.style.cssText = `
             position: absolute;
-            top: 4%;
+            top: ${skyHeight}%;
             left: 0;
             width: 100%;
-            height: 96%;
+            height: ${100 - skyHeight}%;
             background: linear-gradient(to bottom,
-                rgba(${Math.floor(filter.r * 255)}, 
-                     ${Math.floor(filter.g * 255)}, 
+                rgba(${Math.floor(filter.r * 255)},
+                     ${Math.floor(filter.g * 255)},
                      ${Math.floor(filter.b * 255)}, 0.15) 0%,
-                rgba(${Math.floor(filter.r * 255)}, 
-                     ${Math.floor(filter.g * 255)}, 
+                rgba(${Math.floor(filter.r * 255)},
+                     ${Math.floor(filter.g * 255)},
                      ${Math.floor(filter.b * 255)}, 0.35) 50%,
-                rgba(${Math.floor(filter.r * 255)}, 
-                     ${Math.floor(filter.g * 255)}, 
+                rgba(${Math.floor(filter.r * 255)},
+                     ${Math.floor(filter.g * 255)},
                      ${Math.floor(filter.b * 255)}, 0.55) 100%
             );
             pointer-events: none;
@@ -103,15 +123,17 @@ export class OceanBackground {
     }
 
     createWaterLayers() {
+        const { farWaterTop, midWaterTop, closeWaterTop } = this.layers;
+
         // Far water (slowest, calmest) - starts right at horizon
         const farWater = document.createElement('div');
         farWater.className = 'ocean-layer far-water';
         farWater.style.cssText = `
             position: absolute;
-            top: 4%;
+            top: ${farWaterTop}%;
             left: 0;
             width: 100%;
-            height: 96%;
+            height: ${100 - farWaterTop}%;
             background: url('data:image/svg+xml;base64,${this.generateWaterPattern(0.25)}') repeat;
             background-size: 500px 500px;
             animation: waterScroll ${30 / this.config.long_sea.speed}s linear infinite;
@@ -119,15 +141,15 @@ export class OceanBackground {
             filter: blur(4px);
         `;
 
-        // Mid water - middle of screen
+        // Mid water - above top formation slots
         const midWater = document.createElement('div');
         midWater.className = 'ocean-layer mid-water';
         midWater.style.cssText = `
             position: absolute;
-            top: 30%;
+            top: ${midWaterTop}%;
             left: 0;
             width: 100%;
-            height: 70%;
+            height: ${100 - midWaterTop}%;
             background: url('data:image/svg+xml;base64,${this.generateWaterPattern(0.4)}') repeat;
             background-size: 350px 350px;
             animation: waterScroll ${20 / this.config.mid_sea.speed}s linear infinite;
@@ -135,15 +157,15 @@ export class OceanBackground {
             filter: blur(2.5px);
         `;
 
-        // Close water (gentle waves) - lower third
+        // Close water (gentle waves) - mid-field where ships are
         const closeWater = document.createElement('div');
         closeWater.className = 'ocean-layer close-water';
         closeWater.style.cssText = `
             position: absolute;
-            top: 55%;
+            top: ${closeWaterTop}%;
             left: 0;
             width: 100%;
-            height: 45%;
+            height: ${100 - closeWaterTop}%;
             background: url('data:image/svg+xml;base64,${this.generateWaterPattern(0.6)}') repeat;
             background-size: 250px 250px;
             animation: waterScroll ${15 / this.config.close_sea.speed}s linear infinite;
@@ -157,14 +179,15 @@ export class OceanBackground {
     }
 
     createFoamLayer() {
+        const { foamTop } = this.layers;
         const foamLayer = document.createElement('div');
         foamLayer.className = 'ocean-layer foam-layer';
         foamLayer.style.cssText = `
             position: absolute;
-            top: 70%;
+            top: ${foamTop}%;
             left: 0;
             width: 100%;
-            height: 30%;
+            height: ${100 - foamTop}%;
             background: url('data:image/svg+xml;base64,${this.generateFoamPattern()}') repeat-x;
             background-size: 800px 150px;
             animation: foamScroll ${12 / this.config.close_sea.speed}s linear infinite;

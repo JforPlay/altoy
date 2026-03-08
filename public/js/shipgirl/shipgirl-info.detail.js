@@ -407,7 +407,7 @@ function renderSpWeaponSection(ship) {
                         ${skillUpgradeIds.map(skillId => {
         const skillInfo = getSkillInfo(skillId);
         const isWeaponSkill = spWeapon.weapon_true === true;
-        const skillUrl = `simulators/sim-weapon/?skill_id=${skillId}`;
+        const skillUrl = resolveUrl(`simulators/sim-weapon/?skill_id=${skillId}`);
 
         return `
                                 <li class="skill-item ${isWeaponSkill ? 'weapon-skill-clickable' : ''}"
