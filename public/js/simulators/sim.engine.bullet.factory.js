@@ -23,20 +23,25 @@ class StandardMovementBehavior extends BulletBehavior {
     }
 }
 
+// Game: BattleBulletUnit.AccelerateCheck
+//   Velocity += u            (speed magnitude change)
+//   Angle += v               (direction rotation, v in DEGREES per frame)
+//   Speed.x = Velocity * cos(Angle)
+//   Speed.z = Velocity * sin(Angle)
+//   if Velocity < 0: Velocity = -Velocity, flip all u signs
 class AccelerationBehavior extends BulletBehavior {
     initialize() {
         const bulletInfo = this.bullet.bulletInfo;
         this.currentAccel = 0;
-        this.currentCrossAccel = 0;
+        this.currentAngularVel = 0; // degrees per frame
         this.schedule = [];
 
         if (Array.isArray(bulletInfo.acceleration)) {
             bulletInfo.acceleration.forEach(event => {
-                // Task 1.1: Remove gSpeed from u and v (gSpeed is now a time-scale)
-                // Task 1.13: Apply flip logic - negate v when barrageAngle % 360 is in (0, 180)
                 let uVal = event.u || 0;
                 let vVal = event.v || 0;
 
+                // Task 1.13: Apply flip logic - negate v when barrageAngle % 360 is in (0, 180)
                 if (event.flip && this.bullet.barrageAngle !== null && this.bullet.barrageAngle !== undefined) {
                     const normalizedAngle = ((this.bullet.barrageAngle % 360) + 360) % 360;
                     if (normalizedAngle > 0 && normalizedAngle < 180) {
@@ -55,7 +60,7 @@ class AccelerationBehavior extends BulletBehavior {
 
             if (this.schedule.length > 0) {
                 this.currentAccel = this.schedule[0].u;
-                this.currentCrossAccel = this.schedule[0].v;
+                this.currentAngularVel = this.schedule[0].v;
             }
         }
     }
@@ -64,33 +69,37 @@ class AccelerationBehavior extends BulletBehavior {
         for (const event of this.schedule) {
             if (frameData.timeElapsed >= event.time) {
                 this.currentAccel = event.u;
-                this.currentCrossAccel = event.v;
+                this.currentAngularVel = event.v;
             }
         }
 
-        if (this.currentAccel === 0 && this.currentCrossAccel === 0) return;
+        if (this.currentAccel === 0 && this.currentAngularVel === 0) return;
 
-        const speed = Math.sqrt(frameData.velocityX ** 2 + frameData.velocityY ** 2);
+        const delta = frameData.deltaMultiplier || 1;
 
-        if (this.currentAccel < 0 && speed + this.currentAccel * frameData.deltaMultiplier < 0) {
+        // Derive current speed and angle from velocity components each frame
+        // (stays in sync with upstream behaviors that may modify velocity)
+        let speed = Math.sqrt(frameData.velocityX ** 2 + frameData.velocityY ** 2);
+        let angle = Math.atan2(frameData.velocityY, frameData.velocityX);
+
+        // Game: Velocity += u
+        speed += this.currentAccel * delta;
+
+        // Game: if Velocity < 0 → bounce and flip all u signs
+        if (speed < 0) {
+            speed = -speed;
             this.schedule.forEach(e => e.u *= -1);
             this.currentAccel *= -1;
         }
 
-        let normalX = 0, normalY = 0;
-        if (speed > 0) {
-            normalX = frameData.velocityX / speed;
-            normalY = frameData.velocityY / speed;
-        }
+        // Game: Angle += v (v is in degrees per frame)
+        angle += this.currentAngularVel * (Math.PI / 180) * delta;
 
-        const crossX = -normalY;
-        const crossY = normalX;
-
-        const delta = frameData.deltaMultiplier || 1;
-        const newVelX = frameData.velocityX + (normalX * this.currentAccel + crossX * this.currentCrossAccel) * delta;
-        const newVelY = frameData.velocityY + (normalY * this.currentAccel + crossY * this.currentCrossAccel) * delta;
-
-        return { velocityX: newVelX, velocityY: newVelY };
+        // Game: Speed = Velocity * (cos(Angle), sin(Angle))
+        return {
+            velocityX: speed * Math.cos(angle),
+            velocityY: speed * Math.sin(angle)
+        };
     }
 }
 
