@@ -106,7 +106,7 @@ h1 {
   z-index: 5;
 }
 
-/* Task 2.2: Beam bullet styling */
+/* Beam bullet (type 10): sweeping laser */
 .bullet.beam-bullet {
   background: linear-gradient(90deg,
     rgba(255, 100, 100, 0.95),
@@ -542,7 +542,6 @@ button:active {
 
 .skill-icon-container {
   text-align: center;
-  /* margin: 16px 0; */
 }
 
 .skill-icon-container img {
@@ -564,7 +563,6 @@ button:active {
 #level-toggle {
   width: 100%;
   padding: 14px 24px;
-  /* margin-bottom: 16px; */
   font-size: 17px;
   font-weight: 700;
   border-radius: 12px;
@@ -622,7 +620,7 @@ button:active {
   border: 2px solid rgba(102, 126, 234, 0.3);
   color: #eaeaea;
   border-radius: 10px;
-  padding: 1 16px; /* Adjust padding */
+  padding: 0 16px;
   font-size: 16px;
   height: 48px; /* Replace min-height with height */
   transition: all var(--transition-slow);

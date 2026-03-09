@@ -3,10 +3,8 @@ import { SimulationEngine } from './sim.engine.common.js';
 import { WeaponSimData } from './sim.weapon.data.js';
 import { AircraftEntity } from './sim.engine.aircraft.js';
 document.addEventListener('DOMContentLoaded', async () => {
-    // --- Constants ---
-    // Game field dimensions from BattleConfig/BattleDataProxy
-    // X-axis: horizontal (left-right), Z-axis mapped to Y (depth/vertical in 2D view)
-    // Main fleet spawns at X=-105, enemy at X=15, formations at Z=38-78
+    // Game field dimensions (BattleConfig/BattleDataProxy)
+    // X-axis: horizontal, Z-axis → Y (depth). Main fleet at X=-105, enemy at X=15
     const GAME_COORDS = {
         totalArea: { minX: -120, minY: 30, maxX: 80, maxY: 85 },
         playerArea: { minX: -120, minY: 30, maxX: 15, maxY: 85 }
@@ -50,30 +48,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const weaponSimData = new WeaponSimData(simEngine);
 
-    // --- Register Entities ---
-    // Game spawn positions from BattleConfig.MAIN_UNIT_POS:
-    //   Friendly main fleet: Vector3(-105, 0, 58) — center of formation
-    //   Enemy main fleet: Vector3(15, 0, 58) — center of formation
-    //   Z-axis range: 38 (bottom) to 78 (top) for formations
-    // Vanguard position uses fleetCoordinate (dynamically loaded); approximate center of player area
+    // Game spawn positions (BattleConfig.MAIN_UNIT_POS):
+    //   Friendly main fleet: (-105, 0, 58), Enemy: (15, 0, 58)
+    //   Formation Z range: 38 (bottom) to 78 (top)
     simEngine.registerEntities({
         vanguard: {
             element: vanguard,
             baseWidth: 6.5,
             aspectRatio: 178 / 226,
-            gamePos: {
-                x: -36,  // Approximate vanguard position (mid-field, from SubSupportUnitPosList)
-                y: 58    // Game center Z = 58
-            }
+            gamePos: { x: -36, y: 58 }
         },
         mainfleet: {
             element: mainfleet,
             baseWidth: 6.5,
             aspectRatio: 195 / 253,
-            gamePos: {
-                x: -105,  // Game: MAIN_UNIT_POS friendly X = -105
-                y: 58     // Game: MAIN_UNIT_POS friendly Z = 58 (center)
-            }
+            gamePos: { x: -105, y: 58 }
         },
         enemy: {
             element: enemy,
@@ -83,24 +72,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     simEngine.registerEntityState('enemy', {
-        getGamePos: (state, coords) => ({
-            x: 15,    // Game: MAIN_UNIT_POS enemy X = 15
-            y: state.centered
-                ? 58   // Game center Z = 58
-                : 72   // Upper position (closer to Z=78 top formation slot)
+        getGamePos: (state) => ({
+            x: 15,
+            y: state.centered ? 58 : 72
         })
     });
 
     simEngine.setEntityState('enemy', 'centered', false);
 
     let choicesInstance;
-    let levelToggleButton;
+    let levelToggleListener = null;
 
     // --- Initialize ---
     await weaponSimData.loadData();
     simEngine.updateLayoutAndScale(playerAreaDiv);
     populateSkillSelector();
-    initFPSDisplay()
+    initFPSDisplay();
 
     const skillIdFromUrl = getUrlParam('skill_id');
 
@@ -170,7 +157,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         fpsAnimId = requestAnimationFrame(updateFPS);
 
-        // Pause/resume FPS counter when page visibility changes
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 if (fpsAnimId) {
@@ -186,12 +172,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function convertToMs(value, timeUnitIsFrames = false) {
-        // If timeUnitIsFrames is true, value is in frames, convert to seconds first
         if (timeUnitIsFrames) {
-            const seconds = value / TARGET_FPS;
-            return seconds * 1000;
+            return (value / TARGET_FPS) * 1000;
         }
-        // Otherwise value is already in seconds
         return value * 1000;
     }
 
@@ -234,12 +217,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function attachLevelToggleListener(skillId) {
-        levelToggleButton = document.getElementById('level-toggle');
-        if (!levelToggleButton) return;
-        levelToggleButton.addEventListener('click', async () => {
+        const button = document.getElementById('level-toggle');
+        if (!button) return;
+
+        // Remove previous listener to prevent accumulation
+        if (levelToggleListener) {
+            button.removeEventListener('click', levelToggleListener);
+        }
+        levelToggleListener = async () => {
             currentSkillLevel = currentSkillLevel === '1' ? '10' : '1';
             await updateSkillStats(skillId);
-        });
+        };
+        button.addEventListener('click', levelToggleListener);
     }
 
     function createShipgirlInfoHTML(skill, skillId) {
@@ -262,10 +251,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        // Ensure weapon chunks are loaded before firing
         await weaponSimData.ensureSkillWeaponsLoaded(skillId, currentSkillLevel);
 
-        // Pre-load aircraft sub-weapon chunks (aircraft carry their own weapons)
+        // Pre-load aircraft sub-weapon chunks
         const weaponInfoList = weaponSimData.getWeaponIdsFromSkill(skillId, currentSkillLevel);
         const aircraftSubWeaponLoads = [];
         for (const info of weaponInfoList) {
@@ -282,13 +270,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const skillPosition = skill.position;
         simEngine.logToScreen(`Firing skill: ${skillName} (Level ${currentSkillLevel})`);
 
-        // iterates over weaponInfo objects
-        weaponSimData.getWeaponIdsFromSkill(skillId, currentSkillLevel).forEach((weaponInfo, index) =>
-            scheduleFireTimer(() => fireWeapon(weaponInfo, skillPosition), index * 100)
+        // Each weapon fires at its effect_list 'time' offset (in frames at 30fps)
+        weaponSimData.getWeaponIdsFromSkill(skillId, currentSkillLevel).forEach((weaponInfo) =>
+            scheduleFireTimer(() => fireWeapon(weaponInfo, skillPosition),
+                weaponInfo.time ? convertToMs(weaponInfo.time, true) : 0)
         );
     }
 
-    // Accepts a weaponInfo object
     function fireWeapon(weaponInfo, skillPosition = null) {
         const weapon = weaponSimData.getWeaponById(weaponInfo.weaponId);
         if (!weapon || !Array.isArray(weapon.barrage_ID)) {
@@ -296,7 +284,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        // Check if this weapon has aircraft data
         const aircraftData = simEngine.allAircraftData?.[weaponInfo.weaponId];
         if (aircraftData && aircraftData.weapon_ID) {
             spawnAircraft(aircraftData, weapon, skillPosition);
@@ -307,7 +294,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const barrage = simEngine.allBarrageData[weapon.barrage_ID[i]];
             const bulletInfo = simEngine.allBulletData[weapon.bullet_ID[i]];
             if (!barrage || !bulletInfo) continue;
-            // Passes the full weaponInfo object down
             fireBarrage(weapon, barrage, bulletInfo, null, 1, skillPosition, weaponInfo);
         }
     }
@@ -318,11 +304,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const enemyPos = simEngine.getEntityGameCoords('enemy');
         const targetX = enemyPos?.x || 50;
 
-        // Number of aircraft from barrage count
         const count = parentWeapon.barrage_ID?.length || 1;
 
         for (let i = 0; i < count; i++) {
-            const startY = spawnPos.y + (i - (count - 1) / 2) * 3; // Spread vertically
+            const startY = spawnPos.y + (i - (count - 1) / 2) * 3;
 
             const aircraft = new AircraftEntity({
                 engine: simEngine,
@@ -333,10 +318,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 targetX: targetX,
                 targetY: enemyPos?.y || startY,
                 direction: 1,
-                startDelay: i * 200 // Stagger spawns — delays both animation and visibility
+                startDelay: i * 200
             });
 
-            // Callback: when aircraft reaches target, fire sub-weapons
             aircraft.onFireWeapons = (x, y, weaponIds) => {
                 weaponIds.forEach(subWeaponId => {
                     const subWeapon = weaponSimData.getWeaponById(subWeaponId);
@@ -355,8 +339,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Task 1.11: Fix Wave Timing - Chain waves using callbacks
-    // Wave N+1 starts after wave N's bullets finish firing + senior_delay
+    /**
+     * Fire a barrage pattern: schedules all waves (senior_repeat) with proper timing.
+     * Wave N+1 starts after wave N's bullets finish firing + senior_delay.
+     */
     function fireBarrage(weapon, barrage, bulletInfo, overrideStartPos = null, direction = 1, skillPosition = null, weaponInfo = {}) {
         let baseAngle, startX_game, startY_game;
 
@@ -374,7 +360,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             startY_game = spawnPos.y;
         }
 
-        // Direction: RIGHT=1 (baseAngle stays), LEFT=-1 (baseAngle += 180)
         const rawAngle = weapon.axis_angle ?? weapon.angle ?? 0;
         baseAngle = direction === -1 ? rawAngle + 180 : rawAngle;
 
@@ -382,13 +367,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const seniorDelay = barrage.senior_delay || 0;
         const firstDelay = barrage.first_delay || 0;
 
-        // Calculate the primal duration for a single wave (time to fire all bullets in one wave)
+        // Calculate how long a single wave takes (sum of all primal intervals)
         function calculatePrimalDuration(b) {
             const primalCount = (b.primal_repeat || 0) + 1;
             if (primalCount <= 1) return 0;
 
             if (b.delta_delay && b.delta_delay !== 0) {
-                // Advancing delay: sum of intervals
                 let total = 0;
                 let currentInterval = b.delay || 0;
                 for (let i = 0; i < primalCount - 1; i++) {
@@ -397,13 +381,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 return total;
             } else if (b.delay && b.delay !== 0) {
-                // Constant delay
                 return (primalCount - 1) * b.delay;
             }
             return 0;
         }
 
-        // Chain waves: fire wave 0, then after its duration + senior_delay, fire wave 1, etc.
         function fireWaveChain(waveIndex, waveStartTime) {
             if (waveIndex >= seniorRepeatCount) return;
 
@@ -417,7 +399,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 fireWaveImmediate(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction);
             }
 
-            // Schedule next wave after this wave's primal duration + senior_delay
             if (waveIndex + 1 < seniorRepeatCount) {
                 const primalDuration = calculatePrimalDuration(barrage);
                 const nextWaveTime = actualStartTime + primalDuration + seniorDelay;
@@ -427,7 +408,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        // Precast: delay all bullet spawning by precast_param.time
         const precastTime = weapon.precast_param?.time || 0;
         if (precastTime > 0) {
             scheduleFireTimer(() => {
@@ -441,7 +421,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function fireWaveWithAdvancingDelay(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1) {
         const primalRepeatCount = (barrage.primal_repeat || 0) + 1;
         let totalPrimalDelay = 0;
-        let currentPrimalInterval = barrage.delay || 0; // in seconds
+        let currentPrimalInterval = barrage.delay || 0;
 
         for (let i = 0; i < primalRepeatCount; i++) {
             const bulletFireTime = waveStartTime + totalPrimalDelay;
@@ -456,7 +436,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function fireWaveWithConstantDelay(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1) {
         const primalRepeatCount = (barrage.primal_repeat || 0) + 1;
-        const constantInterval = barrage.delay || 0; // in seconds
+        const constantInterval = barrage.delay || 0;
 
         for (let i = 0; i < primalRepeatCount; i++) {
             const bulletFireTime = waveStartTime + (i * constantInterval);
@@ -479,20 +459,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         const enemyGamePos = simEngine.getEntityGameCoords('enemy');
         let angleModifier;
         if (barrage.random_angle) {
-            angleModifier = (Math.random() - 0.5) * (bulletIndex * (barrage.delta_angle || 0) + (barrage.angle || 0));
+            // Game: random_angle randomizes pattern spread with full [-1, 1] range
+            angleModifier = (Math.random() * 2 - 1) * (bulletIndex * (barrage.delta_angle || 0) + (barrage.angle || 0));
         } else {
             angleModifier = bulletIndex * (barrage.delta_angle || 0) + (barrage.angle || 0);
         }
 
         // Shotgun emitter: weapon.random_angle uses weapon.angle as spread range
-        // Formula: random(angleRange) - angleRange/2  (uniform distribution)
         let weaponAngleSpread = 0;
         if (weapon.random_angle) {
             const angleRange = weapon.angle || 0;
             weaponAngleSpread = Math.random() * angleRange - angleRange / 2;
         }
 
-        // Task 2.2/2.5: For beam bullets, attach barrage delta_angle and use host position
+        // Beam bullets: attach sweep rate from barrage delta_angle
         let effectiveBulletInfo = bulletInfo;
         if (bulletInfo.type === 10) {
             effectiveBulletInfo = { ...bulletInfo, beam_delta_angle: barrage.delta_angle || 0 };
@@ -502,48 +482,46 @@ document.addEventListener('DOMContentLoaded', async () => {
         const isAirdrop = effectiveBulletInfo.extra_param?.airdrop;
         let airdropData = null;
 
-        // Task 2.5: Beam bullets skip airdrop and use host position
         if (effectiveBulletInfo.type === 10) {
+            // Beam bullets use host position directly
             finalX_game = startX_game;
             finalY_game = startY_game;
         } else if (isAirdrop) {
-            // Task 2.4: Enhanced bomb — random offset, target offset, target fix
+            // Bomb drop: calculate explode position with offsets
             const explodePos = { x: enemyGamePos.x, y: enemyGamePos.y };
 
-            // Random offset (game: randomOffsetX/Z from airdrop data)
-            const randomOffsetX = effectiveBulletInfo.extra_param.airdrop?.randomOffsetX || 0;
-            const randomOffsetZ = effectiveBulletInfo.extra_param.airdrop?.randomOffsetZ || 0;
+            const airdrop = effectiveBulletInfo.extra_param.airdrop;
+            const randomOffsetX = airdrop?.randomOffsetX || 0;
+            const randomOffsetZ = airdrop?.randomOffsetZ || 0;
             if (randomOffsetX) explodePos.x += (Math.random() - 0.5) * randomOffsetX;
             if (randomOffsetZ) explodePos.y += (Math.random() - 0.5) * randomOffsetZ;
 
-            // Target offset (fixed offset from target position)
-            const targetOffsetX = effectiveBulletInfo.extra_param.airdrop?.targetOffsetX || 0;
-            const targetOffsetZ = effectiveBulletInfo.extra_param.airdrop?.targetOffsetZ || 0;
+            const targetOffsetX = airdrop?.targetOffsetX || 0;
+            const targetOffsetZ = airdrop?.targetOffsetZ || 0;
             explodePos.x += targetOffsetX;
             explodePos.y += targetOffsetZ;
 
-            // Target fix (absolute coordinate override)
-            if (effectiveBulletInfo.extra_param.airdrop?.targetFixX !== undefined) {
-                explodePos.x = effectiveBulletInfo.extra_param.airdrop.targetFixX;
+            // Absolute coordinate override
+            if (airdrop?.targetFixX !== undefined) {
+                explodePos.x = airdrop.targetFixX;
             }
-            if (effectiveBulletInfo.extra_param.airdrop?.targetFixZ !== undefined) {
-                explodePos.y = effectiveBulletInfo.extra_param.airdrop.targetFixZ;
+            if (airdrop?.targetFixZ !== undefined) {
+                explodePos.y = airdrop.targetFixZ;
             }
 
             // Barrage priority: use barrage offsets as additional offset on target
-            if (barrage.offset_prioritise && effectiveBulletInfo.extra_param.airdrop?.barragePriority) {
+            if (barrage.offset_prioritise && airdrop?.barragePriority) {
                 const bOffsetX = (barrage.offset_x || 0) + bulletIndex * (barrage.delta_offset_x || 0);
                 const bOffsetZ = (barrage.offset_z || 0) + bulletIndex * (barrage.delta_offset_z || 0);
                 explodePos.x += bOffsetX;
                 explodePos.y += bOffsetZ;
             }
 
-            const gravity = effectiveBulletInfo.extra_param.gravity || -0.0005;
-            const offsetY = effectiveBulletInfo.extra_param.airdrop.offsetY || 0;
-            const dropOffset = effectiveBulletInfo.extra_param.airdrop.dropOffset;
+            const gravity = effectiveBulletInfo.extra_param?.gravity || -0.0005;
+            const offsetY = airdrop?.offsetY || 0;
+            const dropOffset = airdrop?.dropOffset;
             let horizontalOffset = 0;
             if (dropOffset) {
-                // Task 1.1: Use game speed convert (0.2) for airdrop velocity
                 const convertedVelocity = effectiveBulletInfo.velocity * 0.2;
                 horizontalOffset = Math.sqrt(Math.abs(offsetY * 2 / gravity)) * convertedVelocity;
                 if (direction < 0) horizontalOffset *= -1;
@@ -552,27 +530,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             finalY_game = explodePos.y + offsetY;
             airdropData = { explodePos, gravity, offsetY, horizontalOffset };
         } else {
-            // Task 1.9: Offsets are always additive (no rotation matrix)
-            // offset_prioritise only affects AIM ANGLE, not offset rotation
-            // Direction flips X-offset sign (game: offsetX * directionMultiplier)
+            // Standard bullet: additive offsets, direction flips X
             const offsetX = ((barrage.offset_x || 0) + (bulletIndex * (barrage.delta_offset_x || 0))) * direction;
             finalX_game = startX_game + offsetX;
             finalY_game = startY_game + (barrage.offset_z || 0) + (bulletIndex * (barrage.delta_offset_z || 0));
 
-            // Random launch offset: per-bullet position jitter
-            // Game formula: random() * value * 2 - value (range: -value to +value)
-            if (weapon.randomLaunchOffsetX) {
-                finalX_game += Math.random() * weapon.randomLaunchOffsetX * 2 - weapon.randomLaunchOffsetX;
+            // Per-bullet random position jitter (from bullet extra_param)
+            const rloX = effectiveBulletInfo.extra_param?.randomLaunchOffsetX;
+            const rloZ = effectiveBulletInfo.extra_param?.randomLaunchOffsetZ;
+            if (rloX) {
+                finalX_game += Math.random() * rloX * 2 - rloX;
             }
-            if (weapon.randomLaunchOffsetZ) {
-                finalY_game += Math.random() * weapon.randomLaunchOffsetZ * 2 - weapon.randomLaunchOffsetZ;
+            if (rloZ) {
+                finalY_game += Math.random() * rloZ * 2 - rloZ;
             }
         }
 
-        // Task 1.10: Fix AIM Type - compute aim angle from spawn to enemy
+        // AIM type: compute angle from spawn to enemy
         let finalAngle;
         if (weapon.aim_type === 1 && enemyGamePos) {
-            // Compute aim angle from spawn position to enemy
             const aimDx = enemyGamePos.x - finalX_game;
             const aimDy = enemyGamePos.y - finalY_game;
             const aimAngle = Math.atan2(aimDy, aimDx) * 180 / Math.PI;
@@ -590,7 +566,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             transformChain, shrapnelCallback: handleShrapnel, airdropData,
             weaponPos: { x: weaponScreenPos.x, y: weaponScreenPos.y },
             enemyTarget: enemyGamePos, aimType: weapon.aim_type,
-            // Task 1.13: Pass angleModifier as barrageAngle for acceleration flip logic
             barrageAngle: angleModifier
         });
     }
@@ -619,7 +594,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const skill = weaponSimData.getSkillById(skillId);
         if (!skill) return;
 
-        // Load weapon chunks for this skill's weapons
         await weaponSimData.ensureSkillWeaponsLoaded(skillId, currentSkillLevel);
 
         const levelToggleHtml = createLevelToggle(skillId);

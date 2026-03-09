@@ -7,21 +7,18 @@ export class BulletEngine {
         this.targetFps = options.targetFps || 30;
         this.gSpeed = options.gSpeed || 1.5;
 
-        // Config constants from BattleConfig
         // Game formula: velocity * (60/30 * 0.1) = velocity * 0.2
         this.bulletSpeedConvert = 0.2;
         this.bulletHeight = 1;
         this.gravity = -0.05;
-        // Game: BombDetonateHeight = 1.2 (gravity bullets detonate when altitude <= this)
+        // Gravity bullets detonate when altitude <= this (BattleConfig.BombDetonateHeight)
         this.bombDetonateHeight = 1.2;
 
         this.allBarrages = {};
         this.allBullets = {};
         this.activeBullets = new Set();
 
-        // Time tracking for entire engine
-        this.frameTime = 1000 / this.targetFps; // Target time per frame in ms
-        this.frameTimeSec = 1 / this.targetFps; // Target time per frame in seconds
+        this.frameTime = 1000 / this.targetFps;
 
         this.perspective = {
             enabled: false,
@@ -31,7 +28,8 @@ export class BulletEngine {
         };
 
         this.updateScale();
-        window.addEventListener('resize', () => this.updateScale());
+        this._resizeHandler = () => this.updateScale();
+        window.addEventListener('resize', this._resizeHandler);
     }
 
     setData(allBarrages, allBullets) {
@@ -97,7 +95,7 @@ export class BulletEngine {
         const bulletElement = document.createElement('div');
         bulletElement.className = 'bullet';
         if (bulletInfo.modle_ID) bulletElement.classList.add(bulletInfo.modle_ID);
-        // Bullet type visual classes
+
         const bulletTypeClasses = {
             2: 'bomb-bullet',
             3: 'torpedo-bullet',
@@ -115,7 +113,7 @@ export class BulletEngine {
         const startGamePos = this.screenToGame(startX, startY);
         const initialPos = this.gameToScreen(startGamePos.x, startGamePos.y);
 
-        // Task 2.2: Beam bullets get special sizing and transform origin
+        // Beam bullets: anchored position with sweep angle
         const isBeam = bulletInfo.type === 10;
         if (isBeam) {
             bulletElement.classList.add('beam-bullet');
@@ -147,7 +145,6 @@ export class BulletEngine {
         this.container.appendChild(bulletElement);
 
         // Initialize bullet state
-        // Task 1.1: velocity init without gSpeed (gSpeed applied as time-scale)
         const effectiveVelocity = bulletInfo.velocity + (bulletInfo.extra_param?.torpedoSpeedExtra || 0);
         let currentVelocity_perFrame = effectiveVelocity * this.bulletSpeedConvert;
         if (inheritSpeed !== null && inheritSpeed !== undefined) {
@@ -159,7 +156,6 @@ export class BulletEngine {
         const bullet = {
             x: startGamePos.x,
             y: startGamePos.y,
-            // Task 1.2: Store spawn position for straight-line range check
             spawnX: startGamePos.x,
             spawnY: startGamePos.y,
             velocity: currentVelocity_perFrame,
@@ -169,7 +165,6 @@ export class BulletEngine {
             bulletInfo: bulletInfo,
             element: bulletElement,
             aimType: aimType,
-            // Task 1.13: Store barrageAngle for acceleration flip logic
             barrageAngle: barrageAngle,
             transformChain: transformChain,
             airdropData: airdropData,
@@ -177,12 +172,10 @@ export class BulletEngine {
             enemyTarget: enemyTarget,
             shouldRemove: false,
             framesLived: 0,
-
-            // Time tracking
             timeElapsed: 0,
             lastFrameTime: performance.now(),
 
-            // Task 1.3: Range randomization uses half-width: range_offset * (random - 0.5)
+            // Range with randomization: range_offset * (random - 0.5)
             range: bulletInfo.range + (bulletInfo.range_offset || 0) * (Math.random() - 0.5),
 
             getBehavior: function (name) {
@@ -194,22 +187,21 @@ export class BulletEngine {
         bullet.behaviors.forEach(behavior => behavior.initialize());
         this.activeBullets.add(bullet);
 
-        // Animation loop with delta time
+        // Animation loop
         const animate = () => {
             const now = performance.now();
             const deltaTimeMs = now - bullet.lastFrameTime;
             bullet.lastFrameTime = now;
 
-            // Prevent zero/negative delta on first frame or tab switching
             const safeDeltaTimeMs = Math.max(deltaTimeMs, 1);
 
-            // Task 1.1: Apply gSpeed as time-scale multiplier
+            // gSpeed applied as time-scale multiplier
             const deltaMultiplier = (safeDeltaTimeMs / this.frameTime) * this.gSpeed;
             const deltaTimeSec = safeDeltaTimeMs / 1000;
 
-            // Update counters
             bullet.framesLived++;
-            bullet.timeElapsed += deltaTimeSec;
+            // Track game-time (not wall-clock): all behavior timing data is in game-seconds
+            bullet.timeElapsed += deltaTimeSec * this.gSpeed;
 
             const frameData = {
                 framesLived: bullet.framesLived,
@@ -222,12 +214,10 @@ export class BulletEngine {
                 y: bullet.y,
                 apexReached: false,
                 altitude: 0,
-                // Task 1.2: Use distanceFromSpawn instead of distanceTraveled
                 distanceFromSpawn: 0
             };
 
-            // Task 1.12: Transform is now in main update order (before movement)
-            // Task 2.1/2.2: Added missile (after airdrop) and beam (before transform)
+            // Behavior update order matches game engine priority
             const updateOrder = [
                 'gravity',
                 'airdrop',
@@ -261,13 +251,13 @@ export class BulletEngine {
             bullet.y = frameData.y;
             bullet.velocity = Math.sqrt(bullet.velocityX ** 2 + bullet.velocityY ** 2);
 
-            // Task 1.2: Calculate straight-line distance from spawn
+            // Straight-line distance from spawn for range checks
             const dx = bullet.x - bullet.spawnX;
             const dy = bullet.y - bullet.spawnY;
             bullet.distanceFromSpawn = Math.sqrt(dx * dx + dy * dy);
             frameData.distanceFromSpawn = bullet.distanceFromSpawn;
 
-            // Update emission behaviors (shrapnel only; transform moved to main loop)
+            // Shrapnel runs after main loop (emission behavior, not movement)
             const shrapnelBehavior = bullet.behaviors.get('shrapnel');
             if (shrapnelBehavior) {
                 const shrapnelResult = shrapnelBehavior.update(frameData);
@@ -284,11 +274,10 @@ export class BulletEngine {
             const scaledWidth = bulletWidth * screenPos.scale;
             const scaledHeight = bulletHeight * screenPos.scale;
 
-            // Altitude visual offset: gravity/missile bullets arc above the ground plane
-            // In the game, altitude is the Y-axis (height). We render it as upward screen offset.
+            // Altitude visual offset (gravity/missile bullets arc above ground plane)
             const altitudeOffset = (frameData.altitude || 0) * this.scale;
 
-            // Task 2.2: Beam-specific rendering (anchored position, sweep angle, lifetime)
+            // Beam rendering: anchored position with sweep angle
             const beamBehavior = bullet.behaviors.get('beam');
             if (beamBehavior && beamBehavior.enabled) {
                 const beamScreenPos = this.gameToScreen(bullet.x, bullet.y);
@@ -297,12 +286,10 @@ export class BulletEngine {
                 bulletElement.style.top = `${beamScreenPos.y - bulletHeight / 2}px`;
                 bulletElement.style.transform = `rotate(${angleDeg}deg)`;
 
-                // Beam lifetime check
                 if (bullet.timeElapsed >= beamBehavior.attackTime) {
                     bullet.shouldRemove = true;
                 }
             } else if (bulletInfo.extra_param?.dontRotate !== true) {
-                // Task 1.10: velocity direction IS the correct visual angle (no special aim_type override)
                 const visualAngle = Math.atan2(bullet.velocityY, bullet.velocityX) * 180 / Math.PI;
                 bulletElement.style.transform = `rotate(${visualAngle}deg) scale(${screenPos.scale * (frameData.bulletScale || 1)})`;
             } else {
@@ -314,10 +301,9 @@ export class BulletEngine {
                 bulletElement.style.zIndex = Math.floor(screenPos.depth * 0.1) + 5;
             }
 
-            // Task 2.2: Beam rendering already handled above; skip normal position update
+            // Skip normal position update for beam (already handled above)
             if (!(beamBehavior && beamBehavior.enabled)) {
                 bulletElement.style.left = `${screenPos.x - scaledWidth / 2}px`;
-                // Altitude lifts the bullet visually (negative = upward on screen)
                 bulletElement.style.top = `${screenPos.y - scaledHeight / 2 - altitudeOffset}px`;
             }
 
@@ -374,7 +360,7 @@ export class BulletEngine {
                 }
             }
 
-            // Gravity bullet shadow: show ground position when airborne
+            // Gravity bullet shadow when airborne (altitude > 1 screen pixel)
             if (altitudeOffset > 1) {
                 if (!bullet._shadowEl) {
                     bullet._shadowEl = document.createElement('div');
@@ -399,7 +385,6 @@ export class BulletEngine {
                 shrapnelBehavior.lastTimeSec > 0 &&
                 shrapnelBehavior.splitShrapnels.length > 0;
 
-            // Expiration: gravity bullets use height-based detonation, others use range
             const gravityBehavior = bullet.behaviors.get('gravity');
             const hasGravity = gravityBehavior?.hasGravity;
             const hasGravitation = bullet.behaviors.get('gravitation')?.enabled;
@@ -410,8 +395,7 @@ export class BulletEngine {
                 // Gravitation/SpaceLaser manage their own lifetime
                 rangeExpired = false;
             } else if (hasGravity) {
-                // Game: gravity bullets detonate when altitude <= BombDetonateHeight
-                // altitude starts positive (rising), gravity pulls it negative (falling to ground)
+                // Gravity bullets detonate when altitude falls below -bombDetonateHeight
                 rangeExpired = !isLingering && !hasLingeringCapability &&
                     bullet.framesLived > 3 && frameData.altitude <= -this.bombDetonateHeight;
             } else {
@@ -449,5 +433,10 @@ export class BulletEngine {
 
     clearAllBullets() {
         this.activeBullets.forEach(b => { b.shouldRemove = true; });
+    }
+
+    destroy() {
+        window.removeEventListener('resize', this._resizeHandler);
+        this.clearAllBullets();
     }
 }

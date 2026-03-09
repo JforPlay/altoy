@@ -1,3 +1,19 @@
+/**
+ * Bullet Behavior System
+ *
+ * Each behavior modifies bullet state per frame via update(frameData).
+ * Return conventions:
+ *   - null: no changes to apply
+ *   - { velocityX, velocityY }: override velocity
+ *   - { x, y, velocityX, velocityY }: override position + velocity (position-locking behaviors)
+ *   - { altitude, apexReached }: vertical state (gravity)
+ *   - { bulletScale }: visual scale (scale behavior)
+ *
+ * Primary behavior mutual exclusivity (game assigns exactly one):
+ *   acceleration > tracker > orbit > circle
+ * Independent behaviors: gravity, missile, beam, gravitation, scale, spaceLaser, shrapnel, transform
+ */
+
 class BulletBehavior {
     constructor(bullet, engine) {
         this.bullet = bullet;
@@ -5,7 +21,7 @@ class BulletBehavior {
     }
 
     initialize() { }
-    update(frameData) { }
+    update(frameData) { return null; }
     destroy() { }
 }
 
@@ -16,24 +32,28 @@ class StandardMovementBehavior extends BulletBehavior {
 
     update(frameData) {
         const delta = frameData.deltaMultiplier || 1;
-        const newX = frameData.x + frameData.velocityX * delta;
-        const newY = frameData.y + frameData.velocityY * delta;
-
-        return { x: newX, y: newY };
+        return {
+            x: frameData.x + frameData.velocityX * delta,
+            y: frameData.y + frameData.velocityY * delta
+        };
     }
 }
 
-// Game: BattleBulletUnit.AccelerateCheck
-//   Velocity += u            (speed magnitude change)
-//   Angle += v               (direction rotation, v in DEGREES per frame)
-//   Speed.x = Velocity * cos(Angle)
-//   Speed.z = Velocity * sin(Angle)
-//   if Velocity < 0: Velocity = -Velocity, flip all u signs
+/**
+ * Game: BattleBulletUnit.AccelerateCheck
+ *   Velocity += u            (speed magnitude change per frame)
+ *   Angle += v               (direction rotation, v in DEGREES per frame)
+ *   Speed = Velocity * (cos(Angle), sin(Angle))
+ *   if Velocity < 0: Velocity = -Velocity, flip all u signs
+ *
+ * Flip logic: when event.flip is set, negate v if barrageAngle is in (0°, 180°)
+ * to mirror patterns symmetrically.
+ */
 class AccelerationBehavior extends BulletBehavior {
     initialize() {
         const bulletInfo = this.bullet.bulletInfo;
         this.currentAccel = 0;
-        this.currentAngularVel = 0; // degrees per frame
+        this.currentAngularVel = 0;
         this.schedule = [];
 
         if (Array.isArray(bulletInfo.acceleration)) {
@@ -41,7 +61,7 @@ class AccelerationBehavior extends BulletBehavior {
                 let uVal = event.u || 0;
                 let vVal = event.v || 0;
 
-                // Task 1.13: Apply flip logic - negate v when barrageAngle % 360 is in (0, 180)
+                // Flip v for symmetric patterns based on barrage angle
                 if (event.flip && this.bullet.barrageAngle !== null && this.bullet.barrageAngle !== undefined) {
                     const normalizedAngle = ((this.bullet.barrageAngle % 360) + 360) % 360;
                     if (normalizedAngle > 0 && normalizedAngle < 180) {
@@ -66,6 +86,7 @@ class AccelerationBehavior extends BulletBehavior {
     }
 
     update(frameData) {
+        // Apply all events whose time has elapsed
         for (const event of this.schedule) {
             if (frameData.timeElapsed >= event.time) {
                 this.currentAccel = event.u;
@@ -73,29 +94,25 @@ class AccelerationBehavior extends BulletBehavior {
             }
         }
 
-        if (this.currentAccel === 0 && this.currentAngularVel === 0) return;
+        if (this.currentAccel === 0 && this.currentAngularVel === 0) return null;
 
         const delta = frameData.deltaMultiplier || 1;
 
-        // Derive current speed and angle from velocity components each frame
-        // (stays in sync with upstream behaviors that may modify velocity)
+        // Derive speed/angle from velocity each frame (stays in sync with upstream behaviors)
         let speed = Math.sqrt(frameData.velocityX ** 2 + frameData.velocityY ** 2);
         let angle = Math.atan2(frameData.velocityY, frameData.velocityX);
 
-        // Game: Velocity += u
         speed += this.currentAccel * delta;
 
-        // Game: if Velocity < 0 → bounce and flip all u signs
+        // Bounce: if speed goes negative, invert and flip all u signs
         if (speed < 0) {
             speed = -speed;
             this.schedule.forEach(e => e.u *= -1);
             this.currentAccel *= -1;
         }
 
-        // Game: Angle += v (v is in degrees per frame)
         angle += this.currentAngularVel * (Math.PI / 180) * delta;
 
-        // Game: Speed = Velocity * (cos(Angle), sin(Angle))
         return {
             velocityX: speed * Math.cos(angle),
             velocityY: speed * Math.sin(angle)
@@ -103,7 +120,11 @@ class AccelerationBehavior extends BulletBehavior {
     }
 }
 
-// Task 1.8: Fix Tracker with deadzone + angular speed using rotation matrix
+/**
+ * Homing tracker with deadzone and angular speed.
+ * Only turns when target is within tracking range and outside 10° deadzone.
+ * Uses rotation matrix for smooth turning.
+ */
 class TrackerBehavior extends BulletBehavior {
     initialize() {
         const bulletInfo = this.bullet.bulletInfo;
@@ -128,16 +149,14 @@ class TrackerBehavior extends BulletBehavior {
 
         this.enabled = true;
         this.trackRange = trackerData.tracker.range || 50;
-        // Store angular speed in radians per frame
         this.angularSpeed = (trackerData.tracker.angular || 3) * Math.PI / 180;
         this.target = this.bullet.enemyTarget;
         this.isTracking = false;
-        // Task 1.8: 10-degree deadzone threshold
-        this.deadzoneThreshold = Math.cos(10 * Math.PI / 180);
+        this.deadzoneThreshold = Math.cos(10 * Math.PI / 180); // 10° deadzone
     }
 
     update(frameData) {
-        if (!this.enabled || !this.target) return;
+        if (!this.enabled || !this.target) return null;
 
         const dx = this.target.x - frameData.x;
         const dy = this.target.y - frameData.y;
@@ -151,27 +170,23 @@ class TrackerBehavior extends BulletBehavior {
             }
 
             const speed = Math.sqrt(frameData.velocityX ** 2 + frameData.velocityY ** 2);
-            if (speed < 0.0001 || distance < 0.0001) return;
+            if (speed < 0.0001 || distance < 0.0001) return null;
 
-            // Normalize current velocity direction
             const dirX = frameData.velocityX / speed;
             const dirY = frameData.velocityY / speed;
 
-            // Normalize target direction
             const targetDirX = dx / distance;
             const targetDirY = dy / distance;
 
-            // Dot product to check deadzone
             const dot = dirX * targetDirX + dirY * targetDirY;
 
-            // Task 1.8: 10-degree deadzone - don't turn when already aligned
-            if (dot >= this.deadzoneThreshold) return;
+            // Within deadzone — already aligned, don't turn
+            if (dot >= this.deadzoneThreshold) return null;
 
-            // Cross product for turn direction (z component of 2D cross product)
+            // Cross product determines turn direction
             const cross = dirX * targetDirY - dirY * targetDirX;
             const turnDir = Math.sign(cross);
 
-            // Apply angular speed using rotation matrix
             const delta = frameData.deltaMultiplier || 1;
             const turnAngle = turnDir * this.angularSpeed * delta;
             const cosA = Math.cos(turnAngle);
@@ -185,12 +200,15 @@ class TrackerBehavior extends BulletBehavior {
             if (this.isTracking) {
                 this.isTracking = false;
             }
-            return;
+            return null;
         }
     }
 }
 
-// Task 1.6: Fix Orbit Logic - Two-Mode System with distance threshold
+/**
+ * Two-mode orbit: far from center → blend toward center, close → blend perpendicular.
+ * Distance threshold switches between modes.
+ */
 class OrbitBehavior extends BulletBehavior {
     initialize() {
         const orbitData = this.bullet.bulletInfo.acceleration?.find(a => a.orbit);
@@ -204,26 +222,25 @@ class OrbitBehavior extends BulletBehavior {
             this.bullet.weaponPos.x,
             this.bullet.weaponPos.y
         );
-        // Distance threshold for mode switching
         this.distanceThreshold = 10;
     }
 
     update(frameData) {
-        if (!this.enabled || !this.center) return;
+        if (!this.enabled || !this.center) return null;
 
         const dx = this.center.x - frameData.x;
         const dy = this.center.y - frameData.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < 0.001) return;
+        if (distance < 0.001) return null;
 
         const speed = Math.sqrt(frameData.velocityX ** 2 + frameData.velocityY ** 2);
-        if (speed < 0.0001) return;
+        if (speed < 0.0001) return null;
 
         let blendDirX, blendDirY;
 
         if (distance > this.distanceThreshold) {
-            // Far mode: blend toward-center direction with current velocity
+            // Far: blend toward-center with current velocity
             const towardX = dx / distance;
             const towardY = dy / distance;
             const velNormX = frameData.velocityX / speed;
@@ -231,7 +248,7 @@ class OrbitBehavior extends BulletBehavior {
             blendDirX = towardX + velNormX;
             blendDirY = towardY + velNormY;
         } else {
-            // Close mode: blend perpendicular-to-center with current velocity
+            // Close: blend perpendicular-to-center with current velocity
             const perpX = -dy / distance;
             const perpY = dx / distance;
             const velNormX = frameData.velocityX / speed;
@@ -240,9 +257,8 @@ class OrbitBehavior extends BulletBehavior {
             blendDirY = perpY + velNormY;
         }
 
-        // Normalize blended direction
         const blendLen = Math.sqrt(blendDirX * blendDirX + blendDirY * blendDirY);
-        if (blendLen < 0.0001) return;
+        if (blendLen < 0.0001) return null;
 
         return {
             velocityX: (blendDirX / blendLen) * speed,
@@ -251,7 +267,11 @@ class OrbitBehavior extends BulletBehavior {
     }
 }
 
-// Task 1.7: Fix Circle - Inverse Flag Oscillation
+/**
+ * Circular motion with centripetal speed and inverse flag oscillation.
+ * Uses convertedVelocity (not current speed) for rotation angle.
+ * Inverse flag flips when distance would go negative.
+ */
 class CircleBehavior extends BulletBehavior {
     initialize() {
         const circleData = this.bullet.bulletInfo.acceleration?.find(a => a.circle);
@@ -261,44 +281,39 @@ class CircleBehavior extends BulletBehavior {
         }
 
         this.enabled = true;
-        // Task 1.1: centripetalSpeed uses (1/viewFPS) instead of gSpeed
+        // centripetalSpeed uses (1/viewFPS) instead of gSpeed
         this.centripetalSpeed = (circleData.circle.centripetalSpeed || 0) / this.engine.targetFps;
         this.antiClockwise = circleData.circle.antiClockWise || false;
-        // Task 1.7: Inverse flag for spiral in/out
         this.inverseFlag = 1;
-        // Store converted velocity for rotation angle calculation
         this.convertedVelocity = this.bullet.bulletInfo.velocity * this.engine.bulletSpeedConvert;
 
-        // Center fallback: enemy target position, then bullet spawn position
+        // Center: enemy target > bullet spawn > explicit override
         if (this.bullet.enemyTarget) {
             this.center = { x: this.bullet.enemyTarget.x, y: this.bullet.enemyTarget.y };
         } else {
             this.center = { x: this.bullet.spawnX, y: this.bullet.spawnY };
         }
-        // Override with explicit center if provided
         if (circleData.circle.center) {
             this.center = circleData.circle.center;
         }
     }
 
     update(frameData) {
-        if (!this.enabled || !this.center) return;
+        if (!this.enabled || !this.center) return null;
 
         const dx = frameData.x - this.center.x;
         const dy = frameData.y - this.center.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < 0.001) return;
+        if (distance < 0.001) return null;
 
         const delta = frameData.deltaMultiplier || 1;
 
-        // Task 1.7: Check inverse flag oscillation
-        // If distance would go negative after applying centripetal movement, flip the flag
+        // Flip inverse flag if distance would go negative
         if (distance - this.centripetalSpeed * delta * this.inverseFlag < 0) {
             this.inverseFlag *= -1;
         }
 
-        // Use convertedVelocity (not current speed) for rotation angle
         const rotationAngle = (this.convertedVelocity / distance) * (this.antiClockwise ? 1 : -1) * delta;
         const cosA = Math.cos(rotationAngle);
         const sinA = Math.sin(rotationAngle);
@@ -306,7 +321,6 @@ class CircleBehavior extends BulletBehavior {
         const rotatedVelX = frameData.velocityX * cosA - frameData.velocityY * sinA;
         const rotatedVelY = frameData.velocityX * sinA + frameData.velocityY * cosA;
 
-        // Apply radial component based on centripetal speed and inverseFlag
         let finalVelX = rotatedVelX;
         let finalVelY = rotatedVelY;
 
@@ -323,11 +337,12 @@ class CircleBehavior extends BulletBehavior {
 
 // === VERTICAL BEHAVIORS ===
 
-// Task 1.5: Fix Gravity - Initial Vertical Speed
-// Game has two paths:
-//   BattleBulletUnit (FORWARD/generic): fixed arc, verticalSpeed = -0.5 * gravity * 60 / velocity
-//   BattleBombBulletUnit (AIM/targeted): arc tuned to land on enemy,
-//     flightTime = distance / velocity, verticalSpeed = (targetAlt - spawnAlt) / t - 0.5 * gravity * t
+/**
+ * Gravity: parabolic arc with two trajectory calculation paths.
+ *   Generic (BattleBulletUnit): fixed arc, verticalSpeed = -0.5 * gravity * 60 / velocity
+ *   Aimed (BattleBombBulletUnit): tuned to land on target,
+ *     flightTime = distance / velocity, verticalSpeed = targetAlt/t - 0.5*gravity*t
+ */
 class GravityBehavior extends BulletBehavior {
     initialize() {
         const bulletInfo = this.bullet.bulletInfo;
@@ -342,9 +357,8 @@ class GravityBehavior extends BulletBehavior {
         const hasHorizontalVelocity = Math.abs(Math.cos(this.bullet.angleRad)) > 0.001;
 
         if (this._tryAimedTrajectory(convertedVelocity)) {
-            // Aimed trajectory: vertical speed calculated to land on target
+            // Aimed trajectory set by _tryAimedTrajectory
         } else if (hasHorizontalVelocity && convertedVelocity > 0) {
-            // Generic formula (BattleBulletUnit): fixed arc
             this.verticalSpeed = -0.5 * this.gravity * 60 / convertedVelocity;
         } else {
             this.verticalSpeed = 0;
@@ -357,41 +371,37 @@ class GravityBehavior extends BulletBehavior {
      * Calculate aimed vertical speed so the parabolic arc lands on target.
      * Game: BattleBombBulletUnit.SetExplodePosition
      *   flightTime = horizontalDistance / convertedVelocity
-     *   verticalSpeed = (explodeY - spawnY) / t - 0.5 * gravity * t
-     * In simulator coords: altitude starts at 0, detonation at -bombDetonateHeight
+     *   verticalSpeed = (explodeAlt - spawnAlt) / t - 0.5 * gravity * t
+     * Altitude starts at 0; detonation triggers at -bombDetonateHeight.
      */
     _tryAimedTrajectory(convertedVelocity) {
         if (convertedVelocity <= 0) return false;
 
         let horizontalDistance = 0;
 
-        // Case 1: Airdrop bomb — distance from spawn to explode position
         if (this.bullet.airdropData?.explodePos) {
+            // Airdrop bomb: distance from spawn to explode position
             const dx = this.bullet.airdropData.explodePos.x - this.bullet.x;
             const dy = this.bullet.airdropData.explodePos.y - this.bullet.y;
             horizontalDistance = Math.sqrt(dx * dx + dy * dy);
-        }
-        // Case 2: aim_type=1 — distance from spawn to enemy
-        else if (this.bullet.aimType === 1 && this.bullet.enemyTarget) {
+        } else if (this.bullet.aimType === 1 && this.bullet.enemyTarget) {
+            // aim_type=1: distance from spawn to enemy
             const dx = this.bullet.enemyTarget.x - this.bullet.spawnX;
             const dy = this.bullet.enemyTarget.y - this.bullet.spawnY;
             horizontalDistance = Math.sqrt(dx * dx + dy * dy);
-        }
-        // Neither aimed nor airdrop → use generic formula
-        else {
+        } else {
             return false;
         }
 
         if (horizontalDistance < 0.01) return false;
 
         const flightTime = horizontalDistance / convertedVelocity;
-        // Target altitude = -bombDetonateHeight (bullet falls below ground plane to detonate)
         this.verticalSpeed = (-this.engine.bombDetonateHeight) / flightTime - 0.5 * this.gravity * flightTime;
         return true;
     }
 
     update(frameData) {
-        if (!this.hasGravity) return;
+        if (!this.hasGravity) return null;
 
         const delta = frameData.deltaMultiplier || 1;
         this.previousVerticalSpeed = this.verticalSpeed;
@@ -400,22 +410,27 @@ class GravityBehavior extends BulletBehavior {
 
         return {
             altitude: this.altitude,
-            // Task 1.5: Fix apexReached detection
             apexReached: this.previousVerticalSpeed > 0 && this.verticalSpeed <= 0
         };
     }
 }
 
+/**
+ * Marker behavior for airdrop bullets. Actual trajectory is handled by
+ * GravityBehavior._tryAimedTrajectory(). Kept so BehaviorFactory can detect airdrop bullets.
+ */
 class AirdropBehavior extends BulletBehavior {
-    // Airdrop vertical trajectory is now handled by GravityBehavior._tryAimedTrajectory().
-    // This behavior is kept as a marker so BehaviorFactory can detect airdrop bullets.
     initialize() { }
     update(frameData) { return null; }
 }
 
 // === SPECIAL UNIT BEHAVIORS ===
 
-// Task 2.1: MissileBehavior - Two-phase rise/dive (BattleMissileUnit)
+/**
+ * Missile: two-phase vertical trajectory (BattleMissileUnit).
+ * LAUNCH: rises with gravity until launchRiseTime elapsed.
+ * ATTACK: dives toward target with calculated velocity to arrive in fallTime.
+ */
 class MissileBehavior extends BulletBehavior {
     initialize() {
         const bulletInfo = this.bullet.bulletInfo;
@@ -432,7 +447,6 @@ class MissileBehavior extends BulletBehavior {
         this.fallTime = missileData.fallTime || 1.0;
         this.gravity = bulletInfo.extra_param.gravity || -0.05;
 
-        // Target position (enemy or fixed offset from spawn)
         this.explodePos = this.bullet.enemyTarget
             ? { x: this.bullet.enemyTarget.x, y: this.bullet.enemyTarget.y }
             : { x: this.bullet.spawnX + 30, y: this.bullet.spawnY };
@@ -462,7 +476,6 @@ class MissileBehavior extends BulletBehavior {
             this.verticalSpeed += this.gravity * delta;
             this.altitude += this.verticalSpeed * delta;
 
-            // Detonation when altitude drops below ground
             if (this.altitude <= 0 && frameData.timeElapsed > this.launchRiseTime + 0.1) {
                 this.bullet.shouldRemove = true;
             }
@@ -473,8 +486,11 @@ class MissileBehavior extends BulletBehavior {
         return null;
     }
 
+    /**
+     * Transition from LAUNCH to ATTACK: calculate dive velocity toward target.
+     * Speed = distance / (fallTime * targetFps) — in game-units-per-frame.
+     */
     _completeRise(frameData) {
-        // Calculate horizontal velocity to reach target in fallTime
         const dx = this.explodePos.x - frameData.x;
         const dy = this.explodePos.y - frameData.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -488,7 +504,6 @@ class MissileBehavior extends BulletBehavior {
             newVelY = (dy / distance) * speed;
         }
 
-        // Calculate vertical speed to descend from current altitude in fallTime
         const fallFrames = this.fallTime * this.engine.targetFps;
         if (fallFrames > 0) {
             this.verticalSpeed = -(this.altitude / fallFrames) - 0.5 * this.gravity * fallFrames;
@@ -502,7 +517,10 @@ class MissileBehavior extends BulletBehavior {
     }
 }
 
-// Task 2.2: BeamBehavior - Sweeping laser (BattleBeamUnit)
+/**
+ * Beam: sweeping laser anchored to host position (BattleBeamUnit).
+ * Sweeps at rate derived from barrage delta_angle. Expires after attackTime.
+ */
 class BeamBehavior extends BulletBehavior {
     initialize() {
         const bulletInfo = this.bullet.bulletInfo;
@@ -513,12 +531,10 @@ class BeamBehavior extends BulletBehavior {
 
         this.enabled = true;
         this.currentAngle = this.bullet.angleRad;
-        // Sweep rate from barrage delta_angle (passed via bulletInfo.beam_delta_angle)
         this.sweepRate = (bulletInfo.beam_delta_angle || 0) * Math.PI / 180;
         this.beamLength = bulletInfo.range || 50;
         this.attackTime = bulletInfo.extra_param?.attack_time || 3;
 
-        // Beam anchors to host position
         this.hostPos = this.bullet.weaponPos
             ? this.engine.screenToGame(this.bullet.weaponPos.x, this.bullet.weaponPos.y)
             : { x: this.bullet.spawnX, y: this.bullet.spawnY };
@@ -539,7 +555,10 @@ class BeamBehavior extends BulletBehavior {
     }
 }
 
-// Gravitation bullet (type 11): persistent area damage, position lock, periodic pulse
+/**
+ * Gravitation (type 11): persistent area damage with position lock.
+ * FALLING → ACTIVE (alert phase + pulse phase) → EXPIRED
+ */
 class GravitationBehavior extends BulletBehavior {
     initialize() {
         const bulletInfo = this.bullet.bulletInfo;
@@ -549,7 +568,7 @@ class GravitationBehavior extends BulletBehavior {
         }
 
         this.enabled = true;
-        this.state = 'FALLING'; // FALLING → ACTIVE → EXPIRED
+        this.state = 'FALLING';
         this.hitInterval = bulletInfo.hit_type?.interval || 0.2;
         this.alertDuration = bulletInfo.extra_param?.alert_duration || 0.5;
         this.pierceCount = bulletInfo.pierce_count || 5;
@@ -612,7 +631,9 @@ class GravitationBehavior extends BulletBehavior {
     }
 }
 
-// Scale bullet (type 15): growing collision box with speed reduction
+/**
+ * Scale (type 15): growing collision box with speed reduction during growth.
+ */
 class ScaleBehavior extends BulletBehavior {
     initialize() {
         const bulletInfo = this.bullet.bulletInfo;
@@ -646,7 +667,7 @@ class ScaleBehavior extends BulletBehavior {
                 this.isGrowing = false;
             }
 
-            // Speed reduction during growth: 50% of normal speed
+            // 50% speed during growth phase
             return {
                 velocityX: frameData.velocityX * 0.5,
                 velocityY: frameData.velocityY * 0.5,
@@ -658,7 +679,10 @@ class ScaleBehavior extends BulletBehavior {
     }
 }
 
-// Space Laser (type 14): column area weapon with precast and attack phases
+/**
+ * Space Laser (type 14): vertical column area weapon.
+ * PRECAST (narrow indicator) → ATTACK (full width) → DESTROY
+ */
 class SpaceLaserBehavior extends BulletBehavior {
     initialize() {
         const bulletInfo = this.bullet.bulletInfo;
@@ -668,7 +692,7 @@ class SpaceLaserBehavior extends BulletBehavior {
         }
 
         this.enabled = true;
-        this.state = 'PRECAST'; // PRECAST → ATTACK → DESTROY
+        this.state = 'PRECAST';
         this.attackTime = bulletInfo.extra_param?.attack_time || 3;
         this.hitInterval = bulletInfo.hit_type?.interval || 0.5;
         this.precastTime = bulletInfo.extra_param?.precast_time || 0.5;
@@ -715,6 +739,12 @@ class SpaceLaserBehavior extends BulletBehavior {
 
 // === EMISSION BEHAVIORS ===
 
+/**
+ * Shrapnel: child bullet emission system.
+ * - trailingShrapnels: fire during flight on a timer (initialSplit=true)
+ * - splitShrapnels: fire at range/apex/destruction (initialSplit=false)
+ * - lastTimeSec > 0: linger in place before splitting
+ */
 class ShrapnelBehavior extends BulletBehavior {
     initialize() {
         const bulletInfo = this.bullet.bulletInfo;
@@ -762,12 +792,11 @@ class ShrapnelBehavior extends BulletBehavior {
     }
 
     update(frameData) {
-        // If already lingering, keep bullet fixed
+        // Lingering: keep bullet fixed until lastTimeSec elapses, then split
         if (this.isLingering) {
             const lingeringDuration = frameData.timeElapsed - this.lingeringStartTime;
 
             if (lingeringDuration < this.lastTimeSec) {
-                // Still lingering
                 return {
                     velocityX: 0,
                     velocityY: 0,
@@ -777,11 +806,11 @@ class ShrapnelBehavior extends BulletBehavior {
             } else {
                 this.triggerSplit(frameData);
                 this.bullet.shouldRemove = true;
-                return;
+                return null;
             }
         }
 
-        // Time-based scheduling for trailing shrapnel
+        // Time-based trailing shrapnel emission
         this.trailingShrapnels.forEach(shrapnel => {
             while (shrapnel.shotsFired < shrapnel.totalShots &&
                 frameData.timeElapsed >= shrapnel.nextShotTime) {
@@ -789,13 +818,13 @@ class ShrapnelBehavior extends BulletBehavior {
 
                 shrapnel.shotsFired++;
                 let interval = shrapnel.currentInterval;
-                if (interval <= 0) interval = 1 / this.engine.targetFps; // Minimum one frame
+                if (interval <= 0) interval = 1 / this.engine.targetFps;
                 shrapnel.nextShotTime += interval;
                 shrapnel.currentInterval += shrapnel.delta_interval;
             }
         });
 
-        // Task 2.3: Apex-triggered split: gravity bullets split at highest point
+        // Apex-triggered split: gravity bullets split at highest point
         if (!this.triggered && !this.rangeReached && frameData.apexReached) {
             const gravityBehavior = this.bullet.getBehavior('gravity');
             if (gravityBehavior && gravityBehavior.hasGravity && this.splitShrapnels.length > 0) {
@@ -808,12 +837,12 @@ class ShrapnelBehavior extends BulletBehavior {
                 } else {
                     this.triggerSplit(frameData);
                     this.bullet.shouldRemove = true;
-                    return;
+                    return null;
                 }
             }
         }
 
-        // Task 1.2: Check range using distanceFromSpawn
+        // Range-triggered split
         if (!this.rangeReached && !this.triggered) {
             if (frameData.distanceFromSpawn >= this.originalRange) {
                 this.rangeReached = true;
@@ -829,12 +858,12 @@ class ShrapnelBehavior extends BulletBehavior {
                 } else {
                     this.triggerSplit(frameData);
                     this.bullet.shouldRemove = true;
-                    return;
+                    return null;
                 }
             }
         }
 
-        return undefined;
+        return null;
     }
 
     _startLingering(frameData) {
@@ -926,7 +955,11 @@ class ShrapnelBehavior extends BulletBehavior {
     }
 }
 
-// Task 1.12: Fix Transform - Modify existing bullet angle mid-flight with accumulated delays
+/**
+ * Transform: modify bullet angle mid-flight at scheduled times.
+ * Each transform in the chain fires once when its accumulated delay elapses.
+ * Can aim at a fixed angle or toward a position (offset_prioritise).
+ */
 class TransformBehavior extends BulletBehavior {
     initialize() {
         this.transforms = [];
@@ -983,24 +1016,25 @@ class TransformBehavior extends BulletBehavior {
 
 // === BEHAVIOR FACTORY ===
 
-// Task 1.4: Behavior Mutual Exclusivity
-// Game assigns exactly ONE primary behavior: accel > tracker > orbit > circle
-// Gravity is always separate, movement is always created
-// Shrapnel, transform, airdrop are independent
+/**
+ * Behavior mutual exclusivity (game rule):
+ *   Primary: acceleration > tracker > orbit > circle (exactly ONE)
+ *   Gravity is always separate (independent vertical system)
+ *   Movement is always created
+ *   Shrapnel, transform, airdrop are independent
+ */
 export class BehaviorFactory {
     static createBehaviors(bullet, engine) {
         const behaviors = new Map();
         const bulletInfo = bullet.bulletInfo;
 
-        // Movement is always created
         behaviors.set('movement', new StandardMovementBehavior(bullet, engine));
 
         if (bulletInfo.acceleration) {
             const accelData = bulletInfo.acceleration;
             const isArray = Array.isArray(accelData);
 
-            // Determine which ONE primary behavior to create based on priority:
-            // acceleration > tracker > orbit > circle
+            // Determine which ONE primary behavior to create (priority order)
             let primaryBehaviorSet = false;
 
             if (isArray) {
@@ -1040,48 +1074,47 @@ export class BehaviorFactory {
             }
         }
 
-        // Task 2.2: Beam behavior for bullet type 10
+        // Beam (type 10)
         if (bulletInfo.type === 10) {
             behaviors.set('beam', new BeamBehavior(bullet, engine));
         }
 
-        // Gravitation bullet (type 11): persistent area damage
+        // Gravitation (type 11): persistent area damage
         if (bulletInfo.type === 11) {
             behaviors.set('gravitation', new GravitationBehavior(bullet, engine));
         }
 
-        // Scale bullet (type 15): growing collision box
+        // Scale (type 15): growing collision box
         if (bulletInfo.type === 15) {
             behaviors.set('scale', new ScaleBehavior(bullet, engine));
         }
 
-        // Space Laser (type 14): column area weapon
+        // Space Laser (type 14)
         if (bulletInfo.type === 14) {
             behaviors.set('spaceLaser', new SpaceLaserBehavior(bullet, engine));
         }
 
-        // Task 2.1: Missile behavior (supersedes gravity — manages its own vertical physics)
+        // Missile (supersedes gravity — manages its own vertical physics)
         if (bulletInfo.extra_param?.missile) {
             behaviors.set('missile', new MissileBehavior(bullet, engine));
         }
 
-        // Gravity is always created if present (separate vertical system)
-        // but NOT when missile is active (missile manages its own vertical physics)
+        // Gravity (independent vertical system, but NOT when missile is active)
         if (bulletInfo.extra_param?.gravity && !bulletInfo.extra_param?.missile) {
             behaviors.set('gravity', new GravityBehavior(bullet, engine));
         }
 
-        // Airdrop is independent
+        // Airdrop (independent marker)
         if (bullet.airdropData) {
             behaviors.set('airdrop', new AirdropBehavior(bullet, engine));
         }
 
-        // Shrapnel is independent
+        // Shrapnel (independent emission)
         if (bulletInfo.extra_param?.shrapnel) {
             behaviors.set('shrapnel', new ShrapnelBehavior(bullet, engine));
         }
 
-        // Transform is independent
+        // Transform (independent mid-flight angle change)
         if (bullet.transformChain && bullet.transformChain.length > 0) {
             behaviors.set('transform', new TransformBehavior(bullet, engine));
         }

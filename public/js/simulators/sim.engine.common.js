@@ -11,8 +11,7 @@ export class SimulationEngine {
         this.gameCoords = options.gameCoords;
         this.targetFps = options.targetFps || 30;
         this.gSpeed = options.gSpeed || 1;
-        this.bulletSpeedConvert = 0.1;
-        
+
         // Data stores
         this.allBarrageData = {};
         this.allBulletData = {};
@@ -261,6 +260,9 @@ export class SimulationEngine {
     }
 
     destroy() {
+        if (this.bulletEngine) {
+            this.bulletEngine.destroy();
+        }
         if (this.oceanBackground) {
             this.oceanBackground.destroy();
         }
