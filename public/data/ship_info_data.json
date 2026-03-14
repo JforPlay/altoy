@@ -45653,8 +45653,8 @@
         "timer": "00:55:00",
         "light": false,
         "heavy": false,
-        "special": false,
-        "limited": true
+        "special": true,
+        "limited": false
     },
     {
         "id": 631,
@@ -51376,9 +51376,9 @@
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205140/shipyard.png",
         "timer": "04:10:00",
         "light": false,
-        "heavy": false,
+        "heavy": true,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 138,
@@ -52090,10 +52090,10 @@
         "skin_id": 206020,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/206020/shipyard.png",
         "timer": "02:10:00",
-        "light": false,
+        "light": true,
         "heavy": false,
         "special": false,
-        "limited": true
+        "limited": false
     },
     {
         "id": 142,
@@ -54371,9 +54371,9 @@
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207070/shipyard.png",
         "timer": "04:35:00",
         "light": false,
-        "heavy": false,
-        "special": false,
-        "limited": true
+        "heavy": true,
+        "special": true,
+        "limited": false
     },
     {
         "id": 459,
@@ -107269,8 +107269,8 @@
         ],
         "skin_id": 502120,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502120/shipyard.png",
-        "timer": null,
-        "light": false,
+        "timer": "00:40:00",
+        "light": true,
         "heavy": false,
         "special": false,
         "limited": false
@@ -107441,8 +107441,8 @@
         "skin_id": 503010,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503010/shipyard.png",
         "timer": "01:30:00",
-        "light": true,
-        "heavy": false,
+        "light": false,
+        "heavy": true,
         "special": false,
         "limited": false
     },
@@ -107611,8 +107611,8 @@
         ],
         "skin_id": 503020,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/503020/shipyard.png",
-        "timer": null,
-        "light": false,
+        "timer": "01:30:00",
+        "light": true,
         "heavy": false,
         "special": false,
         "limited": false
@@ -111173,11 +111173,11 @@
         ],
         "skin_id": 602040,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602040/shipyard.png",
-        "timer": null,
+        "timer": "01:26:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 414,
@@ -113512,11 +113512,11 @@
         ],
         "skin_id": 605090,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605090/shipyard.png",
-        "timer": null,
+        "timer": "04:15:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 502,
@@ -117050,11 +117050,11 @@
         ],
         "skin_id": 701130,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701130/shipyard.png",
-        "timer": null,
+        "timer": "00:41:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 262,
@@ -118669,11 +118669,11 @@
         ],
         "skin_id": 702090,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702090/shipyard.png",
-        "timer": null,
+        "timer": "01:20:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 730,
@@ -119374,11 +119374,11 @@
         ],
         "skin_id": 703030,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703030/shipyard.png",
-        "timer": null,
+        "timer": "04:00:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 437,
@@ -122489,7 +122489,7 @@
         ],
         "skin_id": 801050,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/801050/shipyard.png",
-        "timer": "0:26:00",
+        "timer": "00:26:00",
         "light": false,
         "heavy": false,
         "special": false,
@@ -141657,11 +141657,11 @@
         ],
         "skin_id": 9705100,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705100/shipyard.png",
-        "timer": null,
+        "timer": "04:10:00",
         "light": false,
         "heavy": false,
         "special": false,
-        "limited": false
+        "limited": true
     },
     {
         "id": 30006,
