@@ -58,6 +58,9 @@ def process_azur_lane_data():
 
                     if "workload" in item_data and item_data["workload"] == 999999:
                             continue  # Skip this formula
+
+                    if not item_data.get("item_id"):
+                            continue  # Skip placeholder recipes with no valid item
                     
                     # Get the required fields
                     formula_id = item_data.get("id")

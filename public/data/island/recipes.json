@@ -4966,51 +4966,6 @@
       "collectable_vfx": 0,
       "commission_cost": [
         [
-          1,
-          5000
-        ],
-        [
-          2001,
-          63
-        ]
-      ],
-      "commission_product": [],
-      "cost": [
-        [
-          1,
-          5000
-        ],
-        [
-          2001,
-          63
-        ]
-      ],
-      "drop_display": [],
-      "harvest_vfx": 0,
-      "hitpoint": 0,
-      "id": 7530201,
-      "is_condition": 0,
-      "item_id": 0,
-      "name": "옥수수 컵",
-      "production_limit": 1,
-      "pt_award": 0,
-      "second_product": [],
-      "second_product_display": [],
-      "ship_exp": 60,
-      "stamina_cost": 12,
-      "task_filiter": "",
-      "unitid": "",
-      "unlock_type": 37530201,
-      "vfx_offset": "",
-      "workload": 36000
-    },
-    {
-      "affected_vfx": "",
-      "affected_vfx_offset": "",
-      "attribute": 4,
-      "collectable_vfx": 0,
-      "commission_cost": [
-        [
           4007,
           1
         ]
