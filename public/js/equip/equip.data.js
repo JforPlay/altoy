@@ -13,7 +13,7 @@ export function setup(stateRef) {
 }
 
 // Data version — bump to invalidate IndexedDB cache after data updates
-const DATA_VERSION = 2;
+const DATA_VERSION = '1.0.1';
 
 // ===== Data Loading =====
 
