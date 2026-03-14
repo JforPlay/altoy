@@ -1,103 +1,103 @@
-@import url('../theme.css');
+/* Simulator UI uses skin.common.css design tokens (imported by Astro page) */
 
-/* Modern Reset and Base Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* ===== PAGE LAYOUT ===== */
 
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  color: #eaeaea;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* Header Section */
-h1 {
-  text-align: center;
-  padding: 2rem 1rem 1rem;
-  font-size: 2.5rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-/* Main Container - Full Width Layout */
-#simulation-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  max-width: 1800px;
+.sim-page {
+  max-width: 75rem;
   margin: 0 auto;
-  padding: 0 1rem 2rem;
+  padding: 0 var(--spacing-md) var(--spacing-xl);
 }
 
-/* Simulation Container - Full Width */
+.sim-page .page-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sim-page .page-title .material-symbols-outlined {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+}
+
+/* ===== SIMULATION CANVAS (game-specific) ===== */
+
 #simulation-container {
   width: 100%;
   height: auto;
   aspect-ratio: 200 / 55;
   background: linear-gradient(180deg, #0a0e27 0%, #1a1a2e 100%);
-  border: 2px solid rgba(102, 126, 234, 0.3);
-  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-lg);
 }
 
-/* Ocean Background */
 .ocean-background {
   z-index: 0 !important;
   pointer-events: none !important;
 }
 
-/* Player Area */
 #player-area {
   position: absolute;
   background-color: rgba(70, 90, 120, 0.15);
   height: auto;
   z-index: 1;
   pointer-events: none;
-  border-right: 1px dashed rgba(102, 126, 234, 0.2);
+  border-right: 1px dashed var(--primary-alpha-20);
 }
 
-/* Entity Positioning */
-#vanguard,
-#mainfleet,
-#enemy {
+#vanguard, #mainfleet, #enemy {
   position: absolute;
   height: auto;
   z-index: 10;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 4px 8px var(--overlay-medium));
 }
+#vanguard { aspect-ratio: 226 / 178; }
+#mainfleet { aspect-ratio: 253 / 195; }
+#enemy { aspect-ratio: 300 / 369; }
 
-#vanguard {
-  aspect-ratio: 226 / 178;
-}
-#mainfleet {
-  aspect-ratio: 253 / 195;
-}
-#enemy {
-  aspect-ratio: 300 / 369;
-}
-
-#vanguard img,
-#mainfleet img,
-#enemy img {
+#vanguard img, #mainfleet img, #enemy img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-/* Bullets */
+#fps-display {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--overlay-heavy);
+  color: #0f0;
+  padding: 4px 8px;
+  font-family: monospace;
+  font-size: 12px;
+  z-index: 100;
+  border-radius: var(--radius-sm);
+}
+
+#visual-log {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  color: #fff;
+  font-family: monospace;
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 100;
+  background: var(--overlay-strong);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(4px);
+}
+
+/* ===== BULLETS (game-specific visuals) ===== */
+
 .bullet {
   background: linear-gradient(135deg, #ffd93d 0%, #fcbf49 100%);
   position: absolute;
@@ -106,58 +106,48 @@ h1 {
   z-index: 5;
 }
 
-/* Beam bullet (type 10): sweeping laser */
 .bullet.beam-bullet {
-  background: linear-gradient(90deg,
-    rgba(255, 100, 100, 0.95),
-    rgba(255, 180, 80, 0.6),
-    rgba(255, 200, 100, 0.2));
+  background: linear-gradient(90deg, rgba(255,100,100,0.95), rgba(255,180,80,0.6), rgba(255,200,100,0.2));
   border-radius: 2px;
   opacity: 0.85;
   box-shadow: 0 0 12px rgba(255, 100, 100, 0.5);
   pointer-events: none;
 }
 
-/* Gravity bullet shadow — ground position marker */
 .bullet-shadow {
   position: absolute;
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--overlay-medium);
   border-radius: 50%;
   pointer-events: none;
   z-index: 1;
 }
 
-/* Bomb bullet (type 2) */
 .bullet.bomb-bullet {
-  background: radial-gradient(circle, rgba(255, 100, 50, 0.9) 40%, rgba(200, 50, 0, 0.5) 100%);
+  background: radial-gradient(circle, rgba(255,100,50,0.9) 40%, rgba(200,50,0,0.5) 100%);
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(255, 100, 50, 0.6);
 }
 
-/* Torpedo bullet (type 3) */
 .bullet.torpedo-bullet {
   background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
   border-radius: 50% 50% 30% 30%;
   box-shadow: 0 0 8px #74b9ff, 0 0 16px rgba(116, 185, 255, 0.4);
 }
 
-/* Shrapnel bullet (type 4) */
 .bullet.shrapnel-bullet {
   background: linear-gradient(135deg, #ff9f43 0%, #ee5a24 100%);
   border-radius: 1px;
   box-shadow: 0 0 8px rgba(255, 159, 67, 0.5);
 }
 
-/* Missile bullet (type 5) */
 .bullet.missile-bullet {
   background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%);
   border-radius: 3px 3px 1px 1px;
   box-shadow: 0 0 8px rgba(255, 200, 100, 0.4), 0 2px 4px rgba(255, 100, 0, 0.3);
 }
 
-/* Gravitation bullet (type 11): persistent area */
 .bullet.gravitation-bullet {
-  background: radial-gradient(circle, rgba(128, 0, 255, 0.6) 0%, rgba(128, 0, 255, 0.1) 70%, transparent 100%);
+  background: radial-gradient(circle, rgba(128,0,255,0.6) 0%, rgba(128,0,255,0.1) 70%, transparent 100%);
   border-radius: 50%;
   box-shadow: 0 0 20px rgba(128, 0, 255, 0.4);
   pointer-events: none;
@@ -168,599 +158,733 @@ h1 {
 }
 
 @keyframes gravitationPulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(128, 0, 255, 0.4); }
-  50% { box-shadow: 0 0 40px rgba(128, 0, 255, 0.8), 0 0 60px rgba(128, 0, 255, 0.3); }
+  0%, 100% { box-shadow: 0 0 20px rgba(128,0,255,0.4); }
+  50% { box-shadow: 0 0 40px rgba(128,0,255,0.8), 0 0 60px rgba(128,0,255,0.3); }
 }
 
-/* Scale bullet (type 15): growing projectile */
 .bullet.scale-bullet {
-  background: radial-gradient(circle, rgba(255, 200, 50, 0.9) 30%, rgba(255, 120, 0, 0.6) 70%, transparent 100%);
+  background: radial-gradient(circle, rgba(255,200,50,0.9) 30%, rgba(255,120,0,0.6) 70%, transparent 100%);
   border-radius: 50%;
   box-shadow: 0 0 15px rgba(255, 200, 50, 0.5), 0 0 30px rgba(255, 120, 0, 0.3);
 }
 
-/* Space Laser (type 14): vertical column */
-.bullet.space-laser-bullet {
-  pointer-events: none;
-  border-radius: 0;
-}
-
+.bullet.space-laser-bullet { pointer-events: none; border-radius: 0; }
 .bullet.space-laser-bullet.space-laser-precast {
-  background: linear-gradient(180deg,
-    rgba(255, 255, 100, 0.1) 0%,
-    rgba(255, 255, 100, 0.3) 50%,
-    rgba(255, 255, 100, 0.1) 100%);
+  background: linear-gradient(180deg, rgba(255,255,100,0.1) 0%, rgba(255,255,100,0.3) 50%, rgba(255,255,100,0.1) 100%);
   box-shadow: none;
   animation: laserPrecast 0.3s ease-in-out infinite;
 }
-
 .bullet.space-laser-bullet.space-laser-active {
-  background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(255, 100, 100, 0.3) 20%,
-    rgba(255, 200, 100, 0.8) 50%,
-    rgba(255, 100, 100, 0.3) 80%,
-    transparent 100%);
-  box-shadow: 0 0 30px rgba(255, 200, 100, 0.6), 0 0 60px rgba(255, 100, 100, 0.3);
+  background: linear-gradient(90deg, transparent 0%, rgba(255,100,100,0.3) 20%, rgba(255,200,100,0.8) 50%, rgba(255,100,100,0.3) 80%, transparent 100%);
+  box-shadow: 0 0 30px rgba(255,200,100,0.6), 0 0 60px rgba(255,100,100,0.3);
 }
+@keyframes laserPrecast { 0%,100% { opacity: 0.3; } 50% { opacity: 0.7; } }
 
-@keyframes laserPrecast {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.7; }
-}
-
-/* Aircraft Entity */
-.aircraft-entity {
-  width: 20px;
-  height: 20px;
-  pointer-events: none;
-}
-
-/* Fallback CSS shape when no icon image */
+/* Aircraft */
+.aircraft-entity { width: 20px; height: 20px; pointer-events: none; }
 .aircraft-entity:not(.has-icon) {
-  background: radial-gradient(ellipse at 60% 40%,
-    rgba(200, 230, 255, 0.95) 20%,
-    rgba(140, 180, 220, 0.7) 50%,
-    rgba(100, 150, 200, 0.3) 80%,
-    transparent 100%);
+  background: radial-gradient(ellipse at 60% 40%, rgba(200,230,255,0.95) 20%, rgba(140,180,220,0.7) 50%, rgba(100,150,200,0.3) 80%, transparent 100%);
   border-radius: 40% 40% 30% 30%;
 }
-
 .aircraft-entity:not(.has-icon)::before {
-  content: '';
-  position: absolute;
-  top: 35%;
-  left: -30%;
-  width: 160%;
-  height: 30%;
-  background: rgba(180, 210, 240, 0.5);
-  border-radius: 50%;
+  content: ''; position: absolute; top: 35%; left: -30%; width: 160%; height: 30%;
+  background: rgba(180, 210, 240, 0.5); border-radius: 50%;
 }
-
 .aircraft-entity:not(.has-icon)::after {
-  content: '';
-  position: absolute;
-  top: 60%;
-  left: 25%;
-  width: 50%;
-  height: 20%;
-  background: rgba(160, 200, 230, 0.4);
-  border-radius: 0 0 50% 50%;
+  content: ''; position: absolute; top: 60%; left: 25%; width: 50%; height: 20%;
+  background: rgba(160, 200, 230, 0.4); border-radius: 0 0 50% 50%;
 }
+.aircraft-entity.has-icon { width: 40px; height: 40px; overflow: visible; }
+.aircraft-entity .aircraft-icon { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 
-/* Actual aircraft icon image */
-.aircraft-entity.has-icon {
-  width: 40px;
-  height: 40px;
-  overflow: visible;
-}
+/* ===== PLAYBACK BAR ===== */
 
-.aircraft-entity .aircraft-icon {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  pointer-events: none;
-}
-
-/* Visual Log */
-#visual-log {
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  color: #fff;
-  font-family: "Courier New", monospace;
-  font-size: 13px;
-  pointer-events: none;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  z-index: 1000;
-  opacity: 0.9;
-  background: var(--overlay-strong);
-  padding: 8px 12px;
-  border-radius: 6px;
-  backdrop-filter: blur(4px);
-}
-
-/* Controls Section - Positioned below simulator, above stats */
-.controls {
+.playback-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin: 0 auto;
-  padding: 20px;
-  background: linear-gradient(
-    135deg,
-    rgba(42, 48, 49, 0.8) 0%,
-    rgba(26, 32, 34, 0.8) 100%
-  );
-  border-radius: 16px;
-  border: 2px solid rgba(102, 126, 234, 0.2);
-  max-width: 1800px;
-  width: 100%;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-top: var(--spacing-sm);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
   flex-wrap: wrap;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  order: 2; /* Ensure it comes after simulator */
-  position: relative;
-  z-index: 20;
 }
 
-.controls label {
-  font-weight: 500;
-  color: #a2d2ff;
-  font-size: 15px;
+.bar-separator {
+  width: 1px;
+  height: 28px;
+  background: var(--border-color);
+  margin: 0 var(--spacing-xs);
 }
 
-.control-group {
-  display: flex;
+/* Buttons */
+.btn {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  width: 100%; /* Allows the group to expand */
-  max-width: 600px;
-}
-
-/* Modern Button Styles */
-button {
-  height: 48px;
-  padding: 0 28px; /* Adjust padding */
-  font-size: 16px;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  border: none;
-  border-radius: 10px;
-  transition: all var(--transition-slow);
-  position: relative;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  font-family: inherit;
+  line-height: 1;
+}
+
+.btn .material-symbols-outlined { font-size: 18px; }
+
+.btn-primary {
+  background: var(--primary-color);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+.btn-secondary:hover {
+  background: var(--bg-input);
+  border-color: var(--primary-color);
+}
+
+.btn-secondary.centered {
+  background: var(--warning-color);
+  color: #fff;
+  border-color: var(--warning-color);
+}
+
+.btn-icon {
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+  padding: 8px;
+}
+.btn-icon:hover {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+.btn-outline:hover {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  background: var(--primary-alpha-10);
+}
+
+/* Speed Control */
+.speed-control {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
-button::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: var(--highlight-medium);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-button:hover::before {
-  width: 300px;
-  height: 300px;
-}
-
-button:active {
-  transform: scale(0.95);
-}
-
-/* Fire Button */
-#fire-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
-  position: relative;
-  z-index: 1001;
-}
-
-#fire-button:hover {
-  box-shadow: 0 6px 24px rgba(102, 126, 234, 0.6);
-  transform: translateY(-2px);
-}
-
-/* Enemy Toggle Button */
-#enemy-toggle {
-  background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
-  color: white;
-  box-shadow: 0 4px 16px rgba(0, 184, 148, 0.4);
-  position: relative;
-  z-index: 1001;
-}
-
-#enemy-toggle:hover {
-  box-shadow: 0 6px 24px rgba(0, 184, 148, 0.6);
-  transform: translateY(-2px);
-}
-
-#enemy-toggle.centered {
-  background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
-  box-shadow: 0 4px 16px rgba(253, 203, 110, 0.4);
-}
-
-#enemy-toggle.centered:hover {
-  box-shadow: 0 6px 24px rgba(253, 203, 110, 0.6);
-}
-
-/* Stats Panel - Moved Below Controls */
-#stats-panel {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px;
-  background: linear-gradient(
-    135deg,
-    rgba(42, 48, 49, 0.95) 0%,
-    rgba(26, 32, 34, 0.95) 100%
-  );
-  border: 2px solid rgba(102, 126, 234, 0.3);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  order: 3; /* Ensure it comes after controls */
-}
-
-#stats-panel h2 {
-  margin: 0 0 20px 0;
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: 600;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-#stats-content {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* Two Column Layout for Skill Info */
-.stats-two-column {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 24px;
-  margin: 16px 0;
-}
-
-.stats-column-left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.stats-column-right {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-#stats-content p {
-  margin: 0;
+.speed-btn {
   padding: 8px 12px;
-  background: var(--highlight-subtle);
-  border-radius: 8px;
-  border-left: 3px solid rgba(102, 126, 234, 0.5);
-  transition: all var(--transition-slow);
-}
-
-#stats-content p:hover {
-  background: var(--highlight-subtle);
-  border-left-color: #667eea;
-  transform: translateX(4px);
-}
-
-#stats-content strong {
-  color: #a2d2ff;
+  font-size: 13px;
   font-weight: 600;
-  margin-right: 8px;
-}
-
-#stats-content hr {
-  border: none;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(102, 126, 234, 0.3),
-    transparent
-  );
-  margin: 16px 0;
-  grid-column: 1 / -1;
-}
-
-/* Shipgirl Info Section - Enhanced and Larger */
-.shipgirl-info-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 24px;
-  background: linear-gradient(
-    135deg,
-    rgba(102, 126, 234, 0.15) 0%,
-    rgba(118, 75, 162, 0.15) 100%
-  );
-  border-radius: 16px;
   cursor: pointer;
-  transition: all var(--transition-slow);
-  border: 2px solid rgba(102, 126, 234, 0.3);
-  width: 100%;
+  border: none;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  font-family: inherit;
+  line-height: 1;
 }
 
-.shipgirl-info-card:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(102, 126, 234, 0.25) 0%,
-    rgba(118, 75, 162, 0.25) 100%
-  );
-  border-color: rgba(102, 126, 234, 0.6);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+.speed-btn:not(:last-child) {
+  border-right: 1px solid var(--border-color);
 }
 
-.shipgirl-name-large {
-  font-size: 1.8rem;
-  font-weight: 700;
+.speed-btn:hover {
+  background: var(--bg-input);
+  color: var(--text-primary);
+}
+
+.speed-btn.active {
+  background: var(--primary-color);
   color: #fff;
-  text-align: center;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.shipyard-icon-large {
-  height: 48px;
-  width: auto;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
-}
-
-.more-info-text {
-  font-size: 1rem;
-  opacity: 0.8;
-  color: #a2d2ff;
-  font-weight: 500;
-}
-
-.shipgirl-info-card:hover .more-info-text {
-  opacity: 1;
-  transform: translateX(4px);
-}
-
-.skill-icon-container {
-  text-align: center;
-}
-
-.skill-icon-container img {
-  max-width: 96px;
-  max-height: 96px;
-  border-radius: 16px;
-  border: 3px solid rgba(102, 126, 234, 0.5);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  transition: all var(--transition-slow);
-}
-
-.skill-icon-container img:hover {
-  transform: scale(1.08);
-  border-color: #667eea;
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.6);
-}
-
-/* Level Toggle Button - Modern Design */
+/* Level Toggle (in playback bar) */
 #level-toggle {
-  width: 100%;
-  padding: 14px 24px;
-  font-size: 17px;
-  font-weight: 700;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-  color: #fff;
-  border: 2px solid var(--highlight-soft);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: all var(--transition-slow);
-  position: relative;
-  overflow: hidden;
-}
-
-#level-toggle::after {
-  content: "◀ 클릭하여 변경 ▶";
-  display: block;
-  font-size: 12px;
-  font-weight: 400;
-  margin-top: 4px;
-  opacity: 0.7;
-  text-transform: none;
-  letter-spacing: normal;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+  line-height: 1;
 }
 
 #level-toggle:hover {
-  background: linear-gradient(135deg, #5a6778 0%, #3d4858 100%);
-  border-color: var(--highlight-medium);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  transform: translateY(-2px);
+  border-color: var(--primary-color);
 }
 
 #level-toggle.level-10 {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-color: rgba(102, 126, 234, 0.3);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
 }
 
-#level-toggle.level-10:hover {
-  background: linear-gradient(135deg, #7a8efc 0%, #8a5bba 100%);
-  border-color: rgba(102, 126, 234, 0.5);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+/* ===== TWO-COLUMN CONTENT ===== */
+
+.sim-content {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  align-items: start;
 }
 
-/* Choices.js Dropdown Styling */
-.choices {
+.sim-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  position: sticky;
+  top: var(--spacing-md);
+}
+
+.sim-main {
+  min-width: 0;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+}
+
+.card-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.placeholder-card {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--spacing-xl);
+}
+
+/* Selector Card */
+.selector-card {
+  position: relative;
+  z-index: 10;
+}
+
+.selector-card .choices {
   width: 100%;
-  max-width: 600px;
 }
+
+/* ===== SHIPGIRL CARD ===== */
+
+.shipgirl-card {
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.shipgirl-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.shipgirl-card .shipyard-icon {
+  height: 56px;
+  width: auto;
+  margin-bottom: var(--spacing-xs);
+}
+
+.shipgirl-card .ship-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.shipgirl-card .more-info {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Skill Info Card */
+#skill-info-card {
+  font-size: 0.875rem;
+}
+
+.skill-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.skill-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-color);
+  object-fit: cover;
+}
+
+.skill-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.skill-meta-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.skill-meta-row:last-child { border-bottom: none; }
+
+.meta-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.meta-value {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.skill-desc {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ===== WEAPON INFO CARDS ===== */
+
+.weapon-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.weapon-card:last-child { margin-bottom: 0; }
+
+.weapon-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--surface-border);
+  margin-bottom: var(--spacing-sm);
+}
+
+.weapon-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.weapon-card-id {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+/* Ammo type badge */
+.ammo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Placeholder ammo type colors — update with game-accurate values when available */
+:root {
+  --ammo-color-1: #4a90d9;   /* 철갑탄 AP — blue */
+  --ammo-color-2: #e05555;   /* 고폭탄 HE — red */
+  --ammo-color-3: #d4a843;   /* 통상탄 Normal — yellow */
+  --ammo-color-4: #6ec4a7;   /* 음향 유도 Acoustic — teal */
+  --ammo-color-5: #c4b060;   /* 통상 Normal — gold */
+  --ammo-color-6: #b54dce;   /* 삼식탄 Sanshiki — purple */
+  --ammo-color-7: #e08547;   /* 반철갑탄 SAP — orange */
+  --ammo-color-8: #5caed4;   /* 자성식 Magnetic — cyan */
+  --ammo-color-9: #c45858;   /* 격발식 Impact — red-dark */
+  --ammo-color-10: #888;     /* 없음 None — gray */
+  --ammo-color-11: #7a8fd4;  /* 미사일 Missile — blue-gray */
+}
+
+body.dark-mode {
+  --ammo-color-1: #5ea3ef;
+  --ammo-color-2: #ef6b6b;
+  --ammo-color-3: #e0b94f;
+  --ammo-color-4: #7dd4b5;
+  --ammo-color-5: #d4c06a;
+  --ammo-color-6: #c95de8;
+  --ammo-color-7: #f09555;
+  --ammo-color-8: #6ec0e8;
+  --ammo-color-9: #d46a6a;
+  --ammo-color-10: #999;
+  --ammo-color-11: #8ea3ef;
+}
+
+/* Weapon stats grid */
+.weapon-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xs) var(--spacing-md);
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px var(--spacing-sm);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Armor modifiers row */
+.armor-row {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: var(--spacing-xs);
+  padding: 6px var(--spacing-sm);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+.armor-chip {
+  flex: 1;
+  text-align: center;
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--bg-elevated);
+}
+
+.armor-chip .armor-label {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Barrage detail (expandable) */
+.barrage-details {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--surface-border);
+}
+
+.barrage-details summary {
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.barrage-details summary:hover { color: var(--text-primary); }
+
+.barrage-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+  font-size: 0.75rem;
+}
+
+.barrage-detail-item {
+  padding: 4px var(--spacing-xs);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-xs);
+}
+
+/* ===== CHOICES.JS THEMING ===== */
+
+.choices { width: 100%; }
 
 .choices__inner {
-  background: linear-gradient(
-    135deg,
-    rgba(59, 66, 69, 0.8) 0%,
-    rgba(45, 52, 54, 0.8) 100%
-  );
-  border: 2px solid rgba(102, 126, 234, 0.3);
-  color: #eaeaea;
-  border-radius: 10px;
-  padding: 0 16px;
-  font-size: 16px;
-  height: 48px; /* Replace min-height with height */
-  transition: all var(--transition-slow);
-  backdrop-filter: blur(10px);
+  background: var(--bg-input);
+  border: 1px solid var(--input-border);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: 0 var(--spacing-sm);
+  font-size: 14px;
+  min-height: 40px;
+  transition: border-color var(--transition-fast);
   display: flex;
   align-items: center;
 }
 
-.choices__inner:hover {
-  border-color: rgba(102, 126, 234, 0.5);
-}
+.choices__inner:hover { border-color: var(--primary-color); }
 
 .choices.is-focused .choices__inner {
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-alpha-15);
 }
 
 .choices__list--dropdown,
 .choices__list[aria-expanded] {
-  background: linear-gradient(
-    135deg,
-    rgba(42, 48, 49, 0.98) 0%,
-    rgba(26, 32, 34, 0.98) 100%
-  );
-  border: 2px solid rgba(102, 126, 234, 0.3);
-  border-radius: 10px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
   margin-top: 4px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  z-index: 1002; /* Add this line */
+  box-shadow: var(--shadow-lg);
+  z-index: 1002;
 }
 
 .choices__list--dropdown .choices__item--selectable.is-highlighted,
 .choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--primary-color);
+  color: #fff;
 }
 
-.choices__item {
-  color: #eaeaea;
-  padding: 10px 16px;
+/* Choices.js group headings */
+.choices__group .choices__heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 8px 12px 4px;
+  border-bottom: 1px solid var(--surface-border);
+  text-transform: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
+
+.choices__group .choices__heading .group-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-xs);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.choices__item { color: var(--text-primary); padding: 8px 12px; }
 
 .choices__input {
-  background-color: rgba(73, 81, 85, 0.5);
-  color: #eaeaea;
-  border-radius: 6px;
-  padding: 8px;
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 6px;
 }
 
 .choices[data-type*="select-one"]::after {
-  border-color: #eaeaea transparent transparent;
+  border-color: var(--text-secondary) transparent transparent;
   margin-top: -2px;
 }
-
 .choices[data-type*="select-one"].is-open::after {
-  border-color: transparent transparent #eaeaea;
+  border-color: transparent transparent var(--text-secondary);
   margin-top: -7.5px;
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-  h1 {
-    font-size: 2rem;
+/* ===== SHIP BROWSE MODAL ===== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.hidden { display: none; }
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--overlay-heavy);
+  backdrop-filter: blur(4px);
+}
+
+.modal-dialog {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+}
+
+.modal-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px var(--spacing-sm);
+  background: var(--bg-input);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 14px;
+  margin-bottom: var(--spacing-sm);
+  transition: border-color var(--transition-fast);
+  font-family: inherit;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-alpha-15);
+}
+
+.ship-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--spacing-xs);
+  overflow-y: auto;
+  max-height: 50vh;
+  padding-right: var(--spacing-xs);
+}
+
+.ship-grid-item {
+  padding: var(--spacing-sm);
+  text-align: center;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.ship-grid-item .ship-grid-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.ship-grid-item:hover {
+  border-color: var(--primary-color);
+  background: var(--primary-alpha-10);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 1024px) {
+  .sim-content {
+    grid-template-columns: 1fr;
   }
 
-  #stats-panel {
-    padding: 20px;
+  .sim-sidebar {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
-  .stats-two-column {
-    grid-template-columns: 250px 1fr;
-    gap: 20px;
+  .sim-sidebar > * {
+    flex: 1;
+    min-width: 250px;
   }
 }
 
 @media (max-width: 768px) {
-  h1 {
-    font-size: 1.6rem;
-    padding: 1.5rem 1rem 0.5rem;
+  .sim-page .page-title {
+    font-size: 1.2rem;
+    padding: var(--spacing-md) var(--spacing-sm) var(--spacing-sm);
   }
 
-  .controls {
+  .playback-bar {
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .bar-separator { display: none; }
+
+  .sim-sidebar {
     flex-direction: column;
-    gap: 12px;
   }
 
-  #simulation-container {
-    border-radius: 12px;
+  .sim-sidebar > * {
+    min-width: unset;
   }
 
-  #stats-panel {
-    padding: 16px;
-  }
-
-  .stats-two-column {
+  .weapon-stats {
     grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .shipgirl-name-large {
-    font-size: 1.4rem;
-  }
-
-  .shipyard-icon-large {
-    height: 36px;
   }
 }
 
-/* Smooth Animations */
+/* ===== ANIMATIONS ===== */
+
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-#stats-panel,
-#simulation-container {
-  animation: fadeIn 0.5s ease-out;
-}
-
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(26, 26, 46, 0.5);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #7a8efc 0%, #8a5bba 100%);
-}
+.weapon-card { animation: fadeIn 0.3s ease-out; }

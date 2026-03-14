@@ -55,6 +55,9 @@ class AccelerationBehavior extends BulletBehavior {
         this.currentAccel = 0;
         this.currentAngularVel = 0;
         this.schedule = [];
+        // Game quantizes acceleration to ACC_INTERVAL = 1/30 second steps
+        this.accInterval = 1 / this.engine.targetFps;
+        this.accumulatedTime = 0;
 
         if (Array.isArray(bulletInfo.acceleration)) {
             bulletInfo.acceleration.forEach(event => {
@@ -96,13 +99,17 @@ class AccelerationBehavior extends BulletBehavior {
 
         if (this.currentAccel === 0 && this.currentAngularVel === 0) return null;
 
-        const delta = frameData.deltaMultiplier || 1;
+        // Quantized: accumulate game-time, apply in discrete 1/30-sec intervals
+        this.accumulatedTime += frameData.deltaTimeSec * this.engine.gSpeed;
+        const intervalCount = Math.floor(this.accumulatedTime / this.accInterval);
+        if (intervalCount <= 0) return null;
+        this.accumulatedTime -= intervalCount * this.accInterval;
 
         // Derive speed/angle from velocity each frame (stays in sync with upstream behaviors)
         let speed = Math.sqrt(frameData.velocityX ** 2 + frameData.velocityY ** 2);
         let angle = Math.atan2(frameData.velocityY, frameData.velocityX);
 
-        speed += this.currentAccel * delta;
+        speed += this.currentAccel * intervalCount;
 
         // Bounce: if speed goes negative, invert and flip all u signs
         if (speed < 0) {
@@ -111,7 +118,7 @@ class AccelerationBehavior extends BulletBehavior {
             this.currentAccel *= -1;
         }
 
-        angle += this.currentAngularVel * (Math.PI / 180) * delta;
+        angle += this.currentAngularVel * (Math.PI / 180) * intervalCount;
 
         return {
             velocityX: speed * Math.cos(angle),
@@ -740,10 +747,13 @@ class SpaceLaserBehavior extends BulletBehavior {
 // === EMISSION BEHAVIORS ===
 
 /**
- * Shrapnel: child bullet emission system.
+ * Shrapnel: child bullet emission system with multi-phase state machine.
  * - trailingShrapnels: fire during flight on a timer (initialSplit=true)
  * - splitShrapnels: fire at range/apex/destruction (initialSplit=false)
+ * Split sequence: SPIN (decel+rotate) → LINGER (pause) → SPLIT (emit children)
+ * - spinDuration > 0: decelerate and rotate before splitting
  * - lastTimeSec > 0: linger in place before splitting
+ * - shift_split_delay: stagger child group emissions
  */
 class ShrapnelBehavior extends BulletBehavior {
     initialize() {
@@ -760,6 +770,12 @@ class ShrapnelBehavior extends BulletBehavior {
         this.isLingering = false;
         this.lingerPosition = null;
         this.rangeReached = false;
+
+        // SPIN phase: decelerate + rotate before splitting
+        this.isSpinning = false;
+        this.spinStartTime = -1;
+        this.spinDuration = bulletInfo.extra_param?.spinDuration || bulletInfo.extra_param?.spinTime || 0;
+        this.spinSpeed = (bulletInfo.extra_param?.spinSpeed || 360) * Math.PI / 180;
 
         this.originalRange = bulletInfo.range || 50;
 
@@ -792,6 +808,27 @@ class ShrapnelBehavior extends BulletBehavior {
     }
 
     update(frameData) {
+        // SPIN phase: decelerate + rotate before split/linger
+        if (this.isSpinning) {
+            const spinElapsed = frameData.timeElapsed - this.spinStartTime;
+
+            if (spinElapsed >= this.spinDuration) {
+                this.isSpinning = false;
+                return this._afterSpin(frameData);
+            }
+
+            // Decelerate toward zero while rotating
+            const decelFactor = Math.max(0.01, 1 - spinElapsed / this.spinDuration);
+            const spinRotation = this.spinSpeed * frameData.deltaTimeSec * this.engine.gSpeed;
+            const angle = Math.atan2(frameData.velocityY, frameData.velocityX) + spinRotation;
+            const speed = Math.sqrt(frameData.velocityX ** 2 + frameData.velocityY ** 2) * decelFactor;
+
+            return {
+                velocityX: speed * Math.cos(angle),
+                velocityY: speed * Math.sin(angle)
+            };
+        }
+
         // Lingering: keep bullet fixed until lastTimeSec elapses, then split
         if (this.isLingering) {
             const lingeringDuration = frameData.timeElapsed - this.lingeringStartTime;
@@ -828,17 +865,7 @@ class ShrapnelBehavior extends BulletBehavior {
         if (!this.triggered && !this.rangeReached && frameData.apexReached) {
             const gravityBehavior = this.bullet.getBehavior('gravity');
             if (gravityBehavior && gravityBehavior.hasGravity && this.splitShrapnels.length > 0) {
-                if (this.lastTimeSec > 0) {
-                    this._startLingering(frameData);
-                    return {
-                        velocityX: 0, velocityY: 0,
-                        x: frameData.x, y: frameData.y
-                    };
-                } else {
-                    this.triggerSplit(frameData);
-                    this.bullet.shouldRemove = true;
-                    return null;
-                }
+                return this._startSplitSequence(frameData);
             }
         }
 
@@ -846,24 +873,51 @@ class ShrapnelBehavior extends BulletBehavior {
         if (!this.rangeReached && !this.triggered) {
             if (frameData.distanceFromSpawn >= this.originalRange) {
                 this.rangeReached = true;
-
-                if (this.lastTimeSec > 0 && this.splitShrapnels.length > 0) {
-                    this._startLingering(frameData);
-                    return {
-                        velocityX: 0,
-                        velocityY: 0,
-                        x: frameData.x,
-                        y: frameData.y
-                    };
-                } else {
-                    this.triggerSplit(frameData);
-                    this.bullet.shouldRemove = true;
-                    return null;
-                }
+                return this._startSplitSequence(frameData);
             }
         }
 
         return null;
+    }
+
+    /**
+     * Split sequence priority: SPIN → LINGER → SPLIT
+     * Enters the first applicable phase.
+     */
+    _startSplitSequence(frameData) {
+        if (this.spinDuration > 0 && this.splitShrapnels.length > 0) {
+            this._startSpinning(frameData);
+            // Keep current velocity — SPIN phase will decelerate
+            return {};
+        }
+        return this._afterSpin(frameData);
+    }
+
+    _startSpinning(frameData) {
+        this.isSpinning = true;
+        this.spinStartTime = frameData.timeElapsed;
+
+        if (this.bullet.element) {
+            this.bullet.element.style.filter = 'brightness(1.3) drop-shadow(0 0 8px rgba(255,200,100,0.7))';
+        }
+    }
+
+    /**
+     * Called after SPIN completes (or immediately if no SPIN).
+     * Enters LINGER or triggers SPLIT directly.
+     */
+    _afterSpin(frameData) {
+        if (this.lastTimeSec > 0 && this.splitShrapnels.length > 0) {
+            this._startLingering(frameData);
+            return {
+                velocityX: 0, velocityY: 0,
+                x: frameData.x, y: frameData.y
+            };
+        } else {
+            this.triggerSplit(frameData);
+            this.bullet.shouldRemove = true;
+            return null;
+        }
     }
 
     _startLingering(frameData) {
@@ -893,10 +947,21 @@ class ShrapnelBehavior extends BulletBehavior {
 
         this.triggered = true;
 
-        this.splitShrapnels.forEach(({ shrapnelInfo, barrage, bullet }) => {
-            const primalRepeatCount = (barrage.primal_repeat || 0) + 1;
-            for (let i = 0; i < primalRepeatCount; i++) {
-                this._emitShrapnel({ shrapnelInfo, barrage, bullet }, frameData, i);
+        this.splitShrapnels.forEach(({ shrapnelInfo, barrage, bullet }, groupIndex) => {
+            const shiftDelay = shrapnelInfo.shift_split_delay || shrapnelInfo.shiftSplitDelay || 0;
+            const delay = shiftDelay * groupIndex;
+
+            const emitGroup = () => {
+                const primalRepeatCount = (barrage.primal_repeat || 0) + 1;
+                for (let i = 0; i < primalRepeatCount; i++) {
+                    this._emitShrapnel({ shrapnelInfo, barrage, bullet }, frameData, i);
+                }
+            };
+
+            if (delay > 0) {
+                setTimeout(emitGroup, delay * 1000);
+            } else {
+                emitGroup();
             }
         });
     }
