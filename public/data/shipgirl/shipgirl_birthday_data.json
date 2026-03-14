@@ -7225,5 +7225,41 @@
         "일": "11",
         "group_id": "50212",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502120/icon.png"
+    },
+    {
+        "ID": "728",
+        "룽섭 이름": "오조르노이",
+        "레어도": "SSR",
+        "함종": "구축",
+        "진영": "북련",
+        "연": "1940",
+        "월": "12",
+        "일": "25",
+        "group_id": "50212",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502120/icon.png"
+    },
+    {
+        "ID": "729",
+        "룽섭 이름": "크라스늬 캅카스",
+        "레어도": "SR",
+        "함종": "경순",
+        "진영": "북련",
+        "연": "1916",
+        "월": "6",
+        "일": "8",
+        "group_id": "50212",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502120/icon.png"
+    },
+    {
+        "ID": "730",
+        "룽섭 이름": "바가티르",
+        "레어도": "SR",
+        "함종": "경순",
+        "진영": "북련",
+        "연": "1901",
+        "월": "1",
+        "일": "30",
+        "group_id": "50212",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502120/icon.png"
     }
 ]
