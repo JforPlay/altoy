@@ -1,18 +1,23 @@
-import { debounce, getUrlParam, resolveUrl, showElement, hideElement, setupModal, openModal, closeModal } from '../utils.js';
+import { debounce, getUrlParam, setUrlParams, resolveUrl, showElement, hideElement } from '../utils.js';
 import { SimulationEngine } from './sim.engine.common.js';
-import { WeaponSimData } from './sim.weapon.data.js';
+import { AircraftSimData } from './sim.aircraft.data.js';
 import { AircraftEntity } from './sim.engine.aircraft.js';
 
-/** Ammo type display names (from bullet_template ammo_type field) */
+const EQUIP_ICON_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips';
+
 const AMMO_TYPE_NAMES = {
     1: '철갑탄', 2: '고폭탄', 3: '통상탄', 4: '음향 유도', 5: '통상',
     6: '삼식탄', 7: '반철갑탄(SAP탄)', 8: '자성식', 9: '격발식', 10: '없음', 11: '미사일',
 };
 
-/** Bullet type labels */
 const BULLET_TYPE_NAMES = {
     1: '포탄', 2: '폭탄', 3: '어뢰', 4: '파편', 5: '미사일',
     10: '빔', 11: '중력장', 14: '우주레이저', 15: '확장탄',
+};
+
+const RARITY_COLORS = {
+    2: 'var(--rarity-n)', 3: 'var(--rarity-r)', 4: 'var(--rarity-sr)',
+    5: 'var(--rarity-ssr)', 6: 'var(--rarity-ur)',
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -32,16 +37,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fireButton = document.getElementById('fire-button');
     const enemyToggle = document.getElementById('enemy-toggle');
     const pauseButton = document.getElementById('pause-button');
-    const skillSelect = document.getElementById('skill-select');
+    const aircraftSelect = document.getElementById('aircraft-select');
     const visualLog = document.getElementById('visual-log');
     const weaponCardsContainer = document.getElementById('weapon-cards-container');
-    const shipgirlCard = document.getElementById('shipgirl-card');
-    const skillInfoCard = document.getElementById('skill-info-card');
+    const aircraftInfoCard = document.getElementById('aircraft-info-card');
     const levelToggleContainer = document.getElementById('level-toggle-container');
-    const shipBrowseBtn = document.getElementById('ship-browse-btn');
 
     // --- State ---
-    let currentSkillLevel = '1';
+    let currentLevelIndex = 0;
+    let currentEquipId = null;
     let pendingFireTimers = [];
     let activeAircraft = [];
     let isPaused = false;
@@ -63,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         visualLog: visualLog
     });
 
-    const weaponSimData = new WeaponSimData(simEngine);
+    const aircraftSimData = new AircraftSimData(simEngine);
 
     simEngine.registerEntities({
         vanguard: { element: vanguard, baseWidth: 6.5, aspectRatio: 178 / 226, gamePos: { x: -36, y: 58 } },
@@ -77,23 +81,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     simEngine.setEntityState('enemy', 'centered', false);
 
     let choicesInstance;
+    let allDeduped = [];
+    let activeTypeFilter = null;
 
     // --- Initialize ---
-    await weaponSimData.loadData();
+    await aircraftSimData.loadData();
     simEngine.updateLayoutAndScale(playerAreaDiv);
-    populateSkillSelector();
+    allDeduped = aircraftSimData.getDeduplicatedList();
+    populateAircraftSelector();
+    initTypeFilter();
     initFPSDisplay();
     initSpeedControls();
     initPauseButton();
-    initShipBrowseModal();
 
-    const skillIdFromUrl = getUrlParam('skill_id');
-    if (skillIdFromUrl) {
-        if (choicesInstance) choicesInstance.setChoiceByValue(skillIdFromUrl);
-        await updateSkillDisplay(skillIdFromUrl);
+    const equipIdFromUrl = getUrlParam('equip');
+    if (equipIdFromUrl) {
+        if (choicesInstance) choicesInstance.setChoiceByValue(equipIdFromUrl);
+        await updateAircraftDisplay(equipIdFromUrl);
     } else {
-        const selectedSkillId = choicesInstance?.getValue(true);
-        if (selectedSkillId && selectedSkillId !== 'none') await updateSkillDisplay(selectedSkillId);
+        const selectedId = choicesInstance?.getValue(true);
+        if (selectedId && selectedId !== 'none') await updateAircraftDisplay(selectedId);
     }
 
     // --- Event Listeners ---
@@ -101,10 +108,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         simEngine.updateLayoutAndScale(playerAreaDiv);
     }, 150));
 
-    if (skillSelect) {
-        skillSelect.addEventListener('change', async (e) => {
-            currentSkillLevel = '1';
-            await updateSkillDisplay(e.target.value);
+    if (aircraftSelect) {
+        aircraftSelect.addEventListener('change', async (e) => {
+            currentLevelIndex = 0;
+            await updateAircraftDisplay(e.target.value);
         });
     }
 
@@ -114,9 +121,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         activeAircraft.forEach(a => a.destroy());
         activeAircraft = [];
         simEngine.clearBullets();
-        const selectedSkillId = choicesInstance.getValue(true);
-        if (selectedSkillId && selectedSkillId !== 'none') await fireSkill(selectedSkillId);
-        else simEngine.logToScreen("No skill selected to fire.", "error");
+        if (currentEquipId) await fireAircraft(currentEquipId);
+        else simEngine.logToScreen('No aircraft selected.', 'error');
     });
 
     enemyToggle.addEventListener('click', () => {
@@ -134,8 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                const speed = parseFloat(btn.dataset.speed);
-                simEngine.bulletEngine.gSpeed = speed;
+                simEngine.bulletEngine.gSpeed = parseFloat(btn.dataset.speed);
             });
         });
     }
@@ -156,86 +161,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 pauseButton.title = '일시정지';
             }
         });
-    }
-
-    // --- Ship Browse Modal ---
-    function initShipBrowseModal() {
-        setupModal('ship-browse-modal', {
-            closeOnEscape: true,
-            closeOnBackdrop: true,
-            closeButtonSelector: '.modal-close-btn'
-        });
-
-        shipBrowseBtn.addEventListener('click', () => {
-            populateShipBrowseList();
-            openModal('ship-browse-modal');
-        });
-
-        const searchInput = document.getElementById('ship-search-input');
-        searchInput.addEventListener('input', debounce(() => {
-            filterShipBrowseList(searchInput.value);
-        }, 200));
-    }
-
-    function getShipIconUrl(shipName) {
-        const allSkills = weaponSimData.getAllSkills();
-        for (const skillId in allSkills) {
-            const s = allSkills[skillId];
-            if (s?.name === shipName && s.shipyard) {
-                return s.shipyard.replace('shipyard.png', 'icon.png');
-            }
-        }
-        return '';
-    }
-
-    function populateShipBrowseList() {
-        const container = document.getElementById('ship-browse-list');
-        const shipNames = getUniqueShipNames();
-        container.innerHTML = shipNames.map(name => {
-            const iconUrl = getShipIconUrl(name);
-            const iconHtml = iconUrl ? `<img src="${iconUrl}" alt="" class="ship-grid-icon" loading="lazy">` : '';
-            return `<div class="ship-grid-item" data-ship="${name}">${iconHtml}<span>${name}</span></div>`;
-        }).join('');
-
-        container.querySelectorAll('.ship-grid-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const shipName = item.dataset.ship;
-                filterSkillsByShip(shipName);
-                closeModal('ship-browse-modal');
-            });
-        });
-    }
-
-    function filterShipBrowseList(query) {
-        const items = document.querySelectorAll('.ship-grid-item');
-        const q = query.toLowerCase();
-        items.forEach(item => {
-            const match = item.textContent.toLowerCase().includes(q);
-            item.style.display = match ? '' : 'none';
-        });
-    }
-
-    function getUniqueShipNames() {
-        const allSkills = weaponSimData.getAllSkills();
-        const names = new Set();
-        for (const skillId in allSkills) {
-            const name = allSkills[skillId]?.name;
-            if (name) names.add(name);
-        }
-        return [...names].sort();
-    }
-
-    function filterSkillsByShip(shipName) {
-        if (!choicesInstance) return;
-        const allSkills = weaponSimData.getAllSkills();
-        // Find first skill of this ship and select it
-        for (const skillId in allSkills) {
-            if (allSkills[skillId]?.name === shipName) {
-                choicesInstance.setChoiceByValue(skillId);
-                skillSelect.dispatchEvent(new Event('change'));
-                break;
-            }
-        }
     }
 
     // --- FPS Display ---
@@ -272,191 +197,213 @@ document.addEventListener('DOMContentLoaded', async () => {
         return timeUnitIsFrames ? (value / TARGET_FPS) * 1000 : value * 1000;
     }
 
-    // --- Skill Selector (grouped by shipgirl) ---
-    function populateSkillSelector() {
-        if (!skillSelect) return;
-        const allSkills = weaponSimData.getAllSkills();
+    // --- Aircraft Selector (grouped by type with filter) ---
+    function populateAircraftSelector(filterType = null) {
+        if (!aircraftSelect) return;
+        if (allDeduped.length === 0) allDeduped = aircraftSimData.getDeduplicatedList();
 
-        // Group skills by shipgirl name
+        const filtered = filterType
+            ? allDeduped.filter(e => e.type_name === filterType)
+            : allDeduped;
+
+        // Group by type_name
         const groups = {};
-        const groupIcons = {};
-        for (const skillId in allSkills) {
-            const skillData = allSkills[skillId];
-            const shipName = skillData?.name || '알 수 없음';
-            if (!groups[shipName]) {
-                groups[shipName] = [];
-                if (skillData?.shipyard) {
-                    groupIcons[shipName] = skillData.shipyard.replace('shipyard.png', 'icon.png');
-                }
-            }
-            const skillName = weaponSimData.getSkillName(skillId);
-            groups[shipName].push({ value: skillId, label: skillName });
+        for (const equip of filtered) {
+            const typeName = equip.type_name || '기타';
+            if (!groups[typeName]) groups[typeName] = [];
+            groups[typeName].push({ value: String(equip.id), label: equip.name });
         }
 
-        const choiceGroups = Object.keys(groups).sort().map(shipName => ({
-            label: shipName,
-            choices: groups[shipName]
-        }));
+        const typeOrder = ['전투기', '뇌격기', '폭격기', '수상기', '대잠기'];
+        const choiceGroups = typeOrder
+            .filter(t => groups[t])
+            .map(t => ({ label: t, choices: groups[t] }));
 
-        choicesInstance = new Choices(skillSelect, {
+        for (const t of Object.keys(groups)) {
+            if (!typeOrder.includes(t)) {
+                choiceGroups.push({ label: t, choices: groups[t] });
+            }
+        }
+
+        // Destroy and recreate Choices instance
+        if (choicesInstance) choicesInstance.destroy();
+
+        choicesInstance = new Choices(aircraftSelect, {
             choices: choiceGroups,
             searchEnabled: true,
             itemSelectText: '선택',
             shouldSort: false,
-            searchPlaceholderValue: '함선 또는 스킬 검색...',
+            searchPlaceholderValue: '함재기 검색...',
             noResultsText: '검색 결과 없음',
         });
 
-        // Inject shipgirl face icons into group headings
-        const headings = skillSelect.closest('.choices')?.querySelectorAll('.choices__heading');
-        if (headings) {
-            headings.forEach(heading => {
-                const name = heading.textContent.trim();
-                const iconUrl = groupIcons[name];
-                if (iconUrl) {
-                    const img = document.createElement('img');
-                    img.src = iconUrl;
-                    img.alt = '';
-                    img.className = 'group-icon';
-                    img.loading = 'lazy';
-                    heading.prepend(img);
-                }
+        // Prevent page scroll when dropdown opens
+        aircraftSelect.closest('.choices')?.addEventListener('showDropdown', () => {
+            document.querySelector('.choices__list--dropdown')?.scrollIntoView?.({ block: 'nearest' });
+        });
+
+        const firstEquip = filtered[0];
+        if (firstEquip) choicesInstance.setChoiceByValue(String(firstEquip.id));
+    }
+
+    function initTypeFilter() {
+        const container = document.getElementById('type-filter');
+        if (!container) return;
+
+        const typeOrder = ['전투기', '뇌격기', '폭격기', '수상기', '대잠기'];
+        const availableTypes = new Set(allDeduped.map(e => e.type_name));
+
+        // "전체" button
+        const allBtn = document.createElement('button');
+        allBtn.className = 'type-filter-btn active';
+        allBtn.textContent = '전체';
+        allBtn.addEventListener('click', () => {
+            activeTypeFilter = null;
+            setActiveFilterBtn(allBtn);
+            populateAircraftSelector(null);
+        });
+        container.appendChild(allBtn);
+
+        for (const type of typeOrder) {
+            if (!availableTypes.has(type)) continue;
+            const btn = document.createElement('button');
+            btn.className = 'type-filter-btn';
+            btn.textContent = type;
+            btn.addEventListener('click', () => {
+                activeTypeFilter = type;
+                setActiveFilterBtn(btn);
+                populateAircraftSelector(type);
             });
+            container.appendChild(btn);
         }
-
-        // Select first skill
-        const firstSkillId = Object.keys(allSkills)[0];
-        if (firstSkillId) choicesInstance.setChoiceByValue(firstSkillId);
     }
 
-    function hasMultipleLevels(skill) {
-        if (!skill) return false;
-        return !!(skill['1']?.effect_list && skill['10']?.effect_list);
+    function setActiveFilterBtn(activeBtn) {
+        document.querySelectorAll('.type-filter-btn').forEach(b => b.classList.remove('active'));
+        activeBtn.classList.add('active');
     }
 
-    function getEffectList(skill, level) {
-        if (skill[level]?.effect_list) return skill[level].effect_list;
-        if (skill['1']?.effect_list) return skill['1'].effect_list;
-        if (skill.effect_list) return skill.effect_list;
-        return null;
-    }
-
-    // --- Update Display (replaces old updateSkillStats) ---
-    async function updateSkillDisplay(skillId) {
-        if (skillId === 'none' || !skillId) {
-            weaponCardsContainer.innerHTML = '<div class="card placeholder-card"><p>스킬을 선택하여 무기 정보를 확인하세요.</p></div>';
-            hideElement(shipgirlCard);
-            hideElement(skillInfoCard);
+    // --- Update Display ---
+    async function updateAircraftDisplay(equipId) {
+        if (!equipId || equipId === 'none') {
+            weaponCardsContainer.innerHTML = '<div class="card placeholder-card"><p>함재기를 선택하여 무기 정보를 확인하세요.</p></div>';
+            hideElement(aircraftInfoCard);
             levelToggleContainer.innerHTML = '';
+            currentEquipId = null;
             return;
         }
 
-        const skill = weaponSimData.getSkillById(skillId);
-        if (!skill) return;
+        currentEquipId = equipId;
+        setUrlParams({ equip: equipId }, { replace: true });
 
-        await weaponSimData.ensureSkillWeaponsLoaded(skillId, currentSkillLevel);
+        // Find lite data for this equip
+        const equipLite = aircraftSimData.equipList.find(e => String(e.id) === String(equipId));
 
-        // Shipgirl card
-        updateShipgirlCard(skill, skillId);
+        await aircraftSimData.ensureAircraftWeaponsLoaded(equipId, currentLevelIndex);
 
-        // Skill info card
-        updateSkillInfoCard(skill, skillId);
-
-        // Level toggle in playback bar
-        updateLevelToggle(skillId);
-
-        // Weapon cards
-        await updateWeaponCards(skillId);
+        updateAircraftInfoCard(equipId, equipLite);
+        updateLevelToggle(equipId);
+        await updateWeaponCards(equipId);
     }
 
-    function updateShipgirlCard(skill, skillId) {
-        const skillWeaponData = weaponSimData.getAllSkills()[skillId];
-        const shipName = skillWeaponData?.name || '알 수 없음';
-        const shipyardHtml = skill.shipyard ? `<img src="${skill.shipyard}" alt="" class="shipyard-icon">` : '';
+    function updateAircraftInfoCard(equipId, equipLite) {
+        const meta = document.getElementById('aircraft-meta');
+        if (!equipLite) {
+            hideElement(aircraftInfoCard);
+            return;
+        }
 
-        shipgirlCard.innerHTML = `
-            ${shipyardHtml}
-            <div class="ship-name">${shipName}</div>
-            <div class="more-info">클릭하여 함선 정보 보기 →</div>
-        `;
-        shipgirlCard.onclick = () => {
-            window.location.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(shipName)}`);
+        const iconUrl = equipLite.icon ? `${EQUIP_ICON_BASE}/${equipLite.icon}.webp` : '';
+        const rarityColor = RARITY_COLORS[equipLite.rarity] || 'var(--text-muted)';
+
+        // Get aircraft template stats
+        const weaponIds = aircraftSimData.getWeaponIdsForLevel(equipId, currentLevelIndex);
+        const aircraftData = weaponIds.length > 0 ? aircraftSimData.getAircraftTemplate(weaponIds[0]) : null;
+
+        let html = `<div class="skill-header" style="cursor:pointer" id="equip-link">`;
+        if (iconUrl) {
+            html += `<img src="${iconUrl}" alt="" class="skill-icon" style="border-radius:var(--radius-sm)">`;
+        }
+        html += `<div>
+            <div class="skill-name">${equipLite.name}</div>
+            <div style="font-size:0.75rem;color:var(--text-muted)">${equipLite.type_name} · ${equipLite.nation_name || ''}</div>
+        </div>
+        <span class="ammo-badge" style="background:${rarityColor};margin-left:auto">${equipLite.rarity_name}</span>
+        </div>`;
+
+        // Aircraft stats
+        if (aircraftData) {
+            html += `<div class="weapon-stats" style="margin-top:var(--spacing-sm)">`;
+            if (aircraftData.speed != null) html += `<div class="stat-item"><span class="stat-label">항속</span><span class="stat-value">${aircraftData.speed}</span></div>`;
+            if (aircraftData.dodge != null) html += `<div class="stat-item"><span class="stat-label">회피</span><span class="stat-value">${aircraftData.dodge}</span></div>`;
+            if (aircraftData.dodge_limit != null) html += `<div class="stat-item"><span class="stat-label">회피한계</span><span class="stat-value">${aircraftData.dodge_limit}</span></div>`;
+            if (aircraftData.crash_DMG != null) html += `<div class="stat-item"><span class="stat-label">충돌 데미지</span><span class="stat-value">${aircraftData.crash_DMG}</span></div>`;
+            if (aircraftData.weapon_ID) html += `<div class="stat-item"><span class="stat-label">탑재 무장</span><span class="stat-value">${aircraftData.weapon_ID.length}개</span></div>`;
+            html += `</div>`;
+        }
+
+        html += `<div class="more-info" style="margin-top:var(--spacing-xs);font-size:0.8rem;color:var(--text-muted);cursor:pointer">클릭하여 장비 정보 보기 →</div>`;
+
+        meta.innerHTML = html;
+        showElement(aircraftInfoCard);
+
+        // Cross-link to equip viewer
+        aircraftInfoCard.onclick = () => {
+            window.location.href = resolveUrl(`equip/equip-viewer?equip=${equipId}`);
         };
-        showElement(shipgirlCard);
+        aircraftInfoCard.style.cursor = 'pointer';
     }
 
-    function updateSkillInfoCard(skill, skillId) {
-        const skillName = weaponSimData.getSkillName(skillId);
-        const skillMeta = document.getElementById('skill-meta');
-
-        let html = '';
-        if (skill.icon) {
-            html += `<div class="skill-header">
-                <img src="${skill.icon}" alt="" class="skill-icon">
-                <div>
-                    <div class="skill-name">${skillName}</div>
-                    <div style="font-size:0.75rem;color:var(--text-muted)">ID: ${skillId}</div>
-                </div>
-            </div>`;
-        }
-
-        html += `
-            <div class="skill-meta-row"><span class="meta-label">포지션</span><span class="meta-value">${skill.position || '없음'}</span></div>
-            <div class="skill-meta-row"><span class="meta-label">레벨</span><span class="meta-value">${currentSkillLevel}</span></div>
-        `;
-
-        if (skill.requirement) {
-            html += `<div class="skill-meta-row"><span class="meta-label">요구사항</span><span class="meta-value">${skill.requirement}</span></div>`;
-        }
-
-        if (skill.desc) {
-            html += `<div class="skill-desc">${skill.desc}</div>`;
-        }
-
-        skillMeta.innerHTML = html;
-        showElement(skillInfoCard);
-    }
-
-    function updateLevelToggle(skillId) {
-        const skill = weaponSimData.getSkillById(skillId);
-        if (!hasMultipleLevels(skill)) {
+    function updateLevelToggle(equipId) {
+        const maxLevel = aircraftSimData.getMaxLevelIndex(equipId);
+        if (maxLevel <= 0) {
             levelToggleContainer.innerHTML = '';
             return;
         }
 
-        const isLevel10 = currentSkillLevel === '10';
-        levelToggleContainer.innerHTML = `<button id="level-toggle" class="${isLevel10 ? 'level-10' : ''}">Lv.${isLevel10 ? '10' : '1'}</button>`;
+        // Clamp current level
+        if (currentLevelIndex > maxLevel) currentLevelIndex = maxLevel;
+
+        const levelLabel = `+${currentLevelIndex}`;
+        const isMax = currentLevelIndex === maxLevel;
+        levelToggleContainer.innerHTML = `<button id="level-toggle" class="${isMax ? 'level-10' : ''}">${levelLabel}</button>`;
 
         document.getElementById('level-toggle').addEventListener('click', async () => {
-            currentSkillLevel = currentSkillLevel === '1' ? '10' : '1';
-            await updateSkillDisplay(skillId);
+            currentLevelIndex = (currentLevelIndex + 1) % (maxLevel + 1);
+            await updateAircraftDisplay(currentEquipId);
         });
     }
 
-    async function updateWeaponCards(skillId) {
-        const weaponInfoList = weaponSimData.getWeaponIdsFromSkill(skillId, currentSkillLevel);
-        if (weaponInfoList.length === 0) {
+    async function updateWeaponCards(equipId) {
+        const weaponIds = aircraftSimData.getWeaponIdsForLevel(equipId, currentLevelIndex);
+        if (weaponIds.length === 0) {
             weaponCardsContainer.innerHTML = '<div class="card placeholder-card"><p>무기 데이터가 없습니다.</p></div>';
             return;
         }
 
         const cards = [];
-        const showNumber = weaponInfoList.length > 1;
+        let weaponIndex = 1;
 
-        for (let i = 0; i < weaponInfoList.length; i++) {
-            const info = weaponInfoList[i];
-            const weapon = weaponSimData.getWeaponById(info.weaponId);
-            if (!weapon) continue;
+        for (const wid of weaponIds) {
+            const aircraftData = aircraftSimData.getAircraftTemplate(wid);
+            if (!aircraftData?.weapon_ID) continue;
 
-            const card = buildWeaponCard(weapon, info, i + 1, showNumber);
-            cards.push(card);
+            for (const subWid of aircraftData.weapon_ID) {
+                const weapon = aircraftSimData.getWeaponById(subWid);
+                if (!weapon) continue;
+                cards.push(buildWeaponCard(weapon, { weaponId: subWid }, weaponIndex++, true));
+            }
+        }
+
+        if (cards.length === 0) {
+            weaponCardsContainer.innerHTML = '<div class="card placeholder-card"><p>무기 데이터를 불러올 수 없습니다.</p></div>';
+            return;
         }
 
         weaponCardsContainer.innerHTML = cards.join('');
     }
 
     function buildWeaponCard(weapon, weaponInfo, index, showNumber) {
-        // Get first bullet info for ammo type display
         const firstBulletId = weapon.bullet_ID?.[0];
         const bulletInfo = firstBulletId ? simEngine.allBulletData[firstBulletId] : null;
         const ammoType = bulletInfo?.ammo_type || 0;
@@ -464,7 +411,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const bulletType = bulletInfo?.type || 0;
         const bulletTypeName = BULLET_TYPE_NAMES[bulletType] || '일반';
 
-        // Calculate total bullets per fire
         let totalBullets = 0;
         if (weapon.barrage_ID) {
             weapon.barrage_ID.forEach(bId => {
@@ -472,28 +418,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (barrage) totalBullets += (barrage.primal_repeat || 0) + 1;
             });
         }
-        totalBullets *= (weaponInfo.quota || 1);
 
-        // Reload time
         const reloadMs = weapon.reload_max;
         const reloadDisplay = reloadMs ? `${(reloadMs / 10).toFixed(1)}s` : '-';
-
-        // Range
         const range = weapon.range || bulletInfo?.range || '-';
-
-        // Damage
         const damage = weapon.damage || '-';
         const corrected = weapon.corrected ? ` (×${weapon.corrected}%)` : '';
-
-        // Pierce
         const pierce = bulletInfo?.pierce_count || '-';
-
-        // Armor modifiers
         const damageType = bulletInfo?.damage_type;
 
         let html = `<div class="weapon-card">`;
 
-        // Header
         html += `<div class="weapon-card-header">
             <div class="weapon-card-title">${showNumber ? `무기 ${index}` : '무기 정보'}
                 <span class="ammo-badge" style="background:var(--ammo-color-${ammoType})">${ammoName}</span>
@@ -501,7 +436,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             <span class="weapon-card-id">${weaponInfo.weaponId}</span>
         </div>`;
 
-        // Stats grid
         html += `<div class="weapon-stats">
             <div class="stat-item"><span class="stat-label">탄종</span><span class="stat-value">${bulletTypeName}</span></div>
             <div class="stat-item"><span class="stat-label">데미지</span><span class="stat-value">${damage}${corrected}</span></div>
@@ -510,7 +444,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="stat-item"><span class="stat-label">발사 수</span><span class="stat-value">${totalBullets}</span></div>
             <div class="stat-item"><span class="stat-label">관통</span><span class="stat-value">${pierce}</span></div>`;
 
-        // Armor modifiers row
         if (damageType && Array.isArray(damageType) && damageType.length >= 3) {
             html += `<div class="armor-row">
                 <div class="armor-chip"><span class="armor-label">경장</span>${damageType[0]}%</div>
@@ -519,9 +452,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>`;
         }
 
-        html += `</div>`; // close weapon-stats
+        html += `</div>`;
 
-        // Barrage details (expandable)
         if (weapon.barrage_ID && weapon.barrage_ID.length > 0) {
             const firstBarrage = simEngine.allBarrageData[weapon.barrage_ID[0]];
             if (firstBarrage) {
@@ -533,77 +465,48 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <div class="barrage-detail-item"><span class="stat-label">딜레이</span> ${firstBarrage.delay || 0}s</div>
                         <div class="barrage-detail-item"><span class="stat-label">반복</span> ${(firstBarrage.primal_repeat || 0) + 1}발</div>
                         ${firstBarrage.senior_repeat ? `<div class="barrage-detail-item"><span class="stat-label">시니어</span> ${firstBarrage.senior_repeat + 1}회</div>` : ''}
-                        ${weaponInfo.quota ? `<div class="barrage-detail-item"><span class="stat-label">Quota</span> ${weaponInfo.quota}회</div>` : ''}
-                        ${weaponInfo.time ? `<div class="barrage-detail-item"><span class="stat-label">발동</span> ${weaponInfo.time}f</div>` : ''}
                     </div>
                 </details>`;
             }
         }
 
-        html += `</div>`; // close weapon-card
+        html += `</div>`;
         return html;
     }
 
-    // --- Firing Logic (unchanged) ---
+    // --- Firing Logic ---
 
-    async function fireSkill(skillId) {
-        const skill = weaponSimData.getSkillById(skillId);
-        if (!skill) { simEngine.logToScreen(`Skill ${skillId} not found`, 'error'); return; }
-
-        await weaponSimData.ensureSkillWeaponsLoaded(skillId, currentSkillLevel);
-
-        const weaponInfoList = weaponSimData.getWeaponIdsFromSkill(skillId, currentSkillLevel);
-        const aircraftSubWeaponLoads = [];
-        for (const info of weaponInfoList) {
-            const aircraftData = simEngine.allAircraftData?.[info.weaponId];
-            if (aircraftData?.weapon_ID) {
-                aircraftData.weapon_ID.forEach(subId => aircraftSubWeaponLoads.push(weaponSimData.ensureWeaponLoaded(subId)));
-            }
-        }
-        if (aircraftSubWeaponLoads.length > 0) await Promise.all(aircraftSubWeaponLoads);
-
-        const skillName = weaponSimData.getSkillName(skillId);
-        const skillPosition = skill.position;
-        simEngine.logToScreen(`Firing: ${skillName} (Lv.${currentSkillLevel})`);
-
-        weaponSimData.getWeaponIdsFromSkill(skillId, currentSkillLevel).forEach((weaponInfo) =>
-            scheduleFireTimer(() => fireWeapon(weaponInfo, skillPosition),
-                weaponInfo.time ? convertToMs(weaponInfo.time, true) : 0)
-        );
-    }
-
-    function fireWeapon(weaponInfo, skillPosition = null) {
-        const weapon = weaponSimData.getWeaponById(weaponInfo.weaponId);
-        if (!weapon || !Array.isArray(weapon.barrage_ID)) {
-            simEngine.logToScreen(`Weapon ${weaponInfo.weaponId} has invalid data`, 'error');
+    async function fireAircraft(equipId) {
+        const weaponIds = aircraftSimData.getWeaponIdsForLevel(equipId, currentLevelIndex);
+        if (weaponIds.length === 0) {
+            simEngine.logToScreen('No weapon data for this aircraft.', 'error');
             return;
         }
 
-        const aircraftData = simEngine.allAircraftData?.[weaponInfo.weaponId];
-        if (aircraftData && aircraftData.weapon_ID) {
-            spawnAircraft(aircraftData, weapon, skillPosition);
-            return;
-        }
+        await aircraftSimData.ensureAircraftWeaponsLoaded(equipId, currentLevelIndex);
 
-        for (let i = 0; i < weapon.barrage_ID.length; i++) {
-            const barrage = simEngine.allBarrageData[weapon.barrage_ID[i]];
-            const bulletInfo = simEngine.allBulletData[weapon.bullet_ID[i]];
-            if (!barrage || !bulletInfo) continue;
-            fireBarrage(weapon, barrage, bulletInfo, null, 1, skillPosition, weaponInfo);
+        const equipLite = aircraftSimData.equipList.find(e => String(e.id) === String(equipId));
+        simEngine.logToScreen(`Launching: ${equipLite?.name || equipId} (+${currentLevelIndex})`);
+
+        for (const wid of weaponIds) {
+            const aircraftData = aircraftSimData.getAircraftTemplate(wid);
+            if (!aircraftData?.weapon_ID) continue;
+
+            const weapon = aircraftSimData.getWeaponById(wid);
+            spawnAircraft(aircraftData, weapon);
         }
     }
 
-    function spawnAircraft(aircraftData, parentWeapon, skillPosition) {
-        const spawnLocation = skillPosition === '전열' ? 'vanguard' : 'mainfleet';
-        const spawnPos = simEngine.getEntityGamePos(spawnLocation);
+    function spawnAircraft(aircraftData, parentWeapon) {
+        const spawnPos = simEngine.getEntityGamePos('mainfleet');
         const enemyPos = simEngine.getEntityGameCoords('enemy');
         const targetX = enemyPos?.x || 50;
-        const count = parentWeapon.barrage_ID?.length || 1;
+        const count = parentWeapon?.barrage_ID?.length || 1;
         const subWeaponIds = aircraftData.weapon_ID || [];
 
         // Get per-weapon firing ranges from weapon_property.range
         const weaponRanges = subWeaponIds.map(wid => {
-            const w = weaponSimData.getWeaponById(wid);
+            const w = aircraftSimData.getWeaponById(wid);
             return w?.range || 30;
         });
 
@@ -616,7 +519,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             aircraft.onFireWeapon = (x, y, subWeaponId) => {
-                const subWeapon = weaponSimData.getWeaponById(subWeaponId);
+                const subWeapon = aircraftSimData.getWeaponById(subWeaponId);
                 if (!subWeapon || !subWeapon.barrage_ID) return;
                 for (let j = 0; j < subWeapon.barrage_ID.length; j++) {
                     const barrage = simEngine.allBarrageData[subWeapon.barrage_ID[j]];
@@ -635,13 +538,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (overrideStartPos) {
             ({ x: startX_game, y: startY_game } = overrideStartPos);
         } else {
-            let spawnLocation = 'mainfleet';
-            if (skillPosition) {
-                spawnLocation = skillPosition === '전열' ? 'vanguard' : 'mainfleet';
-            } else if (weapon.spawn_bound === 'vanguard' || weapon.spawn_bound === 'cannon') {
-                spawnLocation = 'vanguard';
-            }
-            const spawnPos = simEngine.getEntityGamePos(spawnLocation);
+            const spawnPos = simEngine.getEntityGamePos('mainfleet');
             startX_game = spawnPos.x;
             startY_game = spawnPos.y;
         }
@@ -792,9 +689,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (rloZ) finalY_game += Math.random() * rloZ * 2 - rloZ;
         }
 
-        // AIM type: compute angle toward enemy from bullet's actual spawn position
         let finalAngle;
         if (weapon.aim_type === 1 && enemyGamePos) {
+            // Always aim from bullet's actual spawn position — each bullet converges on target
             const aimDx = enemyGamePos.x - finalX_game;
             const aimDy = enemyGamePos.y - finalY_game;
             const aimAngle = Math.atan2(aimDy, aimDx) * 180 / Math.PI;

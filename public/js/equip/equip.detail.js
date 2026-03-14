@@ -3,7 +3,7 @@
  * Renders equipment detail into the side panel with level selector, stats, icon download
  */
 
-import { showToast } from '../utils.js';
+import { showToast, resolveUrl } from '../utils.js';
 import {
     getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics,
     replaceEquipCodes, getWeaponProperty, getBulletTemplate, getSkillData,
@@ -86,6 +86,7 @@ function renderDetail(equip) {
             ${equip.speciality && equip.speciality !== '없음' ? `<div class="panel-detail-speciality">특성: ${replaceEquipCodes(equip.speciality)}</div>` : ''}
             ${equip.label && equip.label.length > 0 ? `<div class="panel-detail-labels">${equip.label.map(l => `<span class="panel-detail-label-tag">${l}</span>`).join('')}</div>` : ''}
             ${equip.descrip ? `<div class="panel-detail-descrip">${equip.descrip}</div>` : ''}
+            ${AIRCRAFT_TYPES.has(equip.type) ? `<a href="${resolveUrl(`simulators/sim-aircraft?equip=${equip.id}`)}" class="sim-link-btn"><span class="material-symbols-outlined">flight</span> 시뮬레이션</a>` : ''}
         </div>
     `;
 

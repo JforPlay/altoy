@@ -26,6 +26,7 @@ export class AircraftEntity {
         this.altitude = 0;
         this.targetAltitude = 15; // HEIGHT = AircraftHeight + 5
         this.firingRange = options.firingRange || 30;
+        this.weaponRanges = options.weaponRanges || null; // Per-weapon range array from weapon_property.range
 
         this.speed = (this.aircraftData.speed || 50) * 0.01; // AircraftSpeedConvertConst
         this.brownianAmplitude = this.aircraftData.spawn_brownian || 0;
@@ -39,8 +40,8 @@ export class AircraftEntity {
 
         this.element = null;
         this.shouldRemove = false;
-        this.weaponsFired = false;
-        this.onFireWeapons = null;
+        this.weaponsFiredSet = new Set(); // Track which weapons have fired (by index)
+        this.onFireWeapon = null; // Called per weapon: (x, y, weaponId, weaponIndex)
 
         this._createElement();
 
@@ -99,7 +100,7 @@ export class AircraftEntity {
             const now = performance.now();
             const deltaMs = Math.max(now - this.lastFrameTime, 1);
             this.lastFrameTime = now;
-            const delta = (deltaMs / (1000 / this.engine.targetFps)) * this.engine.gSpeed;
+            const delta = (deltaMs / (1000 / this.engine.targetFps)) * (this.engine.bulletEngine?.gSpeed ?? this.engine.gSpeed);
             this.timeElapsed += deltaMs / 1000;
 
             this._update(delta);
@@ -132,15 +133,20 @@ export class AircraftEntity {
                 // Slow descent during ATTACK, clamped to targetAltitude
                 this.altitude = Math.max(this.targetAltitude, this.altitude - 0.04 * delta);
 
-                // Fire weapons when within range of enemy
-                if (!this.weaponsFired) {
+                // Fire each weapon independently when aircraft enters that weapon's range
+                if (this.weaponsFiredSet.size < this.weaponIds.length) {
                     const dx = this.targetX - this.x;
                     const dy = (this.targetY || this.y) - this.y;
                     const distToTarget = Math.sqrt(dx * dx + dy * dy);
-                    if (distToTarget < this.firingRange) {
-                        this.weaponsFired = true;
-                        if (this.onFireWeapons) {
-                            this.onFireWeapons(this.x, this.y, this.weaponIds);
+
+                    for (let wi = 0; wi < this.weaponIds.length; wi++) {
+                        if (this.weaponsFiredSet.has(wi)) continue;
+                        const weaponRange = this.weaponRanges?.[wi] ?? this.firingRange;
+                        if (distToTarget < weaponRange) {
+                            this.weaponsFiredSet.add(wi);
+                            if (this.onFireWeapon) {
+                                this.onFireWeapon(this.x, this.y, this.weaponIds[wi], wi);
+                            }
                         }
                     }
                 }

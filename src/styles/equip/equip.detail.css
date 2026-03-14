@@ -218,6 +218,32 @@
     text-align: left;
 }
 
+/* ===== Sim Link Button ===== */
+.sim-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    background: var(--primary-alpha-10);
+    border: 1px solid var(--primary-alpha-20);
+    border-radius: var(--radius-full);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+.sim-link-btn:hover {
+    color: #fff;
+    background: var(--primary-color);
+}
+
+.sim-link-btn .material-symbols-outlined {
+    font-size: 1rem;
+}
+
 /* ===== Panel Level Selector ===== */
 .level-selector-section {
     background: var(--card-bg);

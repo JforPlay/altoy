@@ -1,6 +1,6 @@
 ---
 /**
- * Weapon Simulator — Skill barrage visualization
+ * Aircraft Simulator — Aircraft flight & weapon visualization
  */
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/skin/skin.common.css';
@@ -8,7 +8,7 @@ import '../../styles/simulators/sim.common.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="스킬/장비 탄막 시뮬레이터" {base}>
+<Layout title="함재기 시뮬레이터" {base}>
     <Fragment slot="head">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     </Fragment>
@@ -16,8 +16,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="sim-page">
         <header class="sim-header">
             <div class="header-title-container">
-                <span class="material-symbols-outlined header-icon">rocket_launch</span>
-                <h1>스킬 탄막 시뮬레이터</h1>
+                <span class="material-symbols-outlined header-icon">flight</span>
+                <h1>함재기 시뮬레이터</h1>
             </div>
         </header>
 
@@ -59,22 +59,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
         <!-- Two-column content area -->
         <div class="sim-content">
-            <!-- Left: Skill Selection -->
+            <!-- Left: Aircraft Selection -->
             <div class="sim-sidebar">
                 <div class="card selector-card">
                     <div class="card-header">
-                        <h3>스킬 선택</h3>
-                        <button id="ship-browse-btn" class="btn btn-icon" title="함선 검색">
-                            <span class="material-symbols-outlined">search</span>
-                        </button>
+                        <h3>함재기 선택</h3>
                     </div>
-                    <select id="skill-select"></select>
+                    <div id="type-filter" class="type-filter-bar"></div>
+                    <select id="aircraft-select"></select>
                 </div>
 
-                <div id="shipgirl-card" class="card shipgirl-card hidden"></div>
-
-                <div id="skill-info-card" class="card hidden">
-                    <div id="skill-meta"></div>
+                <div id="aircraft-info-card" class="card hidden">
+                    <div id="aircraft-meta"></div>
                 </div>
             </div>
 
@@ -82,25 +78,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <div class="sim-main">
                 <div id="weapon-cards-container">
                     <div class="card placeholder-card">
-                        <p>스킬을 선택하여 무기 정보를 확인하세요.</p>
+                        <p>함재기를 선택하여 무기 정보를 확인하세요.</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Shipgirl Browse Modal -->
-    <div id="ship-browse-modal" class="modal-overlay hidden">
-        <div class="modal-backdrop"></div>
-        <div class="modal-dialog card">
-            <div class="modal-header">
-                <h3>함선 검색</h3>
-                <button class="modal-close-btn btn btn-icon">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-            <input type="text" id="ship-search-input" placeholder="함선 이름 검색..." class="search-input" />
-            <div id="ship-browse-list" class="ship-grid"></div>
         </div>
     </div>
 
@@ -109,6 +90,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <script is:inline type="module" src={`${base}/js/simulators/sim.engine.bullet.factory.js`}></script>
     <script is:inline type="module" src={`${base}/js/simulators/sim.engine.bullet.js`}></script>
     <script is:inline type="module" src={`${base}/js/simulators/sim.engine.common.js`}></script>
-    <script is:inline type="module" src={`${base}/js/simulators/sim.weapon.data.js`}></script>
-    <script is:inline type="module" src={`${base}/js/simulators/sim.weapon.main.js`}></script>
+    <script is:inline type="module" src={`${base}/js/simulators/sim.aircraft.data.js`}></script>
+    <script is:inline type="module" src={`${base}/js/simulators/sim.aircraft.main.js`}></script>
 </Layout>
