@@ -117029,7 +117029,7 @@
                 "upgrade": 30582,
                 "downgrade": null,
                 "requirement": "Limit Break 1",
-                "weapon_true": false
+                "weapon_true": true
             },
             "30582": {
                 "id": 30582,
@@ -117037,9 +117037,19 @@
                 "upgrade": null,
                 "downgrade": 30581,
                 "requirement": "Limit Break 3",
-                "weapon_true": false
+                "weapon_true": true
             }
         },
+        "description": [
+            "이벤트: 봄빛 여관 Online"
+        ],
+        "name": "오조르노이",
+        "gift_dislike": [
+            180006,
+            180007
+        ],
+        "skin_id": 701130,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701130/shipyard.png",
         "timer": null,
         "light": false,
         "heavy": false,
@@ -118638,7 +118648,7 @@
                 "upgrade": 26122,
                 "downgrade": null,
                 "requirement": "Limit Break 1",
-                "weapon_true": false
+                "weapon_true": true
             },
             "26122": {
                 "id": 26122,
@@ -118646,9 +118656,19 @@
                 "upgrade": null,
                 "downgrade": 26121,
                 "requirement": "Limit Break 3",
-                "weapon_true": false
+                "weapon_true": true
             }
         },
+        "description": [
+            "이벤트: 봄빛 여관 Online"
+        ],
+        "name": "크라스늬 캅카스",
+        "gift_dislike": [
+            180002,
+            180009
+        ],
+        "skin_id": 702090,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702090/shipyard.png",
         "timer": null,
         "light": false,
         "heavy": false,
@@ -118810,6 +118830,16 @@
                 "weapon_true": true
             }
         },
+        "description": [
+            "이벤트: 봄빛 여관 Online"
+        ],
+        "name": "바가티르",
+        "gift_dislike": [
+            180005,
+            180006
+        ],
+        "skin_id": 702100,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702100/shipyard.png",
         "timer": null,
         "light": false,
         "heavy": false,
@@ -119315,7 +119345,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "30591": {
                 "id": 30591,
@@ -119323,7 +119353,7 @@
                 "upgrade": 30592,
                 "downgrade": null,
                 "requirement": "Limit Break 1",
-                "weapon_true": false
+                "weapon_true": true
             },
             "30592": {
                 "id": 30592,
@@ -119331,9 +119361,19 @@
                 "upgrade": null,
                 "downgrade": 30591,
                 "requirement": "Limit Break 3",
-                "weapon_true": false
+                "weapon_true": true
             }
         },
+        "description": [
+            "이벤트: 봄빛 여관 Online"
+        ],
+        "name": "모스크바",
+        "gift_dislike": [
+            180009,
+            180007
+        ],
+        "skin_id": 703030,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703030/shipyard.png",
         "timer": null,
         "light": false,
         "heavy": false,
@@ -137462,6 +137502,179 @@
         "limited": true
     },
     {
+        "id": 30058,
+        "gid": 970211,
+        "sid": 9702111,
+        "nationality": 97,
+        "type": 2,
+        "rarity": "SSR",
+        "armor": 1,
+        "base": {
+            "9702111": {
+                "health": 630,
+                "firepower": 35,
+                "torpedo": 60,
+                "antiair": 70,
+                "aviation": 0,
+                "reload": 71,
+                "accuracy": 43,
+                "evasion": 23,
+                "speed": 36,
+                "luck": 46,
+                "asw": 33
+            },
+            "9702112": {
+                "health": 784,
+                "firepower": 44,
+                "torpedo": 75,
+                "antiair": 87,
+                "aviation": 0,
+                "reload": 71,
+                "accuracy": 43,
+                "evasion": 23,
+                "speed": 36,
+                "luck": 46,
+                "asw": 41
+            },
+            "9702113": {
+                "health": 1091,
+                "firepower": 61,
+                "torpedo": 105,
+                "antiair": 121,
+                "aviation": 0,
+                "reload": 71,
+                "accuracy": 43,
+                "evasion": 23,
+                "speed": 36,
+                "luck": 46,
+                "asw": 58
+            },
+            "9702114": {
+                "health": 1552,
+                "firepower": 86,
+                "torpedo": 149,
+                "antiair": 172,
+                "aviation": 0,
+                "reload": 71,
+                "accuracy": 43,
+                "evasion": 23,
+                "speed": 36,
+                "luck": 46,
+                "asw": 83
+            }
+        },
+        "growth": {
+            "9702111": {
+                "health": 10584,
+                "firepower": 478,
+                "torpedo": 793,
+                "antiair": 879,
+                "aviation": 0,
+                "reload": 491,
+                "accuracy": 607,
+                "evasion": 566,
+                "speed": 0,
+                "luck": 0,
+                "asw": 462
+            },
+            "9702112": {
+                "health": 10584,
+                "firepower": 478,
+                "torpedo": 793,
+                "antiair": 879,
+                "aviation": 0,
+                "reload": 491,
+                "accuracy": 607,
+                "evasion": 566,
+                "speed": 0,
+                "luck": 0,
+                "asw": 462
+            },
+            "9702113": {
+                "health": 10584,
+                "firepower": 478,
+                "torpedo": 793,
+                "antiair": 879,
+                "aviation": 0,
+                "reload": 491,
+                "accuracy": 607,
+                "evasion": 566,
+                "speed": 0,
+                "luck": 0,
+                "asw": 462
+            },
+            "9702114": {
+                "health": 10584,
+                "firepower": 478,
+                "torpedo": 793,
+                "antiair": 879,
+                "aviation": 0,
+                "reload": 491,
+                "accuracy": 607,
+                "evasion": 566,
+                "speed": 0,
+                "luck": 0,
+                "asw": 462
+            }
+        },
+        "enhance": {
+            "health": 614,
+            "antiair": 68,
+            "accuracy": 43,
+            "evasion": 23,
+            "firepower": 34,
+            "torpedo": 59,
+            "reload": 53
+        },
+        "skill": {
+            "802141": {
+                "id": 802141,
+                "parent": 802141,
+                "upgrade": 802142,
+                "downgrade": null,
+                "requirement": "Limit Break 1",
+                "weapon_true": false
+            },
+            "802142": {
+                "id": 802142,
+                "parent": 802141,
+                "upgrade": null,
+                "downgrade": 802141,
+                "requirement": "Limit Break 3",
+                "weapon_true": false
+            },
+            "802110": {
+                "id": 802110,
+                "parent": 802110,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "802120": {
+                "id": 802120,
+                "parent": 802120,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            },
+            "802130": {
+                "id": 802130,
+                "parent": 802130,
+                "upgrade": null,
+                "downgrade": null,
+                "requirement": "Default",
+                "weapon_true": false
+            }
+        },
+        "timer": null,
+        "light": false,
+        "heavy": false,
+        "special": false,
+        "limited": false
+    },
+    {
         "id": 30013,
         "gid": 970301,
         "sid": 9703011,
@@ -141415,7 +141628,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "802090": {
                 "id": 802090,
@@ -141434,6 +141647,16 @@
                 "weapon_true": false
             }
         },
+        "description": [
+            "이벤트: 봄빛 여관 Online"
+        ],
+        "name": "강구트·META",
+        "gift_dislike": [
+            180005,
+            180007
+        ],
+        "skin_id": 9705100,
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705100/shipyard.png",
         "timer": null,
         "light": false,
         "heavy": false,

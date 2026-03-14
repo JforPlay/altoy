@@ -24,29 +24,29 @@
             "build_name": "기간 한정",
             "banner_type": 2,
             "shipgirls": {
-                "11802": {
-                    "name": "괌",
+                "70303": {
+                    "name": "모스크바",
                     "rarity": "UR",
-                    "nationality": 1,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/118020/shipyard.png"
+                    "nationality": 7,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703030/shipyard.png"
                 },
-                "10401": {
-                    "name": "컨스텔레이션",
+                "70113": {
+                    "name": "오조르노이",
                     "rarity": "SSR",
-                    "nationality": 1,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/104010/shipyard.png"
+                    "nationality": 7,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701130/shipyard.png"
                 },
-                "10808": {
-                    "name": "플래셔",
+                "970510": {
+                    "name": "강구트·META",
                     "rarity": "SSR",
-                    "nationality": 1,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/108080/shipyard.png"
+                    "nationality": 97,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705100/shipyard.png"
                 },
-                "10730": {
-                    "name": "샌 재신토",
+                "70209": {
+                    "name": "크라스늬 캅카스",
                     "rarity": "SR",
-                    "nationality": 1,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107300/shipyard.png"
+                    "nationality": 7,
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702090/shipyard.png"
                 }
             }
         }

@@ -3183,6 +3183,10 @@
         "name": "사무실에서의 \"사고\"",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207071/icon.png"
     },
+    "207072": {
+        "name": "유향 머무는 잔",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207072/icon.png"
+    },
     "207090": {
         "name": "꼬마 일러스트리어스 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207090/icon.png"
@@ -4935,6 +4939,10 @@
         "name": "수묵여색",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306082/icon.png"
     },
+    "306083": {
+        "name": "연꽃못의 찻향",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306083/icon.png"
+    },
     "306090": {
         "name": "{namecode:104}",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306090/icon.png"
@@ -4942,6 +4950,10 @@
     "306091": {
         "name": "푸른 파도가 찬란한 날",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306091/icon.png"
+    },
+    "306092": {
+        "name": "연못가의 주향",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306092/icon.png"
     },
     "307010": {
         "name": "아카기",
@@ -6499,6 +6511,10 @@
         "name": "패럴리틱 버서스",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499091/icon.png"
     },
+    "499092": {
+        "name": "매혹하는 심계의 춤",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499092/icon.png"
+    },
     "499100": {
         "name": "메클렌부르크",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499100/icon.png"
@@ -7371,6 +7387,14 @@
         "name": "아트 오브 리벨리언",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701121/icon.png"
     },
+    "701130": {
+        "name": "오조르노이",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701130/icon.png"
+    },
+    "701131": {
+        "name": "바람 타고 하늘 가르며",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701131/icon.png"
+    },
     "702010": {
         "name": "아브로라 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702010/icon.png"
@@ -7491,6 +7515,22 @@
         "name": "벽난로 곁 나른한 밤",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702081/icon.png"
     },
+    "702090": {
+        "name": "크라스늬 캅카스",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702090/icon.png"
+    },
+    "702091": {
+        "name": "블라인드♥마작",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702091/icon.png"
+    },
+    "702100": {
+        "name": "바가티르",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702100/icon.png"
+    },
+    "702101": {
+        "name": "감정 데이터 점검 중",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702101/icon.png"
+    },
     "703010": {
         "name": "탈린",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703010/icon.png"
@@ -7518,6 +7558,14 @@
     "703022": {
         "name": "아름다운 사냥꾼",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703022/icon.png"
+    },
+    "703030": {
+        "name": "모스크바",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703030/icon.png"
+    },
+    "703031": {
+        "name": "다음 수를 기다리며",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703031/icon.png"
     },
     "705010": {
         "name": "강구트 ",
@@ -9994,6 +10042,10 @@
     "9705090": {
         "name": "네바다·META",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705090/icon.png"
+    },
+    "9705100": {
+        "name": "강구트·META",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705100/icon.png"
     },
     "9706010": {
         "name": "히요·META",

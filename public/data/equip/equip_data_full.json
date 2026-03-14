@@ -273666,6 +273666,526 @@
             }
         ]
     },
+    "85800": {
+        "id": 85800,
+        "name": "SM-40 시제형 220mm 3연장포",
+        "icon": "85800",
+        "rarity": 6,
+        "rarity_name": "UR",
+        "type": 3,
+        "type_name": "함포",
+        "type_name2": "함포(중순)",
+        "compare_group": 1,
+        "nationality": 7,
+        "nation_name": "노스 유니온",
+        "nation_code": "SN",
+        "nation_image": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/nationality/7.png",
+        "speciality": "<[LOCK]>",
+        "label": [
+            "SN",
+            "CA",
+            "MG",
+            "AP"
+        ],
+        "tech": 0,
+        "descrip": "프로젝트 66형 중순양함에 탑재될 예정인 시제형 220mm 3연장 주포",
+        "ammo": 1,
+        "ammo_icon": [
+            2
+        ],
+        "ammo_info": [
+            [
+                1,
+                1432
+            ]
+        ],
+        "torpedo_ammo": 0,
+        "equip_info": [
+            1,
+            2,
+            [
+                3,
+                1432
+            ],
+            [
+                4,
+                1215
+            ],
+            6,
+            10,
+            11,
+            12
+        ],
+        "equip_parameters": {},
+        "attr_info": [
+            {
+                "key": "cannon",
+                "name": "포격",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/attribute/firepower_32.png",
+                "index": 2
+            }
+        ],
+        "part_main": [
+            {
+                "id": 3,
+                "name": "중순",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/3.png"
+            },
+            {
+                "id": 18,
+                "name": "대형순",
+                "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/type/18.png"
+            }
+        ],
+        "part_sub": [],
+        "levels": [
+            {
+                "level": 1,
+                "id": 85800,
+                "attr_2_value": 65,
+                "damage": "34 x 6",
+                "weapon_id": [
+                    85800
+                ],
+                "upgrade_gold": 60,
+                "upgrade_items": [
+                    [
+                        17011,
+                        3
+                    ]
+                ],
+                "scrap_gold": 36,
+                "scrap_items": [
+                    [
+                        17013,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": [
+                    8,
+                    17,
+                    22,
+                    23,
+                    24
+                ]
+            },
+            {
+                "level": 2,
+                "id": 85801,
+                "attr_2_value": 65,
+                "damage": "36 x 6",
+                "weapon_id": [
+                    85801
+                ],
+                "upgrade_gold": 180,
+                "upgrade_items": [
+                    [
+                        17011,
+                        9
+                    ]
+                ],
+                "scrap_gold": 51,
+                "scrap_items": [
+                    [
+                        17011,
+                        1
+                    ],
+                    [
+                        17013,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": []
+            },
+            {
+                "level": 3,
+                "id": 85802,
+                "attr_2_value": 65,
+                "damage": "38 x 6",
+                "weapon_id": [
+                    85802
+                ],
+                "upgrade_gold": 300,
+                "upgrade_items": [
+                    [
+                        17011,
+                        15
+                    ]
+                ],
+                "scrap_gold": 96,
+                "scrap_items": [
+                    [
+                        17011,
+                        3
+                    ],
+                    [
+                        17013,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": []
+            },
+            {
+                "level": 4,
+                "id": 85803,
+                "attr_2_value": 65,
+                "damage": "40 x 6",
+                "weapon_id": [
+                    85803
+                ],
+                "upgrade_gold": 480,
+                "upgrade_items": [
+                    [
+                        17012,
+                        24
+                    ]
+                ],
+                "scrap_gold": 171,
+                "scrap_items": [
+                    [
+                        17011,
+                        7
+                    ],
+                    [
+                        17013,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": []
+            },
+            {
+                "level": 5,
+                "id": 85804,
+                "attr_2_value": 65,
+                "damage": "42 x 6",
+                "weapon_id": [
+                    85804
+                ],
+                "upgrade_gold": 660,
+                "upgrade_items": [
+                    [
+                        17012,
+                        33
+                    ]
+                ],
+                "scrap_gold": 291,
+                "scrap_items": [
+                    [
+                        17011,
+                        7
+                    ],
+                    [
+                        17012,
+                        6
+                    ],
+                    [
+                        17013,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": []
+            },
+            {
+                "level": 6,
+                "id": 85805,
+                "attr_2_value": 65,
+                "damage": "44 x 6",
+                "weapon_id": [
+                    85805
+                ],
+                "upgrade_gold": 840,
+                "upgrade_items": [
+                    [
+                        17012,
+                        42
+                    ]
+                ],
+                "scrap_gold": 456,
+                "scrap_items": [
+                    [
+                        17011,
+                        7
+                    ],
+                    [
+                        17012,
+                        14
+                    ],
+                    [
+                        17013,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": []
+            },
+            {
+                "level": 7,
+                "id": 85806,
+                "attr_2_value": 65,
+                "damage": "46 x 6",
+                "weapon_id": [
+                    85806
+                ],
+                "upgrade_gold": 1080,
+                "upgrade_items": [
+                    [
+                        17013,
+                        54
+                    ]
+                ],
+                "scrap_gold": 666,
+                "scrap_items": [
+                    [
+                        17011,
+                        7
+                    ],
+                    [
+                        17012,
+                        25
+                    ],
+                    [
+                        17013,
+                        1
+                    ]
+                ],
+                "ship_type_forbidden": []
+            },
+            {
+                "level": 8,
+                "id": 85807,
+                "attr_2_value": 65,
+                "damage": "48 x 6",
+                "weapon_id": [
+                    85807
+                ],
+                "upgrade_gold": 1320,
+                "upgrade_items": [
+                    [
+                        17013,
+                        66
+                    ]
+                ],
+                "scrap_gold": 936,
+                "scrap_items": [
+                    [
+                        17011,
+                        7
+                    ],
+                    [
+                        17012,
+                        25
+                    ],
+                    [
+                        17013,
+                        15
+                    ]
+                ],
+                "ship_type_forbidden": []
+            },
+            {
+                "level": 9,
+                "id": 85808,
+                "attr_2_value": 65,
+                "damage": "50 x 6",
+                "weapon_id": [
+                    85808
+                ],
+                "upgrade_gold": 1560,
+                "upgrade_items": [
+                    [
+                        17013,
+                        78
+                    ]
+                ],
+                "scrap_gold": 1266,
+                "scrap_items": [
+                    [
+                        17011,
+                        7
+                    ],
+                    [
+                        17012,
+                        25
+                    ],
+                    [
+                        17013,
+                        31
+                    ]
+                ],
+                "ship_type_forbidden": []
+            },
+            {
+                "level": 10,
+                "id": 85809,
+                "attr_2_value": 65,
+                "damage": "52 x 6",
+                "weapon_id": [
+                    85809
+                ],
+                "upgrade_gold": 1800,
+                "upgrade_items": [
+                    [
+                        17013,
+                        90
+                    ]
+                ],
+                "scrap_gold": 1656,
+                "scrap_items": [
+                    [
+                        17011,
+                        7
+                    ],
+                    [
+                        17012,
+                        25
+                    ],
+                    [
+                        17013,
+                        51
+                    ]
+                ],
+                "ship_type_forbidden": []
+            },
+            {
+                "level": 11,
+                "id": 85810,
+                "attr_2_value": 65,
+                "damage": "54 x 6",
+                "weapon_id": [
+                    85810
+                ],
+                "upgrade_gold": 2100,
+                "upgrade_items": [
+                    [
+                        17014,
+                        105
+                    ]
+                ],
+                "scrap_gold": 2106,
+                "scrap_items": [
+                    [
+                        17011,
+                        7
+                    ],
+                    [
+                        17012,
+                        25
+                    ],
+                    [
+                        17013,
+                        73
+                    ]
+                ],
+                "ship_type_forbidden": []
+            },
+            {
+                "level": 12,
+                "id": 85811,
+                "attr_2_value": 65,
+                "damage": "54 x 6",
+                "weapon_id": [
+                    85811
+                ],
+                "upgrade_gold": 2400,
+                "upgrade_items": [
+                    [
+                        17014,
+                        120
+                    ]
+                ],
+                "scrap_gold": 2631,
+                "scrap_items": [
+                    [
+                        17011,
+                        7
+                    ],
+                    [
+                        17012,
+                        25
+                    ],
+                    [
+                        17013,
+                        73
+                    ],
+                    [
+                        17014,
+                        27
+                    ]
+                ],
+                "ship_type_forbidden": []
+            },
+            {
+                "level": 13,
+                "id": 85812,
+                "attr_2_value": 65,
+                "damage": "54 x 6",
+                "weapon_id": [
+                    85812
+                ],
+                "upgrade_gold": 2700,
+                "upgrade_items": [
+                    [
+                        17014,
+                        135
+                    ],
+                    [
+                        17991,
+                        5
+                    ]
+                ],
+                "scrap_gold": 3231,
+                "scrap_items": [
+                    [
+                        17011,
+                        7
+                    ],
+                    [
+                        17012,
+                        25
+                    ],
+                    [
+                        17013,
+                        73
+                    ],
+                    [
+                        17014,
+                        57
+                    ]
+                ],
+                "ship_type_forbidden": []
+            },
+            {
+                "level": 14,
+                "id": 85813,
+                "attr_2_value": 65,
+                "damage": "54 x 6",
+                "weapon_id": [
+                    85813
+                ],
+                "upgrade_gold": 0,
+                "upgrade_items": [],
+                "scrap_gold": 3906,
+                "scrap_items": [
+                    [
+                        17011,
+                        7
+                    ],
+                    [
+                        17012,
+                        25
+                    ],
+                    [
+                        17013,
+                        73
+                    ],
+                    [
+                        17014,
+                        90
+                    ]
+                ],
+                "ship_type_forbidden": []
+            }
+        ]
+    },
     "89000": {
         "id": 89000,
         "name": "랜덤 워드 생성기",
