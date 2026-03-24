@@ -1,0 +1,91 @@
+---
+/**
+ * Equipment Skin Viewer — Browse and preview equipment cosmetic skins
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/skin/skin.common.css';
+import '../../styles/simulators/sim.common.css';
+import '../../styles/skin/equip-skin-viewer.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="장비 스킨 뷰어" {base}>
+    <div class="sim-page">
+        <header class="sim-header">
+            <div class="header-title-container">
+                <span class="material-symbols-outlined header-icon">palette</span>
+                <h1>장비 스킨 뷰어</h1>
+            </div>
+        </header>
+
+        <!-- Simulation Canvas -->
+        <div id="simulation-container">
+            <div id="fps-display">FPS: --</div>
+            <div id="player-area"></div>
+            <div id="vanguard">
+                <img src={`${base}/assets/img/vanguard_chibi.webp`} alt="vanguard">
+            </div>
+            <div id="enemy">
+                <img src={`${base}/assets/img/enemy_chibi.webp`} alt="enemy">
+            </div>
+            <div id="visual-log"></div>
+        </div>
+
+        <!-- Playback Controls -->
+        <div class="playback-bar">
+            <button id="fire-button" class="btn btn-primary">
+                <span class="material-symbols-outlined">play_arrow</span>
+                발사
+            </button>
+            <button id="loop-button" class="btn btn-secondary" title="자동 반복">
+                <span class="material-symbols-outlined">repeat</span>
+            </button>
+            <div class="speed-control">
+                <button class="speed-btn" data-speed="0.75">0.75x</button>
+                <button class="speed-btn active" data-speed="1.5">1.5x</button>
+                <button class="speed-btn" data-speed="2">2x</button>
+                <button class="speed-btn" data-speed="3">3x</button>
+            </div>
+            <button id="pause-button" class="btn btn-icon" title="일시정지">
+                <span class="material-symbols-outlined">pause</span>
+            </button>
+        </div>
+
+        <!-- Main Content: Theme Sidebar + Skin Area -->
+        <div class="esv-content">
+            <!-- Left: Theme Sidebar -->
+            <aside class="esv-sidebar">
+                <div class="esv-sidebar-header">
+                    <h3>테마</h3>
+                </div>
+                <input type="text" id="theme-search" class="search-input" placeholder="테마 검색..." />
+                <div id="theme-list" class="esv-theme-list"></div>
+            </aside>
+
+            <!-- Right: Skin Info + Grid -->
+            <div class="esv-main">
+                <!-- Selected Skin Info -->
+                <div id="skin-info" class="card esv-skin-info hidden">
+                    <div class="esv-skin-info-content">
+                        <img id="skin-icon" class="esv-skin-icon" src="" alt="" />
+                        <div class="esv-skin-meta">
+                            <h3 id="skin-name"></h3>
+                            <p id="skin-desc" class="esv-skin-desc"></p>
+                            <div id="skin-type-chips" class="esv-type-chips"></div>
+                        </div>
+                        <img id="skin-sprite-preview" class="esv-sprite-preview" src="" alt="" />
+                    </div>
+                </div>
+
+                <!-- Skin Grid -->
+                <div id="skin-grid-container">
+                    <div class="card placeholder-card">
+                        <p>테마를 선택하여 스킨을 확인하세요.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script is:inline type="module" src={`${base}/js/skin/equip-skin-viewer.js`}></script>
+</Layout>
