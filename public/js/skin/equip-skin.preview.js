@@ -3,13 +3,21 @@
  * Canvas-based firing preview using the existing sim engine
  */
 import { SimulationEngine } from '../simulators/sim.engine.common.js';
+import { AircraftEntity } from '../simulators/sim.engine.aircraft.js';
 
+// Zoomed-in view centered on vanguard↔enemy area
+// Slightly wider for aircraft to have room to fly. 110 units X, ~1.8x zoom vs full sim.
 const GAME_COORDS = {
-    totalArea: { minX: -120, minY: 30, maxX: 80, maxY: 85 },
-    playerArea: { minX: -120, minY: 30, maxX: 15, maxY: 85 }
+    totalArea: { minX: -65, minY: 38, maxX: 45, maxY: 78 },
+    playerArea: { minX: -65, minY: 38, maxX: 15, maxY: 78 }
 };
+const VANGUARD_POS = { x: -36, y: 58 };
+const ENEMY_POS = { x: 15, y: 58 };
 const TARGET_FPS = 30;
 const DEFAULT_SPEED = 1.5;
+
+/** Aircraft equip_type codes (checked against skin.equip_type array, not skin.type) */
+const AIRCRAFT_EQUIP_TYPES = new Set([7, 8, 9, 12, 15]);
 
 class EquipSkinPreview {
     constructor(container, dataModule) {
@@ -19,6 +27,7 @@ class EquipSkinPreview {
         this.currentSkin = null;
         this.loopTimer = null;
         this.fireTimers = [];
+        this.activeAircraft = [];
         this.isLooping = false;
         this.isPaused = false;
 
@@ -36,7 +45,6 @@ class EquipSkinPreview {
             gSpeed: DEFAULT_SPEED
         });
 
-        // Register entities
         const vanguard = document.getElementById('vanguard');
         const enemy = document.getElementById('enemy');
 
@@ -45,7 +53,7 @@ class EquipSkinPreview {
                 element: vanguard,
                 baseWidth: 6.5,
                 aspectRatio: 178 / 226,
-                gamePos: { x: -36, y: 58 }
+                gamePos: VANGUARD_POS
             },
             enemy: {
                 element: enemy,
@@ -55,24 +63,21 @@ class EquipSkinPreview {
         });
 
         this.engine.registerEntityState('enemy', {
-            getGamePos: () => ({ x: 15, y: 58 })
+            getGamePos: () => ENEMY_POS
         });
         this.engine.setEntityState('enemy', 'centered', true);
 
         const playerArea = document.getElementById('player-area');
         this.engine.updateLayoutAndScale(playerArea);
-        // Resize handling done by main controller (debounced)
     }
 
-    /**
-     * Set sim data on the engine
-     */
     setSimData(barrageData, bulletData) {
         this.engine.setData(barrageData, bulletData);
     }
 
     /**
-     * Apply a skin's sprite as the bullet visual via CSS injection
+     * Apply a skin's sprite as the bullet visual via CSS injection.
+     * Uses the preloaded image dimensions to set a visible display size.
      */
     applySkinSprite(skin, spriteImg) {
         const bulletName = skin.bullet_name;
@@ -81,10 +86,15 @@ class EquipSkinPreview {
             return;
         }
 
+        const aspectRatio = spriteImg.width / spriteImg.height;
+        const displayHeight = 48; // Large enough to clearly see skin sprite details
+        const displayWidth = Math.round(displayHeight * aspectRatio);
+
         const spriteUrl = this.data.getSpriteUrl(bulletName);
-        // Override all bullets created during this skin's preview
         this._styleEl.textContent = `
             #simulation-container .bullet.esv-skin-bullet {
+                width: ${displayWidth}px !important;
+                height: ${displayHeight}px !important;
                 background: none !important;
                 background-image: url('${spriteUrl}') !important;
                 background-size: contain !important;
@@ -98,31 +108,123 @@ class EquipSkinPreview {
     }
 
     /**
-     * Fire the skin's weapon_ids barrage
+     * Fire the skin's preview — dispatches to bullet or aircraft mode based on skin type
      */
     async fireSkin(skin) {
         this.clearAll();
         this.currentSkin = skin;
 
-        // Ensure sim data is loaded
         await this.data.loadSimData();
         this.setSimData(this.data.barrageData, this.data.bulletData);
 
-        // Preload sprite
         const spriteImg = await this.data.preloadSprite(skin.bullet_name);
-        this.applySkinSprite(skin, spriteImg);
 
-        // Fire each weapon_id
-        const weaponIds = skin.weapon_ids || [];
-        for (const weaponId of weaponIds) {
-            this._fireWeapon(weaponId, skin);
+        const isAircraft = (skin.equip_type || []).some(t => AIRCRAFT_EQUIP_TYPES.has(t));
+        if (isAircraft) {
+            this._fireAircraft(skin, spriteImg);
+        } else {
+            this.applySkinSprite(skin, spriteImg);
+            const weaponIds = skin.weapon_ids || [];
+            for (const weaponId of weaponIds) {
+                this._fireWeapon(weaponId, skin);
+            }
         }
     }
 
+    // === AIRCRAFT PREVIEW ===
+
     /**
-     * Fire a single weapon's barrage
-     * Uses engine.resolveWeapon() to handle base/child weapon inheritance
+     * Spawn aircraft entities that fly across with the skin sprite as their icon.
+     * Aircraft skins' weapon_ids are the weapons the aircraft carries —
+     * we fire those as sub-weapon barrages when the aircraft reaches firing range.
      */
+    _fireAircraft(skin, spriteImg) {
+        const spriteUrl = spriteImg ? this.data.getSpriteUrl(skin.bullet_name) : null;
+        const count = skin.weapon_ids?.length || 1;
+        const subWeaponIds = skin.weapon_ids || [];
+
+        // Inject CSS for aircraft icon using the skin sprite.
+        // Skin sprites face RIGHT natively, but AircraftEntity applies scaleX(-1)
+        // for direction=1 (assuming icons face left). Counter-flip the icon.
+        if (spriteUrl) {
+            this._styleEl.textContent = `
+                #simulation-container .aircraft-entity.esv-skin-aircraft .aircraft-icon {
+                    content: url('${spriteUrl}');
+                    width: 48px !important;
+                    height: auto !important;
+                    transform: scaleX(-1);
+                }
+            `;
+        }
+
+        for (let i = 0; i < Math.max(count, 1); i++) {
+            const startY = VANGUARD_POS.y + (i - (count - 1) / 2) * 3;
+
+            // Build a minimal aircraftData for the entity
+            const aircraftData = {
+                model_ID: skin.bullet_name,
+                speed: 40,
+                type: skin.type === 7 ? 1 : skin.type === 8 ? 2 : 3,
+                spawn_brownian: 0
+            };
+
+            const aircraft = new AircraftEntity({
+                engine: this.engine,
+                aircraftData,
+                weaponIds: subWeaponIds,
+                startX: VANGUARD_POS.x - 15,
+                startY,
+                targetX: ENEMY_POS.x,
+                targetY: ENEMY_POS.y,
+                direction: 1,
+                startDelay: i * 200,
+                firingRange: 35
+            });
+
+            // Override the aircraft icon with the skin sprite
+            if (spriteUrl && aircraft.element) {
+                const existingImg = aircraft.element.querySelector('.aircraft-icon');
+                if (existingImg) {
+                    existingImg.src = spriteUrl;
+                } else {
+                    const img = document.createElement('img');
+                    img.src = spriteUrl;
+                    img.alt = skin.bullet_name;
+                    img.draggable = false;
+                    img.className = 'aircraft-icon';
+                    aircraft.element.appendChild(img);
+                    aircraft.element.classList.add('has-icon');
+                }
+                aircraft.element.classList.add('esv-skin-aircraft');
+            }
+
+            // When aircraft fires, create skin-styled bullets from its sub-weapons.
+            // All bullets fire toward the enemy — the engine's GravityBehavior
+            // automatically creates the parabolic arc for bombs (type=2).
+            aircraft.onFireWeapon = (x, y, weaponId) => {
+                this.applySkinSprite(skin, spriteImg);
+                const weapon = this.engine.resolveWeapon(weaponId, this.data.weaponData);
+                if (!weapon) return;
+
+                const barrageIds = weapon.barrage_ID || [];
+                const bulletIds = weapon.bullet_ID || [];
+                for (let bi = 0; bi < barrageIds.length; bi++) {
+                    const barrage = this.data.barrageData[barrageIds[bi]];
+                    const bulletInfo = this.data.bulletData[bulletIds[bi] || bulletIds[0]];
+                    if (!barrage || !bulletInfo) continue;
+
+                    const skinBulletInfo = { ...bulletInfo, modle_ID: 'esv-skin-bullet' };
+                    // Fire toward enemy — gravity handles the drop arc for bombs
+                    this._fireBarrageFrom({ x, y }, barrage, skinBulletInfo);
+                }
+            };
+
+            this.activeAircraft.push(aircraft);
+        }
+    }
+
+    // === BULLET PREVIEW ===
+
     _fireWeapon(weaponId, skin) {
         const weapon = this.engine.resolveWeapon(weaponId, this.data.weaponData);
         if (!weapon) return;
@@ -135,50 +237,43 @@ class EquipSkinPreview {
             const bulletId = bulletIds[i] || bulletIds[0];
             const barrage = this.data.barrageData[barrageId];
             const bulletInfo = this.data.bulletData[bulletId];
-
             if (!barrage || !bulletInfo) continue;
 
-            // Override bullet modle_ID with skin class for CSS targeting
-            const skinBulletInfo = {
-                ...bulletInfo,
-                modle_ID: 'esv-skin-bullet'
-            };
-
-            this._fireBarrage(weapon, barrage, skinBulletInfo, skin);
+            const skinBulletInfo = { ...bulletInfo, modle_ID: 'esv-skin-bullet' };
+            this._fireBarrageFrom(VANGUARD_POS, barrage, skinBulletInfo);
         }
     }
 
     /**
-     * Fire a barrage pattern with correct coordinate conversion and multi-salvo support.
-     * Barrage fields: primal_repeat (bullets per salvo), senior_repeat (number of salvos),
-     * offset_x/offset_z (base offsets), delta_offset_x/delta_offset_z (per-bullet increments),
-     * angle (spread), delta_angle (per-bullet angle increment), first_delay (seconds),
-     * senior_delay (seconds between salvos), delay/delta_delay (per-bullet timing).
+     * Fire a barrage pattern from a given position.
+     * Supports multi-salvo (senior_repeat), per-bullet offsets and timing.
+     * @param {number|null} overrideBaseAngle - If set, use this angle instead of aiming at enemy.
+     *   Used for aircraft sub-weapons: bombs drop at 90°, torpedoes at ~15°.
      */
-    _fireBarrage(weapon, barrage, bulletInfo, skin) {
-        const vanguardPos = { x: -36, y: 58 };
-        const enemyPos = { x: 15, y: 58 };
-
-        // Base angle toward enemy
-        const dx = enemyPos.x - vanguardPos.x;
-        const dy = enemyPos.y - vanguardPos.y;
-        const baseAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+    _fireBarrageFrom(origin, barrage, bulletInfo, overrideBaseAngle = null) {
+        let baseAngle;
+        if (overrideBaseAngle !== null) {
+            baseAngle = overrideBaseAngle;
+        } else {
+            const dx = ENEMY_POS.x - origin.x;
+            const dy = ENEMY_POS.y - origin.y;
+            baseAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+        }
 
         const bulletCount = barrage.primal_repeat || 1;
         const seniorRepeat = barrage.senior_repeat || 0;
         const totalSalvos = seniorRepeat + 1;
         const spreadAngle = barrage.angle || 0;
         const deltaAngle = barrage.delta_angle || 0;
-        const firstDelay = (barrage.first_delay || 0) * 1000;     // seconds -> ms
-        const seniorDelay = (barrage.senior_delay || 0) * 1000;   // seconds -> ms
-        const bulletDelay = (barrage.delay || 0) * 1000;          // per-bullet delay
+        const firstDelay = (barrage.first_delay || 0) * 1000;
+        const seniorDelay = (barrage.senior_delay || 0) * 1000;
+        const bulletDelay = (barrage.delay || 0) * 1000;
         const deltaBulletDelay = (barrage.delta_delay || 0) * 1000;
 
         for (let salvo = 0; salvo < totalSalvos; salvo++) {
             const salvoDelay = firstDelay + salvo * seniorDelay;
 
             for (let j = 0; j < bulletCount; j++) {
-                // Per-bullet angle: spread evenly + delta_angle per bullet
                 let angle;
                 if (bulletCount === 1) {
                     angle = baseAngle + deltaAngle * salvo;
@@ -188,16 +283,13 @@ class EquipSkinPreview {
                     angle = startAngle + angleStep * j + deltaAngle * salvo;
                 }
 
-                // Per-bullet position offset (game coords)
                 const offsetX = (barrage.offset_x || 0) + j * (barrage.delta_offset_x || 0);
                 const offsetZ = (barrage.offset_z || 0) + j * (barrage.delta_offset_z || 0);
-                const gameX = vanguardPos.x + offsetX;
-                const gameY = vanguardPos.y + offsetZ;
+                const gameX = origin.x + offsetX;
+                const gameY = origin.y + offsetZ;
 
-                // Convert game coords to screen coords for createBullet
                 const screenPos = this.engine.bulletEngine.gameToScreen(gameX, gameY);
 
-                // Per-bullet timing
                 const perBulletDelay = j * (bulletDelay + j * deltaBulletDelay);
                 const totalDelay = salvoDelay + perBulletDelay;
 
@@ -207,7 +299,7 @@ class EquipSkinPreview {
                         startY: screenPos.y,
                         angle,
                         bulletInfo,
-                        enemyTarget: enemyPos
+                        enemyTarget: ENEMY_POS
                     });
                 };
 
@@ -221,9 +313,8 @@ class EquipSkinPreview {
         }
     }
 
-    /**
-     * Start auto-fire loop (1.5s fire, 3s pause)
-     */
+    // === PLAYBACK CONTROLS ===
+
     startLoop(skin) {
         this.isLooping = true;
         const cycle = async () => {
@@ -245,6 +336,8 @@ class EquipSkinPreview {
     clearAll() {
         this.fireTimers.forEach(id => clearTimeout(id));
         this.fireTimers = [];
+        this.activeAircraft.forEach(a => a.destroy());
+        this.activeAircraft = [];
         if (this.engine) {
             this.engine.clearBullets();
         }
