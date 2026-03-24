@@ -40,6 +40,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                                 <p>해당 스킨의 이미지를 클릭하면 상세정보/대사 페이지로 이동됩니다.</p>
                             </div>
                         </div>
+                        <div class="info-step">
+                            <div class="info-icon"><i class="fas fa-heart"></i></div>
+                            <div class="info-content">
+                                <h3>내 컬렉션</h3>
+                                <p>각 스킨 카드에 마우스를 올리면 <strong><i class="fas fa-check"></i> 보유</strong>와 <strong><i class="fas fa-heart"></i> 찜</strong> 버튼이 나타납니다. 보유 중인 스킨과 사고 싶은 스킨을 표시해보세요! 찜한 스킨은 오른쪽 하단 <strong><i class="fas fa-shopping-cart"></i> 장바구니</strong>에서 총 가격과 함께 확인할 수 있습니다.</p>
+                            </div>
+                        </div>
                         <div class="warning-box">
                             <i class="fas fa-exclamation-triangle"></i>
                             <div>
@@ -113,18 +120,29 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <option value="all">전체</option>
                     <option>UNIV</option><option>USS</option><option>HMS</option><option>IJN</option><option>KMS</option>
                     <option>ROC</option><option>RN</option><option>SN</option><option>FFNF (FF, iris libre)</option>
-                    <option>MNF</option><option>FFNF (FR, iris orthodoxy)</option><option>MOT</option><option>META</option>
+                    <option>MNF</option><option>FFNF (FR, iris orthodoxy)</option><option>HNLMS</option>
+                    <option>MOT</option><option>META</option>
                     <option>UNIV (bulin)</option><option>LINK (collab)</option><option>HDN (neptune)</option><option>BILI</option>
                     <option>UM (utawarerumono)</option><option>AI (kizuna)</option><option>HOLO</option><option>DOA</option>
                     <option>IMAS</option><option>SSSS</option><option>RYZA</option><option>SENRAN</option>
+                    <option>ToLove</option><option>BRS</option><option>YUMIA</option>
+                    <option>DanMachi</option><option>DateALive</option>
                 </select>
             </div>
             <div class="filter-group">
-                <label>ex 대사 있는 함순이만 보기</label>
-                <div class="checkbox-group">
-                    <label><input type="checkbox" id="ex-dialogue-checkbox">체크하면 필터링</label>
-                </div>
+                <label for="ownership-select">보유 상태</label>
+                <select id="ownership-select">
+                    <option value="all">전체</option>
+                    <option value="owned">보유중</option>
+                    <option value="not-owned">미보유</option>
+                </select>
             </div>
+        </div>
+
+        <div class="filter-footer">
+            <span class="hint-icons"><i class="fas fa-check"></i> 보유 &nbsp; <i class="fas fa-heart"></i> 찜 표시</span>
+            <span class="filter-footer-divider"></span>
+            <label class="hint-checkbox"><input type="checkbox" id="ex-dialogue-checkbox"> ex 대사 있는 스킨만 보기</label>
         </div>
 
         <div class="skin-section" id="new-skins-section">
@@ -142,6 +160,71 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div class="skin-section" id="other-skins-section">
             <h2>기타 스킨 - 콜라보 / 배포한정 / 상설화 (Other)</h2>
             <div id="other-skins-container" class="skin-list-container"></div>
+        </div>
+    </div>
+
+    <!-- Image Popup (Lightbox) -->
+    <div id="image-popup" class="image-popup">
+        <div class="image-popup-content">
+            <button class="close-image-popup-btn" aria-label="닫기">&times;</button>
+            <img id="popup-full-image" class="popup-image" src="" alt="전체일러">
+            <div class="popup-skin-info">
+                <div class="popup-skin-name" id="popup-skin-name"></div>
+                <div class="popup-char-name" id="popup-char-name"></div>
+                <a id="popup-detail-link" class="popup-detail-link" href="#">
+                    <i class="fas fa-info-circle"></i> 상세정보 / 대사 보기
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart FAB -->
+    <button id="cart-fab" class="cart-fab" title="장바구니 (찜 목록)">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cart-badge" class="cart-badge">0</span>
+    </button>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="cart-modal" style="display:none">
+        <div class="cart-modal-content">
+            <div class="cart-header">
+                <h2><i class="fas fa-shopping-cart"></i> 장바구니</h2>
+                <div class="cart-header-actions">
+                    <button id="cart-buyall-btn" class="cart-action-btn cart-buyall-btn" title="모두 보유표시">
+                        <i class="fas fa-check-double"></i> 모두 보유표시
+                    </button>
+                    <button id="cart-share-btn" class="cart-action-btn cart-share-btn" title="공유용 보기">
+                        <i class="fas fa-camera"></i> 캡처용
+                    </button>
+                    <button id="cart-back-btn" class="cart-action-btn cart-back-btn" title="돌아가기" style="display:none">
+                        <i class="fas fa-arrow-left"></i> 돌아가기
+                    </button>
+                    <button class="modal-close cart-close-btn" aria-label="닫기">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="cart-body" class="cart-body"></div>
+            <div id="cart-footer" class="cart-footer">
+                <div class="cart-summary">
+                    <div class="cart-summary-row">
+                        <span>찜한 스킨</span>
+                        <span id="cart-count">0개</span>
+                    </div>
+                    <div class="cart-summary-row">
+                        <span><img src={`${base}/assets/icon/60px-Ruby.webp`} class="gem-icon" alt="Gem"> 필요 다이아</span>
+                        <span id="cart-total-gems">0</span>
+                    </div>
+                    <div class="cart-summary-row cart-krw">
+                        <span>예상 금액</span>
+                        <span id="cart-total-krw">약 0원</span>
+                    </div>
+                    <div class="cart-summary-row cart-truck">
+                        <span>깡트럭 환산</span>
+                        <span id="cart-total-truck">0 깡트럭</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

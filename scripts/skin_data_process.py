@@ -30,12 +30,14 @@ class AzurLaneDataProcessor:
     
     NATIONALITY_MAPPING = {
         0: 'UNIV', 1: 'USS', 2: 'HMS', 3: 'IJN', 4: 'KMS', 5: 'ROC',
-        6: 'RN', 7: 'SN', 8: 'FFNF', 9: 'MNF',
-        10: 'FFNF (FR, iris orthodoxy)', 96: 'MOT', 97: 'META',
+        6: 'RN', 7: 'SN', 8: 'FFNF (FF, iris libre)', 9: 'MNF',
+        10: 'FFNF (FR, iris orthodoxy)', 11: 'HNLMS',
+        96: 'MOT', 97: 'META',
         98: 'UNIV (bulin)', 100: 'LINK (collab)', 101: 'HDN (neptune)',
         102: 'BILI', 103: 'UM (utawarerumono)', 104: 'AI (kizuna)',
         105: 'HOLO', 106: 'DOA', 107: 'IMAS', 108: 'SSSS', 109: 'RYZA',
-        110: 'SENRAN'
+        110: 'SENRAN', 111: 'ToLove', 112: 'BRS', 113: 'YUMIA',
+        114: 'DanMachi', 115: 'DateALive'
     }
     
     TAG_MAPPING = {
@@ -154,13 +156,22 @@ class AzurLaneDataProcessor:
         }
         return lookups
     
+    SHIPYARD_URL_TEMPLATE = "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/{}/shipyard.png"
+
     def initialize_skin_data(self) -> List[Dict]:
         """Initialize basic skin data structure."""
-        basic_fields = ["id", "gid", "name", "type", "painting", "painting_n", 
+        basic_fields = ["id", "gid", "name", "type", "painting", "painting_n",
                        "chibi", "icon", "qicon", "shipyard"]
-        
-        return [{field: skin.get(field) for field in basic_fields} 
+
+        result = [{field: skin.get(field) for field in basic_fields}
                 for skin in self.data['skin_list']]
+
+        # Fill missing shipyard URLs from ID pattern
+        for skin in result:
+            if not skin.get("shipyard") and skin.get("id"):
+                skin["shipyard"] = self.SHIPYARD_URL_TEMPLATE.format(skin["id"])
+
+        return result
     
     def merge_kr_skin_data(self, skin_data: List[Dict], lookups: Dict) -> Dict[int, str]:
         """Merge Korean skin template data and build GID to name mapping."""
