@@ -1,5 +1,5 @@
 import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex,
-    openModal, closeModal, setupModal, showToast, getStorageItem, setStorageItem, IMG_FALLBACKS } from '../utils.js';
+    openModal, closeModal, setupModal, showToast, getStorageItem, setStorageItem, IMG_FALLBACKS, DATA_VERSION } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // === DOM ELEMENT REFERENCES ===
@@ -98,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const allSkinContainers = Object.values(DOM.containers);
 
     // === CONSTANTS ===
-    const DATA_VERSION = '1.0.0';
 
     const FILTER_PARAMS = {
         TYPE: 'type',

@@ -3,7 +3,7 @@
  * Handles data loading functions and skill/attribute utility functions
  */
 
-import { fetchJSON, fetchJSONWithCache } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, DATA_VERSION } from '../utils.js';
 
 'use strict';
 
@@ -15,9 +15,6 @@ let state;
 export function setup(stateRef) {
     state = stateRef;
 }
-
-// Data version — bump to invalidate IndexedDB cache after data updates
-const DATA_VERSION = '1.0.1';
 
 // ===== Data Loading =====
 export async function loadData() {
