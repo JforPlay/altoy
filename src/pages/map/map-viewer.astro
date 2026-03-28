@@ -1,0 +1,141 @@
+---
+/**
+ * Map Viewer
+ * Browse and inspect Azur Lane map layouts, enemy fleets, and rewards
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/skin/skin.common.css';
+import '../../styles/map/map.style.css';
+import '../../styles/map/map.grid.css';
+import '../../styles/map/map.detail.css';
+import '../../styles/map/map.compare.css';
+import '../../styles/map/map.responsive.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="해역 정보" {base}>
+    <div id="app">
+        <!-- Tab Bar -->
+        <div class="map-tabs" id="mapTabs">
+            <button class="map-tab active" data-tab="main">메인 해역</button>
+            <button class="map-tab" data-tab="hard">하드 해역</button>
+            <button class="map-tab" data-tab="event">이벤트 해역</button>
+            <button class="map-tab" data-tab="archive">작전 문서</button>
+            <button class="map-tab" data-tab="world">대형 작전</button>
+            <div class="map-tabs-spacer"></div>
+            <button class="map-search-btn" id="searchShipBtn" title="함선 드롭 검색">
+                <span class="material-symbols-outlined map-btn-icon">directions_boat</span>
+                함선 검색
+            </button>
+            <button class="map-search-btn" id="searchBlueprintBtn" title="설계도 드롭 검색">
+                <span class="material-symbols-outlined map-btn-icon">description</span>
+                설계도 검색
+            </button>
+        </div>
+
+        <!-- Mobile Map Select -->
+        <div class="map-mobile-select" id="mobileSelect">
+            <select id="mobileMapSelect">
+                <option value="">해역을 선택하세요</option>
+            </select>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="map-layout">
+            <!-- Sidebar -->
+            <nav class="map-sidebar" id="mapSidebar"></nav>
+
+            <!-- Center: Map View -->
+            <main class="map-center" id="mapCenter">
+                <div class="map-empty" id="mapEmpty">
+                    <span>좌측에서 해역을 선택하세요</span>
+                </div>
+                <div id="mapContent" class="hidden">
+                    <!-- Map Zone -->
+                    <div class="map-zone">
+                        <div class="map-header">
+                            <div>
+                                <div class="map-header-title" id="mapTitle"></div>
+                                <div class="map-header-sub" id="mapSubtitle"></div>
+                            </div>
+                            <button class="map-compare-btn" id="compareBtn">
+                                <span class="material-symbols-outlined map-btn-icon-sm">compare_arrows</span>
+                                비교하기
+                            </button>
+                        </div>
+                        <div class="map-stats" id="mapStats"></div>
+                        <div class="map-grid-wrapper">
+                            <div class="map-grid-frame">
+                                <div class="map-grid" id="mapGrid"></div>
+                                <div class="map-legend" id="mapLegend"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Zone -->
+                    <div class="data-zone">
+                        <div class="data-zone-title">해역 상세 정보</div>
+                        <div class="map-info-grid" id="mapInfoGrid"></div>
+                    </div>
+                </div>
+
+                <div class="map-loading hidden" id="mapLoading">로딩 중...</div>
+            </main>
+        </div>
+
+        <!-- Node Detail Overlay -->
+        <div class="map-node-overlay" id="nodeOverlay">
+            <div class="map-node-overlay-header">
+                <span class="map-node-overlay-title" id="nodeOverlayTitle"></span>
+                <button class="map-node-overlay-close" id="nodeOverlayClose">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="map-node-overlay-body" id="nodeOverlayBody"></div>
+        </div>
+
+        <!-- Compare Mode Bar -->
+        <div id="compareBar" class="map-compare-bar hidden">
+            <span class="material-symbols-outlined">compare_arrows</span>
+            <span id="compareBarText">비교할 해역을 선택하세요</span>
+            <button id="compareCancelBtn" class="map-compare-cancel">
+                <span class="material-symbols-outlined map-btn-icon-sm">close</span>
+                취소
+            </button>
+        </div>
+
+        <!-- Compare Modal -->
+        <div id="compareModal" class="map-compare-modal hidden">
+            <div class="map-compare-modal-content">
+                <div class="compare-modal-header">
+                    <span class="compare-modal-title">해역 비교</span>
+                    <button class="modal-close compare-modal-close">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div id="compareModalBody" class="compare-modal-body"></div>
+            </div>
+        </div>
+
+        <!-- Search Modal (shared for ship/blueprint search) -->
+        <div id="searchModal" class="map-search-overlay hidden">
+            <div class="map-search-panel">
+                <div class="map-search-header">
+                    <span class="material-symbols-outlined map-search-header-icon" id="searchModalIcon">directions_boat</span>
+                    <span class="map-search-title" id="searchModalTitle">검색</span>
+                    <div class="map-search-header-spacer"></div>
+                    <button class="map-search-close" id="searchModalClose">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="map-search-input-wrap">
+                    <span class="material-symbols-outlined map-search-input-icon">search</span>
+                    <input type="text" id="searchModalInput" class="map-search-input" placeholder="이름으로 검색...">
+                </div>
+                <div id="searchModalBody" class="map-search-results"></div>
+            </div>
+        </div>
+    </div>
+
+    <script is:inline type="module" src={`${base}/js/map/map.viewer.js`}></script>
+</Layout>

@@ -1,0 +1,172 @@
+/* ===== Map Grid ===== */
+.map-grid-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.map-grid-frame {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    display: inline-block;
+}
+
+.map-grid {
+    display: inline-grid;
+    gap: var(--map-cell-gap);
+    justify-content: center;
+}
+
+/* -- Grid Cells -- */
+.map-cell {
+    width: var(--map-cell-size);
+    height: var(--map-cell-size);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--map-font-sm);
+    transition: transform var(--transition-fast);
+}
+
+/* Sea (empty walkable) */
+.map-cell--sea {
+    background: #e8edf2;
+    border: 1px solid #d0d7de;
+    color: var(--text-dim);
+}
+
+/* Impassable */
+.map-cell--void {
+    background: #c8cdd3;
+}
+
+body.dark-mode .map-cell--sea {
+    background: #3a3d42;
+    border-color: #4a4d52;
+}
+
+body.dark-mode .map-cell--void {
+    background: #1a1b1e;
+}
+
+/* Node badge base */
+.map-cell--node {
+    cursor: default;
+}
+
+.map-cell--clickable {
+    cursor: pointer;
+}
+
+.map-cell--clickable:hover {
+    transform: scale(1.12);
+    z-index: 1;
+}
+
+/* Node inner badge */
+.node-badge {
+    width: var(--map-badge-size);
+    height: var(--map-badge-size);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--map-font-xs);
+    border-width: 1.5px;
+    border-style: solid;
+}
+
+/* -- Node type colors (game-canonical — keep hardcoded) -- */
+/* Enemy: no badge circle, icon rendered directly in cell */
+.map-cell--enemy { color: #eab308; }
+.map-cell--enemy .material-symbols-outlined { font-size: 1.25rem; }
+.map-cell--elite { color: #e74c3c; }
+.map-cell--elite .material-symbols-outlined { font-size: 1.25rem; }
+.node-badge--elite   { background: #201428; border-color: #9b59b666; color: #9b59b6; }
+.node-badge--boss    { background: #3a0808; border-color: #ef4444aa; color: #ef4444; border-width: 2px; }
+.node-badge--champion{ background: #2a2010; border-color: #f59e0b66; color: #f59e0b; }
+.node-badge--spawn   { background: #0a1e10; border-color: #22c55e66; color: #22c55e; }
+
+/* Material icon sizing inside badges */
+.node-badge .material-symbols-outlined {
+    font-size: 0.95rem;
+    line-height: 1;
+}
+.node-badge--spawn-sub { background: #0a1420; border-color: #38bdf8; color: #38bdf8; border-style: dashed; }
+.node-badge--box     { background: #0a1a1e; border-color: #06b6d466; color: #06b6d4; }
+.node-badge--supply  { background: #1e1a0a; border-color: #eab30866; color: #eab308; }
+.node-badge--torpedo  { background: #2a1410; border-color: #f9731666; color: #f97316; }
+.node-badge--transport { background: #0a1a1e; border-color: #22d3ee66; color: #22d3ee; }
+.node-badge--transport-target { background: #0a1a1e; border-color: #22d3ee44; color: #22d3eeaa; }
+.node-badge--landbase { background: #1e1810; border-color: #a8845066; color: #a88450; }
+.node-badge--unknown { background: #1a1a1a; border-color: #66666666; color: #666; }
+
+/* Boss glow */
+.map-cell--boss {
+    box-shadow: 0 0 10px #ef444433;
+}
+
+/* -- Legend -- */
+.map-legend {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.map-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--map-font-xs);
+    color: var(--text-muted);
+}
+
+.map-legend-item .node-badge {
+    width: 1.125rem;
+    height: 1.125rem;
+    font-size: 0.5rem;
+}
+
+.map-legend-item .node-badge .material-symbols-outlined {
+    font-size: 0.65rem;
+    line-height: 1;
+}
+
+
+/* Legend icon without badge circle */
+.map-legend-icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-legend-icon .material-symbols-outlined {
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+.map-legend-icon--enemy { color: #eab308; }
+.map-legend-icon--elite { color: #e74c3c; }
+
+.map-legend-void {
+    width: 1.125rem;
+    height: 1.125rem;
+    background: var(--overlay-medium);
+    border-radius: var(--radius-sm);
+}
+
+/* -- World Grid (simpler) -- */
+.map-cell--world-sea {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.map-cell--world-void {
+    background: var(--overlay-medium);
+}
