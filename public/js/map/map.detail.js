@@ -151,6 +151,11 @@ export function renderMapInfo(chapter, targetEl) {
         html += `<div class="condition-row"><span style="color:#eab308">${'⭐'.repeat(i)}</span> ${desc}</div>`;
     }
 
+    if (chapter.progress_boss && chapter.progress_boss > 0) {
+        const clearsNeeded = Math.ceil(100 / chapter.progress_boss);
+        html += `<div class="map-detail-divider"><span style="color:var(--accent-blue)">100% 달성까지 필요한 클리어 횟수:</span> <b style="color:var(--primary-color)">${clearsNeeded}회</b></div>`;
+    }
+
     const risks = chapter.risk_levels;
     if (risks && risks.length > 0) {
         const maxClears = risks[0][0];
@@ -158,7 +163,7 @@ export function renderMapInfo(chapter, targetEl) {
             if (i === risks.length - 1) return '안전';
             return `${maxClears - r[1] + 1}회`;
         });
-        html += '<div class="map-detail-divider">';
+        html += `<div class="${chapter.progress_boss ? 'mt-xs' : 'map-detail-divider'}">`;
         html += `<span class="text-warning">위협레벨:</span> ${tiers.join(' → ')}`;
         html += `<br><span class="text-dim">총 ${maxClears}회 클리어</span>`;
         html += '</div>';
@@ -417,118 +422,76 @@ export function renderArchiveStats(chapter, targetEl) {
     ).join('');
 }
 
-/** Render archive chapter info cards (special drop, fleets, item drops, ship drops). */
+/** Render archive chapter info cards.
+ *  Reuses renderMapInfo for standard info (star conditions, clear estimate, item drops),
+ *  then appends archive-specific cards (special drop, per-map ship drops). */
 export function renderArchiveInfo(chapter, targetEl) {
-    let html = '<div class="info-grid">';
+    // First render standard map info (star conditions, clear estimate, drops, etc.)
+    renderMapInfo(chapter, targetEl);
+
+    // Append archive-specific cards inside the existing .info-grid
+    const grid = targetEl.querySelector('.info-grid');
+    if (!grid) return;
+
+    let extra = '';
 
     // ── Special Drop Card (60-clear reward) ──
     if (chapter.special_drop) {
         const sd = chapter.special_drop;
         const isShip = sd.type === 4;
-        html += '<div class="info-card full-width">';
-        html += '<div class="info-card-header"><div class="info-card-icon info-card-icon--star"><span class="material-symbols-outlined">emoji_events</span></div><div class="info-card-label">특별 보상 (' + sd.count + '회 클리어)</div></div>';
-        html += '<div class="info-card-body">';
+        extra += '<div class="info-card full-width">';
+        extra += '<div class="info-card-header"><div class="info-card-icon info-card-icon--star"><span class="material-symbols-outlined">emoji_events</span></div><div class="info-card-label">특별 보상 (' + sd.count + '회 클리어)</div></div>';
+        extra += '<div class="info-card-body">';
         if (isShip) {
             const ship = getShipInfoByGid(sd.id) || getShipInfo(sd.id);
             if (ship) {
                 const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}`);
                 const iconSrc = ship.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
-                html += '<div style="display:flex;align-items:center;gap:0.75rem">';
-                if (iconSrc) html += `<a href="${infoUrl}"><img style="width:3rem;height:3rem;border-radius:0.5rem;object-fit:cover" src="${iconSrc}" alt="${ship.name}" loading="lazy" onerror="this.style.display='none'"></a>`;
-                html += `<div><a href="${infoUrl}" style="font-weight:600;text-decoration:none;color:var(--text-primary)">${ship.name}</a>`;
-                html += `<div class="text-muted" style="font-size:0.78rem">${sd.count}회 클리어 시 획득</div></div>`;
-                html += '</div>';
+                extra += '<div style="display:flex;align-items:center;gap:0.75rem">';
+                if (iconSrc) extra += `<a href="${infoUrl}"><img style="width:3rem;height:3rem;border-radius:0.5rem;object-fit:cover" src="${iconSrc}" alt="${ship.name}" loading="lazy" onerror="this.style.display='none'"></a>`;
+                extra += `<div><a href="${infoUrl}" style="font-weight:600;text-decoration:none;color:var(--text-primary)">${ship.name}</a>`;
+                extra += `<div class="text-muted" style="font-size:0.78rem">${sd.count}회 클리어 시 획득</div></div>`;
+                extra += '</div>';
             } else {
-                html += `<div>${sd.count}회 클리어 시 함선 획득 (ID: ${sd.id})</div>`;
+                extra += `<div>${sd.count}회 클리어 시 함선 획득 (ID: ${sd.id})</div>`;
             }
         } else {
-            // Item-type special drop (name/icon/rarity resolved in processing)
             const itemIconUrl = sd.icon ? getItemIconUrl(sd.icon) : '';
-            html += '<div style="display:flex;align-items:center;gap:0.75rem">';
-            if (itemIconUrl) html += `<img style="width:3rem;height:3rem;border-radius:0.5rem;object-fit:contain;background:var(--bg-elevated);padding:0.2rem" src="${itemIconUrl}" alt="" loading="lazy" onerror="this.style.display='none'">`;
-            html += `<div><span style="font-weight:600">${sd.name || `아이템 #${sd.id}`}</span>`;
-            html += `<div class="text-muted" style="font-size:0.78rem">${sd.count}회 클리어 시 획득</div></div>`;
-            html += '</div>';
+            extra += '<div style="display:flex;align-items:center;gap:0.75rem">';
+            if (itemIconUrl) extra += `<img style="width:3rem;height:3rem;border-radius:0.5rem;object-fit:contain;background:var(--bg-elevated);padding:0.2rem" src="${itemIconUrl}" alt="" loading="lazy" onerror="this.style.display='none'">`;
+            extra += `<div><span style="font-weight:600">${sd.name || `아이템 #${sd.id}`}</span>`;
+            extra += `<div class="text-muted" style="font-size:0.78rem">${sd.count}회 클리어 시 획득</div></div>`;
+            extra += '</div>';
         }
         if (chapter.special_drop_display) {
             const stages = chapter.special_drop_display.map(d => d[1]).join(', ');
-            html += `<div class="text-muted mt-xs" style="font-size:0.78rem">드롭 해역: ${stages}</div>`;
+            extra += `<div class="text-muted mt-xs" style="font-size:0.78rem">드롭 해역: ${stages}</div>`;
         }
-        html += '</div></div>';
-    }
-
-    // ── Enemy Fleet Info ──
-    const exps = chapter.expeditions || {};
-    const allFleets = [...(exps.boss || []), ...(exps.elite || []), ...(exps.champion || [])];
-    if (allFleets.length > 0) {
-        html += '<div class="info-card">';
-        html += '<div class="info-card-header"><div class="info-card-icon info-card-icon--fleet"><span class="material-symbols-outlined">swords</span></div><div class="info-card-label">주요 함대</div></div>';
-        html += '<div class="info-card-body">';
-        for (const fleet of allFleets) {
-            const typeClass = fleet.type === 99 || fleet.type === 94 ? 'fleet-type--boss' :
-                              fleet.type === 12 ? 'fleet-type--champion' : 'fleet-type--normal';
-            html += `<div class="map-detail-card">`;
-            html += `<div class="map-detail-card-title ${typeClass}">${fleet.name || '함대'}</div>`;
-            html += `<div class="map-detail-card-body">Lv.${fleet.level || '?'} · EXP ${fleet.exp || 0}</div>`;
-            html += '</div>';
-        }
-        html += '</div></div>';
-    }
-
-    // ── Item Drops Card ──
-    const itemDrops = chapter.item_drops;
-    if (itemDrops && itemDrops.length > 0) {
-        html += '<div class="info-card">';
-        html += '<div class="info-card-header"><div class="info-card-icon info-card-icon--drop"><span class="material-symbols-outlined">inventory_2</span></div><div class="info-card-label">아이템 드롭</div></div>';
-        html += '<div class="info-card-body"><div class="drop-list">';
-        for (const drop of itemDrops) {
-            const iconUrl = getItemIconUrl(drop.icon);
-            if (drop.sub_items && drop.sub_items.length > 0) {
-                html += `<div class="drop-group">`;
-                html += `<div class="drop-group-header" title="${drop.name}">`;
-                if (iconUrl) html += `<img class="drop-icon" src="${iconUrl}" alt="" loading="lazy" onerror="this.style.display='none'">`;
-                html += `<span class="drop-item-name">${drop.name}</span></div>`;
-                html += `<div class="drop-group-items">`;
-                for (const sub of drop.sub_items) {
-                    const subIconUrl = getItemIconUrl(sub.icon);
-                    const rarityClass = sub.rarity ? `drop-sub-rarity-${sub.rarity}` : '';
-                    html += `<span class="drop-sub-item ${rarityClass}" title="${sub.name}">`;
-                    if (subIconUrl) html += `<img class="drop-sub-icon" src="${subIconUrl}" alt="" loading="lazy" onerror="this.style.display='none'">`;
-                    html += `<span class="drop-item-name">${sub.name}</span></span>`;
-                }
-                html += '</div></div>';
-            } else {
-                html += `<span class="drop-item" title="${drop.name}">`;
-                if (iconUrl) html += `<img class="drop-icon" src="${iconUrl}" alt="" loading="lazy" onerror="this.style.display='none'">`;
-                html += `<span class="drop-item-name">${drop.name}</span></span>`;
-            }
-        }
-        html += '</div></div></div>';
+        extra += '</div></div>';
     }
 
     // ── Ship Drops Card (per-map) ──
     const archiveDrops = chapter.ship_drops_archive;
     if (archiveDrops && archiveDrops.length > 0) {
-        html += '<div class="info-card full-width">';
-        html += '<div class="info-card-header"><div class="info-card-icon info-card-icon--ship"><span class="material-symbols-outlined">sailing</span></div><div class="info-card-label">함선 드롭</div></div>';
-        html += '<div class="info-card-body"><div class="ship-drop-grid">';
+        extra += '<div class="info-card full-width">';
+        extra += '<div class="info-card-header"><div class="info-card-icon info-card-icon--ship"><span class="material-symbols-outlined">sailing</span></div><div class="info-card-label">함선 드롭</div></div>';
+        extra += '<div class="info-card-body"><div class="ship-drop-grid">';
         for (const drop of archiveDrops) {
             const ship = getShipInfo(drop.id);
             if (!ship) continue;
             const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}`);
             const iconSrc = ship.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
             const title = ship.name + (drop.type === 1 ? ' (보스 한정)' : '') + (drop.pity ? ' (확정)' : '');
-            html += `<a href="${infoUrl}" class="ship-drop-card ship-drop-rarity-${ship.rarity}" title="${title}">`;
-            if (iconSrc) html += `<img class="ship-drop-portrait" src="${iconSrc}" alt="${ship.name}" loading="lazy" onerror="this.style.display='none'">`;
-            html += `<div class="ship-drop-name">${ship.name}</div>`;
-            if (drop.type === 1) html += `<span class="ship-drop-boss">보스</span>`;
-            html += '</a>';
+            extra += `<a href="${infoUrl}" class="ship-drop-card ship-drop-rarity-${ship.rarity}" title="${title}">`;
+            if (iconSrc) extra += `<img class="ship-drop-portrait" src="${iconSrc}" alt="${ship.name}" loading="lazy" onerror="this.style.display='none'">`;
+            extra += `<div class="ship-drop-name">${ship.name}</div>`;
+            if (drop.type === 1) extra += `<span class="ship-drop-boss">보스</span>`;
+            extra += '</a>';
         }
-        html += '</div></div></div>';
+        extra += '</div></div></div>';
     }
 
-    html += '</div>';
-    targetEl.innerHTML = html;
+    if (extra) grid.insertAdjacentHTML('beforeend', extra);
 }
 
 /** Render exploration map info cards (conditions, basic info, EXP tiers). */

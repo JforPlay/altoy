@@ -196,7 +196,7 @@ async function selectMap(mapId) {
     } else if (chapter.category === 'archive') {
         renderGrid(chapter, mapGrid);
         renderLegend(chapter, mapLegend);
-        renderArchiveStats(chapter, mapStats);
+        renderStats(chapter, mapStats);
         renderArchiveInfo(chapter, mapInfoGrid);
     } else {
         renderGrid(chapter, mapGrid);
