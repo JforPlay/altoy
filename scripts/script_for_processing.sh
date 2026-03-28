@@ -79,6 +79,14 @@ python secretary_process.py
 python secretary_story_process.py
 
 #
+#
+echo downloading map data
+mkdir -p output/maps
+wget -O ./output/maps/world_target_data.json https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/world_target_data.json
+wget -O ./output/maps/memory_group.json https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/memory_group.json
+wget -O ./output/maps/en_memory_group.json https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/EN/ShareCfg/memory_group.json
+
+#
 echo cleanup files not needed for the final output
 rm story.json dungeon.json
 rm ./output/sim/transform_data_template.json

@@ -3,7 +3,7 @@
  * Handles data loading and helper functions for equipment data
  */
 
-import { fetchJSON, fetchJSONWithCache } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, DATA_VERSION } from '../utils.js';
 
 // State reference (set via setup)
 let state;
@@ -11,9 +11,6 @@ let state;
 export function setup(stateRef) {
     state = stateRef;
 }
-
-// Data version — bump to invalidate IndexedDB cache after data updates
-const DATA_VERSION = '1.0.1';
 
 // ===== Data Loading =====
 

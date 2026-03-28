@@ -3,6 +3,13 @@
 // ============================================
 
 /**
+ * Centralized data version for IndexedDB cache invalidation.
+ * Bump this when ANY data file changes to force fresh fetches.
+ * Used by fetchJSONWithCache via ?v=DATA_VERSION query param.
+ */
+const DATA_VERSION = '1.2.0';
+
+/**
  * Debounce function to limit the rate at which a function can fire.
  * Useful for search inputs, resize events, etc.
  * @param {Function} func - The function to debounce
@@ -762,6 +769,9 @@ if (typeof indexedDB !== 'undefined') {
 // These exports enable `import { ... } from './utils.js'` syntax
 // while keeping backward-compatible global access via function hoisting.
 export {
+    // Data versioning
+    DATA_VERSION,
+
     // Core utilities
     debounce,
     throttle,
