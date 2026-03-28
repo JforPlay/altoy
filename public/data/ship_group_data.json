@@ -15133,7 +15133,8 @@
         "nationality": 5,
         "type": 1,
         "description": [
-            "이벤트：안샨의 그림 교실"
+            "이벤트: 사천왕의 대모험·안샨편",
+            "상점의 대함대 보급에서 획득 가능"
         ],
         "rarity": "SR"
     },
@@ -15163,8 +15164,9 @@
         "nationality": 5,
         "type": 1,
         "description": [
-            "이벤트：푸슌의 대모험",
-            "이벤트：푸슌의 대모험II"
+            "이벤트: 사천왕의 대모험·푸슌편",
+            "이벤트: 사천왕의 대모험·푸슌편Ⅱ",
+            "상점의 대함대 보급에서 획득 가능"
         ],
         "rarity": "SR"
     },
@@ -20616,6 +20618,32 @@
         "type": 2,
         "description": [
             "이벤트: 창공에 울리는 소리"
+        ],
+        "rarity": "SSR"
+    },
+    "970211": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702110/icon.png",
+        "name": "레겐스부르크·META",
+        "add_get_attr": 2,
+        "add_get_shiptype": [
+            2
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 8,
+        "add_level_shiptype": [
+            2
+        ],
+        "add_level_value": 1,
+        "class": 970211,
+        "id": 970211,
+        "max_star": 6,
+        "pt_get": 13,
+        "pt_level": 19,
+        "pt_upgrage": 26,
+        "nationality": 97,
+        "type": 2,
+        "description": [
+            "META 연구실·정보 동기화"
         ],
         "rarity": "SSR"
     },

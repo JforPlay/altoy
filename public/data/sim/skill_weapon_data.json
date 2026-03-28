@@ -19628,9 +19628,9 @@
     "22131": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "미나세",
+        "name": null,
         "position": "전열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302270/shipyard.png",
+        "shipyard": null,
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
         "skill_id": 22131,
         "aniEffect": {
@@ -19673,9 +19673,9 @@
     "22132": {
         "requirement": "Limit Break 3",
         "weapon_true": true,
-        "name": "미나세",
+        "name": null,
         "position": "전열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302270/shipyard.png",
+        "shipyard": null,
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
         "skill_id": 22132,
         "aniEffect": {
@@ -39720,6 +39720,76 @@
             ]
         }
     },
+    "1014140": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/14140.png",
+        "name": "스트례미텔니",
+        "weapon_true": true,
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701060/shipyard.png",
+        "skill_id": 1014140,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183351
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 1014142
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183360
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 1.3,
+                        "weapon_id": 183360
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 1014142
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
     "26031": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
@@ -46787,6 +46857,96 @@
             ]
         }
     },
+    "1019260": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/19260.png",
+        "name": "가스코뉴",
+        "weapon_true": true,
+        "position": "후열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/999010/shipyard.png",
+        "skill_id": 1019260,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "delay": 0.5,
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 69611
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.8,
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 69621
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 1.1,
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 69631
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "delay": 0.5,
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 69620
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.8,
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 69630
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 1.1,
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 69640
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
     "19730": {
         "requirement": "Default",
         "weapon_true": true,
@@ -52349,6 +52509,116 @@
                     "arg_list": {
                         "emitter": "BattleBulletEmitter",
                         "weapon_id": 170912
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "802141": {
+        "requirement": "Limit Break 1",
+        "weapon_true": true,
+        "name": "레겐스부르크·META",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702110/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/802140.png",
+        "skill_id": 802141,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170981
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170981
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "802142": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "레겐스부르크·META",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702110/shipyard.png",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/802140.png",
+        "skill_id": 802142,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170982
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170983
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170982
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170983
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",

@@ -29739,123 +29739,460 @@
     "625": {
         "id": 625,
         "ship_group": 50302,
-        "message": "Translation Source Missing",
+        "message": "(파파고)옥병, 옥베개, 옥병풍... 다 실용적인 가전제품인데 돈이 부족해서 아쉽네요...",
         "name": "Chang Wu",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260212_zhangwuUzrsUYGZtE14YFbc.png",
         "shipgirl_names": [
-            50302
+            70112,
+            80303,
+            89904,
+            50302,
+            19903
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "19903": "(파파고)아키타케 씨가 가장 좋아하는... 앵커리지, 페인팅...!"
+            },
+            "2": {
+                "19903": "(파파고)당신을 위한! 안녕 안녕..."
+            },
+            "3": {
+                "50302": "(파파고)감사합니다 받고 마음이 따뜻해집니다..."
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "70112": "(파파고)나도 그릴 수 있어요!"
+            },
+            "2": {
+                "50302": "(파파고)감사합니다. 저도 받았습니다. 이 그림들은...아주 예술적이에요! 어-허…"
+            }
+        },
+        "reply_group3": {
+            "1": {
+                "80303": "(파파고)여행을 떠나보는 건 어떨까요? 옥에 대한 사랑을 여행에 대한 그리움으로 옮겨보세요."
+            },
+            "2": {
+                "89904": "(파파고)물질적인 짐을 내려놓고 여행 중에 마음과 의지를 단련하세요. 이것은 참으로 좋은 시련입니다."
+            },
+            "3": {
+                "50302": "(파파고)네 말이 이해가 되네, 난 이제 떠날게"
+            },
+            "4": {
+                "50302": "(파파고)그런데 제가 집에 갈 수 있도록 도와줄 친절한 사람이 있나요? 방금 마지막 여행비를 옥으로 바꿨는데..."
+            }
+        },
+        "op_option1": "(파파고)힘들 때면 그냥 나한테 와",
+        "op_reply1": "(파파고)지휘관님은 늘 이렇게 도와주시네요... 어떤 옥재료보다 이런 마음이 더 소중해요.",
+        "reply1_shipgirl": 50302,
+        "op_option2": "(파파고)옥베개...정말 사용하기 편한가요?",
+        "op_reply2": "(파파고)아직은 모르겠지만 이 작품이 완성될 때까지 지휘관님께 무릎베개를 드려도 될까요?",
+        "reply2_shipgirl": 50302
     },
     "626": {
         "id": 626,
         "ship_group": 50212,
-        "message": "Translation Source Missing",
+        "message": "(파파고)제가 직접 믹스해서 개발한 샤워젤을 사용했어요. 누구나 이 독특한 냄새를 좋아할 것입니다.",
         "name": "Hai Chou",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260212_haichouVRhLJKYutIenYG2g.png",
         "shipgirl_names": [
-            50212
+            50212,
+            10725,
+            10707,
+            10709,
+            90107,
+            119901
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "119901": "(파파고)알고 보니 이것이 당신의 특별한 향기인 하이초우였습니다."
+            },
+            "2": {
+                "119901": "(파파고)사용해 봤는데 향이 정말 좋더라구요, 자연스러운 향이에요~"
+            },
+            "3": {
+                "10725": "(파파고)향이 너무 좋아요 우유맛이 나네요~"
+            },
+            "4": {
+                "10707": "(파파고)향이 너무 좋아요, 후라이드 치킨 맛이에요~"
+            },
+            "5": {
+                "10709": "(파파고)아? 이게 맞나요?"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "90107": "(파파고)그렇죠 체취는 정말 중요해요~"
+            },
+            "2": {
+                "50212": "(파파고)당신도 향수 뿌리는 걸 좋아하나요? 어쩌면 우리 레시피를 교환할 수도 있겠네요"
+            },
+            "3": {
+                "90107": "(파파고)공식은...지금은 비밀로 할게요, 헤헤..."
+            }
+        },
+        "op_option1": "(파파고)나한테도 향기가 나는 것 같은데..",
+        "op_reply1": "(파파고)당신의 후각은 매우 민감합니다. 방금 당신의 문 밖으로 걸어 나갔습니다.",
+        "reply1_shipgirl": 50212,
+        "op_option2": "(파파고)나도 똑같은 샤워젤을 원해",
+        "op_reply2": "(파파고)같은 샤워 젤을 원하시나요, 아니면... 그냥 내 향기를 원하시나요? 하하~",
+        "reply2_shipgirl": 50212
     },
     "627": {
         "id": 627,
         "ship_group": 30708,
-        "message": "Translation Source Missing",
+        "message": "(파파고)어젯밤 드림보트를 타고 달빛에 뒤덮인 꽃바다에 빠졌는데...",
         "name": "Shinano",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260212_xinnongpUztdp93M7OShNUq.png",
         "shipgirl_names": [
-            30708
+            10149,
+            10155,
+            30708,
+            110201,
+            10205,
+            60702,
+            90303
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "10205": "(파파고)시나노  선생님이 좋은 꿈을 꾸신 것 같아요!"
+            },
+            "2": {
+                "10155": "(파파고)부러워하는. 내 꿈엔 버그팝업이 가득하고 배경음악도 경고음이 나오네요"
+            },
+            "3": {
+                "90303": "(파파고)다행히 어젯밤 꿈에 야근을 해서 이번주 일을 마쳤네요~"
+            },
+            "4": {
+                "60702": "(파파고)당신이 잠을 자는 목적은... 그리 간단하지 않습니다."
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "10149": "(파파고)달빛, 꽃바다... 당신이 도착한 곳은 아마도 저편에 있는 전설의 비밀 왕국일 것입니다!"
+            },
+            "2": {
+                "30708": "(파파고)이곳은 어떤 곳인가요...? 정말 신비로운 것 같아요"
+            },
+            "3": {
+                "10149": "(파파고)꿈과 현실의 경계에 위치한 비밀의 왕국이라고 하며, 저편의 꽃들은 일년 내내 끝없이 피어난다..."
+            },
+            "4": {
+                "110201": "(파파고)너무나 익숙한 설명... 꽃밭이 어딘지 알아요~ 도보로 10분 거리에 있어요"
+            },
+            "5": {
+                "10149": "(파파고)뭐? 뭐? ! 너무 가까워요! 오늘 밤 같이 조사하러 가자!"
+            }
+        },
+        "op_option1": "(파파고)같이 아침 먹으러 가자",
+        "op_reply1": "(파파고)옷 갈아입고 오세요~",
+        "reply1_shipgirl": 30708,
+        "op_option2": "(파파고)아직은 이른 시간이라 조금 더 자도 상관은 없지만",
+        "op_reply2": "(파파고)그럼 이제 다시 잠들려고 하는데... 같이 갈래요?",
+        "reply2_shipgirl": 30708
     },
     "628": {
         "id": 628,
         "ship_group": 50107,
-        "message": "Translation Source Missing",
+        "message": "(파파고)얼리기 전 준비..",
         "name": "Fei Yuen",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260212_feiyunoR227DdshUHMdtHp.png",
         "shipgirl_names": [
-            50107
+            10233,
+            50107,
+            50108,
+            10115
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "50108": "(파파고)자~ 미나토구민 모두가 즐길 수 있는 락캔디 딸기를 만들어 보세요~"
+            },
+            "2": {
+                "50107": "(파파고)아니 와아...! 치통이 있어서 밥 먹기 싫은 분도 계실 텐데요——!"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "10115": "(파파고)이 거리는 매우 안전해 보입니다."
+            },
+            "2": {
+                "50107": "(파파고)그런데...젓가락이 너무 무거워요...! 팔이 아프다 QAQ"
+            },
+            "3": {
+                "10233": "(파파고)드론을 이용해 시럽을 코팅해 보는 것은 어떨까요? 내 것도 빌려줄게."
+            },
+            "4": {
+                "50107": "(파파고)고마워요, 시도해 볼게요!"
+            },
+            "5": {
+                "50107": "(파파고)이런, 프로펠러가 시럽으로 뒤덮여 있다... 비행기가 곧 추락할 것 같다...!"
+            }
+        },
+        "op_option1": "(파파고)조심하세요. 여기 긴 젓가락이 있어요",
+        "op_reply1": "(파파고)지휘관 최고야, 와서 도와줘~",
+        "reply1_shipgirl": 50107,
+        "op_option2": "(파파고)맛있어 보인다",
+        "op_reply2": "(파파고)지휘관님을 위해 몇 장 더 준비하시면... 와서 페이윤을 도와주실 수 있나요!",
+        "reply2_shipgirl": 50107
     },
     "629": {
         "id": 629,
         "ship_group": 49902,
-        "message": "Translation Source Missing",
+        "message": "(파파고)일어나면 베개 밑도 꼭 확인하세요~",
         "name": "SymphonicStigma",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260212_feiteliedadiA7xyjLjzDNrVgiuz.png",
         "shipgirl_names": [
-            49902
+            40135,
+            40109,
+            49902,
+            40143,
+            50109,
+            40147,
+            50107,
+            50108,
+            40125
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "40135": "(파파고)감사해요! 빨간 봉투도 받았어요!"
+            },
+            "2": {
+                "40109": "(파파고)정말 행복해요! 그런데 왜 베개 밑에 빨간 봉투가 의문스럽게 나타난 걸까요...?"
+            },
+            "3": {
+                "40125": "(파파고)저도 예전부터 궁금했는데 왜 크리스마스 선물이 양말에 신기하게 나타나는 걸까요...?"
+            },
+            "4": {
+                "40147": "(파파고)핸드폰으로 확인해봤는데 정말 환상적이었어요..."
+            },
+            "5": {
+                "40143": "(파파고)...그래, 이건 마법이야!"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "50109": "(파파고)일어나기만 하면 빨간 봉투를 받을 수 있나요? ! 그러면 하루에 열 번씩 자야 해요!"
+            },
+            "2": {
+                "50109": "(파파고)1회"
+            },
+            "3": {
+                "50107": "(파파고)2회"
+            },
+            "4": {
+                "50109": "(파파고)3회"
+            },
+            "5": {
+                "50107": "(파파고)4회"
+            },
+            "6": {
+                "50109": "(파파고)10번! 10번이나 일어났어요!"
+            },
+            "7": {
+                "50109": "(파파고)왜 아직도 빨간 봉투가 1개밖에 없나요...?"
+            },
+            "8": {
+                "50107": "(파파고)눈을 감으면 페이윤 사부가 두 명 있어요~"
+            },
+            "9": {
+                "50108": "(파파고)번갈아 가며 눈을 뜨고 자는 것은 의미가 없습니다~"
+            }
+        },
+        "op_option1": "(파파고)베개 밑에 있는 이 빨간 봉투는 유난히 두꺼운 것 같아요...",
+        "op_reply1": "(파파고)여러분을 위해 특별히 준비했습니다~ 마음에 드셨으면 좋겠습니다",
+        "reply1_shipgirl": 49902,
+        "op_option2": "(파파고)고마워요 엄마",
+        "op_reply2": "(파파고)잘 지내요~",
+        "reply2_shipgirl": 49902
     },
     "630": {
         "id": 630,
         "ship_group": 70303,
-        "message": "Translation Source Missing",
+        "message": "(파파고)볼샤야 포베다! (대단한 승리!)",
         "name": "Moskva",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260226_mosikegCHu4bLaYJSyJuyw.png",
         "shipgirl_names": [
+            10515,
+            70102,
+            70201,
+            70109,
             70303
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "70201": "(파파고)따뜻한 보르시가 준비되었습니다. 한 그릇 드세요~"
+            },
+            "2": {
+                "70102": "(파파고)저도 국물 끓일 때 도와주러 왔어요. 맛이 이상하다고 생각했다면 그것은 단지 우연일 뿐이었다."
+            },
+            "3": {
+                "70109": "(파파고)이 맛은... 혹시 국물에 보드카를 넣은 건 아닐까?"
+            },
+            "4": {
+                "70303": "(파파고)마시고 나면 금방 따뜻해지는 기분이 들었어요.."
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "10515": "(파파고)오랫동안 단련된 근육은 반드시 빛을 발할 것입니다!"
+            },
+            "2": {
+                "70303": "(파파고)정확히 그렇습니다!"
+            }
+        },
+        "op_option1": "(파파고)스케이트 잘 타네, 모스크바! 이 챔피언은 그럴 자격이 있어요",
+        "op_reply1": "(파파고)친애하는 친구여, 당신의 인정에 감사드립니다.",
+        "reply1_shipgirl": 70303,
+        "op_option2": "(파파고)챔피언님, 다음에 스키 탈 때 안내해 주세요.",
+        "op_reply2": "(파파고)물론 문제없어요, 사랑하는 친구여",
+        "reply2_shipgirl": 70303
     },
     "631": {
         "id": 631,
         "ship_group": 70113,
-        "message": "Translation Source Missing",
+        "message": "(파파고)예상대로 완벽해요~",
         "name": "Ozornoy",
-        "picture_persist": "",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260226_wanpizuOQLDzrOK5lF8nj.png",
         "shipgirl_names": [
-            70113
+            70113,
+            10701,
+            60304,
+            10704,
+            50102,
+            50107
         ],
-        "op_option1": "Translation Source Missing",
-        "op_reply1": "Translation Source Missing",
-        "reply1_shipgirl": null,
-        "op_option2": "Translation Source Missing",
-        "op_reply2": "Translation Source Missing",
-        "reply2_shipgirl": null
+        "reply_group1": {
+            "1": {
+                "10701": "(파파고)잘했어요~ 모두가 배울 수 있는 본보기로 삼을 가치가 있어요!"
+            },
+            "2": {
+                "60304": "(파파고)글쎄요, 데이터는 확실하고 논리는 명확하며 결론은 근거가 충분합니다."
+            },
+            "3": {
+                "10704": "(파파고)그들은 과연 우리가 공동으로 가르쳤던 학생들입니다! 수업이 끝난 후 경험을 공유하는 것을 잊지 마세요!"
+            },
+            "4": {
+                "70113": "(파파고)예! 선생님 감사합니다! 앞으로도 열심히 하겠습니다!"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "50102": "(파파고)그럼... 장난꾸러기 주인님, 오늘 숙제 다 끝냈어야 했죠? 정말 대단해요~"
+            },
+            "2": {
+                "50107": "(파파고)그럼... 참고용으로 워크북을 빌려주시면 어떨까요? 클릭 한 번이면 됩니다!"
+            },
+            "3": {
+                "70113": "(파파고)게으르지 마세요, 두 분! 추가 수업을 받으려면 지금 저에게 오세요!"
+            },
+            "4": {
+                "50102": "(파파고)표적이 되고 있다! 달리다!"
+            }
+        },
+        "op_option1": "(파파고)당연한 1위",
+        "op_reply1": "(파파고)ㅋㅋㅋ 당연한 얘기죠~",
+        "reply1_shipgirl": 70113,
+        "op_option2": "(파파고)축하드립니다. 이제 휴식을 취해보세요.",
+        "op_reply2": "(파파고)지휘관님의 명령이니까... 나중에 당신의 일을 감독하러 오겠습니다.",
+        "reply2_shipgirl": 70113
     },
     "632": {
         "id": 632,
         "ship_group": 70209,
-        "message": "Translation Source Missing",
+        "message": "(파파고)중독성 있는 이 느낌..",
         "name": "Krasny Kavkaz",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260226_hongseshanmai4J33PXn7FYSaejsU.png",
+        "shipgirl_names": [
+            70208,
+            70209,
+            60802,
+            10126,
+            79902
+        ],
+        "reply_group1": {
+            "1": {
+                "10126": "(파파고)붉은 산도... 방전될까요?"
+            },
+            "2": {
+                "70209": "(파파고)아마도 당신이 언급한 종류의 \"방전\"은 아닐 것입니다...!"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "79902": "(파파고)정전기는...적이다"
+            },
+            "2": {
+                "70208": "(파파고)파견됨"
+            },
+            "3": {
+                "60802": "(파파고)파견됨"
+            }
+        },
+        "op_option1": "(파파고)실제로 사람들에게 특별한 행복을 가져다줄 수 있습니다...",
+        "op_reply1": "(파파고)지휘관님도 그렇게 생각하시나요~ 우리 함께라면 할 수 있어요!",
+        "reply1_shipgirl": 70209,
+        "op_option2": "(파파고)'정전기'도 이런 식으로 해석될 수 있는 것으로 밝혀졌습니다.",
+        "op_reply2": "(파파고)지휘관님, 직접 오셔서 직접 체험해 보시겠어요? 하하♡",
+        "reply2_shipgirl": 70209
+    },
+    "633": {
+        "id": 633,
+        "ship_group": 70210,
+        "message": "(파파고)충전 진행률, 100%...",
+        "name": "Bogatyr",
+        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260226_bojiatelirAJYQq1TZb2Y6JLx.png",
+        "shipgirl_names": [
+            19904,
+            70210,
+            10117,
+            10131,
+            80503,
+            99901,
+            90111
+        ],
+        "reply_group1": {
+            "1": {
+                "10117": "(파파고)딱 맞아..."
+            },
+            "2": {
+                "10131": "(파파고)적합한……"
+            },
+            "3": {
+                "90111": "(파파고)잠……"
+            },
+            "4": {
+                "70210": "(파파고)...? ? ?"
+            }
+        },
+        "reply_group2": {
+            "1": {
+                "99901": "(파파고)이런 식으로 당신은 항상 마스터의 명령에 응답할 수 있습니다."
+            },
+            "2": {
+                "19904": "(파파고)상태 동기화가 완료되었으며 언제든지 지침을 수락할 수 있습니다."
+            },
+            "3": {
+                "80503": "(파파고)알자스도 여전히 최선의 대응 상태를 유지하고 있습니다!"
+            },
+            "4": {
+                "70210": "(파파고)음, 이렇게 하면 우리는 지휘관을 더 효율적으로 지원할 수 있습니다."
+            }
+        },
+        "op_option1": "(파파고)잘 잤어요?",
+        "op_reply1": "(파파고)수면의 질...훌륭해요. 꿈을 꾸었어요, 지휘관님",
+        "reply1_shipgirl": 70210,
+        "op_option2": "(파파고)오늘은 조언 좀 부탁드립니다.",
+        "op_reply2": "(파파고)뭐, 나도 오늘은 지휘관님과의 협력을 기대하고 있겠습니다.",
+        "reply2_shipgirl": 70210
+    },
+    "634": {
+        "id": 634,
+        "ship_group": 30717,
+        "message": "Translation Source Missing",
+        "name": "Unryū",
         "picture_persist": "",
         "shipgirl_names": [
-            70209
+            30717
         ],
         "op_option1": "Translation Source Missing",
         "op_reply1": "Translation Source Missing",
@@ -29864,14 +30201,62 @@
         "op_reply2": "Translation Source Missing",
         "reply2_shipgirl": null
     },
-    "633": {
-        "id": 633,
-        "ship_group": 70210,
+    "635": {
+        "id": 635,
+        "ship_group": 30228,
         "message": "Translation Source Missing",
-        "name": "Bogatyr",
+        "name": "Kizu",
         "picture_persist": "",
         "shipgirl_names": [
-            70210
+            30228
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "636": {
+        "id": 636,
+        "ship_group": 30229,
+        "message": "Translation Source Missing",
+        "name": "Nayoro",
+        "picture_persist": "",
+        "shipgirl_names": [
+            30229
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "20001": {
+        "id": 20001,
+        "ship_group": 0,
+        "message": "Translation Source Missing",
+        "name": "",
+        "picture_persist": "",
+        "shipgirl_names": [
+            0
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "20002": {
+        "id": 20002,
+        "ship_group": 0,
+        "message": "Translation Source Missing",
+        "name": "",
+        "picture_persist": "",
+        "shipgirl_names": [
+            0
         ],
         "op_option1": "Translation Source Missing",
         "op_reply1": "Translation Source Missing",

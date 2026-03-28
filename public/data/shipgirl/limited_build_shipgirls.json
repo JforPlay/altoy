@@ -24,29 +24,29 @@
             "build_name": "기간 한정",
             "banner_type": 2,
             "shipgirls": {
-                "70303": {
-                    "name": "모스크바",
+                "70502": {
+                    "name": "소비에츠키 소유즈",
                     "rarity": "UR",
                     "nationality": 7,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/703030/shipyard.png"
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705020/shipyard.png"
                 },
-                "70113": {
-                    "name": "오조르노이",
+                "70111": {
+                    "name": "오그네보이",
                     "rarity": "SSR",
                     "nationality": 7,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701130/shipyard.png"
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701110/shipyard.png"
                 },
-                "970510": {
-                    "name": "강구트·META",
+                "970207": {
+                    "name": "파먀티 메르쿠리야·META",
                     "rarity": "SSR",
                     "nationality": 97,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9705100/shipyard.png"
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702070/shipyard.png"
                 },
-                "70209": {
-                    "name": "크라스늬 캅카스",
+                "70508": {
+                    "name": "폴타바",
                     "rarity": "SR",
                     "nationality": 7,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702090/shipyard.png"
+                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705080/shipyard.png"
                 }
             }
         }
