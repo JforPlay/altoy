@@ -1,0 +1,270 @@
+---
+/**
+ * Shipgirl Stats — Ship & Skin statistics and comparison
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/shipgirl/shipgirl-stats.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="함순이 통계" {base}>
+    <div id="app" class="stats-app">
+        <!-- Loading spinner -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <span>데이터 로딩 중...</span>
+        </div>
+
+        <!-- Header -->
+        <header class="stats-header">
+            <div class="stats-header-title">
+                <span class="material-symbols-outlined">bar_chart</span>
+                <div>
+                    <h1>함순이 통계</h1>
+                    <p class="stats-subtitle">함순이 &amp; 스킨 통계 및 비교</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Pill toggle (Ship / Skin tabs) -->
+        <div class="tab-toggle-container">
+            <div class="tab-toggle">
+                <button class="tab-toggle-btn active" data-tab="ship">
+                    <span class="material-symbols-outlined">directions_boat</span>
+                    함순이 통계
+                </button>
+                <button class="tab-toggle-btn" data-tab="skin">
+                    <span class="material-symbols-outlined">checkroom</span>
+                    스킨 통계
+                </button>
+                <div class="tab-toggle-indicator"></div>
+            </div>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="filter-bar">
+            <div class="filter-bar-inner">
+                <input type="text" id="searchInput" class="filter-search" placeholder="이름 검색...">
+                <div id="rarityChips" class="rarity-chips">
+                    <button class="rarity-chip active" data-rarity="">전체</button>
+                    <button class="rarity-chip" data-rarity="N">N</button>
+                    <button class="rarity-chip" data-rarity="R">R</button>
+                    <button class="rarity-chip" data-rarity="SR">SR</button>
+                    <button class="rarity-chip" data-rarity="SSR">SSR</button>
+                    <button class="rarity-chip" data-rarity="UR">UR</button>
+                </div>
+                <select id="shipTypeFilter" class="filter-select">
+                    <option value="">모든 함종</option>
+                </select>
+                <select id="nationalityFilter" class="filter-select">
+                    <option value="">모든 진영</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- ===== Ship Tab ===== -->
+        <div id="shipTab" class="tab-content active">
+            <!-- Dashboard -->
+            <section id="shipDashboard" class="dashboard-section">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card summary-card">
+                        <h3 class="dashboard-card-title">
+                            <span class="material-symbols-outlined">summarize</span>
+                            요약
+                        </h3>
+                        <div id="shipSummaryContent" class="summary-content"></div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card-title">
+                            <span class="material-symbols-outlined">category</span>
+                            함종 분포
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="shipTypeChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card-title">
+                            <span class="material-symbols-outlined">flag</span>
+                            진영 분포
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="nationalityChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card-title">
+                            <span class="material-symbols-outlined">leaderboard</span>
+                            스탯 TOP 순위
+                        </h3>
+                        <div class="chart-header-controls">
+                            <select id="topStatSelector" class="filter-select filter-select-sm">
+                                <option value="health">내구</option>
+                                <option value="firepower">포격</option>
+                                <option value="torpedo">뇌장</option>
+                                <option value="antiair">대공</option>
+                                <option value="aviation">항공</option>
+                                <option value="reload">장전</option>
+                                <option value="accuracy">명중</option>
+                                <option value="evasion">기동</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="topStatChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Threshold filters -->
+            <div class="threshold-section">
+                <button id="shipThresholdToggle" class="threshold-toggle">
+                    <span class="material-symbols-outlined">tune</span>
+                    스탯 범위 필터
+                    <span class="material-symbols-outlined toggle-arrow">expand_more</span>
+                </button>
+                <div id="shipThresholdControls" class="threshold-controls"></div>
+            </div>
+
+            <!-- Table -->
+            <section class="table-section">
+                <div class="table-controls">
+                    <span id="shipTableCount" class="table-count"></span>
+                    <button id="shipExpandCols" class="expand-cols-btn" title="열 펼치기/접기">
+                        <span class="material-symbols-outlined">view_column</span>
+                    </button>
+                </div>
+                <div class="table-wrapper">
+                    <table id="shipTable" class="stats-table">
+                        <thead id="shipTableHead"></thead>
+                        <tbody id="shipTableBody"></tbody>
+                    </table>
+                </div>
+                <div id="shipPagination" class="pagination"></div>
+            </section>
+        </div>
+
+        <!-- ===== Skin Tab ===== -->
+        <div id="skinTab" class="tab-content">
+            <!-- Dashboard -->
+            <section id="skinDashboard" class="dashboard-section">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card summary-card">
+                        <h3 class="dashboard-card-title">
+                            <span class="material-symbols-outlined">summarize</span>
+                            요약
+                        </h3>
+                        <div id="skinSummaryContent" class="summary-content"></div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card-title">
+                            <span class="material-symbols-outlined">sell</span>
+                            태그 분포
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="tagChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card-title">
+                            <span class="material-symbols-outlined">trophy</span>
+                            스킨 보유 TOP
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="topSkinChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card-title">
+                            <span class="material-symbols-outlined">style</span>
+                            스킨 타입 분포
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="skinTypeChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="dashboard-card wide-card">
+                        <h3 class="dashboard-card-title">
+                            <span class="material-symbols-outlined">timeline</span>
+                            스킨 출시 타임라인
+                        </h3>
+                        <div class="chart-container chart-container-wide">
+                            <canvas id="timelineChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="dashboard-card wide-card">
+                        <h3 class="dashboard-card-title">
+                            <span class="material-symbols-outlined">trending_up</span>
+                            L2D 트렌드
+                        </h3>
+                        <div class="chart-container chart-container-wide">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Threshold filters -->
+            <div class="threshold-section">
+                <button id="skinThresholdToggle" class="threshold-toggle">
+                    <span class="material-symbols-outlined">tune</span>
+                    스킨 범위 필터
+                    <span class="material-symbols-outlined toggle-arrow">expand_more</span>
+                </button>
+                <div id="skinThresholdControls" class="threshold-controls"></div>
+            </div>
+
+            <!-- Table -->
+            <section class="table-section">
+                <div class="table-controls">
+                    <span id="skinTableCount" class="table-count"></span>
+                </div>
+                <div class="table-wrapper">
+                    <table id="skinTable" class="stats-table">
+                        <thead id="skinTableHead"></thead>
+                        <tbody id="skinTableBody"></tbody>
+                    </table>
+                </div>
+                <div id="skinPagination" class="pagination"></div>
+            </section>
+        </div>
+
+        <!-- Compare bar (floating) -->
+        <div id="compareBar" class="compare-bar">
+            <div id="compareBarItems" class="compare-bar-items"></div>
+            <div class="compare-bar-actions">
+                <button id="compareBtn" class="compare-bar-btn compare-bar-btn-primary">
+                    <span class="material-symbols-outlined">compare</span>
+                    비교하기
+                </button>
+                <button id="compareClearBtn" class="compare-bar-btn compare-bar-btn-secondary">
+                    <span class="material-symbols-outlined">close</span>
+                    초기화
+                </button>
+            </div>
+        </div>
+
+        <!-- Compare modal -->
+        <div id="compareModal" class="compare-modal" style="display: none;">
+            <div class="compare-modal-inner">
+                <div class="compare-modal-header">
+                    <h2>
+                        <span class="material-symbols-outlined">compare</span>
+                        함순이 비교
+                    </h2>
+                    <button id="compareModalClose" class="compare-modal-close">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div id="compareModalBody" class="compare-modal-body"></div>
+            </div>
+        </div>
+    </div>
+
+    <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+    <script is:inline type="module" src={`${base}/js/shipgirl/shipgirl-stats.data.js`}></script>
+    <script is:inline type="module" src={`${base}/js/shipgirl/shipgirl-stats.dashboard.js`}></script>
+    <script is:inline type="module" src={`${base}/js/shipgirl/shipgirl-stats.table.js`}></script>
+    <script is:inline type="module" src={`${base}/js/shipgirl/shipgirl-stats.compare.js`}></script>
+    <script is:inline type="module" src={`${base}/js/shipgirl/shipgirl-stats.js`}></script>
+</Layout>

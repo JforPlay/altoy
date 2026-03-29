@@ -1,5 +1,5 @@
 import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl } from '../utils.js';
-import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames } from './skin.data.js';
+import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getReleaseDate } from './skin.data.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlHtml, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
 
@@ -165,6 +165,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (skin['기간']) html += `<div class="info-item"><strong class="info-label">상시:</strong><span class="info-value">${skin['기간']}</span></div>`;
         if (skin['스킨 타입 - 한글']) html += `<div class="info-item"><strong class="info-label">타입:</strong><span class="info-value">${skin['스킨 타입 - 한글']}</span></div>`;
         if (skin['스킨 태그']) html += `<div class="info-item"><strong class="info-label">태그:</strong><span class="info-value">${skin['스킨 태그']}</span></div>`;
+
+        const releaseDate = getReleaseDate(skin['클뜯 id']);
+        if (releaseDate) html += `<div class="info-item"><strong class="info-label">출시:</strong><span class="info-value">${releaseDate}</span></div>`;
 
         elements.skinInfoBox.innerHTML = html;
         toggleElement(elements.skinInfoBox, !!html);

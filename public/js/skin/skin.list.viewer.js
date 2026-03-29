@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let allSkins = [];
     let fuse;
     let isLoading = false;
+    let releaseDates = {};
     const fuseOptions = { keys: ['name'], threshold: 0.4 };
 
     // Skin ID → skin data for O(1) lookup
@@ -156,6 +157,13 @@ document.addEventListener('DOMContentLoaded', () => {
             DOM.progressBar.classList.remove('visible');
         }
     };
+
+    function formatReleaseDate(skinId) {
+        const date = releaseDates[String(skinId)];
+        if (!date) return null;
+        if (date === '2021-08-14') return '2021-08-14 이전';
+        return date;
+    }
 
     function normalizeFactions(skins) {
         for (const skin of skins) {
@@ -719,6 +727,7 @@ document.addEventListener('DOMContentLoaded', () => {
             imageWrapper.appendChild(img);
             skinBox.appendChild(imageWrapper);
 
+            const releaseDate = formatReleaseDate(skinId);
             const skinInfo = document.createElement('div');
             skinInfo.className = 'skin-info';
             skinInfo.innerHTML = `
@@ -729,6 +738,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
                 <div class="info-line"><strong>가격:</strong> ${costHtml}</div>
                 <div class="info-line"><strong>기간:</strong> ${skin['기간'] || '정보 없음'}</div>
+                ${releaseDate ? `<div class="info-line"><strong>출시:</strong> ${releaseDate}</div>` : ''}
             `;
 
             skinBox.appendChild(skinInfo);
@@ -897,9 +907,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     showLoadingState();
 
-    fetchJSONWithCache(`data/skin/skin_voiceline_data_subset.json?v=${DATA_VERSION}`)
-        .then(skinJson => {
+    Promise.all([
+        fetchJSONWithCache(`data/skin/skin_voiceline_data_subset.json?v=${DATA_VERSION}`),
+        fetchJSONWithCache('data/skin/skin_release_dates.json').catch(() => ({}))
+    ])
+        .then(([skinJson, releaseDateJson]) => {
             allSkins = skinJson;
+            releaseDates = releaseDateJson || {};
             isLoading = false;
 
             // Normalize faction values for current data

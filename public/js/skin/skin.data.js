@@ -12,23 +12,29 @@ const state = {
     skinDataCache: {},       // Cached per-character full data: charName -> skin[]
     expressionManifest: {},
     characterFuse: null,
-    allCharacterNames: []
+    allCharacterNames: [],
+    releaseDates: null       // skinId (string) -> date string
 };
 
 
 async function init() {
     try {
         // Load lightweight index + expression manifest (127KB vs 19MB)
-        const [skinIndex, manifest] = await Promise.all([
+        const [skinIndex, manifest, releaseDates] = await Promise.all([
             fetchJSONWithCache('data/skin/skin_voiceline_index.json'),
             fetchJSONWithCache('data/skin/expression_manifest.json').catch(e => {
                 console.warn('Expression manifest missing', e);
+                return {};
+            }),
+            fetchJSONWithCache('data/skin/skin_release_dates.json').catch(e => {
+                console.warn('Release dates missing', e);
                 return {};
             })
         ]);
 
         state.skinIndex = skinIndex;
         state.expressionManifest = manifest || {};
+        state.releaseDates = releaseDates || {};
 
         // Build search index from character names in the index file
         state.allCharacterNames = Object.keys(skinIndex.characters)
@@ -144,6 +150,19 @@ async function getSkinByName(skinName) {
     return null;
 }
 
+/**
+ * Get formatted release date for a skin by ID
+ * @param {number|string} skinId - Skin ID
+ * @returns {string|null} - Formatted date string or null
+ */
+function getReleaseDate(skinId) {
+    if (!state.releaseDates) return null;
+    const date = state.releaseDates[String(skinId)];
+    if (!date) return null;
+    if (date === '2021-08-14') return '2021-08-14 이전';
+    return date;
+}
+
 function getManifest() {
     return state.expressionManifest;
 }
@@ -160,7 +179,8 @@ window.SkinData = {
     getSkinByName,
     loadCharacterData,
     getManifest,
-    getAllCharacterNames
+    getAllCharacterNames,
+    getReleaseDate
 };
 
 export {
@@ -170,5 +190,6 @@ export {
     getSkinByName,
     loadCharacterData,
     getManifest,
-    getAllCharacterNames
+    getAllCharacterNames,
+    getReleaseDate
 };
