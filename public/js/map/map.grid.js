@@ -52,8 +52,8 @@ export function renderGrid(chapter, targetEl) {
 
     const fragment = document.createDocumentFragment();
 
-    // Render top-to-bottom (highest row first)
-    for (let row = maxRow; row >= 0; row--) {
+    // Render bottom-to-top (lowest row first) to match in-game orientation
+    for (let row = 0; row <= maxRow; row++) {
         for (let col = 0; col <= maxCol; col++) {
             const cell = cellMap.get(`${row}_${col}`);
             const el = document.createElement('div');
@@ -187,7 +187,7 @@ export function renderWorldGrid(chapter, targetEl) {
     targetEl.style.gridTemplateColumns = `repeat(${maxCol + 1}, var(--map-cell-size))`;
 
     const fragment = document.createDocumentFragment();
-    for (let row = maxRow; row >= 0; row--) {
+    for (let row = 0; row <= maxRow; row++) {
         for (let col = 0; col <= maxCol; col++) {
             const cell = cellMap.get(`${row}_${col}`);
             const el = document.createElement('div');
