@@ -107,12 +107,8 @@ export async function loadShipInfo() {
             };
             if (ship.gid) gidToId[ship.gid] = ship.id;
         }
-        // KR server fix: ship 236 (Z23) map drops swap with ship 155 (아야나미)
-        if (state.shipInfo[236] && state.shipInfo[155]) {
-            const temp = state.shipInfo[236].maps;
-            state.shipInfo[236].maps = state.shipInfo[155].maps;
-            state.shipInfo[155].maps = temp;
-        }
+        // KR server fix: ship 236/155 map drop swap is handled in ship_info_process.py
+        // (data in ship_info_lite.json is already corrected for KR)
         return state.shipInfo;
     } catch (error) {
         console.warn('Failed to load ship info:', error);

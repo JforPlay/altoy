@@ -23,11 +23,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <button class="map-tab" data-tab="archive">작전 문서</button>
             <button class="map-tab" data-tab="world">대형 작전</button>
             <div class="map-tabs-spacer"></div>
-            <button class="map-search-btn" id="searchShipBtn" title="함선 드롭 검색">
+            <button class="map-search-btn" id="searchShipBtn" title="함순이 드랍 검색">
                 <span class="material-symbols-outlined map-btn-icon">directions_boat</span>
-                함선 검색
+                함순이 검색
             </button>
-            <button class="map-search-btn" id="searchBlueprintBtn" title="설계도 드롭 검색">
+            <button class="map-search-btn" id="searchBlueprintBtn" title="설계도 드랍 검색">
                 <span class="material-symbols-outlined map-btn-icon">description</span>
                 설계도 검색
             </button>
@@ -105,11 +105,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
 
         <!-- Compare Modal -->
-        <div id="compareModal" class="map-compare-modal hidden">
-            <div class="map-compare-modal-content">
-                <div class="compare-modal-header">
-                    <span class="compare-modal-title">해역 비교</span>
-                    <button class="modal-close compare-modal-close">
+        <div id="compareModal" class="map-search-overlay hidden">
+            <div class="map-search-panel map-search-panel--wide">
+                <div class="map-search-header">
+                    <span class="material-symbols-outlined map-search-header-icon">compare_arrows</span>
+                    <span class="map-search-title">해역 비교</span>
+                    <div class="map-search-header-spacer"></div>
+                    <button class="map-search-close" id="compareModalClose">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>

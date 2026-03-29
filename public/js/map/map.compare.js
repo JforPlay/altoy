@@ -11,6 +11,7 @@ export function setup(stateRef) {
 
 export function setupCompareModal() {
     setupModal('compareModal', {
+        closeButtonSelector: '#compareModalClose',
         closeOnEscape: true,
         closeOnBackdrop: true,
         onClose: () => {

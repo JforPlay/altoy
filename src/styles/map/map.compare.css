@@ -54,44 +54,14 @@
 }
 
 /* ===== Compare Modal ===== */
-.map-compare-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--overlay-strong);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-}
-
-.map-compare-modal-content {
-    background: var(--bg-primary);
-    border-radius: var(--radius-lg);
-    width: 90%;
+.map-search-panel--wide {
     max-width: 62.5rem;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: var(--shadow-xl);
-}
-
-.compare-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--spacing-md);
-    border-bottom: 1px solid var(--border-color);
-}
-
-.compare-modal-title {
-    font-size: var(--map-font-lg);
-    font-weight: 600;
 }
 
 .compare-modal-body {
     padding: var(--spacing-md);
+    overflow-y: auto;
+    flex: 1;
 }
 
 /* Side-by-side comparison */

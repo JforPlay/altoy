@@ -235,7 +235,6 @@ function selectCompareTarget(mapId) {
 
 function switchTab(tab) {
     state.currentTab = tab;
-    state.currentMapId = null;
 
     // Update tab UI
     mapTabs.querySelectorAll('.map-tab').forEach(t => {
@@ -244,15 +243,15 @@ function switchTab(tab) {
 
     renderSidebar(tab);
 
-    // Reset center
-    showElement(mapEmpty);
-    hideElement(mapContent);
-    hideElement(mapLoading);
-
-    // Close node detail overlay
-    closeNodeOverlay();
-
-    setUrlParams({ tab, map: null, compare: null }, { replace: true });
+    // In compare mode, keep the center panel showing the first map
+    if (!state.compareMode) {
+        state.currentMapId = null;
+        showElement(mapEmpty);
+        hideElement(mapContent);
+        hideElement(mapLoading);
+        closeNodeOverlay();
+        setUrlParams({ tab, map: null, compare: null }, { replace: true });
+    }
 }
 
 // ---- Init ----
@@ -268,11 +267,11 @@ function openSearchModal(mode) {
     const input = document.getElementById('searchModalInput');
 
     if (mode === 'ship') {
-        title.textContent = '함선 드롭 검색';
+        title.textContent = '함순이 드랍 검색';
         if (icon) icon.textContent = 'directions_boat';
-        input.placeholder = '함선 이름으로 검색...';
+        input.placeholder = '함순이 이름으로 검색...';
     } else {
-        title.textContent = '설계도 드롭 검색';
+        title.textContent = '설계도 드랍 검색';
         if (icon) icon.textContent = 'description';
         input.placeholder = '설계도 이름으로 검색...';
     }
@@ -330,7 +329,7 @@ function renderShipSearchResults(query, body) {
     results.sort((a, b) => (RARITY_ORDER[a.rarity] ?? 5) - (RARITY_ORDER[b.rarity] ?? 5));
 
     if (results.length === 0) {
-        body.innerHTML = `<div class="detail-empty">${q ? '검색 결과가 없습니다.' : '드롭 데이터가 없습니다.'}</div>`;
+        body.innerHTML = `<div class="detail-empty">${q ? '검색 결과가 없습니다.' : '드랍 데이터가 없습니다.'}</div>`;
         return;
     }
 
@@ -519,6 +518,7 @@ async function init() {
 
     // Search modal setup
     setupModal('searchModal', {
+        closeButtonSelector: '#searchModalClose',
         closeOnEscape: true,
         closeOnBackdrop: true,
     });

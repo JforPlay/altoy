@@ -203,9 +203,9 @@ export function renderMapInfo(chapter, targetEl) {
             html += '</div>';
         }
 
-        // Box 3: 함선 EXP
+        // Box 3: 함순이 EXP
         html += '<div class="clear-stat">';
-        html += '<div class="clear-stat-label">함선 EXP</div>';
+        html += '<div class="clear-stat-label">함순이 EXP</div>';
         if (est.shipExpMin === est.shipExpMax) {
             html += `<div class="clear-stat-value">${est.shipExpAvg.toLocaleString()}</div>`;
         } else {
@@ -272,11 +272,11 @@ export function renderMapInfo(chapter, targetEl) {
         html += '</div></div>';
     }
 
-    // ── Card 5: 아이템 드롭 ──
+    // ── Card 5: 아이템 드랍 ──
     const itemDrops = chapter.item_drops;
     if (itemDrops && itemDrops.length > 0) {
         html += '<div class="info-card full-width">';
-        html += '<div class="info-card-header"><div class="info-card-icon info-card-icon--drop"><span class="material-symbols-outlined">inventory_2</span></div><div class="info-card-label">아이템 드롭</div></div>';
+        html += '<div class="info-card-header"><div class="info-card-icon info-card-icon--drop"><span class="material-symbols-outlined">inventory_2</span></div><div class="info-card-label">아이템 드랍</div></div>';
         html += '<div class="info-card-body">';
         html += '<div class="drop-list">';
         for (const drop of itemDrops) {
@@ -307,11 +307,11 @@ export function renderMapInfo(chapter, targetEl) {
         html += '</div></div></div>';
     }
 
-    // ── Card 6: 함선 드롭 ──
+    // ── Card 6: 함순이 드랍 ──
     const shipDrops = getShipDropsForChapter(String(chapter.id));
     if (shipDrops.length > 0) {
         html += '<div class="info-card full-width">';
-        html += '<div class="info-card-header"><div class="info-card-icon info-card-icon--ship"><span class="material-symbols-outlined">sailing</span></div><div class="info-card-label">함선 드롭</div></div>';
+        html += '<div class="info-card-header"><div class="info-card-icon info-card-icon--ship"><span class="material-symbols-outlined">sailing</span></div><div class="info-card-label">함순이 드랍</div></div>';
         html += '<div class="info-card-body">';
         html += '<div class="ship-drop-grid">';
         for (const ship of shipDrops) {
@@ -453,7 +453,7 @@ export function renderArchiveInfo(chapter, targetEl) {
                 extra += `<div class="text-muted" style="font-size:0.78rem">${sd.count}회 클리어 시 획득</div></div>`;
                 extra += '</div>';
             } else {
-                extra += `<div>${sd.count}회 클리어 시 함선 획득 (ID: ${sd.id})</div>`;
+                extra += `<div>${sd.count}회 클리어 시 함순이 획득 (ID: ${sd.id})</div>`;
             }
         } else {
             const itemIconUrl = sd.icon ? getItemIconUrl(sd.icon) : '';
@@ -465,7 +465,7 @@ export function renderArchiveInfo(chapter, targetEl) {
         }
         if (chapter.special_drop_display) {
             const stages = chapter.special_drop_display.map(d => d[1]).join(', ');
-            extra += `<div class="text-muted mt-xs" style="font-size:0.78rem">드롭 해역: ${stages}</div>`;
+            extra += `<div class="text-muted mt-xs" style="font-size:0.78rem">드랍 해역: ${stages}</div>`;
         }
         extra += '</div></div>';
     }
@@ -474,7 +474,7 @@ export function renderArchiveInfo(chapter, targetEl) {
     const archiveDrops = chapter.ship_drops_archive;
     if (archiveDrops && archiveDrops.length > 0) {
         extra += '<div class="info-card full-width">';
-        extra += '<div class="info-card-header"><div class="info-card-icon info-card-icon--ship"><span class="material-symbols-outlined">sailing</span></div><div class="info-card-label">함선 드롭</div></div>';
+        extra += '<div class="info-card-header"><div class="info-card-icon info-card-icon--ship"><span class="material-symbols-outlined">sailing</span></div><div class="info-card-label">함순이 드랍</div></div>';
         extra += '<div class="info-card-body"><div class="ship-drop-grid">';
         for (const drop of archiveDrops) {
             const ship = getShipInfo(drop.id);
