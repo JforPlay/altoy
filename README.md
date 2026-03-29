@@ -1,5 +1,5 @@
 # Azur Lane KR Toy (ALtoy)
-- Last updated 2026/3/14 (KR: 봄빛 여관 Online)
+- Last updated 2026/3/29 (KR: 설경미종 복각)
 - This repo is the source to build the github pages to view story/skin/info text in kr.
 - ALtoy is a non-profit fan project for the game Azur Lane.
 
