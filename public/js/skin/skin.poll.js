@@ -13,7 +13,7 @@ import { createVirtualScroll } from './skin.poll.virtual-scroll.js';
 // CONSTANTS & CONFIGURATION
 // ====================================
 
-const CACHE_VERSION = 'v3.0-aggregate';
+const CACHE_VERSION = 'v3.1-aggregate';
 const CACHE_DURATION_MS = 1000 * 60 * 60; // 1 hour
 const REFRESH_COOLDOWN_MS = 60000; // 60 seconds
 const MIN_VOTES_FOR_LEADERBOARD = 10;
