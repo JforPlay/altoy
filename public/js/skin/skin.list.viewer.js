@@ -415,6 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const gen = this._generation;
             const shipyardUrl = skin['깔끔한 일러'] || '';
             const fullUrl = shipyardUrl.replace('/shipyard.png', '/painting.png');
+            const asmrUrl = skin['ASMR 일러'] || '';
 
             // Clear old image immediately
             DOM.popup.image.src = '';
@@ -436,9 +437,16 @@ document.addEventListener('DOMContentLoaded', () => {
             DOM.popup.image.addEventListener('load', () => {
                 if (gen === this._generation) DOM.popup.image.classList.remove('loading');
             }, { once: true });
-            DOM.popup.image.addEventListener('error', () => {
-                if (gen === this._generation) DOM.popup.image.src = shipyardUrl;
-            }, { once: true });
+            const fallbacks = [asmrUrl, shipyardUrl].filter(Boolean);
+            const tryNextFallback = () => {
+                if (gen !== this._generation) return;
+                const next = fallbacks.shift();
+                if (next) {
+                    DOM.popup.image.addEventListener('error', tryNextFallback, { once: true });
+                    DOM.popup.image.src = next;
+                }
+            };
+            DOM.popup.image.addEventListener('error', tryNextFallback, { once: true });
             DOM.popup.image.src = fullUrl;
         },
 
