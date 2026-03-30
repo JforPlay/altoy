@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "data:split": "node scripts/split_story_data.mjs && node scripts/split_skin_data.mjs && node scripts/split_simulator_data.mjs",
+    "data:split": "node scripts/split_story_data.mjs && node scripts/split_skin_data.mjs && node scripts/split_simulator_data.mjs && node scripts/split_skin_poll_data.mjs",
     "build": "npm run data:split && astro build && node scripts/minify.mjs",
     "build:no-minify": "astro build",
     "preview": "astro preview",
