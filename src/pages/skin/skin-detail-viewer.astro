@@ -17,6 +17,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <button id="info-button" class="info-button" aria-label="도움말 보기">
                     <i class="fas fa-info-circle"></i>
                 </button>
+                <button id="random-skin-btn" class="random-skin-btn" title="랜덤 스킨 구경가기" aria-label="랜덤 스킨 구경가기">
+                    <i class="fas fa-dice"></i>
+                    <span>랜덤 스킨 구경가기</span>
+                </button>
             </div>
 
             <div id="info-popup" class="info-popup" role="dialog" aria-labelledby="popup-title" aria-hidden="true">
@@ -90,6 +94,36 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div id="image-gallery" class="image-gallery card hidden"></div>
         <div id="text-content-area" class="text-content-area hidden"></div>
         <div id="oath-table-area" class="text-content-area hidden"></div>
+    </div>
+
+    <div id="random-skin-modal" class="random-skin-modal" style="display: none;" role="dialog" aria-label="랜덤 스킨 선택">
+        <div class="random-skin-modal-backdrop"></div>
+        <div class="random-skin-modal-content">
+            <h3><i class="fas fa-dice"></i> 랜덤 스킨 구경가기</h3>
+            <div class="random-skin-filters">
+                <div class="random-filter-group">
+                    <label for="random-rarity-filter">레어도</label>
+                    <select id="random-rarity-filter"><option value="">전체</option></select>
+                </div>
+                <div class="random-filter-group">
+                    <label for="random-type-filter">스킨 타입</label>
+                    <select id="random-type-filter"><option value="">전체</option></select>
+                </div>
+                <div class="random-filter-group">
+                    <label for="random-tag-filter">스킨 태그</label>
+                    <select id="random-tag-filter"><option value="">전체</option></select>
+                </div>
+                <div class="random-filter-group">
+                    <label for="random-nation-filter">진영</label>
+                    <select id="random-nation-filter"><option value="">전체</option></select>
+                </div>
+            </div>
+            <div class="random-skin-actions">
+                <span id="random-skin-count" class="random-skin-count"></span>
+                <button id="random-skin-go" class="random-skin-go-btn"><i class="fas fa-random"></i> 랜덤 구경가기!</button>
+                <button id="random-skin-close" class="random-skin-close-btn">닫기</button>
+            </div>
+        </div>
     </div>
 
     <div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-label="이미지 확대 보기" aria-hidden="true">

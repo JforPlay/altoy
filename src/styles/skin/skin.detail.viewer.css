@@ -93,6 +93,164 @@
   height: 3rem;
 }
 
+/* --- Random Skin Button (Title Row) --- */
+.random-skin-btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.random-skin-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  filter: brightness(1.1);
+}
+
+.random-skin-btn:active {
+  transform: translateY(0);
+}
+
+/* --- Random Skin Modal --- */
+.random-skin-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.random-skin-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--overlay-strong);
+}
+
+.random-skin-modal-content {
+  position: relative;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  max-width: 480px;
+  width: 90%;
+  box-shadow: var(--shadow-xl);
+  z-index: 1;
+}
+
+.random-skin-modal-content h3 {
+  margin: 0 0 var(--spacing-lg) 0;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.random-skin-modal-content h3 i {
+  color: var(--primary-color);
+}
+
+.random-skin-filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.random-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.random-filter-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.random-filter-group select {
+  height: 2.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0 var(--spacing-sm);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  background: var(--bg-input);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.random-filter-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.random-skin-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.random-skin-count {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+.random-skin-go-btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.625rem 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  transition: all var(--transition-fast);
+}
+
+.random-skin-go-btn:hover:not(:disabled) {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.random-skin-go-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.random-skin-close-btn {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.625rem 1.25rem;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.random-skin-close-btn:hover {
+  background: var(--bg-elevated);
+  border-color: var(--text-muted);
+}
+
 /* --- Skin Info Box (Card Style) --- */
 .skin-info-box {
   display: flex;
@@ -736,6 +894,10 @@
     justify-content: center;
   }
 
+  .random-skin-filters {
+    grid-template-columns: 1fr;
+  }
+
   .descriptions-panel,
   .description-group {
     flex-direction: column;
@@ -804,6 +966,17 @@
 /* =================================================================
    DARK MODE OVERRIDES
    ================================================================= */
+
+body.dark-mode .random-skin-modal-content {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+}
+
+body.dark-mode .random-filter-group select {
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
 
 body.dark-mode .lightbox-modal {
   background: rgba(0, 0, 0, 0.95);

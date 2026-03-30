@@ -1,5 +1,5 @@
 import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl } from '../utils.js';
-import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getReleaseDate } from './skin.data.js';
+import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getReleaseDate, getSkinFilterData } from './skin.data.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlHtml, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
 
@@ -47,6 +47,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         clearSkinDetails();
         updateURLWithFilters();
     });
+
+    // Random Skin Feature
+    setupRandomSkin();
 
     window.addEventListener('popstate', applyFiltersFromURL);
 
@@ -254,6 +257,96 @@ document.addEventListener('DOMContentLoaded', async () => {
             character: elements.charInput.value || null,
             skin: elements.skinInput.value || null
         }, { clear: true });
+    }
+
+    // ============================================
+    // Random Skin
+    // ============================================
+    function setupRandomSkin() {
+        const randomBtn = document.getElementById('random-skin-btn');
+        const modal = document.getElementById('random-skin-modal');
+        const backdrop = modal.querySelector('.random-skin-modal-backdrop');
+        const closeBtn = document.getElementById('random-skin-close');
+        const goBtn = document.getElementById('random-skin-go');
+        const countEl = document.getElementById('random-skin-count');
+
+        const raritySelect = document.getElementById('random-rarity-filter');
+        const typeSelect = document.getElementById('random-type-filter');
+        const tagSelect = document.getElementById('random-tag-filter');
+        const nationSelect = document.getElementById('random-nation-filter');
+
+        let skinPool = [];
+        let filterData = null;
+
+        function initFilterData() {
+            if (filterData) return;
+            filterData = getSkinFilterData();
+            skinPool = filterData.pool;
+
+            // Populate dropdowns
+            filterData.filters.rarities.forEach(v => raritySelect.add(new Option(v, v)));
+            filterData.filters.types.forEach(v => typeSelect.add(new Option(v, v)));
+            filterData.filters.tags.forEach(v => tagSelect.add(new Option(v, v)));
+            filterData.filters.nations.forEach(v => nationSelect.add(new Option(v, v)));
+        }
+
+        function getFilteredPool() {
+            const rarity = raritySelect.value;
+            const type = typeSelect.value;
+            const tag = tagSelect.value;
+            const nation = nationSelect.value;
+
+            return skinPool.filter(s => {
+                if (rarity && s.rarity !== rarity) return false;
+                if (type && s.type !== type) return false;
+                if (tag && !s.tag.includes(tag)) return false;
+                if (nation && s.nation !== nation) return false;
+                return true;
+            });
+        }
+
+        function updateCount() {
+            const filtered = getFilteredPool();
+            countEl.textContent = `${filtered.length}개의 스킨`;
+            goBtn.disabled = filtered.length === 0;
+        }
+
+        function openModal() {
+            initFilterData();
+            updateCount();
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        randomBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        backdrop.addEventListener('click', closeModal);
+
+        // Update count on filter change
+        [raritySelect, typeSelect, tagSelect, nationSelect].forEach(sel => {
+            sel.addEventListener('change', updateCount);
+        });
+
+        // Close on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display !== 'none') closeModal();
+        });
+
+        // Go button - pick random and navigate
+        goBtn.addEventListener('click', () => {
+            const filtered = getFilteredPool();
+            if (filtered.length === 0) return;
+
+            const pick = filtered[Math.floor(Math.random() * filtered.length)];
+            closeModal();
+
+            // Navigate to the picked skin
+            handleCharacterSelect(pick.charName, false);
+            handleSkinSelect(pick.skinName);
+        });
     }
 
     function applyFiltersFromURL() {

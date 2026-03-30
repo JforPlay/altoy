@@ -82,6 +82,9 @@ export async function showDetailView(shipName) {
 
     renderDetailView(ship);
 
+    // Update prev/next navigation buttons
+    if (state.updateNavButtons) state.updateNavButtons();
+
     // Reset scroll position to top
     window.scrollTo(0, 0);
 }

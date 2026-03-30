@@ -7,7 +7,7 @@
  * Bump this when ANY data file changes to force fresh fetches.
  * Used by fetchJSONWithCache via ?v=DATA_VERSION query param.
  */
-const DATA_VERSION = '1.2.0';
+const DATA_VERSION = '1.3.0';
 
 /**
  * Debounce function to limit the rate at which a function can fire.

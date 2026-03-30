@@ -163,6 +163,52 @@ function getReleaseDate(skinId) {
     return date;
 }
 
+/**
+ * Get all skins from the index with filter fields, plus unique filter option values.
+ * Used by the random skin feature.
+ * @returns {{ pool: Array, filters: { rarities: string[], types: string[], tags: string[], nations: string[] } }}
+ */
+function getSkinFilterData() {
+    if (!state.skinIndex) return { pool: [], filters: { rarities: [], types: [], tags: [], nations: [] } };
+
+    const pool = [];
+    const rarities = new Set();
+    const types = new Set();
+    const tagKeywords = new Set();
+    const nations = new Set();
+
+    for (const [charName, entry] of Object.entries(state.skinIndex.characters)) {
+        entry.skins.forEach(skin => {
+            pool.push({
+                charName,
+                skinName: skin.name,
+                rarity: skin.rarity || '',
+                type: skin.type || '',
+                tag: skin.tag || '',
+                nation: skin.nation || ''
+            });
+
+            if (skin.rarity) rarities.add(skin.rarity);
+            if (skin.type) types.add(skin.type);
+            if (skin.tag) {
+                skin.tag.split(',').map(t => t.trim()).filter(t => t && !/^\d+$/.test(t)).forEach(t => tagKeywords.add(t));
+            }
+            if (skin.nation) nations.add(skin.nation);
+        });
+    }
+
+    const rarityOrder = ['N', 'R', 'SR', 'SSR', 'UR'];
+    return {
+        pool,
+        filters: {
+            rarities: [...rarities].sort((a, b) => rarityOrder.indexOf(a) - rarityOrder.indexOf(b)),
+            types: [...types].sort((a, b) => a.localeCompare(b, 'ko')),
+            tags: [...tagKeywords].sort((a, b) => a.localeCompare(b, 'ko')),
+            nations: [...nations].sort()
+        }
+    };
+}
+
 function getManifest() {
     return state.expressionManifest;
 }
@@ -180,7 +226,8 @@ window.SkinData = {
     loadCharacterData,
     getManifest,
     getAllCharacterNames,
-    getReleaseDate
+    getReleaseDate,
+    getSkinFilterData
 };
 
 export {
@@ -191,5 +238,6 @@ export {
     loadCharacterData,
     getManifest,
     getAllCharacterNames,
-    getReleaseDate
+    getReleaseDate,
+    getSkinFilterData
 };

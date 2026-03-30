@@ -147,6 +147,35 @@ function setupEventListeners() {
         });
     }
 
+    // Prev/Next navigation buttons
+    const prevShipBtn = document.getElementById('prevShipBtn');
+    const nextShipBtn = document.getElementById('nextShipBtn');
+    if (prevShipBtn) prevShipBtn.addEventListener('click', () => navigatePrevNext(-1));
+    if (nextShipBtn) nextShipBtn.addEventListener('click', () => navigatePrevNext(1));
+
+    // Keyboard navigation (arrows) in detail view
+    document.addEventListener('keydown', (e) => {
+        if (detailView.style.display === 'none') return;
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.key === 'ArrowLeft') { e.preventDefault(); navigatePrevNext(-1); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); navigatePrevNext(1); }
+    });
+
+    // Swipe gesture in detail view
+    let touchStartX = 0;
+    let touchStartY = 0;
+    detailView.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].clientX;
+        touchStartY = e.changedTouches[0].clientY;
+    }, { passive: true });
+    detailView.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+            dx > 0 ? navigatePrevNext(-1) : navigatePrevNext(1);
+        }
+    }, { passive: true });
+
     const gridViewBtn = document.getElementById('gridViewBtn');
     const listViewBtn = document.getElementById('listViewBtn');
 
@@ -447,9 +476,45 @@ function showMainView() {
     window.scrollTo(0, 0);
 }
 
+// ===== Prev/Next Navigation =====
+function navigatePrevNext(direction) {
+    const currentName = state.currentShip?.name;
+    if (!currentName) return;
+
+    const index = state.filteredData.findIndex(s => s.name === currentName);
+    if (index === -1) return;
+
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= state.filteredData.length) return;
+
+    navigateToDetail(state.filteredData[newIndex].name);
+}
+
+function updateNavButtons() {
+    const prevBtn = document.getElementById('prevShipBtn');
+    const nextBtn = document.getElementById('nextShipBtn');
+    const counter = document.getElementById('detailNavCounter');
+    if (!prevBtn || !nextBtn) return;
+
+    const index = state.filteredData.findIndex(s => s.name === state.currentShip?.name);
+
+    if (index === -1) {
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        if (counter) counter.textContent = '';
+        return;
+    }
+
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === state.filteredData.length - 1;
+    if (counter) counter.textContent = `${index + 1} / ${state.filteredData.length}`;
+}
+
 // Store callbacks on state for sub-modules
 state.showMainView = showMainView;
 state.navigateToDetail = navigateToDetail;
+state.navigatePrevNext = navigatePrevNext;
+state.updateNavButtons = updateNavButtons;
 
 // ===== Window Globals for inline onclick handlers =====
 window.showMapsModal = showMapsModal;

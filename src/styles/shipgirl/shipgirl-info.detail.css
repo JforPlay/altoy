@@ -21,6 +21,18 @@
   margin-bottom: 0.9375rem;
 }
 
+/* Spacer pushes nav buttons to the right */
+.detail-nav-spacer {
+  flex: 1;
+}
+
+.detail-nav-counter {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  align-self: center;
+}
+
 /* Back button and navigation buttons */
 .back-button {
   background: var(--surface-elevated);
@@ -43,7 +55,7 @@
   font-size: 1.5rem;
 }
 
-.back-button:hover {
+.back-button:hover:not(:disabled) {
   background: var(--bg-gradient-start);
   border-color: #b8b8b8;
   transform: translateY(-2px);
@@ -56,10 +68,17 @@ body.dark-mode .back-button {
   border-color: #4a4a4a;
 }
 
-body.dark-mode .back-button:hover {
+body.dark-mode .back-button:hover:not(:disabled) {
   background: #4a4a4a;
   border-color: #5a5a5a;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.back-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .detail-header {

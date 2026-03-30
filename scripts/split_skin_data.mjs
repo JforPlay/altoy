@@ -50,13 +50,17 @@ let totalCharSize = 0;
 for (const [charName, skins] of Object.entries(characterGroups)) {
     const hash = nameToHash(charName);
 
-    // Index entry: lightweight metadata
+    // Index entry: lightweight metadata + filter fields for random skin feature
     index.characters[charName] = {
         hash,
         skinCount: skins.length,
         skins: skins.map(s => ({
             name: s['한글 함순이 + 스킨 이름'] || '',
-            clientId: s['클뜯 id'] || ''
+            clientId: s['클뜯 id'] || '',
+            rarity: s['레어도'] || '',
+            type: s['스킨 타입 - 한글'] || '',
+            tag: s['스킨 태그'] || '',
+            nation: s['진영'] || ''
         }))
     };
 
