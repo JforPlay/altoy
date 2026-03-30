@@ -7,7 +7,7 @@
  * aggregates skin metadata for each shipgirl.
  */
 
-import { fetchJSON, fetchJSONWithCache, DATA_VERSION, normalizeRomanNumerals } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, normalizeRomanNumerals } from '../utils.js';
 
 // ============================================
 // CONSTANTS
@@ -55,7 +55,7 @@ export async function loadAllData() {
         shipTypeData,
         attrTypeData,
     ] = await Promise.all([
-        fetchJSONWithCache(`data/ship_info_data.json?v=${DATA_VERSION}`),
+        fetchJSONWithCache('data/ship_info_data.json'),
         fetchJSON('data/skin/skin_voiceline_data_subset.json'),
         fetchJSON('data/skin/skin_release_dates.json'),
         fetchJSON('data/mapping/nationality_mapping.json'),

@@ -3,7 +3,7 @@
  * Handles data loading functions and skill/attribute utility functions
  */
 
-import { fetchJSON, fetchJSONWithCache, DATA_VERSION } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache } from '../utils.js';
 
 'use strict';
 
@@ -29,7 +29,7 @@ export async function loadData() {
 export async function loadFullData() {
     try {
         console.log("Starting background load of full ship data...");
-        state.fullShipData = await fetchJSONWithCache(`data/ship_info_data.json?v=${DATA_VERSION}`);
+        state.fullShipData = await fetchJSONWithCache('data/ship_info_data.json');
         console.log("Full ship data loaded successfully.");
         return state.fullShipData;
     } catch (error) {

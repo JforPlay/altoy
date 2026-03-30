@@ -1,5 +1,5 @@
 import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex,
-    openModal, closeModal, setupModal, showToast, getStorageItem, setStorageItem, IMG_FALLBACKS, DATA_VERSION } from '../utils.js';
+    openModal, closeModal, setupModal, showToast, getStorageItem, setStorageItem, IMG_FALLBACKS } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // === DOM ELEMENT REFERENCES ===
@@ -908,7 +908,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showLoadingState();
 
     Promise.all([
-        fetchJSONWithCache(`data/skin/skin_voiceline_data_subset.json?v=${DATA_VERSION}`),
+        fetchJSONWithCache('data/skin/skin_voiceline_data_subset.json'),
         fetchJSONWithCache('data/skin/skin_release_dates.json').catch(() => ({}))
     ])
         .then(([skinJson, releaseDateJson]) => {

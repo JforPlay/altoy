@@ -1,4 +1,4 @@
-import { fetchJSON, fetchJSONWithCache, DATA_VERSION } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache } from '../utils.js';
 
 let state;
 
@@ -50,7 +50,7 @@ export async function loadLiteData() {
 export async function loadFullData() {
     try {
         state.fullData = await fetchJSONWithCache(
-            `data/maps/map_data_full.json?v=${DATA_VERSION}`,
+            'data/maps/map_data_full.json',
             { maxAge: 86400000 }
         );
 
@@ -78,7 +78,7 @@ export async function loadEnemyStats() {
     if (state.enemyStats) return state.enemyStats;
     try {
         state.enemyStats = await fetchJSONWithCache(
-            `data/maps/enemy_data_statistics.json?v=${DATA_VERSION}`,
+            'data/maps/enemy_data_statistics.json',
             { maxAge: 86400000 }
         );
         return state.enemyStats;

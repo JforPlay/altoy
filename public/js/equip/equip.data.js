@@ -3,7 +3,7 @@
  * Handles data loading and helper functions for equipment data
  */
 
-import { fetchJSON, fetchJSONWithCache, DATA_VERSION } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache } from '../utils.js';
 
 // State reference (set via setup)
 let state;
@@ -21,7 +21,7 @@ export async function loadLiteData() {
 
 export async function loadFullData() {
     try {
-        state.fullEquipData = await fetchJSONWithCache(`data/equip/equip_data_full.json?v=${DATA_VERSION}`, { maxAge: 86400000 });
+        state.fullEquipData = await fetchJSONWithCache('data/equip/equip_data_full.json', { maxAge: 86400000 });
         return state.fullEquipData;
     } catch (error) {
         console.warn('Failed to load full equipment data:', error);

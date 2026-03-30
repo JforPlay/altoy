@@ -5,9 +5,9 @@
 /**
  * Centralized data version for IndexedDB cache invalidation.
  * Bump this when ANY data file changes to force fresh fetches.
- * Used by fetchJSONWithCache via ?v=DATA_VERSION query param.
+ * Used by fetchJSONWithCache — when this changes, the entire IndexedDB cache is cleared on next page load.
  */
-const DATA_VERSION = '1.3.0';
+const DATA_VERSION = '1.0.0';
 
 /**
  * Debounce function to limit the rate at which a function can fire.
@@ -355,9 +355,28 @@ const CacheDB = {
 };
 
 /**
+ * One-time check: if DATA_VERSION changed since last visit, clear all cached data.
+ * This guarantees users always get fresh data after a deploy that bumps the version.
+ */
+let _cacheVersionChecked = false;
+async function _ensureCacheVersion() {
+    if (_cacheVersionChecked) return;
+    _cacheVersionChecked = true;
+    try {
+        const key = '__data_version__';
+        const cached = await CacheDB.get(key);
+        if (!cached || cached.data !== DATA_VERSION) {
+            await CacheDB.clear();
+            await CacheDB.put(key, DATA_VERSION);
+        }
+    } catch (e) { /* IndexedDB unavailable, skip */ }
+}
+
+/**
  * Fetch JSON with IndexedDB caching.
  * On first load, fetches from network and stores in IndexedDB.
  * On subsequent loads, returns cached data if within maxAge.
+ * Automatically clears all cached data when DATA_VERSION changes.
  *
  * @param {string} url - The URL to fetch (relative or absolute)
  * @param {Object} [options] - Cache options
@@ -367,6 +386,9 @@ const CacheDB = {
  */
 async function fetchJSONWithCache(url, options = {}) {
     const { maxAge = 24 * 60 * 60 * 1000, forceRefresh = false } = options;
+
+    // Clear stale cache if DATA_VERSION changed (runs once per page load)
+    await _ensureCacheVersion();
 
     // Resolve the URL for consistent cache keys
     let cacheKey = url;
