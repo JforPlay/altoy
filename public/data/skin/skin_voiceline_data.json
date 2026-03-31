@@ -248965,16 +248965,46 @@
         "메인10_ex":null,
         "ASMR 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/502122\/painting.png",
         "ASMR 음성":[
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_001.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_002.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_003.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_004.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_005.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_006.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_007.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_008.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_009.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_010.ogg"
+            {
+                "voiceline":"지금 얼굴은… 별로 보여주고 싶지 않은데…… 어머? 그래도 보고 싶다고? ……그럼, 이 정도로… 조금은 만족해 줄래?",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_001.ogg"
+            },
+            {
+                "voiceline":"왜 그래? 머리를 풀어 내린 모습이 좋아? 아니면…… 다른 생각이라도 있어?",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_002.ogg"
+            },
+            {
+                "voiceline":"왜 그렇게 빤히…… 내게 남긴 흔적이라도 찾는 중이야? 후후 후♥",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_003.ogg"
+            },
+            {
+                "voiceline":"흐음, 그 손가락은…… 킁킁… 그렇구나. 이 향기가…… 그렇게 푹 빠질 만큼 매력적이야?",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_004.ogg"
+            },
+            {
+                "voiceline":"아직 피로가 남았어? 그럼 이쪽으로 와. 자, 더 가까이…… 후후, 방금 뿌린 향수, 꽤 괜찮지?",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_005.ogg"
+            },
+            {
+                "voiceline":"음?! 방금 걸로는 모자랐던 모양이네…… 뭐…… 지금 바로 떠올리게 해 줄게……",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_006.ogg"
+            },
+            {
+                "voiceline":"후후, 벌써 이미 몇 번이나 함께 했는데…… 사람의 약점을 찾는 게 점점 능숙해져가네♡",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_007.ogg"
+            },
+            {
+                "voiceline":"엉망으로 만들고 싶은 건 침구야? 아니면 이 머리카락……? 하나만 골라 봐. 아직 시간은 있으니… 나중에 같이 정리하면 돼.",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_008.ogg"
+            },
+            {
+                "voiceline":"어머, 이건…… 후후후, 엉망으로 만들었으니…… 그 대가는 톡톡히 치러야지♡",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_009.ogg"
+            },
+            {
+                "voiceline":"자, 이건 당신에게 달라붙는 내 향기야. 오늘은 어딜 가든, 이 순간과…… 나를 떠올리게 될 거야.",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/502122\/asmr_010.ogg"
+            }
         ],
         "메인7":null,
         "스킨 타입 - 한글":"이스트 글림 스타일",
@@ -287819,16 +287849,46 @@
         "메인10_ex":null,
         "ASMR 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/802033\/painting.png",
         "ASMR 음성":[
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_001.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_002.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_003.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_004.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_005.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_006.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_007.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_008.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_009.ogg",
-            "https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_010.ogg"
+            {
+                "voiceline":"손님, 눈을 뜨셨나요? 방금 최면 마법, 꽤 괜찮았지? 다음은…… 오후에만 즐길 수 있는 특제 우유는 어때?",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_001.ogg"
+            },
+            {
+                "voiceline":"지휘관, 지휘관~ 일어나야지. 낮잠 시간이 끝났다구~ ……다음은 마법 메이드와의 꽁냥꽁냥 시간이야♪ 우유랑 푸딩 중에 어떤 게 먼저 먹고 싶어?",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_002.ogg"
+            },
+            {
+                "voiceline":"정신이 들어? 아니면 조금 더… 내 곁에서 코~ 자고 싶은 거야?",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_003.ogg"
+            },
+            {
+                "voiceline":"조금 더 가까이 와~ 봐, 푸딩 냄새도 달콤해서 행복해지잖아? ……응? 우유? 그건 내가 다 마셔버렸어♪",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_004.ogg"
+            },
+            {
+                "voiceline":"사실 마법 서비스가 몇 개 더 있어. 예를 들면…… 방금 막 눈을 뜬 지휘관에게 한번 더 마법을 걸어서 잠들게 한다든가~♪",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_005.ogg"
+            },
+            {
+                "voiceline":"메뉴에 있는 서비스는 뻔한 것밖에 없지만, 그래도 안심해. 마법 메이드의 특별 서비스로 반드시 지휘관을 더 편안하게 해주고 말 테니까~",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_006.ogg"
+            },
+            {
+                "voiceline":"다음은 더 기분 좋게 만들어 줄 수 있는 서비스야~ 아, 나도 참… 피부가 좀 거칠어졌네…… 그래서 말인데, 손님… 만약 괜찮으면…… 이대로 함께 해도 될까?",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_007.ogg"
+            },
+            {
+                "voiceline":"우후후, 마법 메이드의 서비스… 만족했어?",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_008.ogg"
+            },
+            {
+                "voiceline":"꺅…… 저기, 손님…… 마법 메이드에게 손을 대다니… 그만한 값을 치러야 할 거야♪",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_009.ogg"
+            },
+            {
+                "voiceline":"손님, 우선은 내 옆에 누워…… 응, 푸딩의 식감을 느껴~ 자, 아~ 해…… 쪽. 행복해♪ 마법 메이드의 특별 서비스는 이제부터가 진짜 시작이야.",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/audio\/voiceline\/802033\/asmr_010.ogg"
+            }
         ],
         "메인7":null,
         "스킨 타입 - 한글":"메이드 타임",
