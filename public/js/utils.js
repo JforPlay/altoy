@@ -7,7 +7,7 @@
  * Bump this when ANY data file changes to force fresh fetches.
  * Used by fetchJSONWithCache — when this changes, the entire IndexedDB cache is cleared on next page load.
  */
-const DATA_VERSION = '1.1.0';
+const DATA_VERSION = '1.1.1';
 
 /**
  * Debounce function to limit the rate at which a function can fire.
@@ -411,12 +411,8 @@ async function fetchJSONWithCache(url, options = {}) {
     // Fetch from network
     const data = await fetchJSON(url);
 
-    // Store in cache (fire-and-forget)
-    try {
-        await CacheDB.put(cacheKey, data);
-    } catch (e) {
-        // Cache write failed, not critical
-    }
+    // Store in cache (fire-and-forget — no await so we return data immediately)
+    CacheDB.put(cacheKey, data).catch(() => {});
 
     return data;
 }
