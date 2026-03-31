@@ -14,8 +14,8 @@ import {
     loadNationalityData, loadShipTypeData, loadEquipCodeData,
     loadWeaponPropertyData, loadBulletTemplateData, loadSkillData, loadWeaponNameData, loadAircraftTemplateData,
     loadUpgradeTemplateData, isInUpgradeTree,
-    getEquipIconUrl, getRarityBgUrl, getUniqueTypes, getUniqueNationalities, getUniqueLabels,
-    getFullEquipData
+    getEquipIconUrl, getRarityBgUrl, getSPWeaponIconUrl, getUniqueTypes, getUniqueNationalities, getUniqueLabels,
+    getFullEquipData, getSkillData, loadSPWeaponData, normalizeSPWeapons, getSPWeaponRawData
 } from './equip.data.js';
 import {
     setup as setupDetail,
@@ -118,7 +118,15 @@ async function init() {
             loadNationalityData(),
             loadShipTypeData(),
             loadEquipCodeData(),
+            loadSPWeaponData(),
         ]);
+
+        // Merge normalized SP weapons into equip data
+        const spWeapons = normalizeSPWeapons();
+        if (spWeapons.length > 0) {
+            state.equipData.push(...spWeapons);
+            state.filteredData = [...state.equipData];
+        }
 
         // Start loading full data and reference data in background
         state.fullEquipDataPromise = loadFullData();
@@ -300,11 +308,12 @@ function renderEquipGrid() {
             const card = document.createElement('div');
             card.className = `equip-card rarity-${equip.rarity}`;
             card.dataset.equipId = equip.id;
+            if (equip._isSPWeapon) card.dataset.spWeapon = '1';
             if (equip.compare_group != null) {
                 card.dataset.compareGroup = equip.compare_group;
             }
 
-            const iconUrl = getEquipIconUrl(equip.icon);
+            const iconUrl = equip._isSPWeapon ? getSPWeaponIconUrl(equip.icon) : getEquipIconUrl(equip.icon);
             const bgUrl = getRarityBgUrl(equip.rarity);
             const statsHtml = (equip.max_attrs || []).map(attr =>
                 `<span class="equip-stat-item">
@@ -329,7 +338,13 @@ function renderEquipGrid() {
                 </div>
             `;
 
-            card.addEventListener('click', () => onCardClick(equip.id));
+            card.addEventListener('click', () => {
+                if (equip._isSPWeapon) {
+                    openSPWeaponDetail(equip._spId);
+                } else {
+                    onCardClick(equip.id);
+                }
+            });
             grid.appendChild(card);
         }
 
@@ -384,6 +399,125 @@ async function openDetailPanel(equipId) {
     detailBackdrop.classList.add('visible');
     document.body.style.overflow = 'hidden';
 }
+
+function openSPWeaponDetail(spId) {
+    const spWeapon = getSPWeaponRawData(spId);
+    if (!spWeapon) return;
+
+    const panelContent = document.getElementById('detailPanelContent');
+    if (!panelContent) return;
+
+    const SP_ATTR_NAMES = {
+        cannon: '포격', torpedo: '뇌장', antiaircraft: '대공', air: '항공',
+        reload: '장전', hit: '명중', dodge: '기동', durability: '내구',
+        speed: '속력', luck: '행운', antisub: '대잠',
+    };
+    const SP_RARITY_NAMES = { 2: 'R', 3: 'SR', 4: 'SSR' };
+
+    const iconUrl = getSPWeaponIconUrl(spWeapon.icon);
+    const maxLvl = spWeapon.levels ? spWeapon.levels[spWeapon.levels.length - 1] : null;
+    const attr1Name = SP_ATTR_NAMES[spWeapon.attr_1] || spWeapon.attr_1;
+    const attr2Name = SP_ATTR_NAMES[spWeapon.attr_2] || spWeapon.attr_2;
+    const rarityName = SP_RARITY_NAMES[spWeapon.rarity] || '';
+    const uniqueLabel = spWeapon.unique ? '전용' : '범용';
+
+    // Level progression table
+    let levelsHTML = '';
+    if (spWeapon.levels && spWeapon.levels.length > 1) {
+        const rows = spWeapon.levels.map((lvl, i) =>
+            `<tr><td>+${i}</td><td>${lvl.v1}</td><td>${lvl.v2}</td></tr>`
+        ).join('');
+        levelsHTML = `
+            <div class="stats-section">
+                <div class="stats-section-title">
+                    <span class="material-symbols-outlined">upgrade</span>
+                    강화 단계
+                </div>
+                <table class="stats-table">
+                    <thead><tr><th>단계</th><th>${attr1Name}</th><th>${attr2Name}</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>`;
+    }
+
+    // Skill info (unique SP weapons have skill_upgrade)
+    let skillHTML = '';
+    if (spWeapon.skill_upgrade && spWeapon.skill_upgrade.length > 0) {
+        const skillRows = [];
+        for (const [origId, upgId] of spWeapon.skill_upgrade) {
+            if (origId && origId !== 0) {
+                const origSkill = getSkillData(origId);
+                const upgSkill = getSkillData(upgId);
+                if (origSkill || upgSkill) {
+                    skillRows.push(`<tr><th>${origSkill?.name || `스킬 ${origId}`}</th><td>→ ${upgSkill?.name || `스킬 ${upgId}`}</td></tr>`);
+                }
+            } else if (upgId) {
+                const skill = getSkillData(upgId);
+                if (skill) {
+                    const desc = skill.desc ? `<div class="sp-skill-desc">${skill.desc}</div>` : '';
+                    skillRows.push(`<tr><th>${skill.name}</th><td>추가 스킬${desc ? '' : ''}</td></tr>`);
+                    if (desc) skillRows.push(`<tr><td colspan="2" style="font-size:0.8rem;color:var(--text-secondary);padding:4px 8px;">${skill.desc}</td></tr>`);
+                }
+            }
+        }
+        if (skillRows.length > 0) {
+            skillHTML = `
+                <div class="stats-section">
+                    <div class="stats-section-title">
+                        <span class="material-symbols-outlined">auto_awesome</span>
+                        스킬
+                    </div>
+                    <table class="stats-table"><tbody>${skillRows.join('')}</tbody></table>
+                </div>`;
+        }
+    }
+
+    const detailBgUrl = getRarityBgUrl(SP_RARITY_TO_EQUIP_CLASS[spWeapon.rarity] || 3);
+
+    let html = `
+        <div class="panel-detail-top">
+            <div class="panel-detail-icon-wrapper">
+                <canvas id="detailIconCanvas" width="256" height="256" style="display:none"></canvas>
+                <img class="equip-icon-bg-img" src="${detailBgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:8px;">
+                ${iconUrl ? `<img src="${iconUrl}" alt="${spWeapon.name}" style="position:absolute;top:8%;left:8%;width:84%;height:84%;object-fit:contain;">` : ''}
+            </div>
+            <div class="panel-detail-name">${spWeapon.name}</div>
+            <div class="panel-detail-meta">
+                <span class="equip-type-badge">특수 장비</span>
+                <span class="equip-rarity-badge rarity-${SP_RARITY_TO_EQUIP_CLASS[spWeapon.rarity] || ''}">${rarityName}</span>
+                <span class="equip-type-badge">${uniqueLabel}</span>
+            </div>
+        </div>
+        <div class="stats-section">
+            <div class="stats-section-title">
+                <span class="material-symbols-outlined">bar_chart</span>
+                스탯 (최대 강화)
+            </div>
+            <table class="stats-table">
+                <tbody>
+                    <tr><th>${attr1Name}</th><td>${maxLvl ? maxLvl.v1 : '-'}</td></tr>
+                    <tr><th>${attr2Name}</th><td>${maxLvl ? maxLvl.v2 : '-'}</td></tr>
+                </tbody>
+            </table>
+        </div>
+        ${skillHTML}
+        ${levelsHTML}
+    `;
+
+    panelContent.innerHTML = html;
+
+    // Hide research link
+    const researchLink = document.getElementById('detailResearchLink');
+    if (researchLink) researchLink.style.display = 'none';
+
+    // Show panel
+    detailPanel.classList.add('open');
+    detailBackdrop.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+}
+
+/** SP rarity → CSS class suffix for rarity badge */
+const SP_RARITY_TO_EQUIP_CLASS = { 2: 3, 3: 4, 4: 5 };
 
 function closeDetailPanel() {
     detailPanel.classList.remove('open');

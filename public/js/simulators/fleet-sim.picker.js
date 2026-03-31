@@ -668,8 +668,12 @@ function _renderEquipGrid() {
         // SP weapons use different icon URL
         if (equip._isSPWeapon) {
             const iconUrl = getSPWeaponIconUrl(equip.icon);
+            const spBgUrl = getRarityBgUrl(equip.rarity + 1);
             div.innerHTML = `
-                ${iconUrl ? `<img class="picker-item-icon" src="${iconUrl}" alt="${equip.name}" loading="lazy" />` : ''}
+                <div class="equip-icon-wrapper">
+                    <img class="equip-icon-bg" src="${spBgUrl}" alt="" loading="lazy" />
+                    ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${equip.name}" loading="lazy" />` : ''}
+                </div>
                 <span class="picker-item-name">${equip.name}</span>
             `;
         } else {

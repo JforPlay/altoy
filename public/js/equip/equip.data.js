@@ -121,11 +121,18 @@ export function isInUpgradeTree(equipId) {
 // ===== Helper Functions =====
 
 const EQUIP_BASE_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips';
+const SP_WEAPON_BASE_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/spweapon';
 
 /** Get equipment icon URL from icon ID */
 export function getEquipIconUrl(iconId) {
     if (!iconId || iconId === '1') return '';
     return `${EQUIP_BASE_URL}/${iconId}.webp`;
+}
+
+/** Get SP weapon icon URL */
+export function getSPWeaponIconUrl(iconId) {
+    if (!iconId) return '';
+    return `${SP_WEAPON_BASE_URL}/${iconId}.webp`;
 }
 
 /** Get rarity background image URL (N=1, R=2, SR=3, SSR=4, UR=5) */
@@ -240,6 +247,88 @@ export function getWeaponName(weaponId) {
 export function getSkillData(skillId) {
     if (!state.skillData) return null;
     return state.skillData[String(skillId)] || null;
+}
+
+// ===== SP Weapon Data =====
+
+/** SP weapon rarity is shifted: 2=R, 3=SR, 4=SSR */
+const SP_RARITY_TO_EQUIP = { 2: 3, 3: 4, 4: 5 };
+const SP_RARITY_NAMES = { 2: 'R', 3: 'SR', 4: 'SSR' };
+
+/** SP weapon type → display name mapping */
+const SP_TYPE_NAMES = {
+    1: '듀얼 소드/해머', 2: '철검', 3: '크로스보우', 4: '대검', 5: '랜스/쿠나이',
+    6: '지휘도/보건', 7: '헌팅 보우/셉터', 8: '단검/쿠나이', 9: '특수(순양)', 10: '특수(풍범)',
+};
+
+/** Attr key → Korean display name */
+const SP_ATTR_NAMES = {
+    cannon: '포격', torpedo: '뇌장', antiaircraft: '대공', air: '항공',
+    reload: '장전', hit: '명중', dodge: '기동', durability: '내구',
+    speed: '속력', luck: '행운', antisub: '대잠',
+};
+
+export async function loadSPWeaponData() {
+    try {
+        state.spWeaponData = await fetchJSONWithCache('data/sim/spweapon_data.json', { maxAge: 86400000 });
+        return state.spWeaponData;
+    } catch (error) {
+        console.warn('Failed to load SP weapon data:', error);
+    }
+    return null;
+}
+
+/**
+ * Normalize SP weapons to equip-lite format for unified grid rendering.
+ * Uses type offset 900+ to avoid collision with regular equip types.
+ * Only includes base entries (unique=0 for generic, unique>0 for dedicated).
+ */
+export function normalizeSPWeapons() {
+    if (!state.spWeaponData || !state.spWeaponData.weapons) return [];
+
+    const weapons = state.spWeaponData.weapons;
+    const result = [];
+
+    for (const [id, w] of Object.entries(weapons)) {
+        const mappedRarity = SP_RARITY_TO_EQUIP[w.rarity] || w.rarity;
+        const maxLevel = w.levels ? w.levels[w.levels.length - 1] : null;
+        const maxAttrs = [];
+        if (maxLevel) {
+            if (w.attr_1 && maxLevel.v1) maxAttrs.push({ name: SP_ATTR_NAMES[w.attr_1] || w.attr_1, value: maxLevel.v1 });
+            if (w.attr_2 && maxLevel.v2) maxAttrs.push({ name: SP_ATTR_NAMES[w.attr_2] || w.attr_2, value: maxLevel.v2 });
+        }
+
+        const typeName = SP_TYPE_NAMES[w.type] || `SP타입${w.type}`;
+        const uniqueLabel = w.unique ? ' (전용)' : '';
+
+        result.push({
+            id: `sp_${id}`,
+            _spId: id,
+            _isSPWeapon: true,
+            name: w.name + uniqueLabel,
+            icon: w.icon,
+            type: 900 + w.type,
+            type_name: '특수 장비',
+            type_name2: `특수 장비 — ${typeName}`,
+            rarity: mappedRarity,
+            rarity_name: SP_RARITY_NAMES[w.rarity] || '',
+            nationality: 0,
+            nation_name: '',
+            nation_code: '',
+            level_count: w.levels ? w.levels.length : 1,
+            max_attrs: maxAttrs,
+            label: [],
+            unique: w.unique || 0,
+        });
+    }
+
+    return result;
+}
+
+/** Get raw SP weapon data by original ID */
+export function getSPWeaponRawData(spId) {
+    if (!state.spWeaponData || !state.spWeaponData.weapons) return null;
+    return state.spWeaponData.weapons[String(spId)] || null;
 }
 
 /** Replace <[CODE]> patterns in text using equip_data_code.json mapping */

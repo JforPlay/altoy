@@ -364,6 +364,7 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
         const spWeapon = _getSPWeaponDataById(spConfig.id);
         if (spWeapon) {
             const iconUrl = getSPWeaponIconUrl(spWeapon.icon);
+            const bgUrl = getRarityBgUrl(spWeapon.rarity + 1);
             return `
                 <div class="equip-slot equipped sp-slot"
                      data-action="change-sp-weapon"
@@ -372,7 +373,10 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
                      title="${spWeapon.name}">
                     <span class="equip-slot-label">특수 장비</span>
                     <div class="equip-slot-icon-box">
-                        ${iconUrl ? `<img class="equip-slot-icon" src="${iconUrl}" alt="${spWeapon.name}" loading="lazy" />` : ''}
+                        <div class="equip-icon-wrapper">
+                            <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
+                            ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${spWeapon.name}" loading="lazy" />` : ''}
+                        </div>
                         <span class="equip-enhance-badge"
                               data-action="change-sp-level"
                               data-slot="${slotIndex}">+${spConfig.level || 1}</span>
@@ -387,12 +391,17 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
         const iconUrl = dedicated ? getSPWeaponIconUrl(dedicated.icon) :
                          ship.sp_weapon.icon ? getSPWeaponIconUrl(ship.sp_weapon.icon) : '';
         const name = dedicated ? dedicated.name : (ship.sp_weapon.name || 'SP 무기');
+        const spRarity = dedicated ? dedicated.rarity : 4;
+        const bgUrl = getRarityBgUrl(spRarity + 1);
 
         return `
-            <div class="equip-slot equipped sp-slot sp-dedicated" data-equip-rarity="ur" title="${name} (전용)">
+            <div class="equip-slot equipped sp-slot sp-dedicated" data-equip-rarity="${SP_RARITY_MAP[spRarity] || 'ssr'}" title="${name} (전용)">
                 <span class="equip-slot-label">전용 무기</span>
                 <div class="equip-slot-icon-box">
-                    ${iconUrl ? `<img class="equip-slot-icon" src="${iconUrl}" alt="${name}" loading="lazy" />` : ''}
+                    <div class="equip-icon-wrapper">
+                        <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
+                        ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${name}" loading="lazy" />` : ''}
+                    </div>
                     <span class="equip-enhance-badge">SP</span>
                 </div>
             </div>`;
