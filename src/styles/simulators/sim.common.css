@@ -482,9 +482,20 @@
   margin-bottom: var(--spacing-xs);
 }
 
+.shipgirl-card .ship-class {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
 .shipgirl-card .more-info {
   font-size: 0.8rem;
   color: var(--text-muted);
+}
+
+.class-group-current {
+  border-color: var(--primary-color) !important;
+  background: var(--primary-alpha-10) !important;
 }
 
 /* Skill Info Card */

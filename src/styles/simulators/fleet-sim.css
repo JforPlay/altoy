@@ -1,0 +1,1187 @@
+/* =================================================================
+   FLEET BUILD SIMULATOR — fleet-sim.css
+   Dashboard layout for 6-ship fleet composition with equipment,
+   stats, and reload timings.
+
+   Imports: skin.common.css (design tokens), sim.common.css (shared layout)
+   ================================================================= */
+
+/* ===== HEADER LAYOUT ===== */
+
+.fleet-sim-page .sim-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.fleet-sim-page .header-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* ===== FLEET GRID ===== */
+
+.fleet-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-md);
+}
+
+.fleet-section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.fleet-section-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.fleet-section-header .section-icon {
+  font-size: 1.3rem;
+  color: var(--primary-color);
+}
+
+.ship-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+/* ===== SHIP CARD (BASE) ===== */
+
+.ship-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  overflow: hidden;
+}
+
+.ship-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Rarity-colored top border (applied by JS via data-rarity attribute) */
+.ship-card[data-rarity="ur"]  { border-top: 3px solid var(--rarity-ur); }
+.ship-card[data-rarity="ssr"] { border-top: 3px solid var(--rarity-ssr); }
+.ship-card[data-rarity="sr"]  { border-top: 3px solid var(--rarity-sr); }
+.ship-card[data-rarity="r"]   { border-top: 3px solid var(--rarity-r); }
+.ship-card[data-rarity="n"]   { border-top: 3px solid var(--rarity-n); }
+
+/* ===== EMPTY CARD STATE ===== */
+
+.ship-card--empty {
+  border-style: dashed;
+  min-height: 200px;
+}
+
+.ship-card-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  padding: var(--spacing-lg);
+  font-family: inherit;
+}
+
+.ship-card-add .material-symbols-outlined {
+  font-size: 2.5rem;
+}
+
+.ship-card-add .add-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.ship-card-add:hover {
+  color: var(--primary-color);
+  background: var(--primary-alpha-10);
+}
+
+/* ===== POPULATED CARD ===== */
+
+/* Ship identity row: portrait + name + type */
+.ship-card-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.ship-portrait {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+}
+
+.ship-identity-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.ship-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ship-type-nation {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Remove/swap button */
+.ship-card-actions {
+  display: flex;
+  gap: 2px;
+}
+
+.ship-card-actions .btn-icon {
+  padding: 4px;
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.ship-card-actions .btn-icon:hover {
+  color: var(--danger-color);
+  background: var(--primary-alpha-10);
+}
+
+.ship-card-actions .btn-icon .material-symbols-outlined {
+  font-size: 18px;
+}
+
+/* ===== LEVEL / AFFINITY ROW ===== */
+
+.ship-config-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: var(--section-bg);
+}
+
+.config-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.config-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Level stepper (Task 3) */
+.level-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-sm);
+  background: var(--input-bg);
+  overflow: hidden;
+}
+
+.level-stepper .stepper-btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: inherit;
+  padding: 0;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.level-stepper .stepper-btn:hover {
+  background: var(--primary-alpha-15);
+  color: var(--primary-color);
+}
+
+.level-stepper .stepper-btn:active {
+  background: var(--primary-alpha-20);
+}
+
+.level-stepper .stepper-value {
+  min-width: 32px;
+  padding: 2px 2px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  cursor: text;
+  border-left: 1px solid var(--surface-border);
+  border-right: 1px solid var(--surface-border);
+  line-height: 1.5;
+}
+
+.level-stepper .stepper-edit {
+  width: 36px;
+  padding: 2px 2px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  border: none;
+  background: var(--primary-alpha-10);
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+
+/* Hide native number spinner */
+.config-input::-webkit-inner-spin-button,
+.config-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.config-input { -moz-appearance: textfield; }
+
+.config-select {
+  padding: 3px 6px;
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color var(--transition-fast);
+}
+
+.config-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* ===== EQUIPMENT SLOTS (3×2 Grid) ===== */
+
+.equip-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+/* Each slot is a vertical stack: label on top, icon below */
+.equip-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  cursor: pointer;
+}
+
+.equip-slot-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.equip-slot-icon-box {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  background: var(--section-bg);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  overflow: hidden;
+}
+
+.equip-slot:hover .equip-slot-icon-box {
+  border-color: var(--primary-color);
+  background: var(--primary-alpha-10);
+}
+
+/* Equipped state: solid border */
+.equip-slot.equipped .equip-slot-icon-box {
+  border-style: solid;
+}
+
+/* Rarity-colored border for equipped items */
+.equip-slot[data-equip-rarity="ur"] .equip-slot-icon-box  { border-color: var(--rarity-ur); }
+.equip-slot[data-equip-rarity="ssr"] .equip-slot-icon-box { border-color: var(--rarity-ssr); }
+.equip-slot[data-equip-rarity="sr"] .equip-slot-icon-box  { border-color: var(--rarity-sr); }
+.equip-slot[data-equip-rarity="r"] .equip-slot-icon-box   { border-color: var(--rarity-r); }
+.equip-slot[data-equip-rarity="n"] .equip-slot-icon-box   { border-color: var(--rarity-n); }
+
+.equip-slot-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Equip icon with rarity background overlay */
+.equip-icon-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.equip-icon-wrapper .equip-icon-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-xs);
+}
+
+.equip-icon-wrapper .equip-icon-fg {
+  position: absolute;
+  top: 8%;
+  left: 8%;
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+}
+
+/* Picker grid equip icon wrapper */
+.picker-item .equip-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.equip-slot-empty {
+  font-size: 1rem;
+  color: var(--text-dim);
+}
+
+.equip-slot-empty .material-symbols-outlined {
+  font-size: 16px;
+}
+
+/* Enhance level badge (bottom-right corner) — Task 2 improved */
+.equip-enhance-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--overlay-intense);
+  color: var(--rarity-ssr);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  line-height: 1.4;
+  border-radius: var(--radius-xs) 0 var(--radius-xs) 0;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  z-index: 2;
+}
+
+.equip-enhance-badge:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+/* Enhance level popover (fixed to body, positioned by JS) */
+.enhance-popover {
+  background: var(--card-bg);
+  border: 1px solid var(--primary-color);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  box-shadow: var(--shadow-lg);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  animation: popoverIn 0.15s ease-out;
+}
+
+.enhance-popover input[type="range"] {
+  width: 80px;
+  height: 4px;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
+.enhance-popover .enhance-level-display {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--rarity-ssr);
+  min-width: 22px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes popoverIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Locked/disabled slot */
+.equip-slot.locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-style: solid;
+  background: var(--surface-border);
+}
+
+.equip-slot.locked:hover {
+  border-color: var(--border-color);
+  background: var(--surface-border);
+}
+
+/* ===== STATS GRID (2×4) ===== */
+
+.ship-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  padding: var(--spacing-xs) var(--spacing-md);
+}
+
+.ship-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px var(--spacing-xs);
+  border-radius: var(--radius-xs);
+}
+
+/* Alternating row stripes in 2-column grid: children 1-2 = row1, 3-4 = row2, etc. */
+.ship-stat-row:nth-child(4n+1),
+.ship-stat-row:nth-child(4n+2) {
+  background: var(--section-bg);
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-value.stat-zero {
+  color: var(--text-dim);
+}
+
+/* Highest stat marker */
+.stat-value.stat-best {
+  color: var(--primary-color);
+}
+
+.stat-best-marker {
+  font-size: 0.6rem;
+  margin-left: 2px;
+  color: var(--warning-color);
+}
+
+/* ===== RELOAD TIME ROW ===== */
+
+.ship-reload-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md) var(--spacing-sm);
+  border-top: 1px solid var(--surface-border);
+  flex-wrap: wrap;
+}
+
+.reload-item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  background: var(--section-bg);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.reload-item .material-symbols-outlined {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.reload-value {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== FLEET SUMMARY ===== */
+
+.fleet-summary {
+  margin-top: var(--spacing-lg);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+
+.fleet-summary-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.fleet-summary-header .material-symbols-outlined {
+  font-size: 1.3rem;
+  color: var(--primary-color);
+}
+
+.fleet-summary-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.fleet-summary-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+}
+
+.summary-panel h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.tech-bonus-list,
+.passive-skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.tech-bonus-item,
+.passive-skill-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--section-bg);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.tech-bonus-value,
+.passive-skill-value {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-left: auto;
+}
+
+.passive-skill-item .skill-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-xs);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* ===== PICKER MODALS (Ship & Equipment) ===== */
+
+.fleet-picker-dialog {
+  width: 90%;
+  max-width: 700px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.picker-search-input {
+  width: 100%;
+  padding: 10px var(--spacing-sm);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 14px;
+  margin-bottom: var(--spacing-sm);
+  transition: border-color var(--transition-fast);
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.picker-search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-alpha-15);
+}
+
+/* Filter section */
+.picker-filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 40px;
+  flex-shrink: 0;
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.filter-chip {
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--section-bg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+.filter-chip:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.filter-chip.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Rarity-colored filter chips */
+.filter-chip[data-rarity="ur"].active  { background: var(--rarity-ur); border-color: var(--rarity-ur); }
+.filter-chip[data-rarity="ssr"].active { background: var(--rarity-ssr); border-color: var(--rarity-ssr); color: var(--rarity-ssr-text); }
+.filter-chip[data-rarity="sr"].active  { background: var(--rarity-sr); border-color: var(--rarity-sr); }
+.filter-chip[data-rarity="r"].active   { background: var(--rarity-r); border-color: var(--rarity-r); }
+.filter-chip[data-rarity="n"].active   { background: var(--rarity-n); border-color: var(--rarity-n); color: var(--rarity-n-text); }
+
+/* Picker item grid */
+.picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: var(--spacing-xs);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  max-height: 50vh;
+  padding-right: var(--spacing-xs);
+
+  /* Custom scrollbar — Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+/* Custom scrollbar — Webkit */
+.picker-grid::-webkit-scrollbar { width: 6px; }
+.picker-grid::-webkit-scrollbar-track { background: transparent; }
+.picker-grid::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+.picker-grid::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+.save-slot-list {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+.save-slot-list::-webkit-scrollbar { width: 6px; }
+.save-slot-list::-webkit-scrollbar-track { background: transparent; }
+.save-slot-list::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.picker-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  background: var(--section-bg);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-align: center;
+  transition: all var(--transition-fast);
+}
+
+.picker-item:hover {
+  border-color: var(--primary-color);
+  background: var(--primary-alpha-10);
+}
+
+.picker-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.picker-item-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Rarity indicator dot on picker items */
+.picker-item[data-rarity="ur"]  { border-left: 3px solid var(--rarity-ur); }
+.picker-item[data-rarity="ssr"] { border-left: 3px solid var(--rarity-ssr); }
+.picker-item[data-rarity="sr"]  { border-left: 3px solid var(--rarity-sr); }
+.picker-item[data-rarity="r"]   { border-left: 3px solid var(--rarity-r); }
+.picker-item[data-rarity="n"]   { border-left: 3px solid var(--rarity-n); }
+
+/* Assigned ship indicator (checkmark overlay) */
+.picker-item.assigned {
+  opacity: 0.55;
+  position: relative;
+}
+
+.picker-item.assigned::after {
+  content: '\e5ca'; /* Material Symbols "check" */
+  font-family: 'Material Symbols Outlined';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 16px;
+  color: var(--success-color);
+  background: var(--overlay-medium);
+  border-radius: var(--radius-full);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Empty state in picker */
+.picker-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--spacing-xl);
+  font-size: 0.85rem;
+}
+
+/* ===== SAVE/LOAD MODAL ===== */
+
+.fleet-save-dialog {
+  width: 90%;
+  max-width: 480px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.save-load-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.save-input-row {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.save-input-row .picker-search-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.save-divider {
+  height: 1px;
+  background: var(--surface-border);
+  margin: var(--spacing-sm) 0;
+}
+
+.save-slot-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.save-slot-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast);
+}
+
+.save-slot-item:hover {
+  border-color: var(--primary-color);
+}
+
+.save-slot-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.save-slot-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.save-slot-date {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.save-slot-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.save-slot-actions button {
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  font-family: inherit;
+}
+
+.save-slot-actions .load-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+.save-slot-actions .delete-btn:hover {
+  background: var(--danger-color);
+  border-color: var(--danger-color);
+  color: #fff;
+}
+
+.save-empty-msg {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--spacing-lg);
+  font-size: 0.85rem;
+}
+
+/* ===== LOADING OVERLAY ===== */
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-heavy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  backdrop-filter: blur(4px);
+}
+
+.loading-overlay.hidden {
+  display: none;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.loading-icon {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  animation: spin 1.2s linear infinite;
+}
+
+.loading-text {
+  font-size: 0.9rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* Tablet: 2 cards per row */
+@media (max-width: 1024px) {
+  .ship-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fleet-summary-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile: 1 card per row, full-screen modals */
+@media (max-width: 640px) {
+  .fleet-sim-page .sim-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .fleet-sim-page .header-actions {
+    width: 100%;
+  }
+
+  .fleet-sim-page .header-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .ship-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .equip-slots-grid {
+    max-width: none;
+  }
+
+  .equip-slot {
+    max-width: 48px;
+  }
+
+  /* Full-screen picker modals on mobile */
+  .fleet-picker-dialog {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
+
+  .picker-grid {
+    max-height: none;
+    flex: 1;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+
+  .fleet-save-dialog {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 90vh;
+  }
+
+  /* Filter chips scroll horizontally on mobile */
+  .filter-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .filter-chip {
+    flex-shrink: 0;
+  }
+}
+
+/* ===== RETROFIT TOGGLE (Task 5) ===== */
+
+.retrofit-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  user-select: none;
+  flex-shrink: 0;
+  padding: 2px 0;
+}
+
+.retrofit-toggle input[type="checkbox"] {
+  display: none;
+}
+
+.retrofit-toggle .toggle-track {
+  width: 28px;
+  height: 14px;
+  background: var(--surface-border);
+  border-radius: 7px;
+  position: relative;
+  transition: background var(--transition-fast);
+}
+
+.retrofit-toggle .toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 10px;
+  height: 10px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+
+.retrofit-toggle input:checked ~ .toggle-track {
+  background: var(--primary-color);
+}
+
+.retrofit-toggle input:checked ~ .toggle-track::after {
+  transform: translateX(14px);
+  background: #fff;
+}
+
+.retrofit-toggle .toggle-label {
+  font-weight: 600;
+  transition: color var(--transition-fast);
+}
+
+.retrofit-toggle input:checked ~ .toggle-label {
+  color: var(--primary-color);
+}
+
+/* ===== SP WEAPON SLOT (Task 1) ===== */
+
+.equip-slot.sp-slot .equip-slot-label {
+  color: var(--rarity-ur);
+  font-weight: 600;
+}
+
+.equip-slot.sp-dedicated .equip-slot-icon-box {
+  border-style: solid;
+  border-color: var(--rarity-ur);
+  cursor: default;
+}
+
+/* ===== DRAG AND DROP (Task 6) ===== */
+
+.ship-card .drag-handle {
+  cursor: grab;
+  color: var(--text-dim);
+  font-size: 16px;
+  transition: color var(--transition-fast);
+  padding: 2px;
+}
+
+.ship-card .drag-handle:hover {
+  color: var(--text-secondary);
+}
+
+.ship-card .drag-handle:active {
+  cursor: grabbing;
+}
+
+.ship-card.dragging {
+  opacity: 0.4;
+  border-style: dashed;
+}
+
+.ship-card.drag-over {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-lg), inset 0 0 0 1px var(--primary-color);
+}
+
+.ship-card--empty.drag-over {
+  border-color: var(--primary-color);
+  background: var(--primary-alpha-10);
+}
+
+/* ===== ANIMATIONS ===== */
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ship-card:not(.ship-card--empty) {
+  animation: cardFadeIn 0.3s ease-out;
+}

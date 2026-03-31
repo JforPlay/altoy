@@ -104,6 +104,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
     </div>
 
+    <!-- Class Group Modal -->
+    <div id="class-group-modal" class="modal-overlay hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog card">
+            <div class="modal-header">
+                <h3 id="class-group-title"></h3>
+                <button class="modal-close-btn btn btn-icon">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div id="class-group-list" class="ship-grid"></div>
+        </div>
+    </div>
+
     <script is:inline src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script is:inline type="module" src={`${base}/js/simulators/sim.engine.oceanbg.js`}></script>
     <script is:inline type="module" src={`${base}/js/simulators/sim.engine.bullet.factory.js`}></script>

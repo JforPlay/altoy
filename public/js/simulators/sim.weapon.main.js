@@ -1,4 +1,4 @@
-import { debounce, getUrlParam, resolveUrl, showElement, hideElement, setupModal, openModal, closeModal } from '../utils.js';
+import { debounce, fetchJSON, getUrlParam, resolveUrl, showElement, hideElement, setupModal, openModal, closeModal } from '../utils.js';
 import { SimulationEngine } from './sim.engine.common.js';
 import { WeaponSimData } from './sim.weapon.data.js';
 import { AircraftEntity } from './sim.engine.aircraft.js';
@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let pendingFireTimers = [];
     let activeAircraft = [];
     let isPaused = false;
+    let classGroupsData = null;
 
     function scheduleFireTimer(fn, delay) {
         const id = setTimeout(() => {
@@ -86,6 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initSpeedControls();
     initPauseButton();
     initShipBrowseModal();
+    setupModal('class-group-modal', { closeOnEscape: true, closeOnBackdrop: true, closeButtonSelector: '.modal-close-btn' });
 
     const skillIdFromUrl = getUrlParam('skill_id');
     if (skillIdFromUrl) {
@@ -372,17 +374,48 @@ document.addEventListener('DOMContentLoaded', async () => {
     function updateShipgirlCard(skill, skillId) {
         const skillWeaponData = weaponSimData.getAllSkills()[skillId];
         const shipName = skillWeaponData?.name || '알 수 없음';
+        const className = skillWeaponData?.class_name;
         const shipyardHtml = skill.shipyard ? `<img src="${skill.shipyard}" alt="" class="shipyard-icon">` : '';
+        const classHtml = className ? `<div class="ship-class">${className}</div>` : '';
 
         shipgirlCard.innerHTML = `
             ${shipyardHtml}
             <div class="ship-name">${shipName}</div>
-            <div class="more-info">클릭하여 함선 정보 보기 →</div>
+            ${classHtml}
+            <div class="more-info">${className ? '클릭하여 동급 함선 보기 →' : '클릭하여 함선 정보 보기 →'}</div>
         `;
-        shipgirlCard.onclick = () => {
-            window.location.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(shipName)}`);
-        };
+        shipgirlCard.onclick = className
+            ? () => openClassGroupModal(className, shipName)
+            : () => { window.location.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(shipName)}`); };
         showElement(shipgirlCard);
+    }
+
+    // --- Class Group Modal ---
+    async function loadClassGroups() {
+        if (!classGroupsData) {
+            classGroupsData = await fetchJSON('data/sim/class_groups.json');
+        }
+        return classGroupsData;
+    }
+
+    async function openClassGroupModal(className, currentShipName) {
+        const groups = await loadClassGroups();
+        const ships = groups?.[className];
+        if (!ships || ships.length === 0) {
+            window.location.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(currentShipName)}`);
+            return;
+        }
+
+        document.getElementById('class-group-title').textContent = className;
+        const container = document.getElementById('class-group-list');
+        container.innerHTML = ships.map(s => {
+            const iconUrl = s.shipyard ? s.shipyard.replace('shipyard.png', 'icon.png') : '';
+            const iconHtml = iconUrl ? `<img src="${iconUrl}" alt="" class="ship-grid-icon" loading="lazy">` : '';
+            const activeClass = s.name === currentShipName ? ' class-group-current' : '';
+            return `<a href="${resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(s.name)}`)}" class="ship-grid-item${activeClass}" target="_blank">${iconHtml}<span>${s.name}</span></a>`;
+        }).join('');
+
+        openModal('class-group-modal');
     }
 
     function updateSkillInfoCard(skill, skillId) {
