@@ -504,7 +504,7 @@ function _renderTechBonuses(techBonuses) {
         techBonusList.innerHTML = `
             <div class="tech-bonus-item">
                 <span>함대 기술 데이터 없음</span>
-                <a href="${basePath}" class="tech-bonus-value" style="text-decoration:underline;">함선 트래커로 이동</a>
+                <a href="${basePath}" class="tech-bonus-value" style="text-decoration:underline;">함순이 육성트래커로 이동</a>
             </div>
         `;
         return;
