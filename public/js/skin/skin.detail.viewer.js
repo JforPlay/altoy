@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         imageGallery: document.getElementById('image-gallery'),
         textContent: document.getElementById('text-content-area'),
         oathTable: document.getElementById('oath-table-area'),
+        asmrTable: document.getElementById('asmr-table-area'),
         skeleton: document.getElementById('loading-skeleton'),
         clearBtn: document.getElementById('clear-filters-btn')
     };
@@ -159,6 +160,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         hideElement(elements.imageGallery);
         hideElement(elements.textContent);
         hideElement(elements.oathTable);
+        hideElement(elements.asmrTable);
         stopCurrentAudio();
     }
 
@@ -199,9 +201,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             hideElement(elements.oathTable);
         }
 
+        // Render ASMR
+        renderAsmrSection(skin);
+
         // Attach listeners
         elements.textContent.addEventListener('click', handlePlayClick);
         elements.oathTable.addEventListener('click', handlePlayClick);
+        elements.asmrTable.addEventListener('click', handlePlayClick);
         attachVolumeListeners();
     }
 
@@ -250,6 +256,50 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         return { normal, oath };
+    }
+
+    function renderAsmrSection(skin) {
+        const asmrVoices = skin['ASMR 음성'];
+        if (!Array.isArray(asmrVoices) || asmrVoices.length === 0) {
+            hideElement(elements.asmrTable);
+            return;
+        }
+
+        let rows = '';
+        asmrVoices.forEach((line, i) => {
+            const label = `ASMR ${String(i + 1).padStart(2, '0')}`;
+            const text = line.voiceline || '';
+            const btn = line.voicelink
+                ? `<button class="play-voice-btn" data-src="${line.voicelink}"><i class="fas fa-play"></i></button>`
+                : `<button class="play-voice-btn" disabled><i class="fas fa-play"></i></button>`;
+            rows += `<tr><td>${label}</td><td><div>${text}${btn}</div></td></tr>`;
+        });
+
+        // ASMR illustration toggle
+        const asmrPainting = skin['ASMR 일러'];
+        const toggleHtml = asmrPainting
+            ? `<button class="asmr-illust-toggle" id="asmr-illust-toggle"><i class="fas fa-image"></i> ASMR 일러스트 보기</button>
+               <div class="asmr-illust-container hidden" id="asmr-illust-container">
+                   <img src="${asmrPainting}" alt="ASMR 일러스트" loading="lazy">
+               </div>`
+            : '';
+
+        const header = `<div class="table-header-with-volume"><span>ASMR 대사</span>${createVolumeControlHtml()}</div>`;
+        elements.asmrTable.innerHTML = `${toggleHtml}<table class="voice-line-table"><thead><tr><th colspan="2">${header}</th></tr></thead><tbody>${rows}</tbody></table>`;
+        showElement(elements.asmrTable);
+
+        // Toggle listener for ASMR illustration
+        const toggleBtn = document.getElementById('asmr-illust-toggle');
+        const container = document.getElementById('asmr-illust-container');
+        if (toggleBtn && container) {
+            toggleBtn.addEventListener('click', () => {
+                const isVisible = !container.classList.contains('hidden');
+                toggleElement(container, !isVisible);
+                toggleBtn.innerHTML = isVisible
+                    ? '<i class="fas fa-image"></i> ASMR 일러스트 보기'
+                    : '<i class="fas fa-image"></i> ASMR 일러스트 숨기기';
+            });
+        }
     }
 
     function updateURLWithFilters() {
