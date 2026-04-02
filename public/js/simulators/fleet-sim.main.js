@@ -21,6 +21,7 @@ import {
     loadAllData,
     getShipByGid,
     getEquipById,
+    getMaxEnhanceLevel,
 } from './fleet-sim.data.js';
 
 import { setup as setupCalc } from './fleet-sim.calc.js';
@@ -447,7 +448,7 @@ function _showEnhancePopover(badge, slotIndex, equipIndex) {
     if (!eq) return;
 
     const equipInfo = getEquipById(eq.id);
-    const maxLevel = (equipInfo?.level_count || 14) - 1;
+    const maxLevel = getMaxEnhanceLevel(equipInfo);
 
     _showLevelPopover(badge, 0, maxLevel, eq.level || 0,
         (val) => { eq.level = val; badge.textContent = `+${val}`; },

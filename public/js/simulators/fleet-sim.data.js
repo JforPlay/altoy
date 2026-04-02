@@ -247,6 +247,23 @@ export function getSlotName(ship, equipIndex) {
     return names.join('/');
 }
 
+// ===== Enhance Level Caps =====
+
+/** Max enhance level per equipment rarity (game-enforced caps) */
+const ENHANCE_CAP = { 2: 3, 3: 6, 4: 11, 5: 13, 6: 13 };
+
+/**
+ * Get the max enhance level for an equipment, capped by rarity.
+ * @param {object} equip - Equipment object with rarity and level_count
+ * @returns {number} Max enhance level (e.g., 13 for SSR)
+ */
+export function getMaxEnhanceLevel(equip) {
+    if (!equip) return 0;
+    const dataMax = (equip.level_count || 1) - 1;
+    const rarityCap = ENHANCE_CAP[equip.rarity] ?? 13;
+    return Math.min(dataMax, rarityCap);
+}
+
 // ===== SP Weapon Lookups =====
 
 let spWeaponById = {};

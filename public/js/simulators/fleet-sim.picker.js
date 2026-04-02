@@ -14,6 +14,7 @@ import {
     getRarityBgUrl,
     getGenericSPWeapons,
     getSPWeaponIconUrl,
+    getMaxEnhanceLevel,
 } from './fleet-sim.data.js';
 
 // ===== State =====
@@ -693,7 +694,7 @@ function _renderEquipGrid() {
         if (equip._isSPWeapon) div.dataset.spWeapon = '1';
 
         // Max enhance level = level_count - 1 (e.g., 14 levels → +13 max)
-        const maxLevel = equip.level_count ? equip.level_count - 1 : 0;
+        const maxLevel = getMaxEnhanceLevel(equip);
         div.dataset.maxLevel = maxLevel;
 
         // SP weapons use different icon URL

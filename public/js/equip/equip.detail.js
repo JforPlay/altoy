@@ -67,7 +67,9 @@ function renderDetail(equip) {
 
     const level = equip.levels[state.currentLevel] || equip.levels[0];
     const iconUrl = getEquipIconUrl(equip.icon);
-    const maxLevel = equip.levels.length;
+    const ENHANCE_CAP = { 2: 3, 3: 6, 4: 11, 5: 13, 6: 13 };
+    const rarityCap = (ENHANCE_CAP[equip.rarity] ?? 13) + 1;
+    const maxLevel = Math.min(equip.levels.length, rarityCap);
 
     let html = `
         <div class="panel-detail-top">
@@ -617,7 +619,9 @@ function updateLevelDisplay(equip) {
 
     const levelDisplay = document.getElementById('levelDisplay');
     if (levelDisplay) {
-        levelDisplay.textContent = `${formatLevel(state.currentLevel)} / +${equip.levels.length - 1}`;
+        const ENHANCE_CAP = { 2: 3, 3: 6, 4: 11, 5: 13, 6: 13 };
+        const capMax = Math.min(equip.levels.length, (ENHANCE_CAP[equip.rarity] ?? 13) + 1) - 1;
+        levelDisplay.textContent = `${formatLevel(state.currentLevel)} / +${capMax}`;
     }
 
     const statsBody = document.getElementById('statsTableBody');
