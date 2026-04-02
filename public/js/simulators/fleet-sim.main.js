@@ -24,7 +24,7 @@ import {
 } from './fleet-sim.data.js';
 
 import { setup as setupCalc } from './fleet-sim.calc.js';
-import { setup as setupUI, renderFleet } from './fleet-sim.ui.js';
+import { setup as setupUI, renderFleet, toggleStats } from './fleet-sim.ui.js';
 import { setup as setupPicker, openShipPicker, openEquipPicker, openSPWeaponPicker } from './fleet-sim.picker.js';
 
 // ===== Constants =====
@@ -172,6 +172,10 @@ function setupEventListeners() {
                 if (slot !== -1) _inlineEditLevel(actionEl, slot);
                 break;
             }
+            case 'toggle-stats': {
+                if (slot !== -1) toggleStats(slot);
+                break;
+            }
         }
     });
 
@@ -313,14 +317,14 @@ function handleEquipSelected(slotIndex, equipIndex, equipId, level) {
     const slotConfig = state.ships[slotIndex];
     if (!slotConfig) return;
     if (!slotConfig.equips) slotConfig.equips = new Array(5).fill(null);
-    slotConfig.equips[equipIndex] = { id: equipId, level };
+    slotConfig.equips[equipIndex] = equipId ? { id: equipId, level } : null;
     renderFleet();
 }
 
 function handleSPWeaponSelected(slotIndex, spWeaponId, maxLevel) {
     const slotConfig = state.ships[slotIndex];
     if (!slotConfig) return;
-    slotConfig.spWeapon = { id: spWeaponId, level: maxLevel };
+    slotConfig.spWeapon = spWeaponId ? { id: spWeaponId, level: maxLevel } : null;
     renderFleet();
 }
 

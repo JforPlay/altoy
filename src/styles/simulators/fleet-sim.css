@@ -24,8 +24,8 @@
 /* ===== FLEET GRID ===== */
 
 .fleet-grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: var(--spacing-lg);
   margin-top: var(--spacing-md);
 }
@@ -50,8 +50,8 @@
 }
 
 .ship-card-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: var(--spacing-md);
 }
 
@@ -121,13 +121,50 @@
 
 /* ===== POPULATED CARD ===== */
 
-/* Ship identity row: portrait + name + type */
+/* Ship identity section: [drag] [portrait] [2-row content] [close] */
 .ship-card-identity {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
   border-bottom: 1px solid var(--surface-border);
+}
+
+.ship-identity-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ship-identity-top,
+.ship-identity-bottom {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.ship-name-group {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.ship-name-group .ship-name {
+  min-width: 0;
+}
+
+.ship-identity-bottom .ship-type-nation {
+  flex: 1;
+  min-width: 0;
+}
+
+.ship-card-identity > .ship-card-actions {
+  align-self: flex-start;
+  flex-shrink: 0;
 }
 
 .ship-portrait {
@@ -138,11 +175,6 @@
   flex-shrink: 0;
   border: 1px solid var(--border-color);
   cursor: pointer;
-}
-
-.ship-identity-text {
-  flex: 1;
-  min-width: 0;
 }
 
 .ship-name {
@@ -184,14 +216,16 @@
   font-size: 18px;
 }
 
-/* ===== LEVEL / AFFINITY ROW ===== */
+/* ===== RELOAD BAR (replaces old config row position) ===== */
 
-.ship-config-row {
+.ship-reload-bar {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
   padding: var(--spacing-xs) var(--spacing-md);
   background: var(--section-bg);
+  flex-wrap: wrap;
+  min-height: 28px;
 }
 
 .config-group {
@@ -277,6 +311,10 @@
 .config-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .config-input { -moz-appearance: textfield; }
 
+.stepper-edit::-webkit-inner-spin-button,
+.stepper-edit::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.stepper-edit { -moz-appearance: textfield; }
+
 .config-select {
   padding: 3px 6px;
   font-size: 0.75rem;
@@ -294,11 +332,11 @@
   border-color: var(--primary-color);
 }
 
-/* ===== EQUIPMENT SLOTS (3×2 Grid) ===== */
+/* ===== EQUIPMENT SLOTS (6×1 Row) ===== */
 
 .equip-slots-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 2px var(--spacing-xs);
   padding: var(--spacing-sm) var(--spacing-md);
 }
@@ -468,6 +506,53 @@
   background: var(--surface-border);
 }
 
+/* ===== STATS TOGGLE ===== */
+
+.stats-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-xs) var(--spacing-md);
+  cursor: pointer;
+  user-select: none;
+  border-top: 1px solid var(--surface-border);
+  transition: background var(--transition-fast);
+}
+
+.stats-toggle:hover {
+  background: var(--primary-alpha-10);
+}
+
+.stats-toggle-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.stats-toggle .material-symbols-outlined {
+  font-size: 18px;
+  color: var(--text-muted);
+  transition: transform var(--transition-fast);
+}
+
+.stats-toggle.collapsed .material-symbols-outlined {
+  transform: rotate(180deg);
+}
+
+.ship-stats-collapsible {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.2s ease;
+}
+
+.ship-stats-collapsible.collapsed {
+  grid-template-rows: 0fr;
+}
+
+.ship-stats-collapsible-inner {
+  overflow: hidden;
+}
+
 /* ===== STATS GRID (2×4) ===== */
 
 .ship-stats-grid {
@@ -519,16 +604,7 @@
   color: var(--warning-color);
 }
 
-/* ===== RELOAD TIME ROW ===== */
-
-.ship-reload-row {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-xs) var(--spacing-md) var(--spacing-sm);
-  border-top: 1px solid var(--surface-border);
-  flex-wrap: wrap;
-}
+/* ===== RELOAD ITEMS (used in .ship-reload-bar) ===== */
 
 .reload-item {
   display: flex;
@@ -536,7 +612,7 @@
   gap: 3px;
   font-size: 0.7rem;
   color: var(--text-secondary);
-  background: var(--section-bg);
+  background: var(--overlay-lightest);
   padding: 2px 6px;
   border-radius: var(--radius-sm);
 }
@@ -826,6 +902,22 @@
   line-height: 1;
 }
 
+/* Unequip option in picker */
+.picker-item-unequip {
+  border: 1px dashed var(--border-color);
+  color: var(--text-muted);
+}
+
+.picker-item-unequip:hover {
+  border-color: var(--danger-color);
+  color: var(--danger-color);
+  background: var(--primary-alpha-10);
+}
+
+.picker-unequip-icon {
+  font-size: 28px;
+}
+
 /* Empty state in picker */
 .picker-empty {
   grid-column: 1 / -1;
@@ -993,10 +1085,10 @@
 
 /* ===== RESPONSIVE ===== */
 
-/* Tablet: 2 cards per row */
+/* Tablet: stack fleet columns */
 @media (max-width: 1024px) {
-  .ship-card-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .fleet-grid {
+    grid-template-columns: 1fr;
   }
 
   .fleet-summary-content {
@@ -1004,7 +1096,7 @@
   }
 }
 
-/* Mobile: 1 card per row, full-screen modals */
+/* Mobile: full-screen modals */
 @media (max-width: 640px) {
   .fleet-sim-page .sim-header {
     flex-direction: column;
@@ -1018,10 +1110,6 @@
   .fleet-sim-page .header-actions .btn {
     flex: 1;
     justify-content: center;
-  }
-
-  .ship-card-grid {
-    grid-template-columns: 1fr;
   }
 
   .equip-slots-grid {

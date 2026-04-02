@@ -24,6 +24,9 @@ let techBonusList = null;
 let passiveSkillList = null;
 let loadingOverlay = null;
 
+/** Track which slots have stats collapsed (persists across re-renders) */
+const statsCollapsed = new Set([0, 1, 2, 3, 4, 5]);
+
 // ===== Constants =====
 
 /** Affinity option labels (value → Korean display) */
@@ -61,6 +64,29 @@ export function setup(stateRef) {
 }
 
 // ===== Public API =====
+
+/**
+ * Toggle stats visibility for a given ship slot.
+ */
+export function toggleStats(slotIndex) {
+    if (statsCollapsed.has(slotIndex)) {
+        statsCollapsed.delete(slotIndex);
+    } else {
+        statsCollapsed.add(slotIndex);
+    }
+
+    // Toggle DOM directly without full re-render
+    const card = cardElements[slotIndex];
+    if (!card) return;
+
+    const toggle = card.querySelector('.stats-toggle');
+    const collapsible = card.querySelector('.ship-stats-collapsible');
+    if (toggle && collapsible) {
+        const isCollapsed = statsCollapsed.has(slotIndex);
+        toggle.classList.toggle('collapsed', isCollapsed);
+        collapsible.classList.toggle('collapsed', isCollapsed);
+    }
+}
 
 /**
  * Full re-render of all 6 ship cards and fleet summary.
@@ -168,12 +194,15 @@ function _renderPopulatedCard(card, slotIndex, ship, slotConfig, calcResult, hig
     const wrapper = document.createElement('div');
 
     // Build all sections as HTML string for efficiency
+    const isCollapsed = statsCollapsed.has(slotIndex);
     const html = [
         _buildIdentityHTML(slotIndex, ship, slotConfig),
-        _buildConfigHTML(slotIndex, slotConfig),
+        _buildReloadBarHTML(calcResult),
         _buildEquipSlotsHTML(slotIndex, ship, slotConfig),
+        _buildStatsToggleHTML(slotIndex, isCollapsed),
+        `<div class="ship-stats-collapsible${isCollapsed ? ' collapsed' : ''}"><div class="ship-stats-collapsible-inner">`,
         _buildStatsHTML(slotIndex, calcResult, highlights),
-        _buildReloadHTML(calcResult),
+        `</div></div>`,
     ].join('');
 
     wrapper.innerHTML = html;
@@ -200,8 +229,10 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
     const shipType = _getShipTypeName(ship.type);
     const shipNation = _getNationalityName(ship.nationality);
     const typeNation = [shipType, shipNation].filter(Boolean).join(' · ');
+    const level = slotConfig.level || 125;
+    const affinity = slotConfig.affinity || 'love';
 
-    // Retrofit toggle (Task 5)
+    // Retrofit toggle
     let retrofitHTML = '';
     if (ship.retrofit) {
         const isRetrofit = slotConfig.retrofit !== false;
@@ -213,6 +244,10 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
             </label>`;
     }
 
+    const affinityOptions = AFFINITY_OPTIONS.map(opt =>
+        `<option value="${opt.value}"${opt.value === affinity ? ' selected' : ''}>${opt.label}</option>`
+    ).join('');
+
     return `
         <div class="ship-card-identity">
             <span class="material-symbols-outlined drag-handle" title="드래그하여 이동">drag_indicator</span>
@@ -222,48 +257,37 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
                  data-action="change-ship"
                  data-slot="${slotIndex}"
                  loading="lazy" />
-            <div class="ship-identity-text">
-                <div class="ship-name" title="${ship.name}">${ship.name}</div>
-                <div class="ship-type-nation">${typeNation}</div>
+            <div class="ship-identity-content">
+                <div class="ship-identity-top">
+                    <div class="ship-name-group">
+                        <div class="ship-name" title="${ship.name}">${ship.name}</div>
+                        ${retrofitHTML}
+                    </div>
+                    <div class="config-group">
+                        <span class="config-label">Lv.</span>
+                        <div class="level-stepper">
+                            <button class="stepper-btn" data-action="step-level" data-slot="${slotIndex}" data-dir="-1">−</button>
+                            <span class="stepper-value" data-action="edit-level" data-slot="${slotIndex}">${level}</span>
+                            <button class="stepper-btn" data-action="step-level" data-slot="${slotIndex}" data-dir="1">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ship-identity-bottom">
+                    <div class="ship-type-nation">${typeNation}</div>
+                    <div class="config-group">
+                        <span class="config-label">호감도</span>
+                        <select class="config-select"
+                                data-action="change-affinity"
+                                data-slot="${slotIndex}">
+                            ${affinityOptions}
+                        </select>
+                    </div>
+                </div>
             </div>
-            ${retrofitHTML}
             <div class="ship-card-actions">
                 <button class="btn-icon" data-action="remove-ship" data-slot="${slotIndex}" title="제거">
                     <span class="material-symbols-outlined">close</span>
                 </button>
-            </div>
-        </div>
-    `;
-}
-
-/**
- * Build config row: level input + affinity select.
- */
-function _buildConfigHTML(slotIndex, slotConfig) {
-    const level = slotConfig.level || 125;
-    const affinity = slotConfig.affinity || 'love';
-
-    const affinityOptions = AFFINITY_OPTIONS.map(opt =>
-        `<option value="${opt.value}"${opt.value === affinity ? ' selected' : ''}>${opt.label}</option>`
-    ).join('');
-
-    return `
-        <div class="ship-config-row">
-            <div class="config-group">
-                <span class="config-label">Lv.</span>
-                <div class="level-stepper">
-                    <button class="stepper-btn" data-action="step-level" data-slot="${slotIndex}" data-dir="-1">−</button>
-                    <span class="stepper-value" data-action="edit-level" data-slot="${slotIndex}">${level}</span>
-                    <button class="stepper-btn" data-action="step-level" data-slot="${slotIndex}" data-dir="1">+</button>
-                </div>
-            </div>
-            <div class="config-group">
-                <span class="config-label">호감도</span>
-                <select class="config-select"
-                        data-action="change-affinity"
-                        data-slot="${slotIndex}">
-                    ${affinityOptions}
-                </select>
             </div>
         </div>
     `;
@@ -427,6 +451,18 @@ function _getSPWeaponDataById(id) {
 }
 
 /**
+ * Build stats toggle button.
+ */
+function _buildStatsToggleHTML(slotIndex, isCollapsed) {
+    return `
+        <div class="stats-toggle${isCollapsed ? ' collapsed' : ''}" data-action="toggle-stats" data-slot="${slotIndex}">
+            <span class="stats-toggle-label">스탯</span>
+            <span class="material-symbols-outlined">expand_less</span>
+        </div>
+    `;
+}
+
+/**
  * Build stats grid: 2-column grid with 8 stats.
  */
 function _buildStatsHTML(slotIndex, calcResult, highlights) {
@@ -456,11 +492,11 @@ function _buildStatsHTML(slotIndex, calcResult, highlights) {
 }
 
 /**
- * Build reload time row.
+ * Build reload time bar (shown in config-row position, not collapsible).
  */
-function _buildReloadHTML(calcResult) {
+function _buildReloadBarHTML(calcResult) {
     if (!calcResult || !calcResult.reloads || calcResult.reloads.length === 0) {
-        return '';
+        return `<div class="ship-reload-bar"></div>`;
     }
 
     const items = calcResult.reloads.map(({ label, seconds }) => `
@@ -471,7 +507,7 @@ function _buildReloadHTML(calcResult) {
         </div>
     `).join('');
 
-    return `<div class="ship-reload-row">${items}</div>`;
+    return `<div class="ship-reload-bar">${items}</div>`;
 }
 
 // ===== Fleet Summary =====

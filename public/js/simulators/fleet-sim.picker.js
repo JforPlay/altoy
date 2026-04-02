@@ -383,6 +383,24 @@ function _setupEventListeners() {
             const item = e.target.closest('.picker-item');
             if (!item) return;
 
+            // Unequip action
+            if (item.dataset.unequip === '1') {
+                if (activeEquipIndex === -1) {
+                    // SP weapon unequip
+                    if (callbacks && callbacks.onSPWeaponSelected) {
+                        callbacks.onSPWeaponSelected(activeSlotIndex, null, 0);
+                    }
+                } else {
+                    if (callbacks && callbacks.onEquipSelected) {
+                        callbacks.onEquipSelected(activeSlotIndex, activeEquipIndex, null, 0);
+                    }
+                }
+                closeModal('equipPickerModal');
+                const header = document.querySelector('#equipPickerModal .modal-header h3');
+                if (header) header.textContent = '장비 선택';
+                return;
+            }
+
             const equipId = Number(item.dataset.equipId);
             if (isNaN(equipId)) return;
 
@@ -652,6 +670,19 @@ function _renderEquipGrid() {
 
     const frag = document.createDocumentFragment();
 
+    // Unequip option: show when the slot already has equipment
+    const hasEquipped = _slotHasEquip(activeSlotIndex, activeEquipIndex);
+    if (hasEquipped) {
+        const unequipDiv = document.createElement('div');
+        unequipDiv.className = 'picker-item picker-item-unequip';
+        unequipDiv.dataset.unequip = '1';
+        unequipDiv.innerHTML = `
+            <span class="material-symbols-outlined picker-unequip-icon">remove_circle_outline</span>
+            <span class="picker-item-name">장착 해제</span>
+        `;
+        frag.appendChild(unequipDiv);
+    }
+
     for (const equip of equips) {
         const div = document.createElement('div');
         const rarityLower = (equip.rarity_name || '').toLowerCase();
@@ -713,4 +744,20 @@ function _getNationalityName(natId) {
     if (!state.nationalityData) return '';
     const natInfo = state.nationalityData[String(natId)];
     return natInfo ? natInfo.name : '';
+}
+
+/**
+ * Check if a given slot already has equipment equipped.
+ * For SP weapons (activeEquipIndex === -1), checks spWeapon.
+ * For regular equips, checks equips[equipIndex].
+ */
+function _slotHasEquip(slotIndex, equipIndex) {
+    const slotConfig = state.ships[slotIndex];
+    if (!slotConfig) return false;
+
+    if (equipIndex === -1) {
+        // SP weapon mode
+        return !!(slotConfig.spWeapon && slotConfig.spWeapon.id);
+    }
+    return !!(slotConfig.equips && slotConfig.equips[equipIndex] && slotConfig.equips[equipIndex].id);
 }
