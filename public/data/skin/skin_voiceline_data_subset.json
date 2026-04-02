@@ -11,7 +11,7 @@
         "레어도":"SR",
         "재화":null,
         "기간":null,
-        "ex_chat_status":0,
+        "ex_chat_status":1,
         "isNew":false
     },
     {
@@ -22,6 +22,21 @@
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/100001\/shipyard.png",
         "ASMR 일러":null,
         "스킨 태그":"X",
+        "진영":"UNIV (bulin)",
+        "레어도":"SR",
+        "재화":null,
+        "기간":null,
+        "ex_chat_status":0,
+        "isNew":false
+    },
+    {
+        "클뜯 id":100002,
+        "함순이 이름":"범용형 부린",
+        "한글 함순이 + 스킨 이름":"변신! 마법소녀★푸린",
+        "스킨 타입 - 한글":"동화 속 세계",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/100002\/shipyard.png",
+        "ASMR 일러":null,
+        "스킨 태그":"배경",
         "진영":"UNIV (bulin)",
         "레어도":"SR",
         "재화":null,
@@ -5605,7 +5620,7 @@
         "진영":"USS",
         "레어도":"SSR",
         "재화":980.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -9805,7 +9820,7 @@
         "진영":"HMS",
         "레어도":"SR",
         "재화":880.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -10285,7 +10300,7 @@
         "진영":"HMS",
         "레어도":"SSR",
         "재화":880.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -26380,7 +26395,7 @@
         "진영":"RN",
         "레어도":"SSR",
         "재화":880.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -26815,7 +26830,7 @@
         "진영":"RN",
         "레어도":"SSR",
         "재화":1180.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -26935,7 +26950,7 @@
         "진영":"RN",
         "레어도":"SSR",
         "재화":880.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -27085,7 +27100,7 @@
         "진영":"RN",
         "레어도":"SR",
         "재화":780.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "ex_chat_status":0,
         "isNew":false
     },
@@ -27932,11 +27947,11 @@
     {
         "클뜯 id":702013,
         "함순이 이름":"아브로라",
-        "한글 함순이 + 스킨 이름":null,
-        "스킨 타입 - 한글":null,
+        "한글 함순이 + 스킨 이름":"얼큰한 바닷바람",
+        "스킨 타입 - 한글":"파티",
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/702013\/shipyard.png",
         "ASMR 일러":null,
-        "스킨 태그":"X",
+        "스킨 태그":"배경",
         "진영":"SN",
         "레어도":"SSR",
         "재화":null,
@@ -32071,8 +32086,8 @@
     },
     {
         "클뜯 id":9702100,
-        "함순이 이름":null,
-        "한글 함순이 + 스킨 이름":null,
+        "함순이 이름":"쾰른·META",
+        "한글 함순이 + 스킨 이름":"쾰른·META",
         "스킨 타입 - 한글":null,
         "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/Fernando2603\/AzurLane\/main\/images\/skin\/9702100\/shipyard.png",
         "ASMR 일러":null,

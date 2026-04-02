@@ -158276,7 +158276,7 @@
                 "upgrade": 802172,
                 "downgrade": null,
                 "requirement": "Limit Break 1",
-                "weapon_true": false
+                "weapon_true": true
             },
             "802172": {
                 "id": 802172,
@@ -158284,7 +158284,7 @@
                 "upgrade": null,
                 "downgrade": 802171,
                 "requirement": "Limit Break 3",
-                "weapon_true": false
+                "weapon_true": true
             },
             "802150": {
                 "id": 802150,
@@ -158300,15 +158300,44 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             }
         },
-        "equip_1": [],
-        "equip_2": [],
-        "equip_3": [],
-        "equip_4": [],
-        "equip_5": [],
-        "equipment_proficiency": [],
+        "description": [
+            "메타랩·월드 투어"
+        ],
+        "name": "쾰른·META",
+        "gift_dislike": [
+            180009,
+            180005
+        ],
+        "skin_id": 9702100,
+        "class_name": "쾰른·META",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702100/shipyard.png",
+        "equip_1": [
+            2
+        ],
+        "equip_2": [
+            5
+        ],
+        "equip_3": [
+            6
+        ],
+        "equip_4": [
+            10,
+            14,
+            17
+        ],
+        "equip_5": [
+            10,
+            14
+        ],
+        "equipment_proficiency": [
+            1.1,
+            1.6,
+            1.2,
+            0.3
+        ],
         "preload_count": [
             0,
             0,

@@ -7,6 +7,10 @@
         "name": "범용형 강화 장비(업무용)",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/100001/icon.png"
     },
+    "100002": {
+        "name": "변신! 마법소녀★푸린",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/100002/icon.png"
+    },
     "100010": {
         "name": "시제형 부린 MKⅡ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/100010/icon.png"
@@ -7407,6 +7411,10 @@
         "name": "어울리지 않는 역할은 무리하지 않기?",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702012/icon.png"
     },
+    "702013": {
+        "name": "얼큰한 바닷바람",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702013/icon.png"
+    },
     "702020": {
         "name": "파먀티 메르쿠리야 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/702020/icon.png"
@@ -9959,6 +9967,10 @@
         "name": "클리블랜드·META",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702090/icon.png"
     },
+    "9702100": {
+        "name": "{namecode:423}·META",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702100/icon.png"
+    },
     "9702110": {
         "name": "레겐스부르크·META",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702110/icon.png"
@@ -10113,6 +10125,14 @@
     },
     "9900011": {
         "name": "욕조의 작은 악마",
+        "icon": null
+    },
+    "9900021": {
+        "name": "데이터 세트: 무수한 자아",
+        "icon": null
+    },
+    "9900031": {
+        "name": "휴일, 화목한 한때",
         "icon": null
     },
     "10100010": {

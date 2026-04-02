@@ -20621,6 +20621,32 @@
         ],
         "rarity": "SSR"
     },
+    "970210": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702100/icon.png",
+        "name": "쾰른·META",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            2
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 1,
+        "add_level_shiptype": [
+            2
+        ],
+        "add_level_value": 1,
+        "class": 970210,
+        "id": 970210,
+        "max_star": 5,
+        "pt_get": 10,
+        "pt_level": 16,
+        "pt_upgrage": 21,
+        "nationality": 97,
+        "type": 2,
+        "description": [
+            "메타랩·월드 투어"
+        ],
+        "rarity": "SR"
+    },
     "970211": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702110/icon.png",
         "name": "레겐스부르크·META",
