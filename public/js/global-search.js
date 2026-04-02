@@ -29,6 +29,7 @@ const PAGE_CATALOG = [
     { name: '대작전 파일', description: '파일해역에서 해금되는 파일들 모아보기', icon: 'folder', path: LINKS.WORLD_FILE, category: '스토리' },
     { name: 'TB 키우기', description: '통베 회상/수집/엔딩 보기', icon: 'woman', path: LINKS.TB_STORY, category: '스토리' },
     { name: '네비 키우기', description: '네비게이터 회상/수집/엔딩 보기', icon: 'girl', path: LINKS.NAVI_STORY, category: '스토리' },
+    { name: '로라 키우기', description: '스캐빈저 회상/수집/엔딩 보기', icon: 'child_care', path: LINKS.LORA_STORY, category: '스토리' },
     { name: '비서함 스토리', description: '모항 비서함 클릭시 발생하는 스토리 모음', icon: 'diagnosis', path: LINKS.SECRETARY_STORY, category: '스토리' },
     { name: '명예의 전당', description: '룽섭 명전 스토리들 모음', icon: 'emoji_events', path: LINKS.HOF, category: '스토리' },
 

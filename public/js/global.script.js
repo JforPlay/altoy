@@ -33,6 +33,7 @@ const LINKS = {
     WORLD_FILE: 'story-viewer/world-file/',
     NAVI_STORY: 'story-viewer/navi-story/',
     TB_STORY: 'story-viewer/tb-story/',
+    LORA_STORY: 'story-viewer/lora-story/',
     SECRETARY_STORY: 'story-viewer/secretary-story/',
     HOF: 'story-viewer/hof/',
 

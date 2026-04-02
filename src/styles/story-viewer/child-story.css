@@ -1,9 +1,9 @@
 /**
  * child-story.css
  * ---------------
- * Optimized styling for Navi and TB Story Viewers
+ * Optimized styling for Navi, TB, and Lora Story Viewers
  * Features: Tab navigation, card grid layouts, modal windows
- * Used by: navi-story.html, tb-story.html
+ * Used by: navi-story.astro, tb-story.astro, lora-story.astro
  *
  * Responsive Font Scaling:
  * This CSS uses rem units for scalable elements that adapt to screen size.
@@ -18,7 +18,8 @@
    ======================================== */
 
 .navi-header,
-.tb-header {
+.tb-header,
+.lora-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 2.5rem 2rem;
   text-align: center;
@@ -156,7 +157,8 @@
    ======================================== */
 
 .navi-grid-container,
-.tb-grid-container {
+.tb-grid-container,
+.lora-grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr)); /* 280px */
   gap: 1.5rem;
@@ -167,7 +169,8 @@
 
 @media (max-width: 768px) {
   .navi-grid-container,
-  .tb-grid-container {
+  .tb-grid-container,
+  .lora-grid-container {
     grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); /* 240px */
     gap: 1rem;
     padding: 1rem;
@@ -178,9 +181,10 @@
    CARDS
    ======================================== */
 
-/* Shared card styles for both navi and tb */
+/* Shared card styles for navi, tb, and lora */
 .navi-card,
-.tb-card {
+.tb-card,
+.lora-card {
   background: white;
   border-radius: 16px;
   overflow: hidden;
@@ -190,13 +194,15 @@
 }
 
 .navi-card:hover,
-.tb-card:hover {
+.tb-card:hover,
+.lora-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 }
 
 .navi-card-image,
-.tb-card-image {
+.tb-card-image,
+.lora-card-image {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
@@ -205,17 +211,20 @@
 
 /* Taller aspect ratio for ending cards to show more of the image */
 #endings-content .navi-card-image,
-#endings-content .tb-card-image {
+#endings-content .tb-card-image,
+#endings-content .lora-card-image {
   aspect-ratio: 4 / 5;
 }
 
 .navi-card-content,
-.tb-card-content {
+.tb-card-content,
+.lora-card-content {
   padding: 1.25rem;
 }
 
 .navi-card-title,
-.tb-card-title {
+.tb-card-title,
+.lora-card-title {
   font-size: 1.1rem;
   font-weight: 600;
   color: #212529;
@@ -224,7 +233,8 @@
 }
 
 .navi-card-desc,
-.tb-card-desc {
+.tb-card-desc,
+.lora-card-desc {
   font-size: 0.9rem;
   color: #6c757d;
   margin: 0;
@@ -232,7 +242,8 @@
 }
 
 .navi-card-badge,
-.tb-card-badge {
+.tb-card-badge,
+.lora-card-badge {
   display: inline-block;
   padding: 0.25rem 0.75rem;
   background: linear-gradient(135deg, #667eea, #764ba2);
@@ -259,7 +270,8 @@
 }
 
 .polaroid-card .navi-card-image,
-.polaroid-card .tb-card-image {
+.polaroid-card .tb-card-image,
+.polaroid-card .lora-card-image {
   border: 6px solid #ffffff;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
@@ -513,12 +525,14 @@
   }
 
   .navi-card-title,
-  .tb-card-title {
+  .tb-card-title,
+  .lora-card-title {
     font-size: 1rem;
   }
 
   .navi-card-desc,
-  .tb-card-desc {
+  .tb-card-desc,
+  .lora-card-desc {
     font-size: 0.85rem;
   }
 
@@ -550,7 +564,8 @@
   }
 
   .polaroid-card .navi-card-image,
-  .polaroid-card .tb-card-image {
+  .polaroid-card .tb-card-image,
+  .polaroid-card .lora-card-image {
     border-width: 4px;
   }
 }
@@ -560,7 +575,8 @@
    ======================================== */
 
 body.dark-mode .navi-header,
-body.dark-mode .tb-header {
+body.dark-mode .tb-header,
+body.dark-mode .lora-header {
   background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
 }
 
@@ -592,18 +608,21 @@ body.dark-mode .tab-btn.active {
 }
 
 body.dark-mode .navi-card,
-body.dark-mode .tb-card {
+body.dark-mode .tb-card,
+body.dark-mode .lora-card {
   background: #2d3748;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 body.dark-mode .navi-card-title,
-body.dark-mode .tb-card-title {
+body.dark-mode .tb-card-title,
+body.dark-mode .lora-card-title {
   color: #e2e8f0;
 }
 
 body.dark-mode .navi-card-desc,
-body.dark-mode .tb-card-desc {
+body.dark-mode .tb-card-desc,
+body.dark-mode .lora-card-desc {
   color: #a0aec0;
 }
 
@@ -613,7 +632,8 @@ body.dark-mode .polaroid-card {
 }
 
 body.dark-mode .polaroid-card .navi-card-image,
-body.dark-mode .polaroid-card .tb-card-image {
+body.dark-mode .polaroid-card .tb-card-image,
+body.dark-mode .polaroid-card .lora-card-image {
   border-color: #2d3748;
 }
 

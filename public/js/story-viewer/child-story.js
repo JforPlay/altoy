@@ -12,7 +12,7 @@ import { fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, toggleE
 /**
  * Creates a tab-based story viewer instance
  * @param {Object} config - Configuration object
- * @param {string} config.type - Viewer type: 'navi' or 'tb'
+ * @param {string} config.type - Viewer type: 'navi', 'tb', or 'lora'
  * @param {Object} config.dataPaths - Paths to JSON data files
  * @param {Object} config.imageUrls - Base URLs for images
  * @param {string} config.placeholderImage - Placeholder image path
@@ -188,7 +188,7 @@ function createTabStoryViewer(config) {
                 id: 'memory',
                 name: `${this.config.type.toUpperCase()} Memories`,
                 child: Object.values(this.memoriesData).map(mem => {
-                    const storyKey = this.config.type === 'navi' ? mem.lua : mem.performance;
+                    const storyKey = mem.lua || mem.performance;
                     const mappingData = this.storyIconMap[storyKey?.toLowerCase()] || {};
                     const title = mappingData.title || mem.desc || `Memory ${mem.id}`;
                     const icon = mappingData.icon || null;
@@ -383,7 +383,7 @@ function createTabStoryViewer(config) {
             const card = document.createElement('div');
             card.className = `${this.config.type}-card`;
 
-            const storyKey = this.config.type === 'navi' ? memory.lua : memory.performance;
+            const storyKey = memory.lua || memory.performance;
             const mappingData = this.storyIconMap[storyKey?.toLowerCase()] || {};
             const title = mappingData.title || memory.desc || 'Untitled';
 
@@ -416,14 +416,14 @@ function createTabStoryViewer(config) {
             card.dataset.title = title;
 
             let imageUrl;
-            if (this.config.type === 'navi') {
-                imageUrl = ending.pic_preview
-                    ? `${this.config.imageUrls.base}${ending.pic_preview}.webp`
-                    : this.config.placeholderImage;
-            } else {
+            if (this.config.type === 'tb') {
                 imageUrl = icon
                     ? `${this.config.imageUrls.icon}${icon}.webp`
                     : (ending.pic_preview ? `${this.config.imageUrls.base}${ending.pic_preview}.webp` : this.config.placeholderImage);
+            } else {
+                imageUrl = ending.pic_preview
+                    ? `${this.config.imageUrls.base}${ending.pic_preview}.webp`
+                    : this.config.placeholderImage;
             }
 
             card.innerHTML = `
@@ -804,7 +804,7 @@ function createTabStoryViewer(config) {
             // Preload the first few visible images for faster initial render
             const firstMemory = Object.values(this.memoriesData)[0];
             if (firstMemory) {
-                const storyKey = this.config.type === 'navi' ? firstMemory.lua : firstMemory.performance;
+                const storyKey = firstMemory.lua || firstMemory.performance;
                 const story = this.storyData[storyKey?.toLowerCase()];
                 if (story && story.scripts) {
                     // Preload first background image
