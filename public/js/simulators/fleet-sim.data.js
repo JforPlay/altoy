@@ -218,16 +218,33 @@ export function getShipsByPosition(position) {
 
 /**
  * Get the slot name for a ship's equip slot.
- * Uses type_name2 for precise names like "함포(구축)", "함포(경순)", "어뢰(잠수함)".
- * Falls back to type_name, then "슬롯 N".
+ * For single-type slots, uses type_name2 for precise names like "함포(구축)".
+ * For multi-type slots, joins type_name values with "/" (deduped).
+ * Falls back to "슬롯 N".
  */
 export function getSlotName(ship, equipIndex) {
     if (!state.equipTypeData || !ship) return `슬롯 ${equipIndex + 1}`;
     const slotKey = `equip_${equipIndex + 1}`;
     const allowedTypes = ship[slotKey];
     if (!allowedTypes || !allowedTypes.length) return `슬롯 ${equipIndex + 1}`;
-    const typeInfo = state.equipTypeData[String(allowedTypes[0])];
-    return typeInfo?.type_name2 || typeInfo?.type_name || `슬롯 ${equipIndex + 1}`;
+
+    if (allowedTypes.length === 1) {
+        const typeInfo = state.equipTypeData[String(allowedTypes[0])];
+        return typeInfo?.type_name2 || typeInfo?.type_name || `슬롯 ${equipIndex + 1}`;
+    }
+
+    // Multi-type slot: collect unique type_name values
+    const names = [];
+    const seen = new Set();
+    for (const typeId of allowedTypes) {
+        const info = state.equipTypeData[String(typeId)];
+        const name = info?.type_name || `${typeId}`;
+        if (!seen.has(name)) {
+            seen.add(name);
+            names.push(name);
+        }
+    }
+    return names.join('/');
 }
 
 // ===== SP Weapon Lookups =====
