@@ -28708,7 +28708,7 @@
             7
         ],
         "equip_2": [
-            1
+            7
         ],
         "equip_3": [
             9
@@ -31199,7 +31199,9 @@
             9
         ],
         "equip_3": [
-            8
+            7,
+            8,
+            9
         ],
         "equip_4": [
             10
@@ -32134,7 +32136,9 @@
             9
         ],
         "equip_3": [
-            8
+            7,
+            8,
+            9
         ],
         "equip_4": [
             10
@@ -36334,6 +36338,7 @@
             2
         ],
         "equip_2": [
+            2,
             6
         ],
         "equip_3": [
@@ -37257,7 +37262,8 @@
             5
         ],
         "equip_3": [
-            6
+            6,
+            12
         ],
         "equip_4": [
             10,
@@ -60219,7 +60225,8 @@
             7
         ],
         "equip_3": [
-            8
+            8,
+            9
         ],
         "equip_4": [
             10,
@@ -61410,7 +61417,8 @@
         "class_name": "일러스트리어스급",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207050/shipyard.png",
         "equip_1": [
-            7
+            7,
+            9
         ],
         "equip_2": [
             8
@@ -61797,6 +61805,8 @@
             7
         ],
         "equip_2": [
+            7,
+            8,
             9
         ],
         "equip_3": [
@@ -62521,7 +62531,8 @@
         "skin_id": 207130,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207130/shipyard.png",
         "equip_1": [
-            7
+            7,
+            9
         ],
         "equip_2": [
             8
@@ -62708,7 +62719,8 @@
         "skin_id": 207140,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207140/shipyard.png",
         "equip_1": [
-            7
+            7,
+            9
         ],
         "equip_2": [
             8
@@ -78825,6 +78837,7 @@
         "class_name": "나가라급",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302050/shipyard.png",
         "equip_1": [
+            1,
             2
         ],
         "equip_2": [
@@ -94397,7 +94410,9 @@
         "class_name": "야마토급",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307080/shipyard.png",
         "equip_1": [
-            7
+            7,
+            8,
+            9
         ],
         "equip_2": [
             9
@@ -95485,7 +95500,9 @@
         "skin_id": 307140,
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307140/shipyard.png",
         "equip_1": [
-            7
+            7,
+            8,
+            9
         ],
         "equip_2": [
             9
@@ -95673,9 +95690,11 @@
         "class_name": "아마기",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307150/shipyard.png",
         "equip_1": [
-            7
+            7,
+            9
         ],
         "equip_2": [
+            8,
             9
         ],
         "equip_3": [
@@ -95861,7 +95880,9 @@
         "class_name": "하쿠호",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307160/shipyard.png",
         "equip_1": [
-            7
+            7,
+            8,
+            9
         ],
         "equip_2": [
             9
@@ -99210,13 +99231,15 @@
         "class_name": "하쿠류",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399050/shipyard.png",
         "equip_1": [
-            7
+            7,
+            8
         ],
         "equip_2": [
             9
         ],
         "equip_3": [
-            8
+            8,
+            9
         ],
         "equip_4": [
             10
@@ -112937,6 +112960,7 @@
             9
         ],
         "equip_3": [
+            8,
             9
         ],
         "equip_4": [
@@ -113506,6 +113530,8 @@
             7
         ],
         "equip_2": [
+            7,
+            8,
             9
         ],
         "equip_3": [
@@ -118430,6 +118456,7 @@
             5
         ],
         "equip_3": [
+            3,
             6
         ],
         "equip_4": [
@@ -123920,6 +123947,7 @@
             12
         ],
         "equip_2": [
+            1,
             12
         ],
         "equip_3": [
@@ -130535,7 +130563,8 @@
             7
         ],
         "equip_2": [
-            7
+            7,
+            9
         ],
         "equip_3": [
             8
@@ -130713,7 +130742,8 @@
         "class_name": "베네토급",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/607020/shipyard.png",
         "equip_1": [
-            7
+            7,
+            9
         ],
         "equip_2": [
             9
@@ -139451,6 +139481,8 @@
             7
         ],
         "equip_2": [
+            7,
+            8,
             9
         ],
         "equip_3": [
@@ -150477,7 +150509,8 @@
             2
         ],
         "equip_2": [
-            5
+            5,
+            6
         ],
         "equip_3": [
             6
