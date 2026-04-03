@@ -65,6 +65,25 @@ body.dorm-page .scroll-to-top {
     flex: 1;
     overflow-y: auto;
     padding: var(--spacing-sm);
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.theme-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.theme-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.theme-list::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: var(--radius-full);
+}
+
+.theme-list::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-secondary);
 }
 
 /* ── Theme Accordion ── */
@@ -100,8 +119,8 @@ body.dorm-page .scroll-to-top {
 }
 
 .theme-icon {
-    width: 28px;
-    height: 28px;
+    width: 40px;
+    height: 40px;
     border-radius: var(--radius-sm);
     background: var(--section-bg);
     object-fit: cover;
