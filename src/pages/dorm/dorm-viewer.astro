@@ -1,0 +1,82 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/dorm/dorm.style.css';
+import '../../styles/dorm/dorm.grid.css';
+import '../../styles/dorm/dorm.responsive.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="숙소 가구 뷰어" bodyClass="dorm-page" {base}>
+    <div id="dormApp" class="dorm-app">
+
+        <!-- Side Panel -->
+        <aside id="dormPanel" class="dorm-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">가구 목록</h2>
+                <input
+                    type="text"
+                    id="furnitureSearch"
+                    class="panel-search"
+                    placeholder="가구 검색..."
+                    autocomplete="off"
+                />
+            </div>
+
+            <div id="themeList" class="theme-list">
+                <!-- Theme accordion sections rendered by JS -->
+            </div>
+
+            <div id="hoverInfo" class="hover-info">
+                <div class="hover-info-placeholder">가구에 마우스를 올려보세요</div>
+            </div>
+        </aside>
+
+        <!-- Main Area -->
+        <main class="dorm-main">
+            <!-- Toolbar -->
+            <div id="dormToolbar" class="dorm-toolbar">
+                <div class="toolbar-actions">
+                    <button id="btnRotate" class="toolbar-btn" disabled title="회전 (R)">
+                        <span class="material-symbols-outlined">rotate_right</span>
+                        <span class="btn-label">회전</span>
+                    </button>
+                    <button id="btnDelete" class="toolbar-btn" disabled title="삭제 (Del)">
+                        <span class="material-symbols-outlined">delete</span>
+                        <span class="btn-label">삭제</span>
+                    </button>
+                    <button id="btnClear" class="toolbar-btn toolbar-btn--danger" title="전체 삭제">
+                        <span class="material-symbols-outlined">delete_sweep</span>
+                        <span class="btn-label">전체 삭제</span>
+                    </button>
+                </div>
+                <div class="toolbar-stats">
+                    <span class="stat-comfort">
+                        쾌적도: <strong id="comfortValue">0</strong>
+                    </span>
+                    <span class="stat-count">
+                        가구: <strong id="itemCount">0</strong>개
+                    </span>
+                </div>
+            </div>
+
+            <!-- Canvas Area -->
+            <div id="canvasContainer" class="canvas-container">
+                <canvas id="dormCanvas"></canvas>
+                <div class="zoom-controls">
+                    <button id="btnZoomIn" class="zoom-btn" title="확대">+</button>
+                    <button id="btnZoomOut" class="zoom-btn" title="축소">&minus;</button>
+                </div>
+                <div id="canvasLoading" class="canvas-loading">
+                    <span>데이터 로딩 중...</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Mobile panel toggle -->
+        <button id="btnTogglePanel" class="mobile-panel-toggle">
+            <span class="material-symbols-outlined">inventory_2</span>
+        </button>
+    </div>
+
+    <script is:inline type="module" src={`${base}/js/dorm/dorm.viewer.js`}></script>
+</Layout>

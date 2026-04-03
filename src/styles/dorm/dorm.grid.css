@@ -1,0 +1,73 @@
+/* src/styles/dorm/dorm.grid.css */
+/* Dorm viewer — isometric canvas, zoom controls */
+
+.canvas-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-gradient-start);
+}
+
+.canvas-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+}
+
+.canvas-container.drag-active canvas {
+    cursor: grabbing;
+}
+
+.canvas-container.place-ready canvas {
+    cursor: crosshair;
+}
+
+/* ── Zoom controls ── */
+.zoom-controls {
+    position: absolute;
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.zoom-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+}
+
+.zoom-btn:hover {
+    background: var(--section-bg);
+}
+
+/* ── Loading overlay ── */
+.canvas-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--overlay-light);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    z-index: 5;
+    transition: opacity var(--transition-base);
+}
+
+.canvas-loading.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
