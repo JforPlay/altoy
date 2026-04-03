@@ -198,7 +198,9 @@ function isWallValid(belong, gx, gy, w, h) {
 function canPlace(furnitureId, gx, gy, rotated, excludeIdx) {
     const furniture = getFurniture(furnitureId);
     if (!furniture) return false;
-    const [w, h] = rotated ? [furniture.size[1], furniture.size[0]] : furniture.size;
+    // Game size is [depth, width] — swap to [gridX, gridY]
+    const baseW = furniture.size[1], baseH = furniture.size[0];
+    const [w, h] = rotated ? [baseH, baseW] : [baseW, baseH];
     if (!isInBounds(gx, gy, w, h)) return false;
     if (!isWallValid(furniture.belong, gx, gy, w, h)) return false;
     // Floor types don't block placement
@@ -235,7 +237,9 @@ function removeFromOccupancy(item) {
 function getPlacedSize(item) {
     const furniture = getFurniture(item.furnitureId);
     if (!furniture) return [1, 1];
-    return item.rotated ? [furniture.size[1], furniture.size[0]] : furniture.size;
+    // Game size is [depth, width] — swap to [gridX, gridY] for our coordinate system
+    const [w, h] = [furniture.size[1], furniture.size[0]];
+    return item.rotated ? [h, w] : [w, h];
 }
 
 function placeFurnitureAt(furnitureId, gx, gy, rotated) {
@@ -471,7 +475,8 @@ function drawDragGhost() {
     const furniture = getFurniture(dragFurnitureId);
     if (!furniture) return;
 
-    const [w, h] = dragRotated ? [furniture.size[1], furniture.size[0]] : furniture.size;
+    const baseW = furniture.size[1], baseH = furniture.size[0];
+    const [w, h] = dragRotated ? [baseH, baseW] : [baseW, baseH];
     const valid = canPlace(dragFurnitureId, hoverCell.x, hoverCell.y, dragRotated,
         dragPlacedItem !== null ? dragPlacedItem.idx : undefined);
     const color = valid ? COLORS.validGhost : COLORS.invalidGhost;
