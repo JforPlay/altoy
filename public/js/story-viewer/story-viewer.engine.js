@@ -104,8 +104,27 @@ document.addEventListener('DOMContentLoaded', () => {
             muteIcon: null,
         },
 
-        // Painting state
-        activePaintings: new Map(), // Track active paintings by actor ID
+        // Auto-play state. Speed 0 = disabled; 1/2/3 = slow/medium/fast.
+        // Reset to 0 at the start of every story (see startStory) — not
+        // persisted across sessions or stories.
+        autoPlaySpeed: 0,
+        AUTO_PLAY_DELAYS_MS: { 1: 6000, 2: 4000, 3: 2500 },
+        _autoPlayTimer: null,
+
+        // Painting state — one painting per side (0=left, 1=right, 2=center).
+        // Paintings are rebuilt from the script on every render, matching the
+        // game's dialoguestoryplayer.lua. Non-active sides dim to the current
+        // step's painting.alpha; the active speaker is always at 1.0.
+        paintingsBySide: new Map(), // Map<side:number, {actorId, element, expression, side, dir}>
+        activeSpeakerSide: null,
+        PAINTING_FADE_OUT_MS: 250,
+
+        // Effect tuning. Shake "speed" in game data is a small-int tier; we map
+        // it to a per-cycle duration. Flash duration caps keep runaway 'number:
+        // 999' entries from pinning the screen forever.
+        SHAKE_DEFAULT_X_PX: 12,
+        SHAKE_MAX_TOTAL_MS: 8000,
+        FLASH_MAX_TOTAL_MS: 8000,
 
         // =========================================================================
         // INITIALIZATION
@@ -120,6 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.handleUrlParameters();
                     this.setupEventListeners();
                     this.setupBrowserBackButton();
+                    this.injectAutoPlayButton();
                     // Loading state automatically handled by populateEventGrid
                 })
                 .catch(error => {
@@ -193,6 +213,150 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Clean up old audio listeners and add new ones
             this.cleanupAudioListeners();
+
+            // Keyboard navigation (only when the story viewer pane is active
+            // and the user isn't typing into an input).
+            this.setupKeyboardNavigation();
+        },
+
+        isStoryViewActive() {
+            const v = this.elements.storyViewerView;
+            if (!v) return false;
+            // switchView toggles display:none/flex via the standard 'hidden' class;
+            // fall back to a computed style check so we work either way.
+            if (v.classList.contains('hidden')) return false;
+            return v.offsetParent !== null;
+        },
+
+        setupKeyboardNavigation() {
+            if (this._keydownHandler) {
+                document.removeEventListener('keydown', this._keydownHandler);
+            }
+            this._keydownHandler = (e) => {
+                // Don't steal keys from form inputs, textareas, or contenteditable.
+                const t = e.target;
+                if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+
+                // If a modal is open, let Escape close it but ignore other keys.
+                const scriptOpen = !this.elements.scriptModalOverlay?.classList.contains('hidden');
+                const summaryOpen = !this.elements.summaryModalOverlay?.classList.contains('hidden');
+                if (scriptOpen || summaryOpen) {
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        if (scriptOpen) this.hideFullScript();
+                        if (summaryOpen) this.hideSummaryModal();
+                    }
+                    return;
+                }
+
+                if (!this.isStoryViewActive()) return;
+
+                const hasOptions = this.elements.optionsBox?.children.length > 0;
+
+                switch (e.key) {
+                    case ' ':
+                    case 'ArrowRight':
+                    case 'Enter':
+                        // While options are displayed, let the user pick with a click;
+                        // don't auto-advance past a decision point.
+                        if (hasOptions) return;
+                        e.preventDefault();
+                        this.advanceStory();
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        this.goBackStory();
+                        break;
+                    case 'Escape':
+                        e.preventDefault();
+                        this.returnToMemorySelection();
+                        break;
+                    case 'a':
+                    case 'A':
+                        // Reserved for auto-play toggle.
+                        if (typeof this.toggleAutoPlay === 'function') {
+                            e.preventDefault();
+                            this.toggleAutoPlay();
+                        }
+                        break;
+                    case 's':
+                    case 'S':
+                        e.preventDefault();
+                        this.showFullScript();
+                        break;
+                }
+            };
+            document.addEventListener('keydown', this._keydownHandler);
+        },
+
+        // =========================================================================
+        // AUTO-PLAY
+        // =========================================================================
+        injectAutoPlayButton() {
+            // Find the nav-arrows container in whichever story page this engine is mounted on.
+            const navArrows = this.elements.storyViewerView?.querySelector('.story-nav-arrows');
+            if (!navArrows || document.getElementById('auto-play-btn')) return;
+
+            const btn = document.createElement('button');
+            btn.id = 'auto-play-btn';
+            btn.className = 'story-nav-btn auto-play-btn';
+            btn.type = 'button';
+            btn.title = '자동 재생 (A)';
+            navArrows.insertBefore(btn, navArrows.firstChild);
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.toggleAutoPlay();
+            });
+
+            this.elements.autoPlayBtn = btn;
+            this.updateAutoPlayButton();
+        },
+
+        updateAutoPlayButton() {
+            const btn = this.elements.autoPlayBtn;
+            if (!btn) return;
+            const label = ['자동', '자동 (느림)', '자동 (보통)', '자동 (빠름)'][this.autoPlaySpeed] || '자동';
+            btn.textContent = label;
+            btn.classList.toggle('active', this.autoPlaySpeed > 0);
+            btn.setAttribute('aria-pressed', String(this.autoPlaySpeed > 0));
+        },
+
+        toggleAutoPlay() {
+            // Cycle off → slow → medium → fast → off.
+            this.autoPlaySpeed = (this.autoPlaySpeed + 1) % 4;
+            this.updateAutoPlayButton();
+            this.cancelAutoAdvance();
+            if (this.autoPlaySpeed > 0) this.scheduleAutoAdvance();
+        },
+
+        scheduleAutoAdvance() {
+            this.cancelAutoAdvance();
+            if (this.autoPlaySpeed <= 0) return;
+
+            // Don't schedule if we're on an options line, at path end, or if the
+            // story view isn't visible.
+            if (!this.isStoryViewActive()) return;
+            const optionsShowing = this.elements.optionsBox?.children.length > 0;
+            if (optionsShowing) return;
+            if (!this.hasReachableNextDisplayable()) return;
+
+            const delay = this.AUTO_PLAY_DELAYS_MS[this.autoPlaySpeed] || 4000;
+            this._autoPlayTimer = setTimeout(() => {
+                this._autoPlayTimer = null;
+                // Guard again at fire time — state may have changed.
+                if (this.autoPlaySpeed <= 0) return;
+                if (!this.isStoryViewActive()) return;
+                if (this.elements.optionsBox?.children.length > 0) return;
+                this.advanceStory();
+            }, delay);
+        },
+
+        cancelAutoAdvance() {
+            if (this._autoPlayTimer != null) {
+                clearTimeout(this._autoPlayTimer);
+                this._autoPlayTimer = null;
+            }
         },
 
         setupBrowserBackButton() {
@@ -280,10 +444,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.scrollTo(0, 0);
             }
 
-            // When leaving memory view, pause audio and hide player
+            // When leaving the story viewer, pause audio and stop auto-play.
             if (viewToShow !== this.elements.storyViewerView) {
                 this.audio.pause();
                 hideElement(this.elements.audioPlayerContainer);
+                this.cancelAutoAdvance();
             }
         },
 
@@ -467,6 +632,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (flag !== undefined) {
                     flagSet.add(flag);
                 }
+                // Also track flags introduced by option buttons — these are the
+                // flags the user can select, and handleOptionSelect will use them
+                // as the navigation context key.
+                if (hasOptions) {
+                    for (const opt of line.options) {
+                        if (opt && opt.flag !== undefined) flagSet.add(opt.flag);
+                    }
+                }
             });
 
             // Flag contexts: null (outside branch) + all unique flags
@@ -529,6 +702,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // =========================================================================
         // STORY PLAYER LOGIC
         // =========================================================================
+        // Any navigation away from the viewer should stop the auto-play timer.
+        // Called by returnToMemorySelection / switchView indirectly via render gating.
+
         async startStory(memory, updateUrl = true) {
             let story;
             try {
@@ -562,6 +738,14 @@ document.addEventListener('DOMContentLoaded', () => {
             this.currentBgm = null;
             this.currentStoryDefaultBgUrl = null;
             this.activeOptionFlag = null;
+
+            // Auto-play resets to OFF at the start of every story. Carrying
+            // the previous story's auto state over surprised users, and a
+            // persistent "active" state combined with poor dark-mode contrast
+            // made the button look like it had disappeared.
+            this.autoPlaySpeed = 0;
+            this.cancelAutoAdvance();
+            this.updateAutoPlayButton();
             this.lastOptionIndex = -1;
 
             // Clear any existing paintings from previous story
@@ -610,7 +794,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         isLineDisplayable(line) {
             if (!line) return false;
-            return line.say || (line.sequence && line.sequence[0] && line.sequence[0][0]) || (line.signDate && line.signDate[0]) || (line.options && line.options.length > 0);
+            // A line is a "step" the user should navigate through if it has
+            // ANY visible content OR a scene transition. Terminal visual-only
+            // steps (e.g., chapter 9 memory 797 line 14: empty sequence text
+            // but flashout/flashin + IronBloodLogoEffect) are part of the
+            // game's step sequence and must be reachable so the user can see
+            // the outro transition instead of getting stranded one step early.
+            return !!(
+                line.say ||
+                (line.sequence && line.sequence[0] && line.sequence[0][0]) ||
+                (line.signDate && line.signDate[0]) ||
+                (line.options && line.options.length > 0) ||
+                line.flashin || line.flashout
+            );
         },
 
         advanceStory() {
@@ -623,6 +819,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (navInfo && navInfo.next !== null) {
                 this.scriptIndex = navInfo.next;
+                // Only forward advance replays flash curtains — backward nav,
+                // resume, and jumps should NOT re-trigger blackouts.
+                this._playFlashOnNextRender = true;
                 this.renderScriptLine();
             } else {
                 // At end of reachable path
@@ -674,14 +873,46 @@ document.addEventListener('DOMContentLoaded', () => {
             el.infoScreenText.innerHTML = '';
 
             this.updateBackground();
-            if (line.effects) this.handleEffect(line.effects);
-            if (line.stopbgm) { this.handleBgm(null); }
-            else if (line.bgm) { this.handleBgm(line.bgm); }
-
-            // Handle painting rendering
-            if (line.actor !== undefined || line.actorName !== undefined) {
-                this.renderPainting(line);
+            // Line-level visual/audio effects (game's per-step playback).
+            // Gated to forward-advance only (same rule as flashout/flashin) —
+            // replaying shake/flash/sfx on backward nav feels like the story is
+            // resetting on the user. Jumps & resumes also skip. We still cancel
+            // any in-flight effects so a mid-animation escape doesn't linger.
+            //   line.shake     — screen shake with {number, speed, y}
+            //   line.flashN    — color blink sequence (white/red/etc)
+            //   line.soundeffect + line.seDelay — SFX with delay
+            //   line.effects[] — named GameObject overlays (ignored: assets not
+            //                    available as web resources)
+            if (this._playFlashOnNextRender) {
+                this.handleLineShake(line);
+                this.handleLineDialogShake(line);
+                this.handleLineFlashN(line);
+                this.handleLineSoundEffect(line);
+            } else {
+                this.clearLineEffects();
             }
+            // Re-sync BGM from the script position (not just the current line)
+            // so back-navigation and resume jumps land on the correct track.
+            this.updateBgm();
+            // flashin/flashout are top-level fields that bracket the step with a
+            // black (or white) curtain — independent from the `effects` array.
+            // Only replay curtains on natural forward advance (set by
+            // advanceStory) — backward nav, jumps, and resumes should NOT
+            // retrigger blackouts the user has already seen. We still clear
+            // any lingering flash overlay on non-advance renders so the screen
+            // doesn't stay black if we jumped away mid-animation.
+            if (this._playFlashOnNextRender) {
+                this._playFlashOnNextRender = false;
+                this.handleLineFlash(line);
+            } else {
+                this._playFlashOnNextRender = false;
+                this.clearFlashOverlay();
+            }
+
+            // Painting state is rebuilt from the full script history so that
+            // forward AND backward navigation always land on the same visual
+            // state the game would show at this step.
+            this.updatePaintings();
 
             const hasSequenceContent = this.renderSequenceContent(line);
 
@@ -692,8 +923,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Handle text formatting based on viewer type
                 if (this.config.viewerType === 'main') {
-                    const formattedDialogue = line.say.replace(/<color=(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})>(.*?)<\/color>/gi, '<span style="color: $1;">$2</span>');
-                    el.dialogueText.innerHTML = formattedDialogue.replace(/<\/?[^>]+(>|$)/g, (match) => (match.startsWith('<span') || match.startsWith('</span')) ? match : '');
+                    this.renderColoredDialogue(el.dialogueText, line.say);
                 } else {
                     el.dialogueText.textContent = line.say.replace(/<.*?>/g, '');
                 }
@@ -768,6 +998,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // Show the Return/Go Back button when at the end of file OR end of reachable path
             toggleElement(el.returnBtn, isAtFileEnd || isAtPathEnd);
 
+            // If the user has reached the end of a branch (but not the end of the
+            // script), surface a hint so they know they can rewind and try the
+            // other choice. We distinguish "end of branch" from "end of file" by
+            // checking whether there are actually unreachable lines beyond us.
+            const isBranchDeadEnd = isAtPathEnd && !isAtFileEnd && !hasOptions;
+            this.setBranchEndHint(isBranchDeadEnd);
+
             // If you have a "next story" button, you probably want to show it
             // only at the *true* file end; keep that behavior:
             toggleElement(el.nextStoryBtn, (isAtFileEnd || isAtPathEnd) && this.nextMemory);
@@ -788,6 +1025,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     el.optionsBox.appendChild(button);
                 });
             }
+
+            // Schedule the next auto-advance based on the current auto-play speed.
+            // scheduleAutoAdvance cancels any prior timer, so this is safe to call
+            // on every render.
+            this.scheduleAutoAdvance();
+        },
+
+        /**
+         * Show/hide a small hint element near the dialogue area when the user
+         * has reached the end of a branch but the story has more content behind
+         * other choices. Injected once, then toggled.
+         */
+        setBranchEndHint(show) {
+            let hint = this.elements.branchEndHint;
+            if (!hint && show) {
+                hint = document.createElement('div');
+                hint.id = 'branch-end-hint';
+                hint.className = 'branch-end-hint';
+                hint.textContent = '이 분기의 끝입니다. 뒤로 가서 다른 선택을 해보세요.';
+                // Mount below the dialogue box; fall back to viewerContainer.
+                const host = this.elements.dialogueBox?.parentNode || this.elements.viewerContainer;
+                host?.appendChild(hint);
+                this.elements.branchEndHint = hint;
+            }
+            if (hint) {
+                toggleElement(hint, !!show);
+            }
         },
 
         handleOptionSelect(chosenFlag) {
@@ -801,23 +1065,18 @@ document.addEventListener('DOMContentLoaded', () => {
             // If only one option, we simply "advance" but explicitly set branch state anyway
             this.activeOptionFlag = (optionCount >= 1) ? chosenFlag : null;
 
-            // Find the first line with the chosen flag after the options
-            let nextIndex = -1;
-            for (let i = currentLineIndex + 1; i < this.currentStoryScript.length; i++) {
-                const line = this.currentStoryScript[i];
-                if (line && line.optionFlag === chosenFlag) {
-                    nextIndex = i;
-                    break;
-                }
-                // If we hit an unflagged line before any chosen-flag line, we treat it as a rejoin
-                if (line && line.optionFlag === undefined) {
-                    nextIndex = i;
-                    break;
-                }
-            }
+            // Use the nav cache to find the next reachable displayable line under the chosen
+            // flag context. This correctly respects flagged content that appears after an
+            // unflagged line (which the naïve forward-scan used to skip).
+            const key = `${currentLineIndex}_${this.activeOptionFlag}`;
+            const navInfo = this.scriptNavCache?.navigation?.[key];
 
-            if (nextIndex !== -1) {
-                this.scriptIndex = nextIndex;
+            if (navInfo && navInfo.next !== null) {
+                this.scriptIndex = navInfo.next;
+                // Treat option selection as a forward advance so flash
+                // curtains baked into the chosen branch's first line play
+                // exactly like the natural next-click path would.
+                this._playFlashOnNextRender = true;
                 this.renderScriptLine();
             } else {
                 // No reachable line -> this option ends the story immediately
@@ -871,6 +1130,41 @@ document.addEventListener('DOMContentLoaded', () => {
             return collected;
         },
 
+        /**
+         * Render dialogue text with <color=#XXX>...</color> tags into a target
+         * element using DOM nodes (no innerHTML). Text inside color tags is
+         * inserted via textContent, so any other HTML in the raw data is
+         * treated as plain text. Only hex color values that match the pattern
+         * are applied.
+         */
+        renderColoredDialogue(target, rawSay) {
+            target.textContent = '';
+            if (!rawSay || typeof rawSay !== 'string') return;
+
+            const stripTags = (s) => s.replace(/<\/?[^>]+>/g, '');
+            const colorRe = /<color=(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})>([\s\S]*?)<\/color>/gi;
+
+            let lastIdx = 0;
+            let match;
+            while ((match = colorRe.exec(rawSay)) !== null) {
+                if (match.index > lastIdx) {
+                    target.appendChild(document.createTextNode(
+                        stripTags(rawSay.slice(lastIdx, match.index))
+                    ));
+                }
+                const span = document.createElement('span');
+                span.style.color = match[1];
+                span.textContent = stripTags(match[2]);
+                target.appendChild(span);
+                lastIdx = match.index + match[0].length;
+            }
+            if (lastIdx < rawSay.length) {
+                target.appendChild(document.createTextNode(
+                    stripTags(rawSay.slice(lastIdx))
+                ));
+            }
+        },
+
         formatSequenceLine(rawText) {
             if (!rawText || typeof rawText !== 'string') return { text: '', scale: 1 };
 
@@ -878,7 +1172,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let scale = 1;
             if (sizeMatch) {
                 const sizeValue = parseFloat(sizeMatch[1]);
-                if (!isNaN(sizeValue)) {
+                if (Number.isFinite(sizeValue) && sizeValue > 0) {
                     const normalized = sizeValue / 50;
                     scale = Math.min(Math.max(normalized, 0.7), 1.6);
                 }
@@ -993,38 +1287,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const backgroundElement = this.elements.storyBackground;
 
-            // Check if we need to recalculate background (performance optimization)
+            // Short-circuit if we're rendering the same index we just rendered.
             if (this.cachedBackground.lastIndex === this.scriptIndex) {
-                return; // Background hasn't changed
-            }
-
-            // Only scan if current line has background info, otherwise use cached
-            const currentLine = this.currentStoryScript[this.scriptIndex];
-            const needsRescan = currentLine?.bgName || currentLine?.blackBg !== undefined;
-
-            if (!needsRescan && this.cachedBackground.lastIndex >= 0) {
-                // Use cached values
-                this.cachedBackground.lastIndex = this.scriptIndex;
                 return;
             }
 
+            // Per-step bg resolution — matches the game's Reset()+UpdateBg() flow
+            // (storyplayer.lua:1085-1123). Reset() deactivates bgPanel/curtain on
+            // every step entry, and UpdateBg() only re-activates them if THIS step
+            // defines bgName / blackBg. If neither is set, the scene falls back to
+            // the memory's default mask (what shows through the inactive panels).
+            //
+            // The old implementation scanned backward for the most recent bgName,
+            // which is wrong: it left stale backgrounds on lines that were meant
+            // to revert to the memory default (e.g., chapter 9 memory 804 lines
+            // 67-69 should show the memory mask, not bg_bsm_1 from line 66).
+            const line = this.currentStoryScript[this.scriptIndex];
             let backgroundImageUrl = null;
             let isBlackBackground = false;
 
-            // Only scan backwards when necessary
-            for (let i = this.scriptIndex; i >= 0; i--) {
-                const line = this.currentStoryScript[i];
-                if (line) {
-                    if (line.blackBg === true) { isBlackBackground = true; break; }
-                    if (line.bgName) { backgroundImageUrl = `url('${this.BASE_URL}bg/${line.bgName}.webp')`; break; }
+            if (line) {
+                if (line.blackBg === true) {
+                    isBlackBackground = true;
+                } else if (line.bgName) {
+                    backgroundImageUrl = `url('${this.BASE_URL}bg/${line.bgName}.webp')`;
                 }
             }
 
-            if (!backgroundImageUrl && this.currentStoryDefaultBgUrl) {
+            // Fall back to the memory's default mask when this step doesn't set
+            // its own bg. Without a mask we land on transparent (the layer under
+            // the story-background element will show).
+            if (!isBlackBackground && !backgroundImageUrl && this.currentStoryDefaultBgUrl) {
                 backgroundImageUrl = `url('${this.currentStoryDefaultBgUrl}')`;
             }
 
-            // Update cache
             this.cachedBackground = {
                 url: backgroundImageUrl,
                 isBlack: isBlackBackground,
@@ -1037,6 +1333,50 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 backgroundElement.style.backgroundColor = 'transparent';
                 backgroundElement.style.backgroundImage = backgroundImageUrl || 'none';
+            }
+        },
+
+        /**
+         * Resolve which BGM should be playing at the current script position by
+         * scanning backwards for the most recent `bgm`/`stopbgm` directive, and
+         * apply it. This makes backward navigation and resume-jumps land on the
+         * correct track instead of inheriting whatever was last played.
+         *
+         * `bgmDelay` (game data, in seconds) is honored ONLY when the BGM switch
+         * happens on the CURRENT line during forward advance — matches game
+         * semantics where DelayCall(bgmDelay) wraps TempPlay(bgm) per step
+         * (storyplayer.lua:1412). Backward nav and jumps play immediately since
+         * the user has already "passed" the delay.
+         */
+        updateBgm() {
+            let resolved = null; // null = no change, false = stop, string = play
+            let resolvedOnCurrentLine = false;
+            for (let i = this.scriptIndex; i >= 0; i--) {
+                const line = this.currentStoryScript[i];
+                if (!line) continue;
+                if (line.stopbgm) { resolved = false; resolvedOnCurrentLine = (i === this.scriptIndex); break; }
+                if (line.bgm) { resolved = line.bgm; resolvedOnCurrentLine = (i === this.scriptIndex); break; }
+            }
+            if (resolved === null) return;
+
+            const target = resolved === false ? null : resolved;
+            const currentLine = this.currentStoryScript[this.scriptIndex];
+            const bgmDelaySec = Number.isFinite(currentLine?.bgmDelay) ? currentLine.bgmDelay : 0;
+
+            // Cancel any pending delayed BGM switch from a previous render.
+            if (this._bgmDelayTimer) { clearTimeout(this._bgmDelayTimer); this._bgmDelayTimer = null; }
+
+            const shouldDelay = resolvedOnCurrentLine
+                && this._playFlashOnNextRender === true
+                && bgmDelaySec > 0;
+
+            if (shouldDelay) {
+                this._bgmDelayTimer = setTimeout(() => {
+                    this._bgmDelayTimer = null;
+                    this.handleBgm(target);
+                }, bgmDelaySec * 1000);
+            } else {
+                this.handleBgm(target);
             }
         },
 
@@ -1079,158 +1419,299 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         /**
-         * Render a character painting with expression overlay
+         * Rebuild the painting state for the current script position and apply
+         * it to the DOM. Mirrors the game's dialoguestoryplayer.lua model:
+         *
+         *   - Each side (0=LEFT, 1=RIGHT, 2=CENTER) holds at most one painting.
+         *   - When a new step lands on CENTER, LEFT and RIGHT paintings are
+         *     cleared (game's GetRecycleActorList rule for SIDE_MIDDLE).
+         *   - Lines with `hideOther:true`, `hidePainting:true`, or no renderable
+         *     actor clear ALL sides (game's hidePainting/actor==nil path).
+         *   - `paintingFadeOut = {side, time}` MOVES the previous painting from
+         *     its current side to the specified side.
+         *   - The active speaker's painting is at alpha=1.0.
+         *   - All other paintings dim to the CURRENT step's `painting.alpha`
+         *     (the game fades prev speakers to the current step's alpha).
+         *
+         * We rebuild the full state on every render rather than tracking deltas
+         * so that Back/Resume navigation always produces the correct visual
+         * state without needing to "undo" transitions.
          */
-        renderPainting(line) {
+        updatePaintings() {
             if (!this.elements.paintingLayer) return;
+            const target = this.computePaintingStateAt(this.scriptIndex);
+            this.applyPaintingState(target);
+        },
 
-            // Get actor ID - must be numeric for painting
-            let actorId = line.actor;
-            if (typeof actorId !== 'number') {
-                // Try to parse actorName as number
+        computePaintingStateAt(index) {
+            /** @type {Map<number, {actorId:number, side:number, dir:number, expression:string, paintingNoise:boolean}>} */
+            const paintings = new Map();
+            let activeSide = null;
+            let dimAlpha = 1; // non-speakers get this alpha (set by latest step with painting.alpha)
+            let prevSide = null; // side of the previously-placed painting (for paintingFadeOut)
+
+            const resolveActor = (line) => {
+                if (typeof line.actor === 'number') return line.actor;
                 if (line.actorName && !isNaN(parseInt(line.actorName, 10))) {
-                    actorId = parseInt(line.actorName, 10);
-                } else {
-                    // No valid actor - clear all paintings
-                    this.clearPaintings();
-                    return;
+                    return parseInt(line.actorName, 10);
                 }
-            }
+                return null;
+            };
 
-            const expressionData = this.getExpressionData(actorId);
-            if (!expressionData) {
-                // No expression data - clear all paintings
-                this.clearPaintings();
-                return;
-            }
+            // In branching stories, skip lines that aren't reachable in the
+            // currently-selected branch. Matches the nav-cache logic: when
+            // activeOptionFlag is null we only include unflagged lines; when
+            // a flag is active we include unflagged lines and lines with
+            // matching flag.
+            const activeFlag = this.activeOptionFlag;
+            const lineReachable = (line) => {
+                if (line.optionFlag === undefined) return true;
+                return activeFlag !== null && line.optionFlag === activeFlag;
+            };
 
-            // Check if this painting is already displayed (same speaker continues)
-            const existingPainting = this.activePaintings.get(actorId);
-            if (existingPainting) {
+            for (let i = 0; i <= index && i < this.currentStoryScript.length; i++) {
+                const line = this.currentStoryScript[i];
+                if (!line) continue;
+                if (!lineReachable(line)) continue;
+
+                const actorId = resolveActor(line);
+                const hasRenderableActor = actorId != null && this.getExpressionData(actorId) != null;
+                const hideAll =
+                    line.hideOther === true ||
+                    line.hidePainting === true ||
+                    (line.actor === undefined && line.actorName === undefined) ||
+                    !hasRenderableActor;
+
+                if (hideAll) {
+                    paintings.clear();
+                    activeSide = null;
+                    prevSide = null;
+                    continue;
+                }
+
+                const targetSide = line.side !== undefined ? line.side : 0;
+                const dir = line.dir !== undefined ? line.dir : 1;
                 const expression = line.expression !== undefined ? String(line.expression) : '0';
-                const hasNoise = line.paintingNoise === true;
+                const paintingNoise = line.paintingNoise === true;
 
-                // Update expression if changed
-                if (existingPainting.expression !== expression) {
-                    this.updatePaintingExpression(existingPainting.element, expressionData, expression);
-                    existingPainting.expression = expression;
+                if (line.painting?.alpha !== undefined) dimAlpha = line.painting.alpha;
+
+                // paintingFadeOut: move the previously-placed painting to a new side.
+                // This runs BEFORE recycle, so the moved painting survives the recycle pass.
+                let movedToSide = null;
+                if (line.paintingFadeOut && prevSide !== null && prevSide !== targetSide) {
+                    const fadeDest = line.paintingFadeOut.side;
+                    const prevPainting = paintings.get(prevSide);
+                    if (prevPainting && fadeDest !== targetSide) {
+                        paintings.delete(prevSide);
+                        paintings.delete(fadeDest); // overwrite anything at the destination
+                        paintings.set(fadeDest, { ...prevPainting, side: fadeDest });
+                        movedToSide = fadeDest;
+                    }
                 }
-                // Update noise effect
-                existingPainting.element.classList.toggle('painting-noise', hasNoise);
-                // Ensure it's active
-                existingPainting.element.classList.remove('inactive');
-                existingPainting.element.classList.add('active');
-                return; // Keep existing painting, don't re-render
+
+                // Recycle: replace the target side if a different actor is there;
+                // CENTER additionally clears LEFT and RIGHT (game rule).
+                const existing = paintings.get(targetSide);
+                if (existing && existing.actorId !== actorId) paintings.delete(targetSide);
+                if (targetSide === 2) {
+                    if (movedToSide !== 0) paintings.delete(0);
+                    if (movedToSide !== 1) paintings.delete(1);
+                }
+
+                // Place (or update) the new painting on the target side.
+                paintings.set(targetSide, {
+                    actorId, side: targetSide, dir, expression, paintingNoise,
+                });
+
+                activeSide = targetSide;
+                prevSide = targetSide;
             }
 
-            // Different speaker - clear existing paintings first
-            this.clearPaintings();
+            return { paintings, activeSide, dimAlpha };
+        },
 
-            const side = line.side !== undefined ? line.side : 2; // Default to center
-            const dir = line.dir !== undefined ? line.dir : 1; // Default to facing right
-            const expression = line.expression !== undefined ? String(line.expression) : '0';
-            const hasNoise = line.paintingNoise === true;
-            const paintingAlpha = line.painting?.alpha !== undefined ? line.painting.alpha : 1;
+        /**
+         * Reconcile the DOM with a target painting state. Paintings already
+         * matching by (side, actorId) are updated in place; mismatches are
+         * evicted and replaced. Opacity is set so the active speaker is fully
+         * visible (1.0) and every other painting is dimmed to dimAlpha.
+         */
+        applyPaintingState(target) {
+            const { paintings: targetMap, activeSide, dimAlpha } = target;
 
-            // Create new painting container
+            // Evict paintings that don't belong in the target state.
+            const currentSides = Array.from(this.paintingsBySide.keys());
+            for (const side of currentSides) {
+                const current = this.paintingsBySide.get(side);
+                const want = targetMap.get(side);
+                if (!want || want.actorId !== current.actorId) {
+                    this.evictSidePainting(side);
+                }
+            }
+
+            // Create or update paintings to match the target.
+            for (const [side, want] of targetMap) {
+                const current = this.paintingsBySide.get(side);
+                const expressionData = this.getExpressionData(want.actorId);
+                if (!expressionData) continue;
+
+                if (current && current.actorId === want.actorId) {
+                    // Same actor, same side — reuse the element and update fields.
+                    if (current.expression !== want.expression) {
+                        this.updatePaintingExpression(current.element, expressionData, want.expression);
+                        current.expression = want.expression;
+                    }
+                    if (current.dir !== want.dir) {
+                        current.element.dataset.dir = want.dir;
+                        current.dir = want.dir;
+                    }
+                    current.element.classList.toggle('painting-noise', want.paintingNoise);
+                } else {
+                    const container = this.createPaintingContainer({
+                        actorId: want.actorId,
+                        side: want.side,
+                        dir: want.dir,
+                        expressionData,
+                        expression: want.expression,
+                        hasNoise: want.paintingNoise,
+                        fadeInSec: 0.25,
+                    });
+                    this.elements.paintingLayer.appendChild(container);
+                    this.paintingsBySide.set(side, {
+                        actorId: want.actorId,
+                        element: container,
+                        expression: want.expression,
+                        side: want.side,
+                        dir: want.dir,
+                    });
+                }
+            }
+
+            // Apply speaker highlight: active = 1.0, others = dimAlpha.
+            //
+            // Newly-created containers were seeded with --painting-opacity: 0
+            // for fade-in. The browser may batch style writes into a single
+            // frame, which would skip the 0 state and show no animation. We
+            // force a layout read on the new containers to commit the 0, then
+            // set the real opacity so the CSS transition runs. Existing
+            // containers update immediately — no flash possible there.
+            this.activeSpeakerSide = activeSide;
+            for (const [side, p] of this.paintingsBySide) {
+                // Touch offsetHeight to flush the '0' baseline if present.
+                if (p.element.style.getPropertyValue('--painting-opacity') === '0') {
+                    void p.element.offsetHeight; // force reflow
+                }
+                const isActive = side === activeSide;
+                p.element.classList.toggle('active', isActive);
+                p.element.classList.toggle('inactive', !isActive);
+                p.element.style.setProperty('--painting-opacity', isActive ? 1 : dimAlpha);
+            }
+        },
+
+        /**
+         * Build a detached painting-container DOM node. Alpha is controlled
+         * entirely by --painting-opacity (set by applyPaintingState); this
+         * function only handles the initial fade-in from 0 to the target alpha.
+         */
+        createPaintingContainer({ actorId, side, dir, expressionData, expression,
+                                  hasNoise, fadeInSec }) {
             const container = document.createElement('div');
             container.className = 'painting-container';
             container.dataset.side = side;
             container.dataset.dir = dir;
             container.dataset.actorId = actorId;
-
             if (hasNoise) container.classList.add('painting-noise');
 
-            // Handle fade-in animation
-            const fadeTime = line.painting?.time;
-            if (fadeTime && fadeTime > 0) {
-                container.style.opacity = '0';
-                container.style.transition = `opacity ${fadeTime}s ease-in`;
-                // Trigger fade-in after next frame
-                requestAnimationFrame(() => {
-                    container.style.opacity = paintingAlpha < 1 ? paintingAlpha : '1';
-                });
-            } else if (paintingAlpha < 1) {
-                container.style.opacity = paintingAlpha;
+            if (fadeInSec && fadeInSec > 0) {
+                // Seed the custom property to 0 so the CSS-driven transition
+                // animates up to whatever applyPaintingState() sets next frame.
+                container.style.setProperty('--painting-opacity', 0);
+                container.style.transition = `opacity ${fadeInSec}s ease-in`;
             }
 
-            // Create image wrapper
             const wrapper = document.createElement('div');
             wrapper.className = 'painting-image-wrapper';
+            // Publish the painting's natural dimensions so CSS can compute a
+            // box that matches the rendered image exactly (see .painting-image-
+            // wrapper rules). Face overlay percentages are derived from these
+            // same dims, so aligning wrapper to image guarantees face placement.
+            if (expressionData.size && expressionData.size[0] && expressionData.size[1]) {
+                const [imgW, imgH] = expressionData.size;
+                wrapper.style.setProperty('--painting-w', String(imgW));
+                wrapper.style.setProperty('--painting-h', String(imgH));
+                wrapper.style.aspectRatio = `${imgW} / ${imgH}`;
+            }
 
-            // Create base image
             const baseImg = document.createElement('img');
             baseImg.className = 'painting-base';
             baseImg.src = expressionData.baseUrl;
             baseImg.alt = '';
             baseImg.loading = 'eager';
-
             wrapper.appendChild(baseImg);
 
-            // Create face overlay if expression data has face info
             if (expressionData.faces && expressionData.faces.length > 0) {
                 const faceImg = document.createElement('img');
                 faceImg.className = 'painting-face-overlay';
-
-                // Use the requested expression directly (story script knows which faces exist)
-                const faceId = expression;
                 const defaultFaceId = expressionData.faces[0] || '0';
-                faceImg.src = expressionData.faceUrlTemplate.replace('{faceId}', faceId);
+                faceImg.src = expressionData.faceUrlTemplate.replace('{faceId}', expression);
                 faceImg.alt = '';
                 faceImg.loading = 'eager';
 
-                // Fallback to default face if requested expression fails
-                faceImg.onerror = () => {
+                faceImg.addEventListener('error', () => {
                     const defaultSrc = expressionData.faceUrlTemplate.replace('{faceId}', defaultFaceId);
                     if (faceImg.src !== defaultSrc) {
                         faceImg.src = defaultSrc;
                     } else {
-                        // Default face also failed, hide overlay
                         faceImg.style.display = 'none';
                     }
-                };
+                }, { once: true });
 
-                // Apply face positioning after base image loads
-                baseImg.onload = () => {
-                    this.applyFaceOverlayPosition(faceImg, expressionData, baseImg);
-                };
+                // Positioning uses percentages, so we can set it immediately —
+                // no need to wait for the base image to load.
+                this.applyFaceOverlayPosition(faceImg, expressionData);
 
                 wrapper.appendChild(faceImg);
             }
 
             container.appendChild(wrapper);
-            container.classList.add('active');
-
-            // Add to layer
-            this.elements.paintingLayer.appendChild(container);
-
-            // Track this painting
-            this.activePaintings.set(actorId, {
-                element: container,
-                expression: expression,
-                side: side
-            });
+            return container;
         },
 
         /**
-         * Apply face overlay positioning based on expression data
+         * Fade out and remove the painting currently on `side`.
          */
-        applyFaceOverlayPosition(faceImg, expressionData, baseImg) {
-            if (!expressionData.box || !expressionData.size) return;
+        evictSidePainting(side) {
+            const existing = this.paintingsBySide.get(side);
+            if (!existing) return;
+            const el = existing.element;
+            el.style.transition = `opacity ${this.PAINTING_FADE_OUT_MS}ms ease-out`;
+            el.style.opacity = '0';
+            const removeAfter = this.PAINTING_FADE_OUT_MS + 20;
+            setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, removeAfter);
+            this.paintingsBySide.delete(side);
+        },
 
+        /**
+         * Apply face overlay positioning based on expression data.
+         *
+         * The face overlay is positioned relative to the painting-image-wrapper,
+         * which sizes itself to the rendered base image. Using percentages of the
+         * original image dimensions therefore maps 1:1 to percentages of the
+         * rendered image — it's automatic, aspect-ratio-correct, and doesn't
+         * depend on offsetWidth/offsetHeight being resolved at load time (which
+         * can return 0 or stale values if layout hasn't settled).
+         */
+        applyFaceOverlayPosition(faceImg, expressionData /*, baseImg */) {
+            if (!expressionData.box || !expressionData.size) return;
             const [x, y, w, h] = expressionData.box;
             const [imgW, imgH] = expressionData.size;
+            if (!imgW || !imgH) return;
 
-            // Calculate the scaling factor based on rendered image size
-            const renderedWidth = baseImg.offsetWidth;
-            const renderedHeight = baseImg.offsetHeight;
-            const scaleX = renderedWidth / imgW;
-            const scaleY = renderedHeight / imgH;
-
-            faceImg.style.left = `${x * scaleX}px`;
-            faceImg.style.top = `${y * scaleY}px`;
-            faceImg.style.width = `${w * scaleX}px`;
-            faceImg.style.height = `${h * scaleY}px`;
+            faceImg.style.left = `${(x / imgW) * 100}%`;
+            faceImg.style.top = `${(y / imgH) * 100}%`;
+            faceImg.style.width = `${(w / imgW) * 100}%`;
+            faceImg.style.height = `${(h / imgH) * 100}%`;
         },
 
         /**
@@ -1267,7 +1748,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (this.elements.paintingLayer) {
                 this.elements.paintingLayer.innerHTML = '';
             }
-            this.activePaintings.clear();
+            this.paintingsBySide.clear();
+            this.activeSpeakerSide = null;
         },
 
         // to determine if there is any non-option flag ahead that can be displayed
@@ -1286,75 +1768,418 @@ document.addEventListener('DOMContentLoaded', () => {
             return navInfo ? navInfo.next !== null : false;
         },
 
-        handleEffect(effects) {
-            effects?.forEach(effect => {
-                const duration = (effect.duration || 0.5) * 1000;
-                switch (effect.type) {
-                    case "shake":
-                        this.elements.viewerContainer.classList.add('shake');
-                        setTimeout(() => this.elements.viewerContainer.classList.remove('shake'), duration);
-                        break;
-                    case "flash":
-                        const flashEl = document.createElement('div');
-                        flashEl.className = 'flash';
-                        document.body.appendChild(flashEl);
-                        setTimeout(() => {
-                            if (flashEl.parentNode) {
-                                flashEl.parentNode.removeChild(flashEl);
-                            }
-                        }, 300);
-                        break;
-                    case "fadeout":
-                        if (this.elements.fadeOverlay) {
-                            this.elements.fadeOverlay.style.transitionDuration = `${duration / 1000}s`;
-                            showElement(this.elements.fadeOverlay, true);
-                        }
-                        break;
-                    case "fadein":
-                        if (this.elements.fadeOverlay) {
-                            this.elements.fadeOverlay.style.transitionDuration = `${duration / 1000}s`;
-                            hideElement(this.elements.fadeOverlay, true);
-                        }
-                        break;
-                    case "se":
-                        if (effect.audio) {
-                            // Limit concurrent sound effects to prevent memory issues
-                            const MAX_CONCURRENT_SFX = 3;
+        /**
+         * Cancel any in-flight line-level effects (shake/flashN/sfx). Called on
+         * non-advance renders so backward nav / jumps / resume don't leave a
+         * stale animation playing after the user has moved past its step.
+         */
+        clearLineEffects() {
+            // Shake (whole viewer)
+            const container = this.elements.viewerContainer;
+            if (container) {
+                clearTimeout(this._shakeTimer);
+                container.classList.remove('shake');
+                container.style.removeProperty('--shake-x');
+                container.style.removeProperty('--shake-y');
+                container.style.removeProperty('--shake-duration');
+                container.style.removeProperty('--shake-iterations');
+            }
+            // DialogShake (dialogue box only)
+            const dbox = this.elements.dialogueBox;
+            if (dbox) {
+                clearTimeout(this._dialogShakeTimer);
+                dbox.classList.remove('dialog-shake');
+                dbox.style.removeProperty('--dialog-shake-x');
+                dbox.style.removeProperty('--dialog-shake-duration');
+                dbox.style.removeProperty('--dialog-shake-iterations');
+            }
+            // FlashN
+            if (this._flashNAnims) {
+                this._flashNAnims.forEach(a => { try { a.cancel(); } catch (_) {} });
+                this._flashNAnims = null;
+            }
+            if (this._flashNTimers) {
+                this._flashNTimers.forEach(clearTimeout);
+                this._flashNTimers = null;
+            }
+            if (this._flashNOverlay) this._flashNOverlay.style.opacity = '0';
+            // Sound effect (cancel pending delayed SFX only; don't interrupt
+            // SFX already playing — those finish naturally via their own
+            // cleanup in playSfx).
+            if (this._sfxTimer) { clearTimeout(this._sfxTimer); this._sfxTimer = null; }
+        },
 
-                            // Clean up finished SFX
-                            this.activeSfx = this.activeSfx.filter(sfx => !sfx.ended && !sfx.paused);
+        /**
+         * Apply per-step screen shake from `line.shake`.
+         *
+         * Game data shape: { number, speed, y? }
+         *   number — how many shake cycles to play (999 means "very long")
+         *   speed  — small-int tier (0..5 observed); larger = faster cycles
+         *   y      — optional vertical amplitude in px (default 0)
+         *
+         * Previously the engine expected effects[].type === "shake" which NEVER
+         * appears in real data (all effects[] entries are {active, name} for
+         * named GameObject overlays). The old handler was dead code.
+         */
+        handleLineShake(line) {
+            const container = this.elements.viewerContainer;
+            if (!container) return;
 
-                            // If at limit, stop the oldest SFX
-                            if (this.activeSfx.length >= MAX_CONCURRENT_SFX) {
-                                const oldest = this.activeSfx.shift();
-                                oldest.pause();
-                                oldest.src = '';
-                            }
+            // Clear any prior shake first so we can re-apply cleanly.
+            clearTimeout(this._shakeTimer);
+            container.classList.remove('shake');
+            container.style.removeProperty('--shake-x');
+            container.style.removeProperty('--shake-y');
+            container.style.removeProperty('--shake-duration');
+            container.style.removeProperty('--shake-iterations');
 
-                            const sfx = new Audio(`${this.BGM_URL_PREFIX}${effect.audio}.ogg`);
-                            sfx.volume = this.audio.volume;
+            const s = line.shake;
+            if (!s || typeof s !== 'object') return;
 
-                            // Clean up audio resources after playback completes
-                            sfx.addEventListener('ended', () => {
-                                sfx.src = '';
-                                this.activeSfx = this.activeSfx.filter(s => s !== sfx);
-                            }, { once: true });
+            const number = Math.max(1, parseInt(s.number, 10) || 1);
+            const speed = Number.isFinite(s.speed) ? s.speed : 1;
+            const ampY = Number.isFinite(s.y) ? s.y : 0;
+            const ampX = this.SHAKE_DEFAULT_X_PX;
 
-                            this.activeSfx.push(sfx);
-                            sfx.play().catch(e => console.warn("SFX playback failed.", e));
-                        }
-                        break;
-                }
+            // Map speed tier to per-cycle duration. Higher speed = faster cycles.
+            // speed 0 → 520ms, 1 → 440ms, 2 → 360ms, 5 → 120ms (floor 100ms).
+            const perCycleMs = Math.max(100, 520 - speed * 80);
+            const totalMs = Math.min(this.SHAKE_MAX_TOTAL_MS, perCycleMs * number);
+
+            container.style.setProperty('--shake-x', `${ampX}px`);
+            container.style.setProperty('--shake-y', `${ampY}px`);
+            container.style.setProperty('--shake-duration', `${perCycleMs}ms`);
+            container.style.setProperty('--shake-iterations', String(number));
+            container.classList.add('shake');
+
+            this._shakeTimer = setTimeout(() => {
+                container.classList.remove('shake');
+                container.style.removeProperty('--shake-x');
+                container.style.removeProperty('--shake-y');
+                container.style.removeProperty('--shake-duration');
+                container.style.removeProperty('--shake-iterations');
+            }, totalMs + 20);
+        },
+
+        /**
+         * Dialogue-box shake from `line.dialogShake`.
+         *
+         * Game data shape: { number, speed, x, delay? }
+         *   number — cycles of back-and-forth movement
+         *   speed  — SECONDS per cycle (fractional, e.g., 0.08, 0.09, 0.12)
+         *            NOTE: completely different semantic from line.shake.speed
+         *   x      — horizontal amplitude in px (e.g., 8.5, 11, 15)
+         *   delay  — optional seconds before start
+         *
+         * Per dialoguestoryplayer.lua:303 this is `TweenMovex(dialogueWin, x,
+         * origX, speed, delay, number)` — it shakes the dialogue box WINDOW
+         * horizontally (not the whole screen). Used on emphatic lines to make
+         * the textbox jitter as characters shout.
+         */
+        handleLineDialogShake(line) {
+            const dbox = this.elements.dialogueBox;
+            if (!dbox) return;
+
+            clearTimeout(this._dialogShakeTimer);
+            dbox.classList.remove('dialog-shake');
+            dbox.style.removeProperty('--dialog-shake-x');
+            dbox.style.removeProperty('--dialog-shake-duration');
+            dbox.style.removeProperty('--dialog-shake-iterations');
+
+            const s = line.dialogShake;
+            if (!s || typeof s !== 'object') return;
+
+            const number = Math.max(1, parseInt(s.number, 10) || 1);
+            const speedSec = Number.isFinite(s.speed) && s.speed > 0 ? s.speed : 0.1;
+            const ampX = Number.isFinite(s.x) ? s.x : 10;
+            const delayMs = Math.max(0, (s.delay || 0) * 1000);
+            const perCycleMs = Math.max(40, speedSec * 1000);
+            const totalMs = perCycleMs * number;
+
+            const start = () => {
+                dbox.style.setProperty('--dialog-shake-x', `${ampX}px`);
+                dbox.style.setProperty('--dialog-shake-duration', `${perCycleMs}ms`);
+                dbox.style.setProperty('--dialog-shake-iterations', String(number));
+                // Force a reflow so re-adding the class restarts the animation
+                // even if the previous run hadn't fully ended yet.
+                void dbox.offsetHeight;
+                dbox.classList.add('dialog-shake');
+                this._dialogShakeTimer = setTimeout(() => {
+                    dbox.classList.remove('dialog-shake');
+                    dbox.style.removeProperty('--dialog-shake-x');
+                    dbox.style.removeProperty('--dialog-shake-duration');
+                    dbox.style.removeProperty('--dialog-shake-iterations');
+                }, totalMs + 20);
+            };
+
+            if (delayMs > 0) {
+                this._dialogShakeTimer = setTimeout(start, delayMs);
+            } else {
+                start();
+            }
+        },
+
+        /**
+         * Multi-phase color blink from `line.flashN`.
+         *
+         * Game data shape: { alpha: [[from, to, dur, delay?], ...], color: [r,g,b] | [r,g,b,a] }
+         *   Each alpha entry is one phase: tween opacity from→to over dur
+         *   seconds, starting after `delay` seconds (cumulative from t=0, not
+         *   between phases — verified against sample data where delays grow
+         *   monotonically: 0, 0.2, 0.4, 0.6).
+         *   color is normalized RGB(A) 0..1.
+         *
+         * Uses the dedicated flash-overlay element to avoid conflicting with
+         * flashout/flashin curtains (which use story-flash-overlay).
+         */
+        handleLineFlashN(line) {
+            // Cancel any previous flashN animation.
+            if (this._flashNAnims) {
+                this._flashNAnims.forEach(a => { try { a.cancel(); } catch (_) {} });
+                this._flashNAnims = null;
+            }
+            if (this._flashNTimers) {
+                this._flashNTimers.forEach(clearTimeout);
+                this._flashNTimers = null;
+            }
+
+            const fn = line.flashN;
+            if (!fn || !Array.isArray(fn.alpha) || fn.alpha.length === 0) {
+                // Hide any lingering flashN overlay.
+                if (this._flashNOverlay) this._flashNOverlay.style.opacity = '0';
+                return;
+            }
+
+            const overlay = this._ensureFlashNOverlay();
+            const c = Array.isArray(fn.color) ? fn.color : [1, 1, 1];
+            const r = Math.round((c[0] ?? 1) * 255);
+            const g = Math.round((c[1] ?? 1) * 255);
+            const b = Math.round((c[2] ?? 1) * 255);
+            const a = c[3] != null ? c[3] : 1;
+            overlay.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${a})`;
+
+            this._flashNAnims = [];
+            this._flashNTimers = [];
+            const lineDelay = Math.max(0, (fn.delay || 0) * 1000);
+
+            let maxEndMs = 0;
+            fn.alpha.forEach((phase) => {
+                if (!Array.isArray(phase) || phase.length < 3) return;
+                const [from, to, durSec, delaySec] = phase;
+                const durMs = Math.max(0, (durSec || 0) * 1000);
+                const startMs = lineDelay + Math.max(0, (delaySec || 0) * 1000);
+                if (durMs === 0) return;
+                if (startMs + durMs > maxEndMs) maxEndMs = startMs + durMs;
+
+                const startTimer = setTimeout(() => {
+                    overlay.style.opacity = String(from);
+                    const anim = overlay.animate(
+                        [{ opacity: from }, { opacity: to }],
+                        { duration: durMs, easing: 'ease-in-out', fill: 'forwards' }
+                    );
+                    this._flashNAnims?.push(anim);
+                    anim.onfinish = () => { overlay.style.opacity = String(to); };
+                }, startMs);
+                this._flashNTimers.push(startTimer);
             });
+
+            // Cap total so runaway configurations don't leave the screen tinted.
+            if (maxEndMs > this.FLASH_MAX_TOTAL_MS) maxEndMs = this.FLASH_MAX_TOTAL_MS;
+            const cleanupTimer = setTimeout(() => {
+                overlay.style.opacity = '0';
+            }, maxEndMs + 50);
+            this._flashNTimers.push(cleanupTimer);
+        },
+
+        _ensureFlashNOverlay() {
+            if (this._flashNOverlay) return this._flashNOverlay;
+            const el = document.createElement('div');
+            el.className = 'story-flashn-overlay';
+            el.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(el);
+            this._flashNOverlay = el;
+            return el;
+        },
+
+        /**
+         * Play `line.soundeffect` after `line.seDelay` seconds.
+         *
+         * FMOD event paths ('event:/battle/boom2') can't be loaded as web audio
+         * — they reference FMOD Studio event IDs compiled into the game's audio
+         * bank. We skip those and play only plain ID paths. (The existing
+         * playSfx URL convention is `${BGM_URL_PREFIX}${id}.ogg`.)
+         */
+        handleLineSoundEffect(line) {
+            if (this._sfxTimer) { clearTimeout(this._sfxTimer); this._sfxTimer = null; }
+            const sfxId = line.soundeffect;
+            if (!sfxId || typeof sfxId !== 'string') return;
+            if (sfxId.startsWith('event:/')) return; // FMOD event — not available
+            const delayMs = Math.max(0, (line.seDelay || 0) * 1000);
+            if (delayMs === 0) {
+                this.playSfx(sfxId);
+            } else {
+                this._sfxTimer = setTimeout(() => {
+                    this._sfxTimer = null;
+                    this.playSfx(sfxId);
+                }, delayMs);
+            }
+        },
+
+        /**
+         * Handle step-level flashout/flashin curtain transitions.
+         *
+         * In the game, `flashout` fades a black (or white) full-screen curtain
+         * IN at the start of a step — darkening the screen while the new scene
+         * loads — and `flashin` fades it OUT afterwards (with an optional delay)
+         * to reveal the new scene. They're top-level line fields, distinct from
+         * the per-effect `effects[].type = "fadeout"/"fadein"` flow.
+         *
+         * We replicate that sequencing with a dedicated full-screen overlay
+         * animated via `Element.animate()` so we can cancel mid-animation when
+         * the user advances past a still-transitioning step.
+         */
+        /**
+         * Cancel any in-flight flash animations/timers and reset the overlay
+         * to transparent. Used on non-advance renders (back nav, jumps,
+         * resume) so we never leave the screen stuck at a mid-fade opacity.
+         */
+        clearFlashOverlay() {
+            if (this._flashAnims) {
+                this._flashAnims.forEach(a => { try { a.cancel(); } catch (_) {} });
+                this._flashAnims = null;
+            }
+            if (this._flashTimers) {
+                this._flashTimers.forEach(clearTimeout);
+                this._flashTimers = null;
+            }
+            if (this._flashOverlay) this._flashOverlay.style.opacity = '0';
+        },
+
+        handleLineFlash(line) {
+            // Cancel any in-flight flash from a previous step. Without this a
+            // rapid Next-click can leave the screen stuck at a mid-fade opacity.
+            if (this._flashAnims) {
+                this._flashAnims.forEach(a => { try { a.cancel(); } catch (_) {} });
+                this._flashAnims = null;
+            }
+            if (this._flashTimers) {
+                this._flashTimers.forEach(clearTimeout);
+                this._flashTimers = null;
+            }
+
+            if (!line.flashout && !line.flashin) {
+                // Also ensure the overlay is fully hidden in case a prior cancel
+                // left it partially opaque.
+                if (this._flashOverlay) this._flashOverlay.style.opacity = '0';
+                return;
+            }
+
+            const overlay = this._ensureFlashOverlay();
+            this._flashAnims = [];
+            this._flashTimers = [];
+
+            let offset = 0; // ms since this call
+
+            const schedulePhase = (spec) => {
+                const a = spec.alpha || [0, 1];
+                const durMs = Math.max(0, (spec.dur || 0.5) * 1000);
+                const color = spec.black ? 'rgb(0,0,0)' : 'rgb(255,255,255)';
+                const startAt = offset;
+                // We queue the start with setTimeout so phases run sequentially.
+                const startTimer = setTimeout(() => {
+                    overlay.style.backgroundColor = color;
+                    // Pin the starting opacity before the animation so we don't
+                    // see a flash of the wrong intensity.
+                    overlay.style.opacity = String(a[0]);
+                    const anim = overlay.animate(
+                        [{ opacity: a[0] }, { opacity: a[1] }],
+                        { duration: durMs, easing: 'linear', fill: 'forwards' }
+                    );
+                    this._flashAnims?.push(anim);
+                    anim.onfinish = () => {
+                        // Commit the end opacity inline so removing `fill` later
+                        // won't snap the overlay back.
+                        overlay.style.opacity = String(a[1]);
+                    };
+                }, startAt);
+                this._flashTimers.push(startTimer);
+                offset += durMs;
+            };
+
+            if (line.flashout) schedulePhase(line.flashout);
+
+            if (line.flashin) {
+                const delayMs = Math.max(0, (line.flashin.delay || 0) * 1000);
+                offset += delayMs;
+                schedulePhase(line.flashin);
+            }
+        },
+
+        _ensureFlashOverlay() {
+            if (this._flashOverlay) return this._flashOverlay;
+            const el = document.createElement('div');
+            el.className = 'story-flash-overlay';
+            el.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(el);
+            this._flashOverlay = el;
+            return el;
+        },
+
+        /**
+         * Play a short sound effect with bounded concurrency and guaranteed cleanup.
+         * SFX that fail to decode or never fire 'ended' are still released via a
+         * timeout fallback so the activeSfx array cannot grow unbounded.
+         */
+        playSfx(audioId) {
+            const MAX_CONCURRENT_SFX = 3;
+            const MAX_SFX_LIFETIME_MS = 15000;
+
+            // Release any SFX that have fully finished. We do NOT release paused-but-not-ended
+            // ones here — those are still considered active until their own cleanup fires.
+            this.activeSfx = this.activeSfx.filter(sfx => !sfx.ended);
+
+            // If at concurrency cap, evict the oldest.
+            if (this.activeSfx.length >= MAX_CONCURRENT_SFX) {
+                const oldest = this.activeSfx.shift();
+                if (oldest._cleanup) oldest._cleanup();
+            }
+
+            const sfx = new Audio(`${this.BGM_URL_PREFIX}${audioId}.ogg`);
+            sfx.volume = this.audio.volume;
+
+            let released = false;
+            const cleanup = () => {
+                if (released) return;
+                released = true;
+                try { sfx.pause(); } catch (_) { /* ignore */ }
+                sfx.src = '';
+                clearTimeout(timeoutId);
+                this.activeSfx = this.activeSfx.filter(s => s !== sfx);
+            };
+            sfx._cleanup = cleanup;
+
+            sfx.addEventListener('ended', cleanup, { once: true });
+            sfx.addEventListener('error', cleanup, { once: true });
+            const timeoutId = setTimeout(cleanup, MAX_SFX_LIFETIME_MS);
+
+            this.activeSfx.push(sfx);
+            sfx.play().catch(e => { console.warn("SFX playback failed.", e); cleanup(); });
         },
 
         handleBgm(bgmName) {
             toggleElement(this.elements.audioPlayerContainer, !!bgmName);
 
             if (bgmName && bgmName !== this.currentBgm) {
-                this.currentBgm = bgmName;
-                this.audio.src = `${this.BGM_URL_PREFIX}${bgmName}.ogg`;
-                this.audio.play().catch(e => console.warn("Audio playback failed.", e));
+                const requested = bgmName;
+                this.audio.src = `${this.BGM_URL_PREFIX}${requested}.ogg`;
+                this.audio.play()
+                    .then(() => { this.currentBgm = requested; })
+                    .catch(e => {
+                        // Playback failed (autoplay policy, network, etc.) — keep currentBgm null
+                        // so a retry can re-attempt this track next time handleBgm is called.
+                        this.currentBgm = null;
+                        console.warn("Audio playback failed.", e);
+                    });
             } else if (!bgmName && this.currentBgm) {
                 this.currentBgm = null;
                 this.audio.pause();
@@ -1413,18 +2238,26 @@ document.addEventListener('DOMContentLoaded', () => {
         showFullScript() {
             if (!this.currentStoryScript || this.currentStoryScript.length === 0) return;
 
-            // Use cached script if available
+            // Build the full-script DOM once per story, then clone-mount on subsequent opens.
             if (!this.cachedFullScript) {
-                this.cachedFullScript = this.currentStoryScript
-                    .filter(line => line.say && line.say.trim() !== "")
-                    .map(line => {
-                        const actorInfo = this.getActorInfo(line);
-                        const dialogue = line.say.replace(/<.*?>/g, '');
-                        return `<p><strong>${actorInfo.name || 'Narrator'}:</strong> ${dialogue}</p>`;
-                    }).join('');
+                const frag = document.createDocumentFragment();
+                this.currentStoryScript.forEach(line => {
+                    if (!line.say || line.say.trim() === '') return;
+                    const actorInfo = this.getActorInfo(line);
+                    const p = document.createElement('p');
+                    const strong = document.createElement('strong');
+                    strong.textContent = `${actorInfo.name || 'Narrator'}:`;
+                    p.appendChild(strong);
+                    p.appendChild(document.createTextNode(
+                        ' ' + line.say.replace(/<.*?>/g, '')
+                    ));
+                    frag.appendChild(p);
+                });
+                this.cachedFullScript = frag;
             }
 
-            this.elements.fullScriptContent.innerHTML = this.cachedFullScript;
+            this.elements.fullScriptContent.textContent = '';
+            this.elements.fullScriptContent.appendChild(this.cachedFullScript.cloneNode(true));
             showElement(this.elements.scriptModalOverlay);
         },
         hideFullScript() { hideElement(this.elements.scriptModalOverlay); },
@@ -1432,11 +2265,31 @@ document.addEventListener('DOMContentLoaded', () => {
         showSummaryModal(eventId) {
             const data = this.storylineSummaryData[eventId];
             if (!data) return;
-            let keycharHtml = '';
-            if (data.keychar && Array.isArray(data.keychar)) {
-                keycharHtml = `<h3>${data.keychar[0]}</h3><ul>${data.keychar.slice(1).map(item => `<li>${item}</li>`).join('')}</ul>`;
+
+            const content = this.elements.summaryModalContent;
+            content.textContent = '';
+
+            const h2 = document.createElement('h2');
+            h2.textContent = data.title || '';
+            content.appendChild(h2);
+
+            const p = document.createElement('p');
+            p.textContent = data.summary || '';
+            content.appendChild(p);
+
+            if (Array.isArray(data.keychar) && data.keychar.length > 0) {
+                const h3 = document.createElement('h3');
+                h3.textContent = data.keychar[0];
+                content.appendChild(h3);
+                const ul = document.createElement('ul');
+                for (let i = 1; i < data.keychar.length; i++) {
+                    const li = document.createElement('li');
+                    li.textContent = data.keychar[i];
+                    ul.appendChild(li);
+                }
+                content.appendChild(ul);
             }
-            this.elements.summaryModalContent.innerHTML = `<h2>${data.title}</h2><p>${data.summary}</p>${keycharHtml}`;
+
             showElement(this.elements.summaryModalOverlay);
         },
         hideSummaryModal() { hideElement(this.elements.summaryModalOverlay); },

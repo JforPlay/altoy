@@ -449,26 +449,48 @@ body {
 
 .painting-image-wrapper {
   position: relative;
-  display: inline-block;
+  display: block;
   line-height: 0;
+  /* The wrapper is what the face overlay's percentage positioning is
+     measured against, so it MUST match the rendered painting box exactly.
+     We achieve that by:
+       (1) height: 100% anchors the wrapper to the layer's height;
+       (2) aspect-ratio: W/H (set inline from the painting's natural dims)
+           derives wrapper width = height * W/H;
+       (3) max-width: <vw> (per-side below) can clamp width;
+       (4) max-height: calc(max-width * H/W) clamps HEIGHT in lock-step
+           with max-width so the aspect-ratio is preserved when width is
+           the tighter constraint — without this, max-width would clamp
+           width while height stayed at 100%, breaking the ratio.
+     --painting-w/--painting-h are set inline by the engine. */
   height: 100%;
+  aspect-ratio: var(--painting-w, 1) / var(--painting-h, 1);
+  /* max-width / max-height set per-side below */
 }
 
 .painting-base {
   display: block;
+  /* Fill the wrapper exactly. Wrapper's aspect-ratio + size constraints
+     guarantee this matches the painting's natural aspect — no letterboxing
+     under normal conditions. object-fit is defensive. */
+  width: 100%;
   height: 100%;
-  width: auto;
   object-fit: contain;
 }
 
-/* Side-specific width constraints */
-.painting-container[data-side="0"] .painting-base,
-.painting-container[data-side="1"] .painting-base {
+/* Side-specific size constraints — live on the wrapper so its box (and
+   therefore the face overlay coordinate space) matches the painting. The
+   paired max-width + max-height keeps the aspect-ratio intact when either
+   constraint bites. */
+.painting-container[data-side="0"] .painting-image-wrapper,
+.painting-container[data-side="1"] .painting-image-wrapper {
   max-width: 45vw;
+  max-height: calc(45vw * var(--painting-h, 1) / var(--painting-w, 1));
 }
 
-.painting-container[data-side="2"] .painting-base {
+.painting-container[data-side="2"] .painting-image-wrapper {
   max-width: 70vw;
+  max-height: calc(70vw * var(--painting-h, 1) / var(--painting-w, 1));
 }
 
 .painting-face-overlay {
@@ -617,20 +639,15 @@ body {
   }
 }
 
-/* Active speaker highlight - inactive speakers are dimmed */
-.painting-container.inactive {
-  opacity: 1 !important;
-  filter: none !important;
-}
-
-.painting-container.active {
-  opacity: 1 !important;
-  filter: none !important;
-}
-
-/* Entrance animation for new paintings */
+/* Active speaker highlight — paintings persist per side; the non-speaker(s)
+   are dimmed to the step's painting.alpha so the audience knows who's talking.
+   The engine sets --painting-opacity to 1 for the active speaker and to the
+   current step's painting.alpha for everyone else. The CSS transition animates
+   the hand-off. */
 .painting-container {
-  /* animation removed to prevent fade-in/dimming perception */
+  --painting-opacity: 1;
+  opacity: var(--painting-opacity);
+  transition: opacity 0.3s ease-out;
 }
 
 @keyframes paintingEnter {
@@ -881,6 +898,44 @@ body {
   cursor: not-allowed;
 }
 
+/* Branch-end hint: shown when the player has reached the end of a
+   branch but the underlying script still has other branches to explore. */
+.branch-end-hint {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(5rem + 1.5rem); /* sits just above the nav-arrows row */
+  padding: 0.5rem 1rem;
+  background-color: color-mix(in srgb, var(--primary-color) 88%, black);
+  color: #fff;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  z-index: 5;
+  pointer-events: none;
+  max-width: 92vw;
+  text-align: center;
+}
+
+/* Auto-play toggle: when active, tint with the accent-blue so it's clear the
+   story is advancing on a timer. Using accent-blue (not --primary-color)
+   avoids the dark-mode contrast problem where --primary-color resolves to
+   a light silver (#c0c0c0) that washes out against white text and makes
+   the button look disabled or hidden. */
+.auto-play-btn.active {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #fff;
+  opacity: 1;
+}
+
+.auto-play-btn.active:hover {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #fff;
+  opacity: 0.9;
+}
+
 /* --- Audio Player --- */
 .audio-player-container {
   display: flex;
@@ -1123,7 +1178,33 @@ body {
 }
 
 .shake {
-  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  /* Amplitude, per-cycle duration, and iteration count all come from the
+     engine via inline --shake-* vars (set from line.shake = {number, speed,
+     y}). Defaults cover the case where .shake is added without them. */
+  --shake-x: 10px;
+  --shake-y: 0px;
+  --shake-duration: 440ms;
+  --shake-iterations: 1;
+  animation: story-shake-dynamic var(--shake-duration) cubic-bezier(0.36, 0.07, 0.19, 0.97) var(--shake-iterations) both;
+}
+
+/* Dialog-box horizontal shake driven by line.dialogShake. A smooth symmetric
+   back-and-forth pan — matches the game's TweenMovex(dialogueWin, x, origX,
+   speed, delay, number). Amplitude / duration / iterations come from inline
+   --dialog-shake-* vars set by the engine. */
+.dialog-shake {
+  --dialog-shake-x: 10px;
+  --dialog-shake-duration: 100ms;
+  --dialog-shake-iterations: 1;
+  animation: story-dialog-shake var(--dialog-shake-duration) ease-in-out var(--dialog-shake-iterations) both;
+}
+
+@keyframes story-dialog-shake {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(var(--dialog-shake-x)); }
+  50%  { transform: translateX(0); }
+  75%  { transform: translateX(calc(var(--dialog-shake-x) * -1)); }
+  100% { transform: translateX(0); }
 }
 
 .flash {
@@ -1134,7 +1215,34 @@ body {
   height: 100vh;
   background-color: white;
   z-index: 9999;
-  animation: flash-anim 0.3s ease-out;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.flash.flash-black {
+  background-color: black;
+}
+
+/* Step-level flashout/flashin curtain. One overlay, animated via JS. */
+.story-flash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0;
+  background-color: rgb(0, 0, 0);
+}
+
+/* Color blink overlay for line.flashN — distinct from the flashout/flashin
+   curtain so color flashes don't collide with scene transitions. Lower
+   z-index than story-flash-overlay so the curtain can dominate. */
+.story-flashn-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  pointer-events: none;
+  opacity: 0;
+  background-color: rgba(255, 255, 255, 0);
 }
 
 /* --- Keyframe Animations --- */
@@ -1157,7 +1265,16 @@ body {
   }
 }
 
-/* @keyframes shake — moved to theme.css */
+/* Story-viewer uses a dynamic shake keyframe that reads amplitude from CSS
+   custom properties (--shake-x / --shake-y) so each story effect can set its
+   own intensity. The global @keyframes shake in theme.css is kept for other
+   pages that rely on its fixed-amplitude behavior. */
+@keyframes story-shake-dynamic {
+  10%, 90% { transform: translate3d(calc(var(--shake-x) * -0.1), calc(var(--shake-y) * -0.1), 0); }
+  20%, 80% { transform: translate3d(calc(var(--shake-x) *  0.2), calc(var(--shake-y) *  0.2), 0); }
+  30%, 50%, 70% { transform: translate3d(calc(var(--shake-x) * -0.4), calc(var(--shake-y) * -0.4), 0); }
+  40%, 60% { transform: translate3d(calc(var(--shake-x) *  0.4), calc(var(--shake-y) *  0.4), 0); }
+}
 
 @keyframes flash-anim {
   from {
@@ -1265,12 +1382,14 @@ body {
     height: calc(100% - 5rem - 14rem); /* More space for dialogue on mobile */
   }
 
-  .painting-container[data-side="0"] .painting-base,
-  .painting-container[data-side="1"] .painting-base {
+  .painting-container[data-side="0"] .painting-image-wrapper,
+  .painting-container[data-side="1"] .painting-image-wrapper {
     max-width: 50vw;
+    max-height: calc(50vw * var(--painting-h, 1) / var(--painting-w, 1));
   }
 
-  .painting-container[data-side="2"] .painting-base {
+  .painting-container[data-side="2"] .painting-image-wrapper {
     max-width: 85vw;
+    max-height: calc(85vw * var(--painting-h, 1) / var(--painting-w, 1));
   }
 }

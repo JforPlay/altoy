@@ -399,6 +399,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Disconnect the observer when the page is torn down so it doesn't leak
+  // across SPA navigations and fire on stale grids.
+  window.addEventListener('pagehide', () => observer.disconnect(), { once: true });
+
   // If data is already present very early, render immediately
   if (
     window.StoryViewer &&
