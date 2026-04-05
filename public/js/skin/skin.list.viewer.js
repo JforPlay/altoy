@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!entry) continue;
 
                     const visible =
-                        (!searchTerm || skin['함순이 이름']?.toLowerCase().includes(searchTerm)) &&
+                        (!searchTerm || skin['함순이 이름']?.toLowerCase().includes(searchTerm) || skin['한글 함순이 + 스킨 이름']?.toLowerCase().includes(searchTerm)) &&
                         (!filters.ex || skin['ex_chat_status'] === 1) &&
                         this._checkSkinType(skin, filters.type) &&
                         (filters.faction === 'all' || skin['진영'] === filters.faction) &&
@@ -935,8 +935,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Build all cards once (no more per-filter DOM recreation)
             Renderer.buildAll(allSkins);
 
-            const uniqueShipNames = [...new Set(allSkins.map(skin => skin['함순이 이름']))].sort();
-            fuse = createSearchIndex(uniqueShipNames.map(name => ({ name })), fuseOptions);
+            const uniqueNames = [...new Set(allSkins.map(skin => skin['한글 함순이 + 스킨 이름']))].sort();
+            fuse = createSearchIndex(uniqueNames.map(name => ({ name })), fuseOptions);
 
             // Initialize cart badge
             CartManager.updateBadge();
