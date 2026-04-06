@@ -1,3 +1,5 @@
+/* ===== CSS Variables ===== */
+
 * {
   margin: 0;
   padding: 0;
@@ -17,7 +19,8 @@
   --title-gradient-end: #64748b;
 }
 
-/* Dark mode color overrides */
+/* ===== Dark Mode Overrides ===== */
+
 body.dark-mode {
   --bg-dark: #0f172a;
   --bg-medium: #1e293b;
@@ -28,6 +31,8 @@ body.dark-mode {
   --title-gradient-start: #e2e8f0;
   --title-gradient-end: #94a3b8;
 }
+
+/* ===== Base / Header ===== */
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
@@ -68,6 +73,8 @@ body {
   color: var(--text-muted);
 }
 
+/* ===== Controls / Search ===== */
+
 .controls {
   display: flex;
   justify-content: center;
@@ -96,9 +103,7 @@ body {
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-.layout-toggle {
-  display: none;
-}
+/* ===== Gallery Grid ===== */
 
 .gallery {
   max-width: 1400px;
@@ -180,6 +185,8 @@ body {
 .gallery-item:hover .caption {
   transform: translateY(0);
 }
+
+/* ===== Lightbox ===== */
 
 .lightbox {
   display: none;
@@ -263,6 +270,8 @@ body {
   font-size: 1rem;
 }
 
+/* ===== Loading State / Spinner ===== */
+
 .loading {
   position: fixed;
   top: 50%;
@@ -292,6 +301,8 @@ body {
     transform: rotate(360deg);
   }
 }
+
+/* ===== Responsive / Media Queries ===== */
 
 @media (max-width: 768px) {
   .gallery {

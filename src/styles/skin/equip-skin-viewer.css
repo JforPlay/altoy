@@ -1,4 +1,4 @@
-/* === Theme Sidebar === */
+/* ===== Theme Sidebar ===== */
 .esv-content {
     display: grid;
     grid-template-columns: 260px 1fr;
@@ -83,7 +83,7 @@
     border-radius: var(--radius-sm);
 }
 
-/* === Skin Info Bar === */
+/* ===== Skin Info Bar ===== */
 .esv-skin-info {
     margin-bottom: var(--spacing-md);
 }
@@ -144,7 +144,7 @@
     flex-shrink: 0;
 }
 
-/* === Skin Grid === */
+/* ===== Skin Grid ===== */
 .esv-skin-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
@@ -202,7 +202,7 @@
     width: 100%;
 }
 
-/* === Mobile === */
+/* ===== Responsive / Mobile ===== */
 @media (max-width: 768px) {
     .esv-content {
         grid-template-columns: 1fr;

@@ -494,69 +494,6 @@
 .rarity-4 { background: #9C27B0; color: #fff; }
 .rarity-5 { background: #FFD700; color: #1a1d23; }
 
-/* Menu Planner Control */
-.menu-planner-control {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--island-spacing-md);
-    background: var(--island-surface);
-    padding: var(--island-spacing-sm);
-    border-radius: var(--island-radius-md);
-}
-
-.menu-planner-control label {
-    font-size: var(--island-text-sm);
-    font-weight: 600;
-    color: var(--island-text-secondary);
-}
-
-.planner-qty-control {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.planner-qty-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: 1px solid var(--island-border);
-    background: var(--island-bg);
-    color: var(--island-text-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: var(--island-transition);
-}
-
-.planner-qty-btn:hover {
-    background: var(--island-accent);
-    color: #fff;
-    border-color: var(--island-accent);
-}
-
-.planner-qty-btn .material-symbols-outlined {
-    font-size: 16px;
-}
-
-.planner-qty-input {
-    width: 60px;
-    height: 28px;
-    text-align: center;
-    border: 1px solid var(--island-border);
-    border-radius: var(--island-radius-sm);
-    background: var(--island-bg);
-    color: var(--island-text-primary);
-    font-weight: 600;
-}
-
-.planner-qty-input:focus {
-    outline: none;
-    border-color: var(--island-accent);
-}
-
 /* Profit Summary */
 .profit-summary {
     display: flex;

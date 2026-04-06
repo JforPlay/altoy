@@ -575,74 +575,7 @@ body.dark-mode .poll-box:hover {
   font-weight: bold;
 }
 
-/* --- Light-mode-only style additions (elements styled from skin.common.css in dark mode) --- */
-.vote-count-number {
-  color: var(--primary-color);
-}
-
-.info-text {
-  color: var(--text-muted);
-}
-
-.vote-btn {
-  box-shadow: 0px 4px 12px rgba(0, 113, 235, 0.2);
-}
-
-.selected-indicator {
-  color: var(--text-muted);
-}
-
-.stat-value {
-  color: var(--primary-color);
-}
-
-.vote-date-label {
-  color: var(--text-muted);
-}
-
-.vote-date {
-  color: var(--warning-color);
-}
-
-.toggle-stats-btn {
-  color: var(--primary-color);
-}
-
-.toggle-stats-btn:hover {
-  color: var(--primary-hover);
-}
-
-.toggle-stats-btn.active {
-  color: var(--success-color);
-  text-shadow: none;
-}
-
-.selected-skin-name {
-  color: var(--success-color);
-}
-
-.form-disclaimer {
-  color: var(--text-muted);
-}
-
-.submit-vote-btn {
-  background-color: var(--primary-color);
-}
-
-.submit-vote-btn:hover:not(:disabled) {
-  background-color: var(--primary-hover);
-}
-
-.cancel-vote-btn {
-  background-color: var(--danger-color);
-}
-
-.cancel-vote-btn:hover:not(:disabled) {
-  background-color: var(--danger-hover);
-}
-
 /* --- Loading & Empty States --- */
-.loading-indicator,
 .no-results {
   color: var(--text-muted);
   text-align: center;
@@ -669,59 +602,6 @@ body.dark-mode .poll-box:hover {
 
 .skeleton-card .skeleton-line.short {
   width: 60%;
-}
-
-/* --- Notifications --- */
-.notification {
-  position: fixed;
-  top: 1.25rem;
-  right: 1.25rem;
-  padding: 0.9375rem 1.25rem;
-  border-radius: var(--radius-md);
-  font-size: 1em;
-  font-weight: bold;
-  color: var(--text-primary);
-  z-index: 2000;
-  box-shadow: var(--shadow-lg);
-  animation: slideIn 0.3s ease-out forwards;
-}
-
-.notification-info {
-  background-color: var(--info-color);
-}
-
-.notification-success {
-  background-color: var(--success-color);
-}
-
-.notification-error {
-  background-color: var(--danger-color);
-}
-
-.notification.hide {
-  animation: slideOut 0.3s ease-out forwards;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(25rem);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideOut {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(25rem);
-    opacity: 0;
-  }
 }
 
 /* --- Responsive Design (Mobile) --- */

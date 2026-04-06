@@ -1,4 +1,5 @@
-/* Detail View */
+/* ===== Detail View Header / Navigation ===== */
+
 .detail-view-header {
   max-width: 1000px;
   margin: 0 auto 1.25rem auto;
@@ -120,7 +121,8 @@ body.dark-mode .back-button:hover:not(:disabled) {
   gap: 0.5rem;
 }
 
-/* Info Grid */
+/* ===== Info Grid ===== */
+
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(8.125rem, 1fr));
@@ -151,7 +153,8 @@ body.dark-mode .back-button:hover:not(:disabled) {
   transition: color 0.3s;
 }
 
-/* Unified Section Style */
+/* ===== Unified Section Style ===== */
+
 .gift-section,
 .stat-controls,
 .stats-section,
@@ -164,7 +167,8 @@ body.dark-mode .back-button:hover:not(:disabled) {
   transition: background 0.3s, box-shadow 0.3s;
 }
 
-/* Gift Section */
+/* ===== Gift Section ===== */
+
 .gift-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -221,9 +225,3 @@ body.dark-mode .back-button:hover:not(:disabled) {
   box-shadow: 0 4px 12px var(--shadow-hover);
 }
 
-.gift-placeholder {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}

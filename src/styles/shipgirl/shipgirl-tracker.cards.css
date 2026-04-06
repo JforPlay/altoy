@@ -1,4 +1,4 @@
-/* --- Ship List --- */
+/* ===== Ship Card Grid ===== */
 #ship-list-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -67,6 +67,8 @@
   font-size: 0.7rem;
 }
 
+/* ===== Rarity Colors ===== */
+
 /* Rarity styles - ONLY for shipgirl card badges, NOT for filters */
 .info-section .rarity-N {
   background-color: var(--rarity-n);
@@ -105,7 +107,7 @@
   }
 }
 
-/* --- Description Section --- */
+/* ===== Description Section ===== */
 .description-section {
   width: 100%;
   text-align: left;
@@ -137,7 +139,7 @@
   padding: 1px 0;
 }
 
-/* --- Stat Info (입수/120렙 attr on card) --- */
+/* ===== Stat Info ===== */
 .stat-info {
   width: 100%;
   font-size: 0.65rem;
@@ -181,7 +183,7 @@
   flex-shrink: 0;
 }
 
-/* --- Dark Mode Overrides --- */
+/* ===== Dark Mode Overrides ===== */
 body.dark-mode .ship-card {
   box-shadow: 0 2px 4px var(--shadow-color);
 }

@@ -2,12 +2,6 @@
    11. CROSS-TAB LINKS & FOREST VIEW
    ========================================================================== */
 
-.resource-utility-bar {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-}
-
 .ghost-btn {
     display: inline-flex;
     align-items: center;

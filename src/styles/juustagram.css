@@ -1,4 +1,5 @@
-/* --- Root & Theme Variables --- */
+/* ===== CSS Variables ===== */
+
 :root {
     /* Light Mode */
     --bg-color: #f0f2f5;
@@ -41,7 +42,8 @@ body.dark-mode {
     --shadow-color: rgba(0, 0, 0, 0.3);
 }
 
-/* --- General Body and Layout Styles --- */
+/* ===== Base / Layout ===== */
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg-color);
@@ -61,7 +63,8 @@ body > header {
     color: var(--text-color);
 }
 
-/* --- Filter Styles --- */
+/* ===== Filters ===== */
+
 .filters-container {
     max-width: 1400px;
     margin: 0 auto 20px auto;
@@ -165,7 +168,8 @@ body > header {
     transform: scale(0.98);
 }
 
-/* --- Main Layout --- */
+/* ===== Main Layout ===== */
+
 .main-container {
     display: flex;
     flex-wrap: wrap;
@@ -174,7 +178,8 @@ body > header {
     margin: 0 auto;
 }
 
-/* --- Gallery View Styles --- */
+/* ===== Gallery (Character List) ===== */
+
 .gallery-container {
     flex: 1;
     min-width: 300px;
@@ -241,7 +246,8 @@ body > header {
     box-shadow: 0 0 8px color-mix(in srgb, var(--accent-border) 50%, transparent);
 }
 
-/* --- Post Display Styles --- */
+/* ===== Post Display ===== */
+
 #post-display-wrapper {
     flex: 2;
     min-width: 400px;
@@ -371,7 +377,8 @@ body > header {
     color: var(--text-color);
 }
 
-/* --- Commander Reply Section Styles --- */
+/* ===== Commander Reply Section ===== */
+
 .commander-reply-section {
     padding: 15px 25px;
     border-top: 1px solid var(--border-color);
@@ -425,7 +432,8 @@ body > header {
     line-height: 1.5;
 }
 
-/* --- Image Preview Style --- */
+/* ===== Image Preview ===== */
+
 #image-preview {
     display: none;
     position: fixed;
@@ -444,7 +452,8 @@ body > header {
     transform: translateZ(0); /* Create GPU layer */
 }
 
-/* --- Modern Scrollbar Styles --- */
+/* ===== Scrollbars ===== */
+
 .gallery-container::-webkit-scrollbar,
 .post-content::-webkit-scrollbar {
     width: 8px;
@@ -467,7 +476,8 @@ body > header {
     background-color: var(--text-secondary-color);
 }
 
-/* --- Mobile Responsive Styles --- */
+/* ===== Responsive / Media Queries ===== */
+
 @media (max-width: 800px) {
     body {
         padding: 10px;

@@ -1,5 +1,7 @@
 @import url('./theme.css');
 
+/* ===== CSS Variables ===== */
+
 * {
   margin: 0;
   padding: 0;
@@ -16,6 +18,8 @@ body.dark-mode {
   --loading-text: #c0c0c0;
   --stats-text: #d0d0d0;
 }
+
+/* ===== Base / Layout ===== */
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic",
@@ -54,6 +58,8 @@ h1 {
   text-shadow: 2px 2px 4px var(--shadow-color);
   transition: color 0.3s ease;
 }
+
+/* ===== Header / Search / Filters ===== */
 
 .search-container {
   position: relative;
@@ -150,6 +156,8 @@ select:focus {
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* ===== Event Cards ===== */
+
 .event-list {
   display: grid;
   gap: 1.25rem;
@@ -178,25 +186,6 @@ select:focus {
 .event-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 30px var(--shadow-hover);
-}
-
-.event-card-clickable {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.event-card-clickable:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.event-card-clickable:active {
-  transform: translateY(0);
-}
-
-.link-indicator {
-  margin-left: 8px;
-  font-size: 0.9em;
-  opacity: 0.7;
 }
 
 .event-header {
@@ -284,6 +273,8 @@ select:focus {
   transition: color 0.3s ease;
 }
 
+/* ===== Shipgirl Icons ===== */
+
 .shipgirl-icons {
   margin-top: 0.9375rem;
   padding-top: 0.9375rem;
@@ -353,7 +344,8 @@ select:focus {
   pointer-events: none;
 }
 
-/* Rarity color schemes */
+/* ===== Rarity Color Schemes ===== */
+
 .rarity-n img {
   border-color: #9e9e9e;
   box-shadow: 0 2px 8px rgba(158, 158, 158, 0.3);
@@ -436,6 +428,8 @@ select:focus {
   opacity: 1;
 }
 
+/* ===== States (Loading / Empty) ===== */
+
 .loading {
   text-align: center;
   padding: 2.5rem;
@@ -492,6 +486,8 @@ select:focus {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* ===== Page Title ===== */
+
 /* Add these styles for the info popup */
 body.no-scroll {
   overflow: hidden;
@@ -515,6 +511,8 @@ body.no-scroll {
   margin-left: 0.5rem;
 }
 
+
+/* ===== Responsive / Media Queries ===== */
 
 @media (max-width: 768px) {
   body {

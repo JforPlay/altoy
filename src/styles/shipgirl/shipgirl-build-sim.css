@@ -2,6 +2,8 @@
 
 @import url('../theme.css');
 
+/* ===== CSS Variables ===== */
+
 :root {
     --color-ur: #ff6b6b;
     --color-ssr: #ffd93d;
@@ -20,8 +22,7 @@
     --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* Dark mode support - both data-theme and class selectors */
-[data-theme="dark"],
+/* Dark mode */
 body.dark-mode {
     --bg-primary: #1a1a1a;
     --bg-secondary: #2d2d2d;
@@ -39,6 +40,8 @@ body.dark-mode {
     --color-r: #3d7ac4;
     --color-n: #7a8a8b;
 }
+
+/* ===== Base / Layout ===== */
 
 * {
     box-sizing: border-box;
@@ -58,7 +61,8 @@ body {
     padding: 2rem 1rem;
 }
 
-/* Header */
+/* ===== Header ===== */
+
 .page-header {
     text-align: center;
     margin-bottom: 3rem;
@@ -79,7 +83,8 @@ body {
     margin: 0;
 }
 
-/* Pool Selector */
+/* ===== Pool Selector ===== */
+
 .pool-selector {
     display: flex;
     flex-direction: column;
@@ -130,7 +135,8 @@ body {
     font-size: 0.9rem;
 }
 
-/* Section Styles */
+/* ===== Section Panels ===== */
+
 section {
     background: var(--bg-primary);
     border-radius: 16px;
@@ -151,7 +157,8 @@ section h3 {
     color: var(--text-primary);
 }
 
-/* Probability Chart - Compact */
+/* ===== Probability Chart ===== */
+
 .probability-chart-compact {
     margin-bottom: 2rem;
 }
@@ -248,7 +255,8 @@ section h3 {
     color: var(--text-secondary);
 }
 
-/* Ship Probability Calculator */
+/* ===== Ship Probability Calculator ===== */
+
 .probability-calculator {
     background: var(--bg-secondary);
     padding: 1.5rem;
@@ -293,7 +301,8 @@ section h3 {
     color: var(--text-primary);
 }
 
-/* Probability Graph */
+/* ===== Probability Graph ===== */
+
 .probability-graph-container {
     margin-top: 2rem;
     padding: 1.5rem;
@@ -340,7 +349,8 @@ section h3 {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-/* Graph Tooltip */
+/* ===== Graph Tooltip ===== */
+
 .graph-tooltip {
     position: fixed;
     display: none;
@@ -376,7 +386,8 @@ section h3 {
     font-weight: 700;
 }
 
-/* Simulator Controls */
+/* ===== Simulator Controls ===== */
+
 .simulator-controls {
     display: flex;
     gap: 1rem;
@@ -426,7 +437,8 @@ section h3 {
     font-size: 1.25rem;
 }
 
-/* Build Results */
+/* ===== Build Results ===== */
+
 .build-results {
     min-height: 300px;
     background: var(--bg-secondary);
@@ -537,7 +549,8 @@ section h3 {
     display: none;
 }
 
-/* Build Statistics */
+/* ===== Build Statistics ===== */
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -572,7 +585,8 @@ section h3 {
     color: var(--text-primary);
 }
 
-/* Resource Statistics */
+/* ===== Resource Statistics ===== */
+
 .resource-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -618,7 +632,8 @@ section h3 {
     color: var(--text-primary);
 }
 
-/* Ship Adder */
+/* ===== Ship Adder / Custom Pool ===== */
+
 .ship-adder {
     background: var(--bg-secondary);
     padding: 1.5rem;
@@ -863,7 +878,8 @@ section h3 {
     color: var(--color-ur);
 }
 
-/* Section Header with Collapse */
+/* ===== Collapsible Sections ===== */
+
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -915,7 +931,8 @@ section h3 {
     opacity: 0;
 }
 
-/* Pool Filters */
+/* ===== Pool Filters ===== */
+
 .pool-filters {
     display: flex;
     flex-direction: column;
@@ -974,7 +991,8 @@ section h3 {
     font-size: 1rem;
 }
 
-/* Ship Grid */
+/* ===== Ship Grid (Pool Browser) ===== */
+
 .ship-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -1010,7 +1028,8 @@ section h3 {
     border-top: 1px solid var(--border-color);
 }
 
-/* Despair Pool Modal */
+/* ===== Despair Pool Modal ===== */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1271,7 +1290,8 @@ section h3 {
     cursor: not-allowed;
 }
 
-/* Responsive Design */
+/* ===== Responsive / Media Queries ===== */
+
 @media (max-width: 768px) {
     .container {
         padding: 1rem 0.5rem;

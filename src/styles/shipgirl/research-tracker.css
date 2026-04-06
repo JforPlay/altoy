@@ -1,13 +1,13 @@
 @import url('../theme.css');
 
-/* === Base === */
+/* ===== Base ===== */
 body {
     background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
     min-height: 100vh;
     color: var(--text-primary);
 }
 
-/* === Page Layout === */
+/* ===== Page Layout ===== */
 .rt-page {
     max-width: 1400px;
     margin: 0 auto;
@@ -77,7 +77,7 @@ body {
     color: var(--danger-color);
 }
 
-/* === Faction Panel === */
+/* ===== Faction Panel ===== */
 .rt-faction-panel {
     background: var(--card-bg);
     border-radius: var(--radius-lg);
@@ -92,7 +92,7 @@ body {
     padding: var(--spacing-md);
 }
 
-/* === Tabs === */
+/* ===== Tabs ===== */
 .rt-tabs {
     display: flex;
     flex-wrap: wrap;
@@ -155,7 +155,7 @@ body.dark-mode .rt-tab-icon {
     line-height: 1;
 }
 
-/* === Filters === */
+/* ===== Filters ===== */
 .rt-filters {
     background: var(--card-bg);
     border-radius: var(--radius-lg);
@@ -279,7 +279,7 @@ body.dark-mode .rt-tab-icon {
     display: none;
 }
 
-/* === Faction Summary === */
+/* ===== Faction Summary ===== */
 .rt-summary {
     padding: var(--spacing-sm) 0 var(--spacing-md);
     border-bottom: 1px solid var(--border-color);
@@ -347,7 +347,7 @@ body.dark-mode .rt-tab-icon {
     opacity: 1;
 }
 
-/* === Research Ships Panel === */
+/* ===== Research Ships Panel ===== */
 .rt-research-panel {
     margin-bottom: var(--spacing-md);
 }
@@ -474,7 +474,7 @@ body.dark-mode .rt-tab-icon {
     border-radius: var(--radius-sm);
 }
 
-/* === Source Groups (Accordion) === */
+/* ===== Source Groups (Accordion) ===== */
 .rt-source-groups {
     display: flex;
     flex-direction: column;
@@ -572,7 +572,7 @@ body.dark-mode .rt-tab-icon {
     padding: var(--spacing-md);
 }
 
-/* === Owned Ships Compact List === */
+/* ===== Owned Ships Compact List ===== */
 .rt-owned-grid {
     display: flex;
     flex-wrap: wrap;
@@ -631,7 +631,7 @@ body.dark-mode .rt-tab-icon {
     flex-shrink: 0;
 }
 
-/* === Ship Card Grid === */
+/* ===== Ship Card Grid ===== */
 .rt-ship-grid {
     display: flex;
     flex-wrap: wrap;
@@ -734,7 +734,7 @@ body.dark-mode .rt-tab-icon {
     white-space: nowrap;
 }
 
-/* === Drop Descriptions === */
+/* ===== Drop Descriptions ===== */
 .rt-card-desc {
     list-style: none;
     margin: 0;
@@ -753,7 +753,7 @@ body.dark-mode .rt-tab-icon {
     white-space: nowrap;
 }
 
-/* === Checkboxes === */
+/* ===== Checkboxes ===== */
 .rt-card-tracker {
     display: flex;
     gap: var(--spacing-xs);
@@ -792,7 +792,7 @@ body.dark-mode .rt-tab-icon {
     font-weight: 600;
 }
 
-/* === Dark Mode Overrides === */
+/* ===== Dark Mode Overrides ===== */
 body.dark-mode .rt-header {
     box-shadow: var(--shadow-md);
 }
@@ -834,7 +834,7 @@ body.dark-mode .rt-status-btn {
     background: var(--highlight-subtle);
 }
 
-/* === Responsive === */
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
     .rt-page {
         padding: var(--spacing-sm);

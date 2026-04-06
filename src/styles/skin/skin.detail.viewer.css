@@ -26,34 +26,6 @@
   margin: 0;
 }
 
-.modern-badge {
-  display: inline-block;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--accent-color)
-  );
-  color: white;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.25rem 0.625rem;
-  border-radius: 999px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  box-shadow: var(--shadow-sm);
-  animation: subtle-pulse 2s ease-in-out infinite;
-}
-
-@keyframes subtle-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
 /* --- Selectors (Detail Viewer Specific) --- */
 .selectors {
   display: flex;
@@ -393,11 +365,6 @@
   border: 2px dashed var(--border-color);
 }
 
-.no-images-message {
-  border: 2px dashed var(--border-color);
-  color: var(--text-muted);
-}
-
 /* --- Lightbox Modal (Detail Viewer Specific) --- */
 .lightbox-modal {
   position: fixed;
@@ -607,16 +574,6 @@
   align-items: center;
   gap: var(--spacing-md);
   line-height: 1.7;
-}
-
-.description-group {
-  flex: 1 1 55%;
-  display: flex;
-  gap: var(--spacing-lg);
-}
-
-.description-group .description-item {
-  flex: 1;
 }
 
 .self-intro {
@@ -864,11 +821,6 @@
     font-size: 1.25rem;
   }
 
-  .modern-badge {
-    font-size: 0.625rem;
-    padding: 0.2rem 0.5rem;
-  }
-
   .info-button {
     flex-shrink: 0;
     font-size: 1.25rem;
@@ -898,8 +850,7 @@
     grid-template-columns: 1fr;
   }
 
-  .descriptions-panel,
-  .description-group {
+  .descriptions-panel {
     flex-direction: column;
   }
 
@@ -936,11 +887,6 @@
 }
 
 @media (max-width: 480px) {
-  .modern-badge {
-    font-size: 0.5rem;
-    padding: 0.15rem 0.4rem;
-  }
-
   .skin-info-box {
     gap: var(--spacing-sm);
   }
@@ -1102,28 +1048,6 @@ body.dark-mode .volume-slider {
     font-size: 0.85rem;
     color: var(--text-muted);
     font-weight: 500;
-}
-
-.download-composite-btn {
-    background: var(--bg-tertiary);
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all var(--transition-fast);
-}
-
-.download-composite-btn:hover {
-    background: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-sm);
 }
 
 .expression-selector {

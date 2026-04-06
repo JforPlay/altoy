@@ -517,26 +517,6 @@
     overflow: visible;
 }
 
-.planner-stale-note {
-    background: linear-gradient(135deg, rgba(255, 152, 0, 0.15), rgba(255, 152, 0, 0.05));
-    border: 2px solid rgba(255, 152, 0, 0.4);
-    border-radius: var(--island-radius-lg);
-    padding: var(--island-spacing-md);
-    margin-bottom: var(--island-spacing-lg);
-    font-size: var(--island-text-sm);
-    font-weight: 600;
-    color: #ff9800;
-    display: flex;
-    align-items: center;
-    gap: var(--island-gap-sm);
-    animation: pulse 2s ease-in-out infinite;
-}
-
-.planner-stale-note::before {
-    content: '⚠';
-    font-size: 1.25rem;
-}
-
 .planner-section-title {
     margin: var(--island-spacing-lg) 0 var(--island-spacing-md) 0;
     color: var(--island-text-primary);

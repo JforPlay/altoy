@@ -611,29 +611,6 @@
     font-size: 0.9375rem;
 }
 
-.skill-levels {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-    gap: 0.5rem;
-}
-
-.skill-level-badge {
-    background: var(--island-surface);
-    padding: 0.5rem;
-    border-radius: 6px;
-    text-align: center;
-    font-size: 0.8125rem;
-    color: var(--island-text-secondary);
-    border: 1px solid var(--island-border);
-}
-
-.skill-level-badge.active {
-    background: var(--island-accent);
-    color: #ffffff;
-    border-color: var(--island-accent);
-    font-weight: 600;
-}
-
 /* Skill Level Label */
 .skill-level-label {
     font-size: 0.875rem;
@@ -776,11 +753,6 @@
     padding: 0.375rem 0.75rem;
     border-radius: 6px;
     white-space: nowrap;
-}
-
-.material-resource {
-    font-size: 0.875rem;
-    color: var(--island-text-secondary);
 }
 
 .material-quantity {

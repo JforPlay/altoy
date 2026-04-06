@@ -1,4 +1,5 @@
-/* Stat Controls - moved below stats grid */
+/* ===== Stat Controls ===== */
+
 .stats-section {
   margin-top: 1.25rem;
 }
@@ -112,7 +113,8 @@
   background: var(--input-focus);
 }
 
-/* Stats Section */
+/* ===== Stats Section ===== */
+
 .section-title {
   font-size: 1.3em;
   margin-bottom: 0.75rem;

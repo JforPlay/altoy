@@ -581,17 +581,6 @@ body.dark-mode .external-link-desc {
   font-weight: 600;
 }
 
-.dual-link-desc {
-  font-size: 0.7em;
-  color: var(--overlay-heavy);
-  line-height: 1.2;
-}
-
-body.dark-mode .dual-link-desc {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-
 /* =====================================================
    ANIMATIONS
    ===================================================== */
