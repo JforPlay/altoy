@@ -1,3 +1,14 @@
+/**
+ * sim.engine.bullet.js
+ * Low-level bullet engine: coordinate transforms, bullet DOM creation,
+ * per-frame physics dispatch, and rendering for all bullet types.
+ * Part of the simulators shared engine (common → bullet → bullet.factory + aircraft + oceanbg).
+ *
+ * Game constants (from BattleConfig):
+ *   bulletSpeedConvert = 0.2  (velocity * 0.2 → game units per frame)
+ *   bombDetonateHeight = 1.2  (gravity bullets detonate below this altitude)
+ */
+
 import { BehaviorFactory } from './sim.engine.bullet.factory.js';
 
 export class BulletEngine {
@@ -32,10 +43,14 @@ export class BulletEngine {
         window.addEventListener('resize', this._resizeHandler);
     }
 
+    // ===== Data =====
+
     setData(allBarrages, allBullets) {
         this.allBarrages = allBarrages;
         this.allBullets = allBullets;
     }
+
+    // ===== Coordinate Transforms =====
 
     updateScale() {
         const gameWidth = this.gameCoords.totalArea.maxX - this.gameCoords.totalArea.minX;
@@ -77,6 +92,8 @@ export class BulletEngine {
 
         return { x: gameX, y: gameY };
     }
+
+    // ===== Bullet Creation & Animation =====
 
     createBullet(options) {
         const {
@@ -430,6 +447,8 @@ export class BulletEngine {
         requestAnimationFrame(animate);
         return bulletElement;
     }
+
+    // ===== Cleanup =====
 
     clearAllBullets() {
         this.activeBullets.forEach(b => { b.shouldRemove = true; });

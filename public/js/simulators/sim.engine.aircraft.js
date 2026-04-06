@@ -1,6 +1,8 @@
 /**
- * Aircraft Entity System
+ * sim.engine.aircraft.js
+ * Aircraft entity for the simulation engine (sim.engine.common.js).
  * Carrier-based planes: spawn at carrier, rise to altitude, fly forward, fire weapons at enemy.
+ * Used by both sim.weapon.main.js (skill-triggered aircraft) and sim.aircraft.main.js.
  *
  * State machine: CREATE (rising) → ATTACK (flying + firing) → DESTROY (cleanup)
  *
@@ -189,6 +191,7 @@ export class AircraftEntity {
         });
     }
 
+    /** Immediately stop the aircraft: cancel animation frame, clear start timer, remove DOM element. */
     destroy() {
         this.shouldRemove = true;
         if (this._rafId) {

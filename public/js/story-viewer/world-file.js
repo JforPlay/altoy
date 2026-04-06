@@ -1,3 +1,9 @@
+/**
+ * world-file.js
+ * Text-based "world file" (Operation Siren intel documents) viewer.
+ * Renders a thumbnail gallery on the left; clicking an entry loads its
+ * paragraphs into the content area on the right. Includes font-size controls.
+ */
 import { fetchJSON, resolveUrl } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -5,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentContainer = document.getElementById('content-container');
 
     /**
-     * Creates and populates the gallery on the left side of the screen.
-     * @param {object} data - The parsed JSON data containing the story worlds.
+     * Build the gallery list from loaded data.
+     * Each entry gets a background image from the local assets folder.
      */
     function initialize(data) {
         galleryContainer.innerHTML = ''; 
@@ -32,8 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 displayContent(itemData.child);
 
-                // ✨ Auto-scroll on mobile devices
-                if (window.innerWidth <= 768) {
+                if (window.innerWidth <= 768) { // auto-scroll to content on narrow screens
                     contentContainer.scrollIntoView({ behavior: 'smooth' });
                 }
             });
@@ -43,8 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Displays the story content for a selected item in the main content area.
-     * @param {Array<object>} childData - The list of paragraphs for the selected story.
+     * Render the paragraphs of a selected world entry into the content area.
+     * Preserves newlines with <br> and supports an optional subtitle per paragraph.
      */
     function displayContent(childData) {
         contentContainer.querySelector('.placeholder')?.remove();
@@ -77,23 +82,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * ✨ Sets up the font size control logic.
+     * Wire the font-size +/- buttons. Applies size to the container so
+     * paragraph text in em units scales automatically.
      */
     function setupFontControls() {
         const fontIncreaseBtn = document.getElementById('font-increase');
         const fontDecreaseBtn = document.getElementById('font-decrease');
-        
-        let currentFontSize = 16; // Base font size in pixels
+
+        let currentFontSize = 16;
         const step = 1;
         const minSize = 12;
         const maxSize = 22;
 
         const updateFontSize = () => {
-            // We apply the font size to the container, and paragraphs with `em` units will scale.
             contentContainer.style.fontSize = `${currentFontSize}px`;
         };
 
-        // Set initial font size
         updateFontSize();
 
         fontIncreaseBtn.addEventListener('click', () => {
@@ -111,11 +115,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Main Execution ---
     fetchJSON('data/story-viewer/world_collection_data.json')
         .then(data => {
             initialize(data);
-            setupFontControls(); // Initialize the new font controls
+            setupFontControls();
         })
         .catch(error => {
             console.error('Error loading world data:', error);

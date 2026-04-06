@@ -1,6 +1,9 @@
 /**
- * Island Restaurant Module
- * Manages restaurant menus, profit calculations, and event bonuses
+ * island.restaurant.engine.js
+ * Restaurant sub-engine for the island module. Manages restaurant tabs, rank/event/shipgirl selectors,
+ * menu list rendering, preferences persistence, and cross-tab navigation with the resource module.
+ * Delegates calculations to island.restaurant.calc.js and planner UI to island.restaurant.planner.js.
+ * Registers as window.RestaurantModule.
  */
 
 import { fetchJSON, showElement, hideElement, formatTime, getStorageItem, setStorageItem } from '../utils.js';
@@ -23,9 +26,7 @@ import {
 
 'use strict';
 
-// ============================================
-// CONSTANTS (engine-only)
-// ============================================
+// ===== Constants (engine-only) =====
 
 const RANK_ICONS = {
     bronze: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_tong.webp',
@@ -53,9 +54,7 @@ const STORAGE_KEY_EVENTS = 'island-restaurant-events';
 const STORAGE_KEY_SHIPGIRL1 = 'island-restaurant-shipgirl1';
 const STORAGE_KEY_SHIPGIRL2 = 'island-restaurant-shipgirl2';
 
-// ============================================
-// STATE
-// ============================================
+// ===== State =====
 
 const state = {
     restaurants: {},
@@ -95,10 +94,12 @@ const state = {
 setupCalc(state);
 setupPlanner(state);
 
-// ============================================
-// INITIALIZATION
-// ============================================
+// ===== Initialization =====
 
+/**
+ * Load restaurant, recipe, and shop data; build all indices; initialize UI and planner.
+ * Preferences (rank, events, shipgirl attributes) are restored from localStorage.
+ */
 async function init(sharedData) {
     try {
         // Use shared item data
@@ -163,10 +164,9 @@ async function init(sharedData) {
     }
 }
 
-// ============================================
-// DATA STRUCTURE BUILDERS
-// ============================================
+// ===== Data Structure Builders =====
 
+/** Build a reverse index from formulaId → [{restaurantId, restaurantName, itemId}] for cross-tab navigation. */
 function buildMenuIndex() {
     state.menuIndex = {};
     Object.entries(state.restaurants).forEach(([restaurantId, restaurant]) => {
@@ -209,6 +209,10 @@ function findUniqueSubAttributes() {
     state.uniqueSubAttributes = Array.from(subAttributeSet).sort((a, b) => a - b);
 }
 
+/**
+ * Pre-calculate the master ingredient list across all menus for the planner's ingredient summary.
+ * Uses category 1 and 2 as stop nodes to avoid expanding raw material chains.
+ */
 function buildMasterIngredientList() {
     const allIngredients = {}; // Map itemId -> info
 
@@ -239,9 +243,7 @@ function buildMasterIngredientList() {
     state.masterIngredients = groupIngredientsByLocation(allIngredients);
 }
 
-// ============================================
-// PREFERENCES
-// ============================================
+// ===== Preferences =====
 
 function loadPreferences() {
     try {
@@ -283,15 +285,17 @@ function savePreferences() {
     }
 }
 
-// ============================================
-// CROSS-TAB NAVIGATION
-// ============================================
+// ===== Cross-Tab Navigation =====
 
 function getRestaurantsForRecipe(formulaId) {
     if (!formulaId) return [];
     return (state.menuIndex[formulaId] || []).map(entry => ({ ...entry }));
 }
 
+/**
+ * Switch to the restaurant tab and highlight a specific menu card.
+ * Called from the resource module when the user clicks "view in restaurant".
+ */
 function navigateToMenu(formulaId, restaurantId) {
     const targets = state.menuIndex[formulaId] || [];
     if (!targets.length) return;
@@ -322,9 +326,7 @@ function focusMenuCard(formulaId) {
     }
 }
 
-// ============================================
-// RESTAURANT TABS
-// ============================================
+// ===== Restaurant Tabs =====
 
 function renderRestaurantTabs() {
     const container = document.getElementById('restaurant-tabs');
@@ -389,9 +391,7 @@ function selectRestaurant(restaurantId) {
     }
 }
 
-// ============================================
-// RANK SELECTOR
-// ============================================
+// ===== Rank Selector =====
 
 function renderRankSelector() {
     const container = document.getElementById('rank-selector');
@@ -437,9 +437,7 @@ function selectRank(rank) {
     updatePlannerUI();
 }
 
-// ============================================
-// EVENT TOGGLES
-// ============================================
+// ===== Event Toggles =====
 
 function renderEventToggles() {
     const container = document.getElementById('event-toggles');
@@ -485,9 +483,7 @@ function toggleEvent(eventKey, enabled) {
     updatePlannerUI();
 }
 
-// ============================================
-// SHIPGIRL SELECTORS
-// ============================================
+// ===== Shipgirl Attribute Selectors =====
 
 function renderShipgirlSelectors() {
     renderShipgirlSelector(1, 'shipgirl-1-selector', state.shipgirl1Attr);
@@ -570,9 +566,7 @@ function updateShipgirlAttribute(shipgirlNum, attrKey, rank) {
     updatePlannerUI();
 }
 
-// ============================================
-// MENU LIST
-// ============================================
+// ===== Menu List =====
 
 function renderMenuList() {
     const container = document.getElementById('restaurant-menu-list');
@@ -753,9 +747,7 @@ function createMenuCard(itemId, formulaId, restaurantId) {
     `;
 }
 
-// ============================================
-// BACKWARDS COMPATIBILITY & EXPORTS
-// ============================================
+// ===== Public API =====
 
 window.RestaurantModule = {
     init,

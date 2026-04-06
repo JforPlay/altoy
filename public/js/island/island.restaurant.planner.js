@@ -1,6 +1,9 @@
 /**
- * Island Restaurant Module - Meal Planner
- * Handles planner UI, presets, menu selection modals, and results rendering
+ * island.restaurant.planner.js
+ * Meal planner sub-module for the island restaurant system. Manages the daily plan (4 slots per
+ * restaurant × quantity), up to 5 presets per restaurant, menu selection modals, ingredient
+ * aggregation results, and plan/preset persistence in localStorage.
+ * State is shared via setup() called from island.restaurant.engine.js.
  */
 
 import { showElement, hideElement, getStorageItem, setStorageItem } from '../utils.js';
@@ -11,9 +14,7 @@ import {
 
 'use strict';
 
-// ============================================
-// CONSTANTS
-// ============================================
+// ===== Constants =====
 
 const STORAGE_KEY_PLANNER_PLAN = 'island-restaurant-planner-plan-v2';
 const STORAGE_KEY_PLANNER_PRESETS = 'island-restaurant-planner-presets-v2';
@@ -28,18 +29,14 @@ const RARITY_BACKGROUNDS = {
     4: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_orange.webp'
 };
 
-// ============================================
-// STATE REFERENCE (set via setup)
-// ============================================
+// ===== State Reference (set via setup) =====
 let state;
 
 export function setup(stateRef) {
     state = stateRef;
 }
 
-// ============================================
-// HELPER: GET RESTAURANT IDS
-// ============================================
+// ===== Planner State Helpers =====
 
 function getRestaurantIds() {
     return Object.keys(state.restaurants)
@@ -47,9 +44,6 @@ function getRestaurantIds() {
         .sort((a, b) => parseInt(a) - parseInt(b));
 }
 
-// ============================================
-// PLANNER STATE HELPERS
-// ============================================
 
 function buildEmptyPlannerEntry() {
     return {
@@ -146,9 +140,7 @@ function getPlannerEntry(restaurantId) {
     return state.plannerPlan[restaurantId];
 }
 
-// ============================================
-// PLANNER LOGIC
-// ============================================
+// ===== Planner Logic =====
 /**
  * Planner System Overview:
  * - Each restaurant has 4 menu slots that can be filled with recipes
@@ -160,6 +152,10 @@ function getPlannerEntry(restaurantId) {
 
 let confirmResolve = null;
 
+/**
+ * Wire up planner modal open/close buttons and the custom confirm modal.
+ * Called once during restaurant module initialization.
+ */
 export function setupPlannerUI() {
     const openBtn = document.getElementById('planner-open-btn');
     const closeBtn = document.getElementById('planner-modal-close');
@@ -249,6 +245,10 @@ function renderPlannerModal() {
     calcBtn?.addEventListener('click', calculateDailyPlan);
 }
 
+/**
+ * Render the full meal planner view: per-restaurant plan grids, preset slots, and ingredient summary.
+ * Called when switching to the planner tab or after any plan change.
+ */
 export function renderPlannerMainView() {
     const container = document.getElementById('restaurant-planner-view');
     if (!container) return;
@@ -844,6 +844,7 @@ async function resetPlanner() {
     window.IslandEngine.showToast('플래너가 초기화되었습니다.', 'info');
 }
 
+/** Update the planner summary bar (filled slots count) and re-render the modal if it's open. */
 export function updatePlannerUI() {
     const summaryEl = document.getElementById('planner-selection-summary');
     if (!summaryEl) return;
@@ -867,6 +868,10 @@ export function updatePlannerUI() {
     }
 }
 
+/**
+ * Recalculate required ingredients for the current plan across all restaurants.
+ * Pass false as arg for a silent (no toast) recalculation used during background updates.
+ */
 export function calculateDailyPlan(arg) {
     const silent = arg === false;
     const selections = getPlannerSelections();

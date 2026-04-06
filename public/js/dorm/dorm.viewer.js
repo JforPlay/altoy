@@ -1,5 +1,9 @@
-// public/js/dorm/dorm.viewer.js
-// Dorm furniture viewer — entry point
+/**
+ * dorm.viewer.js
+ * Entry point for the dorm furniture simulator.
+ * Creates the shared state object and passes it to dorm.data, dorm.panel,
+ * and dorm.grid via their setup() calls, then wires toolbar button listeners.
+ */
 import { showToast, hideElement } from '../utils.js';
 import { setup as setupData, loadData } from './dorm.data.js';
 import { setup as setupPanel, init as initPanel } from './dorm.panel.js';
@@ -9,7 +13,7 @@ import {
     rotateSelected, deleteSelected, clearAll, createEmptyGrid
 } from './dorm.grid.js';
 
-// ── Shared State ──
+// ===== Shared State =====
 const state = {
     furniture: {},
     themes: {},
@@ -33,10 +37,10 @@ const state = {
     },
 };
 
-// ── Initialization ──
+// ===== Initialization =====
 
 async function init() {
-    // Measure actual navbar height for CSS layout
+    // Measure actual navbar height so CSS can compute the remaining canvas height correctly.
     const navbar = document.querySelector('.navbar');
     if (navbar) {
         document.documentElement.style.setProperty('--dorm-nav-height', navbar.offsetHeight + 'px');
@@ -90,5 +94,4 @@ function setupToolbar() {
     });
 }
 
-// ── Start ──
 document.addEventListener('DOMContentLoaded', init);

@@ -1,10 +1,12 @@
-import { fetchJSONWithCache } from '../utils.js';
-
 /**
- * Aircraft Simulation Data Loader
- * Loads equipment data (aircraft types 7,8,9,12,15) for the selector,
+ * sim.aircraft.data.js
+ * Data loader for the aircraft simulator page (sim.aircraft.main.js).
+ * Loads equipment data (aircraft types 7, 8, 9, 12, 15) for the selector,
  * and resolves aircraft_template → weapon chunks for simulation.
+ * Part of the simulators module group (weapon simulator + aircraft simulator + fleet sim + shared engine).
  */
+
+import { fetchJSONWithCache } from '../utils.js';
 
 const AIRCRAFT_EQUIP_TYPES = new Set([7, 8, 9, 12, 15]);
 
@@ -56,7 +58,7 @@ export class AircraftSimData {
         }
     }
 
-    /** Deduplicate equipment by name — keep highest rarity (max upgrade tier) per name */
+    /** Deduplicate by name, keeping the highest rarity entry — presents one option per aircraft upgrade tier */
     getDeduplicatedList() {
         const byName = {};
         for (const equip of this.equipList) {

@@ -1,3 +1,11 @@
+/**
+ * map.data.js
+ * Data loading and lookup helpers for the map viewer.
+ * Part of the map module group (viewer + data + detail + grid + compare).
+ * State is shared via a ref passed to setup() from map.viewer.js.
+ * World exploration data requires cross-referencing world_chapter_random.json for Korean names.
+ */
+
 import { fetchJSON, fetchJSONWithCache } from '../utils.js';
 
 let state;
@@ -8,10 +16,16 @@ let explorationMap = null;
 /** world_target_data keyed by target ID */
 let worldTargetData = null;
 
+/** Receive shared state from map.viewer.js. */
 export function setup(stateRef) {
     state = stateRef;
 }
 
+/**
+ * Load the lite map list and cross-reference world entries with world_chapter_random.json.
+ * World entries are filtered to those with a Korean name in the random data,
+ * and enriched with name, hazard_level, and randomId for exploration map handling.
+ */
 export async function loadLiteData() {
     const raw = await fetchJSON('data/maps/map_data_lite.json');
     if (!raw) return;
@@ -47,6 +61,10 @@ export async function loadLiteData() {
     state.liteData = raw;
 }
 
+/**
+ * Load full chapter data (cached 24h) and apply Korean names to world entries.
+ * World keys use "w_" prefix (e.g., "w_1001"); other categories use string IDs.
+ */
 export async function loadFullData() {
     try {
         state.fullData = await fetchJSONWithCache(
@@ -74,6 +92,7 @@ export async function loadFullData() {
     return null;
 }
 
+/** Load enemy stat data (cached 24h). Returns the cache if already loaded. */
 export async function loadEnemyStats() {
     if (state.enemyStats) return state.enemyStats;
     try {
@@ -91,7 +110,10 @@ export async function loadEnemyStats() {
 /** Reverse lookup: gid -> ship.id */
 let gidToId = null;
 
-/** Load ship info lite data for ship drop name/portrait resolution. */
+/**
+ * Load ship info lite data for drop name and portrait resolution.
+ * Also builds gidToId for war archive drops where ship IDs are gids (group IDs).
+ */
 export async function loadShipInfo() {
     if (state.shipInfo) return state.shipInfo;
     try {

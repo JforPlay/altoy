@@ -1,8 +1,7 @@
 /**
- * main-story-viewer.script.js
- * ---------------------------
- * This script configures and initializes the common StoryViewer engine
- * for the "Main Storyline".
+ * main-story.js
+ * Page entry for the Main Story viewer.
+ * Configures the shared StoryViewer engine with main-story-specific data sources and wires DOMContentLoaded.
  */
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -18,23 +17,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Path pattern for lazy-loading individual chapters ({id} is replaced with chapter ID)
         chapterDataPath: 'data/story-viewer/main_story_chapters/chapter_{id}.json',
 
-        // Assigns loaded data to the correct properties in the StoryViewer
         processLoadedData: (viewer, dataArray) => {
             viewer.storylineData = dataArray[0];
             viewer.shipgirlData = dataArray[1];
             viewer.nameCodeData = dataArray[2];
         },
-        
-        // Defines how to get the list of stories from an event object
+
         getEventMemories: (eventData) => eventData?.memory_id,
-        
-        // Defines how to find a specific story within an event
+
         findMemory: (eventData, storyId) => eventData?.memory_id?.find(mem => mem.id == storyId),
 
-        // Defines how to get the story script from a memory object
         getMemoryStory: (memoryData) => memoryData?.story,
-        
-        // Defines the base path for event icons
+
         getEventIconPath: (eventData) => `${StoryViewer.BASE_URL}memorystoryline/`,
 
         // Redirect events that live in the world-story viewer
@@ -51,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     };
 
-    // Initialize the common viewer with this specific configuration
     window.StoryViewer.init(mainStoryConfig);
 
 });

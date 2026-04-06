@@ -1,17 +1,16 @@
 'use strict';
 
 /**
- * Shipgirl Stats Dashboard Module
- * Renders Chart.js charts for ship info and skin info tabs.
- * Chart.js is loaded globally via CDN (window.Chart).
+ * shipgirl-stats.dashboard.js
+ * Chart.js dashboards for the ship info and skin info tabs.
+ * Renders rarity/type/nationality breakdowns, top-stat rankings, skin timelines,
+ * and L2D/dual cumulative trend charts. Chart.js is loaded via CDN (window.Chart).
  */
 
 import { normalizeRomanNumerals } from '../utils.js';
 import { getAttrKoreanName, getNationalityName, getShipTypeName, PRIMARY_STATS, SKIN_TAG_KEYS } from './shipgirl-stats.data.js';
 
-// ============================================
-// STATE
-// ============================================
+// ===== State =====
 let state;
 const charts = {};
 
@@ -19,9 +18,7 @@ export function setup(stateRef) {
     state = stateRef;
 }
 
-// ============================================
-// THEME COLORS
-// ============================================
+// ===== Theme Colors =====
 function getChartColors() {
     const isDark = document.body.classList.contains('dark-mode');
     return {
@@ -41,9 +38,7 @@ function getChartColors() {
     };
 }
 
-// ============================================
-// SHARED HELPERS
-// ============================================
+// ===== Shared Helpers =====
 function destroyChart(key) {
     if (charts[key]) { charts[key].destroy(); charts[key] = null; }
 }
@@ -76,9 +71,11 @@ function defaultChartOptions(horizontal = false) {
     };
 }
 
-// ============================================
-// SHIP INFO DASHBOARD
-// ============================================
+// ===== Ship Info Dashboard =====
+/**
+ * Render all ship-info dashboard charts: summary counts, ship type bar,
+ * nationality bar, and top-stat ranking bar.
+ */
 export function renderShipDashboard() {
     const data = getFilteredData();
     _renderShipSummary(data);
@@ -146,6 +143,10 @@ function _renderNationalityChart(data) {
     });
 }
 
+/**
+ * Render the top-10 ships bar chart for the stat selected in #topStatSelector.
+ * Called on initial render and whenever the selector changes.
+ */
 export function renderTopStatChart() {
     const canvas = document.getElementById('topStatChart');
     if (!canvas) return;
@@ -184,9 +185,12 @@ export function renderTopStatChart() {
     });
 }
 
-// ============================================
-// SKIN INFO DASHBOARD
-// ============================================
+// ===== Skin Info Dashboard =====
+/**
+ * Render all skin-info dashboard charts: summary totals, skin-type doughnut,
+ * top-skin-count bar, skin-type breakdown, monthly release timeline, and
+ * cumulative L2D/L2D+/dual trend line.
+ */
 export function renderSkinDashboard() {
     const data = getFilteredData();
     _renderSkinSummary(data);
@@ -435,9 +439,11 @@ function _renderTrendChart(data) {
     });
 }
 
-// ============================================
-// CLEANUP
-// ============================================
+// ===== Cleanup =====
+/**
+ * Destroy all active Chart.js instances to free memory and prevent
+ * "canvas already in use" errors on theme switch or tab change.
+ */
 export function destroyAllCharts() {
     for (const key of Object.keys(charts)) {
         destroyChart(key);

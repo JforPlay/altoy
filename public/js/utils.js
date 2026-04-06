@@ -1,6 +1,11 @@
-// ============================================
-// SHARED UTILITY FUNCTIONS
-// ============================================
+/**
+ * utils.js
+ * Centralized utility library shared by all page scripts in the ALtoy viewer.
+ * Loaded as an ES module via Layout.astro on every page; all page scripts import from here.
+ * Provides: data fetching, IndexedDB caching, URL params, visibility, modals, search, toast.
+ */
+
+// ===== Core Utilities =====
 
 /**
  * Centralized data version for IndexedDB cache invalidation.
@@ -78,7 +83,6 @@ function resolveUrl(url) {
  * @returns {Promise<any>} - The parsed JSON data
  */
 async function fetchJSON(url) {
-    // Prepend base path for relative URLs (not starting with http or /)
     let finalUrl = url;
     if (!url.startsWith('http') && !url.startsWith('/')) {
         finalUrl = `${getBasePath()}/${url}`;
@@ -121,7 +125,6 @@ function setupScrollToTop(buttonId = 'scroll-to-top') {
     const scrollToTopBtn = document.getElementById(buttonId);
     if (!scrollToTopBtn) return; // Exit gracefully if button doesn't exist
 
-    // Show/hide button based on scroll position
     const toggleButton = () => {
         if (window.scrollY > 300) {
             showElement(scrollToTopBtn, true);
@@ -130,26 +133,17 @@ function setupScrollToTop(buttonId = 'scroll-to-top') {
         }
     };
 
-    // Scroll to top with smooth animation
     const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // Throttled scroll handler for better performance
-    // Ensure throttle exists, otherwise fallback
-    const handler = (typeof throttle === 'function') 
-        ? throttle(toggleButton, 100) 
+    // Guard against throttle not being defined yet (utils.js is self-contained)
+    const handler = (typeof throttle === 'function')
+        ? throttle(toggleButton, 100)
         : toggleButton;
-        
+
     window.addEventListener('scroll', handler);
-
-    // Click handler
     scrollToTopBtn.addEventListener('click', scrollToTop);
-
-    // Initial visibility check
     toggleButton();
 }
 
@@ -213,9 +207,7 @@ function createImgElement(src, alt = '', options = {}) {
     return img;
 }
 
-// ============================================
-// INDEXEDDB CACHING UTILITIES
-// ============================================
+// ===== IndexedDB Caching =====
 
 /**
  * IndexedDB cache for JSON data.
@@ -443,9 +435,7 @@ async function purgeOldCache(maxAge = 7 * 24 * 60 * 60 * 1000) {
     }
 }
 
-// ============================================
-// STORAGE UTILITIES
-// ============================================
+// ===== Storage Utilities =====
 
 /**
  * Safely get item from localStorage.
@@ -477,9 +467,7 @@ function setStorageItem(key, value) {
     }
 }
 
-// ============================================
-// STRING NORMALIZATION UTILITIES
-// ============================================
+// ===== String Normalization =====
 
 /**
  * Normalize ASCII Roman numerals (I-X) to Unicode equivalents.
@@ -503,9 +491,7 @@ function normalizeRomanNumerals(str) {
         .trim();
 }
 
-// ============================================
-// URL PARAMETER UTILITIES
-// ============================================
+// ===== URL Parameters =====
 
 /**
  * Get a URL parameter value
@@ -557,9 +543,7 @@ function getAllUrlParams() {
     return result;
 }
 
-// ============================================
-// VISIBILITY UTILITIES
-// ============================================
+// ===== Visibility Utilities =====
 
 /**
  * Show an element (remove hidden class, optionally add visible class)
@@ -602,9 +586,7 @@ function toggleElement(element, show) {
     }
 }
 
-// ============================================
-// MODAL UTILITIES
-// ============================================
+// ===== Modal Utilities =====
 
 /**
  * Open a modal dialog
@@ -697,9 +679,7 @@ function setupModal(modalId, options = {}) {
     }
 }
 
-// ============================================
-// SEARCH UTILITIES
-// ============================================
+// ===== Search Utilities =====
 
 /**
  * Create a Fuse.js search index with common defaults
@@ -725,9 +705,7 @@ function createSearchIndex(data, options = {}) {
     return new Fuse(data, defaultOptions);
 }
 
-// ============================================
-// TOAST NOTIFICATIONS
-// ============================================
+// ===== Toast Notifications =====
 
 /**
  * Show a toast notification
@@ -772,20 +750,14 @@ function showToast(message, type = 'info', duration = 3000) {
     }, duration);
 }
 
-// ============================================
-// INITIALIZATION
-// ============================================
+// ===== Initialization =====
 
 // Auto-purge old cache entries on page load (7 days)
 if (typeof indexedDB !== 'undefined') {
     requestIdleCallback(() => purgeOldCache(), { timeout: 5000 });
 }
 
-// ============================================
-// ES MODULE EXPORTS
-// ============================================
-// These exports enable `import { ... } from './utils.js'` syntax
-// while keeping backward-compatible global access via function hoisting.
+// ===== ES Module Exports =====
 export {
     // Data versioning
     DATA_VERSION,

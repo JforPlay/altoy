@@ -1,9 +1,15 @@
+/**
+ * shipgirl-build-sim.js
+ * Construction gacha simulator: standard pools (light/medium/heavy), limited pickup banners,
+ * and despair pools (custom 2-ship selections). Draws a canvas probability curve per ship.
+ * Build stats (total pulls, rarity counts, resources spent) are persisted to localStorage.
+ */
+
 import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem } from '../utils.js';
-// Build Simulator Script
 (function () {
     'use strict';
 
-    // State Management
+    // ===== State =====
     const state = {
         currentPool: 'pickup',
         poolData: {},
@@ -33,6 +39,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
             search: ''
         }
     };
+
+    // ===== Constants =====
 
     // Despair Pool Pickup Rates
     const DESPAIR_PICKUP_RATES = {
@@ -98,7 +106,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         }
     };
 
-    // Calculate full probabilities with N as leftover
+    // N probability is derived as the remainder so all rarities always sum to 100%
     const POOL_PROBABILITIES = {};
     Object.keys(POOL_PROBABILITIES_BASE).forEach(poolId => {
         const baseProbs = POOL_PROBABILITIES_BASE[poolId];
@@ -111,7 +119,12 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         };
     });
 
-    // Get pool probability dynamically (supports pickup pools)
+    // ===== Pool Probability & Cost Helpers =====
+
+    /**
+     * Return the probability table for a pool ID.
+     * For named pickup pools (e.g. 'pickup-4'), falls back to the base pool's table.
+     */
     function getPoolProbability(poolId) {
         // Check if already calculated
         if (POOL_PROBABILITIES[poolId]) {
@@ -151,7 +164,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         return BUILD_COSTS['3'];
     }
 
-    // Initialize
+    // ===== Initialization =====
+
     // Cached DOM references for frequently-accessed elements
     let shipSelectEl = null;
     let probabilityGraphEl = null;
@@ -176,7 +190,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         loadSavedStats();
     }
 
-    // Load Data
+    // ===== Data Loading =====
+
     async function loadData() {
         try {
             // Load base pools
@@ -211,7 +226,12 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         }
     }
 
-    // Parse pickup data from limited_build_shipgirls.json
+    // ===== Pool Construction =====
+
+    /**
+     * Convert the raw limited_build_shipgirls.json banner list into the internal pickupData map.
+     * Each banner becomes a 'pickup-{buildId}' pool entry with per-ship pickup rates.
+     */
     function parsePickupDataFromLimitedBuilds(limitedBuildData) {
         const pickupData = {};
 
@@ -272,7 +292,10 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         });
     }
 
-    // Build a single pickup pool from base pool + pickup ships
+    /**
+     * Merge a base pool with pickup ships:
+     * URs replace all base URs; SSR/SR pickups mark existing ships or add them fresh.
+     */
     function buildPickupPool(pickupPoolId, basePoolId, pickupShips) {
         // Start with base pool
         state.poolData[pickupPoolId] = JSON.parse(JSON.stringify(state.originalPoolData[basePoolId]));
@@ -448,7 +471,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         return btn;
     }
 
-    // Despair Pool Functions
+    // ===== Despair Pool =====
+
     function openDespairModal(basePool, despairPoolId) {
         state.modalState.basePool = basePool;
         state.modalState.selectedShips = state.despairSelections[despairPoolId] || [];
@@ -617,7 +641,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         }
     }
 
-    // Event Listeners
+    // ===== Event Listeners =====
+
     function setupEventListeners() {
         // Pool selection
         document.querySelectorAll('.pool-btn').forEach(btn => {
@@ -738,7 +763,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         });
     }
 
-    // Pool Selection
+    // ===== Pool Selection & Probability Display =====
+
     function selectPool(poolId) {
         // If it's a despair pool, check if ships are selected
         if (poolId.startsWith('despair-')) {
@@ -936,7 +962,12 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         drawProbabilityGraph(singleProb / 100, ship.name);
     }
 
-    // Draw Probability Graph
+    // ===== Probability Graph =====
+
+    /**
+     * Set up cumulative probability data for the canvas chart (0–400 builds).
+     * Stores metadata as data-* attributes so renderGraph() can be called on resize/theme change.
+     */
     function drawProbabilityGraph(probability, shipName) {
         const canvas = probabilityGraphEl;
         const ctx = canvas.getContext('2d');
@@ -1307,7 +1338,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         renderGraph(canvas, null);
     }
 
-    // Load Ship Database (lazy)
+    // ===== Ship Database & Custom Pool =====
+
     async function loadShipDatabase() {
         if (state.shipDatabase) return;
 
@@ -1539,7 +1571,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         updateProbabilityChart();
     }
 
-    // Perform Build
+    // ===== Build Simulation =====
+
     function performBuild(count) {
         const resultsContainer = document.getElementById('build-results');
 
@@ -1578,7 +1611,11 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         saveStats();
     }
 
-    // Roll Ship based on probabilities
+    /**
+     * Roll one ship result from the current pool.
+     * First determines rarity from cumulative probabilities, then selects a ship within that rarity,
+     * respecting pickup/custom ship rates before distributing the remainder uniformly.
+     */
     function rollShip() {
         const probs = getEffectiveProbabilities(state.currentPool);
         const ships = state.poolData[state.currentPool];
@@ -1732,7 +1769,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         saveStats();
     }
 
-    // Render Ship Grid
+    // ===== Ship Grid & Stats Display =====
+
     function renderShipGrid() {
         const grid = document.getElementById('ship-grid');
         const ships = state.poolData[state.currentPool] || {};

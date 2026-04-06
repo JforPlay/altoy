@@ -1,12 +1,11 @@
+/**
+ * shipgirl-birthday.js
+ * Birthday calendar for all shipgirls. Supports year/month/week/day views,
+ * Fuse.js search with fuzzy match highlighting, upcoming birthdays sidebar,
+ * and URL-persisted view/date state.
+ */
+
 import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex, getUrlParam, setUrlParams } from '../utils.js';
-/* ==========================================================================
-   Shipgirl Birthday Calendar Script (enhanced, structure-preserving)
-   - Adds Day view (일간), mini-month header in Day view
-   - Adds Today button (오늘) and injects it without modifying HTML file
-   - Enables click-through navigation: 연간→월간, 월간/주간→일간
-   - Keeps Korean labels and existing layout intact
-   - Performance: uses event delegation, caches lookups, avoids redundant listeners
-   ========================================================================== */
 
 (() => {
     /**
@@ -35,7 +34,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     const upcomingPanel = document.getElementById('upcomingPanel');
     const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
-    // Template references
+    // ===== Template References =====
     const eventCardTemplate = document.getElementById('event-card-template');
     const eventCardEmptyTemplate = document.getElementById('event-card-empty-template');
     const upcomingItemTemplate = document.getElementById('upcoming-item-template');
@@ -60,10 +59,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     let todayBtn = null;
     let dayToggleBtn = null;
 
-    // Fuse.js (existing behavior)
-
-
-    // ---------- Utilities ----------
+    // ===== Utilities =====
     const pad2 = (n) => (n < 10 ? '0' + n : '' + n);
 
     const isToday = (y, m, d) => {
@@ -85,7 +81,9 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         return img;
     }
 
-    // ---------- Data load & cache (unchanged behavior, path preserved) ----------
+    // ===== Data Loading =====
+
+    /** Read event data from localStorage if the 24-hour cache is still valid. */
     function getCachedData() {
         try {
             const timestamp = getStorageItem(CACHE_TIMESTAMP_KEY, null);
@@ -118,6 +116,10 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
             });
     }
 
+    /**
+     * Normalize raw JSON into event objects, build the date lookup map,
+     * initialize search, and trigger initial render.
+     */
     function processData(data) {
         // Normalize as per existing schema
         state.events = data.map(item => ({
@@ -138,6 +140,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         renderView();
     }
 
+    /** Rebuild the MM-DD keyed lookup map, optionally filtering by the current search query. */
     function rebuildEventsByDate() {
         state.eventsByDate = {};
         const filtered = state.searchQuery ? state.events.filter(ev => ev.name?.toLowerCase().includes(state.searchQuery.toLowerCase())) : state.events;
@@ -149,6 +152,9 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         for (const k in state.eventsByDate) state.eventsByDate[k].sort((a, b) => a.name.localeCompare(b.name));
     }
 
+    // ===== Search =====
+
+    /** Initialize the Fuse.js index and attach input/click handlers for the search dropdown. */
     function initializeSearch() {
         state.fuse = createSearchIndex(state.events, { keys: ['name', 'type', 'faction'] });
         searchInput.addEventListener('input', handleSearch, { passive: true });
@@ -233,7 +239,12 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         searchDropdown.style.display = 'block';
     }
 
-    // ---------- Upcoming ----------
+    // ===== Upcoming Events Sidebar =====
+
+    /**
+     * Return the next N upcoming birthdays, rolling over to the following year
+     * for any dates that have already passed in the current year.
+     */
     function getUpcomingEvents(limit = 12) {
         const now = new Date(); now.setHours(0, 0, 0, 0);
         const y = now.getFullYear();
@@ -277,7 +288,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         upcomingList.appendChild(frag);
     }
 
-    // ---------- URL State ----------
+    // ===== URL State =====
     const VALID_VIEWS = ['year', 'month', 'week', 'day'];
 
     function readUrlState() {
@@ -318,7 +329,12 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         setUrlParams(params, { replace: true, clear: true });
     }
 
-    // ---------- Rendering (existing views preserved) ----------
+    // ===== Calendar Rendering =====
+
+    /**
+     * Sync URL state then re-render the current view with a CSS fade transition.
+     * Dispatches to the appropriate renderXxxView() based on state.currentView.
+     */
     function renderView() {
         syncUrlState();
         calendarContainer.classList.add('fade-out');

@@ -1,3 +1,10 @@
+/**
+ * skin.sd.viewer.js
+ * SD (chibi) spine animation viewer with equipment skin (orbit) overlay support.
+ * Uses PixiJS + pixi-spine to render character and orbit animations side by side or attached.
+ * Orbit attachment is driven by a bone binding in the spine skeleton (orbit_ui_bound/orbit_combat_bound).
+ * Part of the skin module group.
+ */
 import { fetchJSON, resolveUrl } from '../utils.js';
 
 let app, currentSpine, dragTarget;
@@ -28,7 +35,12 @@ if (typeof PIXI === 'undefined') {
     loadInitialData();
 }
 
-// Initialize PixiJS
+// ===== Initialization =====
+
+/**
+ * Create the PixiJS Application, mount it to the spineContainer div,
+ * and register the per-tick updateAttachment callback.
+ */
 function initPixi() {
     const container = document.getElementById('spineContainer');
     app = new PIXI.Application({
@@ -41,7 +53,10 @@ function initPixi() {
     app.ticker.add(updateAttachment);
 }
 
-// Load all necessary data
+/**
+ * Load sd_data.json (character list) and orbit_data.json (equip skin definitions) in parallel,
+ * then populate both dropdowns.
+ */
 async function loadInitialData() {
     try {
         const [charListData, orbitDataResponse] = await Promise.all([
@@ -96,6 +111,12 @@ equipSelect.addEventListener('change', (e) => {
     if (equipName) loadOrbit(equipName);
 });
 
+// ===== Spine Loading =====
+
+/**
+ * Fetch and parse a spine skeleton from .atlas, .skel, and .png files at basePath.
+ * Assembles a PixiJS Spine object ready to add to the stage.
+ */
 async function loadSpine(basePath) {
     const atlasUrl = `${basePath}.atlas`;
     const skelUrl = `${basePath}.skel`;
@@ -124,6 +145,10 @@ async function loadSpine(basePath) {
     return new PIXI.spine.Spine(skeletonData);
 }
 
+/**
+ * Load and display a character spine animation; destroy the previous one first.
+ * Registers pointer events for drag interaction and plays the first available animation.
+ */
 async function loadAnimation(charName) {
     try {
         statusEl.textContent = '캐릭터 로딩 중...';
@@ -171,6 +196,10 @@ async function loadAnimation(charName) {
     }
 }
 
+/**
+ * Load equipment skin (orbit) spine files — orbits can have multiple parts.
+ * Picks the best matching animation (orbit_combat > 'normal' > 'stand' > first available).
+ */
 async function loadOrbit(orbitName) {
     try {
         statusEl.textContent = '장비 스킨 로딩 중...';
@@ -271,6 +300,13 @@ function updateDisplay() {
     }
 }
 
+// ===== Attachment & Display =====
+
+/**
+ * Called every tick — positions orbit parts relative to a named bone on the character spine.
+ * Uses orbit_ui_bound or orbit_combat_bound from orbit_data to find the bone and offset.
+ * No-ops when displayMode is not 'both' or bone data is missing.
+ */
 function updateAttachment() {
     if (displayMode !== 'both' || !currentSpine || multiOrbit.length === 0 || !equipSelect.value) {
         return;
@@ -369,7 +405,8 @@ function loadSkinList(spine) {
     });
 }
 
-// DRAG FUNCTIONS
+// ===== Drag Functions =====
+
 function onDragStart(e) {
     dragTarget = e.currentTarget;
     isDragging = true;
@@ -388,7 +425,7 @@ function onDragMove(e) {
         const deltaY = newY - dragTarget.y;
 
         if (multiOrbit.includes(dragTarget)) {
-            // If dragging one part of a multi-orbit, move all parts
+            // Move all orbit parts together — each part is a separate spine object
             multiOrbit.forEach(orbit => {
                 orbit.x += deltaX;
                 orbit.y += deltaY;
@@ -407,7 +444,8 @@ function onDragEnd(e) {
 
 
 
-// Controls
+// ===== Controls =====
+
 document.getElementById('scale').addEventListener('input', (e) => {
     const val = e.target.value;
     document.getElementById('scaleValue').textContent = val;

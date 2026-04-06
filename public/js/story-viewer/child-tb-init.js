@@ -1,9 +1,10 @@
-import { resolveUrl } from '../utils.js';
 /**
- * tb-story-init.js
- * ----------------
- * Configuration and initialization for TB Story Viewer
+ * child-tb-init.js
+ * Page init for the TB child story viewer.
+ * Passes TB-specific data paths, image URLs, and categories to
+ * window.createTabStoryViewer (defined in child-story.js).
  */
+import { resolveUrl } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const tbConfig = {

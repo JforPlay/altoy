@@ -1,6 +1,8 @@
 /**
- * Skin Expression & Gallery Module
- * Handles image gallery rendering, expression overlay logic, and lightbox functionality.
+ * skin.expression.js
+ * Expression overlay logic and image gallery rendering for the skin detail viewer.
+ * Handles face-expression selectors, base+overlay compositing, lightbox navigation,
+ * and thumbnail display. Part of the skin module group; wired by skin.detail.viewer.js.
  */
 import { showElement } from '../utils.js';
 
@@ -49,7 +51,11 @@ function setManifest(manifest) {
     state.expressionManifest = manifest || {};
 }
 
-// Lightbox Logic
+// ===== Lightbox =====
+
+/**
+ * Open the lightbox with a pre-built image array, starting at the given index.
+ */
 function openLightbox(images, startIndex = 0) {
     state.currentLightboxImages = images;
     state.currentLightboxIndex = startIndex;
@@ -74,9 +80,13 @@ function updateLightboxContent() {
     state.lightboxCounter.textContent = `${state.currentLightboxIndex + 1} / ${state.currentLightboxImages.length}`;
 }
 
+/**
+ * Trigger CSS slide animation in the given direction ('left' or 'right').
+ * The forced reflow ensures the remove→add class cycle actually animates.
+ */
 function animateSlide(direction) {
     state.lightboxImage.classList.remove('animating', 'slide-from-left', 'slide-from-right');
-    void state.lightboxImage.offsetWidth; // Force reflow
+    void state.lightboxImage.offsetWidth; // force reflow so class removal is committed before re-add
     state.lightboxImage.classList.add(`slide-from-${direction}`);
     requestAnimationFrame(() => {
         state.lightboxImage.classList.add('animating');
@@ -98,7 +108,13 @@ function showNextImage() {
     animateSlide('right');
 }
 
-// Gallery Rendering
+// ===== Gallery Rendering =====
+
+/**
+ * Build and mount the full image gallery for a skin into the given container.
+ * Renders: expression selector (if manifest entry exists), main painting with overlay,
+ * zoomed painting with overlay, and thumbnail panels. Attaches expression/lightbox handlers.
+ */
 function renderImageGallery(skin, container) {
     let galleryHtml = '';
     const galleryImages = [];
@@ -230,6 +246,10 @@ function renderImageGallery(skin, container) {
     addImageErrorHandlers(container);
 }
 
+/**
+ * Attach expression-thumb click handlers (update all face-overlay imgs) and
+ * lightbox triggers on gallery images. Canvas-composites overlay+base on click when loaded.
+ */
 function attachGalleryHandlers(container, galleryImages, baseDir) {
     // Expression Selectors
     const thumbs = container.querySelectorAll('.expression-thumb');
@@ -273,6 +293,11 @@ function attachGalleryHandlers(container, galleryImages, baseDir) {
     });
 }
 
+/**
+ * Canvas-composite the base image and face overlay from a face-overlay-container element.
+ * Returns null if base image isn't loaded or canvas throws (CORS).
+ * @returns {{ src, alt, caption } | null}
+ */
 function buildComposite(container) {
     const baseImg = container.querySelector('.base-image');
     const overlayImg = container.querySelector('.face-overlay');

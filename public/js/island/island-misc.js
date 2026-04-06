@@ -1,6 +1,13 @@
+/**
+ * island-misc.js
+ * Miscellaneous island assets gallery: dress icons, theme icons, rest events, invitations, and draw awards.
+ * Fetches file lists from the GitHub API at runtime (no pre-processed JSON) and renders
+ * an image gallery with a lightbox. Part of the island module group.
+ */
+
 import { hideElement, openModal, closeModal, setupModal } from '../utils.js';
 
-// Configuration
+// ===== Configuration =====
 const GITHUB_REPO = 'JforPlay/data_for_toy';
 const RAW_BASE_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/island/`;
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'];
@@ -13,16 +20,21 @@ const CATEGORIES = [
     { key: 'islanddrawawardicon', path: 'island/islanddrawawardicon' },
 ];
 
-// State
+// ===== State =====
 let allImages = []; // flat list for lightbox navigation
 let currentImageIndex = 0;
 
-// DOM
+// ===== DOM =====
 const lightbox = document.getElementById('island-misc-lightbox');
 const lightboxImg = lightbox.querySelector('.lightbox-img');
 const lightboxCaption = lightbox.querySelector('.lightbox-caption');
 
-// Fetch image list for a single category
+// ===== Data Fetching =====
+
+/**
+ * Fetch the image file list for a category from the GitHub Contents API.
+ * Filters to known image extensions and normalizes names for display.
+ */
 async function fetchCategory(category) {
     const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${category.path}`;
     const response = await fetch(apiUrl);
@@ -42,7 +54,12 @@ async function fetchCategory(category) {
         }));
 }
 
-// Render images into a section
+// ===== Rendering =====
+
+/**
+ * Render a fetched image list into its section gallery.
+ * Each image item gets a click handler to open the lightbox at the correct global index.
+ */
 function renderSection(category, images) {
     const section = document.querySelector(`.island-misc-section[data-category="${category}"]`);
     if (!section) return;
@@ -79,7 +96,6 @@ function renderSection(category, images) {
     gallery.appendChild(fragment);
 }
 
-// Show loading placeholder in a section
 function showSectionLoading(category) {
     const section = document.querySelector(`.island-misc-section[data-category="${category}"]`);
     if (!section) return;
@@ -87,7 +103,6 @@ function showSectionLoading(category) {
     gallery.innerHTML = '<div class="island-misc-loading"><div class="spinner"></div><p>로딩 중...</p></div>';
 }
 
-// Show error in a section
 function showSectionError(category, message) {
     const section = document.querySelector(`.island-misc-section[data-category="${category}"]`);
     if (!section) return;
@@ -95,7 +110,8 @@ function showSectionError(category, message) {
     gallery.innerHTML = `<div class="island-misc-loading"><p>오류: ${message}</p></div>`;
 }
 
-// Lightbox
+// ===== Lightbox =====
+
 function openLightbox(index) {
     currentImageIndex = index;
     updateLightboxImage();
@@ -119,7 +135,7 @@ function showPrevImage() {
     updateLightboxImage();
 }
 
-// Event listeners
+// ===== Event Listeners =====
 setupModal('island-misc-lightbox', {
     closeButtonSelector: '.lightbox-close',
     closeOnBackdrop: true,
@@ -136,9 +152,13 @@ document.addEventListener('keydown', (e) => {
     else if (e.key === 'ArrowRight') showNextImage();
 });
 
-// Initialize
+// ===== Initialization =====
+
+/**
+ * Load all image categories in parallel and render each section.
+ * Uses Promise.allSettled so a single failed category doesn't block the rest.
+ */
 async function init() {
-    // Show loading in all sections
     CATEGORIES.forEach(cat => showSectionLoading(cat.key));
 
     const results = await Promise.allSettled(CATEGORIES.map(cat => fetchCategory(cat)));

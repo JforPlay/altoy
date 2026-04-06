@@ -1,10 +1,11 @@
-import { resolveUrl } from '../utils.js';
 /**
- * world-story-viewer.script.js
- * ----------------------------
- * This script configures and initializes the common StoryViewer engine
- * for the "World Storyline" (Operation Siren).
+ * world-story.js
+ * Page init for the World Storyline (Operation Siren) viewer.
+ * Wires the shared StoryViewer engine with world-specific data paths
+ * and injects the "Summary" card via populateMemoryGridExtras.
  */
+import { resolveUrl } from '../utils.js';
+
 document.addEventListener('DOMContentLoaded', () => {
 
     const worldStoryConfig = {
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             viewer.storylineData = dataArray[0];
             viewer.storylineSummaryData = dataArray[1];
             viewer.shipgirlData = dataArray[2];
-            viewer.nameCodeData = dataArray[3]; // Add this line
+            viewer.nameCodeData = dataArray[3];
         },
 
         getEventMemories: (eventData) => eventData?.child,
@@ -33,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         getMemoryStory: (memoryData) => memoryData?.story,
         
-        getEventIconPath: (eventData) => null, // World events don't use icons in the same way
+        getEventIconPath: (eventData) => null, // world events have no icon prefix
 
         // Adds the special "Summary" card to the memory grid
         populateMemoryGridExtras: (viewer, memoryGrid, eventId) => {

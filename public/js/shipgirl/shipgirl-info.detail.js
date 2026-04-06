@@ -1,6 +1,8 @@
 /**
- * Shipgirl Info Module - Detail View Rendering
- * Handles detail view rendering: header, stats, skills, sp weapon, gifts
+ * shipgirl-info.detail.js
+ * Detail panel rendering for the shipgirl info page: header, stat calculator, skills, SP weapon, gifts.
+ * Part of the shipgirl-info module group (info + data + detail + maps).
+ * State is shared via a ref passed to setup() from shipgirl-info.js.
  */
 
 import { createImg, IMG_FALLBACKS, showToast, resolveUrl } from '../utils.js';
@@ -9,9 +11,7 @@ import { getSkillInfo, getAttrKoreanName, getShipType, createAttrMapping } from 
 
 'use strict';
 
-// ============================================
-// CONSTANTS
-// ============================================
+// ===== Constants =====
 const FAVORABILITY_BONUSES = {
     'other': 1.0,
     'friendly': 1.01,
@@ -31,16 +31,20 @@ const LIMIT_BREAK_NAMES = ['기본', '한계돌파 1', '한계돌파 2', '한계
 
 const UNAFFECTED_STATS = ['speed', 'luck'];
 
-// ============================================
-// STATE REFERENCE (set via setup)
-// ============================================
+// ===== State Reference =====
 let state;
 
 export function setup(stateRef) {
     state = stateRef;
 }
 
-// ===== Detail View =====
+// ===== Detail View Entry =====
+
+/**
+ * Show the detail view for a ship by name.
+ * Waits for full data to load if needed, sets initial state (level 100, love affinity, max LB),
+ * then delegates to renderDetailView.
+ */
 export async function showDetailView(shipName) {
     // If full data isn't loaded yet, wait for it
     if (!state.fullShipData) {
@@ -90,6 +94,7 @@ export async function showDetailView(shipName) {
 }
 
 // ===== Detail View Rendering =====
+
 function renderDetailView(ship) {
     const limitBreakOptions = Object.keys(ship.base);
     const nationalityInfo = state.nationalityData[String(ship.nationality)] || {
@@ -111,8 +116,11 @@ function renderDetailView(ship) {
     updateStats();
 }
 
+/**
+ * Render the top info card: ship image, basic metadata, retrofit badge, and drop sources.
+ * Equipment proficiency stats are excluded from the retrofit bonus display.
+ */
 function renderDetailHeader(ship, nationalityInfo) {
-    // Check if ship has retrofit data
     const hasRetrofit = ship.retrofit && ship.retrofit.id;
 
     // Filter retrofit bonuses to exclude equipment proficiency
@@ -479,9 +487,15 @@ export function setupDetailEventListeners() {
     }
 }
 
-// ===== Gift Generation =====
+// ===== Gift & Stats Sections =====
+
+/**
+ * Generate icon chips for the gift preference display.
+ * Gift IDs 180001–180009; liked = all gifts NOT in the disliked set.
+ * The 'type' parameter controls which set is rendered, not which icons are "liked".
+ */
 function generateGiftIcons(dislikedGifts, type) {
-    // Define all possible gift IDs from 180001 to 180009
+    // IDs run from 180001 to 180009
     const allGiftIds = Array.from({ length: 9 }, (_, i) => 180001 + i);
     const dislikedSet = new Set(dislikedGifts || []);
     const baseUrl = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/props/';
@@ -517,7 +531,11 @@ function generateGiftIcons(dislikedGifts, type) {
     }).join('');
 }
 
-// ===== Stats Calculation =====
+/**
+ * Recompute and re-render all stat cells from the current slider/select values.
+ * Formula: floor((base + growth*(level-1)/1000 + enhance) * favorabilityBonus)
+ * Speed and luck are unaffected by the affinity bonus.
+ */
 function updateStats() {
     if (!state.currentShip) return;
 

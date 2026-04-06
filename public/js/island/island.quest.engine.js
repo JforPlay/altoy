@@ -1,15 +1,14 @@
 /**
- * Island Quest Engine
- * Handles quest data loading, filtering, and rendering
+ * island.quest.engine.js
+ * Quest sub-engine for the island module. Loads task data, groups quests by type,
+ * and provides a filterable list with a detail panel. Registers as window.QuestModule.
  */
 
 import { fetchJSON } from '../utils.js';
 
 'use strict';
 
-// ============================================
-// STATE
-// ============================================
+// ===== State =====
 const state = {
     allQuests: [],
     groupedQuests: {},
@@ -59,9 +58,7 @@ const QUEST_TYPE_COLORS = {
     '9': '#FFE66D'  // Gold - Hidden
 };
 
-// ============================================
-// INITIALIZATION
-// ============================================
+// ===== Initialization =====
 
 /**
  * Initialize quest module
@@ -135,9 +132,7 @@ function groupQuestsByType() {
     console.log('[Quest Module] Grouped quests:', state.groupedQuests);
 }
 
-// ============================================
-// EVENT LISTENERS
-// ============================================
+// ===== Event Listeners =====
 
 function setupEventListeners() {
     // Search functionality
@@ -205,9 +200,7 @@ function setupEventListeners() {
     console.log('[Quest Module] Event delegation set up');
 }
 
-// ============================================
-// FILTERING
-// ============================================
+// ===== Filtering =====
 
 /**
  * Filter quests by type and search query
@@ -262,9 +255,7 @@ function setFilter(type) {
     console.log(`[Quest Module] Filter set to: ${type}`);
 }
 
-// ============================================
-// RENDERING
-// ============================================
+// ===== Rendering =====
 
 /**
  * Render quest filter dropdown
@@ -510,9 +501,7 @@ function renderMetadata(quest) {
 }
 
 
-// ============================================
-// BACKWARDS COMPATIBILITY & EXPORTS
-// ============================================
+// ===== Public API =====
 
 window.QuestModule = {
     init,

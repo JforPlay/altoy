@@ -1,12 +1,14 @@
+/**
+ * skin.detail.viewer.js
+ * Page controller for the skin detail viewer — character + skin selection, voice lines, gallery.
+ * Orchestrates three sub-modules: skin.data.js (data), skin.audio.js (audio), skin.expression.js (gallery).
+ * Part of the skin module group.
+ */
 import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl } from '../utils.js';
 import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getReleaseDate, getSkinFilterData } from './skin.data.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlHtml, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
 
-/**
- * Modern Skin Detail Viewer (Controller)
- * Orchestrates SkinData, SkinAudio, and SkinExpression modules.
- */
 document.addEventListener('DOMContentLoaded', async () => {
 
     // DOM Elements
@@ -54,9 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     window.addEventListener('popstate', applyFiltersFromURL);
 
-    // ============================================
-    // Logic
-    // ============================================
+    // ===== Search & Selection =====
 
     function setupDropdowns() {
         // Character Search
@@ -134,6 +134,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateURLWithFilters();
     }
 
+    /**
+     * Fetch full skin data by name, then render info box, image gallery, and voice lines.
+     * Shows a skeleton loader while data is in flight.
+     */
     async function displaySkinDetails(skinName) {
         showElement(elements.skeleton);
 
@@ -178,9 +182,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         toggleElement(elements.skinInfoBox, !!html);
     }
 
+    /**
+     * Render the voice line tables (normal, oath, ASMR) for a skin.
+     * Attaches delegated play-click and volume listeners via skin.audio.js exports.
+     */
     function renderVoiceLines(skin) {
-        // Logic similar to original but using SkinAudio for controls
-        // Simplified for brevity, keeping core logic
         const { normal, oath } = generateVoiceTableHtml(skin);
         
         // Render Normal
@@ -222,6 +228,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         return html ? `<div class="descriptions-panel">${html}</div>` : '';
     }
 
+    /**
+     * Build HTML rows for normal and oath voice line tables.
+     * Priority keys (입수시, 상세확인, etc.) render first; _ex keys go to oath section.
+     * Returns { normal, oath } — both are HTML string fragments.
+     */
     function generateVoiceTableHtml(skin) {
         let normal = '';
         let oath = '';
@@ -309,9 +320,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, { clear: true });
     }
 
-    // ============================================
-    // Random Skin
-    // ============================================
+    // ===== Random Skin Feature =====
+    /**
+     * Wire the random skin modal: filter dropdowns (rarity/type/tag/nation),
+     * count display, and the "go" button that picks and navigates to a random skin.
+     */
     function setupRandomSkin() {
         const randomBtn = document.getElementById('random-skin-btn');
         const modal = document.getElementById('random-skin-modal');

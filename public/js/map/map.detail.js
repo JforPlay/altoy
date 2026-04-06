@@ -1,8 +1,17 @@
+/**
+ * map.detail.js
+ * Renders all map detail panels: info cards, stats chips, node overlays, world/archive/exploration views.
+ * Part of the map module group (viewer + data + detail + grid + compare).
+ * State is shared via a ref passed to setup() from map.viewer.js.
+ * calcClearEstimate is also exported and used by map.compare.js for the compare table.
+ */
+
 import { showElement, hideElement, resolveUrl } from '../utils.js';
 import { getShipDropsForChapter, getShipInfo, getShipInfoByGid } from './map.data.js';
 
 let state;
 
+/** Receive shared state from map.viewer.js. */
 export function setup(stateRef) {
     state = stateRef;
 }
@@ -27,6 +36,7 @@ const SHIP_TYPE_NAMES = {
 /** Star condition values → Korean descriptions */
 const DATA_FOR_TOY_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main';
 
+// Converts Props/XXXX or Equips/XXXX path (from item_drops data) to a hosted WebP URL
 /** Convert item icon path to image URL. Props/XXXX -> props/XXXX.webp, Equips/XXXX -> equips/XXXX.webp */
 function getItemIconUrl(iconPath) {
     if (!iconPath) return '';
@@ -129,7 +139,11 @@ export function calcClearEstimate(chapter) {
     };
 }
 
-/** Render the map info sections below the grid (star conditions, limitations only — no enemy list). */
+/**
+ * Render the main info card grid: star conditions, clear estimate, property limitations,
+ * fleet limitations, item drops, and ship drops.
+ * Sections are conditionally included based on available chapter fields.
+ */
 export function renderMapInfo(chapter, targetEl) {
     if (!chapter) return;
 
@@ -332,7 +346,7 @@ export function renderMapInfo(chapter, targetEl) {
     targetEl.innerHTML = html;
 }
 
-/** Render quick stats chips. */
+/** Render quick stats chips (oil, ammo, air dominance, boss refresh, fleet count, oil cap) for standard maps. */
 export function renderStats(chapter, targetEl) {
     if (!chapter) return;
 
@@ -361,7 +375,7 @@ export function renderStats(chapter, targetEl) {
     }).join('');
 }
 
-/** Render world chapter info (expedition level, tiered exp). */
+/** Render world chapter info cards (expedition level, difficulty, tiered EXP). */
 export function renderWorldInfo(chapter, targetEl) {
     let html = '<div class="info-grid">';
 
@@ -391,7 +405,7 @@ export function renderWorldInfo(chapter, targetEl) {
     targetEl.innerHTML = html;
 }
 
-/** Render world chapter stats. */
+/** Render world chapter stat chips (enemy level, difficulty). */
 export function renderWorldStats(chapter, targetEl) {
     const chips = [
         { icon: 'swords', label: '적 레벨', value: `Lv.${chapter.expedition_level}` },
@@ -407,7 +421,7 @@ export function renderWorldStats(chapter, targetEl) {
     ).join('');
 }
 
-/** Render archive chapter stats. */
+/** Render archive chapter stat chips (boss refresh, fleet count). */
 export function renderArchiveStats(chapter, targetEl) {
     const chips = [];
     if (chapter.boss_refresh) chips.push({ icon: 'swords', label: '보스출현', value: `${chapter.boss_refresh}전` });
@@ -543,7 +557,11 @@ export function renderExplorationInfo(chapter, targets, targetEl) {
     targetEl.innerHTML = html;
 }
 
-/** Handle node click → show fleet detail in the floating overlay (compact: name, level, exp only). */
+/**
+ * Render fleet detail for the clicked grid node in the floating overlay.
+ * Maps attachType to the correct expedition list (boss/elite/normal/guarder/champion).
+ * Shows only name, level, EXP, and commander EXP — no ship list.
+ */
 export function renderNodeDetail(attachType, chapter, targetEl, titleEl) {
     const exps = chapter.expeditions || {};
     let fleets = [];

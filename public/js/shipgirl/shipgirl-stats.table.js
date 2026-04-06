@@ -1,8 +1,10 @@
 'use strict';
 
 /**
- * Shipgirl Stats Module - Ranking Table
- * Sortable, paginated ranking tables for ship info and skin info tabs.
+ * shipgirl-stats.table.js
+ * Sortable, paginated ranking tables for the ship info and skin info tabs.
+ * Renders column headers (with click-to-sort), per-page rows with ship icons,
+ * rarity chips, and stat/skin count cells, plus a page-number pagination strip.
  */
 
 import { createImgElement, IMG_FALLBACKS } from '../utils.js';
@@ -17,17 +19,13 @@ import {
     getShipIconUrl,
 } from './shipgirl-stats.data.js';
 
-// ============================================
-// CONSTANTS
-// ============================================
+// ===== Constants =====
 
 const ROWS_PER_PAGE = 50;
 
 const RARITY_ORDER = { UR: 5, SSR: 4, SR: 3, R: 2, N: 1 };
 
-// ============================================
-// COLUMN DEFINITIONS
-// ============================================
+// ===== Column Definitions =====
 
 /** @type {Array<{key: string, label: string, sortKey?: string, className?: string, sortable?: boolean, isStat?: boolean, hidden?: boolean}>} */
 const SHIP_COLUMNS = [
@@ -67,9 +65,7 @@ const SKIN_COLUMNS = [
     { key: 'daysSinceLast', label: '경과일', sortKey: 'skin.daysSinceLast' },
 ];
 
-// ============================================
-// STATE
-// ============================================
+// ===== State =====
 
 let state;
 
@@ -82,9 +78,7 @@ export function setup(stateRef) {
     state.shipExpanded = false;
 }
 
-// ============================================
-// SORT HELPERS
-// ============================================
+// ===== Sort Helpers =====
 
 function getSortValue(entry, sortKey) {
     if (sortKey === 'name') return entry.ship.name;
@@ -122,9 +116,7 @@ function sortData(data, sortConfig) {
     });
 }
 
-// ============================================
-// TABLE HEAD
-// ============================================
+// ===== Table Head =====
 
 function renderTableHead(elementId, columns, sortConfig, tableType) {
     const thead = document.getElementById(elementId);
@@ -175,9 +167,7 @@ function renderTableHead(elementId, columns, sortConfig, tableType) {
     thead.appendChild(tr);
 }
 
-// ============================================
-// PAGINATION
-// ============================================
+// ===== Pagination =====
 
 function renderPagination(elementId, currentPage, totalPages, tableType) {
     const container = document.getElementById(elementId);
@@ -259,10 +249,12 @@ function getPageNumbers(current, total) {
     return result;
 }
 
-// ============================================
-// SHIP TABLE
-// ============================================
+// ===== Ship Table =====
 
+/**
+ * Render or re-render the ship-info ranking table for the current page and sort state.
+ * Rebuilds the thead (with sort indicators), the tbody rows, and the pagination strip.
+ */
 export function renderShipTable() {
     const source = state.filteredShipStats || state.shipStats;
     if (!source) return;
@@ -366,10 +358,12 @@ export function renderShipTable() {
     renderPagination('shipPagination', state.shipPage, totalPages, 'ship');
 }
 
-// ============================================
-// SKIN TABLE
-// ============================================
+// ===== Skin Table =====
 
+/**
+ * Render or re-render the skin-info ranking table for the current page and sort state.
+ * Rebuilds the thead, the tbody rows with skin-count cells, and the pagination strip.
+ */
 export function renderSkinTable() {
     const source = state.filteredShipStats || state.shipStats;
     if (!source) return;

@@ -1,6 +1,8 @@
 /**
- * Shipgirl Info Module - Data Loading & Utilities
- * Handles data loading functions and skill/attribute utility functions
+ * shipgirl-info.data.js
+ * Data loading and skill/attribute utility functions for the shipgirl info page.
+ * Part of the shipgirl-info module group (info + data + detail + maps).
+ * State is shared via a ref passed to setup() from shipgirl-info.js.
  */
 
 import { fetchJSON, fetchJSONWithCache } from '../utils.js';
@@ -17,8 +19,11 @@ export function setup(stateRef) {
 }
 
 // ===== Data Loading =====
+/**
+ * Load lite data synchronously for fast initial render, then start background load of full data.
+ * Full data is needed only when opening a detail view.
+ */
 export async function loadData() {
-    // Load lite data for fast initial render
     state.shipgirlData = await fetchJSON('data/ship_info_lite.json');
     state.filteredData = [...state.shipgirlData];
 
@@ -50,6 +55,7 @@ export async function loadShipTypeData() {
     state.shipTypeData = await fetchJSON('data/mapping/ship_type_mapping.json');
 }
 
+/** Load skill icon mapping; falls back to Fernando2603/AzurLane remote if local file is missing. */
 export async function loadSkillIconData() {
     try {
         state.skillIconData = await fetchJSON('data/skill_icon_mapping.json');
@@ -67,6 +73,10 @@ export async function loadSkillIconData() {
     }
 }
 
+/**
+ * Load skill_data_template; falls back to AzurLaneData KR remote if local copy is missing.
+ * Normalizes both array and object formats to a keyed object { id: skill }.
+ */
 export async function loadSkillDataTemplate() {
     try {
         const data = await fetchJSON('data/sim/skill_data_template.json');
@@ -118,6 +128,10 @@ export function getSkillIconUrl(skillId) {
     return iconUrl;
 }
 
+/**
+ * Replace $1, $2, ... placeholders in a skill description with values from descGetAdd.
+ * Array values are joined with '/' (e.g. [10, 20] → "10/20").
+ */
 export function processSkillDescription(desc, descGetAdd) {
     if (!desc) return '설명 없음';
     if (!descGetAdd || descGetAdd.length === 0) return desc;
@@ -132,6 +146,7 @@ export function processSkillDescription(desc, descGetAdd) {
     return processed;
 }
 
+/** Resolve a skill ID to { name, description, iconUrl }. Returns a safe fallback if not found. */
 export function getSkillInfo(skillId) {
     const skill = state.skillDataTemplate[String(skillId)];
 
@@ -151,7 +166,9 @@ export function getSkillInfo(skillId) {
     };
 }
 
-// ===== Helper Functions =====
+// ===== Attribute & Ship Type Helpers =====
+
+/** Look up the Korean display name for an attribute by its English key (name or name2). */
 export function getAttrKoreanName(attrName) {
     if (!attrName) return '';
     const lowerAttrName = attrName.toLowerCase();

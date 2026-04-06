@@ -1,13 +1,14 @@
 /**
- * Island Resource Module - Tree Building & Calculations
- * Handles dependency tree construction, cache management, and cost/time calculations
+ * island.resource.tree.js
+ * Tree-building and calculation sub-module for the island resource system.
+ * Provides upstream/downstream dependency trees, LRU-cached tree results, gold/resource
+ * cost calculations, and cumulative time (including manual-mode propagation for category 1).
+ * State is shared via setup() called from island.resource.engine.js.
  */
 
 'use strict';
 
-// ============================================
-// CONSTANTS
-// ============================================
+// ===== Constants =====
 export const CONSTANTS = {
     MANUAL_TIME_MULTIPLIER: 0.7,      // 30% time reduction for manual mode
     MAX_TREE_DEPTH: 5,                // Maximum recursion depth for dependency trees
@@ -18,30 +19,26 @@ export const CONSTANTS = {
     MAX_CACHE_SIZE: 50                // Maximum number of cached dependency trees (prevents memory leaks)
 };
 
-// ============================================
-// STATE REFERENCE (set via setup)
-// ============================================
+// ===== State Reference (set via setup) =====
 let state;
 
 export function setup(stateRef) {
     state = stateRef;
 }
 
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
+// ===== Utility Functions =====
 
+/** O(1) recipe lookup by ID. */
 export function findRecipeById(id) {
     return state.recipeIndex[id] || null;
 }
 
+/** O(1) category lookup for a recipe ID. */
 export function findRecipeCategoryById(id) {
     return state.recipeCategoryIndex[id] || null;
 }
 
-// ============================================
-// CACHE MANAGEMENT (Fixed Memory Leaks)
-// ============================================
+// ===== Cache Management =====
 
 /**
  * Clear all cached dependency trees
@@ -75,10 +72,13 @@ function getFromCache(key) {
     return state.treeCache[key];
 }
 
-// ============================================
-// DEPENDENCY TREE BUILDING
-// ============================================
+// ===== Dependency Tree Building =====
 
+/**
+ * Build an upstream dependency tree for a recipe (what ingredients are needed to produce it).
+ * Supports manual mode (category 1 uses 'cost' field), quantity scaling, and LRU caching for
+ * root-level calls. Shop-purchasable items are represented as leaf nodes with cost data.
+ */
 export function buildUpstreamTree(recipeId, options = {}) {
     const {
         useManualMode = false,
@@ -227,6 +227,10 @@ export function buildUpstreamTree(recipeId, options = {}) {
     return result;
 }
 
+/**
+ * Build a downstream usage tree for a recipe (what recipes consume its outputs).
+ * Results are LRU-cached for root-level calls; recursive calls skip the cache to avoid stale data.
+ */
 export function buildDownstreamTree(recipeId, options = {}) {
     const {
         maxDepth = CONSTANTS.MAX_TREE_DEPTH,
@@ -286,9 +290,7 @@ export function buildDownstreamTree(recipeId, options = {}) {
     return result;
 }
 
-// ============================================
-// TREE STATISTICS & COST CALCULATIONS
-// ============================================
+// ===== Tree Statistics & Cost Calculations =====
 
 /**
  * Calculate tree statistics (total recipes, max depth)
@@ -472,9 +474,7 @@ export function calculateGoldConsumptionWithManual(upstreamTree, useManualForCat
     return { gold, resources };
 }
 
-// ============================================
-// TIME CALCULATIONS
-// ============================================
+// ===== Time Calculations =====
 
 /**
  * Calculate cumulative time per unit of output for a recipe

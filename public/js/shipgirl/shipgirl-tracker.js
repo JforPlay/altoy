@@ -1,3 +1,11 @@
+/**
+ * shipgirl-tracker.js
+ * Fleet tech point tracker for all shipgirls.
+ * Cards render all ships with get/level/upgrade checkboxes; scores update live as boxes are checked.
+ * Features: filter drawer (rarity/nationality/type/stat chips), bulk operations, goal tracker modal,
+ * faction tech bonus display, and cross-tab sync via the storage event (shares SAVE_KEY with research-tracker.js).
+ */
+
 import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 document.addEventListener('DOMContentLoaded', () => {
@@ -7,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const GOAL_KEY = 'shipgirlTrackerSelectedGoal';
     const FILTER_KEY = 'shipgirlTrackerFilters';
     const UNIQUE_ID_LENGTH = 9;
+
+    // ===== State =====
 
     // Cached DOM elements for performance
     let cachedElements = {
@@ -41,13 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
                ) || null;
     }
 
-    /**
-     * Fetches all necessary data from JSON files.
-     * This includes ship data, nationality mappings, ship type mappings, and attribute mappings.
-     * It uses Promise.all for efficient, parallel fetching.
-     */
+    // ===== Data Loading =====
+
+    /** Fetch all required data in parallel. Re-throws on failure to halt initialization. */
     async function fetchData() {
-        // Paths to the data files.
         const dataPaths = [
             'data/ship_group_data.json',
             'data/mapping/nationality_mapping.json',
@@ -57,25 +64,27 @@ document.addEventListener('DOMContentLoaded', () => {
             'data/shipgirl/fleet_tech_template.json'
         ];
         try {
-            // Fetch and parse all files simultaneously using global fetchJSON
             [fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData] = await Promise.all(
                 dataPaths.map(path => fetchJSON(path))
             );
         } catch (error) {
-            // Log the error and display a message to the user if fetching fails.
             console.error("Error loading data files:", error);
             const container = document.getElementById('ship-list-container');
             if (container) container.innerHTML = `<p style="color: red; text-align: center;">데이터 파일을 불러오는 데 실패했습니다. 파일 경로와 JSON 형식을 확인하세요.</p>`;
-            // Re-throw the error to stop further execution.
             throw error;
         }
     }
 
+    // ===== Card Rendering =====
+
+    /**
+     * Build a ship card DOM element with fleet tech checkboxes, stat bonus info, and metadata badges.
+     * All filter-relevant data is stored as data-* attributes for fast applyFilters() queries.
+     */
     function createShipCard(ship, shipId) {
         const card = document.createElement('div');
         card.className = 'ship-card';
 
-        // Store ship data as data attributes on the card element for easy access.
         card.dataset.shipId = shipId;
         card.dataset.nationality = ship.nationality;
         card.dataset.type = ship.type;
@@ -85,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
         card.dataset.ptLevel = ship.pt_level ?? 0;
         card.dataset.ptUpgrade = ship.pt_upgrage ?? 0;
 
-        // Add additional attributes if they exist.
         if (ship.add_get_attr) {
             card.dataset.addGetAttr = ship.add_get_attr;
             card.dataset.addGetShiptype = ship.add_get_shiptype.join(',');
@@ -97,21 +105,18 @@ document.addEventListener('DOMContentLoaded', () => {
             card.dataset.addLevelValue = ship.add_level_value;
         }
 
-        // Create and append the ship's icon.
         const icon = document.createElement('img');
         icon.src = ship.icon;
         icon.alt = ship.name;
         icon.className = 'ship-icon';
-        icon.loading = 'lazy'; // Lazy load images for better performance.
+        icon.loading = 'lazy';
         card.appendChild(icon);
 
-        // Create and append the ship's name.
         const name = document.createElement('div');
         name.className = 'ship-name';
         name.textContent = ship.name;
         card.appendChild(name);
 
-        // Create the info section for nationality, type, and rarity.
         const infoSection = document.createElement('div');
         infoSection.className = 'info-section';
 
@@ -144,7 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         card.appendChild(infoSection);
 
-        // Create and append the description section if it exists.
         if (ship.description && ship.description.length > 0) {
             const descriptionSection = document.createElement('div');
             descriptionSection.className = 'description-section';
@@ -163,7 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
             card.appendChild(descriptionSection);
         }
 
-        // Create stat info section (입수/120렙 attr + shiptype + value)
         if (ship.add_get_attr || ship.add_level_attr) {
             const statInfo = document.createElement('div');
             statInfo.className = 'stat-info';
@@ -186,7 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
             card.appendChild(statInfo);
         }
 
-        // Create the tracker section with checkboxes for progress.
         const trackerSection = document.createElement('div');
         trackerSection.className = 'tracker-section';
         if (ship.pt_get !== undefined) trackerSection.appendChild(createTrackerItem('입수 시', ship.pt_get, 'get', UNIQUE_ID_LENGTH));
@@ -306,6 +308,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const factionBonuses = calculateFactionTechBonuses(fleetTechByName);
         renderFactionTechBonuses(factionBonuses);
     }
+
+    // ===== Scores =====
 
     // Create debounced version for checkbox changes (150ms delay)
     const debouncedCalculateScores = debounce(calculateAndDisplayScores, 150);
@@ -1009,9 +1013,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     }
 
-    // ========================================================================
-    //  DRAWER: open / close
-    // ========================================================================
+    // ===== Filter Drawer =====
 
     function openDrawer() {
         const drawer = document.getElementById('filter-drawer');
@@ -1028,10 +1030,6 @@ document.addEventListener('DOMContentLoaded', () => {
         backdrop.classList.add('hidden');
         document.body.style.overflow = '';
     }
-
-    // ========================================================================
-    //  FILTER DRAWER: populate controls
-    // ========================================================================
 
     // Debounced filter apply (used throughout drawer)
     const debouncedApplyFilters = debounce(applyFilters, 150);
@@ -1369,9 +1367,7 @@ document.addEventListener('DOMContentLoaded', () => {
         autoSaveProgress();
     }
 
-    // ========================================================================
-    //  CONFIRMATION MODAL
-    // ========================================================================
+    // ===== Confirmation Modal =====
 
     /**
      * Current confirmation callback for the modal.
@@ -1525,9 +1521,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ========================================================================
-    //  FILTER CHIPS + PERSISTENCE
-    // ========================================================================
+    // ===== Filter Chips & Persistence =====
 
     /**
      * Updates the filter chips row below the toolbar to show active filters.
@@ -1785,9 +1779,7 @@ document.addEventListener('DOMContentLoaded', () => {
         applyFilters();
     }
 
-    // ========================================================================
-    //  SEARCH
-    // ========================================================================
+    // ===== Search =====
 
     /**
      * Sets up search input and dropdown.
@@ -1848,9 +1840,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ========================================================================
-    //  INITIALIZATION
-    // ========================================================================
+    // ===== Initialization =====
 
     async function initialize() {
         try {

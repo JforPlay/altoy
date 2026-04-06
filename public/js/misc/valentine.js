@@ -1,12 +1,20 @@
+/**
+ * valentine.js
+ * Valentine letter viewer: master list of shipgirls + per-year letter display.
+ * Supports URL parameter ?name= for deep-linking; shipgirl icons resolved from ship_group_data.json.
+ * NAME_ALIASES handles spelling mismatches between valentine_data.json and ship_group_data names.
+ */
+
 import { debounce, fetchJSON, resolveUrl, getUrlParam, setUrlParams, showElement, hideElement, createSearchIndex, normalizeRomanNumerals } from '../utils.js';
 
+// ===== State =====
 let valentineData = [];
 let shipgirlNameMap = new Map();
 let searchIndex = null;
 let selectedShipgirl = null;
 let selectedYear = null;
 
-// DOM elements
+// ===== DOM References =====
 const searchInput = document.getElementById('search');
 const shipgirlList = document.getElementById('shipgirl-list');
 const shipgirlCount = document.getElementById('shipgirl-count');
@@ -24,6 +32,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     handleInitialSelection();
 });
 
+/**
+ * Load valentine letters and ship group data in parallel.
+ * Sorts the valentine list by ship ID (unmatched names go to the end), then creates a Fuse.js index.
+ */
 async function loadData() {
     try {
         const [valData, shipGroupData] = await Promise.all([
@@ -33,7 +45,7 @@ async function loadData() {
 
         valentineData = valData;
 
-        // Build name map from ship_group_data, preserving ID
+        // Build normalized name map for O(1) lookups; ship_group_data may be array or object
         if (Array.isArray(shipGroupData)) {
             shipGroupData.forEach(ship => {
                 if (ship.name) {
@@ -51,7 +63,6 @@ async function loadData() {
             });
         }
 
-        // Sort valentine data by shipgirl ID (unmatched entries go to the end)
         valentineData.sort((a, b) => {
             const shipA = findShipgirl(a.name);
             const shipB = findShipgirl(b.name);
@@ -60,7 +71,6 @@ async function loadData() {
             return idA - idB;
         });
 
-        // Create search index
         searchIndex = createSearchIndex(valentineData, {
             keys: ['name'],
             threshold: 0.3
@@ -70,24 +80,25 @@ async function loadData() {
     }
 }
 
-// Aliases for valentine names that differ from ship_group_data names
+// Spelling mismatches between valentine_data.json and ship_group_data — map to canonical names
 const NAME_ALIASES = {
     '아드미랄 히퍼': '아드미럴 히퍼',
     '어드미럴 나히모프': '아드미랄 나히모프',
 };
 
+/**
+ * Look up a shipgirl by valentine name, trying: exact normalized match → alias → suffix match.
+ * The suffix fallback handles entries like "라이온" matching "라이온급 전함 - 라이온".
+ */
 function findShipgirl(name) {
     const trimmed = name.trim();
     const normalized = normalizeRomanNumerals(trimmed);
     const match = shipgirlNameMap.get(normalized);
     if (match) return match;
 
-    // Try alias
     const alias = NAME_ALIASES[trimmed];
     if (alias) return shipgirlNameMap.get(normalizeRomanNumerals(alias)) || null;
 
-    // Fallback: find a ship_group entry whose name ends with the valentine name
-    // (handles cases like "라이온" matching "라이온급 전함 - 라이온")
     for (const [key, ship] of shipgirlNameMap) {
         if (key.endsWith(normalized)) return ship;
     }
@@ -140,7 +151,6 @@ function renderShipgirlList(data) {
     });
     shipgirlList.appendChild(fragment);
 
-    // Restore active state if selected
     if (selectedShipgirl) {
         highlightActive(selectedShipgirl);
     }
@@ -160,7 +170,6 @@ function selectShipgirl(name) {
     setUrlParams({ name }, true);
     highlightActive(name);
 
-    // Update header
     const ship = findShipgirl(name);
     const iconUrl = getIconUrl(ship);
 
@@ -183,7 +192,6 @@ function selectShipgirl(name) {
     nameEl.textContent = name;
     letterHeader.appendChild(nameEl);
 
-    // Render year tabs
     const years = Object.keys(entry.letters).sort();
     yearTabs.innerHTML = '';
     years.forEach(year => {
@@ -195,11 +203,9 @@ function selectShipgirl(name) {
         yearTabs.appendChild(tab);
     });
 
-    // Show letter area, hide placeholder
     hideElement(letterPlaceholder);
     showElement(letterContentWrapper);
 
-    // Show most recent year by default
     const latestYear = years[years.length - 1];
     showLetter(entry, latestYear);
 }

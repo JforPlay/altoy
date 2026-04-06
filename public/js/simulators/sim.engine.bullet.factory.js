@@ -1,8 +1,10 @@
 /**
- * Bullet Behavior System
+ * sim.engine.bullet.factory.js
+ * Bullet behavior system for the shared simulation engine.
+ * Each behavior class modifies bullet state per frame via update(frameData).
+ * BehaviorFactory.createBehaviors() is called by sim.engine.bullet.js for each new bullet.
  *
- * Each behavior modifies bullet state per frame via update(frameData).
- * Return conventions:
+ * Return conventions from update():
  *   - null: no changes to apply
  *   - { velocityX, velocityY }: override velocity
  *   - { x, y, velocityX, velocityY }: override position + velocity (position-locking behaviors)

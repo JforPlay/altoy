@@ -1,6 +1,8 @@
 /**
- * Shipgirl Info Module - Main Entry Point
- * Keeps state, imports from sub-modules, sets up event listeners, filtering, rendering, and routing
+ * shipgirl-info.js
+ * Main entry point for the shipgirl info page.
+ * Owns shared state, wires sub-modules (data, detail, maps), handles filtering/rendering/routing,
+ * and sets up keyboard/swipe/touch navigation between ship detail views.
  */
 
 import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorageItem, setStorageItem } from '../utils.js';
@@ -19,7 +21,7 @@ import {
     setupMapsModalListeners, setupMapBrowserListeners
 } from './shipgirl-info.maps.js';
 
-// ===== Application State =====
+// ===== State =====
 const state = {
     /** @type {ShipDataLite[]} */
     shipgirlData: [],
@@ -83,6 +85,11 @@ setupDetail(state);
 setupMaps(state);
 
 // ===== Initialization =====
+
+/**
+ * Bootstrap the page: load all data in parallel, populate filters, handle initial URL route,
+ * and set up all event listeners including popstate for browser navigation.
+ */
 async function init() {
     try {
         loading.style.display = 'block';
@@ -205,7 +212,7 @@ function setupEventListeners() {
     }
 }
 
-// ===== Populate Filter Options =====
+// ===== Filtering & Rendering =====
 function populateFilterOptions() {
     // Populate ship type filter
     const shipTypeFilter = document.getElementById('shipTypeFilter');
@@ -228,7 +235,6 @@ function populateFilterOptions() {
         }).join('');
 }
 
-// ===== Filtering and Rendering =====
 function filterShipgirls() {
     const searchTerm = searchInput.value.toLowerCase();
     const selectedRarity = rarityFilter.value;
@@ -384,7 +390,7 @@ function createListCard(ship) {
     `;
 }
 
-// Get compact map display for cards
+/** Summarize a ship's drop areas as a compact string (e.g. "1지, 3지, 5지 외 2개"). */
 function getCompactMapDisplay(maps) {
     if (!maps || maps.length === 0) return '';
 
@@ -410,7 +416,9 @@ function getCompactMapDisplay(maps) {
     return display;
 }
 
-// Format timer for display
+// ===== Navigation =====
+
+/** Convert a raw "HH:MM:SS" timer string to a Korean human-readable format. */
 function formatTimer(timer) {
     if (!timer || timer === '건조시간 없음') return timer;
     const parts = timer.split(':');
@@ -428,7 +436,6 @@ function formatTimer(timer) {
     return `${hours}시간 ${minutes}분 ${seconds}초`;
 }
 
-// Update filter statistics
 function updateFilterStats() {
     const totalCount = state.shipgirlData.length;
     const filteredCount = state.filteredData.length;
@@ -441,7 +448,9 @@ function updateFilterStats() {
     if (filteredElement) filteredElement.textContent = filteredCount;
 }
 
-// ===== Navigation and Routing =====
+// ===== Navigation & Routing =====
+
+
 function navigateToDetail(shipName) {
     history.pushState({ shipName }, '', resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(shipName)}`));
     handleRoute();
@@ -476,7 +485,6 @@ function showMainView() {
     window.scrollTo(0, 0);
 }
 
-// ===== Prev/Next Navigation =====
 function navigatePrevNext(direction) {
     const currentName = state.currentShip?.name;
     if (!currentName) return;

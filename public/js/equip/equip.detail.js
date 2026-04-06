@@ -1,6 +1,9 @@
 /**
- * Equipment Viewer Module - Detail Panel
- * Renders equipment detail into the side panel with level selector, stats, icon download
+ * equip.detail.js
+ * Renders the slide-in detail panel for a selected equipment entry.
+ * Part of the equip viewer module group (viewer + data + detail + compare + upgrade).
+ * State is shared via a ref passed to setup() from equip.viewer.js.
+ * Covers: canvas icon compositing, stat rows, weapon/aircraft params, skills, upgrade costs, scrap info.
  */
 
 import { showToast, resolveUrl } from '../utils.js';
@@ -29,6 +32,7 @@ let state;
 /** Cached canvas from the last rendered icon (used for download) */
 let iconCanvas = null;
 
+/** Receive shared state from equip.viewer.js. */
 export function setup(stateRef) {
     state = stateRef;
 }
@@ -38,8 +42,13 @@ function formatLevel(index) {
     return index === 0 ? '0' : `+${index}`;
 }
 
-// ===== Show Detail View (renders into panel body) =====
+// ===== Show Detail View =====
 
+/**
+ * Load full equipment data by ID and render it into the detail panel.
+ * Resets current level to 0 and clears the icon canvas on each call.
+ * Returns the resolved equipment object, or null if not found.
+ */
 export async function showDetailView(equipId) {
     const panelContent = document.getElementById('detailPanelContent');
     if (!panelContent) return;
@@ -59,8 +68,13 @@ export async function showDetailView(equipId) {
     return equip;
 }
 
-// ===== Render Detail (compact layout for panel) =====
+// ===== Render Detail =====
 
+/**
+ * Build and inject the full detail panel HTML for the given equipment.
+ * Sections are conditionally rendered based on available data fields.
+ * ENHANCE_CAP caps the visible level range by rarity (e.g., rarity 2 → max +3).
+ */
 function renderDetail(equip) {
     const panelContent = document.getElementById('detailPanelContent');
     if (!panelContent) return;
@@ -239,6 +253,11 @@ function renderDetail(equip) {
 
 // ===== Canvas Icon Compositing =====
 
+/**
+ * Draw the rarity background and equipment icon onto the detail canvas.
+ * Images are loaded with crossOrigin=anonymous so the canvas can be exported.
+ * Stores the finished canvas reference in iconCanvas for download.
+ */
 function compositeIcon(equip) {
     const canvas = document.getElementById('detailIconCanvas');
     if (!canvas) return;
@@ -286,6 +305,9 @@ function compositeIcon(equip) {
 }
 
 // ===== Render Helpers =====
+
+// Weapon/aircraft resolution helpers — see CLAUDE.md "Aircraft Equipment Data Resolution"
+// for the two-path model (standard vs. aircraft chain).
 
 /** Merge base and current weapon properties, skipping null overrides */
 function getMergedWeaponProperty(baseWpId, currentWpId) {
@@ -365,6 +387,10 @@ function getMergedAircraftTemplate(baseAcId, currentAcId) {
     return merged;
 }
 
+/**
+ * Render aircraft-level stats (speed, dodge, dodge_limit, crash_DMG) for aircraft equip types.
+ * Uses the first weapon_id → aircraft_template, merged with the base level's template.
+ */
 function renderAircraftParams(equip, level) {
     if (!AIRCRAFT_TYPES.has(equip.type)) return '';
 
@@ -398,6 +424,11 @@ function renderAircraftParams(equip, level) {
     `;
 }
 
+/**
+ * Build table rows for a single merged weapon property object.
+ * Reads damage_type from bullet_template for armor modifiers (대갑 배율).
+ * Does NOT use equip.ammo for ammo type — that's rendered separately via AMMO_TYPE_NAMES.
+ */
 function renderWeaponParamsRows(wp) {
     let rows = '';
 
@@ -465,6 +496,10 @@ function renderWeaponParamsRows(wp) {
     return rows;
 }
 
+/**
+ * Render the weapon parameters section for the current level.
+ * Multi-weapon entries show grouped headers (name from weapon_name.json or "무기 N").
+ */
 function renderWeaponParams(equip, level) {
     const weapons = getMergedWeaponProperties(equip, level);
     if (!weapons.length) return '';
@@ -547,6 +582,10 @@ function getPrimaryWeaponProperty(equip, level) {
     return getMergedWeaponProperty(baseWid, weaponIds[0]);
 }
 
+/**
+ * Build attribute stat rows for the current level, appending reload speed and anti_siren if present.
+ * Reload is sourced from the primary weapon (not aircraft chain) — see getPrimaryWeaponProperty.
+ */
 function renderStatsRows(equip, level) {
     let rows = equip.attr_info.map(attr => {
         const value = level[`attr_${attr.index}_value`] || 0;
@@ -588,6 +627,7 @@ function renderItemChips(items) {
     ).join(' ');
 }
 
+/** Render one row per level with gold cost and material chips. Highlights the current level. */
 function renderUpgradeRows(equip) {
     return equip.levels.map((lvl, i) => {
         const isCurrent = i === state.currentLevel;
@@ -601,6 +641,7 @@ function renderUpgradeRows(equip) {
     }).join('');
 }
 
+/** Render gold and item rows for the scrap reward section. */
 function renderScrapRows(level) {
     let rows = '';
     if (level.scrap_gold) {
@@ -614,6 +655,11 @@ function renderScrapRows(level) {
 
 // ===== Update on Level Change =====
 
+/**
+ * Refresh all level-dependent sections when the slider moves.
+ * Updates the level display, stats, damage value, upgrade table, scrap table,
+ * and dynamic sections (aircraft params, weapon params, skills) without a full re-render.
+ */
 function updateLevelDisplay(equip) {
     const level = equip.levels[state.currentLevel] || equip.levels[0];
 
@@ -665,6 +711,7 @@ function updateDynamicSection(tbodyId, fullHtml) {
 
 // ===== Event Listeners =====
 
+/** Attach the level slider input handler after panel HTML is injected. */
 function setupDetailListeners(equip) {
     const levelSlider = document.getElementById('levelSlider');
     if (levelSlider) {
@@ -675,8 +722,13 @@ function setupDetailListeners(equip) {
     }
 }
 
-// ===== Icon Download (uses cached canvas) =====
+// ===== Icon Download =====
 
+/**
+ * Download the composited equipment icon as a PNG.
+ * Falls back to the current equip in state if none is passed.
+ * Toasts a warning if the canvas hasn't finished rendering yet.
+ */
 export function downloadEquipIcon(equip) {
     if (!equip) equip = state.currentEquip;
     if (!equip) return;

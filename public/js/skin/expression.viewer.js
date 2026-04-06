@@ -1,9 +1,12 @@
+/**
+ * expression.viewer.js
+ * Page controller for the standalone expression illustration viewer.
+ * Shows base-image + face-overlay composites for characters whose expressions
+ * are not shown in the skin detail page; includes lightbox with canvas composite.
+ * Part of the skin module group.
+ */
 import { debounce, fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, createSearchIndex, setupModal } from '../utils.js';
 
-/**
- * Expression Viewer
- * Modern viewer for expression illustrations not covered by the skin detail page.
- */
 document.addEventListener('DOMContentLoaded', async () => {
     // State
     const state = {
@@ -33,6 +36,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initialize
     await init();
 
+    /**
+     * Bootstrap: load data, build search index, render list, wire event listeners,
+     * then apply any URL params for deep-link restoration.
+     */
     async function init() {
         try {
             // Load data
@@ -190,6 +197,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         return data.faces.includes('0') ? '0' : data.faces[0];
     }
 
+    /**
+     * Render the full viewer panel for the selected character:
+     * header, painting type tabs, expression selector, and image-with-overlay display.
+     */
     function renderViewer() {
         const item = state.selectedCharacter;
         if (!item) return;
@@ -287,6 +298,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    /**
+     * Build the base-image + face-overlay HTML for the viewer panel.
+     * The overlay is positioned via percentage-based CSS computed from the manifest box/size.
+     */
     function renderImageWithOverlay(data) {
         if (!data) return '<div class="no-data-state"><p>이미지 없음</p></div>';
 
@@ -323,6 +338,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    /**
+     * Open the lightbox with a canvas-composited version of the current base + face overlay.
+     * Falls back to the raw base URL if the base image isn't loaded or canvas fails (CORS).
+     */
     function openLightbox() {
         const item = state.selectedCharacter;
         if (!item) return;

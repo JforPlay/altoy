@@ -1,6 +1,9 @@
 /**
- * Equipment Skin Preview Module
- * Canvas-based firing preview using the existing sim engine
+ * equip-skin.preview.js
+ * Canvas-based preview engine for equipment skins — fires weapon barrages or spawns aircraft
+ * using the existing SimulationEngine and AircraftEntity from the simulator module.
+ * Part of the equip skin viewer group (equip-skin-viewer.js + equip-skin.data.js + equip-skin.preview.js).
+ * Provides loop/pause/speed playback controls on top of the underlying engine.
  */
 import { SimulationEngine } from '../simulators/sim.engine.common.js';
 import { AircraftEntity } from '../simulators/sim.engine.aircraft.js';
@@ -37,6 +40,10 @@ class EquipSkinPreview {
         document.head.appendChild(this._styleEl);
     }
 
+    /**
+     * Create and configure the SimulationEngine: register vanguard/enemy entities,
+     * set layout/scale, and wire the pixel area to the DOM container.
+     */
     init() {
         this.engine = new SimulationEngine({
             container: this.container,
@@ -225,6 +232,9 @@ class EquipSkinPreview {
 
     // === BULLET PREVIEW ===
 
+    /**
+     * Resolve a weapon from its ID and fire all its barrage/bullet pairs from VANGUARD_POS.
+     */
     _fireWeapon(weaponId, skin) {
         const weapon = this.engine.resolveWeapon(weaponId, this.data.weaponData);
         if (!weapon) return;

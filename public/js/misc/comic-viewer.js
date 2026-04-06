@@ -1,4 +1,11 @@
+/**
+ * comic-viewer.js
+ * Gallery viewer for in-game manga/comic images served from the JforPlay CDN.
+ * Image list is fetched dynamically from the GitHub API; supports sort toggle and lightbox.
+ */
+
 import { openModal, closeModal, setupModal } from '../utils.js';
+
 document.addEventListener("DOMContentLoaded", async function() {
     const gallery = document.getElementById('gallery');
     const sortButton = document.getElementById('sort-button');
@@ -12,8 +19,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     const closeButton = document.querySelector('.close-button');
 
     /**
-     * Fetches the list of image files directly from the GitHub repository.
-     * This replaces the hardcoded file generation.
+     * Fetch the file list from the GitHub Contents API.
+     * Returns only files (ignoring subdirectories), mapped to their names.
      */
     async function fetchImageFiles() {
         const apiUrl = 'https://api.github.com/repos/JforPlay/data_for_toy/contents/mangapic';
@@ -23,7 +30,6 @@ document.addEventListener("DOMContentLoaded", async function() {
                 throw new Error(`GitHub API responded with status: ${response.status}`);
             }
             const data = await response.json();
-            // Filter for files only (in case of subdirectories) and map to their names.
             return data.filter(item => item.type === 'file').map(item => item.name);
         } catch (error) {
             console.error('Could not fetch image file list:', error);
@@ -32,7 +38,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     }
 
-    // Function to create and append image elements
     function createGalleryItem(imageName) {
         const fullImageUrl = imageBaseUrl + imageName;
         
@@ -48,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         img.alt = `Manga Image ${imageName}`;
         img.classList.add('lazy');
         img.loading = 'lazy';
-        // Use a transparent placeholder to maintain layout
+        // 1×1 transparent GIF keeps the layout stable before lazy images load
         img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
         img.addEventListener('click', function() {
@@ -65,7 +70,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         gallery.appendChild(div);
     }
     
-    // Function to initialize the Intersection Observer for lazy loading
     function initializeLazyLoading() {
         const lazyImages = document.querySelectorAll('img.lazy');
         const observerOptions = {
@@ -92,7 +96,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
     }
 
-    // Function to render the gallery
     function renderGallery() {
         gallery.innerHTML = '';
         imageFiles.forEach(file => {
@@ -101,10 +104,9 @@ document.addEventListener("DOMContentLoaded", async function() {
         initializeLazyLoading();
     }
 
-    // Sort function
     sortButton.addEventListener('click', function() {
         isAscending = !isAscending;
-        // Natural sort to handle numbers in filenames correctly (e.g., '10.png' vs '2.png')
+        // Intl.Collator numeric mode sorts "10.png" after "2.png" (vs. lexicographic order)
         const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
         if (isAscending) {
             imageFiles.sort(collator.compare);
@@ -116,18 +118,15 @@ document.addEventListener("DOMContentLoaded", async function() {
         renderGallery();
     });
 
-    // Lightbox close handlers (close button, backdrop click, ESC)
     setupModal('lightbox', {
         closeButtonSelector: '.close-button',
         closeOnBackdrop: true,
         closeOnEscape: true
     });
 
-    // --- Initial Setup ---
-    imageFiles = await fetchImageFiles(); // Fetch files dynamically
+    imageFiles = await fetchImageFiles();
     
     if (imageFiles.length > 0) {
-        // Use natural sort for the initial descending order
         const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
         imageFiles.sort((a, b) => collator.compare(b, a));
         sortButton.textContent = '기간정렬 : 최신부터';

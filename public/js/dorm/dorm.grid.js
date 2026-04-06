@@ -1,21 +1,27 @@
-// public/js/dorm/dorm.grid.js
+/**
+ * dorm.grid.js
+ * Isometric canvas grid renderer and interaction handler for the dorm simulator.
+ * Manages camera (pan/zoom), furniture placement/drag/rotation/deletion,
+ * sprite loading, and all canvas drawing for the 12×12 isometric grid.
+ * Part of the dorm module group (viewer + data + grid + panel).
+ */
 import { getFurniture, getFurnitureSpriteUrl } from './dorm.data.js';
 
 let state;
 let canvas, ctx;
 
-// ── Constants ──
+// ===== Constants =====
 const GRID_SIZE = 12;
 const TILE_W = 48;  // Isometric tile width
 const TILE_H = 24;  // Isometric tile height (2:1 ratio)
 
-// ── Camera ──
+// ===== Camera =====
 const camera = { x: 0, y: 0, zoom: 1 };
 const ZOOM_MIN = 0.4;
 const ZOOM_MAX = 2.5;
 const ZOOM_STEP = 0.1;
 
-// ── Interaction state ──
+// ===== Interaction State =====
 let hoverCell = null;       // {x, y} grid cell under cursor
 let dragFurnitureId = null;  // Furniture ID being dragged from panel
 let dragRotated = false;     // Rotation state of drag ghost
@@ -25,11 +31,11 @@ let dragPlacedItem = null;   // Placed item being repositioned
 let dragPlacedOffset = null; // Offset from item origin to grab point
 let pendingDrag = null;      // Click on placed item, becomes drag on mouse move
 
-// ── Sprite cache ──
+// ===== Sprite Cache =====
 const spriteCache = new Map();
 const spriteLoading = new Set();
 
-// ── Colors ──
+// ===== Colors =====
 const COLORS = {
     gridLine: 'rgba(120, 140, 180, 0.3)',
     gridBorder: 'rgba(120, 140, 180, 0.6)',
@@ -45,12 +51,17 @@ const COLORS = {
     placeholderText: 'rgba(200, 210, 230, 0.8)',
 };
 
+/** Receive the shared state reference from dorm.viewer.js. */
 export function setup(stateRef) {
     state = stateRef;
 }
 
-// ── Public API ──
+// ===== Public API =====
 
+/**
+ * Initialize the canvas grid: size it, center the camera, bind all events,
+ * and start the animation loop.
+ */
 export function init(canvasElement) {
     canvas = canvasElement;
     ctx = canvas.getContext('2d');
@@ -60,12 +71,17 @@ export function init(canvasElement) {
     requestAnimationFrame(renderLoop);
 }
 
+// Drag-from-panel and click-to-place enter/exit the same internal state,
+// but are exposed as two separate pairs for caller clarity.
+
+/** Begin drag-from-panel placement mode for the given furniture ID. */
 export function startDrag(furnitureId) {
     dragFurnitureId = furnitureId;
     dragRotated = false;
     canvas.parentElement.classList.add('place-ready');
 }
 
+/** Cancel an in-progress drag-from-panel, resetting all drag state. */
 export function cancelDrag() {
     dragFurnitureId = null;
     dragPlacedItem = null;
@@ -74,17 +90,23 @@ export function cancelDrag() {
     canvas.parentElement.classList.remove('drag-active');
 }
 
+/** Begin click-to-place mode (touch/mobile fallback for drag). */
 export function startPlacementMode(furnitureId) {
     dragFurnitureId = furnitureId;
     dragRotated = false;
     canvas.parentElement.classList.add('place-ready');
 }
 
+/** Cancel click-to-place mode. */
 export function cancelPlacementMode() {
     dragFurnitureId = null;
     canvas.parentElement.classList.remove('place-ready');
 }
 
+/**
+ * Rotate the selected placed item 90°, or toggle drag ghost rotation if
+ * placement mode is active. Reverts if the rotated position would be invalid.
+ */
 export function rotateSelected() {
     if (state.selected !== null) {
         const item = state.grid.placed[state.selected];
@@ -109,6 +131,7 @@ export function rotateSelected() {
     }
 }
 
+/** Remove the currently selected placed item and clear its occupancy cells. */
 export function deleteSelected() {
     if (state.selected === null) return;
     const item = state.grid.placed[state.selected];
@@ -119,6 +142,7 @@ export function deleteSelected() {
     updateToolbarState();
 }
 
+/** Remove all placed furniture and reset the occupancy grid. */
 export function clearAll() {
     state.grid.placed = [];
     state.grid.cells = createEmptyGrid();
@@ -127,6 +151,7 @@ export function clearAll() {
     updateToolbarState();
 }
 
+/** Sum the comfort value of all placed furniture items. */
 export function getComfort() {
     let total = 0;
     for (const item of state.grid.placed) {
@@ -137,7 +162,7 @@ export function getComfort() {
     return total;
 }
 
-// ── Coordinate Transforms ──
+// ===== Coordinate Transforms =====
 
 function gridToScreen(gx, gy) {
     const sx = (gx - gy) * (TILE_W / 2) * camera.zoom + camera.x;
@@ -153,8 +178,9 @@ function screenToGrid(sx, sy) {
     return { x: Math.floor(gx), y: Math.floor(gy) };
 }
 
-// ── Grid State ──
+// ===== Grid State =====
 
+/** Return a fresh GRID_SIZE×GRID_SIZE 2D array of nulls (no occupancy). */
 export function createEmptyGrid() {
     const cells = [];
     for (let x = 0; x < GRID_SIZE; x++) {
@@ -195,16 +221,21 @@ function isWallValid(belong, gx, gy, w, h) {
     return true;
 }
 
+/**
+ * Check whether furnitureId can be placed at (gx, gy) with given rotation.
+ * Returns false if out of bounds, violates wall rules, or overlaps another item
+ * (excluding excludeIdx so a dragged item doesn't block its own prior position).
+ */
 function canPlace(furnitureId, gx, gy, rotated, excludeIdx) {
     const furniture = getFurniture(furnitureId);
     if (!furniture) return false;
-    // Game size is [depth, width] — swap to [gridX, gridY]
+    // Game stores size as [depth, width]; we use [gridX, gridY] — swap here.
     const baseW = furniture.size[1], baseH = furniture.size[0];
     const [w, h] = rotated ? [baseH, baseW] : [baseW, baseH];
     if (!isInBounds(gx, gy, w, h)) return false;
     if (!isWallValid(furniture.belong, gx, gy, w, h)) return false;
     // Floor types don't block placement
-    if (isFloorType(furniture.type)) return true;
+    if (isFloorType(furniture.type)) return true; // floor/wallpaper can stack freely
     return !hasOverlap(gx, gy, w, h, excludeIdx !== undefined ? excludeIdx : -1);
 }
 
@@ -253,8 +284,13 @@ function placeFurnitureAt(furnitureId, gx, gy, rotated) {
     return true;
 }
 
-// ── Sprite Loading ──
+// ===== Sprite Loading =====
 
+/**
+ * Return a cached sprite Image for the given picture key, or null if it's
+ * still loading. Kicks off the background fetch on the first call per key;
+ * stores null in the cache on error so repeat calls don't retry endlessly.
+ */
 function getSprite(picture) {
     if (!picture) return null;
     if (spriteCache.has(picture)) return spriteCache.get(picture);
@@ -274,7 +310,7 @@ function getSprite(picture) {
     return null;
 }
 
-// ── Rendering ──
+// ===== Rendering =====
 
 function renderLoop() {
     render();
@@ -416,28 +452,30 @@ function drawPlacedFurniture() {
     }
 }
 
+/**
+ * Draw a furniture sprite scaled to fit its isometric diamond footprint.
+ * The sprite is centered horizontally on the diamond and bottom-aligned,
+ * with the furniture's pixel offset applied afterwards. Rotation is simulated
+ * by mirroring the sprite horizontally around the diamond center.
+ */
 function drawFurnitureSprite(item, furniture, sprite, w, h) {
     const top = gridToScreen(item.x, item.y);
     const right = gridToScreen(item.x + w, item.y);
     const bottom = gridToScreen(item.x + w, item.y + h);
     const left = gridToScreen(item.x, item.y + h);
 
-    // Diamond bounding box
     const minX = Math.min(top.x, right.x, bottom.x, left.x);
     const maxX = Math.max(top.x, right.x, bottom.x, left.x);
     const diamondW = maxX - minX;
 
-    // Scale sprite to fit diamond width, maintain aspect ratio
     const scale = diamondW / sprite.width;
     const drawW = sprite.width * scale;
     const drawH = sprite.height * scale;
 
-    // Position: center horizontally on diamond, align bottom to diamond bottom
     const centerX = (minX + maxX) / 2;
     const drawX = centerX - drawW / 2;
     const drawY = bottom.y - drawH;
 
-    // Apply offset from furniture data
     const offsetX = (furniture.offset[0] || 0) * camera.zoom;
     const offsetY = (furniture.offset[1] || 0) * camera.zoom;
 
@@ -445,8 +483,6 @@ function drawFurnitureSprite(item, furniture, sprite, w, h) {
     const finalY = drawY + offsetY;
 
     if (item.rotated) {
-        // Mirror horizontally around the diamond center to simulate isometric rotation
-        ctx.save();
         ctx.translate(centerX, 0);
         ctx.scale(-1, 1);
         ctx.drawImage(sprite, centerX - (finalX + drawW), finalY, drawW, drawH);
@@ -511,7 +547,7 @@ function drawHoverHighlight() {
     drawCellDiamond(hoverCell.x, hoverCell.y, COLORS.hover);
 }
 
-// ── Hit Testing ──
+// ===== Hit Testing =====
 
 function findPlacedItemAt(gx, gy) {
     for (let i = state.grid.placed.length - 1; i >= 0; i--) {
@@ -525,7 +561,7 @@ function findPlacedItemAt(gx, gy) {
     return -1;
 }
 
-// ── Event Handling ──
+// ===== Event Handling =====
 
 function bindEvents() {
     canvas.addEventListener('mousemove', handleMouseMove);
@@ -597,11 +633,15 @@ function handleMouseMove(e) {
     hoverCell = screenToGrid(pos.x, pos.y);
 }
 
+/**
+ * Handle left-click (place / select) and right/middle-click (start pan).
+ * Left-click while in placement mode places furniture; otherwise hits-tests
+ * placed items and queues a pending drag that only activates on mousemove.
+ */
 function handleMouseDown(e) {
     const pos = getMousePos(e);
     const grid = screenToGrid(pos.x, pos.y);
 
-    // Right-click or middle-click → start pan
     if (e.button === 1 || e.button === 2) {
         isPanning = true;
         panStart = pos;
@@ -609,16 +649,15 @@ function handleMouseDown(e) {
         return;
     }
 
-    // Left click with furniture selected for placement
     if (dragFurnitureId !== null && !dragPlacedItem) {
         if (canPlace(dragFurnitureId, grid.x, grid.y, dragRotated)) {
             placeFurnitureAt(dragFurnitureId, grid.x, grid.y, dragRotated);
-            // Keep placement mode active for rapid placing
+            // Keep placement mode active so the user can place multiple copies.
         }
         return;
     }
 
-    // Left click on placed furniture → select (drag starts on move)
+    // Hit-test placed furniture; if found, queue a drag that activates on mousemove.
     const idx = findPlacedItemAt(grid.x, grid.y);
     if (idx >= 0) {
         state.selected = idx;
@@ -630,7 +669,6 @@ function handleMouseDown(e) {
         return;
     }
 
-    // Click empty space → deselect
     state.selected = null;
     updateToolbarState();
 }
@@ -642,8 +680,8 @@ function handleMouseUp(e) {
         return;
     }
 
-    // Click-only (no drag happened) — just clear pending
     if (pendingDrag) {
+        // Click only — no drag happened, just clear pending.
         pendingDrag = null;
         return;
     }
@@ -730,7 +768,7 @@ function zoomAt(sx, sy, delta) {
     camera.y = sy - (sy - camera.y) * scale;
 }
 
-// ── Stats ──
+// ===== Stats =====
 
 function updateStats() {
     const comfort = getComfort();

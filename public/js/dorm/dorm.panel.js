@@ -1,15 +1,22 @@
-// public/js/dorm/dorm.panel.js
+/**
+ * dorm.panel.js
+ * Left-side furniture panel for the dorm simulator: theme accordion,
+ * furniture icon grid, hover info, search, and placement selection.
+ * Part of the dorm module group (viewer + data + grid + panel).
+ */
 import { debounce } from '../utils.js';
 import { getFurniture, getThemesSorted, searchFurniture, getFurnitureIconUrl, getThemeIconUrl } from './dorm.data.js';
 
 let state;
 
+/** Receive the shared state reference from dorm.viewer.js. */
 export function setup(stateRef) {
     state = stateRef;
 }
 
 /**
  * Initialize the panel after data is loaded.
+ * Renders all theme sections and wires search and toggle behavior.
  */
 export function init() {
     renderThemes();
@@ -17,7 +24,7 @@ export function init() {
     setupPanelToggle();
 }
 
-// ── Rendering ──
+// ===== Rendering =====
 
 function isPlaceable(f) {
     return f && f.type !== 1 && f.type !== 4 &&
@@ -112,11 +119,9 @@ function createFurnitureIcon(furniture) {
     sizeLabel.textContent = `${furniture.size[0]}x${furniture.size[1]}`;
     wrapper.appendChild(sizeLabel);
 
-    // Hover → update info panel
     wrapper.addEventListener('mouseenter', () => showHoverInfo(furniture));
     wrapper.addEventListener('mouseleave', () => clearHoverInfo());
 
-    // Drag start → notify grid
     wrapper.addEventListener('dragstart', (e) => {
         e.dataTransfer.setData('text/plain', furniture.id);
         e.dataTransfer.effectAllowed = 'copy';
@@ -128,7 +133,6 @@ function createFurnitureIcon(furniture) {
         if (state.onDragEnd) state.onDragEnd();
     });
 
-    // Click → select for placement (touch fallback)
     wrapper.addEventListener('click', (e) => {
         if (e.detail === 1) { // single click only
             selectForPlacement(furniture.id);
@@ -138,13 +142,13 @@ function createFurnitureIcon(furniture) {
     return wrapper;
 }
 
-// ── Theme Accordion ──
+// ===== Theme Accordion =====
 
 function toggleTheme(section) {
     section.classList.toggle('expanded');
 }
 
-// ── Hover Info ──
+// ===== Hover Info =====
 
 function showHoverInfo(furniture) {
     const info = state.elements.hoverInfo;
@@ -163,7 +167,7 @@ function clearHoverInfo() {
         '<div class="hover-info-placeholder">가구에 마우스를 올려보세요</div>';
 }
 
-// ── Search ──
+// ===== Search =====
 
 function setupSearch() {
     const input = state.elements.furnitureSearch;
@@ -195,8 +199,12 @@ function filterBySearch(query) {
     }
 }
 
-// ── Placement selection (touch fallback) ──
+// ===== Placement Selection (click-to-place, touch fallback) =====
 
+/**
+ * Toggle click-to-place mode for a furniture item.
+ * Clicking the same item again deselects and cancels placement mode.
+ */
 function selectForPlacement(furnitureId) {
     // Clear previous selection highlight
     const prev = state.elements.themeList.querySelector('.furniture-icon-wrapper.selected');
@@ -217,7 +225,7 @@ function selectForPlacement(furnitureId) {
     if (state.onPlacementSelect) state.onPlacementSelect(furnitureId);
 }
 
-// ── Mobile panel toggle ──
+// ===== Mobile Panel Toggle =====
 
 function setupPanelToggle() {
     const toggleBtn = state.elements.btnTogglePanel;
@@ -229,7 +237,6 @@ function setupPanelToggle() {
         });
     }
 
-    // Also toggle on panel header click (mobile)
     const header = panel.querySelector('.panel-header');
     header.addEventListener('click', (e) => {
         if (window.innerWidth <= 768 && e.target === header) {

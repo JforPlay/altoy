@@ -1,15 +1,17 @@
 /**
- * Shipgirl Info Module - Maps Modal Functionality
- * Handles maps modal, map browser modal, and all map-related functions
+ * shipgirl-info.maps.js
+ * Two map-related modals for the shipgirl info page:
+ * 1. Maps modal: shows which stages a specific ship drops from.
+ * 2. Map browser modal: reverse lookup — pick a stage, see which ships drop there.
+ * Part of the shipgirl-info module group (info + data + detail + maps).
+ * State is shared via a ref passed to setup() from shipgirl-info.js.
  */
 
 import { showToast, openModal, closeModal, setupModal } from '../utils.js';
 
 'use strict';
 
-// ============================================
-// STATE REFERENCE (set via setup)
-// ============================================
+// ===== State Reference =====
 let state;
 
 export function setup(stateRef) {
@@ -28,7 +30,9 @@ let mapBrowserFilters = {
     search: ''
 };
 
-// ===== Maps Modal Functions =====
+// ===== Maps Modal (Ship → Stages) =====
+
+/** Open the maps modal for a ship, ensuring full data is loaded first. */
 export async function showMapsModal(shipName) {
     // Ensure full data is loaded
     if (!state.fullShipData) {
@@ -189,8 +193,12 @@ export function setupMapsModalListeners() {
     }
 }
 
-// ===== Map Browser Modal Functions (Reverse lookup: Map -> Ships) =====
+// ===== Map Browser Modal (Stage → Ships) =====
 
+/**
+ * Open the map browser modal for the reverse lookup.
+ * Builds the mapBrowserData index once on first open, then populates filters and renders.
+ */
 async function openMapBrowserModal() {
     // Ensure full data is loaded
     if (!state.fullShipData) {
@@ -217,6 +225,10 @@ async function openMapBrowserModal() {
     openModal('mapBrowserModal');
 }
 
+/**
+ * Build the area→map→ships index from fullShipData.maps.
+ * The result is cached in mapBrowserData and reused on subsequent openings.
+ */
 function buildMapBrowserData() {
     const mapData = {};
 
@@ -393,7 +405,7 @@ function renderMapBrowserContent() {
         </div>
     `).join('');
 
-    // Add click handlers
+    // Defer click-handler setup so the newly inserted cards are in the DOM
     setTimeout(() => {
         document.querySelectorAll('.map-browser-ship-card').forEach(card => {
             card.addEventListener('click', () => {

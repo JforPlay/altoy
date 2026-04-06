@@ -1,14 +1,14 @@
 /**
- * Island Page Script
- * Initializes the island page and handles tab navigation, search, etc.
+ * island.script.js
+ * Page entry script for the island feature. Wires tab navigation, character search,
+ * and initializes island.engine.js on DOMContentLoaded. Restores the last active tab from
+ * localStorage and triggers the season-calc module's post-activation hook when needed.
  */
 
 import { init, loadModule, switchTab } from './island.engine.js';
 import { getStorageItem, setStorageItem } from '../utils.js';
 
-// ============================================
-// INITIALIZATION
-// ============================================
+// ===== Initialization =====
 
 document.addEventListener('DOMContentLoaded', async function () {
     console.log('[Island Page] Initializing...');
@@ -38,10 +38,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.log('[Island Page] Initialization complete');
 });
 
-// ============================================
-// TAB NAVIGATION
-// ============================================
+// ===== Tab Navigation =====
 
+/**
+ * Attach click handlers to all tab buttons, update active state, and restore the last tab from localStorage.
+ * Also triggers the season-calc module hook when its tab becomes active.
+ */
 function setupTabNavigation() {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -87,10 +89,9 @@ function setupTabNavigation() {
     }
 }
 
-// ============================================
-// CHARACTER SEARCH
-// ============================================
+// ===== Character Search =====
 
+/** Wire the character search input with debouncing and ESC-to-clear. */
 function setupCharacterSearch() {
     const searchInput = document.getElementById('character-search');
     if (!searchInput) return;
@@ -116,6 +117,7 @@ function setupCharacterSearch() {
     });
 }
 
+/** Run a character search and re-render the character list with the results. */
 function performSearch(query) {
     const results = window.IslandEngine.searchCharacters(query);
     window.IslandEngine.renderCharacterList(results);

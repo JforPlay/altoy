@@ -1,15 +1,15 @@
 /**
- * Island Season Calculator Module
- * Calculate season points from items and track ingredient contributions
+ * island.season-calc.engine.js
+ * Season calculator sub-engine for the island module. Displays season pass reward tiers,
+ * lets users enter item quantities to tally points, and computes per-item net pt gain
+ * and pt-per-minute using the resource module's dependency trees. Registers as window.SeasonCalcModule.
  */
 
 import { fetchJSON, getStorageItem, setStorageItem } from '../utils.js';
 
 'use strict';
 
-// ============================================
-// STATE
-// ============================================
+// ===== State =====
 const state = {
     items: {},              // All items from template
     ptItems: [],            // Items with pt_num > 0
@@ -21,10 +21,12 @@ const state = {
     recipeIndex: null       // Recipe index for calculations
 };
 
-// ============================================
-// INITIALIZATION
-// ============================================
+// ===== Initialization =====
 
+/**
+ * Load season pass and item data, restore saved quantities and owned points, then render the UI.
+ * Ensures the resource module is loaded first so recipe indices are available for gain calculations.
+ */
 async function init(sharedData) {
     try {
         console.log('[SeasonCalc] Initializing...');
@@ -77,9 +79,7 @@ async function init(sharedData) {
     }
 }
 
-// ============================================
-// DATA MANAGEMENT
-// ============================================
+// ===== Data Management =====
 
 async function loadSeasonData() {
     try {
@@ -204,9 +204,7 @@ function setSortOrder(sortBy) {
     renderItemGrid();
 }
 
-// ============================================
-// CALCULATIONS
-// ============================================
+// ===== Calculations =====
 
 function calculateMaterialPoints() {
     let total = 0;
@@ -237,9 +235,7 @@ function hasRecipeForItem(itemId) {
     return producerRecipeIds.length > 0;
 }
 
-// ============================================
-// RENDERING
-// ============================================
+// ===== Rendering =====
 
 function formatSeasonTime() {
     if (!state.seasonData || !state.seasonData.time) return '';
@@ -403,6 +399,11 @@ function renderSeasonPass() {
     `;
 }
 
+/**
+ * Render the item grid sorted by the current sort order.
+ * Pre-calculates net pt gain and pt/min for each item using the resource module's dependency trees;
+ * lazily loads the recipe index from ResourceModule if not yet available.
+ */
 function renderItemGrid() {
     const container = document.getElementById('season-calc-grid');
     if (!container) return;
@@ -599,9 +600,7 @@ function renderTotalDisplay() {
     `;
 }
 
-// ============================================
-// EVENT LISTENERS
-// ============================================
+// ===== Event Listeners =====
 
 function setupEventListeners() {
     const container = document.getElementById('tab-season-calc');
@@ -644,9 +643,7 @@ function setupEventListeners() {
     });
 }
 
-// ============================================
-// NAVIGATION
-// ============================================
+// ===== Navigation =====
 
 function viewItemInResources(itemId) {
     // Find recipe that produces this item
@@ -670,10 +667,12 @@ function viewItemInResources(itemId) {
     }, 100);
 }
 
-// ============================================
-// PUBLIC API
-// ============================================
+// ===== Public API =====
 
+/**
+ * Called by island.script.js when the season-calc tab is activated.
+ * Refreshes the recipe index (ResourceModule may have loaded after SeasonCalc) and re-renders the grid.
+ */
 function onTabActivated() {
     // Always try to reload recipe index when tab becomes active
     // This ensures we have the latest data even if ResourceModule loaded after SeasonCalc
