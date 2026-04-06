@@ -1,15 +1,21 @@
+/**
+ * loadingbg.js
+ * Gallery viewer for in-game loading illustrations (로딩일러).
+ * Image list is fetched from the GitHub API; supports name search and a lightbox with arrow navigation.
+ */
+
 import { hideElement, openModal, closeModal, setupModal } from '../utils.js';
-// Configuration
+
+// ===== Configuration & State =====
 const GITHUB_REPO = 'JforPlay/data_for_toy';
 const FOLDER_PATH = 'loadingbg';
 const RAW_BASE_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/${FOLDER_PATH}`;
 
-// State
 let images = [];
 let currentImageIndex = 0;
 let filteredImages = [];
 
-// DOM Elements
+// ===== DOM References =====
 const gallery = document.getElementById('gallery');
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
@@ -17,7 +23,12 @@ const lightboxCaption = document.querySelector('.lightbox-caption');
 const searchInput = document.getElementById('searchInput');
 const loading = document.getElementById('loading');
 
-// Fetch image list from GitHub API
+// ===== Data Loading =====
+
+/**
+ * Fetch the image list from the GitHub Contents API, filter to image extensions,
+ * and populate the gallery. Strips extension from filenames to build display names.
+ */
 async function fetchImageList() {
     try {
         const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${FOLDER_PATH}`;
@@ -29,7 +40,6 @@ async function fetchImageList() {
         
         const files = await response.json();
         
-        // Filter for image files
         const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'];
         images = files
             .filter(file => {
@@ -58,7 +68,8 @@ async function fetchImageList() {
     }
 }
 
-// Render gallery
+// ===== Gallery & Lightbox =====
+
 function renderGallery() {
     gallery.innerHTML = '';
     
@@ -85,7 +96,8 @@ function renderGallery() {
     });
 }
 
-// Search functionality
+// ===== Search =====
+
 searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
     filteredImages = images.filter(img => 
@@ -95,7 +107,6 @@ searchInput.addEventListener('input', (e) => {
     renderGallery();
 });
 
-// Lightbox functionality
 function openLightbox(index) {
     currentImageIndex = index;
     updateLightboxImage();
@@ -123,7 +134,8 @@ function showPrevImage() {
     updateLightboxImage();
 }
 
-// Event listeners
+// ===== Event Listeners =====
+
 setupModal('lightbox', {
     closeButtonSelector: '.lightbox-close',
     closeOnBackdrop: true,
@@ -132,12 +144,11 @@ setupModal('lightbox', {
 document.querySelector('.lightbox-next').addEventListener('click', showNextImage);
 document.querySelector('.lightbox-prev').addEventListener('click', showPrevImage);
 
-// Arrow key navigation for lightbox
+// Arrow keys navigate images when the lightbox is open
 document.addEventListener('keydown', (e) => {
     if (!lightbox.classList.contains('active')) return;
     if (e.key === 'ArrowLeft') showPrevImage();
     else if (e.key === 'ArrowRight') showNextImage();
 });
 
-// Initialize
 fetchImageList();

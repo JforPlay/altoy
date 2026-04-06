@@ -1,6 +1,9 @@
 /**
- * Equipment Viewer Module - Data Loading & Utilities
- * Handles data loading and helper functions for equipment data
+ * equip.data.js
+ * Data loading and lookup helpers for the equipment viewer.
+ * Part of the equip viewer module group (viewer + data + detail + compare + upgrade).
+ * State is shared via a ref passed to setup() from equip.viewer.js.
+ * Exports all data-layer functions used by detail, compare, and upgrade modules.
  */
 
 import { fetchJSON, fetchJSONWithCache } from '../utils.js';
@@ -8,17 +11,22 @@ import { fetchJSON, fetchJSONWithCache } from '../utils.js';
 // State reference (set via setup)
 let state;
 
+/** Receive shared state from equip.viewer.js. */
 export function setup(stateRef) {
     state = stateRef;
 }
 
 // ===== Data Loading =====
 
+// Lite/full/statistics data — lite is blocking at init; full and statistics are background-cached
+
+/** Load the lite equipment list (blocking at init). Populates state.equipData and state.filteredData. */
 export async function loadLiteData() {
     state.equipData = await fetchJSON('data/equip/equip_data_lite.json');
     state.filteredData = [...state.equipData];
 }
 
+/** Load the full equipment detail JSON (cached 24h). Returns null on failure. */
 export async function loadFullData() {
     try {
         state.fullEquipData = await fetchJSONWithCache('data/equip/equip_data_full.json', { maxAge: 86400000 });
@@ -29,6 +37,7 @@ export async function loadFullData() {
     return null;
 }
 
+/** Load anti-siren statistics keyed by level ID (cached 24h). Returns null on failure. */
 export async function loadStatisticsData() {
     try {
         state.statisticsData = await fetchJSONWithCache('data/equip/equip_data_statistics.json', { maxAge: 86400000 });
@@ -38,6 +47,8 @@ export async function loadStatisticsData() {
     }
     return null;
 }
+
+// Mapping data — blocking at init (small files, needed for initial render)
 
 export async function loadEquipTypeData() {
     state.equipTypeData = await fetchJSON('data/mapping/equip_data_by_type.json');
@@ -97,6 +108,10 @@ export async function loadSkillData() {
 
 let upgradeEquipIds = null;
 
+/**
+ * Load the upgrade tree template and build a Set of all equipment IDs that appear in any tree.
+ * Used by the card grid to show a "in research tree" badge without loading full upgrade data.
+ */
 export async function loadUpgradeTemplateData() {
     try {
         const templates = await fetchJSONWithCache('data/equip/equip_upgrade_template.json', { maxAge: 86400000 });
@@ -118,7 +133,7 @@ export function isInUpgradeTree(equipId) {
     return upgradeEquipIds ? upgradeEquipIds.has(equipId) : false;
 }
 
-// ===== Helper Functions =====
+// ===== URL Helpers =====
 
 const EQUIP_BASE_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips';
 const SP_WEAPON_BASE_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/spweapon';
@@ -251,6 +266,9 @@ export function getSkillData(skillId) {
 
 // ===== SP Weapon Data =====
 
+// SP weapons are a separate data source (spweapon_data.json) normalized to equip-lite format
+// for unified grid rendering. Type IDs use 900+ offset to avoid collision with regular types.
+
 /** SP weapon rarity is shifted: 2=R, 3=SR, 4=SSR */
 const SP_RARITY_TO_EQUIP = { 2: 3, 3: 4, 4: 5 };
 const SP_RARITY_NAMES = { 2: 'R', 3: 'SR', 4: 'SSR' };
@@ -268,6 +286,7 @@ const SP_ATTR_NAMES = {
     speed: '속력', luck: '행운', antisub: '대잠',
 };
 
+/** Load the SP weapon dataset (cached 24h). Returns null on failure. */
 export async function loadSPWeaponData() {
     try {
         state.spWeaponData = await fetchJSONWithCache('data/sim/spweapon_data.json', { maxAge: 86400000 });

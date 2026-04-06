@@ -1,12 +1,11 @@
 /**
- * @file Type definitions for ALtoy
- * JSDoc typedefs for core data structures used across the application.
- * This file is documentation-only and contains no executable code.
+ * types.js
+ * Shared JSDoc type definitions for core data structures used across ALtoy.
+ * Documentation-only — no executable code. Import this file nowhere; IDEs pick it up automatically.
+ * Organized by feature area: island, ship, skin, story, chat, cache.
  */
 
-// ============================================
-// ISLAND DATA TYPES
-// ============================================
+// ===== Island Data Types =====
 
 /**
  * @typedef {Object} IslandItem
@@ -63,9 +62,7 @@
  * @property {boolean} isManualMode - Whether using manual mode
  */
 
-// ============================================
-// SHIP DATA TYPES
-// ============================================
+// ===== Ship Data Types =====
 
 /**
  * @typedef {Object} ShipData
@@ -90,9 +87,7 @@
  * @property {string} nationality - Nationality code
  */
 
-// ============================================
-// SKIN DATA TYPES
-// ============================================
+// ===== Skin Data Types =====
 
 /**
  * @typedef {Object} SkinData
@@ -104,9 +99,7 @@
  * @property {Object} [voicelines] - Voice line data
  */
 
-// ============================================
-// STORY DATA TYPES
-// ============================================
+// ===== Story Data Types =====
 
 /**
  * @typedef {Object} StoryEvent
@@ -136,9 +129,7 @@
  * @property {string} [optionFlag] - Option flag for branching
  */
 
-// ============================================
-// CHAT DATA TYPES
-// ============================================
+// ===== Chat Data Types =====
 
 /**
  * @typedef {Object} ChatMessage
@@ -149,9 +140,7 @@
  * @property {boolean} [isPlayer] - Whether this is a player message
  */
 
-// ============================================
-// CACHE TYPES
-// ============================================
+// ===== Cache Types =====
 
 /**
  * @typedef {Object} CacheEntry

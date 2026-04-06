@@ -1,27 +1,31 @@
-import { fetchJSON, showElement } from '../utils.js';
 /**
- * Unified Chat Viewer Engine
- * Supports both Instagram-style chats and Dorm3D conversations
+ * chat-viewer.engine.js
+ * Shared chat playback engine for Juustagram and Dorm3D viewers.
+ * Accepts a config object from the page-specific init script (juus.js / dorm3d.js)
+ * that provides the data URL, timing, group chat icons, and optional type-4 handler.
+ * Renders a character selector grid, story dropdown, and auto-advancing message bubbles.
  */
+import { fetchJSON, showElement } from '../utils.js';
+
 export class ChatViewerEngine {
     /**
-     * @param {Object} config - Engine configuration
+     * Create and immediately start a chat viewer instance.
+     * @param {Object} config
      * @param {string} config.dataUrl - URL to fetch chat data JSON
-     * @param {string} [config.shipGroupIdUrl] - URL to fetch ship group ID data
-     * @param {Object<string, string>} [config.groupChatIcons] - Group chat icon mappings
-     * @param {number} [config.defaultDelay=1300] - Default message display delay (ms)
-     * @param {number} [config.initialDelay=100] - Initial message delay (ms)
-     * @param {Object} [config.customHandlers] - Custom event handler overrides
+     * @param {string} [config.shipGroupIdUrl] - External source for @username handles
+     * @param {Object<string, string>} [config.groupChatIcons] - Group chat name → icon URL
+     * @param {number} [config.defaultDelay=1300] - Delay between messages (ms)
+     * @param {number} [config.initialDelay=100] - Delay before first message (ms)
+     * @param {Object} [config.customHandlers] - Optional overrides for script type handlers
      */
     constructor(config) {
-        // Configuration
         this.dataUrl = config.dataUrl;
         this.shipGroupIdUrl = config.shipGroupIdUrl || null;
         this.groupChatIcons = config.groupChatIcons || {};
         this.defaultDelay = config.defaultDelay || 1300;
         this.initialDelay = config.initialDelay || 100;
 
-        // DOM Elements (cached for performance)
+        // DOM elements cached at construction time
         this.characterGrid = document.getElementById('character-selector-grid');
         this.characterSelectionSection = document.getElementById('character-selection-section');
         this.selectedCharacterNameDisplay = document.getElementById('selected-character-name');
@@ -32,35 +36,35 @@ export class ChatViewerEngine {
         this.optionsContainer = document.getElementById('options-container');
         this.restartButton = document.getElementById('restart-button');
 
-        // Data and state
         this.allData = {};
         this.shipGroupIdData = {};
         this.selectedCharacterName = null;
         this.currentStoryScripts = [];
         this.currentScriptIndex = 0;
 
-        // Cached character cards for efficient queries
+        // NodeList cached after grid population for faster per-click queries
         this.characterCards = null;
 
-        // Timer management for cleanup
+        // All setTimeout IDs tracked here so clearTimers() can cancel them atomically
         this.activeTimers = [];
 
-        // Custom handlers
         this.customHandlers = config.customHandlers || {};
 
-        // Bind event handlers
+        // Bind so removeEventListener gets the same reference
         this.handleStoryChange = this.loadSelectedStory.bind(this);
         this.handleRestart = this.initializeStory.bind(this);
         this.handleSectionToggle = () => {
             this.characterSelectionSection.classList.toggle('collapsed');
         };
 
-        // Initialize
         this.initialize();
     }
     
+    // ===== Data Loading =====
+
     /**
-     * Fetches data and initializes the viewer
+     * Fetch chat data (and optional ship group IDs) in parallel, then
+     * populate the character grid and attach event listeners.
      */
     async initialize() {
         try {
@@ -84,8 +88,13 @@ export class ChatViewerEngine {
         }
     }
     
+    // ===== Message Rendering =====
+
+    // ===== Character Selection =====
+
     /**
-     * Creates and displays character cards in the grid
+     * Build and insert character cards into the grid.
+     * Uses a DocumentFragment for a single DOM insertion, then caches the NodeList.
      */
     populateCharacterSelector() {
         this.characterGrid.innerHTML = '';
@@ -105,13 +114,11 @@ export class ChatViewerEngine {
             if (!iconSrc && this.groupChatIcons[firstStory.kr_name]) {
                 iconSrc = this.groupChatIcons[firstStory.kr_name];
             } else if (!iconSrc) {
-                // SVG fallback placeholder (no external dependency)
                 iconSrc = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
             }
 
             const shipName = firstStory.ship_name || '';
 
-            // Create image element with error handling
             const img = document.createElement('img');
             img.src = iconSrc;
             img.alt = firstStory.kr_name;
@@ -137,34 +144,30 @@ export class ChatViewerEngine {
         }
 
         this.characterGrid.appendChild(fragment);
-        // Cache character cards for efficient queries
         this.characterCards = this.characterGrid.querySelectorAll('.character-card');
     }
     
     /**
-     * Handles clicking a character card
+     * Select a character: highlight their card, collapse the selector,
+     * reveal the story section, and load their first story.
      */
     handleCharacterClick(characterName) {
         this.selectedCharacterName = characterName;
 
-        // Use cached character cards for better performance
         if (this.characterCards) {
             this.characterCards.forEach(card => {
                 card.classList.toggle('selected', card.dataset.characterName === characterName);
             });
         }
 
-        // Get character display name
         const characterData = this.allData[characterName];
         const firstStoryId = Object.keys(characterData)[0];
         const displayName = characterData[firstStoryId]?.kr_name || characterName;
 
-        // Update collapsed state display
         if (this.selectedCharacterNameDisplay) {
             this.selectedCharacterNameDisplay.textContent = `(${displayName})`;
         }
 
-        // Collapse character selection section
         this.characterSelectionSection.classList.add('collapsed');
 
         showElement(this.storyDisplaySection);
@@ -172,16 +175,15 @@ export class ChatViewerEngine {
         this.storyContainer.innerHTML = '';
         this.optionsContainer.innerHTML = '';
 
-        // Smooth scroll to show the chat section
         const scrollTimer = setTimeout(() => {
             this.storyDisplaySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
         this.activeTimers.push(scrollTimer);
     }
     
-    /**
-     * Populates the story dropdown menu
-     */
+    // ===== Story Playback =====
+
+    /** Fill the dropdown with all stories for the selected character, then auto-load the first. */
     populateStoryDropdown(characterStories) {
         this.storyDropdown.innerHTML = '';
         
@@ -197,7 +199,8 @@ export class ChatViewerEngine {
     }
     
     /**
-     * Loads the story selected in the dropdown
+     * Read the dropdown selection, set the unlock condition text,
+     * and reset playback to the beginning of the chosen story.
      */
     loadSelectedStory() {
         const storyId = this.storyDropdown.value;
@@ -216,9 +219,7 @@ export class ChatViewerEngine {
         this.initializeStory();
     }
     
-    /**
-     * Clears the display and starts the current story
-     */
+    /** Cancel pending timers, clear the message container, and begin message playback. */
     initializeStory() {
         // Clear any pending timers
         this.clearTimers();
@@ -230,35 +231,31 @@ export class ChatViewerEngine {
     }
     
     /**
-     * Modern chat-style auto-scroll with smart behavior
-     * Only scrolls if user is near the bottom (not reading old messages)
-     * Adds comfortable spacing for better readability
+     * Scroll the story container to the bottom after a new message is appended,
+     * but only if the user is already near the bottom (within 150px). This lets
+     * users scroll up to re-read earlier messages without being yanked back down.
      */
     scrollToLatest(element) {
-        // Small delay to ensure element is rendered and CSS transitions applied
+        // Double rAF ensures the element is in the layout before measuring.
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 const container = this.storyContainer;
 
-                // For initial messages or when at bottom, always scroll
-                // Check if user is near the bottom (within 150px) or container is very short
                 const scrolledFromBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
                 const isNearBottom = scrolledFromBottom < 150 || container.scrollHeight <= container.clientHeight;
 
                 // Only auto-scroll if user hasn't scrolled up to read old messages
                 if (isNearBottom) {
-                    // Modern approach: scroll container to bottom with smooth animation
-                    container.scrollTo({
-                        top: container.scrollHeight,
-                        behavior: 'smooth'
-                    });
+                    container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
                 }
             });
         });
     }
 
     /**
-     * Main story progression engine
+     * Advance to the next script entry. Dispatches by type:
+     * 1=dialogue, 3=red envelope, 4=sticker/special event, 5=system message.
+     * Unknown types are silently skipped. Stops when all scripts are consumed.
      */
     showNextLine() {
         if (this.currentScriptIndex >= this.currentStoryScripts.length) {
@@ -317,16 +314,16 @@ export class ChatViewerEngine {
         }
     }
     
-    /**
-     * Delays before showing next line
-     */
+    /** Schedule the next script line after `delay` ms; tracks the timer for cleanup. */
     showNextLineAfterDelay(delay = this.defaultDelay) {
         const timer = setTimeout(() => this.showNextLine(), delay);
         this.activeTimers.push(timer);
     }
     
     /**
-     * Displays a single dialogue bubble with portraits
+     * Render a dialogue bubble for one script line.
+     * Determines speaker role (player / character / narrator), resolves icon and
+     * @username, then wraps in a character-line-wrapper when a portrait is needed.
      */
     displayBubble(script) {
         const currentStoryInfo = this.allData[this.selectedCharacterName][this.storyDropdown.value];
@@ -335,13 +332,13 @@ export class ChatViewerEngine {
         let speakerUsername = '';
         let messageClass = '';
         
-        // Determine message type
+        // ship_group === 0 → player; named icon present → character; otherwise → narrator
         if (script.ship_group === 0) {
             speakerName = '지휘관';
             messageClass = 'player';
         } else if (speakerName && speakerIcon) {
             messageClass = 'character';
-            // For guest characters, check if we have their username
+            // Guest characters may have an @username from the ship group ID source
             if (this.shipGroupIdData && script.ship_group) {
                 const idEntry = this.shipGroupIdData[script.ship_group];
                 if (idEntry && idEntry.name) {
@@ -360,13 +357,11 @@ export class ChatViewerEngine {
         const messageBubble = document.createElement('div');
         messageBubble.classList.add('message-bubble', messageClass);
         
-        // Add speaker name with optional ID
         if (messageClass === 'character') {
             const speakerNameElement = document.createElement('p');
             speakerNameElement.className = 'speaker-name';
             speakerNameElement.textContent = speakerName;
             
-            // Append @username if available
             if (speakerUsername) {
                 const speakerId = document.createElement('span');
                 speakerId.className = 'speaker-id';
@@ -385,7 +380,6 @@ export class ChatViewerEngine {
         
         let topLevelElement = messageBubble;
         
-        // Add portrait for character messages
         if (messageClass === 'character') {
             const wrapper = document.createElement('div');
             wrapper.className = 'character-line-wrapper';
@@ -411,9 +405,7 @@ export class ChatViewerEngine {
         return topLevelElement;
     }
     
-    /**
-     * Displays a sticker/emoji
-     */
+    /** Render a sticker image fetched from the emoji asset repo. Wraps in player or character layout. */
     displaySticker(script) {
         const isPlayer = script.ship_group === 0;
         const stickerUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/emoji/${script.param}.webp`;
@@ -448,7 +440,6 @@ export class ChatViewerEngine {
             portrait.className = 'portrait';
             portrait.src = script.icon;
             portrait.alt = script.kr_name;
-            // Add error handling for portrait images
             portrait.onerror = () => {
                 portrait.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
             };
@@ -460,9 +451,7 @@ export class ChatViewerEngine {
         }
     }
     
-    /**
-     * Displays a system message
-     */
+    /** Render a system/notification message (Juustagram only, script type 5). */
     displaySystemMessage(script) {
         const message = document.createElement('div');
         message.className = 'system-message';
@@ -471,9 +460,7 @@ export class ChatViewerEngine {
         this.scrollToLatest(message);
     }
 
-    /**
-     * Displays a red envelope
-     */
+    /** Render the red envelope element (Juustagram only, script type 3). */
     displayRedEnvelope(script) {
         const envelope = document.createElement('div');
         envelope.className = 'red-envelope-bubble';
@@ -483,7 +470,8 @@ export class ChatViewerEngine {
     }
     
     /**
-     * Displays choice buttons for the player
+     * Render choice buttons and force-scroll to the bottom so they're immediately visible
+     * (they push earlier bubbles upward and can be clipped without the scroll).
      */
     displayOptions(options) {
         this.optionsContainer.innerHTML = '';
@@ -496,7 +484,6 @@ export class ChatViewerEngine {
             this.optionsContainer.appendChild(button);
         });
 
-        // Force scroll to bottom when options appear (they push content up)
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 const container = this.storyContainer;
@@ -509,10 +496,11 @@ export class ChatViewerEngine {
     }
     
     /**
-     * Handles the player's choice and finds the next script block
+     * Record the player's choice: show it as a bubble, clear options,
+     * then jump to the first script entry tagged with the chosen flag.
+     * Falls back to the line immediately after the options if no match.
      */
     handleChoice(chosenFlag, chosenText) {
-        // Display the selected choice as a small option bubble
         this.displaySelectedChoice(chosenText);
         this.optionsContainer.innerHTML = '';
         
@@ -524,9 +512,7 @@ export class ChatViewerEngine {
         this.showNextLineAfterDelay();
     }
     
-    /**
-     * Displays the selected choice as a small option bubble
-     */
+    /** Render the chosen option as a player bubble so the choice appears in the chat history. */
     displaySelectedChoice(chosenText) {
         const choiceBubble = document.createElement('div');
         choiceBubble.classList.add('message-bubble', 'player', 'selected-choice');
@@ -536,9 +522,9 @@ export class ChatViewerEngine {
         this.scrollToLatest(choiceBubble);
     }
 
-    /**
-     * Displays end of conversation message
-     */
+    // ===== Controls & Cleanup =====
+
+    /** Append the end-of-conversation marker to signal no more messages. */
     displayEndOfConversation() {
         const endMessage = document.createElement('div');
         endMessage.className = 'end-of-conversation';
@@ -547,9 +533,7 @@ export class ChatViewerEngine {
         this.scrollToLatest(endMessage);
     }
     
-    /**
-     * Attaches event listeners to controls
-     */
+    /** Wire dropdown change, restart button, and collapsible section header. */
     attachEventListeners() {
         this.storyDropdown.addEventListener('change', this.handleStoryChange);
         this.restartButton.addEventListener('click', this.handleRestart);
@@ -561,23 +545,19 @@ export class ChatViewerEngine {
         }
     }
 
-    /**
-     * Clears all active timers
-     */
+    /** Cancel all queued setTimeout calls so switching stories doesn't produce stale messages. */
     clearTimers() {
         this.activeTimers.forEach(timer => clearTimeout(timer));
         this.activeTimers = [];
     }
 
     /**
-     * Cleanup method for proper resource management
-     * Call this when navigating away or before re-initializing
+     * Full teardown: cancel timers, remove all event listeners, and clear cached data.
+     * Call when navigating away or before re-initializing the viewer.
      */
     destroy() {
-        // Clear all pending timers
         this.clearTimers();
 
-        // Remove event listeners
         if (this.storyDropdown) {
             this.storyDropdown.removeEventListener('change', this.handleStoryChange);
         }
@@ -591,18 +571,17 @@ export class ChatViewerEngine {
             sectionHeader.removeEventListener('click', this.handleSectionToggle);
         }
 
-        // Clear character card event listeners (if needed for re-initialization)
+        // Replace card nodes to strip their per-card click listeners without tracking each one
         if (this.characterCards) {
             this.characterCards.forEach(card => {
                 card.replaceWith(card.cloneNode(true));
             });
         }
 
-        // Clear cached references
         this.characterCards = null;
         this.allData = {};
         this.shipGroupIdData = {};
 
-        console.log('ChatViewerEngine cleaned up successfully');
+        console.log('[ChatViewerEngine] destroyed');
     }
 }

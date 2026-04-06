@@ -1,21 +1,19 @@
-import { debounce, fetchJSONWithCache, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl } from '../utils.js';
-
 /**
- * story-viewer-common.js
- * ----------------------
- * This is the shared "engine" for both the Main and World Story Viewers.
- * It contains all the common logic for rendering the story, handling audio,
- * managing UI views, and processing user interactions.
+ * story-viewer.engine.js
+ * Shared story viewer engine for all story viewer pages (main, world, secretary, HOF, child).
+ * Exposes window.StoryViewer and is configured by a page-specific init script that calls
+ * window.StoryViewer.init(config). The config object provides data paths, data processing,
+ * event/memory accessors, and optional overrides for grid population.
  *
- * It is configured by a page-specific script (like main-story-viewer.script.js)
- * which tells it what data to load and how to handle minor variations.
+ * Concerns handled here: data loading, URL routing, view switching, script navigation
+ * (including branching with option flags), background/BGM sync, painting/expression
+ * rendering, screen shake/flash effects, SFX playback, auto-play, full-script modal,
+ * and all keyboard/pointer event wiring.
  */
+import { debounce, fetchJSONWithCache, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl } from '../utils.js';
 document.addEventListener('DOMContentLoaded', () => {
-    // A global namespace to hold all viewer logic and state.
     window.StoryViewer = {
-        // =========================================================================
-        // STATE & CONSTANTS
-        // =========================================================================
+        // ===== State & Constants =====
         config: {}, // Page-specific configuration
         storylineData: {},
         storylineSummaryData: {}, // Only used by world viewer
@@ -54,9 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         BASE_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/",
         BGM_URL_PREFIX: "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/",
 
-        // =========================================================================
-        // DOM ELEMENTS
-        // =========================================================================
+        // ===== DOM Elements =====
         elements: {
             eventSelectionView: document.getElementById('event-selection-view'),
             memorySelectionView: document.getElementById('memory-selection-view'),
@@ -126,9 +122,13 @@ document.addEventListener('DOMContentLoaded', () => {
         SHAKE_MAX_TOTAL_MS: 8000,
         FLASH_MAX_TOTAL_MS: 8000,
 
-        // =========================================================================
-        // INITIALIZATION
-        // =========================================================================
+        // ===== Initialization =====
+
+        /**
+         * Bootstrap the engine with a page-specific config.
+         * Loads all data, renders the event grid, handles deep-link URL params,
+         * and wires all event listeners and the browser back button.
+         */
         init(config) {
             this.config = config;
             this.audio.loop = true;
@@ -140,7 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.setupEventListeners();
                     this.setupBrowserBackButton();
                     this.injectAutoPlayButton();
-                    // Loading state automatically handled by populateEventGrid
                 })
                 .catch(error => {
                     console.error('Initialization failed:', error);
@@ -148,18 +147,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         },
 
+        /**
+         * Fetch all data paths declared by config, delegate to config.processLoadedData,
+         * populate the shipgirl name map, and load the expression manifest.
+         */
         async loadData() {
             const fetchPromises = this.config.dataPaths.map(path => fetchJSONWithCache(path));
             const jsonDataArray = await Promise.all(fetchPromises);
 
-            // Allow the config to process the loaded data
             this.config.processLoadedData(this, jsonDataArray);
 
             for (const id in this.shipgirlData) {
                 this.shipgirlNameMap[this.shipgirlData[id].name] = id;
             }
 
-            // Load expression manifest for painting/expression data
             try {
                 this.expressionManifest = await fetchJSONWithCache('data/skin/expression_manifest.json');
             } catch (e) {
@@ -167,9 +168,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
-        // =========================================================================
-        // EVENT LISTENERS SETUP
-        // =========================================================================
+        // ===== Event Listeners =====
+
+        /**
+         * Wire all DOM event listeners for search, navigation buttons, story
+         * interaction, modals, and the audio player.
+         */
         setupEventListeners() {
             const el = this.elements;
 
@@ -189,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.returnToMemorySelection();
             });
 
-            // Story Viewer Interactions
             el.storyViewerView?.addEventListener('click', (e) => {
                 if (e.target.closest('.option-button, .nav-button, .story-nav-btn, .audio-player-container, .theme-toggle')) return;
                 if (el.optionsBox.children.length === 0) this.advanceStory();
@@ -199,19 +202,16 @@ document.addEventListener('DOMContentLoaded', () => {
             el.nextStoryBtn?.addEventListener('click', (e) => { e.stopPropagation(); if (this.nextMemory) this.startStory(this.nextMemory); });
             el.returnBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.returnToMemorySelection(); });
 
-            // Modals
             el.viewScriptBtn?.addEventListener('click', () => this.showFullScript());
             el.closeModalBtn?.addEventListener('click', () => this.hideFullScript());
             el.scriptModalOverlay?.addEventListener('click', (e) => { if (e.target === el.scriptModalOverlay) this.hideFullScript(); });
             el.closeSummaryModalBtn?.addEventListener('click', () => this.hideSummaryModal());
             el.summaryModalOverlay?.addEventListener('click', (e) => { if (e.target === el.summaryModalOverlay) this.hideSummaryModal(); });
 
-            // Audio Player
             el.playPauseBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.audio.paused ? this.audio.play().catch(console.warn) : this.audio.pause(); });
             el.muteBtn?.addEventListener('click', (e) => { e.stopPropagation(); this.audio.muted = !this.audio.muted; this.updateAudioPlayerUI(); });
             el.volumeSlider?.addEventListener('input', (e) => { e.stopPropagation(); this.audio.volume = e.target.value; this.audio.muted = e.target.value == 0; this.updateAudioPlayerUI(); });
 
-            // Clean up old audio listeners and add new ones
             this.cleanupAudioListeners();
 
             // Keyboard navigation (only when the story viewer pane is active
@@ -219,6 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.setupKeyboardNavigation();
         },
 
+        /** Return true when the story viewer pane is visible (not in event/memory selection). */
         isStoryViewActive() {
             const v = this.elements.storyViewerView;
             if (!v) return false;
@@ -228,6 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return v.offsetParent !== null;
         },
 
+        /**
+         * Register the document-level keydown handler for story navigation.
+         * Replaces any previously registered handler so re-calls are safe.
+         * Arrow keys / Space advance or rewind; Escape returns to memory selection;
+         * 'A' toggles auto-play; 'S' opens the full-script modal.
+         */
         setupKeyboardNavigation() {
             if (this._keydownHandler) {
                 document.removeEventListener('keydown', this._keydownHandler);
@@ -289,9 +296,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.addEventListener('keydown', this._keydownHandler);
         },
 
-        // =========================================================================
-        // AUTO-PLAY
-        // =========================================================================
+        // ===== Auto-Play =====
+
+        /**
+         * Create the auto-play button and insert it into the story nav-arrows
+         * container. No-op if the container is missing or the button already exists.
+         */
         injectAutoPlayButton() {
             // Find the nav-arrows container in whichever story page this engine is mounted on.
             const navArrows = this.elements.storyViewerView?.querySelector('.story-nav-arrows');
@@ -313,6 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.updateAutoPlayButton();
         },
 
+        /** Sync the auto-play button label and aria-pressed to the current speed tier. */
         updateAutoPlayButton() {
             const btn = this.elements.autoPlayBtn;
             if (!btn) return;
@@ -322,6 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.setAttribute('aria-pressed', String(this.autoPlaySpeed > 0));
         },
 
+        /** Cycle auto-play speed: off → slow → medium → fast → off. */
         toggleAutoPlay() {
             // Cycle off → slow → medium → fast → off.
             this.autoPlaySpeed = (this.autoPlaySpeed + 1) % 4;
@@ -330,6 +342,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (this.autoPlaySpeed > 0) this.scheduleAutoAdvance();
         },
 
+        /**
+         * Queue the next auto-advance after the delay for the current speed tier.
+         * Cancels any pending timer first. No-op when the story view is hidden,
+         * options are showing, or there is no next reachable line.
+         */
         scheduleAutoAdvance() {
             this.cancelAutoAdvance();
             if (this.autoPlaySpeed <= 0) return;
@@ -352,6 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, delay);
         },
 
+        /** Clear the pending auto-advance timer, if any. */
         cancelAutoAdvance() {
             if (this._autoPlayTimer != null) {
                 clearTimeout(this._autoPlayTimer);
@@ -359,6 +377,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
+        /**
+         * Handle browser back/forward navigation via the History API popstate event.
+         * Restores story or memory-selection state from the history entry's state object.
+         */
         setupBrowserBackButton() {
             window.addEventListener('popstate', async (e) => {
                 if (e.state) {
@@ -383,8 +405,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         },
 
+        /**
+         * Replace the audio element's play/pause listeners with fresh ones.
+         * Called by setupEventListeners to avoid stacking duplicate handlers
+         * if init() is somehow called more than once.
+         */
         cleanupAudioListeners() {
-            // Remove old event listeners if they exist
             if (this.audioPlayHandler) {
                 this.audio.removeEventListener('play', this.audioPlayHandler);
             }
@@ -392,7 +418,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.audio.removeEventListener('pause', this.audioPauseHandler);
             }
 
-            // Store new handlers for future cleanup
             this.audioPlayHandler = () => this.updateAudioPlayerUI();
             this.audioPauseHandler = () => this.updateAudioPlayerUI();
 
@@ -400,9 +425,9 @@ document.addEventListener('DOMContentLoaded', () => {
             this.audio.addEventListener('pause', this.audioPauseHandler);
         },
 
-        // =========================================================================
-        // URL & VIEW MANAGEMENT
-        // =========================================================================
+        // ===== URL & View Management =====
+
+        /** Push or replace the URL to reflect the current event/story selection. */
         updateUrl(eventId, storyId, clear = false) {
             if (clear) {
                 history.pushState({}, '', window.location.pathname);
@@ -414,6 +439,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }, { replace: false });
         },
 
+        /**
+         * Read `eventid` and `story` URL params on initial load and open the
+         * matching event or story directly, bypassing the selection grids.
+         */
         async handleUrlParameters() {
             const eventId = getUrlParam('eventid'); // Consistently use lowercase 'eventid'
             const storyId = getUrlParam('story');
@@ -434,17 +463,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
+        /**
+         * Show one of the three views (event grid / memory grid / story viewer)
+         * and hide the other two. Also pauses audio and cancels auto-play when
+         * leaving the story viewer pane.
+         */
         switchView(viewToShow, scrollToTop = true) {
             [this.elements.eventSelectionView, this.elements.memorySelectionView, this.elements.storyViewerView].forEach(view => {
                 if (view) toggleElement(view, view === viewToShow);
             });
 
-            // Scroll to top when navigating forward (unless explicitly disabled)
             if (scrollToTop) {
                 window.scrollTo(0, 0);
             }
 
-            // When leaving the story viewer, pause audio and stop auto-play.
             if (viewToShow !== this.elements.storyViewerView) {
                 this.audio.pause();
                 hideElement(this.elements.audioPlayerContainer);
@@ -465,30 +497,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 return this.storylineData[eventId];
             }
 
-            // If no lazy-load path configured, data should already be there
             if (!this.config.chapterDataPath) {
                 return this.storylineData[eventId];
             }
 
-            // Fetch the full chapter data
             const chapterUrl = this.config.chapterDataPath.replace('{id}', eventId);
             const fullChapter = await fetchJSONWithCache(chapterUrl);
 
-            // Merge into storylineData (preserving index metadata, adding full data)
             this.storylineData[eventId] = { ...this.storylineData[eventId], ...fullChapter };
             return this.storylineData[eventId];
         },
 
-        // =========================================================================
-        // UI POPULATION & NAVIGATION
-        // =========================================================================
+        // ===== UI Population & Navigation =====
+
+        /**
+         * Render the event/chapter grid, optionally filtered by a search term.
+         * Shows skeleton cards while data is loading (empty storylineData).
+         * Called on init and on search input; also called by the secretary-story
+         * page's filter logic after it re-renders via renderEventEntries.
+         */
         populateEventGrid(searchTerm = '') {
             this.elements.eventGrid.innerHTML = '';
-            const filteredEvents = Object.entries(this.storylineData) // Use Object.entries to get both key and value
+            const filteredEvents = Object.entries(this.storylineData)
                 .filter(([key, event]) => event.name.toLowerCase().includes((searchTerm || '').toLowerCase()));
 
             if (filteredEvents.length === 0 && Object.keys(this.storylineData).length === 0) {
-                // Still loading - show skeleton cards
                 for (let i = 0; i < 6; i++) {
                     const skeletonCard = this.createSkeletonCard();
                     this.elements.eventGrid.appendChild(skeletonCard);
@@ -497,7 +530,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             filteredEvents.forEach(([key, event]) => {
-                // This new line robustly finds the ID whether it's the key or a property inside the object.
                 const eventId = event.id || key;
                 const specialLink = this.config.getEventLink ? this.config.getEventLink(event) : null;
                 const subtitle = specialLink
@@ -514,7 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             window.location.href = specialLink;
                             return;
                         }
-                        this.selectEvent(eventId); // Pass the correct eventId
+                        this.selectEvent(eventId);
                     }
                 );
 
@@ -525,6 +557,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         },
 
+        /** Return a CSS-animated skeleton placeholder card for the loading state. */
         createSkeletonCard() {
             const card = document.createElement('div');
             card.className = 'grid-card skeleton-card';
@@ -537,6 +570,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return card;
         },
 
+        /**
+         * Build a clickable grid card DOM element. The icon URL is resolved from
+         * a base path + filename unless it is already an absolute URL or a local
+         * asset path. Used for both event and memory grid cards.
+         */
         createCard(title, subtitle, icon, pathPrefix, onClick, id = null) {
             const card = document.createElement('div');
             card.className = 'grid-card';
@@ -562,15 +600,19 @@ document.addEventListener('DOMContentLoaded', () => {
             return card;
         },
 
+        /**
+         * Navigate to the memory-selection view for the given event/chapter.
+         * Lazy-loads full chapter data if only index metadata is available,
+         * delegates extras injection to config.populateMemoryGridExtras, and
+         * renders the memory card list via config.getEventMemories.
+         */
         async selectEvent(eventId, updateUrl = true) {
             this.currentEventId = eventId;
 
-            // Lazy-load full chapter data if needed
             const eventData = await this.loadChapterData(eventId);
             this.elements.memoryViewTitle.textContent = eventData.name;
             this.elements.memoryGrid.innerHTML = '';
 
-            // Allow config to add extra cards (like summary card for world viewer)
             if (this.config.populateMemoryGridExtras) {
                 this.config.populateMemoryGridExtras(this, this.elements.memoryGrid, eventId);
             }
@@ -595,9 +637,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             this.switchView(this.elements.memorySelectionView);
-            // Note: Audio warning now displayed via flavor-text-box in HTML (not programmatic popup)
         },
 
+        /**
+         * Return to the memory-selection view without scrolling to top, and
+         * highlight the next memory card (if any) so the user can see where
+         * they left off.
+         */
         returnToMemorySelection() {
             this.updateUrl(this.currentEventId);
             this.switchView(this.elements.memorySelectionView, false); // Don't scroll to top when going back
@@ -614,9 +660,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
-        // =========================================================================
-        // NAVIGATION CACHE (Precomputed for Performance)
-        // =========================================================================
+        // ===== Navigation Cache =====
+
+        /**
+         * Precompute next/prev reachable line indices for every (index, flagContext)
+         * pair in the current story script. Stored in this.scriptNavCache so that
+         * advanceStory, goBackStory, and hasReachableNextDisplayable are O(1)
+         * lookups instead of per-render linear scans.
+         */
         buildNavigationCache() {
             // First pass: collect metadata and find all unique flags
             const flagSet = new Set();
@@ -699,12 +750,14 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         },
 
-        // =========================================================================
-        // STORY PLAYER LOGIC
-        // =========================================================================
-        // Any navigation away from the viewer should stop the auto-play timer.
-        // Called by returnToMemorySelection / switchView indirectly via render gating.
+        // ===== Story Player Logic =====
 
+        /**
+         * Initialize and begin playing a memory (story script). Resets all per-
+         * story state (script index, paintings, background cache, auto-play),
+         * preloads the first background image, builds the navigation cache, and
+         * switches to the story viewer pane.
+         */
         async startStory(memory, updateUrl = true) {
             let story;
             try {
@@ -758,10 +811,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 isBlack: false,
                 lastIndex: -1
             };
-            this.scriptNavCache = null; // Will be rebuilt after preloading
-            this.cachedFullScript = null; // Will be built on first modal open
+            this.scriptNavCache = null;
+            this.cachedFullScript = null;
 
-            // Set default background for both viewer types if mask exists
             if (memory.mask) {
                 this.currentStoryDefaultBgUrl = `${this.BASE_URL}${memory.mask}.webp`;
             }
@@ -778,20 +830,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.updateUrl(this.currentEventId, memory.id);
             }
 
-            // Preload key images
             const imagesToPreload = new Set();
             if (this.currentStoryDefaultBgUrl) imagesToPreload.add(this.currentStoryDefaultBgUrl);
             const firstBgLine = this.currentStoryScript.find(line => line.bgName);
             if (firstBgLine) imagesToPreload.add(`${this.BASE_URL}bg/${firstBgLine.bgName}.webp`);
             imagesToPreload.forEach(src => { new Image().src = src; });
 
-            // Build navigation cache for fast lookups
             this.buildNavigationCache();
 
             this.renderScriptLine();
             this.switchView(this.elements.storyViewerView);
         },
 
+        /**
+         * Return true if a script line should be presented as a navigable step.
+         * Lines with no visible content and no scene transition are skipped by
+         * the nav cache so the user never lands on a blank dialogue state.
+         */
         isLineDisplayable(line) {
             if (!line) return false;
             // A line is a "step" the user should navigate through if it has
@@ -809,6 +864,10 @@ document.addEventListener('DOMContentLoaded', () => {
             );
         },
 
+        /**
+         * Advance to the next reachable displayable line in the current branch context.
+         * Sets _playFlashOnNextRender so flash/shake effects trigger on forward nav only.
+         */
         advanceStory() {
             if (this.scriptIndex >= this.currentStoryScript.length - 1) return;
 
@@ -829,19 +888,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
+        /**
+         * Move to the previous reachable displayable line, respecting the active
+         * branch context. Crossing back over a decision point (lastOptionIndex)
+         * exits branch mode and returns to the options line.
+         */
         goBackStory() {
             if (this.scriptIndex <= 0) return;
 
-            // For going back, we need to consider both the current line's context
-            // and whether we're in an active branch
             const currentLine = this.currentStoryScript[this.scriptIndex];
             let flagContext;
 
             if (this.activeOptionFlag !== null) {
-                // Inside a branch, use the active flag
                 flagContext = this.activeOptionFlag;
             } else {
-                // Outside branch, use current line's flag (if any)
                 flagContext = (currentLine && currentLine.optionFlag !== undefined) ? currentLine.optionFlag : null;
             }
 
@@ -849,9 +909,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const navInfo = this.scriptNavCache.navigation[key];
 
             if (navInfo && navInfo.prev !== null) {
-                // Check if going back crosses the decision point
                 if (this.activeOptionFlag !== null && navInfo.prev <= this.lastOptionIndex) {
-                    // Exit branch mode and land on the options line
+                    // Crossed the decision point — exit branch mode and land on the options line.
                     this.activeOptionFlag = null;
                     this.scriptIndex = this.lastOptionIndex;
                 } else {
@@ -862,6 +921,12 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
 
+        /**
+         * Render the current script line to the DOM. Updates background, BGM, paintings,
+         * dialogue/sequence content, navigation button states, option buttons, the
+         * branch-end hint, progress indicator, and schedules the next auto-advance.
+         * This is the central render function called after every index change.
+         */
         renderScriptLine() {
             if (this.scriptIndex >= this.currentStoryScript.length) return;
             const line = this.currentStoryScript[this.scriptIndex];
@@ -938,7 +1003,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (actorInfo.id !== this.lastActorId) {
                     el.actorName.textContent = displayedName;
 
-                    // Use expression portrait only for numeric actor IDs
                     let portraitIcon = actorInfo.icon;
                     if (typeof line.actor === 'number' && line.actor > 0) {
                         const expressionData = this.getExpressionData(line.actor);
@@ -952,7 +1016,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         const img = document.createElement('img');
                         img.src = portraitIcon;
                         img.alt = actorInfo.name;
-                        // Fallback to default icon if expression portrait fails
                         img.onerror = () => {
                             if (actorInfo.icon && img.src !== actorInfo.icon) {
                                 img.src = actorInfo.icon;
@@ -969,33 +1032,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                // Apply nameColor if specified
                 if (line.nameColor) {
                     el.actorName.style.color = line.nameColor;
                 } else {
-                    // Reset to default color if no nameColor is specified
                     el.actorName.style.color = '';
                 }
 
-                // Apply shadow effect if actorShadow flag is set
                 el.actorPortrait.classList.toggle('actor-shadow', line.actorShadow === true);
 
                 this.lastActorId = actorInfo.id;
             }
 
-            // Update navigation buttons
             const hasOptions = line.options && line.options.length > 0;
             const isAtFileEnd = this.scriptIndex >= this.currentStoryScript.length - 1;
             el.prevLineBtn.disabled = (this.scriptIndex <= 0);
 
-            // Use "reachable path" semantics (branch-aware) for both Next and Return
             const nextDisplayableExists = this.hasReachableNextDisplayable();
             const isAtPathEnd = !nextDisplayableExists;
 
-            // Hide Next when there's no reachable next line OR we're on an options line
             toggleElement(el.nextLineBtn, !(hasOptions || !nextDisplayableExists));
-
-            // Show the Return/Go Back button when at the end of file OR end of reachable path
             toggleElement(el.returnBtn, isAtFileEnd || isAtPathEnd);
 
             // If the user has reached the end of a branch (but not the end of the
@@ -1005,15 +1060,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const isBranchDeadEnd = isAtPathEnd && !isAtFileEnd && !hasOptions;
             this.setBranchEndHint(isBranchDeadEnd);
 
-            // If you have a "next story" button, you probably want to show it
-            // only at the *true* file end; keep that behavior:
             toggleElement(el.nextStoryBtn, (isAtFileEnd || isAtPathEnd) && this.nextMemory);
-
-            // Page indicator hidden when we're at path end (no next) or on options
             toggleElement(el.nextPageIndicator, !(isAtPathEnd || hasOptions));
 
-
-            // Update progress indicator
             this.updateProgressIndicator();
 
             if (hasOptions) {
@@ -1026,9 +1075,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
-            // Schedule the next auto-advance based on the current auto-play speed.
-            // scheduleAutoAdvance cancels any prior timer, so this is safe to call
-            // on every render.
             this.scheduleAutoAdvance();
         },
 
@@ -1054,37 +1100,39 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
+        /**
+         * Record the player's choice at a branching decision point, set the active
+         * flag context, and navigate to the first reachable line in the chosen branch.
+         */
         handleOptionSelect(chosenFlag) {
             const currentLineIndex = this.scriptIndex;
             const currentLine = this.currentStoryScript[currentLineIndex];
             const optionCount = currentLine.options ? currentLine.options.length : 0;
 
-            // Record decision point
             this.lastOptionIndex = currentLineIndex;
-
-            // If only one option, we simply "advance" but explicitly set branch state anyway
             this.activeOptionFlag = (optionCount >= 1) ? chosenFlag : null;
 
-            // Use the nav cache to find the next reachable displayable line under the chosen
-            // flag context. This correctly respects flagged content that appears after an
-            // unflagged line (which the naïve forward-scan used to skip).
             const key = `${currentLineIndex}_${this.activeOptionFlag}`;
             const navInfo = this.scriptNavCache?.navigation?.[key];
 
             if (navInfo && navInfo.next !== null) {
                 this.scriptIndex = navInfo.next;
-                // Treat option selection as a forward advance so flash
-                // curtains baked into the chosen branch's first line play
-                // exactly like the natural next-click path would.
+                // Treat option selection as a forward advance so flash curtains baked
+                // into the first line of the chosen branch play on the natural path.
                 this._playFlashOnNextRender = true;
                 this.renderScriptLine();
             } else {
-                // No reachable line -> this option ends the story immediately
-                this.scriptIndex = currentLineIndex; // stay put; UI will show end after render
+                // No reachable line — this branch ends immediately; render to show end state.
+                this.scriptIndex = currentLineIndex;
                 this.renderScriptLine();
             }
         },
 
+        /**
+         * Render sequence/signDate overlay text (fullscreen title cards) to the
+         * info-screen element. Returns true when content was rendered so the caller
+         * knows to skip the normal dialogue path.
+         */
         renderSequenceContent(line) {
             const sequences = this.extractSequenceLines(line);
             if (sequences.length === 0) return false;
@@ -1108,6 +1156,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return true;
         },
 
+        /**
+         * Extract formatted text entries from a line's sequence or signDate field.
+         * Returns an array of {text, scale} objects for renderSequenceContent.
+         */
         extractSequenceLines(line) {
             if (!line) return [];
 
@@ -1165,6 +1217,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
+        /**
+         * Parse a raw sequence text entry — strip HTML tags and map any `<size=N>`
+         * tags to a CSS scale factor clamped to [0.7, 1.6].
+         */
         formatSequenceLine(rawText) {
             if (!rawText || typeof rawText !== 'string') return { text: '', scale: 1 };
 
@@ -1188,35 +1244,32 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
 
-        // =========================================================================
-        // HELPERS (VISUAL & AUDIO)
-        // =========================================================================
+        // ===== Helpers: Visual & Audio =====
+
+        /**
+         * Resolve display info (id, name, icon) for a script line's speaker.
+         * Handles the many ways the game identifies actors: numeric IDs, string
+         * names, actorName overrides, Commander (actor 0), world-viewer Narrator,
+         * {namecode:N} placeholders, and pure narration lines with no speaker.
+         */
         getActorInfo(line) {
             const isKorean = (text) => /[\uAC00-\uD7AF]/.test(text || '');
 
-            // --- REQUIREMENT 1: No actor or actorName ---
-            // Handles narration lines that should have no speaker info displayed.
-            // `line.actor == null` checks for both undefined and null.
+            // Narration: no actor or actorName. A distinct ID forces the renderer
+            // to clear the previous character's portrait.
             if (line.actor == null && !line.actorName) {
-                // Return an object that results in an empty name and no portrait.
-                // A distinct ID forces the renderer to clear any previous character's info.
                 return { id: 'no-actor', name: '', icon: null };
             }
 
-            // --- REQUIREMENT 2: Only actorName, and it's Korean ---
-            // Handles characters who are named but don't have a standard actor entry.
+            // Named character with no numeric actor ID — show name, no portrait.
+            // Using the name as ID ensures the UI updates when the speaker changes.
             if (line.actor == null && line.actorName && isKorean(line.actorName)) {
-                // Return the specified name with an empty portrait.
-                // Using the name as the ID ensures the UI updates if the speaker changes.
                 return { id: line.actorName, name: line.actorName, icon: null };
             }
 
-
-            // --- ORIGINAL LOGIC FOR ALL OTHER CASES ---
-            // This existing code will now only run for lines that don't match the special cases above.
             let actorInfo = { id: null, name: '', icon: null };
 
-            // --- Step 1: Establish base actor from `line.actor` ---
+            // Step 1: Base actor from line.actor
             let baseActorId = null;
             if (typeof line.actor === 'number') {
                 baseActorId = line.actor;
@@ -1229,23 +1282,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 actorInfo = { id: baseActorId, name: char.name, icon: char.icon };
             }
 
-            // --- Step 2: Handle `line.actorName` overrides ---
+            // Step 2: actorName overrides
             if (line.actorName) {
                 const actorNameId = parseInt(line.actorName, 10);
                 if (!isNaN(actorNameId) && this.shipgirlData[actorNameId]) {
                     const overrideChar = this.shipgirlData[actorNameId];
-                    actorInfo.id = actorNameId; // Update ID so UI knows actor changed
+                    actorInfo.id = actorNameId;
                     actorInfo.name = overrideChar.name;
                     actorInfo.icon = overrideChar.icon;
                 } else {
-                    // For text actorName, use it as both ID and name
                     actorInfo.id = line.actorName;
                     actorInfo.name = line.actorName;
                 }
             }
 
-            // --- Step 3: Handle special cases (Commander, Narrator) ---
-            // Only apply commander default if no custom actorName was provided
+            // Step 3: Special cases — Commander, world-viewer Narrator
             if ((line.actor === 0 || line.portrait === 'zhihuiguan') && !line.actorName) {
                 actorInfo = { id: 0, name: '지휘관', icon: this.COMMANDER_ICON_PATH };
             } else if (this.config.viewerType === 'world' && line.say && !line.actor && !line.actorName) {
@@ -1257,7 +1308,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 actorInfo.name = 'Narrator';
             }
 
-            // --- Step 4: Translate namecode ---
+            // Step 4: Translate {namecode:N} placeholders
             const nameCodeMatch = String(actorInfo.name).match(/{namecode:(\d+)}/);
             if (nameCodeMatch && this.nameCodeData) {
                 const code = nameCodeMatch[1];
@@ -1266,12 +1317,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // --- Step 5: Clean up names that are just raw IDs ---
+            // Step 5: Numeric-only names are raw IDs with no translation — show as Narrator
             if (!isNaN(parseInt(actorInfo.name, 10)) && String(actorInfo.name).indexOf('{') === -1) {
                 actorInfo.name = 'Narrator';
             }
 
-            // --- Step 6: Final icon cleanup for all non-character speakers ---
+            // Step 6: Clear portrait for non-character speakers
             const nonCharacterNames = ['Narrator', '통신기', '분석기', '모두들'];
             if (nonCharacterNames.includes(actorInfo.name) || actorInfo.name?.includes('?')) {
                 actorInfo.icon = null;
@@ -1280,6 +1331,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return actorInfo;
         },
 
+        /**
+         * Apply the background for the current script line. Mirrors the game's
+         * Reset()+UpdateBg() flow: each step uses only THIS line's bgName/blackBg,
+         * falling back to the memory's default mask. Backward nav and resume jumps
+         * therefore always show the correct background rather than whatever was
+         * last rendered. Short-circuits if the index hasn't changed.
+         */
         updateBackground() {
             // Cache the background element on first access
             if (!this.elements.storyBackground) {
@@ -1380,13 +1438,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
 
-        // =========================================================================
-        // PAINTING & EXPRESSION RENDERING
-        // =========================================================================
+        // ===== Painting & Expression Rendering =====
 
         /**
-         * Get expression data for a character ID
-         * Checks both regular painting and painting_n (zoomed) variants
+         * Look up expression manifest data for a character.
+         * Prefers painting_n (zoomed variant used in story mode) over the
+         * standard painting, and returns null if neither variant is present.
          */
         getExpressionData(actorId) {
             if (!actorId || !this.expressionManifest) return null;
@@ -1715,23 +1772,21 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         /**
-         * Update expression on existing painting
+         * Swap the face overlay src on an existing painting container when only
+         * the expression changes (actor and side are the same). Falls back to the
+         * default face ID if the requested expression image fails to load.
          */
         updatePaintingExpression(container, expressionData, newExpression) {
             const faceImg = container.querySelector('.painting-face-overlay');
             if (!faceImg) return;
 
-            // Show face overlay (in case it was hidden due to previous error)
             faceImg.style.display = '';
 
-            // Use the requested expression directly
             const newSrc = expressionData.faceUrlTemplate.replace('{faceId}', newExpression);
             const defaultFaceId = expressionData.faces?.[0] || '0';
             const defaultSrc = expressionData.faceUrlTemplate.replace('{faceId}', defaultFaceId);
 
             faceImg.src = newSrc;
-
-            // Fallback to default face if requested expression fails
             faceImg.onerror = () => {
                 if (faceImg.src !== defaultSrc) {
                     faceImg.src = defaultSrc;
@@ -1741,9 +1796,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         },
 
-        /**
-         * Clear all paintings (called when starting new story)
-         */
+        /** Clear all paintings when starting a new story. */
         clearPaintings() {
             if (this.elements.paintingLayer) {
                 this.elements.paintingLayer.innerHTML = '';
@@ -1752,7 +1805,11 @@ document.addEventListener('DOMContentLoaded', () => {
             this.activeSpeakerSide = null;
         },
 
-        // to determine if there is any non-option flag ahead that can be displayed
+        /**
+         * Return true if there is at least one displayable line reachable from the
+         * current position in the active branch context. Used to decide whether to
+         * show the Next button and whether auto-play should schedule another advance.
+         */
         hasReachableNextDisplayable() {
             const curr = this.currentStoryScript[this.scriptIndex];
 
@@ -2026,19 +2083,6 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         /**
-         * Handle step-level flashout/flashin curtain transitions.
-         *
-         * In the game, `flashout` fades a black (or white) full-screen curtain
-         * IN at the start of a step — darkening the screen while the new scene
-         * loads — and `flashin` fades it OUT afterwards (with an optional delay)
-         * to reveal the new scene. They're top-level line fields, distinct from
-         * the per-effect `effects[].type = "fadeout"/"fadein"` flow.
-         *
-         * We replicate that sequencing with a dedicated full-screen overlay
-         * animated via `Element.animate()` so we can cancel mid-animation when
-         * the user advances past a still-transitioning step.
-         */
-        /**
          * Cancel any in-flight flash animations/timers and reset the overlay
          * to transparent. Used on non-advance renders (back nav, jumps,
          * resume) so we never leave the screen stuck at a mid-fade opacity.
@@ -2055,9 +2099,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (this._flashOverlay) this._flashOverlay.style.opacity = '0';
         },
 
+        /**
+         * Animate the step-level flashout/flashin curtain sequence.
+         * `flashout` fades a full-screen overlay IN (black or white) and `flashin`
+         * fades it OUT, with an optional delay between them. Distinct from the
+         * `flashN` multi-phase blink — uses a separate overlay element.
+         */
         handleLineFlash(line) {
-            // Cancel any in-flight flash from a previous step. Without this a
-            // rapid Next-click can leave the screen stuck at a mid-fade opacity.
             if (this._flashAnims) {
                 this._flashAnims.forEach(a => { try { a.cancel(); } catch (_) {} });
                 this._flashAnims = null;
@@ -2068,8 +2116,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (!line.flashout && !line.flashin) {
-                // Also ensure the overlay is fully hidden in case a prior cancel
-                // left it partially opaque.
                 if (this._flashOverlay) this._flashOverlay.style.opacity = '0';
                 return;
             }
@@ -2134,11 +2180,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const MAX_CONCURRENT_SFX = 3;
             const MAX_SFX_LIFETIME_MS = 15000;
 
-            // Release any SFX that have fully finished. We do NOT release paused-but-not-ended
-            // ones here — those are still considered active until their own cleanup fires.
+            // Release finished SFX. Paused-but-not-ended entries stay active
+            // until their own cleanup timer fires.
             this.activeSfx = this.activeSfx.filter(sfx => !sfx.ended);
 
-            // If at concurrency cap, evict the oldest.
             if (this.activeSfx.length >= MAX_CONCURRENT_SFX) {
                 const oldest = this.activeSfx.shift();
                 if (oldest._cleanup) oldest._cleanup();
@@ -2166,6 +2211,11 @@ document.addEventListener('DOMContentLoaded', () => {
             sfx.play().catch(e => { console.warn("SFX playback failed.", e); cleanup(); });
         },
 
+        /**
+         * Apply a BGM change: start playing the named track, stop BGM when null,
+         * show/hide the audio player container, and update the UI. No-op when
+         * the same track is already playing.
+         */
         handleBgm(bgmName) {
             toggleElement(this.elements.audioPlayerContainer, !!bgmName);
 
@@ -2189,11 +2239,11 @@ document.addEventListener('DOMContentLoaded', () => {
             this.updateAudioPlayerUI();
         },
 
+        /** Sync the audio player button icons and volume slider to the audio element's current state. */
         updateAudioPlayerUI() {
             const el = this.elements;
             if (!el.playPauseBtn || !el.muteBtn || !el.volumeSlider) return;
 
-            // Cache icon elements on first access
             if (!el.playPauseIcon) {
                 el.playPauseIcon = el.playPauseBtn.querySelector('.material-symbols-outlined');
             }
@@ -2205,18 +2255,19 @@ document.addEventListener('DOMContentLoaded', () => {
             el.muteIcon.textContent = this.audio.muted || this.audio.volume === 0 ? 'volume_off' : 'volume_up';
             el.volumeSlider.value = this.audio.muted ? 0 : this.audio.volume;
 
-            // Toggle waveform animation
             if (el.audioPlayerContainer) {
                 el.audioPlayerContainer.classList.toggle('playing', !this.audio.paused);
             }
         },
 
+        /** Display an error message in the error container for 5 seconds. */
         showError(message) {
             this.elements.errorContainer.textContent = message;
             showElement(this.elements.errorContainer);
             setTimeout(() => hideElement(this.elements.errorContainer), 5000);
         },
 
+        /** Update the line-count and progress-bar UI based on the current script position. */
         updateProgressIndicator() {
             if (!this.elements.progressIndicator) return;
 
@@ -2232,9 +2283,12 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         },
 
-        // =========================================================================
-        // MODALS
-        // =========================================================================
+        // ===== Modals =====
+
+        /**
+         * Open the full-script modal. The dialogue DOM is built once per story
+         * (cachedFullScript) and cloned on subsequent opens to avoid rebuilding it.
+         */
         showFullScript() {
             if (!this.currentStoryScript || this.currentStoryScript.length === 0) return;
 
@@ -2262,6 +2316,10 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         hideFullScript() { hideElement(this.elements.scriptModalOverlay); },
 
+        /**
+         * Open the world-story summary modal for the given event ID.
+         * Renders title, summary text, and key character list from storylineSummaryData.
+         */
         showSummaryModal(eventId) {
             const data = this.storylineSummaryData[eventId];
             if (!data) return;

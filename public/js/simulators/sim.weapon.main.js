@@ -1,3 +1,11 @@
+/**
+ * sim.weapon.main.js
+ * Main entry point for the weapon/skill simulator page.
+ * Initializes the engine and WeaponSimData, populates the skill selector (grouped by ship),
+ * renders weapon info cards, and fires barrages/aircraft when the fire button is clicked.
+ * Part of the simulators module group; mirrors sim.aircraft.main.js structure.
+ */
+
 import { debounce, fetchJSON, getUrlParam, resolveUrl, showElement, hideElement, setupModal, openModal, closeModal } from '../utils.js';
 import { SimulationEngine } from './sim.engine.common.js';
 import { WeaponSimData } from './sim.weapon.data.js';
@@ -130,6 +138,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         simEngine.updateLayoutAndScale(playerAreaDiv);
     });
 
+    // ===== Controls Initialization =====
+
     // --- Speed Controls ---
     function initSpeedControls() {
         document.querySelectorAll('.speed-btn').forEach(btn => {
@@ -159,6 +169,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
+
+    // ===== Ship Browse Modal =====
 
     // --- Ship Browse Modal ---
     function initShipBrowseModal() {
@@ -240,6 +252,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    // ===== FPS Display =====
+
     // --- FPS Display ---
     function initFPSDisplay() {
         const fpsDisplay = document.getElementById('fps-display');
@@ -273,6 +287,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     function convertToMs(value, timeUnitIsFrames = false) {
         return timeUnitIsFrames ? (value / TARGET_FPS) * 1000 : value * 1000;
     }
+
+    // ===== Skill Selector =====
 
     // --- Skill Selector (grouped by shipgirl) ---
     function populateSkillSelector() {
@@ -342,6 +358,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (skill.effect_list) return skill.effect_list;
         return null;
     }
+
+    // ===== Display Update =====
 
     // --- Update Display (replaces old updateSkillStats) ---
     async function updateSkillDisplay(skillId) {
@@ -577,7 +595,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return html;
     }
 
-    // --- Firing Logic (unchanged) ---
+    // ===== Firing Logic =====
 
     async function fireSkill(skillId) {
         const skill = weaponSimData.getSkillById(skillId);

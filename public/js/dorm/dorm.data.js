@@ -1,12 +1,17 @@
-// public/js/dorm/dorm.data.js
+/**
+ * dorm.data.js
+ * Data loading and lookup helpers for the dorm furniture simulator.
+ * Part of the dorm module group (viewer + data + grid + panel).
+ * State is shared via a ref passed to setup() from dorm.viewer.js.
+ */
 import { fetchJSON, resolveUrl, createSearchIndex } from '../utils.js';
 
 /** @type {import('./dorm.viewer.js').DormState} */
 let state;
 
-// Asset base URL — data_for_toy GitHub repo
 const ASSET_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main';
 
+/** Receive the shared state reference from dorm.viewer.js. */
 export function setup(stateRef) {
     state = stateRef;
 }

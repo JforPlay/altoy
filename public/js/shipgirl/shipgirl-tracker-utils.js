@@ -1,6 +1,7 @@
 /**
- * Utility functions for shipgirl-tracker
- * Helper functions that are called infrequently or for initialization
+ * shipgirl-tracker-utils.js
+ * Utility helpers for shipgirl-tracker.js: checkbox parsing, search dropdown,
+ * and tracker item DOM creation. Exported as a single namespace object.
  */
 
 const ShipgirlTrackerUtils = {

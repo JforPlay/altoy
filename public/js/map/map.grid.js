@@ -1,6 +1,15 @@
+/**
+ * map.grid.js
+ * Grid and legend renderers for the map viewer.
+ * Part of the map module group (viewer + data + detail + grid + compare).
+ * State is shared via a ref; setup() also receives a node click callback from map.viewer.js.
+ * renderGrid is also called from map.compare.js to show mini grids inside the compare modal.
+ */
+
 let state;
 let onNodeClick = null;
 
+/** Receive shared state and the node click handler from map.viewer.js. */
 export function setup(stateRef, nodeClickHandler) {
     state = stateRef;
     onNodeClick = nodeClickHandler;
@@ -26,7 +35,11 @@ const NODE_TYPES = {
 
 const UNKNOWN_NODE = { cls: 'unknown', icon: '?', label: '?', clickable: false };
 
-/** Render a standard chapter grid into the target element. */
+/**
+ * Render a standard chapter grid (main, hard, event, archive) into the target element.
+ * Builds a cell lookup map, then renders bottom-to-top to match in-game grid orientation.
+ * Clickable nodes (enemy, boss, etc.) get data attributes and delegate clicks via targetEl.onclick.
+ */
 export function renderGrid(chapter, targetEl) {
     if (!chapter || !chapter.grids || chapter.grids.length === 0) {
         targetEl.innerHTML = '<div class="map-empty">그리드 데이터가 없습니다</div>';
@@ -126,7 +139,7 @@ export function renderGrid(chapter, targetEl) {
     };
 }
 
-/** Render legend below the grid. */
+/** Render a legend row showing only node types present in this grid. */
 export function renderLegend(chapter, targetEl) {
     // Collect which node types are present in this grid
     const presentTypes = new Set();
@@ -165,7 +178,10 @@ export function renderLegend(chapter, targetEl) {
     targetEl.innerHTML = html;
 }
 
-/** Render a world chapter grid (simpler: just walkable/void). */
+/**
+ * Render a world chapter grid — simpler than renderGrid: only walkable vs. void cells.
+ * Node types are not distinguished; no click delegation.
+ */
 export function renderWorldGrid(chapter, targetEl) {
     if (!chapter || !chapter.grids || chapter.grids.length === 0) {
         targetEl.innerHTML = '<div class="map-empty">그리드 데이터가 없습니다</div>';

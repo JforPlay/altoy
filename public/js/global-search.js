@@ -1,9 +1,14 @@
+/**
+ * global-search.js
+ * Global search modal (Ctrl+K) loaded on every page via Layout.astro.
+ * Searches both the page catalog (static list) and shipgirl names (lazy-loaded from ship_group_data.json).
+ * Depends on Fuse.js (CDN), utils.js, and global.script.js (for LINKS).
+ */
+
 import { debounce, fetchJSON, resolveUrl, createSearchIndex } from './utils.js';
 import { LINKS } from './global.script.js';
 
-// ============================================
-// PAGE CATALOG
-// ============================================
+// ===== Page Catalog =====
 
 const PAGE_CATALOG = [
     // Ships & Skins
@@ -44,9 +49,7 @@ const PAGE_CATALOG = [
     { name: '발렌타인 편지', description: '함순이별 발렌타인 편지 모음', icon: 'mail', path: 'misc/valentine/', category: '인게임' },
 ];
 
-// ============================================
-// STATE
-// ============================================
+// ===== State =====
 
 let pageIndex = null;
 let shipData = null;
@@ -55,18 +58,18 @@ let shipDataLoading = false;
 let activeIndex = -1;
 let allResults = [];
 
-// ============================================
-// DOM REFERENCES
-// ============================================
+// ===== DOM References =====
 
 const overlay = document.getElementById('global-search-modal');
 const input = document.getElementById('global-search-input');
 const resultsContainer = document.getElementById('global-search-results');
 
-// ============================================
-// INITIALIZATION
-// ============================================
+// ===== Initialization =====
 
+/**
+ * Wire up the global search modal: build the page index, attach trigger/close handlers,
+ * bind input search + keyboard navigation.
+ */
 function init() {
     if (!overlay || !input || !resultsContainer) return;
 
@@ -108,9 +111,7 @@ function init() {
     input.addEventListener('keydown', handleKeydown);
 }
 
-// ============================================
-// OPEN / CLOSE
-// ============================================
+// ===== Open / Close =====
 
 function openSearch() {
     overlay.classList.add('visible');
@@ -134,10 +135,12 @@ function closeSearch() {
     resultsContainer.innerHTML = '<div class="global-search-empty">검색어를 입력하세요</div>';
 }
 
-// ============================================
-// SHIP DATA LOADING
-// ============================================
+// ===== Ship Data Loading =====
 
+/**
+ * Lazy-load ship name data from ship_group_data.json on first modal open.
+ * Builds a Fuse.js index so ship names appear alongside page results.
+ */
 async function loadShipData() {
     shipDataLoading = true;
     try {
@@ -159,10 +162,12 @@ async function loadShipData() {
     shipDataLoading = false;
 }
 
-// ============================================
-// SEARCH LOGIC
-// ============================================
+// ===== Search Logic =====
 
+/**
+ * Run both page and ship indexes against the current input, render combined results.
+ * Ship results link to three destinations (info, skin detail, valentine) per entry.
+ */
 function handleSearch() {
     const query = input.value.trim();
     if (!query) {
@@ -244,10 +249,9 @@ function handleSearch() {
     resultsContainer.innerHTML = html;
     activeIndex = -1;
 
-    // Click handler for ship rows (navigate to default url)
+    // Clicking the ship row navigates to the default (info) URL; sub-link clicks handle themselves
     resultsContainer.querySelectorAll('.global-search-ship').forEach(el => {
         el.addEventListener('click', (e) => {
-            // Don't navigate if clicking a sub-link
             if (e.target.closest('.global-search-ship-link')) return;
             const url = el.getAttribute('data-url');
             if (url) window.location.href = url;
@@ -255,10 +259,11 @@ function handleSearch() {
     });
 }
 
-// ============================================
-// KEYBOARD NAVIGATION
-// ============================================
+// ===== Keyboard Navigation =====
 
+/**
+ * Handle Escape (close), ArrowUp/Down (move highlight), Enter (navigate to result).
+ */
 function handleKeydown(e) {
     if (e.key === 'Escape') {
         e.preventDefault();
@@ -306,9 +311,7 @@ function moveHighlight(direction) {
     }
 }
 
-// ============================================
-// HELPERS
-// ============================================
+// ===== Helpers =====
 
 function buildPageUrl(path) {
     if (path.startsWith('http')) return path;
@@ -320,8 +323,6 @@ function escapeHtml(str) {
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-// ============================================
-// START
-// ============================================
+// ===== Start =====
 
 document.addEventListener('DOMContentLoaded', init);

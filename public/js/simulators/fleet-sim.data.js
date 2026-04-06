@@ -270,6 +270,10 @@ let spWeaponById = {};
 let spWeaponTypeMap = {};   // spweapon_type → [ship_type_ids]
 let shipTypeToSPTypes = {}; // ship_type → [spweapon_type_ids]
 
+/**
+ * Build SP weapon lookup maps from spweapon_data.json.
+ * Populates spWeaponById, spWeaponTypeMap (spType → shipTypes), and the reverse shipTypeToSPTypes.
+ */
 function _buildSPWeaponIndex(spWeaponData) {
     spWeaponById = {};
     spWeaponTypeMap = {};

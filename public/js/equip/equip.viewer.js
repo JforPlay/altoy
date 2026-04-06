@@ -1,6 +1,9 @@
 /**
- * Equipment Viewer Module - Main Entry Point
- * State management, routing, filters, search, panel/modal control
+ * equip.viewer.js
+ * Main entry point for the equipment viewer: state management, URL routing,
+ * filters/search, detail panel, and compare mode orchestration.
+ * Part of the equip module group (viewer + data + detail + compare).
+ * Shares state with submodules via a ref object passed to each setup() function.
  */
 
 import {
@@ -104,6 +107,12 @@ setupDetail(state);
 setupCompare(state);
 
 // ===== Initialization =====
+
+/**
+ * Bootstrap the viewer: load blocking data (lite + mappings + SP weapons),
+ * kick off background loads (full data, weapon/bullet/skill refs), then
+ * wire up filters, event listeners, compare modal, and URL routing.
+ */
 async function init() {
     try {
         loading.style.display = 'block';
@@ -121,14 +130,14 @@ async function init() {
             loadSPWeaponData(),
         ]);
 
-        // Merge normalized SP weapons into equip data
+        // SP weapons use a different data source but appear as regular cards in the grid
         const spWeapons = normalizeSPWeapons();
         if (spWeapons.length > 0) {
             state.equipData.push(...spWeapons);
             state.filteredData = [...state.equipData];
         }
 
-        // Start loading full data and reference data in background
+        // Non-blocking: detail/compare views need these but the list renders without them
         state.fullEquipDataPromise = loadFullData();
         loadStatisticsData();
         loadWeaponPropertyData();
@@ -140,7 +149,6 @@ async function init() {
 
         loading.style.display = 'none';
 
-        // Build search index
         state.searchIndex = createSearchIndex(state.equipData, {
             keys: ['name', 'type_name', 'type_name2', 'nation_name', 'nation_code'],
             threshold: 0.3,
@@ -160,6 +168,11 @@ async function init() {
 }
 
 // ===== Populate Filters =====
+
+/**
+ * Build the type/nationality dropdowns and label chip buttons
+ * from the loaded mapping data, then refresh filter stats.
+ */
 function populateFilters() {
     const types = getUniqueTypes();
     typeFilter.innerHTML = '<option value="">모든 장비</option>' +
@@ -178,6 +191,12 @@ function populateFilters() {
 }
 
 // ===== Event Listeners =====
+
+/**
+ * Wire all user interactions: search (debounced), filter dropdowns,
+ * rarity/label chip toggles, detail panel open/close, compare mode
+ * controls, and ESC key handling.
+ */
 function setupEventListeners() {
     const debouncedFilter = debounce(filterEquipment, 200);
 
@@ -246,6 +265,12 @@ function setupEventListeners() {
 }
 
 // ===== Filtering =====
+
+/**
+ * Apply all active filters (search, type, nationality, rarity, labels)
+ * to the full equipment list and re-render the grid.
+ * Search uses Fuse.js first, then the remaining filters narrow results.
+ */
 function filterEquipment() {
     const searchTerm = searchInput.value.trim();
     const selectedType = typeFilter.value;
@@ -272,6 +297,12 @@ function filterEquipment() {
 }
 
 // ===== Rendering =====
+
+/**
+ * Render the filtered equipment list, grouped by equipment type.
+ * Each group gets a section header with count, and cards within
+ * are built with icon, rarity badge, stats, and click handlers.
+ */
 function renderEquipGrid() {
     if (state.filteredData.length === 0) {
         equipGrid.innerHTML = '<div class="empty-state">장비를 찾을 수 없습니다.</div>';
@@ -354,7 +385,6 @@ function renderEquipGrid() {
     equipGrid.innerHTML = '';
     equipGrid.appendChild(fragment);
 
-    // Apply compare mode visual overlay if active
     if (state.compareMode) {
         applyCompareModeOverlay();
     }
@@ -366,6 +396,8 @@ function updateFilterStats() {
 }
 
 // ===== Card Click Handler =====
+
+/** Route card clicks: in compare mode selects the second item, otherwise opens detail. */
 function onCardClick(equipId) {
     if (state.compareMode) {
         selectCompareSecondItem(equipId);
@@ -375,15 +407,21 @@ function onCardClick(equipId) {
 }
 
 // ===== Detail Panel =====
+
+// Panel openers — one for standard equipment, one for SP weapons (different data shape)
+
+/**
+ * Open the detail panel for a standard equipment item.
+ * Delegates rendering to equip.detail.js, updates the URL,
+ * and conditionally shows the research tree link.
+ */
 async function openDetailPanel(equipId) {
-    // Load data and render into panel
     const equip = await showDetailView(parseInt(equipId));
     if (!equip) return;
 
-    // Update URL (clear compare param if lingering)
+    // Clear any lingering compare param so back-navigation works correctly
     setUrlParams({ equip: equipId, compare: null }, { replace: true });
 
-    // Update research tree link (hide if equip not in any upgrade tree)
     const researchLink = document.getElementById('detailResearchLink');
     if (researchLink) {
         if (isInUpgradeTree(parseInt(equipId))) {
@@ -394,12 +432,17 @@ async function openDetailPanel(equipId) {
         }
     }
 
-    // Show panel
     detailPanel.classList.add('open');
     detailBackdrop.classList.add('visible');
     document.body.style.overflow = 'hidden';
 }
 
+/**
+ * Open the detail panel for an SP (special) weapon.
+ * Renders entirely in this function since SP weapons have a different
+ * data shape (attr pairs, level progression, skill upgrades) than
+ * standard equipment handled by equip.detail.js.
+ */
 function openSPWeaponDetail(spId) {
     const spWeapon = getSPWeaponRawData(spId);
     if (!spWeapon) return;
@@ -421,7 +464,6 @@ function openSPWeaponDetail(spId) {
     const rarityName = SP_RARITY_NAMES[spWeapon.rarity] || '';
     const uniqueLabel = spWeapon.unique ? '전용' : '범용';
 
-    // Level progression table
     let levelsHTML = '';
     if (spWeapon.levels && spWeapon.levels.length > 1) {
         const rows = spWeapon.levels.map((lvl, i) =>
@@ -440,7 +482,7 @@ function openSPWeaponDetail(spId) {
             </div>`;
     }
 
-    // Skill info (unique SP weapons have skill_upgrade)
+    // Only unique (전용) SP weapons have skill upgrades
     let skillHTML = '';
     if (spWeapon.skill_upgrade && spWeapon.skill_upgrade.length > 0) {
         const skillRows = [];
@@ -506,42 +548,44 @@ function openSPWeaponDetail(spId) {
 
     panelContent.innerHTML = html;
 
-    // Hide research link
+    // SP weapons don't participate in the upgrade tree system
     const researchLink = document.getElementById('detailResearchLink');
     if (researchLink) researchLink.style.display = 'none';
 
-    // Show panel
     detailPanel.classList.add('open');
     detailBackdrop.classList.add('visible');
     document.body.style.overflow = 'hidden';
 }
 
-/** SP rarity → CSS class suffix for rarity badge */
+/** SP rarity (2=R, 3=SR, 4=SSR) mapped to equip CSS rarity class (3, 4, 5) */
 const SP_RARITY_TO_EQUIP_CLASS = { 2: 3, 3: 4, 4: 5 };
 
 function closeDetailPanel() {
     detailPanel.classList.remove('open');
     detailBackdrop.classList.remove('visible');
     document.body.style.overflow = '';
-
-    // Clear equip URL param
     setUrlParams({ equip: null }, { replace: true });
 }
 
 // ===== Compare Mode =====
+
+// Mode lifecycle — enter/exit toggle the floating bar and card overlays
+
+/**
+ * Enter compare mode after the user clicks "Compare" in the detail panel.
+ * Closes the panel, shows the floating instruction bar, and dims cards
+ * that don't share the same compare_group as the first item.
+ */
 function enterCompareMode(firstEquip) {
     state.compareMode = true;
     state.compareFirstItem = firstEquip;
     state.compareGroupFilter = firstEquip.compare_group;
 
-    // Close detail panel
     closeDetailPanel();
 
-    // Show floating bar
     compareModeText.textContent = `"${firstEquip.name}" 과(와) 비교할 장비를 선택하세요`;
     compareModeBar.style.display = 'flex';
 
-    // Apply visual overlay to cards
     applyCompareModeOverlay();
 }
 
@@ -549,14 +593,16 @@ function exitCompareMode() {
     state.compareMode = false;
     state.compareFirstItem = null;
     state.compareGroupFilter = null;
-
-    // Hide floating bar
     compareModeBar.style.display = 'none';
-
-    // Remove card overlay classes
     removeCompareModeOverlay();
 }
 
+// Overlay helpers — mark cards as selected, eligible, or ineligible for comparison
+
+/**
+ * Apply visual classes to all cards: highlight the first-selected card,
+ * dim cards outside its compare_group so only valid targets stand out.
+ */
 function applyCompareModeOverlay() {
     const cards = equipGrid.querySelectorAll('.equip-card');
     for (const card of cards) {
@@ -583,6 +629,11 @@ function removeCompareModeOverlay() {
     }
 }
 
+/**
+ * Complete the comparison by loading the second item's full data,
+ * validating it belongs to the same compare_group, then opening
+ * the side-by-side compare modal.
+ */
 async function selectCompareSecondItem(equipId) {
     const secondEquip = await getFullEquipData(parseInt(equipId));
     if (!secondEquip) {
@@ -590,13 +641,11 @@ async function selectCompareSecondItem(equipId) {
         return;
     }
 
-    // Verify same compare_group
     if (secondEquip.compare_group !== state.compareFirstItem.compare_group) {
         showToast('같은 종류의 장비만 비교할 수 있습니다.', 'error');
         return;
     }
 
-    // Don't compare with self
     if (secondEquip.id === state.compareFirstItem.id) {
         showToast('같은 장비끼리는 비교할 수 없습니다.', 'info');
         return;
@@ -604,15 +653,18 @@ async function selectCompareSecondItem(equipId) {
 
     const firstEquip = state.compareFirstItem;
 
-    // Exit compare mode first
     exitCompareMode();
-
-    // Update URL and open modal
     setUrlParams({ compare: `${firstEquip.id},${secondEquip.id}`, equip: null }, { replace: true });
     renderCompareModal(firstEquip, secondEquip);
 }
 
 // ===== Routing =====
+
+/**
+ * Read URL params and open the appropriate view: compare modal (?compare=),
+ * detail panel (?equip=), or just the list. Also handles popstate for
+ * browser back/forward navigation.
+ */
 function handleRoute() {
     const equipParam = getUrlParam('equip');
     const compareParam = getUrlParam('compare');
@@ -622,12 +674,10 @@ function handleRoute() {
     } else if (equipParam) {
         openDetailPanel(parseInt(equipParam));
     } else {
-        // Close panel and modal if open
         closeDetailPanel();
         closeModal('compareModal');
     }
 
-    // Always show the main view (list)
     mainView.style.display = 'block';
     renderEquipGrid();
     updateFilterStats();

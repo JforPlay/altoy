@@ -1,22 +1,20 @@
-import { ChatViewerEngine } from './chat-viewer.engine.js';
 /**
- * Dorm3D Chat Viewer Configuration
- * Initializes the chat viewer for 3D Dorm conversations
+ * dorm3d.js
+ * Page init for the Dorm3D chat viewer. Passes Dorm3D-specific config to
+ * ChatViewerEngine, including a custom type-4 handler that shakes the last bubble.
  */
+import { ChatViewerEngine } from './chat-viewer.engine.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     new ChatViewerEngine({
-        // Data source for Dorm3D conversations
         dataUrl: 'data/chat-viewer/dorm3d_data.json',
+        defaultDelay: 1300,
+        initialDelay: 100,
 
-        // Timing configuration (ms)
-        defaultDelay: 1300,   // Delay between regular messages
-        initialDelay: 100,    // Initial delay before first message
-
-        // Custom event handlers specific to Dorm3D
         customHandlers: {
             /**
-             * Handle Type 4 scripts (special events in Dorm3D)
-             * Applies shake effect to last message bubble
+             * Type 4 scripts in Dorm3D are special events (not stickers).
+             * Apply a brief shake animation to the last bubble as a substitute.
              */
             handleType4: function(script) {
                 console.log(`[Dorm3D] Special Event: Type ${script.type}, Param: ${script.param}`);

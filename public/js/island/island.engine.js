@@ -1,14 +1,15 @@
 /**
- * Island Core Engine
- * Handles shared functionality and module coordination
+ * island.engine.js
+ * Core coordinator for the island module. Manages tab-based lazy loading of sub-modules
+ * (character, technology, quest, resource, restaurant, season-calc) and provides shared
+ * utilities (recipe tree building, dependency graphs, item lookups) used by all sub-engines.
+ * Exposes itself as window.IslandEngine for cross-module access.
  */
 import { fetchJSON, showToast, setStorageItem, createSearchIndex } from '../utils.js';
 
 'use strict';
 
-// ============================================
-// STATE
-// ============================================
+// ===== State =====
 const state = {
     activeTab: 'characters',
     modules: {
@@ -34,10 +35,11 @@ const TAB_MODULE_MAP = {
     'season-calc': { key: 'seasonCalc', module: () => window.SeasonCalcModule }
 };
 
-// ============================================
-// INITIALIZATION
-// ============================================
+// ===== Initialization =====
 
+/**
+ * Boot the island engine: load shared item data, then wait for tab activation to lazy-load sub-modules.
+ */
 async function init() {
     console.log('[Island] Initializing core engine...');
 
@@ -51,6 +53,10 @@ async function init() {
     }
 }
 
+/**
+ * Load island_item_data_template.json once and store in shared state.
+ * Guards against double-loading when multiple modules call init() concurrently.
+ */
 async function loadSharedData() {
     if (state.sharedData.loaded) return;
 
@@ -68,6 +74,10 @@ async function loadSharedData() {
     }
 }
 
+/**
+ * Lazy-load and initialize the module for the given tab name.
+ * No-ops if the module is already initialized or tab name is unknown.
+ */
 async function loadModule(tabName) {
     const config = TAB_MODULE_MAP[tabName];
     if (!config) return;
@@ -108,9 +118,7 @@ async function initModule(name, module) {
     console.log(`[Island] ${name} module initialized successfully`);
 }
 
-// ============================================
-// TAB MANAGEMENT
-// ============================================
+// ===== Tab Management =====
 
 /**
  * Switch active tab
@@ -154,10 +162,9 @@ function getActiveTab() {
     return state.activeTab;
 }
 
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
+// ===== Utility Functions =====
 
+/** Return the shared data object (items, loaded flag) for sub-modules that need it. */
 function getSharedData() {
     return state.sharedData;
 }
@@ -186,6 +193,10 @@ function getItemInfo(itemId) {
     };
 }
 
+/**
+ * Wrapper around utils.js createSearchIndex with island-module defaults.
+ * Sub-modules call this via window.IslandEngine.createSearchIndex.
+ */
 function createIslandSearchIndex(data, config) {
     return createSearchIndex(data, {
         keys: config.keys || ['searchText'],
@@ -194,9 +205,7 @@ function createIslandSearchIndex(data, config) {
     });
 }
 
-// ============================================
-// RECIPE TREE UTILITIES (Shared)
-// ============================================
+// ===== Recipe Tree Utilities (Shared) =====
 
 const GOLD_ITEM_ID = 1;
 const MAX_TREE_DEPTH = 5;
@@ -545,9 +554,7 @@ function calculateTreeNetGain(tree, direction = 'dependencies', parentRecipeCate
     return totalAccumulatedGain;
 }
 
-// ============================================
-// SHARED DATA STRUCTURE BUILDERS
-// ============================================
+// ===== Shared Data Structure Builders =====
 
 /**
  * Build dependency graph from recipes
@@ -625,11 +632,7 @@ function buildRecipeIndices(recipes) {
     return { recipeIndex, recipeCategoryIndex };
 }
 
-// ============================================
-// PUBLIC API
-// ============================================
-
-// Backwards-compatible global access
+// ===== Public API =====
 window.IslandEngine = {
     init,
     switchTab,

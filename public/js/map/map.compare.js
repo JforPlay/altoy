@@ -1,3 +1,11 @@
+/**
+ * map.compare.js
+ * Compare modal and compare mode (floating bar) for the map viewer.
+ * Part of the map module group (viewer + data + detail + grid + compare).
+ * State is shared via a ref passed to setup() from map.viewer.js.
+ * Depends on map.data.js for chapter lookup and map.grid.js for mini-grid rendering.
+ */
+
 import { openModal, closeModal, setupModal, setUrlParams, showElement, hideElement } from '../utils.js';
 import { getChapter } from './map.data.js';
 import { renderGrid } from './map.grid.js';
@@ -5,10 +13,15 @@ import { calcClearEstimate } from './map.detail.js';
 
 let state;
 
+/** Receive shared state from map.viewer.js. */
 export function setup(stateRef) {
     state = stateRef;
 }
 
+/**
+ * Wire close handlers for the compare modal.
+ * On close, exits compare mode and clears the URL compare param.
+ */
 export function setupCompareModal() {
     setupModal('compareModal', {
         closeButtonSelector: '#compareModalClose',
@@ -45,6 +58,7 @@ const COMPARE_STATS = [
     { key: 'group_num', label: '함대 수', lowerBetter: false },
 ];
 
+// Average EXP/level helpers for the dynamic stats rows in the compare table
 function getAvgExp(chapter, type) {
     const fleets = chapter?.expeditions?.[type] || [];
     if (fleets.length === 0) return 0;
@@ -57,7 +71,11 @@ function getAvgLevel(chapter, type) {
     return Math.round(fleets.reduce((sum, f) => sum + (f.level || 0), 0) / fleets.length);
 }
 
-/** Render the compare modal for two maps. */
+/**
+ * Render and open the compare modal for two map IDs.
+ * Shows side-by-side mini grids and a stats table with better/worse highlighting.
+ * Computed rows (EXP totals, oil total, EXP/oil) use calcClearEstimate from map.detail.js.
+ */
 export function renderCompareModal(id1, id2) {
     const ch1 = getChapter(id1);
     const ch2 = getChapter(id2);

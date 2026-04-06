@@ -1,5 +1,8 @@
 /**
- * Equipment Skin Viewer — Main Controller
+ * equip-skin-viewer.js
+ * Main controller for the equipment skin viewer page.
+ * Part of the equip skin viewer group (equip-skin-viewer.js + equip-skin.data.js + equip-skin.preview.js).
+ * Manages theme sidebar, skin grid, info bar, playback controls, and URL state.
  */
 import {
     debounce, getUrlParam, setUrlParams, resolveUrl,
@@ -61,6 +64,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     );
 
     // --- Render Theme Sidebar ---
+    /**
+     * Build and mount the theme sidebar from a list of theme objects.
+     * Marks the currently active theme with the 'active' class.
+     */
     function renderThemeList(themes) {
         const fragment = document.createDocumentFragment();
         for (const theme of themes) {
@@ -94,6 +101,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }, 200));
 
     // --- Select Theme ---
+    /**
+     * Select a theme: update sidebar state, render its skin grid, hide skin info, update URL.
+     */
     function selectTheme(themeId) {
         activeThemeId = themeId;
         activeSkinId = null;
@@ -151,6 +161,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // --- Select Skin ---
+    /**
+     * Select a skin: update grid active state, populate info bar, auto-fire preview, update URL.
+     */
     async function selectSkin(skinId) {
         activeSkinId = skinId;
         const skin = data.getSkin(skinId);

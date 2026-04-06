@@ -1,13 +1,13 @@
 /**
- * Island Character Module
- * Handles character data loading, rendering, stats calculation, and search
+ * island.character.engine.js
+ * Character management sub-engine for the island module.
+ * Handles character data loading, stat calculation (level/enhancement/skill), list/detail rendering,
+ * and search. Registers itself as window.CharacterModule for access by island.engine.js.
  */
 
 import { fetchJSON, createImg } from '../utils.js';
 
-// ============================================
-// STATE
-// ============================================
+// ===== State =====
 const state = {
     characters: {},
     attRankings: {},
@@ -22,10 +22,12 @@ const state = {
     characterIcons: {} // Icon data from character_icon.json
 };
 
-// ============================================
-// DATA LOADING
-// ============================================
+// ===== Data Loading =====
 
+/**
+ * Load character data and initialize search, list, and event delegation.
+ * Accepts sharedData from island.engine.js to reuse already-loaded item data.
+ */
 async function init(sharedData) {
     try {
         console.log('[Island Character] Initializing module...');
@@ -73,9 +75,7 @@ async function init(sharedData) {
     }
 }
 
-// ============================================
-// EVENT DELEGATION (Fixed Memory Leaks)
-// ============================================
+// ===== Event Delegation =====
 
 /**
  * Setup event delegation for character detail panel
@@ -144,9 +144,7 @@ function setupEventDelegation() {
     console.log('[Island Character] Event delegation set up');
 }
 
-// ============================================
-// SEARCH FUNCTIONALITY
-// ============================================
+// ===== Search =====
 
 /**
  * Initialize Fuse.js search
@@ -178,9 +176,7 @@ function searchCharacters(query) {
     return results.map(result => state.characters[result.item.id]);
 }
 
-// ============================================
-// CHARACTER LIST RENDERING
-// ============================================
+// ===== Character List Rendering =====
 
 /**
  * Render the character list with cards
@@ -241,9 +237,7 @@ function createCharacterCard(char) {
     `;
 }
 
-// ============================================
-// CHARACTER SELECTION & DETAIL
-// ============================================
+// ===== Character Selection & Detail =====
 
 /**
  * Select a character and show details
@@ -459,9 +453,7 @@ function renderStatsSection(char) {
     `;
 }
 
-// ============================================
-// CALCULATION FUNCTIONS
-// ============================================
+// ===== Calculations =====
 
 /**
  * Calculate stat value at a given level
@@ -588,9 +580,7 @@ function formatGrowthRates(rates, currentLevel) {
     }).join(' <span class="growth-separator">/</span> ');
 }
 
-// ============================================
-// UPDATE FUNCTIONS
-// ============================================
+// ===== Update Functions =====
 
 /**
  * Update stats display when level or enhancement changes
@@ -714,9 +704,7 @@ function updateEnhancementDisplay() {
     });
 }
 
-// ============================================
-// SKILL SECTION
-// ============================================
+// ===== Skill Section =====
 
 /**
  * Render skill section
@@ -848,9 +836,7 @@ function updateSkillDisplay(char) {
     }
 }
 
-// ============================================
-// SKIN SECTION
-// ============================================
+// ===== Skin Section =====
 
 /**
  * Render skin section
@@ -899,9 +885,7 @@ function renderSkinSection(char) {
     `;
 }
 
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
+// ===== Utility Functions =====
 
 /**
  * Render skill material with item data
@@ -941,9 +925,7 @@ function renderSkillMaterial(material) {
     `;
 }
 
-// ============================================
-// BACKWARDS COMPATIBILITY & EXPORTS
-// ============================================
+// ===== Public API =====
 
 window.CharacterModule = {
     init,

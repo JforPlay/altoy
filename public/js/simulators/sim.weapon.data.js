@@ -1,10 +1,12 @@
-import { fetchJSONWithCache } from '../utils.js';
 /**
- * Weapon Simulation Data Loader
- * Handles loading and management of weapon/skill specific data.
- * Uses chunked loading: only skill data is loaded upfront (~5MB),
- * weapon/barrage/bullet data is loaded on-demand per chunk (~200-500KB each).
+ * sim.weapon.data.js
+ * Data loader for the weapon simulator page (sim.weapon.main.js).
+ * Loads skill and chunk-index data upfront; weapon/barrage/bullet data is loaded
+ * on-demand per chunk when a skill is selected (~200–500 KB per chunk vs ~5 MB total).
+ * Part of the simulators module group.
  */
+
+import { fetchJSONWithCache } from '../utils.js';
 
 export class WeaponSimData {
     constructor(simEngine) {
@@ -138,6 +140,11 @@ export class WeaponSimData {
         }
     }
 
+    /**
+     * Extract weapon IDs from a skill's effect_list at the given level.
+     * Falls back through level → '1' → root effect_list to handle different data shapes.
+     * Also captures quota and time fields used for barrage count and fire delay.
+     */
     getWeaponIdsFromSkill(skillId, level = '1') {
         const weaponInfoList = [];
         const foundWeaponIds = new Set();

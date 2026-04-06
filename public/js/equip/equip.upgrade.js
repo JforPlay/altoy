@@ -1,6 +1,9 @@
 /**
- * Equipment Research Tree
- * Renders gear lab upgrade trees with tabs for nationality/equip type
+ * equip.upgrade.js
+ * Renders the equipment research tree page (gear lab upgrade paths).
+ * Standalone page script — not part of the equip viewer module group.
+ * Uses equip.data.js for icon/rarity URL helpers but manages its own data and state.
+ * Covers: category tabs, tree SVG rendering, node selection, equip info panel, material modal.
  */
 
 import {
@@ -41,6 +44,10 @@ const PROP_ICON_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/m
 
 // ===== Init =====
 
+/**
+ * Load all required data in parallel, then restore state from URL or localStorage.
+ * item_data_lite is optional — falls back to prop ID numbers as names if missing.
+ */
 async function init() {
     const loadingEl = document.getElementById('loading');
 
@@ -86,6 +93,10 @@ async function init() {
 
 // ===== Build Categories =====
 
+/**
+ * Index all templates into a two-level category structure (cat1=nationality, cat2=equip type).
+ * Sorts cat2 entries by ID within each cat1.
+ */
 function buildCategories() {
     for (const [id, tmpl] of Object.entries(templateData)) {
         if (tmpl.category1 == null || tmpl.category2 == null) continue;
@@ -113,7 +124,7 @@ function buildCategories() {
 
 // ===== Tab Rendering =====
 
-function renderCat1Tabs() {
+// Cat1 = nationality tabs (top row), Cat2 = equip type tabs (second row)
     const container = document.getElementById('cat1Tabs');
     const sorted = Object.keys(categories).map(Number).sort((a, b) => a - b);
 
@@ -133,6 +144,7 @@ function renderCat2Tabs(cat1) {
 
 // ===== Tab Selection =====
 
+/** Select a cat1 tab, save to localStorage, re-render cat2 tabs, and auto-select first cat2. */
 function selectCategory1(cat1, autoSelectCat2 = true) {
     currentCat1 = cat1;
     setStorageItem('upgrade-cat1', cat1);
@@ -168,6 +180,11 @@ function selectCategory2(cat2) {
 
 // ===== Tree Rendering =====
 
+/**
+ * Render the research tree into #treeContainer at a responsive scale.
+ * SVG polylines with arrowhead polygons show upgrade connections.
+ * Nodes are absolutely positioned divs scaled to fit the viewport width.
+ */
 function renderTree(template) {
     const viewport = document.getElementById('treeViewport');
     const container = document.getElementById('treeContainer');
@@ -225,6 +242,7 @@ function renderTree(template) {
     container.style.height = `${scaledH}px`;
 }
 
+/** Render an SVG arrowhead polygon at the endpoint of a link, pointing toward `to`. */
 function renderArrow(from, to) {
     const dx = to[0] - from[0];
     const dy = to[1] - from[1];
@@ -244,6 +262,7 @@ function renderArrow(from, to) {
 
 // ===== Node Selection =====
 
+/** Mark the clicked node as selected, update the URL, and render the info panel. */
 function selectNode(equipId) {
     selectedEquipId = equipId;
 
@@ -257,7 +276,7 @@ function selectNode(equipId) {
 
 // ===== Item Helpers =====
 
-function getItemName(propId) {
+// Prop name/icon lookups — item_data_lite is optional; IDs are shown as fallback
     return itemData[String(propId)]?.name || `아이템 #${propId}`;
 }
 
@@ -267,6 +286,11 @@ function getItemIconUrl(propId) {
 
 // ===== Equip Info Panel =====
 
+/**
+ * Render the info panel for a selected tree node.
+ * Shows icon, name, type, rarity, a link to the equip DB, and upgrade cost details.
+ * If no upgrade record exists (base equip), shows an explanatory fallback message.
+ */
 function renderEquipInfo(equipId) {
     const panel = document.getElementById('upgradeInfo');
     const equip = liteMap[equipId];
@@ -348,6 +372,10 @@ function renderEquipInfo(equipId) {
 
 // ===== Navigate to Equip =====
 
+/**
+ * Find which template contains equipId, switch to that nationality/type tab, and select the node.
+ * Falls back to clearing the URL param and loading the default tab if not found.
+ */
 function navigateToEquip(equipId) {
     for (const [id, tmpl] of Object.entries(templateData)) {
         if (tmpl.category1 == null || tmpl.category2 == null) continue;
@@ -368,6 +396,11 @@ function navigateToEquip(equipId) {
 
 // ===== Material Modal =====
 
+/**
+ * Build (and cache) a reverse index: propId → list of equips that need it.
+ * Skips equipment not in liteMap (e.g., filtered-out entries without names).
+ * Sorts each list by rarity desc, then name, for consistent display order.
+ */
 function getMaterialIndex() {
     if (matIndex) return matIndex;
 
@@ -521,6 +554,10 @@ function renderMatEquipList(propId) {
 
 // ===== Event Listeners =====
 
+/**
+ * Wire all event listeners using event delegation where possible.
+ * Resize re-renders the current tree and re-applies the selected node highlight.
+ */
 function setupListeners() {
     // Cat1 tab clicks (event delegation)
     document.getElementById('cat1Tabs').addEventListener('click', (e) => {

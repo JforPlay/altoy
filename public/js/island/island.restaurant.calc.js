@@ -1,13 +1,13 @@
 /**
- * Island Restaurant Module - Calculations
- * Handles profit calculations, sales count, cost calculations, and ingredient aggregation
+ * island.restaurant.calc.js
+ * Pure calculation sub-module for the island restaurant system. Provides profit, sales count,
+ * ingredient aggregation, and location grouping. State is shared via setup() called from
+ * island.restaurant.engine.js. No DOM access — all functions are deterministic given state.
  */
 
 'use strict';
 
-// ============================================
-// CONSTANTS
-// ============================================
+// ===== Constants =====
 
 export const RANK_COEFFICIENTS = {
     bronze: 0.9,
@@ -71,19 +71,19 @@ export const EVENT_BONUSES = {
     food_review: { name: '메탈 블러드 사절 방문', bonus: 0.30 }
 };
 
-// ============================================
-// STATE REFERENCE (set via setup)
-// ============================================
+// ===== State Reference (set via setup) =====
 let state;
 
 export function setup(stateRef) {
     state = stateRef;
 }
 
-// ============================================
-// PRICE CALCULATION
-// ============================================
+// ===== Price Calculation =====
 
+/**
+ * Calculate the gold and resource costs for a menu item using the recipe dependency tree.
+ * Results are cached in state.costCache keyed by formulaId.
+ */
 export function calculateMenuCost(formulaId) {
     if (!formulaId) {
         return { gold: 0, resources: {} };
@@ -115,6 +115,10 @@ export function calculateMenuCost(formulaId) {
     return costs;
 }
 
+/**
+ * Calculate full profit data for a menu item at a given rank with optional event bonuses.
+ * Returns sell price, cost, profit margin, and sales count range.
+ */
 export function calculateProfit(itemId, formulaId, rank = 'silver', events = []) {
     const item = state.items[itemId];
     if (!item) return null;
@@ -153,6 +157,11 @@ export function calculateProfit(itemId, formulaId, rank = 'silver', events = [])
     };
 }
 
+/**
+ * Calculate the min/max sales count for an item using the game's sales formula.
+ * Accounts for restaurant rank, shipgirl attributes, and active event bonuses.
+ * Results are cached in state.salesCache; cache must be invalidated when preferences change.
+ */
 export function calculateSalesCount(itemId, rank = 'silver', events = []) {
     // Check cache
     const cacheKey = `${itemId}_${rank}`;
@@ -218,10 +227,12 @@ function getSubAttrFactor(subAttributeId) {
     return factor;
 }
 
-// ============================================
-// INGREDIENT AGGREGATION
-// ============================================
+// ===== Ingredient Aggregation =====
 
+/**
+ * Recursively walk a dependency tree and accumulate ingredient quantities into resultObj.
+ * Only leaf nodes (isStopNode or isShopPurchase) contribute quantities; intermediates recurse.
+ */
 export function aggregateIngredients(node, resultObj) {
     if (node.isStopNode || node.isShopPurchase) {
         const itemId = node.itemId;
@@ -247,6 +258,7 @@ export function aggregateIngredients(node, resultObj) {
     }
 }
 
+/** Return the first jump_page label for an item, or '기타' if not set. */
 export function getIngredientLocation(itemId) {
     const itemInfo = state.items[itemId];
     if (itemInfo && Array.isArray(itemInfo.jump_page) && itemInfo.jump_page.length > 0) {
@@ -256,6 +268,7 @@ export function getIngredientLocation(itemId) {
     return '기타';
 }
 
+/** Group an ingredient map by location label, sorted alphabetically by location key. */
 export function groupIngredientsByLocation(ingredients) {
     const groups = {};
     Object.values(ingredients).forEach(item => {

@@ -1,7 +1,12 @@
 /**
- * Skin Audio Module
- * Handles audio playback, volume control, and play button state management.
+ * skin.audio.js
+ * Audio playback controller for skin voice lines.
+ * Manages a single shared audio instance and synchronized volume sliders across
+ * the skin detail and skin list pages. Exposed as both ES module exports and
+ * window.SkinAudio for pages that import it non-modularly.
  */
+
+// ===== State =====
 
 const state = {
     currentAudio: null,
@@ -10,15 +15,16 @@ const state = {
     volumeChangeHandlers: []
 };
 
-/**
- * Initialize audio controls (volume slider)
- */
+// ===== Playback =====
+
+/** Sync the volume icon class with the current global volume level. */
 function init() {
     updateVolumeIcon();
 }
 
 /**
- * stop currently playing audio and reset button state
+ * Stop any currently playing audio and reset its play button to the idle state.
+ * Clears the tracked audio and button references so the next play starts fresh.
  */
 function stopCurrentAudio() {
     if (state.currentAudio) {
@@ -34,8 +40,10 @@ function stopCurrentAudio() {
 }
 
 /**
- * Handle play button click
- * @param {Event} event - Click event
+ * Toggle playback for the clicked `.play-voice-btn`; stops any other playing audio first.
+ * If the same button is clicked while playing, it acts as a stop. If a different button is
+ * clicked, the previous audio stops and the new clip starts, registering an `ended` listener
+ * to auto-reset the button when playback finishes naturally.
  */
 function handlePlayClick(event) {
     const button = event.target.closest('.play-voice-btn');
@@ -58,9 +66,13 @@ function handlePlayClick(event) {
     }
 }
 
+// ===== Volume =====
+
+// Volume state handlers — react to slider input and sync state/icons
 /**
- * Handle volume slider change
- * @param {Event} event - Input event
+ * Handle a `.volume-slider` input event: update global volume and apply it to any
+ * currently playing audio. Syncs all slider values and percentage labels on the page
+ * (both detail and list pages may have sliders), then refreshes the volume icon.
  */
 function handleVolumeChange(event) {
     state.globalVolume = event.target.value / 100;
@@ -83,6 +95,10 @@ function handleVolumeChange(event) {
     updateVolumeIcon();
 }
 
+/**
+ * Update all `.volume-icon` elements to reflect the current volume level.
+ * Picks between mute, low, and high icon classes based on three thresholds (0 / < 0.5 / ≥ 0.5).
+ */
 function updateVolumeIcon() {
     const volumeIcons = document.querySelectorAll('.volume-icon');
     const volume = state.globalVolume;
@@ -99,6 +115,11 @@ function updateVolumeIcon() {
     });
 }
 
+// Volume DOM helpers — build and wire the slider UI
+/**
+ * Return the HTML string for a volume slider widget initialized to the current volume.
+ * The rendered percentage label and slider value both reflect `state.globalVolume` at call time.
+ */
 function createVolumeControlHtml() {
     const volumePercentage = Math.round(state.globalVolume * 100);
     return `
@@ -111,10 +132,11 @@ function createVolumeControlHtml() {
 }
 
 /**
- * Attach volume listeners to new sliders
+ * Re-bind volume input listeners on all current `.volume-slider` elements.
+ * Removes previously tracked listeners first to prevent duplicates when sliders are re-rendered.
  */
 function attachVolumeListeners() {
-    // Remove old listeners to prevent duplicates if any
+    // Remove old listeners to prevent duplicates when sliders are re-rendered
     state.volumeChangeHandlers.forEach(({ slider, handler }) => {
         slider.removeEventListener('input', handler);
     });
@@ -127,7 +149,9 @@ function attachVolumeListeners() {
     });
 }
 
-// Backwards-compatible global access
+// ===== Exports =====
+
+// Backwards-compatible global access for pages that load this file non-modularly
 window.SkinAudio = {
     init,
     stopCurrentAudio,

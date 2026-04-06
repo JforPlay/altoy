@@ -1,9 +1,10 @@
-import { resolveUrl } from '../utils.js';
 /**
- * lora-story-init.js
- * ------------------
- * Configuration and initialization for Lora (Scavenger) Story Viewer
+ * child-lora-init.js
+ * Page init for the Lora (Scavenger) child story viewer.
+ * Passes Lora-specific data paths, image URLs, and categories to
+ * window.createTabStoryViewer (defined in child-story.js).
  */
+import { resolveUrl } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const loraConfig = {

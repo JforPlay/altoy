@@ -1,11 +1,18 @@
+/**
+ * event-timeline.js
+ * KR server event timeline viewer with search and multi-filter support.
+ * Loads kr_event_timeline.json + ship_group_data.json; shipgirl names are normalized for consistent matching.
+ */
+
 import { debounce, fetchJSON, resolveUrl, normalizeRomanNumerals } from './utils.js';
-// Global data storage
+
+// ===== State =====
 let eventData = [];
 let shipgirlData = {};
-let shipgirlNameMap = new Map(); // Optimized lookup by name
+let shipgirlNameMap = new Map(); // Map for O(1) name lookups — see findShipgirlByName
 let filteredEvents = [];
 
-// DOM elements
+// ===== DOM References =====
 const searchInput = document.getElementById('searchInput');
 const clearBtn = document.getElementById('clearBtn');
 const categoryFilter = document.getElementById('categoryFilter');
@@ -16,16 +23,19 @@ const showJpDatesFilter = document.getElementById('showJpDatesFilter');
 const eventList = document.getElementById('eventList');
 const eventCount = document.getElementById('eventCount');
 
-// Load data on page load
+// ===== Data Loading =====
+
 document.addEventListener('DOMContentLoaded', async () => {
     await loadData();
     setupEventListeners();
 });
 
-// Load JSON data
+/**
+ * Load event timeline and ship group data in parallel.
+ * Handles both array and object formats for ship data, builds a normalized name Map for lookups.
+ */
 async function loadData() {
     try {
-        // Load both JSON files
         const [eventsData, shipgirlRawData] = await Promise.all([
             fetchJSON('data/kr_event_timeline.json'),
             fetchJSON('data/ship_group_data.json')
@@ -33,46 +43,30 @@ async function loadData() {
 
         eventData = eventsData;
 
-        // Convert shipgirl data to object for easier lookup
-        // Check if it's already an object or an array
+        // ship_group_data can be an array (some scripts output it that way) or an object keyed by ID
         if (Array.isArray(shipgirlRawData)) {
             shipgirlData = {};
             shipgirlRawData.forEach(shipgirl => {
-                if (shipgirl.id) {
-                    shipgirlData[shipgirl.id.toString()] = shipgirl;
-                }
-                // Build name-based lookup map for O(1) access with normalized names
+                if (shipgirl.id) shipgirlData[shipgirl.id.toString()] = shipgirl;
                 if (shipgirl.name) {
-                    const normalizedName = normalizeRomanNumerals(shipgirl.name.trim());
-                    shipgirlNameMap.set(normalizedName, shipgirl);
+                    shipgirlNameMap.set(normalizeRomanNumerals(shipgirl.name.trim()), shipgirl);
                 }
             });
         } else {
-            // If it's already an object, use it directly
             shipgirlData = shipgirlRawData;
-            // Build name map from object with normalized names
             Object.values(shipgirlData).forEach(shipgirl => {
                 if (shipgirl.name) {
-                    const normalizedName = normalizeRomanNumerals(shipgirl.name.trim());
-                    shipgirlNameMap.set(normalizedName, shipgirl);
+                    shipgirlNameMap.set(normalizeRomanNumerals(shipgirl.name.trim()), shipgirl);
                 }
             });
         }
 
-        // Filter out events with empty ID
         eventData = eventData.filter(event => event.ID && event.ID.trim() !== '');
 
-        // Sort events by ID in reverse order (high to low)
-        eventData.sort((a, b) => {
-            const idA = parseInt(a.ID) || 0;
-            const idB = parseInt(b.ID) || 0;
-            return idB - idA;
-        });
+        // Newest events first (high ID = more recent)
+        eventData.sort((a, b) => (parseInt(b.ID) || 0) - (parseInt(a.ID) || 0));
 
-        // Initialize filters
         populateFilters();
-
-        // Start with filtered view (hide JP dates by default)
         filterEvents();
     } catch (error) {
         eventList.innerHTML = `
@@ -85,9 +79,9 @@ async function loadData() {
     }
 }
 
-// Setup event listeners
+// ===== Event Listeners & Filters =====
+
 function setupEventListeners() {
-    // Debounce search input for better performance (300ms delay)
     const debouncedSearch = debounce(handleSearch, 300);
     searchInput.addEventListener('input', debouncedSearch);
 
@@ -99,7 +93,6 @@ function setupEventListeners() {
     showJpDatesFilter.addEventListener('change', filterEvents);
 }
 
-// Populate filter dropdowns
 function populateFilters() {
     const categories = [...new Set(eventData.map(e => e.분류).filter(c => c))];
     const factions = [...new Set(eventData.map(e => e.진영).filter(f => f))];
@@ -122,24 +115,22 @@ function populateFilters() {
     });
 }
 
-// Handle search input
 function handleSearch() {
     const query = searchInput.value.trim();
-
-    // Show/hide clear button
     clearBtn.classList.toggle('visible', query.length > 0);
-
     filterEvents();
 }
 
-// Clear search
 function clearSearch() {
     searchInput.value = '';
     clearBtn.classList.remove('visible');
     filterEvents();
 }
 
-// Filter events based on all criteria
+/**
+ * Apply all active filters (search, category, faction, mudak, rerun status, JP dates toggle)
+ * and re-render the event list.
+ */
 function filterEvents() {
     const searchQuery = normalizeRomanNumerals(searchInput.value.trim()).toLowerCase();
     const selectedCategory = categoryFilter.value;
@@ -149,13 +140,12 @@ function filterEvents() {
     const showJpDates = showJpDatesFilter.checked;
 
     filteredEvents = eventData.filter(event => {
-        // JP date filter (dates with "~" character)
+        // JP dates appear as date ranges with "~"; hide them by default since KR dates differ
         const hasJpDate = (event.날짜 || '').includes('~');
         if (hasJpDate && !showJpDates) {
             return false;
         }
 
-        // Search filter (event name or shipgirl names) - normalize for consistent matching
         if (searchQuery) {
             const eventName = normalizeRomanNumerals(event.이벤트명 || '').toLowerCase();
             const shipgirls = normalizeRomanNumerals(event.함순이 || '').toLowerCase();
@@ -165,22 +155,10 @@ function filterEvents() {
             }
         }
 
-        // Category filter
-        if (selectedCategory && event.분류 !== selectedCategory) {
-            return false;
-        }
+        if (selectedCategory && event.분류 !== selectedCategory) return false;
+        if (selectedFaction && event.진영 !== selectedFaction) return false;
+        if (selectedMudak && event['무딱 이벤?'] !== selectedMudak) return false;
 
-        // Faction filter
-        if (selectedFaction && event.진영 !== selectedFaction) {
-            return false;
-        }
-
-        // Mudak filter
-        if (selectedMudak && event['무딱 이벤?'] !== selectedMudak) {
-            return false;
-        }
-
-        // Rerun status filter
         if (selectedRerunStatus) {
             if (selectedRerunStatus === 'empty') {
                 if (event.복각여부 && event.복각여부 !== '') {
@@ -199,12 +177,11 @@ function filterEvents() {
     displayEvents();
 }
 
-// Display filtered events
+// ===== Rendering =====
+
 function displayEvents() {
-    // Update count
     eventCount.textContent = `총 ${filteredEvents.length}개 이벤트`;
 
-    // Check if no results
     if (filteredEvents.length === 0) {
         eventList.innerHTML = `
             <div class="no-results">
@@ -215,11 +192,13 @@ function displayEvents() {
         return;
     }
 
-    // Display events
     eventList.innerHTML = filteredEvents.map(event => createEventCard(event)).join('');
 }
 
-// Create event card HTML
+/**
+ * Build the HTML card for a single event entry.
+ * Includes badges (category, faction, rerun status) and optional shipgirl icon row.
+ */
 function createEventCard(event) {
     const badges = [];
 
@@ -231,7 +210,6 @@ function createEventCard(event) {
         badges.push(`<span class="badge badge-faction">${event.진영}</span>`);
     }
 
-    // Add badge based on 복각여부 field value
     if (event.복각여부 === '신규') {
         badges.push(`<span class="badge badge-new">신규</span>`);
     } else if (event.복각여부 === '복각') {
@@ -250,7 +228,6 @@ function createEventCard(event) {
 
     const shipgirlsSection = createShipgirlsSection(event.함순이);
 
-    // Check if event has a link
     const hasLink = event.링크 && event.링크.trim() !== '';
     const linkButton = hasLink ? `<a href="${event.링크}" target="_blank" class="event-link-btn" onclick="event.stopPropagation()">🔗 상세보기</a>` : '';
 
@@ -278,13 +255,15 @@ function createEventCard(event) {
     `;
 }
 
-// Create shipgirls icons section
+/**
+ * Build the icon row for shipgirls featured in an event.
+ * Falls back to a text placeholder if the shipgirl has no icon in ship_group_data.
+ */
 function createShipgirlsSection(shipgirlsStr) {
     if (!shipgirlsStr || shipgirlsStr === '-') {
         return '';
     }
 
-    // Split by comma and trim whitespace
     const shipgirlNames = shipgirlsStr.split(',').map(name => name.trim()).filter(name => name);
 
     if (shipgirlNames.length === 0) {
@@ -297,7 +276,6 @@ function createShipgirlsSection(shipgirlsStr) {
 
         if (shipgirl) {
             const rarityClass = getRarityClass(shipgirl.rarity);
-            // Use normalized name for consistent URLs
             const shipgirlUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(normalizedName)}`);
             return `
                 <a href="${shipgirlUrl}" class="shipgirl-icon-link">
@@ -309,7 +287,6 @@ function createShipgirlsSection(shipgirlsStr) {
                 </a>
             `;
         } else {
-            // If icon not found, show text only with link using normalized name
             const shipgirlUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(normalizedName)}`);
             return `
                 <a href="${shipgirlUrl}" class="shipgirl-icon-link">
@@ -332,7 +309,6 @@ function createShipgirlsSection(shipgirlsStr) {
     `;
 }
 
-// Get rarity class for styling
 function getRarityClass(rarity) {
     const rarityMap = {
         'N': 'rarity-n',
@@ -344,8 +320,10 @@ function getRarityClass(rarity) {
     return rarityMap[rarity] || 'rarity-unknown';
 }
 
-// Find shipgirl by name in shipgirl_data
-// Optimized with Map for O(1) lookup instead of O(n) iteration
+/**
+ * Look up a shipgirl by name using the pre-built Map for O(1) access.
+ * Name is normalized before lookup to handle Roman numeral variants.
+ */
 function findShipgirlByName(name) {
     const normalizedName = normalizeRomanNumerals(name.trim());
     return shipgirlNameMap.get(normalizedName) || null;

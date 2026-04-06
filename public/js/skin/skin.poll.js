@@ -1,17 +1,20 @@
+/**
+ * skin.poll.js
+ * Skin poll/voting page controller. Lets users rate skins 1–5 stars.
+ * Uses Firebase Firestore (anonymous auth) with an aggregate-doc architecture:
+ * all vote results in one document (metadata/all_poll_results) for minimal reads.
+ * Votes are written to vote_queue; a Cloud Function processes them asynchronously.
+ * Real-time sync via Firestore onSnapshot, paused when the tab is hidden.
+ * Virtual scroll (skin.poll.virtual-scroll.js) keeps DOM light across hundreds of cards.
+ * Part of the skin module group.
+ */
 import {
   debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams,
   getStorageItem, setStorageItem, showToast, createSearchIndex
 } from '../utils.js';
 import { createVirtualScroll } from './skin.poll.virtual-scroll.js';
 
-/* ====================================
-   SKIN POLL - MAIN SCRIPT
-   (Aggregate-doc architecture)
-   ==================================== */
-
-// ====================================
-// CONSTANTS & CONFIGURATION
-// ====================================
+// ===== Constants & Configuration =====
 
 const CACHE_VERSION = 'v3.1-aggregate';
 const CACHE_DURATION_MS = 1000 * 60 * 60; // 1 hour
@@ -30,9 +33,7 @@ const FIREBASE_CONFIG = {
   appId: "1:282702723033:web:a97b60cb7138bdbbbacbc8",
 };
 
-// ====================================
-// UTILITY FUNCTIONS
-// ====================================
+// ===== Utility Functions =====
 
 /**
  * Create SVG placeholder for broken images
@@ -48,15 +49,11 @@ const createImageErrorHandler = () => {
   };
 };
 
-// ====================================
-// DOM READY - MAIN INITIALIZATION
-// ====================================
+// ===== DOM Ready — Main Initialization =====
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-  // ====================================
-  // DOM ELEMENTS
-  // ====================================
+  // ===== DOM Elements =====
 
   const pollContainer = document.getElementById("poll-container");
   const characterNameSearch = document.getElementById("character-name-search");
@@ -83,9 +80,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const popupCharName = document.getElementById('popup-char-name');
   const closeImagePopupBtn = document.querySelector('.close-image-popup-btn');
 
-  // ====================================
-  // STATE VARIABLES
-  // ====================================
+  // ===== State Variables =====
 
   let allSkins = [];                 // Array of skin objects from skin_poll_data.json
   let allCharacterNames = [];        // Unique character names (sorted)
@@ -120,9 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     refreshCooldown: null
   };
 
-  // ====================================
-  // FIREBASE INITIALIZATION
-  // ====================================
+  // ===== Firebase Initialization =====
 
   if (!firebase.apps.length) {
     firebase.initializeApp(FIREBASE_CONFIG);
@@ -142,9 +135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // ====================================
-  // CACHE MANAGEMENT
-  // ====================================
+  // ===== Cache Management =====
 
   /**
    * Check and update cache version — clears stale localStorage entries
@@ -293,9 +284,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  // ====================================
-  // DATA AGE INDICATOR
-  // ====================================
+  // ===== Data Age Indicator =====
 
   /**
    * Update data age indicator with connection status
@@ -354,9 +343,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  // ====================================
-  // FIRESTORE OPERATIONS (Aggregate-doc)
-  // ====================================
+  // ===== Firestore Operations (Aggregate-doc) =====
 
   /**
    * Load initial data from Firestore: poll data, leaderboard, user votes.
@@ -463,9 +450,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  // ====================================
-  // VOTE SUBMISSION (queue write)
-  // ====================================
+  // ===== Vote Submission =====
 
   /**
    * Submit vote via vote_queue collection.
@@ -560,9 +545,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  // ====================================
-  // REAL-TIME SYNC (single-doc listener)
-  // ====================================
+  // ===== Real-time Sync =====
 
   /**
    * Setup real-time listener on the single aggregate document.
@@ -681,9 +664,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   };
 
-  // ====================================
-  // LEADERBOARD LOGIC (local only)
-  // ====================================
+  // ===== Leaderboard Logic (local only) =====
 
   /**
    * Recalculate leaderboard locally from allPollDataCache.
@@ -770,9 +751,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   };
 
-  // ====================================
-  // UI RENDERING
-  // ====================================
+  // ===== UI Rendering =====
 
   /**
    * Display skeleton loader
@@ -902,9 +881,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  // ====================================
-  // FILTERING & SORTING
-  // ====================================
+  // ===== Filtering & Sorting =====
 
   /**
    * Apply filters, sort, and push to virtual scroll
@@ -987,9 +964,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     applyFilters();
   };
 
-  // ====================================
-  // URL STATE MANAGEMENT
-  // ====================================
+  // ===== URL State Management =====
 
   /**
    * Update URL with current filter state
@@ -1034,9 +1009,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     applyFilters();
   };
 
-  // ====================================
-  // DROPDOWN HELPERS
-  // ====================================
+  // ===== Dropdown Helpers =====
 
   /**
    * Populate dropdown with Fuse.js results (with highlighting)
@@ -1119,9 +1092,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     applyFilters();
   };
 
-  // ====================================
-  // POPUP HANDLERS
-  // ====================================
+  // ===== Popup Handlers =====
 
   /**
    * Open image popup
@@ -1147,9 +1118,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 300);
   };
 
-  // ====================================
-  // VOTING LOGIC
-  // ====================================
+  // ===== Voting Logic =====
 
   /**
    * Clear pending vote state
@@ -1166,9 +1135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  // ====================================
-  // REFRESH DATA
-  // ====================================
+  // ===== Refresh Data =====
 
   /**
    * Start refresh cooldown timer
@@ -1275,9 +1242,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  // ====================================
-  // EVENT LISTENERS
-  // ====================================
+  // ===== Event Listeners =====
 
   // Poll container click handling (voting & image popup) — delegated
   pollContainer.addEventListener("click", (event) => {
@@ -1384,9 +1349,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // ====================================
-  // MAIN INIT SEQUENCE
-  // ====================================
+  // ===== Main Init Sequence =====
 
   // 1. Initialize cache version
   initializeCacheVersion();
@@ -1444,9 +1407,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     showToast("스킨 데이터 로드 실패", "error");
   }
 
-  // ====================================
-  // CLEANUP
-  // ====================================
+  // ===== Cleanup =====
 
   /**
    * Cleanup function to prevent memory leaks

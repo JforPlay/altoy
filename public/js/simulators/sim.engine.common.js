@@ -1,6 +1,8 @@
 /**
- * Common Simulation Engine
- * Shared logic for all simulation pages
+ * sim.engine.common.js
+ * Shared SimulationEngine class used by all three simulators (weapon, aircraft, fleet).
+ * Wraps BulletEngine and OceanBackground, manages entities (ship sprites + enemy),
+ * and exposes coordinate helpers, barrage transform resolution, and logging.
  */
 import { OceanBackground } from './sim.engine.oceanbg.js';
 import { BulletEngine } from './sim.engine.bullet.js';
@@ -38,11 +40,15 @@ export class SimulationEngine {
         }
     }
 
+    // ===== Data =====
+
     setData(barrageData, bulletData) {
         this.allBarrageData = barrageData;
         this.allBulletData = bulletData;
         this.bulletEngine.setData(barrageData, bulletData);
     }
+
+    // ===== Entity Management =====
 
     /**
      * Register entities for layout management
@@ -57,10 +63,8 @@ export class SimulationEngine {
     }
 
     /**
-     * Register an entity state (e.g., enemy position toggle)
-     * @param {string} entityName - Name of the entity
-     * @param {Object} state - State configuration with getGamePos function
-     * Example: { getGamePos: (state) => ({ x: ..., y: state.centered ? ... : ... }) }
+     * Register a dynamic state config for an entity whose position can change (e.g., enemy toggle).
+     * stateConfig.getGamePos(state, gameCoords) is called by getEntityGamePos() to resolve position.
      */
     registerEntityState(entityName, stateConfig) {
         if (!this.entityStates[entityName]) {
@@ -174,6 +178,8 @@ export class SimulationEngine {
         return this.bulletEngine.screenToGame(screenCenter.x, screenCenter.y);
     }
 
+    // ===== Utilities =====
+
     logToScreen(message, type = 'info') {
         if (!this.visualLog) return;
         const p = document.createElement('p');
@@ -189,10 +195,14 @@ export class SimulationEngine {
         return timeUnitIsFrames ? value * (1000 / this.targetFps) : value * 1000;
     }
 
+    /**
+     * Resolve a weapon by merging it with its base weapon if one is specified.
+     * Upgrade-level weapons store only changed fields; non-null barrage_ID/bullet_ID override the base.
+     */
     resolveWeapon(weaponId, weaponData) {
         const weapon = weaponData[weaponId];
         if (!weapon) return null;
-        
+
         if (weapon.base) {
             const baseWeapon = weaponData[weapon.base];
             if (!baseWeapon) return weapon;
@@ -219,6 +229,10 @@ export class SimulationEngine {
         return weapon;
     }
 
+    /**
+     * Walk a barrage's trans_ID chain and build a transform array for mid-flight angle changes.
+     * Each entry has a triggerTime (accumulated) and either a target angle or a target position.
+     */
     generateTransformBarrages(barrageID, direction, primalIndex) {
         const transformChain = [];
         let currentBarrage = this.allBarrageData[barrageID];

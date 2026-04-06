@@ -1,12 +1,12 @@
 /**
- * Skin Data Module
- * Handles loading of skin data and expression manifests, and provides search functionality.
- * Uses lazy loading: loads lightweight index on init, fetches full character data on demand.
- * @namespace SkinData
+ * skin.data.js
+ * Shared data layer for the skin module group (list viewer, detail viewer, poll, etc.).
+ * Loads a lightweight index on init (~127KB), then lazy-fetches full per-character
+ * data on demand. Exposes both ES module exports and window.SkinData for legacy access.
  */
 import { fetchJSONWithCache, normalizeRomanNumerals, createSearchIndex } from '../utils.js';
 
-/** @type {{skinIndex: Object, skinDataCache: Object<string, Array>, expressionManifest: Object, characterFuse: Fuse|null, allCharacterNames: string[]}} */
+// @type {{skinIndex: Object, skinDataCache: Object<string, Array>, expressionManifest: Object, characterFuse: Fuse|null, allCharacterNames: string[], releaseDates: Object|null}}
 const state = {
     skinIndex: null,         // Lightweight index: character names, skin names, file hashes
     skinDataCache: {},       // Cached per-character full data: charName -> skin[]
@@ -17,6 +17,10 @@ const state = {
 };
 
 
+/**
+ * Load the skin index, expression manifest, and release dates.
+ * Builds the character name list and Fuse.js search index. Must be called before any lookup.
+ */
 async function init() {
     try {
         // Load lightweight index + expression manifest (127KB vs 19MB)
@@ -82,6 +86,7 @@ async function loadCharacterData(charName) {
     return charData;
 }
 
+// Sort helpers: Korean first, then Latin, then numeric, then other
 function getCategory(str) {
     if (!str) return 4;
     if (/^[가-힣]/.test(str)) return 1;
@@ -97,6 +102,10 @@ function customSort(a, b) {
     return a.localeCompare(b, 'ko');
 }
 
+/**
+ * Fuzzy-search character names using the Fuse.js index.
+ * Returns all characters (as Fuse result objects) when query is empty.
+ */
 function searchCharacters(query) {
     if (!state.characterFuse) return [];
     if (!query.trim()) {
@@ -209,10 +218,12 @@ function getSkinFilterData() {
     };
 }
 
+/** Return the expression manifest (skinId → face layout data). */
 function getManifest() {
     return state.expressionManifest;
 }
 
+/** Return the sorted list of all character names from the index. */
 function getAllCharacterNames() {
     return state.allCharacterNames;
 }

@@ -1,6 +1,8 @@
 /**
- * Equipment Skin Data Module
- * Loads skin/theme data and sim weapon data for preview
+ * equip-skin.data.js
+ * Data loading and asset URL helpers for the equipment skin viewer.
+ * Part of the equip skin viewer group (equip-skin-viewer.js + equip-skin.data.js + equip-skin.preview.js).
+ * Loads equip skin/theme JSON on init; sim data (weapon/barrage/bullet) deferred to first preview fire.
  */
 import { fetchJSON, fetchJSONWithCache, resolveUrl } from '../utils.js';
 
@@ -34,6 +36,9 @@ class EquipSkinData {
         this._spriteCache = {};
     }
 
+    /**
+     * Load skin and theme JSON in parallel; populate themeList sorted by id.
+     */
     async loadData() {
         const [skins, themes] = await Promise.all([
             fetchJSON(resolveUrl('data/equip/equip_skin_template.json')),
@@ -51,6 +56,10 @@ class EquipSkinData {
         return { skins, themes };
     }
 
+    /**
+     * Lazy-load sim data (weapon/barrage/bullet) for the preview engine.
+     * Called on first fire; no-ops on subsequent calls.
+     */
     async loadSimData() {
         if (this.simDataLoaded) return;
 

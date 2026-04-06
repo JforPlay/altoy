@@ -1,4 +1,11 @@
+/**
+ * gallerypic.js
+ * Gallery viewer for in-game illustration images (삽화).
+ * Loads image metadata from gallery_data.json; opens a fullscreen modal on click.
+ */
+
 import { fetchJSON, openModal, setupModal } from '../utils.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const gallery = document.getElementById('gallery');
     const modal = document.getElementById('modal');
@@ -6,15 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const baseImageUrl = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/gallerypic/';
 
-    // Fetch the image data from the JSON file
     fetchJSON('data/misc/gallery_data.json')
         .then(data => {
-            // Filter out the 'all' key and process the rest of the image objects
             Object.values(data).forEach(item => {
                 if (item && typeof item === 'object' && item.illustration) {
-                    const imageName = item.illustration; // This is "gallerypic1", "gallerypic2", etc.
+                    const imageName = item.illustration; // "gallerypic1", "gallerypic2", etc.
 
-                    // Format the name to match the repo's capitalization, e.g., "GalleryPic1"
+                    // Repo files use PascalCase: "gallerypic1" → "GalleryPic1"
                     const formattedName = imageName.replace('gallerypic', 'GalleryPic');
                     
                     const thumbnailUrl = `${baseImageUrl}${formattedName}_t.webp`;
@@ -31,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     img.alt = `Gallery thumbnail for ${formattedName}`;
                     img.className = 'w-full h-auto object-cover aspect-square';
                     img.loading = 'lazy';
-                    // Fallback for broken images
                     img.onerror = () => {
                         img.src = 'https://placehold.co/400x400/EEE/31343C?text=Image+Not+Found';
                     };
@@ -46,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
             gallery.innerHTML = `<p class="text-red-500 col-span-full text-center">Could not load gallery images. Please check the console for more information.</p>`;
         });
 
-    // Event listener for opening the modal
     gallery.addEventListener('click', (e) => {
         const item = e.target.closest('.gallery-item');
         if (item) {
@@ -55,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Setup modal close handlers (close button, backdrop, ESC)
     setupModal('modal', {
         closeButtonSelector: '#close',
         closeOnBackdrop: true,

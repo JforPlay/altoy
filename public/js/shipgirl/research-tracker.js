@@ -1,3 +1,12 @@
+/**
+ * research-tracker.js
+ * Fleet tech point tracker for research ship unlock requirements.
+ * Displays permanent-acquisition ships by faction, tracks get/level/upgrade progress,
+ * and shows research ship unlock progress bars.
+ * Shares progress with shipgirl-tracker.js via localStorage (SAVE_KEY = 'shipgirlTrackerProgress').
+ * The storage event keeps both pages in sync across tabs without circular triggering.
+ */
+
 import { fetchJSON, fetchJSONWithCache, getStorageItem, setStorageItem, debounce, createImg, IMG_FALLBACKS } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -125,6 +134,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return ship.description.some(d => isWarArchiveDescription(d));
     }
 
+    /**
+     * Load all data sources in parallel, build the war archive name set, and restore progress.
+     */
     async function loadData() {
         try {
             let warArchiveData;
@@ -149,11 +161,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /** Returns true if the ship can be obtained via any permanent (non-limited) source. */
     function isPermanentShip(ship) {
         if (!ship.description || !Array.isArray(ship.description)) return false;
         return ship.description.some(d => PERMANENT_PATTERNS.some(p => p.test(d)) || isWarArchiveDescription(d));
     }
 
+    /**
+     * Calculate earned vs. total fleet tech points for a single ship.
+     * Progress bitmask: bit 0 = get (+pt_get), bit 1 = level (+pt_level), bit 2 = upgrade (+pt_upgrage).
+     */
     function getShipTechPoints(shipId) {
         const state = progress[shipId] || 0;
         const ship = shipData[shipId];
@@ -172,6 +189,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
+    /**
+     * Build a Map of faction name → Set of research ship names that require that faction.
+     * Drives the tab order and content for the faction selector.
+     */
     function getRequiredFactions() {
         const factions = new Map();
         for (const [name, goal] of Object.entries(fleetTechGoalData)) {
@@ -253,6 +274,9 @@ document.addEventListener('DOMContentLoaded', () => {
         renderFactionContent(factionName);
     }
 
+    /**
+     * Render the full panel for a faction: summary, research ships, owned ships, filter bar, source groups.
+     */
     function renderFactionContent(factionName) {
         contentContainer.innerHTML = '';
         extraContainer.innerHTML = '';
@@ -341,6 +365,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return bar;
     }
 
+    /**
+     * Render the progress bar header for a faction.
+     * Markers on the bar indicate each research ship's required score; the bar fills to the next goal.
+     */
     function renderFactionSummary(factionName, natId) {
         const { earned, total } = getFactionTotalPoints(natId);
         const natInfo = nationalityData[natId];
@@ -386,6 +414,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return section;
     }
 
+    /**
+     * Render the research ship grid for a faction.
+     * Shows all unlock requirements for each ship (not just the current faction's),
+     * and marks requirements as met based on current progress.
+     */
     function renderResearchShips(factionName) {
         const section = document.createElement('div');
         section.className = 'rt-research-panel';
@@ -565,6 +598,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return item;
     }
 
+    /**
+     * Render collapsible source groups (map drops, builds, shops, etc.) for a faction.
+     * Ships can appear in multiple groups; archive ships are independently listed.
+     */
     function renderSourceGroups(natId) {
         const section = document.createElement('div');
         section.className = 'rt-source-groups';
@@ -706,6 +743,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     }
 
+    /** Restore checkbox states on all visible ship cards from in-memory progress. */
     function applyProgress() {
         extraContainer.querySelectorAll('.rt-ship-card').forEach(card => {
             const shipId = card.dataset.shipId;
@@ -728,6 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setStorageItem(SAVE_KEY, JSON.stringify(progress));
     }
 
+    /** Show/hide ship cards based on active rarity and ownership status filters. */
     function applyFilters() {
         extraContainer.querySelectorAll('.rt-ship-card').forEach(card => {
             const rarity = card.dataset.rarity;
@@ -822,6 +861,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadData();
 
+    // Cross-tab sync: shipgirl-tracker.js writes the same SAVE_KEY.
+    // The storage event fires only in other tabs, so there is no circular trigger.
     window.addEventListener('storage', (e) => {
         if (e.key !== SAVE_KEY) return;
         try {

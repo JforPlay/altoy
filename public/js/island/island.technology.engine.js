@@ -1,13 +1,14 @@
 /**
- * Island Technology Module
- * Handles technology tree data loading, rendering, and visualization
+ * island.technology.engine.js
+ * Technology tree sub-engine for the island module. Loads tech nodes, renders a scrollable
+ * category-filtered tree with expandable details (unlock conditions, resource costs), tracks
+ * completion state in localStorage, and provides resource-total summaries.
+ * Registers as window.TechnologyModule.
  */
 
 import { fetchJSON, formatTime, getStorageItem, setStorageItem } from '../utils.js';
 
-// ============================================
-// STATE
-// ============================================
+// ===== State =====
 const state = {
     technologies: {},
     selectedTechId: null,
@@ -34,9 +35,7 @@ const UNLOCK_TYPES = {
     3: 'tech'
 };
 
-// ============================================
-// DATA LOADING
-// ============================================
+// ===== Data Loading =====
 
 /**
  * Initialize the technology module by loading data
@@ -79,9 +78,7 @@ async function init(sharedData) {
     }
 }
 
-// ============================================
-// EVENT DELEGATION (Fixed Memory Leaks)
-// ============================================
+// ===== Event Delegation =====
 
 /**
  * Setup event delegation for technology module
@@ -178,9 +175,7 @@ function setupEventDelegation() {
     console.log('[Island Technology] Event delegation set up');
 }
 
-// ============================================
-// SEARCH FUNCTIONALITY
-// ============================================
+// ===== Search =====
 
 /**
  * Initialize Fuse.js search
@@ -213,9 +208,7 @@ function searchTechnologies(query) {
     return results.map(result => state.technologies[result.item.id]);
 }
 
-// ============================================
-// COMPLETION TRACKING
-// ============================================
+// ===== Completion Tracking =====
 
 const STORAGE_KEY_TECH_COMPLETION = 'island-tech-completion';
 
@@ -302,9 +295,7 @@ function canCompleteTech(techId, currentTechs) {
     return true;
 }
 
-// ============================================
-// CATEGORY FILTERING
-// ============================================
+// ===== Category Filtering =====
 
 /**
  * Render category filter buttons
@@ -363,9 +354,7 @@ function getFilteredTechnologies() {
     return allTechs.filter(tech => tech.tech_belong === state.activeCategory);
 }
 
-// ============================================
-// TECHNOLOGY TREE RENDERING
-// ============================================
+// ===== Technology Tree Rendering =====
 
 /**
  * Render the technology tree visualization
@@ -761,9 +750,7 @@ function attachTechCardHandlers(container) {
     });
 }
 
-// ============================================
-// TECHNOLOGY DETAIL PANEL
-// ============================================
+// ===== Technology Detail Panel =====
 
 /**
  * Select and display technology details
@@ -1017,9 +1004,7 @@ function renderFormulaDetails(formula) {
     `;
 }
 
-// ============================================
-// RESOURCE TOTALS
-// ============================================
+// ===== Resource Totals =====
 
 /**
  * Calculate resource totals for a list of techs
@@ -1143,15 +1128,11 @@ function renderResourceTotals(techs) {
     `;
 }
 
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
+// ===== Utility Functions =====
 
 
 
-// ============================================
-// NAVIGATION HELPERS
-// ============================================
+// ===== Navigation Helpers =====
 
 /**
  * Navigate to quest tab and select a specific quest
@@ -1171,9 +1152,7 @@ function navigateToQuest(questId) {
     }, 100);
 }
 
-// ============================================
-// PUBLIC API - backwards compatibility via window global
-// ============================================
+// ===== Public API =====
 
 window.TechnologyModule = {
     init,

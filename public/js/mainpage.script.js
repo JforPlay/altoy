@@ -1,10 +1,12 @@
-import { hideElement, getStorageItem, setStorageItem, fetchJSONWithCache } from './utils.js';
-// =====================================================
-// MAINPAGE SCRIPT - MERGED & OPTIMIZED
-// Combines hero carousel, event carousel, and card animations
-// =====================================================
+/**
+ * mainpage.script.js
+ * Main page entry point: hero carousel, live event banner carousel, birthday widget, card animations.
+ * Loaded only on index.astro. Event banner data is fetched from AzurLaneTools GitHub (with localStorage cache).
+ */
 
-// ===== SHARED UTILITIES =====
+import { hideElement, getStorageItem, setStorageItem, fetchJSONWithCache } from './utils.js';
+
+// ===== Shared Carousel Utilities =====
 
 /**
  * Shared carousel utilities to avoid code duplication
@@ -75,10 +77,12 @@ const CarouselUtils = {
     }
 };
 
-// =====================================================
-// HERO CAROUSEL
-// =====================================================
+// ===== Hero Carousel =====
 
+/**
+ * Initialize the main hero image carousel with indicators, autoplay, and touch/mouse handlers.
+ * Stops autoplay on hover; resumes when mouse leaves.
+ */
 function initHeroCarousel() {
     const carousel = document.querySelector('.hero-carousel');
     if (!carousel) return;
@@ -97,7 +101,6 @@ function initHeroCarousel() {
     let currentIndex = 0;
     const totalSlides = slides.length;
 
-    // Clear and create indicators
     indicatorsContainer.innerHTML = '';
     const indicators = slides.map((_, index) => {
         const indicator = document.createElement('button');
@@ -109,7 +112,6 @@ function initHeroCarousel() {
         return indicator;
     });
 
-    // Set initial state
     slides[0].classList.add('active');
 
     function updateCarousel() {
@@ -138,7 +140,6 @@ function initHeroCarousel() {
         updateCarousel();
     }
 
-    // Setup autoplay
     const autoplay = CarouselUtils.createAutoplay(nextSlide, 5000);
 
     // Navigation buttons
@@ -171,10 +172,13 @@ function initHeroCarousel() {
     autoplay.start();
 }
 
-// =====================================================
-// EVENT BANNER CAROUSEL
-// =====================================================
+// ===== Event Banner Carousel =====
 
+/**
+ * IIFE module managing the live event banner carousel.
+ * Fetches active banners from AzurLaneTools, caches in localStorage for 30 minutes.
+ * Banners are filtered by current date and sorted by type then ID.
+ */
 const EventCarousel = (function () {
     const API_URL = 'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/activity_banner.json';
     const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/activitybanner/';
@@ -185,7 +189,7 @@ const EventCarousel = (function () {
     let banners = [];
     let autoplay = null;
 
-    // Type names mapping
+    // Maps banner.type integers to Korean display labels
     const typeNames = {
         1: '이벤트',
         2: '상점',
@@ -194,14 +198,13 @@ const EventCarousel = (function () {
         9: '기타'
     };
 
-    // Parse date from array format
+    // Date helpers — banner.time is stored as [[year,month,day],[hour,min,sec]]
     function parseDate(dateArray) {
         if (!Array.isArray(dateArray) || dateArray.length < 2) return null;
         const [date, time] = dateArray;
         return new Date(date[0], date[1] - 1, date[2], time[0] || 0, time[1] || 0, time[2] || 0);
     }
 
-    // Check if banner is currently active
     function isActiveBanner(banner) {
         if (!banner.time || banner.time === 'stop') return false;
         if (banner.time === 'always') return false;
@@ -216,14 +219,12 @@ const EventCarousel = (function () {
         return false;
     }
 
-    // Format date for display
     function formatDate(dateArray) {
         const date = parseDate(dateArray);
         if (!date) return '';
         return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
     }
 
-    // Create banner element
     function createBannerElement(banner) {
         const bannerDiv = document.createElement('div');
         bannerDiv.className = 'event-banner';
@@ -259,7 +260,6 @@ const EventCarousel = (function () {
         return bannerDiv;
     }
 
-    // Create indicator element
     function createIndicator(index) {
         const indicator = document.createElement('button');
         indicator.className = 'event-indicator';
@@ -269,7 +269,6 @@ const EventCarousel = (function () {
         return indicator;
     }
 
-    // Update carousel position (optimized - no repeated DOM queries)
     function updateCarousel(indicatorsArray) {
         const track = document.querySelector('.event-carousel-track');
         track.style.transform = `translateX(${-100 * currentIndex}%)`;
@@ -280,7 +279,6 @@ const EventCarousel = (function () {
         });
     }
 
-    // Go to specific slide
     function goToSlide(index) {
         currentIndex = index;
         const indicators = Array.from(document.querySelectorAll('.event-indicator'));
@@ -288,7 +286,6 @@ const EventCarousel = (function () {
         if (autoplay) autoplay.reset();
     }
 
-    // Next/previous slide
     function nextSlide() {
         currentIndex = (currentIndex + 1) % banners.length;
         const indicators = Array.from(document.querySelectorAll('.event-indicator'));
@@ -301,7 +298,6 @@ const EventCarousel = (function () {
         updateCarousel(indicators);
     }
 
-    // Show empty state
     function showEmptyState() {
         const track = document.querySelector('.event-carousel-track');
         const prevButton = document.querySelector('.event-carousel-nav.prev');
@@ -320,7 +316,7 @@ const EventCarousel = (function () {
         if (indicatorsContainer) indicatorsContainer.style.display = 'none';
     }
 
-    // Cache management
+    // localStorage cache helpers (separate from IndexedDB — 30-minute short TTL for live data)
     function getCachedData() {
         try {
             const cached = getStorageItem(CACHE_KEY, null);
@@ -352,7 +348,6 @@ const EventCarousel = (function () {
         }
     }
 
-    // Fetch and display banners
     async function loadBanners() {
         const track = document.querySelector('.event-carousel-track');
         const indicatorsContainer = document.querySelector('.event-carousel-indicators');
@@ -366,7 +361,6 @@ const EventCarousel = (function () {
         }
 
         try {
-            // Try cache first
             let data = getCachedData();
 
             if (!data) {
@@ -376,7 +370,6 @@ const EventCarousel = (function () {
                 setCachedData(data);
             }
 
-            // Filter active banners
             banners = Object.values(data)
                 .filter(banner => isActiveBanner(banner))
                 .sort((a, b) => {
@@ -391,11 +384,9 @@ const EventCarousel = (function () {
                 return;
             }
 
-            // Clear existing content
             track.innerHTML = '';
             indicatorsContainer.innerHTML = '';
 
-            // Create elements
             const indicatorsArray = [];
             banners.forEach((banner, index) => {
                 track.appendChild(createBannerElement(banner));
@@ -404,7 +395,6 @@ const EventCarousel = (function () {
                 indicatorsArray.push(indicator);
             });
 
-            // Setup controls
             if (banners.length > 1) {
                 if (prevButton) {
                     prevButton.style.display = 'flex';
@@ -415,10 +405,8 @@ const EventCarousel = (function () {
                     nextButton.addEventListener('click', nextSlide, { once: false });
                 }
 
-                // Setup autoplay
                 autoplay = CarouselUtils.createAutoplay(nextSlide, 5000);
 
-                // Mouse events
                 const carousel = document.querySelector('.event-carousel');
                 if (carousel) {
                     carousel.addEventListener('mouseenter', () => autoplay.stop());
@@ -450,7 +438,6 @@ const EventCarousel = (function () {
         }
     }
 
-    // Cleanup
     function cleanup() {
         if (autoplay) autoplay.stop();
     }
@@ -461,10 +448,13 @@ const EventCarousel = (function () {
     };
 })();
 
-// =====================================================
-// BIRTHDAY SECTION
-// =====================================================
+// ===== Birthday Section =====
 
+/**
+ * IIFE module for the homepage birthday widget.
+ * Shows today's birthdays if any exist; falls back to the next 5 upcoming birthdays.
+ * Data is cached for 24 hours via fetchJSONWithCache.
+ */
 const BirthdaySection = (function () {
     const birthdayList = document.getElementById('birthdayList');
     if (!birthdayList) return { init() {} };
@@ -544,12 +534,10 @@ const BirthdaySection = (function () {
         const now = new Date();
         const base = getBasePath();
 
-        // Show today's date next to title
         if (dateEl) {
             dateEl.textContent = `${now.getMonth() + 1}월 ${now.getDate()}일`;
         }
 
-        // Update calendar link to point to today's day view
         if (moreLink) {
             moreLink.href = `${base}/shipgirl/shipgirl-birthday/?view=day&year=${now.getFullYear()}&month=${now.getMonth() + 1}&day=${now.getDate()}`;
         }
@@ -600,15 +588,16 @@ const BirthdaySection = (function () {
     return { init };
 })();
 
-// =====================================================
-// CARD ANIMATIONS
-// =====================================================
+// ===== Card Animations =====
 
+/**
+ * Set --card-index CSS custom property on each bento card for staggered entrance animations.
+ * External cards continue the index sequence after main cards so delays remain consistent.
+ */
 function initCardAnimations() {
     const mainCards = document.querySelectorAll('.bento-grid > .bento-card');
     const externalCards = document.querySelectorAll('.external-links-section .bento-card');
 
-    // Batch set CSS custom properties for better performance
     mainCards.forEach((card, index) => {
         card.style.setProperty('--card-index', index + 1);
     });
@@ -618,17 +607,13 @@ function initCardAnimations() {
     });
 }
 
-// =====================================================
-// INITIALIZATION
-// =====================================================
+// ===== Initialization =====
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Initialize all components
     initHeroCarousel();
     EventCarousel.init();
     BirthdaySection.init();
     initCardAnimations();
 
-    // Cleanup on page unload
     window.addEventListener('beforeunload', EventCarousel.cleanup);
 });

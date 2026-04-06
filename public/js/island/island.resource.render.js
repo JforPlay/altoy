@@ -1,6 +1,8 @@
 /**
- * Island Resource Module - Rendering
- * Handles all UI rendering for recipe lists, details, dependency trees, and forest views
+ * island.resource.render.js
+ * Rendering sub-module for the island resource system. Handles all UI output: category filters,
+ * recipe lists, recipe detail panels (costs, season points, dependency trees), and the recipe
+ * forest modal. State is shared via setup() called from island.resource.engine.js.
  */
 
 import { formatTime } from '../utils.js';
@@ -22,19 +24,16 @@ export const categoryNames = {
     '시즌템': '시즌템 (Seasonal Items)'
 };
 
-// ============================================
-// STATE REFERENCE (set via setup)
-// ============================================
+// ===== State Reference (set via setup) =====
 let state;
 
 export function setup(stateRef) {
     state = stateRef;
 }
 
-// ============================================
-// UI RENDERING
-// ============================================
+// ===== UI Rendering =====
 
+/** Render the category dropdown, search input, and forest button into the filter container. */
 export function renderCategoryFilter() {
     const container = document.getElementById('resource-category-filter');
     if (!container) return;
@@ -71,6 +70,7 @@ export function renderCategoryFilter() {
     container.innerHTML = html;
 }
 
+/** Render the recipe card list for the currently selected category, filtered by search query. */
 export function renderRecipeList() {
     const container = document.getElementById('recipe-list');
     if (!container) return;
@@ -117,6 +117,10 @@ export function renderRecipeList() {
     container.innerHTML = html;
 }
 
+/**
+ * Compute all derived data for the recipe detail panel: upstream/downstream links, gold/season-point
+ * consumption, cumulative times, and net pt gains for both auto and manual mode (category 1 only).
+ */
 export function gatherRecipeData(recipe) {
     const item = window.IslandEngine.getItemInfo(recipe.item_id);
     const category = categoryNames[state.selectedCategory];

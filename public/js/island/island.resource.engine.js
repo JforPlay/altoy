@@ -1,6 +1,9 @@
 /**
- * Island Resource Module
- * Handles recipe browsing, dependency tracking, and chain visualization
+ * island.resource.engine.js
+ * Resource sub-engine for the island module. Manages recipe browsing, dependency tree
+ * visualization, and cross-tab navigation (resource ↔ restaurant). Delegates tree building
+ * to island.resource.tree.js and rendering to island.resource.render.js.
+ * Registers as window.ResourceModule.
  */
 
 import { fetchJSON, formatTime, openModal, closeModal } from '../utils.js';
@@ -21,9 +24,7 @@ import {
 
 'use strict';
 
-// ============================================
-// STATE
-// ============================================
+// ===== State =====
 const state = {
     recipes: {},           // { "1": [...], "2": [...], ... }
     items: {},             // { "2000": { name, icon, ... }, ... }
@@ -44,10 +45,12 @@ const state = {
 setupTree(state);
 setupRender(state);
 
-// ============================================
-// INITIALIZATION
-// ============================================
+// ===== Initialization =====
 
+/**
+ * Load recipe and shop data, build all lookup indices and dependency graph, then render the UI.
+ * Reuses sharedData.items from island.engine.js to avoid re-fetching the item template.
+ */
 async function init(sharedData) {
     try {
         // Use shared item data instead of loading again
@@ -96,6 +99,11 @@ async function init(sharedData) {
     }
 }
 
+/**
+ * Build a synthetic '시즌템' recipe category from items in the 4000–4999 ID range.
+ * Items produced by real recipes link to them; pickup/shop items get a synthetic stub recipe.
+ * Must run after the dependency graph is built.
+ */
 function buildSeasonalItemsCategory() {
     // Filter items with IDs 4000-4999 from item data
     const seasonalItems = Object.entries(state.items)
@@ -163,9 +171,7 @@ function buildSeasonalItemsCategory() {
     state.recipes['시즌템'] = seasonalRecipes;
 }
 
-// ============================================
-// EVENT HANDLERS
-// ============================================
+// ===== Event Handlers =====
 
 function setupEventListeners() {
     // Category select
@@ -265,10 +271,12 @@ function setupEventListeners() {
     });
 }
 
-// ============================================
-// PUBLIC METHODS - TREE NAVIGATION
-// ============================================
+// ===== Tree Navigation =====
 
+/**
+ * Select a recipe by ID, switching to its category if needed, and scroll it into view.
+ * Accepts numeric IDs, string IDs (for seasonal synthetic recipes), or seasonal category entries.
+ */
 function selectRecipe(recipeId) {
     // Try to find recipe by ID (string or number)
     let recipe = state.recipeIndex[recipeId];
@@ -307,6 +315,7 @@ function selectRecipe(recipeId) {
     }, 100);
 }
 
+/** Called from tree node clicks — delegates to selectRecipe. */
 function selectRecipeFromTree(recipeId) {
     selectRecipe(recipeId);
 }
@@ -320,6 +329,10 @@ function viewInRestaurant(recipeId) {
     }
 }
 
+/**
+ * Collect related recipes for the dependency modal.
+ * direction='upstream' finds recipes that produce the inputs; 'downstream' finds recipes that use the outputs.
+ */
 function showRelatedRecipes(recipeId, direction) {
     const recipe = findRecipeById(recipeId);
     if (!recipe) return;
@@ -486,9 +499,7 @@ function selectRecipeFromModal(recipeId) {
     selectRecipe(recipeId);
 }
 
-// ============================================
-// PUBLIC API - Backwards compatibility
-// ============================================
+// ===== Public API =====
 
 window.ResourceModule = {
     init,

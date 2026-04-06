@@ -1,7 +1,11 @@
-/* ============================================================
-   Secretary Story Viewer – Page Script (engine-agnostic)
-   ============================================================ */
-
+/**
+ * secretary-story.js
+ * Page script for the secretary story viewer, layered on top of the shared
+ * StoryViewer engine. Adds per-shipgirl completion tracking (localStorage),
+ * a three-state filter (all / completed / unmarked), and Fuse.js search with
+ * highlight. Uses a MutationObserver to wire checkboxes whenever the engine
+ * re-renders the event grid.
+ */
 import { getStorageItem, setStorageItem, createSearchIndex } from '../utils.js';
 
 const COMPLETION_STORAGE_KEY = 'secretaryStoryCompletion';
@@ -23,17 +27,17 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  /* ------------------------------------------------------------
-     State
-  ------------------------------------------------------------ */
+  // ===== State =====
   let currentFilter = 'all'; // 'all' | 'completed' | 'unmarked'
-  let initialHydrateDone = false; // ensure first view uses our renderer
+  let initialHydrateDone = false; // guard: ensure first render uses our filter, not the engine's default
 
-  /* ------------------------------------------------------------
-     Rendering helper (no engine edits required)
-     Renders provided entries with engine's card factory,
-     then immediately wires checkboxes.
-  ------------------------------------------------------------ */
+  // ===== Grid Rendering =====
+
+  /**
+   * Re-render the event grid for the given [id, event] entries using the
+   * engine's card factory, then immediately inject completion checkboxes.
+   * Called by applyFilter so the grid always reflects the current filter state.
+   */
   function renderEventEntries(entries) {
     const grid = document.getElementById('event-grid');
     if (!grid) return;
@@ -52,15 +56,17 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.appendChild(card);
     });
 
-    // ✅ Immediately annotate with saved completion state
     setupCompletionTracking();
   }
 
-  /* ------------------------------------------------------------
-     Filter (reads fresh completion snapshot each time)
-     - String-normalized keys so "0" vs 0 never mismatches.
-     - Calls renderEventEntries(), which will annotate right away.
-  ------------------------------------------------------------ */
+  // ===== Filter =====
+
+  /**
+   * Re-render the event grid filtered by `currentFilter`.
+   * Reads a fresh completion snapshot on every call so the filter reflects
+   * any checkbox toggle that happened since the last render.
+   * Keys are string-normalized to avoid "0" vs 0 mismatches.
+   */
   function applyFilter() {
     const done = getCompletionData();
     const allEntries = Object.entries(window.StoryViewer.storylineData || {});
@@ -75,13 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
     renderEventEntries(entries);
   }
 
-  /* ------------------------------------------------------------
-     Checkbox injection + persistence
-     - Derives data-id when engine didn't set it
-     - Special case: "아카시" → "0"
-     - Avoids duplicate checkboxes on re-renders
-     - String-normalized keys everywhere
-  ------------------------------------------------------------ */
+  // ===== Completion Tracking =====
+
+  /**
+   * Inject a completion checkbox into each card that lacks one, and sync the
+   * visual state of existing checkboxes with localStorage. Called after every
+   * grid render. Derives the shipgirl ID from data-id, the name-to-id map,
+   * or the special case "아카시" → "0" when the engine hasn't set it.
+   */
   function setupCompletionTracking() {
     const grid = document.getElementById('event-grid');
     if (!grid) return;
@@ -127,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.add('completed-card');
       }
 
-      // Toggle + persist
       checkbox.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -140,17 +146,20 @@ document.addEventListener('DOMContentLoaded', () => {
         checkbox.classList.toggle('completed');
         card.classList.toggle('completed-card');
 
-        // Re-apply filter so the view stays in sync
-        applyFilter();
+        applyFilter(); // keep filtered view consistent after every toggle
       });
 
       card.appendChild(checkbox);
     });
   }
 
-  /* ------------------------------------------------------------
-     Fuse.js search (with highlight)
-  ------------------------------------------------------------ */
+  // ===== Search =====
+
+  /**
+   * Initialize Fuse.js search on the shipgirl event list.
+   * Renders a dropdown of matching results with name-range highlights;
+   * respects the active filter when narrowing results.
+   */
   function setupSearch() {
     const source = Object.values(window.StoryViewer.storylineData || {});
     const fuse = createSearchIndex(source, { keys: ['name'], threshold: 0.4 });
@@ -222,9 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ------------------------------------------------------------
-     Filter buttons
-  ------------------------------------------------------------ */
+  // ===== Filter Buttons =====
   const filterButtons = document.querySelectorAll('.filter-btn');
   filterButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -235,9 +242,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ------------------------------------------------------------
-     Page-specific configuration for the engine (no engine edits)
-  ------------------------------------------------------------ */
+  // ===== Engine Configuration =====
+
   const secretaryStoryConfig = {
     viewerType: 'secretary',
     dataPaths: [
@@ -252,14 +258,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const [taskGroups, taskData, storyData, shipgirlGroupData, shipgirlStoryData] =
         jsonDataArray;
 
-      // Merge shipgirl data
+      // shipgirlGroupData (ship_group_data) takes priority over shipgirlStoryData for shared keys
       const shipgirlData = {};
       Object.assign(shipgirlData, shipgirlStoryData, shipgirlGroupData);
 
       viewer.secretaryTaskGroups = taskGroups;
       viewer.shipgirlData = shipgirlData;
 
-      // Build secretaryMemories (task → story)
       viewer.secretaryMemories = {};
       for (const taskId in taskData) {
         const task = taskData[taskId];
@@ -271,13 +276,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Populate storylineData (only shipgirls that have tasks)
       viewer.storylineData = {};
       for (const groupId in taskGroups) {
         const shipgirlId = groupId;
 
         if (shipgirlId === '0') {
-          // Special handling for Akashi
+          // Akashi (ID 0) uses a hardcoded icon; she's not in the normal shipgirl data.
           viewer.storylineData[shipgirlId] = {
             id: shipgirlId,
             name: '아카시',
@@ -298,14 +302,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Build name → id map (used for deriving card ids)
       viewer.shipgirlNameMap = viewer.shipgirlNameMap || {};
       for (const id in viewer.shipgirlData) {
         const n = viewer.shipgirlData[id]?.name;
         if (n) viewer.shipgirlNameMap[n] = id;
       }
-      // Ensure Akashi is discoverable
-      viewer.shipgirlNameMap['아카시'] = '0';
+      viewer.shipgirlNameMap['아카시'] = '0'; // Akashi is not in shipgirlData by name
     },
 
     getEventIconPath(event) {
@@ -313,7 +315,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return event.icon;
     },
 
-    // Returns the list of memory cards for a shipgirl
+    /**
+     * Return the memory card list for a shipgirl.
+     * The task group may be an array of IDs or an object with a `tasks` array;
+     * both shapes are handled for forward compatibility.
+     */
     getEventMemories(eventData) {
       const memories = [];
       const groupId = String(eventData.id);
@@ -346,27 +352,27 @@ document.addEventListener('DOMContentLoaded', () => {
       return memories;
     },
 
-    // Engine may call this when deep-linking to a memory via URL
+    /** Look up a memory by ID, used when deep-linking via URL params. */
     findMemory(eventData, memoryId) {
       const mems = this.getEventMemories(eventData) || [];
       return mems.find((m) => String(m.id) === String(memoryId));
     },
 
-    // Engine calls this to play a memory
     getMemoryStory(memory) {
       return memory.story;
     }
   };
 
-  // Initialize engine with our page configuration
   window.StoryViewer.init(secretaryStoryConfig);
 
-  /* ------------------------------------------------------------
-     Automatic wiring after the grid is (re)rendered
-     - set up search once
-     - inject/refresh checkboxes every time
-     - trigger our own initial hydrate exactly once
-  ------------------------------------------------------------ */
+  // ===== MutationObserver Wiring =====
+
+  /**
+   * Watch the event grid for engine-triggered renders. On first paint,
+   * replace the engine's default card list with our filtered/annotated view.
+   * On subsequent renders, ensure checkboxes stay in sync with storage.
+   * Search is initialized once on the first observed render.
+   */
   const observer = new MutationObserver((mutationsList) => {
     for (const m of mutationsList) {
       if (m.type === 'childList' && m.addedNodes.length > 0) {
@@ -399,8 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Disconnect the observer when the page is torn down so it doesn't leak
-  // across SPA navigations and fire on stale grids.
+  // Disconnect on pagehide so it doesn't fire on stale grids in back-forward cache.
   window.addEventListener('pagehide', () => observer.disconnect(), { once: true });
 
   // If data is already present very early, render immediately

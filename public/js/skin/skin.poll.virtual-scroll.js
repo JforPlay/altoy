@@ -1,22 +1,19 @@
 /**
- * Virtual Scroll Module - Skin Poll
- * Manages virtual scrolling for a CSS grid of poll cards.
+ * skin.poll.virtual-scroll.js
+ * Virtual scroll manager for the skin poll grid.
  * Only renders cards visible in the viewport plus a buffer,
  * keeping the DOM light regardless of total dataset size.
+ * Used by skin.poll.js via createVirtualScroll(). Part of the skin module group.
  */
 
 import { throttle } from '../utils.js';
 
-// ====================================
-// CONSTANTS
-// ====================================
+// ===== Constants =====
 
 const RESIZE_THROTTLE_MS = 200;
 const SAMPLE_CARD_ID = '__vs-sample-card__';
 
-// ====================================
-// PUBLIC API
-// ====================================
+// ===== Public API =====
 
 /**
  * Create a virtual scroll manager for a CSS grid container.
@@ -28,9 +25,7 @@ const SAMPLE_CARD_ID = '__vs-sample-card__';
  * @returns {{ setItems, refresh, getRenderedRange, destroy }}
  */
 export function createVirtualScroll({ container, renderCard, buffer = 10 }) {
-    // ====================================
-    // MODULE STATE
-    // ====================================
+    // ===== Module State =====
 
     let items = [];
     let columns = 1;
@@ -44,9 +39,7 @@ export function createVirtualScroll({ container, renderCard, buffer = 10 }) {
     let topSpacer = null;
     let bottomSpacer = null;
 
-    // ====================================
-    // INTERNAL HELPERS
-    // ====================================
+    // ===== Internal Helpers =====
 
     /**
      * Parse the number of columns from the container's computed grid style.
@@ -229,9 +222,7 @@ export function createVirtualScroll({ container, renderCard, buffer = 10 }) {
         renderRange(startItem, endItem);
     }
 
-    // ====================================
-    // SCROLL HANDLER (rAF-throttled)
-    // ====================================
+    // ===== Scroll Handler (rAF-throttled) =====
 
     function onScroll() {
         if (needsRender) return;     // already queued
@@ -250,24 +241,18 @@ export function createVirtualScroll({ container, renderCard, buffer = 10 }) {
         });
     }
 
-    // ====================================
-    // RESIZE HANDLER (throttled at 200ms)
-    // ====================================
+    // ===== Resize Handler (throttled at 200ms) =====
 
     const onResize = throttle(() => {
         recalcAndRender();
     }, RESIZE_THROTTLE_MS);
 
-    // ====================================
-    // EVENT LISTENERS
-    // ====================================
+    // ===== Event Listeners =====
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
 
-    // ====================================
-    // PUBLIC METHODS
-    // ====================================
+    // ===== Public Methods =====
 
     /**
      * Replace the full dataset, recalculate dimensions, and re-render from top.

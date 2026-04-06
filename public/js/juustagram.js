@@ -1,12 +1,14 @@
-import { fetchJSON } from './utils.js';
 /**
- * Juustagram Viewer - Instagram-style social media post viewer for Azur Lane
- * Displays posts from shipgirls with filtering, comments, and commander interactions
+ * juustagram.js
+ * Instagram-style social feed viewer for Azur Lane's Juustagram feature.
+ * Displays posts with gallery thumbnails, author/mentioned-shipgirl filters, lazy loading,
+ * and threaded comments. Full post data is loaded in the background after initial render.
  */
+
+import { fetchJSON } from './utils.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-    // ============================================================================
-    // DOM ELEMENT REFERENCES
-    // ============================================================================
+    // ===== DOM References =====
     const galleryView = document.getElementById('gallery-view');
     const postDisplayContainer = document.getElementById('post-display');
     const authorSearchInput = document.getElementById('author-search');
@@ -15,9 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mentionedDropdown = document.getElementById('mentioned-dropdown');
     const clearFiltersBtn = document.getElementById('clear-filters-btn');
 
-    // ============================================================================
-    // DATA STORAGE
-    // ============================================================================
+    // ===== Data Storage =====
     let postsData = {};              // Main posts data (initially lite, then full if needed for list)
     let fullPostsData = null;        // Full detailed post data
     let fullPostsPromise = null;     // Promise for background loading
@@ -27,22 +27,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Placeholder icon for unknown/missing shipgirls (gray circle SVG)
     const placeholderIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
 
-    // ============================================================================
-    // IMAGE PREVIEW SETUP
-    // ============================================================================
-    // Create hover preview element that follows mouse cursor over gallery thumbnails
+    // ===== Image Preview Setup =====
+    // Hover preview follows the cursor; positioned with flip logic to stay on-screen
     const imagePreview = document.createElement('img');
     imagePreview.id = 'image-preview';
     document.body.appendChild(imagePreview);
 
-    // ============================================================================
-    // DATA FETCHING & INITIALIZATION
-    // ============================================================================
+    // ===== Data Fetching & Initialization =====
+
     /**
-     * Fetch all required data sources in parallel:
-     * 1. juustagram_lite.json - Lite post content for gallery
-     * 2. ship_group_data.json - Shipgirl names and icons
-     * 3. External API - Username templates from AzurLaneTools
+     * Fetch three sources in parallel: lite posts (gallery), shipgirl metadata (icons/names),
+     * and AzurLaneTools CN template data (usernames). Full post data loads in the background.
      */
     Promise.all([
         fetchJSON('data/juustagram_lite.json'),
@@ -50,18 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchJSON('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/CN/ShareCfg/activity_ins_ship_group_template.json')
     ])
         .then(([posts, shipgirlData, templateData]) => {
-            // Store fetched data in module-level variables
             postsData = posts;
             shipgirlDataMap = shipgirlData;
             shipgroupTemplateMap = templateData;
 
-            // Initialize filter dropdowns with available options
             initializeFilters();
-
-            // Populate gallery with all posts (no filters applied initially)
             populateGallery();
 
-            // Start loading full data in background
+            // Background-load full post data so detail view is ready when the user clicks
             fullPostsPromise = loadFullPosts();
         })
         .catch(error => {
@@ -71,9 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadFullPosts() {
         try {
-            console.log("Starting background load of full Juustagram data...");
             fullPostsData = await fetchJSON('data/juustagram_data.json');
-            console.log("Full Juustagram data loaded successfully.");
             return fullPostsData;
         } catch (error) {
             console.warn("Background loading of full data failed:", error);
@@ -81,9 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
-    // ============================================================================
-    // HELPER FUNCTIONS
-    // ============================================================================
+    // ===== Helper Functions =====
 
     /**
      * Retrieve shipgirl display data by ID
@@ -96,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const shipData = shipgirlDataMap[id];
         const templateData = shipgroupTemplateMap[id];
 
-        // If shipgirl data exists, combine with template data
         if (shipData) {
             return {
                 name: shipData.name.trim(),
@@ -105,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        // Handle unknown IDs that are already marked as such
+        // Some IDs are pre-labeled "Unknown" in the source data
         if (typeof id === 'string' && id.startsWith('Unknown')) {
             return { name: id, icon: placeholderIcon, username: '' };
         }
@@ -114,9 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return { name: `Unknown ID: ${id}`, icon: placeholderIcon, username: '' };
     }
 
-    // ============================================================================
-    // FILTER INITIALIZATION & LOGIC
-    // ============================================================================
+    // ===== Filter Initialization & Logic =====
 
     /**
      * Initialize filter dropdowns with all available authors and mentioned shipgirls
@@ -125,37 +109,30 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeFilters() {
         const allPosts = Object.values(postsData);
 
-        // Extract unique author names from all posts and sort alphabetically
         const allAuthors = [...new Set(
             allPosts.map(p => getShipgirlData(p.ship_group).name).filter(Boolean)
         )].sort();
 
-        // Extract unique mentioned shipgirl names from all posts and sort alphabetically
         const allMentioned = [...new Set(
             allPosts.flatMap(p => (p.shipgirl_names || []).map(id => getShipgirlData(id).name).filter(Boolean))
         )].sort();
 
-        // Populate author dropdown with click handlers
         populateDropdown(authorDropdown, allAuthors, (author) => {
             authorSearchInput.value = author;
             populateGallery({ author });
         });
 
-        // Populate mentioned shipgirl dropdown with click handlers
         populateDropdown(mentionedDropdown, allMentioned, (name) => {
             mentionedSearchInput.value = name;
             populateGallery({ mentioned: name });
         });
 
-        // Setup live search filtering for dropdowns
         authorSearchInput.addEventListener('keyup', () => filterDropdown(authorSearchInput, authorDropdown));
         mentionedSearchInput.addEventListener('keyup', () => filterDropdown(mentionedSearchInput, mentionedDropdown));
 
-        // Setup dropdown show/hide behavior on focus/blur
         setupDropdownToggle(authorSearchInput, authorDropdown);
         setupDropdownToggle(mentionedSearchInput, mentionedDropdown);
 
-        // Clear all filters and show all posts
         clearFiltersBtn.addEventListener('click', () => {
             authorSearchInput.value = '';
             mentionedSearchInput.value = '';
@@ -193,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const filter = input.value.toUpperCase();
         const items = dropdown.getElementsByTagName('a');
 
-        // Show only items that contain the search text
         for (let i = 0; i < items.length; i++) {
             const txtValue = items[i].textContent || items[i].innerText;
             items[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
@@ -209,15 +185,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupDropdownToggle(input, dropdown) {
         input.addEventListener('focus', () => dropdown.style.display = 'block');
         input.addEventListener('blur', () => {
-            // Delay hiding to allow click events on dropdown items to fire
+            // Delay lets click events on dropdown items fire before the dropdown hides
             setTimeout(() => {
                 dropdown.style.display = 'none';
             }, 150);
         });
     }
-    // ============================================================================
-    // GALLERY DISPLAY & POST FILTERING
-    // ============================================================================
+    // ===== Gallery Display & Post Filtering =====
 
     /**
      * Populate the image gallery with filtered posts
@@ -230,17 +204,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function populateGallery(filters = {}) {
         galleryView.innerHTML = '';
 
-        // Convert posts object to array for filtering/sorting (creates new array, doesn't mutate original)
         let postEntries = [...Object.entries(postsData)].reverse(); // Newest posts first
 
-        // Apply author filter if specified
         if (filters.author) {
             postEntries = postEntries.filter(([key, post]) =>
                 getShipgirlData(post.ship_group).name === filters.author
             );
         }
 
-        // Apply mentioned shipgirl filter if specified
         if (filters.mentioned) {
             postEntries = postEntries.filter(([key, post]) => {
                 const mentionedNames = (post.shipgirl_names || []).map(id => getShipgirlData(id).name);
@@ -248,39 +219,34 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Handle no results case
         if (postEntries.length === 0) {
             galleryView.innerHTML = '<p>필터와 일치하는 게시물이 없습니다.</p>';
             postDisplayContainer.innerHTML = '';
             return;
         }
 
-        // Create thumbnail images for each post
         postEntries.forEach(([key, post], index) => {
-            // Only create thumbnail if post has an image
             if (post.picture_persist && post.picture_persist.trim() !== '') {
                 const authorData = getShipgirlData(post.ship_group);
                 const img = document.createElement('img');
 
-                // Lazy loading: First 12 images load immediately, rest load as they come into viewport
+                // First 12 images load eagerly; the rest use data-src + IntersectionObserver
                 if (index < 12) {
                     img.src = post.picture_persist;
                 } else {
-                    img.dataset.src = post.picture_persist; // Store URL for lazy loading
-                    img.classList.add('lazy'); // Mark as lazy-load image
+                    img.dataset.src = post.picture_persist;
+                    img.classList.add('lazy');
                 }
 
                 img.alt = `Post by ${authorData.name}`;
                 img.dataset.postId = post.id;
-                img.loading = 'lazy'; // Native browser lazy loading
+                img.loading = 'lazy';
                 galleryView.appendChild(img);
             }
         });
 
-        // Initialize Intersection Observer for lazy loading images beyond first 12
         observeLazyImages();
 
-        // Auto-select and display the first post in the filtered results
         const firstPostId = postEntries[0]?.[1]?.id;
         if (firstPostId) {
             displayPost(firstPostId);
@@ -312,12 +278,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Clear previous content and create new post container
         postDisplayContainer.innerHTML = '';
         const postContent = document.createElement('div');
         postContent.className = 'post-content';
 
-        // Build post header with author info
         const authorData = getShipgirlData(post.ship_group);
         const header = document.createElement('div');
         header.className = 'post-header';
@@ -331,36 +295,31 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
         header.appendChild(authorInfo);
 
-        // Create main post image
         const image = document.createElement('img');
         image.src = post.picture_persist;
         image.alt = `Post image by ${authorData.name}`;
         image.className = 'post-image';
 
-        // Create post message text
         const message = document.createElement('p');
         message.className = 'post-message';
         message.textContent = post.message;
 
-        // Build comments section with threaded replies
         const commentsSection = document.createElement('div');
         commentsSection.className = 'comments-section';
 
         let hasComments = false;
 
-        // Iterate through reply groups (reply_group1, reply_group2, etc.)
+        // Threads are stored as reply_group1, reply_group2, … until a key is missing
         for (let i = 1; ; i++) {
             const groupKey = `reply_group${i}`;
-            if (!post[groupKey]) break; // No more reply groups
+            if (!post[groupKey]) break;
             hasComments = true;
 
-            // Create container for this comment thread
             const threadContainer = document.createElement('div');
             threadContainer.className = 'comment-thread';
 
             let isFirstInThread = true;
 
-            // Process each comment in the thread
             for (const commentId in post[groupKey]) {
                 const commentData = post[groupKey][commentId];
                 const authorId = Object.keys(commentData)[0];
@@ -370,10 +329,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const commentDiv = document.createElement('div');
                 commentDiv.className = 'comment';
 
-                // Indent replies (comments after the first in a thread)
                 if (!isFirstInThread) commentDiv.classList.add('reply');
 
-                // Build comment HTML with icon, author, and text
                 commentDiv.innerHTML = `
                     <img src="${author.icon}" class="comment-icon" alt="${author.name}">
                     <div class="comment-body">
@@ -387,50 +344,40 @@ document.addEventListener('DOMContentLoaded', () => {
             commentsSection.appendChild(threadContainer);
         }
 
-        // Add "Comments" header if any comments exist
         if (hasComments) {
             const commentsHeader = document.createElement('h3');
             commentsHeader.textContent = '댓글';
             commentsSection.prepend(commentsHeader);
         }
 
-        // Assemble all post components
         postContent.appendChild(header);
         postContent.appendChild(image);
         postContent.appendChild(message);
         postContent.appendChild(commentsSection);
 
-        // Build commander reply interaction section (if available)
         const commanderReplySection = document.createElement('footer');
         commanderReplySection.className = 'commander-reply-section';
 
-        // Check if post has commander reply options
         if (post.op_option1 && post.op_option1 !== "Translation Source Missing") {
             const optionsContainer = document.createElement('div');
             optionsContainer.className = 'commander-options';
             const replyContainer = document.createElement('div');
             replyContainer.className = 'shipgirl-reply';
 
-            /**
-             * Create click handler for reply options
-             * Shows shipgirl's response when commander selects an option
-             */
             const createReplyHandler = (optionText, replyText, replierId) => {
                 return () => {
                     const replierData = getShipgirlData(replierId);
                     replyContainer.innerHTML = `<strong>지휘관:</strong> ${optionText}<br><strong>${replierData.name}:</strong> ${replyText}`;
-                    optionsContainer.style.display = 'none'; // Hide options after selection
+                    optionsContainer.style.display = 'none';
                     commanderReplySection.appendChild(replyContainer);
                 };
             };
 
-            // Create first reply option button
             const button1 = document.createElement('button');
             button1.textContent = post.op_option1;
             button1.addEventListener('click', createReplyHandler(post.op_option1, post.op_reply1, post.reply1_shipgirl));
             optionsContainer.appendChild(button1);
 
-            // Create second reply option button (if exists)
             if (post.op_option2 && post.op_option2 !== "Translation Source Missing") {
                 const button2 = document.createElement('button');
                 button2.textContent = post.op_option2;
@@ -441,23 +388,17 @@ document.addEventListener('DOMContentLoaded', () => {
             commanderReplySection.appendChild(optionsContainer);
         }
 
-        // Add all components to display container
         postDisplayContainer.appendChild(postContent);
         if (commanderReplySection.hasChildNodes()) {
             postDisplayContainer.appendChild(commanderReplySection);
         }
     }
     /**
-     * Highlight the selected thumbnail in the gallery
-     * Removes highlight from all thumbnails, then adds it to the selected one
-     *
+     * Mark a gallery thumbnail as selected and clear all others.
      * @param {number|string} postId - The ID of the post to highlight
      */
     function highlightSelectedThumbnail(postId) {
-        // Remove 'selected' class from all thumbnails
         galleryView.querySelectorAll('img').forEach(img => img.classList.remove('selected'));
-
-        // Add 'selected' class to the clicked thumbnail
         const selectedImg = galleryView.querySelector(`img[data-post-id="${postId}"]`);
         if (selectedImg) {
             selectedImg.classList.add('selected');
@@ -465,34 +406,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Setup Intersection Observer for lazy loading images
-     * Images load when they come within 200px of the viewport
+     * Set up IntersectionObserver to load gallery images as they approach the viewport.
+     * Falls back to eager loading on browsers without IntersectionObserver support.
      */
     function observeLazyImages() {
         const lazyImages = galleryView.querySelectorAll('img.lazy');
 
-        // Check if browser supports Intersection Observer
         if ('IntersectionObserver' in window) {
             const imageObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const img = entry.target;
-                        img.src = img.dataset.src; // Load the actual image
-                        img.classList.remove('lazy'); // Remove lazy class
-                        img.classList.add('loaded'); // Add loaded class for potential styling
-                        observer.unobserve(img); // Stop observing this image
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        img.classList.add('loaded');
+                        observer.unobserve(img);
                     }
                 });
             }, {
                 root: galleryView,
-                rootMargin: '200px', // Start loading 200px before image enters viewport
+                rootMargin: '200px', // Pre-load slightly before viewport entry
                 threshold: 0.01
             });
 
-            // Observe all lazy images
             lazyImages.forEach(img => imageObserver.observe(img));
         } else {
-            // Fallback for older browsers - load all images immediately
+            // Fallback: load all immediately on older browsers
             lazyImages.forEach(img => {
                 img.src = img.dataset.src;
                 img.classList.remove('lazy');
@@ -500,13 +439,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ============================================================================
-    // EVENT LISTENERS - Gallery Interactions
-    // ============================================================================
+    // ===== Gallery Interactions =====
 
-    /**
-     * Handle thumbnail clicks - display the selected post
-     */
     galleryView.addEventListener('click', (event) => {
         if (event.target.tagName === 'IMG') {
             const postId = event.target.dataset.postId;
@@ -515,9 +449,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    /**
-     * Show preview image when hovering over thumbnails
-     */
     galleryView.addEventListener('mouseover', (event) => {
         if (event.target.tagName === 'IMG') {
             imagePreview.src = event.target.src;
@@ -525,35 +456,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    /**
-     * Hide preview image when mouse leaves thumbnail
-     */
     galleryView.addEventListener('mouseout', (event) => {
         if (event.target.tagName === 'IMG') {
             imagePreview.style.display = 'none';
         }
     });
 
-    /**
-     * Position preview image to follow mouse cursor
-     * Automatically flips to left/top if preview would go off-screen
-     */
+    // Mouse-follow preview with edge-flip so it stays on-screen
     galleryView.addEventListener('mousemove', (event) => {
         const preview = imagePreview;
         if (preview.style.display !== 'block') return;
 
-        const offsetX = 20; // Cursor offset to prevent blocking thumbnail
+        const offsetX = 20;
         const offsetY = 20;
 
         let newX = event.clientX + offsetX;
         let newY = event.clientY + offsetY;
 
-        // Flip to left if preview would overflow right edge
         if (newX + preview.offsetWidth > window.innerWidth) {
             newX = event.clientX - preview.offsetWidth - offsetX;
         }
-
-        // Flip to top if preview would overflow bottom edge
         if (newY + preview.offsetHeight > window.innerHeight) {
             newY = event.clientY - preview.offsetHeight - offsetY;
         }

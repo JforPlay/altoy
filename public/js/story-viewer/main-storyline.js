@@ -1,15 +1,14 @@
+/**
+ * main-storyline.js
+ * Interactive horizontal timeline for the Azur Lane main story chapters.
+ * Renders chapter nodes on a canvas-backed grid with draggable pan, search,
+ * faction filter, a scrollable progress bar, and a details modal with BGM preview.
+ * Data is loaded from main_story_meta.json on init.
+ */
 import { debounce, fetchJSON, hideElement, showElement, resolveUrl, openModal, closeModal as utilsCloseModal, setupModal } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // =========================================================================
-    // UTILITY FUNCTIONS
-    // =========================================================================
-
-    // Removed responsive font sizing - using fixed sizes instead
-
-    // =========================================================================
-    // DOM ELEMENTS - Cached for performance
-    // =========================================================================
+    // ===== DOM Elements =====
     const elements = {
         loadingOverlay: document.getElementById('loading-overlay'),
         timelineWrapper: document.querySelector('.timeline-wrapper'),
@@ -50,16 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
         97: "META"
     };
 
-    // =========================================================================
-    // STATE
-    // =========================================================================
+    // ===== State =====
     let allData = {};
     let allDataArray = []; // Cache Object.values result
     let domElementsCache = new Map(); // Cache for DOM queries
 
-    // =========================================================================
-    // DATA LOADING
-    // =========================================================================
+    // ===== Data Loading =====
     fetchJSON('data/story-viewer/main_story_meta.json')
         .then(data => {
             allData = data;
@@ -93,6 +88,11 @@ document.addEventListener('DOMContentLoaded', () => {
         hideElement(elements.loadingOverlay);
     }
 
+    /**
+     * Clear and re-render the timeline grid from `items`.
+     * Sets grid-template-columns/rows, creates one card per item, caches
+     * the DOM elements, and redraws connector lines in the next animation frame.
+     */
     function renderTimeline(items) {
         elements.timelineContainer.innerHTML = '';
         elements.timelineContainer.appendChild(elements.canvas);
@@ -116,6 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(() => drawLines(items.map(item => item.id)));
     }
 
+    /**
+     * Build a single timeline card element. Maps row -1 to grid row 1 and
+     * all other rows to row+2 (row 1 is reserved for chapter markers).
+     */
     function createTimelineItem(itemData) {
         const itemElement = document.createElement('div');
         itemElement.className = 'timeline-item';
@@ -154,6 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return itemElement;
     }
 
+    /**
+     * Place chapter label markers on the progress bar, aligned to the horizontal
+     * position of the first card in each chapter. Uses DOM element offsets, so
+     * must be called after the timeline has been rendered and laid out.
+     */
     function setupChapters(items) {
         const chapterMarkersContainer = document.getElementById('chapter-markers');
         chapterMarkersContainer.innerHTML = '';
@@ -207,6 +216,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /**
+     * Build the faction filter checkboxes from the unique nation IDs found
+     * across all timeline items. Nations are sorted by ID before rendering.
+     */
     function populateFilters(items) {
         const uniqueNations = new Map();
         items.forEach(item => {
@@ -239,6 +252,11 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.filterPanel.innerHTML = filterHtml;
     }
 
+    /**
+     * Wire filter panel open/close and checkbox change logic.
+     * The "전체" (all) checkbox is mutually exclusive with faction checkboxes;
+     * dragging is disabled while the panel is open to avoid accidental panning.
+     */
     function setupFilterListeners() {
         elements.filterButton.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -302,6 +320,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Dim or highlight timeline items based on the active faction checkboxes.
+     * When "전체" is checked, all dimming/highlighting is cleared.
+     */
     function applyFilter() {
         const allCheckbox = document.getElementById('nation-all');
         const timelineItems = document.querySelectorAll('.timeline-item');
@@ -329,7 +351,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // draw lines between linked events
+    /**
+     * Draw straight connector lines on the canvas between linked timeline events.
+     * Uses the DOM element cache for position lookups; populates the cache on miss.
+     */
     function drawLines(visibleItemIds) {
         elements.canvas.width = elements.timelineContainer.scrollWidth;
         elements.canvas.height = elements.timelineContainer.scrollHeight;
@@ -379,11 +404,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ===== Details Modal =====
+
     elements.timelineContainer.addEventListener('click', (event) => {
         const item = event.target.closest('.timeline-item');
         if (!item) return;
 
-        // The 'id' is now correctly destructured from item.dataset
         const { id, name, description, summary, shipnation, bgm } = item.dataset;
 
         elements.modalTitle.textContent = name;
@@ -393,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const nations = JSON.parse(shipnation).map(id => factionMap[id] || `진영 ${id}`).join(', ');
         elements.modalShipNation.textContent = nations;
 
-        // Create or reuse button (performance improvement)
+        // Reuse the button element across modal openings to avoid appending duplicates.
         if (!elements.storyButton) {
             elements.storyButton = document.createElement('button');
             elements.storyButton.id = 'view-story-btn';
@@ -441,6 +467,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // ===== Scroll Indicator & Drag-to-Pan =====
 
     function updateIndicator() {
         const scrollableWidth = elements.timelineWrapper.scrollWidth - elements.timelineWrapper.clientWidth;
@@ -493,9 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.timelineWrapper.scrollTop = scrollTop - walkY;
     });
 
-    // =========================================================================
-    // SEARCH FUNCTIONALITY
-    // =========================================================================
+    // ===== Search =====
     function setupSearchListener() {
         if (!elements.searchInput) return;
 
@@ -530,9 +556,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // =========================================================================
-    // KEYBOARD NAVIGATION
-    // =========================================================================
+    // ===== Keyboard Navigation =====
     function setupKeyboardNavigation() {
         document.addEventListener('keydown', (e) => {
             // ESC to close modal
@@ -565,9 +589,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // =========================================================================
-    // INTERACTIVE PROGRESS BAR
-    // =========================================================================
+    // ===== Progress Bar =====
     function setupProgressBarClick() {
         if (!elements.progressBar) return;
 
@@ -586,9 +608,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // =========================================================================
-    // RESIZE HANDLER (DEBOUNCED)
-    // =========================================================================
+    // ===== Resize Handler =====
     const debouncedResizeHandler = debounce(() => {
         renderTimeline(allDataArray);
         setTimeout(() => {

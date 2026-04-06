@@ -1,6 +1,10 @@
 /**
- * Ocean Background Renderer
- * Handles animated ocean/sky layers for battle simulation
+ * sim.engine.oceanbg.js
+ * Procedurally renders an animated ocean/sky background for simulation pages.
+ * Generates SVG-based water layers at speeds derived from BattleConfig
+ * (sky_layer, long_sea, mid_sea, close_sea). Layer positions are calculated
+ * from game Y-coordinates so they align with ship formation zones.
+ * Instantiated by sim.engine.common.js in the SimulationEngine constructor.
  */
 
 export class OceanBackground {

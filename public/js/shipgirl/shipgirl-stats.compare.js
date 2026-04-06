@@ -1,8 +1,9 @@
 'use strict';
 
 /**
- * Shipgirl Stats - Compare Panel
- * Floating compare bar and side-by-side comparison modal for ship/skin data.
+ * shipgirl-stats.compare.js
+ * Floating compare bar and side-by-side comparison modal for ship combat stats
+ * and skin counts. Shared state is injected via setup(stateRef).
  */
 
 import { IMG_FALLBACKS, openModal, closeModal, setupModal } from '../utils.js';
@@ -22,10 +23,12 @@ export function setup(stateRef) {
     });
 }
 
-// ============================================
-// COMPARE BAR
-// ============================================
+// ===== Compare Bar =====
 
+/**
+ * Refresh the floating compare bar with the current compareList.
+ * Shows/hides the bar and rebuilds ship name + icon entries.
+ */
 export function updateCompareBar() {
     const bar = document.getElementById('compareBar');
     const itemsEl = document.getElementById('compareBarItems');
@@ -57,10 +60,12 @@ export function updateCompareBar() {
     itemsEl.appendChild(fragment);
 }
 
-// ============================================
-// COMPARE MODAL
-// ============================================
+// ===== Compare Modal =====
 
+/**
+ * Open the comparison modal, rendering either combat stats or skin counts
+ * depending on the active tab.
+ */
 export function openCompareModal() {
     if (state.compareList.length < 2) return;
 
@@ -82,9 +87,7 @@ export function openCompareModal() {
     openModal('compareModal');
 }
 
-// ============================================
-// COMBAT COMPARE
-// ============================================
+// ===== Combat Compare =====
 
 function renderCombatCompare(entries, colClass) {
     const headers = entries.map(e => `
@@ -123,9 +126,7 @@ function renderCombatCompare(entries, colClass) {
     `;
 }
 
-// ============================================
-// SKIN COMPARE
-// ============================================
+// ===== Skin Compare =====
 
 function renderSkinCompare(entries, colClass) {
     const headers = entries.map(e => `
@@ -182,9 +183,7 @@ function renderSkinCompare(entries, colClass) {
     `;
 }
 
-// ============================================
-// HELPERS
-// ============================================
+// ===== Helpers =====
 
 function getGlobalMax(stat, type) {
     let max = 0;

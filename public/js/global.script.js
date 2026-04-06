@@ -1,8 +1,13 @@
+/**
+ * global.script.js
+ * Global UI behavior loaded on every page via Layout.astro.
+ * Handles: navbar (theme, mobile menu, mega-menu, scroll), link routing, info popups, tooltip toggles.
+ * Exports LINKS and setup functions so page scripts can re-invoke specific behaviors.
+ */
+
 import { throttle, setupScrollToTop, getStorageItem, setStorageItem } from './utils.js';
 
-// ============================================
-// CENTRALIZED LINK CONFIGURATION
-// ============================================
+// ===== Centralized Link Configuration =====
 const LINKS = {
     // Main Pages
     HOME: '',
@@ -63,13 +68,15 @@ const LINKS = {
     EXTERNAL_GITHUB: 'https://github.com/JforPlay/altoy'
 };
 
-// ============================================
-// LINK INITIALIZATION
-// ============================================
+// ===== Link Initialization =====
 function getBasePath() {
     return window.location.pathname.startsWith('/altoy') ? '/altoy' : '';
 }
 
+/**
+ * Resolve all [data-link] anchors on the page to their full URLs.
+ * Reads the LINKS constant above and prepends the correct base path for GitHub Pages.
+ */
 function initLinks() {
     const base = getBasePath();
     const linkElements = document.querySelectorAll('[data-link]');
@@ -86,24 +93,17 @@ function initLinks() {
     });
 }
 
-// ============================================
-// MAIN INITIALIZATION
-// ============================================
+// ===== Main Initialization =====
 document.addEventListener('DOMContentLoaded', function () {
-    // Apply saved theme or default to dark mode
     const savedTheme = getStorageItem('theme', 'dark');
     applyTheme(savedTheme);
 
-    // Setup interactive elements
     setupMobileMenu();
     setupThemeToggles();
     setupMegaMenuToggles();
     updateNavbarHeight();
-
-    // Initialize links
     initLinks();
 
-    // Setup scroll listener for navbar with throttling (performance optimization)
     const navbar = document.querySelector('.navbar');
     if (navbar) {
         const handleNavbarScroll = throttle(() => {
@@ -112,13 +112,8 @@ document.addEventListener('DOMContentLoaded', function () {
         window.addEventListener('scroll', handleNavbarScroll);
     }
 
-    // Initialize scroll-to-top button
     setupScrollToTop();
-
-    // Initialize info popups
     setupInfoPopups();
-
-    // Initialize tooltip toggles
     setupTooltipToggles();
 });
 
@@ -255,20 +250,16 @@ function setupInfoPopups() {
             document.body.classList.remove('no-scroll');
         };
 
-        // Button click to open
         infoButton.addEventListener('click', openPopup);
 
-        // Close button click
         if (closePopupBtn) {
             closePopupBtn.addEventListener('click', closePopup);
         }
 
-        // Click outside to close
         infoPopup.addEventListener('click', (e) => {
             if (e.target === infoPopup) closePopup();
         });
 
-        // ESC key to close
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && infoPopup.classList.contains('visible')) {
                 closePopup();
@@ -306,19 +297,15 @@ function setupTooltipToggles() {
         button.addEventListener('click', (e) => {
             e.stopPropagation();
 
-            // Close all other tooltips
+            // Close all other open tooltips before toggling this one (one-at-a-time behavior)
             document.querySelectorAll('.info-tooltip.visible').forEach(otherTooltip => {
-                if (otherTooltip !== tooltip) {
-                    otherTooltip.classList.remove('visible');
-                }
+                if (otherTooltip !== tooltip) otherTooltip.classList.remove('visible');
             });
 
-            // Toggle this tooltip
             tooltip.classList.toggle('visible');
         });
     });
 
-    // Close tooltips when clicking outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.tooltip-toggle-button') && !e.target.closest('.info-tooltip')) {
             document.querySelectorAll('.info-tooltip.visible').forEach(tooltip => {
@@ -327,7 +314,6 @@ function setupTooltipToggles() {
         }
     });
 
-    // Close tooltips on ESC key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             document.querySelectorAll('.info-tooltip.visible').forEach(tooltip => {
@@ -337,13 +323,11 @@ function setupTooltipToggles() {
     });
 }
 
-// ============================================
-// RESIZE HANDLER
-// ============================================
+// ===== Resize Handler =====
 
 /**
- * Update navbar height on window resize (debounced)
- * Prevents excessive updates during resize
+ * Update navbar height on window resize (debounced).
+ * Keeps --navbar-height accurate for pages that offset content below the fixed bar.
  */
 let resizeTimer;
 window.addEventListener('resize', () => {
@@ -351,9 +335,7 @@ window.addEventListener('resize', () => {
     resizeTimer = setTimeout(updateNavbarHeight, 100);
 });
 
-// ============================================
-// ES MODULE EXPORTS
-// ============================================
+// ===== ES Module Exports =====
 export {
     getStorageItem,
     setStorageItem,

@@ -1,8 +1,15 @@
+/**
+ * skin.list.viewer.js
+ * Skin list/browse page controller for the skin module group.
+ * Renders all skins grouped by availability (new/limited/permanent/other) with multi-filter,
+ * search autocomplete, collection tracking (owned/wanted), a wishlist cart modal, and image lightbox.
+ * Cards are built once at load time; filtering hides/shows wrappers without DOM recreation.
+ */
 import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex,
     openModal, closeModal, setupModal, showToast, getStorageItem, setStorageItem, IMG_FALLBACKS } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // === DOM ELEMENT REFERENCES ===
+    // ===== DOM Element References =====
     const DOM = {
         search: document.getElementById('search-input'),
         filters: {
@@ -55,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // === STATE ===
+    // ===== State =====
     let allSkins = [];
     let fuse;
     let isLoading = false;
@@ -67,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Skin ID → { wrapper, category } for visibility-toggle filtering
     const skinCardMap = new Map();
 
-    // === COLLECTION STATE ===
+    // ===== Collection State =====
     const COLLECTION_KEY = 'skinCollection';
     let collection = loadCollection();
 
@@ -94,11 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
     }
 
-    // === CACHED QUERIES ===
+    // ===== Cached Queries & Constants =====
     const cachedRarityCheckboxes = Array.from(DOM.filters.rarities.querySelectorAll('input'));
     const allSkinContainers = Object.values(DOM.containers);
-
-    // === CONSTANTS ===
 
     const FILTER_PARAMS = {
         TYPE: 'type',
@@ -134,14 +139,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tag display order for cart grouping
     const TAG_ORDER = ['듀얼', 'L2D+', 'L2D', '쁘띠모션', '기타'];
 
-    // === TIMER MANAGEMENT ===
+    // ===== Timer Management =====
     let activeTimers = {
         debounce: null,
         throttle: null,
         progressBar: null
     };
 
-    // === UTILITY FUNCTIONS ===
+    // ===== Utility Functions =====
     const showFilteringState = () => {
         activeTimers.progressBar = setTimeout(() => {
             if (DOM.progressBar) {
@@ -174,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // === URL STATE MANAGEMENT ===
+    // ===== URL State Management =====
     const URLState = {
         getFilters() {
             const selectedRarities = cachedRarityCheckboxes
@@ -230,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // === AUTOCOMPLETE ===
+    // ===== Autocomplete =====
     const Autocomplete = {
         close() {
             document.getElementById("autocomplete-list")?.remove();
@@ -283,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // === FILTER ENGINE ===
+    // ===== Filter Engine =====
     const FilterEngine = {
         _checkSkinType(skin, selectedType) {
             if (selectedType === 'all') return true;
@@ -312,6 +317,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return ownershipFilter === 'owned' ? isOwned : !isOwned;
         },
 
+        /**
+         * Apply all active filters by toggling card wrapper visibility via display style.
+         * Uses pre-built skinCardMap for O(1) per-card access — no DOM recreation.
+         * Runs inside requestAnimationFrame to batch style changes.
+         */
         apply() {
             if (isLoading || skinCardMap.size === 0) return;
 
@@ -355,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // === COLLECTION MANAGER ===
+    // ===== Collection Manager =====
     const CollectionManager = {
         toggleOwned(skinId) {
             if (collection.owned.has(skinId)) {
@@ -406,8 +416,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // === LIGHTBOX ===
+    // ===== Lightbox =====
     const Lightbox = {
+        // Generation counter prevents stale image-load callbacks from a previous open()
+        // from resolving after the user has already selected a different skin.
         _generation: 0,
 
         open(skin) {
@@ -458,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // === CART MANAGER ===
+    // ===== Cart Manager =====
     const CartManager = {
         updateBadge() {
             const count = collection.wanted.size;
@@ -670,7 +682,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // === RENDERER ===
+    // ===== Renderer =====
     const Renderer = {
         _createSkinBox(skin) {
             const skinId = skin['클뜯 id'];
@@ -778,7 +790,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return 'other';
         },
 
-        // Build all cards once, append to their section containers
+        /**
+         * Build all skin cards once at page load and append them to their section containers.
+         * Populates skinCardMap for fast filter toggling; never re-builds on filter changes.
+         */
         buildAll(skins) {
             // Cache today's date once for all categorizations
             this._today = new Date();
@@ -801,7 +816,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // === EVENT DELEGATION for skin cards ===
+    // ===== Event Delegation =====
     // Single listener per container handles all card interactions
     const handleContainerClick = (e) => {
         const ownedBtn = e.target.closest('.owned-btn');
@@ -846,7 +861,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // === EVENT HANDLERS ===
+    // ===== Event Handlers =====
     const debouncedAutocomplete = debounce((searchTerm) => {
         if (fuse && searchTerm.trim()) {
             Autocomplete.render(fuse.search(searchTerm));
@@ -886,13 +901,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // === DEBOUNCED/THROTTLED FUNCTIONS ===
+    // ===== Debounced/Throttled Functions =====
     const debouncedFilterUpdate = debounce(() => {
         FilterEngine.apply();
         URLState.update();
     }, DEBOUNCE_DELAY);
 
-    // === DATA INITIALIZATION ===
+    // ===== Data Initialization =====
     const showLoadingState = () => {
         isLoading = true;
         allSkinContainers.forEach(container => {
@@ -947,7 +962,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showErrorState(error);
         });
 
-    // === CLEANUP METHOD ===
+    // ===== Cleanup =====
     const cleanup = () => {
         clearTimeout(activeTimers.debounce);
         clearTimeout(activeTimers.throttle);
@@ -983,7 +998,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.skinListViewerCleanup = cleanup;
 
-    // === EVENT LISTENERS ===
+    // ===== Event Listeners =====
     DOM.search.addEventListener('input', EventHandlers.handleSearch);
 
     [DOM.filters.skinType, DOM.filters.period, DOM.filters.faction, DOM.filters.tag,

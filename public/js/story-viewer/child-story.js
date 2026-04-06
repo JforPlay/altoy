@@ -1,23 +1,26 @@
+/**
+ * child-story.js
+ * Tabbed story viewer engine for Navi, TB, and Lora child story pages.
+ * Exports window.createTabStoryViewer, which is called by the page-specific
+ * init scripts (child-navi-init.js, child-tb-init.js, child-lora-init.js).
+ *
+ * Handles: memories, endings, polaroids, photos, and config-driven custom
+ * categories. Delegates actual script playback to the shared StoryViewer engine
+ * (story-viewer.engine.js) by patching its loadData and returnToMemorySelection.
+ */
 import { fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, toggleElement } from '../utils.js';
 
 /**
- * tab-story.js
- * -------------
- * Unified Story Viewer with tab navigation for Navi and TB
- * Handles: Memories, Endings, Polaroids, Photos, and custom categories
+ * Create a tab-based story viewer instance for a child story page.
+ * The returned object must be initialized by calling viewer.init().
  *
- * Uses the common StoryViewer engine for story playback with proper URL state management
- */
-
-/**
- * Creates a tab-based story viewer instance
- * @param {Object} config - Configuration object
- * @param {string} config.type - Viewer type: 'navi', 'tb', or 'lora'
- * @param {Object} config.dataPaths - Paths to JSON data files
- * @param {Object} config.imageUrls - Base URLs for images
- * @param {string} config.placeholderImage - Placeholder image path
- * @param {Array} config.categories - Custom category definitions
- * @param {Array} config.photoList - List of photo filenames (optional)
+ * @param {Object} config
+ * @param {string} config.type - Viewer type identifier: 'navi', 'tb', or 'lora'
+ * @param {Object} config.dataPaths - Paths to JSON data files (memories, endings, etc.)
+ * @param {Object} config.imageUrls - Base URLs for images (base, icon, photo)
+ * @param {string} config.placeholderImage - Fallback image URL
+ * @param {Array}  config.categories - Custom category definitions with storyKeyPrefix
+ * @param {Array|null} config.photoList - Explicit photo filenames, or null to use default
  */
 function createTabStoryViewer(config) {
     const viewer = {
@@ -78,9 +81,7 @@ function createTabStoryViewer(config) {
             errorContainer: document.getElementById('error-container'),
         },
 
-        // =========================================================================
-        // INITIALIZATION
-        // =========================================================================
+        // ===== Initialization =====
         async init() {
             this.showLoadingState();
 
@@ -101,6 +102,7 @@ function createTabStoryViewer(config) {
             this.hideLoadingState();
         },
 
+        /** Show a loading indicator while data is being fetched. */
         showLoadingState() {
             this.elements.memoriesGrid.innerHTML = '<div class="loading">데이터 로딩 중...</div>';
         },
@@ -110,6 +112,10 @@ function createTabStoryViewer(config) {
             loadingElements.forEach(el => el.remove());
         },
 
+        /**
+         * Fetch all data sources in parallel, store them, build the icon lookup map,
+         * and extract per-category story entries from the raw story data.
+         */
         async loadAllData() {
             try {
                 const [memoriesData, endingsData, polaroidsData, storyData, shipgirlData, nameCodeData, iconMappingData] = await Promise.all([
@@ -144,6 +150,10 @@ function createTabStoryViewer(config) {
             }
         },
 
+        /**
+         * Build a reverse lookup from story key → {icon, title} using iconMappingData.
+         * Keys are lowercased to match the lowercase story keys used in storyData.
+         */
         buildStoryIconMap() {
             this.storyIconMap = {};
             for (const id in this.iconMappingData) {
@@ -180,6 +190,10 @@ function createTabStoryViewer(config) {
             }
         },
 
+        /**
+         * Transform raw memories, endings, and custom categories into the engine's
+         * expected {id, name, child[]} structure and store in convertedStorylineData.
+         */
         convertDataForEngine() {
             this.convertedStorylineData = {};
 
@@ -241,9 +255,7 @@ function createTabStoryViewer(config) {
             });
         },
 
-        // =========================================================================
-        // EVENT LISTENERS
-        // =========================================================================
+        // ===== Event Listeners =====
         setupEventListeners() {
             // Tab navigation
             this.elements.tabBtns.forEach(btn => {
@@ -270,6 +282,10 @@ function createTabStoryViewer(config) {
             });
         },
 
+        /**
+         * Handle browser back/forward navigation by restoring the story or
+         * returning to the tab view based on the popstate history state.
+         */
         setupBrowserBackButton() {
             window.addEventListener('popstate', (e) => {
                 if (e.state && e.state.category && e.state.storyId) {
@@ -280,9 +296,7 @@ function createTabStoryViewer(config) {
             });
         },
 
-        // =========================================================================
-        // TAB SWITCHING
-        // =========================================================================
+        // ===== Tab Switching =====
         switchTab(tabName) {
             this.currentTab = tabName;
 
@@ -295,9 +309,7 @@ function createTabStoryViewer(config) {
             });
         },
 
-        // =========================================================================
-        // GRID POPULATION
-        // =========================================================================
+        // ===== Grid Population =====
         populateAllGrids() {
             this.populateMemoriesGrid();
             this.populateEndingsGrid();
@@ -376,9 +388,7 @@ function createTabStoryViewer(config) {
             this.elements.photosGrid.appendChild(fragment);
         },
 
-        // =========================================================================
-        // CARD CREATION
-        // =========================================================================
+        // ===== Card Creation =====
         createMemoryCard(memory) {
             const card = document.createElement('div');
             card.className = `${this.config.type}-card`;
@@ -523,7 +533,8 @@ function createTabStoryViewer(config) {
         },
 
         addImageErrorHandler(img) {
-            // Use arrow function to avoid closure, and { once: true } to auto-cleanup
+            // Shared handler is created once and reused across all cards.
+            // { once: true } auto-removes it after the first error, preventing memory leaks.
             if (!this.boundImageErrorHandler) {
                 const placeholderImage = this.config.placeholderImage;
                 this.boundImageErrorHandler = function(event) {
@@ -534,13 +545,10 @@ function createTabStoryViewer(config) {
                     }
                 };
             }
-            // Using { once: true } auto-removes the listener after first error
             img.addEventListener('error', this.boundImageErrorHandler, { once: true });
         },
 
-        // =========================================================================
-        // URL & STATE MANAGEMENT
-        // =========================================================================
+        // ===== URL & State Management =====
         updateUrl(category, storyId, clear = false) {
             if (clear) {
                 history.pushState({}, '', window.location.pathname);
@@ -561,9 +569,7 @@ function createTabStoryViewer(config) {
             }
         },
 
-        // =========================================================================
-        // STORY PLAYBACK
-        // =========================================================================
+        // ===== Story Playback =====
         playStory(category, id, title) {
             this.currentCategory = category;
             this.currentStoryId = id;
@@ -571,6 +577,11 @@ function createTabStoryViewer(config) {
             this.playStoryById(category, id, false);
         },
 
+        /**
+         * Load and start the specified story by category and ID.
+         * Resets the StoryViewer engine state directly — bypasses normal
+         * event/memory selection so back navigation stays within this viewer.
+         */
         playStoryById(category, storyId, updateUrl = true) {
             const eventData = this.convertedStorylineData[category];
             if (!eventData) {
@@ -660,9 +671,7 @@ function createTabStoryViewer(config) {
             showElement(this.elements.tabNavView);
         },
 
-        // =========================================================================
-        // POLAROID MODAL
-        // =========================================================================
+        // ===== Polaroid Modal =====
         showPolaroidDetail(polaroid) {
             const frontUrl = polaroid.pic
                 ? `${this.config.imageUrls.base}${polaroid.pic}.webp`
@@ -732,9 +741,12 @@ function createTabStoryViewer(config) {
             toggleElement(this.elements.polaroidImgBack, isFrontVisible);
         },
 
-        // =========================================================================
-        // STORY VIEWER INITIALIZATION
-        // =========================================================================
+        // ===== Story Viewer Initialization =====
+        /**
+         * Patch window.StoryViewer so it uses this viewer's pre-loaded data
+         * instead of fetching its own. Also overrides loadData and
+         * returnToMemorySelection to integrate with the tab-based UI.
+         */
         initStoryViewer() {
             const viewerConfig = {
                 viewerType: this.config.type,
@@ -755,7 +767,7 @@ function createTabStoryViewer(config) {
             };
 
             if (window.StoryViewer) {
-                // Store references to avoid closure capture
+                // Capture by value so the overridden function doesn't capture `this`
                 const convertedData = this.convertedStorylineData;
                 const shipgirlData = this.shipgirlData;
                 const nameCodeData = this.nameCodeData;
@@ -780,20 +792,11 @@ function createTabStoryViewer(config) {
             }
         },
 
-        // =========================================================================
-        // CLEANUP & OPTIMIZATION
-        // =========================================================================
+        // ===== Cleanup & Optimization =====
         cleanup() {
-            // Cleanup method for removing event listeners and freeing memory
-            // Called when page is unloaded or viewer is destroyed
-
-            // Clear card click handlers (though event delegation would be better)
             this.cardClickHandlers = [];
-
-            // Clear bound error handler
             this.boundImageErrorHandler = null;
 
-            // Pause audio if playing
             if (window.StoryViewer && window.StoryViewer.audio) {
                 window.StoryViewer.audio.pause();
                 window.StoryViewer.audio.src = '';
@@ -801,7 +804,7 @@ function createTabStoryViewer(config) {
         },
 
         preloadFirstImages() {
-            // Preload the first few visible images for faster initial render
+            // Kick off background image load for the first story so it's ready when the user clicks.
             const firstMemory = Object.values(this.memoriesData)[0];
             if (firstMemory) {
                 const storyKey = firstMemory.lua || firstMemory.performance;
@@ -817,9 +820,7 @@ function createTabStoryViewer(config) {
             }
         },
 
-        // =========================================================================
-        // ERROR HANDLING
-        // =========================================================================
+        // ===== Error Handling =====
         showError(message) {
             this.elements.errorContainer.textContent = message;
             showElement(this.elements.errorContainer);

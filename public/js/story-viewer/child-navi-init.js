@@ -1,9 +1,10 @@
-import { resolveUrl } from '../utils.js';
 /**
- * navi-story-init.js
- * ------------------
- * Configuration and initialization for Navi Story Viewer
+ * child-navi-init.js
+ * Page init for the Navi child story viewer.
+ * Passes Navi-specific data paths, image URLs, and categories to
+ * window.createTabStoryViewer (defined in child-story.js).
  */
+import { resolveUrl } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const naviConfig = {

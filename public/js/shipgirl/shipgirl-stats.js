@@ -1,9 +1,10 @@
 'use strict';
 
 /**
- * Shipgirl Stats — Main Entry Module
- * Bootstraps the page: initialises sub-modules, loads data, manages tab switching,
- * shared filters, threshold filters, and event wiring.
+ * shipgirl-stats.js
+ * Main entry for the shipgirl stats page. Bootstraps sub-modules, loads data,
+ * manages tab switching (ship info / skin info), shared filters (search, rarity,
+ * ship type, nationality), threshold filters, and compare mode event wiring.
  */
 
 import { debounce, showElement, hideElement, toggleElement, showToast, setupScrollToTop } from '../utils.js';
@@ -12,9 +13,7 @@ import { setup as setupDashboard, renderShipDashboard, renderSkinDashboard, rend
 import { setup as setupTable, renderShipTable, renderSkinTable } from './shipgirl-stats.table.js';
 import { setup as setupCompare, updateCompareBar, openCompareModal } from './shipgirl-stats.compare.js';
 
-// ============================================
-// STATE
-// ============================================
+// ===== State =====
 
 const state = {
     // Raw data (populated by data module)
@@ -35,9 +34,7 @@ const state = {
     shipThresholds: {}, skinThresholds: {},
 };
 
-// ============================================
-// INIT
-// ============================================
+// ===== Init =====
 
 async function init() {
     // Wire up all sub-modules with shared state
@@ -62,9 +59,7 @@ async function init() {
     setupScrollToTop('scroll-to-top');
 }
 
-// ============================================
-// FILTER DROPDOWNS
-// ============================================
+// ===== Filter Dropdowns =====
 
 function populateFilterDropdowns() {
     // Ship type filter
@@ -96,9 +91,7 @@ function populateFilterDropdowns() {
     }
 }
 
-// ============================================
-// THRESHOLD FILTERS
-// ============================================
+// ===== Threshold Filters =====
 
 function setupThresholdFilters() {
     // --- Ship stat thresholds ---
@@ -183,9 +176,7 @@ function setupThresholdFilters() {
     }
 }
 
-// ============================================
-// FILTERING
-// ============================================
+// ===== Filtering =====
 
 function applyFilters() {
     const searchEl = document.getElementById('searchInput');
@@ -257,9 +248,7 @@ const debouncedApplyFilters = debounce(() => {
     applyFilters();
 }, 300);
 
-// ============================================
-// TAB SWITCHING
-// ============================================
+// ===== Tab Switching =====
 
 function switchTab(tab) {
     state.activeTab = tab;
@@ -284,9 +273,7 @@ function switchTab(tab) {
     applyFilters();
 }
 
-// ============================================
-// RENDER DISPATCH
-// ============================================
+// ===== Render Dispatch =====
 
 function renderActiveTab() {
     if (state.activeTab === 'ship') {
@@ -298,9 +285,7 @@ function renderActiveTab() {
     }
 }
 
-// ============================================
-// EVENT LISTENERS
-// ============================================
+// ===== Event Listeners =====
 
 function setupEventListeners() {
     // Tab toggle buttons
@@ -437,9 +422,7 @@ function _setupCompareCheckboxes(tbodyId) {
     });
 }
 
-// ============================================
-// INTERNAL HELPERS
-// ============================================
+// ===== Internal Helpers =====
 
 /**
  * Get the Korean display label for a stat key from attrTypeData.
@@ -456,8 +439,6 @@ function _getAttrLabel(stat) {
     return entry ? entry.condition : stat;
 }
 
-// ============================================
-// BOOTSTRAP
-// ============================================
+// ===== Bootstrap =====
 
 init();

@@ -1,3 +1,11 @@
+/**
+ * map.viewer.js
+ * Main entry point for the map viewer page.
+ * Part of the map module group (viewer + data + detail + grid + compare).
+ * Owns shared state and wires all sub-modules (data, grid, detail, compare).
+ * Covers: tab switching, sidebar rendering, map selection, node overlay, search modal (ship + blueprint).
+ */
+
 import { getUrlParam, setUrlParams, showElement, hideElement, openModal, closeModal, setupModal, resolveUrl, debounce } from '../utils.js';
 
 import { setup as setupData, loadLiteData, loadFullData, loadShipInfo, loadWorldTargetData, getWorldTargets, getChapterGroup } from './map.data.js';
@@ -49,8 +57,9 @@ function cacheDom() {
     mobileMapSelect = document.getElementById('mobileMapSelect');
 }
 
-// ---- Sidebar Event Delegation (set up once in init) ----
+// ===== Sidebar =====
 
+/** Set up a single delegated click handler for accordion headers and sidebar items. */
 function setupSidebarListeners() {
     // Single delegated click handler for the entire sidebar
     mapSidebar.addEventListener('click', (e) => {
@@ -77,8 +86,10 @@ function setupSidebarListeners() {
     });
 }
 
-// ---- Sidebar Rendering ----
-
+/**
+ * Group and render lite entries for a category into the sidebar and mobile select.
+ * Groups are accordion-collapsed by default; click delegation is set up once in init.
+ */
 function renderSidebar(category) {
     if (!state.liteData) return;
     const entries = state.liteData[category] || [];
@@ -129,8 +140,13 @@ function renderSidebar(category) {
     }
 }
 
-// ---- Map Selection ----
+// ===== Map Selection =====
 
+/**
+ * Select and display a map by ID.
+ * Waits for full data if it hasn't loaded yet, then dispatches to the correct
+ * render path based on chapter.category (world / archive / standard).
+ */
 async function selectMap(mapId) {
     state.currentMapId = mapId;
 
@@ -212,8 +228,9 @@ async function selectMap(mapId) {
     setUrlParams({ map: mapId, tab: state.currentTab }, { replace: true });
 }
 
-// ---- Node Click Handler ----
+// ===== Node Overlay =====
 
+/** Open the floating node detail overlay with fleet info for the clicked cell. */
 function handleNodeClick(attachType, chapter) {
     renderNodeDetail(attachType, chapter, nodeOverlayBody, nodeOverlayTitle);
     nodeOverlay.classList.add('active');
@@ -223,16 +240,21 @@ function closeNodeOverlay() {
     if (nodeOverlay) nodeOverlay.classList.remove('active');
 }
 
-// ---- Compare ----
+// ===== Compare =====
 
+/** Called when a sidebar item is clicked in compare mode — renders the compare modal. */
 function selectCompareTarget(mapId) {
     state.compareMapId = mapId;
     exitCompareMode();
     renderCompareModal(state.currentMapId, mapId);
 }
 
-// ---- Tab Switching ----
+// ===== Tab Switching =====
 
+/**
+ * Switch the active category tab, re-render the sidebar, and reset map selection.
+ * In compare mode, skips resetting the center panel (keeps first map visible).
+ */
 function switchTab(tab) {
     state.currentTab = tab;
 
@@ -254,12 +276,11 @@ function switchTab(tab) {
     }
 }
 
-// ---- Init ----
-
-// ---- Search Modal ----
+// ===== Search Modal =====
 
 let searchMode = null; // 'ship' or 'blueprint'
 
+/** Open the search modal in ship-drop or blueprint-drop mode. */
 function openSearchModal(mode) {
     searchMode = mode;
     const title = document.getElementById('searchModalTitle');
@@ -293,6 +314,10 @@ function renderSearchResults(query) {
     }
 }
 
+/**
+ * Filter ship_info by name query and render drop location results.
+ * Clicking a map tag navigates to that map, switching tab if needed.
+ */
 function renderShipSearchResults(query, body) {
     if (!state.shipInfo) {
         body.innerHTML = '<div class="detail-empty">데이터 로딩 중...</div>';
@@ -366,6 +391,10 @@ function renderShipSearchResults(query, body) {
     });
 }
 
+/**
+ * Build a reverse index of blueprint → chapter IDs from item_drops, then render results.
+ * Shows only SR (rarity 3) and SSR (rarity 4) sub-items; groups by blueprint across maps.
+ */
 function renderBlueprintSearchResults(query, body) {
     if (!state.fullData) {
         body.innerHTML = '<div class="detail-empty">데이터 로딩 중...</div>';
@@ -443,6 +472,13 @@ function renderBlueprintSearchResults(query, body) {
     });
 }
 
+// ===== Init =====
+
+/**
+ * Initialize the map viewer: cache DOM, wire sub-modules, load lite data, restore URL state.
+ * Full data and ship info load in the background; full data is awaited only if a specific map
+ * is requested via URL param or when a sidebar item is clicked before it resolves.
+ */
 async function init() {
     cacheDom();
 

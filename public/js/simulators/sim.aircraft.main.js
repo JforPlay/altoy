@@ -1,3 +1,11 @@
+/**
+ * sim.aircraft.main.js
+ * Main entry point for the aircraft simulator page.
+ * Initializes the engine and AircraftSimData, populates the equipment selector,
+ * renders weapon cards, and fires aircraft groups when the fire button is clicked.
+ * Part of the simulators module group; mirrors sim.weapon.main.js structure.
+ */
+
 import { debounce, getUrlParam, setUrlParams, resolveUrl, showElement, hideElement } from '../utils.js';
 import { SimulationEngine } from './sim.engine.common.js';
 import { AircraftSimData } from './sim.aircraft.data.js';
@@ -134,6 +142,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         simEngine.updateLayoutAndScale(playerAreaDiv);
     });
 
+    // ===== Controls Initialization =====
+
     // --- Speed Controls ---
     function initSpeedControls() {
         document.querySelectorAll('.speed-btn').forEach(btn => {
@@ -162,6 +172,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
+
+    // ===== FPS Display =====
 
     // --- FPS Display ---
     function initFPSDisplay() {
@@ -196,6 +208,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     function convertToMs(value, timeUnitIsFrames = false) {
         return timeUnitIsFrames ? (value / TARGET_FPS) * 1000 : value * 1000;
     }
+
+    // ===== Aircraft Selector =====
 
     // --- Aircraft Selector (grouped by type with filter) ---
     function populateAircraftSelector(filterType = null) {
@@ -282,6 +296,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.querySelectorAll('.type-filter-btn').forEach(b => b.classList.remove('active'));
         activeBtn.classList.add('active');
     }
+
+    // ===== Display Update =====
 
     // --- Update Display ---
     async function updateAircraftDisplay(equipId) {
@@ -474,7 +490,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return html;
     }
 
-    // --- Firing Logic ---
+    // ===== Firing Logic =====
 
     async function fireAircraft(equipId) {
         const weaponIds = aircraftSimData.getWeaponIdsForLevel(equipId, currentLevelIndex);

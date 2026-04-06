@@ -1,6 +1,9 @@
 /**
- * Equipment Viewer Module - Compare Modal
- * Modal-based side-by-side comparison with diff highlighting
+ * equip.compare.js
+ * Renders the side-by-side compare modal for equipment diff highlighting.
+ * Part of the equip viewer module group (viewer + data + detail + compare + upgrade).
+ * State is shared via a ref passed to setup() from equip.viewer.js.
+ * Depends on equip.data.js for full equipment data and weapon/bullet lookups.
  */
 
 import { showToast, openModal, closeModal, setupModal, setUrlParams } from '../utils.js';
@@ -8,6 +11,7 @@ import { getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics, 
 
 let state;
 
+/** Receive shared state from equip.viewer.js. */
 export function setup(stateRef) {
     state = stateRef;
 }
@@ -19,6 +23,10 @@ function formatLevel(index) {
 
 // ===== Setup Compare Modal =====
 
+/**
+ * Wire up close handlers for the compare modal.
+ * On close, resets compareSlots/compareLevels and clears the URL compare param.
+ */
 export function setupCompareModal() {
     setupModal('compareModal', {
         closeOnEscape: true,
@@ -33,6 +41,10 @@ export function setupCompareModal() {
 
 // ===== Render Compare Modal =====
 
+/**
+ * Populate and open the compare modal with two equipment entries.
+ * Renders both slot headers, level sliders, equip selectors, and the stats table.
+ */
 export function renderCompareModal(equip0, equip1) {
     const modalBody = document.getElementById('compareModalBody');
     if (!modalBody) return;
@@ -60,6 +72,10 @@ export function renderCompareModal(equip0, equip1) {
 
 // ===== Load Compare from URL =====
 
+/**
+ * Parse a "id1,id2" URL compare param and open the modal.
+ * Silently no-ops if either ID fails to resolve.
+ */
 export async function loadCompareFromUrl(compareParam) {
     const ids = compareParam.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
     if (ids.length < 2) return;
@@ -76,6 +92,10 @@ export async function loadCompareFromUrl(compareParam) {
 
 // ===== Render Helpers =====
 
+/**
+ * Render one slot header: icon, name, optional equip selector (for compare_group siblings),
+ * and optional level range slider.
+ */
 function renderCompareSlot(equip, slotIndex) {
     const iconUrl = getEquipIconUrl(equip.icon);
     const maxLevel = equip.levels.length;
@@ -119,6 +139,11 @@ function renderCompareSlot(equip, slotIndex) {
     `;
 }
 
+/**
+ * Build the stats comparison table HTML for the current level selection.
+ * Merges attr keys from both slots — missing attrs on one side show "-".
+ * Highlights better/worse values; for reload and armor, lower/higher rules are inverted.
+ */
 function renderCompareTable(slot0, slot1) {
     const level0 = slot0.levels[state.compareLevels[0]] || slot0.levels[0];
     const level1 = slot1.levels[state.compareLevels[1]] || slot1.levels[0];
@@ -234,6 +259,7 @@ function renderCompareTable(slot0, slot1) {
     `;
 }
 
+/** Look up the level-specific value for a given attr key using attr_info index. */
 function getAttrValue(equip, level, attrKey) {
     for (const attr of (equip.attr_info || [])) {
         if (attr.key === attrKey) {
@@ -296,6 +322,10 @@ function getArmorModifiers(equip, level) {
 
 // ===== Event Listeners =====
 
+/**
+ * Attach input and change listeners after modal HTML is injected.
+ * Level slider updates the stats table in-place; equip selector re-renders the whole modal.
+ */
 function setupCompareListeners() {
     // Level sliders
     document.querySelectorAll('#compareModalBody .compare-level-input').forEach(input => {

@@ -1,17 +1,16 @@
 'use strict';
 
 /**
- * Shipgirl Stats Module - Data Loading & Computations
- * Loads ship_info_data, skin subset, release dates, and mapping tables.
- * Computes per-ship combat stats at Lv.120 (max LB, 사랑 affinity) and
- * aggregates skin metadata for each shipgirl.
+ * shipgirl-stats.data.js
+ * Data loading and stat computation for the shipgirl stats page.
+ * Loads ship_info_data, skin subset, skin release dates, and mapping tables.
+ * Computes per-ship Lv.120 combat stats (max LB, 사랑 affinity) and aggregates
+ * skin metadata (counts, gem costs, tag counts, release dates) for each shipgirl.
  */
 
 import { fetchJSON, fetchJSONWithCache, normalizeRomanNumerals } from '../utils.js';
 
-// ============================================
-// CONSTANTS
-// ============================================
+// ===== Constants =====
 
 /** Affinity bonus at 사랑 (100 Favorability) */
 export const FAVORABILITY_BONUS = 1.06;
@@ -29,9 +28,7 @@ export const ALL_STATS       = [...PRIMARY_STATS, ...SECONDARY_STATS];
 /** Special skin tag keys used for aggregation */
 export const SKIN_TAG_KEYS = ['L2D+', 'L2D', '듀얼', '쁘띠모션'];
 
-// ============================================
-// STATE REFERENCE (set via setup)
-// ============================================
+// ===== State Reference (set via setup) =====
 
 let state;
 
@@ -39,9 +36,7 @@ export function setup(stateRef) {
     state = stateRef;
 }
 
-// ============================================
-// DATA LOADING
-// ============================================
+// ===== Data Loading =====
 
 /**
  * Load all required data sources in parallel, then compute aggregations.
@@ -73,9 +68,7 @@ export async function loadAllData() {
     computeAll();
 }
 
-// ============================================
-// STAT CALCULATION
-// ============================================
+// ===== Stat Calculation =====
 
 /**
  * Compute Lv.120 stats for a single ship at max limit break with affinity bonus.
@@ -104,9 +97,7 @@ function computeShipStats(ship) {
     return result;
 }
 
-// ============================================
-// SKIN AGGREGATION
-// ============================================
+// ===== Skin Aggregation =====
 
 /**
  * Parse a skin's tag string into an array of trimmed token strings.
@@ -197,9 +188,7 @@ function computeSkinStats(shipName) {
     };
 }
 
-// ============================================
-// NAME ALIAS MAP
-// ============================================
+// ===== Name Alias Map =====
 
 /** Known name mismatches between skin_voiceline_data_subset and ship_info_data */
 const SKIN_NAME_ALIASES = new Map([
@@ -221,9 +210,7 @@ function normalizeSkinName(rawName) {
     return normalizeRomanNumerals(aliased || rawName);
 }
 
-// ============================================
-// MAIN COMPUTE PASS
-// ============================================
+// ===== Main Compute Pass =====
 
 /**
  * Build all derived state:
@@ -270,9 +257,7 @@ function computeAll() {
     }
 }
 
-// ============================================
-// HELPER LOOKUP FUNCTIONS
-// ============================================
+// ===== Helper Lookup Functions =====
 
 /**
  * Get the display name for a nationality ID.
