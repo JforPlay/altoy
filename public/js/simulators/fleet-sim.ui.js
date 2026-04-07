@@ -467,6 +467,7 @@ function _buildStatsToggleHTML(slotIndex, isCollapsed) {
  */
 function _buildStatsHTML(slotIndex, calcResult, highlights) {
     const stats = calcResult ? calcResult.stats : null;
+    const breakdown = calcResult ? calcResult.breakdown : null;
 
     const rows = DISPLAY_STATS.map(({ key, label }) => {
         const value = stats ? (stats[key] || 0) : 0;
@@ -480,15 +481,45 @@ function _buildStatsHTML(slotIndex, calcResult, highlights) {
         const displayValue = isZero ? '---' : Math.floor(value);
         const marker = (!isZero && isBest) ? '<span class="stat-best-marker">★</span>' : '';
 
+        // Breakdown line: base + equip + tech + buff
+        let breakdownHTML = '';
+        if (!isZero && breakdown && breakdown[key]) {
+            breakdownHTML = _buildBreakdownHTML(breakdown[key]);
+        }
+
         return `
-            <div class="ship-stat-row">
+            <div class="ship-stat-row${breakdownHTML ? ' has-breakdown' : ''}">
                 <span class="stat-label">${label}</span>
                 <span class="${valueClasses}">${displayValue}${marker}</span>
+                ${breakdownHTML}
             </div>
         `;
     }).join('');
 
     return `<div class="ship-stats-grid">${rows}</div>`;
+}
+
+/**
+ * Build compact breakdown HTML for a single stat.
+ * Shows: base + non-zero bonus components.
+ */
+function _buildBreakdownHTML(bd) {
+    const parts = [];
+    parts.push(`<span class="bd-base">${bd.base}</span>`);
+
+    if (bd.equip) parts.push(`<span class="bd-equip">+${bd.equip}</span>`);
+    if (bd.tech) parts.push(`<span class="bd-tech">+${bd.tech}</span>`);
+    if (bd.buffFlat) parts.push(`<span class="bd-buff">+${bd.buffFlat}</span>`);
+    if (bd.buffRatio) {
+        const pct = bd.buffRatioPercent % 1 === 0
+            ? bd.buffRatioPercent.toFixed(0) : bd.buffRatioPercent.toFixed(1);
+        parts.push(`<span class="bd-buff">+${bd.buffRatio}<small>(${pct}%)</small></span>`);
+    }
+
+    // Only show breakdown if there are bonuses beyond base
+    if (parts.length <= 1) return '';
+
+    return `<span class="stat-breakdown">${parts.join('')}</span>`;
 }
 
 /**

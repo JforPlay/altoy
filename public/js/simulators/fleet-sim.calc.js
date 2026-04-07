@@ -103,6 +103,12 @@ const ATTR_TYPE_ID_TO_STAT = {
     12: 'asw',
 };
 
+/**
+ * Game's calcFloor: math.floor(x + 1e-9) (mathssupport.lua:190).
+ * Epsilon guards against IEEE 754 rounding (e.g., 584.0 represented as 583.9999999998).
+ */
+const calcFloor = (x) => Math.floor(x + 1e-9);
+
 /** Reload formula constants (from battleformulas.lua) */
 const RELOAD_K1 = 6;
 const RELOAD_K2 = 100;
@@ -168,13 +174,34 @@ export function calculateShipStats(slotConfig, fleetTechBonuses, fleetPassiveBuf
         stats[key] += (enhance[key] || 0);
     }
 
-    // --- Step 3: Affinity ---
-    // Store post-affinity values (needed for ratio skill calculation)
-    const postAffinityStats = {};
+    // --- Step 3: Affinity + Retrofit → calcFloor ---
+    // Game order (ship.lua:1046,1080-1094,1438):
+    //   (base + growth + enhance) × affinity + retrofit_transforms → calcFloor
+    // Affinity is float multiply, retrofit is added, THEN floor happens once.
     for (const key of ALL_STAT_KEYS) {
         const mult = NO_AFFINITY_STATS.has(key) ? 1.0 : affinityMultiplier;
-        stats[key] = Math.floor(stats[key] * mult);
-        postAffinityStats[key] = stats[key];
+        stats[key] = stats[key] * mult;
+    }
+
+    // Retrofit bonus added BEFORE floor (game adds in getShipProperties, floors in getProperties)
+    if (useRetrofit && ship.retrofit && ship.retrofit.bonus) {
+        for (const [key, value] of Object.entries(ship.retrofit.bonus)) {
+            const statKey = EQUIP_ATTR_TO_STAT[key] || key;
+            if (stats[statKey] !== undefined && typeof value === 'number') {
+                stats[statKey] += value;
+            }
+        }
+    }
+
+    // calcFloor: game's math.floor(x + 1e-9) — matches ship.lua:1438
+    for (const key of ALL_STAT_KEYS) {
+        stats[key] = calcFloor(stats[key]);
+    }
+
+    // --- Breakdown: snapshot base stat (in-game ship stat) ---
+    const breakdown = {};
+    for (const key of ALL_STAT_KEYS) {
+        breakdown[key] = { base: stats[key], equip: 0, tech: 0, buffFlat: 0, buffRatio: 0, buffRatioPercent: 0 };
     }
 
     // --- Step 4: Equipment flat bonuses ---
@@ -187,25 +214,17 @@ export function calculateShipStats(slotConfig, fleetTechBonuses, fleetPassiveBuf
         for (const [statKey, value] of Object.entries(equipBonuses)) {
             if (stats[statKey] !== undefined) {
                 stats[statKey] += value;
+                breakdown[statKey].equip += value;
             }
         }
     }
 
-    // --- Step 4b: Retrofit bonus (flat additions from retrofit.bonus) ---
-    if (useRetrofit && ship.retrofit && ship.retrofit.bonus) {
-        for (const [key, value] of Object.entries(ship.retrofit.bonus)) {
-            const statKey = EQUIP_ATTR_TO_STAT[key] || key;
-            if (stats[statKey] !== undefined && typeof value === 'number') {
-                stats[statKey] += value;
-            }
-        }
-    }
-
-    // --- Step 4c: SP weapon stat bonuses ---
+    // --- Step 4b: SP weapon stat bonuses (counted as equip) ---
     const spWeaponStats = _getSPWeaponStatBonuses(slotConfig, ship);
     for (const [statKey, value] of Object.entries(spWeaponStats)) {
         if (stats[statKey] !== undefined) {
             stats[statKey] += value;
+            breakdown[statKey].equip += value;
         }
     }
 
@@ -215,36 +234,50 @@ export function calculateShipStats(slotConfig, fleetTechBonuses, fleetPassiveBuf
         for (const [statKey, value] of Object.entries(techBonus)) {
             if (stats[statKey] !== undefined) {
                 stats[statKey] += value;
+                breakdown[statKey].tech += value;
             }
         }
     }
 
+    // --- Snapshot baseAttr (game calls SetBaseAttr here) ---
+    // Used as base for ratio buff calculation (BattleBuffAddAttrRatio)
+    // Must include all flat bonuses: equip, SP weapon, fleet tech
+    const baseAttrStats = {};
+    for (const key of ALL_STAT_KEYS) {
+        baseAttrStats[key] = stats[key];
+    }
+
     // --- Step 6: Passive skill buffs ---
+    // Game accumulates buff values as floats and applies via FlashByBuff:
+    //   _attr[stat] = baseAttr[stat] + accumulated_buff_total
+    // Ratio buffs: number * baseAttr * 0.0001 (battlebuffaddattrratio.lua:19)
     if (fleetPassiveBuffs && fleetPassiveBuffs.length > 0) {
         for (const buff of fleetPassiveBuffs) {
             const statKey = BATTLE_ATTR_TO_STAT[buff.attr];
             if (!statKey || stats[statKey] === undefined) continue;
 
             if (buff.type === 'flat') {
-                // BattleBuffAddAttr: add value directly
-                // Flat buff values can be negative (e.g., damage reduction)
                 stats[statKey] += buff.value;
+                breakdown[statKey].buffFlat += buff.value;
             } else if (buff.type === 'ratio') {
-                // BattleBuffAddAttrRatio: value is in 0.01% units (divide by 10000)
-                stats[statKey] += Math.floor(buff.value * postAffinityStats[statKey] * 0.0001);
+                const ratioAdd = buff.value * baseAttrStats[statKey] * 0.0001;
+                stats[statKey] += ratioAdd;
+                breakdown[statKey].buffRatio += ratioAdd;
+                breakdown[statKey].buffRatioPercent += buff.value * 0.01; // accumulate percentage
             }
         }
     }
 
-    // --- Final: floor all stats ---
+    // --- Final: floor all stats and ratio breakdown ---
     for (const key of ALL_STAT_KEYS) {
-        stats[key] = Math.floor(stats[key]);
+        stats[key] = calcFloor(stats[key]);
+        breakdown[key].buffRatio = calcFloor(breakdown[key].buffRatio);
     }
 
     // --- Reload calculation ---
     const reloads = _calculateReloads(ship, slotConfig, stats.reload);
 
-    return { stats, reloads };
+    return { stats, reloads, breakdown };
 }
 
 // ===== Fleet Tech Bonuses =====
@@ -384,6 +417,9 @@ export function resolvePassiveBuffs(targetShip, allFleetShips) {
             const levelBuffs = _getMaxLevelBuffs(passiveSkill);
             if (levelBuffs) {
                 for (const buff of levelBuffs) {
+                    // Per-buff target override (e.g., mixed self+fleet skills)
+                    if (buff.target === 'self' && !isSelf) continue;
+                    if (buff.target === 'fleet_except_self' && isSelf) continue;
                     buffs.push({ attr: buff.attr, value: buff.value, type: buff.type });
                 }
             }

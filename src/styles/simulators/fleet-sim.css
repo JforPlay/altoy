@@ -604,6 +604,52 @@
   color: var(--warning-color);
 }
 
+/* ===== STAT BREAKDOWN ===== */
+
+.ship-stat-row.has-breakdown {
+  flex-wrap: wrap;
+}
+
+.stat-breakdown {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.6rem;
+  line-height: 1;
+  padding-top: 1px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-breakdown > span::before {
+  content: '';
+}
+
+/* Base value — no prefix */
+.bd-base {
+  color: var(--text-muted);
+}
+
+/* Equipment bonus — teal accent */
+.bd-equip {
+  color: var(--accent-green);
+}
+
+/* Fleet tech bonus — blue accent */
+.bd-tech {
+  color: var(--accent-blue);
+}
+
+/* Passive skill buff — warm */
+.bd-buff {
+  color: var(--warning-color);
+}
+
+.bd-buff small {
+  opacity: 0.8;
+}
+
 /* ===== RELOAD ITEMS (used in .ship-reload-bar) ===== */
 
 .reload-item {
