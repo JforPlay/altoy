@@ -291,7 +291,7 @@ body.dark-mode {
 }
 
 .navbar.navbar-light.scrolled {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px var(--overlay-light);
 }
 
 .navbar.navbar-light .nav-logo,
@@ -315,7 +315,7 @@ body.dark-mode {
 .navbar.navbar-light .mega-menu {
   background: var(--surface-elevated);
   border-top: 2px solid var(--border-color);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 40px var(--overlay-light);
 }
 
 .navbar.navbar-light .mega-menu-title {
@@ -633,7 +633,7 @@ body.dark-mode .theme-icon-moon {
 
 .scroll-to-top:hover {
   transform: translateY(-5px);
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1rem 2rem var(--overlay-heavy);
 }
 
 .scroll-to-top:active {
@@ -741,7 +741,7 @@ body.dark-mode .theme-icon-moon {
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1rem 2rem var(--overlay-heavy);
   animation: popup-scale-in 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
@@ -1004,7 +1004,7 @@ body.dark-mode .popup-header {
   justify-content: center;
   font-weight: 700;
   font-size: 1.125rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.25rem 0.5rem var(--overlay-medium);
 }
 
 /* Step content */
@@ -1131,7 +1131,7 @@ body.dark-mode .tooltip-toggle-button {
 
 .tooltip-toggle-button:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px var(--overlay-medium);
 }
 
 body.dark-mode .tooltip-toggle-button:hover {

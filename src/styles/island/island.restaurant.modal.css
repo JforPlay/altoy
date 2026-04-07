@@ -131,7 +131,7 @@
     max-height: 90vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 60px var(--overlay-heavy);
     animation: slideUp 0.3s ease;
 }
 
@@ -394,7 +394,7 @@
     pointer-events: none;
     transition: opacity 0.2s;
     z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px var(--overlay-strong);
 }
 
 .menu-option-ingredients img:hover::before {
@@ -675,7 +675,7 @@
     font-weight: 700;
     padding: 0.1rem 0.3rem;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 4px var(--overlay-strong);
     border: none;
 }
 

@@ -169,7 +169,7 @@
   opacity: 0;
   transition: opacity var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
   -webkit-tap-highlight-color: transparent;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 4px var(--overlay-strong);
 }
 
 .skin-box-link:hover .skin-action-btn {

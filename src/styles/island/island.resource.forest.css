@@ -14,7 +14,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px var(--overlay-lightest);
 }
 
 .ghost-btn:hover {
@@ -92,7 +92,7 @@
     border-radius: 16px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px var(--overlay-lighter);
 }
 
 .forest-category[open] {
@@ -155,7 +155,7 @@
     border-radius: 12px;
     padding: 1.25rem;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 6px var(--overlay-lightest);
 }
 
 .forest-tree-wrapper:hover {
@@ -187,7 +187,7 @@
     background: linear-gradient(135deg, var(--primary-alpha-10) 0%, rgba(114, 137, 218, 0.03) 100%);
     border: 2px solid var(--primary-alpha-30);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px var(--overlay-lightest);
 }
 
 .forest-root-chip:hover {
@@ -202,7 +202,7 @@
     height: 32px;
     border-radius: 6px;
     border: 2px solid var(--primary-alpha-30);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--overlay-light);
 }
 
 .forest-chip-name {
@@ -273,7 +273,7 @@
     border: 2px solid var(--island-border);
     font-size: 0.9375rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px var(--overlay-lightest);
 }
 
 .forest-tree__content:hover {
@@ -289,7 +289,7 @@
     height: 28px;
     border-radius: 6px;
     border: 2px solid var(--primary-alpha-20);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 4px var(--overlay-lighter);
     transition: all 0.3s ease;
 }
 

@@ -43,7 +43,7 @@
     background: linear-gradient(135deg, var(--island-surface) 0%, var(--island-bg) 100%);
     border: 2px solid var(--primary-alpha-30);
     border-radius: 20px;
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--highlight-subtle);
     display: flex;
     flex-direction: column;
     animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -68,7 +68,7 @@
     padding: 1.75rem 2.25rem;
     background: linear-gradient(135deg, var(--primary-alpha-10) 0%, var(--primary-alpha-10) 100%);
     border-bottom: 2px solid var(--primary-alpha-20);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px var(--overlay-lightest);
 }
 
 .modal-header h3 {
@@ -84,7 +84,7 @@
 .modal-header h3::before {
     content: '\1F332';
     font-size: 1.5rem;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 2px 4px var(--overlay-medium));
 }
 
 .modal-close-btn {

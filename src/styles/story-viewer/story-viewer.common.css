@@ -116,7 +116,7 @@ body {
   padding: 1rem 2rem;
   border-radius: 0.5rem;
   z-index: 2000;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px var(--overlay-medium);
 }
 
 /* Flavor text box (floating warning in memory selection / tab views) */
@@ -322,7 +322,7 @@ body {
   font-weight: 700;
   text-align: center;
   transform: rotate(45deg);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px var(--overlay-medium);
   white-space: nowrap;
 }
 
@@ -526,8 +526,8 @@ body {
       0deg,
       transparent 0px,
       transparent 1px,
-      rgba(0, 0, 0, 0.3) 1px,
-      rgba(0, 0, 0, 0.3) 2px
+      var(--overlay-strong) 1px,
+      var(--overlay-strong) 2px
     ),
     repeating-linear-gradient(
       0deg,
@@ -586,7 +586,7 @@ body {
   z-index: 6;
   background:
     linear-gradient(transparent 0%, transparent 15%, rgba(0, 255, 255, 0.25) 15%, rgba(0, 255, 255, 0.25) 17%, transparent 17%, transparent 100%),
-    linear-gradient(transparent 0%, transparent 45%, rgba(255, 255, 255, 0.2) 45%, rgba(255, 255, 255, 0.2) 46%, transparent 46%, transparent 100%),
+    linear-gradient(transparent 0%, transparent 45%, var(--highlight-medium) 45%, var(--highlight-medium) 46%, transparent 46%, transparent 100%),
     linear-gradient(transparent 0%, transparent 62%, rgba(0, 255, 200, 0.2) 62%, rgba(0, 255, 200, 0.2) 64%, transparent 64%, transparent 100%),
     linear-gradient(transparent 0%, transparent 78%, rgba(255, 100, 200, 0.15) 78%, rgba(255, 100, 200, 0.15) 80%, transparent 80%, transparent 100%),
     linear-gradient(transparent 0%, transparent 33%, rgba(100, 255, 150, 0.18) 33%, rgba(100, 255, 150, 0.18) 34%, transparent 34%, transparent 100%);
@@ -773,7 +773,7 @@ body {
   margin: 0 auto 1rem auto;
   border-radius: 0.75rem;
   padding: 1.5rem;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 20px var(--overlay-medium);
   display: flex;
   align-items: center;
   z-index: 10;
@@ -791,7 +791,7 @@ body {
 }
 
 .actor-portrait.actor-shadow {
-  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px 5px var(--overlay-heavy);
   filter: brightness(0.5);
   opacity: 0.7;
 }
@@ -888,7 +888,7 @@ body {
 .story-nav-btn:hover {
   background-color: var(--border-color);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px var(--overlay-medium);
   opacity: 1;
 }
 
@@ -1084,7 +1084,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px var(--overlay-strong);
 }
 
 /* Summary modal content styling */

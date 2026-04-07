@@ -9,11 +9,11 @@
   --bg-primary: #f5f5f5;
   --bg-secondary: #ffffff;
   --bg-tertiary: #f0f0f0;
-  --border-color: #e0e0e0;
+  --chat-border: #e0e0e0;
   --border-hover: #5865f2;
 
-  --text-primary: #1a1a1a;
-  --text-secondary: #666;
+  --chat-text: #1a1a1a;
+  --chat-text-secondary: #666;
   --text-muted: #888;
   --text-heading: #1a1a1a;
 
@@ -40,11 +40,11 @@ body.dark-mode {
   --bg-primary: #36393f;
   --bg-secondary: #2f3136;
   --bg-tertiary: #292b2f;
-  --border-color: #40444b;
+  --chat-border: #40444b;
   --border-hover: #7289da;
 
-  --text-primary: #dcddde;
-  --text-secondary: #b9bbbe;
+  --chat-text: #dcddde;
+  --chat-text-secondary: #b9bbbe;
   --text-muted: #a3a6aa;
   --text-heading: #ffffff;
 
@@ -81,7 +81,7 @@ body.dark-mode {
 body {
   background-color: var(--bg-primary);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--text-primary);
+  color: var(--chat-text);
   margin: 0;
   padding: 1.25rem;
   transition: background-color var(--animation-duration) ease,
@@ -111,7 +111,7 @@ body {
 }
 
 .main-header p {
-  color: var(--text-secondary);
+  color: var(--chat-text-secondary);
   text-align: center;
   margin: 0;
   transition: color var(--animation-duration) ease;
@@ -125,7 +125,7 @@ body {
 
 #character-selection-section {
   background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--chat-border);
   padding: 1.25rem 1.5625rem;
   border-radius: 0.625rem;
   margin: 0 auto 1.875rem auto;
@@ -170,7 +170,7 @@ body {
 }
 
 #character-selection-section .character-grid::-webkit-scrollbar-thumb {
-  background-color: var(--border-color);
+  background-color: var(--chat-border);
   border-radius: 0.625rem;
 }
 
@@ -213,7 +213,7 @@ body {
 .selected-character-display {
   display: none;
   font-size: 0.9em;
-  color: var(--text-secondary);
+  color: var(--chat-text-secondary);
   font-weight: normal;
   margin-left: 0.9375rem;
 }
@@ -254,7 +254,7 @@ body {
 
 .loading-message {
   text-align: center;
-  color: var(--text-secondary);
+  color: var(--chat-text-secondary);
   transition: color var(--animation-duration) ease;
 }
 
@@ -269,7 +269,7 @@ body {
 
 .character-card {
   background-color: var(--bg-secondary);
-  border: 2px solid var(--border-color);
+  border: 2px solid var(--chat-border);
   border-radius: 0.625rem;
   padding: 0.9375rem;
   text-align: center;
@@ -322,7 +322,7 @@ body.dark-mode .character-card.selected {
 
 .character-card .ship-name {
   font-size: 0.9em;
-  color: var(--text-secondary);
+  color: var(--chat-text-secondary);
   margin: 0;
   transition: color var(--animation-duration) ease;
   overflow: hidden;
@@ -363,7 +363,7 @@ body.dark-mode .character-card.selected {
   gap: 0.9375rem;
   align-items: start;
   padding: 1.25rem 1.5625rem 0.9375rem 1.5625rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--chat-border);
   flex-shrink: 0;
 }
 
@@ -390,9 +390,9 @@ body.dark-mode .character-card.selected {
   width: 100%;
   padding: 0.75rem;
   border-radius: 0.3125rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--chat-border);
   background-color: var(--bg-tertiary);
-  color: var(--text-primary);
+  color: var(--chat-text);
   font-size: 1em;
   cursor: pointer;
   transition: background-color var(--animation-duration) ease,
@@ -408,7 +408,7 @@ body.dark-mode .character-card.selected {
 
 .flavor-text-box {
   background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--chat-border);
   border-radius: 0.5rem;
   padding: 0.9375rem;
   text-align: center;
@@ -425,7 +425,7 @@ body.dark-mode .flavor-text-box {
   margin: 0;
   line-height: 1.6;
   font-style: italic;
-  color: var(--text-secondary);
+  color: var(--chat-text-secondary);
   transition: color var(--animation-duration) ease;
 }
 
@@ -471,7 +471,7 @@ body.dark-mode .flavor-text-box {
   max-width: 56.25rem;
   margin: 0 auto;
   background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--chat-border);
   border-radius: 0.625rem;
   box-sizing: border-box;
   transition: background-color var(--animation-duration) ease,
@@ -505,7 +505,7 @@ body.dark-mode .flavor-text-box {
 }
 
 .story-container::-webkit-scrollbar-thumb {
-  background-color: var(--border-color);
+  background-color: var(--chat-border);
   border-radius: 0.625rem;
 }
 
@@ -529,7 +529,7 @@ body.dark-mode .flavor-text-box {
   width: 2.8125rem;
   height: 2.8125rem;
   border-radius: 50%;
-  border: 2px solid var(--border-color);
+  border: 2px solid var(--chat-border);
   flex-shrink: 0;
   object-fit: cover;
   transition: border-color var(--animation-duration) ease;
@@ -583,7 +583,7 @@ body.dark-mode .flavor-text-box {
 /* Message types */
 .character {
   background-color: var(--character-bg);
-  color: var(--text-primary);
+  color: var(--chat-text);
 }
 
 .player {
@@ -614,7 +614,7 @@ body.dark-mode .flavor-text-box {
   align-items: flex-end;
   gap: 0.625rem;
   background-color: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--chat-border);
 }
 
 .choice-button {
@@ -651,7 +651,7 @@ body.dark-mode .flavor-text-box {
   padding: 0.5rem 0.75rem;
   background-color: rgba(88, 101, 242, 0.15);
   border: 1px solid var(--accent-primary);
-  color: var(--text-primary);
+  color: var(--chat-text);
 }
 
 body.dark-mode .message-bubble.selected-choice {
@@ -668,10 +668,10 @@ body.dark-mode .message-bubble.selected-choice {
   margin: 1.25rem 0;
   font-size: 1.1em;
   font-weight: bold;
-  color: var(--text-secondary);
+  color: var(--chat-text-secondary);
   background-color: var(--bg-tertiary);
   border-radius: 0.625rem;
-  border: 2px dashed var(--border-color);
+  border: 2px dashed var(--chat-border);
   transition: background-color var(--animation-duration) ease,
     border-color var(--animation-duration) ease,
     color var(--animation-duration) ease;
@@ -704,7 +704,7 @@ body.dark-mode .end-of-conversation {
 /* System Messages */
 .system-message {
   text-align: center;
-  color: var(--text-secondary);
+  color: var(--chat-text-secondary);
   font-size: 0.9em;
   font-style: italic;
   padding: 0.5rem;

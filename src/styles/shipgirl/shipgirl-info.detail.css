@@ -60,7 +60,7 @@
   background: var(--bg-gradient-start);
   border-color: #b8b8b8;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px var(--overlay-light);
 }
 
 body.dark-mode .back-button {

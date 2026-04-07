@@ -15,11 +15,11 @@
     --bg-primary: #ffffff;
     --bg-secondary: #f8f9fa;
     --bg-tertiary: #e9ecef;
-    --text-primary: #212529;
-    --text-secondary: #6c757d;
-    --border-color: #dee2e6;
+    --build-sim-text: #212529;
+    --build-sim-text-secondary: #6c757d;
+    --build-sim-border: #dee2e6;
     --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+    --build-sim-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* Dark mode */
@@ -27,11 +27,11 @@ body.dark-mode {
     --bg-primary: #1a1a1a;
     --bg-secondary: #2d2d2d;
     --bg-tertiary: #3d3d3d;
-    --text-primary: #f8f9fa;
-    --text-secondary: #adb5bd;
-    --border-color: #495057;
+    --build-sim-text: #f8f9fa;
+    --build-sim-text-secondary: #adb5bd;
+    --build-sim-border: #495057;
     --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --build-sim-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
 
     /* Dimmed rarity colors for dark mode */
     --color-ur: #d45555;
@@ -51,7 +51,7 @@ body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: var(--bg-secondary);
-    color: var(--text-primary);
+    color: var(--build-sim-text);
     line-height: 1.6;
 }
 
@@ -78,7 +78,7 @@ body {
 }
 
 .subtitle {
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
     font-size: 1.1rem;
     margin: 0;
 }
@@ -103,7 +103,7 @@ body {
     min-width: 150px;
     padding: 1rem;
     background: var(--bg-primary);
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--build-sim-border);
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -112,12 +112,12 @@ body {
     align-items: center;
     gap: 0.4rem;
     font-size: 0.9rem;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 .pool-btn:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--build-sim-shadow-lg);
 }
 
 .pool-btn.active {
@@ -148,13 +148,13 @@ section {
 section h2 {
     margin: 0 0 1.5rem 0;
     font-size: 1.5rem;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 section h3 {
     margin: 1.5rem 0 1rem 0;
     font-size: 1.1rem;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 /* ===== Probability Chart ===== */
@@ -201,7 +201,7 @@ section h3 {
     font-weight: 700;
     font-size: 0.9rem;
     color: white;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 2px var(--overlay-strong);
     white-space: nowrap;
 }
 
@@ -209,7 +209,7 @@ section h3 {
     font-weight: 600;
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.95);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 2px var(--overlay-strong);
 }
 
 /* Hide labels on very small segments */
@@ -247,12 +247,12 @@ section h3 {
 .legend-color.n { background: var(--color-n); }
 
 .legend-text {
-    color: var(--text-primary);
+    color: var(--build-sim-text);
     font-weight: 600;
 }
 
 .legend-percent {
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
 }
 
 /* ===== Ship Probability Calculator ===== */
@@ -266,10 +266,10 @@ section h3 {
 .ship-select {
     width: 100%;
     padding: 0.75rem 1rem;
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--build-sim-border);
     border-radius: 8px;
     background: var(--bg-primary);
-    color: var(--text-primary);
+    color: var(--build-sim-text);
     font-size: 1rem;
     margin-bottom: 1rem;
     cursor: pointer;
@@ -291,14 +291,14 @@ section h3 {
 }
 
 .result-label {
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
     font-size: 0.95rem;
 }
 
 .result-value {
     font-weight: 700;
     font-size: 1.1rem;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 /* ===== Probability Graph ===== */
@@ -308,13 +308,13 @@ section h3 {
     padding: 1.5rem;
     background: var(--bg-primary);
     border-radius: 12px;
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--build-sim-border);
 }
 
 .probability-graph-container h4 {
     margin: 0 0 1rem 0;
     font-size: 1.1rem;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 #probability-graph {
@@ -339,7 +339,7 @@ section h3 {
     align-items: center;
     gap: 0.5rem;
     font-size: 0.9rem;
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
 }
 
 .legend-dot {
@@ -355,10 +355,10 @@ section h3 {
     position: fixed;
     display: none;
     background: var(--bg-primary);
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--build-sim-border);
     border-radius: 8px;
     padding: 0.75rem 1rem;
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--build-sim-shadow-lg);
     z-index: 10000;
     pointer-events: none;
     min-width: 200px;
@@ -367,22 +367,22 @@ section h3 {
 .tooltip-ship {
     font-weight: 700;
     font-size: 1rem;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
     margin-bottom: 0.5rem;
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--build-sim-border);
     padding-bottom: 0.5rem;
 }
 
 .tooltip-builds,
 .tooltip-prob {
     font-size: 0.9rem;
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
     margin: 0.25rem 0;
 }
 
 .tooltip-builds strong,
 .tooltip-prob strong {
-    color: var(--text-primary);
+    color: var(--build-sim-text);
     font-weight: 700;
 }
 
@@ -426,7 +426,7 @@ section h3 {
 
 .sim-btn:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--build-sim-shadow-lg);
 }
 
 .sim-btn:active {
@@ -457,7 +457,7 @@ section h3 {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
     font-size: 1.1rem;
 }
 
@@ -511,7 +511,7 @@ section h3 {
     font-weight: 700;
     padding: 0.25rem 0.5rem;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px var(--overlay-strong);
     z-index: 10;
 }
 
@@ -527,7 +527,7 @@ section h3 {
     font-size: 0.9rem;
     font-weight: 600;
     text-align: center;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 .ship-card-rarity {
@@ -565,7 +565,7 @@ section h3 {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    border-left: 4px solid var(--border-color);
+    border-left: 4px solid var(--build-sim-border);
 }
 
 .stat-card.ur-stat { border-left-color: var(--color-ur); }
@@ -575,14 +575,14 @@ section h3 {
 .stat-card.n-stat { border-left-color: var(--color-n); }
 
 .stat-label {
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
     font-size: 0.9rem;
 }
 
 .stat-value {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 /* ===== Resource Statistics ===== */
@@ -621,7 +621,7 @@ section h3 {
 }
 
 .resource-label {
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
     font-size: 0.9rem;
     font-weight: 600;
 }
@@ -629,7 +629,7 @@ section h3 {
 .resource-value {
     font-size: 1.75rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 /* ===== Ship Adder / Custom Pool ===== */
@@ -639,13 +639,13 @@ section h3 {
     padding: 1.5rem;
     border-radius: 12px;
     margin-bottom: 2rem;
-    border: 2px dashed var(--border-color);
+    border: 2px dashed var(--build-sim-border);
 }
 
 .ship-adder h3 {
     margin: 0 0 1rem 0;
     font-size: 1.1rem;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 .adder-controls {
@@ -664,10 +664,10 @@ section h3 {
 .ship-search-input {
     width: 100%;
     padding: 0.75rem 1rem;
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--build-sim-border);
     border-radius: 8px;
     background: var(--bg-primary);
-    color: var(--text-primary);
+    color: var(--build-sim-text);
     font-size: 1rem;
     transition: border-color 0.2s ease;
 }
@@ -685,10 +685,10 @@ section h3 {
     max-height: 300px;
     overflow-y: auto;
     background: var(--bg-primary);
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--build-sim-border);
     border-radius: 8px;
     margin-top: 0.5rem;
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--build-sim-shadow-lg);
     z-index: 1000;
 }
 
@@ -726,12 +726,12 @@ section h3 {
 
 .ship-option-name {
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 .ship-option-id {
     font-size: 0.85rem;
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
 }
 
 .ship-option-rarity {
@@ -758,15 +758,15 @@ section h3 {
 .pickup-input-group label {
     font-size: 0.9rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 .pickup-rate-input {
     padding: 0.75rem 1rem;
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--build-sim-border);
     border-radius: 8px;
     background: var(--bg-primary);
-    color: var(--text-primary);
+    color: var(--build-sim-text);
     font-size: 1rem;
     width: 150px;
 }
@@ -797,13 +797,13 @@ section h3 {
 
 .add-ship-btn:disabled {
     background: var(--bg-tertiary);
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
     cursor: not-allowed;
 }
 
 .add-ship-btn:not(:disabled):hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--build-sim-shadow-lg);
 }
 
 .reset-pool-btn {
@@ -812,7 +812,7 @@ section h3 {
 
 .reset-pool-btn:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--build-sim-shadow-lg);
 }
 
 .added-ships-list {
@@ -828,7 +828,7 @@ section h3 {
     gap: 0.5rem;
     padding: 0.5rem 1rem;
     background: var(--bg-primary);
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--build-sim-border);
     border-radius: 8px;
     position: relative;
 }
@@ -854,12 +854,12 @@ section h3 {
 .added-ship-tag-name {
     font-weight: 600;
     font-size: 0.9rem;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 .added-ship-tag-rate {
     font-size: 0.75rem;
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
 }
 
 .added-ship-tag-remove {
@@ -867,7 +867,7 @@ section h3 {
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
     padding: 0.25rem;
     border-radius: 4px;
     transition: all 0.2s ease;
@@ -903,7 +903,7 @@ section h3 {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 .collapse-btn:hover {
@@ -949,7 +949,7 @@ section h3 {
 
 .filter-group label {
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 .rarity-filters {
@@ -960,9 +960,9 @@ section h3 {
 
 .rarity-filter {
     padding: 0.5rem 1rem;
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--build-sim-border);
     background: var(--bg-secondary);
-    color: var(--text-primary);
+    color: var(--build-sim-text);
     border-radius: 8px;
     cursor: pointer;
     font-size: 0.9rem;
@@ -984,10 +984,10 @@ section h3 {
     flex: 1;
     min-width: 250px;
     padding: 0.75rem 1rem;
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--build-sim-border);
     border-radius: 8px;
     background: var(--bg-primary);
-    color: var(--text-primary);
+    color: var(--build-sim-text);
     font-size: 1rem;
 }
 
@@ -1022,10 +1022,10 @@ section h3 {
 
 .ship-count {
     text-align: center;
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
     font-size: 0.95rem;
     padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--build-sim-border);
 }
 
 /* ===== Despair Pool Modal ===== */
@@ -1052,7 +1052,7 @@ section h3 {
     max-height: 90vh;
     display: flex;
     flex-direction: column;
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--build-sim-shadow-lg);
 }
 
 .modal-header {
@@ -1060,13 +1060,13 @@ section h3 {
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 2rem;
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--build-sim-border);
 }
 
 .modal-header h2 {
     margin: 0;
     font-size: 1.5rem;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 .modal-close {
@@ -1079,7 +1079,7 @@ section h3 {
     align-items: center;
     justify-content: center;
     transition: background 0.2s ease;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 .modal-close:hover {
@@ -1101,7 +1101,7 @@ section h3 {
 
 .selection-info p {
     margin: 0 0 1rem 0;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
     font-size: 1rem;
 }
 
@@ -1109,7 +1109,7 @@ section h3 {
     display: flex;
     gap: 2rem;
     font-size: 0.95rem;
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
 }
 
 .selection-status span {
@@ -1117,7 +1117,7 @@ section h3 {
 }
 
 .selection-status span span {
-    color: var(--text-primary);
+    color: var(--build-sim-text);
     font-weight: 700;
     font-size: 1.1rem;
 }
@@ -1131,9 +1131,9 @@ section h3 {
 .rarity-tab {
     flex: 1;
     padding: 0.75rem 1.5rem;
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--build-sim-border);
     background: var(--bg-secondary);
-    color: var(--text-primary);
+    color: var(--build-sim-text);
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
@@ -1174,7 +1174,7 @@ section h3 {
 
 .modal-ship-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--build-sim-shadow-lg);
 }
 
 .modal-ship-card.selected {
@@ -1213,7 +1213,7 @@ section h3 {
     font-size: 0.85rem;
     font-weight: 600;
     text-align: center;
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 .modal-ship-rarity {
@@ -1239,7 +1239,7 @@ section h3 {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px var(--overlay-strong);
 }
 
 .selected-check .material-symbols-outlined {
@@ -1251,7 +1251,7 @@ section h3 {
     display: flex;
     gap: 1rem;
     padding: 1.5rem 2rem;
-    border-top: 2px solid var(--border-color);
+    border-top: 2px solid var(--build-sim-border);
 }
 
 .modal-btn {
@@ -1267,11 +1267,11 @@ section h3 {
 
 .cancel-btn {
     background: var(--bg-tertiary);
-    color: var(--text-primary);
+    color: var(--build-sim-text);
 }
 
 .cancel-btn:hover {
-    background: var(--border-color);
+    background: var(--build-sim-border);
 }
 
 .confirm-btn {
@@ -1281,12 +1281,12 @@ section h3 {
 
 .confirm-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--build-sim-shadow-lg);
 }
 
 .confirm-btn:disabled {
     background: var(--bg-tertiary);
-    color: var(--text-secondary);
+    color: var(--build-sim-text-secondary);
     cursor: not-allowed;
 }
 

@@ -469,7 +469,7 @@
     letter-spacing: 0.5px;
     text-align: center;
     min-width: 3rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px var(--overlay-medium);
     transition: var(--island-transition);
 }
 

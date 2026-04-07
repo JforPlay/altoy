@@ -226,7 +226,7 @@ body {
 
 body.dark-mode .container {
   background: white;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px var(--overlay-strong);
 }
 
 body.dark-mode .container h1 {

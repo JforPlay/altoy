@@ -234,7 +234,7 @@
   font-weight: bold;
   border-radius: 0.25rem;
   text-transform: uppercase;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px var(--overlay-medium);
 }
 
 body.dark-mode .construction-badge {

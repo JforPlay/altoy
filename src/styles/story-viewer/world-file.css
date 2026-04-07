@@ -29,7 +29,7 @@ header {
   color: white;
   padding: 10px 20px;
   text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px var(--overlay-medium);
 }
 
 header h1 {

@@ -100,7 +100,7 @@
     max-height: calc(100vh - 8rem);
     background: var(--island-surface);
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px var(--overlay-strong);
     overflow-y: auto;
     z-index: 1000;
     opacity: 0;
@@ -286,7 +286,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0.125rem 0.5rem var(--overlay-strong);
     z-index: 3;
     cursor: help;
     animation: badge-appear 0.3s ease-out;
