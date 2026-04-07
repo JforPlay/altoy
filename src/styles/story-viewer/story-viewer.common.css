@@ -1185,7 +1185,7 @@ body {
   --shake-y: 0px;
   --shake-duration: 440ms;
   --shake-iterations: 1;
-  animation: story-shake-dynamic var(--shake-duration) cubic-bezier(0.36, 0.07, 0.19, 0.97) var(--shake-iterations) both;
+  animation: story-shake-dynamic var(--shake-duration) ease-in-out var(--shake-iterations) both;
 }
 
 /* Dialog-box horizontal shake driven by line.dialogShake. A smooth symmetric
@@ -1205,6 +1205,25 @@ body {
   50%  { transform: translateX(0); }
   75%  { transform: translateX(calc(var(--dialog-shake-x) * -1)); }
   100% { transform: translateX(0); }
+}
+
+/* Painting/portrait shake driven by line.action[].type="shake".
+   Supports both X and Y axes. In the game this is a LeanTween ping-pong
+   move on the character painting element. */
+.painting-shake {
+  --painting-shake-x: 0px;
+  --painting-shake-y: 0px;
+  --painting-shake-duration: 150ms;
+  --painting-shake-iterations: 2;
+  animation: story-painting-shake var(--painting-shake-duration) ease-in-out var(--painting-shake-iterations) both;
+}
+
+@keyframes story-painting-shake {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(var(--painting-shake-x), var(--painting-shake-y)); }
+  50%  { transform: translate(0, 0); }
+  75%  { transform: translate(calc(var(--painting-shake-x) * -1), calc(var(--painting-shake-y) * -1)); }
+  100% { transform: translate(0, 0); }
 }
 
 .flash {
@@ -1270,10 +1289,11 @@ body {
    own intensity. The global @keyframes shake in theme.css is kept for other
    pages that rely on its fixed-amplitude behavior. */
 @keyframes story-shake-dynamic {
-  10%, 90% { transform: translate3d(calc(var(--shake-x) * -0.1), calc(var(--shake-y) * -0.1), 0); }
-  20%, 80% { transform: translate3d(calc(var(--shake-x) *  0.2), calc(var(--shake-y) *  0.2), 0); }
-  30%, 50%, 70% { transform: translate3d(calc(var(--shake-x) * -0.4), calc(var(--shake-y) * -0.4), 0); }
-  40%, 60% { transform: translate3d(calc(var(--shake-x) *  0.4), calc(var(--shake-y) *  0.4), 0); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  15%, 85% { transform: translate3d(calc(var(--shake-x) * -0.12), calc(var(--shake-y) * -0.12), 0); }
+  30%, 70% { transform: translate3d(calc(var(--shake-x) *  0.25), calc(var(--shake-y) *  0.25), 0); }
+  45%      { transform: translate3d(calc(var(--shake-x) * -0.25), calc(var(--shake-y) * -0.25), 0); }
+  60%      { transform: translate3d(calc(var(--shake-x) *  0.12), calc(var(--shake-y) *  0.12), 0); }
 }
 
 @keyframes flash-anim {

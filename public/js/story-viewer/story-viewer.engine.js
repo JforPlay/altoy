@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Effect tuning. Shake "speed" in game data is a small-int tier; we map
         // it to a per-cycle duration. Flash duration caps keep runaway 'number:
         // 999' entries from pinning the screen forever.
-        SHAKE_DEFAULT_X_PX: 12,
+        SHAKE_DEFAULT_X_PX: 8,
         SHAKE_MAX_TOTAL_MS: 8000,
         FLASH_MAX_TOTAL_MS: 8000,
 
@@ -943,7 +943,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // replaying shake/flash/sfx on backward nav feels like the story is
             // resetting on the user. Jumps & resumes also skip. We still cancel
             // any in-flight effects so a mid-animation escape doesn't linger.
-            //   line.shake     — screen shake with {number, speed, y}
+            //   line.shakeTime — full-screen shake (rare, dramatic moments)
+            //   line.shake — painting shake (NOT screen shake; storymgr.lua:991)
+            //   line.dialogShake — dialogue box shake
+            //   line.action[].type="shake" — painting/portrait shake
             //   line.flashN    — color blink sequence (white/red/etc)
             //   line.soundeffect + line.seDelay — SFX with delay
             //   line.effects[] — named GameObject overlays (ignored: assets not
@@ -951,6 +954,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (this._playFlashOnNextRender) {
                 this.handleLineShake(line);
                 this.handleLineDialogShake(line);
+                this.handleLinePaintingShake(line);
                 this.handleLineFlashN(line);
                 this.handleLineSoundEffect(line);
             } else {
@@ -1536,13 +1540,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 const hideAll =
                     line.hideOther === true ||
                     line.hidePainting === true ||
-                    (line.actor === undefined && line.actorName === undefined) ||
-                    !hasRenderableActor;
+                    (line.actor === undefined && line.actorName === undefined);
 
                 if (hideAll) {
                     paintings.clear();
                     activeSide = null;
                     prevSide = null;
+                    continue;
+                }
+
+                // Actor exists but has no expression data (missing from manifest).
+                // Don't clear other paintings — just skip painting placement and
+                // update the active speaker side for dimming.
+                if (!hasRenderableActor) {
+                    activeSide = line.side !== undefined ? line.side : null;
                     continue;
                 }
 
@@ -1850,6 +1861,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 dbox.style.removeProperty('--dialog-shake-duration');
                 dbox.style.removeProperty('--dialog-shake-iterations');
             }
+            // PaintingShake (character portrait)
+            this._clearPaintingShake();
             // FlashN
             if (this._flashNAnims) {
                 this._flashNAnims.forEach(a => { try { a.cancel(); } catch (_) {} });
@@ -1867,16 +1880,15 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         /**
-         * Apply per-step screen shake from `line.shake`.
+         * Apply full-screen shake from `line.shakeTime`.
          *
-         * Game data shape: { number, speed, y? }
-         *   number — how many shake cycles to play (999 means "very long")
-         *   speed  — small-int tier (0..5 observed); larger = faster cycles
-         *   y      — optional vertical amplitude in px (default 0)
+         * line.shakeTime — number (seconds)
+         *   In the game (storyplayer.lua) this plays a looping Unity animation
+         *   for the given duration. Only ~27 occurrences across all story data
+         *   — reserved for dramatic moments (explosions, impacts).
          *
-         * Previously the engine expected effects[].type === "shake" which NEVER
-         * appears in real data (all effects[] entries are {active, name} for
-         * named GameObject overlays). The old handler was dead code.
+         * NOTE: `line.shake` is NOT a screen shake — it's a painting shake
+         * handled by handleLinePaintingShake(). See storymgr.lua:991-994.
          */
         handleLineShake(line) {
             const container = this.elements.viewerContainer;
@@ -1890,21 +1902,16 @@ document.addEventListener('DOMContentLoaded', () => {
             container.style.removeProperty('--shake-duration');
             container.style.removeProperty('--shake-iterations');
 
-            const s = line.shake;
-            if (!s || typeof s !== 'object') return;
+            if (!Number.isFinite(line.shakeTime) || line.shakeTime <= 0) return;
 
-            const number = Math.max(1, parseInt(s.number, 10) || 1);
-            const speed = Number.isFinite(s.speed) ? s.speed : 1;
-            const ampY = Number.isFinite(s.y) ? s.y : 0;
+            // Derive iteration count from duration at a moderate cycle pace.
+            const perCycleMs = 520;
+            const number = Math.max(1, Math.round(line.shakeTime * 1000 / perCycleMs));
             const ampX = this.SHAKE_DEFAULT_X_PX;
-
-            // Map speed tier to per-cycle duration. Higher speed = faster cycles.
-            // speed 0 → 520ms, 1 → 440ms, 2 → 360ms, 5 → 120ms (floor 100ms).
-            const perCycleMs = Math.max(100, 520 - speed * 80);
             const totalMs = Math.min(this.SHAKE_MAX_TOTAL_MS, perCycleMs * number);
 
             container.style.setProperty('--shake-x', `${ampX}px`);
-            container.style.setProperty('--shake-y', `${ampY}px`);
+            container.style.setProperty('--shake-y', '0px');
             container.style.setProperty('--shake-duration', `${perCycleMs}ms`);
             container.style.setProperty('--shake-iterations', String(number));
             container.classList.add('shake');
@@ -1973,6 +1980,109 @@ document.addEventListener('DOMContentLoaded', () => {
                 this._dialogShakeTimer = setTimeout(start, delayMs);
             } else {
                 start();
+            }
+        },
+
+        /**
+         * Painting/portrait shake from `line.action[]` entries with type="shake".
+         *
+         * Game data shape (per action entry):
+         *   { type:"shake", x, y, dur, number, delay }
+         *   x/y   — displacement in px (game coords, scaled down for web)
+         *   dur   — seconds per ping-pong cycle
+         *   number — how many ping-pong loops
+         *   delay — seconds before start
+         *
+         * In the game this is TweenMove on the character painting with
+         * setLoopPingPong. We apply a CSS animation to the painting element
+         * on the active speaker's side.
+         */
+        handleLinePaintingShake(line) {
+            // Clear any prior painting shake.
+            this._clearPaintingShake();
+
+            // Two sources of painting shake (both use LeanTween.move on the
+            // painting in storymgr.lua):
+            //
+            // 1. line.shake = {number, speed, x?, y?}   (storymgr.lua:991-994)
+            //    speed is a divisor: duration = 1/speed seconds per tween
+            //    x defaults 0, y defaults 10 (game px)
+            //
+            // 2. line.action[].type="shake" = {x, y, dur, number, delay}
+            //    dur is direct duration in seconds    (storymgr.lua:1002-1003)
+            //    x defaults 0, y defaults 10 (game px)
+            let ampX, ampY, perCycleMs, number, delayMs;
+
+            const actionShake = Array.isArray(line.action)
+                ? line.action.find(a => a && a.type === 'shake')
+                : null;
+            const lineShake = (line.shake && typeof line.shake === 'object') ? line.shake : null;
+
+            if (!actionShake && !lineShake) return;
+
+            // Scale down game coords — game paintings are much larger than the
+            // web viewer's painting layer. Use ~15% of the raw value so the
+            // effect is noticeable without being jarring.
+            const scale = 0.15;
+
+            if (actionShake) {
+                // action shake: dur is seconds per tween cycle
+                number = Math.max(1, parseInt(actionShake.number, 10) || 2);
+                const dur = Number.isFinite(actionShake.dur) && actionShake.dur > 0 ? actionShake.dur : 0.15;
+                delayMs = Math.max(0, (actionShake.delay || 0) * 1000);
+                ampX = (Number.isFinite(actionShake.x) ? actionShake.x : 0) * scale;
+                ampY = (Number.isFinite(actionShake.y) ? actionShake.y : 10) * scale;
+                perCycleMs = Math.max(40, dur * 1000);
+            } else {
+                // line.shake: speed is a divisor → duration = 1/speed seconds
+                number = Math.max(1, parseInt(lineShake.number, 10) || 1);
+                const speed = Number.isFinite(lineShake.speed) && lineShake.speed > 0 ? lineShake.speed : 1;
+                delayMs = 0;
+                ampX = (Number.isFinite(lineShake.x) ? lineShake.x : 0) * scale;
+                ampY = (Number.isFinite(lineShake.y) ? lineShake.y : 10) * scale;
+                perCycleMs = Math.max(40, (1 / speed) * 1000);
+            }
+
+            // Find the painting element for the current speaker's side.
+            const side = line.side !== undefined ? line.side : 0;
+            const paintingInfo = this.paintingsBySide.get(side);
+            if (!paintingInfo?.element) return;
+
+            const el = paintingInfo.element;
+            const totalMs = perCycleMs * number;
+
+            const start = () => {
+                el.style.setProperty('--painting-shake-x', `${ampX}px`);
+                el.style.setProperty('--painting-shake-y', `${ampY}px`);
+                el.style.setProperty('--painting-shake-duration', `${perCycleMs}ms`);
+                el.style.setProperty('--painting-shake-iterations', String(number));
+                void el.offsetHeight;
+                el.classList.add('painting-shake');
+                this._paintingShakeTimer = setTimeout(() => {
+                    this._clearPaintingShake();
+                }, totalMs + 20);
+            };
+
+            this._paintingShakeEl = el;
+            if (delayMs > 0) {
+                this._paintingShakeTimer = setTimeout(start, delayMs);
+            } else {
+                start();
+            }
+        },
+
+        /** Clear any in-flight painting shake animation. */
+        _clearPaintingShake() {
+            clearTimeout(this._paintingShakeTimer);
+            this._paintingShakeTimer = null;
+            const el = this._paintingShakeEl;
+            if (el) {
+                el.classList.remove('painting-shake');
+                el.style.removeProperty('--painting-shake-x');
+                el.style.removeProperty('--painting-shake-y');
+                el.style.removeProperty('--painting-shake-duration');
+                el.style.removeProperty('--painting-shake-iterations');
+                this._paintingShakeEl = null;
             }
         },
 
