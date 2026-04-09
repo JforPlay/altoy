@@ -46913,7 +46913,7 @@
             ]
         }
     },
-    "라이온급 전함 - 라이온": {
+    "라이온": {
         "117": {
             "id": 117,
             "type": null,
@@ -46922,7 +46922,7 @@
             "name": "천려일실",
             "trigger_type": 1,
             "trigger_param": "",
-            "kr_name": "라이온급 전함 - 라이온",
+            "kr_name": "라이온",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png",
             "ship_name": "Lion",
             "scripts": [
@@ -46933,7 +46933,7 @@
                     "param": "하나 전해둘 말이 있다.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -46943,7 +46943,7 @@
                     "param": "아, 그리고 네가 없는 동안 집무실 서류를 좀 정리해 뒀다.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -46958,7 +46958,7 @@
                     "param": "그게 본래 용건은 아니지만, 그렇게 번거로운 일도 아니라서 겸사겸사 해뒀지.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -46978,7 +46978,7 @@
                     "param": "모항을 둘러보다가 몇 가지 문제가 있길래 해결해 뒀다.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -46988,7 +46988,7 @@
                     "param": "그래서 모항의 지휘관으로서 신경 쓰지 못하고 간과하고 있는 부분이 있는 것 같아서, 그걸 이야기해 주려고 했지.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -46998,7 +46998,7 @@
                     "param": "그런데 네 책상 위에 쌓인 서류를 보니, 너도 너 나름대로 꽤 고생하는 것 같더군.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47017,7 +47017,7 @@
                     "param": "그래서 말인데, 자잘한 일은 앞으로 내가 맡도록 하지.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47037,7 +47037,7 @@
                     "param": "흠…? 그래?",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47047,7 +47047,7 @@
                     "param": "솔직히 인정해 주니 기쁘긴 한데… 그렇게 단언하니 뭔가 꿍꿍이가 있는 게 아니냔 생각도 드는군.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47057,7 +47057,7 @@
                     "param": "뭐, 아무튼 모항에서 일어난 문제라면 웬만하면 다 처리할 수 있어.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47067,7 +47067,7 @@
                     "param": "그렇게 어려운 일도 아니니.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47087,7 +47087,7 @@
                     "param": "전혀. 네게 도움이 된다면 그걸로 충분해.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47097,7 +47097,7 @@
                     "param": "내가 움직이는 편이 더 빠를 때도 있고 말이지.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47107,7 +47107,7 @@
                     "param": "슬슬 보안 시스템을 확인하러 가야겠군.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47122,7 +47122,7 @@
                     "param": "문제가 있으면 내가 대신 처리하지.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47147,7 +47147,7 @@
                     "param": "112",
                     "ship_group": 20516,
                     "type": 4,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47167,7 +47167,7 @@
                     "param": "……흠.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47177,7 +47177,7 @@
                     "param": "시스템에 문제가 있으면 너와 논의해야 하니 가긴 해야겠군.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47187,7 +47187,7 @@
                     "param": "그동안 키홀더는 잠시 맡아줘.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 }
             ]
@@ -47200,7 +47200,7 @@
             "name": "네가 원한 벌",
             "trigger_type": 2,
             "trigger_param": "100",
-            "kr_name": "라이온급 전함 - 라이온",
+            "kr_name": "라이온",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png",
             "ship_name": "Lion",
             "scripts": [
@@ -47211,7 +47211,7 @@
                     "param": "전에 부탁한 목록 정리를 마쳤다.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47221,7 +47221,7 @@
                     "param": "지금 보내주마.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47276,7 +47276,7 @@
                     "param": "이 정도로 뭘.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47291,7 +47291,7 @@
                     "param": "또 부탁할 거 있으면 부담 갖지 말고 말하라고.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47321,7 +47321,7 @@
                     "param": "뭐…? 이게 어떻게 된 거지…?",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47331,7 +47331,7 @@
                     "param": "으… 그만 보라고.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47346,7 +47346,7 @@
                     "param": "아무래도 실수로 파일 두 개를 같이 보낸 것 같군……",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47366,7 +47366,7 @@
                     "param": "내 말 잘 들어라.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47381,7 +47381,7 @@
                     "param": "지금 당장 그 주문 목록은 닫고, 업무 목록에 집중하도록 해라.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47401,7 +47401,7 @@
                     "param": "……사실 말이지.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47411,7 +47411,7 @@
                     "param": "요즘 계속 모항을 순찰하다 보니, 사야 할 것을 자꾸 까먹게 되더라고.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47421,7 +47421,7 @@
                     "param": "그래서 이렇게 목록으로 정리해 두는 습관이 생겼지.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47431,7 +47431,7 @@
                     "param": "뭐…… 내 실수로 잘못된 파일을 보낸 건 사실이니까.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47446,7 +47446,7 @@
                     "param": "이번에는 특별히 네게 이 라이온에게 「명령」을 내릴 기회를 주마.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47476,7 +47476,7 @@
                     "param": "……뭐? 그건 명령이라고 하기엔 좀 이상한데…?",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47486,7 +47486,7 @@
                     "param": "그렇게 물러빠져선 지휘관으로서의 위엄이 안 산다고.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47496,7 +47496,7 @@
                     "param": "그래도…… 네가 말하니까 묘하게 납득이 되는 것 같기도 하고.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47506,7 +47506,7 @@
                     "param": "371",
                     "ship_group": 20516,
                     "type": 4,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47516,7 +47516,7 @@
                     "param": "명령은 명령이니 좋다. 이제 와서 번복하긴 없기다. 당분간은 나도 제대로 쉬어야겠군.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47526,7 +47526,7 @@
                     "param": "너도 몸 간수 잘하고.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47536,7 +47536,7 @@
                     "param": "다음에 네가 실수하면…… 후후, 그때는 내 차례라는 걸 알아두라고.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47546,7 +47546,7 @@
                     "param": "지휘관에게 명령을 내릴 기회를… 이 라이온이 놓칠 것 같나?",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 }
             ]
@@ -47559,7 +47559,7 @@
             "name": "둘만의 증표",
             "trigger_type": 2,
             "trigger_param": "150",
-            "kr_name": "라이온급 전함 - 라이온",
+            "kr_name": "라이온",
             "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png",
             "ship_name": "Lion",
             "scripts": [
@@ -47570,7 +47570,7 @@
                     "param": "지휘관, 배지를 두 개 주문해 뒀다.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47585,7 +47585,7 @@
                     "param": "우리 둘만의 「증표」로 받아줬으면 하는군.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47605,7 +47605,7 @@
                     "param": "그래.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47615,7 +47615,7 @@
                     "param": "넌 이 모항의 지휘관이고, 난 그걸 지키는 자…",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47630,7 +47630,7 @@
                     "param": "이 완벽한 조합을 상징하는 「증표」가 지금까지 없었다는 게 더 이상하지 않은가?",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47660,7 +47660,7 @@
                     "param": "후후, 안달 내긴. 최선의 결과를 얻으려면 가끔은 자신의 욕망을 감춰야 하는 법이라고.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47670,7 +47670,7 @@
                     "param": "뭐, 그래도…… 배지의 기능 하나 정도는 알려줘도 괜찮겠지.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47680,7 +47680,7 @@
                     "param": "우선 손전등 기능도 있고… 안에는 몇 가지 도구도 갖추어져 있어. 그리고 무엇보다 디자인이 아주 훌륭하지.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47690,7 +47690,7 @@
                     "param": "그 외에도 자잘한 기능이 있기는 한데……",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47700,7 +47700,7 @@
                     "param": "아무튼, 이 배지를 몸에 지니고 있으면…",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47710,7 +47710,7 @@
                     "param": "어디 있든, 설령 전쟁터 한복판이라도",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47725,7 +47725,7 @@
                     "param": "언제든 널 찾을 수 있지.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47745,7 +47745,7 @@
                     "param": "112",
                     "ship_group": 20516,
                     "type": 4,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47755,7 +47755,7 @@
                     "param": "당연하지. 이걸 받으면 언제든 늘 몸에 지니고 다녀야 해.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47765,7 +47765,7 @@
                     "param": "그래야 언제든 네가 어디 있는지 정확히 파악할 수 있고",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47775,7 +47775,7 @@
                     "param": "네가 날 필요로 하는 순간에 네 곁에 나타나……",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47790,7 +47790,7 @@
                     "param": "널 지킬 수 있으니까.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47820,7 +47820,7 @@
                     "param": "당연하지. 내가 특별히 주문한 거니까.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47830,7 +47830,7 @@
                     "param": "지금부터 어디에 달지 미리 생각해 두라고.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47845,7 +47845,7 @@
                     "param": "나중에 주러 갔을 때 망설이지 않게 말이다.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47875,7 +47875,7 @@
                     "param": "……",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47885,7 +47885,7 @@
                     "param": "235",
                     "ship_group": 20516,
                     "type": 4,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47895,7 +47895,7 @@
                     "param": "굳이 말 안 해도 알 테지만… 이 라이온의 「짝」이라고 티 낼 수 있는 곳에 달아달라고는 하지 않으마.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47905,7 +47905,7 @@
                     "param": "그러니, 그냥… 어디든 몸에 지니고 있기만 하면 충분해. 그게 「증표」의 의미니까.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47915,7 +47915,7 @@
                     "param": "네 곁에는 항상 내가 있고",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 },
                 {
@@ -47925,7 +47925,7 @@
                     "param": "내 곁에는 늘 네가 있다는 뜻이지.",
                     "ship_group": 20516,
                     "type": 1,
-                    "kr_name": "라이온급 전함 - 라이온",
+                    "kr_name": "라이온",
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png"
                 }
             ]

@@ -7194,7 +7194,7 @@
     },
     "20516": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/205160/icon.png",
-        "name": "라이온급 전함 - 라이온",
+        "name": "라이온",
         "add_get_attr": 1,
         "add_get_shiptype": [
             4,
