@@ -1,0 +1,25 @@
+---
+/**
+ * Juus Hot Issue Viewer (쥬쥬 핫 이슈)
+ * Displays official account / news-style posts from Juustagram (type=2 entries).
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/chat-viewer/chat-viewer.common.css';
+import '../../styles/chat-viewer/juus-hot-issue.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="쥬쥬 핫 이슈" {base}>
+    <header class="main-header">
+        <h1>쥬쥬 핫 이슈</h1>
+        <p>쥬스타그램 공식 계정 게시글</p>
+    </header>
+
+    <main class="content-container">
+        <div id="hot-issue-grid" class="hot-issue-grid">
+            <p class="hot-issue-empty">데이터 불러오는 중...</p>
+        </div>
+    </main>
+
+    <script is:inline type="module" src={`${base}/js/chat-viewer/juus-hot-issue.js`}></script>
+</Layout>
