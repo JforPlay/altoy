@@ -12,7 +12,7 @@
  * Bump this when ANY data file changes to force fresh fetches.
  * Used by fetchJSONWithCache — when this changes, the entire IndexedDB cache is cleared on next page load.
  */
-const DATA_VERSION = '1.2.3';
+const DATA_VERSION = '1.2.4';
 
 /**
  * Debounce function to limit the rate at which a function can fire.
