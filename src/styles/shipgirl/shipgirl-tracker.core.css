@@ -186,11 +186,44 @@ body {
   line-height: 1;
 }
 
+/* --- Total Score Bar --- */
+
+.st-total-score {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.st-total-score .material-symbols-outlined {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+
+.st-total-score-value {
+  color: var(--primary-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.st-total-score-sep {
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+.st-total-score-max {
+  font-variant-numeric: tabular-nums;
+}
+
 /* --- Filter Chips Row --- */
 
 .st-chips-row {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 6px;
   padding: var(--spacing-xs) var(--spacing-md);
   max-width: 1400px;

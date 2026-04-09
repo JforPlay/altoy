@@ -89,8 +89,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
     </div>
 
-    <!-- Active filter chips -->
-    <div class="st-chips-row hidden" id="filter-chips"></div>
+    <!-- Active filter chips + total score -->
+    <div class="st-chips-row" id="filter-chips">
+        <div class="st-total-score" id="total-score-bar">
+            <span class="material-symbols-outlined">military_tech</span>
+            <span class="st-total-score-value" id="total-score-value">0</span>
+            <span class="st-total-score-sep">/</span>
+            <span class="st-total-score-max" id="total-score-max">0</span>
+        </div>
+    </div>
 
     <!-- Ship list -->
     <div id="ship-list-container"></div>

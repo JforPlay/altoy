@@ -18,12 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== State =====
 
+    let maxFleetTech = 0;
+
     // Cached DOM elements for performance
     let cachedElements = {
         fleetTechContainer: null,
         statTechContainer: null,
         shipListContainer: null,
-        filterDrawerBody: null
+        filterDrawerBody: null,
+        totalScoreValue: null,
+        totalScoreMax: null
     };
 
     /**
@@ -34,6 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cachedElements.statTechContainer = document.getElementById('stat-tech-container');
         cachedElements.shipListContainer = document.getElementById('ship-list-container');
         cachedElements.filterDrawerBody = document.getElementById('filter-drawer-body');
+        cachedElements.totalScoreValue = document.getElementById('total-score-value');
+        cachedElements.totalScoreMax = document.getElementById('total-score-max');
     }
 
     // Use utilities from external file
@@ -298,6 +304,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+
+        // Update total fleet tech score indicator
+        const totalCurrent = Object.values(fleetTech).reduce((sum, v) => sum + v, 0);
+        if (cachedElements.totalScoreValue) {
+            cachedElements.totalScoreValue.textContent = totalCurrent.toLocaleString();
+        }
 
         // Render the updated score tables.
         renderFleetTechTable(fleetTech);
@@ -1530,7 +1542,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateFilterChips() {
         const chipsRow = document.getElementById('filter-chips');
         if (!chipsRow) return;
-        chipsRow.innerHTML = '';
+        chipsRow.querySelectorAll('.st-chip').forEach(el => el.remove());
         const chips = [];
 
         // Rarity chips (only if NOT all selected)
@@ -1588,12 +1600,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update badge + render
         const badge = document.getElementById('filter-badge');
         if (chips.length === 0) {
-            chipsRow.classList.add('hidden');
             if (badge) badge.classList.add('hidden');
             return;
         }
 
-        chipsRow.classList.remove('hidden');
         if (badge) {
             badge.textContent = chips.length;
             badge.classList.remove('hidden');
@@ -1607,7 +1617,8 @@ document.addEventListener('DOMContentLoaded', () => {
             el.addEventListener('click', () => removeFilterChip(chip));
             fragment.appendChild(el);
         });
-        chipsRow.appendChild(fragment);
+        const totalScoreBar = document.getElementById('total-score-bar');
+        chipsRow.insertBefore(fragment, totalScoreBar);
     }
 
     /**
@@ -1817,14 +1828,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = cachedElements.shipListContainer;
         if (!container) return;
         const fragment = document.createDocumentFragment();
+        maxFleetTech = 0;
         Object.keys(fullShipData).forEach(shipId => {
             const ship = fullShipData[shipId];
             if (ship) {
                 const card = createShipCard(ship, shipId);
                 fragment.appendChild(card);
+                maxFleetTech += (ship.pt_get ?? 0) + (ship.pt_level ?? 0) + (ship.pt_upgrage ?? 0);
             }
         });
         container.appendChild(fragment);
+        if (cachedElements.totalScoreMax) {
+            cachedElements.totalScoreMax.textContent = maxFleetTech.toLocaleString();
+        }
         loadProgress();
     }
 
@@ -1885,6 +1901,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loadFiltersFromStorage();
             renderAllCards();
             applyFilters();
+            calculateAndDisplayScores();
 
             // Search setup
             setupSearch();
