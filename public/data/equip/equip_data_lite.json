@@ -32750,5 +32750,137 @@
             }
         ],
         "compare_group": 5
+    },
+    {
+        "id": 151020,
+        "name": "더 유람자",
+        "icon": "151020",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 0,
+        "nation_name": "Universal",
+        "nation_code": "UNIV",
+        "speciality": "<[NA]>",
+        "label": [
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "hit",
+                "name": "명중",
+                "value": "15"
+            },
+            {
+                "key": "dodge",
+                "name": "기동",
+                "value": 6
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "hit",
+                "name": "명중",
+                "value": "45"
+            },
+            {
+                "key": "dodge",
+                "name": "기동",
+                "value": 18
+            }
+        ],
+        "compare_group": 5
+    },
+    {
+        "id": 151040,
+        "name": "시스템 지명수배",
+        "icon": "151040",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 0,
+        "nation_name": "Universal",
+        "nation_code": "UNIV",
+        "speciality": "<[NA]>",
+        "label": [
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "140"
+            },
+            {
+                "key": "speed",
+                "name": "항속",
+                "value": 1
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "371"
+            },
+            {
+                "key": "speed",
+                "name": "항속",
+                "value": 3
+            }
+        ],
+        "compare_group": 5
+    },
+    {
+        "id": 151060,
+        "name": "제로 프로토콜 키",
+        "icon": "151060",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 0,
+        "nation_name": "Universal",
+        "nation_code": "UNIV",
+        "speciality": "<[NA]>",
+        "label": [
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "100"
+            },
+            {
+                "key": "speed",
+                "name": "항속",
+                "value": 1
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "472"
+            },
+            {
+                "key": "speed",
+                "name": "항속",
+                "value": 4
+            }
+        ],
+        "compare_group": 5
     }
 ]

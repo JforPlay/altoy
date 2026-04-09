@@ -8,7 +8,7 @@
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/100001/icon.png"
     },
     "100002": {
-        "name": "변신! 마법소녀★푸린",
+        "name": "변신! 마법소녀 ★ 부린!",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/100002/icon.png"
     },
     "100010": {
@@ -4379,6 +4379,22 @@
         "name": "무녀의 명상 수련",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302271/icon.png"
     },
+    "302280": {
+        "name": "{namecode:312}",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302280/icon.png"
+    },
+    "302281": {
+        "name": "그물에 걸린 뇌룡",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302281/icon.png"
+    },
+    "302290": {
+        "name": "{namecode:311}",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302290/icon.png"
+    },
+    "302291": {
+        "name": "Electric Affection",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302291/icon.png"
+    },
     "303010": {
         "name": "후루타카",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303010/icon.png"
@@ -4511,6 +4527,10 @@
         "name": "마야",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303130/icon.png"
     },
+    "303131": {
+        "name": "쿨 하트 킬러",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303131/icon.png"
+    },
     "303140": {
         "name": "{namecode:69}",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303140/icon.png"
@@ -4518,6 +4538,10 @@
     "303141": {
         "name": "평온해지는 가게",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303141/icon.png"
+    },
+    "303142": {
+        "name": "하드 시프",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/303142/icon.png"
     },
     "303170": {
         "name": "스즈야",
@@ -5186,6 +5210,18 @@
     "307161": {
         "name": "흐드러지게 피어나는 닌자의 여흥",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307161/icon.png"
+    },
+    "307170": {
+        "name": "{namecode:209}",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307170/icon.png"
+    },
+    "307171": {
+        "name": "야음영의",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307171/icon.png"
+    },
+    "307172": {
+        "name": "야음영의",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307172/icon.png"
     },
     "308010": {
         "name": "이19",
@@ -6006,6 +6042,10 @@
     "404033": {
         "name": "오피서즈 스트리트!",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404033/icon.png"
+    },
+    "404034": {
+        "name": "더블 이머전시",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/404034/icon.png"
     },
     "404040": {
         "name": "뤼초",
@@ -7118,6 +7158,10 @@
     "603061": {
         "name": "이루어지지 않는 오피스 러브?",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603061/icon.png"
+    },
+    "603062": {
+        "name": "디피티드 스파이",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/603062/icon.png"
     },
     "605010": {
         "name": "비토리오 베네토",
@@ -9463,6 +9507,10 @@
         "name": "아비터·채리엇·Ⅶ",
         "icon": null
     },
+    "900539": {
+        "name": "{namecode:311}",
+        "icon": null
+    },
     "901010": {
         "name": "르 마르스 ",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901010/icon.png"
@@ -9578,6 +9626,10 @@
     "901132": {
         "name": "따끈따끈 일일 점원",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901132/icon.png"
+    },
+    "901133": {
+        "name": "전력으로 변장 도청!",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/901133/icon.png"
     },
     "901140": {
         "name": "로데슈",

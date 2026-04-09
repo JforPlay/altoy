@@ -1317,6 +1317,36 @@
     "painting_n": null
   },
   {
+    "id": "900539",
+    "name": "나요로",
+    "painting": {
+      "faces": [
+        "3",
+        "4",
+        "9",
+        "7",
+        "8",
+        "6",
+        "5",
+        "2",
+        "1"
+      ],
+      "box": [
+        1222,
+        103,
+        255,
+        251
+      ],
+      "size": [
+        1848,
+        1442
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900539/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900539/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
     "id": "900212",
     "name": "나츠이로 마츠리",
     "painting": {
