@@ -7261,5 +7261,17 @@
         "일": "30",
         "group_id": "50212",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502120/icon.png"
+    },
+    {
+        "ID": "731",
+        "룽섭 이름": "운류",
+        "레어도": "SSR",
+        "함종": "항모",
+        "진영": "사쿠라 엠파이어",
+        "연": "1943",
+        "월": "9",
+        "일": "25",
+        "group_id": "30717",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307170/icon.png"
     }
 ]
