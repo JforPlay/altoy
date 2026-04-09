@@ -18,7 +18,8 @@ import {
     loadWeaponPropertyData, loadBulletTemplateData, loadSkillData, loadWeaponNameData, loadAircraftTemplateData,
     loadUpgradeTemplateData, isInUpgradeTree,
     getEquipIconUrl, getRarityBgUrl, getSPWeaponIconUrl, getUniqueTypes, getUniqueNationalities, getUniqueLabels,
-    getFullEquipData, getSkillData, loadSPWeaponData, normalizeSPWeapons, getSPWeaponRawData
+    getFullEquipData, getSkillData, loadSPWeaponData, normalizeSPWeapons, getSPWeaponRawData,
+    enrichEquipDataWithReload
 } from './equip.data.js';
 import {
     setup as setupDetail,
@@ -65,6 +66,10 @@ const state = {
     // Search
     searchIndex: null,
 
+    // Sort
+    sortStat: '',
+    sortDirection: 'desc',
+
     // DOM Elements
     elements: {},
 };
@@ -77,6 +82,8 @@ const typeFilter = document.getElementById('typeFilter');
 const nationalityFilter = document.getElementById('nationalityFilter');
 const rarityChips = document.getElementById('rarityChips');
 const labelChips = document.getElementById('labelChips');
+const sortStat = document.getElementById('sortStat');
+const sortDirection = document.getElementById('sortDirection');
 const loading = document.getElementById('loading');
 const totalCount = document.getElementById('totalCount');
 const filteredCount = document.getElementById('filteredCount');
@@ -140,12 +147,18 @@ async function init() {
         // Non-blocking: detail/compare views need these but the list renders without them
         state.fullEquipDataPromise = loadFullData();
         loadStatisticsData();
-        loadWeaponPropertyData();
+        const wpPromise = loadWeaponPropertyData();
         loadBulletTemplateData();
         loadSkillData();
         loadWeaponNameData();
         loadAircraftTemplateData();
         loadUpgradeTemplateData();
+
+        // Enrich lite entries with reload time once both full data and weapon_property are ready
+        Promise.all([state.fullEquipDataPromise, wpPromise]).then(() => {
+            enrichEquipDataWithReload();
+            renderEquipGrid();
+        });
 
         loading.style.display = 'none';
 
@@ -234,6 +247,17 @@ function setupEventListeners() {
         filterEquipment();
     });
 
+    // Sort controls
+    sortStat.addEventListener('change', () => {
+        state.sortStat = sortStat.value;
+        renderEquipGrid();
+    });
+    sortDirection.addEventListener('click', () => {
+        state.sortDirection = state.sortDirection === 'desc' ? 'asc' : 'desc';
+        sortDirection.textContent = state.sortDirection === 'desc' ? '내림차순' : '오름차순';
+        if (state.sortStat) renderEquipGrid();
+    });
+
     // Detail panel close
     detailPanelClose.addEventListener('click', closeDetailPanel);
     detailBackdrop.addEventListener('click', closeDetailPanel);
@@ -299,6 +323,46 @@ function filterEquipment() {
 // ===== Rendering =====
 
 /**
+ * Sort equips within a type group based on the active sort stat.
+ * For stat sorts: sorts by matching max_attrs value.
+ * For reload sort: equips with reload come first (sorted), rest keep default order.
+ */
+function sortEquipsInGroup(equips) {
+    if (!state.sortStat) return equips;
+
+    const isReload = state.sortStat === '_reload';
+    const mult = state.sortDirection === 'desc' ? -1 : 1;
+
+    if (isReload) {
+        // Partition: equips with reload first (sorted), rest keep original order
+        const withReload = [];
+        const withoutReload = [];
+        for (const e of equips) {
+            if (e._reloadTime != null) withReload.push(e);
+            else withoutReload.push(e);
+        }
+        withReload.sort((a, b) => mult * (a._reloadTime - b._reloadTime));
+        return [...withReload, ...withoutReload];
+    }
+
+    // Stat sort: partition by whether equip has the stat
+    const statKey = state.sortStat;
+    const getStatValue = (e) => {
+        const attr = (e.max_attrs || []).find(a => a.key === statKey);
+        return attr ? Number(attr.value) : null;
+    };
+
+    const withStat = [];
+    const withoutStat = [];
+    for (const e of equips) {
+        if (getStatValue(e) != null) withStat.push(e);
+        else withoutStat.push(e);
+    }
+    withStat.sort((a, b) => mult * (getStatValue(a) - getStatValue(b)));
+    return [...withStat, ...withoutStat];
+}
+
+/**
  * Render the filtered equipment list, grouped by equipment type.
  * Each group gets a section header with count, and cards within
  * are built with icon, rarity badge, stats, and click handlers.
@@ -332,10 +396,13 @@ function renderEquipGrid() {
         `;
         fragment.appendChild(section);
 
+        // Sort within group if a sort stat is selected
+        const sorted = sortEquipsInGroup(equips);
+
         const grid = document.createElement('div');
         grid.className = 'type-section-grid';
 
-        for (const equip of equips) {
+        for (const equip of sorted) {
             const card = document.createElement('div');
             card.className = `equip-card rarity-${equip.rarity}`;
             card.dataset.equipId = equip.id;
@@ -346,12 +413,19 @@ function renderEquipGrid() {
 
             const iconUrl = equip._isSPWeapon ? getSPWeaponIconUrl(equip.icon) : getEquipIconUrl(equip.icon);
             const bgUrl = getRarityBgUrl(equip.rarity);
-            const statsHtml = (equip.max_attrs || []).map(attr =>
+
+            let statsHtml = (equip.max_attrs || []).map(attr =>
                 `<span class="equip-stat-item">
                     <span class="equip-stat-name">${attr.name}</span>
                     <span class="equip-stat-value">${attr.value}</span>
                 </span>`
             ).join('');
+            if (equip._reloadTime != null) {
+                statsHtml += `<span class="equip-stat-item equip-stat-reload">
+                    <span class="equip-stat-name">사속</span>
+                    <span class="equip-stat-value">${equip._reloadTime}s</span>
+                </span>`;
+            }
 
             card.innerHTML = `
                 <div class="equip-icon-wrapper">

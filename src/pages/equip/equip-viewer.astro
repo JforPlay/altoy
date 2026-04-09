@@ -46,6 +46,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <select id="nationalityFilter">
                         <option value="">모든 진영</option>
                     </select>
+                    <div class="sort-container">
+                        <select id="sortStat">
+                            <option value="">정렬 없음</option>
+                            <option value="cannon">포격</option>
+                            <option value="torpedo">뇌장</option>
+                            <option value="air">항공</option>
+                            <option value="antiaircraft">대공</option>
+                            <option value="hit">명중</option>
+                            <option value="dodge">기동</option>
+                            <option value="durability">내구</option>
+                            <option value="reload">장전</option>
+                            <option value="antisub">대잠</option>
+                            <option value="speed">항속</option>
+                            <option value="_reload">사속</option>
+                        </select>
+                        <button id="sortDirection" class="sort-direction-btn" type="button">내림차순</button>
+                    </div>
                 </div>
                 <div class="label-chips-container" id="labelChips"></div>
             </header>

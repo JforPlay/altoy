@@ -350,6 +350,45 @@ export function getSPWeaponRawData(spId) {
     return state.spWeaponData.weapons[String(spId)] || null;
 }
 
+/**
+ * Compute reload time (seconds) for an equip entry using full data + weapon_property.
+ * Uses the max-level primary weapon_id merged with base-level weapon for null fields.
+ * Returns null if no reload_max is available.
+ */
+function getEquipReloadTime(equipId) {
+    if (!state.fullEquipData || !state.weaponPropertyData) return null;
+    const full = state.fullEquipData[String(equipId)];
+    if (!full || !full.levels || full.levels.length === 0) return null;
+
+    const maxLevel = full.levels[full.levels.length - 1];
+    const maxWids = maxLevel.weapon_id;
+    if (!maxWids || !maxWids.length) return null;
+
+    const baseWids = full.levels[0].weapon_id || [];
+    const baseWp = state.weaponPropertyData[String(baseWids[0])];
+    const currentWp = state.weaponPropertyData[String(maxWids[0])];
+
+    if (!baseWp && !currentWp) return null;
+
+    const reloadMax = (currentWp && currentWp.reload_max != null)
+        ? currentWp.reload_max
+        : (baseWp ? baseWp.reload_max : null);
+
+    if (reloadMax == null) return null;
+    return Math.floor((reloadMax / 150) * 100) / 100;
+}
+
+/**
+ * Enrich all lite entries with _reloadTime after full data and weapon_property are loaded.
+ * Skips SP weapons (they don't have weapon_id-based reload).
+ */
+export function enrichEquipDataWithReload() {
+    for (const equip of state.equipData) {
+        if (equip._isSPWeapon) continue;
+        equip._reloadTime = getEquipReloadTime(equip.id);
+    }
+}
+
 /** Replace <[CODE]> patterns in text using equip_data_code.json mapping */
 export function replaceEquipCodes(text) {
     if (!text || !state.equipCodeData) return text || '';

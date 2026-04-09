@@ -112,6 +112,57 @@ body {
     border-color: var(--input-focus);
 }
 
+/* ===== Sort Controls ===== */
+.sort-container {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.sort-container select {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+}
+
+.sort-container select:focus {
+    outline: none;
+    border-color: var(--input-focus);
+}
+
+.sort-direction-btn {
+    padding: 0.5rem 0.625rem;
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    background: var(--input-bg);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.sort-direction-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--text-primary);
+}
+
+/* ===== Reload Stat on Card ===== */
+.equip-stat-reload {
+    color: var(--accent-blue);
+}
+
+.equip-stat-reload .equip-stat-name {
+    color: var(--accent-blue);
+}
+
 /* ===== Rarity Filter Chips (inline in filter row) ===== */
 .rarity-chips-container {
     display: flex;
@@ -411,6 +462,14 @@ body {
 
     .search-filter-container select {
         width: 100%;
+    }
+
+    .sort-container {
+        width: 100%;
+    }
+
+    .sort-container select {
+        flex: 1;
     }
 
     .rarity-chips-container {
