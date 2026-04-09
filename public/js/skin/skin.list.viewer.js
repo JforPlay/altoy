@@ -3,10 +3,10 @@
  * Skin list/browse page controller for the skin module group.
  * Renders all skins grouped by availability (new/limited/permanent/other) with multi-filter,
  * search autocomplete, collection tracking (owned/wanted), a wishlist cart modal, and image lightbox.
- * Cards are built once at load time; filtering hides/shows wrappers without DOM recreation.
+ * Cards are built once at load time; filtering rebuilds visible sets and appends in chunks of 50 via IntersectionObserver.
  */
 import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex,
-    openModal, closeModal, setupModal, showToast, getStorageItem, setStorageItem, IMG_FALLBACKS } from '../utils.js';
+    openModal, closeModal, setupModal, showToast, getStorageItem, setStorageItem, toggleElement, IMG_FALLBACKS } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // ===== DOM Element References =====
@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tag: document.getElementById('tag-select'),
             rarities: document.getElementById('rarity-checkboxes'),
             exDialogue: document.getElementById('ex-dialogue-checkbox'),
-            ownership: document.getElementById('ownership-select')
+            ownership: document.getElementById('ownership-select'),
+            sort: document.getElementById('sort-select')
         },
         buttons: {
             clearAll: document.getElementById('clear-all-btn'),
@@ -39,6 +40,16 @@ document.addEventListener('DOMContentLoaded', () => {
             other: document.getElementById('other-skins-container')
         },
         filterContainer: document.getElementById('filter-container'),
+        resultCount: document.getElementById('result-count'),
+        owned: {
+            fab: document.getElementById('owned-fab'),
+            badge: document.getElementById('owned-badge'),
+            body: document.getElementById('owned-body'),
+            footer: document.getElementById('owned-footer'),
+            count: document.getElementById('owned-count'),
+            totalGems: document.getElementById('owned-total-gems'),
+            toggleBtns: document.querySelectorAll('.owned-toggle-btn')
+        },
         cart: {
             fab: document.getElementById('cart-fab'),
             badge: document.getElementById('cart-badge'),
@@ -102,7 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===== Cached Queries & Constants =====
-    const cachedRarityCheckboxes = Array.from(DOM.filters.rarities.querySelectorAll('input'));
+    const allRarityInputs = Array.from(DOM.filters.rarities.querySelectorAll('input'));
+    const rarityAllCheckbox = allRarityInputs.find(cb => cb.value === 'all');
+    const cachedRarityCheckboxes = allRarityInputs.filter(cb => cb.value !== 'all');
     const allSkinContainers = Object.values(DOM.containers);
 
     const FILTER_PARAMS = {
@@ -113,12 +126,14 @@ document.addEventListener('DOMContentLoaded', () => {
         RARITIES: 'rarities',
         EX: 'ex',
         SEARCH: 'search',
-        OWNERSHIP: 'ownership'
+        OWNERSHIP: 'ownership',
+        SORT: 'sort'
     };
 
     const TAGS_TO_EXCLUDE = ['듀얼', 'L2D', 'L2D+', '쁘띠모션'];
     const AUTOCOMPLETE_LIMIT = 10;
     const DEBOUNCE_DELAY = 300;
+    const CHUNK_SIZE = 50;
 
     // Faction normalization for current data (before re-processing)
     const FACTION_NORMALIZE = {
@@ -140,15 +155,88 @@ document.addEventListener('DOMContentLoaded', () => {
     const TAG_ORDER = ['듀얼', 'L2D+', 'L2D', '쁘띠모션', '기타'];
 
     // ===== Timer Management =====
-    let activeTimers = {
-        debounce: null,
-        throttle: null,
-        progressBar: null
+    let progressBarTimer = null;
+
+    // ===== Chunk Controller =====
+    // Manages progressive DOM appending per section. Cards are created once and stored
+    // in skinCardMap; this controller decides which are currently in the DOM.
+    const ChunkController = {
+        _sections: {},
+
+        init(sectionKeys) {
+            for (const key of sectionKeys) {
+                const sentinel = document.createElement('div');
+                sentinel.className = 'chunk-sentinel';
+                sentinel.setAttribute('aria-hidden', 'true');
+
+                const observer = new IntersectionObserver((observed) => {
+                    if (observed[0].isIntersecting) {
+                        this._appendNextChunk(key);
+                    }
+                }, { rootMargin: '300px' });
+
+                this._sections[key] = {
+                    entries: [],
+                    appendIndex: 0,
+                    observer,
+                    sentinel
+                };
+            }
+        },
+
+        /** Replace a section's content with a new set of entries, rendered in chunks. */
+        load(key, entries) {
+            const section = this._sections[key];
+            section.entries = entries;
+            section.appendIndex = 0;
+            section.observer.disconnect();
+
+            const container = DOM.containers[key];
+            container.innerHTML = '';
+
+            if (entries.length > 0) {
+                this._appendNextChunk(key);
+            }
+        },
+
+        _appendNextChunk(key) {
+            const section = this._sections[key];
+            const container = DOM.containers[key];
+            const end = Math.min(section.appendIndex + CHUNK_SIZE, section.entries.length);
+
+            if (section.appendIndex >= section.entries.length) return;
+
+            const fragment = document.createDocumentFragment();
+            for (let i = section.appendIndex; i < end; i++) {
+                fragment.appendChild(section.entries[i].wrapper);
+            }
+
+            // Remove sentinel before appending new batch
+            if (section.sentinel.parentNode) {
+                section.sentinel.remove();
+            }
+            container.appendChild(fragment);
+            section.appendIndex = end;
+
+            // If more entries remain, place sentinel and observe it
+            if (section.appendIndex < section.entries.length) {
+                container.appendChild(section.sentinel);
+                section.observer.observe(section.sentinel);
+            } else {
+                section.observer.disconnect();
+            }
+        },
+
+        cleanup() {
+            for (const section of Object.values(this._sections)) {
+                section.observer.disconnect();
+            }
+        }
     };
 
     // ===== Utility Functions =====
     const showFilteringState = () => {
-        activeTimers.progressBar = setTimeout(() => {
+        progressBarTimer = setTimeout(() => {
             if (DOM.progressBar) {
                 DOM.progressBar.classList.add('visible');
             }
@@ -156,8 +244,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const hideFilteringState = () => {
-        clearTimeout(activeTimers.progressBar);
-        activeTimers.progressBar = null;
+        clearTimeout(progressBarTimer);
+        progressBarTimer = null;
         if (DOM.progressBar) {
             DOM.progressBar.classList.remove('visible');
         }
@@ -182,9 +270,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== URL State Management =====
     const URLState = {
         getFilters() {
-            const selectedRarities = cachedRarityCheckboxes
-                .filter(cb => cb.checked)
-                .map(cb => cb.value);
+            // If "전체보기" is checked, treat as all rarities (empty array = no filter)
+            const selectedRarities = rarityAllCheckbox.checked
+                ? []
+                : cachedRarityCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
 
             return {
                 type: DOM.filters.skinType.value,
@@ -194,7 +283,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 rarities: selectedRarities,
                 ex: DOM.filters.exDialogue.checked,
                 search: DOM.search.value,
-                ownership: DOM.filters.ownership.value
+                ownership: DOM.filters.ownership.value,
+                sort: DOM.filters.sort.value
             };
         },
 
@@ -205,10 +295,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 [FILTER_PARAMS.TAG]: filters.tag !== 'all' ? filters.tag : null,
                 [FILTER_PARAMS.PERIOD]: filters.period !== 'all' ? filters.period : null,
                 [FILTER_PARAMS.FACTION]: filters.faction !== 'all' ? filters.faction : null,
-                [FILTER_PARAMS.RARITIES]: filters.rarities.length < 5 ? filters.rarities.join(',') : null,
+                [FILTER_PARAMS.RARITIES]: filters.rarities.length > 0 ? filters.rarities.join(',') : null,
                 [FILTER_PARAMS.EX]: filters.ex ? 'true' : null,
                 [FILTER_PARAMS.SEARCH]: filters.search || null,
                 [FILTER_PARAMS.OWNERSHIP]: filters.ownership !== 'all' ? filters.ownership : null,
+                [FILTER_PARAMS.SORT]: filters.sort !== 'default' ? filters.sort : null,
             }, { clear: true });
         },
 
@@ -221,13 +312,18 @@ document.addEventListener('DOMContentLoaded', () => {
             DOM.filters.faction.value = params[FILTER_PARAMS.FACTION] || 'all';
             DOM.search.value = params[FILTER_PARAMS.SEARCH] || '';
             DOM.filters.ownership.value = params[FILTER_PARAMS.OWNERSHIP] || 'all';
+            DOM.filters.sort.value = params[FILTER_PARAMS.SORT] || 'default';
 
             const raritiesParam = params[FILTER_PARAMS.RARITIES];
             if (raritiesParam) {
                 const activeRarities = new Set(raritiesParam.split(','));
+                rarityAllCheckbox.checked = false;
                 cachedRarityCheckboxes.forEach(cb => {
                     cb.checked = activeRarities.has(cb.value);
                 });
+            } else {
+                rarityAllCheckbox.checked = true;
+                cachedRarityCheckboxes.forEach(cb => { cb.checked = false; });
             }
 
             DOM.filters.exDialogue.checked = params[FILTER_PARAMS.EX] === 'true';
@@ -313,14 +409,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
         _checkOwnership(skin, ownershipFilter) {
             if (ownershipFilter === 'all') return true;
-            const isOwned = collection.owned.has(skin['클뜯 id']);
-            return ownershipFilter === 'owned' ? isOwned : !isOwned;
+            const skinId = skin['클뜯 id'];
+            if (ownershipFilter === 'owned') return collection.owned.has(skinId);
+            if (ownershipFilter === 'wanted') return collection.wanted.has(skinId);
+            if (ownershipFilter === 'not-owned') return !collection.owned.has(skinId);
+            return true;
+        },
+
+        _parseRerunDate(period) {
+            if (!period) return null;
+            const match = period.match(/(\d{4})\/(\d{2})\/(\d{2})/);
+            return match ? `${match[1]}-${match[2]}-${match[3]}` : null;
+        },
+
+        _makeDateComparator(getDate, descending) {
+            return (a, b) => {
+                const dateA = getDate(a);
+                const dateB = getDate(b);
+                if (!dateA && !dateB) return 0;
+                if (!dateA) return 1;
+                if (!dateB) return -1;
+                return descending ? dateB.localeCompare(dateA) : dateA.localeCompare(dateB);
+            };
+        },
+
+        _getSortComparator(sortMode) {
+            const releaseDate = (entry) => releaseDates[String(entry.skin['클뜯 id'])] || '';
+            const rerunDate = (entry) => this._parseRerunDate(entry.skin['기간']) || '';
+
+            if (sortMode === 'release-desc') return this._makeDateComparator(releaseDate, true);
+            if (sortMode === 'release-asc') return this._makeDateComparator(releaseDate, false);
+            if (sortMode === 'rerun-desc') return this._makeDateComparator(rerunDate, true);
+            if (sortMode === 'rerun-asc') return this._makeDateComparator(rerunDate, false);
+            return null;
         },
 
         /**
-         * Apply all active filters by toggling card wrapper visibility via display style.
-         * Uses pre-built skinCardMap for O(1) per-card access — no DOM recreation.
-         * Runs inside requestAnimationFrame to batch style changes.
+         * Compute visible card sets per section, then delegate to ChunkController.
+         * Cards are either in the DOM (via chunks) or not — no display toggling.
          */
         apply() {
             if (isLoading || skinCardMap.size === 0) return;
@@ -332,14 +458,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const filters = URLState.getFilters();
                 const selectedRarities = new Set(filters.rarities);
 
-                // Track visible count per section
-                const visibleCounts = { new: 0, limited: 0, permanent: 0, other: 0 };
+                const visibleBySection = { new: [], limited: [], permanent: [], other: [] };
 
-                // Toggle visibility on pre-built cards
-                for (const skin of allSkins) {
-                    const skinId = skin['클뜯 id'];
-                    const entry = skinCardMap.get(skinId);
-                    if (!entry) continue;
+                for (const [, entry] of skinCardMap) {
+                    const skin = entry.skin;
 
                     const visible =
                         (!searchTerm || skin['함순이 이름']?.toLowerCase().includes(searchTerm) || skin['한글 함순이 + 스킨 이름']?.toLowerCase().includes(searchTerm)) &&
@@ -351,14 +473,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         (selectedRarities.size === 0 || selectedRarities.has(skin['레어도'])) &&
                         this._checkOwnership(skin, filters.ownership);
 
-                    entry.wrapper.style.display = visible ? '' : 'none';
-                    if (visible) visibleCounts[entry.category]++;
+                    if (visible) {
+                        visibleBySection[entry.category].push(entry);
+                    }
                 }
 
-                // Toggle section visibility
-                for (const key of Object.keys(DOM.sections)) {
-                    DOM.sections[key].style.display = visibleCounts[key] > 0 ? 'block' : 'none';
+                // Sort within each section if a sort mode is active
+                const sortMode = filters.sort || 'default';
+                const comparator = this._getSortComparator(sortMode);
+                if (comparator) {
+                    for (const entries of Object.values(visibleBySection)) {
+                        entries.sort(comparator);
+                    }
                 }
+
+                // Re-chunk each section
+                for (const key of Object.keys(DOM.sections)) {
+                    ChunkController.load(key, visibleBySection[key]);
+                    toggleElement(DOM.sections[key], visibleBySection[key].length > 0);
+                }
+
+                // Update result count
+                const totalVisible = Object.values(visibleBySection).reduce((sum, arr) => sum + arr.length, 0);
+                DOM.resultCount.textContent = `전체 ${allSkins.length.toLocaleString()}개 중 ${totalVisible.toLocaleString()}개 표시`;
 
                 requestAnimationFrame(() => hideFilteringState());
             });
@@ -380,6 +517,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             saveCollection();
             this._updateCardState(skinId);
+            OwnedShowcase.updateBadge();
         },
 
         toggleWanted(skinId) {
@@ -397,7 +535,9 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         _updateCardState(skinId) {
-            const card = document.querySelector(`.skin-box[data-skin-id="${skinId}"]`);
+            const entry = skinCardMap.get(skinId);
+            if (!entry) return;
+            const card = entry.wrapper.querySelector('.skin-box');
             if (!card) return;
 
             const isOwned = collection.owned.has(skinId);
@@ -418,53 +558,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== Lightbox =====
     const Lightbox = {
-        // Generation counter prevents stale image-load callbacks from a previous open()
-        // from resolving after the user has already selected a different skin.
         _generation: 0,
+        _errorHandler: null,
 
         open(skin) {
+            // Remove stale error handler from previous open
+            if (this._errorHandler) {
+                DOM.popup.image.removeEventListener('error', this._errorHandler);
+                this._errorHandler = null;
+            }
+
             this._generation++;
             const gen = this._generation;
             const shipyardUrl = skin['깔끔한 일러'] || '';
             const fullUrl = shipyardUrl.replace('/shipyard.png', '/painting.png');
             const asmrUrl = skin['ASMR 일러'] || '';
 
-            // Clear old image immediately
             DOM.popup.image.src = '';
             DOM.popup.image.classList.add('loading');
 
-            // Set text and link immediately
             DOM.popup.skinName.textContent = skin['한글 함순이 + 스킨 이름'];
             DOM.popup.charName.textContent = skin['함순이 이름'];
 
             const characterName = encodeURIComponent(normalizeRomanNumerals(skin['함순이 이름']));
-            const skinName = encodeURIComponent(normalizeRomanNumerals(skin['한글 함순이 + 스킨 이름']));
-            DOM.popup.detailLink.href = resolveUrl(`skin/skin-detail-viewer/?character=${characterName}&skin=${skinName}`);
+            const skinDisplayName = encodeURIComponent(normalizeRomanNumerals(skin['한글 함순이 + 스킨 이름']));
+            DOM.popup.detailLink.href = resolveUrl(`skin/skin-detail-viewer/?character=${characterName}&skin=${skinDisplayName}`);
 
-            // Show overlay immediately
             DOM.popup.overlay.classList.add('visible');
             document.body.classList.add('no-scroll');
 
-            // Load image with generation check
             DOM.popup.image.addEventListener('load', () => {
                 if (gen === this._generation) DOM.popup.image.classList.remove('loading');
             }, { once: true });
+
             const fallbacks = [asmrUrl, shipyardUrl].filter(Boolean);
-            const tryNextFallback = () => {
+            const handleError = () => {
                 if (gen !== this._generation) return;
                 const next = fallbacks.shift();
                 if (next) {
-                    DOM.popup.image.addEventListener('error', tryNextFallback, { once: true });
+                    this._errorHandler = handleError;
+                    DOM.popup.image.addEventListener('error', handleError, { once: true });
                     DOM.popup.image.src = next;
+                } else {
+                    this._errorHandler = null;
                 }
             };
-            DOM.popup.image.addEventListener('error', tryNextFallback, { once: true });
+            this._errorHandler = handleError;
+            DOM.popup.image.addEventListener('error', handleError, { once: true });
             DOM.popup.image.src = fullUrl;
         },
 
         close() {
             DOM.popup.overlay.classList.remove('visible');
             document.body.classList.remove('no-scroll');
+            if (this._errorHandler) {
+                DOM.popup.image.removeEventListener('error', this._errorHandler);
+                this._errorHandler = null;
+            }
             DOM.popup.image.src = '';
             DOM.popup.image.classList.remove('loading');
         }
@@ -618,6 +768,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             saveCollection();
             this.updateBadge();
+            OwnedShowcase.updateBadge();
             this.render();
             FilterEngine.apply();
             showToast(`${wantedIds.length}개 스킨을 보유 표시했습니다.`, 'success');
@@ -637,10 +788,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         renderShareView() {
             const wantedSkins = allSkins.filter(s => collection.wanted.has(s['클뜯 id']));
-            const ownedSkins = allSkins.filter(s => collection.owned.has(s['클뜯 id']));
 
-            if (wantedSkins.length === 0 && ownedSkins.length === 0) {
-                showToast('공유할 컬렉션이 없습니다.', 'info');
+            if (wantedSkins.length === 0) {
+                showToast('찜한 스킨이 없습니다.', 'info');
                 return;
             }
 
@@ -648,37 +798,188 @@ document.addEventListener('DOMContentLoaded', () => {
             wantedSkins.forEach(s => { if (s['재화']) totalGems += s['재화']; });
             const totalKrw = Math.round(totalGems * KRW_PER_GEM);
             const trucks = totalGems / GEMS_PER_TRUCK;
-
             const today = new Date().toLocaleDateString('ko-KR');
 
-            let html = '<div class="share-view">';
-            html += `<div class="share-header"><h3>내 스킨 컬렉션</h3><span class="share-date">${today}</span></div>`;
+            const view = document.createElement('div');
+            view.className = 'share-view';
 
-            if (ownedSkins.length > 0) {
-                html += `<div class="share-section"><div class="share-section-title"><i class="fas fa-check-circle"></i> 보유 스킨 (${ownedSkins.length}개)</div>`;
-                html += '<div class="share-grid">';
-                for (const skin of ownedSkins) {
-                    html += `<div class="share-item"><img src="${skin['깔끔한 일러'] || IMG_FALLBACKS.CARD}" alt="${skin['함순이 이름']}" loading="lazy"><span>${skin['함순이 이름']}</span></div>`;
-                }
-                html += '</div></div>';
+            // Header
+            const header = document.createElement('div');
+            header.className = 'share-header';
+            const h3 = document.createElement('h3');
+            h3.textContent = '내 찜 목록';
+            const dateSpan = document.createElement('span');
+            dateSpan.className = 'share-date';
+            dateSpan.textContent = today;
+            header.appendChild(h3);
+            header.appendChild(dateSpan);
+            view.appendChild(header);
+
+            // Summary
+            const summaryTitle = document.createElement('div');
+            summaryTitle.className = 'share-section-title';
+            const heartIcon = document.createElement('i');
+            heartIcon.className = 'fas fa-heart';
+            summaryTitle.appendChild(heartIcon);
+            summaryTitle.appendChild(document.createTextNode(` ${wantedSkins.length}개 — `));
+            const gemImg = document.createElement('img');
+            gemImg.src = resolveUrl('assets/icon/60px-Ruby.webp');
+            gemImg.className = 'gem-icon';
+            gemImg.alt = 'Gem';
+            summaryTitle.appendChild(gemImg);
+            summaryTitle.appendChild(document.createTextNode(` ${totalGems.toLocaleString()} (약 ${totalKrw.toLocaleString()}원 / ${trucks.toFixed(1)} 깡트럭)`));
+            view.appendChild(summaryTitle);
+
+            // Grid
+            const grid = document.createElement('div');
+            grid.className = 'share-grid';
+            for (const skin of wantedSkins) {
+                const item = document.createElement('div');
+                item.className = 'share-item';
+                const img = document.createElement('img');
+                img.src = skin['깔끔한 일러'] || IMG_FALLBACKS.CARD;
+                img.alt = skin['함순이 이름'];
+                img.loading = 'lazy';
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = skin['함순이 이름'];
+                const priceEl = document.createElement('small');
+                priceEl.textContent = skin['재화'] ? skin['재화'].toLocaleString() : '?';
+                item.appendChild(img);
+                item.appendChild(nameSpan);
+                item.appendChild(priceEl);
+                grid.appendChild(item);
             }
+            view.appendChild(grid);
 
-            if (wantedSkins.length > 0) {
-                html += `<div class="share-section"><div class="share-section-title"><i class="fas fa-heart"></i> 찜 목록 (${wantedSkins.length}개) — <img src="${resolveUrl('assets/icon/60px-Ruby.webp')}" class="gem-icon" alt="Gem"> ${totalGems.toLocaleString()} (약 ${totalKrw.toLocaleString()}원 / ${trucks.toFixed(1)} 깡트럭)</div>`;
-                html += '<div class="share-grid">';
-                for (const skin of wantedSkins) {
-                    const cost = skin['재화'] ? skin['재화'].toLocaleString() : '?';
-                    html += `<div class="share-item"><img src="${skin['깔끔한 일러'] || IMG_FALLBACKS.CARD}" alt="${skin['함순이 이름']}" loading="lazy"><span>${skin['함순이 이름']}</span><small>${cost}</small></div>`;
-                }
-                html += '</div></div>';
-            }
-
-            html += '</div>';
-
-            DOM.cart.body.innerHTML = html;
+            DOM.cart.body.innerHTML = '';
+            DOM.cart.body.appendChild(view);
             DOM.cart.footer.style.display = 'none';
             this._showShareMode();
             showToast('캡처용 화면입니다. 스크린샷을 찍어주세요!', 'info');
+        }
+    };
+
+    // ===== Owned Showcase =====
+    const OwnedShowcase = {
+        _groupMode: 'type',
+
+        updateBadge() {
+            const count = collection.owned.size;
+            DOM.owned.badge.textContent = count;
+            DOM.owned.fab.classList.toggle('has-items', count > 0);
+        },
+
+        open() {
+            this.render();
+            openModal('owned-modal');
+        },
+
+        render() {
+            const ownedSkins = allSkins.filter(s => collection.owned.has(s['클뜯 id']));
+
+            if (ownedSkins.length === 0) {
+                DOM.owned.body.innerHTML = '<div class="cart-empty"><i class="fas fa-shirt"></i><p>보유 스킨이 없습니다</p><p class="cart-empty-hint">스킨 카드의 <i class="fas fa-check"></i> 버튼으로 보유 표시해보세요!</p></div>';
+                DOM.owned.footer.style.display = 'none';
+                return;
+            }
+
+            DOM.owned.footer.style.display = '';
+
+            // Group skins
+            const groups = this._groupMode === 'type'
+                ? this._groupByType(ownedSkins)
+                : this._groupByTag(ownedSkins);
+
+            const fragment = document.createDocumentFragment();
+
+            for (const [groupName, skins] of groups) {
+                const section = document.createElement('div');
+                section.className = 'share-section';
+
+                const title = document.createElement('div');
+                title.className = 'share-section-title';
+                title.textContent = `${groupName} (${skins.length}개)`;
+                section.appendChild(title);
+
+                const grid = document.createElement('div');
+                grid.className = 'share-grid';
+
+                for (const skin of skins) {
+                    const item = document.createElement('div');
+                    item.className = 'share-item';
+
+                    const img = document.createElement('img');
+                    img.src = skin['깔끔한 일러'] || IMG_FALLBACKS.CARD;
+                    img.alt = skin['함순이 이름'];
+                    img.loading = 'lazy';
+
+                    const nameSpan = document.createElement('span');
+                    nameSpan.textContent = skin['함순이 이름'] || '';
+
+                    item.appendChild(img);
+                    item.appendChild(nameSpan);
+                    grid.appendChild(item);
+                }
+
+                section.appendChild(grid);
+                fragment.appendChild(section);
+            }
+
+            DOM.owned.body.innerHTML = '';
+            DOM.owned.body.appendChild(fragment);
+
+            // Update footer
+            let totalGems = 0;
+            for (const skin of ownedSkins) {
+                if (skin['재화']) totalGems += skin['재화'];
+            }
+            DOM.owned.count.textContent = `${ownedSkins.length}개`;
+            DOM.owned.totalGems.textContent = totalGems.toLocaleString();
+        },
+
+        _groupByType(skins) {
+            const groups = new Map();
+            for (const skin of skins) {
+                const type = skin['스킨 타입 - 한글'] || '기본';
+                if (!groups.has(type)) groups.set(type, []);
+                groups.get(type).push(skin);
+            }
+            // Sort groups: 기본 first, then alphabetically
+            return [...groups.entries()].sort((a, b) => {
+                if (a[0] === '기본') return -1;
+                if (b[0] === '기본') return 1;
+                return a[0].localeCompare(b[0], 'ko');
+            });
+        },
+
+        _groupByTag(skins) {
+            const TAG_GROUP_ORDER = ['듀얼', 'L2D+', 'L2D', '쁘띠모션'];
+            const TAG_DISPLAY_ORDER = ['듀얼', 'L2D+', 'L2D', '쁘띠모션', '기타'];
+            const groups = new Map();
+            for (const skin of skins) {
+                const rawTag = skin['스킨 태그'] || '';
+                let tag = '기타';
+                for (const candidate of TAG_GROUP_ORDER) {
+                    if (rawTag.includes(candidate)) {
+                        tag = candidate;
+                        break;
+                    }
+                }
+                if (!groups.has(tag)) groups.set(tag, []);
+                groups.get(tag).push(skin);
+            }
+            // Sort by display order
+            return TAG_DISPLAY_ORDER
+                .filter(tag => groups.has(tag))
+                .map(tag => [tag, groups.get(tag)]);
+        },
+
+        setGroupMode(mode) {
+            this._groupMode = mode;
+            DOM.owned.toggleBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.group === mode);
+            });
+            this.render();
         }
     };
 
@@ -747,11 +1048,19 @@ document.addEventListener('DOMContentLoaded', () => {
             imageWrapper.appendChild(img);
             skinBox.appendChild(imageWrapper);
 
+            // Extract skin-specific name (remove character name prefix)
+            const fullName = skin['한글 함순이 + 스킨 이름'] || '';
+            const charName = skin['함순이 이름'] || '';
+            const skinOnlyName = fullName.startsWith(charName) ? fullName.slice(charName.length).trim() : fullName;
+            // Skin name is the heading; character name is a small chip below it
+            const charChipHtml = `<div class="char-name-chip" title="${charName}">${charName}</div>`;
+
             const releaseDate = formatReleaseDate(skinId);
             const skinInfo = document.createElement('div');
             skinInfo.className = 'skin-info';
             skinInfo.innerHTML = `
-                <h3>${skin['함순이 이름']}</h3>
+                <h3>${skinOnlyName || charName}</h3>
+                ${skinOnlyName ? charChipHtml : ''}
                 <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
                 <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
                 <div class="info-line"><strong>진영:</strong> ${skin['진영'] || '없음'}</div>
@@ -791,28 +1100,18 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         /**
-         * Build all skin cards once at page load and append them to their section containers.
-         * Populates skinCardMap for fast filter toggling; never re-builds on filter changes.
+         * Create all card wrappers and populate skinCardMap.
+         * Does NOT append to DOM — ChunkController handles that via FilterEngine.apply().
          */
         buildAll(skins) {
-            // Cache today's date once for all categorizations
             this._today = new Date();
             this._today.setHours(0, 0, 0, 0);
-
-            const fragments = { new: document.createDocumentFragment(), limited: document.createDocumentFragment(), permanent: document.createDocumentFragment(), other: document.createDocumentFragment() };
 
             for (const skin of skins) {
                 const category = this._categorizeSkin(skin);
                 const wrapper = this._createSkinBox(skin);
-
-                skinCardMap.set(skin['클뜯 id'], { wrapper, category });
-                fragments[category].appendChild(wrapper);
+                skinCardMap.set(skin['클뜯 id'], { wrapper, category, skin });
             }
-
-            Object.keys(DOM.containers).forEach(key => {
-                DOM.containers[key].innerHTML = '';
-                DOM.containers[key].appendChild(fragments[key]);
-            });
         }
     };
 
@@ -884,13 +1183,34 @@ document.addEventListener('DOMContentLoaded', () => {
             DOM.filters.tag.value = 'all';
             DOM.filters.exDialogue.checked = false;
             DOM.filters.ownership.value = 'all';
-            cachedRarityCheckboxes.forEach(cb => cb.checked = true);
+            DOM.filters.sort.value = 'default';
+            rarityAllCheckbox.checked = true;
+            cachedRarityCheckboxes.forEach(cb => cb.checked = false);
 
             FilterEngine.apply();
             URLState.update();
         },
 
         handleFilterChange() {
+            FilterEngine.apply();
+            URLState.update();
+        },
+
+        handleRarityAllChange() {
+            if (rarityAllCheckbox.checked) {
+                cachedRarityCheckboxes.forEach(cb => { cb.checked = false; });
+            } else {
+                // Don't allow unchecking 전체보기 directly — if nothing else is checked, re-check it
+                const anyChecked = cachedRarityCheckboxes.some(cb => cb.checked);
+                if (!anyChecked) rarityAllCheckbox.checked = true;
+            }
+            FilterEngine.apply();
+            URLState.update();
+        },
+
+        handleRarityChange() {
+            const anyChecked = cachedRarityCheckboxes.some(cb => cb.checked);
+            rarityAllCheckbox.checked = !anyChecked;
             FilterEngine.apply();
             URLState.update();
         },
@@ -911,19 +1231,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const showLoadingState = () => {
         isLoading = true;
         allSkinContainers.forEach(container => {
-            container.innerHTML = '<p style="text-align: center; padding: 2rem; color: var(--text-secondary);">데이터 불러오는 중...</p>';
+            container.innerHTML = '<p class="loading-message">데이터 불러오는 중...</p>';
         });
     };
 
     const showErrorState = (error) => {
         isLoading = false;
+        const msg = error.message || 'Unknown error';
         allSkinContainers.forEach(container => {
-            container.innerHTML = `
-                <p style="text-align: center; padding: 2rem; color: var(--danger-color);">
-                    데이터를 불러오는데 실패했습니다.<br>
-                    <small style="color: var(--text-muted);">${error.message || 'Unknown error'}</small>
-                </p>
-            `;
+            const p = document.createElement('p');
+            p.className = 'error-message';
+            p.textContent = '데이터를 불러오는데 실패했습니다.';
+            p.appendChild(document.createElement('br'));
+            const small = document.createElement('small');
+            small.textContent = msg;
+            p.appendChild(small);
+            container.innerHTML = '';
+            container.appendChild(p);
         });
         console.error("Failed to load data:", error);
     };
@@ -947,14 +1271,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 skinById.set(skin['클뜯 id'], skin);
             }
 
-            // Build all cards once (no more per-filter DOM recreation)
+            // Create all card wrappers (not yet in DOM)
             Renderer.buildAll(allSkins);
+
+            // Initialize chunked rendering
+            ChunkController.init(Object.keys(DOM.sections));
 
             const uniqueNames = [...new Set(allSkins.map(skin => skin['한글 함순이 + 스킨 이름']))].sort();
             fuse = createSearchIndex(uniqueNames.map(name => ({ name })), fuseOptions);
 
             // Initialize cart badge
             CartManager.updateBadge();
+            OwnedShowcase.updateBadge();
 
             URLState.apply();
         })
@@ -964,18 +1292,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== Cleanup =====
     const cleanup = () => {
-        clearTimeout(activeTimers.debounce);
-        clearTimeout(activeTimers.throttle);
-        clearTimeout(activeTimers.progressBar);
-        activeTimers.debounce = null;
-        activeTimers.throttle = null;
-        activeTimers.progressBar = null;
+        ChunkController.cleanup();
+        clearTimeout(progressBarTimer);
+        progressBarTimer = null;
 
         DOM.search.removeEventListener('input', EventHandlers.handleSearch);
         [DOM.filters.skinType, DOM.filters.period, DOM.filters.faction, DOM.filters.tag,
-         DOM.filters.exDialogue, DOM.filters.ownership]
+         DOM.filters.exDialogue, DOM.filters.ownership, DOM.filters.sort]
             .forEach(el => el.removeEventListener('change', EventHandlers.handleFilterChange));
-        cachedRarityCheckboxes.forEach(cb => cb.removeEventListener('change', EventHandlers.handleFilterChange));
+        rarityAllCheckbox.removeEventListener('change', EventHandlers.handleRarityAllChange);
+        cachedRarityCheckboxes.forEach(cb => cb.removeEventListener('change', EventHandlers.handleRarityChange));
         DOM.buttons.clearAll.removeEventListener('click', EventHandlers.resetFilters);
         DOM.buttons.filterToggle.removeEventListener('click', EventHandlers.toggleFilters);
         window.removeEventListener('popstate', URLState.apply);
@@ -1002,11 +1328,12 @@ document.addEventListener('DOMContentLoaded', () => {
     DOM.search.addEventListener('input', EventHandlers.handleSearch);
 
     [DOM.filters.skinType, DOM.filters.period, DOM.filters.faction, DOM.filters.tag,
-     DOM.filters.exDialogue, DOM.filters.ownership]
+     DOM.filters.exDialogue, DOM.filters.ownership, DOM.filters.sort]
         .forEach(el => el.addEventListener('change', EventHandlers.handleFilterChange));
 
+    rarityAllCheckbox.addEventListener('change', EventHandlers.handleRarityAllChange);
     cachedRarityCheckboxes
-        .forEach(cb => cb.addEventListener('change', EventHandlers.handleFilterChange));
+        .forEach(cb => cb.addEventListener('change', EventHandlers.handleRarityChange));
 
     DOM.buttons.clearAll.addEventListener('click', EventHandlers.resetFilters);
     DOM.buttons.filterToggle.addEventListener('click', EventHandlers.toggleFilters);
@@ -1022,6 +1349,7 @@ document.addEventListener('DOMContentLoaded', () => {
             collection.owned = new Set(newData.owned || []);
             collection.wanted = new Set(newData.wanted || []);
             CartManager.updateBadge();
+            OwnedShowcase.updateBadge();
             FilterEngine.apply();
         } catch (err) {
             console.error('Failed to sync collection from storage event:', err);
@@ -1037,6 +1365,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cart body delegation
     DOM.cart.body.addEventListener('click', handleCartClick);
+
+    // Owned showcase FAB + toggle
+    DOM.owned.fab.addEventListener('click', () => OwnedShowcase.open());
+    DOM.owned.toggleBtns.forEach(btn => {
+        btn.addEventListener('click', () => OwnedShowcase.setGroupMode(btn.dataset.group));
+    });
+
+    setupModal('owned-modal', {
+        closeButtonSelector: '#owned-modal .cart-close-btn',
+        closeOnEscape: true,
+        closeOnBackdrop: true
+    });
 
     // Cart FAB + header buttons
     DOM.cart.fab.addEventListener('click', () => CartManager.open());

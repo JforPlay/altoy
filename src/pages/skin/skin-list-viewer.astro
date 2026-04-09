@@ -66,6 +66,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <input type="text" id="search-input" placeholder="함순이 또는 스킨 이름을 검색...">
                 </div>
             </div>
+            <select id="sort-select" class="sort-select">
+                <option value="default">정렬: 기본</option>
+                <option value="release-desc">출시일 ↓</option>
+                <option value="release-asc">출시일 ↑</option>
+                <option value="rerun-desc">최근복각 ↓</option>
+                <option value="rerun-asc">최근복각 ↑</option>
+            </select>
             <button id="clear-all-btn" class="clear-btn" title="Clear All Filters">
                 <i class="fas fa-undo"></i> 필터 초기화
             </button>
@@ -105,17 +112,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </select>
             </div>
             <div class="filter-group">
-                <label>레어도</label>
+                <label>함순이 레어도</label>
                 <div id="rarity-checkboxes" class="checkbox-group">
-                    <label><input type="checkbox" value="UR" checked> UR</label>
-                    <label><input type="checkbox" value="SSR" checked> SSR</label>
-                    <label><input type="checkbox" value="SR" checked> SR</label>
-                    <label><input type="checkbox" value="R" checked> R</label>
-                    <label><input type="checkbox" value="N" checked> N</label>
+                    <label><input type="checkbox" value="all" checked> 전체보기</label>
+                    <label><input type="checkbox" value="UR"> UR</label>
+                    <label><input type="checkbox" value="SSR"> SSR</label>
+                    <label><input type="checkbox" value="SR"> SR</label>
+                    <label><input type="checkbox" value="R"> R</label>
+                    <label><input type="checkbox" value="N"> N</label>
                 </div>
             </div>
             <div class="filter-group">
-                <label for="faction-select">진영</label>
+                <label for="faction-select">함순이 진영</label>
                 <select id="faction-select">
                     <option value="all">전체</option>
                     <option>UNIV</option><option>USS</option><option>HMS</option><option>IJN</option><option>KMS</option>
@@ -129,20 +137,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <option>DanMachi</option><option>DateALive</option>
                 </select>
             </div>
-            <div class="filter-group">
-                <label for="ownership-select">보유 상태</label>
-                <select id="ownership-select">
-                    <option value="all">전체</option>
-                    <option value="owned">보유중</option>
-                    <option value="not-owned">미보유</option>
-                </select>
-            </div>
         </div>
 
         <div class="filter-footer">
             <span class="hint-icons"><i class="fas fa-check"></i> 보유 &nbsp; <i class="fas fa-heart"></i> 찜 표시</span>
             <span class="filter-footer-divider"></span>
+            <label class="filter-footer-label">내 컬렉션</label>
+            <select id="ownership-select" class="ownership-select">
+                <option value="all">전체</option>
+                <option value="owned">보유중</option>
+                <option value="not-owned">미보유</option>
+                <option value="wanted">찜</option>
+            </select>
+            <span class="filter-footer-divider"></span>
             <label class="hint-checkbox"><input type="checkbox" id="ex-dialogue-checkbox"> ex 대사 있는 스킨만 보기</label>
+            <span id="result-count" class="result-count"></span>
         </div>
 
         <div class="skin-section" id="new-skins-section">
@@ -174,6 +183,44 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <a id="popup-detail-link" class="popup-detail-link" href="#">
                     <i class="fas fa-info-circle"></i> 상세정보 / 대사 보기
                 </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Owned Showcase FAB -->
+    <button id="owned-fab" class="owned-fab" title="내 옷장 (보유 스킨)">
+        <i class="fas fa-shirt"></i>
+        <span id="owned-badge" class="cart-badge">0</span>
+    </button>
+
+    <!-- Owned Showcase Modal -->
+    <div id="owned-modal" class="cart-modal" style="display:none">
+        <div class="cart-modal-content">
+            <div class="cart-header">
+                <h2><i class="fas fa-shirt"></i> 내 옷장</h2>
+                <div class="cart-header-actions">
+                    <div class="owned-group-toggle">
+                        <button class="owned-toggle-btn active" data-group="type">스킨 타입</button>
+                        <button class="owned-toggle-btn" data-group="tag">스킨 태그</button>
+                    </div>
+                    <button class="modal-close cart-close-btn" aria-label="닫기">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="owned-hint">보유 표시해둔 스킨이 여기 표시됩니다</div>
+            <div id="owned-body" class="cart-body"></div>
+            <div id="owned-footer" class="cart-footer">
+                <div class="cart-summary">
+                    <div class="cart-summary-row">
+                        <span>보유 스킨</span>
+                        <span id="owned-count">0개</span>
+                    </div>
+                    <div class="cart-summary-row">
+                        <span><img src={`${base}/assets/icon/60px-Ruby.webp`} class="gem-icon" alt="Gem"> 총 가치</span>
+                        <span id="owned-total-gems">0</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
