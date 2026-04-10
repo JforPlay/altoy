@@ -493,8 +493,13 @@ async function init() {
     // Load lite data (blocking)
     await loadLiteData();
 
-    // Determine initial tab from URL or default
+    // Capture all URL params before switchTab runs — switchTab wipes map/compare
+    // from the URL as part of its normal tab-change behavior, so we must read
+    // them upfront or they'll be gone by the time we try to restore state.
     const urlTab = getUrlParam('tab', 'main');
+    const urlMap = getUrlParam('map');
+    const compareParam = getUrlParam('compare');
+
     switchTab(urlTab);
 
     // Load full data and ship info in background
@@ -566,8 +571,7 @@ async function init() {
         }, 200));
     }
 
-    // Handle URL params on load
-    const urlMap = getUrlParam('map');
+    // Restore map selection from URL (captured before switchTab wiped the params)
     if (urlMap) {
         // Auto-detect tab from map ID
         await state.fullDataPromise;
@@ -578,8 +582,7 @@ async function init() {
         selectMap(urlMap);
     }
 
-    // Handle compare URL
-    const compareParam = getUrlParam('compare');
+    // Restore compare modal from URL
     if (compareParam) {
         const [id1, id2] = compareParam.split(',');
         if (id1 && id2) {
