@@ -116,6 +116,12 @@
   --primary-alpha-20: rgba(0, 113, 235, 0.2);
   --primary-alpha-30: rgba(0, 113, 235, 0.3);
 
+  /* Danger color alpha variants */
+  --danger-alpha-10: rgba(231, 76, 60, 0.1);
+  --danger-alpha-15: rgba(231, 76, 60, 0.15);
+  --danger-alpha-25: rgba(231, 76, 60, 0.25);
+  --danger-alpha-40: rgba(231, 76, 60, 0.4);
+
   /* Island semantic colors */
   --island-stamina:   #3498db;
   --island-points:    #9b59b6;
@@ -192,6 +198,12 @@ body.dark-mode {
   --primary-alpha-15: rgba(114, 137, 218, 0.15);
   --primary-alpha-20: rgba(114, 137, 218, 0.2);
   --primary-alpha-30: rgba(114, 137, 218, 0.3);
+
+  /* Danger color alpha variants (same base as light since --danger-color is shared) */
+  --danger-alpha-10: rgba(231, 76, 60, 0.1);
+  --danger-alpha-15: rgba(231, 76, 60, 0.18);
+  --danger-alpha-25: rgba(231, 76, 60, 0.3);
+  --danger-alpha-40: rgba(231, 76, 60, 0.45);
 
   /* Island semantic colors (same in both modes) */
   --island-stamina:   #3498db;

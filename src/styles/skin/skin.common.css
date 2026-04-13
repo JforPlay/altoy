@@ -282,11 +282,28 @@ label {
 }
 
 .clear-btn i {
+  color: var(--danger-color);
   transition: transform var(--transition-base);
 }
 
 .clear-btn:hover i {
   transform: rotate(180deg);
+}
+
+/* Reset-intent pastel red hue for .clear-btn (scoped to not affect .reset-button) */
+.clear-btn {
+  background: linear-gradient(135deg, var(--danger-alpha-10), var(--danger-alpha-15));
+}
+
+.clear-btn:hover {
+  background: linear-gradient(135deg, var(--danger-alpha-15), var(--danger-alpha-25));
+  border-color: var(--danger-color);
+  color: var(--danger-color);
+  box-shadow: 0 4px 12px var(--danger-alpha-25);
+}
+
+.clear-btn:active {
+  box-shadow: inset 0 2px 4px var(--danger-alpha-25);
 }
 
 /* --- Loading Skeleton --- */
@@ -487,6 +504,18 @@ body.dark-mode .reset-button {
 body.dark-mode .clear-btn:hover,
 body.dark-mode .reset-button:hover {
   background: linear-gradient(135deg, var(--bg-secondary), var(--bg-elevated));
+}
+
+/* Dark-mode pastel red override for .clear-btn (beats shared dark rules) */
+body.dark-mode .clear-btn {
+  background: linear-gradient(135deg, var(--danger-alpha-15), var(--danger-alpha-25));
+}
+
+body.dark-mode .clear-btn:hover {
+  background: linear-gradient(135deg, var(--danger-alpha-25), var(--danger-alpha-40));
+  border-color: var(--danger-color);
+  color: var(--danger-color);
+  box-shadow: 0 4px 12px var(--danger-alpha-25);
 }
 
 body.dark-mode .skeleton-card {
