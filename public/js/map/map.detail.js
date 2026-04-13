@@ -74,9 +74,16 @@ export function calcClearEstimate(chapter) {
     const preBossBattles = chapter.boss_refresh || 0;
     const totalBattles = preBossBattles + bossCount;
 
-    // Count elite battles (capped by pre-boss battle count)
-    const eliteBattles = Math.min(eliteFleets.length, preBossBattles);
-    const normalBattles = preBossBattles - eliteBattles;
+    // Phase-based refresh arrays — sum each to get guaranteed per-clear spawn counts.
+    // ai_refresh → champion (엘리트 in-game, type-12 diamond cells)
+    // elite_refresh → strong-normal (강한 일반, type-4 cells)
+    const championBattles = (chapter.ai_refresh || []).reduce((a, b) => a + b, 0);
+    const strongNormalSpawns = (chapter.elite_refresh || []).reduce((a, b) => a + b, 0);
+
+    // Clamp to remaining pre-boss slots in case a map over-declares. `eliteBattles` kept as
+    // the variable name for historical compat (EXP calc below slices eliteFleets by it).
+    const eliteBattles = Math.min(strongNormalSpawns, Math.max(0, preBossBattles - championBattles));
+    const normalBattles = Math.max(0, preBossBattles - championBattles - eliteBattles);
 
     // EXP calculations
     const eliteExps = eliteFleets.slice(0, eliteBattles).map(f => f.exp || 0);
@@ -122,6 +129,7 @@ export function calcClearEstimate(chapter) {
     return {
         totalBattles,
         bossCount,
+        championBattles,
         eliteBattles,
         normalBattles,
         shipExpMin,
@@ -196,7 +204,15 @@ export function renderMapInfo(chapter, targetEl) {
         html += '<div class="info-card-body">';
 
         const bossLabel = est.isMultiBoss ? `보스 ${est.bossCount}` : '보스 1';
-        const battleSub = `${est.eliteBattles > 0 ? `엘리트 ${est.eliteBattles} + ` : ''}일반 ${est.normalBattles} + ${bossLabel}`;
+        // 강한 일반 (type-4) and 일반 (type-6) are both "mob battles" in the game's auto-mode
+        // battle-count display — they tick the same boss_refresh counter. Merge for display;
+        // the internal eliteBattles split is still used by the EXP estimate below.
+        const mobBattles = est.eliteBattles + est.normalBattles;
+        const battleSub = [
+            est.championBattles > 0 ? `엘리트 ${est.championBattles}` : null,
+            mobBattles > 0 ? `일반 ${mobBattles}` : null,
+            bossLabel,
+        ].filter(Boolean).join(' + ');
 
         html += '<div class="clear-stats">';
 
@@ -241,6 +257,15 @@ export function renderMapInfo(chapter, targetEl) {
             html += '<div class="clear-stat">';
             html += '<div class="clear-stat-label">EXP/연료</div>';
             html += `<div class="clear-stat-value">${est.expPerOil.toFixed(2)}</div>`;
+            html += '</div>';
+        }
+
+        // Box 6: 이벤트 pt (event maps only)
+        if (chapter.event_pt) {
+            html += '<div class="clear-stat">';
+            html += '<div class="clear-stat-label">이벤트 pt</div>';
+            html += `<div class="clear-stat-value">${chapter.event_pt.toLocaleString()}</div>`;
+            html += '<div class="clear-stat-sub">클리어당</div>';
             html += '</div>';
         }
 
