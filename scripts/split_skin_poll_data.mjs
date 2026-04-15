@@ -47,7 +47,7 @@ for (const [id, skin] of Object.entries(data)) {
     included++;
 }
 
-const outputJson = JSON.stringify(result);
+const outputJson = JSON.stringify(result, null, 4);
 fs.writeFileSync(OUTPUT, outputJson);
 
 console.log(`--- Summary ---`);
