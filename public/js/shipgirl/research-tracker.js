@@ -7,14 +7,16 @@
  * The storage event keeps both pages in sync across tabs without circular triggering.
  */
 
-import { fetchJSON, fetchJSONWithCache, getStorageItem, setStorageItem, debounce, createImg, IMG_FALLBACKS } from '../utils.js';
+import { fetchJSONWithCache, getStorageItem, setStorageItem, debounce, createImg, IMG_FALLBACKS, createSearchIndex } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const SAVE_KEY = 'shipgirlTrackerProgress';
+    const PINNED_KEY = 'researchTrackerPinned';
 
-    const PERMANENT_PATTERNS = [
-        /^메인 스테이지 해역/,
-        /^추천 획득 해역/,
+    // Descriptions that are NOT map-drops or archive-drops but still grant the ship permanently.
+    // Map drops and archive drops are detected via ship_info_lite.json and map_data_full.json
+    // (same lookup path as the map viewer) rather than by parsing description strings.
+    const NON_DROP_PERMANENT_PATTERNS = [
         /^소형함 건조/,
         /^중형함 건조/,
         /^대형함 건조/,
@@ -49,6 +51,46 @@ document.addEventListener('DOMContentLoaded', () => {
         /^훈장 교환/,
     ];
 
+    const BUILD_TEST = d => /건조/.test(d) && !/한정/.test(d) && !/이벤트/.test(d) && !/기간/.test(d);
+    const SHOP_TEST = d => SHOP_PATTERNS.some(p => p.test(d));
+    const OTHER_TEST = d => {
+        if (BUILD_TEST(d)) return false;
+        if (SHOP_TEST(d)) return false;
+        return NON_DROP_PERMANENT_PATTERNS.some(p => p.test(d));
+    };
+
+    // Map a description prefix to the shop name shown under the ship card.
+    // Order matters: more specific patterns first so "훈장 상점 교환" takes precedence
+    // over a hypothetical bare "훈장" prefix. Each rule must cover at least one entry
+    // in SHOP_PATTERNS so every shop-group ship resolves to a label.
+    //
+    // Hardcoded rollups:
+    //   군수 상점  + 특별 보급       → 연습전 상점 (both use 공훈치 from 연습전/PvP)
+    //   함대 상점  + 대함대 보급     → 대함대 상점 (unified guild/grand-fleet storefront)
+    const SHOP_LABEL_RULES = [
+        { pattern: /^원형 상점/, label: '원형 상점' },
+        { pattern: /^군수 상점/, label: '연습전 상점' },
+        { pattern: /^코어/, label: '코어 상점' },
+        { pattern: /^함대 상점/, label: '대함대 상점' },
+        { pattern: /^훈장 상점/, label: '훈장 상점' },
+        { pattern: /^훈장 교환/, label: '훈장 상점' },
+        { pattern: /^상점의 대함대/, label: '대함대 상점' },
+        { pattern: /^특별 ?보급/, label: '연습전 상점' },
+    ];
+
+    function getShopLabelForShip(ship) {
+        const labels = new Set();
+        for (const d of ship.description || []) {
+            for (const rule of SHOP_LABEL_RULES) {
+                if (rule.pattern.test(d)) {
+                    labels.add(rule.label);
+                    break;
+                }
+            }
+        }
+        return [...labels].join(', ');
+    }
+
     const FACTION_ABBR = {
         '로열 네이비': 'HMS',
         '사쿠라 엠파이어': 'IJN',
@@ -61,110 +103,200 @@ document.addEventListener('DOMContentLoaded', () => {
         '노스 유니온': 'SN',
     };
 
+    // Single-assignment priority order: map drops → archive drops → build → shop → other.
+    // Ships are grouped in this order; the first matching group wins, so a ship that drops in
+    // a map stage is never also shown under build/shop even if its description mentions them.
     const SOURCE_GROUPS = [
         {
             key: 'map',
             label: '해역 드랍',
             icon: 'sailing',
-            test: d => /^메인 스테이지 해역/.test(d) || /^추천 획득 해역/.test(d)
+            test: ship => mapDropGids.has(ship.gid),
+        },
+        {
+            key: 'archive',
+            label: '작전문서 드랍',
+            icon: 'menu_book',
+            test: ship => archiveDropGids.has(ship.gid),
         },
         {
             key: 'build',
             label: '상시 건조',
             icon: 'construction',
-            test: d => /건조/.test(d) && !/한정/.test(d) && !/이벤트/.test(d) && !/기간/.test(d)
+            test: ship => (ship.description || []).some(BUILD_TEST),
         },
         {
             key: 'shop',
             label: '상점 교환',
             icon: 'shopping_cart',
-            test: d => SHOP_PATTERNS.some(p => p.test(d))
+            test: ship => (ship.description || []).some(SHOP_TEST),
         },
         {
             key: 'other',
             label: '기타 획득',
             icon: 'storefront',
-            test: d => {
-                if (/^메인 스테이지 해역/.test(d) || /^추천 획득 해역/.test(d)) return false;
-                if (/건조/.test(d) && !/한정/.test(d) && !/이벤트/.test(d) && !/기간/.test(d)) return false;
-                if (SHOP_PATTERNS.some(p => p.test(d))) return false;
-                return PERMANENT_PATTERNS.some(p => p.test(d));
-            }
+            test: ship => (ship.description || []).some(OTHER_TEST),
         },
-        {
-            key: 'archive',
-            label: '상시 편입된 이벤트 함순이',
-            icon: 'menu_book',
-            test: d => isWarArchiveDescription(d)
-        }
     ];
 
     let shipData = null;
     let nationalityData = null;
     let shipTypeData = null;
     let fleetTechGoalData = null;
-    let warArchiveEventNames = null;
+    // Set<string> gids + parallel Map<gid, shortLabel>. Built once in loadData() from
+    // ship_info_lite.json and map_data_full.json (same authoritative sources the map viewer
+    // uses) so drop-based grouping no longer depends on acquireTip description strings.
+    // The label is a brief hint rendered under the ship name — e.g. "1-4, 3-2" for map drops,
+    // "홍염의 방문자" for archive drops.
+    let mapDropGids = new Set();
+    let archiveDropGids = new Set();
+    const mapDropLabel = new Map();
+    const archiveDropLabel = new Map();
+    const shopDropLabel = new Map();
+
+    const MAX_MAP_STAGES_IN_LABEL = 3;
+    const MAX_ARCHIVE_EVENTS_IN_LABEL = 2;
     let progress = {};
+    let pinned = new Set();
     let activeFaction = null;
     const activeRarities = new Set(['ur', 'ssr', 'sr', 'r', 'n']);
     const activeStatuses = new Set(['missing', 'owned']);
 
     const tabsContainer = document.getElementById('faction-tabs');
-    const contentContainer = document.getElementById('faction-content');
-    const extraContainer = document.getElementById('faction-extra');
-
-    function extractEventName(desc) {
-        const match = desc.match(/^(?:한정\s*)?이벤트\s*[：:]\s*(.+)$/);
-        return match ? match[1].trim() : null;
-    }
-
-    function isWarArchiveDescription(desc) {
-        if (!warArchiveEventNames) return false;
-        const eventName = extractEventName(desc);
-        if (!eventName) return false;
-        if (warArchiveEventNames.has(eventName)) return true;
-        for (const archiveName of warArchiveEventNames) {
-            if (eventName.startsWith(archiveName)) return true;
-        }
-        return false;
-    }
-
-    function isWarArchiveShip(ship) {
-        if (!ship.description || !Array.isArray(ship.description)) return false;
-        return ship.description.some(d => isWarArchiveDescription(d));
-    }
+    const sidebarBody = document.getElementById('sidebar-content');
+    const rightPane = document.getElementById('right-pane');
 
     /**
-     * Load all data sources in parallel, build the war archive name set, and restore progress.
+     * Load all data sources in parallel and build authoritative drop gid sets.
+     *
+     * Map drops come from ship_info_lite.json (each ship has a `maps` array of
+     * main-story areas; any non-empty entry means the ship drops somewhere).
+     * Archive drops come from map_data_full.json archive chapters (keys prefixed
+     * "a_"), using `ship_drops_archive` (ship.id) and `special_drop` (type 4).
+     * Both sources use the same approach as the map viewer in map.data.js.
      */
     async function loadData() {
         try {
-            let warArchiveData;
-            [shipData, nationalityData, shipTypeData, fleetTechGoalData, warArchiveData] = await Promise.all([
+            let shipInfoLite, mapDataFull;
+            [shipData, nationalityData, shipTypeData, fleetTechGoalData, shipInfoLite, mapDataFull] = await Promise.all([
                 fetchJSONWithCache('data/ship_group_data.json'),
                 fetchJSONWithCache('data/mapping/nationality_mapping.json'),
                 fetchJSONWithCache('data/mapping/ship_type_mapping.json'),
                 fetchJSONWithCache('data/shipgirl/fleet_tech_goal.json'),
-                fetchJSONWithCache('data/shipgirl/war_archive.json'),
+                fetchJSONWithCache('data/ship_info_lite.json'),
+                fetchJSONWithCache('data/maps/map_data_full.json'),
             ]);
-            warArchiveEventNames = new Set();
-            for (const category of Object.values(warArchiveData)) {
-                for (const eventName of Object.values(category)) {
-                    warArchiveEventNames.add(eventName);
+
+            // ship_info_lite.json is an array. Each entry has numeric id + gid.
+            // Build the id→gid reverse lookup, the map-drop gid set, and the
+            // per-gid stage label ("1-4, 3-2, …") in one pass.
+            const idToGid = new Map();
+            for (const ship of shipInfoLite || []) {
+                if (ship.gid != null) idToGid.set(ship.id, String(ship.gid));
+                const maps = ship.maps;
+                if (!Array.isArray(maps) || ship.gid == null) continue;
+                const stages = [];
+                maps.forEach((area, chapterIdx) => {
+                    if (!Array.isArray(area) || area.length === 0) return;
+                    const chapter = chapterIdx + 1;
+                    for (const d of area) stages.push(`${chapter}-${d.map}`);
+                });
+                if (stages.length > 0) {
+                    const gidStr = String(ship.gid);
+                    mapDropGids.add(gidStr);
+                    const label = stages.length <= MAX_MAP_STAGES_IN_LABEL
+                        ? stages.join(', ')
+                        : `${stages.slice(0, MAX_MAP_STAGES_IN_LABEL).join(', ')} +${stages.length - MAX_MAP_STAGES_IN_LABEL}`;
+                    mapDropLabel.set(gidStr, label);
                 }
             }
+
+            // Archive drops: iterate only `a_`-prefixed chapters in map_data_full.
+            // ship_drops_archive entries reference ship.id (not gid), so translate via idToGid.
+            // special_drop may be either a ship.id or a gid (matching map.detail.js fallback).
+            // Collect per-gid event name set so we can render a short list under the ship name.
+            const gidToEvents = new Map();
+            const addEvent = (gid, eventName) => {
+                if (!eventName) return;
+                if (!gidToEvents.has(gid)) gidToEvents.set(gid, new Set());
+                gidToEvents.get(gid).add(eventName);
+            };
+            if (mapDataFull) {
+                for (const [key, chapter] of Object.entries(mapDataFull)) {
+                    if (!key.startsWith('a_')) continue;
+                    const eventName = chapter.event_name || '';
+                    const drops = chapter.ship_drops_archive;
+                    if (Array.isArray(drops)) {
+                        for (const drop of drops) {
+                            const gid = idToGid.get(drop.id);
+                            if (!gid) continue;
+                            archiveDropGids.add(gid);
+                            addEvent(gid, eventName);
+                        }
+                    }
+                    const sd = chapter.special_drop;
+                    if (sd && sd.type === 4 && sd.id != null) {
+                        let gidStr = String(sd.id);
+                        if (!shipData[gidStr]) {
+                            const viaId = idToGid.get(sd.id);
+                            gidStr = viaId || null;
+                        }
+                        if (gidStr) {
+                            archiveDropGids.add(gidStr);
+                            addEvent(gidStr, eventName);
+                        }
+                    }
+                }
+            }
+            for (const [gid, events] of gidToEvents) {
+                const arr = [...events];
+                const label = arr.length <= MAX_ARCHIVE_EVENTS_IN_LABEL
+                    ? arr.join(', ')
+                    : `${arr.slice(0, MAX_ARCHIVE_EVENTS_IN_LABEL).join(', ')} +${arr.length - MAX_ARCHIVE_EVENTS_IN_LABEL}`;
+                archiveDropLabel.set(gid, label);
+            }
+
+            // Shop labels are derived from each ship's description strings (no map data needed).
+            // We compute them for every ship, but they're only displayed by createShipRow when
+            // the ship doesn't have a higher-priority map or archive label.
+            for (const [gid, ship] of Object.entries(shipData)) {
+                const label = getShopLabelForShip(ship);
+                if (label) shopDropLabel.set(gid, label);
+            }
+
             progress = JSON.parse(getStorageItem(SAVE_KEY, null) || '{}');
+            try {
+                const stored = getStorageItem(PINNED_KEY, null);
+                if (stored) {
+                    const arr = JSON.parse(stored);
+                    if (Array.isArray(arr)) pinned = new Set(arr);
+                }
+            } catch (err) {
+                console.error('Failed to load pinned ships:', err);
+                pinned = new Set();
+            }
             init();
         } catch (error) {
             console.error('Failed to load data:', error);
-            contentContainer.innerHTML = '<p class="rt-error">데이터를 불러오는 데 실패했습니다.</p>';
+            rightPane.innerHTML = '<p class="rt-error">데이터를 불러오는 데 실패했습니다.</p>';
         }
     }
 
-    /** Returns true if the ship can be obtained via any permanent (non-limited) source. */
+    /**
+     * Returns true if the ship can be obtained via any permanent (non-limited) source.
+     * Delegates to SOURCE_GROUPS so the grouping logic and the permanence check can never
+     * drift apart — if a ship qualifies for any group, it is permanent.
+     */
     function isPermanentShip(ship) {
-        if (!ship.description || !Array.isArray(ship.description)) return false;
-        return ship.description.some(d => PERMANENT_PATTERNS.some(p => p.test(d)) || isWarArchiveDescription(d));
+        return SOURCE_GROUPS.some(sg => sg.test(ship));
+    }
+
+    /**
+     * Ships that grant zero fleet tech points (e.g. 부린, 꼬마 chibi ships, μ장비 retrofits)
+     * are hidden across the tracker — they're meaningless in a fleet-tech-points UI.
+     */
+    function hasTechPoints(ship) {
+        return ((ship.pt_get || 0) + (ship.pt_level || 0) + (ship.pt_upgrage || 0)) > 0;
     }
 
     /**
@@ -222,9 +354,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function getPermanentShipsForNationality(natId) {
         const ships = [];
         for (const [gid, ship] of Object.entries(shipData)) {
-            if (ship.nationality === natId && isPermanentShip(ship)) {
-                ships.push({ ...ship, gid });
-            }
+            if (ship.nationality !== natId) continue;
+            if (!hasTechPoints(ship)) continue;
+            // SOURCE_GROUPS tests reference ship.gid for mapDropGids/archiveDropGids lookup,
+            // so attach the gid before the permanence check.
+            const withGid = { ...ship, gid };
+            if (isPermanentShip(withGid)) ships.push(withGid);
         }
         return ships;
     }
@@ -241,6 +376,119 @@ document.addEventListener('DOMContentLoaded', () => {
         return { earned, total };
     }
 
+    /**
+     * Count owned vs total ships of a nation by position (전열/후열/잠수).
+     * Returns { '전열': {owned, total}, '후열': {owned, total}, '잠수': {owned, total} }.
+     * "owned" means bit 0 of progress is set. "total" includes ALL ships (event/limited too)
+     * so owned can never exceed total.
+     */
+    function buildPositionCounts(natId) {
+        const counts = {
+            '전열': { owned: 0, total: 0 },
+            '후열': { owned: 0, total: 0 },
+            '잠수': { owned: 0, total: 0 },
+        };
+        for (const [gid, ship] of Object.entries(shipData)) {
+            if (ship.nationality !== natId) continue;
+            const typeInfo = shipTypeData[ship.type];
+            const position = typeInfo?.position;
+            if (!position || !(position in counts)) continue;
+            counts[position].total += 1;
+            if (progress[gid] & 1) counts[position].owned += 1;
+        }
+        return counts;
+    }
+
+    /**
+     * Build a Fuse.js search index of all ships belonging to a nation.
+     * Each entry is { gid, name, rarity, typeName, position, icon, isPermanent }.
+     */
+    function buildNationSearchIndex(natId) {
+        const entries = [];
+        for (const [gid, ship] of Object.entries(shipData)) {
+            if (ship.nationality !== natId) continue;
+            if (!hasTechPoints(ship)) continue;
+            const typeInfo = shipTypeData[ship.type];
+            entries.push({
+                gid,
+                name: ship.name,
+                rarity: ship.rarity,
+                typeName: typeInfo?.type_name || '',
+                position: typeInfo?.position || '',
+                icon: ship.icon,
+                isPermanent: isPermanentShip(ship),
+            });
+        }
+        return createSearchIndex(entries, {
+            keys: ['name', 'typeName'],
+            threshold: 0.3,
+        });
+    }
+
+    /**
+     * Render the quick-add search widget.
+     * Search across all ships of the active nation. Clicking "+ 추가" marks 입수.
+     * Ships that already have progress show a muted "이미 체크됨" label.
+     */
+    function renderQuickAdd(natId) {
+        const wrap = document.createElement('div');
+        wrap.className = 'rt-quickadd';
+        wrap.innerHTML = `
+            <div class="rt-section-title">보유 함순이 빠른 추가</div>
+            <input type="search" class="rt-quickadd-input" placeholder="함순이 이름 검색…" autocomplete="off">
+            <div class="rt-quickadd-results"></div>
+            <p class="rt-quickadd-hint">이벤트·한정 함순이도 검색됩니다.<br>추가하면 오른쪽에 표시됩니다.</p>
+        `;
+
+        const input = wrap.querySelector('.rt-quickadd-input');
+        const results = wrap.querySelector('.rt-quickadd-results');
+        const index = buildNationSearchIndex(natId);
+
+        const renderMatches = (query) => {
+            results.innerHTML = '';
+            if (!query || query.length < 1) return;
+            const matches = index.search(query).slice(0, 8);
+            if (matches.length === 0) {
+                results.innerHTML = '<div class="rt-quickadd-empty">일치하는 함순이가 없습니다.</div>';
+                return;
+            }
+            for (const { item } of matches) {
+                const row = document.createElement('div');
+                row.className = 'rt-quickadd-match';
+                const isPinned = pinned.has(item.gid);
+                row.innerHTML = `
+                    ${createImg(item.icon, item.name, { className: 'rt-quickadd-icon', fallback: IMG_FALLBACKS.CARD })}
+                    <div class="rt-quickadd-info">
+                        <span class="rt-quickadd-name">${item.name}</span>
+                        <span class="rt-quickadd-meta">${item.position || ''} · ${item.rarity}</span>
+                    </div>
+                    ${isPinned
+                        ? '<span class="rt-quickadd-pinned">목록에 있음</span>'
+                        : `<button class="rt-quickadd-add" data-gid="${item.gid}">+ 추가</button>`}
+                `;
+                results.appendChild(row);
+            }
+        };
+
+        input.addEventListener('input', debounce((e) => renderMatches(e.target.value.trim()), 150));
+        results.addEventListener('click', (e) => {
+            const btn = e.target.closest('.rt-quickadd-add');
+            if (!btn) return;
+            const gid = btn.dataset.gid;
+            pinned.add(gid);
+            savePinned();
+            // Convenience: also mark 입수 since the typical case is "I own this ship, pin + track it".
+            // Users can still uncheck 체 afterward if they want to pin without marking owned.
+            progress[gid] = (progress[gid] || 0) | 1;
+            saveProgress();
+            input.value = '';
+            results.innerHTML = '';
+            if (activeFaction) renderFactionContent(activeFaction);
+        });
+
+        return wrap;
+    }
+
     function init() {
         const factions = getRequiredFactions();
         renderTabs(factions);
@@ -253,14 +501,14 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const [factionName] of factions) {
             const natId = getNationalityIdByName(factionName);
             const natInfo = natId !== null ? nationalityData[natId] : null;
+            const abbr = FACTION_ABBR[factionName] || factionName;
             const tab = document.createElement('button');
             tab.className = 'rt-tab';
             tab.dataset.faction = factionName;
-            const abbr = FACTION_ABBR[factionName];
-            const nameHtml = `<span class="rt-tab-name">${factionName}</span>${abbr ? `<span class="rt-tab-abbr">(${abbr})</span>` : ''}`;
+            tab.title = factionName;
             tab.innerHTML = natInfo
-                ? `<img src="${natInfo.image}" alt="${factionName}" class="rt-tab-icon">${nameHtml}`
-                : nameHtml;
+                ? `<img src="${natInfo.image}" alt="" class="rt-tab-icon"><span class="rt-tab-abbr">${abbr}</span>`
+                : `<span class="rt-tab-abbr">${abbr}</span>`;
             tab.addEventListener('click', () => switchTab(factionName));
             tabsContainer.appendChild(tab);
         }
@@ -275,29 +523,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Render the full panel for a faction: summary, research ships, owned ships, filter bar, source groups.
+     * Render the full panel for a faction: sidebar (summary + research ships)
+     * and right pane (filter bar + source groups).
      */
     function renderFactionContent(factionName) {
-        contentContainer.innerHTML = '';
-        extraContainer.innerHTML = '';
+        sidebarBody.innerHTML = '';
+        rightPane.innerHTML = '';
         const natId = getNationalityIdByName(factionName);
         if (natId === null) {
-            contentContainer.innerHTML = '<p class="rt-error">진영 정보를 찾을 수 없습니다.</p>';
+            rightPane.innerHTML = '<p class="rt-error">진영 정보를 찾을 수 없습니다.</p>';
             return;
         }
 
-        // Panel body: summary + research ships
-        const panelFragment = document.createDocumentFragment();
-        panelFragment.appendChild(renderFactionSummary(factionName, natId));
-        panelFragment.appendChild(renderResearchShips(factionName));
-        contentContainer.appendChild(panelFragment);
+        // Sidebar: summary + research list + quick-add
+        const sidebarFragment = document.createDocumentFragment();
+        sidebarFragment.appendChild(renderFactionSummary(factionName, natId));
+        sidebarFragment.appendChild(renderResearchShips(factionName));
+        sidebarFragment.appendChild(renderQuickAdd(natId));
+        sidebarBody.appendChild(sidebarFragment);
 
-        // Below panel: owned ships + filter bar + source groups
-        const extraFragment = document.createDocumentFragment();
-        extraFragment.appendChild(renderOwnedShips(natId));
-        extraFragment.appendChild(renderFilterBar());
-        extraFragment.appendChild(renderSourceGroups(natId));
-        extraContainer.appendChild(extraFragment);
+        // Right pane: filter bar + source groups
+        const rightFragment = document.createDocumentFragment();
+        rightFragment.appendChild(renderFilterBar());
+        rightFragment.appendChild(renderSourceGroups(natId));
+        rightPane.appendChild(rightFragment);
 
         applyProgress();
         applyFilters();
@@ -310,41 +559,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const rarities = ['ur', 'ssr', 'sr', 'r', 'n'];
         const rarityBtns = rarities.map(r => {
             const active = activeRarities.has(r) ? ' active' : '';
-            return `<button class="rt-rarity-btn${active}" data-rarity="${r}"><span class="rt-btn-check">&#10003;</span> ${r.toUpperCase()}</button>`;
+            return `<button class="rt-rarity-btn${active}" data-rarity="${r}">${r.toUpperCase()}</button>`;
         }).join('');
 
         const statuses = [
             { key: 'missing', label: '미획득' },
-            { key: 'owned', label: '획득' }
+            { key: 'owned', label: '획득' },
         ];
         const statusBtns = statuses.map(s => {
             const active = activeStatuses.has(s.key) ? ' active' : '';
-            return `<button class="rt-status-btn${active}" data-status="${s.key}"><span class="rt-btn-check">&#10003;</span> ${s.label}</button>`;
+            return `<button class="rt-status-btn${active}" data-status="${s.key}">${s.label}</button>`;
         }).join('');
 
         bar.innerHTML = `
-            <div class="rt-filters-title">
-                <span class="material-symbols-outlined">tune</span>
-                필터
-                <span class="rt-filters-hint">체크해제로 목록에서 제거</span>
-            </div>
-            <div class="rt-filters-row">
-                <div class="rt-filter-group">
-                    <span class="rt-filter-label">레어도</span>
-                    <div class="rt-rarity-toggles">${rarityBtns}</div>
-                </div>
-                <div class="rt-filter-group">
-                    <span class="rt-filter-label">상태</span>
-                    <div class="rt-status-toggles">${statusBtns}</div>
-                </div>
-            </div>
+            <div class="rt-filter-group">${rarityBtns}</div>
+            <div class="rt-filter-sep"></div>
+            <div class="rt-filter-group">${statusBtns}</div>
+            <span class="rt-filter-hint">체크해제로 필터</span>
         `;
 
-        // Event delegation for filter clicks
         bar.addEventListener('click', (e) => {
             const rarityBtn = e.target.closest('.rt-rarity-btn');
             const statusBtn = e.target.closest('.rt-status-btn');
-
             if (rarityBtn) {
                 const rarity = rarityBtn.dataset.rarity;
                 rarityBtn.classList.toggle('active');
@@ -352,7 +588,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 else activeRarities.add(rarity);
                 applyFilters();
             }
-
             if (statusBtn) {
                 const status = statusBtn.dataset.status;
                 statusBtn.classList.toggle('active');
@@ -411,13 +646,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 }).join('')}
             </div>
         `;
+
         return section;
     }
 
     /**
-     * Render the research ship grid for a faction.
-     * Shows all unlock requirements for each ship (not just the current faction's),
-     * and marks requirements as met based on current progress.
+     * Render the research ship list for a faction as compact rows.
+     * Each row shows icon, name, a chip per requirement, and a ✓ when all are met.
+     * Requirement chips cover both score (점수) and position (전열/후열/잠수) requirements.
      */
     function renderResearchShips(factionName) {
         const section = document.createElement('div');
@@ -425,7 +661,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const ships = [];
         for (const [name, goal] of Object.entries(fleetTechGoalData)) {
-            // Check if this faction appears in any unlock requirement
             let matchesFaction = false;
             for (let i = 1; i <= 3; i++) {
                 if (goal[`unlock_${i}`] === factionName) {
@@ -435,14 +670,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (!matchesFaction) continue;
 
-            // Collect ALL requirements for this ship (not just the matching faction)
             const requirements = [];
             for (let i = 1; i <= 3; i++) {
                 if (goal[`unlock_${i}`]) {
                     requirements.push({
                         faction: goal[`unlock_${i}`],
                         type: goal[`unlock_${i}_req_type`],
-                        value: goal[`unlock_${i}_req_type_value`]
+                        value: goal[`unlock_${i}_req_type_value`],
                     });
                 }
             }
@@ -456,151 +690,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const title = document.createElement('h3');
         title.className = 'rt-section-title';
-        title.innerHTML = '<span class="material-symbols-outlined">science</span> 개발함';
+        title.textContent = '개발함';
         section.appendChild(title);
 
-        const grid = document.createElement('div');
-        grid.className = 'rt-research-grid';
+        const list = document.createElement('div');
+        list.className = 'rt-research-list';
 
         for (const { name, goal, requirements } of ships) {
-            const card = document.createElement('div');
+            const row = document.createElement('div');
             const rarityClass = goal.rarity_type === 'DR' ? 'dr' : 'pr';
-            card.className = `rt-research-card ${rarityClass}`;
-
-            const allMet = requirements.every(req => {
-                if (req.type === '점수') {
-                    const reqNatId = getNationalityIdByName(req.faction);
-                    if (reqNatId === null) return false;
-                    const { earned } = getFactionTotalPoints(reqNatId);
-                    return earned >= parseInt(req.value, 10);
-                }
-                return false;
-            });
+            row.className = `rt-research-row ${rarityClass}`;
 
             const iconUrl = getShipIconByName(name);
-            card.innerHTML = `
-                <div class="rt-research-card-top">
-                    ${iconUrl ? createImg(iconUrl, name, { className: 'rt-research-icon', fallback: IMG_FALLBACKS.CARD }) : ''}
-                    <div class="rt-research-card-info">
-                        <div class="rt-research-name">${name}</div>
-                        <span class="rt-research-rarity ${rarityClass}">${goal.rarity_type}</span>
-                        ${goal.project ? `<span class="rt-research-project">${goal.project}기</span>` : ''}
-                    </div>
+
+            const chipHtml = requirements.map(req => {
+                const chip = evaluateRequirement(req);
+                return `<span class="rt-req-chip${chip.met ? ' met' : ''}">${chip.label}</span>`;
+            }).join('');
+
+            const allMet = requirements.every(req => evaluateRequirement(req).met);
+
+            row.innerHTML = `
+                ${iconUrl ? createImg(iconUrl, name, { className: 'rt-research-icon', fallback: IMG_FALLBACKS.CARD }) : '<div class="rt-research-icon placeholder"></div>'}
+                <div class="rt-research-body">
+                    <div class="rt-research-name">${name}${goal.project ? ` <span class="rt-research-project">${goal.project}기</span>` : ''}</div>
+                    <div class="rt-research-reqs">${chipHtml}</div>
                 </div>
-                <div class="rt-research-reqs">
-                    ${requirements.map(req => {
-                        let met = false;
-                        let current = 0;
-                        const reqValue = parseInt(req.value, 10);
-                        if (req.type === '점수') {
-                            const reqNatId = getNationalityIdByName(req.faction);
-                            if (reqNatId !== null) {
-                                current = getFactionTotalPoints(reqNatId).earned;
-                                met = current >= reqValue;
-                            }
-                        }
-                        return `<span class="rt-req ${met ? 'met' : ''}">${req.faction} ${req.type} ${current}/${req.value}</span>`;
-                    }).join('')}
-                </div>
-                ${allMet ? '<span class="rt-research-status unlocked">해금 완료</span>' : ''}
+                <div class="rt-research-status">${allMet ? '<span class="material-symbols-outlined">check_circle</span>' : ''}</div>
             `;
-            grid.appendChild(card);
+            list.appendChild(row);
         }
-        section.appendChild(grid);
+        section.appendChild(list);
         return section;
-    }
-
-    function renderOwnedShips(natId) {
-        const section = document.createElement('div');
-        section.className = 'rt-group rt-owned-group';
-
-        // Collect all owned ships in this faction
-        const ownedShips = [];
-        for (const [gid, ship] of Object.entries(shipData)) {
-            if (ship.nationality !== natId) continue;
-            if (!(progress[gid] & 1)) continue;
-            ownedShips.push({ ...ship, gid });
-        }
-
-        const rarityOrder = { UR: 0, SSR: 1, SR: 2, R: 3, N: 4 };
-        ownedShips.sort((a, b) => {
-            const ra = rarityOrder[a.rarity] ?? 5;
-            const rb = rarityOrder[b.rarity] ?? 5;
-            if (ra !== rb) return ra - rb;
-            return a.name.localeCompare(b.name);
-        });
-
-        // Calculate earned points
-        let earnedPts = 0;
-        for (const ship of ownedShips) {
-            const pts = getShipTechPoints(ship.gid);
-            earnedPts += pts.earned;
-        }
-
-        const header = document.createElement('button');
-        header.className = 'rt-group-header';
-        header.innerHTML = `
-            <span class="rt-group-label">
-                <span class="material-symbols-outlined">inventory_2</span>
-                보유 함순이 현황
-                <span class="rt-group-count">${ownedShips.length}척</span>
-                <span class="rt-group-pts">${earnedPts}pts</span>
-            </span>
-            <span class="material-symbols-outlined rt-group-chevron">expand_more</span>
-        `;
-
-        const body = document.createElement('div');
-        body.className = 'rt-group-body';
-
-        if (ownedShips.length === 0) {
-            body.innerHTML = '<p class="rt-placeholder">보유 중인 함순이가 없습니다.</p>';
-        } else {
-            const grid = document.createElement('div');
-            grid.className = 'rt-owned-grid';
-            for (const ship of ownedShips) {
-                grid.appendChild(createOwnedShipItem(ship));
-            }
-            body.appendChild(grid);
-        }
-
-        header.addEventListener('click', () => {
-            const isOpen = section.classList.toggle('open');
-            header.querySelector('.rt-group-chevron').textContent = isOpen ? 'expand_less' : 'expand_more';
-        });
-
-        // Collapsed by default — do NOT add 'open' class
-
-        section.appendChild(header);
-        section.appendChild(body);
-        return section;
-    }
-
-    function createOwnedShipItem(ship) {
-        const item = document.createElement('div');
-        item.className = `rt-owned-item rarity-border-${ship.rarity.toLowerCase()}`;
-
-        const typeInfo = shipTypeData[ship.type];
-        const typeIcon = typeInfo ? typeInfo.icon : '';
-        const typeName = typeInfo ? typeInfo.type_name : '';
-
-        const pts = getShipTechPoints(ship.gid);
-
-        item.innerHTML = `
-            ${createImg(ship.icon, ship.name, { className: 'rt-owned-icon', fallback: IMG_FALLBACKS.CARD })}
-            <span class="rt-owned-name">${ship.name}</span>
-            <span class="rt-owned-meta">
-                ${typeIcon ? `<img src="${typeIcon}" alt="${typeName}" class="rt-card-type-icon">` : ''}
-                <span class="rt-card-rarity rarity-${ship.rarity.toLowerCase()}">${ship.rarity}</span>
-            </span>
-            <span class="rt-owned-pts">${pts.earned}/${pts.total}</span>
-        `;
-
-        return item;
     }
 
     /**
-     * Render collapsible source groups (map drops, builds, shops, etc.) for a faction.
-     * Ships can appear in multiple groups; archive ships are independently listed.
+     * Evaluate a single unlock requirement against the current progress state.
+     * Supports 점수 (score) and 전열/후열/잠수 (position count).
+     * Returns { met: boolean, label: string }.
+     */
+    function evaluateRequirement(req) {
+        const reqNatId = getNationalityIdByName(req.faction);
+        const abbr = FACTION_ABBR[req.faction] || req.faction;
+        const target = parseInt(req.value, 10) || 0;
+
+        if (req.type === '점수') {
+            const current = reqNatId !== null ? getFactionTotalPoints(reqNatId).earned : 0;
+            return { met: current >= target, label: `${abbr} 점수 ${current}/${target}` };
+        }
+
+        if (req.type === '전열' || req.type === '후열' || req.type === '잠수') {
+            const current = reqNatId !== null ? (buildPositionCounts(reqNatId)[req.type]?.owned ?? 0) : 0;
+            return { met: current >= target, label: `${abbr} ${req.type} ${current}/${target}` };
+        }
+
+        return { met: false, label: `${abbr} ${req.type} ${req.value}` };
+    }
+
+    /**
+     * Render collapsible source groups for a faction.
+     * Each group header shows label, ship count, mini progress bar, and earned/max pts.
+     * Group bodies render ships as dense 2-column rows.
      */
     function renderSourceGroups(natId) {
         const section = document.createElement('div');
@@ -609,26 +759,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const ships = getPermanentShipsForNationality(natId);
 
         const grouped = {};
-        for (const sg of SOURCE_GROUPS) {
-            grouped[sg.key] = [];
-        }
+        for (const sg of SOURCE_GROUPS) grouped[sg.key] = [];
+        // Single-assignment: first matching group wins. SOURCE_GROUPS is ordered
+        // map → archive → build → shop → other, so drops take priority over
+        // build/shop/other when a ship has multiple acquisition paths.
         for (const ship of ships) {
-            // Assign to first matching non-archive group
-            let assigned = false;
-            for (const d of (ship.description || [])) {
-                if (assigned) break;
-                for (const sg of SOURCE_GROUPS) {
-                    if (sg.key === 'archive') continue;
-                    if (sg.test(d)) {
-                        grouped[sg.key].push(ship);
-                        assigned = true;
-                        break;
-                    }
+            for (const sg of SOURCE_GROUPS) {
+                if (sg.test(ship)) {
+                    grouped[sg.key].push(ship);
+                    break;
                 }
-            }
-            // Archive: independently check (ships can appear in both their group and archive)
-            if (isWarArchiveShip(ship)) {
-                grouped['archive'].push(ship);
             }
         }
 
@@ -642,59 +782,128 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        const manual = renderManualGroup(natId);
+        if (manual) section.appendChild(manual);
+
         for (const sg of SOURCE_GROUPS) {
             const groupShips = grouped[sg.key];
             if (groupShips.length === 0) continue;
-
-            const totalPts = groupShips.reduce((sum, s) => sum + (s.pt_get || 0) + (s.pt_level || 0) + (s.pt_upgrage || 0), 0);
-
-            const group = document.createElement('div');
-            group.className = 'rt-group';
-
-            const header = document.createElement('button');
-            header.className = 'rt-group-header';
-            header.innerHTML = `
-                <span class="rt-group-label">
-                    <span class="material-symbols-outlined">${sg.icon}</span>
-                    ${sg.label}
-                    <span class="rt-group-count">${groupShips.length}척</span>
-                    <span class="rt-group-pts">${totalPts}pts</span>
-                </span>
-                <span class="material-symbols-outlined rt-group-chevron">expand_more</span>
-            `;
-
-            const body = document.createElement('div');
-            body.className = 'rt-group-body';
-
-            const grid = document.createElement('div');
-            grid.className = 'rt-ship-grid';
-            for (const ship of groupShips) {
-                grid.appendChild(createShipCard(ship));
-            }
-            body.appendChild(grid);
-
-            header.addEventListener('click', () => {
-                const isOpen = group.classList.toggle('open');
-                header.querySelector('.rt-group-chevron').textContent = isOpen ? 'expand_less' : 'expand_more';
-            });
-
-            if (groupShips.length > 0) {
-                group.classList.add('open');
-            }
-
-            group.appendChild(header);
-            group.appendChild(body);
-            section.appendChild(group);
+            section.appendChild(createShipGroup(sg, groupShips));
         }
 
         return section;
     }
 
-    function createShipCard(ship) {
-        const card = document.createElement('div');
-        card.className = `rt-ship-card rarity-border-${ship.rarity.toLowerCase()}`;
-        card.dataset.shipId = ship.gid;
-        card.dataset.rarity = ship.rarity.toLowerCase();
+    /**
+     * Build a single source group: header with earned/max pts + 2-col ship row grid.
+     */
+    function createShipGroup(sg, groupShips) {
+        let earned = 0;
+        let max = 0;
+        for (const s of groupShips) {
+            const pts = getShipTechPoints(s.gid);
+            earned += pts.earned;
+            max += pts.total;
+        }
+        const pct = max > 0 ? Math.min(100, (earned / max) * 100) : 0;
+
+        const group = document.createElement('div');
+        group.className = 'rt-group';
+        group.dataset.groupKey = sg.key;
+
+        const header = document.createElement('button');
+        header.className = 'rt-group-header';
+        header.type = 'button';
+        header.innerHTML = `
+            <span class="material-symbols-outlined rt-group-icon">${sg.icon}</span>
+            <span class="rt-group-label">${sg.label}</span>
+            <span class="rt-group-count">${groupShips.length}척</span>
+            <span class="rt-group-minibar"><span class="rt-group-minibar-fill" style="width:${pct}%"></span></span>
+            <span class="rt-group-pts"><b>${earned}</b> / ${max}pts</span>
+            <span class="material-symbols-outlined rt-group-chevron">expand_less</span>
+        `;
+
+        const body = document.createElement('div');
+        body.className = 'rt-group-body';
+        const grid = document.createElement('div');
+        grid.className = 'rt-ship-grid';
+        for (const ship of groupShips) {
+            grid.appendChild(createShipRow(ship));
+        }
+        body.appendChild(grid);
+
+        header.addEventListener('click', () => {
+            const isOpen = group.classList.toggle('open');
+            header.querySelector('.rt-group-chevron').textContent = isOpen ? 'expand_less' : 'expand_more';
+        });
+
+        group.classList.add('open');
+        group.appendChild(header);
+        group.appendChild(body);
+        return group;
+    }
+
+    /**
+     * Build the manual pinned group for the given nation.
+     * Contents = all pinned ships whose nationality matches natId.
+     * Returns null if no pinned ships apply to this nation.
+     */
+    function renderManualGroup(natId) {
+        const ships = [];
+        for (const gid of pinned) {
+            const ship = shipData[gid];
+            if (!ship) continue;
+            if (ship.nationality !== natId) continue;
+            if (!hasTechPoints(ship)) continue;
+            ships.push({ ...ship, gid });
+        }
+        if (ships.length === 0) return null;
+
+        const rarityOrder = { UR: 0, SSR: 1, SR: 2, R: 3, N: 4 };
+        ships.sort((a, b) => {
+            const ra = rarityOrder[a.rarity] ?? 5;
+            const rb = rarityOrder[b.rarity] ?? 5;
+            if (ra !== rb) return ra - rb;
+            return a.name.localeCompare(b.name);
+        });
+
+        const sg = { key: 'manual', label: '내 목록 (수동 추가)', icon: 'bookmark' };
+        const group = createShipGroup(sg, ships);
+        group.classList.add('rt-group-manual');
+
+        // Add ✕ remove button to every row in this group.
+        group.querySelectorAll('.rt-ship-row').forEach(row => {
+            const gid = row.dataset.shipId;
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'rt-row-remove';
+            removeBtn.title = '내 목록에서 제거';
+            removeBtn.setAttribute('aria-label', '내 목록에서 제거');
+            removeBtn.textContent = '✕';
+            removeBtn.dataset.gid = gid;
+            removeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                pinned.delete(gid);
+                savePinned();
+                if (activeFaction) renderFactionContent(activeFaction);
+            });
+            row.appendChild(removeBtn);
+        });
+
+        return group;
+    }
+
+    /**
+     * Build a single dense ship row for the right-pane grid.
+     * Layout: [icon] [name + type + rarity  /  drop location] [3 toggles] [pts]
+     * Name, type badge, and rarity badge share a header line inside the main column;
+     * map/archive ships get a small second-line drop label ("1-4, 3-2" or event name).
+     */
+    function createShipRow(ship) {
+        const row = document.createElement('div');
+        row.className = `rt-ship-row rarity-border-${ship.rarity.toLowerCase()}`;
+        row.dataset.shipId = ship.gid;
+        row.dataset.rarity = ship.rarity.toLowerCase();
 
         const ptGet = ship.pt_get || 0;
         const ptLevel = ship.pt_level || 0;
@@ -702,61 +911,87 @@ document.addEventListener('DOMContentLoaded', () => {
         const ptTotal = ptGet + ptLevel + ptUpgrade;
 
         const typeInfo = shipTypeData[ship.type];
-        const typeName = typeInfo ? typeInfo.type_name : '';
         const typeIcon = typeInfo ? typeInfo.icon : '';
+        const typeName = typeInfo ? typeInfo.type_name : '';
 
-        // Build description list from permanent sources + war archive
-        const descHtml = (ship.description || [])
-            .filter(d => PERMANENT_PATTERNS.some(p => p.test(d)) || isWarArchiveDescription(d))
-            .map(d => `<li>${d}</li>`)
-            .join('');
+        const earnedNow = getShipTechPoints(ship.gid).earned;
 
-        card.innerHTML = `
-            <div class="rt-card-top">
-                <img src="${ship.icon}" alt="${ship.name}" class="rt-card-icon" loading="lazy">
-                <div class="rt-card-info">
-                    <span class="rt-card-name">${ship.name}</span>
-                    <span class="rt-card-meta">
-                        ${typeIcon ? `<img src="${typeIcon}" alt="${typeName}" class="rt-card-type-icon">` : ''}
-                        <span class="rt-card-rarity rarity-${ship.rarity.toLowerCase()}">${ship.rarity}</span>
-                    </span>
+        // Priority matches SOURCE_GROUPS order: map > archive > shop.
+        // Each kind picks its own icon and color in the CSS via .rt-row-location-{kind}.
+        let dropLabel = '';
+        let dropLabelKind = '';
+        if (mapDropGids.has(ship.gid)) {
+            dropLabel = mapDropLabel.get(ship.gid) || '';
+            dropLabelKind = 'map';
+        } else if (archiveDropGids.has(ship.gid)) {
+            dropLabel = archiveDropLabel.get(ship.gid) || '';
+            dropLabelKind = 'archive';
+        } else if (shopDropLabel.has(ship.gid)) {
+            dropLabel = shopDropLabel.get(ship.gid);
+            dropLabelKind = 'shop';
+        }
+
+        const LOCATION_ICONS = { map: 'sailing', archive: 'menu_book', shop: 'shopping_cart' };
+        const dropLabelHtml = dropLabel
+            ? `<div class="rt-row-location rt-row-location-${dropLabelKind}" title="${dropLabel}">
+                   <span class="material-symbols-outlined rt-row-location-icon">${LOCATION_ICONS[dropLabelKind]}</span>
+                   <span class="rt-row-location-text">${dropLabel}</span>
+               </div>`
+            : '';
+
+        row.innerHTML = `
+            ${createImg(ship.icon, ship.name, { className: 'rt-row-icon', fallback: IMG_FALLBACKS.CARD })}
+            <div class="rt-row-main">
+                <div class="rt-row-header">
+                    <span class="rt-row-name" title="${ship.name}">${ship.name}</span>
+                    ${typeIcon ? `<img src="${typeIcon}" alt="${typeName}" class="rt-row-type" title="${typeName}">` : ''}
+                    <span class="rt-row-rarity rarity-${ship.rarity.toLowerCase()}">${ship.rarity}</span>
                 </div>
-                <span class="rt-card-pts">${ptTotal}pts</span>
+                ${dropLabelHtml}
             </div>
-            ${descHtml ? `<ul class="rt-card-desc">${descHtml}</ul>` : ''}
-            <div class="rt-card-tracker">
-                <label class="rt-check">
+            <div class="rt-row-toggles">
+                <label class="rt-toggle rt-toggle-get" title="입수 +${ptGet}">
                     <input type="checkbox" data-type="get" data-pts="${ptGet}">
-                    <span>입수 <em>+${ptGet}</em></span>
+                    <span>입수</span>
                 </label>
-                <label class="rt-check">
+                <label class="rt-toggle rt-toggle-level" title="Lv.120 +${ptLevel}">
                     <input type="checkbox" data-type="level" data-pts="${ptLevel}">
-                    <span>Lv120 <em>+${ptLevel}</em></span>
+                    <span>120</span>
                 </label>
-                <label class="rt-check">
+                <label class="rt-toggle rt-toggle-upgrade" title="풀돌 +${ptUpgrade}">
                     <input type="checkbox" data-type="upgrade" data-pts="${ptUpgrade}">
-                    <span>풀돌 <em>+${ptUpgrade}</em></span>
+                    <span>풀돌</span>
                 </label>
             </div>
+            <span class="rt-row-pts" title="현재 점수 / 최대 점수">
+                <b class="rt-row-pts-current">${earnedNow}</b><span class="rt-row-pts-sep">/</span><span class="rt-row-pts-total">${ptTotal}</span>
+            </span>
         `;
 
-        return card;
+        return row;
     }
 
-    /** Restore checkbox states on all visible ship cards from in-memory progress. */
+    /** Sync a row's current/total points text with the in-memory progress state. */
+    function updateRowPts(row) {
+        const shipId = row.dataset.shipId;
+        const { earned } = getShipTechPoints(shipId);
+        const el = row.querySelector('.rt-row-pts-current');
+        if (el) el.textContent = String(earned);
+    }
+
+    /** Restore checkbox states on all visible ship rows from in-memory progress. */
     function applyProgress() {
-        extraContainer.querySelectorAll('.rt-ship-card').forEach(card => {
-            const shipId = card.dataset.shipId;
+        rightPane.querySelectorAll('.rt-ship-row').forEach(row => {
+            const shipId = row.dataset.shipId;
             const state = progress[shipId] || 0;
-            const getBox = card.querySelector('[data-type="get"]');
-            const levelBox = card.querySelector('[data-type="level"]');
-            const upgradeBox = card.querySelector('[data-type="upgrade"]');
+            const getBox = row.querySelector('[data-type="get"]');
+            const levelBox = row.querySelector('[data-type="level"]');
+            const upgradeBox = row.querySelector('[data-type="upgrade"]');
             if (getBox) getBox.checked = (state & 1) > 0;
             if (levelBox) levelBox.checked = (state & 2) > 0;
             if (upgradeBox) upgradeBox.checked = (state & 4) > 0;
-
-            const allChecked = (state & 7) === 7;
-            card.classList.toggle('completed', allChecked);
+            row.classList.toggle('completed', (state & 7) === 7);
+            updateRowPts(row);
         });
     }
 
@@ -766,35 +1001,58 @@ document.addEventListener('DOMContentLoaded', () => {
         setStorageItem(SAVE_KEY, JSON.stringify(progress));
     }
 
-    /** Show/hide ship cards based on active rarity and ownership status filters. */
+    function savePinned() {
+        setStorageItem(PINNED_KEY, JSON.stringify([...pinned]));
+    }
+
+    /** Show/hide ship rows based on active rarity and ownership status filters. */
     function applyFilters() {
-        extraContainer.querySelectorAll('.rt-ship-card').forEach(card => {
-            const rarity = card.dataset.rarity;
-            const isOwned = !!(progress[card.dataset.shipId] & 1);
+        rightPane.querySelectorAll('.rt-ship-row').forEach(row => {
+            const rarity = row.dataset.rarity;
+            const isOwned = !!(progress[row.dataset.shipId] & 1);
             const status = isOwned ? 'owned' : 'missing';
             const show = activeRarities.has(rarity) && activeStatuses.has(status);
-            card.classList.toggle('filter-hidden', !show);
+            row.classList.toggle('filter-hidden', !show);
         });
-
-        // Update group counts
-        extraContainer.querySelectorAll('.rt-group:not(.rt-owned-group)').forEach(group => {
-            const visible = group.querySelectorAll('.rt-ship-card:not(.filter-hidden)').length;
+        rightPane.querySelectorAll('.rt-group').forEach(group => {
+            const visible = group.querySelectorAll('.rt-ship-row:not(.filter-hidden)').length;
             const countEl = group.querySelector('.rt-group-count');
             if (countEl) countEl.textContent = `${visible}척`;
         });
     }
 
+    /**
+     * Recompute earned/max pts for every group header in the right pane.
+     * Called after a checkbox change so the header totals track live without rebuilding rows.
+     */
+    function refreshGroupHeaders() {
+        rightPane.querySelectorAll('.rt-group').forEach(group => {
+            let earned = 0;
+            let max = 0;
+            group.querySelectorAll('.rt-ship-row').forEach(row => {
+                const pts = getShipTechPoints(row.dataset.shipId);
+                earned += pts.earned;
+                max += pts.total;
+            });
+            const pct = max > 0 ? Math.min(100, (earned / max) * 100) : 0;
+            const ptsEl = group.querySelector('.rt-group-pts');
+            if (ptsEl) ptsEl.innerHTML = `<b>${earned}</b> / ${max}pts`;
+            const fill = group.querySelector('.rt-group-minibar-fill');
+            if (fill) fill.style.width = `${pct}%`;
+        });
+    }
+
     const debouncedSave = debounce(saveProgress, 300);
 
-    extraContainer.addEventListener('change', (e) => {
-        if (!e.target.matches('.rt-card-tracker input[type="checkbox"]')) return;
+    rightPane.addEventListener('change', (e) => {
+        if (!e.target.matches('.rt-row-toggles input[type="checkbox"]')) return;
         const checkbox = e.target;
-        const card = checkbox.closest('.rt-ship-card');
-        if (!card) return;
+        const row = checkbox.closest('.rt-ship-row');
+        if (!row) return;
 
-        const getBox = card.querySelector('[data-type="get"]');
-        const levelBox = card.querySelector('[data-type="level"]');
-        const upgradeBox = card.querySelector('[data-type="upgrade"]');
+        const getBox = row.querySelector('[data-type="get"]');
+        const levelBox = row.querySelector('[data-type="level"]');
+        const upgradeBox = row.querySelector('[data-type="upgrade"]');
 
         if (checkbox.checked) {
             if (checkbox.dataset.type === 'level' || checkbox.dataset.type === 'upgrade') {
@@ -808,7 +1066,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Update in-memory progress
-        const shipId = card.dataset.shipId;
+        const shipId = row.dataset.shipId;
         const state = ((getBox?.checked ? 1 : 0) | (levelBox?.checked ? 2 : 0) | (upgradeBox?.checked ? 4 : 0));
         if (state > 0) {
             progress[shipId] = state;
@@ -816,11 +1074,12 @@ document.addEventListener('DOMContentLoaded', () => {
             delete progress[shipId];
         }
 
-        card.classList.toggle('completed', state === 7);
+        row.classList.toggle('completed', state === 7);
+        updateRowPts(row);
 
-        // Sync all other cards for the same ship
-        extraContainer.querySelectorAll(`.rt-ship-card[data-ship-id="${shipId}"]`).forEach(other => {
-            if (other === card) return;
+        // Sync all other rows for the same ship
+        rightPane.querySelectorAll(`.rt-ship-row[data-ship-id="${shipId}"]`).forEach(other => {
+            if (other === row) return;
             const g = other.querySelector('[data-type="get"]');
             const l = other.querySelector('[data-type="level"]');
             const u = other.querySelector('[data-type="upgrade"]');
@@ -828,6 +1087,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (l) l.checked = !!(state & 2);
             if (u) u.checked = !!(state & 4);
             other.classList.toggle('completed', state === 7);
+            updateRowPts(other);
         });
 
         debouncedSave();
@@ -835,27 +1095,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activeFaction) {
             const natId = getNationalityIdByName(activeFaction);
             if (natId !== null) {
-                const oldSummary = contentContainer.querySelector('.rt-summary');
-                const oldResearch = contentContainer.querySelector('.rt-research-panel');
-                if (oldSummary) {
-                    const newSummary = renderFactionSummary(activeFaction, natId);
-                    oldSummary.replaceWith(newSummary);
-                }
-                if (oldResearch) {
-                    const newResearch = renderResearchShips(activeFaction);
-                    oldResearch.replaceWith(newResearch);
-                }
-                const oldOwned = extraContainer.querySelector('.rt-owned-group');
-                if (oldOwned) {
-                    const newOwned = renderOwnedShips(natId);
-                    if (oldOwned.classList.contains('open')) {
-                        newOwned.classList.add('open');
-                    }
-                    oldOwned.replaceWith(newOwned);
-                }
+                sidebarBody.innerHTML = '';
+                const fragment = document.createDocumentFragment();
+                fragment.appendChild(renderFactionSummary(activeFaction, natId));
+                fragment.appendChild(renderResearchShips(activeFaction));
+                fragment.appendChild(renderQuickAdd(natId));
+                sidebarBody.appendChild(fragment);
             }
         }
 
+        refreshGroupHeaders();
         applyFilters();
     });
 
@@ -864,14 +1113,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cross-tab sync: shipgirl-tracker.js writes the same SAVE_KEY.
     // The storage event fires only in other tabs, so there is no circular trigger.
     window.addEventListener('storage', (e) => {
-        if (e.key !== SAVE_KEY) return;
-        try {
-            progress = JSON.parse(e.newValue || '{}');
-            if (activeFaction) {
-                renderFactionContent(activeFaction);
+        if (e.key === SAVE_KEY) {
+            try {
+                progress = JSON.parse(e.newValue || '{}');
+            } catch (err) {
+                console.error('Failed to sync progress from storage event:', err);
+                return;
             }
-        } catch (err) {
-            console.error('Failed to sync progress from storage event:', err);
+        } else if (e.key === PINNED_KEY) {
+            try {
+                const arr = JSON.parse(e.newValue || '[]');
+                pinned = new Set(Array.isArray(arr) ? arr : []);
+            } catch (err) {
+                console.error('Failed to sync pinned from storage event:', err);
+                return;
+            }
+        } else {
+            return;
+        }
+        if (activeFaction) {
+            renderFactionContent(activeFaction);
         }
     });
 });

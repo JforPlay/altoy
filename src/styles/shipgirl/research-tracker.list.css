@@ -1,0 +1,532 @@
+@import url('../theme.css');
+
+/* ==========================================================================
+   RESEARCH TRACKER — LIST
+   Filter bar, source groups, ship rows, toggles
+   ========================================================================== */
+
+/* --- Filter bar --- */
+
+.rt-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  font-size: 0.75rem;
+}
+
+.rt-filter-group {
+  display: flex;
+  gap: 6px;
+}
+
+.rt-filter-sep {
+  width: 1px;
+  height: 22px;
+  background: var(--border-color);
+}
+
+.rt-filter-hint {
+  margin-left: auto;
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+}
+
+/* Shared chip sizing so rarity and status rows feel uniform. */
+.rt-rarity-btn,
+.rt-status-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  min-width: 44px;
+  padding: 0 12px;
+  background: var(--section-bg);
+  border: 1.5px solid var(--border-color);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+              box-shadow 0.18s ease, transform 0.12s ease;
+}
+
+.rt-rarity-btn:hover,
+.rt-status-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+.rt-rarity-btn:active,
+.rt-status-btn:active { transform: translateY(1px); }
+
+/* Inactive chips are faded so "active = included in filter" reads clearly. */
+.rt-rarity-btn:not(.active),
+.rt-status-btn:not(.active) {
+  opacity: 0.55;
+}
+
+/* --- Rarity chips: active state uses the rarity color --- */
+
+.rt-rarity-btn.active {
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 6px var(--overlay-lighter, rgba(0,0,0,0.12));
+}
+
+.rt-rarity-btn[data-rarity="ur"].active {
+  background: var(--rarity-ur);
+  color: #fff;
+}
+.rt-rarity-btn[data-rarity="ssr"].active {
+  background: var(--rarity-ssr);
+  color: var(--rarity-ssr-text);
+}
+.rt-rarity-btn[data-rarity="sr"].active {
+  background: var(--rarity-sr);
+  color: var(--rarity-sr-text);
+}
+.rt-rarity-btn[data-rarity="r"].active {
+  background: var(--rarity-r);
+  color: var(--rarity-r-text);
+}
+.rt-rarity-btn[data-rarity="n"].active {
+  background: var(--rarity-n);
+  color: var(--rarity-n-text);
+}
+
+/* --- Status chips: semantic active colors --- */
+
+.rt-status-btn.active {
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 6px var(--overlay-lighter, rgba(0,0,0,0.12));
+}
+
+.rt-status-btn[data-status="owned"].active {
+  background: var(--success-color);
+}
+
+.rt-status-btn[data-status="missing"].active {
+  background: var(--warning-color);
+  color: #3a2400;
+}
+
+/* --- Source groups --- */
+
+.rt-source-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.rt-group {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.rt-group-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto auto;
+  align-items: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+  background: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  text-align: left;
+}
+
+.rt-group-header:hover {
+  background: var(--bg-elevated, var(--section-bg));
+}
+
+.rt-group-icon {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+
+.rt-group-label {
+  font-weight: 600;
+}
+
+.rt-group-count {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.rt-group-minibar {
+  display: inline-block;
+  width: 80px;
+  height: 4px;
+  background: var(--card-bg);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.rt-group-minibar-fill {
+  display: block;
+  height: 100%;
+  background: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+.rt-group-pts {
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.rt-group-pts b {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.rt-group-chevron {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.rt-group-body {
+  display: none;
+  margin-top: 6px;
+}
+
+.rt-group.open .rt-group-body {
+  display: block;
+}
+
+/* auto-fill + minmax gives us 2 columns only when each card has enough room
+ * (≥ 360 px) to fit icon + name + badges + toggles + pts comfortably. At mid-range
+ * viewport widths the grid falls back to 1 column automatically, so the cramped
+ * "between desktop 2-col and mobile 1-col" state disappears without a breakpoint. */
+.rt-ship-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 4px 8px;
+}
+
+/* --- Ship row ---
+ * Grid: [icon] [main column] [toggles] [pts]
+ * Main column is a flex stack: header line (name + type icon + rarity badge)
+ * and an optional second line with the drop location for map/archive ships.
+ */
+
+.rt-ship-row {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  border-left-width: 3px;
+  font-size: 0.75rem;
+  min-height: 40px;
+}
+
+.rt-ship-row.rarity-border-ur    { border-left-color: var(--rarity-ur); }
+.rt-ship-row.rarity-border-ssr   { border-left-color: var(--rarity-ssr); }
+.rt-ship-row.rarity-border-sr    { border-left-color: var(--rarity-sr); }
+.rt-ship-row.rarity-border-r     { border-left-color: var(--rarity-r); }
+.rt-ship-row.rarity-border-n     { border-left-color: var(--rarity-n); }
+
+.rt-ship-row.completed {
+  background: var(--primary-alpha-10, var(--section-bg));
+}
+
+.rt-ship-row.filter-hidden {
+  display: none;
+}
+
+.rt-row-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-xs);
+  object-fit: cover;
+}
+
+.rt-row-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.rt-row-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.rt-row-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.rt-row-type {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Rarity badge — every rarity now uses a gradient background like UR did before,
+ * so the badges read as a unified set instead of UR being the only colorful one.
+ * SSR-N gradients are defined locally because theme.css only ships --rarity-ur-bg.
+ * Height is fixed to 18px so the badge sits flush with the name text and stays
+ * shorter than the 22px type icon (matches the row's vertical rhythm). */
+.rt-row-rarity {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 18px;
+  line-height: 1;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 0 8px;
+  border-radius: 4px;
+  border: 1px solid var(--overlay-lighter, rgba(0, 0, 0, 0.1));
+  text-shadow: 0 1px 0 var(--highlight-soft, rgba(255, 255, 255, 0.35));
+  box-shadow: inset 0 1px 0 var(--highlight-soft, rgba(255, 255, 255, 0.35)),
+              0 1px 2px var(--overlay-lighter, rgba(0, 0, 0, 0.1));
+  background: var(--section-bg);
+  color: var(--text-primary);
+}
+
+.rt-row-rarity.rarity-ur {
+  background: var(--rarity-ur-bg, linear-gradient(135deg, #fdeebb, #ffc8b2, #ffb7c5, #dcb5ff, #fdeebb));
+  color: var(--rarity-ur-text, #4a0028);
+}
+
+.rt-row-rarity.rarity-ssr {
+  background: linear-gradient(135deg, #fff4c2 0%, #ffd54f 50%, #f5b800 100%);
+  color: var(--rarity-ssr-text, #5d4037);
+}
+
+.rt-row-rarity.rarity-sr {
+  background: linear-gradient(135deg, #e6c8f0 0%, #ba68c8 50%, #8e3aa0 100%);
+  color: var(--rarity-sr-text, #ffffff);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+}
+
+.rt-row-rarity.rarity-r {
+  background: linear-gradient(135deg, #c6dafd 0%, #6495ed 50%, #3b6fc4 100%);
+  color: var(--rarity-r-text, #ffffff);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+}
+
+.rt-row-rarity.rarity-n {
+  background: linear-gradient(135deg, #eceff1 0%, #b0bec5 50%, #78909c 100%);
+  color: var(--rarity-n-text, #37474f);
+}
+
+/* --- Drop location label (map or war archive) --- */
+
+.rt-row-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.rt-row-location-icon {
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.rt-row-location-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+
+.rt-row-location-map .rt-row-location-icon {
+  color: var(--accent-blue, var(--primary-color));
+}
+
+.rt-row-location-archive .rt-row-location-icon {
+  color: var(--warning-color);
+}
+
+.rt-row-location-shop .rt-row-location-icon {
+  color: var(--accent-green, var(--success-color));
+}
+
+/* --- Toggles ---
+ * Each toggle has a distinct semantic color when checked so "checked/unchecked"
+ * reads at a glance in both themes:
+ *   입수 (obtained)  → success green
+ *   120  (max level) → info blue
+ *   풀돌 (max LB)    → warning gold
+ * Unchecked state is a clean flat outline, not grayscale, so light mode still
+ * has clear contrast against the card background.
+ */
+
+.rt-row-toggles {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.rt-toggle {
+  position: relative;
+  cursor: pointer;
+}
+
+.rt-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  pointer-events: none;
+}
+
+.rt-toggle span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 22px;
+  padding: 0 8px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted, var(--text-secondary));
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease,
+              box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.rt-toggle:hover span {
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+.rt-toggle input:active + span { transform: translateY(1px); }
+
+/* Generic checked fallback (should be overridden by the per-type rules below). */
+.rt-toggle input:checked + span {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+/* 입수 (obtained) — success green */
+.rt-toggle-get input:checked + span {
+  background: var(--success-color);
+  border-color: var(--success-color);
+  color: #fff;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--success-color) 25%, transparent),
+              0 2px 4px var(--overlay-lighter, rgba(0,0,0,0.12));
+}
+
+/* 120 (max level) — info blue */
+.rt-toggle-level input:checked + span {
+  background: var(--info-color);
+  border-color: var(--info-color);
+  color: #fff;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--info-color) 25%, transparent),
+              0 2px 4px var(--overlay-lighter, rgba(0,0,0,0.12));
+}
+
+/* 풀돌 (max limit break) — warning gold */
+.rt-toggle-upgrade input:checked + span {
+  background: var(--warning-color);
+  border-color: var(--warning-color);
+  color: #3a2400;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--warning-color) 25%, transparent),
+              0 2px 4px var(--overlay-lighter, rgba(0,0,0,0.12));
+}
+
+/* --- Ship row point display (current / total) --- */
+
+.rt-row-pts {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  text-align: right;
+  min-width: 44px;
+  justify-content: flex-end;
+  white-space: nowrap;
+}
+
+.rt-row-pts-current {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.rt-row-pts-sep {
+  color: var(--text-muted, var(--text-secondary));
+  margin: 0 1px;
+}
+
+.rt-row-pts-total {
+  color: var(--text-muted, var(--text-secondary));
+}
+
+.rt-ship-row.completed .rt-row-pts-current {
+  color: var(--success-color);
+}
+
+/* --- Manual (pinned) group accent --- */
+
+.rt-group-manual .rt-group-header {
+  border-left: 3px solid var(--success-color);
+}
+
+.rt-row-remove {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: var(--radius-xs);
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  font-size: 0.7rem;
+  line-height: 1;
+  cursor: pointer;
+  margin-left: 4px;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.rt-row-remove:hover {
+  background: var(--danger-color);
+  border-color: var(--danger-color);
+  color: #fff;
+}
+
+/* Widen the ship-row grid template for rows inside the manual group to fit the ✕ button */
+.rt-group-manual .rt-ship-row {
+  grid-template-columns: 32px minmax(0, 1fr) auto auto auto;
+}

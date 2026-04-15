@@ -1,0 +1,123 @@
+@import url('../theme.css');
+
+/* ==========================================================================
+   RESEARCH TRACKER — CORE
+   Page shell, sidebar/right-pane grid, header card, filter bar
+   ========================================================================== */
+
+.rt-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+}
+
+/* --- Header (matches shipgirl-tracker .st-page-header shape) --- */
+
+.rt-header {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-md);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rt-header-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.rt-header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rt-header-icon {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.rt-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: var(--primary-color);
+}
+
+.rt-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.info-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  padding: 0;
+  margin-left: 0.5rem;
+}
+
+.info-button:hover {
+  color: var(--primary-color);
+}
+
+/* --- Two-column shell --- */
+
+.rt-shell {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: var(--spacing-md);
+  align-items: start;
+}
+
+/* Sticky offset accounts for the global .navbar (position: sticky; top: 0; ~64px tall).
+ * Without this, the sidebar's top edge scrolls underneath the navbar and the nation
+ * tabs / faction summary get hidden. --navbar-height is set by the layout on pages
+ * that care; the 64px fallback matches other sticky sidebars in this project. */
+.rt-sidebar {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-md);
+  position: sticky;
+  top: calc(var(--navbar-height, 64px) + var(--spacing-md));
+  max-height: calc(100vh - var(--navbar-height, 64px) - 2 * var(--spacing-md));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.rt-right {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-md);
+  min-height: 400px;
+}
+
+.rt-loading,
+.rt-error,
+.rt-empty,
+.rt-placeholder {
+  padding: var(--spacing-md);
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.rt-error {
+  color: var(--danger-color);
+}
+
+/* --- Page background (inherit project-wide gradient) --- */
+
+body {
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  min-height: 100vh;
+  color: var(--text-primary);
+}

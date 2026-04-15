@@ -1,6 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import '../../styles/shipgirl/research-tracker.css';
+import '../../styles/shipgirl/research-tracker.core.css';
+import '../../styles/shipgirl/research-tracker.sidebar.css';
+import '../../styles/shipgirl/research-tracker.list.css';
+import '../../styles/shipgirl/research-tracker.responsive.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -32,41 +35,45 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                         <div class="info-icon"><span class="material-symbols-outlined">flag</span></div>
                         <div class="info-content">
                             <h3>진영 탭</h3>
-                            <p>상단 탭에서 진영을 선택하면 해당 진영의 기술점수 현황과 개발함 목록을 확인할 수 있습니다.</p>
+                            <p>왼쪽 사이드바의 진영 탭에서 진영을 선택하면 해당 진영의 기술점수 현황과 개발함 목록을 확인할 수 있습니다.</p>
                         </div>
                     </div>
                     <div class="info-step">
                         <div class="info-icon"><span class="material-symbols-outlined">check_box</span></div>
                         <div class="info-content">
                             <h3>진행도 체크</h3>
-                            <p>각 함순이 카드에서 입수 / 120달성 / 풀돌 체크박스를 체크하면 기술점수가 자동으로 계산됩니다. 진행 상황은 자동 저장되며, 기존 함순이 트래커와 공유됩니다.</p>
+                            <p>오른쪽 목록의 각 함순이 행에서 체/120/돌 토글을 체크하면 기술점수가 자동으로 계산됩니다. 진행 상황은 자동 저장되며, 기존 함순이 트래커와 공유됩니다.</p>
                         </div>
                     </div>
                     <div class="info-step">
-                        <div class="info-icon"><span class="material-symbols-outlined">tune</span></div>
+                        <div class="info-icon"><span class="material-symbols-outlined">search</span></div>
                         <div class="info-content">
-                            <h3>필터</h3>
-                            <p>레어도(UR~N)와 획득 상태(미획득/획득)로 함순이 목록을 필터링할 수 있습니다.</p>
+                            <h3>빠른 추가</h3>
+                            <p>사이드바 하단의 검색창으로 이벤트·한정 함순이를 추가할 수 있습니다. 추가된 함순이는 "이벤트·한정 획득" 그룹에 표시됩니다.</p>
                         </div>
                     </div>
                     <div class="info-step">
                         <div class="info-icon"><span class="material-symbols-outlined">science</span></div>
                         <div class="info-content">
                             <h3>개발함 해금</h3>
-                            <p>진영점수가 개발함의 필요 점수에 도달하면 해금 완료로 표시됩니다. 일부 개발함은 2개 진영의 점수가 모두 필요합니다.</p>
+                            <p>진영점수가 개발함의 필요 점수에 도달하면 해금 완료로 표시됩니다. 1차 개발함은 진영의 전열/후열 함순이 보유 수로도 판정됩니다.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="rt-faction-panel">
-            <nav class="rt-tabs" id="faction-tabs"></nav>
-            <div class="rt-panel-body" id="faction-content">
+        <div class="rt-shell">
+            <aside class="rt-sidebar">
+                <nav class="rt-tabs" id="faction-tabs" aria-label="진영 선택"></nav>
+                <div class="rt-sidebar-body" id="sidebar-content">
+                    <div class="rt-loading">데이터를 불러오는 중...</div>
+                </div>
+            </aside>
+            <section class="rt-right" id="right-pane" aria-label="함순이 목록">
                 <div class="rt-loading">데이터를 불러오는 중...</div>
-            </div>
+            </section>
         </div>
-        <div id="faction-extra"></div>
     </div>
 
     <script is:inline type="module" src={`${base}/js/shipgirl/research-tracker.js`}></script>

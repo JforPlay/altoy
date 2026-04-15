@@ -1,0 +1,78 @@
+@import url('../theme.css');
+
+/* ==========================================================================
+   RESEARCH TRACKER — RESPONSIVE
+   Breakpoints for tablets and phones
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .rt-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .rt-sidebar {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .rt-ship-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .rt-page {
+    padding: var(--spacing-sm);
+  }
+
+  .rt-header {
+    padding: 0.875rem;
+  }
+
+  .rt-header h1 {
+    font-size: 1.375rem;
+  }
+
+  .rt-tabs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .rt-group-header {
+    grid-template-columns: auto 1fr auto auto;
+    gap: 6px;
+  }
+
+  .rt-group-minibar {
+    display: none;
+  }
+
+  .rt-filters {
+    font-size: 0.7rem;
+  }
+
+  .rt-filter-sep {
+    display: none;
+  }
+
+  /* Slightly smaller badges on phones so the name still fits, but keep them visible
+   * — they sit inline with the name in a flex row, not in their own grid columns. */
+  .rt-row-name {
+    font-size: 0.78rem;
+  }
+
+  .rt-row-type {
+    width: 18px;
+    height: 18px;
+  }
+
+  .rt-row-rarity {
+    height: 16px;
+    font-size: 0.6rem;
+    padding: 0 6px;
+  }
+
+  .rt-row-location {
+    font-size: 0.62rem;
+  }
+}

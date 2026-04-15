@@ -1,0 +1,338 @@
+@import url('../theme.css');
+
+/* ==========================================================================
+   RESEARCH TRACKER — SIDEBAR
+   Nation tabs, summary, progress bar, position strip, research list, quick-add
+   ========================================================================== */
+
+/* --- Nation tabs (3 per row grid) --- */
+
+.rt-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+}
+
+.rt-tab {
+  background: var(--section-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  padding: 5px 2px;
+  cursor: pointer;
+  font-size: 0.68rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.rt-tab:hover {
+  background: var(--bg-elevated, var(--section-bg));
+  color: var(--text-primary);
+}
+
+.rt-tab.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+}
+
+.rt-tab-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.rt-tab-name {
+  display: none;
+}
+
+.rt-tab-abbr {
+  font-weight: 600;
+}
+
+/* --- Faction summary --- */
+
+.rt-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.rt-summary-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.rt-summary-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+}
+
+.rt-summary-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rt-summary-info h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.rt-summary-points {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.rt-progress-bar {
+  position: relative;
+  height: 8px;
+  background: var(--section-bg);
+  border-radius: 4px;
+  overflow: visible;
+}
+
+.rt-progress-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--primary-color);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.rt-progress-marker {
+  position: absolute;
+  top: -4px;
+  width: 3px;
+  height: 16px;
+  background: var(--text-primary);
+  border-radius: 1px;
+  transform: translateX(-50%);
+  pointer-events: auto;
+  cursor: help;
+}
+
+.rt-progress-marker.unlocked {
+  background: var(--success-color);
+}
+
+/* --- Research list --- */
+
+.rt-section-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 6px;
+}
+
+.rt-research-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.rt-research-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rt-research-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--section-bg);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  border-left: 3px solid var(--rarity-ssr);
+}
+
+.rt-research-row.dr {
+  border-left-color: var(--rarity-ur);
+}
+
+.rt-research-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-xs);
+  object-fit: cover;
+}
+
+.rt-research-icon.placeholder {
+  background: var(--bg-elevated, var(--section-bg));
+}
+
+.rt-research-body {
+  min-width: 0;
+}
+
+.rt-research-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rt-research-project {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.rt-research-reqs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+.rt-req-chip {
+  font-size: 0.65rem;
+  padding: 1px 5px;
+  background: var(--bg-elevated, var(--card-bg));
+  border-radius: 3px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.rt-req-chip.met {
+  background: var(--success-color);
+  color: #fff;
+}
+
+.rt-research-status {
+  color: var(--success-color);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.rt-research-status .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+/* --- Quick-add search --- */
+
+.rt-quickadd {
+  background: var(--section-bg);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+}
+
+.rt-quickadd .rt-section-title {
+  margin-bottom: 6px;
+}
+
+.rt-quickadd-input {
+  width: 100%;
+  background: var(--input-bg, var(--card-bg));
+  border: 1px solid var(--input-border, var(--border-color));
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.rt-quickadd-input:focus {
+  outline: none;
+  border-color: var(--input-focus, var(--primary-color));
+}
+
+.rt-quickadd-results {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.rt-quickadd-match {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  background: var(--card-bg);
+  border-radius: var(--radius-xs);
+  font-size: 0.75rem;
+}
+
+.rt-quickadd-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-xs);
+  object-fit: cover;
+}
+
+.rt-quickadd-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rt-quickadd-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rt-quickadd-meta {
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+}
+
+.rt-quickadd-add {
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-xs);
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.rt-quickadd-add:hover {
+  opacity: 0.9;
+}
+
+.rt-quickadd-owned {
+  font-size: 0.65rem;
+  color: var(--success-color);
+  white-space: nowrap;
+}
+
+.rt-quickadd-empty {
+  padding: 4px 6px;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.rt-quickadd-hint {
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  margin: 6px 0 0;
+}
+
+.rt-quickadd-pinned {
+  font-size: 0.65rem;
+  color: var(--success-color);
+  white-space: nowrap;
+}
