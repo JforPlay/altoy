@@ -117,7 +117,8 @@ function openSearch() {
     overlay.classList.add('visible');
     overlay.setAttribute('aria-hidden', 'false');
     document.body.classList.add('no-scroll');
-    input.focus();
+    // Defer focus until after the visibility transition applies; focusing a still-hidden input is a no-op in some browsers.
+    requestAnimationFrame(() => input.focus());
 
     // Lazy-load ship data on first open
     if (!shipData && !shipDataLoading) {
