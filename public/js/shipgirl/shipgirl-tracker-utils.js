@@ -46,10 +46,12 @@ const ShipgirlTrackerUtils = {
      * @param {HTMLElement} dropdown - The dropdown element.
      */
     setupDropdownToggle(input, dropdown) {
+        let hideTimeout;
         input.addEventListener('focus', () => dropdown.style.display = 'block');
         input.addEventListener('blur', () => {
             // Delay hiding to allow click events on dropdown items.
-            setTimeout(() => {
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => {
                 dropdown.style.display = 'none';
             }, 150);
         });

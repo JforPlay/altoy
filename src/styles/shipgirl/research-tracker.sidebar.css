@@ -313,11 +313,6 @@
   opacity: 0.9;
 }
 
-.rt-quickadd-owned {
-  font-size: 0.65rem;
-  color: var(--success-color);
-  white-space: nowrap;
-}
 
 .rt-quickadd-empty {
   padding: 4px 6px;

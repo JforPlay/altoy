@@ -6,7 +6,7 @@
  * faction tech bonus display, and cross-tab sync via the storage event (shares SAVE_KEY with research-tracker.js).
  */
 
-import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement } from '../utils.js';
+import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 document.addEventListener('DOMContentLoaded', () => {
     let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData;
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Use utilities from external file
-    const { parseDatasetInt, getCheckedFilterValues, filterSearchDropdown, setupDropdownToggle, createTrackerItem } = ShipgirlTrackerUtils;
+    const { parseDatasetInt, filterSearchDropdown, setupDropdownToggle, createTrackerItem } = ShipgirlTrackerUtils;
 
     /**
      * Lookup ship data by name for goal tracker.
@@ -204,6 +204,13 @@ document.addEventListener('DOMContentLoaded', () => {
             card.appendChild(trackerSection);
         }
 
+        // Cache checkbox references to avoid repeated querySelector calls
+        card._cb = {
+            get: card.querySelector('[data-type="get"]'),
+            level: card.querySelector('[data-type="level"]'),
+            upgrade: card.querySelector('[data-type="upgrade"]')
+        };
+
         return card;
     }
 
@@ -215,9 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleCheckboxLogic(checkbox) {
         const card = checkbox.closest('.ship-card');
         if (!card) return;
-        const getCheckbox = card.querySelector('[data-type="get"]');
-        const levelCheckbox = card.querySelector('[data-type="level"]');
-        const upgradeCheckbox = card.querySelector('[data-type="upgrade"]');
+        const { get: getCheckbox, level: levelCheckbox, upgrade: upgradeCheckbox } = card._cb;
         if (checkbox.checked) {
             // If level or upgrade is checked, 'get' must also be checked.
             if ((checkbox.dataset.type === 'level' || checkbox.dataset.type === 'upgrade') && getCheckbox) {
@@ -251,9 +256,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const nationalityName = nationalityData[nationId]?.name;
             const typeId = data.type;
             const position = shipTypeData[typeId]?.position;
-            const isGetChecked = card.querySelector('[data-type="get"]')?.checked;
-            const isLevelChecked = card.querySelector('[data-type="level"]')?.checked;
-            const isUpgradeChecked = card.querySelector('[data-type="upgrade"]')?.checked;
+            const isGetChecked = card._cb.get?.checked;
+            const isLevelChecked = card._cb.level?.checked;
+            const isUpgradeChecked = card._cb.upgrade?.checked;
 
             if (isGetChecked) {
                 fleetTech[nationId] += parseDatasetInt(data.ptGet);
@@ -794,9 +799,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Update each requirement's progress bar
+        // Update each requirement's progress bar + track overall completion
         const requirements = card.querySelectorAll('.goal-requirement');
         let reqIndex = 0;
+        let allComplete = true;
 
         for (let i = 1; i <= 3; i++) {
             const nationality = goalData[`unlock_${i}`];
@@ -819,6 +825,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 isComplete = current >= reqValue;
             }
 
+            if (!isComplete) allComplete = false;
+
             // Update progress bar
             const progressFill = req.querySelector('.goal-progress-fill');
             const progressText = req.querySelector('.goal-progress-text');
@@ -839,28 +847,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             reqIndex++;
-        }
-
-        // Update overall completion status
-        let allComplete = true;
-        for (let i = 1; i <= 3; i++) {
-            const nationality = goalData[`unlock_${i}`];
-            const reqType = goalData[`unlock_${i}_req_type`];
-            const reqValue = parseDatasetInt(goalData[`unlock_${i}_req_type_value`]);
-
-            if (!nationality || !reqType || !reqValue) continue;
-
-            let current = 0;
-            if (reqType === '점수') {
-                current = currentScores[nationality] || 0;
-            } else {
-                current = positionCounts[nationality]?.[reqType] || 0;
-            }
-
-            if (current < reqValue) {
-                allComplete = false;
-                break;
-            }
         }
 
         // Toggle complete state on card
@@ -1331,11 +1317,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (type === 'all') {
                     // For 'all' type, we need to handle the checkboxes in the right order
                     // to ensure proper cascading logic
+                    const { get: getCheckbox, level: levelCheckbox, upgrade: upgradeCheckbox } = card._cb;
                     if (shouldBeChecked) {
                         // When checking all, check in order: get, level, upgrade
-                        const getCheckbox = card.querySelector('[data-type="get"]');
-                        const levelCheckbox = card.querySelector('[data-type="level"]');
-                        const upgradeCheckbox = card.querySelector('[data-type="upgrade"]');
                         if (getCheckbox) {
                             getCheckbox.checked = true;
                             handleCheckboxLogic(getCheckbox);
@@ -1350,9 +1334,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     } else {
                         // When unchecking all, uncheck in reverse order: upgrade, level, get
-                        const upgradeCheckbox = card.querySelector('[data-type="upgrade"]');
-                        const levelCheckbox = card.querySelector('[data-type="level"]');
-                        const getCheckbox = card.querySelector('[data-type="get"]');
                         if (upgradeCheckbox) {
                             upgradeCheckbox.checked = false;
                             handleCheckboxLogic(upgradeCheckbox);
@@ -1367,7 +1348,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 } else {
-                    const checkbox = card.querySelector(`[data-type="${type}"]`);
+                    const checkbox = card._cb[type];
                     if (checkbox && checkbox.checked !== shouldBeChecked) {
                         checkbox.checked = shouldBeChecked;
                         handleCheckboxLogic(checkbox);
@@ -1422,16 +1403,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const progress = JSON.parse(getStorageItem(SAVE_KEY, null) || '{}');
         document.querySelectorAll('.ship-card').forEach(card => {
             let state = 0;
-            if (card.querySelector('[data-type="get"]')?.checked) state |= 1;
-            if (card.querySelector('[data-type="level"]')?.checked) state |= 2;
-            if (card.querySelector('[data-type="upgrade"]')?.checked) state |= 4;
+            if (card._cb.get?.checked) state |= 1;
+            if (card._cb.level?.checked) state |= 2;
+            if (card._cb.upgrade?.checked) state |= 4;
             if (state > 0) {
                 progress[card.dataset.shipId] = state;
             } else {
                 delete progress[card.dataset.shipId];
             }
         });
-        setStorageItem(SAVE_KEY, JSON.stringify(progress));
+        try {
+            setStorageItem(SAVE_KEY, JSON.stringify(progress));
+        } catch (err) {
+            console.error('Failed to save progress:', err);
+        }
     }
 
     /**
@@ -1443,15 +1428,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const shipId = card.dataset.shipId;
             if (progress[shipId]) {
                 const state = progress[shipId];
-                const get = (state & 1) > 0;
-                const level = (state & 2) > 0;
-                const upgrade = (state & 4) > 0;
-                const getCheckbox = card.querySelector('[data-type="get"]');
-                const levelCheckbox = card.querySelector('[data-type="level"]');
-                const upgradeCheckbox = card.querySelector('[data-type="upgrade"]');
-                if (getCheckbox) getCheckbox.checked = get;
-                if (levelCheckbox) levelCheckbox.checked = level;
-                if (upgradeCheckbox) upgradeCheckbox.checked = upgrade;
+                if (card._cb.get) card._cb.get.checked = (state & 1) > 0;
+                if (card._cb.level) card._cb.level.checked = (state & 2) > 0;
+                if (card._cb.upgrade) card._cb.upgrade.checked = (state & 4) > 0;
             }
         });
     }

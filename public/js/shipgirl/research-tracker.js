@@ -7,7 +7,7 @@
  * The storage event keeps both pages in sync across tabs without circular triggering.
  */
 
-import { fetchJSONWithCache, getStorageItem, setStorageItem, debounce, createImg, IMG_FALLBACKS, createSearchIndex } from '../utils.js';
+import { fetchJSONWithCache, getStorageItem, setStorageItem, createImg, IMG_FALLBACKS, createSearchIndex, debounce } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const SAVE_KEY = 'shipgirlTrackerProgress';
@@ -1001,6 +1001,26 @@ document.addEventListener('DOMContentLoaded', () => {
         setStorageItem(SAVE_KEY, JSON.stringify(progress));
     }
 
+    /**
+     * Lightweight sidebar update: replace only the summary and research-ship sections,
+     * leaving the quick-add widget (and its event listeners / search index) intact.
+     */
+    function updateSidebarOnChange() {
+        if (!activeFaction) return;
+        const natId = getNationalityIdByName(activeFaction);
+        if (natId === null) return;
+
+        const oldSummary = sidebarBody.querySelector('.rt-summary');
+        if (oldSummary) {
+            oldSummary.replaceWith(renderFactionSummary(activeFaction, natId));
+        }
+
+        const oldResearch = sidebarBody.querySelector('.rt-research-panel');
+        if (oldResearch) {
+            oldResearch.replaceWith(renderResearchShips(activeFaction));
+        }
+    }
+
     function savePinned() {
         setStorageItem(PINNED_KEY, JSON.stringify([...pinned]));
     }
@@ -1022,11 +1042,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Recompute earned/max pts for every group header in the right pane.
-     * Called after a checkbox change so the header totals track live without rebuilding rows.
+     * Recompute earned/max pts for group headers in the right pane.
+     * @param {Iterable<Element>} [groups] — only update these groups; omit to update all.
      */
-    function refreshGroupHeaders() {
-        rightPane.querySelectorAll('.rt-group').forEach(group => {
+    function refreshGroupHeaders(groups) {
+        (groups || rightPane.querySelectorAll('.rt-group')).forEach(group => {
             let earned = 0;
             let max = 0;
             group.querySelectorAll('.rt-ship-row').forEach(row => {
@@ -1041,8 +1061,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (fill) fill.style.width = `${pct}%`;
         });
     }
-
-    const debouncedSave = debounce(saveProgress, 300);
 
     rightPane.addEventListener('change', (e) => {
         if (!e.target.matches('.rt-row-toggles input[type="checkbox"]')) return;
@@ -1077,7 +1095,12 @@ document.addEventListener('DOMContentLoaded', () => {
         row.classList.toggle('completed', state === 7);
         updateRowPts(row);
 
-        // Sync all other rows for the same ship
+        // Collect affected groups for targeted header refresh
+        const affectedGroups = new Set();
+        const changedGroup = row.closest('.rt-group');
+        if (changedGroup) affectedGroups.add(changedGroup);
+
+        // Sync all other rows for the same ship (duplicates across source groups)
         rightPane.querySelectorAll(`.rt-ship-row[data-ship-id="${shipId}"]`).forEach(other => {
             if (other === row) return;
             const g = other.querySelector('[data-type="get"]');
@@ -1088,23 +1111,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (u) u.checked = !!(state & 4);
             other.classList.toggle('completed', state === 7);
             updateRowPts(other);
+            const otherGroup = other.closest('.rt-group');
+            if (otherGroup) affectedGroups.add(otherGroup);
         });
 
-        debouncedSave();
+        saveProgress();
 
-        if (activeFaction) {
-            const natId = getNationalityIdByName(activeFaction);
-            if (natId !== null) {
-                sidebarBody.innerHTML = '';
-                const fragment = document.createDocumentFragment();
-                fragment.appendChild(renderFactionSummary(activeFaction, natId));
-                fragment.appendChild(renderResearchShips(activeFaction));
-                fragment.appendChild(renderQuickAdd(natId));
-                sidebarBody.appendChild(fragment);
-            }
-        }
+        updateSidebarOnChange();
 
-        refreshGroupHeaders();
+        refreshGroupHeaders(affectedGroups);
         applyFilters();
     });
 
@@ -1120,6 +1135,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Failed to sync progress from storage event:', err);
                 return;
             }
+            // Targeted update: patch checkboxes + sidebar, don't rebuild the entire page
+            if (activeFaction) {
+                applyProgress();
+                updateSidebarOnChange();
+                refreshGroupHeaders();
+                applyFilters();
+            }
         } else if (e.key === PINNED_KEY) {
             try {
                 const arr = JSON.parse(e.newValue || '[]');
@@ -1128,11 +1150,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Failed to sync pinned from storage event:', err);
                 return;
             }
-        } else {
-            return;
-        }
-        if (activeFaction) {
-            renderFactionContent(activeFaction);
+            // Pinned changes add/remove rows — full rebuild required
+            if (activeFaction) {
+                renderFactionContent(activeFaction);
+            }
         }
     });
 });
