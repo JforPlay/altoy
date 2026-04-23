@@ -2,6 +2,10 @@
  * drive-sync.ui.js
  * Nav icon, popover panel, conflict modal, and cooldown timer for Drive sync.
  * Mount by calling mountSyncUI() — typically gated on a feature flag.
+ *
+ * The popover is appended to <body> (not the navbar) so the navbar's
+ * backdrop-filter can't bleed through the popover's background. Position is
+ * computed on open via getBoundingClientRect().
  */
 
 import { openModal, closeModal, setupModal, showToast, getStorageItem } from '../utils.js';
@@ -15,12 +19,12 @@ let cooldownTimerId = null;
 let currentConflict = null;
 
 function formatRelative(ms) {
-    if (!ms) return 'never';
+    if (!ms) return '없음';
     const diff = Date.now() - ms;
-    if (diff < 60_000) return 'just now';
-    if (diff < 3_600_000) return `${Math.floor(diff / 60_000)} min ago`;
-    if (diff < 86_400_000) return `${Math.floor(diff / 3_600_000)} hr ago`;
-    return `${Math.floor(diff / 86_400_000)} days ago`;
+    if (diff < 60_000) return '방금';
+    if (diff < 3_600_000) return `${Math.floor(diff / 60_000)}분 전`;
+    if (diff < 86_400_000) return `${Math.floor(diff / 3_600_000)}시간 전`;
+    return `${Math.floor(diff / 86_400_000)}일 전`;
 }
 
 function renderPopoverBody() {
@@ -30,20 +34,20 @@ function renderPopoverBody() {
     const lastAt = Number(getStorageItem(STORAGE_KEYS.lastSyncedAt, '0'));
     const cooldownLeft = Math.max(0, cooldownUntil - Date.now());
     const btnLabel = !signedIn
-        ? '☁ Sign in with Google'
+        ? '☁ Google로 로그인'
         : cooldownLeft > 0
-            ? `☁ Sync now (${Math.ceil(cooldownLeft / 1000)}s)`
-            : '☁ Sync now';
+            ? `☁ 동기화 (${Math.ceil(cooldownLeft / 1000)}초)`
+            : '☁ 지금 동기화';
     const btnDisabled = cooldownLeft > 0 ? 'disabled' : '';
     popover.innerHTML = `
-        <h3>Google Drive sync</h3>
-        ${signedIn ? '' : `<p>Sync your progress across devices using your own Google Drive. We only store a small file in a hidden app folder.</p>`}
+        <h3>Google Drive 동기화</h3>
+        ${signedIn ? '' : `<p>내 Google Drive를 이용해 기기 간 진행도를 동기화합니다. 숨겨진 앱 폴더에 작은 파일 하나만 저장됩니다.</p>`}
         <button class="sync-action" ${btnDisabled}>${btnLabel}</button>
         ${signedIn ? `
             <div class="sync-meta">
-                Last synced: ${formatRelative(lastAt)}
+                마지막 동기화: ${formatRelative(lastAt)}
             </div>
-            <button class="sync-unlink">Unlink Google account</button>
+            <button class="sync-unlink">Google 계정 연결 해제</button>
         ` : ''}
     `;
     popover.querySelector('.sync-action')?.addEventListener('click', onSyncClick);
@@ -65,7 +69,7 @@ function setIconState(state) {
     } else if (state === 'cooldown') {
         glyph.textContent = 'cloud';
         const left = Math.ceil((cooldownUntil - Date.now()) / 1000);
-        countdownSpan.textContent = left > 0 ? `${left}s` : '';
+        countdownSpan.textContent = left > 0 ? `${left}초` : '';
     } else if (state === 'error') {
         glyph.textContent = 'cloud_off';
     } else if (!signedIn) {
@@ -100,26 +104,26 @@ function renderConflictModal(localData, cloudData, cloudModifiedTime) {
     if (!modal) return;
     const localLabels = summarize(localData);
     const cloudLabels = summarize(cloudData);
-    const localEdited = 'just now';
+    const localEdited = '방금';
     const cloudEdited = formatRelative(new Date(cloudModifiedTime).getTime());
     modal.querySelector('.modal-body').innerHTML = `
-        <p>Both devices have unsynced changes. Pick which side to keep.</p>
+        <p>두 기기 모두 저장되지 않은 변경사항이 있습니다. 유지할 쪽을 선택하세요.</p>
         <div class="sync-conflict-grid">
             <div class="sync-conflict-side">
-                <h4>This device</h4>
-                <div class="sync-conflict-time">Edited ${localEdited}</div>
-                <ul>${localLabels.length ? localLabels.map(l => `<li>${l}</li>`).join('') : '<li>(no summarizable data)</li>'}</ul>
+                <h4>이 기기</h4>
+                <div class="sync-conflict-time">${localEdited} 수정됨</div>
+                <ul>${localLabels.length ? localLabels.map(l => `<li>${l}</li>`).join('') : '<li>(요약 가능한 데이터 없음)</li>'}</ul>
             </div>
             <div class="sync-conflict-side">
                 <h4>Google Drive</h4>
-                <div class="sync-conflict-time">Edited ${cloudEdited}</div>
-                <ul>${cloudLabels.length ? cloudLabels.map(l => `<li>${l}</li>`).join('') : '<li>(no summarizable data)</li>'}</ul>
+                <div class="sync-conflict-time">${cloudEdited} 수정됨</div>
+                <ul>${cloudLabels.length ? cloudLabels.map(l => `<li>${l}</li>`).join('') : '<li>(요약 가능한 데이터 없음)</li>'}</ul>
             </div>
         </div>
         <div class="sync-conflict-actions">
-            <button data-choice="cancel">Cancel</button>
-            <button data-choice="keep-cloud">Keep cloud (download)</button>
-            <button class="primary" data-choice="keep-local">Keep local (upload)</button>
+            <button data-choice="cancel">취소</button>
+            <button data-choice="keep-cloud">클라우드 유지 (다운로드)</button>
+            <button class="primary" data-choice="keep-local">로컬 유지 (업로드)</button>
         </div>
     `;
     modal.querySelectorAll('[data-choice]').forEach(btn => {
@@ -136,7 +140,7 @@ async function onSyncClick() {
         handleOutcome(result);
     } catch (e) {
         console.error('Sync error:', e);
-        showToast(`Sync failed: ${e.message}`, 'error');
+        showToast(`동기화 실패: ${e.message}`, 'error');
         setIconState('error');
         startCooldown();
     }
@@ -145,13 +149,13 @@ async function onSyncClick() {
 function handleOutcome(result) {
     switch (result.outcome) {
         case SYNC_OUTCOMES.IN_SYNC:
-            showToast('Already in sync', 'info');
+            showToast('이미 동기화됨', 'info');
             break;
         case SYNC_OUTCOMES.UPLOADED:
-            showToast('Uploaded to Google Drive', 'success');
+            showToast('Google Drive에 업로드됨', 'success');
             break;
         case SYNC_OUTCOMES.DOWNLOADED:
-            showToast('Downloaded from Google Drive', 'success');
+            showToast('Google Drive에서 다운로드됨', 'success');
             break;
         case SYNC_OUTCOMES.CONFLICT:
             currentConflict = result;
@@ -177,7 +181,7 @@ async function onConflictChoice(choice) {
         handleOutcome(result);
     } catch (e) {
         console.error('Conflict resolution error:', e);
-        showToast(`Sync failed: ${e.message}`, 'error');
+        showToast(`동기화 실패: ${e.message}`, 'error');
         setIconState('error');
         startCooldown();
     }
@@ -185,16 +189,37 @@ async function onConflictChoice(choice) {
 
 function onUnlinkClick() {
     unlink();
-    showToast('Unlinked from Google Drive', 'info');
+    showToast('Google Drive 연결 해제됨', 'info');
     renderPopoverBody();
     setIconState('idle');
+}
+
+function positionPopover() {
+    const popover = document.getElementById('sync-popover');
+    const icon = document.getElementById('sync-nav-icon');
+    if (!popover || !icon) return;
+    const rect = icon.getBoundingClientRect();
+    popover.style.top = `${rect.bottom + 8}px`;
+    // Align popover's left edge with the icon's left edge, but clamp so it
+    // doesn't overflow the right side of the viewport.
+    const popoverWidth = 280;
+    const maxLeft = window.innerWidth - popoverWidth - 8;
+    popover.style.left = `${Math.min(rect.left, maxLeft)}px`;
 }
 
 function togglePopover() {
     const popover = document.getElementById('sync-popover');
     if (!popover) return;
     const open = popover.classList.toggle('open');
-    if (open) renderPopoverBody();
+    if (open) {
+        positionPopover();
+        renderPopoverBody();
+    }
+}
+
+function closePopover() {
+    const popover = document.getElementById('sync-popover');
+    popover?.classList.remove('open');
 }
 
 function onDocumentClick(e) {
@@ -203,7 +228,7 @@ function onDocumentClick(e) {
     if (!popover || !icon) return;
     if (!popover.classList.contains('open')) return;
     if (icon.contains(e.target) || popover.contains(e.target)) return;
-    popover.classList.remove('open');
+    closePopover();
 }
 
 /**
@@ -215,18 +240,13 @@ export function mountSyncUI() {
     if (!navbar) return;
 
     const themeToggle = navbar.querySelector('.theme-toggle');
-    // Wrap icon + popover so the popover drops directly under the icon
-    // (position: relative on .sync-nav-wrapper; popover uses left: 0).
-    // Also gives us an isolated stacking context so the navbar's
-    // backdrop-filter doesn't bleed into the popover's background.
+    // Icon goes in the navbar. Popover goes in <body> so the navbar's
+    // backdrop-filter cannot affect its background rendering.
     const iconHTML = `
-        <div class="sync-nav-wrapper">
-            <button id="sync-nav-icon" class="sync-nav-icon" aria-label="Sync to Google Drive">
-                <span class="material-symbols-outlined">cloud</span>
-                <span class="sync-cooldown-num"></span>
-            </button>
-            <div id="sync-popover" class="sync-popover" role="dialog" aria-label="Google Drive sync"></div>
-        </div>
+        <button id="sync-nav-icon" class="sync-nav-icon" aria-label="Google Drive 동기화">
+            <span class="material-symbols-outlined">cloud</span>
+            <span class="sync-cooldown-num"></span>
+        </button>
     `;
     if (themeToggle) {
         themeToggle.insertAdjacentHTML('beforebegin', iconHTML);
@@ -235,11 +255,12 @@ export function mountSyncUI() {
     }
 
     document.body.insertAdjacentHTML('beforeend', `
-        <div id="sync-conflict-modal" class="modal" style="display:none;" role="dialog" aria-label="Sync conflict">
+        <div id="sync-popover" class="sync-popover" role="dialog" aria-label="Google Drive 동기화"></div>
+        <div id="sync-conflict-modal" class="modal" style="display:none;" role="dialog" aria-label="동기화 충돌">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>Sync conflict</h2>
-                    <button class="modal-close" aria-label="Close">&times;</button>
+                    <h2>동기화 충돌</h2>
+                    <button class="modal-close" aria-label="닫기">&times;</button>
                 </div>
                 <div class="modal-body"></div>
             </div>
@@ -249,6 +270,10 @@ export function mountSyncUI() {
 
     document.getElementById('sync-nav-icon').addEventListener('click', togglePopover);
     document.addEventListener('click', onDocumentClick);
+    // Close popover on scroll/resize — the fixed position would otherwise
+    // disconnect from the icon.
+    window.addEventListener('scroll', closePopover, { passive: true });
+    window.addEventListener('resize', closePopover);
 
     setIconState('idle');
 

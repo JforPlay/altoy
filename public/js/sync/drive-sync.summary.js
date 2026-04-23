@@ -21,34 +21,34 @@ function countTrackerProgress(raw) {
     if (!obj || typeof obj !== 'object') return '';
     // Bit 0 (value & 1) = ship obtained; only count ships the user has marked
     const count = Object.values(obj).filter(v => (v & 1) === 1).length;
-    return count > 0 ? `${count} ships tracked` : '';
+    return count > 0 ? `함순이 ${count}명 트래킹` : '';
 }
 
 function countCollection(raw) {
     const obj = tryParse(raw);
     if (!obj) return '';
     const items = Array.isArray(obj) ? obj : (obj.items || []);
-    return items.length > 0 ? `${items.length} skins collected` : '';
+    return items.length > 0 ? `스킨 ${items.length}개 수집` : '';
 }
 
 function countPlannerPlan(raw) {
     const obj = tryParse(raw);
     if (!obj || typeof obj !== 'object') return '';
     const n = Object.keys(obj).length;
-    return n > 0 ? `${n} island plans` : '';
+    return n > 0 ? `아일랜드 계획 ${n}개` : '';
 }
 
 function countFleetSim(raw) {
     const obj = tryParse(raw);
     if (!obj) return '';
     const saves = Array.isArray(obj) ? obj : (obj.saves || []);
-    return saves.length > 0 ? `${saves.length} fleet saves` : '';
+    return saves.length > 0 ? `함대 저장 ${saves.length}개` : '';
 }
 
 function countTechCompletion(raw) {
     const arr = tryParse(raw);
     if (!Array.isArray(arr)) return '';
-    return arr.length > 0 ? `${arr.length} tech nodes completed` : '';
+    return arr.length > 0 ? `기술 ${arr.length}개 완료` : '';
 }
 
 const SUMMARIZERS = {

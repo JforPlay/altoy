@@ -1,14 +1,5 @@
 /* Drive sync — nav icon + popover + conflict modal */
 
-/* Wrapper — creates a positioning context so the popover drops under the icon
-   (not relative to the navbar). `isolation: isolate` ensures the popover is
-   not affected by the navbar's backdrop-filter stacking context. */
-.sync-nav-wrapper {
-    position: relative;
-    display: inline-flex;
-    isolation: isolate;
-}
-
 /* Nav icon slot */
 .sync-nav-icon {
     background: transparent;
@@ -33,20 +24,18 @@
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Popover panel — anchored to the wrapper (left edge aligned with icon).
-   background-color (not shorthand) + isolation on the wrapper prevents the
-   navbar's backdrop-filter from making this look semi-transparent. */
+/* Popover panel — rendered as a child of <body> (NOT inside the navbar) so
+   the navbar's backdrop-filter can't affect its background. Position is
+   computed in JS on open (top/left inline styles). */
 .sync-popover {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
+    position: fixed;
     min-width: 280px;
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     padding: var(--spacing-md);
-    z-index: 1001;
+    z-index: 1100;
     color: var(--text-primary);
     display: none;
 }
@@ -186,5 +175,5 @@
 
 @media (max-width: 600px) {
     .sync-conflict-grid { grid-template-columns: 1fr; }
-    .sync-popover { left: 0; min-width: 0; max-width: calc(100vw - 2*var(--spacing-sm)); }
+    .sync-popover { min-width: 0; max-width: calc(100vw - 2 * var(--spacing-sm)); }
 }
