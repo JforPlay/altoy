@@ -106,7 +106,13 @@ async function doDownload(fileId, modifiedTime) {
  */
 export async function runSync() {
     if (!hasToken()) {
-        await requestToken();
+        // If user has signed in before on this device, request silently —
+        // GIS restores the token without a popup when Google session is
+        // valid, and falls back to a popup triggered by this user click if
+        // needed (user gesture means the popup isn't blocked). First-time
+        // sign-in uses the default consent flow.
+        const wasSignedIn = localStorage.getItem(STORAGE_KEYS.everSignedIn) === '1';
+        await requestToken({ silent: wasSignedIn });
     }
 
     const file = await findSyncFile();

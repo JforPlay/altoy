@@ -18,6 +18,16 @@ let cooldownUntil = 0;
 let cooldownTimerId = null;
 let currentConflict = null;
 
+/**
+ * "Signed in" means either we have a live token OR the user has signed in
+ * before on this device (flag in localStorage). We show the signed-in UI
+ * optimistically because actual token acquisition must happen on a user
+ * gesture (click) — not on page load, where browsers block popups.
+ */
+function isSignedIn() {
+    return hasToken() || localStorage.getItem(STORAGE_KEYS.everSignedIn) === '1';
+}
+
 function formatRelative(ms) {
     if (!ms) return '없음';
     const diff = Date.now() - ms;
@@ -30,7 +40,7 @@ function formatRelative(ms) {
 function renderPopoverBody() {
     const popover = document.getElementById('sync-popover');
     if (!popover) return;
-    const signedIn = hasToken();
+    const signedIn = isSignedIn();
     const lastAt = Number(getStorageItem(STORAGE_KEYS.lastSyncedAt, '0'));
     const cooldownLeft = Math.max(0, cooldownUntil - Date.now());
     const btnLabel = !signedIn
@@ -59,7 +69,7 @@ function setIconState(state) {
     if (!icon) return;
     icon.classList.remove('syncing');
     const dirty = localStorage.getItem(STORAGE_KEYS.localDirty) === '1';
-    const signedIn = hasToken();
+    const signedIn = isSignedIn();
     const glyph = icon.querySelector('.material-symbols-outlined');
     const countdownSpan = icon.querySelector('.sync-cooldown-num');
     countdownSpan.textContent = '';
@@ -276,22 +286,4 @@ export function mountSyncUI() {
     window.addEventListener('resize', closePopover);
 
     setIconState('idle');
-
-    // Attempt silent re-auth if the user has previously signed in on this
-    // device. GIS restores the token without a popup when the Google session
-    // is still valid (most cases). If it fails (session expired, access
-    // revoked), the flag is cleared and the UI reverts to "Sign in".
-    if (localStorage.getItem(STORAGE_KEYS.everSignedIn) === '1') {
-        // Small delay so the GIS script has time to finish loading.
-        setTimeout(() => {
-            requestToken({ silent: true })
-                .then(() => {
-                    setIconState('idle');
-                    renderPopoverBody();
-                })
-                .catch(() => {
-                    localStorage.removeItem(STORAGE_KEYS.everSignedIn);
-                });
-        }, 500);
-    }
 }
