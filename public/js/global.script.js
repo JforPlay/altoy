@@ -5,7 +5,36 @@
  * Exports LINKS and setup functions so page scripts can re-invoke specific behaviors.
  */
 
-import { throttle, setupScrollToTop, getStorageItem, setStorageItem } from './utils.js';
+import { throttle, setupScrollToTop, getStorageItem, setStorageItem, getUrlParam } from './utils.js';
+
+// ===== Drive Sync Feature Flag =====
+//
+// Default OFF until OAuth verification clears. During beta, enable per-device by
+// visiting any page with ?sync=1 — persists to localStorage so the UI stays
+// visible across subsequent page loads. Disable with ?sync=0.
+//
+// Flip DEFAULT_SYNC_ENABLED to true at launch (Task 16 in the rollout plan).
+const DEFAULT_SYNC_ENABLED = false;
+
+const syncParam = getUrlParam('sync');
+if (syncParam === '1') setStorageItem('altoy:sync:beta', '1');
+if (syncParam === '0') setStorageItem('altoy:sync:beta', '');
+
+const SYNC_UI_ENABLED =
+    getStorageItem('altoy:sync:beta') === '1' || DEFAULT_SYNC_ENABLED;
+
+if (SYNC_UI_ENABLED) {
+    const mount = () => {
+        import('./sync/drive-sync.ui.js')
+            .then(mod => mod.mountSyncUI())
+            .catch(err => console.warn('Drive sync UI failed to mount:', err));
+    };
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', mount);
+    } else {
+        mount();
+    }
+}
 
 // ===== Centralized Link Configuration =====
 const LINKS = {
