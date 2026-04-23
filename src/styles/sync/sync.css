@@ -30,7 +30,7 @@
 .sync-popover {
     position: fixed;
     min-width: 280px;
-    background-color: var(--card-bg);
+    background-color: var(--popover-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
@@ -86,7 +86,7 @@
     padding: var(--spacing-md);
 }
 #sync-conflict-modal .modal-content {
-    background: var(--card-bg);
+    background: var(--popover-bg);
     color: var(--text-primary);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);

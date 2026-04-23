@@ -25,6 +25,9 @@
   --section-bg: #f8f8f8;
   --bg-secondary: #eeeeee;
   --item-bg: #ffffff;
+  /* Always-solid popover/modal background — independent of page overrides
+     like mainpage's glass-card --card-bg (which is near-transparent). */
+  --popover-bg: #ffffff;
 
   /* Text */
   --text-primary: #2a2a2a;
@@ -147,6 +150,7 @@ body.dark-mode {
   --section-bg: #1f1f1f;
   --bg-secondary: #252525;
   --item-bg: #2a2a2a;
+  --popover-bg: #2a2a2a;
 
   /* Text */
   --text-primary: #e8e8e8;
