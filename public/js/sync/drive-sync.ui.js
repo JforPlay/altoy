@@ -11,7 +11,7 @@
 import { openModal, closeModal, setupModal, showToast, getStorageItem } from '../utils.js';
 import { STORAGE_KEYS, COOLDOWN_MS } from './drive-sync.config.js';
 import { hasToken, requestToken, unlink } from './drive-sync.auth.js';
-import { runSync, resolveConflict, SYNC_OUTCOMES } from './drive-sync.engine.js';
+import { runSync, resolveConflict, exportPayload, importPayload, hasLocalData, SYNC_OUTCOMES } from './drive-sync.engine.js';
 import { summarize } from './drive-sync.summary.js';
 
 // Cooldown persists across page navigations via sessionStorage so the
@@ -72,9 +72,17 @@ function renderPopoverBody() {
             </div>
             <button class="sync-unlink">Google 계정 연결 해제</button>
         ` : ''}
+        <div class="sync-divider"></div>
+        <div class="sync-section-label">수동 백업</div>
+        <div class="sync-manual-buttons">
+            <button class="sync-secondary sync-export">📥 내보내기</button>
+            <button class="sync-secondary sync-import">📤 불러오기</button>
+        </div>
     `;
     popover.querySelector('.sync-action')?.addEventListener('click', onSyncClick);
     popover.querySelector('.sync-unlink')?.addEventListener('click', onUnlinkClick);
+    popover.querySelector('.sync-export')?.addEventListener('click', onExportClick);
+    popover.querySelector('.sync-import')?.addEventListener('click', onImportClick);
 }
 
 function setIconState(state) {
@@ -221,6 +229,54 @@ function onUnlinkClick() {
     showToast('Google Drive 연결 해제됨', 'info');
     renderPopoverBody();
     setIconState('idle');
+}
+
+function onExportClick() {
+    try {
+        const payload = exportPayload();
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const date = new Date().toISOString().slice(0, 10);
+        const filename = `altoy-sync-${date}.json`;
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast(`백업 파일 저장됨: ${filename}`, 'success');
+        closePopover();
+    } catch (e) {
+        console.error('Export error:', e);
+        showToast(`내보내기 실패: ${e.message}`, 'error');
+    }
+}
+
+function onImportClick() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json,application/json';
+    input.addEventListener('change', async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        try {
+            const text = await file.text();
+            const payload = JSON.parse(text);
+            if (hasLocalData()) {
+                if (!confirm('현재 로컬 데이터가 불러온 파일로 덮어쓰기됩니다. 계속하시겠습니까?')) {
+                    return;
+                }
+            }
+            importPayload(payload);
+            showToast('파일에서 불러옴', 'success');
+            renderPopoverBody();
+            setIconState('idle');
+            closePopover();
+        } catch (err) {
+            console.error('Import error:', err);
+            showToast(`불러오기 실패: ${err.message}`, 'error');
+        }
+    });
+    input.click();
 }
 
 function positionPopover() {

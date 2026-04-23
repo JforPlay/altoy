@@ -151,6 +151,45 @@ export async function runSync() {
 }
 
 /**
+ * Build a payload of current local data, ready to be written to a JSON file.
+ * Uses the same format Drive sync stores so the resulting file is importable
+ * back and interoperable with altoy-sync.json downloaded from Drive.
+ */
+export function exportPayload() {
+    return buildPayload(collectLocalData());
+}
+
+/**
+ * Apply an imported payload to localStorage. Validates schema; throws on
+ * malformed or future-schema files. Marks localDirty so the next Drive sync
+ * pushes the imported data up.
+ */
+export function importPayload(payload) {
+    if (!payload || typeof payload !== 'object') {
+        throw new Error('Invalid payload');
+    }
+    if (typeof payload.schemaVersion !== 'number') {
+        throw new Error('Invalid file format (missing schemaVersion)');
+    }
+    if (payload.schemaVersion > SCHEMA_VERSION) {
+        throw new Error(`File requires a newer ALtoy version (schema ${payload.schemaVersion})`);
+    }
+    if (!payload.data || typeof payload.data !== 'object') {
+        throw new Error('Invalid data payload');
+    }
+    applyRemoteData(payload.data);
+    localStorage.setItem(STORAGE_KEYS.localDirty, '1');
+}
+
+/**
+ * Returns true if the user has any synced-key data in localStorage.
+ * Used to decide whether an import will overwrite existing progress.
+ */
+export function hasLocalData() {
+    return Object.keys(collectLocalData()).length > 0;
+}
+
+/**
  * Apply the user's conflict resolution. `choice` is one of:
  * 'keep-local' — upload local to Drive (overwrites cloud)
  * 'keep-cloud' — download cloud to localStorage (overwrites local)

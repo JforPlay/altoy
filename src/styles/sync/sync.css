@@ -77,6 +77,38 @@
 }
 .sync-popover .sync-unlink:hover { color: var(--danger-color); border-color: var(--danger-color); }
 
+/* Manual backup section (export / import — works without Google Drive) */
+.sync-popover .sync-divider {
+    margin: var(--spacing-md) 0 var(--spacing-sm);
+    border-top: 1px solid var(--border-color);
+}
+.sync-popover .sync-section-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--spacing-xs);
+}
+.sync-popover .sync-manual-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xs);
+}
+.sync-popover .sync-secondary {
+    padding: var(--spacing-sm);
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+.sync-popover .sync-secondary:hover {
+    background: var(--highlight-subtle);
+    border-color: var(--accent-blue);
+}
+
 /* Conflict modal — shell (scoped to this modal so we don't affect other .modal usage) */
 #sync-conflict-modal.modal {
     position: fixed;
