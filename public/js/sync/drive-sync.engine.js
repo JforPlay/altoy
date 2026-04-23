@@ -124,6 +124,9 @@ export async function runSync() {
     const remoteEmpty = file === null;
 
     if (!localChanged && !remoteChanged) {
+        // Update lastSyncedAt so the popover's "마지막 동기화" reflects
+        // "last time the user clicked Sync", not "last data exchange".
+        localStorage.setItem(STORAGE_KEYS.lastSyncedAt, String(Date.now()));
         return { outcome: SYNC_OUTCOMES.IN_SYNC };
     }
     if (localChanged && !remoteChanged) {
