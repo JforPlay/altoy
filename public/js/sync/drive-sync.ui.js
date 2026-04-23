@@ -14,7 +14,20 @@ import { hasToken, requestToken, unlink } from './drive-sync.auth.js';
 import { runSync, resolveConflict, SYNC_OUTCOMES } from './drive-sync.engine.js';
 import { summarize } from './drive-sync.summary.js';
 
-let cooldownUntil = 0;
+// Cooldown persists across page navigations via sessionStorage so the
+// 60s guard actually works across a multi-page site.
+const SESSION_COOLDOWN_KEY = 'altoy:sync:cooldownUntil';
+
+function loadCooldownFromSession() {
+    try {
+        const stored = Number(sessionStorage.getItem(SESSION_COOLDOWN_KEY) || 0);
+        if (stored > Date.now()) return stored;
+        if (stored) sessionStorage.removeItem(SESSION_COOLDOWN_KEY);
+    } catch { /* sessionStorage unavailable */ }
+    return 0;
+}
+
+let cooldownUntil = loadCooldownFromSession();
 let cooldownTimerId = null;
 let currentConflict = null;
 
@@ -91,13 +104,13 @@ function setIconState(state) {
     }
 }
 
-function startCooldown() {
-    cooldownUntil = Date.now() + COOLDOWN_MS;
+function startCooldownInterval() {
     if (cooldownTimerId) clearInterval(cooldownTimerId);
     cooldownTimerId = setInterval(() => {
         if (Date.now() >= cooldownUntil) {
             clearInterval(cooldownTimerId);
             cooldownTimerId = null;
+            try { sessionStorage.removeItem(SESSION_COOLDOWN_KEY); } catch { /* ignore */ }
             setIconState('idle');
             renderPopoverBody();
         } else {
@@ -105,6 +118,12 @@ function startCooldown() {
             renderPopoverBody();
         }
     }, 1000);
+}
+
+function startCooldown() {
+    cooldownUntil = Date.now() + COOLDOWN_MS;
+    try { sessionStorage.setItem(SESSION_COOLDOWN_KEY, String(cooldownUntil)); } catch { /* ignore */ }
+    startCooldownInterval();
     setIconState('cooldown');
     renderPopoverBody();
 }
@@ -285,5 +304,11 @@ export function mountSyncUI() {
     window.addEventListener('scroll', closePopover, { passive: true });
     window.addEventListener('resize', closePopover);
 
-    setIconState('idle');
+    // Resume cooldown from a prior page if still active
+    if (cooldownUntil > Date.now()) {
+        startCooldownInterval();
+        setIconState('cooldown');
+    } else {
+        setIconState('idle');
+    }
 }
