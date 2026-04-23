@@ -471,17 +471,7 @@ import '../styles/global.style.css';
         <i class="fas fa-chevron-up"></i>
     </button>
 
-    <!-- Copyright year script + Service Worker registration -->
-    <script is:inline define:vars={{ base }}>
-        document.getElementById('copyright-year').textContent = new Date().getFullYear();
-
-        // Register Service Worker for offline caching
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register(base + '/sw.js')
-                    .catch(err => console.warn('SW registration failed:', err));
-            });
-        }
-    </script>
+    <!-- Copyright year + Service Worker registration -->
+    <script is:inline type="module" src={`${base}/js/global.init.js`}></script>
 </body>
 </html>
