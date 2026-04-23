@@ -24,4 +24,5 @@ export const STORAGE_KEYS = {
     lastCloudModified: 'altoy:sync:lastCloudModified',
     lastSyncedAt: 'altoy:sync:lastSyncedAt',
     beta: 'altoy:sync:beta',
+    everSignedIn: 'altoy:sync:everSignedIn',
 };

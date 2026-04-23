@@ -1,5 +1,14 @@
 /* Drive sync — nav icon + popover + conflict modal */
 
+/* Wrapper — creates a positioning context so the popover drops under the icon
+   (not relative to the navbar). `isolation: isolate` ensures the popover is
+   not affected by the navbar's backdrop-filter stacking context. */
+.sync-nav-wrapper {
+    position: relative;
+    display: inline-flex;
+    isolation: isolate;
+}
+
 /* Nav icon slot */
 .sync-nav-icon {
     background: transparent;
@@ -12,7 +21,6 @@
     align-items: center;
     gap: 4px;
     transition: background var(--transition-fast);
-    position: relative;
 }
 .sync-nav-icon:hover { background: var(--highlight-subtle); }
 .sync-nav-icon[disabled] { opacity: 0.6; cursor: not-allowed; }
@@ -25,18 +33,20 @@
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Popover panel */
+/* Popover panel — anchored to the wrapper (left edge aligned with icon).
+   background-color (not shorthand) + isolation on the wrapper prevents the
+   navbar's backdrop-filter from making this look semi-transparent. */
 .sync-popover {
     position: absolute;
     top: calc(100% + 8px);
-    right: 0;
+    left: 0;
     min-width: 280px;
-    background: var(--card-bg);
+    background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     padding: var(--spacing-md);
-    z-index: 1000;
+    z-index: 1001;
     color: var(--text-primary);
     display: none;
 }
@@ -176,5 +186,5 @@
 
 @media (max-width: 600px) {
     .sync-conflict-grid { grid-template-columns: 1fr; }
-    .sync-popover { right: var(--spacing-sm); min-width: 0; max-width: calc(100vw - 2*var(--spacing-sm)); }
+    .sync-popover { left: 0; min-width: 0; max-width: calc(100vw - 2*var(--spacing-sm)); }
 }

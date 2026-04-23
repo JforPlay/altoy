@@ -215,12 +215,18 @@ export function mountSyncUI() {
     if (!navbar) return;
 
     const themeToggle = navbar.querySelector('.theme-toggle');
+    // Wrap icon + popover so the popover drops directly under the icon
+    // (position: relative on .sync-nav-wrapper; popover uses left: 0).
+    // Also gives us an isolated stacking context so the navbar's
+    // backdrop-filter doesn't bleed into the popover's background.
     const iconHTML = `
-        <button id="sync-nav-icon" class="sync-nav-icon" aria-label="Sync to Google Drive">
-            <span class="material-symbols-outlined">cloud</span>
-            <span class="sync-cooldown-num"></span>
-        </button>
-        <div id="sync-popover" class="sync-popover" role="dialog" aria-label="Google Drive sync"></div>
+        <div class="sync-nav-wrapper">
+            <button id="sync-nav-icon" class="sync-nav-icon" aria-label="Sync to Google Drive">
+                <span class="material-symbols-outlined">cloud</span>
+                <span class="sync-cooldown-num"></span>
+            </button>
+            <div id="sync-popover" class="sync-popover" role="dialog" aria-label="Google Drive sync"></div>
+        </div>
     `;
     if (themeToggle) {
         themeToggle.insertAdjacentHTML('beforebegin', iconHTML);
@@ -245,4 +251,22 @@ export function mountSyncUI() {
     document.addEventListener('click', onDocumentClick);
 
     setIconState('idle');
+
+    // Attempt silent re-auth if the user has previously signed in on this
+    // device. GIS restores the token without a popup when the Google session
+    // is still valid (most cases). If it fails (session expired, access
+    // revoked), the flag is cleared and the UI reverts to "Sign in".
+    if (localStorage.getItem(STORAGE_KEYS.everSignedIn) === '1') {
+        // Small delay so the GIS script has time to finish loading.
+        setTimeout(() => {
+            requestToken({ silent: true })
+                .then(() => {
+                    setIconState('idle');
+                    renderPopoverBody();
+                })
+                .catch(() => {
+                    localStorage.removeItem(STORAGE_KEYS.everSignedIn);
+                });
+        }, 500);
+    }
 }

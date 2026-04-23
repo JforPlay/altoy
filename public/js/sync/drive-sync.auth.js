@@ -40,6 +40,7 @@ export function requestToken({ silent = false } = {}) {
                     return;
                 }
                 accessToken = response.access_token;
+                localStorage.setItem(STORAGE_KEYS.everSignedIn, '1');
                 resolve(accessToken);
             };
             client.requestAccessToken({ prompt: silent ? '' : 'consent' });
@@ -53,4 +54,5 @@ export function unlink() {
     accessToken = null;
     localStorage.removeItem(STORAGE_KEYS.lastCloudModified);
     localStorage.removeItem(STORAGE_KEYS.lastSyncedAt);
+    localStorage.removeItem(STORAGE_KEYS.everSignedIn);
 }
