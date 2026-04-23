@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Privacy Policy — ALtoy">
+    <main style="max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6;">
+        <h1>ALtoy Privacy Policy</h1>
+        <p><em>Last updated: 2026-04-23</em></p>
+
+        <h2>What ALtoy is</h2>
+        <p>ALtoy (<code>jforplay.github.io/altoy</code>) is a non-profit fan-made web viewer for Azur Lane KR game assets. It is a static website hosted on GitHub Pages with no server, no user accounts, and no database.</p>
+
+        <h2>What data ALtoy collects from you</h2>
+        <p>ALtoy does not collect personal information. The site stores the following only in your browser's local storage, on your device:</p>
+        <ul>
+            <li>UI preferences (theme, view mode, last active tab)</li>
+            <li>Progress data you voluntarily enter (ship tracker, skin collection, island planner, etc.)</li>
+            <li>Cached game data for performance (no personal data)</li>
+        </ul>
+        <p>This data never leaves your device unless you explicitly enable Google Drive sync.</p>
+
+        <h2>Google Drive sync (optional)</h2>
+        <p>If you enable Google Drive sync, ALtoy uses the <code>drive.appdata</code> OAuth scope to store a single JSON file (<code>altoy-sync.json</code>) in a hidden, application-specific folder in your own Google Drive. This folder is invisible to other apps and not shown in your Drive's regular file list.</p>
+        <ul>
+            <li>The file contains only the progress data listed above.</li>
+            <li>Data is sent directly from your browser to Google's servers over HTTPS. ALtoy's developer never sees or stores this data.</li>
+            <li>You can revoke ALtoy's access at any time at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>. You can also delete the file manually via Google Drive's "Manage apps" settings.</li>
+        </ul>
+
+        <h2>Analytics</h2>
+        <p>ALtoy uses Cloudflare Web Analytics for aggregate, privacy-preserving visitor statistics. Cloudflare Web Analytics does not use cookies and does not track individual users across sites.</p>
+
+        <h2>Third-party resources</h2>
+        <p>Pages load the following from external sources:</p>
+        <ul>
+            <li>Google Fonts (for typography)</li>
+            <li>Font Awesome via cdnjs.cloudflare.com (for icons)</li>
+            <li>Fuse.js via cdn.jsdelivr.net (for search)</li>
+            <li>Game assets (images, audio) from public GitHub-hosted repositories</li>
+        </ul>
+        <p>These services may receive your IP address and user-agent as part of normal web requests, per their own privacy policies.</p>
+
+        <h2>Contact</h2>
+        <p>This is a non-commercial fan project. For questions, open an issue at the project's GitHub repository.</p>
+    </main>
+</Layout>
