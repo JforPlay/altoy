@@ -23,11 +23,13 @@
   /* Surface colors */
   --card-bg: #ffffff;
   --section-bg: #f8f8f8;
+  --bg-secondary: #eeeeee;
   --item-bg: #ffffff;
 
   /* Text */
   --text-primary: #2a2a2a;
   --text-secondary: #6b6b6b;
+  --text-muted: #8a8a8a;
 
   /* Accent */
   --primary-color: #4a4a4a;
@@ -143,11 +145,13 @@ body.dark-mode {
   /* Surface colors */
   --card-bg: #2a2a2a;
   --section-bg: #1f1f1f;
+  --bg-secondary: #252525;
   --item-bg: #2a2a2a;
 
   /* Text */
   --text-primary: #e8e8e8;
   --text-secondary: #a8a8a8;
+  --text-muted: #808080;
 
   /* Accent */
   --primary-color: #c0c0c0;
