@@ -1,13 +1,51 @@
 /**
  * drive-sync.auth.js
  * Google Identity Services (GIS) token acquisition for Drive sync.
- * Access token lives in a module-scoped variable — never persisted.
+ * Access token is cached in sessionStorage for the tab's lifetime so
+ * page navigations don't trigger the Google account chooser popup every
+ * time. Tokens expire naturally after ~1 hour; sessionStorage evaporates
+ * on tab close.
  */
 
 import { OAUTH_CLIENT_ID, OAUTH_SCOPE, STORAGE_KEYS } from './drive-sync.config.js';
 
-let accessToken = null;
+// Separate sessionStorage keys (not in STORAGE_KEYS which is localStorage)
+const SESSION_TOKEN_KEY = 'altoy:sync:token';
+const SESSION_EXPIRY_KEY = 'altoy:sync:tokenExpiry';
+const EXPIRY_SAFETY_MS = 60_000;  // Treat tokens as expired 1 min early
+
+let accessToken = loadTokenFromSession();
 let tokenClient = null;
+
+function loadTokenFromSession() {
+    try {
+        const stored = sessionStorage.getItem(SESSION_TOKEN_KEY);
+        const expiry = Number(sessionStorage.getItem(SESSION_EXPIRY_KEY) || 0);
+        if (stored && Date.now() < expiry - EXPIRY_SAFETY_MS) return stored;
+        // Expired or missing — clean up if needed
+        if (stored) {
+            sessionStorage.removeItem(SESSION_TOKEN_KEY);
+            sessionStorage.removeItem(SESSION_EXPIRY_KEY);
+        }
+    } catch { /* sessionStorage unavailable */ }
+    return null;
+}
+
+function persistToken(token, expiresInSec) {
+    try {
+        sessionStorage.setItem(SESSION_TOKEN_KEY, token);
+        if (expiresInSec) {
+            sessionStorage.setItem(SESSION_EXPIRY_KEY, String(Date.now() + expiresInSec * 1000));
+        }
+    } catch { /* sessionStorage unavailable — token stays in memory only */ }
+}
+
+function clearPersistedToken() {
+    try {
+        sessionStorage.removeItem(SESSION_TOKEN_KEY);
+        sessionStorage.removeItem(SESSION_EXPIRY_KEY);
+    } catch { /* ignore */ }
+}
 
 function initTokenClient() {
     if (tokenClient) return tokenClient;
@@ -40,6 +78,7 @@ export function requestToken({ silent = false } = {}) {
                     return;
                 }
                 accessToken = response.access_token;
+                persistToken(accessToken, response.expires_in);
                 localStorage.setItem(STORAGE_KEYS.everSignedIn, '1');
                 resolve(accessToken);
             };
@@ -52,6 +91,7 @@ export function requestToken({ silent = false } = {}) {
 
 export function unlink() {
     accessToken = null;
+    clearPersistedToken();
     localStorage.removeItem(STORAGE_KEYS.lastCloudModified);
     localStorage.removeItem(STORAGE_KEYS.lastSyncedAt);
     localStorage.removeItem(STORAGE_KEYS.everSignedIn);
