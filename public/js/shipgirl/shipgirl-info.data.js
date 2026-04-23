@@ -119,13 +119,7 @@ export async function loadSkillDataTemplate() {
 // ===== Skill Helper Functions =====
 
 export function getSkillIconUrl(skillId) {
-    const iconUrl = state.skillIconData[String(skillId)];
-    if (!iconUrl) {
-        console.log('No icon found for skill:', skillId);
-        return null;
-    }
-    console.log('Skill icon URL:', skillId, '->', iconUrl);
-    return iconUrl;
+    return state.skillIconData[String(skillId)] || null;
 }
 
 /**

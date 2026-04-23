@@ -5,7 +5,7 @@
  * and sets up keyboard/swipe/touch navigation between ship detail views.
  */
 
-import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorageItem, setStorageItem } from '../utils.js';
+import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorageItem, setStorageItem, setupModal } from '../utils.js';
 import {
     setup as setupData,
     loadData, loadNationalityData, loadAttrTypeData,
@@ -20,6 +20,7 @@ import {
     showMapsModal,
     setupMapsModalListeners, setupMapBrowserListeners
 } from './shipgirl-info.maps.js';
+import { setup as setupSkillSearch } from './shipgirl-info.skill-search.js';
 
 // ===== State =====
 const state = {
@@ -83,6 +84,7 @@ state.elements = { mainView, detailView, shipgirls, searchInput, rarityFilter, b
 setupData(state);
 setupDetail(state);
 setupMaps(state);
+setupSkillSearch(state);
 
 // ===== Initialization =====
 
@@ -153,6 +155,12 @@ function setupEventListeners() {
             handleRoute();
         });
     }
+
+    setupModal('skillSearchModal', {
+        closeButtonSelector: '#closeSkillSearchModal',
+        closeOnEscape: true,
+        closeOnBackdrop: true
+    });
 
     // Prev/Next navigation buttons
     const prevShipBtn = document.getElementById('prevShipBtn');
