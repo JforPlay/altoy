@@ -125,6 +125,7 @@ function buildCategories() {
 // ===== Tab Rendering =====
 
 // Cat1 = nationality tabs (top row), Cat2 = equip type tabs (second row)
+function renderCat1Tabs() {
     const container = document.getElementById('cat1Tabs');
     const sorted = Object.keys(categories).map(Number).sort((a, b) => a - b);
 
@@ -277,6 +278,7 @@ function selectNode(equipId) {
 // ===== Item Helpers =====
 
 // Prop name/icon lookups — item_data_lite is optional; IDs are shown as fallback
+function getItemName(propId) {
     return itemData[String(propId)]?.name || `아이템 #${propId}`;
 }
 
