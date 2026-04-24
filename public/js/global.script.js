@@ -9,18 +9,20 @@ import { throttle, setupScrollToTop, getStorageItem, setStorageItem, getUrlParam
 
 // ===== Drive Sync Feature Flag =====
 //
-// Sync is LIVE for everyone (OAuth verification cleared 2026-04-23).
-// Users can still opt out per-device with ?sync=0 (clears altoy:sync:beta).
-// Leave this block in place until Task 17 cleanup; removing the flag too
-// early would break any user who has opted out with ?sync=0.
+// Sync is LIVE for everyone by default (OAuth verification cleared 2026-04-23).
+// Per-device opt-out: ?sync=off stores 'off' in altoy:sync:beta; re-enable with ?sync=on.
+// altoy:sync:beta values: '' / unset = default, 'on' = explicit on, 'off' = explicit off.
 const DEFAULT_SYNC_ENABLED = true;
 
 const syncParam = getUrlParam('sync');
-if (syncParam === '1') setStorageItem('altoy:sync:beta', '1');
-if (syncParam === '0') setStorageItem('altoy:sync:beta', '');
+if (syncParam === '1' || syncParam === 'on') setStorageItem('altoy:sync:beta', 'on');
+if (syncParam === '0' || syncParam === 'off') setStorageItem('altoy:sync:beta', 'off');
 
+const syncPref = getStorageItem('altoy:sync:beta', '');
 const SYNC_UI_ENABLED =
-    getStorageItem('altoy:sync:beta') === '1' || DEFAULT_SYNC_ENABLED;
+    syncPref === 'on' ? true :
+    syncPref === 'off' ? false :
+    DEFAULT_SYNC_ENABLED;
 
 if (SYNC_UI_ENABLED) {
     const mount = () => {

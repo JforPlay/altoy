@@ -57,7 +57,6 @@ const state = {
 
     // Construction-specific filters
     currentConstructionType: 'all',
-    currentTimerFilter: 'all',
 
     // DOM Elements (set during init)
     elements: {},
@@ -259,10 +258,7 @@ function filterShipgirls() {
         // Construction type filter
         const matchesConstruction = state.currentConstructionType === 'all' || ship[state.currentConstructionType] === true;
 
-        // Timer filter
-        const matchesTimer = state.currentTimerFilter === 'all' || ship.timer === state.currentTimerFilter;
-
-        return matchesSearch && matchesRarity && matchesShipType && matchesNationality && matchesConstruction && matchesTimer;
+        return matchesSearch && matchesRarity && matchesShipType && matchesNationality && matchesConstruction;
     });
 
     renderShipgirls();
