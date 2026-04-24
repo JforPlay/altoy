@@ -360,10 +360,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </Layout>
 
 <style>
+    /* The .bento-grid above uses grid-auto-rows: 90px while its nested
+       .external-links-section uses 120px rows, so those cards visually
+       overflow the grid's computed height. We render the About section
+       below both with explicit clearing and a generous top margin so
+       it can't overlap the overflowing content. */
     .about-altoy {
+        clear: both;
+        position: relative;
         max-width: 720px;
-        margin: 3rem auto 1rem;
-        padding: 1rem 1.5rem;
+        margin: 6rem auto 1rem;
+        padding: 1.5rem 1.5rem 0.5rem;
         text-align: center;
         color: var(--text-secondary);
         border-top: 1px solid var(--card-border, rgba(128, 128, 128, 0.2));
