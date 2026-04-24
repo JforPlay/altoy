@@ -1,0 +1,213 @@
+/* Drive sync — nav icon + popover + conflict modal */
+
+/* Nav icon slot */
+.sync-nav-icon {
+    background: transparent;
+    border: none;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    color: var(--text-primary);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: background var(--transition-fast);
+}
+.sync-nav-icon:hover { background: var(--highlight-subtle); }
+.sync-nav-icon[disabled] { opacity: 0.6; cursor: not-allowed; }
+.sync-nav-icon .sync-cooldown-num {
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+}
+.sync-nav-icon.syncing .material-symbols-outlined {
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Popover panel — rendered as a child of <body> (NOT inside the navbar) so
+   the navbar's backdrop-filter can't affect its background. Position is
+   computed in JS on open (top/left inline styles). */
+.sync-popover {
+    position: fixed;
+    min-width: 280px;
+    background-color: var(--popover-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--spacing-md);
+    z-index: 1100;
+    color: var(--text-primary);
+    display: none;
+}
+.sync-popover.open { display: block; }
+.sync-popover h3 { margin: 0 0 var(--spacing-sm); font-size: 0.95rem; }
+.sync-popover p { margin: var(--spacing-xs) 0; font-size: 0.85rem; color: var(--text-secondary); }
+.sync-popover .sync-action {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    /* --accent-blue from theme.css stays blue on every page; --primary-color
+       is overridden to gray/silver in places. */
+    background: var(--accent-blue);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-top: var(--spacing-xs);
+    transition: background var(--transition-fast);
+}
+.sync-popover .sync-action:hover:not([disabled]) { filter: brightness(1.1); }
+.sync-popover .sync-action[disabled] { background: var(--surface-border); color: var(--text-muted); cursor: not-allowed; }
+.sync-popover .sync-meta {
+    margin-top: var(--spacing-sm);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+.sync-popover .sync-unlink {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+.sync-popover .sync-unlink:hover { color: var(--danger-color); border-color: var(--danger-color); }
+
+/* Manual backup section (export / import — works without Google Drive) */
+.sync-popover .sync-divider {
+    margin: var(--spacing-md) 0 var(--spacing-sm);
+    border-top: 1px solid var(--border-color);
+}
+.sync-popover .sync-section-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--spacing-xs);
+}
+.sync-popover .sync-manual-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xs);
+}
+.sync-popover .sync-secondary {
+    padding: var(--spacing-sm);
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+.sync-popover .sync-secondary:hover {
+    background: var(--highlight-subtle);
+    border-color: var(--accent-blue);
+}
+
+/* Conflict modal — shell (scoped to this modal so we don't affect other .modal usage) */
+#sync-conflict-modal.modal {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-intense);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+}
+#sync-conflict-modal .modal-content {
+    background: var(--popover-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: var(--spacing-md);
+}
+#sync-conflict-modal .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-color);
+}
+#sync-conflict-modal .modal-header h2 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+#sync-conflict-modal .modal-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0 var(--spacing-xs);
+    line-height: 1;
+}
+#sync-conflict-modal .modal-close:hover { color: var(--danger-color); }
+#sync-conflict-modal .modal-body p { margin: 0 0 var(--spacing-sm); font-size: 0.9rem; }
+
+/* Conflict modal — inner content */
+.sync-conflict-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+}
+.sync-conflict-side {
+    background: var(--bg-secondary, var(--section-bg));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+}
+.sync-conflict-side h4 {
+    margin: 0 0 var(--spacing-xs);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+.sync-conflict-side .sync-conflict-time {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-sm);
+}
+.sync-conflict-side ul {
+    margin: 0;
+    padding-left: var(--spacing-md);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+.sync-conflict-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+.sync-conflict-actions button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+.sync-conflict-actions button.primary {
+    background: var(--accent-blue);
+    color: white;
+    border-color: var(--accent-blue);
+}
+.sync-conflict-actions button:hover { filter: brightness(1.1); }
+
+@media (max-width: 600px) {
+    .sync-conflict-grid { grid-template-columns: 1fr; }
+    .sync-popover { min-width: 0; max-width: calc(100vw - 2 * var(--spacing-sm)); }
+}

@@ -5,7 +5,7 @@
  * Provides: data fetching, IndexedDB caching, URL params, visibility, modals, search, toast.
  */
 
-// ===== Core Utilities =====
+// ===== Module Constants =====
 
 /**
  * Centralized data version for IndexedDB cache invalidation.
@@ -13,6 +13,55 @@
  * Used by fetchJSONWithCache — when this changes, the entire IndexedDB cache is cleared on next page load.
  */
 const DATA_VERSION = '1.3.1';
+
+/**
+ * localStorage keys that participate in Google Drive sync.
+ * Writing any of these keys via setStorageItem automatically flips
+ * altoy:sync:localDirty to "1", signalling pending local changes.
+ *
+ * Synced: tracker progress, completion markers, collections, planners,
+ * fleet sim saves, restaurant settings, season calculator quantities.
+ *
+ * NOT synced: UI preferences (theme, view-mode, active-tab, filter selections,
+ * UI collapse states), IndexedDB version caches, buildSimulatorStats.
+ *
+ * When adding a new progress-tracking localStorage key in any consumer module,
+ * add it to this Set so writes flip the dirty flag.
+ */
+const SYNCED_KEYS = new Set([
+    // Shipgirl tracker (shared between shipgirl-tracker.js and research-tracker.js)
+    'shipgirlTrackerProgress',
+    'shipgirlTrackerSelectedGoal',
+    'researchTrackerPinned',
+
+    // Secretary story completion
+    'secretaryStoryCompletion',
+
+    // Skin collection
+    'skinCollection',
+
+    // Island restaurant calculator settings
+    'island-restaurant-rank',
+    'island-restaurant-events',
+    'island-restaurant-shipgirl1',
+    'island-restaurant-shipgirl2',
+
+    // Island restaurant planner
+    'island-restaurant-planner-plan-v2',
+    'island-restaurant-planner-presets-v2',
+
+    // Island season calculator (quantities + owned points are progress; pass-collapsed is UI)
+    'island-season-quantities',
+    'island-season-owned-points',
+
+    // Island technology completion
+    'island-tech-completion',
+
+    // Fleet simulator saves
+    'fleetSimSaves',
+]);
+
+// ===== Core Utilities =====
 
 /**
  * Debounce function to limit the rate at which a function can fire.
@@ -456,12 +505,18 @@ function getStorageItem(key, defaultValue) {
 /**
  * Safely set item in localStorage.
  * Handles private browsing mode and permission errors.
+ * If key is in SYNCED_KEYS, also sets altoy:sync:localDirty="1"
+ * so the Drive sync engine knows local data has changed.
  * @param {string} key - Storage key
  * @param {string} value - Value to store
  */
 function setStorageItem(key, value) {
     try {
         localStorage.setItem(key, value);
+        if (SYNCED_KEYS.has(key)) {
+            // TODO(Task 5): replace literal with STORAGE_KEYS.localDirty from drive-sync.config.js
+            localStorage.setItem('altoy:sync:localDirty', '1');
+        }
     } catch (e) {
         console.warn('localStorage unavailable:', e);
     }
@@ -759,7 +814,7 @@ if (typeof indexedDB !== 'undefined') {
 
 // ===== ES Module Exports =====
 export {
-    // Data versioning
+    // Module constants
     DATA_VERSION,
 
     // Core utilities
@@ -800,6 +855,7 @@ export {
     // Storage utilities
     getStorageItem,
     setStorageItem,
+    SYNCED_KEYS,
 
     // String normalization
     normalizeRomanNumerals,

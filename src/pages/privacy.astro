@@ -3,9 +3,9 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Privacy Policy — ALtoy">
-    <main style="max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6;">
+    <main class="privacy-page">
         <h1>ALtoy Privacy Policy</h1>
-        <p><em>Last updated: 2026-04-23</em></p>
+        <p class="updated"><em>Last updated: 2026-04-23</em></p>
 
         <h2>What ALtoy is</h2>
         <p>ALtoy (<code>jforplay.github.io/altoy</code>) is a non-profit fan-made web viewer for Azur Lane KR game assets. It is a static website hosted on GitHub Pages with no server, no user accounts, and no database.</p>
@@ -44,3 +44,74 @@ import Layout from '../layouts/Layout.astro';
         <p>This is a non-commercial fan project. For questions, open an issue at the project's GitHub repository.</p>
     </main>
 </Layout>
+
+<style is:global>
+    /* Body styling only applies when /privacy/ is rendered (this file is the
+       only one that loads this CSS). Gives the page a theme-aware background
+       so dark mode doesn't leave dark text on a white canvas.
+
+       Target html AND body with explicit background-color (not shorthand) so
+       the rule is robust against whatever cascades in on other pages. */
+    html,
+    body {
+        background-color: var(--bg-gradient-start);
+        min-height: 100vh;
+        margin: 0;
+    }
+    body {
+        color: var(--text-primary);
+    }
+</style>
+
+<style>
+    .privacy-page {
+        max-width: 720px;
+        margin: 2rem auto;
+        padding: 2rem 1rem 4rem;
+        line-height: 1.6;
+        color: var(--text-primary);
+    }
+    .privacy-page h1 {
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+    }
+    .privacy-page h2 {
+        color: var(--text-primary);
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .privacy-page .updated {
+        margin-top: 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+    .privacy-page p {
+        color: var(--text-primary);
+    }
+    .privacy-page code {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        padding: 0.1em 0.35em;
+        border-radius: var(--radius-sm);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.9em;
+        border: 1px solid var(--border-color);
+    }
+    .privacy-page a {
+        color: var(--accent-blue);
+        text-decoration: underline;
+    }
+    .privacy-page a:hover {
+        filter: brightness(1.15);
+    }
+    .privacy-page ul {
+        padding-left: 1.5rem;
+        margin: 0.5rem 0 1rem;
+    }
+    .privacy-page li {
+        margin-bottom: 0.3rem;
+        color: var(--text-primary);
+    }
+</style>

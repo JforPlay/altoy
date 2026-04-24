@@ -588,6 +588,18 @@ body.dark-mode .theme-icon-moon {
   margin-top: 4rem;
 }
 
+.site-footer .footer-links {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+}
+.site-footer .footer-links a {
+  color: var(--footer-text);
+  text-decoration: underline;
+}
+.site-footer .footer-links a:hover {
+  color: var(--text-primary);
+}
+
 /* ==========================================================================
    8. GLOBAL UTILITY COMPONENTS
    ==========================================================================

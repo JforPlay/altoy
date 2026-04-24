@@ -3,7 +3,7 @@
 // Caches static assets and data for faster loads
 // ============================================
 
-const CACHE_VERSION = 'v4.1';
+const CACHE_VERSION = 'v4.2';
 const STATIC_CACHE = `altoy-static-${CACHE_VERSION}`;
 const DATA_CACHE = `altoy-data-${CACHE_VERSION}`;
 
