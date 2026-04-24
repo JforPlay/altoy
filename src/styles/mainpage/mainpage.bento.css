@@ -441,6 +441,12 @@ body.dark-mode .card-meta {
 
 .external-links-section {
   grid-column: 1 / -1;
+  /* Needs to span multiple outer-grid rows — the nested grid uses 120px
+     rows while the outer uses 90px, so the section's actual height (2-3
+     internal rows ≈ 240-360px) overflows if it only reserves 1 outer row.
+     Span 3 gives 270px of reserved height, enough for the current 2-row
+     layout plus breathing room. */
+  grid-row: span 3;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 1rem;
