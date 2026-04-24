@@ -30188,7 +30188,7 @@
     "634": {
         "id": 634,
         "ship_group": 30717,
-        "message": "(파파고)발견되었습니다~",
+        "message": "설마 들켜버릴 줄이야~♪",
         "name": "Unryū",
         "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260326_yunlong2Zx0i2l6dav8zElm.png",
         "shipgirl_names": [
@@ -30202,44 +30202,44 @@
         ],
         "reply_group1": {
             "1": {
-                "71801": "(파파고)어느 곳에 몰래 들어가려고 하는 걸까요~"
+                "71801": "대체 어딜 몰래 잠입하려는 거야?"
             },
             "2": {
-                "30717": "(파파고)아무튼... 지휘관님 편이 아니군요!"
+                "30717": "음…… 지휘관님이 계신 곳은 아니랍니다!"
             },
             "3": {
-                "60306": "(파파고)정말? 응시--"
+                "60306": "정말이야? (의심의 눈초리――)"
             },
             "4": {
-                "10125": "(파파고)……응시--"
+                "10125": "……(의심의 눈초리――)"
             },
             "5": {
-                "20208": "(파파고)공개적으로 말했다"
+                "20208": "아주 시치미를 잘 떼시는군요."
             }
         },
         "reply_group2": {
             "1": {
-                "30127": "(파파고)정말 심오한 인술이네요... 운류 자매님, 가르쳐 주세요!"
+                "30127": "인술이 참으로 정묘하군요. 운류 씨, 부디 가르침을 주십시오!"
             },
             "2": {
-                "30192": "(파파고)타에카제 님도 배우고 싶어해요~!"
+                "30192": "타에카제도 배우고 싶어!"
             },
             "3": {
-                "30717": "(파파고)뭐? 교사가 되고 싶나요? 나?"
+                "30717": "네? 선생님이 되어 달라고요? 저한테?"
             }
         },
-        "op_option1": "(파파고)물방울 떨어지는 소리가 들리는 것 같은데... 착각인가요?",
-        "op_reply1": "(파파고)착각이 아니고 지휘관 바로 옆에 있어요~",
+        "op_option1": "물방울이 떨어지는 듯한 소리가 들리는 것 같은…?",
+        "op_reply1": "착각이 아니랍니다. 지금 지휘관님 곁이니까요♪",
         "reply1_shipgirl": 30717,
-        "op_option2": "(파파고)투명화? 나도 배우고 싶다",
-        "op_reply2": "(파파고)비법은 누구에게도 전수할 수 없습니다~ 하지만 다른 각도에서 체험해볼 수는 있습니다♪",
+        "op_option2": "은신술? 나도 배우고 싶은걸.",
+        "op_reply2": "비술은 함부로 전수할 수 없는 법~ 하지만, 다른 방식으로 직접 체험하게 해드릴 순 있답니다♪",
         "reply2_shipgirl": 30717
     },
     "635": {
         "id": 635,
         "ship_group": 30228,
-        "message": "(파파고)...난 포기하지 않을 거야!",
-        "name": "Nayoro",
+        "message": "……절대로 굴복하지 않겠다!",
+        "name": "Kizu",
         "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260326_mujinD6EopPEDVIclQT47.png",
         "shipgirl_names": [
             70208,
@@ -30250,44 +30250,44 @@
         ],
         "reply_group1": {
             "1": {
-                "90105": "(파파고)어서 해봐요! 탈출마법에서는 이것도 SSS급 난이도!"
+                "90105": "힘내! 탈출 마술 중에서도 이건 난이도 SSS급이야!"
             },
             "2": {
-                "30192": "(파파고)좋아요! 이렇게 밀도가 높은 레이저를 사용하면 타에카제도 탈출하는 데 시간이 좀 걸릴 것입니다!"
+                "30192": "맞아! 이렇게 촘촘한 레이저는 타에카제도 빠져나가기 힘들어!"
             },
             "3": {
-                "30228": "(파파고)도와주세요...끝나고 있어요!嘤——!"
+                "30228": "살려줘…… 안 돼… 이젠 끝이야! 크윽…!"
             }
         },
         "reply_group2": {
             "1": {
-                "70208": "(파파고)안심하세요! 제가 개발한 슈퍼 레이저 드레싱 장치는 옷과 장비만 녹여 인체에 전혀 무해합니다!"
+                "70208": "걱정 마십시오~! 제가 개발한 슈퍼 레이저 탈의 장치는 옷과 장비만 녹이니까 몸에는 전혀 무해하답니다!"
             },
             "2": {
-                "30228": "(파파고)왜 이런 이상한 장치가 있는 걸까요? !"
+                "30228": "왜 그런 기괴한 장치를 개발한 거냐고!"
             },
             "3": {
-                "70208": "(파파고)효율성을 높이려면! 장치를 활성화하기만 하면 손을 사용하지 않고도 빠르게 옷을 벗을 수 있습니다! 매우 편리하지 않나요?"
+                "70208": "당연히 효율 향상을 위해서 아니겠습니까! 장치를 가동하면 손 하나 까딱 않고 순식간에 옷을 제거할 수 있으니 엄청 편리하잖습니까?"
             },
             "4": {
-                "20712": "(파파고)정말 노동력이 절약되는 것 같아요...저도 하나 만들어주세요"
+                "20712": "확실히 편하긴 하겠네…… 저한테도 한 대 만들어 주시겠어요?"
             },
             "5": {
-                "30228": "(파파고)? ? ?"
+                "30228": "???"
             }
         },
-        "op_option1": "(파파고)지금 당장 레이저 장치를 꺼둘게요",
-        "op_reply1": "(파파고)...보고 싶지 않아? 정말 전혀 보고 싶지 않은 걸까요? !",
+        "op_option1": "지금 레이저 장치를 끌게.",
+        "op_reply1": "……보기 싫어서 그래? 저, 정말 하나도……?!",
         "reply1_shipgirl": 30228,
-        "op_option2": "(파파고)갈아입을 옷을 가져왔어",
-        "op_reply2": "(파파고)감사합니다...네 손으로 직접 입어주실 수 있나요...",
+        "op_option2": "갈아입을 옷을 가져왔어.",
+        "op_reply2": "고, 고마워…… 저기…… 직접…… 입혀줄 수 있어……?",
         "reply2_shipgirl": 30228
     },
     "636": {
         "id": 636,
         "ship_group": 30229,
-        "message": "(파파고)배터리가 충전되었습니다~",
-        "name": "Kizu",
+        "message": "충전 완료입니다~",
+        "name": "Nayoro",
         "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260326_mingjiO6qUqxkhGvob1lLw.png",
         "shipgirl_names": [
             39906,
@@ -30298,273 +30298,182 @@
         ],
         "reply_group1": {
             "1": {
-                "40146": "(파파고)이제 치열한 전투가 시작될 때가 되었나요?"
+                "40146": "드디어 찾아온 격전의 순간"
             },
             "2": {
-                "40146": "(파파고)당신은 어둠 속으로 뛰어들어 방심하고 있는 적들에게 반격을 가합니다!"
+                "40146": "어둠 속에 몸을 숨기고, 무방비한 적에게 반격을 가하며――"
             },
             "3": {
-                "10655": "(파파고)그렇게 그는 공성전을 헤쳐나가고, 배후의 악당을 물리치고, 지휘관을 구출했다──"
+                "10655": "그대로 단숨에 포위망을 돌파하고, 흑막을 쓰러뜨려 지휘관님을 구출하네――"
             },
             "4": {
-                "10655": "(파파고)예, 예, 정말 좋은 줄거리이고 눈을 즐겁게 해줍니다."
+                "10655": "음, 꽤 괜찮은 흐름으로 완성되었네요. 덕분에 즐거웠습니다."
             },
             "5": {
-                "30229": "(파파고)응, 응, 정말 좋은 줄거리야, 이렇게 하자~!"
+                "30229": "네, 정말 괜찮네요~ 그런 느낌으로 가보자고요~"
             }
         },
         "reply_group2": {
             "1": {
-                "39906": "(파파고)앗, 꼬리의 활용도가 늘어났네요...?"
+                "39906": "음? 꼬리의 용도가 또 늘어난 거야……?"
             },
             "2": {
-                "39907": "(파파고)용신님, 위험한 동작을 쉽게 시도하지 마세요."
+                "39907": "용신님, 위험하니까 절대 따라하지 마세요."
             }
         },
-        "op_option1": "(파파고)방금 휴대폰 배터리가 나갔네요...",
-        "op_reply1": "(파파고)맡겨주세요~ 꼬리는 준비되어있습니다~",
+        "op_option1": "마침 휴대폰 배터리가 다 됐는데……",
+        "op_reply1": "저에게 맡겨주세요~ 꼬리는 이미 준비되어 있답니다~",
         "reply1_shipgirl": 30229,
-        "op_option2": "(파파고)함께 포위망에서 탈출하자!",
-        "op_reply2": "(파파고)하하하~ 우리 함께 고민을 풀어봅시다~",
+        "op_option2": "함께 돌파하자!",
+        "op_reply2": "후후후, 함께 이 소동을 처리해요~",
         "reply2_shipgirl": 30229
+    },
+    "637": {
+        "id": 637,
+        "ship_group": 10990,
+        "message": "Translation Source Missing",
+        "name": "Elise",
+        "picture_persist": "",
+        "shipgirl_names": [
+            10990
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "638": {
+        "id": 638,
+        "ship_group": 10991,
+        "message": "Translation Source Missing",
+        "name": "Shizuku",
+        "picture_persist": "",
+        "shipgirl_names": [
+            10991
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "639": {
+        "id": 639,
+        "ship_group": 10992,
+        "message": "Translation Source Missing",
+        "name": "Shandy",
+        "picture_persist": "",
+        "shipgirl_names": [
+            10992
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "640": {
+        "id": 640,
+        "ship_group": 10993,
+        "message": "Translation Source Missing",
+        "name": "Tsukushi",
+        "picture_persist": "",
+        "shipgirl_names": [
+            10993
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "641": {
+        "id": 641,
+        "ship_group": 10994,
+        "message": "Translation Source Missing",
+        "name": "Patty",
+        "picture_persist": "",
+        "shipgirl_names": [
+            10994
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "642": {
+        "id": 642,
+        "ship_group": 10995,
+        "message": "Translation Source Missing",
+        "name": "Yukino",
+        "picture_persist": "",
+        "shipgirl_names": [
+            10995
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
     },
     "20001": {
         "id": 20001,
         "ship_group": 0,
-        "message": "(파파고)Jiujiu 핫 채널을 팔로우하는 것을 환영합니다! \\n여기서 우리는 홍콩의 현재 핫스팟을 추적하고 가장 신선하고 흥미로운 뉴스 보도와 일일 가십을 제공할 것입니다. 물론 익명의 제보도 받습니다~\\n치우 채널이 여러분과 함께 새로운 여정을 시작하겠습니다!",
+        "message": "Translation Source Missing",
         "name": "",
-        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260326_OA4bigldklYOjgVP5SyeJa.png",
+        "picture_persist": "",
         "shipgirl_names": [
-            0,
-            960001,
-            20101,
-            69901,
-            30201,
-            960015,
-            60701,
-            79902,
-            20401,
-            50102,
-            50107,
-            30141,
-            60112,
-            30806,
-            70109,
-            30303,
-            10210,
-            10211,
-            10601,
-            10105,
-            10234
+            0
         ],
-        "reply_group1": {
-            "1": {
-                "30201": "(파파고)새로운 기능 트윗 채널이 온라인에 있습니다~"
-            },
-            "2": {
-                "70109": "(파파고)프로젝트 완료! 축하 행사를 시작해보세요!"
-            },
-            "3": {
-                "60112": "(파파고)당신의 노고에 감사드립니다! 기능은 매우 건강합니다. 새로운 기능을 담당하시는 분들 모두 푹 쉬시고 건강하세요!"
-            }
-        },
-        "reply_group2": {
-            "1": {
-                "79902": "(파파고)지휘관 여러분도 우리가 열심히 개발한 새로운 기능을 즐겨보시기 바랍니다..."
-            },
-            "2": {
-                "30303": "(파파고)당신의 노고에 감사드립니다! 다음은 칙칙함이 사라지고 소식이 옵니다~"
-            }
-        },
-        "reply_group3": {
-            "1": {
-                "10234": "(파파고)꽃을 던져라, 꽃을 던져라, 그거 들었어? 가장 신선하고 흥미로운 일이 다가옵니다~!"
-            }
-        },
-        "reply_group4": {
-            "1": {
-                "10210": "(파파고)오오 나쁘지 않네요 신세계를 발견했어요~"
-            }
-        },
-        "reply_group5": {
-            "1": {
-                "20101": "(파파고)기능이 업데이트 되었나요? !"
-            }
-        },
-        "reply_group6": {
-            "1": {
-                "50102": "(파파고)보고서! 실명으로 제출하고 싶어요!"
-            }
-        },
-        "reply_group7": {
-            "1": {
-                "69901": "(파파고)움직임이 너무 많기 때문에 이러한 야망은 나쁘지 않습니다."
-            }
-        },
-        "reply_group8": {
-            "1": {
-                "20401": "(파파고)새 채널..."
-            },
-            "2": {
-                "20401": "(파파고)…잠깐, 내가 언제 주의를 기울였는가? 왜 팔로우를 취소할 수 없나요?"
-            }
-        },
-        "reply_group9": {
-            "1": {
-                "30806": "(파파고)재미있게 보내세요? 안되면 취소할게요~"
-            }
-        },
-        "reply_group10": {
-            "1": {
-                "10211": "(파파고)더 자세히 알아볼까요? 그래서 기대됩니다!"
-            }
-        },
-        "reply_group11": {
-            "1": {
-                "50107": "(파파고)푸순의 휴대폰은 안산 자매에게 막 압수당했고, 페이윤 씨는 계속해서 그녀의 등록과 기사 제출을 도왔습니다 ~"
-            }
-        },
-        "reply_group12": {
-            "1": {
-                "60701": "(파파고)업데이트를 기대합니다~"
-            },
-            "2": {
-                "10105": "(파파고)홍콩뉴스가 동시 업데이트 되었습니다! 귀하의 의견과 제안을 환영합니다!"
-            }
-        },
-        "reply_group13": {
-            "1": {
-                "10601": "(파파고)공시 하다! 4인 경쟁게임 3레벨 1, 빨리와라!"
-            }
-        },
-        "reply_group14": {
-            "1": {
-                "30141": "(파파고)그런데 다들 식사는 하셨나요? 아침에 무엇을 먹었나요? 점심으로 무엇을 먹었나요? 저녁으로 무엇을 드셨나요?"
-            }
-        },
-        "reply_group15": {
-            "1": {
-                "960015": "(파파고)정말 아무거나 보내도 되나요? ! 그럼 보물지도를 보내드리고 싶어요! 잃어버린 보물을 함께 찾아보자!"
-            },
-            "2": {
-                "960001": "(파파고)글쎄요! 보물 지도를 먼저 보내 주시겠어요? 진실을 알 수 있도록 도와드리겠습니다~"
-            }
-        },
-        "op_option1": "(파파고)익명 제출에 참여할 수 있습니다.",
-        "op_reply1": "(파파고)데이트를 해보세요! !",
+        "op_option1": "혹시 나 대신 익명으로 제보해 줄 사람 있어…?",
+        "op_reply1": "내가 할래, 내가!",
         "reply1_shipgirl": 10234,
-        "op_option2": "(파파고)Jiujiu 핫 채널 런칭을 축하합니다!",
-        "op_reply2": "(파파고)슬롯을 잡아",
+        "op_option2": "만쥬 뉴스 채널 개설 축하해!",
+        "op_reply2": "나한테 말해줘! 아니, 그것보다 지휘관의 일정을 다 파악해야겠어!",
         "reply2_shipgirl": 10324
     },
     "20002": {
         "id": 20002,
         "ship_group": 0,
-        "message": "(파파고)좋은 소식! 최근 Saratoga Film Studio는 영화와 TV를 게임화하려는 혁신적인 시도를 시작할 것이라고 공식 발표했습니다! \\n이러한 기술 혁신은 전통적인 영화 및 TV 제작의 경계를 허물고 대화형 내러티브와 몰입형 경험을 위한 새로운 가능성을 탐색할 것으로 보고됩니다. \\n프로듀서 Saratoga는 인터뷰에서 \"예, 우리가 해냈습니다!\"라고 말했습니다.\\n그녀는 이러한 혁신이 제작 기술의 업그레이드일 뿐만 아니라 콘텐츠 표현의 새로운 정의임을 강조했습니다.",
+        "message": "Translation Source Missing",
         "name": "",
-        "picture_persist": "https://line3-patch-blhx.bilibiligame.net/pic/260326_OA2bigMMwdfawHI7buhdmj.png",
+        "picture_persist": "",
         "shipgirl_names": [
-            0,
-            30221,
-            10131,
-            10517,
-            30111,
-            30112,
-            30118,
-            40501,
-            70202,
-            19903,
-            10703,
-            10706,
-            10208,
-            31201,
-            80103,
-            10601,
-            49905,
-            30707,
-            20220
+            0
         ],
-        "reply_group1": {
-            "1": {
-                "80103": "(파파고)정말 멋지네요!"
-            }
-        },
-        "reply_group2": {
-            "1": {
-                "40501": "(파파고)상호작용 경험을 증가시킬 수 있으므로 더 많은 전술적 추론 요소를 추가해 볼 수 있을까요?"
-            },
-            "2": {
-                "10706": "(파파고)좋은 생각"
-            }
-        },
-        "reply_group3": {
-            "1": {
-                "70202": "(파파고)하지만 이것은 대화형 영화 및 TV 게임이 아닌가요?"
-            }
-        },
-        "reply_group4": {
-            "1": {
-                "10601": "(파파고)하지만 이것은 대화형 영화 및 TV 게임이 아닌가요?"
-            }
-        },
-        "reply_group5": {
-            "1": {
-                "10131": "(파파고)하지만 이것은 대화형 영화 및 TV 게임이 아닌가요?"
-            }
-        },
-        "reply_group6": {
-            "1": {
-                "30111": "(파파고)\"끝났어요!\" 나는 10여년 전의 기술에 둘러싸여 있습니다! 》"
-            },
-            "2": {
-                "30112": "(파파고)일종의 '르네상스'이기도 하다."
-            }
-        },
-        "reply_group7": {
-            "1": {
-                "10208": "(파파고)어서, 당신의 에너지를 보여주세요, 작은 가가! 계속 이대로 가면 멸시받게 될 거야!"
-            },
-            "2": {
-                "10703": "(파파고)뭐하세요! ! !"
-            }
-        },
-        "reply_group8": {
-            "1": {
-                "30118": "(파파고)우선 임대용 광고 공간을 마련하자…"
-            },
-            "2": {
-                "31201": "(파파고)기술 지원이 필요하시면 아카시이 도와드릴 수 있습니다! 물론 요금도 합리적이에요~"
-            }
-        },
-        "reply_group9": {
-            "1": {
-                "30707": "(파파고)대화식? 지휘관과 친밀한 교류가 가능한가요? 그런거...다이호님이 이미 즐기고 계시네요~♡"
-            },
-            "2": {
-                "20220": "(파파고)동의하다"
-            },
-            "3": {
-                "30221": "(파파고)목례"
-            },
-            "4": {
-                "49905": "(파파고)흡입……"
-            },
-            "5": {
-                "19903": "(파파고)어이 어이... 선생님! 최고!"
-            },
-            "6": {
-                "10517": "(파파고)응~♪"
-            }
-        },
-        "op_option1": "(파파고)네, 해냈습니다!",
-        "op_reply1": "(파파고)네, 해냈습니다!",
+        "op_option1": "Yes, we did it!",
+        "op_reply1": "Yes, we did it!",
         "reply1_shipgirl": 960013,
-        "op_option2": "(파파고)가입해서 사용해 볼 수 있나요?",
-        "op_reply2": "(파파고)네, 해냈습니다!",
+        "op_option2": "나도 체험해 보고 싶은데 신청받아?",
+        "op_reply2": "Yes, we did it!",
         "reply2_shipgirl": 40407
     },
     "20003": {
         "id": 20003,
+        "ship_group": 0,
+        "message": "Translation Source Missing",
+        "name": "",
+        "picture_persist": "",
+        "shipgirl_names": [
+            0
+        ],
+        "op_option1": "Translation Source Missing",
+        "op_reply1": "Translation Source Missing",
+        "reply1_shipgirl": null,
+        "op_option2": "Translation Source Missing",
+        "op_reply2": "Translation Source Missing",
+        "reply2_shipgirl": null
+    },
+    "20004": {
+        "id": 20004,
         "ship_group": 0,
         "message": "Translation Source Missing",
         "name": "",
