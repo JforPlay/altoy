@@ -45,6 +45,18 @@ import Layout from '../layouts/Layout.astro';
     </main>
 </Layout>
 
+<style is:global>
+    /* Body styling only applies when /privacy/ is rendered (this file is the
+       only one that loads this CSS). Gives the page a theme-aware background
+       so dark mode doesn't leave dark text on a white canvas. */
+    body {
+        background: var(--bg-gradient-start, #ffffff);
+        color: var(--text-primary);
+        min-height: 100vh;
+        margin: 0;
+    }
+</style>
+
 <style>
     .privacy-page {
         max-width: 720px;
