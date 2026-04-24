@@ -9,12 +9,11 @@ import { throttle, setupScrollToTop, getStorageItem, setStorageItem, getUrlParam
 
 // ===== Drive Sync Feature Flag =====
 //
-// Default OFF until OAuth verification clears. During beta, enable per-device by
-// visiting any page with ?sync=1 — persists to localStorage so the UI stays
-// visible across subsequent page loads. Disable with ?sync=0.
-//
-// Flip DEFAULT_SYNC_ENABLED to true at launch (Task 16 in the rollout plan).
-const DEFAULT_SYNC_ENABLED = false;
+// Sync is LIVE for everyone (OAuth verification cleared 2026-04-23).
+// Users can still opt out per-device with ?sync=0 (clears altoy:sync:beta).
+// Leave this block in place until Task 17 cleanup; removing the flag too
+// early would break any user who has opted out with ?sync=0.
+const DEFAULT_SYNC_ENABLED = true;
 
 const syncParam = getUrlParam('sync');
 if (syncParam === '1') setStorageItem('altoy:sync:beta', '1');
