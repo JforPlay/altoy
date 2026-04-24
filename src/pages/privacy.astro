@@ -48,12 +48,18 @@ import Layout from '../layouts/Layout.astro';
 <style is:global>
     /* Body styling only applies when /privacy/ is rendered (this file is the
        only one that loads this CSS). Gives the page a theme-aware background
-       so dark mode doesn't leave dark text on a white canvas. */
+       so dark mode doesn't leave dark text on a white canvas.
+
+       Target html AND body with explicit background-color (not shorthand) so
+       the rule is robust against whatever cascades in on other pages. */
+    html,
     body {
-        background: var(--bg-gradient-start, #ffffff);
-        color: var(--text-primary);
+        background-color: var(--bg-gradient-start);
         min-height: 100vh;
         margin: 0;
+    }
+    body {
+        color: var(--text-primary);
     }
 </style>
 
