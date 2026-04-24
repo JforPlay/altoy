@@ -21,6 +21,7 @@ export const COOLDOWN_MS = 60_000;
 
 export const STORAGE_KEYS = {
     localDirty: 'altoy:sync:localDirty',
+    localDirtyAt: 'altoy:sync:localDirtyAt',
     lastCloudModified: 'altoy:sync:lastCloudModified',
     lastSyncedAt: 'altoy:sync:lastSyncedAt',
     beta: 'altoy:sync:beta',

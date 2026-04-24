@@ -6,7 +6,7 @@
  * resolveConflict() with the user's choice.
  */
 
-import { SYNCED_KEYS } from '../utils.js';
+import { SYNCED_KEYS, getStorageItem } from '../utils.js';
 import { STORAGE_KEYS, SCHEMA_VERSION } from './drive-sync.config.js';
 import { hasToken, requestToken } from './drive-sync.auth.js';
 import { findSyncFile, getContent, createFile, updateFile } from './drive-sync.api.js';
@@ -16,10 +16,6 @@ export const SYNC_OUTCOMES = {
     UPLOADED: 'uploaded',
     DOWNLOADED: 'downloaded',
     CONFLICT: 'conflict',
-    // ERROR is exported for UI code to reference in error-handling branches.
-    // The engine itself does not return this — it lets exceptions propagate
-    // so the UI can catch and display them via showToast.
-    ERROR: 'error',
 };
 
 /**
@@ -41,6 +37,10 @@ function collectLocalData() {
  *
  * Removes any currently-set synced keys that are NOT in the remote
  * payload — required for "delete propagation" to work correctly.
+ *
+ * Writes only keys in SYNCED_KEYS with string values. Entries outside
+ * the allowlist or with non-string values are dropped, so a malformed
+ * import file can't overwrite unrelated localStorage keys.
  */
 function applyRemoteData(data) {
     // Browsers only fire 'storage' events in OTHER tabs, not the one making
@@ -56,6 +56,8 @@ function applyRemoteData(data) {
         }
     }
     for (const [key, value] of Object.entries(data)) {
+        if (!SYNCED_KEYS.has(key)) continue;
+        if (typeof value !== 'string') continue;
         const oldValue = localStorage.getItem(key);
         if (oldValue !== value) {
             localStorage.setItem(key, value);
@@ -81,6 +83,7 @@ function markSynced(cloudModified) {
     }
     localStorage.setItem(STORAGE_KEYS.lastSyncedAt, String(Date.now()));
     localStorage.removeItem(STORAGE_KEYS.localDirty);
+    localStorage.removeItem(STORAGE_KEYS.localDirtyAt);
 }
 
 async function doUpload(existingFileId) {
@@ -111,7 +114,7 @@ export async function runSync() {
         // valid, and falls back to a popup triggered by this user click if
         // needed (user gesture means the popup isn't blocked). First-time
         // sign-in uses the default consent flow.
-        const wasSignedIn = localStorage.getItem(STORAGE_KEYS.everSignedIn) === '1';
+        const wasSignedIn = getStorageItem(STORAGE_KEYS.everSignedIn, '') === '1';
         await requestToken({ silent: wasSignedIn });
     }
 
@@ -179,6 +182,7 @@ export function importPayload(payload) {
     }
     applyRemoteData(payload.data);
     localStorage.setItem(STORAGE_KEYS.localDirty, '1');
+    localStorage.setItem(STORAGE_KEYS.localDirtyAt, String(Date.now()));
 }
 
 /**

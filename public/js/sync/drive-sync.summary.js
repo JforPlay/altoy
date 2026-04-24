@@ -3,12 +3,10 @@
  * Per-key summary functions for the Drive sync conflict modal.
  * Takes raw localStorage string values and produces short "N items" labels
  * to show which side has more data in a conflict state.
- */
-
-/**
- * Summarize synced data for the conflict modal.
- * Each function takes the raw localStorage string value and returns a short
- * human-readable count. Return empty string to omit from the summary.
+ *
+ * Keep SUMMARIZERS in sync with utils.js SYNCED_KEYS — every synced key
+ * should have (or explicitly skip) a summary so the conflict modal doesn't
+ * render "(요약 가능한 데이터 없음)" for cases we could describe.
  */
 
 function tryParse(raw) {
@@ -24,11 +22,40 @@ function countTrackerProgress(raw) {
     return count > 0 ? `함순이 ${count}명 트래킹` : '';
 }
 
+function describeGoal(raw) {
+    if (!raw || typeof raw !== 'string') return '';
+    return `목표 함순이: ${raw}`;
+}
+
+function countPinned(raw) {
+    const arr = tryParse(raw);
+    if (!Array.isArray(arr)) return '';
+    return arr.length > 0 ? `고정 ${arr.length}개` : '';
+}
+
+function countSecretaryCompletion(raw) {
+    const obj = tryParse(raw);
+    if (!obj || typeof obj !== 'object') return '';
+    const count = Object.values(obj).filter(Boolean).length;
+    return count > 0 ? `비서함 스토리 ${count}개 완료` : '';
+}
+
 function countCollection(raw) {
     const obj = tryParse(raw);
     if (!obj) return '';
     const items = Array.isArray(obj) ? obj : (obj.items || []);
     return items.length > 0 ? `스킨 ${items.length}개 수집` : '';
+}
+
+function describeRestaurantRank(raw) {
+    if (!raw || typeof raw !== 'string') return '';
+    return `레스토랑 랭크: ${raw}`;
+}
+
+function countRestaurantEvents(raw) {
+    const arr = tryParse(raw);
+    if (!Array.isArray(arr)) return '';
+    return arr.length > 0 ? `진행 중 이벤트 ${arr.length}개` : '';
 }
 
 function countPlannerPlan(raw) {
@@ -38,11 +65,24 @@ function countPlannerPlan(raw) {
     return n > 0 ? `아일랜드 계획 ${n}개` : '';
 }
 
-function countFleetSim(raw) {
+function countPlannerPresets(raw) {
     const obj = tryParse(raw);
-    if (!obj) return '';
-    const saves = Array.isArray(obj) ? obj : (obj.saves || []);
-    return saves.length > 0 ? `함대 저장 ${saves.length}개` : '';
+    if (!obj || typeof obj !== 'object') return '';
+    const n = Object.keys(obj).length;
+    return n > 0 ? `프리셋 ${n}개` : '';
+}
+
+function countSeasonQuantities(raw) {
+    const obj = tryParse(raw);
+    if (!obj || typeof obj !== 'object') return '';
+    const n = Object.keys(obj).length;
+    return n > 0 ? `시즌 수량 ${n}개 입력` : '';
+}
+
+function describeSeasonPoints(raw) {
+    const n = Number(raw);
+    if (!Number.isFinite(n) || n <= 0) return '';
+    return `시즌 포인트: ${n.toLocaleString('ko-KR')}`;
 }
 
 function countTechCompletion(raw) {
@@ -51,12 +91,30 @@ function countTechCompletion(raw) {
     return arr.length > 0 ? `기술 ${arr.length}개 완료` : '';
 }
 
+function countFleetSim(raw) {
+    const obj = tryParse(raw);
+    if (!obj) return '';
+    const saves = Array.isArray(obj) ? obj : (obj.saves || []);
+    return saves.length > 0 ? `함대 저장 ${saves.length}개` : '';
+}
+
+// Restaurant shipgirl selections are single attribute configurations — having
+// them set doesn't carry a meaningful count. Silently skip rather than
+// printing "설정됨" noise for the conflict modal.
 const SUMMARIZERS = {
     shipgirlTrackerProgress: countTrackerProgress,
+    shipgirlTrackerSelectedGoal: describeGoal,
+    researchTrackerPinned: countPinned,
+    secretaryStoryCompletion: countSecretaryCompletion,
     skinCollection: countCollection,
+    'island-restaurant-rank': describeRestaurantRank,
+    'island-restaurant-events': countRestaurantEvents,
     'island-restaurant-planner-plan-v2': countPlannerPlan,
-    fleetSimSaves: countFleetSim,
+    'island-restaurant-planner-presets-v2': countPlannerPresets,
+    'island-season-quantities': countSeasonQuantities,
+    'island-season-owned-points': describeSeasonPoints,
     'island-tech-completion': countTechCompletion,
+    fleetSimSaves: countFleetSim,
 };
 
 /**

@@ -514,8 +514,11 @@ function setStorageItem(key, value) {
     try {
         localStorage.setItem(key, value);
         if (SYNCED_KEYS.has(key)) {
-            // TODO(Task 5): replace literal with STORAGE_KEYS.localDirty from drive-sync.config.js
+            // Keys duplicated in drive-sync.config.js STORAGE_KEYS. utils.js is
+            // the foundational module (imported BY the sync module), so we can't
+            // import from it without inverting the dependency direction.
             localStorage.setItem('altoy:sync:localDirty', '1');
+            localStorage.setItem('altoy:sync:localDirtyAt', String(Date.now()));
         }
     } catch (e) {
         console.warn('localStorage unavailable:', e);

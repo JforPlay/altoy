@@ -115,15 +115,19 @@ function setIconState(state) {
 function startCooldownInterval() {
     if (cooldownTimerId) clearInterval(cooldownTimerId);
     cooldownTimerId = setInterval(() => {
+        const popoverOpen = document.getElementById('sync-popover')?.classList.contains('open');
         if (Date.now() >= cooldownUntil) {
             clearInterval(cooldownTimerId);
             cooldownTimerId = null;
             try { sessionStorage.removeItem(SESSION_COOLDOWN_KEY); } catch { /* ignore */ }
             setIconState('idle');
-            renderPopoverBody();
+            if (popoverOpen) renderPopoverBody();
         } else {
+            // Fast path: while the popover is closed, just tick the icon
+            // countdown. Skip re-rendering the popover's inner HTML (and the
+            // four event listeners it binds) every second.
             setIconState('cooldown');
-            renderPopoverBody();
+            if (popoverOpen) renderPopoverBody();
         }
     }, 1000);
 }
@@ -141,7 +145,8 @@ function renderConflictModal(localData, cloudData, cloudModifiedTime) {
     if (!modal) return;
     const localLabels = summarize(localData);
     const cloudLabels = summarize(cloudData);
-    const localEdited = '방금';
+    const localDirtyAt = Number(getStorageItem(STORAGE_KEYS.localDirtyAt, '0')) || Date.now();
+    const localEdited = formatRelative(localDirtyAt);
     const cloudEdited = formatRelative(new Date(cloudModifiedTime).getTime());
     modal.querySelector('.modal-body').innerHTML = `
         <p>두 기기 모두 저장되지 않은 변경사항이 있습니다. 유지할 쪽을 선택하세요.</p>
