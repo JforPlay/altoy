@@ -15,25 +15,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <Layout title="ALtoy - 벽람 장난감" {base}>
     <main class="home-container">
-        <!-- About ALtoy (visible text for OAuth verification crawler) -->
-        <section class="about-altoy" aria-label="About ALtoy">
-            <h1 class="about-altoy-title">ALtoy</h1>
-            <p class="about-altoy-desc">
-                ALtoy는 모바일 게임 <strong>Azur Lane (벽람항로)</strong> 한국 서버의
-                팬 메이드 웹 뷰어입니다. 함순이 정보, 스토리, 스킨, 장비 데이터베이스,
-                해역 정보, 아일랜드 계획 도구 등 각종 인게임 에셋과 자료를 한 곳에서
-                확인할 수 있습니다. GitHub Pages에서 호스팅되며, 서버나 사용자 계정
-                없이 정적으로 동작하는 비영리 팬 프로젝트입니다.
-            </p>
-            <p class="about-altoy-desc-en">
-                <em>ALtoy is a non-profit fan-made web viewer for the mobile game
-                Azur Lane (Korean server). It aggregates ship information, story
-                scripts, skins, equipment data, map information, and various
-                in-game planning tools into a single static website hosted on
-                GitHub Pages. No server, no user accounts.</em>
-            </p>
-        </section>
-
         <!-- Hero Carousel Section -->
         <section class="hero-carousel">
             <div class="carousel-track">
@@ -356,6 +337,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </a>
             </div>
         </div>
+
+        <!-- About ALtoy — keeps the "app purpose" text on the homepage for
+             OAuth verification re-audits, positioned at the bottom so it
+             doesn't dominate the landing view. -->
+        <section class="about-altoy" aria-label="About ALtoy">
+            <h1 class="about-altoy-title">ALtoy</h1>
+            <p class="about-altoy-desc">
+                ALtoy는 모바일 게임 <strong>Azur Lane (벽람항로)</strong> 한국 서버의 팬 메이드 웹 뷰어입니다.
+                함순이 정보, 스토리, 스킨, 장비 데이터베이스, 해역 정보, 아일랜드 계획 도구 등 각종 인게임
+                에셋과 자료를 한 곳에서 확인할 수 있습니다.
+            </p>
+            <p class="about-altoy-desc-en">
+                <em>ALtoy is a non-profit fan-made web viewer for the mobile game Azur Lane (Korean server),
+                aggregating ship information, story scripts, skins, equipment data, map information, and
+                in-game planning tools. Static site hosted on GitHub Pages with no server or user accounts.</em>
+            </p>
+        </section>
     </main>
 
     <script is:inline type="module" src={`${base}/js/mainpage.script.js`}></script>
@@ -363,30 +361,30 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <style>
     .about-altoy {
-        max-width: var(--container-max-width, 1200px);
-        margin: 0 auto 2rem;
-        padding: 1.5rem 2rem;
+        max-width: 720px;
+        margin: 3rem auto 1rem;
+        padding: 1rem 1.5rem;
         text-align: center;
-        color: var(--text-primary);
+        color: var(--text-secondary);
+        border-top: 1px solid var(--card-border, rgba(128, 128, 128, 0.2));
+        opacity: 0.75;
     }
     .about-altoy-title {
-        font-size: 2rem;
-        margin: 0 0 0.75rem;
-        letter-spacing: 0.05em;
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin: 0 0 0.5rem;
+        letter-spacing: 0.04em;
+        color: var(--text-primary);
     }
     .about-altoy-desc {
-        font-size: 0.95rem;
-        line-height: 1.6;
-        max-width: 720px;
-        margin: 0 auto 0.5rem;
-        color: var(--text-secondary);
+        font-size: 0.8rem;
+        line-height: 1.5;
+        margin: 0 0 0.4rem;
     }
     .about-altoy-desc-en {
-        font-size: 0.85rem;
-        line-height: 1.55;
-        max-width: 720px;
-        margin: 0 auto;
-        color: var(--text-secondary);
+        font-size: 0.75rem;
+        line-height: 1.45;
+        margin: 0;
         opacity: 0.85;
     }
 </style>
