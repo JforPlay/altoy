@@ -7,7 +7,14 @@
 
 import { createImg, IMG_FALLBACKS, showToast, resolveUrl } from '../utils.js';
 import { setupTooltipToggles } from '../global.script.js';
-import { getSkillInfo, getAttrKoreanName, getShipType, createAttrMapping } from './shipgirl-info.data.js';
+import {
+    getSkillInfo,
+    getAttrKoreanName,
+    getShipType,
+    createAttrMapping,
+    loadSkillIconData,
+    loadSkillDataTemplate
+} from './shipgirl-info.data.js';
 
 'use strict';
 
@@ -77,9 +84,17 @@ export async function showDetailView(shipName) {
     state.currentShip = ship;
     state.currentLevel = 100;
     state.currentFavorability = 'love';
+    state.currentEnhancement = 'complete';
 
     const limitBreakOptions = Object.keys(ship.base);
     state.currentLimitBreak = limitBreakOptions[limitBreakOptions.length - 1];
+
+    state.elements.loading.style.display = 'block';
+    try {
+        await Promise.all([loadSkillIconData(), loadSkillDataTemplate()]);
+    } finally {
+        state.elements.loading.style.display = 'none';
+    }
 
     state.elements.mainView.style.display = 'none';
     state.elements.detailView.style.display = 'block';

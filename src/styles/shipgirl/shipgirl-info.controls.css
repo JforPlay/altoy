@@ -136,7 +136,7 @@
   gap: 0.5rem;
 }
 
-.stat-item {
+.stats-grid .stat-item {
   background: var(--section-bg);
   padding: 0.625rem;
   border-radius: 0.375rem;

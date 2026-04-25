@@ -5,7 +5,7 @@
  * and sets up keyboard/swipe/touch navigation between ship detail views.
  */
 
-import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorageItem, setStorageItem, setupModal } from '../utils.js';
+import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorageItem, setStorageItem, setupModal, debounce } from '../utils.js';
 import {
     setup as setupData,
     loadData, loadNationalityData, loadAttrTypeData,
@@ -74,10 +74,9 @@ const searchInput = document.getElementById('searchInput');
 const rarityFilter = document.getElementById('rarityFilter');
 const backButton = document.getElementById('backButton');
 const loading = document.getElementById('loading');
-const errorDiv = document.getElementById('error');
 
 // Store DOM elements in state for sub-modules
-state.elements = { mainView, detailView, shipgirls, searchInput, rarityFilter, backButton, loading, errorDiv };
+state.elements = { mainView, detailView, shipgirls, searchInput, rarityFilter, backButton, loading };
 
 // Initialize sub-modules with shared state reference
 setupData(state);
@@ -104,9 +103,7 @@ async function init() {
             loadData(),
             loadNationalityData(),
             loadAttrTypeData(),
-            loadShipTypeData(),
-            loadSkillIconData(),
-            loadSkillDataTemplate()
+            loadShipTypeData()
         ]);
         loading.style.display = 'none';
 
@@ -119,6 +116,15 @@ async function init() {
         handleRoute();
         setupEventListeners();
         window.addEventListener('popstate', handleRoute);
+
+        // Warm skill assets after first render. Detail/skill search also await these
+        // explicitly, so this improves repeat interactions without delaying the grid.
+        const loadSkillAssets = () => Promise.all([loadSkillIconData(), loadSkillDataTemplate()]);
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(loadSkillAssets, { timeout: 3000 });
+        } else {
+            setTimeout(loadSkillAssets, 0);
+        }
     } catch (error) {
         loading.style.display = 'none';
         showToast(error.message || 'Initialization error', 'error');
@@ -128,7 +134,7 @@ async function init() {
 
 // ===== Event Listeners =====
 function setupEventListeners() {
-    searchInput.addEventListener('input', filterShipgirls);
+    searchInput.addEventListener('input', debounce(filterShipgirls, 120));
     rarityFilter.addEventListener('change', filterShipgirls);
     document.getElementById('shipTypeFilter').addEventListener('change', filterShipgirls);
     document.getElementById('nationalityFilter').addEventListener('change', filterShipgirls);
@@ -141,6 +147,13 @@ function setupEventListeners() {
             filterShipgirls();
         });
     }
+
+    shipgirls.addEventListener('click', (e) => {
+        const card = e.target.closest('.shipgirl-card');
+        if (!card || !shipgirls.contains(card)) return;
+        const shipName = card.dataset.shipName;
+        if (shipName) navigateToDetail(shipName);
+    });
 
     // Info popup is handled globally by global.script.js
 
@@ -272,10 +285,13 @@ function renderShipgirls() {
     }
 
     shipgirls.innerHTML = state.filteredData.map(ship => createShipgirlCard(ship)).join('');
+}
 
-    document.querySelectorAll('.shipgirl-card').forEach((card, index) => {
-        card.addEventListener('click', () => navigateToDetail(state.filteredData[index].name));
-    });
+function escapeAttr(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;');
 }
 
 function createShipgirlCard(ship) {
@@ -319,7 +335,7 @@ function createGridCard(ship) {
     const mapsDisplay = compactMaps ? `<span class="maps-badge" title="드랍 지역: ${compactMaps}"><i class="fas fa-map-marker-alt"></i> ${compactMaps}</span>` : '';
 
     return `
-        <div class="shipgirl-card">
+        <div class="shipgirl-card" data-ship-name="${escapeAttr(ship.name)}">
             ${createImg(ship.shipyard || '', ship.name || '알 수 없음', { className: 'shipgirl-image', fallback: IMG_FALLBACKS.CARD })}
             ${constructionBadges ? `<div class="construction-badges-overlay">${constructionBadges}</div>` : ''}
             <div class="shipgirl-info">
@@ -372,7 +388,7 @@ function createListCard(ship) {
     const mapsDisplay = compactMaps ? `<span class="maps-badge" title="드랍 지역: ${compactMaps}"><i class="fas fa-map-marker-alt"></i> ${compactMaps}</span>` : '';
 
     return `
-        <div class="shipgirl-card">
+        <div class="shipgirl-card" data-ship-name="${escapeAttr(ship.name)}">
             ${createImg(ship.shipyard || '', ship.name || '알 수 없음', { className: 'shipgirl-image', fallback: IMG_FALLBACKS.CARD })}
             <div class="shipgirl-info">
                 <div class="left-info">

@@ -175,42 +175,6 @@ header h1 {
   font-weight: bold;
 }
 
-/* Info section customizations for popup-body content */
-.info-section {
-  margin-bottom: 1.5625rem;
-}
-
-.info-section h3 {
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-  font-size: 1.2em;
-}
-
-.info-section ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.info-section li {
-  color: var(--text-primary);
-  margin-bottom: 0.625rem;
-  padding-left: 1.25rem;
-  position: relative;
-}
-
-.info-section li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: var(--primary-color);
-  font-weight: bold;
-}
-
-.info-section p {
-  color: var(--text-primary);
-  line-height: 1.6;
-}
-
 /* Loading and Error */
 .loading {
   text-align: center;

@@ -4,7 +4,12 @@
  * Part of the shipgirl-info module group. State is shared via a ref passed to setup().
  */
 
-import { processSkillDescription, getSkillIconUrl } from './shipgirl-info.data.js';
+import {
+    processSkillDescription,
+    getSkillIconUrl,
+    loadSkillIconData,
+    loadSkillDataTemplate
+} from './shipgirl-info.data.js';
 import { openModal, closeModal, createSearchIndex, debounce } from '../utils.js';
 
 'use strict';
@@ -116,6 +121,8 @@ async function buildCorpus() {
     if (!state.fullShipData && state.fullShipDataPromise) {
         await state.fullShipDataPromise;
     }
+    await Promise.all([loadSkillIconData(), loadSkillDataTemplate()]);
+
     if (!state.fullShipData || !state.skillDataTemplate || Object.keys(state.skillDataTemplate).length === 0) {
         throw new Error('데이터 로딩이 완료되지 않았습니다');
     }
@@ -274,7 +281,7 @@ function wireControls() {
         }, 150));
     }
 
-    document.querySelectorAll('.skill-chip').forEach(btn => {
+    document.querySelectorAll('.skill-chip[data-group]').forEach(btn => {
         btn.addEventListener('click', () => {
             const { group, tag } = btn.dataset;
             const set = filters[group];

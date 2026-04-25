@@ -14,14 +14,6 @@
   margin: 0 auto;
 }
 
-/* Add this new style block, for example after the .detail-content style */
-.navigation-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.625rem;
-  margin-bottom: 0.9375rem;
-}
-
 /* Spacer pushes nav buttons to the right */
 .detail-nav-spacer {
   flex: 1;

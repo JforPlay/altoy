@@ -13,6 +13,8 @@ import { fetchJSON, fetchJSONWithCache } from '../utils.js';
 // STATE REFERENCE (set via setup)
 // ============================================
 let state;
+let skillIconDataPromise = null;
+let skillDataTemplatePromise = null;
 
 export function setup(stateRef) {
     state = stateRef;
@@ -57,6 +59,13 @@ export async function loadShipTypeData() {
 
 /** Load skill icon mapping; falls back to Fernando2603/AzurLane remote if local file is missing. */
 export async function loadSkillIconData() {
+    if (skillIconDataPromise) return skillIconDataPromise;
+
+    skillIconDataPromise = doLoadSkillIconData();
+    return skillIconDataPromise;
+}
+
+async function doLoadSkillIconData() {
     try {
         state.skillIconData = await fetchJSON('data/skill_icon_mapping.json');
         console.log('Loaded local skill icon data:', Object.keys(state.skillIconData).length, 'icons');
@@ -78,6 +87,13 @@ export async function loadSkillIconData() {
  * Normalizes both array and object formats to a keyed object { id: skill }.
  */
 export async function loadSkillDataTemplate() {
+    if (skillDataTemplatePromise) return skillDataTemplatePromise;
+
+    skillDataTemplatePromise = doLoadSkillDataTemplate();
+    return skillDataTemplatePromise;
+}
+
+async function doLoadSkillDataTemplate() {
     try {
         const data = await fetchJSON('data/sim/skill_data_template.json');
 

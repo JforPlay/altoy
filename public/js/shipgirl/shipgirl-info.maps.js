@@ -20,15 +20,43 @@ export function setup(stateRef) {
 
 // ===== Map Browser State =====
 let mapBrowserData = null;
-let mapBrowserFilters = {
-    area: 'all',
-    map: 'all',
-    type: 'all',
-    rarity: 'all',
-    shipType: 'all',
-    nationality: 'all',
-    search: ''
-};
+let mapBrowserFilters = createDefaultMapBrowserFilters();
+
+function createDefaultMapBrowserFilters() {
+    return {
+        area: 'all',
+        map: 'all',
+        type: 'all',
+        rarity: 'all',
+        shipType: 'all',
+        nationality: 'all',
+        search: ''
+    };
+}
+
+function resetMapBrowserFilters() {
+    mapBrowserFilters = createDefaultMapBrowserFilters();
+    syncMapBrowserControls();
+}
+
+function syncMapBrowserControls() {
+    const areaFilter = document.getElementById('mapBrowserAreaFilter');
+    const mapFilter = document.getElementById('mapBrowserMapFilter');
+    const typeFilter = document.getElementById('mapBrowserTypeFilter');
+    const rarityFilter = document.getElementById('mapBrowserRarityFilter');
+    const shipTypeFilter = document.getElementById('mapBrowserShipTypeFilter');
+    const nationalityFilter = document.getElementById('mapBrowserNationalityFilter');
+    const searchInput = document.getElementById('mapBrowserSearchInput');
+
+    if (areaFilter) areaFilter.value = mapBrowserFilters.area;
+    updateMapFilter();
+    if (mapFilter) mapFilter.value = mapBrowserFilters.map;
+    if (typeFilter) typeFilter.value = mapBrowserFilters.type;
+    if (rarityFilter) rarityFilter.value = mapBrowserFilters.rarity;
+    if (shipTypeFilter) shipTypeFilter.value = mapBrowserFilters.shipType;
+    if (nationalityFilter) nationalityFilter.value = mapBrowserFilters.nationality;
+    if (searchInput) searchInput.value = mapBrowserFilters.search;
+}
 
 // ===== Maps Modal (Ship → Stages) =====
 
@@ -217,6 +245,7 @@ async function openMapBrowserModal() {
 
     // Populate filter dropdowns
     populateMapBrowserFilters();
+    syncMapBrowserControls();
 
     // Render content
     renderMapBrowserContent();
@@ -422,11 +451,6 @@ function createMapBrowserShipCard(ship) {
         name: ship.nationality,
         code: ship.nationality
     };
-    const shipTypeInfo = state.shipTypeData[String(ship.type)] || {
-        type_name: `함종 ${ship.type}`,
-        icon: ''
-    };
-
     return `
         <div class="map-browser-ship-card" data-ship-name="${ship.name}">
             <img src="${ship.shipyard || ''}" alt="${ship.name}" class="map-browser-ship-image"
@@ -444,17 +468,7 @@ function createMapBrowserShipCard(ship) {
 
 function closeMapBrowserModal() {
     closeModal('mapBrowserModal', {
-        onClose: () => {
-            mapBrowserFilters = {
-                area: 'all',
-                map: 'all',
-                type: 'all',
-                rarity: 'all',
-                shipType: 'all',
-                nationality: 'all',
-                search: ''
-            };
-        }
+        onClose: resetMapBrowserFilters
     });
 }
 
@@ -469,17 +483,7 @@ export function setupMapBrowserListeners() {
         closeButtonSelector: '#closeMapBrowserModal',
         closeOnBackdrop: true,
         closeOnEscape: true,
-        onClose: () => {
-            mapBrowserFilters = {
-                area: 'all',
-                map: 'all',
-                type: 'all',
-                rarity: 'all',
-                shipType: 'all',
-                nationality: 'all',
-                search: ''
-            };
-        }
+        onClose: resetMapBrowserFilters
     });
 
     // Filter change handlers
