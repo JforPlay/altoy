@@ -1,0 +1,80 @@
+/* ===== Shipgirl Info Shared Modal Shell ===== */
+.shipgirl-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-intense);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  padding: 1.25rem;
+  backdrop-filter: blur(4px);
+}
+
+.shipgirl-modal-content {
+  background: var(--card-bg);
+  border-radius: var(--radius-xl, 1rem);
+  max-width: var(--shipgirl-modal-width, 50rem);
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0.625rem 2.5rem var(--overlay-strong);
+  animation: shipgirlModalIn 0.3s ease-out;
+}
+
+@keyframes shipgirlModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(-1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.shipgirl-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.shipgirl-modal-header h2 {
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.shipgirl-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast), background var(--transition-fast);
+  border-radius: var(--radius-sm);
+}
+
+.shipgirl-modal-close:hover {
+  color: var(--text-primary);
+  background: var(--highlight-subtle, var(--section-bg));
+}
+
+.shipgirl-modal-body {
+  overflow-y: auto;
+  flex: 1;
+}
+
+@media (max-width: 48rem) {
+  .shipgirl-modal {
+    padding: 0.625rem;
+  }
+
+  .shipgirl-modal-content {
+    max-height: 95vh;
+    border-radius: var(--radius-lg, 0.75rem);
+  }
+}

@@ -1,72 +1,23 @@
 /* ===== Skill Search Modal ===== */
-.skill-search-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: var(--overlay-intense);
-  z-index: 10000;
-  justify-content: center;
-  align-items: center;
-  padding: 1.25rem;
-  backdrop-filter: blur(4px);
-}
-
 .skill-search-modal-content {
-  background: var(--card-bg);
-  border-radius: 1rem;
-  max-width: 62rem;
-  width: 100%;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0.625rem 2.5rem var(--overlay-strong);
-  animation: modalSlideIn 0.3s ease-out;
-}
-
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-1.25rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  --shipgirl-modal-width: 62rem;
 }
 
 .skill-search-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid var(--border-color);
 }
 
 .skill-search-modal-header h2 {
-  margin: 0;
   font-size: 1.25rem;
-  color: var(--text-primary);
 }
 
 .skill-search-modal-close {
-  background: none;
-  border: none;
   font-size: 1.25rem;
-  color: var(--text-secondary);
-  cursor: pointer;
   padding: 0.25rem 0.5rem;
-  border-radius: var(--radius-sm);
-  transition: background var(--transition-fast);
-}
-
-.skill-search-modal-close:hover {
-  background: var(--highlight-subtle);
 }
 
 .skill-search-modal-body {
   padding: 1rem 1.25rem;
-  overflow-y: auto;
-  flex: 1;
   scrollbar-width: thin;
   scrollbar-color: var(--border-color) transparent;
 }
@@ -468,14 +419,6 @@ body.dark-mode .skill-view-btn.active {
 
 /* ===== Responsive ===== */
 @media (max-width: 48rem) {
-  .skill-search-modal {
-    padding: 0.5rem;
-  }
-
-  .skill-search-modal-content {
-    max-height: 95vh;
-  }
-
   .skill-search-toolbar {
     flex-direction: column;
     align-items: stretch;

@@ -5,7 +5,7 @@
  * Exports LINKS and setup functions so page scripts can re-invoke specific behaviors.
  */
 
-import { throttle, setupScrollToTop, getStorageItem, setStorageItem, getUrlParam } from './utils.js';
+import { throttle, setupScrollToTop, getStorageItem, setStorageItem, getUrlParam, getBasePath } from './utils.js';
 
 // ===== Drive Sync Feature Flag =====
 //
@@ -97,11 +97,6 @@ const LINKS = {
     EXTERNAL_GODROOKLYN: 'https://godrooklyn.tistory.com/',
     EXTERNAL_GITHUB: 'https://github.com/JforPlay/altoy'
 };
-
-// ===== Link Initialization =====
-function getBasePath() {
-    return window.location.pathname.startsWith('/altoy') ? '/altoy' : '';
-}
 
 /**
  * Resolve all [data-link] anchors on the page to their full URLs.
@@ -314,10 +309,20 @@ function setupInfoPopups() {
  *   </div>
  * </div>
  */
+let tooltipGlobalListenersBound = false;
+
+function closeVisibleTooltips() {
+    document.querySelectorAll('.info-tooltip.visible').forEach(tooltip => {
+        tooltip.classList.remove('visible');
+    });
+}
+
 function setupTooltipToggles() {
     const tooltipButtons = document.querySelectorAll('.tooltip-toggle-button');
 
     tooltipButtons.forEach(button => {
+        if (button.dataset.tooltipToggleBound === 'true') return;
+
         const targetId = button.getAttribute('data-tooltip-target');
         if (!targetId) return;
 
@@ -334,23 +339,24 @@ function setupTooltipToggles() {
 
             tooltip.classList.toggle('visible');
         });
+
+        button.dataset.tooltipToggleBound = 'true';
     });
+
+    if (tooltipGlobalListenersBound) return;
 
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.tooltip-toggle-button') && !e.target.closest('.info-tooltip')) {
-            document.querySelectorAll('.info-tooltip.visible').forEach(tooltip => {
-                tooltip.classList.remove('visible');
-            });
+            closeVisibleTooltips();
+        }
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeVisibleTooltips();
         }
     });
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.info-tooltip.visible').forEach(tooltip => {
-                tooltip.classList.remove('visible');
-            });
-        }
-    });
+    tooltipGlobalListenersBound = true;
 }
 
 // ===== Resize Handler =====
