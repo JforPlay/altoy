@@ -8,6 +8,9 @@
  */
 
 import { fetchJSONWithCache, getStorageItem, setStorageItem, createImg, IMG_FALLBACKS, createSearchIndex, debounce } from '../utils.js';
+import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
+
+const { parseProgress } = ShipgirlTrackerUtils;
 
 document.addEventListener('DOMContentLoaded', () => {
     const SAVE_KEY = 'shipgirlTrackerProgress';
@@ -166,6 +169,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebarBody = document.getElementById('sidebar-content');
     const rightPane = document.getElementById('right-pane');
 
+    function loadProgress() {
+        try {
+            return parseProgress(getStorageItem(SAVE_KEY, null));
+        } catch (err) {
+            console.error('Failed to load tracker progress:', err);
+            return {};
+        }
+    }
+
+    function showLoadError() {
+        const message = '<p class="rt-error">데이터를 불러오는 데 실패했습니다.</p>';
+        sidebarBody.innerHTML = message;
+        rightPane.innerHTML = message;
+    }
+
     /**
      * Load all data sources in parallel and build authoritative drop gid sets.
      *
@@ -264,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (label) shopDropLabel.set(gid, label);
             }
 
-            progress = JSON.parse(getStorageItem(SAVE_KEY, null) || '{}');
+            progress = loadProgress();
             try {
                 const stored = getStorageItem(PINNED_KEY, null);
                 if (stored) {
@@ -278,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
             init();
         } catch (error) {
             console.error('Failed to load data:', error);
-            rightPane.innerHTML = '<p class="rt-error">데이터를 불러오는 데 실패했습니다.</p>';
+            showLoadError();
         }
     }
 
@@ -416,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 typeName: typeInfo?.type_name || '',
                 position: typeInfo?.position || '',
                 icon: ship.icon,
-                isPermanent: isPermanentShip(ship),
+                isPermanent: isPermanentShip({ ...ship, gid }),
             });
         }
         return createSearchIndex(entries, {
@@ -504,6 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const abbr = FACTION_ABBR[factionName] || factionName;
             const tab = document.createElement('button');
             tab.className = 'rt-tab';
+            tab.type = 'button';
             tab.dataset.faction = factionName;
             tab.title = factionName;
             tab.innerHTML = natInfo
@@ -517,7 +536,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function switchTab(factionName) {
         activeFaction = factionName;
         tabsContainer.querySelectorAll('.rt-tab').forEach(t => {
-            t.classList.toggle('active', t.dataset.faction === factionName);
+            const isActive = t.dataset.faction === factionName;
+            t.classList.toggle('active', isActive);
+            t.setAttribute('aria-pressed', String(isActive));
         });
         renderFactionContent(factionName);
     }
@@ -559,7 +580,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const rarities = ['ur', 'ssr', 'sr', 'r', 'n'];
         const rarityBtns = rarities.map(r => {
             const active = activeRarities.has(r) ? ' active' : '';
-            return `<button class="rt-rarity-btn${active}" data-rarity="${r}">${r.toUpperCase()}</button>`;
+            const pressed = activeRarities.has(r) ? 'true' : 'false';
+            return `<button type="button" class="rt-rarity-btn${active}" data-rarity="${r}" aria-pressed="${pressed}">${r.toUpperCase()}</button>`;
         }).join('');
 
         const statuses = [
@@ -568,7 +590,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         const statusBtns = statuses.map(s => {
             const active = activeStatuses.has(s.key) ? ' active' : '';
-            return `<button class="rt-status-btn${active}" data-status="${s.key}">${s.label}</button>`;
+            const pressed = activeStatuses.has(s.key) ? 'true' : 'false';
+            return `<button type="button" class="rt-status-btn${active}" data-status="${s.key}" aria-pressed="${pressed}">${s.label}</button>`;
         }).join('');
 
         bar.innerHTML = `
@@ -586,6 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 rarityBtn.classList.toggle('active');
                 if (activeRarities.has(rarity)) activeRarities.delete(rarity);
                 else activeRarities.add(rarity);
+                rarityBtn.setAttribute('aria-pressed', String(activeRarities.has(rarity)));
                 applyFilters();
             }
             if (statusBtn) {
@@ -593,6 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusBtn.classList.toggle('active');
                 if (activeStatuses.has(status)) activeStatuses.delete(status);
                 else activeStatuses.add(status);
+                statusBtn.setAttribute('aria-pressed', String(activeStatuses.has(status)));
                 applyFilters();
             }
         });
@@ -791,6 +816,17 @@ document.addEventListener('DOMContentLoaded', () => {
             section.appendChild(createShipGroup(sg, groupShips));
         }
 
+        if (!section.querySelector('.rt-group')) {
+            section.innerHTML = '<p class="rt-empty">표시할 상시 획득 함순이가 없습니다.</p>';
+            return section;
+        }
+
+        const filterEmpty = document.createElement('p');
+        filterEmpty.className = 'rt-empty rt-filter-empty';
+        filterEmpty.hidden = true;
+        filterEmpty.textContent = '현재 필터와 일치하는 함순이가 없습니다.';
+        section.appendChild(filterEmpty);
+
         return section;
     }
 
@@ -814,6 +850,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const header = document.createElement('button');
         header.className = 'rt-group-header';
         header.type = 'button';
+        header.setAttribute('aria-expanded', 'true');
         header.innerHTML = `
             <span class="material-symbols-outlined rt-group-icon">${sg.icon}</span>
             <span class="rt-group-label">${sg.label}</span>
@@ -834,6 +871,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         header.addEventListener('click', () => {
             const isOpen = group.classList.toggle('open');
+            header.setAttribute('aria-expanded', String(isOpen));
             header.querySelector('.rt-group-chevron').textContent = isOpen ? 'expand_less' : 'expand_more';
         });
 
@@ -1034,11 +1072,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const show = activeRarities.has(rarity) && activeStatuses.has(status);
             row.classList.toggle('filter-hidden', !show);
         });
+        let totalVisible = 0;
         rightPane.querySelectorAll('.rt-group').forEach(group => {
             const visible = group.querySelectorAll('.rt-ship-row:not(.filter-hidden)').length;
+            totalVisible += visible;
+            group.hidden = visible === 0;
             const countEl = group.querySelector('.rt-group-count');
             if (countEl) countEl.textContent = `${visible}척`;
         });
+        const filterEmpty = rightPane.querySelector('.rt-filter-empty');
+        if (filterEmpty) filterEmpty.hidden = totalVisible > 0;
     }
 
     /**
@@ -1130,7 +1173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('storage', (e) => {
         if (e.key === SAVE_KEY) {
             try {
-                progress = JSON.parse(e.newValue || '{}');
+                progress = parseProgress(e.newValue);
             } catch (err) {
                 console.error('Failed to sync progress from storage event:', err);
                 return;

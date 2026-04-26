@@ -17,13 +17,25 @@ const ShipgirlTrackerUtils = {
     },
 
     /**
-     * Utility function to get checked filter values.
-     * @param {string} selector - CSS selector for the checkboxes.
-     * @returns {Array} Array of checked values.
+     * Validate and normalize a tracker progress payload (from localStorage or a storage event).
+     * Defines the cross-tab sync contract shared by shipgirl-tracker and research-tracker:
+     * a plain object whose values are integers in the 3-bit checkbox-mask range [0, 7].
+     * Any malformed entry is silently dropped so a bad write in one tab can't poison the other.
+     * @param {string|null} rawValue - Raw JSON string (e.g. localStorage value or storage event newValue).
+     * @returns {Object<string, number>} Cleaned shipId → state map.
      */
-    getCheckedFilterValues(selector) {
-        return Array.from(document.querySelectorAll(selector))
-            .map(cb => cb.value);
+    parseProgress(rawValue) {
+        const parsed = rawValue ? JSON.parse(rawValue) : {};
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {};
+
+        const cleaned = {};
+        for (const [shipId, state] of Object.entries(parsed)) {
+            const numericState = Number(state);
+            if (Number.isInteger(numericState) && numericState >= 0 && numericState <= 7) {
+                cleaned[shipId] = numericState;
+            }
+        }
+        return cleaned;
     },
 
     /**

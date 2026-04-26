@@ -29,6 +29,37 @@ document.addEventListener('DOMContentLoaded', () => {
         totalScoreValue: null,
         totalScoreMax: null
     };
+    const shipCardById = new Map();
+
+    function getShipCards() {
+        return Array.from(shipCardById.values());
+    }
+
+    function getCardProgressState(card) {
+        let state = 0;
+        if (card?._cb?.get?.checked) state |= 1;
+        if (card?._cb?.level?.checked) state |= 2;
+        if (card?._cb?.upgrade?.checked) state |= 4;
+        return state;
+    }
+
+    // Assumes a card exists for every shipId that should be persisted.
+    // If card creation ever becomes filtered, switch back to merge-with-storage.
+    function collectProgressFromCards() {
+        const progress = {};
+        getShipCards().forEach(card => {
+            const state = getCardProgressState(card);
+            if (state > 0) {
+                progress[card.dataset.shipId] = state;
+            }
+        });
+        return progress;
+    }
+
+    function isProgressFilterActive() {
+        const progressFilter = document.getElementById('progress-filter');
+        return progressFilter && progressFilter.value !== 'all';
+    }
 
     /**
      * Caches frequently accessed DOM elements for performance optimization.
@@ -43,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Use utilities from external file
-    const { parseDatasetInt, filterSearchDropdown, setupDropdownToggle, createTrackerItem } = ShipgirlTrackerUtils;
+    const { parseDatasetInt, filterSearchDropdown, setupDropdownToggle, createTrackerItem, parseProgress } = ShipgirlTrackerUtils;
 
     /**
      * Lookup ship data by name for goal tracker.
@@ -1312,7 +1343,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {boolean} shouldBeChecked - The desired state of the checkbox.
      */
     function bulkCheck(type, shouldBeChecked) {
-        document.querySelectorAll('.ship-card').forEach(card => {
+        getShipCards().forEach(card => {
             if (filteredShipIds.includes(card.dataset.shipId)) {
                 if (type === 'all') {
                     // For 'all' type, we need to handle the checkboxes in the right order
@@ -1356,8 +1387,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
-        calculateAndDisplayScores();
         autoSaveProgress();
+        if (isProgressFilterActive()) {
+            applyFilters();
+        } else {
+            calculateAndDisplayScores();
+        }
     }
 
     // ===== Confirmation Modal =====
@@ -1400,18 +1435,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Saves the current progress (checked boxes) to localStorage.
      */
     function autoSaveProgress() {
-        const progress = JSON.parse(getStorageItem(SAVE_KEY, null) || '{}');
-        document.querySelectorAll('.ship-card').forEach(card => {
-            let state = 0;
-            if (card._cb.get?.checked) state |= 1;
-            if (card._cb.level?.checked) state |= 2;
-            if (card._cb.upgrade?.checked) state |= 4;
-            if (state > 0) {
-                progress[card.dataset.shipId] = state;
-            } else {
-                delete progress[card.dataset.shipId];
-            }
-        });
+        const progress = collectProgressFromCards();
         try {
             setStorageItem(SAVE_KEY, JSON.stringify(progress));
         } catch (err) {
@@ -1424,14 +1448,13 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {object} progress - The progress object loaded from localStorage.
      */
     function applyProgress(progress) {
-        document.querySelectorAll('.ship-card').forEach(card => {
+        const nextProgress = progress && typeof progress === 'object' ? progress : {};
+        getShipCards().forEach(card => {
             const shipId = card.dataset.shipId;
-            if (progress[shipId]) {
-                const state = progress[shipId];
-                if (card._cb.get) card._cb.get.checked = (state & 1) > 0;
-                if (card._cb.level) card._cb.level.checked = (state & 2) > 0;
-                if (card._cb.upgrade) card._cb.upgrade.checked = (state & 4) > 0;
-            }
+            const state = nextProgress[shipId] || 0;
+            if (card._cb.get) card._cb.get.checked = (state & 1) > 0;
+            if (card._cb.level) card._cb.level.checked = (state & 2) > 0;
+            if (card._cb.upgrade) card._cb.upgrade.checked = (state & 4) > 0;
         });
     }
 
@@ -1442,8 +1465,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const savedProgress = getStorageItem(SAVE_KEY, null);
         if (!savedProgress) return;
         try {
-            const progress = JSON.parse(savedProgress);
-            applyProgress(progress);
+            applyProgress(parseProgress(savedProgress));
         } catch (e) {
             console.error("Failed to parse saved progress:", e);
         }
@@ -1716,12 +1738,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const isTypeFilterActive = checkedTypes.length > 0;
         const isRarityFilterActive = checkedRarities.length > 0;
 
-        const savedProgress = JSON.parse(getStorageItem(SAVE_KEY, null) || '{}');
-
         filteredShipIds = Object.keys(fullShipData).filter(shipId => {
             const ship = fullShipData[shipId];
 
-            const state = savedProgress[shipId] || 0;
+            const state = getCardProgressState(shipCardById.get(shipId));
             const isAnyChecked = state > 0;
 
             let progressMatch = true;
@@ -1808,10 +1828,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container) return;
         const fragment = document.createDocumentFragment();
         maxFleetTech = 0;
+        shipCardById.clear();
         Object.keys(fullShipData).forEach(shipId => {
             const ship = fullShipData[shipId];
             if (ship) {
                 const card = createShipCard(ship, shipId);
+                shipCardById.set(shipId, card);
                 fragment.appendChild(card);
                 maxFleetTech += (ship.pt_get ?? 0) + (ship.pt_level ?? 0) + (ship.pt_upgrage ?? 0);
             }
@@ -1889,20 +1911,33 @@ document.addEventListener('DOMContentLoaded', () => {
             cachedElements.shipListContainer.addEventListener('change', (e) => {
                 if (e.target.classList.contains('tracker-checkbox')) {
                     handleCheckboxLogic(e.target);
-                    debouncedCalculateScores();
                     autoSaveProgress();
+                    if (isProgressFilterActive()) {
+                        applyFilters();
+                    } else {
+                        debouncedCalculateScores();
+                    }
                 }
             });
 
             // Cross-tab sync: update when another tab changes progress
             window.addEventListener('storage', (e) => {
-                if (e.key !== SAVE_KEY) return;
-                try {
-                    const newProgress = JSON.parse(e.newValue || '{}');
-                    applyProgress(newProgress);
-                    calculateAndDisplayScores();
-                } catch (err) {
-                    console.error('Failed to sync progress from storage event:', err);
+                if (e.key === SAVE_KEY) {
+                    try {
+                        applyProgress(parseProgress(e.newValue));
+                        if (isProgressFilterActive()) {
+                            applyFilters();
+                        } else {
+                            calculateAndDisplayScores();
+                        }
+                    } catch (err) {
+                        console.error('Failed to sync progress from storage event:', err);
+                    }
+                } else if (e.key === GOAL_KEY) {
+                    const goalModal = document.getElementById('goal-modal');
+                    if (goalModal?.classList.contains('active')) {
+                        renderGoalTracker();
+                    }
                 }
             });
 
