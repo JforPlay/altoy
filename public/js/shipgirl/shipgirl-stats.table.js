@@ -9,13 +9,8 @@
 
 import { createImgElement, IMG_FALLBACKS } from '../utils.js';
 import {
-    PRIMARY_STATS,
-    SECONDARY_STATS,
-    getAttrKoreanName,
-    getAttrIcon,
     getNationalityName,
     getShipTypeName,
-    getShipTypeIcon,
     getShipIconUrl,
 } from './shipgirl-stats.data.js';
 
@@ -300,6 +295,7 @@ export function renderShipTable() {
                     cb.className = 'compare-check';
                     cb.dataset.ship = shipId;
                     cb.checked = state.compareList.includes(shipId);
+                    cb.setAttribute('aria-label', `${entry.ship?.name ?? ''} 비교 선택`);
                     td.appendChild(cb);
                     break;
                 }
@@ -403,6 +399,7 @@ export function renderSkinTable() {
                     cb.className = 'compare-check';
                     cb.dataset.ship = shipId;
                     cb.checked = state.compareList.includes(shipId);
+                    cb.setAttribute('aria-label', `${entry.ship?.name ?? ''} 비교 선택`);
                     td.appendChild(cb);
                     break;
                 }

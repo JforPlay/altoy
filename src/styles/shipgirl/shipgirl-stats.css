@@ -46,6 +46,18 @@ body {
     to { transform: rotate(360deg); }
 }
 
+.stats-page-status {
+    margin: var(--spacing-lg) auto;
+    padding: var(--spacing-md);
+    max-width: 36rem;
+    text-align: center;
+    color: var(--danger-color);
+    background: var(--card-bg);
+    border: 1px solid var(--danger-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
 /* -- Header -- */
 .stats-header {
     text-align: center;
@@ -311,6 +323,18 @@ body {
     position: relative;
     height: 14rem;
     width: 100%;
+}
+
+.chart-container.chart-empty::after {
+    content: "차트를 불러올 수 없습니다";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-align: center;
 }
 
 .chart-container-wide {

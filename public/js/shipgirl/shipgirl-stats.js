@@ -7,8 +7,8 @@
  * ship type, nationality), threshold filters, and compare mode event wiring.
  */
 
-import { debounce, showElement, hideElement, toggleElement, showToast, setupScrollToTop } from '../utils.js';
-import { setup as setupData, loadAllData, PRIMARY_STATS, SKIN_TAG_KEYS, getNationalityName, getShipTypeName } from './shipgirl-stats.data.js';
+import { debounce, hideElement, showToast, setupScrollToTop } from '../utils.js';
+import { setup as setupData, loadAllData, PRIMARY_STATS } from './shipgirl-stats.data.js';
 import { setup as setupDashboard, renderShipDashboard, renderSkinDashboard, renderTopStatChart, destroyAllCharts } from './shipgirl-stats.dashboard.js';
 import { setup as setupTable, renderShipTable, renderSkinTable } from './shipgirl-stats.table.js';
 import { setup as setupCompare, updateCompareBar, openCompareModal } from './shipgirl-stats.compare.js';
@@ -48,6 +48,9 @@ async function init() {
     } catch (err) {
         console.error('Failed to load stats data:', err);
         showToast('데이터를 불러오지 못했습니다.', 'error');
+        hideElement(document.getElementById('loading'));
+        showPageStatus('데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
+        return;
     }
 
     hideElement(document.getElementById('loading'));
@@ -57,6 +60,13 @@ async function init() {
     setupThresholdFilters();
     applyFilters();
     setupScrollToTop('scroll-to-top');
+}
+
+function showPageStatus(message) {
+    const status = document.getElementById('statsPageStatus');
+    if (!status) return;
+    status.textContent = message;
+    status.hidden = false;
 }
 
 // ===== Filter Dropdowns =====
@@ -70,10 +80,10 @@ function populateFilterDropdowns() {
             .filter(e => e.name)
             .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
 
-        const opts = typeEntries
-            .map(e => `<option value="${e.id}">${e.name}</option>`)
-            .join('');
-        shipTypeSelect.innerHTML = '<option value="">모든 함종</option>' + opts;
+        shipTypeSelect.replaceChildren(createOption('', '모든 함종'));
+        for (const entry of typeEntries) {
+            shipTypeSelect.appendChild(createOption(entry.id, entry.name));
+        }
     }
 
     // Nationality filter
@@ -84,11 +94,18 @@ function populateFilterDropdowns() {
             .filter(e => e.name)
             .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
 
-        const opts = natEntries
-            .map(e => `<option value="${e.id}">${e.name}</option>`)
-            .join('');
-        nationalitySelect.innerHTML = '<option value="">모든 진영</option>' + opts;
+        nationalitySelect.replaceChildren(createOption('', '모든 진영'));
+        for (const entry of natEntries) {
+            nationalitySelect.appendChild(createOption(entry.id, entry.name));
+        }
     }
+}
+
+function createOption(value, label) {
+    const option = document.createElement('option');
+    option.value = String(value);
+    option.textContent = label;
+    return option;
 }
 
 // ===== Threshold Filters =====
@@ -100,13 +117,7 @@ function setupThresholdFilters() {
         const fragment = document.createDocumentFragment();
         for (const stat of PRIMARY_STATS) {
             const label = _getAttrLabel(stat);
-            const group = document.createElement('div');
-            group.className = 'threshold-group';
-            group.innerHTML = `
-                <label class="threshold-label">${label}</label>
-                <input type="number" class="threshold-input" data-stat="${stat}" min="0" placeholder="최솟값">
-            `;
-            fragment.appendChild(group);
+            fragment.appendChild(createThresholdInput(label, 'stat', stat));
         }
         shipControls.appendChild(fragment);
 
@@ -127,7 +138,9 @@ function setupThresholdFilters() {
     if (shipToggle) {
         shipToggle.addEventListener('click', () => {
             const section = shipToggle.closest('.threshold-section');
-            if (section) section.classList.toggle('open');
+            if (!section) return;
+            const isOpen = section.classList.toggle('open');
+            shipToggle.setAttribute('aria-expanded', String(isOpen));
         });
     }
 
@@ -144,13 +157,7 @@ function setupThresholdFilters() {
 
         const fragment = document.createDocumentFragment();
         for (const def of skinThresholdDefs) {
-            const group = document.createElement('div');
-            group.className = 'threshold-group';
-            group.innerHTML = `
-                <label class="threshold-label">${def.label}</label>
-                <input type="number" class="threshold-input" data-skin-stat="${def.key}" min="0" placeholder="최솟값">
-            `;
-            fragment.appendChild(group);
+            fragment.appendChild(createThresholdInput(def.label, 'skinStat', def.key));
         }
         skinControls.appendChild(fragment);
 
@@ -171,9 +178,35 @@ function setupThresholdFilters() {
     if (skinToggle) {
         skinToggle.addEventListener('click', () => {
             const section = skinToggle.closest('.threshold-section');
-            if (section) section.classList.toggle('open');
+            if (!section) return;
+            const isOpen = section.classList.toggle('open');
+            skinToggle.setAttribute('aria-expanded', String(isOpen));
         });
     }
+}
+
+function createThresholdInput(labelText, dataKey, dataValue) {
+    const group = document.createElement('div');
+    group.className = 'threshold-group';
+
+    const inputId = `threshold-${dataKey}-${String(dataValue).replace(/[^a-z0-9_-]/gi, '-')}`;
+
+    const label = document.createElement('label');
+    label.className = 'threshold-label';
+    label.htmlFor = inputId;
+    label.textContent = labelText;
+
+    const input = document.createElement('input');
+    input.id = inputId;
+    input.type = 'number';
+    input.className = 'threshold-input';
+    input.min = '0';
+    input.placeholder = '최솟값';
+    input.dataset[dataKey] = dataValue;
+
+    group.appendChild(label);
+    group.appendChild(input);
+    return group;
 }
 
 // ===== Filtering =====
@@ -256,6 +289,7 @@ function switchTab(tab) {
     // Update toggle button active states
     document.querySelectorAll('.tab-toggle-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === tab);
+        btn.setAttribute('aria-pressed', String(btn.dataset.tab === tab));
     });
 
     // Slide the indicator
@@ -305,8 +339,12 @@ function setupEventListeners() {
         rarityChips.addEventListener('click', e => {
             const chip = e.target.closest('.rarity-chip');
             if (!chip) return;
-            rarityChips.querySelectorAll('.rarity-chip').forEach(c => c.classList.remove('active'));
+            rarityChips.querySelectorAll('.rarity-chip').forEach(c => {
+                c.classList.remove('active');
+                c.setAttribute('aria-pressed', 'false');
+            });
             chip.classList.add('active');
+            chip.setAttribute('aria-pressed', 'true');
             state.shipPage = 1;
             state.skinPage = 1;
             applyFilters();
@@ -338,6 +376,7 @@ function setupEventListeners() {
         shipExpandCols.addEventListener('click', () => {
             state.shipExpanded = !state.shipExpanded;
             shipExpandCols.classList.toggle('active', state.shipExpanded);
+            shipExpandCols.setAttribute('aria-pressed', String(state.shipExpanded));
             renderShipTable();
         });
     }

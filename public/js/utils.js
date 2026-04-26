@@ -247,13 +247,21 @@ function createImg(src, alt = '', options = {}) {
  * @returns {HTMLImageElement} - Image element
  */
 function createImgElement(src, alt = '', options = {}) {
-    const { className = '', eager = false, onError = null } = options;
+    const { className = '', eager = false, onError = null, fallback = '' } = options;
     const img = new Image();
     img.src = src;
     img.alt = alt;
     img.loading = eager ? 'eager' : 'lazy';
     if (className) img.className = className;
-    if (onError) img.onerror = onError;
+    if (onError) {
+        img.onerror = onError;
+    } else if (fallback) {
+        img.onerror = () => {
+            if (img.src !== fallback) {
+                img.src = fallback;
+            }
+        };
+    }
     return img;
 }
 

@@ -8,7 +8,7 @@
  */
 
 import { normalizeRomanNumerals } from '../utils.js';
-import { getAttrKoreanName, getNationalityName, getShipTypeName, PRIMARY_STATS, SKIN_TAG_KEYS } from './shipgirl-stats.data.js';
+import { getAttrKoreanName, getNationalityName, getShipTypeName } from './shipgirl-stats.data.js';
 
 // ===== State =====
 let state;
@@ -41,6 +41,18 @@ function getChartColors() {
 // ===== Shared Helpers =====
 function destroyChart(key) {
     if (charts[key]) { charts[key].destroy(); charts[key] = null; }
+}
+
+function createChart(key, canvas, config) {
+    if (typeof window === 'undefined' || typeof window.Chart !== 'function') {
+        canvas.hidden = true;
+        canvas.closest('.chart-container')?.classList.add('chart-empty');
+        return;
+    }
+
+    canvas.hidden = false;
+    canvas.closest('.chart-container')?.classList.remove('chart-empty');
+    charts[key] = new window.Chart(canvas, config);
 }
 
 function getFilteredData() {
@@ -114,7 +126,7 @@ function _renderShipTypeChart(data) {
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
     const colors = getChartColors();
 
-    charts.shipType = new Chart(canvas, {
+    createChart('shipType', canvas, {
         type: 'bar',
         data: {
             labels: sorted.map(e => e[0]),
@@ -133,7 +145,7 @@ function _renderNationalityChart(data) {
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 15);
     const colors = getChartColors();
 
-    charts.nationality = new Chart(canvas, {
+    createChart('nationality', canvas, {
         type: 'bar',
         data: {
             labels: sorted.map(e => e[0]),
@@ -164,7 +176,7 @@ export function renderTopStatChart() {
         .slice(0, 10)
         .reverse();
 
-    charts.topStat = new Chart(canvas, {
+    createChart('topStat', canvas, {
         type: 'bar',
         data: {
             labels: sorted.map(d => d.ship.name),
@@ -256,7 +268,7 @@ function _renderTagChart(data) {
     const values = [l2d, l2dPlus, dual, petit, other];
     const bgColors = labels.map(l => colors.tagColors[l]);
 
-    charts.tag = new Chart(canvas, {
+    createChart('tag', canvas, {
         type: 'doughnut',
         data: { labels, datasets: [{ data: values, backgroundColor: bgColors, borderWidth: 0 }] },
         options: {
@@ -277,7 +289,7 @@ function _renderTopSkinChart(data) {
     const sorted = [...data].sort((a, b) => b.skin.total - a.skin.total).slice(0, 10).reverse();
     const colors = getChartColors();
 
-    charts.topSkin = new Chart(canvas, {
+    createChart('topSkin', canvas, {
         type: 'bar',
         data: {
             labels: sorted.map(d => d.ship.name),
@@ -303,7 +315,7 @@ function _renderSkinTypeChart(data) {
     const sorted = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]).slice(0, 15);
     const colors = getChartColors();
 
-    charts.skinType = new Chart(canvas, {
+    createChart('skinType', canvas, {
         type: 'bar',
         data: {
             labels: sorted.map(e => e[0]),
@@ -339,7 +351,7 @@ function _renderTimelineChart(data) {
     if (filtered.length === 0) return;
 
     const colors = getChartColors();
-    charts.timeline = new Chart(canvas, {
+    createChart('timeline', canvas, {
         type: 'bar',
         data: {
             labels: filtered,
@@ -417,7 +429,7 @@ function _renderTrendChart(data) {
     }
 
     const colors = getChartColors();
-    charts.trend = new Chart(canvas, {
+    createChart('trend', canvas, {
         type: 'line',
         data: {
             labels: months,

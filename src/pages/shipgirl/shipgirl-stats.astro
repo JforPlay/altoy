@@ -14,6 +14,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <div class="spinner"></div>
             <span>데이터 로딩 중...</span>
         </div>
+        <div id="statsPageStatus" class="stats-page-status" role="status" hidden></div>
 
         <!-- Header -->
         <header class="stats-header">
@@ -29,11 +30,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <!-- Pill toggle (Ship / Skin tabs) -->
         <div class="tab-toggle-container">
             <div class="tab-toggle">
-                <button class="tab-toggle-btn active" data-tab="ship">
+                <button type="button" class="tab-toggle-btn active" data-tab="ship" aria-pressed="true">
                     <span class="material-symbols-outlined">directions_boat</span>
                     함순이 통계
                 </button>
-                <button class="tab-toggle-btn" data-tab="skin">
+                <button type="button" class="tab-toggle-btn" data-tab="skin" aria-pressed="false">
                     <span class="material-symbols-outlined">checkroom</span>
                     스킨 통계
                 </button>
@@ -44,14 +45,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <!-- Filter bar -->
         <div class="filter-bar">
             <div class="filter-bar-inner">
-                <input type="text" id="searchInput" class="filter-search" placeholder="이름 검색...">
+                <input type="search" id="searchInput" class="filter-search" placeholder="이름 검색..." aria-label="함순이 이름 검색">
                 <div id="rarityChips" class="rarity-chips">
-                    <button class="rarity-chip active" data-rarity="">전체</button>
-                    <button class="rarity-chip" data-rarity="N">N</button>
-                    <button class="rarity-chip" data-rarity="R">R</button>
-                    <button class="rarity-chip" data-rarity="SR">SR</button>
-                    <button class="rarity-chip" data-rarity="SSR">SSR</button>
-                    <button class="rarity-chip" data-rarity="UR">UR</button>
+                    <button type="button" class="rarity-chip active" data-rarity="" aria-pressed="true">전체</button>
+                    <button type="button" class="rarity-chip" data-rarity="N" aria-pressed="false">N</button>
+                    <button type="button" class="rarity-chip" data-rarity="R" aria-pressed="false">R</button>
+                    <button type="button" class="rarity-chip" data-rarity="SR" aria-pressed="false">SR</button>
+                    <button type="button" class="rarity-chip" data-rarity="SSR" aria-pressed="false">SSR</button>
+                    <button type="button" class="rarity-chip" data-rarity="UR" aria-pressed="false">UR</button>
                 </div>
                 <select id="shipTypeFilter" class="filter-select">
                     <option value="">모든 함종</option>
@@ -118,7 +119,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
             <!-- Threshold filters -->
             <div class="threshold-section">
-                <button id="shipThresholdToggle" class="threshold-toggle">
+                <button type="button" id="shipThresholdToggle" class="threshold-toggle" aria-expanded="false" aria-controls="shipThresholdControls">
                     <span class="material-symbols-outlined">tune</span>
                     스탯 범위 필터
                     <span class="material-symbols-outlined toggle-arrow">expand_more</span>
@@ -130,7 +131,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <section class="table-section">
                 <div class="table-controls">
                     <span id="shipTableCount" class="table-count"></span>
-                    <button id="shipExpandCols" class="expand-cols-btn" title="열 펼치기/접기">
+                    <button type="button" id="shipExpandCols" class="expand-cols-btn" title="열 펼치기/접기" aria-pressed="false">
                         <span class="material-symbols-outlined">view_column</span>
                     </button>
                 </div>
@@ -206,7 +207,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
             <!-- Threshold filters -->
             <div class="threshold-section">
-                <button id="skinThresholdToggle" class="threshold-toggle">
+                <button type="button" id="skinThresholdToggle" class="threshold-toggle" aria-expanded="false" aria-controls="skinThresholdControls">
                     <span class="material-symbols-outlined">tune</span>
                     스킨 범위 필터
                     <span class="material-symbols-outlined toggle-arrow">expand_more</span>
@@ -233,11 +234,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div id="compareBar" class="compare-bar">
             <div id="compareBarItems" class="compare-bar-items"></div>
             <div class="compare-bar-actions">
-                <button id="compareBtn" class="compare-bar-btn compare-bar-btn-primary">
+                <button type="button" id="compareBtn" class="compare-bar-btn compare-bar-btn-primary" disabled>
                     <span class="material-symbols-outlined">compare</span>
                     비교하기
                 </button>
-                <button id="compareClearBtn" class="compare-bar-btn compare-bar-btn-secondary">
+                <button type="button" id="compareClearBtn" class="compare-bar-btn compare-bar-btn-secondary">
                     <span class="material-symbols-outlined">close</span>
                     초기화
                 </button>
@@ -245,14 +246,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
 
         <!-- Compare modal -->
-        <div id="compareModal" class="compare-modal" style="display: none;">
+        <div id="compareModal" class="compare-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="compareModalTitle">
             <div class="compare-modal-inner">
                 <div class="compare-modal-header">
-                    <h2>
+                    <h2 id="compareModalTitle">
                         <span class="material-symbols-outlined">compare</span>
-                        함순이 비교
+                        <span id="compareModalTitleText">함순이 비교</span>
                     </h2>
-                    <button id="compareModalClose" class="compare-modal-close">
+                    <button type="button" id="compareModalClose" class="compare-modal-close" aria-label="비교 창 닫기">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>

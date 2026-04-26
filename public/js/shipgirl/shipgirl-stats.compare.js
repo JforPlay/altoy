@@ -6,10 +6,10 @@
  * and skin counts. Shared state is injected via setup(stateRef).
  */
 
-import { IMG_FALLBACKS, openModal, closeModal, setupModal } from '../utils.js';
+import { IMG_FALLBACKS, createImgElement, openModal, setupModal } from '../utils.js';
 import {
-    PRIMARY_STATS, SECONDARY_STATS, ALL_STATS, SKIN_TAG_KEYS,
-    getAttrKoreanName, getNationalityName, getShipTypeName, getShipIconUrl,
+    ALL_STATS,
+    getAttrKoreanName, getShipIconUrl,
 } from './shipgirl-stats.data.js';
 
 let state;
@@ -20,6 +20,7 @@ export function setup(stateRef) {
     setupModal('compareModal', {
         closeOnEscape: true,
         closeOnBackdrop: true,
+        closeButtonSelector: '#compareModalClose, .compare-modal-close',
     });
 }
 
@@ -47,17 +48,17 @@ export function updateCompareBar() {
     for (const id of state.compareList) {
         const entry = state.shipStatsById.get(id);
         if (!entry) continue;
-        const name = entry.ship.name;
         const div = document.createElement('div');
         div.className = 'compare-bar-item';
-        div.innerHTML = `
-            <img src="${getShipIconUrl(entry.ship)}" alt="${name}" onerror="this.src='${IMG_FALLBACKS.DEFAULT}'">
-            <span>${name}</span>
-        `;
+        div.appendChild(createCompareImage(entry.ship, 'compare-bar-item-icon'));
+
+        const name = document.createElement('span');
+        name.textContent = entry.ship.name;
+        div.appendChild(name);
+
         fragment.appendChild(div);
     }
-    itemsEl.innerHTML = '';
-    itemsEl.appendChild(fragment);
+    itemsEl.replaceChildren(fragment);
 }
 
 // ===== Compare Modal =====
@@ -72,16 +73,21 @@ export function openCompareModal() {
     const entries = state.compareList
         .map(id => state.shipStatsById.get(id))
         .filter(Boolean);
+    if (entries.length < 2) return;
 
     const body = document.getElementById('compareModalBody');
     if (!body) return;
 
     const colClass = `cols-${entries.length}`;
+    const title = document.getElementById('compareModalTitleText');
+    if (title) {
+        title.textContent = state.activeTab === 'ship' ? '함순이 비교' : '스킨 비교';
+    }
 
     if (state.activeTab === 'ship') {
-        body.innerHTML = renderCombatCompare(entries, colClass);
+        body.replaceChildren(renderCombatCompare(entries, colClass));
     } else {
-        body.innerHTML = renderSkinCompare(entries, colClass);
+        body.replaceChildren(renderSkinCompare(entries, colClass));
     }
 
     openModal('compareModal');
@@ -90,52 +96,47 @@ export function openCompareModal() {
 // ===== Combat Compare =====
 
 function renderCombatCompare(entries, colClass) {
-    const headers = entries.map(e => `
-        <div class="compare-ship-header">
-            <img src="${getShipIconUrl(e.ship)}" alt="${e.ship.name}" onerror="this.src='${IMG_FALLBACKS.DEFAULT}'">
-            <div class="ship-name">${e.ship.name}</div>
-            <span class="table-rarity rarity-${e.ship.rarity}">${e.ship.rarity}</span>
-        </div>
-    `).join('');
+    const fragment = document.createDocumentFragment();
+    const grid = createCompareGrid(entries, colClass);
+    fragment.appendChild(grid);
 
-    const statRows = ALL_STATS.map(stat => {
+    for (const stat of ALL_STATS) {
         const values = entries.map(e => e.combat[stat] || 0);
         const maxVal = Math.max(...values);
         const globalMax = getGlobalMax(stat, 'combat');
 
-        const valueCells = values.map(v => `
-            <div class="compare-stat-val ${v === maxVal && maxVal > 0 ? 'is-best' : ''}">
-                ${v.toLocaleString()}
-                <div class="compare-stat-bar">
-                    <div class="compare-stat-bar-fill ${v === maxVal && maxVal > 0 ? 'is-best' : ''}" style="width:${globalMax > 0 ? (v / globalMax * 100) : 0}%"></div>
-                </div>
-            </div>
-        `).join('');
+        const cells = values.map(v => {
+            const isBest = v === maxVal && maxVal > 0;
+            const cell = document.createElement('div');
+            cell.className = 'compare-stat-val';
+            if (isBest) cell.classList.add('is-best');
+            cell.appendChild(document.createTextNode(v.toLocaleString()));
 
-        return `
-            <div class="compare-stat-row">
-                <div class="compare-stat-label">${getAttrKoreanName(stat)}</div>
-                <div class="compare-stat-values ${colClass}">${valueCells}</div>
-            </div>
-        `;
-    }).join('');
+            const bar = document.createElement('div');
+            bar.className = 'compare-stat-bar';
 
-    return `
-        <div class="compare-grid ${colClass}">${headers}</div>
-        ${statRows}
-    `;
+            const fill = document.createElement('div');
+            fill.className = 'compare-stat-bar-fill';
+            if (isBest) fill.classList.add('is-best');
+            fill.style.width = `${globalMax > 0 ? Math.min(100, Math.max(0, v / globalMax * 100)) : 0}%`;
+
+            bar.appendChild(fill);
+            cell.appendChild(bar);
+            return cell;
+        });
+
+        fragment.appendChild(createStatRow(getAttrKoreanName(stat), cells, colClass));
+    }
+
+    return fragment;
 }
 
 // ===== Skin Compare =====
 
 function renderSkinCompare(entries, colClass) {
-    const headers = entries.map(e => `
-        <div class="compare-ship-header">
-            <img src="${getShipIconUrl(e.ship)}" alt="${e.ship.name}" onerror="this.src='${IMG_FALLBACKS.DEFAULT}'">
-            <div class="ship-name">${e.ship.name}</div>
-            <span class="table-rarity rarity-${e.ship.rarity}">${e.ship.rarity}</span>
-        </div>
-    `).join('');
+    const fragment = document.createDocumentFragment();
+    const grid = createCompareGrid(entries, colClass);
+    fragment.appendChild(grid);
 
     const skinKeys = [
         { key: 'total',        label: '총 스킨' },
@@ -148,12 +149,12 @@ function renderSkinCompare(entries, colClass) {
         { key: 'daysSinceLast', label: '경과일' },
     ];
 
-    const skinRows = skinKeys.map(({ key, label }) => {
+    for (const { key, label } of skinKeys) {
         const values = entries.map(e => e.skin[key]);
         const numericValues = values.map(v => (typeof v === 'number' ? v : 0));
         const maxVal = Math.max(...numericValues);
 
-        const valueCells = values.map((v, i) => {
+        const cells = values.map((v, i) => {
             const isNumeric = typeof v === 'number';
             const isBest = isNumeric && key !== 'daysSinceLast' && numericValues[i] === maxVal && maxVal > 0;
 
@@ -166,24 +167,75 @@ function renderSkinCompare(entries, colClass) {
                 displayVal = v != null ? v : '-';
             }
 
-            return `<div class="compare-stat-val ${isBest ? 'is-best' : ''}">${displayVal}</div>`;
-        }).join('');
+            const cell = document.createElement('div');
+            cell.className = 'compare-stat-val';
+            if (isBest) cell.classList.add('is-best');
+            cell.textContent = displayVal;
+            return cell;
+        });
 
-        return `
-            <div class="compare-stat-row">
-                <div class="compare-stat-label">${label}</div>
-                <div class="compare-stat-values ${colClass}">${valueCells}</div>
-            </div>
-        `;
-    }).join('');
+        fragment.appendChild(createStatRow(label, cells, colClass));
+    }
 
-    return `
-        <div class="compare-grid ${colClass}">${headers}</div>
-        ${skinRows}
-    `;
+    return fragment;
 }
 
 // ===== Helpers =====
+
+function createCompareGrid(entries, colClass) {
+    const grid = document.createElement('div');
+    grid.className = `compare-grid ${colClass}`;
+
+    for (const entry of entries) {
+        const header = document.createElement('div');
+        header.className = 'compare-ship-header';
+        header.appendChild(createCompareImage(entry.ship));
+
+        const name = document.createElement('div');
+        name.className = 'ship-name';
+        name.textContent = entry.ship.name;
+        header.appendChild(name);
+
+        const rarity = document.createElement('span');
+        rarity.className = `table-rarity rarity-${sanitizeClassToken(entry.ship.rarity)}`;
+        rarity.textContent = entry.ship.rarity;
+        header.appendChild(rarity);
+
+        grid.appendChild(header);
+    }
+
+    return grid;
+}
+
+function createCompareImage(ship, className = '') {
+    return createImgElement(getShipIconUrl(ship), ship?.name ?? '', {
+        className,
+        fallback: IMG_FALLBACKS.DEFAULT,
+    });
+}
+
+function createStatRow(label, cells, colClass) {
+    const row = document.createElement('div');
+    row.className = 'compare-stat-row';
+
+    const labelEl = document.createElement('div');
+    labelEl.className = 'compare-stat-label';
+    labelEl.textContent = label;
+    row.appendChild(labelEl);
+
+    const values = document.createElement('div');
+    values.className = `compare-stat-values ${colClass}`;
+    for (const cell of cells) {
+        values.appendChild(cell);
+    }
+    row.appendChild(values);
+
+    return row;
+}
+
+function sanitizeClassToken(value) {
+    return String(value ?? '').replace(/[^a-z0-9_-]/gi, '');
+}
 
 function getGlobalMax(stat, type) {
     let max = 0;
