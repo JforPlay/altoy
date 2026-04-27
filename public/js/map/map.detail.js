@@ -323,7 +323,7 @@ export function renderMapInfo(chapter, targetEl) {
             if (drop.sub_items && drop.sub_items.length > 0) {
                 html += `<div class="drop-group">`;
                 html += `<div class="drop-group-header" title="${drop.name}">`;
-                if (iconUrl) html += `<img class="drop-icon" src="${iconUrl}" alt="" loading="lazy" onerror="this.style.display='none'">`;
+                if (iconUrl) html += `<img class="drop-icon" src="${iconUrl}" alt="" loading="lazy" data-onfail="hide">`;
                 html += `<span class="drop-item-name">${drop.name}</span>`;
                 html += `</div>`;
                 html += `<div class="drop-group-items">`;
@@ -331,14 +331,14 @@ export function renderMapInfo(chapter, targetEl) {
                     const subIconUrl = getItemIconUrl(sub.icon);
                     const rarityClass = sub.rarity ? `drop-sub-rarity-${sub.rarity}` : '';
                     html += `<span class="drop-sub-item ${rarityClass}" title="${sub.name}">`;
-                    if (subIconUrl) html += `<img class="drop-sub-icon" src="${subIconUrl}" alt="" loading="lazy" onerror="this.style.display='none'">`;
+                    if (subIconUrl) html += `<img class="drop-sub-icon" src="${subIconUrl}" alt="" loading="lazy" data-onfail="hide">`;
                     html += `<span class="drop-item-name">${sub.name}</span>`;
                     html += '</span>';
                 }
                 html += '</div></div>';
             } else {
                 html += `<span class="drop-item" title="${drop.name}">`;
-                if (iconUrl) html += `<img class="drop-icon" src="${iconUrl}" alt="" loading="lazy" onerror="this.style.display='none'">`;
+                if (iconUrl) html += `<img class="drop-icon" src="${iconUrl}" alt="" loading="lazy" data-onfail="hide">`;
                 html += `<span class="drop-item-name">${drop.name}</span>`;
                 html += '</span>';
             }
@@ -358,7 +358,7 @@ export function renderMapInfo(chapter, targetEl) {
             html += `<a href="${infoUrl}" class="ship-drop-card ship-drop-rarity-${ship.rarity}" title="${ship.name}${ship.bossOnly ? ' (보스 한정)' : ''}">`;
             const iconSrc = ship.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
             if (iconSrc) {
-                html += `<img class="ship-drop-portrait" src="${iconSrc}" alt="${ship.name}" loading="lazy" onerror="this.style.display='none'">`;
+                html += `<img class="ship-drop-portrait" src="${iconSrc}" alt="${ship.name}" loading="lazy" data-onfail="hide">`;
             }
             html += `<div class="ship-drop-name">${ship.name}</div>`;
             if (ship.bossOnly) html += `<span class="ship-drop-boss">보스</span>`;
@@ -487,7 +487,7 @@ export function renderArchiveInfo(chapter, targetEl) {
                 const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}`);
                 const iconSrc = ship.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
                 extra += '<div style="display:flex;align-items:center;gap:0.75rem">';
-                if (iconSrc) extra += `<a href="${infoUrl}"><img style="width:3rem;height:3rem;border-radius:0.5rem;object-fit:cover" src="${iconSrc}" alt="${ship.name}" loading="lazy" onerror="this.style.display='none'"></a>`;
+                if (iconSrc) extra += `<a href="${infoUrl}"><img style="width:3rem;height:3rem;border-radius:0.5rem;object-fit:cover" src="${iconSrc}" alt="${ship.name}" loading="lazy" data-onfail="hide"></a>`;
                 extra += `<div><a href="${infoUrl}" style="font-weight:600;text-decoration:none;color:var(--text-primary)">${ship.name}</a>`;
                 extra += `<div class="text-muted" style="font-size:0.78rem">${sd.count}회 클리어 시 획득</div></div>`;
                 extra += '</div>';
@@ -497,7 +497,7 @@ export function renderArchiveInfo(chapter, targetEl) {
         } else {
             const itemIconUrl = sd.icon ? getItemIconUrl(sd.icon) : '';
             extra += '<div style="display:flex;align-items:center;gap:0.75rem">';
-            if (itemIconUrl) extra += `<img style="width:3rem;height:3rem;border-radius:0.5rem;object-fit:contain;background:var(--bg-elevated);padding:0.2rem" src="${itemIconUrl}" alt="" loading="lazy" onerror="this.style.display='none'">`;
+            if (itemIconUrl) extra += `<img style="width:3rem;height:3rem;border-radius:0.5rem;object-fit:contain;background:var(--bg-elevated);padding:0.2rem" src="${itemIconUrl}" alt="" loading="lazy" data-onfail="hide">`;
             extra += `<div><span style="font-weight:600">${sd.name || `아이템 #${sd.id}`}</span>`;
             extra += `<div class="text-muted" style="font-size:0.78rem">${sd.count}회 클리어 시 획득</div></div>`;
             extra += '</div>';
@@ -522,7 +522,7 @@ export function renderArchiveInfo(chapter, targetEl) {
             const iconSrc = ship.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
             const title = ship.name + (drop.type === 1 ? ' (보스 한정)' : '') + (drop.pity ? ' (확정)' : '');
             extra += `<a href="${infoUrl}" class="ship-drop-card ship-drop-rarity-${ship.rarity}" title="${title}">`;
-            if (iconSrc) extra += `<img class="ship-drop-portrait" src="${iconSrc}" alt="${ship.name}" loading="lazy" onerror="this.style.display='none'">`;
+            if (iconSrc) extra += `<img class="ship-drop-portrait" src="${iconSrc}" alt="${ship.name}" loading="lazy" data-onfail="hide">`;
             extra += `<div class="ship-drop-name">${ship.name}</div>`;
             if (drop.type === 1) extra += `<span class="ship-drop-boss">보스</span>`;
             extra += '</a>';

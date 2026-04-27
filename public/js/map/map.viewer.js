@@ -365,7 +365,7 @@ function renderShipSearchResults(query, body) {
         html += `<div class="search-result-header">`;
         const iconSrc = ship.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
         if (iconSrc) {
-            html += `<a href="${infoUrl}"><img class="search-result-portrait" src="${iconSrc}" alt="" loading="lazy" onerror="this.style.display='none'"></a>`;
+            html += `<a href="${infoUrl}"><img class="search-result-portrait" src="${iconSrc}" alt="" loading="lazy" data-onfail="hide"></a>`;
         }
         html += `<div>`;
         html += `<a href="${infoUrl}" class="search-result-name search-rarity-${ship.rarity}">${ship.name}</a>`;
@@ -447,7 +447,7 @@ function renderBlueprintSearchResults(query, body) {
         const bgClass = `search-bp-rarity-${bp.rarity}`;
         html += `<div class="search-result-item">`;
         html += `<div class="search-result-header">`;
-        if (iconUrl) html += `<img class="search-result-bp-icon ${bgClass}" src="${iconUrl}" alt="" loading="lazy" onerror="this.style.display='none'">`;
+        if (iconUrl) html += `<img class="search-result-bp-icon ${bgClass}" src="${iconUrl}" alt="" loading="lazy" data-onfail="hide">`;
         html += `<span class="${rarityClass}">${bp.name}</span>`;
         html += `</div>`;
         html += `<div class="search-result-maps">`;

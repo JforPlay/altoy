@@ -345,7 +345,7 @@ export function renderRecipeHeader(recipe, data) {
             </div>
             <div class="recipe-header-actions">
                 ${restaurants.length > 0 ? `
-                    <button class="action-btn" onclick="ResourceModule.viewInRestaurant(${recipe.id})">
+                    <button class="action-btn" data-action="view-in-restaurant" data-recipe-id="${recipe.id}">
                         <span class="material-symbols-outlined">restaurant</span>
                         레스토랑에서 보기
                     </button>
@@ -703,11 +703,11 @@ export function renderRecipeActions(recipe, data) {
     const { producedByRecipes, usedInRecipes } = data;
     return `
         <div class="recipe-actions">
-            <button class="action-btn" onclick="ResourceModule.showUpstream(${recipe.id})">
+            <button class="action-btn" data-action="show-upstream" data-recipe-id="${recipe.id}">
                 <span class="material-symbols-outlined">arrow_upward</span>
                 하위 조합 전체 보기 (${producedByRecipes.length})
             </button>
-            <button class="action-btn" onclick="ResourceModule.showDownstream(${recipe.id})">
+            <button class="action-btn" data-action="show-downstream" data-recipe-id="${recipe.id}">
                 <span class="material-symbols-outlined">arrow_downward</span>
                 상위 조합 전체 보기 (${usedInRecipes.length})
             </button>
@@ -1134,7 +1134,7 @@ export function renderTreeNodesWithConnectors(nodes, depth, direction) {
 
         return `
             <div class="tree-node depth-${depth} ${isLast ? 'last-child' : ''}" data-direction="${direction}">
-                <div class="tree-node-card ${direction} ${isManualMode ? 'manual-mode' : ''}" data-recipe-id="${node.recipe.id}" onclick="ResourceModule.selectRecipeFromTree(${node.recipe.id})">
+                <div class="tree-node-card ${direction} ${isManualMode ? 'manual-mode' : ''}" data-action="select-tree-recipe" data-recipe-id="${node.recipe.id}">
                     <div class="tree-node-icon">
                         ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '📦'}
                     </div>
@@ -1235,7 +1235,7 @@ export function renderForestDependencies(nodes, depth = 0) {
         // Recipe node
         const item = window.IslandEngine.getItemInfo(node.recipe.item_id);
         const chip = `
-                    <div class="forest-tree__content" onclick="event.stopPropagation(); ResourceModule.selectRecipeFromTree(${node.recipe.id});">
+                    <div class="forest-tree__content" data-action="select-tree-recipe" data-recipe-id="${node.recipe.id}">
                         ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}" class="forest-tree__icon"/>` : '<span class="forest-tree__icon">•</span>'}
                         <span class="forest-tree__text">${node.recipe.name || item.name}</span>
                         <span class="forest-tree__meta">⏱${formatTime(node.recipe.workload)}</span>
@@ -1273,7 +1273,7 @@ export function renderForestTree(recipe, categoryId) {
         <div class="forest-tree-wrapper">
             <details class="forest-tree" open>
                 <summary class="forest-root">
-                    <div class="forest-root-chip" onclick="event.stopPropagation(); ResourceModule.selectRecipeFromModal(${recipe.id});">
+                    <div class="forest-root-chip" data-action="select-modal-recipe" data-recipe-id="${recipe.id}">
                         ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}" />` : '•'}
                         <span class="forest-chip-name">${recipe.name || item.name}</span>
                         <span class="forest-root-meta">

@@ -229,7 +229,7 @@ function createEventCard(event) {
     const shipgirlsSection = createShipgirlsSection(event.함순이);
 
     const hasLink = event.링크 && event.링크.trim() !== '';
-    const linkButton = hasLink ? `<a href="${event.링크}" target="_blank" class="event-link-btn" onclick="event.stopPropagation()">🔗 상세보기</a>` : '';
+    const linkButton = hasLink ? `<a href="${event.링크}" target="_blank" rel="noopener" class="event-link-btn">🔗 상세보기</a>` : '';
 
     return `
         <div class="event-card">
@@ -280,7 +280,7 @@ function createShipgirlsSection(shipgirlsStr) {
             return `
                 <a href="${shipgirlUrl}" class="shipgirl-icon-link">
                     <div class="shipgirl-icon ${rarityClass}">
-                        <img src="${shipgirl.icon}" alt="${shipgirl.name}" loading="lazy" onerror="this.style.display='none'">
+                        <img src="${shipgirl.icon}" alt="${shipgirl.name}" loading="lazy" data-onfail="hide">
                         <div class="rarity-indicator">${shipgirl.rarity || '?'}</div>
                         <div class="tooltip">${shipgirl.name}</div>
                     </div>

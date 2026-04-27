@@ -61,7 +61,7 @@ function createThemeSection(theme) {
         <span class="theme-arrow">&#9654;</span>
         ${theme.icon
             ? `<img class="theme-icon" src="${getThemeIconUrl(theme.icon)}" alt="" loading="lazy"
-                 onerror="this.style.display='none'">`
+                 data-onfail="hide">`
             : ''
         }
         <div class="theme-info">

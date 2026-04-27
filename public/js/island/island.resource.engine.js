@@ -6,7 +6,7 @@
  * Registers as window.ResourceModule.
  */
 
-import { fetchJSON, formatTime, openModal, closeModal } from '../utils.js';
+import { fetchJSON, formatTime, openModal, closeModal, setupModal } from '../utils.js';
 import {
     CONSTANTS,
     setup as setupTree,
@@ -174,6 +174,9 @@ function buildSeasonalItemsCategory() {
 // ===== Event Handlers =====
 
 function setupEventListeners() {
+    // Recipe-dependency modal close button + backdrop + ESC
+    setupModal('dependency-modal', { closeButtonSelector: '.modal-close-btn' });
+
     // Category select
     const categorySelect = document.getElementById('recipe-category-select');
     categorySelect?.addEventListener('change', (e) => {
@@ -226,8 +229,30 @@ function setupEventListeners() {
         }
     });
 
-    // Seasonal recipe card clicks (delegated from detail panel)
+    // Resource module clicks. Single delegated listener at document level so
+    // anything rendered into the recipe detail/tree/forest panels routes here
+    // without each render function having to wire its own listeners.
     document.addEventListener('click', (e) => {
+        const actionEl = e.target.closest('[data-action]');
+        if (actionEl) {
+            const action = actionEl.dataset.action;
+            const recipeId = parseInt(actionEl.dataset.recipeId, 10);
+            // The forest-root chip lives inside `<summary>`, whose default click
+            // toggles the parent `<details>`. Cancel that so the chip click only
+            // selects the recipe.
+            if (actionEl.classList.contains('forest-root-chip')) e.preventDefault();
+
+            if (Number.isFinite(recipeId)) {
+                switch (action) {
+                    case 'view-in-restaurant':   viewInRestaurant(recipeId);   return;
+                    case 'show-upstream':        showUpstream(recipeId);       return;
+                    case 'show-downstream':      showDownstream(recipeId);     return;
+                    case 'select-tree-recipe':   selectRecipeFromTree(recipeId); return;
+                    case 'select-modal-recipe':  selectRecipeFromModal(recipeId); return;
+                }
+            }
+        }
+
         const seasonalCard = e.target.closest('.seasonal-recipe-card');
         if (seasonalCard && seasonalCard.dataset.recipeId) {
             const recipeId = parseInt(seasonalCard.dataset.recipeId);
@@ -434,7 +459,7 @@ function showDependencyModal(title, recipes, direction, sourceRecipe) {
                                                 <span class="modal-recipe-category">${categoryNames[findRecipeCategoryById(recipe.id)] || '알 수 없음'}</span>
                                             </div>
                                         </div>
-                                        <button class="modal-select-btn" onclick="ResourceModule.selectRecipeFromModal(${recipe.id})">
+                                        <button class="modal-select-btn" data-action="select-modal-recipe" data-recipe-id="${recipe.id}">
                                             <span class="material-symbols-outlined">arrow_forward</span>
                                         </button>
                                     </div>

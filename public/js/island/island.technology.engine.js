@@ -162,12 +162,18 @@ function setupEventDelegation() {
         });
     }
 
-    // Handle detail panel close button
+    // Handle detail panel close button + quest-requirement navigation
     const detailContainer = document.getElementById('tech-detail');
     if (detailContainer) {
         detailContainer.addEventListener('click', (e) => {
             if (e.target.closest('#tech-detail-close')) {
                 closeTechnologyDetail();
+                return;
+            }
+            const questItem = e.target.closest('.requirement-item.clickable[data-quest-id]');
+            if (questItem) {
+                const questId = parseInt(questItem.dataset.questId, 10);
+                if (Number.isFinite(questId)) navigateToQuest(questId);
             }
         });
     }
@@ -890,7 +896,7 @@ function renderRequirements(tech) {
 
         if (type === 1) { // Quest requirement - make it clickable
             clickable = 'clickable';
-            clickHandler = `onclick="TechnologyModule.navigateToQuest(${id})"`;
+            clickHandler = `data-quest-id="${id}"`;
 
             // Try to get quest name if QuestModule is loaded
             if (window.QuestModule && window.QuestModule.getQuestName) {
