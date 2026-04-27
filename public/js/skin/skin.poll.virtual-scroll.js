@@ -197,7 +197,7 @@ export function createVirtualScroll({ container, renderCard, buffer = 10 }) {
      * Show the empty-state message and clear spacers.
      */
     function showNoResults() {
-        container.innerHTML = '';
+        container.replaceChildren();
         const msg = document.createElement('div');
         msg.className = 'no-results';
         msg.textContent = '표시할 스킨이 없습니다.';

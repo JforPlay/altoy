@@ -13,14 +13,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <header class="page-header">
         <h1 class="page-title">
             벽챈 스킨 선호도 투표
-            <button id="info-button" class="info-button info-button-inline" aria-label="도움말 보기">
+            <button id="info-button" class="info-button info-button-inline" aria-label="도움말 보기" type="button">
                 <i class="fas fa-info-circle"></i>
             </button>
         </h1>
 
         <div class="header-status-row">
             <p id="data-age-indicator" class="data-age-indicator"></p>
-            <button id="refresh-data-btn" class="refresh-button-compact" title="최신 투표 데이터로 업데이트">
+            <button id="refresh-data-btn" class="refresh-button-compact" title="최신 투표 데이터로 업데이트" aria-label="최신 투표 데이터로 업데이트" type="button">
                 <i class="fas fa-sync-alt"></i>
             </button>
         </div>
@@ -29,7 +29,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <div class="info-popup-content">
                 <div class="popup-header">
                     <h2 id="popup-title">초간단 설명서</h2>
-                    <button class="close-popup-btn" aria-label="닫기"><i class="fas fa-times"></i></button>
+                    <button class="close-popup-btn" aria-label="닫기" type="button"><i class="fas fa-times"></i></button>
                 </div>
                 <div class="popup-body">
                     <div class="info-step">
@@ -66,9 +66,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
     </header>
 
-    <div id="image-popup">
+    <div id="image-popup" role="dialog" aria-label="전체 일러스트 보기" aria-modal="true" aria-hidden="true">
         <div class="image-popup-content">
-            <button class="close-image-popup-btn">&times;</button>
+            <button class="close-image-popup-btn" aria-label="닫기" type="button">&times;</button>
             <img id="popup-full-image" class="popup-image" src="" alt="전체일러">
             <div class="popup-skin-info">
                 <div class="popup-skin-name" id="popup-skin-name"></div>
@@ -78,11 +78,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <section class="leaderboard-section">
-        <button id="leaderboard-toggle-btn" class="leaderboard-toggle">Top 10 스킨 보기</button>
+        <button id="leaderboard-toggle-btn" class="leaderboard-toggle" type="button" aria-expanded="false" aria-controls="leaderboard-content">Top 10 스킨 보기</button>
         <div id="leaderboard-content" class="leaderboard-content"></div>
     </section>
 
-    <button id="filter-toggle-btn" class="filter-toggle-btn">
+    <button id="filter-toggle-btn" class="filter-toggle-btn" type="button" aria-expanded="false" aria-controls="filter-container">
         필터 옵션 보기/숨기기
         <i class="fas fa-chevron-down"></i>
     </button>
@@ -91,8 +91,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div class="filter-group">
             <label for="character-name-search">함순이 이름</label>
             <div class="dropdown-container">
-                <input type="text" id="character-name-search" placeholder="이름으로 검색..." autocomplete="off">
-                <div id="character-dropdown-content" class="dropdown-content"></div>
+                <input type="text" id="character-name-search" placeholder="이름으로 검색..." autocomplete="off" aria-autocomplete="list" aria-controls="character-dropdown-content" aria-expanded="false">
+                <div id="character-dropdown-content" class="dropdown-content" role="listbox"></div>
             </div>
         </div>
         <div class="filter-group">
@@ -146,7 +146,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
         <div class="filter-group">
             <label>&nbsp;</label>
-            <button id="reset-filters-btn" class="reset-button">필터링 초기화</button>
+            <button id="reset-filters-btn" class="reset-button" type="button">필터링 초기화</button>
         </div>
     </div>
 

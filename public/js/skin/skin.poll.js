@@ -49,6 +49,53 @@ const createImageErrorHandler = () => {
   };
 };
 
+const createIcon = (className) => {
+  const icon = document.createElement('i');
+  icon.className = className;
+  icon.setAttribute('aria-hidden', 'true');
+  return icon;
+};
+
+const setStatusIndicator = (indicator, iconClass, text, state = '') => {
+  indicator.replaceChildren(createIcon(iconClass), document.createTextNode(text));
+  indicator.classList.remove('status-error', 'status-warning', 'status-loading');
+  if (state) indicator.classList.add(`status-${state}`);
+};
+
+const appendTextWithMark = (parent, text, ranges = []) => {
+  let lastIndex = 0;
+  ranges.forEach(([start, end]) => {
+    if (start > lastIndex) {
+      parent.appendChild(document.createTextNode(text.slice(lastIndex, start)));
+    }
+
+    const mark = document.createElement('mark');
+    mark.textContent = text.slice(start, end + 1);
+    parent.appendChild(mark);
+    lastIndex = end + 1;
+  });
+
+  if (lastIndex < text.length) {
+    parent.appendChild(document.createTextNode(text.slice(lastIndex)));
+  }
+};
+
+const createTextLine = (label, value) => {
+  const line = document.createElement('div');
+  line.className = 'info-line';
+
+  const strong = document.createElement('strong');
+  strong.textContent = label;
+
+  line.append(strong, document.createTextNode(` ${value}`));
+  return line;
+};
+
+const setButtonIconText = (button, iconClass, text = '') => {
+  button.replaceChildren(createIcon(iconClass));
+  if (text) button.appendChild(document.createTextNode(` ${text}`));
+};
+
 // ===== DOM Ready — Main Initialization =====
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -94,6 +141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let userVotesCache = {};           // { clientId: { rating, skin_name, character_name, voted_at } }
   let currentUserId = null;
   let virtualScroll = null;
+  let realtimeSyncCleanup = null;
 
   // Fuse.js options for character search
   const fuseOptions = { keys: ['name'], threshold: 0.4 };
@@ -112,10 +160,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Timer tracking for cleanup
   const activeTimers = {
     dataAgeInterval: null,
-    refreshCooldown: null
+    refreshCooldown: null,
+    realtimeRetry: null
   };
 
   // ===== Firebase Initialization =====
+
+  if (typeof firebase === 'undefined') {
+    pollContainer.replaceChildren();
+    showToast("Firebase SDK를 불러오지 못했습니다. 네트워크 또는 CSP 설정을 확인하세요.", "error");
+    return;
+  }
 
   if (!firebase.apps.length) {
     firebase.initializeApp(FIREBASE_CONFIG);
@@ -297,33 +352,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Check connection status first
     if (!connectionStatus.isConnected) {
-      indicator.innerHTML = `<i class="fas fa-exclamation-circle"></i> 서버 연결 실패`;
-      indicator.style.backgroundColor = 'rgba(231, 76, 60, 0.2)';
-      indicator.style.borderLeft = '3px solid #e74c3c';
+      setStatusIndicator(indicator, 'fas fa-exclamation-circle', '서버 연결 실패', 'error');
       return;
     }
 
     if (connectionStatus.lastError) {
       if (connectionStatus.lastError.code === 'resource-exhausted') {
-        indicator.innerHTML = `<i class="fas fa-ban"></i> 일일 한도 초과 (내일 재시도)`;
-        indicator.style.backgroundColor = 'rgba(231, 76, 60, 0.2)';
-        indicator.style.borderLeft = '3px solid #e74c3c';
+        setStatusIndicator(indicator, 'fas fa-ban', '일일 한도 초과 (내일 재시도)', 'error');
       } else if (connectionStatus.lastError.code === 'permission-denied') {
-        indicator.innerHTML = `<i class="fas fa-lock"></i> 권한 오류`;
-        indicator.style.backgroundColor = 'rgba(231, 76, 60, 0.2)';
-        indicator.style.borderLeft = '3px solid #e74c3c';
+        setStatusIndicator(indicator, 'fas fa-lock', '권한 오류', 'error');
       } else {
-        indicator.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 연결 불안정`;
-        indicator.style.backgroundColor = 'rgba(243, 156, 18, 0.2)';
-        indicator.style.borderLeft = '3px solid #f39c12';
+        setStatusIndicator(indicator, 'fas fa-exclamation-triangle', '연결 불안정', 'warning');
       }
       return;
     }
 
     if (!cacheTimestamp) {
-      indicator.innerHTML = `<i class="fas fa-spinner fa-spin"></i> 데이터 로딩 중...`;
-      indicator.style.backgroundColor = 'rgba(52, 152, 219, 0.2)';
-      indicator.style.borderLeft = '3px solid #3498db';
+      setStatusIndicator(indicator, 'fas fa-spinner fa-spin', '데이터 로딩 중...', 'loading');
       return;
     }
 
@@ -331,15 +376,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const ageMinutes = Math.floor(cacheAge / 60000);
 
     // Reset styles for normal operation
-    indicator.style.backgroundColor = 'rgba(47, 49, 54, 0.5)';
-    indicator.style.borderLeft = 'none';
+    indicator.classList.remove('status-error', 'status-warning', 'status-loading');
 
     if (ageMinutes < 2) {
-      indicator.innerHTML = `<i class="fas fa-circle" style="color: #27ae60;"></i> 실시간 동기화 중`;
+      setStatusIndicator(indicator, 'fas fa-circle status-icon-success', '실시간 동기화 중');
     } else if (ageMinutes < 30) {
-      indicator.innerHTML = `<i class="fas fa-clock" style="color: #f39c12;"></i> 데이터: ${ageMinutes}분 전`;
+      setStatusIndicator(indicator, 'fas fa-clock status-icon-warning', `데이터: ${ageMinutes}분 전`);
     } else {
-      indicator.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: #e74c3c;"></i> 데이터: ${ageMinutes}분 전`;
+      setStatusIndicator(indicator, 'fas fa-exclamation-triangle status-icon-error', `데이터: ${ageMinutes}분 전`);
     }
   };
 
@@ -495,6 +539,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         ratingArea.classList.remove('pending-vote');
         ratingArea.classList.add("voted", "voted-animation");
         ratingArea.querySelectorAll('input').forEach(input => input.disabled = true);
+        ratingArea.querySelectorAll('.star-rating label').forEach(label => {
+          label.tabIndex = -1;
+        });
         setTimeout(() => ratingArea.classList.remove("voted-animation"), 300);
       }
 
@@ -625,7 +672,12 @@ document.addEventListener("DOMContentLoaded", async () => {
           const retryDelay = Math.min(5000 * Math.pow(2, connectionStatus.errorCount - 1), 60000);
           console.log(`Retrying in ${retryDelay / 1000}s...`);
 
-          setTimeout(() => {
+          if (activeTimers.realtimeRetry) {
+            clearTimeout(activeTimers.realtimeRetry);
+          }
+
+          activeTimers.realtimeRetry = setTimeout(() => {
+            activeTimers.realtimeRetry = null;
             if (isTabActive && !realtimeUnsubscribe) {
               startRealtimeSync();
             }
@@ -643,7 +695,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     // Tab visibility handling
-    document.addEventListener('visibilitychange', () => {
+    const handleVisibilityChange = () => {
       isTabActive = !document.hidden;
 
       if (isTabActive) {
@@ -651,17 +703,29 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         stopRealtimeSync();
       }
-    });
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     if (isTabActive) {
       startRealtimeSync();
     }
 
-    window.addEventListener('beforeunload', () => {
+    const cleanupRealtimeSync = () => {
+      window.removeEventListener('beforeunload', cleanupRealtimeSync);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (activeTimers.realtimeRetry) {
+        clearTimeout(activeTimers.realtimeRetry);
+        activeTimers.realtimeRetry = null;
+      }
       if (realtimeUnsubscribe) {
         realtimeUnsubscribe();
+        realtimeUnsubscribe = null;
       }
-    });
+    };
+
+    window.addEventListener('beforeunload', cleanupRealtimeSync, { once: true });
+    return cleanupRealtimeSync;
   };
 
   // ===== Leaderboard Logic (local only) =====
@@ -714,12 +778,19 @@ document.addEventListener("DOMContentLoaded", async () => {
    * and locally-computed format (which additionally has imageUrl from allSkins).
    */
   const populateLeaderboard = (leaderboardData) => {
+    leaderboardContent.replaceChildren();
+
     if (!leaderboardData || leaderboardData.length === 0) {
-      leaderboardContent.innerHTML = `<p style="text-align: center; color: #b9bbbe;">리더보드에 표시할 스킨이 아직 없습니다. (최소 10표 필요)</p>`;
+      const empty = document.createElement('p');
+      empty.className = 'leaderboard-empty';
+      empty.textContent = '리더보드에 표시할 스킨이 아직 없습니다. (최소 10표 필요)';
+      leaderboardContent.appendChild(empty);
       return;
     }
 
-    leaderboardContent.innerHTML = leaderboardData.map((skin, index) => {
+    const fragment = document.createDocumentFragment();
+
+    leaderboardData.forEach((skin, index) => {
       // Resolve display values — handle both CF format and local format
       const cid = skin.clientId || skin.id;
       const localSkin = cid ? clientIdToSkinMap[cid] : null;
@@ -730,25 +801,50 @@ document.addEventListener("DOMContentLoaded", async () => {
       const avgScore = skin.average_score ?? 0;
       const totalVotes = skin.total_votes ?? 0;
 
-      return `
-      <div class="leaderboard-item">
-        <div class="leaderboard-rank">#${index + 1}</div>
-        <img src="${imageUrl}" class="leaderboard-image" loading="lazy">
-        <div class="leaderboard-details">
-          <div class="skin-name">${displayName}</div>
-          <div class="char-name">${charName}</div>
-        </div>
-        <div class="leaderboard-score">
-          <div class="avg-score">★ ${avgScore.toFixed(2)}</div>
-          <div class="total-votes">(${totalVotes} 표)</div>
-        </div>
-      </div>`;
-    }).join('');
+      const item = document.createElement('div');
+      item.className = 'leaderboard-item';
 
-    // Add image error handlers to leaderboard images
-    leaderboardContent.querySelectorAll('.leaderboard-image').forEach(img => {
+      const rank = document.createElement('div');
+      rank.className = 'leaderboard-rank';
+      rank.textContent = `#${index + 1}`;
+
+      const img = document.createElement('img');
+      img.src = imageUrl;
+      img.className = 'leaderboard-image';
+      img.loading = 'lazy';
+      img.alt = displayName;
       img.addEventListener('error', createImageErrorHandler());
+
+      const details = document.createElement('div');
+      details.className = 'leaderboard-details';
+
+      const skinName = document.createElement('div');
+      skinName.className = 'skin-name';
+      skinName.textContent = displayName;
+
+      const characterName = document.createElement('div');
+      characterName.className = 'char-name';
+      characterName.textContent = charName;
+
+      details.append(skinName, characterName);
+
+      const score = document.createElement('div');
+      score.className = 'leaderboard-score';
+
+      const avg = document.createElement('div');
+      avg.className = 'avg-score';
+      avg.textContent = `★ ${avgScore.toFixed(2)}`;
+
+      const votes = document.createElement('div');
+      votes.className = 'total-votes';
+      votes.textContent = `(${totalVotes} 표)`;
+
+      score.append(avg, votes);
+      item.append(rank, img, details, score);
+      fragment.appendChild(item);
     });
+
+    leaderboardContent.appendChild(fragment);
   };
 
   // ===== UI Rendering =====
@@ -757,17 +853,25 @@ document.addEventListener("DOMContentLoaded", async () => {
    * Display skeleton loader
    */
   const displaySkeletonLoader = (count = 18) => {
-    pollContainer.innerHTML = '';
+    pollContainer.replaceChildren();
     for (let i = 0; i < count; i++) {
       const skeletonBox = document.createElement("div");
       skeletonBox.className = "skeleton-card";
-      skeletonBox.innerHTML = `
-        <div class="skeleton-image skeleton-element"></div>
-        <div class="skeleton-info">
-          <div class="skeleton-line skeleton-element"></div>
-          <div class="skeleton-line short skeleton-element"></div>
-        </div>
-      `;
+
+      const image = document.createElement('div');
+      image.className = 'skeleton-image skeleton-element';
+
+      const info = document.createElement('div');
+      info.className = 'skeleton-info';
+
+      const line = document.createElement('div');
+      line.className = 'skeleton-line skeleton-element';
+
+      const shortLine = document.createElement('div');
+      shortLine.className = 'skeleton-line short skeleton-element';
+
+      info.append(line, shortLine);
+      skeletonBox.append(image, info);
       pollContainer.appendChild(skeletonBox);
     }
   };
@@ -779,6 +883,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const createPollCard = (skin) => {
     const skinId = skin.id;
     const clientId = String(skin["클뜯 id"]);
+    const skinName = skin["한글 함순이 + 스킨 이름"];
+    const characterName = skin["함순이 이름"];
 
     const hasVoted = userVotesCache[clientId] !== undefined;
     const votedRating = hasVoted ? String(userVotesCache[clientId].rating) : null;
@@ -787,64 +893,95 @@ document.addEventListener("DOMContentLoaded", async () => {
     pollBox.className = "poll-box";
     pollBox.id = `poll-box-${skinId}`;
 
-    pollBox.innerHTML = `
-      <img src="${skin["깔끔한 일러"]}"
-           class="poll-image"
-           loading="lazy"
-           data-full-image="${skin["전체 일러"] || skin["ASMR 일러"] || skin["깔끔한 일러"]}"
-           data-skin-name="${skin["한글 함순이 + 스킨 이름"]}"
-           data-char-name="${skin["함순이 이름"]}"
-           title="클릭하여 전체 일러스트 보기">
-      <div class="poll-info">
-        <div class="character-name">${skin["함순이 이름"]}</div>
-        <h3>${skin["한글 함순이 + 스킨 이름"]}</h3>
-        <div class="info-line"><strong>타입:</strong> ${skin["스킨 타입 - 한글"] || "기본"}</div>
-        <div class="info-line"><strong>태그:</strong> ${skin["스킨 태그"] || "없음"}</div>
-        <div class="info-line"><strong>레어도:</strong> ${skin["레어도"] || "없음"}</div>
-        <div class="rating-area ${hasVoted ? "voted" : ""}" data-skin-id-area="${skinId}" data-client-id="${clientId}">
-          <div class="vote-widget">
-            <span class="vote-label">투표:</span>
-            <div class="star-rating" data-skin-id="${skinId}" data-client-id="${clientId}" data-skin-name="${skin["한글 함순이 + 스킨 이름"]}" data-character-name="${skin["함순이 이름"]}">
-              <input type="radio" id="star5-${skinId}" name="rating-${skinId}" value="5" ${votedRating === '5' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star5-${skinId}">★</label>
-              <input type="radio" id="star4-${skinId}" name="rating-${skinId}" value="4" ${votedRating === '4' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star4-${skinId}">★</label>
-              <input type="radio" id="star3-${skinId}" name="rating-${skinId}" value="3" ${votedRating === '3' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star3-${skinId}">★</label>
-              <input type="radio" id="star2-${skinId}" name="rating-${skinId}" value="2" ${votedRating === '2' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star2-${skinId}">★</label>
-              <input type="radio" id="star1-${skinId}" name="rating-${skinId}" value="1" ${votedRating === '1' ? 'checked' : ''} ${hasVoted ? 'disabled' : ''}><label for="star1-${skinId}">★</label>
-            </div>
-          </div>
-          <div class="confirm-vote-message" id="confirm-msg-${skinId}">다시 클릭하여 확정</div>
-          <div class="poll-results" id="results-${clientId}"></div>
-        </div>
-      </div>`;
+    const imageButton = document.createElement('button');
+    imageButton.type = 'button';
+    imageButton.className = 'poll-image-button';
+    imageButton.dataset.fullImage = skin["전체 일러"] || skin["ASMR 일러"] || skin["깔끔한 일러"] || '';
+    imageButton.dataset.skinName = skinName;
+    imageButton.dataset.charName = characterName;
+    imageButton.title = '클릭하여 전체 일러스트 보기';
+    imageButton.setAttribute('aria-label', `${skinName} 전체 일러스트 보기`);
 
-    // Add image error handler
-    const pollImage = pollBox.querySelector('.poll-image');
-    if (pollImage) {
-      pollImage.addEventListener('error', createImageErrorHandler());
+    const pollImage = document.createElement('img');
+    pollImage.src = skin["깔끔한 일러"];
+    pollImage.className = 'poll-image';
+    pollImage.loading = 'lazy';
+    pollImage.alt = skinName;
+    pollImage.addEventListener('error', createImageErrorHandler());
+    imageButton.appendChild(pollImage);
+
+    const pollInfo = document.createElement('div');
+    pollInfo.className = 'poll-info';
+
+    const charName = document.createElement('div');
+    charName.className = 'character-name';
+    charName.textContent = characterName;
+
+    const title = document.createElement('h3');
+    title.textContent = skinName;
+
+    const ratingArea = document.createElement('div');
+    ratingArea.className = hasVoted ? 'rating-area voted' : 'rating-area';
+    ratingArea.dataset.skinIdArea = skinId;
+    ratingArea.dataset.clientId = clientId;
+
+    const voteWidget = document.createElement('div');
+    voteWidget.className = 'vote-widget';
+
+    const voteLabel = document.createElement('span');
+    voteLabel.className = 'vote-label';
+    voteLabel.textContent = '투표:';
+
+    const starRating = document.createElement('div');
+    starRating.className = 'star-rating';
+    starRating.dataset.skinId = skinId;
+    starRating.dataset.clientId = clientId;
+    starRating.dataset.skinName = skinName;
+    starRating.dataset.characterName = characterName;
+
+    for (let rating = 5; rating >= 1; rating--) {
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.id = `star${rating}-${skinId}`;
+      input.name = `rating-${skinId}`;
+      input.value = String(rating);
+      input.checked = votedRating === String(rating);
+      input.disabled = hasVoted;
+
+      const label = document.createElement('label');
+      label.htmlFor = input.id;
+      label.textContent = '★';
+      label.setAttribute('aria-label', `${rating}점`);
+      label.setAttribute('role', 'button');
+      label.tabIndex = hasVoted ? -1 : 0;
+
+      starRating.append(input, label);
     }
 
-    // Initialize score display in the newly created card
-    const pollData = allPollDataCache[clientId];
-    if (pollData) {
-      const resultsEl = pollBox.querySelector(`#results-${clientId}`);
-      if (resultsEl) {
-        const average = pollData.total_votes > 0
-          ? pollData.total_score / pollData.total_votes
-          : 0;
-        const percentage = (average / 5) * 100;
+    voteWidget.append(voteLabel, starRating);
 
-        resultsEl.innerHTML = `<div class="score-bar-visual">★★★★★<div class="score-bar-foreground" style="width: ${percentage}%;">★★★★★</div></div><div class="score-bar-text">${
-          pollData.total_votes > 0
-            ? `평균: <strong>${average.toFixed(2)}</strong> (${pollData.total_votes}표)`
-            : '투표 없음'
-        }</div>`;
-      }
-    } else {
-      const resultsEl = pollBox.querySelector(`#results-${clientId}`);
-      if (resultsEl) {
-        resultsEl.innerHTML = `<div class="score-bar-visual">★★★★★<div class="score-bar-foreground" style="width: 0%;">★★★★★</div></div><div class="score-bar-text">투표 없음</div>`;
-      }
-    }
+    const confirm = document.createElement('div');
+    confirm.className = 'confirm-vote-message';
+    confirm.id = `confirm-msg-${skinId}`;
+    confirm.textContent = '다시 클릭하여 확정';
+
+    const results = document.createElement('div');
+    results.className = 'poll-results';
+    results.id = `results-${clientId}`;
+
+    ratingArea.append(voteWidget, confirm, results);
+    pollInfo.append(
+      charName,
+      title,
+      createTextLine('타입:', skin["스킨 타입 - 한글"] || '기본'),
+      createTextLine('태그:', skin["스킨 태그"] || '없음'),
+      createTextLine('레어도:', skin["레어도"] || '없음'),
+      ratingArea
+    );
+
+    pollBox.append(imageButton, pollInfo);
+
+    updateScoreDisplay(clientId, allPollDataCache[clientId], results);
 
     return pollBox;
   };
@@ -852,33 +989,54 @@ document.addEventListener("DOMContentLoaded", async () => {
   /**
    * Update score display for a skin (used by real-time updates on already-rendered cards)
    */
-  const updateScoreDisplay = (clientId, data) => {
-    const resultsEl = document.getElementById(`results-${clientId}`);
+  const updateScoreDisplay = (clientId, data, targetEl = null) => {
+    const resultsEl = targetEl || document.getElementById(`results-${clientId}`);
     if (!resultsEl) return;
 
-    const foregroundEl = resultsEl.querySelector('.score-bar-foreground');
-    const textEl = resultsEl.querySelector('.score-bar-text');
-
-    if (!foregroundEl || !textEl) {
-      resultsEl.innerHTML = `<div class="score-bar-visual">★★★★★<div class="score-bar-foreground" style="width: 0%;">★★★★★</div></div><div class="score-bar-text"></div>`;
+    let fg = resultsEl.querySelector('.score-bar-foreground');
+    let txt = resultsEl.querySelector('.score-bar-text');
+    if (!fg || !txt) {
+      resultsEl.replaceChildren(createScoreBar());
+      fg = resultsEl.querySelector('.score-bar-foreground');
+      txt = resultsEl.querySelector('.score-bar-text');
     }
-
-    const fg = resultsEl.querySelector('.score-bar-foreground');
-    const txt = resultsEl.querySelector('.score-bar-text');
 
     if (data && data.total_votes > 0) {
       const average = data.total_score / data.total_votes;
       const percentage = (average / 5) * 100;
 
       const newWidth = `${percentage}%`;
-      const newText = `평균: <strong>${average.toFixed(2)}</strong> (${data.total_votes}표)`;
 
       if (fg.style.width !== newWidth) fg.style.width = newWidth;
-      if (txt.innerHTML !== newText) txt.innerHTML = newText;
+      txt.replaceChildren(
+        document.createTextNode('평균: '),
+        Object.assign(document.createElement('strong'), { textContent: average.toFixed(2) }),
+        document.createTextNode(` (${data.total_votes}표)`)
+      );
     } else {
       if (fg.style.width !== '0%') fg.style.width = '0%';
       if (txt.textContent !== '투표 없음') txt.textContent = '투표 없음';
     }
+  };
+
+  const createScoreBar = () => {
+    const fragment = document.createDocumentFragment();
+
+    const visual = document.createElement('div');
+    visual.className = 'score-bar-visual';
+    visual.appendChild(document.createTextNode('★★★★★'));
+
+    const foreground = document.createElement('div');
+    foreground.className = 'score-bar-foreground';
+    foreground.style.width = '0%';
+    foreground.textContent = '★★★★★';
+    visual.appendChild(foreground);
+
+    const text = document.createElement('div');
+    text.className = 'score-bar-text';
+
+    fragment.append(visual, text);
+    return fragment;
   };
 
   // ===== Filtering & Sorting =====
@@ -886,7 +1044,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   /**
    * Apply filters, sort, and push to virtual scroll
    */
-  const applyFilters = () => {
+  const applyFilters = ({ updateUrl = true } = {}) => {
     const selectedCharName = characterNameSearch.value;
     const selectedType = skinTypeSelect.value;
     const selectedFaction = factionSelect.value;
@@ -920,7 +1078,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     applySorting();
-    updateURLWithFilters();
+    if (updateUrl) updateURLWithFilters();
   };
 
   /**
@@ -978,7 +1136,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       tag: tagSelect.value !== 'all' ? tagSelect.value : null,
       sort: sortSelect.value !== 'default' ? sortSelect.value : null,
       rarities: selectedRarities.length < 5 ? selectedRarities.join(',') : null,
-    }, { replace: false, clear: true });
+    }, { replace: true, clear: true });
+  };
+
+  const setSelectValue = (selectEl, value, fallback) => {
+    const candidate = value || fallback;
+    const hasOption = Array.from(selectEl.options).some(option => option.value === candidate);
+    selectEl.value = hasOption ? candidate : fallback;
+  };
+
+  const setDropdownVisible = (dropdownEl, inputEl, isVisible) => {
+    dropdownEl.style.display = isVisible ? 'block' : 'none';
+    inputEl.setAttribute('aria-expanded', String(isVisible));
   };
 
   /**
@@ -990,23 +1159,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (Object.keys(params).length === 0) {
       // First visit with no URL params - showcase featured event
+      characterNameSearch.value = '';
       skinTypeSelect.value = FEATURED_SKIN_TYPE;
+      factionSelect.value = 'all';
+      tagSelect.value = 'all';
+      sortSelect.value = 'default';
+      cachedRarityCheckboxes.forEach(cb => {
+        cb.checked = true;
+      });
     } else {
       // Returning visit or shared link - respect URL parameters
       characterNameSearch.value = params.character || '';
-      skinTypeSelect.value = params.type || 'all';
-      factionSelect.value = params.faction || 'all';
-      tagSelect.value = params.tag || 'all';
-      sortSelect.value = params.sort || 'default';
+      setSelectValue(skinTypeSelect, params.type, 'all');
+      setSelectValue(factionSelect, params.faction, 'all');
+      setSelectValue(tagSelect, params.tag, 'all');
+      setSelectValue(sortSelect, params.sort, 'default');
       const raritiesParam = params.rarities;
       if (raritiesParam) {
-        const activeRarities = raritiesParam.split(',');
+        const validRarities = new Set(cachedRarityCheckboxes.map(cb => cb.value));
+        const activeRarities = raritiesParam.split(',').filter(rarity => validRarities.has(rarity));
         cachedRarityCheckboxes.forEach(cb => {
           cb.checked = activeRarities.includes(cb.value);
         });
+      } else {
+        cachedRarityCheckboxes.forEach(cb => {
+          cb.checked = true;
+        });
       }
     }
-    applyFilters();
+    applyFilters({ updateUrl: false });
   };
 
   // ===== Dropdown Helpers =====
@@ -1015,39 +1196,32 @@ document.addEventListener("DOMContentLoaded", async () => {
    * Populate dropdown with Fuse.js results (with highlighting)
    */
   const populateDropdown = (dropdownEl, results, onSelectCallback) => {
-    dropdownEl.innerHTML = '';
+    dropdownEl.replaceChildren();
     if (results.length === 0) {
-      dropdownEl.innerHTML = `<div class="no-results">검색 결과가 없습니다</div>`;
+      const noResults = document.createElement('div');
+      noResults.className = 'no-results';
+      noResults.textContent = '검색 결과가 없습니다';
+      dropdownEl.appendChild(noResults);
       return;
     }
 
     results.forEach((result) => {
       const item = result.item;
       const matches = result.matches;
-      const a = document.createElement('a');
-      a.setAttribute('role', 'option');
-      a.setAttribute('tabindex', '0');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'dropdown-option';
+      button.setAttribute('role', 'option');
 
       // Highlight matches if available
       if (matches && matches.length > 0 && matches[0].indices) {
-        let highlightedName = '';
-        let lastIndex = 0;
-        matches[0].indices.forEach(([start, end]) => {
-          highlightedName += item.name.substring(lastIndex, start);
-          highlightedName += `<mark>${item.name.substring(start, end + 1)}</mark>`;
-          lastIndex = end + 1;
-        });
-        highlightedName += item.name.substring(lastIndex);
-        a.innerHTML = highlightedName;
+        appendTextWithMark(button, item.name, matches[0].indices);
       } else {
-        a.textContent = item.name;
+        button.textContent = item.name;
       }
 
-      a.addEventListener('click', () => onSelectCallback(item.name));
-      a.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') onSelectCallback(item.name);
-      });
-      dropdownEl.appendChild(a);
+      button.addEventListener('click', () => onSelectCallback(item.name));
+      dropdownEl.appendChild(button);
     });
   };
 
@@ -1057,10 +1231,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const setupDropdown = (inputEl, dropdownEl, getFuseInstance, onSelectCallback) => {
     const handleFilter = () => {
       const fuse = getFuseInstance();
-      if (!fuse) return;
-
       const searchTerm = inputEl.value;
-      if (searchTerm.trim() === '') {
+
+      if (!fuse) {
+        const normalizedTerm = searchTerm.trim().toLowerCase();
+        const results = allCharacterNames
+          .filter(name => !normalizedTerm || name.toLowerCase().includes(normalizedTerm))
+          .map(name => ({ item: { name }, matches: [] }));
+        populateDropdown(dropdownEl, results, onSelectCallback);
+      } else if (searchTerm.trim() === '') {
         // Show all items when empty
         const allItems = fuse.getIndex().docs.map(doc => ({ item: doc, matches: [] }));
         populateDropdown(dropdownEl, allItems, onSelectCallback);
@@ -1074,11 +1253,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     inputEl.addEventListener('keyup', debounce(handleFilter, 200));
     inputEl.addEventListener('focus', () => {
       handleFilter();
-      dropdownEl.style.display = 'block';
+      setDropdownVisible(dropdownEl, inputEl, true);
     });
     inputEl.addEventListener('blur', () => {
       setTimeout(() => {
-        dropdownEl.style.display = 'none';
+        setDropdownVisible(dropdownEl, inputEl, false);
       }, 200);
     });
   };
@@ -1088,7 +1267,7 @@ document.addEventListener("DOMContentLoaded", async () => {
    */
   const handleCharacterSelect = (characterName) => {
     characterNameSearch.value = characterName;
-    characterDropdownContent.style.display = 'none';
+    setDropdownVisible(characterDropdownContent, characterNameSearch, false);
     applyFilters();
   };
 
@@ -1101,10 +1280,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     popupFullImage.addEventListener('error', createImageErrorHandler(), { once: true });
 
     popupFullImage.src = fullImageUrl;
+    popupFullImage.alt = skinName ? `${skinName} 전체 일러스트` : '전체 일러스트';
     popupSkinName.textContent = skinName;
     popupCharName.textContent = charName;
     imagePopup.classList.add('visible');
+    imagePopup.setAttribute('aria-hidden', 'false');
     document.body.classList.add('no-scroll');
+    closeImagePopupBtn.focus();
   };
 
   /**
@@ -1112,6 +1294,7 @@ document.addEventListener("DOMContentLoaded", async () => {
    */
   const closeImagePopup = () => {
     imagePopup.classList.remove('visible');
+    imagePopup.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
     setTimeout(() => {
       popupFullImage.src = '';
@@ -1148,11 +1331,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const updateButtonText = () => {
       if (secondsLeft > 0) {
-        refreshDataBtn.innerHTML = `<i class="fas fa-clock"></i> ${secondsLeft}초`;
+        setButtonIconText(refreshDataBtn, 'fas fa-clock', `${secondsLeft}초`);
       } else {
         clearInterval(refreshCooldownTimer);
         refreshDataBtn.disabled = false;
-        refreshDataBtn.innerHTML = '<i class="fas fa-sync-alt"></i>';
+        setButtonIconText(refreshDataBtn, 'fas fa-sync-alt');
       }
     };
 
@@ -1180,7 +1363,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (refreshDataBtn) {
       refreshDataBtn.classList.add('loading');
       refreshDataBtn.disabled = true;
-      refreshDataBtn.innerHTML = '<i class="fas fa-sync-alt"></i>';
+      setButtonIconText(refreshDataBtn, 'fas fa-sync-alt');
     }
 
     showToast("투표 데이터 업데이트 중...", "info");
@@ -1237,7 +1420,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (refreshDataBtn) {
         refreshDataBtn.classList.remove('loading');
         refreshDataBtn.disabled = false;
-        refreshDataBtn.innerHTML = '<i class="fas fa-sync-alt"></i>';
+        setButtonIconText(refreshDataBtn, 'fas fa-sync-alt');
       }
     }
   };
@@ -1247,11 +1430,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Poll container click handling (voting & image popup) — delegated
   pollContainer.addEventListener("click", (event) => {
     // Image popup handler
-    const clickedImage = event.target.closest('.poll-image');
-    if (clickedImage) {
-      const fullImageUrl = clickedImage.dataset.fullImage;
-      const skinName = clickedImage.dataset.skinName;
-      const charName = clickedImage.dataset.charName;
+    const imageButton = event.target.closest('.poll-image-button');
+    if (imageButton) {
+      const fullImageUrl = imageButton.dataset.fullImage;
+      const skinName = imageButton.dataset.skinName;
+      const charName = imageButton.dataset.charName;
 
       if (fullImageUrl && fullImageUrl !== 'null' && fullImageUrl !== 'undefined') {
         openImagePopup(fullImageUrl, skinName, charName);
@@ -1300,8 +1483,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Leaderboard toggle
   leaderboardToggleBtn.addEventListener('click', () => {
-    leaderboardContent.classList.toggle('visible');
-    leaderboardToggleBtn.textContent = leaderboardContent.classList.contains('visible') ? '리더보드 숨기기' : 'Top 10 스킨 보기';
+    const isVisible = leaderboardContent.classList.toggle('visible');
+    leaderboardToggleBtn.textContent = isVisible ? '리더보드 숨기기' : 'Top 10 스킨 보기';
+    leaderboardToggleBtn.setAttribute('aria-expanded', String(isVisible));
+  });
+
+  pollContainer.addEventListener('keydown', (event) => {
+    const starLabel = event.target.closest('.star-rating label');
+    if (!starLabel || (event.key !== 'Enter' && event.key !== ' ')) return;
+
+    event.preventDefault();
+    starLabel.click();
   });
 
   // Reset filters button
@@ -1310,8 +1502,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Mobile filter toggle
   if (filterToggleBtn && filterContainer) {
     filterToggleBtn.addEventListener('click', () => {
-      filterContainer.classList.toggle('visible');
-      filterToggleBtn.classList.toggle('active');
+      const isVisible = filterContainer.classList.toggle('visible');
+      filterToggleBtn.classList.toggle('active', isVisible);
+      filterToggleBtn.setAttribute('aria-expanded', String(isVisible));
     });
   }
 
@@ -1390,7 +1583,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // 7. Setup real-time sync on aggregate doc
-    setupRealtimeSync();
+    realtimeSyncCleanup = setupRealtimeSync();
 
     // 8. Data age indicator + interval
     updateDataAgeIndicator();
@@ -1424,6 +1617,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (activeTimers.refreshCooldown) {
       clearInterval(activeTimers.refreshCooldown);
       activeTimers.refreshCooldown = null;
+    }
+
+    if (activeTimers.realtimeRetry) {
+      clearTimeout(activeTimers.realtimeRetry);
+      activeTimers.realtimeRetry = null;
+    }
+
+    if (realtimeSyncCleanup) {
+      realtimeSyncCleanup();
+      realtimeSyncCleanup = null;
     }
 
     // Destroy virtual scroll (removes scroll/resize listeners)
