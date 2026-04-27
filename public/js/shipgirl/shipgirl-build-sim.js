@@ -892,6 +892,12 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         return baseProbs;
     }
 
+    // Format a percent number for display: drops float drift (e.g. 28.7999... → 28.8)
+    // and trims trailing zeros (2 → "2", 2.5 → "2.5", 1.20 → "1.2").
+    function formatPercent(p) {
+        return Number(p.toFixed(2)).toString();
+    }
+
     // Update Probability Chart
     function updateProbabilityChart() {
         const probs = getEffectiveProbabilities(state.currentPool);
@@ -908,7 +914,9 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
             const percentage = probs[rarity];
 
             if (percentage > 0) {
-                // Create segment
+                const display = `${formatPercent(percentage)}%`;
+
+                // Create segment — keep raw width for sub-pixel accuracy across segments
                 const segment = document.createElement('div');
                 segment.className = `stacked-segment ${rarity.toLowerCase()}`;
                 segment.style.width = `${percentage}%`;
@@ -918,7 +926,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
 
                 const segmentValue = document.createElement('span');
                 segmentValue.className = 'segment-value';
-                segmentValue.textContent = `${percentage}%`;
+                segmentValue.textContent = display;
 
                 segment.append(segmentLabel, segmentValue);
                 stackedBar.appendChild(segment);
@@ -935,7 +943,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
 
                 const percent = document.createElement('span');
                 percent.className = 'legend-percent';
-                percent.textContent = `${percentage}%`;
+                percent.textContent = display;
 
                 legendItem.append(color, text, percent);
                 legend.appendChild(legendItem);
