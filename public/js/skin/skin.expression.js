@@ -4,7 +4,7 @@
  * Handles face-expression selectors, base+overlay compositing, lightbox navigation,
  * and thumbnail display. Part of the skin module group; wired by skin.detail.viewer.js.
  */
-import { showElement } from '../utils.js';
+import { hideElement, showElement, createImgElement } from '../utils.js';
 
 const state = {
     expressionManifest: {},
@@ -116,18 +116,19 @@ function showNextImage() {
  * zoomed painting with overlay, and thumbnail panels. Attaches expression/lightbox handlers.
  */
 function renderImageGallery(skin, container) {
-    let galleryHtml = '';
+    const topNodes = [];
     const galleryImages = [];
     const skinId = skin['클뜯 id'];
 
-    // Helper: Compute overlay CSS from manifest box/size
-    const computeOverlayStyle = (entry) => {
-        if (!entry || !entry.box || !entry.size) return { style: '' };
+    // Apply manifest box/size as percentage-based positioning to an overlay element.
+    const applyOverlayStyle = (el, entry) => {
+        if (!entry || !entry.box || !entry.size) return;
         const [x, y, w, h] = entry.box;
         const [imgW, imgH] = entry.size;
-        return {
-            style: `left: ${(x / imgW) * 100}%; top: ${(y / imgH) * 100}%; width: ${(w / imgW) * 100}%; height: ${(h / imgH) * 100}%;`
-        };
+        el.style.left = `${(x / imgW) * 100}%`;
+        el.style.top = `${(y / imgH) * 100}%`;
+        el.style.width = `${(w / imgW) * 100}%`;
+        el.style.height = `${(h / imgH) * 100}%`;
     };
 
     const getDefaultFace = (faces) => (faces && faces.includes('0') ? '0' : (faces ? faces[0] : '0'));
@@ -147,104 +148,170 @@ function renderImageGallery(skin, container) {
     // Top Banner (Full Art)
     if (manifestData && manifestData.faces && manifestData.faces.length > 0) {
         const baseImageUrl = `${baseDir}/painting.png`;
-        const overlayStyle = computeOverlayStyle(manifestData);
         const defaultFaceUrl = `${baseDir}/painting_face_${mainDefaultFace}.png`;
 
-        // Expression Selector
-        let expressionSelectorHtml = `
-            <div class="expression-selector-container">
-                <div class="expression-header">
-                    <div class="expression-label">
-                        <i class="fas fa-smile"></i> 표정 선택
-                        <span class="expression-hint">(메인/확대 일러스트가 함께 변경됩니다)</span>
-                    </div>
-                    <div class="expression-note">일러스트 클릭 후 확대 상태에서 저장해야 표정이 같이 저장됩니다</div>
-                </div>
-                <div class="expression-selector">
-        `;
-        manifestData.faces.forEach(faceId => {
-            const activeClass = faceId === mainDefaultFace ? 'active' : '';
-            const thumbUrl = `${baseDir}/painting_face_${faceId}.png`;
-            expressionSelectorHtml += `<img src="${thumbUrl}" class="expression-thumb ${activeClass}" data-face-id="${faceId}" alt="Face ${faceId}" loading="lazy">`;
-        });
-        expressionSelectorHtml += `</div></div>`;
-        galleryHtml += expressionSelectorHtml;
-
-        galleryHtml += `
-            <div class="face-overlay-container" data-base-name="painting">
-                <img class="base-image gallery-top-banner" src="${baseImageUrl}" alt="전체 일러스트" loading="lazy" crossorigin="anonymous">
-                <img class="face-overlay" src="${defaultFaceUrl}" style="${overlayStyle.style}" alt="Expression" crossorigin="anonymous">
-            </div>
-        `;
+        topNodes.push(buildExpressionSelector(manifestData.faces, mainDefaultFace, baseDir));
+        topNodes.push(buildOverlayContainer({
+            baseName: 'painting',
+            baseImageUrl,
+            overlayUrl: defaultFaceUrl,
+            manifest: manifestData,
+            applyOverlayStyle,
+            baseClass: 'base-image gallery-top-banner',
+            alt: '전체 일러스트'
+        }));
         galleryImages.push({ src: baseImageUrl, alt: '전체 일러스트', caption: '전체 일러스트' });
     } else if (skin['전체 일러']) {
-        galleryHtml += `<img class="gallery-top-banner" src="${skin['전체 일러']}" alt="전체 일러스트" loading="lazy">`;
+        topNodes.push(createImgElement(skin['전체 일러'], '전체 일러스트', { className: 'gallery-top-banner' }));
         galleryImages.push({ src: skin['전체 일러'], alt: '전체 일러스트', caption: '전체 일러스트' });
     }
 
     // Bottom Panel
-    let bottomPanelHtml = '';
-    let bottomLeftHtml = '<div class="bottom-left-panel">';
+    const bottomLeft = document.createElement('div');
+    bottomLeft.className = 'bottom-left-panel';
 
     // Zoomed Art (with expression check)
     const zoomedManifestKey = `${skinId}_n`;
     const zoomedManifest = state.expressionManifest[zoomedManifestKey];
+    const hasZoomedExpressionArt = !!(zoomedManifest && zoomedManifest.faces && zoomedManifest.faces.length > 0);
 
-    if (zoomedManifest && zoomedManifest.faces && zoomedManifest.faces.length > 0) {
+    if (hasZoomedExpressionArt) {
         const baseImageUrl = `${baseDir}/painting_n.png`;
-        const overlayStyle = computeOverlayStyle(zoomedManifest);
         const zoomDefaultFace = (mainDefaultFace && zoomedManifest.faces.includes(mainDefaultFace)) ? mainDefaultFace : getDefaultFace(zoomedManifest.faces);
         const defaultFaceUrl = `${baseDir}/painting_n_face_${zoomDefaultFace}.png`;
 
-        bottomLeftHtml += `
-            <div class="face-overlay-container" data-base-name="painting_n">
-                <img class="base-image" src="${baseImageUrl}" alt="확대 일러스트" loading="lazy" crossorigin="anonymous">
-                <img class="face-overlay" src="${defaultFaceUrl}" style="${overlayStyle.style}" alt="Expression" crossorigin="anonymous">
-            </div>
-        `;
+        bottomLeft.appendChild(buildOverlayContainer({
+            baseName: 'painting_n',
+            baseImageUrl,
+            overlayUrl: defaultFaceUrl,
+            manifest: zoomedManifest,
+            applyOverlayStyle,
+            baseClass: 'base-image',
+            alt: '확대 일러스트'
+        }));
         galleryImages.push({ src: baseImageUrl, alt: '확대 일러스트', caption: '확대 일러스트' });
     } else if (skin['확대 일러']) {
-        bottomLeftHtml += `<img src="${skin['확대 일러']}" alt="확대 일러스트" loading="lazy">`;
+        bottomLeft.appendChild(createImgElement(skin['확대 일러'], '확대 일러스트'));
         galleryImages.push({ src: skin['확대 일러'], alt: '확대 일러스트', caption: '확대 일러스트' });
     } else {
-        bottomLeftHtml += `<div class="dummy-image-box">이 스킨은 확대 일러가 없어요 지휘관님</div>`;
+        const dummy = document.createElement('div');
+        dummy.className = 'dummy-image-box';
+        dummy.textContent = '이 스킨은 확대 일러가 없어요 지휘관님';
+        bottomLeft.appendChild(dummy);
     }
-    bottomLeftHtml += '</div>';
 
     // Thumbnails
-    let bottomRightHtml = '<div class="bottom-right-panel">';
-    const tallSources = [{ src: skin['깔끔한 일러'], caption: '깔끔한 일러스트' }, { src: skin['sd 일러'], caption: 'SD 일러스트' }].filter(i => i.src);
-    const smallSources = [{ src: skin['아이콘 일러'], caption: '아이콘' }, { src: skin['쥬스타 아이콘 일러'], caption: '쥬스타 아이콘' }].filter(i => i.src);
+    const bottomRight = document.createElement('div');
+    bottomRight.className = 'bottom-right-panel';
+
+    const tallSources = [
+        { src: skin['깔끔한 일러'], caption: '깔끔한 일러스트' },
+        { src: skin['sd 일러'], caption: 'SD 일러스트' }
+    ].filter(i => i.src);
+    const smallSources = [
+        { src: skin['아이콘 일러'], caption: '아이콘' },
+        { src: skin['쥬스타 아이콘 일러'], caption: '쥬스타 아이콘' }
+    ].filter(i => i.src);
 
     if (tallSources.length > 0) {
-        bottomRightHtml += '<div class="thumbnail-group tall-group">';
+        const group = document.createElement('div');
+        group.className = 'thumbnail-group tall-group';
         tallSources.forEach(item => {
-            bottomRightHtml += `<img src="${item.src}" class="tall-thumbnail" alt="${item.caption}" loading="lazy">`;
+            group.appendChild(createImgElement(item.src, item.caption, { className: 'tall-thumbnail' }));
             galleryImages.push(item);
         });
-        bottomRightHtml += '</div>';
+        bottomRight.appendChild(group);
     }
     if (smallSources.length > 0) {
-        bottomRightHtml += '<div class="thumbnail-group small-group">';
+        const group = document.createElement('div');
+        group.className = 'thumbnail-group small-group';
         smallSources.forEach(item => {
-            bottomRightHtml += `<img src="${item.src}" alt="${item.caption}" loading="lazy">`;
+            group.appendChild(createImgElement(item.src, item.caption));
             galleryImages.push(item);
         });
-        bottomRightHtml += '</div>';
-    }
-    bottomRightHtml += '</div>';
-
-    if (skin['확대 일러'] || tallSources.length || smallSources.length) {
-        bottomPanelHtml = `<div class="gallery-bottom-panel">${bottomLeftHtml}${bottomRightHtml}</div>`;
+        bottomRight.appendChild(group);
     }
 
-    container.innerHTML = galleryHtml + bottomPanelHtml;
+    let bottomPanel = null;
+    if (hasZoomedExpressionArt || skin['확대 일러'] || tallSources.length || smallSources.length) {
+        bottomPanel = document.createElement('div');
+        bottomPanel.className = 'gallery-bottom-panel';
+        bottomPanel.append(bottomLeft, bottomRight);
+    }
+
+    if (topNodes.length === 0 && !bottomPanel) {
+        container.replaceChildren();
+        hideElement(container);
+        return;
+    }
+
+    container.replaceChildren();
+    topNodes.forEach(node => container.appendChild(node));
+    if (bottomPanel) container.appendChild(bottomPanel);
     showElement(container);
 
     // Attach Handlers (Selectors & Lightbox)
     attachGalleryHandlers(container, galleryImages, baseDir);
     addImageErrorHandlers(container);
 }
+
+/** Build the expression-thumbnail selector strip with default-face highlighted. */
+function buildExpressionSelector(faces, defaultFace, baseDir) {
+    const selectorContainer = document.createElement('div');
+    selectorContainer.className = 'expression-selector-container';
+
+    const header = document.createElement('div');
+    header.className = 'expression-header';
+
+    const label = document.createElement('div');
+    label.className = 'expression-label';
+    const labelIcon = document.createElement('i');
+    labelIcon.className = 'fas fa-smile';
+    labelIcon.setAttribute('aria-hidden', 'true');
+    const hint = document.createElement('span');
+    hint.className = 'expression-hint';
+    hint.textContent = '(메인/확대 일러스트가 함께 변경됩니다)';
+    label.append(labelIcon, ' 표정 선택 ', hint);
+
+    const note = document.createElement('div');
+    note.className = 'expression-note';
+    note.textContent = '일러스트 클릭 후 확대 상태에서 저장해야 표정이 같이 저장됩니다';
+
+    header.append(label, note);
+
+    const selector = document.createElement('div');
+    selector.className = 'expression-selector';
+    faces.forEach(faceId => {
+        const thumb = createImgElement(
+            `${baseDir}/painting_face_${faceId}.png`,
+            `Face ${faceId}`,
+            { className: faceId === defaultFace ? 'expression-thumb active' : 'expression-thumb' }
+        );
+        thumb.dataset.faceId = faceId;
+        selector.appendChild(thumb);
+    });
+
+    selectorContainer.append(header, selector);
+    return selectorContainer;
+}
+
+/** Build a base-image + face-overlay container that the lightbox can canvas-composite. */
+function buildOverlayContainer({ baseName, baseImageUrl, overlayUrl, manifest, applyOverlayStyle, baseClass, alt }) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'face-overlay-container';
+    wrapper.dataset.baseName = baseName;
+
+    const baseImg = createImgElement(baseImageUrl, alt, { className: baseClass });
+    baseImg.crossOrigin = 'anonymous';
+
+    const overlayImg = createImgElement(overlayUrl, 'Expression', { className: 'face-overlay' });
+    overlayImg.crossOrigin = 'anonymous';
+    applyOverlayStyle(overlayImg, manifest);
+
+    wrapper.append(baseImg, overlayImg);
+    return wrapper;
+}
+
 
 /**
  * Attach expression-thumb click handlers (update all face-overlay imgs) and

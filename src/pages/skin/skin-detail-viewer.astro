@@ -14,10 +14,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <header class="controls-header">
             <div class="title-wrapper">
                 <h1 class="page-title">함순이 스킨 / 대사보기</h1>
-                <button id="info-button" class="info-button" aria-label="도움말 보기">
+                <button id="info-button" class="info-button" aria-label="도움말 보기" type="button">
                     <i class="fas fa-info-circle"></i>
                 </button>
-                <button id="random-skin-btn" class="random-skin-btn" title="랜덤 스킨 구경가기" aria-label="랜덤 스킨 구경가기">
+                <button id="random-skin-btn" class="random-skin-btn" title="랜덤 스킨 구경가기" aria-label="랜덤 스킨 구경가기" aria-expanded="false" aria-controls="random-skin-modal" type="button">
                     <i class="fas fa-dice"></i>
                     <span>랜덤 스킨 구경가기</span>
                 </button>
@@ -27,7 +27,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div class="info-popup-content">
                     <div class="popup-header">
                         <h2 id="popup-title">초간단 설명서</h2>
-                        <button class="close-popup-btn" aria-label="닫기"><i class="fas fa-times"></i></button>
+                        <button class="close-popup-btn" aria-label="닫기" type="button"><i class="fas fa-times"></i></button>
                     </div>
                     <div class="popup-body">
                         <div class="info-step">
@@ -72,7 +72,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                         <div class="dropdown-content" id="skin-dropdown-content" role="listbox"></div>
                     </div>
                 </div>
-                <button id="clear-filters-btn" class="clear-btn" title="검색 초기화" aria-label="검색 초기화">
+                <button id="clear-filters-btn" class="clear-btn" title="검색 초기화" aria-label="검색 초기화" type="button">
                     <i class="fas fa-redo-alt"></i>
                     <span>검색 초기화</span>
                 </button>
@@ -97,7 +97,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div id="asmr-table-area" class="text-content-area hidden"></div>
     </div>
 
-    <div id="random-skin-modal" class="random-skin-modal" style="display: none;" role="dialog" aria-label="랜덤 스킨 선택">
+    <div id="random-skin-modal" class="random-skin-modal" style="display: none;" role="dialog" aria-label="랜덤 스킨 선택" aria-modal="true" aria-hidden="true">
         <div class="random-skin-modal-backdrop"></div>
         <div class="random-skin-modal-content">
             <h3><i class="fas fa-dice"></i> 랜덤 스킨 구경가기</h3>
@@ -121,16 +121,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </div>
             <div class="random-skin-actions">
                 <span id="random-skin-count" class="random-skin-count"></span>
-                <button id="random-skin-go" class="random-skin-go-btn"><i class="fas fa-random"></i> 랜덤 구경가기!</button>
-                <button id="random-skin-close" class="random-skin-close-btn">닫기</button>
+                <button id="random-skin-go" class="random-skin-go-btn" type="button"><i class="fas fa-random"></i> 랜덤 구경가기!</button>
+                <button id="random-skin-close" class="random-skin-close-btn" type="button">닫기</button>
             </div>
         </div>
     </div>
 
     <div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-label="이미지 확대 보기" aria-hidden="true">
-        <button class="lightbox-close" aria-label="닫기"><i class="fas fa-times"></i></button>
-        <button class="lightbox-prev" aria-label="이전 이미지"><i class="fas fa-chevron-left"></i></button>
-        <button class="lightbox-next" aria-label="다음 이미지"><i class="fas fa-chevron-right"></i></button>
+        <button class="lightbox-close" aria-label="닫기" type="button"><i class="fas fa-times"></i></button>
+        <button class="lightbox-prev" aria-label="이전 이미지" type="button"><i class="fas fa-chevron-left"></i></button>
+        <button class="lightbox-next" aria-label="다음 이미지" type="button"><i class="fas fa-chevron-right"></i></button>
         <div class="lightbox-content">
             <img id="lightbox-image" src="" alt="">
             <div class="lightbox-caption"></div>

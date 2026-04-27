@@ -117,18 +117,33 @@ function updateVolumeIcon() {
 
 // Volume DOM helpers — build and wire the slider UI
 /**
- * Return the HTML string for a volume slider widget initialized to the current volume.
- * The rendered percentage label and slider value both reflect `state.globalVolume` at call time.
+ * Return a volume slider widget element initialized to the current global volume.
+ * The label and slider both reflect `state.globalVolume` at call time.
  */
-function createVolumeControlHtml() {
+function createVolumeControlElement() {
     const volumePercentage = Math.round(state.globalVolume * 100);
-    return `
-        <div class="volume-control-container">
-            <i class="fas fa-volume-up volume-icon"></i>
-            <input type="range" class="volume-slider" min="0" max="100" value="${volumePercentage}" aria-label="볼륨 조절">
-            <span class="volume-percentage">${volumePercentage}%</span>
-        </div>
-    `;
+
+    const container = document.createElement('div');
+    container.className = 'volume-control-container';
+
+    const icon = document.createElement('i');
+    icon.className = 'fas fa-volume-up volume-icon';
+    icon.setAttribute('aria-hidden', 'true');
+
+    const slider = document.createElement('input');
+    slider.type = 'range';
+    slider.className = 'volume-slider';
+    slider.min = '0';
+    slider.max = '100';
+    slider.value = String(volumePercentage);
+    slider.setAttribute('aria-label', '볼륨 조절');
+
+    const percentage = document.createElement('span');
+    percentage.className = 'volume-percentage';
+    percentage.textContent = `${volumePercentage}%`;
+
+    container.append(icon, slider, percentage);
+    return container;
 }
 
 /**
@@ -156,7 +171,7 @@ window.SkinAudio = {
     init,
     stopCurrentAudio,
     handlePlayClick,
-    createVolumeControlHtml,
+    createVolumeControlElement,
     attachVolumeListeners,
     updateVolumeIcon
 };
@@ -165,7 +180,7 @@ export {
     init,
     stopCurrentAudio,
     handlePlayClick,
-    createVolumeControlHtml,
+    createVolumeControlElement,
     attachVolumeListeners,
     updateVolumeIcon
 };

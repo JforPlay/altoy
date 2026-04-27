@@ -114,7 +114,9 @@
   border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
   max-width: 480px;
+  max-height: calc(100vh - 2rem);
   width: 90%;
+  overflow-y: auto;
   box-shadow: var(--shadow-xl);
   z-index: 1;
 }
@@ -258,6 +260,13 @@
 .info-value {
   color: var(--text-primary);
   font-weight: 600;
+}
+
+.skin-detail-error {
+  width: 100%;
+  color: var(--danger-color);
+  font-weight: 600;
+  text-align: center;
 }
 
 /* --- Image Gallery (Modern Layout) --- */

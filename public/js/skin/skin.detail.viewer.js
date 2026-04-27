@@ -6,7 +6,7 @@
  */
 import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl } from '../utils.js';
 import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getReleaseDate, getSkinFilterData } from './skin.data.js';
-import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlHtml, attachVolumeListeners } from './skin.audio.js';
+import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlElement, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         skeleton: document.getElementById('loading-skeleton'),
         clearBtn: document.getElementById('clear-filters-btn')
     };
+    let skinRenderToken = 0;
+    let isApplyingURLState = false;
 
     // Initialize Modules
     initSkinAudio();
@@ -33,21 +35,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     if (!dataLoaded) {
         elements.charInput.placeholder = '데이터 로딩 실패';
+        elements.charInput.disabled = true;
+        elements.skinInput.disabled = true;
+        elements.clearBtn.disabled = true;
+        renderLoadError();
         return;
     }
 
     setManifest(getManifest());
-    applyFiltersFromURL();
 
     // Event Listeners
     setupDropdowns();
-    
+    [elements.textContent, elements.oathTable, elements.asmrTable].forEach(container => {
+        container.addEventListener('click', handlePlayClick);
+    });
+
     elements.clearBtn.addEventListener('click', () => {
         elements.charInput.value = '';
         elements.skinInput.value = '';
         elements.skinInput.placeholder = '함순이를 먼저 선택해주세요...';
         elements.skinInput.disabled = true;
         clearSkinDetails();
+        elements.charDropdown.style.display = 'none';
+        elements.skinDropdown.style.display = 'none';
         updateURLWithFilters();
     });
 
@@ -55,6 +65,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupRandomSkin();
 
     window.addEventListener('popstate', applyFiltersFromURL);
+
+    // Apply initial URL state after listeners are wired so deep-linked skins
+    // render against fully-attached delegated handlers.
+    applyFiltersFromURL();
 
     // ===== Search & Selection =====
 
@@ -81,7 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const charName = elements.charInput.value;
             const skins = getSkinsForCharacter(charName);
             if (!charName || skins.length === 0) {
-                elements.skinDropdown.innerHTML = `<div class="no-results">함순이를 먼저 선택해주세요</div>`;
+                renderNoResults(elements.skinDropdown, '함순이를 먼저 선택해주세요');
             } else {
                 renderSimpleDropdown(elements.skinDropdown, skins, handleSkinSelect);
             }
@@ -95,14 +109,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     function renderDropdown(el, results, onSelect) {
         el.innerHTML = '';
         if (results.length === 0) {
-            el.innerHTML = `<div class="no-results">검색 결과가 없습니다</div>`;
+            renderNoResults(el, '검색 결과가 없습니다');
             return;
         }
         results.forEach(res => {
             const item = res.item;
             const a = document.createElement('a');
+            a.href = '#';
+            a.role = 'option';
             a.textContent = item.name; // Simplified highlighting for brevity
-            a.addEventListener('click', () => onSelect(item.name));
+            a.addEventListener('click', (event) => {
+                event.preventDefault();
+                onSelect(item.name);
+            });
             el.appendChild(a);
         });
     }
@@ -111,10 +130,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         el.innerHTML = '';
         items.forEach(item => {
             const a = document.createElement('a');
+            a.href = '#';
+            a.role = 'option';
             a.textContent = item;
-            a.addEventListener('click', () => onSelect(item));
+            a.addEventListener('click', (event) => {
+                event.preventDefault();
+                onSelect(item);
+            });
             el.appendChild(a);
         });
+    }
+
+    function renderNoResults(el, message) {
+        el.replaceChildren();
+        const div = document.createElement('div');
+        div.className = 'no-results';
+        div.textContent = message;
+        el.appendChild(div);
     }
 
     function handleCharacterSelect(name, clearSkin = true) {
@@ -139,15 +171,24 @@ document.addEventListener('DOMContentLoaded', async () => {
      * Shows a skeleton loader while data is in flight.
      */
     async function displaySkinDetails(skinName) {
+        const renderToken = ++skinRenderToken;
         showElement(elements.skeleton);
 
-        const skin = await getSkinByName(skinName);
+        let skin = null;
+        try {
+            skin = await getSkinByName(skinName);
+        } catch (error) {
+            console.error('Failed to load skin details', error);
+        }
+        if (renderToken !== skinRenderToken) return;
         if (!skin) {
             hideElement(elements.skeleton);
+            renderSkinError('스킨 정보를 불러올 수 없습니다.');
             return;
         }
 
         requestAnimationFrame(() => {
+            if (renderToken !== skinRenderToken) return;
             // Render Info
             renderSkinInfoBox(skin);
             // Render Gallery
@@ -160,26 +201,76 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function clearSkinDetails() {
+        skinRenderToken += 1;
         hideElement(elements.skinInfoBox);
         hideElement(elements.imageGallery);
         hideElement(elements.textContent);
         hideElement(elements.oathTable);
         hideElement(elements.asmrTable);
+        hideElement(elements.skeleton);
+        elements.skinInfoBox.replaceChildren();
+        elements.imageGallery.replaceChildren();
+        elements.textContent.replaceChildren();
+        elements.oathTable.replaceChildren();
+        elements.asmrTable.replaceChildren();
         stopCurrentAudio();
     }
 
     function renderSkinInfoBox(skin) {
-        let html = '';
-        if (skin['재화']) html += `<div class="info-item"><img src="${resolveUrl('assets/icon/60px-Ruby.webp')}" class="gem-icon"><span class="info-value">${skin['재화']}</span></div>`;
-        if (skin['기간']) html += `<div class="info-item"><strong class="info-label">상시:</strong><span class="info-value">${skin['기간']}</span></div>`;
-        if (skin['스킨 타입 - 한글']) html += `<div class="info-item"><strong class="info-label">타입:</strong><span class="info-value">${skin['스킨 타입 - 한글']}</span></div>`;
-        if (skin['스킨 태그']) html += `<div class="info-item"><strong class="info-label">태그:</strong><span class="info-value">${skin['스킨 태그']}</span></div>`;
+        elements.skinInfoBox.replaceChildren();
+        if (skin['재화']) {
+            const item = document.createElement('div');
+            item.className = 'info-item';
+
+            const img = document.createElement('img');
+            img.src = resolveUrl('assets/icon/60px-Ruby.webp');
+            img.className = 'gem-icon';
+            img.alt = 'Gem';
+
+            const value = document.createElement('span');
+            value.className = 'info-value';
+            value.textContent = skin['재화'];
+
+            item.append(img, value);
+            elements.skinInfoBox.appendChild(item);
+        }
+        if (skin['기간']) elements.skinInfoBox.appendChild(createInfoItem('상시:', skin['기간']));
+        if (skin['스킨 타입 - 한글']) elements.skinInfoBox.appendChild(createInfoItem('타입:', skin['스킨 타입 - 한글']));
+        if (skin['스킨 태그']) elements.skinInfoBox.appendChild(createInfoItem('태그:', skin['스킨 태그']));
 
         const releaseDate = getReleaseDate(skin['클뜯 id']);
-        if (releaseDate) html += `<div class="info-item"><strong class="info-label">출시:</strong><span class="info-value">${releaseDate}</span></div>`;
+        if (releaseDate) elements.skinInfoBox.appendChild(createInfoItem('출시:', releaseDate));
 
-        elements.skinInfoBox.innerHTML = html;
-        toggleElement(elements.skinInfoBox, !!html);
+        toggleElement(elements.skinInfoBox, elements.skinInfoBox.childElementCount > 0);
+    }
+
+    function createInfoItem(labelText, valueText) {
+        const item = document.createElement('div');
+        item.className = 'info-item';
+
+        const label = document.createElement('strong');
+        label.className = 'info-label';
+        label.textContent = labelText;
+
+        const value = document.createElement('span');
+        value.className = 'info-value';
+        value.textContent = valueText;
+
+        item.append(label, value);
+        return item;
+    }
+
+    function renderLoadError() {
+        renderSkinError('데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+    }
+
+    function renderSkinError(message) {
+        elements.skinInfoBox.replaceChildren();
+        const error = document.createElement('div');
+        error.className = 'skin-detail-error';
+        error.textContent = message;
+        elements.skinInfoBox.appendChild(error);
+        showElement(elements.skinInfoBox);
     }
 
     /**
@@ -187,21 +278,25 @@ document.addEventListener('DOMContentLoaded', async () => {
      * Attaches delegated play-click and volume listeners via skin.audio.js exports.
      */
     function renderVoiceLines(skin) {
-        const { normal, oath } = generateVoiceTableHtml(skin);
-        
+        const { normal, oath } = collectVoiceLines(skin);
+
         // Render Normal
-        if (normal) {
-            const header = `<div class="table-header-with-volume"><span>대사 모음</span>${createVolumeControlHtml()}</div>`;
-            elements.textContent.innerHTML = renderDescriptions(skin) + `<table class="voice-line-table"><thead><tr><th colspan="2">${header}</th></tr></thead><tbody>${normal}</tbody></table>`;
+        elements.textContent.replaceChildren();
+        const descriptions = renderDescriptions(skin);
+        if (descriptions) elements.textContent.appendChild(descriptions);
+        if (normal.length > 0) {
+            elements.textContent.appendChild(createVoiceTable('대사 모음', normal));
+        }
+        if (elements.textContent.childElementCount > 0) {
             showElement(elements.textContent);
         } else {
             hideElement(elements.textContent);
         }
 
         // Render Oath
-        if (oath && skin['ex_chat_status'] === 1) {
-            const header = `<div class="table-header-with-volume"><span>서약 대사</span>${createVolumeControlHtml()}</div>`;
-            elements.oathTable.innerHTML = `<table class="voice-line-table"><thead><tr><th colspan="2">${header}</th></tr></thead><tbody>${oath}</tbody></table>`;
+        elements.oathTable.replaceChildren();
+        if (oath.length > 0 && skin['ex_chat_status'] === 1) {
+            elements.oathTable.appendChild(createVoiceTable('서약 대사', oath));
             showElement(elements.oathTable);
         } else {
             hideElement(elements.oathTable);
@@ -210,63 +305,147 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Render ASMR
         renderAsmrSection(skin);
 
-        // Attach listeners
-        elements.textContent.addEventListener('click', handlePlayClick);
-        elements.oathTable.addEventListener('click', handlePlayClick);
-        elements.asmrTable.addEventListener('click', handlePlayClick);
         attachVolumeListeners();
     }
 
     function renderDescriptions(skin) {
-        // Re-implement description rendering
-        let html = '';
-        if (skin['설명']) html += `<div class="description-item"><h2>설명</h2><p>${skin['설명']}</p></div>`;
-        if (skin['자기소개'] && skin['자기소개'].voiceline) {
-            const btn = skin['자기소개'].voicelink ? `<button class="play-voice-btn" data-src="${skin['자기소개'].voicelink}"><i class="fas fa-play"></i></button>` : '';
-            html += `<div class="description-item self-intro"><h2>자기소개</h2><p>${skin['자기소개'].voiceline}${btn}</p></div>`;
+        const items = [];
+        if (skin['설명']) {
+            items.push(createDescriptionItem('설명', skin['설명']));
         }
-        return html ? `<div class="descriptions-panel">${html}</div>` : '';
+        if (skin['자기소개'] && skin['자기소개'].voiceline) {
+            const selfIntro = createDescriptionItem('자기소개', skin['자기소개'].voiceline, skin['자기소개'].voicelink);
+            selfIntro.classList.add('self-intro');
+            items.push(selfIntro);
+        }
+        if (items.length === 0) return null;
+
+        const panel = document.createElement('div');
+        panel.className = 'descriptions-panel';
+        panel.append(...items);
+        return panel;
     }
 
     /**
-     * Build HTML rows for normal and oath voice line tables.
+     * Build DOM-safe description and voice-line nodes.
      * Priority keys (입수시, 상세확인, etc.) render first; _ex keys go to oath section.
-     * Returns { normal, oath } — both are HTML string fragments.
      */
-    function generateVoiceTableHtml(skin) {
-        let normal = '';
-        let oath = '';
+    function createDescriptionItem(titleText, bodyText, voiceSrc = '') {
+        const item = document.createElement('div');
+        item.className = 'description-item';
+
+        const title = document.createElement('h2');
+        title.textContent = titleText;
+
+        const body = document.createElement('p');
+        const span = document.createElement('span');
+        span.textContent = bodyText;
+        body.appendChild(span);
+        if (voiceSrc) body.appendChild(createPlayButton(voiceSrc));
+
+        item.append(title, body);
+        return item;
+    }
+
+    function collectVoiceLines(skin) {
+        const normal = [];
+        const oath = [];
         
-        const createRow = (key, label) => {
+        const addLine = (target, key, label) => {
             const val = skin[key];
-            if (!val || !val.voiceline) return '';
-            const btn = val.voicelink ? `<button class="play-voice-btn" data-src="${val.voicelink}"><i class="fas fa-play"></i></button>` : `<button class="play-voice-btn" disabled><i class="fas fa-play"></i></button>`;
-            return `<tr><td>${label}</td><td><div>${val.voiceline}${btn}</div></td></tr>`;
+            if (!val || !val.voiceline) return;
+            target.push({ label, text: val.voiceline, src: val.voicelink || '' });
         };
 
         // Priority keys
         const priority = ["입수시", "상세확인", "실망", "낯섦", "호감", "기쁨", "사랑", "서약"];
-        priority.forEach(k => normal += createRow(k, k));
+        priority.forEach(k => addLine(normal, k, k));
         
         // Other keys
         Object.keys(skin).forEach(k => {
             if (priority.includes(k)) return;
             if (k.endsWith('_ex')) {
-                oath += createRow(k, k.replace('_ex', ' EX'));
+                addLine(oath, k, k.replace('_ex', ' EX'));
             } else if (skin[k] && skin[k].voiceline && !['설명', '자기소개', '드랍 설명', '함대 특수대사'].includes(k)) {
-                normal += createRow(k, k);
+                addLine(normal, k, k);
             }
         });
 
         // Special handling for fleet lines
         if (skin['함대 특수대사']) {
             skin['함대 특수대사'].forEach(l => {
-                 const btn = l.voicelink ? `<button class="play-voice-btn" data-src="${l.voicelink}"><i class="fas fa-play"></i></button>` : '';
-                 normal += `<tr><td>함대 특수대사</td><td><div>${l.voiceline}${btn}</div></td></tr>`;
+                if (l.voiceline) {
+                    normal.push({ label: '함대 특수대사', text: l.voiceline, src: l.voicelink || '' });
+                }
             });
         }
 
         return { normal, oath };
+    }
+
+    function createVoiceTable(titleText, lines) {
+        const table = document.createElement('table');
+        table.className = 'voice-line-table';
+
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        const headerCell = document.createElement('th');
+        headerCell.colSpan = 2;
+        headerCell.appendChild(createTableHeader(titleText));
+        headerRow.appendChild(headerCell);
+        thead.appendChild(headerRow);
+
+        const tbody = document.createElement('tbody');
+        lines.forEach(line => tbody.appendChild(createVoiceRow(line)));
+
+        table.append(thead, tbody);
+        return table;
+    }
+
+    function createTableHeader(titleText) {
+        const header = document.createElement('div');
+        header.className = 'table-header-with-volume';
+
+        const title = document.createElement('span');
+        title.textContent = titleText;
+        header.append(title, createVolumeControlElement());
+        return header;
+    }
+
+    function createVoiceRow({ label, text, src }) {
+        const row = document.createElement('tr');
+
+        const labelCell = document.createElement('td');
+        labelCell.textContent = label;
+
+        const textCell = document.createElement('td');
+        const wrapper = document.createElement('div');
+        const lineText = document.createElement('span');
+        lineText.textContent = text;
+        wrapper.appendChild(lineText);
+        wrapper.appendChild(createPlayButton(src));
+        textCell.appendChild(wrapper);
+
+        row.append(labelCell, textCell);
+        return row;
+    }
+
+    function createPlayButton(src) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'play-voice-btn';
+        button.setAttribute('aria-label', src ? '대사 재생' : '대사 음성 없음');
+        if (src) {
+            button.dataset.src = src;
+        } else {
+            button.disabled = true;
+        }
+
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-play';
+        icon.setAttribute('aria-hidden', 'true');
+        button.appendChild(icon);
+        return button;
     }
 
     function renderAsmrSection(skin) {
@@ -276,44 +455,53 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        let rows = '';
+        elements.asmrTable.replaceChildren();
+        const rows = [];
         asmrVoices.forEach((line, i) => {
             const label = `ASMR ${String(i + 1).padStart(2, '0')}`;
             const text = line.voiceline || '';
-            const btn = line.voicelink
-                ? `<button class="play-voice-btn" data-src="${line.voicelink}"><i class="fas fa-play"></i></button>`
-                : `<button class="play-voice-btn" disabled><i class="fas fa-play"></i></button>`;
-            rows += `<tr><td>${label}</td><td><div>${text}${btn}</div></td></tr>`;
+            rows.push({ label, text, src: line.voicelink || '' });
         });
 
         // ASMR illustration toggle
         const asmrPainting = skin['ASMR 일러'];
-        const toggleHtml = asmrPainting
-            ? `<button class="asmr-illust-toggle" id="asmr-illust-toggle"><i class="fas fa-image"></i> ASMR 일러스트 보기</button>
-               <div class="asmr-illust-container hidden" id="asmr-illust-container">
-                   <img src="${asmrPainting}" alt="ASMR 일러스트" loading="lazy">
-               </div>`
-            : '';
+        if (asmrPainting) {
+            const toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'asmr-illust-toggle';
+            toggleBtn.setAttribute('aria-expanded', 'false');
 
-        const header = `<div class="table-header-with-volume"><span>ASMR 대사</span>${createVolumeControlHtml()}</div>`;
-        elements.asmrTable.innerHTML = `${toggleHtml}<table class="voice-line-table"><thead><tr><th colspan="2">${header}</th></tr></thead><tbody>${rows}</tbody></table>`;
-        showElement(elements.asmrTable);
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-image';
+            icon.setAttribute('aria-hidden', 'true');
+            const toggleLabel = document.createElement('span');
+            toggleLabel.textContent = 'ASMR 일러스트 보기';
+            toggleBtn.append(icon, toggleLabel);
 
-        // Toggle listener for ASMR illustration
-        const toggleBtn = document.getElementById('asmr-illust-toggle');
-        const container = document.getElementById('asmr-illust-container');
-        if (toggleBtn && container) {
+            const container = document.createElement('div');
+            container.className = 'asmr-illust-container hidden';
+            const img = document.createElement('img');
+            img.src = asmrPainting;
+            img.alt = 'ASMR 일러스트';
+            img.loading = 'lazy';
+            container.appendChild(img);
+
             toggleBtn.addEventListener('click', () => {
                 const isVisible = !container.classList.contains('hidden');
                 toggleElement(container, !isVisible);
-                toggleBtn.innerHTML = isVisible
-                    ? '<i class="fas fa-image"></i> ASMR 일러스트 보기'
-                    : '<i class="fas fa-image"></i> ASMR 일러스트 숨기기';
+                toggleBtn.setAttribute('aria-expanded', String(!isVisible));
+                toggleLabel.textContent = isVisible ? 'ASMR 일러스트 보기' : 'ASMR 일러스트 숨기기';
             });
+
+            elements.asmrTable.append(toggleBtn, container);
         }
+
+        elements.asmrTable.appendChild(createVoiceTable('ASMR 대사', rows));
+        showElement(elements.asmrTable);
     }
 
     function updateURLWithFilters() {
+        if (isApplyingURLState) return;
         setUrlParams({
             character: elements.charInput.value || null,
             skin: elements.skinInput.value || null
@@ -362,7 +550,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return skinPool.filter(s => {
                 if (rarity && s.rarity !== rarity) return false;
                 if (type && s.type !== type) return false;
-                if (tag && !s.tag.includes(tag)) return false;
+                if (tag && !s.tagList.includes(tag)) return false;
                 if (nation && s.nation !== nation) return false;
                 return true;
             });
@@ -378,10 +566,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             initFilterData();
             updateCount();
             modal.style.display = 'flex';
+            modal.setAttribute('aria-hidden', 'false');
+            randomBtn.setAttribute('aria-expanded', 'true');
+            document.body.classList.add('no-scroll');
+            goBtn.focus();
         }
 
         function closeModal() {
             modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+            randomBtn.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('no-scroll');
+            randomBtn.focus();
         }
 
         randomBtn.addEventListener('click', openModal);
@@ -413,60 +609,49 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function applyFiltersFromURL() {
-        const char = getUrlParam('character');
-        const skin = getUrlParam('skin');
+        isApplyingURLState = true;
+        try {
+            const char = getUrlParam('character');
+            const skin = getUrlParam('skin');
 
-        console.log('URL params - character:', char, 'skin:', skin);
+            if (!char) {
+                elements.charInput.value = '';
+                elements.skinInput.value = '';
+                elements.skinInput.placeholder = '함순이를 먼저 선택해주세요...';
+                elements.skinInput.disabled = true;
+                clearSkinDetails();
+                return;
+            }
 
-        if (char) {
             // Normalize and find exact or fuzzy match
             const normalizedChar = char.trim();
             const allNames = getAllCharacterNames();
+            let matchedName = allNames.includes(normalizedChar) ? normalizedChar : '';
 
-            console.log('Looking for character:', normalizedChar);
-            console.log('Exact match exists:', allNames.includes(normalizedChar));
-
-            // Try exact match first (case-sensitive)
-            if (allNames.includes(normalizedChar)) {
-                console.log('Exact match found, selecting character');
-                handleCharacterSelect(normalizedChar, false);
-
-                // If skin parameter exists, try to select it
-                if (skin) {
-                    const skins = getSkinsForCharacter(normalizedChar);
-                    console.log('Available skins:', skins);
-
-                    // Try exact match first
-                    if (skins.includes(skin)) {
-                        handleSkinSelect(skin);
-                    } else {
-                        // If no exact match, select the first skin (usually the default skin)
-                        if (skins.length > 0) {
-                            console.log('Skin not found, selecting first skin:', skins[0]);
-                            handleSkinSelect(skins[0]);
-                        }
-                    }
-                }
-            } else {
-                // Try fuzzy search as fallback
-                console.log('No exact match, trying fuzzy search');
+            if (!matchedName) {
                 const results = searchCharacters(normalizedChar);
-                console.log('Fuzzy search results:', results);
-
-                if (results.length > 0 && results[0].score < 0.3) {
-                    // If we have a good match (low score = good match)
-                    const matchedName = results[0].item.name;
-                    console.log('Fuzzy match found:', matchedName, 'score:', results[0].score);
-                    handleCharacterSelect(matchedName, false);
-
-                    if (skin) {
-                        const skins = getSkinsForCharacter(matchedName);
-                        if (skins.length > 0) {
-                            handleSkinSelect(skins[0]);
-                        }
-                    }
+                if (results.length > 0 && (results[0].score ?? 1) < 0.3) {
+                    matchedName = results[0].item.name;
                 }
             }
+
+            if (!matchedName) {
+                clearSkinDetails();
+                return;
+            }
+
+            handleCharacterSelect(matchedName, false);
+
+            if (!skin) return;
+            const skins = getSkinsForCharacter(matchedName);
+
+            if (skins.includes(skin)) {
+                handleSkinSelect(skin);
+            } else if (skins.length > 0) {
+                handleSkinSelect(skins[0]);
+            }
+        } finally {
+            isApplyingURLState = false;
         }
     }
 });

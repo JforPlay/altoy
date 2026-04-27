@@ -107,11 +107,22 @@ function customSort(a, b) {
  * Returns all characters (as Fuse result objects) when query is empty.
  */
 function searchCharacters(query) {
-    if (!state.characterFuse) return [];
-    if (!query.trim()) {
+    const normalizedQuery = normalizeRomanNumerals(query || '').trim();
+    const lowerQuery = normalizedQuery.toLowerCase();
+
+    if (!state.characterFuse) {
+        const names = lowerQuery
+            ? state.allCharacterNames.filter(name => name.toLowerCase().includes(lowerQuery))
+            : state.allCharacterNames;
+        return names.map(name => ({ item: { name }, matches: [], score: lowerQuery ? 0.2 : 0 }));
+    }
+
+    if (!normalizedQuery) {
         return state.characterFuse.getIndex().docs.map(doc => ({ item: doc, matches: [] }));
     }
-    return state.characterFuse.search(query);
+    // Pass the normalized query so Fuse matches against the pre-normalized index
+    // (allCharacterNames is normalized at init).
+    return state.characterFuse.search(normalizedQuery);
 }
 
 
@@ -188,20 +199,23 @@ function getSkinFilterData() {
 
     for (const [charName, entry] of Object.entries(state.skinIndex.characters)) {
         entry.skins.forEach(skin => {
+            const tagList = skin.tag
+                ? skin.tag.split(',').map(t => t.trim()).filter(t => t && t !== 'X' && !/^\d+$/.test(t))
+                : [];
+
             pool.push({
                 charName,
                 skinName: skin.name,
                 rarity: skin.rarity || '',
                 type: skin.type || '',
                 tag: skin.tag || '',
+                tagList,
                 nation: skin.nation || ''
             });
 
             if (skin.rarity) rarities.add(skin.rarity);
             if (skin.type) types.add(skin.type);
-            if (skin.tag) {
-                skin.tag.split(',').map(t => t.trim()).filter(t => t && !/^\d+$/.test(t)).forEach(t => tagKeywords.add(t));
-            }
+            tagList.forEach(t => tagKeywords.add(t));
             if (skin.nation) nations.add(skin.nation);
         });
     }
