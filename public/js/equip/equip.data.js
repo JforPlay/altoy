@@ -69,6 +69,7 @@ export async function loadEquipCodeData() {
 export async function loadWeaponPropertyData() {
     try {
         state.weaponPropertyData = await fetchJSONWithCache('data/sim/weapon_property.json', { maxAge: 86400000 });
+        resolvedWeaponPropertyCache.clear();
         return state.weaponPropertyData;
     } catch (error) {
         console.warn('Failed to load weapon property data:', error);
@@ -219,7 +220,43 @@ export function getLevelStatistics(levelId) {
 /** Get weapon property by weapon ID */
 export function getWeaponProperty(weaponId) {
     if (!state.weaponPropertyData) return null;
-    return state.weaponPropertyData[String(weaponId)] || null;
+    return resolveWeaponProperty(weaponId);
+}
+
+const resolvedWeaponPropertyCache = new Map();
+
+/**
+ * Resolve a weapon_property row through its own base chain.
+ * Some max-enhance synthetic weapon IDs only override a few fields and inherit
+ * reload/damage data from another max-level weapon_property row.
+ */
+function resolveWeaponProperty(weaponId, seen = new Set()) {
+    const key = String(weaponId);
+    if (resolvedWeaponPropertyCache.has(key)) {
+        return resolvedWeaponPropertyCache.get(key);
+    }
+
+    const entry = state.weaponPropertyData[key];
+    if (!entry) return null;
+
+    if (entry.base == null || seen.has(key)) {
+        resolvedWeaponPropertyCache.set(key, entry);
+        return entry;
+    }
+
+    seen.add(key);
+    const base = resolveWeaponProperty(entry.base, seen);
+    if (!base) {
+        resolvedWeaponPropertyCache.set(key, entry);
+        return entry;
+    }
+
+    const resolved = { ...base };
+    for (const [prop, value] of Object.entries(entry)) {
+        if (value != null) resolved[prop] = value;
+    }
+    resolvedWeaponPropertyCache.set(key, resolved);
+    return resolved;
 }
 
 /** Get bullet template by bullet ID */
@@ -351,8 +388,9 @@ export function getSPWeaponRawData(spId) {
 }
 
 /**
- * Compute reload time (seconds) for an equip entry using full data + weapon_property.
- * Uses the max-level primary weapon_id merged with base-level weapon for null fields.
+ * Compute reload time (seconds) for an equip entry from its max-level primary weapon.
+ * Falls back to the base-level weapon's reload_max when the max-level value is null.
+ * Weapon rows are looked up via getWeaponProperty, which already resolves base-chain inheritance.
  * Returns null if no reload_max is available.
  */
 function getEquipReloadTime(equipId) {
@@ -365,8 +403,8 @@ function getEquipReloadTime(equipId) {
     if (!maxWids || !maxWids.length) return null;
 
     const baseWids = full.levels[0].weapon_id || [];
-    const baseWp = state.weaponPropertyData[String(baseWids[0])];
-    const currentWp = state.weaponPropertyData[String(maxWids[0])];
+    const baseWp = getWeaponProperty(baseWids[0]);
+    const currentWp = getWeaponProperty(maxWids[0]);
 
     if (!baseWp && !currentWp) return null;
 

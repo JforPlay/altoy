@@ -42,6 +42,20 @@ const CAT2_NAMES = {
 
 const PROP_ICON_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/props';
 
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[char]));
+}
+
+function isActivationKey(event) {
+    return event.key === 'Enter' || event.key === ' ';
+}
+
 // ===== Init =====
 
 /**
@@ -130,7 +144,7 @@ function renderCat1Tabs() {
     const sorted = Object.keys(categories).map(Number).sort((a, b) => a - b);
 
     container.innerHTML = sorted.map(c1 =>
-        `<button class="cat1-tab" data-cat1="${c1}">${categories[c1].name}</button>`
+        `<button class="cat1-tab" type="button" data-cat1="${c1}">${escapeHtml(categories[c1].name)}</button>`
     ).join('');
 }
 
@@ -139,7 +153,7 @@ function renderCat2Tabs(cat1) {
     const cat2s = categories[cat1]?.cat2s || [];
 
     container.innerHTML = cat2s.map(c2 =>
-        `<button class="cat2-tab" data-cat2="${c2.id}">${c2.name}</button>`
+        `<button class="cat2-tab" type="button" data-cat2="${c2.id}">${escapeHtml(c2.name)}</button>`
     ).join('');
 }
 
@@ -191,7 +205,7 @@ function renderTree(template) {
     const container = document.getElementById('treeContainer');
     const [canvasW, canvasH] = template.canvasSize;
 
-    const containerW = viewport.clientWidth - 32; // account for padding
+    const containerW = Math.max(viewport.clientWidth - 32, 320); // account for padding
     const scale = Math.min(containerW / canvasW, 1);
     const scaledH = canvasH * scale;
     const nodeIconSize = Math.max(Math.round(48 * (containerW / 1000)), 36);
@@ -216,18 +230,19 @@ function renderTree(template) {
         const iconUrl = getEquipIconUrl(lite?.icon || String(equipId));
         const bgUrl = getRarityBgUrl(lite?.rarity || 2);
         const name = lite?.name || `#${equipId}`;
+        const safeName = escapeHtml(name);
 
         const scaledX = x * scale;
         const scaledY = y * scale;
 
         nodesHtml += `
-            <div class="tree-node" data-equip-id="${equipId}"
+            <div class="tree-node" role="button" tabindex="0" aria-pressed="false" aria-label="${escapeHtml(name)}" data-equip-id="${equipId}"
                  style="left: ${scaledX}px; top: ${scaledY}px;">
                 <div class="tree-node-icon-wrap" style="width: ${nodeIconSize}px; height: ${nodeIconSize}px;">
                     <img class="tree-node-bg" src="${bgUrl}" alt="" draggable="false">
-                    ${iconUrl ? `<img class="tree-node-img" src="${iconUrl}" alt="${name}" draggable="false">` : ''}
+                    ${iconUrl ? `<img class="tree-node-img" src="${iconUrl}" alt="${safeName}" draggable="false">` : ''}
                 </div>
-                <div class="tree-node-name">${name}</div>
+                <div class="tree-node-name">${safeName}</div>
             </div>
         `;
     }
@@ -268,7 +283,9 @@ function selectNode(equipId) {
     selectedEquipId = equipId;
 
     document.querySelectorAll('.tree-node').forEach(node => {
-        node.classList.toggle('selected', parseInt(node.dataset.equipId) === equipId);
+        const isSelected = parseInt(node.dataset.equipId) === equipId;
+        node.classList.toggle('selected', isSelected);
+        node.setAttribute('aria-pressed', String(isSelected));
     });
 
     setUrlParams({ equip: equipId }, { replace: true });
@@ -301,18 +318,21 @@ function renderEquipInfo(equipId) {
     const name = equip?.name || `#${equipId}`;
     const iconUrl = getEquipIconUrl(equip?.icon || String(equipId));
     const bgUrl = getRarityBgUrl(equip?.rarity || 2);
+    const safeName = escapeHtml(name);
+    const safeTypeName = escapeHtml(equip?.type_name2 || equip?.type_name || '');
+    const safeRarityName = escapeHtml(equip?.rarity_name || '');
 
     let html = `
         <div class="info-header">
             <div class="info-icon">
                 <img class="info-icon-bg" src="${bgUrl}" alt="">
-                ${iconUrl ? `<img class="info-icon-img" src="${iconUrl}" alt="${name}">` : ''}
+                ${iconUrl ? `<img class="info-icon-img" src="${iconUrl}" alt="${safeName}">` : ''}
             </div>
             <div class="info-details">
-                <div class="info-name">${name}</div>
+                <div class="info-name">${safeName}</div>
                 <div class="info-meta">
-                    ${equip ? `<span class="info-type">${equip.type_name2 || equip.type_name}</span>` : ''}
-                    ${equip ? `<span class="info-rarity rarity-${equip.rarity}">${equip.rarity_name}</span>` : ''}
+                    ${equip ? `<span class="info-type">${safeTypeName}</span>` : ''}
+                    ${equip ? `<span class="info-rarity rarity-${equip.rarity}">${safeRarityName}</span>` : ''}
                 </div>
             </div>
             <a class="info-link-btn" href="${resolveUrl(`equip/equip-viewer?equip=${equipId}`)}" title="장비 DB에서 보기">
@@ -326,6 +346,7 @@ function renderEquipInfo(equipId) {
         const fromName = fromEquip?.name || `#${upgrade.upgrade_from}`;
         const fromIconUrl = getEquipIconUrl(fromEquip?.icon || String(upgrade.upgrade_from));
         const fromBgUrl = getRarityBgUrl(fromEquip?.rarity || 2);
+        const safeFromName = escapeHtml(fromName);
 
         html += `
             <div class="info-upgrade">
@@ -336,11 +357,11 @@ function renderEquipInfo(equipId) {
                 <div class="info-cost-row">
                     <span class="info-cost-label">필요 장비</span>
                     <span class="info-cost-value">
-                        <span class="info-from-equip" data-equip-id="${upgrade.upgrade_from}" title="${fromName}">
+                        <span class="info-from-equip" data-equip-id="${upgrade.upgrade_from}" title="${escapeHtml(fromName)}">
                             <img class="info-from-icon-bg" src="${fromBgUrl}" alt="">
                             ${fromIconUrl ? `<img class="info-from-icon-img" src="${fromIconUrl}" alt="">` : ''}
                         </span>
-                        ${fromName}
+                        ${safeFromName}
                     </span>
                 </div>
                 <div class="info-cost-row">
@@ -351,15 +372,19 @@ function renderEquipInfo(equipId) {
                     <div class="info-cost-row">
                         <span class="info-cost-label">재료</span>
                         <span class="info-cost-value info-materials">
-                            ${upgrade.material_consume.map(([propId, qty]) => `
-                                <span class="info-material" data-prop-id="${propId}" title="${getItemName(propId)} - 클릭하여 필요 장비 보기">
-                                    <img src="${getItemIconUrl(propId)}" alt="${getItemName(propId)}" loading="lazy">
+                            ${upgrade.material_consume.map(([propId, qty]) => {
+                                const itemName = getItemName(propId);
+                                const safeItemName = escapeHtml(itemName);
+                                return `
+                                <span class="info-material" data-prop-id="${propId}" title="${escapeHtml(`${itemName} - 클릭하여 필요 장비 보기`)}">
+                                    <img src="${getItemIconUrl(propId)}" alt="${safeItemName}" loading="lazy">
                                     <span class="info-material-info">
-                                        <span class="info-material-name">${getItemName(propId)}</span>
+                                        <span class="info-material-name">${safeItemName}</span>
                                         <span class="info-material-qty">x${qty}</span>
                                     </span>
                                 </span>
-                            `).join('')}
+                            `;
+                            }).join('')}
                         </span>
                     </div>
                 ` : ''}
@@ -467,15 +492,18 @@ function renderMatBrowseList() {
 
     for (const propId of sortedIds) {
         const name = getItemName(propId);
+        const safeName = escapeHtml(name);
         const equipCount = index[propId].length;
 
         const item = document.createElement('div');
         item.className = 'mat-browse-item';
         item.dataset.propId = propId;
+        item.setAttribute('role', 'button');
+        item.tabIndex = 0;
         item.innerHTML = `
-            <img src="${getItemIconUrl(propId)}" alt="${name}" loading="lazy">
+            <img src="${getItemIconUrl(propId)}" alt="${safeName}" loading="lazy">
             <div class="mat-browse-item-info">
-                <div class="mat-browse-item-name">${name}</div>
+                <div class="mat-browse-item-name">${safeName}</div>
                 <div class="mat-browse-item-count">장비 ${equipCount}종</div>
             </div>
         `;
@@ -528,20 +556,25 @@ function renderMatEquipList(propId) {
     for (const eq of equips) {
         const iconUrl = getEquipIconUrl(eq.icon);
         const bgUrl = getRarityBgUrl(eq.rarity);
+        const safeName = escapeHtml(eq.name);
+        const safeTypeName = escapeHtml(eq.type_name);
+        const safeRarityName = escapeHtml(eq.rarity_name);
 
         const card = document.createElement('div');
         card.className = 'mat-equip-card';
         card.dataset.equipId = eq.equipId;
+        card.setAttribute('role', 'button');
+        card.tabIndex = 0;
         card.innerHTML = `
             <div class="mat-equip-card-icon">
                 <img class="equip-bg" src="${bgUrl}" alt="">
-                ${iconUrl ? `<img class="equip-img" src="${iconUrl}" alt="${eq.name}">` : ''}
+                ${iconUrl ? `<img class="equip-img" src="${iconUrl}" alt="${safeName}">` : ''}
             </div>
             <div class="mat-equip-card-info">
-                <div class="mat-equip-card-name">${eq.name}</div>
+                <div class="mat-equip-card-name">${safeName}</div>
                 <div class="mat-equip-card-meta">
-                    <span class="mat-equip-card-type">${eq.type_name}</span>
-                    <span class="mat-equip-card-rarity rarity-${eq.rarity}">${eq.rarity_name}</span>
+                    <span class="mat-equip-card-type">${safeTypeName}</span>
+                    <span class="mat-equip-card-rarity rarity-${eq.rarity}">${safeRarityName}</span>
                     <span class="mat-equip-card-qty">x${eq.qty}</span>
                 </div>
             </div>
@@ -577,6 +610,14 @@ function setupListeners() {
     document.getElementById('treeContainer').addEventListener('click', (e) => {
         const node = e.target.closest('.tree-node');
         if (node) selectNode(parseInt(node.dataset.equipId));
+    });
+
+    document.getElementById('treeContainer').addEventListener('keydown', (e) => {
+        if (!isActivationKey(e)) return;
+        const node = e.target.closest('.tree-node');
+        if (!node) return;
+        e.preventDefault();
+        selectNode(parseInt(node.dataset.equipId));
     });
 
     // From-equip clicks in info panel (navigate within tree or to DB)
@@ -626,13 +667,34 @@ function setupListeners() {
         }
     });
 
+    document.getElementById('matModalBody').addEventListener('keydown', (e) => {
+        if (!isActivationKey(e)) return;
+
+        const browseItem = e.target.closest('.mat-browse-item');
+        if (browseItem) {
+            e.preventDefault();
+            renderMatEquipList(parseInt(browseItem.dataset.propId));
+            return;
+        }
+
+        const equipCard = e.target.closest('.mat-equip-card');
+        if (equipCard) {
+            e.preventDefault();
+            const equipId = parseInt(equipCard.dataset.equipId);
+            closeModal('matModal');
+            navigateToEquip(equipId);
+        }
+    });
+
     // Resize handler
     window.addEventListener('resize', debounce(() => {
         if (currentTemplate) renderTree(currentTemplate);
         // Re-select node after re-render
         if (selectedEquipId) {
             document.querySelectorAll('.tree-node').forEach(node => {
-                node.classList.toggle('selected', parseInt(node.dataset.equipId) === selectedEquipId);
+                const isSelected = parseInt(node.dataset.equipId) === selectedEquipId;
+                node.classList.toggle('selected', isSelected);
+                node.setAttribute('aria-pressed', String(isSelected));
             });
         }
     }, 250));

@@ -8,8 +8,7 @@
 
 import {
     createSearchIndex, debounce, getUrlParam, setUrlParams,
-    resolveUrl, showToast, openModal, closeModal,
-    showElement, hideElement
+    resolveUrl, showToast, closeModal
 } from '../utils.js';
 import {
     setup as setupData,
@@ -303,8 +302,7 @@ function filterEquipment() {
     let results = state.equipData;
 
     if (searchTerm) {
-        const searchResults = state.searchIndex.search(searchTerm);
-        results = searchResults.map(r => r.item);
+        results = searchEquipment(searchTerm);
     }
 
     state.filteredData = results.filter(equip => {
@@ -318,6 +316,22 @@ function filterEquipment() {
 
     renderEquipGrid();
     updateFilterStats();
+}
+
+/** Search with Fuse when available, otherwise use a simple case-insensitive fallback. */
+function searchEquipment(searchTerm) {
+    if (state.searchIndex) {
+        return state.searchIndex.search(searchTerm).map(r => r.item);
+    }
+
+    const needle = searchTerm.toLowerCase();
+    return state.equipData.filter(equip => [
+        equip.name,
+        equip.type_name,
+        equip.type_name2,
+        equip.nation_name,
+        equip.nation_code,
+    ].some(value => String(value || '').toLowerCase().includes(needle)));
 }
 
 // ===== Rendering =====

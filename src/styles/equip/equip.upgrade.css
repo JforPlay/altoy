@@ -184,6 +184,12 @@ body.dark-mode .tree-arrow {
     z-index: 3;
 }
 
+.tree-node:focus { outline: none; }
+
+.tree-node:focus-visible .tree-node-icon-wrap {
+    box-shadow: 0 0 0 2px var(--primary-color), var(--shadow-md);
+}
+
 .tree-node-icon-wrap {
     position: relative;
     border-radius: var(--radius-md);
@@ -589,10 +595,12 @@ body.dark-mode .tree-arrow {
     transition: all var(--transition-fast);
 }
 
-.mat-browse-item:hover {
+.mat-browse-item:hover,
+.mat-browse-item:focus-visible {
     background: var(--section-bg);
     border-color: var(--primary-color);
     box-shadow: var(--shadow-sm);
+    outline: none;
 }
 
 .mat-browse-item img {
@@ -640,10 +648,12 @@ body.dark-mode .tree-arrow {
     transition: all var(--transition-fast);
 }
 
-.mat-equip-card:hover {
+.mat-equip-card:hover,
+.mat-equip-card:focus-visible {
     background: var(--section-bg);
     border-color: var(--accent-blue);
     box-shadow: var(--shadow-sm);
+    outline: none;
 }
 
 .mat-equip-card-icon {
