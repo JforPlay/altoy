@@ -265,6 +265,36 @@ function createImgElement(src, alt = '', options = {}) {
     return img;
 }
 
+/**
+ * Create a Font Awesome icon element with `aria-hidden="true"` by default.
+ * Decorative icons should be hidden from assistive tech; pass ariaHidden=false
+ * for icons that convey meaning without an accompanying label.
+ * @param {string} className - Icon class string (e.g., 'fas fa-play')
+ * @param {Object} [options]
+ * @param {boolean} [options.ariaHidden=true]
+ * @returns {HTMLElement}
+ */
+function createIcon(className, { ariaHidden = true } = {}) {
+    const icon = document.createElement('i');
+    icon.className = className;
+    if (ariaHidden) icon.setAttribute('aria-hidden', 'true');
+    return icon;
+}
+
+/**
+ * Create the shared gem-icon `<img>` element used across skin pages for price displays.
+ * Always uses the canonical Ruby asset and the `gem-icon` class so visual treatment
+ * stays consistent (sizing/drop-shadow lives in skin.common.css).
+ * @returns {HTMLImageElement}
+ */
+function createGemIconImg() {
+    const img = document.createElement('img');
+    img.src = resolveUrl('assets/icon/60px-Ruby.webp');
+    img.className = 'gem-icon';
+    img.alt = 'Gem';
+    return img;
+}
+
 // ===== IndexedDB Caching =====
 
 /**
@@ -962,6 +992,8 @@ export {
     IMG_FALLBACKS,
     createImg,
     createImgElement,
+    createIcon,
+    createGemIconImg,
 
     // Cache utilities
     CacheDB,

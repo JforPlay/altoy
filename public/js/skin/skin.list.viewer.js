@@ -6,7 +6,8 @@
  * Cards are built once at load time; filtering rebuilds visible sets and appends in chunks of 50 via IntersectionObserver.
  */
 import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex,
-    openModal, closeModal, setupModal, showToast, getStorageItem, setStorageItem, toggleElement, IMG_FALLBACKS } from '../utils.js';
+    openModal, closeModal, setupModal, showToast, getStorageItem, setStorageItem, toggleElement, IMG_FALLBACKS,
+    createIcon, createGemIconImg } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // ===== DOM Element References =====
@@ -192,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             section.observer.disconnect();
 
             const container = DOM.containers[key];
-            container.innerHTML = '';
+            container.replaceChildren();
 
             if (entries.length > 0) {
                 this._appendNextChunk(key);
@@ -267,6 +268,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function createGemPrice(value) {
+        const fragment = document.createDocumentFragment();
+        fragment.append(createGemIconImg(), document.createTextNode(` ${Number(value).toLocaleString()}`));
+        return fragment;
+    }
+
+    function createInfoLine(labelText, valueContent) {
+        const line = document.createElement('div');
+        line.className = 'info-line';
+
+        const label = document.createElement('strong');
+        label.textContent = labelText;
+        line.append(label, document.createTextNode(' '));
+
+        if (valueContent instanceof Node) {
+            line.appendChild(valueContent);
+        } else {
+            line.appendChild(document.createTextNode(valueContent));
+        }
+
+        return line;
+    }
+
+    function createEmptyState(iconClass, message, hintFragment) {
+        const empty = document.createElement('div');
+        empty.className = 'cart-empty';
+
+        empty.appendChild(createIcon(iconClass));
+
+        const messageEl = document.createElement('p');
+        messageEl.textContent = message;
+
+        const hint = document.createElement('p');
+        hint.className = 'cart-empty-hint';
+        hint.append(...hintFragment);
+
+        empty.append(messageEl, hint);
+        return empty;
+    }
+
+    function createIconButton(className, iconClass, title) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = className;
+        button.title = title;
+        button.setAttribute('aria-label', title);
+        button.appendChild(createIcon(iconClass));
+        return button;
+    }
+
+    function setSelectValue(select, value, fallback) {
+        const nextValue = value || fallback;
+        const hasOption = Array.from(select.options).some(option => option.value === nextValue || option.textContent === nextValue);
+        select.value = hasOption ? nextValue : fallback;
+    }
+
     // ===== URL State Management =====
     const URLState = {
         getFilters() {
@@ -306,13 +363,13 @@ document.addEventListener('DOMContentLoaded', () => {
         apply() {
             const params = getAllUrlParams();
 
-            DOM.filters.skinType.value = params[FILTER_PARAMS.TYPE] || 'all';
-            DOM.filters.tag.value = params[FILTER_PARAMS.TAG] || 'all';
-            DOM.filters.period.value = params[FILTER_PARAMS.PERIOD] || 'all';
-            DOM.filters.faction.value = params[FILTER_PARAMS.FACTION] || 'all';
+            setSelectValue(DOM.filters.skinType, params[FILTER_PARAMS.TYPE], 'all');
+            setSelectValue(DOM.filters.tag, params[FILTER_PARAMS.TAG], 'all');
+            setSelectValue(DOM.filters.period, params[FILTER_PARAMS.PERIOD], 'all');
+            setSelectValue(DOM.filters.faction, params[FILTER_PARAMS.FACTION], 'all');
             DOM.search.value = params[FILTER_PARAMS.SEARCH] || '';
-            DOM.filters.ownership.value = params[FILTER_PARAMS.OWNERSHIP] || 'all';
-            DOM.filters.sort.value = params[FILTER_PARAMS.SORT] || 'default';
+            setSelectValue(DOM.filters.ownership, params[FILTER_PARAMS.OWNERSHIP], 'all');
+            setSelectValue(DOM.filters.sort, params[FILTER_PARAMS.SORT], 'default');
 
             const raritiesParam = params[FILTER_PARAMS.RARITIES];
             if (raritiesParam) {
@@ -321,6 +378,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 cachedRarityCheckboxes.forEach(cb => {
                     cb.checked = activeRarities.has(cb.value);
                 });
+                if (!cachedRarityCheckboxes.some(cb => cb.checked)) {
+                    rarityAllCheckbox.checked = true;
+                }
             } else {
                 rarityAllCheckbox.checked = true;
                 cachedRarityCheckboxes.forEach(cb => { cb.checked = false; });
@@ -344,23 +404,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const list = document.createElement("div");
             list.id = "autocomplete-list";
             list.className = "autocomplete-items";
+            list.setAttribute('role', 'listbox');
 
             results.slice(0, AUTOCOMPLETE_LIMIT).forEach(result => {
                 const item = result.item;
                 const matches = result.matches;
                 const div = document.createElement("div");
+                div.setAttribute('role', 'option');
+                div.tabIndex = 0;
 
                 if (matches?.[0]?.indices) {
-                    div.innerHTML = this._highlightMatches(item.name, matches[0].indices);
+                    this._appendHighlightedText(div, item.name, matches[0].indices);
                 } else {
                     div.textContent = item.name;
                 }
 
-                div.addEventListener("click", () => {
+                const selectItem = () => {
                     DOM.search.value = item.name;
                     this.close();
                     FilterEngine.apply();
                     URLState.update();
+                };
+
+                div.addEventListener("click", selectItem);
+                div.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        selectItem();
+                    }
                 });
 
                 list.appendChild(div);
@@ -369,18 +440,22 @@ document.addEventListener('DOMContentLoaded', () => {
             DOM.search.parentNode.appendChild(list);
         },
 
-        _highlightMatches(text, indices) {
-            let highlighted = '';
+        _appendHighlightedText(container, text, indices) {
             let lastIndex = 0;
 
             indices.forEach(([start, end]) => {
-                highlighted += text.substring(lastIndex, start);
-                highlighted += `<mark>${text.substring(start, end + 1)}</mark>`;
+                if (start > lastIndex) {
+                    container.appendChild(document.createTextNode(text.substring(lastIndex, start)));
+                }
+                const mark = document.createElement('mark');
+                mark.textContent = text.substring(start, end + 1);
+                container.appendChild(mark);
                 lastIndex = end + 1;
             });
 
-            highlighted += text.substring(lastIndex);
-            return highlighted;
+            if (lastIndex < text.length) {
+                container.appendChild(document.createTextNode(text.substring(lastIndex)));
+            }
         }
     };
 
@@ -518,6 +593,9 @@ document.addEventListener('DOMContentLoaded', () => {
             saveCollection();
             this._updateCardState(skinId);
             OwnedShowcase.updateBadge();
+            if (DOM.filters.ownership.value !== 'all') {
+                FilterEngine.apply();
+            }
         },
 
         toggleWanted(skinId) {
@@ -532,6 +610,9 @@ document.addEventListener('DOMContentLoaded', () => {
             saveCollection();
             this._updateCardState(skinId);
             CartManager.updateBadge();
+            if (DOM.filters.ownership.value !== 'all') {
+                FilterEngine.apply();
+            }
         },
 
         _updateCardState(skinId) {
@@ -548,10 +629,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const ownedBtn = card.querySelector('.owned-btn');
             const wantedBtn = card.querySelector('.wanted-btn');
-            if (ownedBtn) ownedBtn.classList.toggle('active', isOwned);
+            if (ownedBtn) {
+                ownedBtn.classList.toggle('active', isOwned);
+                ownedBtn.setAttribute('aria-pressed', String(isOwned));
+            }
             if (wantedBtn) {
                 wantedBtn.classList.toggle('active', isWanted);
                 wantedBtn.classList.toggle('disabled', isOwned);
+                wantedBtn.disabled = isOwned;
+                wantedBtn.title = isOwned ? '보유중인 스킨' : '찜하기';
+                wantedBtn.setAttribute('aria-label', wantedBtn.title);
+                wantedBtn.setAttribute('aria-pressed', String(isWanted));
             }
         }
     };
@@ -571,7 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this._generation++;
             const gen = this._generation;
             const shipyardUrl = skin['깔끔한 일러'] || '';
-            const fullUrl = shipyardUrl.replace('/shipyard.png', '/painting.png');
+            const fullUrl = shipyardUrl ? shipyardUrl.replace('/shipyard.png', '/painting.png') : IMG_FALLBACKS.CARD;
             const asmrUrl = skin['ASMR 일러'] || '';
 
             DOM.popup.image.src = '';
@@ -581,10 +669,11 @@ document.addEventListener('DOMContentLoaded', () => {
             DOM.popup.charName.textContent = skin['함순이 이름'];
 
             const characterName = encodeURIComponent(normalizeRomanNumerals(skin['함순이 이름']));
-            const skinDisplayName = encodeURIComponent(normalizeRomanNumerals(skin['한글 함순이 + 스킨 이름']));
+            const skinDisplayName = encodeURIComponent(skin['한글 함순이 + 스킨 이름']);
             DOM.popup.detailLink.href = resolveUrl(`skin/skin-detail-viewer/?character=${characterName}&skin=${skinDisplayName}`);
 
             DOM.popup.overlay.classList.add('visible');
+            DOM.popup.overlay.setAttribute('aria-hidden', 'false');
             document.body.classList.add('no-scroll');
 
             DOM.popup.image.addEventListener('load', () => {
@@ -610,6 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         close() {
             DOM.popup.overlay.classList.remove('visible');
+            DOM.popup.overlay.setAttribute('aria-hidden', 'true');
             document.body.classList.remove('no-scroll');
             if (this._errorHandler) {
                 DOM.popup.image.removeEventListener('error', this._errorHandler);
@@ -631,14 +721,22 @@ document.addEventListener('DOMContentLoaded', () => {
         open() {
             this._showCartMode();
             this.render();
-            openModal('cart-modal');
+            openModal('cart-modal', { onOpen: m => m.setAttribute('aria-hidden', 'false') });
         },
 
         render() {
             const wantedSkins = allSkins.filter(s => collection.wanted.has(s['클뜯 id']));
 
             if (wantedSkins.length === 0) {
-                DOM.cart.body.innerHTML = '<div class="cart-empty"><i class="fas fa-shopping-cart"></i><p>찜한 스킨이 없습니다</p><p class="cart-empty-hint">스킨 카드의 <i class="fas fa-heart"></i> 버튼으로 찜해보세요!</p></div>';
+                DOM.cart.body.replaceChildren(createEmptyState(
+                    'fas fa-shopping-cart',
+                    '찜한 스킨이 없습니다',
+                    [
+                        document.createTextNode('스킨 카드의 '),
+                        createIcon('fas fa-heart'),
+                        document.createTextNode(' 버튼으로 찜해보세요!')
+                    ]
+                ));
                 DOM.cart.footer.style.display = 'none';
                 return;
             }
@@ -673,7 +771,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const header = document.createElement('div');
                 header.className = 'cart-group-header';
-                header.innerHTML = `<span class="cart-group-tag">${tagName}</span><span class="cart-group-count">${skins.length}개</span>`;
+                const tag = document.createElement('span');
+                tag.className = 'cart-group-tag';
+                tag.textContent = tagName;
+                const count = document.createElement('span');
+                count.className = 'cart-group-count';
+                count.textContent = `${skins.length}개`;
+                header.append(tag, count);
                 group.appendChild(header);
 
                 const grid = document.createElement('div');
@@ -700,7 +804,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const price = document.createElement('div');
                     price.className = 'cart-item-price';
                     if (skin['재화']) {
-                        price.innerHTML = `<img src="${resolveUrl('assets/icon/60px-Ruby.webp')}" class="gem-icon" alt="Gem"> ${skin['재화'].toLocaleString()}`;
+                        price.appendChild(createGemPrice(skin['재화']));
                     } else {
                         price.textContent = '가격 미정';
                     }
@@ -709,14 +813,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     actions.className = 'cart-item-actions';
 
                     const buyBtn = document.createElement('button');
+                    buyBtn.type = 'button';
                     buyBtn.className = 'cart-item-buy';
-                    buyBtn.innerHTML = '<i class="fas fa-check"></i>';
                     buyBtn.title = '보유표시';
+                    buyBtn.setAttribute('aria-label', '보유표시');
+                    buyBtn.appendChild(createIcon('fas fa-check'));
 
                     const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
                     removeBtn.className = 'cart-item-remove';
-                    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
                     removeBtn.title = '찜 해제';
+                    removeBtn.setAttribute('aria-label', '찜 해제');
+                    removeBtn.appendChild(createIcon('fas fa-times'));
 
                     actions.appendChild(buyBtn);
                     actions.appendChild(removeBtn);
@@ -733,8 +841,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fragment.appendChild(group);
             }
 
-            DOM.cart.body.innerHTML = '';
-            DOM.cart.body.appendChild(fragment);
+            DOM.cart.body.replaceChildren(fragment);
 
             // Update summary
             let totalGems = 0;
@@ -818,16 +925,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Summary
             const summaryTitle = document.createElement('div');
             summaryTitle.className = 'share-section-title';
-            const heartIcon = document.createElement('i');
-            heartIcon.className = 'fas fa-heart';
-            summaryTitle.appendChild(heartIcon);
-            summaryTitle.appendChild(document.createTextNode(` ${wantedSkins.length}개 — `));
-            const gemImg = document.createElement('img');
-            gemImg.src = resolveUrl('assets/icon/60px-Ruby.webp');
-            gemImg.className = 'gem-icon';
-            gemImg.alt = 'Gem';
-            summaryTitle.appendChild(gemImg);
-            summaryTitle.appendChild(document.createTextNode(` ${totalGems.toLocaleString()} (약 ${totalKrw.toLocaleString()}원 / ${trucks.toFixed(1)} 깡트럭)`));
+            summaryTitle.append(
+                createIcon('fas fa-heart'),
+                document.createTextNode(` ${wantedSkins.length}개 — `),
+                createGemIconImg(),
+                document.createTextNode(` ${totalGems.toLocaleString()} (약 ${totalKrw.toLocaleString()}원 / ${trucks.toFixed(1)} 깡트럭)`)
+            );
             view.appendChild(summaryTitle);
 
             // Grid
@@ -851,8 +954,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             view.appendChild(grid);
 
-            DOM.cart.body.innerHTML = '';
-            DOM.cart.body.appendChild(view);
+            DOM.cart.body.replaceChildren(view);
             DOM.cart.footer.style.display = 'none';
             this._showShareMode();
             showToast('캡처용 화면입니다. 스크린샷을 찍어주세요!', 'info');
@@ -871,14 +973,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         open() {
             this.render();
-            openModal('owned-modal');
+            openModal('owned-modal', { onOpen: m => m.setAttribute('aria-hidden', 'false') });
         },
 
         render() {
             const ownedSkins = allSkins.filter(s => collection.owned.has(s['클뜯 id']));
 
             if (ownedSkins.length === 0) {
-                DOM.owned.body.innerHTML = '<div class="cart-empty"><i class="fas fa-shirt"></i><p>보유 스킨이 없습니다</p><p class="cart-empty-hint">스킨 카드의 <i class="fas fa-check"></i> 버튼으로 보유 표시해보세요!</p></div>';
+                DOM.owned.body.replaceChildren(createEmptyState(
+                    'fas fa-shirt',
+                    '보유 스킨이 없습니다',
+                    [
+                        document.createTextNode('스킨 카드의 '),
+                        createIcon('fas fa-check'),
+                        document.createTextNode(' 버튼으로 보유 표시해보세요!')
+                    ]
+                ));
                 DOM.owned.footer.style.display = 'none';
                 return;
             }
@@ -925,8 +1035,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fragment.appendChild(section);
             }
 
-            DOM.owned.body.innerHTML = '';
-            DOM.owned.body.appendChild(fragment);
+            DOM.owned.body.replaceChildren(fragment);
 
             // Update footer
             let totalGems = 0;
@@ -977,7 +1086,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setGroupMode(mode) {
             this._groupMode = mode;
             DOM.owned.toggleBtns.forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.group === mode);
+                const isActive = btn.dataset.group === mode;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-pressed', String(isActive));
             });
             this.render();
         }
@@ -988,16 +1099,15 @@ document.addEventListener('DOMContentLoaded', () => {
         _createSkinBox(skin) {
             const skinId = skin['클뜯 id'];
 
-            const costHtml = skin['재화']
-                ? `<img src="${resolveUrl('assets/icon/60px-Ruby.webp')}" class="gem-icon" alt="Gem"> ${skin['재화']}`
-                : 'N/A';
-
             const wrapper = document.createElement('div');
             wrapper.className = 'skin-box-link';
 
             const skinBox = document.createElement('div');
             skinBox.className = 'skin-box';
             skinBox.dataset.skinId = skinId;
+            skinBox.setAttribute('role', 'button');
+            skinBox.tabIndex = 0;
+            skinBox.setAttribute('aria-label', `${skin['한글 함순이 + 스킨 이름'] || skin['함순이 이름']} 상세 이미지 보기`);
 
             // Apply owned/wanted state
             if (collection.owned.has(skinId)) skinBox.classList.add('is-owned');
@@ -1012,17 +1122,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const isOwned = collection.owned.has(skinId);
 
-            const ownedBtn = document.createElement('button');
-            ownedBtn.className = 'skin-action-btn owned-btn' + (isOwned ? ' active' : '');
-            ownedBtn.innerHTML = '<i class="fas fa-check"></i>';
-            ownedBtn.title = '보유중 표시';
+            const ownedBtn = createIconButton(
+                'skin-action-btn owned-btn' + (isOwned ? ' active' : ''),
+                'fas fa-check',
+                '보유중 표시'
+            );
+            const wantedBtn = createIconButton(
+                'skin-action-btn wanted-btn'
+                    + (collection.wanted.has(skinId) ? ' active' : '')
+                    + (isOwned ? ' disabled' : ''),
+                'fas fa-heart',
+                isOwned ? '보유중인 스킨' : '찜하기'
+            );
 
-            const wantedBtn = document.createElement('button');
-            wantedBtn.className = 'skin-action-btn wanted-btn'
-                + (collection.wanted.has(skinId) ? ' active' : '')
-                + (isOwned ? ' disabled' : '');
-            wantedBtn.innerHTML = '<i class="fas fa-heart"></i>';
-            wantedBtn.title = isOwned ? '보유중인 스킨' : '찜하기';
+            ownedBtn.setAttribute('aria-pressed', String(isOwned));
+            wantedBtn.setAttribute('aria-pressed', String(collection.wanted.has(skinId)));
+            wantedBtn.disabled = isOwned;
 
             actions.appendChild(ownedBtn);
             actions.appendChild(wantedBtn);
@@ -1052,23 +1167,30 @@ document.addEventListener('DOMContentLoaded', () => {
             const fullName = skin['한글 함순이 + 스킨 이름'] || '';
             const charName = skin['함순이 이름'] || '';
             const skinOnlyName = fullName.startsWith(charName) ? fullName.slice(charName.length).trim() : fullName;
-            // Skin name is the heading; character name is a small chip below it
-            const charChipHtml = `<div class="char-name-chip" title="${charName}">${charName}</div>`;
 
             const releaseDate = formatReleaseDate(skinId);
             const skinInfo = document.createElement('div');
             skinInfo.className = 'skin-info';
-            skinInfo.innerHTML = `
-                <h3>${skinOnlyName || charName}</h3>
-                ${skinOnlyName ? charChipHtml : ''}
-                <div class="info-line"><strong>타입:</strong> ${skin['스킨 타입 - 한글'] || '기본'}</div>
-                <div class="info-line"><strong>태그:</strong> ${skin['스킨 태그'] || '없음'}</div>
-                <div class="info-line"><strong>진영:</strong> ${skin['진영'] || '없음'}</div>
-                <div class="info-line"><strong>레어도:</strong> ${skin['레어도'] || '없음'}</div>
-                <div class="info-line"><strong>가격:</strong> ${costHtml}</div>
-                <div class="info-line"><strong>기간:</strong> ${skin['기간'] || '정보 없음'}</div>
-                ${releaseDate ? `<div class="info-line"><strong>출시:</strong> ${releaseDate}</div>` : ''}
-            `;
+
+            const title = document.createElement('h3');
+            title.textContent = skinOnlyName || charName;
+            skinInfo.appendChild(title);
+
+            if (skinOnlyName) {
+                const charChip = document.createElement('div');
+                charChip.className = 'char-name-chip';
+                charChip.title = charName;
+                charChip.textContent = charName;
+                skinInfo.appendChild(charChip);
+            }
+
+            skinInfo.appendChild(createInfoLine('타입:', skin['스킨 타입 - 한글'] || '기본'));
+            skinInfo.appendChild(createInfoLine('태그:', skin['스킨 태그'] || '없음'));
+            skinInfo.appendChild(createInfoLine('진영:', skin['진영'] || '없음'));
+            skinInfo.appendChild(createInfoLine('레어도:', skin['레어도'] || '없음'));
+            skinInfo.appendChild(createInfoLine('가격:', skin['재화'] ? createGemPrice(skin['재화']) : 'N/A'));
+            skinInfo.appendChild(createInfoLine('기간:', skin['기간'] || '정보 없음'));
+            if (releaseDate) skinInfo.appendChild(createInfoLine('출시:', releaseDate));
 
             skinBox.appendChild(skinInfo);
             wrapper.appendChild(skinBox);
@@ -1140,6 +1262,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const skin = skinById.get(skinId);
             if (skin) Lightbox.open(skin);
         }
+    };
+
+    const handleContainerKeydown = (e) => {
+        if (e.target.closest('button')) return;
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+
+        const card = e.target.closest('.skin-box');
+        if (!card) return;
+
+        e.preventDefault();
+        const skinId = parseInt(card.dataset.skinId);
+        const skin = skinById.get(skinId);
+        if (skin) Lightbox.open(skin);
     };
 
     // Cart body delegation for buy and remove buttons
@@ -1216,8 +1351,9 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         toggleFilters() {
-            DOM.filterContainer.classList.toggle('visible');
-            DOM.buttons.filterToggle.classList.toggle('active');
+            const isVisible = DOM.filterContainer.classList.toggle('visible');
+            DOM.buttons.filterToggle.classList.toggle('active', isVisible);
+            DOM.buttons.filterToggle.setAttribute('aria-expanded', String(isVisible));
         }
     };
 
@@ -1231,7 +1367,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const showLoadingState = () => {
         isLoading = true;
         allSkinContainers.forEach(container => {
-            container.innerHTML = '<p class="loading-message">데이터 불러오는 중...</p>';
+            const message = document.createElement('p');
+            message.className = 'loading-message';
+            message.textContent = '데이터 불러오는 중...';
+            container.replaceChildren(message);
         });
     };
 
@@ -1246,8 +1385,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const small = document.createElement('small');
             small.textContent = msg;
             p.appendChild(small);
-            container.innerHTML = '';
-            container.appendChild(p);
+            container.replaceChildren(p);
         });
         console.error("Failed to load data:", error);
     };
@@ -1311,6 +1449,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Remove delegated listeners
         Object.values(DOM.containers).forEach(c => c.removeEventListener('click', handleContainerClick));
+        Object.values(DOM.containers).forEach(c => c.removeEventListener('keydown', handleContainerKeydown));
         DOM.cart.body.removeEventListener('click', handleCartClick);
 
         Autocomplete.close();
@@ -1362,6 +1501,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event delegation on skin card containers (4 listeners instead of ~9000)
     Object.values(DOM.containers).forEach(c => c.addEventListener('click', handleContainerClick));
+    Object.values(DOM.containers).forEach(c => c.addEventListener('keydown', handleContainerKeydown));
 
     // Cart body delegation
     DOM.cart.body.addEventListener('click', handleCartClick);
@@ -1375,7 +1515,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModal('owned-modal', {
         closeButtonSelector: '#owned-modal .cart-close-btn',
         closeOnEscape: true,
-        closeOnBackdrop: true
+        closeOnBackdrop: true,
+        onClose: (modal) => modal.setAttribute('aria-hidden', 'true')
     });
 
     // Cart FAB + header buttons
@@ -1390,7 +1531,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModal('cart-modal', {
         closeButtonSelector: '.cart-close-btn',
         closeOnEscape: true,
-        closeOnBackdrop: true
+        closeOnBackdrop: true,
+        onClose: (modal) => modal.setAttribute('aria-hidden', 'true')
     });
 
     // Lightbox events

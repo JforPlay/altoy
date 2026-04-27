@@ -4,7 +4,7 @@
  * Orchestrates three sub-modules: skin.data.js (data), skin.audio.js (audio), skin.expression.js (gallery).
  * Part of the skin module group.
  */
-import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl } from '../utils.js';
+import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg } from '../utils.js';
 import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getReleaseDate, getSkinFilterData } from './skin.data.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlElement, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
@@ -222,16 +222,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const item = document.createElement('div');
             item.className = 'info-item';
 
-            const img = document.createElement('img');
-            img.src = resolveUrl('assets/icon/60px-Ruby.webp');
-            img.className = 'gem-icon';
-            img.alt = 'Gem';
-
             const value = document.createElement('span');
             value.className = 'info-value';
-            value.textContent = skin['재화'];
+            value.textContent = Number(skin['재화']).toLocaleString();
 
-            item.append(img, value);
+            item.append(createGemIconImg(), value);
             elements.skinInfoBox.appendChild(item);
         }
         if (skin['기간']) elements.skinInfoBox.appendChild(createInfoItem('상시:', skin['기간']));
@@ -441,10 +436,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             button.disabled = true;
         }
 
-        const icon = document.createElement('i');
-        icon.className = 'fas fa-play';
-        icon.setAttribute('aria-hidden', 'true');
-        button.appendChild(icon);
+        button.appendChild(createIcon('fas fa-play'));
         return button;
     }
 
@@ -471,12 +463,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             toggleBtn.className = 'asmr-illust-toggle';
             toggleBtn.setAttribute('aria-expanded', 'false');
 
-            const icon = document.createElement('i');
-            icon.className = 'fas fa-image';
-            icon.setAttribute('aria-hidden', 'true');
             const toggleLabel = document.createElement('span');
             toggleLabel.textContent = 'ASMR 일러스트 보기';
-            toggleBtn.append(icon, toggleLabel);
+            toggleBtn.append(createIcon('fas fa-image'), toggleLabel);
 
             const container = document.createElement('div');
             container.className = 'asmr-illust-container hidden';
@@ -644,9 +633,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (!skin) return;
             const skins = getSkinsForCharacter(matchedName);
+            const normalizedSkin = normalizeRomanNumerals(skin);
+            const matchedSkin = skins.includes(skin)
+                ? skin
+                : skins.find(skinName => normalizeRomanNumerals(skinName) === normalizedSkin);
 
-            if (skins.includes(skin)) {
-                handleSkinSelect(skin);
+            if (matchedSkin) {
+                handleSkinSelect(matchedSkin);
             } else if (skins.length > 0) {
                 handleSkinSelect(skins[0]);
             }

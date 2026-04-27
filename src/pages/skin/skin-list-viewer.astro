@@ -14,7 +14,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <header class="page-header">
             <h1 class="page-title">
                 함순이 스킨검색기
-                <button id="info-button" class="info-button info-button-inline" aria-label="도움말 보기">
+                <button id="info-button" class="info-button info-button-inline" aria-label="도움말 보기" type="button">
                     <i class="fas fa-info-circle"></i>
                 </button>
             </h1>
@@ -23,7 +23,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div class="info-popup-content">
                     <div class="popup-header">
                         <h2 id="popup-title">초간단 설명서</h2>
-                        <button class="close-popup-btn" aria-label="닫기"><i class="fas fa-times"></i></button>
+                        <button class="close-popup-btn" aria-label="닫기" type="button"><i class="fas fa-times"></i></button>
                     </div>
                     <div class="popup-body">
                         <div class="info-step">
@@ -73,12 +73,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <option value="rerun-desc">최근복각 ↓</option>
                 <option value="rerun-asc">최근복각 ↑</option>
             </select>
-            <button id="clear-all-btn" class="clear-btn" title="Clear All Filters">
+            <button id="clear-all-btn" class="clear-btn" title="Clear All Filters" type="button">
                 <i class="fas fa-redo-alt"></i> 필터 초기화
             </button>
         </div>
 
-        <button id="filter-toggle-btn" class="filter-toggle-btn">
+        <button id="filter-toggle-btn" class="filter-toggle-btn" type="button" aria-expanded="false" aria-controls="filter-container">
             필터 옵션 보기/숨기기
             <i class="fas fa-chevron-down"></i>
         </button>
@@ -173,9 +173,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <!-- Image Popup (Lightbox) -->
-    <div id="image-popup" class="image-popup">
+    <div id="image-popup" class="image-popup" role="dialog" aria-label="스킨 이미지 확대 보기" aria-modal="true" aria-hidden="true">
         <div class="image-popup-content">
-            <button class="close-image-popup-btn" aria-label="닫기">&times;</button>
+            <button class="close-image-popup-btn" aria-label="닫기" type="button">&times;</button>
             <img id="popup-full-image" class="popup-image" src="" alt="전체일러">
             <div class="popup-skin-info">
                 <div class="popup-skin-name" id="popup-skin-name"></div>
@@ -188,22 +188,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <!-- Owned Showcase FAB -->
-    <button id="owned-fab" class="owned-fab" title="내 옷장 (보유 스킨)">
+    <button id="owned-fab" class="owned-fab" title="내 옷장 (보유 스킨)" type="button" aria-label="내 옷장 열기">
         <i class="fas fa-shirt"></i>
         <span id="owned-badge" class="cart-badge">0</span>
     </button>
 
     <!-- Owned Showcase Modal -->
-    <div id="owned-modal" class="cart-modal" style="display:none">
+    <div id="owned-modal" class="cart-modal" style="display:none" role="dialog" aria-label="내 옷장" aria-modal="true" aria-hidden="true">
         <div class="cart-modal-content">
             <div class="cart-header">
                 <h2><i class="fas fa-shirt"></i> 내 옷장</h2>
                 <div class="cart-header-actions">
                     <div class="owned-group-toggle">
-                        <button class="owned-toggle-btn active" data-group="type">스킨 타입</button>
-                        <button class="owned-toggle-btn" data-group="tag">스킨 태그</button>
+                        <button class="owned-toggle-btn active" data-group="type" type="button" aria-pressed="true">스킨 타입</button>
+                        <button class="owned-toggle-btn" data-group="tag" type="button" aria-pressed="false">스킨 태그</button>
                     </div>
-                    <button class="modal-close cart-close-btn" aria-label="닫기">
+                    <button class="modal-close cart-close-btn" aria-label="닫기" type="button">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -226,27 +226,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <!-- Cart FAB -->
-    <button id="cart-fab" class="cart-fab" title="장바구니 (찜 목록)">
+    <button id="cart-fab" class="cart-fab" title="장바구니 (찜 목록)" type="button" aria-label="장바구니 열기">
         <i class="fas fa-shopping-cart"></i>
         <span id="cart-badge" class="cart-badge">0</span>
     </button>
 
     <!-- Cart Modal -->
-    <div id="cart-modal" class="cart-modal" style="display:none">
+    <div id="cart-modal" class="cart-modal" style="display:none" role="dialog" aria-label="장바구니" aria-modal="true" aria-hidden="true">
         <div class="cart-modal-content">
             <div class="cart-header">
                 <h2><i class="fas fa-shopping-cart"></i> 장바구니</h2>
                 <div class="cart-header-actions">
-                    <button id="cart-buyall-btn" class="cart-action-btn cart-buyall-btn" title="모두 보유표시">
+                    <button id="cart-buyall-btn" class="cart-action-btn cart-buyall-btn" title="모두 보유표시" type="button">
                         <i class="fas fa-check-double"></i> 모두 보유표시
                     </button>
-                    <button id="cart-share-btn" class="cart-action-btn cart-share-btn" title="공유용 보기">
+                    <button id="cart-share-btn" class="cart-action-btn cart-share-btn" title="공유용 보기" type="button">
                         <i class="fas fa-camera"></i> 캡처용
                     </button>
-                    <button id="cart-back-btn" class="cart-action-btn cart-back-btn" title="돌아가기" style="display:none">
+                    <button id="cart-back-btn" class="cart-action-btn cart-back-btn" title="돌아가기" style="display:none" type="button">
                         <i class="fas fa-arrow-left"></i> 돌아가기
                     </button>
-                    <button class="modal-close cart-close-btn" aria-label="닫기">
+                    <button class="modal-close cart-close-btn" aria-label="닫기" type="button">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>

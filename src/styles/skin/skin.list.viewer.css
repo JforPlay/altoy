@@ -478,14 +478,10 @@
    IMAGE POPUP (Lightbox)
    ================================================================= */
 
+/* Layout/background/blur are shared via `.image-popup, .lightbox-modal` in skin.common.css.
+   Activation here is opacity-based so the popup can fade in/out. */
 .image-popup {
-  position: fixed;
-  inset: 0;
-  background-color: var(--bg-primary);
-  z-index: 1000;
   display: flex;
-  justify-content: center;
-  align-items: center;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.15s ease, visibility 0.15s ease;
@@ -1338,10 +1334,6 @@ body.dark-mode .filter-footer {
   background-color: var(--bg-secondary);
   border: none;
   border-top: 1px solid var(--bg-input);
-}
-
-body.dark-mode .image-popup {
-  background-color: var(--overlay-opaque);
 }
 
 body.dark-mode .popup-skin-info {

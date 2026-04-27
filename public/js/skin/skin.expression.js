@@ -4,7 +4,7 @@
  * Handles face-expression selectors, base+overlay compositing, lightbox navigation,
  * and thumbnail display. Part of the skin module group; wired by skin.detail.viewer.js.
  */
-import { hideElement, showElement, createImgElement } from '../utils.js';
+import { hideElement, showElement, createImgElement, createIcon } from '../utils.js';
 
 const state = {
     expressionManifest: {},
@@ -265,13 +265,10 @@ function buildExpressionSelector(faces, defaultFace, baseDir) {
 
     const label = document.createElement('div');
     label.className = 'expression-label';
-    const labelIcon = document.createElement('i');
-    labelIcon.className = 'fas fa-smile';
-    labelIcon.setAttribute('aria-hidden', 'true');
     const hint = document.createElement('span');
     hint.className = 'expression-hint';
     hint.textContent = '(메인/확대 일러스트가 함께 변경됩니다)';
-    label.append(labelIcon, ' 표정 선택 ', hint);
+    label.append(createIcon('fas fa-smile'), ' 표정 선택 ', hint);
 
     const note = document.createElement('div');
     note.className = 'expression-note';

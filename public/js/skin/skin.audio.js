@@ -6,6 +6,8 @@
  * window.SkinAudio for pages that import it non-modularly.
  */
 
+import { createIcon } from '../utils.js';
+
 // ===== State =====
 
 const state = {
@@ -33,7 +35,7 @@ function stopCurrentAudio() {
         state.currentAudio = null;
     }
     if (state.currentPlayButton) {
-        state.currentPlayButton.innerHTML = '<i class="fas fa-play"></i>';
+        state.currentPlayButton.replaceChildren(createIcon('fas fa-play'));
         state.currentPlayButton.classList.remove('playing');
         state.currentPlayButton = null;
     }
@@ -60,7 +62,7 @@ function handlePlayClick(event) {
         state.currentAudio = new Audio(src);
         state.currentAudio.volume = state.globalVolume;
         state.currentAudio.play().catch(e => console.error("Error playing audio:", e));
-        button.innerHTML = '<i class="fas fa-stop"></i>';
+        button.replaceChildren(createIcon('fas fa-stop'));
         button.classList.add('playing');
         state.currentAudio.addEventListener('ended', stopCurrentAudio);
     }
@@ -126,9 +128,7 @@ function createVolumeControlElement() {
     const container = document.createElement('div');
     container.className = 'volume-control-container';
 
-    const icon = document.createElement('i');
-    icon.className = 'fas fa-volume-up volume-icon';
-    icon.setAttribute('aria-hidden', 'true');
+    const icon = createIcon('fas fa-volume-up volume-icon');
 
     const slider = document.createElement('input');
     slider.type = 'range';

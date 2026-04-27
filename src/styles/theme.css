@@ -69,6 +69,9 @@
   --highlight-medium:  rgba(255, 255, 255, 0.2);
   --highlight-strong:  rgba(255, 255, 255, 0.3);
 
+  /* Theme-aware glass backdrop (used with backdrop-filter blur) — flips light/dark */
+  --bg-glass:          rgba(255, 255, 255, 0.95);
+
   /* Border Radius */
   --radius-xs: 0.125rem;
   --radius-sm: 0.25rem;
@@ -223,6 +226,9 @@ body.dark-mode {
   --surface-elevated: #3d4148;
   --surface-border: #4f545c;
   --text-on-surface: #b9bbbe;
+
+  /* Theme-aware glass backdrop (dark-mode flip) */
+  --bg-glass:          rgba(0, 0, 0, 0.95);
 }
 
 /* ==========================================================================

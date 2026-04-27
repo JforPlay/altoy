@@ -395,6 +395,21 @@ label {
   filter: drop-shadow(0 2px 4px var(--overlay-light));
 }
 
+/* --- Shared Lightbox Backdrop ---
+   Visual base for full-viewport image popups. Each page keeps its own
+   activation strategy (`.image-popup` toggles opacity/visibility,
+   `.lightbox-modal` toggles display) in its own CSS file. */
+.image-popup,
+.lightbox-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  justify-content: center;
+  align-items: center;
+}
+
 /* .hidden utility class defined in global.style.css */
 
 /* --- Responsive Styles --- */
