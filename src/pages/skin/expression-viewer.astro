@@ -14,7 +14,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <header class="controls-header">
             <div class="title-wrapper">
                 <h1 class="page-title">표정 일러스트 뷰어</h1>
-                <button id="info-button" class="info-button" aria-label="도움말 보기">
+                <button id="info-button" class="info-button" aria-label="도움말 보기" type="button">
                     <i class="fas fa-info-circle"></i>
                 </button>
             </div>
@@ -23,7 +23,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div class="info-popup-content">
                     <div class="popup-header">
                         <h2 id="popup-title">표정 일러스트 뷰어 사용법</h2>
-                        <button class="close-popup-btn" aria-label="닫기"><i class="fas fa-times"></i></button>
+                        <button class="close-popup-btn" aria-label="닫기" type="button"><i class="fas fa-times"></i></button>
                     </div>
                     <div class="popup-body">
                         <div class="info-step">
@@ -60,7 +60,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
             <div class="search-section">
                 <div class="dropdown-container">
-                    <input type="text" id="search-input" placeholder="캐릭터 이름 또는 ID로 검색..." autocomplete="off" aria-label="캐릭터 검색" aria-autocomplete="list" aria-controls="search-dropdown">
+                    <input type="text" id="search-input" placeholder="캐릭터 이름 또는 ID로 검색..." autocomplete="off" aria-label="캐릭터 검색" aria-autocomplete="list" aria-controls="search-dropdown" aria-expanded="false">
+                    <button id="clear-search" class="clear-search-btn" type="button" aria-label="검색 지우기" hidden>
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
                     <div class="dropdown-icon"><i class="fas fa-search"></i></div>
                     <div class="dropdown-content" id="search-dropdown" role="listbox"></div>
                 </div>
@@ -93,8 +96,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
     </div>
 
-    <div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-label="이미지 확대 보기" aria-hidden="true">
-        <button class="lightbox-close" aria-label="닫기"><i class="fas fa-times"></i></button>
+    <div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-label="이미지 확대 보기" aria-modal="true" aria-hidden="true">
+        <button class="lightbox-close" aria-label="닫기" type="button"><i class="fas fa-times"></i></button>
         <div class="lightbox-content">
             <img id="lightbox-image" src="" alt="">
             <div class="lightbox-caption"></div>

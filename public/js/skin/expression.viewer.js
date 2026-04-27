@@ -5,10 +5,19 @@
  * are not shown in the skin detail page; includes lightbox with canvas composite.
  * Part of the skin module group.
  */
-import { debounce, fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, createSearchIndex, setupModal } from '../utils.js';
+import {
+    debounce,
+    fetchJSON,
+    getUrlParam,
+    setUrlParams,
+    hideElement,
+    showElement,
+    createSearchIndex,
+    setupModal,
+    openModal
+} from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // State
     const state = {
         data: [],
         fuse: null,
@@ -17,9 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         currentFaceId: null
     };
 
-    // DOM Elements
     const elements = {
         searchInput: document.getElementById('search-input'),
+        clearSearchBtn: document.getElementById('clear-search'),
         searchDropdown: document.getElementById('search-dropdown'),
         totalCount: document.getElementById('total-count'),
         filteredCount: document.getElementById('filtered-count'),
@@ -29,11 +38,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         viewerPanel: document.getElementById('viewer-panel'),
         lightboxModal: document.getElementById('lightbox-modal'),
         lightboxImage: document.getElementById('lightbox-image'),
-        lightboxCaption: document.querySelector('.lightbox-caption'),
-        lightboxClose: document.querySelector('.lightbox-close')
+        lightboxCaption: document.querySelector('.lightbox-caption')
     };
 
-    // Initialize
     await init();
 
     /**
@@ -42,52 +49,50 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     async function init() {
         try {
-            // Load data
             state.data = await fetchJSON('data/skin/expression_viewer_data.json');
-
-            // Initialize Fuse.js for search
             state.fuse = createSearchIndex(state.data, { keys: ['name', 'id'], threshold: 0.4 });
 
-            // Update UI
             elements.totalCount.textContent = state.data.length;
             elements.filteredCount.textContent = `${state.data.length}개`;
 
-            // Render character list
             renderCharacterList(state.data);
-
-            // Setup event listeners
             setupEventListeners();
 
-            // Hide loading, show content
             hideElement(elements.loadingState);
             showElement(elements.mainContent);
 
-            // Check URL params
             applyURLParams();
 
         } catch (error) {
             console.error('Initialization failed:', error);
-            elements.loadingState.innerHTML = `
-                <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: var(--danger-color);"></i>
-                <p>데이터 로딩 실패</p>
-                <p style="font-size: 0.875rem;">${error.message}</p>
-            `;
+            elements.loadingState.replaceChildren(createMessageState({
+                iconClass: 'fas fa-exclamation-triangle',
+                message: '데이터 로딩 실패',
+                detail: error.message,
+                className: 'load-error-state'
+            }));
         }
     }
 
     function setupEventListeners() {
-        // Search input
+        elements.searchInput.addEventListener('input', updateClearButton);
         elements.searchInput.addEventListener('input', debounce(handleSearch, 200));
         elements.searchInput.addEventListener('focus', () => {
             if (elements.searchInput.value.trim()) {
-                elements.searchDropdown.style.display = 'block';
+                setDropdownVisible(true);
             }
         });
         elements.searchInput.addEventListener('blur', () => {
-            setTimeout(() => elements.searchDropdown.style.display = 'none', 200);
+            setTimeout(() => setDropdownVisible(false), 200);
         });
 
-        // Lightbox close handlers (close button, backdrop, ESC)
+        elements.clearSearchBtn.addEventListener('click', () => {
+            elements.searchInput.value = '';
+            updateClearButton();
+            handleSearch();
+            elements.searchInput.focus();
+        });
+
         setupModal('lightbox-modal', {
             closeButtonSelector: '.lightbox-close',
             closeOnBackdrop: true,
@@ -95,10 +100,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             onClose: () => {
                 elements.lightboxModal.setAttribute('aria-hidden', 'true');
                 document.body.classList.remove('no-scroll');
+                elements.lightboxImage.removeAttribute('src');
             }
         });
 
-        // URL changes
         window.addEventListener('popstate', applyURLParams);
     }
 
@@ -106,7 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const query = elements.searchInput.value.trim();
 
         if (!query) {
-            elements.searchDropdown.style.display = 'none';
+            setDropdownVisible(false);
             renderCharacterList(state.data);
             elements.filteredCount.textContent = `${state.data.length}개`;
             return;
@@ -115,79 +120,107 @@ document.addEventListener('DOMContentLoaded', async () => {
         const results = state.fuse.search(query);
         const filteredData = results.map(r => r.item);
 
-        // Show dropdown
         renderSearchDropdown(results.slice(0, 10));
-        elements.searchDropdown.style.display = 'block';
+        setDropdownVisible(true);
 
-        // Update character list
         renderCharacterList(filteredData);
         elements.filteredCount.textContent = `${filteredData.length}개`;
     }
 
     function renderSearchDropdown(results) {
-        elements.searchDropdown.innerHTML = '';
+        elements.searchDropdown.replaceChildren();
 
         if (results.length === 0) {
-            elements.searchDropdown.innerHTML = '<div class="no-results">검색 결과가 없습니다</div>';
+            const noResults = document.createElement('div');
+            noResults.className = 'no-results';
+            noResults.textContent = '검색 결과가 없습니다';
+            elements.searchDropdown.appendChild(noResults);
             return;
         }
 
         results.forEach(result => {
             const item = result.item;
-            const a = document.createElement('a');
-            a.innerHTML = `
-                <span class="dropdown-name">${item.name}</span>
-                <span class="dropdown-id">${item.id}</span>
-            `;
-            a.addEventListener('click', () => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'dropdown-option';
+            button.setAttribute('role', 'option');
+
+            const name = document.createElement('span');
+            name.className = 'dropdown-name';
+            name.textContent = item.name;
+
+            const id = document.createElement('span');
+            id.className = 'dropdown-id';
+            id.textContent = item.id;
+
+            button.append(name, id);
+            button.addEventListener('click', () => {
                 selectCharacter(item);
-                elements.searchDropdown.style.display = 'none';
+                setDropdownVisible(false);
             });
-            elements.searchDropdown.appendChild(a);
+            elements.searchDropdown.appendChild(button);
         });
     }
 
     function renderCharacterList(data) {
-        elements.characterGrid.innerHTML = '';
+        elements.characterGrid.replaceChildren();
+
+        if (data.length === 0) {
+            elements.characterGrid.appendChild(createMessageState({
+                iconClass: 'fas fa-search',
+                message: '검색 결과가 없습니다',
+                className: 'empty-list-state'
+            }));
+            return;
+        }
 
         data.forEach(item => {
-            const card = document.createElement('div');
+            const card = document.createElement('button');
+            card.type = 'button';
             card.className = 'character-card';
             card.dataset.id = item.id;
+            setActive(card, state.selectedCharacter?.id === item.id);
 
             const hasPainting = !!item.painting;
             const hasZoomed = !!item.painting_n;
 
-            card.innerHTML = `
-                <div class="card-top-row">
-                    <span class="card-id">${item.id}</span>
-                    <div class="card-badges">
-                        ${hasPainting ? '<span class="badge has-painting">기본</span>' : ''}
-                        ${hasZoomed ? '<span class="badge has-zoomed">확대</span>' : ''}
-                    </div>
-                </div>
-                <span class="card-name">${item.name}</span>
-            `;
+            const topRow = document.createElement('div');
+            topRow.className = 'card-top-row';
+
+            const id = document.createElement('span');
+            id.className = 'card-id';
+            id.textContent = item.id;
+
+            const badges = document.createElement('div');
+            badges.className = 'card-badges';
+            if (hasPainting) badges.appendChild(createBadge('has-painting', '기본'));
+            if (hasZoomed) badges.appendChild(createBadge('has-zoomed', '확대'));
+
+            const name = document.createElement('span');
+            name.className = 'card-name';
+            name.textContent = item.name;
+
+            topRow.append(id, badges);
+            card.append(topRow, name);
 
             card.addEventListener('click', () => selectCharacter(item));
             elements.characterGrid.appendChild(card);
         });
     }
 
-    function selectCharacter(item) {
+    function selectCharacter(item, { updateHistory = true } = {}) {
+        if (state.selectedCharacter?.id === item.id) return;
+
         state.selectedCharacter = item;
         state.currentPaintingType = item.painting ? 'painting' : 'painting_n';
         state.currentFaceId = getDefaultFace(item);
 
-        // Update active state in list
         document.querySelectorAll('.character-card').forEach(card => {
-            card.classList.toggle('active', card.dataset.id === item.id);
+            setActive(card, card.dataset.id === item.id);
         });
 
-        // Update URL
-        updateURL(item.id);
+        if (updateHistory) updateURL(item.id);
 
-        // Render viewer
         renderViewer();
     }
 
@@ -210,65 +243,78 @@ document.addEventListener('DOMContentLoaded', async () => {
         const currentData = item[state.currentPaintingType];
 
         if (!currentData) {
-            elements.viewerPanel.innerHTML = `
-                <div class="no-data-state">
-                    <i class="fas fa-image-slash"></i>
-                    <p>선택한 일러스트 타입이 없습니다.</p>
-                </div>
-            `;
+            elements.viewerPanel.replaceChildren(createMessageState({
+                iconClass: 'fas fa-image-slash',
+                message: '선택한 일러스트 타입이 없습니다.',
+                className: 'no-data-state'
+            }));
             return;
         }
 
         const faces = currentData.faces || [];
         state.currentFaceId = state.currentFaceId || getDefaultFace(item);
 
-        elements.viewerPanel.innerHTML = `
-            <div class="viewer-content">
-                <div class="viewer-header">
-                    <div class="viewer-title">
-                        <h2>${item.name}</h2>
-                        <span class="id-badge">ID: ${item.id}</span>
-                    </div>
-                    <div class="painting-tabs">
-                        <button class="painting-tab ${state.currentPaintingType === 'painting' ? 'active' : ''}"
-                                data-type="painting"
-                                ${!hasPainting ? 'disabled' : ''}>
-                            기본 일러
-                        </button>
-                        <button class="painting-tab ${state.currentPaintingType === 'painting_n' ? 'active' : ''}"
-                                data-type="painting_n"
-                                ${!hasZoomed ? 'disabled' : ''}>
-                            확대 일러
-                        </button>
-                    </div>
-                </div>
+        const viewerContent = document.createElement('div');
+        viewerContent.className = 'viewer-content';
 
-                <div class="expression-section">
-                    <div class="expression-label">
-                        <i class="fas fa-smile"></i>
-                        <span>표정 선택</span>
-                        <span class="count">(${faces.length}개)</span>
-                    </div>
-                    <div class="expression-selector">
-                        ${faces.map(faceId => {
-                            const faceUrl = currentData.face_url_template.replace('{faceId}', faceId);
-                            const isActive = faceId === state.currentFaceId;
-                            return `<img src="${faceUrl}"
-                                        class="expression-thumb ${isActive ? 'active' : ''}"
-                                        data-face-id="${faceId}"
-                                        alt="표정 ${faceId}"
-                                        loading="lazy">`;
-                        }).join('')}
-                    </div>
-                </div>
+        const viewerHeader = document.createElement('div');
+        viewerHeader.className = 'viewer-header';
 
-                <div class="image-display">
-                    ${renderImageWithOverlay(currentData)}
-                </div>
-            </div>
-        `;
+        const viewerTitle = document.createElement('div');
+        viewerTitle.className = 'viewer-title';
 
-        // Setup tab listeners
+        const title = document.createElement('h2');
+        title.textContent = item.name;
+
+        const idBadge = document.createElement('span');
+        idBadge.className = 'id-badge';
+        idBadge.textContent = `ID: ${item.id}`;
+
+        viewerTitle.append(title, idBadge);
+
+        const tabs = document.createElement('div');
+        tabs.className = 'painting-tabs';
+        tabs.append(
+            createPaintingTab('painting', '기본 일러', hasPainting),
+            createPaintingTab('painting_n', '확대 일러', hasZoomed)
+        );
+
+        viewerHeader.append(viewerTitle, tabs);
+
+        const expressionSection = document.createElement('div');
+        expressionSection.className = 'expression-section';
+
+        const expressionLabel = document.createElement('div');
+        expressionLabel.className = 'expression-label';
+        const smileIcon = document.createElement('i');
+        smileIcon.className = 'fas fa-smile';
+        smileIcon.setAttribute('aria-hidden', 'true');
+        const labelText = document.createElement('span');
+        labelText.textContent = '표정 선택';
+        const count = document.createElement('span');
+        count.className = 'count';
+        count.textContent = `(${faces.length}개)`;
+        expressionLabel.append(smileIcon, labelText, count);
+
+        const expressionSelector = document.createElement('div');
+        expressionSelector.className = 'expression-selector';
+        expressionSelector.setAttribute('role', 'group');
+        expressionSelector.setAttribute('aria-label', '표정 선택');
+
+        faces.forEach(faceId => {
+            const faceUrl = currentData.face_url_template.replace('{faceId}', faceId);
+            expressionSelector.appendChild(createExpressionThumb(faceId, faceUrl));
+        });
+
+        expressionSection.append(expressionLabel, expressionSelector);
+
+        const imageDisplay = document.createElement('div');
+        imageDisplay.className = 'image-display';
+        imageDisplay.appendChild(renderImageWithOverlay(currentData));
+
+        viewerContent.append(viewerHeader, expressionSection, imageDisplay);
+        elements.viewerPanel.replaceChildren(viewerContent);
+
         elements.viewerPanel.querySelectorAll('.painting-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 if (tab.disabled) return;
@@ -278,20 +324,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         });
 
-        // Setup expression thumb listeners
-        elements.viewerPanel.querySelectorAll('.expression-thumb').forEach(thumb => {
+        elements.viewerPanel.querySelectorAll('.expression-thumb-btn').forEach(thumb => {
             thumb.addEventListener('click', () => {
                 state.currentFaceId = thumb.dataset.faceId;
                 updateFaceOverlay();
 
-                // Update active state
-                elements.viewerPanel.querySelectorAll('.expression-thumb').forEach(t => {
-                    t.classList.toggle('active', t.dataset.faceId === state.currentFaceId);
+                elements.viewerPanel.querySelectorAll('.expression-thumb-btn').forEach(t => {
+                    setActive(t, t.dataset.faceId === state.currentFaceId);
                 });
             });
         });
 
-        // Setup lightbox trigger
         const container = elements.viewerPanel.querySelector('.face-overlay-container');
         if (container) {
             container.addEventListener('click', () => openLightbox());
@@ -303,25 +346,54 @@ document.addEventListener('DOMContentLoaded', async () => {
      * The overlay is positioned via percentage-based CSS computed from the manifest box/size.
      */
     function renderImageWithOverlay(data) {
-        if (!data) return '<div class="no-data-state"><p>이미지 없음</p></div>';
+        if (!data) {
+            return createMessageState({
+                iconClass: 'fas fa-image-slash',
+                message: '이미지 없음',
+                className: 'no-data-state'
+            });
+        }
 
         const baseUrl = data.base_url;
         const faceUrl = data.face_url_template.replace('{faceId}', state.currentFaceId || '0');
-        const overlayStyle = computeOverlayStyle(data);
 
-        return `
-            <div class="face-overlay-container">
-                <img class="base-image" src="${baseUrl}" alt="일러스트" crossorigin="anonymous">
-                <img class="face-overlay" src="${faceUrl}" style="${overlayStyle}" alt="표정" crossorigin="anonymous">
-            </div>
-        `;
+        const container = document.createElement('button');
+        container.type = 'button';
+        container.className = 'face-overlay-container';
+        container.setAttribute('aria-label', '이미지 확대 보기');
+
+        const baseImage = document.createElement('img');
+        baseImage.className = 'base-image';
+        baseImage.src = baseUrl;
+        baseImage.alt = '일러스트';
+        baseImage.crossOrigin = 'anonymous';
+        baseImage.addEventListener('error', () => {
+            container.replaceWith(createMessageState({
+                iconClass: 'fas fa-image-slash',
+                message: '이미지를 불러올 수 없습니다.',
+                className: 'no-data-state'
+            }));
+        }, { once: true });
+
+        const faceOverlay = document.createElement('img');
+        faceOverlay.className = 'face-overlay';
+        faceOverlay.src = faceUrl;
+        faceOverlay.alt = '표정';
+        faceOverlay.crossOrigin = 'anonymous';
+        applyOverlayStyle(faceOverlay, data);
+
+        container.append(baseImage, faceOverlay);
+        return container;
     }
 
-    function computeOverlayStyle(data) {
-        if (!data || !data.box || !data.size) return '';
+    function applyOverlayStyle(element, data) {
+        if (!data || !data.box || !data.size) return;
         const [x, y, w, h] = data.box;
         const [imgW, imgH] = data.size;
-        return `left: ${(x / imgW) * 100}%; top: ${(y / imgH) * 100}%; width: ${(w / imgW) * 100}%; height: ${(h / imgH) * 100}%;`;
+        element.style.left = `${(x / imgW) * 100}%`;
+        element.style.top = `${(y / imgH) * 100}%`;
+        element.style.width = `${(w / imgW) * 100}%`;
+        element.style.height = `${(h / imgH) * 100}%`;
     }
 
     function updateFaceOverlay() {
@@ -349,7 +421,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const currentData = item[state.currentPaintingType];
         if (!currentData) return;
 
-        // Build composite image
         const container = elements.viewerPanel.querySelector('.face-overlay-container');
         const baseImg = container?.querySelector('.base-image');
         const overlayImg = container?.querySelector('.face-overlay');
@@ -361,6 +432,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const ctx = canvas.getContext('2d');
 
             try {
+                if (!ctx || !canvas.width || !canvas.height) throw new Error('Canvas is not ready');
                 ctx.drawImage(baseImg, 0, 0);
 
                 if (overlayImg && overlayImg.complete) {
@@ -383,12 +455,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         elements.lightboxCaption.textContent = `${item.name} - ${state.currentPaintingType === 'painting' ? '기본 일러' : '확대 일러'}`;
-        elements.lightboxModal.classList.add('active');
-        elements.lightboxModal.setAttribute('aria-hidden', 'false');
+        openModal('lightbox-modal', {
+            lockBody: false,
+            onOpen: modal => modal.setAttribute('aria-hidden', 'false')
+        });
         document.body.classList.add('no-scroll');
     }
-
-    // closeLightbox handled by setupModal('lightbox-modal') onClose callback
 
     function updateURL(id) {
         setUrlParams({ id }, { replace: false, clear: true });
@@ -400,9 +472,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (id) {
             const item = state.data.find(d => d.id === id);
             if (item) {
-                selectCharacter(item);
+                selectCharacter(item, { updateHistory: false });
 
-                // Scroll to item in list
                 const card = document.querySelector(`.character-card[data-id="${id}"]`);
                 if (card) {
                     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -411,5 +482,76 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // Note: debounce() is available from utils.js
+    function setActive(el, isActive) {
+        el.classList.toggle('active', isActive);
+        el.setAttribute('aria-pressed', String(isActive));
+    }
+
+    function setDropdownVisible(isVisible) {
+        elements.searchDropdown.style.display = isVisible ? 'block' : 'none';
+        elements.searchInput.setAttribute('aria-expanded', String(isVisible));
+    }
+
+    function updateClearButton() {
+        elements.clearSearchBtn.hidden = !elements.searchInput.value;
+    }
+
+    function createBadge(className, text) {
+        const badge = document.createElement('span');
+        badge.className = `badge ${className}`;
+        badge.textContent = text;
+        return badge;
+    }
+
+    function createPaintingTab(type, label, isEnabled) {
+        const tab = document.createElement('button');
+        tab.type = 'button';
+        tab.className = 'painting-tab';
+        tab.dataset.type = type;
+        tab.textContent = label;
+        tab.disabled = !isEnabled;
+        setActive(tab, state.currentPaintingType === type);
+        return tab;
+    }
+
+    function createExpressionThumb(faceId, faceUrl) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'expression-thumb-btn';
+        button.dataset.faceId = faceId;
+        button.setAttribute('aria-label', `표정 ${faceId}`);
+        setActive(button, faceId === state.currentFaceId);
+
+        const img = document.createElement('img');
+        img.src = faceUrl;
+        img.className = 'expression-thumb';
+        img.alt = '';
+        img.loading = 'lazy';
+        img.setAttribute('aria-hidden', 'true');
+
+        button.appendChild(img);
+        return button;
+    }
+
+    function createMessageState({ iconClass, message, detail = '', className }) {
+        const wrapper = document.createElement('div');
+        wrapper.className = className;
+
+        const icon = document.createElement('i');
+        icon.className = iconClass;
+        icon.setAttribute('aria-hidden', 'true');
+
+        const messageEl = document.createElement('p');
+        messageEl.textContent = message;
+        wrapper.append(icon, messageEl);
+
+        if (detail) {
+            const detailEl = document.createElement('p');
+            detailEl.className = 'message-detail';
+            detailEl.textContent = detail;
+            wrapper.appendChild(detailEl);
+        }
+
+        return wrapper;
+    }
 });
