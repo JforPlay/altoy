@@ -531,15 +531,9 @@ function bindMenuSelectionModalEvents(restaurantId) {
     const overlay = document.querySelector('.menu-selection-modal-overlay');
     if (!overlay) return;
 
+    // Click on the overlay (but not the inner panel) closes the modal.
     overlay.addEventListener('click', (e) => {
-        // Backdrop click closes — only when the click landed directly on the overlay,
-        // not on the inner modal panel (replaces former `event.stopPropagation()` on the panel).
-        if (e.target === overlay) {
-            closeMenuSelectionModal();
-            return;
-        }
-
-        if (e.target.closest('[data-action="close-menu-modal"]')) {
+        if (e.target === overlay || e.target.closest('[data-action="close-menu-modal"]')) {
             closeMenuSelectionModal();
             return;
         }
@@ -553,8 +547,8 @@ function bindMenuSelectionModalEvents(restaurantId) {
 
         const option = e.target.closest('.menu-option-item');
         if (option) {
+            // Empty data-formula-id = "선택 해제" (clear) — pass null to the API.
             const formulaId = option.dataset.formulaId;
-            // Empty string = the "선택 해제" (clear) option, encoded as null for the API.
             selectMenusFromModal(restaurantId, formulaId === '' ? null : formulaId);
         }
     });
@@ -827,7 +821,7 @@ function openCopyPresetModal(restaurantId, targetPresetIndex) {
     }).filter(Boolean).join('');
 
     const modalHtml = `
-        <div class="menu-selection-modal-overlay copy-preset-overlay">
+        <div class="menu-selection-modal-overlay">
             <div class="menu-selection-modal copy-preset-modal">
                 <div class="menu-modal-header">
                     <h3>
@@ -854,14 +848,14 @@ function openCopyPresetModal(restaurantId, targetPresetIndex) {
 
     document.body.insertAdjacentHTML('beforeend', modalHtml);
 
-    const overlay = document.querySelector('.copy-preset-overlay');
+    bindCopyPresetModalEvents(restaurantId, targetPresetIndex);
+}
+
+function bindCopyPresetModalEvents(restaurantId, targetPresetIndex) {
+    const overlay = document.querySelector('.menu-selection-modal-overlay');
     if (!overlay) return;
     overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            closeCopyPresetModal();
-            return;
-        }
-        if (e.target.closest('[data-action="close-copy-modal"]')) {
+        if (e.target === overlay || e.target.closest('[data-action="close-copy-modal"]')) {
             closeCopyPresetModal();
             return;
         }

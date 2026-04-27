@@ -41,13 +41,24 @@ const UNAFFECTED_STATS = ['speed', 'luck'];
 
 // ===== State Reference =====
 let state;
-// One-time flag: delegated click handler on the static #detailContent container
-// is wired on first render and persists across re-renders, so we don't stack
-// duplicate listeners every time setupDetailEventListeners runs.
-let detailDelegatedClickWired = false;
 
 export function setup(stateRef) {
     state = stateRef;
+
+    // #detailContent is static markup; its innerHTML is rebuilt per ship, but
+    // delegation on the container itself survives every re-render.
+    document.getElementById('detailContent').addEventListener('click', (e) => {
+        const mapsBtn = e.target.closest('[data-action="show-maps"]');
+        if (mapsBtn) {
+            const shipName = mapsBtn.dataset.shipName;
+            if (shipName) showMapsModal(shipName);
+            return;
+        }
+        const skillItem = e.target.closest('[data-skill-url]');
+        if (skillItem) {
+            window.location.href = skillItem.dataset.skillUrl;
+        }
+    });
 }
 
 // ===== Detail View Entry =====
@@ -474,7 +485,6 @@ function renderSpWeaponSection(ship) {
 }
 
 export function setupDetailEventListeners() {
-    const detailContent = document.getElementById('detailContent');
     const levelSlider = document.getElementById('levelSlider');
     const levelValue = document.getElementById('levelValue');
     const limitBreakSelect = document.getElementById('limitBreakSelect');
@@ -501,26 +511,6 @@ export function setupDetailEventListeners() {
         state.currentEnhancement = e.target.value;
         updateStats();
     });
-
-    // Delegated click handling for buttons/items rendered into detailContent.
-    // Strict CSP forbids inline `onclick=` attributes, so the markup carries
-    // intent via data-action / data-skill-url / data-ship-name and we route here.
-    // Wired once — the container element is static, only its innerHTML changes.
-    if (!detailDelegatedClickWired) {
-        detailContent.addEventListener('click', (e) => {
-            const mapsBtn = e.target.closest('[data-action="show-maps"]');
-            if (mapsBtn) {
-                const shipName = mapsBtn.dataset.shipName;
-                if (shipName) showMapsModal(shipName);
-                return;
-            }
-            const skillItem = e.target.closest('[data-skill-url]');
-            if (skillItem) {
-                window.location.href = skillItem.dataset.skillUrl;
-            }
-        });
-        detailDelegatedClickWired = true;
-    }
 
     // Reinitialize tooltip functionality for dynamically loaded content
     if (typeof setupTooltipToggles === 'function') {

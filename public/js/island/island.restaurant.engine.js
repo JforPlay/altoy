@@ -152,6 +152,7 @@ async function init(sharedData) {
         renderRankSelector();
         renderEventToggles();
         renderShipgirlSelectors();
+        bindMenuListEvents();
         renderMenuList();
         setupPlannerUI();
         updatePlannerUI();
@@ -574,25 +575,24 @@ function updateShipgirlAttribute(shipgirlNum, attrKey, rank) {
 
 // ===== Menu List =====
 
-// Delegated click handler is wired once on the static `#restaurant-menu-list`
-// container — its innerHTML is rebuilt on every render, but the container
-// itself persists, so re-wiring would stack duplicate listeners.
-let menuListClickWired = false;
+// Wire delegated click on the static `#restaurant-menu-list` container.
+// Called once from init — innerHTML is rebuilt each render but the container
+// itself persists, so this listener survives.
+function bindMenuListEvents() {
+    const container = document.getElementById('restaurant-menu-list');
+    if (!container) return;
+    container.addEventListener('click', (e) => {
+        const btn = e.target.closest('.view-recipe-btn');
+        if (btn) {
+            const formulaId = parseInt(btn.dataset.formulaId, 10);
+            if (Number.isFinite(formulaId)) viewRecipe(formulaId);
+        }
+    });
+}
 
 function renderMenuList() {
     const container = document.getElementById('restaurant-menu-list');
     if (!container) return;
-
-    if (!menuListClickWired) {
-        container.addEventListener('click', (e) => {
-            const btn = e.target.closest('.view-recipe-btn');
-            if (btn) {
-                const formulaId = parseInt(btn.dataset.formulaId, 10);
-                if (Number.isFinite(formulaId)) viewRecipe(formulaId);
-            }
-        });
-        menuListClickWired = true;
-    }
 
     const restaurantId = state.selectedRestaurant;
     const restaurant = state.restaurants[restaurantId];
