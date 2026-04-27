@@ -15,6 +15,7 @@ import {
     loadSkillIconData,
     loadSkillDataTemplate
 } from './shipgirl-info.data.js';
+import { showMapsModal } from './shipgirl-info.maps.js';
 
 'use strict';
 
@@ -40,6 +41,10 @@ const UNAFFECTED_STATS = ['speed', 'luck'];
 
 // ===== State Reference =====
 let state;
+// One-time flag: delegated click handler on the static #detailContent container
+// is wired on first render and persists across re-renders, so we don't stack
+// duplicate listeners every time setupDetailEventListeners runs.
+let detailDelegatedClickWired = false;
 
 export function setup(stateRef) {
     state = stateRef;
@@ -203,7 +208,7 @@ function renderDetailHeader(ship, nationalityInfo) {
                     </div>
                 ` : ''}
                 <div style="margin-top: 20px;">
-                    <button class="view-maps-btn" onclick="showMapsModal('${ship.name}')">
+                    <button class="view-maps-btn" data-action="show-maps" data-ship-name="${ship.name}">
                         <i class="fas fa-map-marked-alt"></i> 드랍 지역 보기
                     </button>
                 </div>
@@ -361,12 +366,12 @@ function renderSkillSection(ship) {
 
         return `
                         <li class="skill-item ${skill.isRetrofit ? 'retrofit-skill' : ''} ${isWeaponSkill ? 'weapon-skill-clickable' : ''}"
-                            ${isWeaponSkill ? `onclick="window.location.href='${skillUrl}'" style="cursor: pointer;"` : ''}>
+                            ${isWeaponSkill ? `data-skill-url="${skillUrl}"` : ''}>
                             <div class="skill-header">
                                 ${iconUrl ? `
                                     <img src="${iconUrl}"
                                          alt="${skillInfo.name}"
-                                         class="skill-icon" loading="lazy" onerror="this.style.display='none'">
+                                         class="skill-icon" loading="lazy" data-onfail="hide">
                                 ` : `
                                     <div class="skill-icon-placeholder">${skill.id}</div>
                                 `}
@@ -437,13 +442,13 @@ function renderSpWeaponSection(ship) {
 
         return `
                                 <li class="skill-item ${isWeaponSkill ? 'weapon-skill-clickable' : ''}"
-                                    ${isWeaponSkill ? `onclick="window.location.href='${skillUrl}'" style="cursor: pointer;"` : ''}>
+                                    ${isWeaponSkill ? `data-skill-url="${skillUrl}"` : ''}>
                                     <div class="skill-header">
                                         ${skillInfo.iconUrl ? `
                                             <img src="${skillInfo.iconUrl}"
                                                  alt="${skillInfo.name}"
                                                  class="skill-icon"
-                                                 onerror="this.style.display='none'">
+                                                 data-onfail="hide">
                                         ` : ''}
                                         <div class="skill-title">
                                             <div>
@@ -469,6 +474,7 @@ function renderSpWeaponSection(ship) {
 }
 
 export function setupDetailEventListeners() {
+    const detailContent = document.getElementById('detailContent');
     const levelSlider = document.getElementById('levelSlider');
     const levelValue = document.getElementById('levelValue');
     const limitBreakSelect = document.getElementById('limitBreakSelect');
@@ -495,6 +501,26 @@ export function setupDetailEventListeners() {
         state.currentEnhancement = e.target.value;
         updateStats();
     });
+
+    // Delegated click handling for buttons/items rendered into detailContent.
+    // Strict CSP forbids inline `onclick=` attributes, so the markup carries
+    // intent via data-action / data-skill-url / data-ship-name and we route here.
+    // Wired once — the container element is static, only its innerHTML changes.
+    if (!detailDelegatedClickWired) {
+        detailContent.addEventListener('click', (e) => {
+            const mapsBtn = e.target.closest('[data-action="show-maps"]');
+            if (mapsBtn) {
+                const shipName = mapsBtn.dataset.shipName;
+                if (shipName) showMapsModal(shipName);
+                return;
+            }
+            const skillItem = e.target.closest('[data-skill-url]');
+            if (skillItem) {
+                window.location.href = skillItem.dataset.skillUrl;
+            }
+        });
+        detailDelegatedClickWired = true;
+    }
 
     // Reinitialize tooltip functionality for dynamically loaded content
     if (typeof setupTooltipToggles === 'function') {

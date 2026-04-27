@@ -338,7 +338,7 @@ function renderRestaurantTabs() {
 
     const tabsHtml = restaurants.map(([id, restaurant]) => `
         <button class="restaurant-tab ${state.selectedRestaurant === id ? 'active' : ''}"
-                data-restaurant-id="${id}" onclick="RestaurantModule.selectRestaurant('${id}')">
+                data-restaurant-id="${id}">
             <span class="material-symbols-outlined">restaurant</span>
             <span class="restaurant-tab-name">${restaurant.name}</span>
         </button>
@@ -346,13 +346,19 @@ function renderRestaurantTabs() {
 
     const plannerTabHtml = `
         <button class="restaurant-tab planner-tab ${state.selectedRestaurant === 'planner' ? 'active' : ''}"
-                data-restaurant-id="planner" onclick="RestaurantModule.selectRestaurant('planner')">
+                data-restaurant-id="planner">
             <span class="material-symbols-outlined">event_note</span>
             <span class="restaurant-tab-name">메뉴 계산기</span>
         </button>
     `;
 
     container.innerHTML = tabsHtml + plannerTabHtml;
+
+    container.querySelectorAll('.restaurant-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            selectRestaurant(btn.dataset.restaurantId);
+        });
+    });
 }
 
 function selectRestaurant(restaurantId) {
@@ -568,9 +574,25 @@ function updateShipgirlAttribute(shipgirlNum, attrKey, rank) {
 
 // ===== Menu List =====
 
+// Delegated click handler is wired once on the static `#restaurant-menu-list`
+// container — its innerHTML is rebuilt on every render, but the container
+// itself persists, so re-wiring would stack duplicate listeners.
+let menuListClickWired = false;
+
 function renderMenuList() {
     const container = document.getElementById('restaurant-menu-list');
     if (!container) return;
+
+    if (!menuListClickWired) {
+        container.addEventListener('click', (e) => {
+            const btn = e.target.closest('.view-recipe-btn');
+            if (btn) {
+                const formulaId = parseInt(btn.dataset.formulaId, 10);
+                if (Number.isFinite(formulaId)) viewRecipe(formulaId);
+            }
+        });
+        menuListClickWired = true;
+    }
 
     const restaurantId = state.selectedRestaurant;
     const restaurant = state.restaurants[restaurantId];
@@ -738,7 +760,7 @@ function createMenuCard(itemId, formulaId, restaurantId) {
                 </div>
             </details>
             <div class="menu-actions">
-                <button class="menu-action-btn" type="button" onclick="RestaurantModule.viewRecipe(${formulaId})">
+                <button class="menu-action-btn view-recipe-btn" type="button" data-formula-id="${formulaId}">
                     <span class="material-symbols-outlined">menu_book</span>
                     레시피 보기
                 </button>

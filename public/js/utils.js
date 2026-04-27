@@ -201,8 +201,8 @@ function setupScrollToTop(buttonId = 'scroll-to-top') {
  * Common SVG fallback images for onerror handlers
  */
 const IMG_FALLBACKS = {
-    // Generic placeholder with "이미지 없음" text
-    // Single quotes encoded as %27 to avoid breaking onerror="this.src='...'" handlers
+    // Generic placeholder with "이미지 없음" text. Single quotes are %27-encoded —
+    // the legacy inline-onerror path required it; harmless to keep.
     DEFAULT: "data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27100%27 height=%27100%27%3E%3Crect fill=%27%23ddd%27 width=%27100%27 height=%27100%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 text-anchor=%27middle%27 dy=%27.3em%27 fill=%27%23999%27%3E?%3C/text%3E%3C/svg%3E",
     // Larger placeholder for card images
     CARD: "data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27250%27 height=%27200%27%3E%3Crect fill=%27%23ddd%27 width=%27250%27 height=%27200%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 text-anchor=%27middle%27 dy=%27.3em%27 fill=%27%23999%27%3E이미지 없음%3C/text%3E%3C/svg%3E",
@@ -211,29 +211,72 @@ const IMG_FALLBACKS = {
 };
 
 /**
- * Create an image HTML string with lazy loading
+ * Named img-error actions handled by the document-level capture listener installed below.
+ * Strict CSP forbids inline `onerror=`, so callers describe the desired action via
+ * `data-onfail="…"` (or `data-fallback="<url>"`) and the listener performs it.
+ */
+const IMG_ONFAIL_ACTIONS = {
+    hide:          (img) => { img.style.display = 'none'; },
+    'hide-parent': (img) => { if (img.parentElement) img.parentElement.style.display = 'none'; },
+    dim:           (img) => { img.style.opacity = '0.3'; },
+    invisible:     (img) => { img.style.visibility = 'hidden'; },
+    // Used by patterns where an `<img>` is followed by a sibling fallback element
+    // that is initially `display:none`; on error, hide the image and reveal the fallback.
+    'swap-fallback': (img) => {
+        img.style.display = 'none';
+        if (img.nextElementSibling) img.nextElementSibling.style.display = 'flex';
+    },
+};
+
+/**
+ * Document-level fallback handler. The `error` event does not bubble, so we
+ * listen in capture phase. Runs once per failed image; clears the attribute
+ * afterwards so a fallback URL that itself fails won't loop.
+ */
+function handleImgError(e) {
+    const img = e.target;
+    if (!(img instanceof HTMLImageElement)) return;
+
+    const fallback = img.getAttribute('data-fallback');
+    if (fallback) {
+        img.removeAttribute('data-fallback');
+        img.src = fallback;
+        return;
+    }
+
+    const action = img.getAttribute('data-onfail');
+    if (action && IMG_ONFAIL_ACTIONS[action]) {
+        img.removeAttribute('data-onfail');
+        IMG_ONFAIL_ACTIONS[action](img);
+    }
+}
+document.addEventListener('error', handleImgError, true);
+
+/**
+ * Create an image HTML string with lazy loading.
+ * Strict CSP forbids inline `onerror=`, so error behavior is encoded as data
+ * attributes consumed by the global handler above.
  * @param {string} src - Image source URL
  * @param {string} alt - Alt text
  * @param {Object} options - Additional options
  * @param {string} options.className - CSS class(es)
- * @param {string} options.onerror - Error handler code (e.g., "this.style.display='none'")
- * @param {string} options.fallback - Fallback image URL for onerror (alternative to onerror)
+ * @param {string} options.onFail - Named action: 'hide' | 'hide-parent' | 'dim' | 'invisible'
+ * @param {string} options.fallback - Fallback image URL applied on first error
  * @param {string} options.title - Title attribute for tooltip
  * @param {boolean} options.eager - If true, load immediately (default: false/lazy)
  * @returns {string} - HTML string for the image
  */
 function createImg(src, alt = '', options = {}) {
-    const { className = '', onerror = '', fallback = '', title = '', eager = false } = options;
+    const { className = '', onFail = '', fallback = '', title = '', eager = false } = options;
     const loading = eager ? 'eager' : 'lazy';
     const classAttr = className ? ` class="${className}"` : '';
     const titleAttr = title ? ` title="${title}"` : '';
 
-    // Support both onerror code and fallback URL
     let errorAttr = '';
-    if (onerror) {
-        errorAttr = ` onerror="${onerror}"`;
-    } else if (fallback) {
-        errorAttr = ` onerror="this.src='${fallback}'"`;
+    if (fallback) {
+        errorAttr = ` data-fallback="${fallback}"`;
+    } else if (onFail) {
+        errorAttr = ` data-onfail="${onFail}"`;
     }
 
     return `<img src="${src}" alt="${alt}" loading="${loading}"${classAttr}${titleAttr}${errorAttr}>`;

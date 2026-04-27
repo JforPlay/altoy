@@ -358,7 +358,7 @@ function renderSeasonPass() {
                     ${iconSrc ? `
                         <img src="${iconSrc}"
                              alt="${tier.itemInfo.name}"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                             data-onfail="swap-fallback">
                     ` : ''}
                     <div class="season-tier-icon-fallback" style="display: ${iconSrc ? 'none' : 'flex'}">
                         <span class="material-symbols-outlined">${tier.isFurniture ? 'chair' : 'redeem'}</span>
@@ -383,7 +383,7 @@ function renderSeasonPass() {
                     </h2>
                     ${formatSeasonTime()}
                 </div>
-                <button class="season-pass-toggle" onclick="SeasonCalcModule.toggleSeasonPassCollapse()" title="${state.seasonPassCollapsed ? '보상 펼치기' : '보상 접기'}">
+                <button class="season-pass-toggle" data-action="toggle-season-pass" title="${state.seasonPassCollapsed ? '보상 펼치기' : '보상 접기'}">
                     <span class="material-symbols-outlined">${state.seasonPassCollapsed ? 'expand_more' : 'expand_less'}</span>
                     ${state.seasonPassCollapsed ? '보상 펼치기' : '보상 접기'}
                 </button>
@@ -516,7 +516,7 @@ function renderItemGrid() {
                         ${iconSrc ? `
                             <img src="${iconSrc}"
                                  alt="${item.name}"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                 data-onfail="swap-fallback">
                         ` : ''}
                         <div class="calc-item-icon-fallback" style="display: ${iconSrc ? 'none' : 'flex'}">
                             <span class="material-symbols-outlined">inventory_2</span>
@@ -626,6 +626,12 @@ function setupEventListeners() {
         if (viewRecipeBtn) {
             const itemId = viewRecipeBtn.dataset.itemId;
             viewItemInResources(itemId);
+            return;
+        }
+
+        // Season pass collapse toggle
+        if (e.target.closest('[data-action="toggle-season-pass"]')) {
+            toggleSeasonPassCollapse();
             return;
         }
 

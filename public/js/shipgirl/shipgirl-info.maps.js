@@ -7,7 +7,7 @@
  * State is shared via a ref passed to setup() from shipgirl-info.js.
  */
 
-import { showToast, openModal, closeModal, setupModal } from '../utils.js';
+import { showToast, openModal, closeModal, setupModal, IMG_FALLBACKS } from '../utils.js';
 
 'use strict';
 
@@ -454,7 +454,7 @@ function createMapBrowserShipCard(ship) {
     return `
         <div class="map-browser-ship-card" data-ship-name="${ship.name}">
             <img src="${ship.shipyard || ''}" alt="${ship.name}" class="map-browser-ship-image"
-                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23ddd%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'">
+                 data-fallback="${IMG_FALLBACKS.DEFAULT}">
             <div class="map-browser-ship-info">
                 <div class="map-browser-ship-name">${ship.name}</div>
                 <div class="map-browser-ship-meta">

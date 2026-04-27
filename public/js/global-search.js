@@ -227,7 +227,7 @@ function handleSearch() {
             html += `
                 <div class="global-search-ship" data-index="${idx}" data-url="${infoUrl}">
                     <img class="global-search-ship-icon" src="${escapeHtml(ship.icon)}" alt="${escapeHtml(ship.name)}" loading="lazy"
-                         onerror="this.style.display='none'">
+                         data-onfail="hide">
                     <div class="global-search-ship-info">
                         <span class="global-search-ship-name">${escapeHtml(ship.name)}</span>
                         <span class="global-search-rarity rarity-${ship.rarity}">${ship.rarity}</span>

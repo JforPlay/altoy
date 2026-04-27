@@ -224,7 +224,7 @@ function createCharacterCard(char) {
     return `
         <div class="character-card ${isSelected ? 'selected' : ''}" data-char-id="${char.id}">
             <div class="character-card-portrait">
-                ${portraitUrl ? createImg(portraitUrl, char.name, { onerror: "this.style.display='none'" }) : ''}
+                ${portraitUrl ? createImg(portraitUrl, char.name, { onFail: 'hide' }) : ''}
             </div>
             <div class="character-card-info">
                 <h4 class="character-card-name">${char.name}</h4>
@@ -285,7 +285,7 @@ function renderCharacterDetail() {
     container.innerHTML = `
         <div class="detail-header">
             <div class="detail-portrait">
-                ${portraitUrl ? createImg(portraitUrl, char.name, { onerror: "this.style.display='none'" }) : ''}
+                ${portraitUrl ? createImg(portraitUrl, char.name, { onFail: 'hide' }) : ''}
             </div>
             <div class="detail-info">
                 <h2 class="detail-name">${char.name}</h2>
@@ -765,7 +765,7 @@ function renderSkillSection(char) {
                     <div class="skill-title-container">
                         ${iconUrl ? `
                             <div class="skill-icon">
-                                ${createImg(iconUrl, '스킬 아이콘', { onerror: "this.parentElement.style.display='none'" })}
+                                ${createImg(iconUrl, '스킬 아이콘', { onFail: 'hide-parent' })}
                             </div>
                         ` : ''}
                         <div>
@@ -862,7 +862,7 @@ function renderSkinSection(char) {
         return `
             <div class="skin-card">
                 <div class="skin-thumbnail">
-                    ${iconUrl ? createImg(iconUrl, skin.name, { onerror: "this.style.opacity='0.3'" }) : ''}
+                    ${iconUrl ? createImg(iconUrl, skin.name, { onFail: 'dim' }) : ''}
                 </div>
                 <div class="skin-info">
                     <h5 class="skin-name">${skin.name}</h5>

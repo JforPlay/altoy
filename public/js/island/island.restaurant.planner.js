@@ -333,7 +333,7 @@ function renderPlannerRestaurantCard(restaurantId) {
 
         return `
             <div class="preset-visual-slot ${isSelected ? 'selected' : ''} ${hasData ? 'filled' : 'empty'}"
-                 onclick="RestaurantModule.selectPresetSlot('${restaurantId}', ${presetIndex})">
+                 data-restaurant-id="${restaurantId}" data-preset-index="${presetIndex}">
                 <div class="preset-slot-num">${presetIndex}</div>
                 ${iconsHtml}
             </div>
@@ -353,11 +353,11 @@ function renderPlannerRestaurantCard(restaurantId) {
                     <div class="global-qty-wrapper">
                          <span class="qty-label">생산 수량</span>
                          <div class="qty-control-group">
-                             <button class="qty-btn qty-btn-minus" data-restaurant-id="${restaurantId}" onclick="RestaurantModule.adjustGlobalQty('${restaurantId}', -1)">
+                             <button class="qty-btn qty-btn-minus" data-restaurant-id="${restaurantId}" data-delta="-1">
                                  <span class="material-symbols-outlined">remove</span>
                              </button>
                              <input type="number" class="planner-global-input modern" data-restaurant-id="${restaurantId}" min="0" max="999" value="${plan.globalCount}">
-                             <button class="qty-btn qty-btn-plus" data-restaurant-id="${restaurantId}" onclick="RestaurantModule.adjustGlobalQty('${restaurantId}', 1)">
+                             <button class="qty-btn qty-btn-plus" data-restaurant-id="${restaurantId}" data-delta="1">
                                  <span class="material-symbols-outlined">add</span>
                              </button>
                          </div>
@@ -414,8 +414,7 @@ function renderPlannerSlot(restaurantId, slotIndex, slot, menuOptions) {
     return `
         <div class="planner-slot-custom ${selectedMenu ? 'filled' : 'empty'}"
              data-restaurant-id="${restaurantId}"
-             data-slot-index="${slotIndex}"
-             onclick="RestaurantModule.openMenuSelectionModal('${restaurantId}', ${slotIndex})">
+             data-slot-index="${slotIndex}">
 
             <div class="slot-content">
                 ${selectedMenu ? `
@@ -446,14 +445,14 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
     const menuOptions = getMenuOptions(restaurantId);
 
     const modalHtml = `
-        <div class="menu-selection-modal-overlay" onclick="RestaurantModule.closeMenuSelectionModal()">
-            <div class="menu-selection-modal" onclick="event.stopPropagation()">
+        <div class="menu-selection-modal-overlay">
+            <div class="menu-selection-modal">
                 <div class="menu-modal-header">
                     <h3>
                         <span class="material-symbols-outlined">restaurant</span>
                         ${restaurant.name} - 메뉴 선택
                     </h3>
-                    <button class="modal-close-btn" onclick="RestaurantModule.closeMenuSelectionModal()">
+                    <button class="modal-close-btn" data-action="close-menu-modal">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>
@@ -463,7 +462,7 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
         const selected = menuOptions.find(opt => `${opt.formulaId}` === `${slot.formulaId}`);
         return `
                                 <div class="menu-modal-slot ${selected ? 'selected' : ''} ${idx === initialSlotIndex ? 'active' : ''}"
-                                     onclick="RestaurantModule.selectSlotForModal(${idx})">
+                                     data-slot-idx="${idx}">
                                     <div class="slot-number">슬롯 ${idx + 1}</div>
                                     <div class="slot-current">
                                         ${selected ? `
@@ -479,7 +478,7 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
                         현재 선택 중: <strong>슬롯 ${initialSlotIndex + 1}</strong>
                     </div>
                     <div class="menu-modal-options">
-                        <div class="menu-option-item" onclick="RestaurantModule.selectMenusFromModal('${restaurantId}', null)">
+                        <div class="menu-option-item" data-formula-id="">
                             <div class="menu-option-icon empty-icon">
                                 <span class="material-symbols-outlined">close</span>
                             </div>
@@ -488,7 +487,7 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
                         ${menuOptions.map(opt => {
         const ingredients = getMenuIngredientPreview(opt.formulaId);
         return `
-                                <div class="menu-option-item" onclick="RestaurantModule.selectMenusFromModal('${restaurantId}', '${opt.formulaId}')">
+                                <div class="menu-option-item" data-formula-id="${opt.formulaId}">
                                     <div class="menu-option-icon" style="background-image: url('${RARITY_BACKGROUNDS[opt.rarity || 1]}')">
                                         <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${opt.icon}" alt="${opt.name}">
                                     </div>
@@ -519,6 +518,46 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
     document.body.insertAdjacentHTML('beforeend', modalHtml);
     state.currentMenuModalRestaurant = restaurantId;
     state.currentMenuModalSlot = initialSlotIndex;
+
+    bindMenuSelectionModalEvents(restaurantId);
+}
+
+/**
+ * Wire delegated handlers on the just-inserted menu-selection modal.
+ * Strict CSP forbids inline `onclick=` so the markup carries intent
+ * via data-action / data-slot-idx / data-formula-id.
+ */
+function bindMenuSelectionModalEvents(restaurantId) {
+    const overlay = document.querySelector('.menu-selection-modal-overlay');
+    if (!overlay) return;
+
+    overlay.addEventListener('click', (e) => {
+        // Backdrop click closes — only when the click landed directly on the overlay,
+        // not on the inner modal panel (replaces former `event.stopPropagation()` on the panel).
+        if (e.target === overlay) {
+            closeMenuSelectionModal();
+            return;
+        }
+
+        if (e.target.closest('[data-action="close-menu-modal"]')) {
+            closeMenuSelectionModal();
+            return;
+        }
+
+        const slot = e.target.closest('.menu-modal-slot');
+        if (slot) {
+            const idx = parseInt(slot.dataset.slotIdx, 10);
+            if (Number.isFinite(idx)) selectSlotForModal(idx);
+            return;
+        }
+
+        const option = e.target.closest('.menu-option-item');
+        if (option) {
+            const formulaId = option.dataset.formulaId;
+            // Empty string = the "선택 해제" (clear) option, encoded as null for the API.
+            selectMenusFromModal(restaurantId, formulaId === '' ? null : formulaId);
+        }
+    });
 }
 
 function getMenuIngredientPreview(formulaId) {
@@ -666,6 +705,33 @@ function bindPlannerBuilderEvents() {
             handlePresetAction(action, restaurantId, presetIndex);
         });
     });
+
+    container.querySelectorAll('.qty-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const el = e.currentTarget;
+            const restaurantId = el.dataset.restaurantId;
+            const delta = parseInt(el.dataset.delta, 10);
+            if (restaurantId && Number.isFinite(delta)) adjustGlobalQty(restaurantId, delta);
+        });
+    });
+
+    container.querySelectorAll('.preset-visual-slot').forEach(slot => {
+        slot.addEventListener('click', (e) => {
+            const el = e.currentTarget;
+            const restaurantId = el.dataset.restaurantId;
+            const presetIndex = parseInt(el.dataset.presetIndex, 10);
+            if (restaurantId && Number.isFinite(presetIndex)) selectPresetSlot(restaurantId, presetIndex);
+        });
+    });
+
+    container.querySelectorAll('.planner-slot-custom').forEach(slot => {
+        slot.addEventListener('click', (e) => {
+            const el = e.currentTarget;
+            const restaurantId = el.dataset.restaurantId;
+            const slotIndex = parseInt(el.dataset.slotIndex, 10);
+            if (restaurantId && Number.isFinite(slotIndex)) openMenuSelectionModal(restaurantId, slotIndex);
+        });
+    });
 }
 
 function handleSlotSelection(restaurantId, slotIndex, formulaId) {
@@ -750,7 +816,7 @@ function openCopyPresetModal(restaurantId, targetPresetIndex) {
             : `<div class="preset-empty-dash">-</div>`;
 
         return `
-            <div class="copy-preset-option ${!hasData ? 'disabled' : ''}" ${hasData ? `onclick="RestaurantModule.copyPresetFrom('${restaurantId}', ${sourceIndex}, ${targetPresetIndex})"` : ''}>
+            <div class="copy-preset-option ${!hasData ? 'disabled' : ''}" ${hasData ? `data-source-index="${sourceIndex}"` : ''}>
                 <div class="copy-preset-slot ${hasData ? 'filled' : 'empty'}">
                     <div class="preset-slot-num">${sourceIndex}</div>
                     ${iconsHtml}
@@ -761,14 +827,14 @@ function openCopyPresetModal(restaurantId, targetPresetIndex) {
     }).filter(Boolean).join('');
 
     const modalHtml = `
-        <div class="menu-selection-modal-overlay" onclick="RestaurantModule.closeCopyPresetModal()">
-            <div class="menu-selection-modal copy-preset-modal" onclick="event.stopPropagation()">
+        <div class="menu-selection-modal-overlay copy-preset-overlay">
+            <div class="menu-selection-modal copy-preset-modal">
                 <div class="menu-modal-header">
                     <h3>
                         <span class="material-symbols-outlined">content_copy</span>
                         프리셋 복사
                     </h3>
-                    <button class="modal-close-btn" onclick="RestaurantModule.closeCopyPresetModal()">
+                    <button class="modal-close-btn" data-action="close-copy-modal">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>
@@ -787,6 +853,24 @@ function openCopyPresetModal(restaurantId, targetPresetIndex) {
     if (existingModal) existingModal.remove();
 
     document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    const overlay = document.querySelector('.copy-preset-overlay');
+    if (!overlay) return;
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            closeCopyPresetModal();
+            return;
+        }
+        if (e.target.closest('[data-action="close-copy-modal"]')) {
+            closeCopyPresetModal();
+            return;
+        }
+        const option = e.target.closest('.copy-preset-option[data-source-index]');
+        if (option) {
+            const sourceIndex = parseInt(option.dataset.sourceIndex, 10);
+            if (Number.isFinite(sourceIndex)) copyPresetFrom(restaurantId, sourceIndex, targetPresetIndex);
+        }
+    });
 }
 
 /**

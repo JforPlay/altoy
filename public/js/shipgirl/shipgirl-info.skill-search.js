@@ -429,12 +429,12 @@ function renderSkillCard(skill) {
     const hiddenCount = ships.length - visibleShips.length;
     const avatarHtml = visibleShips.map(s => `
         <button type="button" class="skill-result-ship-btn" data-ship-name="${attr(s.name)}" title="${attr(s.name)}">
-            <img src="${attr(s.shipyard)}" alt="${attr(s.name)}" loading="lazy" onerror="this.style.visibility='hidden'">
+            <img src="${attr(s.shipyard)}" alt="${attr(s.name)}" loading="lazy" data-onfail="invisible">
         </button>
     `).join('') + (hiddenCount > 0 ? `<span class="skill-result-ship-more">+${hiddenCount}</span>` : '');
 
     const iconHtml = skill.iconUrl
-        ? `<img class="skill-result-icon" src="${attr(skill.iconUrl)}" alt="" loading="lazy" onerror="this.style.display='none'">`
+        ? `<img class="skill-result-icon" src="${attr(skill.iconUrl)}" alt="" loading="lazy" data-onfail="hide">`
         : `<div class="skill-result-icon-placeholder">${skill.id}</div>`;
 
     return `
@@ -494,7 +494,7 @@ function renderShipCard({ ship, skills }) {
 
     return `
         <button type="button" class="skill-result-ship-card" data-ship-name="${attr(ship.name)}">
-            <img class="skill-result-ship-portrait" src="${attr(ship.shipyard)}" alt="${attr(ship.name)}" loading="lazy" onerror="this.style.visibility='hidden'">
+            <img class="skill-result-ship-portrait" src="${attr(ship.shipyard)}" alt="${attr(ship.name)}" loading="lazy" data-onfail="invisible">
             <div class="skill-result-ship-info">
                 <div class="skill-result-ship-name">
                     <strong>${ship.name}</strong>
