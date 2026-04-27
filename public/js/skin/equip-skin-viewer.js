@@ -5,11 +5,11 @@
  * Manages theme sidebar, skin grid, info bar, playback controls, and URL state.
  */
 import {
-    debounce, getUrlParam, setUrlParams, resolveUrl,
+    debounce, getUrlParam, setUrlParams,
     showElement, hideElement, showToast, createSearchIndex,
     createImgElement, IMG_FALLBACKS
 } from '../utils.js';
-import { EquipSkinData, EQUIP_TYPE_NAMES } from './equip-skin.data.js';
+import { EquipSkinData } from './equip-skin.data.js';
 import { EquipSkinPreview } from './equip-skin.preview.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -30,23 +30,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loopButton = document.getElementById('loop-button');
     const pauseButton = document.getElementById('pause-button');
     const simContainer = document.getElementById('simulation-container');
+    const playerArea = document.getElementById('player-area');
+    const speedButtons = Array.from(document.querySelectorAll('.speed-btn'));
 
     // --- State ---
     let activeThemeId = null;
     let activeSkinId = null;
     let currentSpeed = 1.5;
     let themeSearchIndex = null;
+    let selectSkinToken = 0;
 
     // --- Init Preview ---
     const preview = new EquipSkinPreview(simContainer, data);
+    preview.onError = (error) => {
+        console.error('Equipment skin preview failed:', error);
+        updateLoopButton(false);
+        showToast('미리보기 재생 실패', 'error');
+    };
 
     // --- Load Data ---
+    themeList.setAttribute('aria-busy', 'true');
+    skinGridContainer.setAttribute('aria-busy', 'true');
     try {
         await data.loadData();
     } catch (e) {
         showToast('데이터 로드 실패', 'error');
         console.error('Failed to load skin data:', e);
+        renderPlaceholder(skinGridContainer, '데이터를 불러오지 못했습니다. 잠시 후 다시 시도하세요.');
+        preview.destroy();
         return;
+    } finally {
+        themeList.setAttribute('aria-busy', 'false');
+        skinGridContainer.setAttribute('aria-busy', 'false');
     }
 
     // Load sim data in background
@@ -63,71 +78,149 @@ document.addEventListener('DOMContentLoaded', async () => {
         { keys: ['name'], threshold: 0.4 }
     );
 
-    // --- Render Theme Sidebar ---
-    /**
-     * Build and mount the theme sidebar from a list of theme objects.
-     * Marks the currently active theme with the 'active' class.
-     */
+    // --- Render Helpers ---
+    function renderPlaceholder(container, message) {
+        const card = document.createElement('div');
+        card.className = 'card placeholder-card';
+        const text = document.createElement('p');
+        text.textContent = message;
+        card.appendChild(text);
+        container.replaceChildren(card);
+    }
+
+    function renderEmpty(container, message) {
+        const empty = document.createElement('div');
+        empty.className = 'esv-empty-state';
+        empty.textContent = message;
+        container.replaceChildren(empty);
+    }
+
+    function setPressed(button, isPressed) {
+        button.classList.toggle('active', isPressed);
+        button.setAttribute('aria-pressed', String(isPressed));
+    }
+
+    function updateLoopButton(isLooping = preview.isLooping) {
+        setPressed(loopButton, isLooping);
+    }
+
+    function updatePauseButton() {
+        const icon = pauseButton.querySelector('.material-symbols-outlined');
+        setPressed(pauseButton, preview.isPaused);
+        pauseButton.setAttribute('aria-label', preview.isPaused ? '재생' : '일시정지');
+        if (icon) {
+            icon.textContent = preview.isPaused ? 'play_arrow' : 'pause';
+        }
+    }
+
+    function updateSpeedButtons() {
+        for (const button of speedButtons) {
+            const isActive = Number(button.dataset.speed) === currentSpeed;
+            setPressed(button, isActive);
+        }
+    }
+
+    function updateThemeActiveState() {
+        themeList.querySelectorAll('.esv-theme-item').forEach(el => {
+            const isActive = Number(el.dataset.themeId) === activeThemeId;
+            setPressed(el, isActive);
+        });
+    }
+
+    function updateSkinActiveState() {
+        skinGridContainer.querySelectorAll('.esv-skin-card').forEach(el => {
+            const isActive = Number(el.dataset.skinId) === activeSkinId;
+            setPressed(el, isActive);
+        });
+    }
+
     function renderThemeList(themes) {
+        if (!themes.length) {
+            renderEmpty(themeList, '검색 결과가 없습니다.');
+            return;
+        }
+
         const fragment = document.createDocumentFragment();
         for (const theme of themes) {
-            const div = document.createElement('div');
-            div.className = 'esv-theme-item';
-            if (theme.id === activeThemeId) div.classList.add('active');
-            div.dataset.themeId = theme.id;
-            div.innerHTML = `
-                <span class="theme-name">${theme.name}</span>
-                <span class="theme-count">${theme.ids ? theme.ids.length : 0}</span>
-            `;
-            div.addEventListener('click', () => selectTheme(theme.id));
-            fragment.appendChild(div);
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'esv-theme-item';
+            button.dataset.themeId = theme.id;
+            button.setAttribute('aria-pressed', String(theme.id === activeThemeId));
+
+            const name = document.createElement('span');
+            name.className = 'theme-name';
+            name.textContent = theme.name;
+
+            const count = document.createElement('span');
+            count.className = 'theme-count';
+            count.textContent = String(theme.ids ? theme.ids.length : 0);
+
+            button.append(name, count);
+            fragment.appendChild(button);
         }
-        themeList.innerHTML = '';
-        themeList.appendChild(fragment);
+        themeList.replaceChildren(fragment);
+        updateThemeActiveState();
     }
 
     renderThemeList(data.themeList);
+    updateLoopButton();
+    updatePauseButton();
+    updateSpeedButtons();
 
-    // --- Theme Search ---
+    // --- Theme Search / Selection ---
     themeSearch.addEventListener('input', debounce(() => {
         const query = themeSearch.value.trim();
         if (!query) {
             renderThemeList(data.themeList);
             return;
         }
-        const results = themeSearchIndex.search(query);
-        const filtered = results.map(r => data.getTheme(r.item.id));
+        const filtered = themeSearchIndex
+            ? themeSearchIndex.search(query).map(r => data.getTheme(r.item.id)).filter(Boolean)
+            : data.themeList.filter(theme => theme.name.toLowerCase().includes(query.toLowerCase()));
         renderThemeList(filtered);
     }, 200));
 
-    // --- Select Theme ---
+    themeList.addEventListener('click', (event) => {
+        const item = event.target.closest('.esv-theme-item');
+        if (!item) return;
+        selectTheme(Number(item.dataset.themeId));
+    });
+
     /**
      * Select a theme: update sidebar state, render its skin grid, hide skin info, update URL.
      */
-    function selectTheme(themeId) {
+    function selectTheme(themeId, options = {}) {
+        const { updateUrl = true, clearPreview = true } = options;
+        const theme = data.getTheme(themeId);
+        if (!theme) return false;
+
         activeThemeId = themeId;
         activeSkinId = null;
+        selectSkinToken++;
 
-        // Update sidebar active state
-        themeList.querySelectorAll('.esv-theme-item').forEach(el => {
-            el.classList.toggle('active', Number(el.dataset.themeId) === themeId);
-        });
-
-        // Render skin grid
+        updateThemeActiveState();
         const skins = data.getSkinsForTheme(themeId);
         renderSkinGrid(skins);
-
-        // Hide skin info
         hideElement(skinInfo);
 
-        // Update URL
-        setUrlParams({ theme: themeId, skin: null }, { replace: true });
+        if (clearPreview) {
+            preview.stopLoop();
+            preview.cancelPending();
+            updateLoopButton(false);
+        }
+
+        if (updateUrl) {
+            setUrlParams({ theme: themeId, skin: null }, { replace: true });
+        }
+
+        return true;
     }
 
     // --- Render Skin Grid ---
     function renderSkinGrid(skins) {
         if (!skins.length) {
-            skinGridContainer.innerHTML = '<div class="card placeholder-card"><p>이 테마에 스킨이 없습니다.</p></div>';
+            renderPlaceholder(skinGridContainer, '이 테마에 스킨이 없습니다.');
             return;
         }
 
@@ -136,11 +229,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const fragment = document.createDocumentFragment();
         for (const skin of skins) {
-            const card = document.createElement('div');
+            const card = document.createElement('button');
+            card.type = 'button';
             card.className = 'esv-skin-card';
             card.dataset.skinId = skin.id;
             card.dataset.rarity = skin.rarity || 3;
-            if (skin.id === activeSkinId) card.classList.add('active');
+            card.setAttribute('aria-label', `${skin.name} 미리보기`);
+            card.setAttribute('aria-pressed', String(skin.id === activeSkinId));
 
             const iconUrl = data.getEquipIconUrl(skin.icon);
             const img = createImgElement(iconUrl, skin.name, {
@@ -152,56 +247,89 @@ document.addEventListener('DOMContentLoaded', async () => {
             nameSpan.className = 'esv-skin-card-name';
             nameSpan.textContent = skin.name;
             card.appendChild(nameSpan);
-            card.addEventListener('click', () => selectSkin(skin.id));
             fragment.appendChild(card);
         }
         grid.appendChild(fragment);
-        skinGridContainer.innerHTML = '';
-        skinGridContainer.appendChild(grid);
+        skinGridContainer.replaceChildren(grid);
+        updateSkinActiveState();
     }
 
-    // --- Select Skin ---
+    skinGridContainer.addEventListener('click', (event) => {
+        const card = event.target.closest('.esv-skin-card');
+        if (!card) return;
+        selectSkin(Number(card.dataset.skinId));
+    });
+
+    async function fireSelectedSkin(skin) {
+        try {
+            await preview.fireSkin(skin);
+        } catch (error) {
+            console.error('Failed to fire equipment skin preview:', error);
+            showToast('미리보기 재생 실패', 'error');
+        }
+    }
+
     /**
      * Select a skin: update grid active state, populate info bar, auto-fire preview, update URL.
      */
-    async function selectSkin(skinId) {
-        activeSkinId = skinId;
+    async function selectSkin(skinId, options = {}) {
+        const { updateUrl = true, autoFire = true } = options;
         const skin = data.getSkin(skinId);
-        if (!skin) return;
+        if (!skin) return false;
 
-        // Update grid active state
-        skinGridContainer.querySelectorAll('.esv-skin-card').forEach(el => {
-            el.classList.toggle('active', Number(el.dataset.skinId) === skinId);
-        });
+        if (activeThemeId !== skin.themeid) {
+            selectTheme(skin.themeid, { updateUrl: false, clearPreview: false });
+        }
 
-        // Update info bar
+        activeSkinId = skin.id;
+        const currentToken = ++selectSkinToken;
+        const wasLooping = preview.isLooping;
+        if (wasLooping) {
+            preview.stopLoop();
+        }
+
+        updateSkinActiveState();
         skinName.textContent = skin.name;
         skinDesc.textContent = skin.desc || '';
+        skinIcon.setAttribute('data-fallback', IMG_FALLBACKS.DEFAULT);
         skinIcon.src = data.getEquipIconUrl(skin.icon);
         skinIcon.alt = skin.name;
 
-        // Type chips
         const types = skin.equip_type || [];
-        skinTypeChips.innerHTML = types
-            .map(t => `<span class="esv-type-chip">${data.getEquipTypeName(t)}</span>`)
-            .join('');
+        skinTypeChips.replaceChildren(...types.map(typeCode => {
+            const chip = document.createElement('span');
+            chip.className = 'esv-type-chip';
+            chip.textContent = data.getEquipTypeName(typeCode);
+            return chip;
+        }));
 
-        // Sprite preview
         if (skin.bullet_name) {
+            skinSpritePreview.setAttribute('data-onfail', 'hide');
             skinSpritePreview.src = data.getSpriteUrl(skin.bullet_name);
             skinSpritePreview.alt = skin.bullet_name;
+            skinSpritePreview.style.display = '';
             showElement(skinSpritePreview);
         } else {
+            skinSpritePreview.removeAttribute('data-onfail');
+            skinSpritePreview.removeAttribute('src');
+            skinSpritePreview.alt = '';
             hideElement(skinSpritePreview);
         }
 
         showElement(skinInfo);
 
-        // Update URL
-        setUrlParams({ theme: activeThemeId, skin: skinId }, { replace: true });
+        if (updateUrl) {
+            setUrlParams({ theme: activeThemeId, skin: skin.id }, { replace: true });
+        }
 
-        // Auto-fire preview
-        await preview.fireSkin(skin);
+        if (wasLooping) {
+            preview.startLoop(skin);
+            updateLoopButton(true);
+        } else if (autoFire) {
+            await fireSelectedSkin(skin);
+        }
+
+        return currentToken === selectSkinToken;
     }
 
     // --- Playback Controls ---
@@ -211,7 +339,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         const skin = data.getSkin(activeSkinId);
-        if (skin) await preview.fireSkin(skin);
+        if (skin) await fireSelectedSkin(skin);
     });
 
     loopButton.addEventListener('click', () => {
@@ -221,33 +349,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (preview.isLooping) {
             preview.stopLoop();
-            loopButton.classList.remove('active');
+            updateLoopButton(false);
         } else {
             const skin = data.getSkin(activeSkinId);
             if (skin) {
                 preview.startLoop(skin);
-                loopButton.classList.add('active');
+                updateLoopButton(true);
             }
         }
     });
 
     pauseButton.addEventListener('click', () => {
-        const icon = pauseButton.querySelector('.material-symbols-outlined');
         if (preview.isPaused) {
             preview.resume(currentSpeed);
-            icon.textContent = 'pause';
         } else {
             preview.pause();
-            icon.textContent = 'play_arrow';
         }
+        updatePauseButton();
     });
 
     // Speed controls
-    document.querySelectorAll('.speed-btn').forEach(btn => {
+    speedButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
             currentSpeed = parseFloat(btn.dataset.speed);
+            updateSpeedButtons();
             if (!preview.isPaused) {
                 preview.setSpeed(currentSpeed);
             }
@@ -255,22 +380,75 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // --- URL Parameter Restore ---
-    const urlTheme = getUrlParam('theme');
-    const urlSkin = getUrlParam('skin');
-
-    if (urlSkin) {
+    async function restoreUrlState() {
+        const urlTheme = Number(getUrlParam('theme'));
+        const urlSkin = Number(getUrlParam('skin'));
         const skin = data.getSkin(urlSkin);
         if (skin) {
-            selectTheme(skin.themeid);
-            await selectSkin(Number(urlSkin));
+            // Skip if the URL already matches current state (e.g. popstate to same entry) — avoids restarting the preview animation.
+            if (skin.id === activeSkinId) return;
+            await selectSkin(urlSkin, { updateUrl: false });
+            return;
         }
-    } else if (urlTheme) {
-        selectTheme(Number(urlTheme));
+
+        if (data.getTheme(urlTheme)) {
+            if (urlTheme === activeThemeId) return;
+            selectTheme(urlTheme, { updateUrl: false });
+            return;
+        }
+
+        if (getUrlParam('theme') || getUrlParam('skin')) {
+            setUrlParams({ theme: null, skin: null }, { replace: true });
+        }
     }
+
+    await restoreUrlState();
+    window.addEventListener('popstate', restoreUrlState);
 
     // --- Resize ---
     window.addEventListener('resize', debounce(() => {
-        const playerArea = document.getElementById('player-area');
         preview.engine?.updateLayoutAndScale(playerArea);
     }, 150));
+
+    // --- FPS Display ---
+    const fpsDisplay = document.getElementById('fps-display');
+    if (fpsDisplay) {
+        let lastTime = performance.now();
+        let frameCount = 0;
+        let fpsAnimId = null;
+
+        const updateFPS = () => {
+            const now = performance.now();
+            frameCount++;
+            if (now >= lastTime + 1000) {
+                fpsDisplay.textContent = `FPS: ${Math.round((frameCount * 1000) / (now - lastTime))}`;
+                frameCount = 0;
+                lastTime = now;
+            }
+            fpsAnimId = requestAnimationFrame(updateFPS);
+        };
+
+        const onVisibility = () => {
+            if (document.hidden && fpsAnimId) {
+                cancelAnimationFrame(fpsAnimId);
+                fpsAnimId = null;
+            } else if (!document.hidden && !fpsAnimId) {
+                lastTime = performance.now();
+                frameCount = 0;
+                fpsAnimId = requestAnimationFrame(updateFPS);
+            }
+        };
+        document.addEventListener('visibilitychange', onVisibility);
+
+        // Tear down on page unload so a future Astro view-transition migration doesn't leak this listener / rAF across navigations.
+        window.addEventListener('pagehide', () => {
+            document.removeEventListener('visibilitychange', onVisibility);
+            if (fpsAnimId) {
+                cancelAnimationFrame(fpsAnimId);
+                fpsAnimId = null;
+            }
+        }, { once: true });
+
+        fpsAnimId = requestAnimationFrame(updateFPS);
+    }
 });

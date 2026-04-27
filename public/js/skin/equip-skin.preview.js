@@ -22,6 +22,10 @@ const DEFAULT_SPEED = 1.5;
 /** Aircraft equip_type codes (checked against skin.equip_type array, not skin.type) */
 const AIRCRAFT_EQUIP_TYPES = new Set([7, 8, 9, 12, 15]);
 
+function cssUrl(url) {
+    return String(url).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/[\r\n]/g, '');
+}
+
 class EquipSkinPreview {
     constructor(container, dataModule) {
         this.container = container;
@@ -33,6 +37,8 @@ class EquipSkinPreview {
         this.activeAircraft = [];
         this.isLooping = false;
         this.isPaused = false;
+        this.onError = null;
+        this._fireToken = 0;
 
         // Dynamic style element for skin sprite overrides
         this._styleEl = document.createElement('style');
@@ -103,7 +109,7 @@ class EquipSkinPreview {
                 width: ${displayWidth}px !important;
                 height: ${displayHeight}px !important;
                 background: none !important;
-                background-image: url('${spriteUrl}') !important;
+                background-image: url('${cssUrl(spriteUrl)}') !important;
                 background-size: contain !important;
                 background-repeat: no-repeat !important;
                 background-position: center !important;
@@ -118,23 +124,34 @@ class EquipSkinPreview {
      * Fire the skin's preview — dispatches to bullet or aircraft mode based on skin type
      */
     async fireSkin(skin) {
+        const fireToken = ++this._fireToken;
         this.clearAll();
         this.currentSkin = skin;
 
-        await this.data.loadSimData();
-        this.setSimData(this.data.barrageData, this.data.bulletData);
+        try {
+            await this.data.loadSimData();
+            if (fireToken !== this._fireToken) return false;
+            this.setSimData(this.data.barrageData, this.data.bulletData);
 
-        const spriteImg = await this.data.preloadSprite(skin.bullet_name);
+            const spriteImg = await this.data.preloadSprite(skin.bullet_name);
+            if (fireToken !== this._fireToken) return false;
 
-        const isAircraft = (skin.equip_type || []).some(t => AIRCRAFT_EQUIP_TYPES.has(t));
-        if (isAircraft) {
-            this._fireAircraft(skin, spriteImg);
-        } else {
-            this.applySkinSprite(skin, spriteImg);
-            const weaponIds = skin.weapon_ids || [];
-            for (const weaponId of weaponIds) {
-                this._fireWeapon(weaponId, skin);
+            const isAircraft = (skin.equip_type || []).some(t => AIRCRAFT_EQUIP_TYPES.has(t));
+            if (isAircraft) {
+                this._fireAircraft(skin, spriteImg);
+            } else {
+                this.applySkinSprite(skin, spriteImg);
+                const weaponIds = skin.weapon_ids || [];
+                for (const weaponId of weaponIds) {
+                    this._fireWeapon(weaponId, skin);
+                }
             }
+            return true;
+        } catch (error) {
+            if (fireToken === this._fireToken) {
+                this.clearAll();
+            }
+            throw error;
         }
     }
 
@@ -156,12 +173,14 @@ class EquipSkinPreview {
         if (spriteUrl) {
             this._styleEl.textContent = `
                 #simulation-container .aircraft-entity.esv-skin-aircraft .aircraft-icon {
-                    content: url('${spriteUrl}');
+                    content: url('${cssUrl(spriteUrl)}');
                     width: 48px !important;
                     height: auto !important;
                     transform: scaleX(-1);
                 }
             `;
+        } else {
+            this._styleEl.textContent = '';
         }
 
         for (let i = 0; i < Math.max(count, 1); i++) {
@@ -326,11 +345,24 @@ class EquipSkinPreview {
     // === PLAYBACK CONTROLS ===
 
     startLoop(skin) {
+        this.stopLoop();
         this.isLooping = true;
         const cycle = async () => {
             if (!this.isLooping) return;
-            await this.fireSkin(skin);
-            this.loopTimer = setTimeout(cycle, 3000);
+            try {
+                await this.fireSkin(skin);
+            } catch (error) {
+                this.stopLoop();
+                if (typeof this.onError === 'function') {
+                    this.onError(error);
+                } else {
+                    console.error('Equipment skin preview loop failed:', error);
+                }
+                return;
+            }
+            if (this.isLooping) {
+                this.loopTimer = setTimeout(cycle, 3000);
+            }
         };
         cycle();
     }
@@ -344,6 +376,7 @@ class EquipSkinPreview {
     }
 
     clearAll() {
+        this._styleEl.textContent = '';
         this.fireTimers.forEach(id => clearTimeout(id));
         this.fireTimers = [];
         this.activeAircraft.forEach(a => a.destroy());
@@ -351,6 +384,11 @@ class EquipSkinPreview {
         if (this.engine) {
             this.engine.clearBullets();
         }
+    }
+
+    cancelPending() {
+        this._fireToken++;
+        this.clearAll();
     }
 
     setSpeed(speed) {
@@ -371,7 +409,7 @@ class EquipSkinPreview {
 
     destroy() {
         this.stopLoop();
-        this.clearAll();
+        this.cancelPending();
         if (this._styleEl.parentNode) {
             this._styleEl.parentNode.removeChild(this._styleEl);
         }

@@ -31,6 +31,7 @@ class EquipSkinData {
         this.barrageData = {};
         this.bulletData = {};
         this.simDataLoaded = false;
+        this._simDataPromise = null;
 
         // Sprite image cache
         this._spriteCache = {};
@@ -62,17 +63,23 @@ class EquipSkinData {
      */
     async loadSimData() {
         if (this.simDataLoaded) return;
+        if (this._simDataPromise) return this._simDataPromise;
 
-        const [weaponData, barrageData, bulletData] = await Promise.all([
+        this._simDataPromise = Promise.all([
             fetchJSONWithCache(resolveUrl('data/sim/weapon_property.json'), { maxAge: 86400000 }),
             fetchJSONWithCache(resolveUrl('data/sim/barrage_template.json'), { maxAge: 86400000 }),
             fetchJSONWithCache(resolveUrl('data/sim/bullet_template.json'), { maxAge: 86400000 }),
-        ]);
+        ]).then(([weaponData, barrageData, bulletData]) => {
+            this.weaponData = weaponData;
+            this.barrageData = barrageData;
+            this.bulletData = bulletData;
+            this.simDataLoaded = true;
+        }).catch(error => {
+            this._simDataPromise = null;
+            throw error;
+        });
 
-        this.weaponData = weaponData;
-        this.barrageData = barrageData;
-        this.bulletData = bulletData;
-        this.simDataLoaded = true;
+        return this._simDataPromise;
     }
 
     getSkin(skinId) {
@@ -100,11 +107,13 @@ class EquipSkinData {
     }
 
     getEquipIconUrl(iconId) {
-        return `${EQUIP_ICON_BASE}${iconId}.webp`;
+        if (!iconId) return '';
+        return `${EQUIP_ICON_BASE}${encodeURIComponent(iconId)}.webp`;
     }
 
     getSpriteUrl(bulletName) {
-        return `${SKIN_SPRITE_BASE}${bulletName}.webp`;
+        if (!bulletName) return '';
+        return `${SKIN_SPRITE_BASE}${encodeURIComponent(bulletName)}.webp`;
     }
 
     /**
@@ -112,6 +121,7 @@ class EquipSkinData {
      * @returns {Promise<HTMLImageElement|null>}
      */
     async preloadSprite(bulletName) {
+        if (!bulletName) return null;
         if (this._spriteCache[bulletName]) return this._spriteCache[bulletName];
         return new Promise((resolve) => {
             const img = new Image();

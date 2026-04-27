@@ -56,17 +56,24 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
     padding: 0.5rem 0.75rem;
+    border: 0;
     border-radius: var(--radius-md);
+    background: transparent;
     cursor: pointer;
     transition: background var(--transition-fast);
     color: var(--text-secondary);
     font-size: 0.8125rem;
+    font-family: inherit;
+    text-align: left;
 }
 
-.esv-theme-item:hover {
+.esv-theme-item:hover,
+.esv-theme-item:focus-visible {
     background: var(--primary-alpha-10);
     color: var(--text-primary);
+    outline: none;
 }
 
 .esv-theme-item.active {
@@ -81,6 +88,22 @@
     background: var(--bg-tertiary);
     padding: 0.125rem 0.375rem;
     border-radius: var(--radius-sm);
+}
+
+.esv-empty-state {
+    padding: 0.75rem;
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    text-align: center;
+}
+
+.btn-secondary.active,
+.btn-icon.active {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
 }
 
 /* ===== Skin Info Bar ===== */
@@ -161,11 +184,15 @@
     background: var(--bg-elevated);
     cursor: pointer;
     transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+    font-family: inherit;
+    min-width: 0;
 }
 
-.esv-skin-card:hover {
+.esv-skin-card:hover,
+.esv-skin-card:focus-visible {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
+    outline: none;
 }
 
 .esv-skin-card.active {
@@ -200,6 +227,15 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
+}
+
+.placeholder-card {
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.placeholder-card p {
+    margin: 0;
 }
 
 /* ===== Responsive / Mobile ===== */
