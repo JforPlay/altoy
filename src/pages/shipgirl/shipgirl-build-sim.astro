@@ -15,33 +15,35 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <p class="subtitle">건조 확률을 확인하고 시뮬레이션을 해보세요</p>
         </header>
 
-        <section class="pool-selector"></section>
+        <div id="build-sim-status" class="build-sim-status" role="status" hidden></div>
+
+        <section class="pool-selector" aria-label="건조 풀 선택"></section>
 
         <section class="pool-section">
             <div class="section-header" id="pool-section-header">
                 <h2>건조 목록</h2>
-                <button class="collapse-btn" id="pool-collapse-btn">
+                <button type="button" class="collapse-btn" id="pool-collapse-btn" aria-label="건조 목록 접기" aria-expanded="true" aria-controls="pool-content">
                     <span class="material-symbols-outlined">expand_less</span>
                 </button>
             </div>
 
             <div class="collapsible-content" id="pool-content">
                 <div class="ship-adder">
-                    <h3>픽업 함선 추가</h3>
+                    <h3>픽업 함순이 추가</h3>
                     <div class="adder-controls">
                         <div class="search-container">
-                            <input type="text" id="ship-search-input" class="ship-search-input" placeholder="함선 이름 검색...">
+                            <input type="search" id="ship-search-input" class="ship-search-input" placeholder="함순이 이름 검색..." aria-label="픽업에 추가할 함순이 검색" autocomplete="off">
                             <div class="ship-dropdown" id="ship-dropdown" style="display: none;"></div>
                         </div>
                         <div class="pickup-input-group">
                             <label for="pickup-rate">픽업 확률 (%):</label>
                             <input type="number" id="pickup-rate" class="pickup-rate-input" min="0" max="100" step="0.01" value="2.0" placeholder="2.0">
                         </div>
-                        <button class="add-ship-btn" id="add-ship-btn" disabled>
+                        <button type="button" class="add-ship-btn" id="add-ship-btn" disabled>
                             <span class="material-symbols-outlined">add_circle</span>
                             <span>추가</span>
                         </button>
-                        <button class="reset-pool-btn" id="reset-pool-btn">
+                        <button type="button" class="reset-pool-btn" id="reset-pool-btn">
                             <span class="material-symbols-outlined">refresh</span>
                             <span>풀 초기화</span>
                         </button>
@@ -53,16 +55,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <div class="filter-group">
                         <label>등급 필터:</label>
                         <div class="rarity-filters">
-                            <button class="rarity-filter active" data-rarity="all">전체</button>
-                            <button class="rarity-filter" data-rarity="UR">UR</button>
-                            <button class="rarity-filter" data-rarity="SSR">SSR</button>
-                            <button class="rarity-filter" data-rarity="SR">SR</button>
-                            <button class="rarity-filter" data-rarity="R">R</button>
-                            <button class="rarity-filter" data-rarity="N">N</button>
+                            <button type="button" class="rarity-filter active" data-rarity="all" aria-pressed="true">전체</button>
+                            <button type="button" class="rarity-filter" data-rarity="UR" aria-pressed="false">UR</button>
+                            <button type="button" class="rarity-filter" data-rarity="SSR" aria-pressed="false">SSR</button>
+                            <button type="button" class="rarity-filter" data-rarity="SR" aria-pressed="false">SR</button>
+                            <button type="button" class="rarity-filter" data-rarity="R" aria-pressed="false">R</button>
+                            <button type="button" class="rarity-filter" data-rarity="N" aria-pressed="false">N</button>
                         </div>
                     </div>
                     <div class="filter-group">
-                        <input type="text" id="ship-search" class="ship-search" placeholder="함선 이름 검색...">
+                        <input type="search" id="ship-search" class="ship-search" placeholder="함순이 이름 검색..." aria-label="건조 목록 함순이 검색">
                     </div>
                 </div>
 
@@ -79,10 +81,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </div>
 
             <div class="ship-probability">
-                <h3>함선별 확률 계산</h3>
+                <h3>함순이별 확률 계산</h3>
                 <div class="probability-calculator">
                     <select id="ship-select" class="ship-select">
-                        <option value="">함선을 선택하세요</option>
+                        <option value="">함순이를 선택하세요</option>
                     </select>
                     <div class="probability-result">
                         <div class="result-item">
@@ -116,15 +118,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <section class="simulator-section">
             <h2>건조 시뮬레이터</h2>
             <div class="simulator-controls">
-                <button class="sim-btn primary-btn" id="build-one">
+                <button type="button" class="sim-btn primary-btn" id="build-one">
                     <span class="btn-icon">🎲</span>
                     <span>1회 건조</span>
                 </button>
-                <button class="sim-btn secondary-btn" id="build-ten">
+                <button type="button" class="sim-btn secondary-btn" id="build-ten">
                     <span class="btn-icon">🎲</span>
                     <span>10회 건조</span>
                 </button>
-                <button class="sim-btn tertiary-btn" id="reset-stats">
+                <button type="button" class="sim-btn tertiary-btn" id="reset-stats">
                     <span class="btn-icon">🔄</span>
                     <span>통계 초기화</span>
                 </button>
@@ -160,30 +162,30 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </section>
     </main>
 
-    <div class="modal-overlay" id="despair-modal" style="display: none;">
+    <div class="modal-overlay" id="despair-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="despair-modal-title">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>절망 건조 픽업 함선 선택</h2>
-                <button class="modal-close" id="modal-close"><span class="material-symbols-outlined">close</span></button>
+                <h2 id="despair-modal-title">절망 건조 픽업 함순이 선택</h2>
+                <button type="button" class="modal-close" id="modal-close" aria-label="닫기"><span class="material-symbols-outlined">close</span></button>
             </div>
             <div class="modal-body">
                 <div class="selection-info">
-                    <p>UR/SSR/SR 함선 중 <strong>정확히 2척</strong>을 선택하세요 (UR은 최대 1척)</p>
+                    <p>UR/SSR/SR 함순이 중 <strong>정확히 2척</strong>을 선택하세요 (UR은 최대 1척)</p>
                     <div class="selection-status">
                         <span>선택: <span id="selected-count">0</span> / 2</span>
                         <span>UR: <span id="selected-ur-count">0</span> / 1</span>
                     </div>
                 </div>
                 <div class="rarity-tabs">
-                    <button class="rarity-tab active" data-rarity="UR">UR</button>
-                    <button class="rarity-tab" data-rarity="SSR">SSR</button>
-                    <button class="rarity-tab" data-rarity="SR">SR</button>
+                    <button type="button" class="rarity-tab active" data-rarity="UR" aria-pressed="true">UR</button>
+                    <button type="button" class="rarity-tab" data-rarity="SSR" aria-pressed="false">SSR</button>
+                    <button type="button" class="rarity-tab" data-rarity="SR" aria-pressed="false">SR</button>
                 </div>
                 <div class="modal-ship-grid" id="modal-ship-grid"></div>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn cancel-btn" id="modal-cancel">취소</button>
-                <button class="modal-btn confirm-btn" id="modal-confirm" disabled>확인</button>
+                <button type="button" class="modal-btn cancel-btn" id="modal-cancel">취소</button>
+                <button type="button" class="modal-btn confirm-btn" id="modal-confirm" disabled>확인</button>
             </div>
         </div>
     </div>

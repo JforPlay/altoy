@@ -5,7 +5,7 @@
  * Build stats (total pulls, rarity counts, resources spent) are persisted to localStorage.
  */
 
-import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem, createImgElement, debounce, showToast } from '../utils.js';
 (function () {
     'use strict';
 
@@ -48,6 +48,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         SSR: 2.0,
         SR: 2.5
     };
+
+    const DEFAULT_SHIP_ICON = resolveUrl('assets/img/default-ship.webp');
 
     // Build Costs (per build)
     const BUILD_COSTS = {
@@ -132,8 +134,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         }
 
         // For pickup pools, get base pool probabilities
-        if (poolId.startsWith('pickup-')) {
-            const pickupConfig = state.pickupData[poolId];
+        if (poolId?.startsWith('pickup-')) {
+            const pickupConfig = state.pickupData?.[poolId];
             if (pickupConfig) {
                 const basePoolId = pickupConfig.basePool;
                 return POOL_PROBABILITIES[basePoolId];
@@ -152,8 +154,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         }
 
         // For pickup pools, get base pool costs
-        if (poolId.startsWith('pickup-')) {
-            const pickupConfig = state.pickupData[poolId];
+        if (poolId?.startsWith('pickup-')) {
+            const pickupConfig = state.pickupData?.[poolId];
             if (pickupConfig) {
                 const basePoolId = pickupConfig.basePool;
                 return BUILD_COSTS[basePoolId];
@@ -164,6 +166,24 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         return BUILD_COSTS['3'];
     }
 
+    function showPageStatus(message) {
+        const status = document.getElementById('build-sim-status');
+        if (!status) return;
+        status.textContent = message;
+        status.hidden = false;
+    }
+
+    function createEmptyMessage(message) {
+        const empty = document.createElement('p');
+        empty.className = 'build-sim-empty';
+        empty.textContent = message;
+        return empty;
+    }
+
+    function sanitizeClassToken(value) {
+        return String(value ?? '').replace(/[^a-z0-9_-]/gi, '');
+    }
+
     // ===== Initialization =====
 
     // Cached DOM references for frequently-accessed elements
@@ -171,7 +191,14 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
     let probabilityGraphEl = null;
 
     async function init() {
-        await loadData();
+        try {
+            await loadData();
+        } catch (error) {
+            console.error('Failed to initialize build simulator:', error);
+            showPageStatus('건조 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
+            return;
+        }
+
         renderPoolButtons(); // Render dynamic pool buttons after data is loaded
 
         // Cache frequently-accessed DOM elements
@@ -193,37 +220,31 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
     // ===== Data Loading =====
 
     async function loadData() {
-        try {
-            // Load base pools
-            const data = await fetchJSON('data/shipgirl/ship_build_sim_data.json');
-            state.poolData = JSON.parse(JSON.stringify(data));
-            state.originalPoolData = JSON.parse(JSON.stringify(data));
+        // Load base pools
+        const data = await fetchJSON('data/shipgirl/ship_build_sim_data.json');
+        state.poolData = JSON.parse(JSON.stringify(data));
+        state.originalPoolData = JSON.parse(JSON.stringify(data));
 
-            // Load limited build shipgirls data
-            const limitedBuildData = await fetchJSON('data/shipgirl/limited_build_shipgirls.json');
-            state.pickupData = parsePickupDataFromLimitedBuilds(limitedBuildData);
+        // Load limited build shipgirls data
+        const limitedBuildData = await fetchJSON('data/shipgirl/limited_build_shipgirls.json');
+        state.pickupData = parsePickupDataFromLimitedBuilds(limitedBuildData);
 
-            // Initialize custom ships for all pools including pickup pools
-            state.customShips = { '1': [], '2': [], '3': [] };
-            Object.keys(state.pickupData).forEach(poolId => {
-                state.customShips[poolId] = [];
-            });
+        // Initialize custom ships for all pools including pickup and despair pools.
+        state.customShips = { '1': [], '2': [], '3': [], 'despair-1': [], 'despair-2': [], 'despair-3': [] };
+        Object.keys(state.pickupData).forEach(poolId => {
+            state.customShips[poolId] = [];
+        });
 
-            // Initialize despair pools (empty until user selects ships)
-            state.poolData['despair-1'] = {};
-            state.poolData['despair-2'] = {};
-            state.poolData['despair-3'] = {};
-            state.originalPoolData['despair-1'] = {};
-            state.originalPoolData['despair-2'] = {};
-            state.originalPoolData['despair-3'] = {};
+        // Initialize despair pools (empty until user selects ships)
+        state.poolData['despair-1'] = {};
+        state.poolData['despair-2'] = {};
+        state.poolData['despair-3'] = {};
+        state.originalPoolData['despair-1'] = {};
+        state.originalPoolData['despair-2'] = {};
+        state.originalPoolData['despair-3'] = {};
 
-            // Build all pickup pools
-            buildAllPickupPools();
-
-            console.log('Build data loaded successfully');
-        } catch (error) {
-            console.error('Failed to load build data:', error);
-        }
+        // Build all pickup pools
+        buildAllPickupPools();
     }
 
     // ===== Pool Construction =====
@@ -297,6 +318,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
      * URs replace all base URs; SSR/SR pickups mark existing ships or add them fresh.
      */
     function buildPickupPool(pickupPoolId, basePoolId, pickupShips) {
+        if (!state.originalPoolData[basePoolId]) return;
+
         // Start with base pool
         state.poolData[pickupPoolId] = JSON.parse(JSON.stringify(state.originalPoolData[basePoolId]));
         state.originalPoolData[pickupPoolId] = JSON.parse(JSON.stringify(state.originalPoolData[basePoolId]));
@@ -334,7 +357,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
                     state.poolData[pickupPoolId][shipId] = {
                         name: ship.name,
                         rarity: ship.rarity,
-                        icon: ship.icon || resolveUrl('assets/img/default-ship.webp'),
+                        icon: ship.icon || DEFAULT_SHIP_ICON,
                         isPickup: true,
                         pickupRate: ship.pickupRate
                     };
@@ -359,7 +382,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
                         state.poolData[pickupPoolId][shipId] = {
                             name: ship.name,
                             rarity: ship.rarity,
-                            icon: ship.icon || resolveUrl('assets/img/default-ship.webp'),
+                            icon: ship.icon || DEFAULT_SHIP_ICON,
                             isPickup: true,
                             pickupRate: ship.pickupRate
                         };
@@ -381,22 +404,10 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         return null;
     }
 
-    // Helper to get ship icon from ship database
-    function getShipIcon(shipName) {
-        // Try to find ship in the main ship database when loaded
-        if (state.shipDatabase) {
-            const ship = Object.values(state.shipDatabase).find(s => s.name === shipName);
-            if (ship && ship.icon) return ship.icon;
-        }
-        
-        // Fallback to default
-        return resolveUrl('assets/img/default-ship.webp');
-    }
-
     // Render pool buttons dynamically
     function renderPoolButtons() {
         const poolSelector = document.querySelector('.pool-selector');
-        poolSelector.innerHTML = ''; // Clear existing buttons
+        poolSelector.replaceChildren();
 
         // Create groups
         const standardGroup = document.createElement('div');
@@ -450,23 +461,33 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         const firstPickupPool = Object.keys(state.pickupData || {})[0];
         if (firstPickupPool) {
             const firstBtn = poolSelector.querySelector(`[data-pool="${firstPickupPool}"]`);
-            if (firstBtn) firstBtn.classList.add('active');
+            if (firstBtn) {
+                firstBtn.classList.add('active');
+                firstBtn.setAttribute('aria-pressed', 'true');
+            }
         }
     }
 
     // Create a pool button element
     function createPoolButton(pool, icon, name, isPickup = false, basePool = null) {
         const btn = document.createElement('button');
+        btn.type = 'button';
         btn.className = 'pool-btn';
         btn.dataset.pool = pool;
+        btn.setAttribute('aria-pressed', 'false');
         
         if (isPickup) btn.dataset.isPickup = 'true';
         if (basePool) btn.dataset.basePool = basePool;
 
-        btn.innerHTML = `
-            <span class="pool-icon">${icon}</span>
-            <span class="pool-name">${name}</span>
-        `;
+        const iconEl = document.createElement('span');
+        iconEl.className = 'pool-icon';
+        iconEl.textContent = icon;
+
+        const nameEl = document.createElement('span');
+        nameEl.className = 'pool-name';
+        nameEl.textContent = name;
+
+        btn.append(iconEl, nameEl);
 
         return btn;
     }
@@ -480,10 +501,13 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
 
         // Show modal
         document.getElementById('despair-modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
 
         // Reset rarity tabs
         document.querySelectorAll('.rarity-tab').forEach(tab => {
-            tab.classList.toggle('active', tab.dataset.rarity === 'UR');
+            const isActive = tab.dataset.rarity === 'UR';
+            tab.classList.toggle('active', isActive);
+            tab.setAttribute('aria-pressed', String(isActive));
         });
 
         // Render ship grid
@@ -493,6 +517,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
 
     function closeDespairModal() {
         document.getElementById('despair-modal').style.display = 'none';
+        document.body.style.overflow = '';
         state.modalState = {
             basePool: null,
             selectedShips: [],
@@ -506,7 +531,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         const currentRarity = state.modalState.currentRarityTab;
 
         if (!basePool || !state.originalPoolData[basePool]) {
-            grid.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">로딩 중...</p>';
+            grid.replaceChildren(createEmptyMessage('로딩 중...'));
             return;
         }
 
@@ -516,28 +541,56 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
             .map(([id, ship]) => ({ id, ...ship }));
 
         if (ships.length === 0) {
-            grid.innerHTML = `<p style="text-align: center; color: var(--text-secondary);">${currentRarity} 함선이 없습니다.</p>`;
+            grid.replaceChildren(createEmptyMessage(`${currentRarity} 함순이가 없습니다.`));
             return;
         }
 
-        grid.innerHTML = '';
+        const fragment = document.createDocumentFragment();
         ships.forEach(ship => {
             const isSelected = state.modalState.selectedShips.some(s => s.id === ship.id);
 
             const card = document.createElement('div');
-            card.className = `modal-ship-card ${ship.rarity.toLowerCase()}`;
+            card.className = `modal-ship-card ${sanitizeClassToken(ship.rarity).toLowerCase()}`;
             if (isSelected) card.classList.add('selected');
+            card.tabIndex = 0;
+            card.setAttribute('role', 'button');
+            card.setAttribute('aria-pressed', String(isSelected));
 
-            card.innerHTML = `
-                <img src="${ship.icon}" alt="${ship.name}" class="modal-ship-icon" onerror="this.src='${resolveUrl('assets/img/default-ship.webp')}'">
-                <div class="modal-ship-name">${ship.name}</div>
-                <div class="modal-ship-rarity ${ship.rarity.toLowerCase()}">${ship.rarity}</div>
-                ${isSelected ? '<div class="selected-check"><span class="material-symbols-outlined">check_circle</span></div>' : ''}
-            `;
+            const img = createImgElement(ship.icon || DEFAULT_SHIP_ICON, ship.name, {
+                className: 'modal-ship-icon',
+                fallback: DEFAULT_SHIP_ICON,
+            });
+
+            const name = document.createElement('div');
+            name.className = 'modal-ship-name';
+            name.textContent = ship.name;
+
+            const rarity = document.createElement('div');
+            rarity.className = `modal-ship-rarity ${sanitizeClassToken(ship.rarity).toLowerCase()}`;
+            rarity.textContent = ship.rarity;
+
+            card.append(img, name, rarity);
+
+            if (isSelected) {
+                const selected = document.createElement('div');
+                selected.className = 'selected-check';
+                const icon = document.createElement('span');
+                icon.className = 'material-symbols-outlined';
+                icon.textContent = 'check_circle';
+                selected.appendChild(icon);
+                card.appendChild(selected);
+            }
 
             card.addEventListener('click', () => toggleShipSelection(ship));
-            grid.appendChild(card);
+            card.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    toggleShipSelection(ship);
+                }
+            });
+            fragment.appendChild(card);
         });
+        grid.replaceChildren(fragment);
     }
 
     function toggleShipSelection(ship) {
@@ -554,13 +607,13 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
 
             // Max 2 ships total
             if (totalCount >= 2) {
-                alert('최대 2척까지만 선택할 수 있습니다.');
+                showToast('최대 2척까지만 선택할 수 있습니다.', 'info');
                 return;
             }
 
             // Max 1 UR
             if (ship.rarity === 'UR' && urCount >= 1) {
-                alert('UR은 최대 1척까지만 선택할 수 있습니다.');
+                showToast('UR은 최대 1척까지만 선택할 수 있습니다.', 'info');
                 return;
             }
 
@@ -604,15 +657,19 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         // Update UI
         document.querySelectorAll('.pool-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.pool === despairPoolId);
+            btn.setAttribute('aria-pressed', String(btn.dataset.pool === despairPoolId));
         });
 
         updateProbabilityChart();
         updateShipSelect();
+        updateShipProbability();
         renderShipGrid();
         renderAddedShips();
     }
 
     function buildDespairPool(despairPoolId, basePoolId, selectedShips) {
+        if (!state.originalPoolData[basePoolId]) return;
+
         // Start with base pool
         state.poolData[despairPoolId] = JSON.parse(JSON.stringify(state.originalPoolData[basePoolId]));
         state.originalPoolData[despairPoolId] = JSON.parse(JSON.stringify(state.originalPoolData[basePoolId]));
@@ -661,16 +718,20 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         document.querySelectorAll('.rarity-filter').forEach(btn => {
             btn.addEventListener('click', () => {
                 state.filters.rarity = btn.dataset.rarity;
-                document.querySelectorAll('.rarity-filter').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.rarity-filter').forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-pressed', 'false');
+                });
                 btn.classList.add('active');
+                btn.setAttribute('aria-pressed', 'true');
                 renderShipGrid();
             });
         });
 
-        document.getElementById('ship-search').addEventListener('input', (e) => {
+        document.getElementById('ship-search').addEventListener('input', debounce((e) => {
             state.filters.search = e.target.value.toLowerCase();
             renderShipGrid();
-        });
+        }, 150));
 
         // Ship adder controls
         const searchInput = document.getElementById('ship-search-input');
@@ -702,8 +763,10 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         const poolSectionHeader = document.getElementById('pool-section-header');
 
         poolSectionHeader.addEventListener('click', () => {
-            poolContent.classList.toggle('collapsed');
-            poolCollapseBtn.classList.toggle('collapsed');
+            const isCollapsed = poolContent.classList.toggle('collapsed');
+            poolCollapseBtn.classList.toggle('collapsed', isCollapsed);
+            poolCollapseBtn.setAttribute('aria-expanded', String(!isCollapsed));
+            poolCollapseBtn.setAttribute('aria-label', isCollapsed ? '건조 목록 펼치기' : '건조 목록 접기');
         });
 
         // Close dropdown when clicking outside
@@ -724,15 +787,16 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
             }, 250);
         });
 
-        // Redraw graph on theme change
+        // Redraw graph on theme change. global.script.js toggles the `dark-mode`
+        // class on <body>, so observe that — not data-theme on <html>.
         const observer = new MutationObserver(() => {
             if (probabilityGraphEl && probabilityGraphEl.dataset.shipName) {
                 renderGraph(probabilityGraphEl, null);
             }
         });
-        observer.observe(document.documentElement, {
+        observer.observe(document.body, {
             attributes: true,
-            attributeFilter: ['data-theme']
+            attributeFilter: ['class']
         });
 
         // Despair Pool Modal
@@ -749,8 +813,12 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         document.querySelectorAll('.rarity-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 state.modalState.currentRarityTab = tab.dataset.rarity;
-                document.querySelectorAll('.rarity-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.rarity-tab').forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-pressed', 'false');
+                });
                 tab.classList.add('active');
+                tab.setAttribute('aria-pressed', 'true');
                 renderModalShipGrid();
             });
         });
@@ -758,6 +826,12 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         // Close modal when clicking overlay
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
+                closeDespairModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display !== 'none') {
                 closeDespairModal();
             }
         });
@@ -784,10 +858,12 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         // Update button states
         document.querySelectorAll('.pool-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.pool === poolId);
+            btn.setAttribute('aria-pressed', String(btn.dataset.pool === poolId));
         });
 
         updateProbabilityChart();
         updateShipSelect();
+        updateShipProbability();
         renderShipGrid();
         renderAddedShips();
     }
@@ -823,8 +899,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         const legend = document.getElementById('probability-legend');
 
         // Clear existing content
-        stackedBar.innerHTML = '';
-        legend.innerHTML = '';
+        stackedBar.replaceChildren();
+        legend.replaceChildren();
 
         // Render stacked bar segments
         const rarityOrder = ['UR', 'SSR', 'SR', 'R', 'N'];
@@ -836,20 +912,32 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
                 const segment = document.createElement('div');
                 segment.className = `stacked-segment ${rarity.toLowerCase()}`;
                 segment.style.width = `${percentage}%`;
-                segment.innerHTML = `
-                    <span class="segment-label">${rarity}</span>
-                    <span class="segment-value">${percentage}%</span>
-                `;
+                const segmentLabel = document.createElement('span');
+                segmentLabel.className = 'segment-label';
+                segmentLabel.textContent = rarity;
+
+                const segmentValue = document.createElement('span');
+                segmentValue.className = 'segment-value';
+                segmentValue.textContent = `${percentage}%`;
+
+                segment.append(segmentLabel, segmentValue);
                 stackedBar.appendChild(segment);
 
                 // Create legend item
                 const legendItem = document.createElement('div');
                 legendItem.className = 'legend-item-compact';
-                legendItem.innerHTML = `
-                    <div class="legend-color ${rarity.toLowerCase()}"></div>
-                    <span class="legend-text">${rarity}</span>
-                    <span class="legend-percent">${percentage}%</span>
-                `;
+                const color = document.createElement('div');
+                color.className = `legend-color ${rarity.toLowerCase()}`;
+
+                const text = document.createElement('span');
+                text.className = 'legend-text';
+                text.textContent = rarity;
+
+                const percent = document.createElement('span');
+                percent.className = 'legend-percent';
+                percent.textContent = `${percentage}%`;
+
+                legendItem.append(color, text, percent);
                 legend.appendChild(legendItem);
             }
         });
@@ -860,7 +948,10 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         const select = shipSelectEl;
         const ships = state.poolData[state.currentPool] || {};
 
-        select.innerHTML = '<option value="">함선을 선택하세요</option>';
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = '함순이를 선택하세요';
+        select.replaceChildren(placeholder);
 
         // Group ships by rarity
         const groupedShips = {};
@@ -917,7 +1008,12 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
             return;
         }
 
-        const ship = state.poolData[state.currentPool][shipId];
+        const ship = state.poolData[state.currentPool]?.[shipId];
+        if (!ship) {
+            select.value = '';
+            updateShipProbability();
+            return;
+        }
         const rarityProb = getEffectiveProbabilities(state.currentPool)[ship.rarity] / 100;
 
         // Check if this ship is a pickup ship
@@ -940,7 +1036,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
 
             // Remaining probability is distributed among non-pickup ships
             const regularShipsCount = sameRarityShips.filter(s => !s.isPickup && !s.isCustom).length;
-            const remainingProb = rarityProb * 100 - pickupTotal;
+            const remainingProb = Math.max(0, rarityProb * 100 - pickupTotal);
 
             if (regularShipsCount > 0) {
                 singleProb = remainingProb / regularShipsCount;
@@ -1013,6 +1109,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
 
     // Render the graph (can be called with optional highlight point)
     function renderGraph(canvas, highlightPoint) {
+        if (!canvas?.dataset?.dataPoints) return;
+
         const ctx = canvas.getContext('2d');
 
         // Get stored data
@@ -1233,10 +1331,13 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
 
     // Setup Graph Interaction (Tooltip on hover/touch)
     function setupGraphInteraction(canvas) {
+        if (!canvas?.parentNode) return;
+
         // Remove existing listeners by cloning
         const newCanvas = canvas.cloneNode(true);
         canvas.parentNode.replaceChild(newCanvas, canvas);
         canvas = newCanvas;
+        probabilityGraphEl = newCanvas;
 
         // Create tooltip element if it doesn't exist
         let tooltip = document.getElementById('graph-tooltip');
@@ -1278,11 +1379,11 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
             if (dataPoint) {
                 // Show tooltip
                 tooltip.style.display = 'block';
-                tooltip.innerHTML = `
-                    <div class="tooltip-ship">${shipName}</div>
-                    <div class="tooltip-builds">건조 횟수: <strong>${dataPoint.x}회</strong></div>
-                    <div class="tooltip-prob">획득 확률: <strong>${dataPoint.y.toFixed(2)}%</strong></div>
-                `;
+                tooltip.replaceChildren(
+                    createTooltipLine('tooltip-ship', shipName),
+                    createTooltipLine('tooltip-builds', '건조 횟수: ', `${dataPoint.x}회`),
+                    createTooltipLine('tooltip-prob', '획득 확률: ', `${dataPoint.y.toFixed(2)}%`)
+                );
 
                 // Position tooltip
                 const tooltipRect = tooltip.getBoundingClientRect();
@@ -1338,6 +1439,22 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         renderGraph(canvas, null);
     }
 
+    function createTooltipLine(className, label, value = '') {
+        const line = document.createElement('div');
+        line.className = className;
+
+        if (!value) {
+            line.textContent = label;
+            return line;
+        }
+
+        line.appendChild(document.createTextNode(label));
+        const strong = document.createElement('strong');
+        strong.textContent = value;
+        line.appendChild(strong);
+        return line;
+    }
+
     // ===== Ship Database & Custom Pool =====
 
     async function loadShipDatabase() {
@@ -1361,11 +1478,12 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
                 }));
 
             console.log(`Loaded ${state.shipDatabase.length} ships from database`);
-            searchInput.placeholder = '함선 이름 검색...';
+            searchInput.placeholder = '함순이 이름 검색...';
             searchInput.disabled = false;
         } catch (error) {
             console.error('Failed to load ship database:', error);
             searchInput.placeholder = '로딩 실패';
+            searchInput.disabled = false;
         }
     }
 
@@ -1384,36 +1502,57 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
             .slice(0, 50); // Limit to 50 results
 
         if (filtered.length === 0) {
-            dropdown.innerHTML = '<div class="ship-option" style="pointer-events: none; color: var(--text-secondary);">검색 결과 없음</div>';
+            const empty = document.createElement('div');
+            empty.className = 'ship-option ship-option-empty';
+            empty.setAttribute('role', 'status');
+            empty.textContent = '검색 결과 없음';
+            dropdown.replaceChildren(empty);
             dropdown.style.display = 'block';
             return;
         }
 
-        dropdown.innerHTML = filtered.map(ship => `
-            <div class="ship-option" data-sid="${ship.sid}">
-                <img src="${ship.icon}" alt="${ship.name}" class="ship-option-icon" loading="lazy">
-                <div class="ship-option-info">
-                    <div class="ship-option-name">${ship.name}</div>
-                    <div class="ship-option-id">ID: ${ship.sid}</div>
-                </div>
-                <span class="ship-option-rarity ${ship.rarity.toLowerCase()}">${ship.rarity}</span>
-            </div>
-        `).join('');
+        const fragment = document.createDocumentFragment();
+        for (const ship of filtered) {
+            const option = document.createElement('button');
+            option.type = 'button';
+            option.className = 'ship-option';
+            option.dataset.sid = ship.sid;
 
-        // Add click handlers
-        dropdown.querySelectorAll('.ship-option').forEach(option => {
-            option.addEventListener('click', () => {
-                const sid = option.dataset.sid;
-                const ship = state.shipDatabase.find(s => s.sid === sid);
-                selectShipFromDropdown(ship);
+            const img = createImgElement(ship.icon || DEFAULT_SHIP_ICON, ship.name, {
+                className: 'ship-option-icon',
+                fallback: DEFAULT_SHIP_ICON,
             });
-        });
 
+            const info = document.createElement('div');
+            info.className = 'ship-option-info';
+
+            const name = document.createElement('div');
+            name.className = 'ship-option-name';
+            name.textContent = ship.name;
+
+            const id = document.createElement('div');
+            id.className = 'ship-option-id';
+            id.textContent = `ID: ${ship.sid}`;
+
+            info.append(name, id);
+
+            const rarity = document.createElement('span');
+            rarity.className = `ship-option-rarity ${sanitizeClassToken(ship.rarity).toLowerCase()}`;
+            rarity.textContent = ship.rarity;
+
+            option.append(img, info, rarity);
+            option.addEventListener('click', () => selectShipFromDropdown(ship));
+            fragment.appendChild(option);
+        }
+
+        dropdown.replaceChildren(fragment);
         dropdown.style.display = 'block';
     }
 
     // Select ship from dropdown
     function selectShipFromDropdown(ship) {
+        if (!ship) return;
+
         state.selectedShip = ship;
         const searchInput = document.getElementById('ship-search-input');
         searchInput.value = ship.name;
@@ -1427,19 +1566,22 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
 
         const pickupRate = parseFloat(document.getElementById('pickup-rate').value);
         if (isNaN(pickupRate) || pickupRate <= 0 || pickupRate > 100) {
-            alert('픽업 확률을 0 초과 100 이하의 값으로 입력해주세요.');
+            showToast('픽업 확률을 0 초과 100 이하의 값으로 입력해주세요.', 'error');
             return;
         }
 
         const ship = state.selectedShip;
         const poolId = state.currentPool;
+        if (!state.customShips[poolId]) {
+            state.customShips[poolId] = [];
+        }
 
         // Check if ship already exists in pool
-        const existsInOriginal = state.originalPoolData[poolId][ship.sid];
+        const existsInOriginal = state.originalPoolData[poolId]?.[ship.sid];
         const existsInCustom = state.customShips[poolId].find(s => s.ship.sid === ship.sid);
 
         if (existsInOriginal || existsInCustom) {
-            alert('이 함선은 이미 현재 풀에 존재합니다.');
+            showToast('이 함순이는 이미 현재 풀에 존재합니다.', 'info');
             return;
         }
 
@@ -1454,7 +1596,9 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
 
         // Update UI
         renderAddedShips();
+        updateProbabilityChart();
         updateShipSelect();
+        updateShipProbability();
         renderShipGrid();
 
         // Reset search
@@ -1468,10 +1612,10 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         const poolId = state.currentPool;
 
         // Start with original pool
-        state.poolData[poolId] = JSON.parse(JSON.stringify(state.originalPoolData[poolId]));
+        state.poolData[poolId] = JSON.parse(JSON.stringify(state.originalPoolData[poolId] || {}));
 
         // Get custom ships for this pool
-        const customShips = state.customShips[poolId];
+        const customShips = state.customShips[poolId] || [];
         if (customShips.length === 0) return;
 
         // Group custom ships by rarity
@@ -1492,15 +1636,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
             const baseRarityProb = getPoolProbability(poolId)[rarity];
 
             if (totalPickupRate >= baseRarityProb) {
-                alert(`경고: ${rarity} 등급의 픽업 확률 합계(${totalPickupRate}%)가 해당 등급 전체 확률(${baseRarityProb}%)을 초과합니다. 다른 함선의 확률이 0이 됩니다.`);
+                showToast(`${rarity} 등급의 픽업 확률 합계(${totalPickupRate}%)가 해당 등급 전체 확률(${baseRarityProb}%)을 초과합니다. 다른 함순이의 확률이 0이 됩니다.`, 'error', 5000);
             }
-
-            // Calculate remaining probability for existing ships
-            const remainingProb = Math.max(0, baseRarityProb - totalPickupRate);
-
-            // Count existing ships of this rarity in original pool
-            const existingShips = Object.values(state.originalPoolData[poolId])
-                .filter(s => s.rarity === rarity);
 
             // Add custom ships to pool
             rarityCustomShips.forEach(({ ship, pickupRate }) => {
@@ -1518,55 +1655,79 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
     // Render added ships tags
     function renderAddedShips() {
         const container = document.getElementById('added-ships-list');
-        const customShips = state.customShips[state.currentPool];
+        const customShips = state.customShips[state.currentPool] || [];
 
         if (customShips.length === 0) {
-            container.innerHTML = '';
+            container.replaceChildren();
             return;
         }
 
-        container.innerHTML = customShips.map((item, index) => `
-            <div class="added-ship-tag pickup">
-                <img src="${item.ship.icon}" alt="${item.ship.name}" class="added-ship-tag-icon">
-                <div class="added-ship-tag-info">
-                    <div class="added-ship-tag-name">${item.ship.name}</div>
-                    <div class="added-ship-tag-rate">픽업: ${item.pickupRate}%</div>
-                </div>
-                <button class="added-ship-tag-remove" data-index="${index}">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-        `).join('');
+        const fragment = document.createDocumentFragment();
+        customShips.forEach((item, index) => {
+            const tag = document.createElement('div');
+            tag.className = 'added-ship-tag pickup';
 
-        // Add remove handlers
-        container.querySelectorAll('.added-ship-tag-remove').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const index = parseInt(btn.dataset.index);
-                removeCustomShip(index);
+            const img = createImgElement(item.ship.icon || DEFAULT_SHIP_ICON, item.ship.name, {
+                className: 'added-ship-tag-icon',
+                fallback: DEFAULT_SHIP_ICON,
             });
+
+            const info = document.createElement('div');
+            info.className = 'added-ship-tag-info';
+
+            const name = document.createElement('div');
+            name.className = 'added-ship-tag-name';
+            name.textContent = item.ship.name;
+
+            const rate = document.createElement('div');
+            rate.className = 'added-ship-tag-rate';
+            rate.textContent = `픽업: ${item.pickupRate}%`;
+
+            info.append(name, rate);
+
+            const remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'added-ship-tag-remove';
+            remove.dataset.index = String(index);
+            remove.setAttribute('aria-label', `${item.ship.name} 제거`);
+
+            const close = document.createElement('span');
+            close.className = 'material-symbols-outlined';
+            close.textContent = 'close';
+            remove.appendChild(close);
+            remove.addEventListener('click', () => removeCustomShip(index));
+
+            tag.append(img, info, remove);
+            fragment.appendChild(tag);
         });
+
+        container.replaceChildren(fragment);
     }
 
     // Remove custom ship
     function removeCustomShip(index) {
+        if (!state.customShips[state.currentPool]) return;
         state.customShips[state.currentPool].splice(index, 1);
         recalculatePoolProbabilities();
         renderAddedShips();
+        updateProbabilityChart();
         updateShipSelect();
+        updateShipProbability();
         renderShipGrid();
     }
 
     // Reset pool to original
     function resetPool() {
-        if (!confirm('현재 풀을 초기 상태로 되돌리시겠습니까? 추가한 모든 픽업 함선이 제거됩니다.')) {
+        if (!confirm('현재 풀을 초기 상태로 되돌리시겠습니까? 추가한 모든 픽업 함순이가 제거됩니다.')) {
             return;
         }
 
         state.customShips[state.currentPool] = [];
-        state.poolData[state.currentPool] = JSON.parse(JSON.stringify(state.originalPoolData[state.currentPool]));
+        state.poolData[state.currentPool] = JSON.parse(JSON.stringify(state.originalPoolData[state.currentPool] || {}));
 
         renderAddedShips();
         updateShipSelect();
+        updateShipProbability();
         renderShipGrid();
         updateProbabilityChart();
     }
@@ -1583,10 +1744,10 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         }
 
         // Clear previous results
-        resultsContainer.innerHTML = '';
+        resultsContainer.replaceChildren();
 
         // Calculate resource costs
-        const cost = BUILD_COSTS[state.currentPool];
+        const cost = getBuildCost(state.currentPool);
         const totalCubes = cost.cubes * count;
         const totalMoney = cost.money * count;
 
@@ -1608,7 +1769,6 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
             }, index * 100);
         });
 
-        saveStats();
     }
 
     /**
@@ -1636,6 +1796,15 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
 
         // Get all ships of selected rarity
         const rarityShips = Object.entries(ships).filter(([id, ship]) => ship.rarity === selectedRarity);
+        if (rarityShips.length === 0) {
+            const fallback = Object.entries(ships)[0];
+            return fallback ? { id: fallback[0], ...fallback[1] } : {
+                id: 'unknown',
+                name: '알 수 없음',
+                rarity: 'N',
+                icon: DEFAULT_SHIP_ICON
+            };
+        }
 
         // Check if there are pickup ships in this rarity
         const pickupShips = rarityShips.filter(([id, ship]) => ship.isPickup && ship.pickupRate);
@@ -1643,7 +1812,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         const regularShips = rarityShips.filter(([id, ship]) => !ship.isPickup && !ship.isCustom);
 
         // Handle pickup pool (UR limited banner) OR despair pool
-        if ((state.currentPool === 'pickup' || state.currentPool.startsWith('despair-')) && pickupShips.length > 0) {
+        if ((state.currentPool === 'pickup' || state.currentPool.startsWith('pickup-') || state.currentPool.startsWith('despair-')) && pickupShips.length > 0) {
             if (selectedRarity === 'UR') {
                 // UR: Only pickup UR exists (all others removed)
                 const [id, ship] = pickupShips[0];
@@ -1706,18 +1875,29 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
     function renderShipCard(ship, container) {
         const card = document.createElement('div');
         const isPickupOrCustom = ship.isPickup || ship.isCustom;
-        card.className = `ship-card ${ship.rarity.toLowerCase()} ${isPickupOrCustom ? 'custom-ship' : ''}`;
+        card.className = `ship-card ${sanitizeClassToken(ship.rarity).toLowerCase()} ${isPickupOrCustom ? 'custom-ship' : ''}`;
 
-        const pickupBadge = (ship.isPickup || ship.isCustom) && ship.pickupRate
-            ? `<div class="pickup-badge">픽업 ${ship.pickupRate}%</div>`
-            : '';
+        if ((ship.isPickup || ship.isCustom) && ship.pickupRate) {
+            const pickupBadge = document.createElement('div');
+            pickupBadge.className = 'pickup-badge';
+            pickupBadge.textContent = `픽업 ${ship.pickupRate}%`;
+            card.appendChild(pickupBadge);
+        }
 
-        card.innerHTML = `
-            ${pickupBadge}
-            <img src="${ship.icon}" alt="${ship.name}" class="ship-card-icon" loading="lazy">
-            <div class="ship-card-name">${ship.name}</div>
-            <div class="ship-card-rarity ${ship.rarity.toLowerCase()}">${ship.rarity}</div>
-        `;
+        const img = createImgElement(ship.icon || DEFAULT_SHIP_ICON, ship.name, {
+            className: 'ship-card-icon',
+            fallback: DEFAULT_SHIP_ICON,
+        });
+
+        const name = document.createElement('div');
+        name.className = 'ship-card-name';
+        name.textContent = ship.name;
+
+        const rarity = document.createElement('div');
+        rarity.className = `ship-card-rarity ${sanitizeClassToken(ship.rarity).toLowerCase()}`;
+        rarity.textContent = ship.rarity;
+
+        card.append(img, name, rarity);
 
         container.appendChild(card);
     }
@@ -1735,6 +1915,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         document.getElementById('stat-n').textContent = state.buildStats.N;
         document.getElementById('stat-cubes').textContent = state.buildStats.cubes.toLocaleString();
         document.getElementById('stat-money').textContent = state.buildStats.money.toLocaleString();
+        saveStats();
     }
 
     // Reset Statistics
@@ -1764,7 +1945,10 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         document.getElementById('stat-money').textContent = '0';
 
         const resultsContainer = document.getElementById('build-results');
-        resultsContainer.innerHTML = '<div class="placeholder">건조 버튼을 눌러 시작하세요</div>';
+        const placeholder = document.createElement('div');
+        placeholder.className = 'placeholder';
+        placeholder.textContent = '건조 버튼을 눌러 시작하세요';
+        resultsContainer.replaceChildren(placeholder);
 
         saveStats();
     }
@@ -1775,7 +1959,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         const grid = document.getElementById('ship-grid');
         const ships = state.poolData[state.currentPool] || {};
 
-        grid.innerHTML = '';
+        grid.replaceChildren();
 
         let filteredShips = Object.entries(ships);
 
@@ -1800,9 +1984,13 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         });
 
         // Render ships
-        filteredShips.forEach(([id, ship]) => {
-            renderShipCard({ id, ...ship }, grid);
-        });
+        if (filteredShips.length === 0) {
+            grid.appendChild(createEmptyMessage('조건에 맞는 함순이가 없습니다.'));
+        } else {
+            filteredShips.forEach(([id, ship]) => {
+                renderShipCard({ id, ...ship }, grid);
+            });
+        }
 
         // Update count
         document.getElementById('ship-count').textContent = filteredShips.length;

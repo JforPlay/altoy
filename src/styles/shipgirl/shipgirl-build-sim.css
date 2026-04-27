@@ -83,6 +83,26 @@ body {
     margin: 0;
 }
 
+.build-sim-status {
+    margin: 0 auto 2rem;
+    padding: 1rem;
+    max-width: 42rem;
+    text-align: center;
+    color: var(--danger-color);
+    background: var(--bg-primary);
+    border: 2px solid var(--danger-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.build-sim-empty {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 1rem;
+    color: var(--build-sim-text-secondary);
+    text-align: center;
+}
+
 /* ===== Pool Selector ===== */
 
 .pool-selector {
@@ -696,13 +716,23 @@ section h3 {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    width: 100%;
     padding: 0.75rem 1rem;
     cursor: pointer;
+    border: none;
+    background: transparent;
+    color: inherit;
+    text-align: left;
     transition: background 0.2s ease;
 }
 
 .ship-option:hover {
     background: var(--bg-secondary);
+}
+
+.ship-option-empty {
+    pointer-events: none;
+    color: var(--build-sim-text-secondary);
 }
 
 .ship-option.selected {
