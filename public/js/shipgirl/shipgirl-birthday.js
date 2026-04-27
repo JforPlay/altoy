@@ -5,7 +5,7 @@
  * and URL-persisted view/date state.
  */
 
-import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex, getUrlParam, setUrlParams } from '../utils.js';
+import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex, getUrlParam, setUrlParams, debounce, createImgElement } from '../utils.js';
 
 (() => {
     /**
@@ -22,6 +22,9 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     const CACHE_KEY = 'altoy_birthday_data';
     const CACHE_TIMESTAMP_KEY = 'altoy_birthday_data_timestamp';
     const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+    const PLACEHOLDER_32 = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"%3E%3Crect width="32" height="32" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="10" fill="%23999"%3E?%3C/text%3E%3C/svg%3E';
+    const PLACEHOLDER_48 = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"%3E%3Crect width="48" height="48" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="12" fill="%23999"%3E?%3C/text%3E%3C/svg%3E';
+    const PLACEHOLDER_56 = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56"%3E%3Crect width="56" height="56" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="14" fill="%23999"%3E?%3C/text%3E%3C/svg%3E';
 
     const calendarContainer = document.getElementById('calendarContainer');
     const upcomingList = document.getElementById('upcomingList');
@@ -43,9 +46,12 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
 
     if (!calendarContainer || !upcomingList || !calendarTitle || !viewButtons.length || !searchInput || !searchDropdown || !sidebarToggle || !upcomingPanel) {
         console.error('필수 DOM 요소를 찾지 못했습니다. 초기화 중단.');
-        if (document.querySelector('.birthday-container')) {
-            document.querySelector('.birthday-container').innerHTML =
-                '<div class="error-message">오류: 캘린더 초기화에 실패했습니다. 페이지를 새로고침해 주세요.</div>';
+        const container = document.querySelector('.birthday-container');
+        if (container) {
+            const error = document.createElement('div');
+            error.className = 'error-message';
+            error.textContent = '오류: 캘린더 초기화에 실패했습니다. 페이지를 새로고침해 주세요.';
+            container.replaceChildren(error);
         }
         return;
     }
@@ -58,6 +64,9 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     // Injected controls (created at runtime to avoid touching HTML)
     let todayBtn = null;
     let dayToggleBtn = null;
+    let renderTimer = null;
+    let fadeTimer = null;
+    let searchInitialized = false;
 
     // ===== Utilities =====
     const pad2 = (n) => (n < 10 ? '0' + n : '' + n);
@@ -69,16 +78,50 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     const monthNamesKR = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
     const dowNamesKR = ['일', '월', '화', '수', '목', '금', '토'];
 
+    function attachIconFallback(img, placeholder) {
+        img.addEventListener('error', () => {
+            img.src = placeholder;
+            img.style.opacity = '0.5';
+        }, { once: true });
+    }
+
     function createImageWithFallback(src, alt, className, title) {
-        const placeholderSvg = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"%3E%3Crect width="32" height="32" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="10" fill="%23999"%3E?%3C/text%3E%3C/svg%3E';
-        const img = document.createElement('img');
-        img.src = (src && src !== 'undefined') ? src : placeholderSvg;
-        img.alt = alt;
-        img.className = className;
+        const img = createImgElement((src && src !== 'undefined') ? src : PLACEHOLDER_32, alt, { className });
         if (title) img.title = title;
-        img.loading = 'lazy';
-        img.onerror = function () { this.onerror = null; this.src = placeholderSvg; this.style.opacity = '0.5'; };
+        attachIconFallback(img, PLACEHOLDER_32);
         return img;
+    }
+
+    function createLoadingMessage(message, compact = false) {
+        const loading = document.createElement('div');
+        loading.className = 'loading-message';
+        if (compact) loading.classList.add('loading-message-compact');
+
+        const spinner = document.createElement('span');
+        spinner.className = 'loading-spinner';
+        loading.append(spinner, document.createTextNode(message));
+        return loading;
+    }
+
+    function createIconSpan(iconName) {
+        const icon = document.createElement('span');
+        icon.className = 'material-symbols-outlined';
+        icon.textContent = iconName;
+        return icon;
+    }
+
+    function createNavButton(action, iconName, label, extraClass = '') {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = extraClass ? `nav-btn ${extraClass}` : 'nav-btn';
+        button.dataset.action = action;
+        button.setAttribute('aria-label', label);
+        button.appendChild(createIconSpan(iconName));
+        return button;
+    }
+
+    function sanitizeClassToken(value) {
+        return String(value ?? '').replace(/[^a-z0-9_-]/gi, '');
     }
 
     // ===== Data Loading =====
@@ -102,8 +145,8 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     }
 
     function loadData() {
-        calendarContainer.innerHTML = '<div class="loading-message"><span class="loading-spinner"></span>생일 데이터를 불러오는 중...</div>';
-        upcomingList.innerHTML = '<div class="loading-message" style="padding: 1rem;"><span class="loading-spinner"></span>불러오는 중...</div>';
+        calendarContainer.replaceChildren(createLoadingMessage('생일 데이터를 불러오는 중...'));
+        upcomingList.replaceChildren(createLoadingMessage('불러오는 중...', true));
         const cached = getCachedData();
         if (cached) { processData(cached); return; }
 
@@ -111,16 +154,50 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
             .then(data => { cacheData(data); processData(data); })
             .catch(err => {
                 console.error('데이터 로드 실패:', err);
-                calendarContainer.innerHTML = `<div class="error-message"><p><strong>생일 데이터 로드 실패</strong></p><p>${err.message}</p><p><button onclick="location.reload()" style="margin-top:1rem;padding:.5rem 1rem;cursor:pointer;">다시 시도</button></p></div>`;
-                upcomingList.innerHTML = '<div class="error-message" style="padding:1rem;font-size:.9rem;">로드 실패</div>';
+                renderLoadError(err);
             });
     }
 
+    function renderLoadError(err) {
+        const error = document.createElement('div');
+        error.className = 'error-message';
+
+        const title = document.createElement('p');
+        const strong = document.createElement('strong');
+        strong.textContent = '생일 데이터 로드 실패';
+        title.appendChild(strong);
+
+        const detail = document.createElement('p');
+        detail.textContent = err?.message || '알 수 없는 오류가 발생했습니다.';
+
+        const retryWrap = document.createElement('p');
+        const retry = document.createElement('button');
+        retry.type = 'button';
+        retry.className = 'retry-btn';
+        retry.textContent = '다시 시도';
+        retry.addEventListener('click', loadData);
+        retryWrap.appendChild(retry);
+
+        error.append(title, detail, retryWrap);
+        calendarContainer.replaceChildren(error);
+
+        const upcomingError = document.createElement('div');
+        upcomingError.className = 'error-message error-message-compact';
+        upcomingError.textContent = '로드 실패';
+        upcomingList.replaceChildren(upcomingError);
+    }
+
     /**
-     * Normalize raw JSON into event objects, build the date lookup map,
-     * initialize search, and trigger initial render.
+     * Validate input shape, normalize raw JSON into event objects (dropping
+     * entries with empty names or out-of-range month/day), build the date
+     * lookup map, initialize search, and trigger initial render.
      */
     function processData(data) {
+        if (!Array.isArray(data)) {
+            renderLoadError(new Error('생일 데이터 형식이 올바르지 않습니다.'));
+            return;
+        }
+
         // Normalize as per existing schema
         state.events = data.map(item => ({
             id: item.ID,
@@ -133,7 +210,11 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
             day: parseInt(item['일']),
             icon: item.icon,
             groupId: item.group_id
-        }));
+        })).filter(ev => {
+            if (!ev.name || ev.month < 1 || ev.month > 12) return false;
+            const maxDay = new Date(2000, ev.month, 0).getDate();
+            return ev.day >= 1 && ev.day <= maxDay;
+        });
         initializeSearch();
         rebuildEventsByDate();
         renderUpcoming();
@@ -157,11 +238,15 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     /** Initialize the Fuse.js index and attach input/click handlers for the search dropdown. */
     function initializeSearch() {
         state.fuse = createSearchIndex(state.events, { keys: ['name', 'type', 'faction'] });
-        searchInput.addEventListener('input', handleSearch, { passive: true });
+        if (searchInitialized) return;
+
+        const debouncedSearch = debounce(handleSearch, 150);
+        searchInput.addEventListener('input', debouncedSearch, { passive: true });
         searchInput.addEventListener('focus', handleSearch, { passive: true });
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.dropdown-container')) searchDropdown.style.display = 'none';
         });
+        searchInitialized = true;
     }
 
     function handleSearch() {
@@ -174,18 +259,34 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
             renderUpcoming();
             return;
         }
-        const results = state.fuse.search(query, { limit: 10 });
+        const results = state.fuse
+            ? state.fuse.search(query, { limit: 10 })
+            : state.events
+                .filter(ev => [ev.name, ev.type, ev.faction].some(value => value?.toLowerCase().includes(query.toLowerCase())))
+                .slice(0, 10)
+                .map(item => ({ item, matches: [] }));
         displaySearchResults(results);
     }
 
-    function highlightMatches(text, indices) {
-        let out = '', last = 0;
-        indices.forEach(([s, e]) => { out += text.substring(last, s) + '<mark>' + text.substring(s, e + 1) + '</mark>'; last = e + 1; });
-        return out + text.substring(last);
+    function appendHighlightedText(target, text, indices = []) {
+        target.textContent = '';
+        let last = 0;
+        for (const [start, end] of indices) {
+            if (start > last) {
+                target.appendChild(document.createTextNode(text.substring(last, start)));
+            }
+            const mark = document.createElement('mark');
+            mark.textContent = text.substring(start, end + 1);
+            target.appendChild(mark);
+            last = end + 1;
+        }
+        if (last < text.length) {
+            target.appendChild(document.createTextNode(text.substring(last)));
+        }
     }
 
     function displaySearchResults(results) {
-        searchDropdown.innerHTML = '';
+        searchDropdown.replaceChildren();
         if (!results.length) {
             const noResults = noResultsTemplate.content.cloneNode(true);
             searchDropdown.appendChild(noResults);
@@ -203,7 +304,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
             if (r.matches) {
                 const m = r.matches.find(mm => mm.key === 'name');
                 if (m) {
-                    nameEl.innerHTML = highlightMatches(it.name, m.indices);
+                    appendHighlightedText(nameEl, it.name, m.indices);
                 } else {
                     nameEl.textContent = it.name;
                 }
@@ -258,7 +359,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     
     function renderUpcoming() {
         const list = getUpcomingEvents(12);
-        upcomingList.innerHTML = '';
+        upcomingList.replaceChildren();
         const frag = document.createDocumentFragment();
         for (const ev of list) {
             const clone = upcomingItemTemplate.content.cloneNode(true);
@@ -267,13 +368,9 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
             item.setAttribute('aria-label', `${ev.name} 생일: ${ev.nextDate.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' })}`);
 
             const img = clone.querySelector('.upcoming-icon');
-            img.src = ev.icon || '';
+            img.src = ev.icon || PLACEHOLDER_48;
             img.alt = ev.name;
-            img.onerror = function() {
-                this.onerror = null;
-                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"%3E%3Crect width="48" height="48" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="12" fill="%23999"%3E?%3C/text%3E%3C/svg%3E';
-                this.style.opacity = '0.5';
-            };
+            attachIconFallback(img, PLACEHOLDER_48);
 
             clone.querySelector('.upcoming-date').textContent = ev.nextDate.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' });
             clone.querySelector('.upcoming-name').textContent = ev.name;
@@ -301,16 +398,19 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
             state.currentView = view;
         }
 
-        if (!isNaN(year)) {
-            const m = !isNaN(month) ? month - 1 : state.currentDate.getMonth();
-            const d = !isNaN(day) ? day : state.currentDate.getDate();
-            state.currentDate = new Date(year, m, d);
-        } else if (!isNaN(month)) {
-            const d = !isNaN(day) ? day : state.currentDate.getDate();
-            state.currentDate = new Date(state.currentDate.getFullYear(), month - 1, d);
-        } else if (!isNaN(day)) {
-            state.currentDate = new Date(state.currentDate.getFullYear(), state.currentDate.getMonth(), day);
+        const safeYear = clampNumber(year, 2000, 2100, state.currentDate.getFullYear());
+        const safeMonth = clampNumber(month, 1, 12, state.currentDate.getMonth() + 1);
+        const maxDay = new Date(safeYear, safeMonth, 0).getDate();
+        const safeDay = clampNumber(day, 1, maxDay, Math.min(state.currentDate.getDate(), maxDay));
+
+        if (!isNaN(year) || !isNaN(month) || !isNaN(day)) {
+            state.currentDate = new Date(safeYear, safeMonth - 1, safeDay);
         }
+    }
+
+    function clampNumber(value, min, max, fallback) {
+        if (isNaN(value)) return fallback;
+        return Math.min(max, Math.max(min, value));
     }
 
     function syncUrlState() {
@@ -336,10 +436,13 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
      * Dispatches to the appropriate renderXxxView() based on state.currentView.
      */
     function renderView() {
+        clearTimeout(renderTimer);
+        clearTimeout(fadeTimer);
+
         syncUrlState();
         calendarContainer.classList.add('fade-out');
-        setTimeout(() => {
-            calendarContainer.innerHTML = '';
+        renderTimer = setTimeout(() => {
+            calendarContainer.replaceChildren();
             calendarContainer.classList.remove('fade-out');
             if (state.currentView === 'year') renderYearView();
             else if (state.currentView === 'month') renderMonthView();
@@ -347,15 +450,21 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
             else if (state.currentView === 'day') renderDayView();
             calendarContainer.classList.add('fade-in');
             updateActiveButtons();
-            setTimeout(() => calendarContainer.classList.remove('fade-in'), 300);
+            fadeTimer = setTimeout(() => calendarContainer.classList.remove('fade-in'), 300);
         }, 150);
     }
 
     function updateActiveButtons() {
         document.querySelectorAll('.view-toggle').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.view === state.currentView);
+            const isActive = btn.dataset.view === state.currentView;
+            btn.classList.toggle('active', isActive);
+            btn.setAttribute('aria-pressed', String(isActive));
         });
-        if (dayToggleBtn) dayToggleBtn.classList.toggle('active', state.currentView === 'day');
+        if (dayToggleBtn) {
+            const isDay = state.currentView === 'day';
+            dayToggleBtn.classList.toggle('active', isDay);
+            dayToggleBtn.setAttribute('aria-pressed', String(isDay));
+        }
     }
 
     function createDayCell(day, month, year, isOtherMonth, maxIcons = 3) {
@@ -367,6 +476,11 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         cell.dataset.year = String(year);
         cell.dataset.month = String(month);
         cell.dataset.day = String(day);
+        if (!isOtherMonth) {
+            cell.tabIndex = 0;
+            cell.setAttribute('role', 'button');
+            cell.setAttribute('aria-label', `${year}년 ${month + 1}월 ${day}일 보기`);
+        }
 
         const dateNum = document.createElement('span');
         dateNum.className = 'date-num';
@@ -394,7 +508,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
                         const link = document.createElement('a');
                         link.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ev.name)}`);
                         if (ev.rarity) {
-                            link.classList.add(`rarity-${ev.rarity.toLowerCase()}`);
+                            link.classList.add(`rarity-${sanitizeClassToken(ev.rarity).toLowerCase()}`);
                         }
                         const img = createImageWithFallback(ev.icon, ev.name, 'event-icon', ev.name);
                         link.appendChild(img);
@@ -436,22 +550,13 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         const yearHeader = document.createElement('div');
         yearHeader.className = 'year-view-header';
 
-        const prevBtn = document.createElement('button');
-        prevBtn.className = 'nav-btn';
-        prevBtn.innerHTML = '<span class="material-symbols-outlined">chevron_left</span>';
-        prevBtn.setAttribute('aria-label', '이전 년도');
-        prevBtn.dataset.action = 'prev-year';
-
-        const nextBtn = document.createElement('button');
-        nextBtn.className = 'nav-btn';
-        nextBtn.innerHTML = '<span class="material-symbols-outlined">chevron_right</span>';
-        nextBtn.setAttribute('aria-label', '다음 년도');
-        nextBtn.dataset.action = 'next-year';
+        const prevYearBtn = createNavButton('prev-year', 'chevron_left', '이전 년도');
+        const nextYearBtn = createNavButton('next-year', 'chevron_right', '다음 년도');
 
         const titleH3 = document.createElement('h3');
         titleH3.textContent = `${year}년`;
 
-        yearHeader.appendChild(prevBtn); yearHeader.appendChild(titleH3); yearHeader.appendChild(nextBtn);
+        yearHeader.appendChild(prevYearBtn); yearHeader.appendChild(titleH3); yearHeader.appendChild(nextYearBtn);
         calendarContainer.appendChild(yearHeader);
 
         calendarTitle.textContent = '';
@@ -468,6 +573,9 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
             // Click header to navigate to month view
             header.dataset.month = String(month);
             header.dataset.year = String(year);
+            header.tabIndex = 0;
+            header.setAttribute('role', 'button');
+            header.setAttribute('aria-label', `${year}년 ${monthNamesKR[month]} 보기`);
             monthDiv.appendChild(header);
 
             const grid = document.createElement('div');
@@ -512,13 +620,8 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         const header = document.createElement('div');
         header.className = 'month-view-header';
 
-        const prevBtn = document.createElement('button');
-        prevBtn.className = 'nav-btn'; prevBtn.innerHTML = '<span class="material-symbols-outlined">chevron_left</span>';
-        prevBtn.dataset.action = 'prev-month';
-
-        const nextBtn = document.createElement('button');
-        nextBtn.className = 'nav-btn'; nextBtn.innerHTML = '<span class="material-symbols-outlined">chevron_right</span>';
-        nextBtn.dataset.action = 'next-month';
+        const prevBtn = createNavButton('prev-month', 'chevron_left', '이전 달');
+        const nextBtn = createNavButton('next-month', 'chevron_right', '다음 달');
 
         const title = document.createElement('h3'); title.textContent = `${year}년 ${monthNamesKR[month]}`;
         header.appendChild(prevBtn); header.appendChild(title); header.appendChild(nextBtn);
@@ -568,12 +671,8 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         const weekContainer = document.createElement('div'); weekContainer.className = 'week-view';
 
         const header = document.createElement('div'); header.className = 'week-view-header';
-        const prevBtn = document.createElement('button'); prevBtn.className = 'nav-btn';
-        prevBtn.innerHTML = '<span class="material-symbols-outlined">chevron_left</span>';
-        prevBtn.dataset.action = 'prev-week';
-        const nextBtn = document.createElement('button'); nextBtn.className = 'nav-btn';
-        nextBtn.innerHTML = '<span class="material-symbols-outlined">chevron_right</span>';
-        nextBtn.dataset.action = 'next-week';
+        const prevBtn = createNavButton('prev-week', 'chevron_left', '이전 주');
+        const nextBtn = createNavButton('next-week', 'chevron_right', '다음 주');
 
         const endDate = new Date(weekStart); endDate.setDate(weekStart.getDate() + 6);
         const options = { month: 'long', day: 'numeric' };
@@ -611,7 +710,12 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         // Left: events list
         const left = document.createElement('div'); left.className = 'day-panel';
         const head = document.createElement('div'); head.className = 'day-header';
-        head.innerHTML = `<h2>${m + 1}월 ${d}일</h2><span class="sub">${isToday(y, m, d) ? '오늘' : ''}</span>`;
+        const heading = document.createElement('h2');
+        heading.textContent = `${m + 1}월 ${d}일`;
+        const sub = document.createElement('span');
+        sub.className = 'sub';
+        sub.textContent = isToday(y, m, d) ? '오늘' : '';
+        head.append(heading, sub);
         left.appendChild(head);
 
         const list = document.createElement('div'); list.className = 'event-list';
@@ -634,13 +738,9 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
                 card.style.cursor = 'pointer';
 
                 const img = clone.querySelector('.event-img');
-                img.src = ev.icon || '';
+                img.src = ev.icon || PLACEHOLDER_56;
                 img.alt = ev.name;
-                img.onerror = function() {
-                    this.onerror = null;
-                    this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56"%3E%3Crect width="56" height="56" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="14" fill="%23999"%3E?%3C/text%3E%3C/svg%3E';
-                    this.style.opacity = '0.5';
-                };
+                attachIconFallback(img, PLACEHOLDER_56);
 
                 clone.querySelector('.title').textContent = ev.name;
                 clone.querySelector('.meta').textContent = ev.year ? ev.year + '년' : '연도 미상';
@@ -661,7 +761,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         const right = renderDayMiniMonth(y, m, d);
 
         root.appendChild(left); root.appendChild(right);
-        calendarContainer.innerHTML = ''; calendarContainer.appendChild(root);
+        calendarContainer.replaceChildren(root);
     }
 
     function renderDayMiniMonth(y, m, selectedDay) {
@@ -670,12 +770,8 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         const head = document.createElement('div'); head.className = 'mm-head';
         const name = document.createElement('div'); name.className = 'mm-name'; name.textContent = `${y}년 ${m + 1}월`;
         const ctrls = document.createElement('div');
-        const prev = document.createElement('button'); prev.className = 'nav-btn mini';
-        prev.innerHTML = '<span class="material-symbols-outlined">chevron_left</span>';
-        prev.dataset.action = 'prev-month-day';
-        const next = document.createElement('button'); next.className = 'nav-btn mini';
-        next.innerHTML = '<span class="material-symbols-outlined">chevron_right</span>';
-        next.dataset.action = 'next-month-day';
+        const prev = createNavButton('prev-month-day', 'chevron_left', '이전 달', 'mini');
+        const next = createNavButton('next-month-day', 'chevron_right', '다음 달', 'mini');
         ctrls.appendChild(prev); ctrls.appendChild(next);
         head.appendChild(name); head.appendChild(ctrls);
         box.appendChild(head);
@@ -699,10 +795,13 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
                 const key = `${pad2(m + 1)}-${pad2(dayNum)}`;
                 if ((state.eventsByDate[key] || []).length) cell.classList.add('has');
                 if (isToday(y, m, dayNum)) cell.classList.add('today');
-                if (dayNum === selectedDay) { cell.style.outline = '2px solid var(--calendar-primary)'; cell.style.outlineOffset = '2px'; }
+                if (dayNum === selectedDay) cell.classList.add('selected');
                 cell.dataset.year = String(y);
                 cell.dataset.month = String(m);
                 cell.dataset.day = String(dayNum);
+                cell.tabIndex = 0;
+                cell.setAttribute('role', 'button');
+                cell.setAttribute('aria-label', `${y}년 ${m + 1}월 ${dayNum}일 보기`);
             }
             grid.appendChild(cell);
         }
@@ -768,9 +867,18 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         }
     });
 
+    calendarContainer.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const target = e.target.closest('[data-action], .calendar-month-header, .day-cell, .mm-cell');
+        if (!target || !calendarContainer.contains(target)) return;
+        e.preventDefault();
+        target.click();
+    });
+
     // ---------- Controls setup (keep structure, inject Today & Day toggle) ----------
     function setupViewButtons() {
         viewButtons.forEach(btn => {
+            btn.type = 'button';
             btn.addEventListener('click', () => { state.currentView = btn.dataset.view; renderView(); });
         });
 
@@ -779,10 +887,12 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         if (controls && !document.querySelector('.view-toggle[data-view="day"]')) {
             dayToggleBtn = document.createElement('button');
             dayToggleBtn.className = 'view-toggle';
+            dayToggleBtn.type = 'button';
             dayToggleBtn.dataset.view = 'day';
             dayToggleBtn.title = '일간 보기';
             dayToggleBtn.setAttribute('aria-label', '일간 보기로 전환');
-            dayToggleBtn.innerHTML = '<span class="material-symbols-outlined">event</span> 일간';
+            dayToggleBtn.setAttribute('aria-pressed', 'false');
+            dayToggleBtn.append(createIconSpan('event'), document.createTextNode(' 일간'));
             dayToggleBtn.addEventListener('click', () => { state.currentView = 'day'; renderView(); });
             // Insert before search box to preserve layout feel
             const dropdownContainer = controls.querySelector('.dropdown-container');
@@ -792,32 +902,36 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         // Inject "오늘" button
         if (controls && !document.getElementById('todayBtn')) {
             todayBtn = document.createElement('button');
+            todayBtn.type = 'button';
             todayBtn.className = 'today-btn';
             todayBtn.id = 'todayBtn';
             todayBtn.title = '오늘로 이동';
-            todayBtn.innerHTML = '<span class="material-symbols-outlined">calendar_today</span> 오늘';
+            todayBtn.append(createIconSpan('calendar_today'), document.createTextNode(' 오늘'));
             todayBtn.addEventListener('click', () => { state.currentDate = new Date(); state.currentView = 'day'; renderView(); });
             controls.appendChild(todayBtn);
         }
     }
 
     function setupSidebar() {
-        sidebarToggle.addEventListener('click', () => {
-            const isOpen = upcomingPanel.classList.toggle('open');
-            sidebarToggle.classList.toggle('active');
+        const setSidebarOpen = (isOpen) => {
+            upcomingPanel.classList.toggle('open', isOpen);
+            sidebarToggle.classList.toggle('active', isOpen);
+            sidebarToggle.setAttribute('aria-expanded', String(isOpen));
             if (sidebarBackdrop) sidebarBackdrop.classList.toggle('visible', isOpen);
+        };
+
+        sidebarToggle.addEventListener('click', () => {
+            setSidebarOpen(!upcomingPanel.classList.contains('open'));
         });
         if (sidebarClose) sidebarClose.addEventListener('click', () => {
-            upcomingPanel.classList.remove('open'); sidebarToggle.classList.remove('active');
-            if (sidebarBackdrop) sidebarBackdrop.classList.remove('visible');
+            setSidebarOpen(false);
         });
         if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', () => {
-            upcomingPanel.classList.remove('open'); sidebarToggle.classList.remove('active'); sidebarBackdrop.classList.remove('visible');
+            setSidebarOpen(false);
         });
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && upcomingPanel.classList.contains('open')) {
-                upcomingPanel.classList.remove('open'); sidebarToggle.classList.remove('active');
-                if (sidebarBackdrop) sidebarBackdrop.classList.remove('visible');
+                setSidebarOpen(false);
             }
         });
     }

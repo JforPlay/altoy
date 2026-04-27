@@ -73,10 +73,40 @@ body.calendar-page {
   border: 1px solid var(--calendar-border);
 }
 
+.loading-message-compact {
+  margin: 0;
+  padding: 1rem;
+  max-width: none;
+  font-size: 0.9rem;
+}
+
 .error-message {
   background: rgba(220, 38, 38, 0.1);
   color: #dc2626;
   border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.error-message-compact {
+  margin: 0;
+  padding: 1rem;
+  max-width: none;
+  font-size: 0.9rem;
+}
+
+.retry-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--calendar-border);
+  border-radius: 8px;
+  background: var(--calendar-bg);
+  color: var(--calendar-text);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.retry-btn:hover {
+  border-color: var(--calendar-primary);
+  background: var(--calendar-event-bg);
 }
 
 .loading-spinner {
@@ -815,6 +845,10 @@ body.calendar-page {
 .mm-cell.outside { opacity: .45; }
 .mm-cell.today { border-color: var(--calendar-primary); }
 .mm-cell.has { background: var(--calendar-event-bg); border-color: var(--calendar-event-border); }
+.mm-cell.selected {
+  outline: 2px solid var(--calendar-primary);
+  outline-offset: 2px;
+}
 
 /* Responsive for day view */
 @media (max-width: 980px) {
