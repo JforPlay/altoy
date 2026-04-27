@@ -301,7 +301,7 @@ function createShipgirlsSection(shipgirlsStr) {
 
     return `
         <div class="shipgirl-icons">
-            <div class="shipgirl-icons-title">등장 함선</div>
+            <div class="shipgirl-icons-title">등장 함순이</div>
             <div class="icons-container">
                 ${icons}
             </div>

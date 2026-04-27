@@ -173,9 +173,9 @@ function _renderEmptyCard(card, slotIndex) {
     card.draggable = false;
     card.dataset.slot = slotIndex;
     card.innerHTML = `
-        <button class="ship-card-add" data-action="change-ship" data-slot="${slotIndex}" aria-label="함선 추가">
+        <button class="ship-card-add" data-action="change-ship" data-slot="${slotIndex}" aria-label="함순이 추가">
             <span class="material-symbols-outlined">add</span>
-            <span class="add-label">함선 추가</span>
+            <span class="add-label">함순이 추가</span>
         </button>
     `;
 }

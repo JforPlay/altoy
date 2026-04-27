@@ -111,7 +111,7 @@ function _renderShipSummary(data) {
     container.innerHTML = `
         <div class="summary-stat">
             <span class="summary-stat-value">${data.length}</span>
-            <span class="summary-stat-label">총 함선</span>
+            <span class="summary-stat-label">총 함순이</span>
         </div>
         <div class="rarity-breakdown">${tags}</div>
     `;
@@ -235,7 +235,7 @@ function _renderSkinSummary(data) {
         </div>
         <div class="summary-stat">
             <span class="summary-stat-value">${avgSkins}</span>
-            <span class="summary-stat-label">평균/함선</span>
+            <span class="summary-stat-label">평균/함순이</span>
         </div>
         <div class="summary-stat">
             <span class="summary-stat-value">${totalL2D} / ${totalL2DPlus}</span>

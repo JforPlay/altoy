@@ -280,7 +280,7 @@ function filterShipgirls() {
 
 function renderShipgirls() {
     if (state.filteredData.length === 0) {
-        shipgirls.innerHTML = '<p style="color: var(--text-primary); text-align: center; grid-column: 1/-1;">함선을 찾을 수 없습니다.</p>';
+        shipgirls.innerHTML = '<p style="color: var(--text-primary); text-align: center; grid-column: 1/-1;">함순이를 찾을 수 없습니다.</p>';
         return;
     }
 

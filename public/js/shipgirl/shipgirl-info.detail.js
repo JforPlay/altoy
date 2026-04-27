@@ -76,7 +76,7 @@ export async function showDetailView(shipName) {
     const ship = state.fullShipData.find(s => s.name === shipName);
 
     if (!ship) {
-        showToast('함순이을 찾을 수 없습니다', 'error');
+        showToast('함순이를 찾을 수 없습니다', 'error');
         state.showMainView();
         return;
     }

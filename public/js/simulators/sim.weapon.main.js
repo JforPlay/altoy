@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             searchEnabled: true,
             itemSelectText: '선택',
             shouldSort: false,
-            searchPlaceholderValue: '함선 또는 스킬 검색...',
+            searchPlaceholderValue: '함순이 또는 스킬 검색...',
             noResultsText: '검색 결과 없음',
         });
 
@@ -400,7 +400,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             ${shipyardHtml}
             <div class="ship-name">${shipName}</div>
             ${classHtml}
-            <div class="more-info">${className ? '클릭하여 동급 함선 보기 →' : '클릭하여 함선 정보 보기 →'}</div>
+            <div class="more-info">${className ? '클릭하여 동급 함순이 보기 →' : '클릭하여 함순이 정보 보기 →'}</div>
         `;
         shipgirlCard.onclick = className
             ? () => openClassGroupModal(className, shipName)
