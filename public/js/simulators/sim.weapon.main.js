@@ -250,6 +250,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 shouldSort: false,
                 searchPlaceholderValue: '함순이 또는 스킬 검색...',
                 noResultsText: '검색 결과 없음',
+                placeholder: false,
             },
             firstValue: firstSkillId,
         });

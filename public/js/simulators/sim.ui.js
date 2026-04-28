@@ -222,9 +222,10 @@ function createStatItem(label, value) {
 
 function buildArmorRow(damageType) {
     const row = createElement('div', 'armor-row');
+    // damage_type values are damage multipliers (e.g. 1.25, 0.85), shown as percent.
     [['경장', damageType[0]], ['중장', damageType[1]], ['중장갑', damageType[2]]].forEach(([label, value]) => {
         const chip = createElement('div', 'armor-chip');
-        chip.append(createElement('span', 'armor-label', label), document.createTextNode(`${value}%`));
+        chip.append(createElement('span', 'armor-label', label), document.createTextNode(`${Math.round(value * 100)}%`));
         row.appendChild(chip);
     });
     return row;

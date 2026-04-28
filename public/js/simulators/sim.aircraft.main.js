@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let pendingFireTimers = [];
     let activeAircraft = [];
     let displayToken = 0;
+    const typeFilterButtons = [];
 
     function scheduleFireTimer(fn, delay) {
         const id = setTimeout(() => {
@@ -167,22 +168,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 shouldSort: false,
                 searchPlaceholderValue: '함재기 검색...',
                 noResultsText: '검색 결과 없음',
+                placeholder: false,
             },
             firstValue: firstEquip ? String(firstEquip.id) : null,
             destroyExisting: choicesInstance,
         });
 
-        if (choicesInstance) {
-            const choicesWrapper = aircraftSelect.closest('.choices');
-            choicesWrapper?.addEventListener('showDropdown', () => {
-                choicesWrapper.querySelector('.choices__list--dropdown')?.scrollIntoView?.({ block: 'nearest' });
-            });
-        }
-
         return firstEquip ? String(firstEquip.id) : null;
     }
-
-    const typeFilterButtons = [];
 
     function initTypeFilter() {
         const container = document.getElementById('type-filter');
