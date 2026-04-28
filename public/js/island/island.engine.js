@@ -12,19 +12,19 @@ import { fetchJSON, showToast, setStorageItem, createSearchIndex } from '../util
 // ===== State =====
 const state = {
     activeTab: 'characters',
-    modules: {
-        character: null,
-        technology: null,
-        quest: null,
-        resource: null,
-        restaurant: null,
-        seasonCalc: null
-    },
+    modules: {},  // populated only after each module's init() resolves
     sharedData: {
         items: null,  // Shared across all modules
         loaded: false
     }
 };
+
+// Memoized in-flight promises so concurrent callers share the same work and
+// every awaiter sees init as truly complete (not just "started"). Once a
+// promise here resolves, the corresponding module is fully initialized and
+// safe to read from.
+const moduleLoadPromises = {};
+let sharedDataPromise = null;
 
 const TAB_MODULE_MAP = {
     'characters': { key: 'character', module: () => window.CharacterModule },
@@ -44,7 +44,6 @@ async function init() {
     console.log('[Island] Initializing core engine...');
 
     try {
-        // Load shared data first
         await loadSharedData();
         console.log('[Island] Core engine initialized (Lazy loading modules)');
     } catch (error) {
@@ -55,80 +54,76 @@ async function init() {
 
 /**
  * Load island_item_data_template.json once and store in shared state.
- * Guards against double-loading when multiple modules call init() concurrently.
+ * Concurrent callers share the same in-flight promise.
  */
-async function loadSharedData() {
-    if (state.sharedData.loaded) return;
+function loadSharedData() {
+    if (sharedDataPromise) return sharedDataPromise;
 
-    console.log('[Island] Loading shared data...');
+    sharedDataPromise = (async () => {
+        console.log('[Island] Loading shared data...');
+        try {
+            state.sharedData.items = await fetchJSON('data/island/island_item_data_template.json');
+            state.sharedData.loaded = true;
+            console.log(`[Island] Loaded shared item data: ${Object.keys(state.sharedData.items).length} items`);
+        } catch (error) {
+            console.error('[Island] Failed to load shared data:', error);
+            sharedDataPromise = null;  // allow retry on transient failures
+            throw error;
+        }
+    })();
 
-    try {
-        // Load island_item_data_template.json once for all modules
-        state.sharedData.items = await fetchJSON('data/island/island_item_data_template.json');
-        state.sharedData.loaded = true;
-
-        console.log(`[Island] Loaded shared item data: ${Object.keys(state.sharedData.items).length} items`);
-    } catch (error) {
-        console.error('[Island] Failed to load shared data:', error);
-        throw error;
-    }
+    return sharedDataPromise;
 }
 
 /**
- * Lazy-load and initialize the module for the given tab name.
- * No-ops if the module is already initialized or tab name is unknown.
+ * Lazy-load and fully initialize the module for the given tab name.
+ *
+ * Idempotent: concurrent and repeat callers receive the same promise. The
+ * returned promise does NOT resolve until module.init() has completed, so
+ * after `await loadModule('foo')` the foo module is guaranteed to be ready
+ * for reads. This is the contract that lets dependent modules (e.g.
+ * season-calc → resources) just await without defensive re-checks.
  */
-async function loadModule(tabName) {
+function loadModule(tabName) {
     const config = TAB_MODULE_MAP[tabName];
-    if (!config) return;
+    if (!config) return Promise.resolve();
 
     const { key, module: getModule } = config;
 
-    // Return if already initialized
-    if (state.modules[key]) return;
+    if (moduleLoadPromises[key]) return moduleLoadPromises[key];
 
-    const module = getModule();
-    if (!module) {
-        console.warn(`[Island] Module for ${tabName} not found`);
-        return;
-    }
-
-    try {
-        // Ensure shared data is loaded
+    moduleLoadPromises[key] = (async () => {
+        const module = getModule();
+        if (!module) {
+            console.warn(`[Island] Module for ${tabName} not found`);
+            return;
+        }
         await loadSharedData();
-        await initModule(key, module);
-    } catch (error) {
+        console.log(`[Island] Initializing ${key} module...`);
+        await module.init(state.sharedData);
+        // Mark as initialized only AFTER init resolves, so other callers
+        // observing state.modules can trust the module is fully ready.
+        state.modules[key] = module;
+        console.log(`[Island] ${key} module initialized successfully`);
+    })().catch(error => {
         console.error(`[Island] Failed to lazy load ${tabName}:`, error);
         showToast(`${tabName} 모듈을 불러오는데 실패했습니다.`, 'error');
-    }
-}
+        delete moduleLoadPromises[key];  // allow retry on transient failures
+    });
 
-async function initModule(name, module) {
-    if (!module) {
-        console.warn(`[Island] ${name} module not found`);
-        return;
-    }
-
-    console.log(`[Island] Initializing ${name} module...`);
-    state.modules[name] = module;
-
-    // Pass shared data to module
-    await module.init(state.sharedData);
-
-    console.log(`[Island] ${name} module initialized successfully`);
+    return moduleLoadPromises[key];
 }
 
 // ===== Tab Management =====
 
 /**
- * Switch active tab
+ * Switch active tab and trigger lazy load. Returns the load promise so
+ * callers that need to wait for the module to be ready can await it.
  */
 function switchTab(tabName) {
     state.activeTab = tabName;
     console.log(`[Island] Switched to tab: ${tabName}`);
-
-    // Lazy load the module for this tab
-    loadModule(tabName);
+    return loadModule(tabName);
 }
 
 /**

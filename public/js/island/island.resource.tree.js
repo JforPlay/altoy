@@ -16,7 +16,11 @@ export const CONSTANTS = {
     DECISECONDS_PER_MINUTE: 600,      // Conversion factor: deciseconds to minutes
     DEBOUNCE_DELAY: 300,              // Milliseconds to wait before search
     GOLD_ITEM_ID: 1,                  // Item ID for gold currency
-    MAX_CACHE_SIZE: 50                // Maximum number of cached dependency trees (prevents memory leaks)
+    MAX_CACHE_SIZE: 200               // Bounded memoization for buildUpstreamTree. Sized to cover
+                                      // season-calc's full-grid render (~138 unique trees) plus
+                                      // headroom for the resource browser, while staying small
+                                      // enough that total cache memory is negligible (each tree is
+                                      // depth-bounded at MAX_TREE_DEPTH=5).
 };
 
 // ===== State Reference (set via setup) =====
@@ -55,11 +59,10 @@ export function clearTreeCache() {
 function addToCache(key, value) {
     const cacheKeys = Object.keys(state.treeCache);
 
-    // If cache is full, remove oldest entry (first key)
+    // If cache is full, remove oldest entry (first key). Silent — eviction
+    // is normal LRU behavior, not an error worth logging per call.
     if (cacheKeys.length >= CONSTANTS.MAX_CACHE_SIZE) {
-        const oldestKey = cacheKeys[0];
-        delete state.treeCache[oldestKey];
-        console.log(`[Resource] Cache limit reached (${CONSTANTS.MAX_CACHE_SIZE}), evicted oldest entry`);
+        delete state.treeCache[cacheKeys[0]];
     }
 
     state.treeCache[key] = value;

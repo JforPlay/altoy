@@ -1,11 +1,11 @@
 /**
  * island.script.js
  * Page entry script for the island feature. Wires tab navigation, character search,
- * and initializes island.engine.js on DOMContentLoaded. Restores the last active tab from
- * localStorage and triggers the season-calc module's post-activation hook when needed.
+ * and initializes island.engine.js on DOMContentLoaded. After core init completes,
+ * activates the last-used tab (from localStorage) or the default 'characters' tab.
  */
 
-import { init, loadModule, switchTab } from './island.engine.js';
+import { init } from './island.engine.js';
 import { getStorageItem, setStorageItem } from '../utils.js';
 
 // ===== Initialization =====
@@ -13,27 +13,22 @@ import { getStorageItem, setStorageItem } from '../utils.js';
 document.addEventListener('DOMContentLoaded', async function () {
     console.log('[Island Page] Initializing...');
 
-    // Setup tab navigation
     setupTabNavigation();
-
-    // Setup search
     setupCharacterSearch();
 
-    // Initialize island engine
+    // Initialize island engine (loads shared data) before activating any tab.
+    // Activating before init would race with module load and force defensive
+    // re-render hooks in dependent modules — see island.engine.js loadModule.
     await init();
 
-    // Identify and load the initial module
-    const activeTabBtn = document.querySelector('.tab-button.active');
-    const initialTab = activeTabBtn ? activeTabBtn.dataset.tab : 'characters';
-    await loadModule(initialTab);
-
-    // Use requestAnimationFrame to ensure the DOM is ready for the season-calc module
-    // This avoids race conditions where the tab content isn't fully rendered yet
-    if (initialTab === 'season-calc' && window.SeasonCalcModule) {
-        requestAnimationFrame(() => {
-            window.SeasonCalcModule.onTabActivated();
-        });
-    }
+    // Restore the saved tab (or default) via the same activation path as a
+    // manual click: programmatic click → click handler → switchTab → loadModule.
+    const savedTab = getStorageItem('island-active-tab', null);
+    const savedButton = savedTab
+        ? document.querySelector(`.tab-button[data-tab="${savedTab}"]`)
+        : null;
+    const initialTab = savedButton ? savedTab : 'characters';
+    window.IslandEngine.activateTab(initialTab);
 
     console.log('[Island Page] Initialization complete');
 });
@@ -41,8 +36,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 // ===== Tab Navigation =====
 
 /**
- * Attach click handlers to all tab buttons, update active state, and restore the last tab from localStorage.
- * Also triggers the season-calc module hook when its tab becomes active.
+ * Attach click handlers to all tab buttons. Saved-tab restoration happens
+ * separately, after init() — see DOMContentLoaded above.
  */
 function setupTabNavigation() {
     const tabButtons = document.querySelectorAll('.tab-button');
@@ -52,41 +47,23 @@ function setupTabNavigation() {
         button.addEventListener('click', () => {
             const targetTab = button.dataset.tab;
 
-            // Update button states
             tabButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
-            // Update content visibility
             tabContents.forEach(content => {
                 const contentId = content.id.replace('tab-', '');
                 content.classList.toggle('active', contentId === targetTab);
             });
 
-            // Notify Engine of switch (triggers lazy load)
             if (window.IslandEngine) {
                 window.IslandEngine.switchTab(targetTab);
             }
 
-            // Notify modules when their tab is activated
-            if (targetTab === 'season-calc' && window.SeasonCalcModule) {
-                window.SeasonCalcModule.onTabActivated();
-            }
-
-            // Save active tab to localStorage
             setStorageItem('island-active-tab', targetTab);
 
             console.log(`[Island] Switched to tab: ${targetTab}`);
         });
     });
-
-    // Restore last active tab
-    const savedTab = getStorageItem('island-active-tab', null);
-    if (savedTab) {
-        const savedButton = document.querySelector(`.tab-button[data-tab="${savedTab}"]`);
-        if (savedButton) {
-            savedButton.click();
-        }
-    }
 }
 
 // ===== Character Search =====

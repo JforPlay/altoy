@@ -31,45 +31,32 @@ async function init(sharedData) {
     try {
         console.log('[SeasonCalc] Initializing...');
 
-        // Use shared item data
         if (sharedData && sharedData.items) {
             state.items = sharedData.items;
         }
 
-        // Ensure ResourceModule is loaded for recipe calculations
-        if (window.IslandEngine && window.IslandEngine.loadModule) {
-            try {
-                await window.IslandEngine.loadModule('resources');
-            } catch (e) {
-                console.warn('[SeasonCalc] Failed to load resources module:', e);
-            }
-        }
+        // loadModule resolves only after ResourceModule.init() completes, so
+        // getRecipeIndex() is guaranteed populated here. No fallback needed.
+        await window.IslandEngine.loadModule('resources');
+        state.recipeIndex = window.ResourceModule.getRecipeIndex();
 
-        // Note: We don't get recipeIndex here because ResourceModule might not be initialized yet
-        // It will be loaded lazily in renderItemGrid() when needed
-
-        // Filter items with pt_num > 0
         state.ptItems = Object.values(state.items)
             .filter(item => item.pt_num > 0)
-            .sort((a, b) => b.pt_num - a.pt_num); // Default: highest pt first
+            .sort((a, b) => b.pt_num - a.pt_num);
 
         console.log(`[SeasonCalc] Found ${state.ptItems.length} items with season points`);
 
-        // Load season pass data
         await loadSeasonData();
 
-        // Load saved quantities and owned points from localStorage
         loadUserQuantities();
         loadOwnedPoints();
         loadSeasonPassCollapseState();
 
-        // Render UI
         renderControls();
         renderSeasonPass();
         renderItemGrid();
         renderTotalDisplay();
 
-        // Setup event listeners
         setupEventListeners();
 
         console.log('[SeasonCalc] Initialization complete');
@@ -401,27 +388,12 @@ function renderSeasonPass() {
 
 /**
  * Render the item grid sorted by the current sort order.
- * Pre-calculates net pt gain and pt/min for each item using the resource module's dependency trees;
- * lazily loads the recipe index from ResourceModule if not yet available.
+ * Pre-calculates net pt gain and pt/min for each item using the resource
+ * module's dependency trees. state.recipeIndex is populated during init().
  */
 function renderItemGrid() {
     const container = document.getElementById('season-calc-grid');
     if (!container) return;
-
-    // Lazily load recipe index from ResourceModule when first rendering
-    if (!state.recipeIndex && window.ResourceModule) {
-        state.recipeIndex = window.ResourceModule.getRecipeIndex();
-        if (state.recipeIndex) {
-            console.log('[SeasonCalc] Loaded recipe index:', Object.keys(state.recipeIndex).length, 'recipes');
-        } else {
-            console.warn('[SeasonCalc] Recipe index is still null after trying to load from ResourceModule');
-        }
-    }
-
-    // Check if recipe index is actually populated (not just an empty object)
-    if (!state.recipeIndex || Object.keys(state.recipeIndex).length === 0) {
-        console.warn('[SeasonCalc] Recipe index is empty, ResourceModule may not be initialized yet. Showing items without net gain calculations.');
-    }
 
     // Pre-calculate net gains for all items to enable sorting
     const itemsWithGains = state.ptItems.map(item => {
@@ -675,32 +647,11 @@ function viewItemInResources(itemId) {
 
 // ===== Public API =====
 
-/**
- * Called by island.script.js when the season-calc tab is activated.
- * Refreshes the recipe index (ResourceModule may have loaded after SeasonCalc) and re-renders the grid.
- */
-function onTabActivated() {
-    // Always try to reload recipe index when tab becomes active
-    // This ensures we have the latest data even if ResourceModule loaded after SeasonCalc
-    if (window.ResourceModule) {
-        const newRecipeIndex = window.ResourceModule.getRecipeIndex();
-        if (newRecipeIndex && Object.keys(newRecipeIndex).length > 0) {
-            state.recipeIndex = newRecipeIndex;
-            console.log('[SeasonCalc] onTabActivated - Refreshed recipe index:', Object.keys(state.recipeIndex).length, 'recipes');
-        }
-    }
-
-    // Re-render the grid to ensure recipe data is loaded and calculations are up to date
-    renderItemGrid();
-}
-
-// Backwards compatibility
 window.SeasonCalcModule = {
     init,
     calculateTotalPoints,
     clearAllQuantities,
-    toggleSeasonPassCollapse,
-    onTabActivated
+    toggleSeasonPassCollapse
 };
 
-export { init, calculateTotalPoints, clearAllQuantities, toggleSeasonPassCollapse, onTabActivated };
+export { init, calculateTotalPoints, clearAllQuantities, toggleSeasonPassCollapse };
