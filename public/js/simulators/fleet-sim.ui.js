@@ -85,6 +85,7 @@ export function toggleStats(slotIndex) {
         const isCollapsed = statsCollapsed.has(slotIndex);
         toggle.classList.toggle('collapsed', isCollapsed);
         collapsible.classList.toggle('collapsed', isCollapsed);
+        toggle.setAttribute('aria-expanded', String(!isCollapsed));
     }
 }
 
@@ -229,6 +230,8 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
     const shipType = _getShipTypeName(ship.type);
     const shipNation = _getNationalityName(ship.nationality);
     const typeNation = [shipType, shipNation].filter(Boolean).join(' · ');
+    const safeShipName = _escapeHtml(ship.name || '');
+    const safeTypeNation = _escapeHtml(typeNation);
     const level = slotConfig.level || 125;
     const affinity = slotConfig.affinity || 'love';
 
@@ -253,14 +256,16 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
             <span class="material-symbols-outlined drag-handle" title="드래그하여 이동">drag_indicator</span>
             <img class="ship-portrait"
                  src="${portraitUrl}"
-                 alt="${ship.name}"
+                 alt="${safeShipName}"
+                 role="button"
+                 tabindex="0"
                  data-action="change-ship"
                  data-slot="${slotIndex}"
                  loading="lazy" />
             <div class="ship-identity-content">
                 <div class="ship-identity-top">
                     <div class="ship-name-group">
-                        <div class="ship-name" title="${ship.name}">${ship.name}</div>
+                        <div class="ship-name" title="${safeShipName}">${safeShipName}</div>
                         ${retrofitHTML}
                     </div>
                     <div class="config-group">
@@ -273,7 +278,7 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
                     </div>
                 </div>
                 <div class="ship-identity-bottom">
-                    <div class="ship-type-nation">${typeNation}</div>
+                    <div class="ship-type-nation">${safeTypeNation}</div>
                     <div class="config-group">
                         <span class="config-label">호감도</span>
                         <select class="config-select"
@@ -316,16 +321,19 @@ function _buildEquipSlotsHTML(slotIndex, ship, slotConfig) {
  */
 function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship) {
     const slotName = getSlotName(ship, equipIndex);
+    const safeSlotName = _escapeHtml(slotName);
 
     if (!equipConfig || !equipConfig.id) {
         // Empty slot
         return `
             <div class="equip-slot"
+                 role="button"
+                 tabindex="0"
                  data-action="change-equip"
                  data-slot="${slotIndex}"
                  data-equip-index="${equipIndex}"
-                 title="${slotName}">
-                <span class="equip-slot-label">${slotName}</span>
+                 title="${safeSlotName}">
+                <span class="equip-slot-label">${safeSlotName}</span>
                 <div class="equip-slot-icon-box">
                     <span class="equip-slot-empty"><span class="material-symbols-outlined">add</span></span>
                 </div>
@@ -337,11 +345,13 @@ function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship) {
     if (!equip) {
         return `
             <div class="equip-slot"
+                 role="button"
+                 tabindex="0"
                  data-action="change-equip"
                  data-slot="${slotIndex}"
                  data-equip-index="${equipIndex}"
-                 title="${slotName}">
-                <span class="equip-slot-label">${slotName}</span>
+                 title="${safeSlotName}">
+                <span class="equip-slot-label">${safeSlotName}</span>
                 <div class="equip-slot-icon-box">
                     <span class="equip-slot-empty"><span class="material-symbols-outlined">add</span></span>
                 </div>
@@ -353,19 +363,22 @@ function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship) {
     const bgUrl = getRarityBgUrl(equip.rarity);
     const rarityAttr = EQUIP_RARITY_MAP[equip.rarity] || '';
     const enhanceLevel = equipConfig.level || 0;
+    const safeEquipName = _escapeHtml(equip.name || '');
 
     return `
         <div class="equip-slot equipped"
+             role="button"
+             tabindex="0"
              data-action="change-equip"
              data-slot="${slotIndex}"
              data-equip-index="${equipIndex}"
              data-equip-rarity="${rarityAttr}"
-             title="${slotName}: ${equip.name}">
-            <span class="equip-slot-label">${slotName}</span>
+             title="${safeSlotName}: ${safeEquipName}">
+            <span class="equip-slot-label">${safeSlotName}</span>
             <div class="equip-slot-icon-box">
                 <div class="equip-icon-wrapper">
                     <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
-                    ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${equip.name}" loading="lazy" />` : ''}
+                    ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${safeEquipName}" loading="lazy" />` : ''}
                 </div>
                 <span class="equip-enhance-badge"
                       data-action="change-equip-level"
@@ -389,17 +402,20 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
         if (spWeapon) {
             const iconUrl = getSPWeaponIconUrl(spWeapon.icon);
             const bgUrl = getRarityBgUrl(spWeapon.rarity + 1);
+            const safeName = _escapeHtml(spWeapon.name || '');
             return `
                 <div class="equip-slot equipped sp-slot"
+                     role="button"
+                     tabindex="0"
                      data-action="change-sp-weapon"
                      data-slot="${slotIndex}"
                      data-equip-rarity="${SP_RARITY_MAP[spWeapon.rarity] || ''}"
-                     title="${spWeapon.name}">
+                     title="${safeName}">
                     <span class="equip-slot-label">특수 장비</span>
                     <div class="equip-slot-icon-box">
                         <div class="equip-icon-wrapper">
                             <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
-                            ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${spWeapon.name}" loading="lazy" />` : ''}
+                            ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${safeName}" loading="lazy" />` : ''}
                         </div>
                         <span class="equip-enhance-badge"
                               data-action="change-sp-level"
@@ -417,14 +433,15 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
         const name = dedicated ? dedicated.name : (ship.sp_weapon.name || 'SP 무기');
         const spRarity = dedicated ? dedicated.rarity : 4;
         const bgUrl = getRarityBgUrl(spRarity + 1);
+        const safeName = _escapeHtml(name);
 
         return `
-            <div class="equip-slot equipped sp-slot sp-dedicated" data-equip-rarity="${SP_RARITY_MAP[spRarity] || 'ssr'}" title="${name} (전용)">
+            <div class="equip-slot equipped sp-slot sp-dedicated" data-equip-rarity="${SP_RARITY_MAP[spRarity] || 'ssr'}" title="${safeName} (전용)">
                 <span class="equip-slot-label">전용 무기</span>
                 <div class="equip-slot-icon-box">
                     <div class="equip-icon-wrapper">
                         <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
-                        ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${name}" loading="lazy" />` : ''}
+                        ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${safeName}" loading="lazy" />` : ''}
                     </div>
                     <span class="equip-enhance-badge">SP</span>
                 </div>
@@ -434,6 +451,8 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
     // No dedicated SP weapon — show empty slot for generic SP weapon selection
     return `
         <div class="equip-slot sp-slot"
+             role="button"
+             tabindex="0"
              data-action="change-sp-weapon"
              data-slot="${slotIndex}"
              title="특수 장비 선택">
@@ -455,7 +474,7 @@ function _getSPWeaponDataById(id) {
  */
 function _buildStatsToggleHTML(slotIndex, isCollapsed) {
     return `
-        <div class="stats-toggle${isCollapsed ? ' collapsed' : ''}" data-action="toggle-stats" data-slot="${slotIndex}">
+        <div class="stats-toggle${isCollapsed ? ' collapsed' : ''}" role="button" tabindex="0" aria-expanded="${String(!isCollapsed)}" data-action="toggle-stats" data-slot="${slotIndex}">
             <span class="stats-toggle-label">스탯</span>
             <span class="material-symbols-outlined">expand_less</span>
         </div>
@@ -582,10 +601,12 @@ function _renderTechBonuses(techBonuses) {
     for (const [groupId, data] of Object.entries(techBonuses)) {
         const item = document.createElement('div');
         item.className = 'tech-bonus-item';
-        item.innerHTML = `
-            <span>${data.name}</span>
-            <span class="tech-bonus-value">Lv.${data.level} (${data.score}pt)</span>
-        `;
+        const name = document.createElement('span');
+        name.textContent = data.name || '';
+        const value = document.createElement('span');
+        value.className = 'tech-bonus-value';
+        value.textContent = `Lv.${data.level} (${data.score}pt)`;
+        item.append(name, value);
         frag.appendChild(item);
     }
 
@@ -626,11 +647,13 @@ function _renderPassiveSkills(fleetShips) {
     }
 
     if (skillEntries.length === 0) {
-        passiveSkillList.innerHTML = `
-            <div class="passive-skill-item">
-                <span>적용 가능한 패시브 스킬 없음</span>
-            </div>
-        `;
+        const item = document.createElement('div');
+        item.className = 'passive-skill-item';
+        const message = document.createElement('span');
+        message.textContent = '적용 가능한 패시브 스킬 없음';
+        item.appendChild(message);
+        passiveSkillList.innerHTML = '';
+        passiveSkillList.appendChild(item);
         return;
     }
 
@@ -640,10 +663,12 @@ function _renderPassiveSkills(fleetShips) {
         const targetLabel = entry.targetMode === 'self' ? '자신' : '함대';
         const item = document.createElement('div');
         item.className = 'passive-skill-item';
-        item.innerHTML = `
-            <span>${entry.name}</span>
-            <span class="passive-skill-value">${entry.ownerName} (${targetLabel})</span>
-        `;
+        const name = document.createElement('span');
+        name.textContent = entry.name;
+        const value = document.createElement('span');
+        value.className = 'passive-skill-value';
+        value.textContent = `${entry.ownerName} (${targetLabel})`;
+        item.append(name, value);
         frag.appendChild(item);
     }
 
@@ -698,4 +723,12 @@ function _getNationalityName(natId) {
     if (!state.nationalityData) return '';
     const natInfo = state.nationalityData[String(natId)];
     return natInfo ? natInfo.name : '';
+}
+
+function _escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
 }

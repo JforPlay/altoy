@@ -504,12 +504,13 @@ function _getStatsForLB(ship, field, useRetrofit) {
 function _getSPWeaponStatBonuses(slotConfig, ship) {
     const bonuses = {};
 
-    // Check for user-selected SP weapon first
+    // Check for user-selected SP weapon first. Stored level is the visible
+    // enhance value (+0..+10), while data levels are indexed from base.
     const spConfig = slotConfig.spWeapon;
     if (spConfig && spConfig.id) {
         const spWeapon = getSPWeaponById(spConfig.id);
         if (spWeapon && spWeapon.levels) {
-            const levelIdx = Math.min((spConfig.level || 1) - 1, spWeapon.levels.length - 1);
+            const levelIdx = Math.min(spConfig.level || 0, spWeapon.levels.length - 1);
             const lvl = spWeapon.levels[Math.max(0, levelIdx)];
             const stat1 = EQUIP_ATTR_TO_STAT[spWeapon.attr_1];
             const stat2 = EQUIP_ATTR_TO_STAT[spWeapon.attr_2];
@@ -546,7 +547,7 @@ function _findDedicatedSPWeaponData(gid) {
 /**
  * Extract flat stat bonuses from an equipment at a given enhance level.
  * @param {number|string} equipId - Equipment base ID
- * @param {number} enhanceLevel - 1-based enhance level (1-13 typically)
+ * @param {number} enhanceLevel - visible enhance level (+0..+13 typically)
  * @returns {object} { statKey: value, ... }
  */
 function _getEquipStatBonuses(equipId, enhanceLevel) {
@@ -555,8 +556,8 @@ function _getEquipStatBonuses(equipId, enhanceLevel) {
     const equipFull = getEquipFullById(equipId);
     if (!equipFull || !equipFull.attr_info || !equipFull.levels) return bonuses;
 
-    // Find the level entry (0-indexed: enhanceLevel 1 → index 0)
-    const levelIdx = Math.max(0, (enhanceLevel || 1) - 1);
+    // Data levels include base as index 0, so visible +13 maps to index 13.
+    const levelIdx = Math.max(0, enhanceLevel || 0);
     const levelData = equipFull.levels[Math.min(levelIdx, equipFull.levels.length - 1)];
     if (!levelData) return bonuses;
 
@@ -690,15 +691,15 @@ function _calculateCarrierReload(equips, reloadStat) {
 /**
  * Get the weapon's reload_max for an equipment at a given enhance level.
  * @param {number|string} equipId - Equipment base ID
- * @param {number} enhanceLevel - 1-based enhance level
+ * @param {number} enhanceLevel - visible enhance level (+0..+13 typically)
  * @returns {number|null} reload_max value or null
  */
 function _getWeaponReloadMax(equipId, enhanceLevel) {
     const equipFull = getEquipFullById(equipId);
     if (!equipFull || !equipFull.levels) return null;
 
-    // Find level data
-    const levelIdx = Math.max(0, (enhanceLevel || 1) - 1);
+    // Data levels include base as index 0, so visible +13 maps to index 13.
+    const levelIdx = Math.max(0, enhanceLevel || 0);
     const levelData = equipFull.levels[Math.min(levelIdx, equipFull.levels.length - 1)];
     if (!levelData) return null;
 

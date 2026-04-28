@@ -177,6 +177,11 @@
   cursor: pointer;
 }
 
+.ship-portrait:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
 .ship-name {
   font-size: 0.9rem;
   font-weight: 700;
@@ -376,6 +381,17 @@
   background: var(--primary-alpha-10);
 }
 
+.equip-slot:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.equip-slot:focus-visible .equip-slot-icon-box {
+  border-color: var(--primary-color);
+  background: var(--primary-alpha-10);
+}
+
 /* Equipped state: solid border */
 .equip-slot.equipped .equip-slot-icon-box {
   border-style: solid;
@@ -519,8 +535,14 @@
   transition: background var(--transition-fast);
 }
 
-.stats-toggle:hover {
+.stats-toggle:hover,
+.stats-toggle:focus-visible {
   background: var(--primary-alpha-10);
+  outline: none;
+}
+
+.stats-toggle:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--primary-color);
 }
 
 .stats-toggle-label {
@@ -893,11 +915,14 @@
   cursor: pointer;
   text-align: center;
   transition: all var(--transition-fast);
+  font-family: inherit;
 }
 
-.picker-item:hover {
+.picker-item:hover,
+.picker-item:focus-visible {
   border-color: var(--primary-color);
   background: var(--primary-alpha-10);
+  outline: none;
 }
 
 .picker-item-icon {
@@ -1035,6 +1060,20 @@
 .save-slot-info {
   flex: 1;
   min-width: 0;
+  display: block;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+  color: inherit;
+}
+
+.save-slot-info:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
 .save-slot-name {

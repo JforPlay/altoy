@@ -8,7 +8,6 @@ import {
     getUrlParam,
     setUrlParams,
     showToast,
-    debounce,
     setupModal,
     openModal,
     closeModal,
@@ -56,10 +55,6 @@ const state = {
     attrTypeData: {},
     equipTypeData: {},
 };
-
-// ===== Debounced Render =====
-
-const debouncedRender = debounce(() => renderFleet(), 300);
 
 // ===== Initialization =====
 
@@ -178,6 +173,18 @@ function setupEventListeners() {
                 break;
             }
         }
+    });
+
+    page.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const target = e.target;
+        if (target instanceof HTMLButtonElement || target instanceof HTMLSelectElement || target instanceof HTMLInputElement) return;
+
+        const actionEl = target.closest('[data-action]');
+        if (!actionEl) return;
+
+        e.preventDefault();
+        actionEl.click();
     });
 
     // --- Change delegation (affinity select) ---
@@ -318,14 +325,14 @@ function handleEquipSelected(slotIndex, equipIndex, equipId, level) {
     const slotConfig = state.ships[slotIndex];
     if (!slotConfig) return;
     if (!slotConfig.equips) slotConfig.equips = new Array(5).fill(null);
-    slotConfig.equips[equipIndex] = equipId ? { id: equipId, level } : null;
+    slotConfig.equips[equipIndex] = equipId ? { id: equipId, level: _clampLevel(level, 0, 13) } : null;
     renderFleet();
 }
 
 function handleSPWeaponSelected(slotIndex, spWeaponId, maxLevel) {
     const slotConfig = state.ships[slotIndex];
     if (!slotConfig) return;
-    slotConfig.spWeapon = spWeaponId ? { id: spWeaponId, level: maxLevel } : null;
+    slotConfig.spWeapon = spWeaponId ? { id: spWeaponId, level: _clampLevel(maxLevel, 0, 10) } : null;
     renderFleet();
 }
 
@@ -460,8 +467,8 @@ function _showSPLevelPopover(badge, slotIndex) {
     const sp = state.ships[slotIndex]?.spWeapon;
     if (!sp) return;
 
-    _showLevelPopover(badge, 1, 11, sp.level || 1,
-        (val) => { sp.level = val; badge.textContent = `+${val - 1}`; },
+    _showLevelPopover(badge, 0, 10, sp.level || 0,
+        (val) => { sp.level = val; badge.textContent = `+${val}`; },
         () => renderFleet()
     );
 }
@@ -597,12 +604,12 @@ function _deserializeFleet(savedShips) {
         if (!s || !s.gid) return null;
         const slot = {
             gid: s.gid,
-            level: s.level || 125,
+            level: _clampLevel(s.level, 1, 125, 125),
             affinity: s.affinity || 'love',
             equips: Array.isArray(s.equips)
-                ? s.equips.map(eq => eq ? { id: eq.id, level: eq.level } : null)
+                ? s.equips.slice(0, 5).map(eq => eq ? { id: eq.id, level: _clampLevel(eq.level, 0, 13, 0) } : null)
                 : new Array(5).fill(null),
-            spWeapon: s.spWeapon || null,
+            spWeapon: s.spWeapon ? { id: s.spWeapon.id, level: _clampLevel(s.spWeapon.level, 0, 10, 0) } : null,
         };
         if (s.retrofit !== undefined) slot.retrofit = s.retrofit;
         return slot;
@@ -611,6 +618,12 @@ function _deserializeFleet(savedShips) {
     // Ensure exactly 6 slots
     while (state.ships.length < 6) state.ships.push(null);
     if (state.ships.length > 6) state.ships.length = 6;
+}
+
+function _clampLevel(value, min, max, fallback = max) {
+    const parsed = parseInt(value, 10);
+    if (isNaN(parsed)) return fallback;
+    return Math.max(min, Math.min(max, parsed));
 }
 
 /**
@@ -623,7 +636,7 @@ function _renderSaveSlotList() {
     const saves = _getSaves();
 
     if (saves.length === 0) {
-        listEl.innerHTML = '<p class="save-empty-msg">저장된 편성이 없습니다.</p>';
+        _renderSaveEmptyState(listEl);
         return;
     }
 
@@ -644,25 +657,42 @@ function _renderSaveSlotList() {
 
         const slot = document.createElement('div');
         slot.className = 'save-slot-item';
-        slot.innerHTML = `
-            <div class="save-slot-info" data-save-index="${i}">
-                <div class="save-slot-name">${_escapeHtml(save.name)}</div>
-                <div class="save-slot-meta">
-                    <span>${shipCount}척</span>
-                    <span>·</span>
-                    <span>${dateStr}</span>
-                </div>
-                ${shipNames ? `<div class="save-slot-ships">${_escapeHtml(shipNames)}</div>` : ''}
-            </div>
-            <div class="save-slot-actions">
-                <button class="btn btn-sm btn-primary save-slot-load" data-save-index="${i}" title="불러오기">
-                    <span class="material-symbols-outlined">download</span>
-                </button>
-                <button class="btn btn-sm btn-danger save-slot-delete" data-save-index="${i}" title="삭제">
-                    <span class="material-symbols-outlined">delete</span>
-                </button>
-            </div>
-        `;
+        const info = document.createElement('button');
+        info.className = 'save-slot-info';
+        info.type = 'button';
+        info.dataset.saveIndex = String(i);
+        info.title = '불러오기';
+
+        const name = document.createElement('div');
+        name.className = 'save-slot-name';
+        name.textContent = save.name || '';
+
+        const meta = document.createElement('div');
+        meta.className = 'save-slot-meta';
+        const count = document.createElement('span');
+        count.textContent = `${shipCount}척`;
+        const separator = document.createElement('span');
+        separator.textContent = '·';
+        const dateEl = document.createElement('span');
+        dateEl.textContent = dateStr;
+        meta.append(count, separator, dateEl);
+
+        info.append(name, meta);
+        if (shipNames) {
+            const ships = document.createElement('div');
+            ships.className = 'save-slot-ships';
+            ships.textContent = shipNames;
+            info.appendChild(ships);
+        }
+
+        const actions = document.createElement('div');
+        actions.className = 'save-slot-actions';
+        actions.append(
+            _createSaveActionButton('save-slot-load', i, 'download', '불러오기'),
+            _createSaveActionButton('save-slot-delete', i, 'delete', '삭제')
+        );
+
+        slot.append(info, actions);
 
         frag.appendChild(slot);
     }
@@ -713,16 +743,30 @@ function _getSaveShipNames(savedShips) {
     return names.slice(0, 3).join(', ') + ` 외 ${names.length - 3}척`;
 }
 
-/**
- * Escape HTML special characters for safe insertion.
- */
-function _escapeHtml(str) {
-    if (!str) return '';
-    return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+function _renderSaveEmptyState(listEl) {
+    const empty = document.createElement('p');
+    empty.className = 'save-empty-msg';
+    empty.textContent = '저장된 편성이 없습니다.';
+    listEl.innerHTML = '';
+    listEl.appendChild(empty);
+}
+
+function _createSaveActionButton(className, saveIndex, iconName, label) {
+    const button = document.createElement('button');
+    const variant = className === 'save-slot-load' ? 'btn-primary' : 'btn-danger';
+    button.className = `btn btn-sm ${variant} ${className}`;
+    button.type = 'button';
+    button.dataset.saveIndex = String(saveIndex);
+    button.title = label;
+    button.setAttribute('aria-label', label);
+
+    const icon = document.createElement('span');
+    icon.className = 'material-symbols-outlined';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = iconName;
+    button.appendChild(icon);
+
+    return button;
 }
 
 // ===== URL Sharing =====
@@ -769,10 +813,10 @@ function restoreFromUrl(encoded) {
             if (!s) return null;
             const slot = {
                 gid: s.g,
-                level: s.l || 125,
+                level: _clampLevel(s.l, 1, 125, 125),
                 affinity: s.a || 'love',
-                equips: (s.e || []).map(eq => eq ? { id: eq[0], level: eq[1] } : null),
-                spWeapon: s.sp ? { id: s.sp[0], level: s.sp[1] } : null,
+                equips: (s.e || []).slice(0, 5).map(eq => eq ? { id: eq[0], level: _clampLevel(eq[1], 0, 13, 0) } : null),
+                spWeapon: s.sp ? { id: s.sp[0], level: _clampLevel(s.sp[1], 0, 10, 0) } : null,
             };
             if (s.r !== undefined) slot.retrofit = s.r === 1;
             return slot;
@@ -792,6 +836,10 @@ init().catch(err => {
     console.error('Fleet sim init failed:', err);
     const overlay = document.getElementById('loading-overlay');
     if (overlay) {
-        overlay.innerHTML = `<p style="color:var(--danger-color)">로딩 실패: ${err.message}</p>`;
+        overlay.innerHTML = '';
+        const message = document.createElement('p');
+        message.style.color = 'var(--danger-color)';
+        message.textContent = `로딩 실패: ${err.message}`;
+        overlay.appendChild(message);
     }
 });

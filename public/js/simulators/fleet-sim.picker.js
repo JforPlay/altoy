@@ -4,7 +4,7 @@
  * Both support fuzzy search (Fuse.js) and filter chips (type, rarity, nationality).
  */
 
-import { createSearchIndex, debounce, setupModal, openModal, closeModal } from '../utils.js';
+import { createSearchIndex, debounce, setupModal, openModal, closeModal, IMG_FALLBACKS } from '../utils.js';
 import {
     getShipByGid,
     getShipsByPosition,
@@ -451,6 +451,8 @@ function _populateShipTypeChips(ships) {
 
         const btn = document.createElement('button');
         btn.className = 'filter-chip';
+        btn.type = 'button';
+        btn.setAttribute('aria-pressed', 'false');
         btn.dataset.type = String(typeId);
         btn.textContent = typeName;
         frag.appendChild(btn);
@@ -479,6 +481,8 @@ function _populateShipRarityChips(ships) {
 
         const btn = document.createElement('button');
         btn.className = 'filter-chip';
+        btn.type = 'button';
+        btn.setAttribute('aria-pressed', 'false');
         // Use lowercase for CSS matching (.filter-chip[data-rarity="ssr"].active)
         btn.dataset.rarity = rarity.toLowerCase();
         btn.textContent = RARITY_DISPLAY[rarity] || rarity;
@@ -511,6 +515,8 @@ function _populateShipNationChips(ships) {
 
         const btn = document.createElement('button');
         btn.className = 'filter-chip';
+        btn.type = 'button';
+        btn.setAttribute('aria-pressed', 'false');
         btn.dataset.nation = String(natId);
         btn.textContent = natName;
         frag.appendChild(btn);
@@ -538,6 +544,8 @@ function _populateEquipRarityChips(equips) {
 
         const btn = document.createElement('button');
         btn.className = 'filter-chip';
+        btn.type = 'button';
+        btn.setAttribute('aria-pressed', 'false');
         // Use lowercase for CSS matching (.filter-chip[data-rarity="ssr"].active)
         btn.dataset.rarity = rarity.toLowerCase();
         btn.textContent = RARITY_DISPLAY[rarity] || rarity;
@@ -563,8 +571,10 @@ function _updateChipStates(container, activeValue, dataAttr) {
     for (const chip of chips) {
         if (activeValue != null && chip.dataset[dataAttr] === activeValue) {
             chip.classList.add('active');
+            chip.setAttribute('aria-pressed', 'true');
         } else {
             chip.classList.remove('active');
+            chip.setAttribute('aria-pressed', 'false');
         }
     }
 }
@@ -577,9 +587,13 @@ function _renderShipGrid() {
     let ships = currentShipList;
 
     // Apply search query
-    if (shipFilters.query && shipSearchIndex) {
-        const results = shipSearchIndex.search(shipFilters.query);
-        ships = results.map(r => r.item);
+    if (shipFilters.query) {
+        if (shipSearchIndex) {
+            const results = shipSearchIndex.search(shipFilters.query);
+            ships = results.map(r => r.item);
+        } else {
+            ships = _filterByQuery(ships, shipFilters.query);
+        }
     }
 
     // Apply type filter
@@ -611,32 +625,40 @@ function _renderShipGrid() {
 
     // Render
     if (ships.length === 0) {
-        shipGrid.innerHTML = '<div class="picker-empty">검색 결과가 없습니다.</div>';
+        _renderEmptyState(shipGrid, '검색 결과가 없습니다.');
         return;
     }
 
     const frag = document.createDocumentFragment();
 
     for (const ship of ships) {
-        const div = document.createElement('div');
+        const button = document.createElement('button');
         const rarityLower = (ship.rarity || '').toLowerCase();
 
-        div.className = 'picker-item';
+        button.className = 'picker-item';
+        button.type = 'button';
         if (assignedGids.has(ship.gid)) {
-            div.classList.add('assigned');
+            button.classList.add('assigned');
         }
 
-        div.dataset.gid = ship.gid;
-        div.dataset.rarity = rarityLower;
+        button.dataset.gid = ship.gid;
+        button.dataset.rarity = rarityLower;
 
         const portraitUrl = getShipPortraitUrl(ship.skin_id);
 
-        div.innerHTML = `
-            <img class="picker-item-icon" src="${portraitUrl}" alt="${ship.name}" loading="lazy" />
-            <span class="picker-item-name">${ship.name}</span>
-        `;
+        const img = document.createElement('img');
+        img.className = 'picker-item-icon';
+        img.src = portraitUrl;
+        img.alt = ship.name || '';
+        img.loading = 'lazy';
+        img.dataset.fallback = IMG_FALLBACKS.DEFAULT;
 
-        frag.appendChild(div);
+        const name = document.createElement('span');
+        name.className = 'picker-item-name';
+        name.textContent = ship.name || '';
+
+        button.append(img, name);
+        frag.appendChild(button);
     }
 
     shipGrid.innerHTML = '';
@@ -651,9 +673,13 @@ function _renderEquipGrid() {
     let equips = currentEquipList;
 
     // Apply search query
-    if (equipFilters.query && equipSearchIndex) {
-        const results = equipSearchIndex.search(equipFilters.query);
-        equips = results.map(r => r.item);
+    if (equipFilters.query) {
+        if (equipSearchIndex) {
+            const results = equipSearchIndex.search(equipFilters.query);
+            equips = results.map(r => r.item);
+        } else {
+            equips = _filterByQuery(equips, equipFilters.query);
+        }
     }
 
     // Apply rarity filter (stored as lowercase to match CSS data-rarity)
@@ -663,32 +689,39 @@ function _renderEquipGrid() {
         );
     }
 
+    const hasEquipped = _slotHasEquip(activeSlotIndex, activeEquipIndex);
+
     // Render
-    if (equips.length === 0) {
-        equipGrid.innerHTML = '<div class="picker-empty">검색 결과가 없습니다.</div>';
+    if (equips.length === 0 && !hasEquipped) {
+        _renderEmptyState(equipGrid, '검색 결과가 없습니다.');
         return;
     }
 
     const frag = document.createDocumentFragment();
 
     // Unequip option: show when the slot already has equipment
-    const hasEquipped = _slotHasEquip(activeSlotIndex, activeEquipIndex);
     if (hasEquipped) {
-        const unequipDiv = document.createElement('div');
+        const unequipDiv = document.createElement('button');
         unequipDiv.className = 'picker-item picker-item-unequip';
+        unequipDiv.type = 'button';
         unequipDiv.dataset.unequip = '1';
-        unequipDiv.innerHTML = `
-            <span class="material-symbols-outlined picker-unequip-icon">remove_circle_outline</span>
-            <span class="picker-item-name">장착 해제</span>
-        `;
+        const icon = document.createElement('span');
+        icon.className = 'material-symbols-outlined picker-unequip-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = 'remove_circle_outline';
+        const label = document.createElement('span');
+        label.className = 'picker-item-name';
+        label.textContent = '장착 해제';
+        unequipDiv.append(icon, label);
         frag.appendChild(unequipDiv);
     }
 
     for (const equip of equips) {
-        const div = document.createElement('div');
+        const div = document.createElement('button');
         const rarityLower = (equip.rarity_name || '').toLowerCase();
 
         div.className = 'picker-item';
+        div.type = 'button';
         div.dataset.equipId = equip.id;
         div.dataset.rarity = rarityLower;
         if (equip._isSPWeapon) div.dataset.spWeapon = '1';
@@ -701,23 +734,11 @@ function _renderEquipGrid() {
         if (equip._isSPWeapon) {
             const iconUrl = getSPWeaponIconUrl(equip.icon);
             const spBgUrl = getRarityBgUrl(equip.rarity + 1);
-            div.innerHTML = `
-                <div class="equip-icon-wrapper">
-                    <img class="equip-icon-bg" src="${spBgUrl}" alt="" loading="lazy" />
-                    ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${equip.name}" loading="lazy" />` : ''}
-                </div>
-                <span class="picker-item-name">${equip.name}</span>
-            `;
+            div.append(_createEquipIcon(spBgUrl, iconUrl, equip.name), _createPickerName(equip.name));
         } else {
             const iconUrl = getEquipIconUrl(equip.icon);
             const bgUrl = getRarityBgUrl(equip.rarity);
-            div.innerHTML = `
-                <div class="equip-icon-wrapper">
-                    <img class="equip-icon-bg" src="${bgUrl}" alt="" loading="lazy" />
-                    ${iconUrl ? `<img class="equip-icon-fg" src="${iconUrl}" alt="${equip.name}" loading="lazy" />` : ''}
-                </div>
-                <span class="picker-item-name">${equip.name}</span>
-            `;
+            div.append(_createEquipIcon(bgUrl, iconUrl, equip.name), _createPickerName(equip.name));
         }
 
         frag.appendChild(div);
@@ -745,6 +766,52 @@ function _getNationalityName(natId) {
     if (!state.nationalityData) return '';
     const natInfo = state.nationalityData[String(natId)];
     return natInfo ? natInfo.name : '';
+}
+
+function _filterByQuery(items, query) {
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) return items;
+    return items.filter(item => String(item.name || '').toLowerCase().includes(normalized));
+}
+
+function _renderEmptyState(container, message) {
+    const empty = document.createElement('div');
+    empty.className = 'picker-empty';
+    empty.textContent = message;
+    container.innerHTML = '';
+    container.appendChild(empty);
+}
+
+function _createPickerName(text) {
+    const name = document.createElement('span');
+    name.className = 'picker-item-name';
+    name.textContent = text || '';
+    return name;
+}
+
+function _createEquipIcon(bgUrl, iconUrl, altText) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'equip-icon-wrapper';
+
+    const bg = document.createElement('img');
+    bg.className = 'equip-icon-bg';
+    bg.src = bgUrl;
+    bg.alt = '';
+    bg.loading = 'lazy';
+    bg.dataset.fallback = IMG_FALLBACKS.DEFAULT;
+    wrapper.appendChild(bg);
+
+    if (iconUrl) {
+        const fg = document.createElement('img');
+        fg.className = 'equip-icon-fg';
+        fg.src = iconUrl;
+        fg.alt = altText || '';
+        fg.loading = 'lazy';
+        fg.dataset.fallback = IMG_FALLBACKS.DEFAULT;
+        wrapper.appendChild(fg);
+    }
+
+    return wrapper;
 }
 
 /**
