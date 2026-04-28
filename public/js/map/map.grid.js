@@ -35,6 +35,29 @@ const NODE_TYPES = {
 
 const UNKNOWN_NODE = { cls: 'unknown', icon: '?', label: '?', clickable: false };
 
+function renderEmptyGrid(targetEl, message) {
+    const empty = document.createElement('div');
+    empty.className = 'map-empty';
+    empty.textContent = message;
+    targetEl.replaceChildren(empty);
+}
+
+function createMaterialIcon(iconName) {
+    const icon = document.createElement('span');
+    icon.className = 'material-symbols-outlined';
+    icon.textContent = iconName;
+    icon.setAttribute('aria-hidden', 'true');
+    return icon;
+}
+
+function appendNodeIcon(targetEl, info) {
+    if (info.material) {
+        targetEl.appendChild(createMaterialIcon(info.icon));
+    } else {
+        targetEl.textContent = info.icon;
+    }
+}
+
 /**
  * Render a standard chapter grid (main, hard, event, archive) into the target element.
  * Builds a cell lookup map, then renders bottom-to-top to match in-game grid orientation.
@@ -42,7 +65,7 @@ const UNKNOWN_NODE = { cls: 'unknown', icon: '?', label: '?', clickable: false }
  */
 export function renderGrid(chapter, targetEl) {
     if (!chapter || !chapter.grids || chapter.grids.length === 0) {
-        targetEl.innerHTML = '<div class="map-empty">그리드 데이터가 없습니다</div>';
+        renderEmptyGrid(targetEl, '그리드 데이터가 없습니다');
         return;
     }
 
@@ -69,8 +92,14 @@ export function renderGrid(chapter, targetEl) {
     for (let row = 0; row <= maxRow; row++) {
         for (let col = 0; col <= maxCol; col++) {
             const cell = cellMap.get(`${row}_${col}`);
-            const el = document.createElement('div');
+            const attach = cell?.[3] || 0;
+            const nodeType = NODE_TYPES[attach] || UNKNOWN_NODE;
+            const el = nodeType.clickable ? document.createElement('button') : document.createElement('div');
             el.className = 'map-cell';
+            if (nodeType.clickable) {
+                el.type = 'button';
+                el.setAttribute('aria-label', `${nodeType.label} 함대 정보 보기`);
+            }
 
             if (!cell) {
                 // Cell not in grid data — void
@@ -79,9 +108,6 @@ export function renderGrid(chapter, targetEl) {
                 // Not walkable
                 el.classList.add('map-cell--void');
             } else {
-                const attach = cell[3] || 0;
-                const nodeType = NODE_TYPES[attach] || UNKNOWN_NODE;
-
                 if (attach === 0) {
                     el.classList.add('map-cell--sea');
                     el.textContent = '·';
@@ -98,25 +124,11 @@ export function renderGrid(chapter, targetEl) {
                     if (nodeType.noBadge) {
                         // Render icon directly in cell without badge circle
                         el.classList.add(`map-cell--${nodeType.cls}`);
-                        if (nodeType.material) {
-                            const icon = document.createElement('span');
-                            icon.className = 'material-symbols-outlined';
-                            icon.textContent = nodeType.icon;
-                            el.appendChild(icon);
-                        } else {
-                            el.textContent = nodeType.icon;
-                        }
+                        appendNodeIcon(el, nodeType);
                     } else {
                         const badge = document.createElement('div');
                         badge.className = `node-badge node-badge--${nodeType.cls}`;
-                        if (nodeType.material) {
-                            const icon = document.createElement('span');
-                            icon.className = 'material-symbols-outlined';
-                            icon.textContent = nodeType.icon;
-                            badge.appendChild(icon);
-                        } else {
-                            badge.textContent = nodeType.icon;
-                        }
+                        appendNodeIcon(badge, nodeType);
                         el.appendChild(badge);
                     }
                 }
@@ -126,8 +138,7 @@ export function renderGrid(chapter, targetEl) {
         }
     }
 
-    targetEl.innerHTML = '';
-    targetEl.appendChild(fragment);
+    targetEl.replaceChildren(fragment);
 
     // Click delegation
     targetEl.onclick = (e) => {
@@ -147,35 +158,36 @@ export function renderLegend(chapter, targetEl) {
         if (cell[2] && cell[3]) presentTypes.add(cell[3]);
     }
 
-    let html = '';
+    const fragment = document.createDocumentFragment();
     for (const [type, info] of Object.entries(NODE_TYPES)) {
         const t = parseInt(type, 10);
         if (t === 0 || t === 5) continue; // Skip sea and ambush
         if (!presentTypes.has(t)) continue;
+        const item = document.createElement('div');
+        item.className = 'map-legend-item';
         if (info.noBadge) {
-            const iconHtml = info.material
-                ? `<span class="material-symbols-outlined">${info.icon}</span>`
-                : info.icon;
-            html += `<div class="map-legend-item">
-                <div class="map-legend-icon map-legend-icon--${info.cls}">${iconHtml}</div>
-                ${info.label}
-            </div>`;
+            const icon = document.createElement('div');
+            icon.className = `map-legend-icon map-legend-icon--${info.cls}`;
+            appendNodeIcon(icon, info);
+            item.appendChild(icon);
         } else {
-            const iconHtml = info.material
-                ? `<span class="material-symbols-outlined">${info.icon}</span>`
-                : info.icon;
-            html += `<div class="map-legend-item">
-                <div class="node-badge node-badge--${info.cls}">${iconHtml}</div>
-                ${info.label}
-            </div>`;
+            const badge = document.createElement('div');
+            badge.className = `node-badge node-badge--${info.cls}`;
+            appendNodeIcon(badge, info);
+            item.appendChild(badge);
         }
+        item.append(document.createTextNode(info.label));
+        fragment.appendChild(item);
     }
-    html += `<div class="map-legend-item">
-        <div class="map-legend-void"></div>
-        이동불가
-    </div>`;
 
-    targetEl.innerHTML = html;
+    const voidItem = document.createElement('div');
+    voidItem.className = 'map-legend-item';
+    const voidIcon = document.createElement('div');
+    voidIcon.className = 'map-legend-void';
+    voidItem.append(voidIcon, document.createTextNode('이동불가'));
+    fragment.appendChild(voidItem);
+
+    targetEl.replaceChildren(fragment);
 }
 
 /**
@@ -184,7 +196,7 @@ export function renderLegend(chapter, targetEl) {
  */
 export function renderWorldGrid(chapter, targetEl) {
     if (!chapter || !chapter.grids || chapter.grids.length === 0) {
-        targetEl.innerHTML = '<div class="map-empty">그리드 데이터가 없습니다</div>';
+        renderEmptyGrid(targetEl, '그리드 데이터가 없습니다');
         return;
     }
 
@@ -219,7 +231,6 @@ export function renderWorldGrid(chapter, targetEl) {
         }
     }
 
-    targetEl.innerHTML = '';
-    targetEl.appendChild(fragment);
+    targetEl.replaceChildren(fragment);
     targetEl.onclick = null;
 }

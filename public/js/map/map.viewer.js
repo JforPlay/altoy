@@ -25,7 +25,11 @@ const state = {
     currentMapId: null,
     compareMode: false,
     compareMapId: null,
+    shipInfoPromise: null,
+    worldTargetPromise: null,
 };
+
+const VALID_TABS = new Set(['main', 'hard', 'event', 'archive', 'world']);
 
 // DOM refs
 let mapTabs, mapSidebar, mapCenter, mapContent, mapEmpty, mapLoading;
@@ -33,6 +37,8 @@ let mapTitle, mapSubtitle, mapStats, mapGrid, mapLegend, mapInfoGrid;
 let nodeOverlay, nodeOverlayTitle, nodeOverlayBody, nodeOverlayClose;
 let compareBtn, compareBar, compareCancelBtn;
 let mobileMapSelect;
+let searchModalBody, searchModalInput;
+let mapSelectionToken = 0;
 
 function cacheDom() {
     mapTabs = document.getElementById('mapTabs');
@@ -55,6 +61,55 @@ function cacheDom() {
     compareBar = document.getElementById('compareBar');
     compareCancelBtn = document.getElementById('compareCancelBtn');
     mobileMapSelect = document.getElementById('mobileMapSelect');
+    searchModalBody = document.getElementById('searchModalBody');
+    searchModalInput = document.getElementById('searchModalInput');
+}
+
+function createIcon(iconName, className = 'material-symbols-outlined') {
+    const icon = document.createElement('span');
+    icon.className = className;
+    icon.textContent = iconName;
+    icon.setAttribute('aria-hidden', 'true');
+    return icon;
+}
+
+function renderMessage(container, message, className = 'detail-empty') {
+    const empty = document.createElement('div');
+    empty.className = className;
+    empty.textContent = message;
+    container.replaceChildren(empty);
+}
+
+function getMapKey(category, item) {
+    if (category === 'world') return `w_${item.id}`;
+    if (category === 'archive') return `a_${item.id}`;
+    return String(item.id);
+}
+
+function getMapLabel(item) {
+    return item.chapter_name ? `${item.chapter_name} ${item.name}` : item.name;
+}
+
+function setTabState(tab) {
+    mapTabs.querySelectorAll('.map-tab').forEach(t => {
+        const isActive = t.dataset.tab === tab;
+        t.classList.toggle('active', isActive);
+        t.setAttribute('aria-pressed', String(isActive));
+    });
+}
+
+function setSidebarActive(mapId) {
+    mapSidebar.querySelectorAll('.sidebar-item').forEach(el => {
+        const isActive = el.dataset.mapId === mapId;
+        el.classList.toggle('active', isActive);
+        el.setAttribute('aria-pressed', String(isActive));
+    });
+}
+
+function setNodeOverlayOpen(isOpen) {
+    if (!nodeOverlay) return;
+    nodeOverlay.classList.toggle('active', isOpen);
+    nodeOverlay.setAttribute('aria-hidden', String(!isOpen));
 }
 
 // ===== Sidebar =====
@@ -70,6 +125,7 @@ function setupSidebarListeners() {
             const isOpen = !items.classList.contains('collapsed');
             items.classList.toggle('collapsed', isOpen);
             header.classList.toggle('expanded', !isOpen);
+            header.setAttribute('aria-expanded', String(!isOpen));
             return;
         }
 
@@ -102,41 +158,66 @@ function renderSidebar(category) {
         groups.get(group).push(entry);
     }
 
-    let html = '';
+    const sidebarFragment = document.createDocumentFragment();
+    const selectFragment = document.createDocumentFragment();
+    const placeholderOption = document.createElement('option');
+    placeholderOption.value = '';
+    placeholderOption.textContent = '해역을 선택하세요';
+    selectFragment.appendChild(placeholderOption);
+
     for (const [groupName, items] of groups) {
         const groupLabel = category === 'event' || category === 'world' || category === 'archive'
                            ? groupName : `${groupName}장`;
-        html += `<div class="sidebar-group">`;
-        html += `<div class="sidebar-group-header" data-group="${groupName}"><span>${groupLabel}</span><span class="material-symbols-outlined sidebar-chevron">expand_more</span></div>`;
-        html += `<div class="sidebar-group-items collapsed">`;
+        const group = document.createElement('div');
+        group.className = 'sidebar-group';
+
+        const header = document.createElement('button');
+        header.type = 'button';
+        header.className = 'sidebar-group-header';
+        header.dataset.group = groupName;
+        header.setAttribute('aria-expanded', 'false');
+        const headerText = document.createElement('span');
+        headerText.textContent = groupLabel;
+        const chevron = createIcon('expand_more', 'material-symbols-outlined sidebar-chevron');
+        header.append(headerText, chevron);
+
+        const groupItems = document.createElement('div');
+        groupItems.className = 'sidebar-group-items collapsed';
         for (const item of items) {
-            const label = item.chapter_name ? `${item.chapter_name} ${item.name}` : item.name;
-            const key = category === 'world' ? `w_${item.id}` : category === 'archive' ? `a_${item.id}` : String(item.id);
-            html += `<div class="sidebar-item" data-map-id="${key}">${label}</div>`;
+            const label = getMapLabel(item);
+            const key = getMapKey(category, item);
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'sidebar-item';
+            button.dataset.mapId = key;
+            button.setAttribute('aria-pressed', String(key === state.currentMapId));
+            button.textContent = label;
+            groupItems.appendChild(button);
         }
-        html += `</div></div>`;
+
+        group.append(header, groupItems);
+        sidebarFragment.appendChild(group);
+
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = groupLabel;
+        for (const item of items) {
+            const option = document.createElement('option');
+            option.value = getMapKey(category, item);
+            option.textContent = getMapLabel(item);
+            optgroup.appendChild(option);
+        }
+        selectFragment.appendChild(optgroup);
     }
 
-    mapSidebar.innerHTML = html;
+    mapSidebar.replaceChildren(sidebarFragment);
 
     // Note: click delegation for sidebar items and accordion headers
     // is set up once in init() via setupSidebarListeners(), not here.
 
     // Populate mobile select
     if (mobileMapSelect) {
-        let options = '<option value="">해역을 선택하세요</option>';
-        for (const [groupName, items] of groups) {
-            const groupLabel = category === 'event' || category === 'world' || category === 'archive'
-                               ? groupName : `${groupName}장`;
-            options += `<optgroup label="${groupLabel}">`;
-            for (const item of items) {
-                const label = item.chapter_name ? `${item.chapter_name} ${item.name}` : item.name;
-                const key = category === 'world' ? `w_${item.id}` : category === 'archive' ? `a_${item.id}` : String(item.id);
-                options += `<option value="${key}">${label}</option>`;
-            }
-            options += '</optgroup>';
-        }
-        mobileMapSelect.innerHTML = options;
+        mobileMapSelect.replaceChildren(selectFragment);
+        mobileMapSelect.value = state.currentMapId || '';
     }
 }
 
@@ -148,12 +229,11 @@ function renderSidebar(category) {
  * render path based on chapter.category (world / archive / standard).
  */
 async function selectMap(mapId) {
+    const selectionToken = ++mapSelectionToken;
     state.currentMapId = mapId;
 
     // Update sidebar active state
-    mapSidebar.querySelectorAll('.sidebar-item').forEach(el => {
-        el.classList.toggle('active', el.dataset.mapId === mapId);
-    });
+    setSidebarActive(mapId);
 
     // Expand parent group if collapsed
     const activeItem = mapSidebar.querySelector(`.sidebar-item[data-map-id="${mapId}"]`);
@@ -162,7 +242,10 @@ async function selectMap(mapId) {
         if (groupItems && groupItems.classList.contains('collapsed')) {
             groupItems.classList.remove('collapsed');
             const header = groupItems.previousElementSibling;
-            if (header) header.classList.add('expanded');
+            if (header) {
+                header.classList.add('expanded');
+                header.setAttribute('aria-expanded', 'true');
+            }
         }
     }
 
@@ -175,14 +258,30 @@ async function selectMap(mapId) {
         hideElement(mapContent);
         showElement(mapLoading);
         await state.fullDataPromise;
+        if (selectionToken !== mapSelectionToken) return;
         hideElement(mapLoading);
     }
 
     const chapter = state.fullData?.[mapId];
     if (!chapter) {
+        mapEmpty.textContent = '해역 데이터를 찾을 수 없습니다.';
         showElement(mapEmpty);
         hideElement(mapContent);
         return;
+    }
+
+    const needsWorldTargets = chapter.category === 'world' && chapter.randomId && state.worldTargetPromise;
+    const needsShipInfo = chapter.category !== 'world' && !state.shipInfo && state.shipInfoPromise;
+    if (needsWorldTargets || needsShipInfo) {
+        hideElement(mapEmpty);
+        hideElement(mapContent);
+        showElement(mapLoading);
+        await Promise.all([
+            needsWorldTargets ? state.worldTargetPromise : null,
+            needsShipInfo ? state.shipInfoPromise : null,
+        ].filter(Boolean));
+        if (selectionToken !== mapSelectionToken) return;
+        hideElement(mapLoading);
     }
 
     hideElement(mapEmpty);
@@ -200,7 +299,7 @@ async function selectMap(mapId) {
     // Render content based on category
     if (chapter.category === 'world') {
         renderWorldGrid(chapter, mapGrid);
-        mapLegend.innerHTML = '';
+        mapLegend.replaceChildren();
         renderWorldStats(chapter, mapStats);
         if (chapter.randomId) {
             // Exploration map — show conditions
@@ -233,11 +332,11 @@ async function selectMap(mapId) {
 /** Open the floating node detail overlay with fleet info for the clicked cell. */
 function handleNodeClick(attachType, chapter) {
     renderNodeDetail(attachType, chapter, nodeOverlayBody, nodeOverlayTitle);
-    nodeOverlay.classList.add('active');
+    setNodeOverlayOpen(true);
 }
 
 function closeNodeOverlay() {
-    if (nodeOverlay) nodeOverlay.classList.remove('active');
+    setNodeOverlayOpen(false);
 }
 
 // ===== Compare =====
@@ -256,23 +355,26 @@ function selectCompareTarget(mapId) {
  * In compare mode, skips resetting the center panel (keeps first map visible).
  */
 function switchTab(tab) {
-    state.currentTab = tab;
+    const nextTab = VALID_TABS.has(tab) ? tab : 'main';
+    state.currentTab = nextTab;
 
     // Update tab UI
-    mapTabs.querySelectorAll('.map-tab').forEach(t => {
-        t.classList.toggle('active', t.dataset.tab === tab);
-    });
+    setTabState(nextTab);
 
-    renderSidebar(tab);
+    if (!state.compareMode) {
+        state.currentMapId = null;
+    }
+
+    renderSidebar(nextTab);
 
     // In compare mode, keep the center panel showing the first map
     if (!state.compareMode) {
-        state.currentMapId = null;
         showElement(mapEmpty);
         hideElement(mapContent);
         hideElement(mapLoading);
         closeNodeOverlay();
-        setUrlParams({ tab, map: null, compare: null }, { replace: true });
+        mapEmpty.textContent = '좌측에서 해역을 선택하세요';
+        setUrlParams({ tab: nextTab, map: null, compare: null }, { replace: true });
     }
 }
 
@@ -299,12 +401,19 @@ function openSearchModal(mode) {
 
     input.value = '';
     renderSearchResults('');
-    openModal('searchModal');
+    openModal('searchModal', { onOpen: modal => modal.setAttribute('aria-hidden', 'false') });
     setTimeout(() => input.focus(), 100);
+
+    const pending = mode === 'ship' ? state.shipInfoPromise : state.fullDataPromise;
+    pending?.then(() => {
+        if (searchMode === mode) {
+            renderSearchResults(input.value);
+        }
+    });
 }
 
 function renderSearchResults(query) {
-    const body = document.getElementById('searchModalBody');
+    const body = searchModalBody || document.getElementById('searchModalBody');
     if (!body) return;
 
     if (searchMode === 'ship') {
@@ -320,7 +429,7 @@ function renderSearchResults(query) {
  */
 function renderShipSearchResults(query, body) {
     if (!state.shipInfo) {
-        body.innerHTML = '<div class="detail-empty">데이터 로딩 중...</div>';
+        renderMessage(body, '데이터 로딩 중...');
         return;
     }
 
@@ -354,41 +463,62 @@ function renderShipSearchResults(query, body) {
     results.sort((a, b) => (RARITY_ORDER[a.rarity] ?? 5) - (RARITY_ORDER[b.rarity] ?? 5));
 
     if (results.length === 0) {
-        body.innerHTML = `<div class="detail-empty">${q ? '검색 결과가 없습니다.' : '드랍 데이터가 없습니다.'}</div>`;
+        renderMessage(body, q ? '검색 결과가 없습니다.' : '드랍 데이터가 없습니다.');
         return;
     }
 
-    let html = '';
+    const fragment = document.createDocumentFragment();
     for (const ship of results) {
         const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}`);
-        html += `<div class="search-result-item">`;
-        html += `<div class="search-result-header">`;
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        const header = document.createElement('div');
+        header.className = 'search-result-header';
         const iconSrc = ship.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
         if (iconSrc) {
-            html += `<a href="${infoUrl}"><img class="search-result-portrait" src="${iconSrc}" alt="" loading="lazy" data-onfail="hide"></a>`;
+            const imageLink = document.createElement('a');
+            imageLink.href = infoUrl;
+            const img = document.createElement('img');
+            img.className = 'search-result-portrait';
+            img.src = iconSrc;
+            img.alt = '';
+            img.loading = 'lazy';
+            img.setAttribute('data-onfail', 'hide');
+            imageLink.appendChild(img);
+            header.appendChild(imageLink);
         }
-        html += `<div>`;
-        html += `<a href="${infoUrl}" class="search-result-name search-rarity-${ship.rarity}">${ship.name}</a>`;
-        html += `<span class="search-result-rarity">${ship.rarity}</span>`;
-        html += `</div></div>`;
-        html += `<div class="search-result-maps">`;
+        const textWrap = document.createElement('div');
+        const nameLink = document.createElement('a');
+        nameLink.href = infoUrl;
+        nameLink.className = `search-result-name search-rarity-${ship.rarity}`;
+        nameLink.textContent = ship.name;
+        const rarity = document.createElement('span');
+        rarity.className = 'search-result-rarity';
+        rarity.textContent = ship.rarity;
+        textWrap.append(nameLink, rarity);
+        header.appendChild(textWrap);
+
+        const maps = document.createElement('div');
+        maps.className = 'search-result-maps';
         for (const m of ship.maps) {
-            html += `<span class="search-result-map" data-map-id="${m.chapter * 100 + m.stage}">${m.label}${m.bossOnly ? ' <small>보스</small>' : ''}</span>`;
+            const mapButton = document.createElement('button');
+            mapButton.type = 'button';
+            mapButton.className = 'search-result-map';
+            mapButton.dataset.mapId = String(m.chapter * 100 + m.stage);
+            mapButton.textContent = m.label;
+            if (m.bossOnly) {
+                mapButton.append(' ');
+                const boss = document.createElement('small');
+                boss.textContent = '보스';
+                mapButton.appendChild(boss);
+            }
+            maps.appendChild(mapButton);
         }
-        html += `</div></div>`;
+        item.append(header, maps);
+        fragment.appendChild(item);
     }
 
-    body.innerHTML = html;
-
-    // Click map tags to navigate
-    body.querySelectorAll('.search-result-map').forEach(el => {
-        el.addEventListener('click', () => {
-            const mapId = el.dataset.mapId;
-            closeModal('searchModal');
-            if (state.currentTab !== 'main') switchTab('main');
-            selectMap(mapId);
-        });
-    });
+    body.replaceChildren(fragment);
 }
 
 /**
@@ -397,7 +527,7 @@ function renderShipSearchResults(query, body) {
  */
 function renderBlueprintSearchResults(query, body) {
     if (!state.fullData) {
-        body.innerHTML = '<div class="detail-empty">데이터 로딩 중...</div>';
+        renderMessage(body, '데이터 로딩 중...');
         return;
     }
 
@@ -431,7 +561,7 @@ function renderBlueprintSearchResults(query, body) {
     results.sort((a, b) => b.rarity - a.rarity || a.name.localeCompare(b.name));
 
     if (results.length === 0) {
-        body.innerHTML = `<div class="detail-empty">${q ? '검색 결과가 없습니다.' : '설계도 데이터가 없습니다.'}</div>`;
+        renderMessage(body, q ? '검색 결과가 없습니다.' : '설계도 데이터가 없습니다.');
         return;
     }
 
@@ -439,37 +569,54 @@ function renderBlueprintSearchResults(query, body) {
 
     const BP_RARITY_MAP = { 5: 'UR', 4: 'SSR', 3: 'SR', 2: 'R' };
 
-    let html = '';
+    const fragment = document.createDocumentFragment();
     for (const bp of results) {
         const iconUrl = bp.icon ? `${DATA_FOR_TOY_BASE}/${bp.icon.replace(/^Props\//, 'props/').replace(/^Equips\//, 'equips/')}.webp` : '';
         const rarityName = BP_RARITY_MAP[bp.rarity] || 'N';
         const rarityClass = `search-rarity-${rarityName}`;
         const bgClass = `search-bp-rarity-${bp.rarity}`;
-        html += `<div class="search-result-item">`;
-        html += `<div class="search-result-header">`;
-        if (iconUrl) html += `<img class="search-result-bp-icon ${bgClass}" src="${iconUrl}" alt="" loading="lazy" data-onfail="hide">`;
-        html += `<span class="${rarityClass}">${bp.name}</span>`;
-        html += `</div>`;
-        html += `<div class="search-result-maps">`;
-        for (const m of bp.maps) {
-            const fullKey = m.category === 'world' ? `w_${m.id}` : String(m.id);
-            html += `<span class="search-result-map" data-map-id="${fullKey}" data-category="${m.category}">${m.label}</span>`;
+        const item = document.createElement('div');
+        item.className = 'search-result-item';
+        const header = document.createElement('div');
+        header.className = 'search-result-header';
+        if (iconUrl) {
+            const img = document.createElement('img');
+            img.className = `search-result-bp-icon ${bgClass}`;
+            img.src = iconUrl;
+            img.alt = '';
+            img.loading = 'lazy';
+            img.setAttribute('data-onfail', 'hide');
+            header.appendChild(img);
         }
-        html += `</div></div>`;
+        const name = document.createElement('span');
+        name.className = rarityClass;
+        name.textContent = bp.name;
+        header.appendChild(name);
+
+        const maps = document.createElement('div');
+        maps.className = 'search-result-maps';
+        for (const m of bp.maps) {
+            const fullKey = m.category === 'world' ? `w_${m.id}` : m.category === 'archive' ? `a_${m.id}` : String(m.id);
+            const mapButton = document.createElement('button');
+            mapButton.type = 'button';
+            mapButton.className = 'search-result-map';
+            mapButton.dataset.mapId = fullKey;
+            mapButton.dataset.category = m.category;
+            mapButton.textContent = m.label;
+            maps.appendChild(mapButton);
+        }
+        item.append(header, maps);
+        fragment.appendChild(item);
     }
 
-    body.innerHTML = html;
+    body.replaceChildren(fragment);
+}
 
-    // Click map tags to navigate
-    body.querySelectorAll('.search-result-map').forEach(el => {
-        el.addEventListener('click', () => {
-            const mapId = el.dataset.mapId;
-            const category = el.dataset.category;
-            closeModal('searchModal');
-            if (state.currentTab !== category) switchTab(category);
-            selectMap(mapId);
-        });
-    });
+function navigateToSearchMap(mapId, category) {
+    closeModal('searchModal', { onClose: modal => modal.setAttribute('aria-hidden', 'true') });
+    const targetCategory = category || 'main';
+    if (state.currentTab !== targetCategory) switchTab(targetCategory);
+    selectMap(mapId);
 }
 
 // ===== Init =====
@@ -491,12 +638,23 @@ async function init() {
     setupSidebarListeners();
 
     // Load lite data (blocking)
-    await loadLiteData();
+    try {
+        showElement(mapLoading);
+        await loadLiteData();
+    } catch (error) {
+        console.error('Failed to load map list:', error);
+        hideElement(mapLoading);
+        mapEmpty.textContent = '해역 목록을 불러오지 못했습니다.';
+        showElement(mapEmpty);
+        return;
+    } finally {
+        hideElement(mapLoading);
+    }
 
     // Capture all URL params before switchTab runs — switchTab wipes map/compare
     // from the URL as part of its normal tab-change behavior, so we must read
     // them upfront or they'll be gone by the time we try to restore state.
-    const urlTab = getUrlParam('tab', 'main');
+    const urlTab = VALID_TABS.has(getUrlParam('tab', 'main')) ? getUrlParam('tab', 'main') : 'main';
     const urlMap = getUrlParam('map');
     const compareParam = getUrlParam('compare');
 
@@ -504,8 +662,8 @@ async function init() {
 
     // Load full data and ship info in background
     state.fullDataPromise = loadFullData();
-    loadShipInfo();
-    loadWorldTargetData();
+    state.shipInfoPromise = loadShipInfo();
+    state.worldTargetPromise = loadWorldTargetData();
 
     // Node overlay close button
     if (nodeOverlayClose) {
@@ -562,13 +720,22 @@ async function init() {
         closeButtonSelector: '#searchModalClose',
         closeOnEscape: true,
         closeOnBackdrop: true,
+        onClose: modal => modal.setAttribute('aria-hidden', 'true'),
     });
 
-    const searchInput = document.getElementById('searchModalInput');
+    const searchInput = searchModalInput || document.getElementById('searchModalInput');
     if (searchInput) {
         searchInput.addEventListener('input', debounce((e) => {
             renderSearchResults(e.target.value);
         }, 200));
+    }
+
+    if (searchModalBody) {
+        searchModalBody.addEventListener('click', (event) => {
+            const mapButton = event.target.closest('.search-result-map');
+            if (!mapButton) return;
+            navigateToSearchMap(mapButton.dataset.mapId, mapButton.dataset.category);
+        });
     }
 
     // Restore map selection from URL (captured before switchTab wiped the params)
@@ -579,7 +746,7 @@ async function init() {
         if (chapter && chapter.category !== state.currentTab) {
             switchTab(chapter.category);
         }
-        selectMap(urlMap);
+        await selectMap(urlMap);
     }
 
     // Restore compare modal from URL

@@ -22,11 +22,16 @@
 .map-cell {
     width: var(--map-cell-size);
     height: var(--map-cell-size);
+    padding: 0;
+    border: 0;
     border-radius: var(--radius-sm);
+    background: transparent;
+    color: inherit;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: var(--map-font-sm);
+    font-family: inherit;
     transition: transform var(--transition-fast);
 }
 
@@ -60,9 +65,12 @@ body.dark-mode .map-cell--void {
     cursor: pointer;
 }
 
-.map-cell--clickable:hover {
+.map-cell--clickable:hover,
+.map-cell--clickable:focus-visible {
     transform: scale(1.12);
     z-index: 1;
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 /* Node inner badge */

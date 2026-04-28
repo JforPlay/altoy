@@ -6,7 +6,7 @@
  * Depends on map.data.js for chapter lookup and map.grid.js for mini-grid rendering.
  */
 
-import { openModal, closeModal, setupModal, setUrlParams, showElement, hideElement } from '../utils.js';
+import { openModal, setupModal, setUrlParams, showElement, hideElement } from '../utils.js';
 import { getChapter } from './map.data.js';
 import { renderGrid } from './map.grid.js';
 import { calcClearEstimate } from './map.detail.js';
@@ -30,6 +30,8 @@ export function setupCompareModal() {
         onClose: () => {
             state.compareMode = false;
             state.compareMapId = null;
+            const modal = document.getElementById('compareModal');
+            if (modal) modal.setAttribute('aria-hidden', 'true');
             setUrlParams({ compare: null }, { replace: true });
         }
     });
@@ -38,14 +40,18 @@ export function setupCompareModal() {
 /** Enter compare mode — show floating bar. */
 export function enterCompareMode() {
     state.compareMode = true;
-    showElement(document.getElementById('compareBar'));
+    const bar = document.getElementById('compareBar');
+    showElement(bar);
+    if (bar) bar.setAttribute('aria-hidden', 'false');
 }
 
 /** Exit compare mode — hide bar. */
 export function exitCompareMode() {
     state.compareMode = false;
     state.compareMapId = null;
-    hideElement(document.getElementById('compareBar'));
+    const bar = document.getElementById('compareBar');
+    hideElement(bar);
+    if (bar) bar.setAttribute('aria-hidden', 'true');
 }
 
 /** Stats to compare with labels and "lower is better" flag. */
@@ -84,24 +90,31 @@ export function renderCompareModal(id1, id2) {
     const body = document.getElementById('compareModalBody');
     if (!body) return;
 
-    let html = '<div class="compare-sides">';
+    const compareSides = document.createElement('div');
+    compareSides.className = 'compare-sides';
 
-    // Side 1
-    html += '<div>';
-    html += `<div class="compare-side-header">${ch1.chapter_name || ch1.name}</div>`;
-    html += `<div id="compareGrid1" class="map-grid" style="margin-bottom:var(--spacing-sm);"></div>`;
-    html += '</div>';
+    const side1 = document.createElement('div');
+    const side1Header = document.createElement('div');
+    side1Header.className = 'compare-side-header';
+    side1Header.textContent = ch1.chapter_name || ch1.name || String(id1);
+    const grid1El = document.createElement('div');
+    grid1El.id = 'compareGrid1';
+    grid1El.className = 'map-grid compare-grid';
+    side1.append(side1Header, grid1El);
 
-    // Side 2
-    html += '<div>';
-    html += `<div class="compare-side-header">${ch2.chapter_name || ch2.name}</div>`;
-    html += `<div id="compareGrid2" class="map-grid" style="margin-bottom:var(--spacing-sm);"></div>`;
-    html += '</div>';
+    const side2 = document.createElement('div');
+    const side2Header = document.createElement('div');
+    side2Header.className = 'compare-side-header';
+    side2Header.textContent = ch2.chapter_name || ch2.name || String(id2);
+    const grid2El = document.createElement('div');
+    grid2El.id = 'compareGrid2';
+    grid2El.className = 'map-grid compare-grid';
+    side2.append(side2Header, grid2El);
 
-    html += '</div>';
+    compareSides.append(side1, side2);
 
-    // Stats comparison table
-    html += '<div style="margin-top:var(--spacing-md);">';
+    const statsWrap = document.createElement('div');
+    statsWrap.className = 'compare-stats';
 
     const allStats = [
         ...COMPARE_STATS,
@@ -134,20 +147,24 @@ export function renderCompareModal(id1, id2) {
             }
         }
 
-        html += `<div class="compare-stat-row">
-            <span class="${cls1}">${v1}</span>
-            <span style="color:var(--text-dim);flex:1;text-align:center;">${stat.label}</span>
-            <span class="${cls2}">${v2}</span>
-        </div>`;
+        const row = document.createElement('div');
+        row.className = 'compare-stat-row';
+        const left = document.createElement('span');
+        left.className = cls1;
+        left.textContent = String(v1);
+        const label = document.createElement('span');
+        label.className = 'compare-stat-label';
+        label.textContent = stat.label;
+        const right = document.createElement('span');
+        right.className = cls2;
+        right.textContent = String(v2);
+        row.append(left, label, right);
+        statsWrap.appendChild(row);
     }
 
-    html += '</div>';
-
-    body.innerHTML = html;
+    body.replaceChildren(compareSides, statsWrap);
 
     // Render mini grids inside modal
-    const grid1El = document.getElementById('compareGrid1');
-    const grid2El = document.getElementById('compareGrid2');
     if (grid1El && ch1.grids) {
         renderGrid(ch1, grid1El);
         grid1El.onclick = null; // Disable clicks in compare modal
@@ -159,4 +176,6 @@ export function renderCompareModal(id1, id2) {
 
     setUrlParams({ compare: `${id1},${id2}` }, { replace: true });
     openModal('compareModal');
+    const modal = document.getElementById('compareModal');
+    if (modal) modal.setAttribute('aria-hidden', 'false');
 }

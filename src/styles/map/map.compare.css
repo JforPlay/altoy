@@ -78,6 +78,14 @@
     text-align: center;
 }
 
+.compare-grid {
+    margin-bottom: var(--spacing-sm);
+}
+
+.compare-stats {
+    margin-top: var(--spacing-md);
+}
+
 /* Diff highlighting */
 .compare-stat-row {
     display: flex;
@@ -85,6 +93,12 @@
     padding: 0.25rem 0;
     font-size: var(--map-font-sm);
     border-bottom: 1px solid var(--border-color);
+}
+
+.compare-stat-label {
+    color: var(--text-dim);
+    flex: 1;
+    text-align: center;
 }
 
 /* Compare diff colors (game-canonical — keep hardcoded) */
@@ -180,16 +194,19 @@
     border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
     font-size: var(--map-font-xs);
+    font-family: inherit;
     color: var(--text-secondary);
     cursor: pointer;
     transition: all var(--transition-fast);
     white-space: nowrap;
 }
 
-.search-result-map:hover {
+.search-result-map:hover,
+.search-result-map:focus-visible {
     background: var(--primary-alpha-10);
     border-color: var(--primary-color);
     color: var(--primary-color);
+    outline: none;
 }
 
 .search-result-map small {
