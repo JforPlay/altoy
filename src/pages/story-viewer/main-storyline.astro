@@ -6,7 +6,13 @@
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/story-viewer/main-storyline.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const storylineBg = `url("${base}/assets/img/background.webp")`;
 ---
+
+<style is:global define:vars={{ storylineBg }}>
+    :root { --storyline-bg: var(--storylineBg); }
+</style>
+
 
 <Layout title="벽람 메인스 타임라인" {base}>
     <div id="loading-overlay" class="loading-overlay">
