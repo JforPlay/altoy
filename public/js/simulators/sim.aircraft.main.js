@@ -6,22 +6,28 @@
  * Part of the simulators module group; mirrors sim.weapon.main.js structure.
  */
 
-import { debounce, getUrlParam, setUrlParams, resolveUrl, showElement, hideElement } from '../utils.js';
+import { debounce, getUrlParam, setUrlParams, resolveUrl, showElement, hideElement, createImgElement, setupFpsDisplay } from '../utils.js';
 import { SimulationEngine } from './sim.engine.common.js';
 import { AircraftSimData } from './sim.aircraft.data.js';
 import { AircraftEntity } from './sim.engine.aircraft.js';
+import {
+    SIM_DEFAULT_SPEED,
+    SIM_GAME_COORDS,
+    SIM_TARGET_FPS,
+    buildWeaponCard,
+    convertToMs,
+    makeClickableCard,
+    populateChoicesOrSelect,
+    registerDefaultBattleEntities,
+    renderLevelToggle,
+    renderPlaceholder,
+    setPressed,
+    setupEnemyToggle,
+    setupPauseButton,
+    setupSpeedControls
+} from './sim.ui.js';
 
 const EQUIP_ICON_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips';
-
-const AMMO_TYPE_NAMES = {
-    1: '철갑탄', 2: '고폭탄', 3: '통상탄', 4: '음향 유도', 5: '통상',
-    6: '삼식탄', 7: '반철갑탄(SAP탄)', 8: '자성식', 9: '격발식', 10: '없음', 11: '미사일',
-};
-
-const BULLET_TYPE_NAMES = {
-    1: '포탄', 2: '폭탄', 3: '어뢰', 4: '파편', 5: '미사일',
-    10: '빔', 11: '중력장', 14: '우주레이저', 15: '확장탄',
-};
 
 const RARITY_COLORS = {
     2: 'var(--rarity-n)', 3: 'var(--rarity-r)', 4: 'var(--rarity-sr)',
@@ -29,13 +35,6 @@ const RARITY_COLORS = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const GAME_COORDS = {
-        totalArea: { minX: -120, minY: 30, maxX: 80, maxY: 85 },
-        playerArea: { minX: -120, minY: 30, maxX: 15, maxY: 85 }
-    };
-    const TARGET_FPS = 30;
-    const GLOBAL_SPEED_MULTIPLIER = 1.5;
-
     // --- DOM Elements ---
     const simContainer = document.getElementById('simulation-container');
     const vanguard = document.getElementById('vanguard');
@@ -56,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentEquipId = null;
     let pendingFireTimers = [];
     let activeAircraft = [];
-    let isPaused = false;
+    let displayToken = 0;
 
     function scheduleFireTimer(fn, delay) {
         const id = setTimeout(() => {
@@ -69,38 +68,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- Engine Initialization ---
     const simEngine = new SimulationEngine({
         container: simContainer,
-        gameCoords: GAME_COORDS,
-        targetFps: TARGET_FPS,
-        gSpeed: GLOBAL_SPEED_MULTIPLIER,
+        gameCoords: SIM_GAME_COORDS,
+        targetFps: SIM_TARGET_FPS,
+        gSpeed: SIM_DEFAULT_SPEED,
         visualLog: visualLog
     });
 
     const aircraftSimData = new AircraftSimData(simEngine);
 
-    simEngine.registerEntities({
-        vanguard: { element: vanguard, baseWidth: 6.5, aspectRatio: 178 / 226, gamePos: { x: -36, y: 58 } },
-        mainfleet: { element: mainfleet, baseWidth: 6.5, aspectRatio: 195 / 253, gamePos: { x: -105, y: 58 } },
-        enemy: { element: enemy, baseWidth: 7.0, aspectRatio: 369 / 300 }
-    });
-
-    simEngine.registerEntityState('enemy', {
-        getGamePos: (state) => ({ x: 15, y: state.centered ? 58 : 72 })
-    });
-    simEngine.setEntityState('enemy', 'centered', false);
+    registerDefaultBattleEntities(simEngine, { vanguard, mainfleet, enemy });
 
     let choicesInstance;
     let allDeduped = [];
-    let activeTypeFilter = null;
 
     // --- Initialize ---
-    await aircraftSimData.loadData();
+    try {
+        await aircraftSimData.loadData();
+    } catch (error) {
+        renderPlaceholder(weaponCardsContainer, '함재기 데이터를 불러올 수 없습니다. 잠시 후 다시 시도하세요.', 'error');
+        fireButton.disabled = true;
+        return;
+    }
     simEngine.updateLayoutAndScale(playerAreaDiv);
     allDeduped = aircraftSimData.getDeduplicatedList();
     populateAircraftSelector();
     initTypeFilter();
-    initFPSDisplay();
-    initSpeedControls();
-    initPauseButton();
+    setupFpsDisplay(document.getElementById('fps-display'));
+    setupSpeedControls(simEngine);
+    setupPauseButton(simEngine, pauseButton);
+    setupEnemyToggle(simEngine, enemyToggle, playerAreaDiv);
 
     const equipIdFromUrl = getUrlParam('equip');
     if (equipIdFromUrl) {
@@ -133,82 +129,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         else simEngine.logToScreen('No aircraft selected.', 'error');
     });
 
-    enemyToggle.addEventListener('click', () => {
-        const currentState = simEngine.getEntityState('enemy', 'centered');
-        simEngine.setEntityState('enemy', 'centered', !currentState);
-        const isCentered = simEngine.getEntityState('enemy', 'centered');
-        enemyToggle.textContent = isCentered ? '적 위치: 중앙' : '적 위치: 상단';
-        enemyToggle.classList.toggle('centered', isCentered);
-        simEngine.updateLayoutAndScale(playerAreaDiv);
-    });
-
-    // ===== Controls Initialization =====
-
-    // --- Speed Controls ---
-    function initSpeedControls() {
-        document.querySelectorAll('.speed-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                simEngine.bulletEngine.gSpeed = parseFloat(btn.dataset.speed);
-            });
-        });
-    }
-
-    // --- Pause/Resume ---
-    function initPauseButton() {
-        pauseButton.addEventListener('click', () => {
-            isPaused = !isPaused;
-            const icon = pauseButton.querySelector('.material-symbols-outlined');
-            if (isPaused) {
-                simEngine.bulletEngine.gSpeed = 0;
-                icon.textContent = 'play_arrow';
-                pauseButton.title = '재생';
-            } else {
-                const activeSpeedBtn = document.querySelector('.speed-btn.active');
-                simEngine.bulletEngine.gSpeed = activeSpeedBtn ? parseFloat(activeSpeedBtn.dataset.speed) : 1.5;
-                icon.textContent = 'pause';
-                pauseButton.title = '일시정지';
-            }
-        });
-    }
-
-    // ===== FPS Display =====
-
-    // --- FPS Display ---
-    function initFPSDisplay() {
-        const fpsDisplay = document.getElementById('fps-display');
-        if (!fpsDisplay) return;
-        let lastTime = performance.now();
-        let frameCount = 0;
-        let fpsAnimId = null;
-
-        function updateFPS() {
-            const now = performance.now();
-            frameCount++;
-            if (now >= lastTime + 1000) {
-                fpsDisplay.textContent = `FPS: ${Math.round((frameCount * 1000) / (now - lastTime))}`;
-                frameCount = 0;
-                lastTime = now;
-            }
-            fpsAnimId = requestAnimationFrame(updateFPS);
-        }
-        fpsAnimId = requestAnimationFrame(updateFPS);
-
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                if (fpsAnimId) { cancelAnimationFrame(fpsAnimId); fpsAnimId = null; }
-            } else if (!fpsAnimId) {
-                lastTime = performance.now(); frameCount = 0;
-                fpsAnimId = requestAnimationFrame(updateFPS);
-            }
-        });
-    }
-
-    function convertToMs(value, timeUnitIsFrames = false) {
-        return timeUnitIsFrames ? (value / TARGET_FPS) * 1000 : value * 1000;
-    }
-
     // ===== Aircraft Selector =====
 
     // --- Aircraft Selector (grouped by type with filter) ---
@@ -239,26 +159,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        // Destroy and recreate Choices instance
-        if (choicesInstance) choicesInstance.destroy();
-
-        choicesInstance = new Choices(aircraftSelect, {
-            choices: choiceGroups,
-            searchEnabled: true,
-            itemSelectText: '선택',
-            shouldSort: false,
-            searchPlaceholderValue: '함재기 검색...',
-            noResultsText: '검색 결과 없음',
-        });
-
-        // Prevent page scroll when dropdown opens
-        aircraftSelect.closest('.choices')?.addEventListener('showDropdown', () => {
-            document.querySelector('.choices__list--dropdown')?.scrollIntoView?.({ block: 'nearest' });
-        });
-
         const firstEquip = filtered[0];
-        if (firstEquip) choicesInstance.setChoiceByValue(String(firstEquip.id));
+        choicesInstance = populateChoicesOrSelect(aircraftSelect, choiceGroups, {
+            choicesConfig: {
+                searchEnabled: true,
+                itemSelectText: '선택',
+                shouldSort: false,
+                searchPlaceholderValue: '함재기 검색...',
+                noResultsText: '검색 결과 없음',
+            },
+            firstValue: firstEquip ? String(firstEquip.id) : null,
+            destroyExisting: choicesInstance,
+        });
+
+        if (choicesInstance) {
+            const choicesWrapper = aircraftSelect.closest('.choices');
+            choicesWrapper?.addEventListener('showDropdown', () => {
+                choicesWrapper.querySelector('.choices__list--dropdown')?.scrollIntoView?.({ block: 'nearest' });
+            });
+        }
+
+        return firstEquip ? String(firstEquip.id) : null;
     }
+
+    const typeFilterButtons = [];
 
     function initTypeFilter() {
         const container = document.getElementById('type-filter');
@@ -267,34 +191,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         const typeOrder = ['전투기', '뇌격기', '폭격기', '수상기', '대잠기'];
         const availableTypes = new Set(allDeduped.map(e => e.type_name));
 
-        // "전체" button
-        const allBtn = document.createElement('button');
-        allBtn.className = 'type-filter-btn active';
-        allBtn.textContent = '전체';
-        allBtn.addEventListener('click', () => {
-            activeTypeFilter = null;
-            setActiveFilterBtn(allBtn);
-            populateAircraftSelector(null);
-        });
-        container.appendChild(allBtn);
-
-        for (const type of typeOrder) {
-            if (!availableTypes.has(type)) continue;
+        const makeFilterBtn = (label, filterType, isInitial) => {
             const btn = document.createElement('button');
-            btn.className = 'type-filter-btn';
-            btn.textContent = type;
-            btn.addEventListener('click', () => {
-                activeTypeFilter = type;
+            btn.type = 'button';
+            btn.className = `type-filter-btn${isInitial ? ' active' : ''}`;
+            btn.textContent = label;
+            btn.setAttribute('aria-pressed', String(isInitial));
+            btn.addEventListener('click', async () => {
                 setActiveFilterBtn(btn);
-                populateAircraftSelector(type);
+                const selectedId = populateAircraftSelector(filterType);
+                currentLevelIndex = 0;
+                if (selectedId) await updateAircraftDisplay(selectedId);
             });
             container.appendChild(btn);
+            typeFilterButtons.push(btn);
+        };
+
+        makeFilterBtn('전체', null, true);
+        for (const type of typeOrder) {
+            if (availableTypes.has(type)) makeFilterBtn(type, type, false);
         }
     }
 
     function setActiveFilterBtn(activeBtn) {
-        document.querySelectorAll('.type-filter-btn').forEach(b => b.classList.remove('active'));
-        activeBtn.classList.add('active');
+        for (const btn of typeFilterButtons) setPressed(btn, btn === activeBtn);
     }
 
     // ===== Display Update =====
@@ -302,13 +222,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- Update Display ---
     async function updateAircraftDisplay(equipId) {
         if (!equipId || equipId === 'none') {
-            weaponCardsContainer.innerHTML = '<div class="card placeholder-card"><p>함재기를 선택하여 무기 정보를 확인하세요.</p></div>';
+            renderPlaceholder(weaponCardsContainer, '함재기를 선택하여 무기 정보를 확인하세요.');
             hideElement(aircraftInfoCard);
-            levelToggleContainer.innerHTML = '';
+            levelToggleContainer.replaceChildren();
             currentEquipId = null;
             return;
         }
 
+        const token = ++displayToken;
         currentEquipId = equipId;
         setUrlParams({ equip: equipId }, { replace: true });
 
@@ -316,6 +237,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const equipLite = aircraftSimData.equipList.find(e => String(e.id) === String(equipId));
 
         await aircraftSimData.ensureAircraftWeaponsLoaded(equipId, currentLevelIndex);
+        if (token !== displayToken) return;
 
         updateAircraftInfoCard(equipId, equipLite);
         updateLevelToggle(equipId);
@@ -336,44 +258,72 @@ document.addEventListener('DOMContentLoaded', async () => {
         const weaponIds = aircraftSimData.getWeaponIdsForLevel(equipId, currentLevelIndex);
         const aircraftData = weaponIds.length > 0 ? aircraftSimData.getAircraftTemplate(weaponIds[0]) : null;
 
-        let html = `<div class="skill-header" style="cursor:pointer" id="equip-link">`;
+        const fragment = document.createDocumentFragment();
+        const header = document.createElement('div');
+        header.className = 'skill-header';
+        header.id = 'equip-link';
         if (iconUrl) {
-            html += `<img src="${iconUrl}" alt="" class="skill-icon" style="border-radius:var(--radius-sm)">`;
+            header.appendChild(createImgElement(iconUrl, '', { className: 'skill-icon aircraft-equip-icon' }));
         }
-        html += `<div>
-            <div class="skill-name">${equipLite.name}</div>
-            <div style="font-size:0.75rem;color:var(--text-muted)">${equipLite.type_name} · ${equipLite.nation_name || ''}</div>
-        </div>
-        <span class="ammo-badge" style="background:${rarityColor};margin-left:auto">${equipLite.rarity_name}</span>
-        </div>`;
+        const headerText = document.createElement('div');
+        const name = document.createElement('div');
+        name.className = 'skill-name';
+        name.textContent = equipLite.name;
+        const sub = document.createElement('div');
+        sub.className = 'sim-muted-text';
+        sub.textContent = `${equipLite.type_name} · ${equipLite.nation_name || ''}`;
+        headerText.append(name, sub);
+        const rarity = document.createElement('span');
+        rarity.className = 'ammo-badge aircraft-rarity-badge';
+        rarity.style.background = rarityColor;
+        rarity.textContent = equipLite.rarity_name;
+        header.append(headerText, rarity);
+        fragment.appendChild(header);
 
-        // Aircraft stats
         if (aircraftData) {
-            html += `<div class="weapon-stats" style="margin-top:var(--spacing-sm)">`;
-            if (aircraftData.speed != null) html += `<div class="stat-item"><span class="stat-label">항속</span><span class="stat-value">${aircraftData.speed}</span></div>`;
-            if (aircraftData.dodge != null) html += `<div class="stat-item"><span class="stat-label">회피</span><span class="stat-value">${aircraftData.dodge}</span></div>`;
-            if (aircraftData.dodge_limit != null) html += `<div class="stat-item"><span class="stat-label">회피한계</span><span class="stat-value">${aircraftData.dodge_limit}</span></div>`;
-            if (aircraftData.crash_DMG != null) html += `<div class="stat-item"><span class="stat-label">충돌 데미지</span><span class="stat-value">${aircraftData.crash_DMG}</span></div>`;
-            if (aircraftData.weapon_ID) html += `<div class="stat-item"><span class="stat-label">탑재 무장</span><span class="stat-value">${aircraftData.weapon_ID.length}개</span></div>`;
-            html += `</div>`;
+            const stats = document.createElement('div');
+            stats.className = 'weapon-stats aircraft-stats';
+            const statRows = [
+                ['항속', aircraftData.speed],
+                ['회피', aircraftData.dodge],
+                ['회피한계', aircraftData.dodge_limit],
+                ['충돌 데미지', aircraftData.crash_DMG],
+                ['탑재 무장', aircraftData.weapon_ID ? `${aircraftData.weapon_ID.length}개` : null],
+            ];
+            for (const [label, value] of statRows) {
+                if (value == null) continue;
+                const item = document.createElement('div');
+                item.className = 'stat-item';
+                const labelEl = document.createElement('span');
+                labelEl.className = 'stat-label';
+                labelEl.textContent = label;
+                const valueEl = document.createElement('span');
+                valueEl.className = 'stat-value';
+                valueEl.textContent = value;
+                item.append(labelEl, valueEl);
+                stats.appendChild(item);
+            }
+            fragment.appendChild(stats);
         }
 
-        html += `<div class="more-info" style="margin-top:var(--spacing-xs);font-size:0.8rem;color:var(--text-muted);cursor:pointer">클릭하여 장비 정보 보기 →</div>`;
+        const moreInfo = document.createElement('div');
+        moreInfo.className = 'more-info';
+        moreInfo.textContent = '클릭하여 장비 정보 보기 →';
+        fragment.appendChild(moreInfo);
 
-        meta.innerHTML = html;
+        meta.replaceChildren(fragment);
         showElement(aircraftInfoCard);
 
-        // Cross-link to equip viewer
-        aircraftInfoCard.onclick = () => {
-            window.location.href = resolveUrl(`equip/equip-viewer?equip=${equipId}`);
-        };
-        aircraftInfoCard.style.cursor = 'pointer';
+        makeClickableCard(aircraftInfoCard, {
+            onActivate: () => { window.location.href = resolveUrl(`equip/equip-viewer?equip=${equipId}`); },
+            ariaLabel: `${equipLite.name} 장비 정보 보기`,
+        });
     }
 
     function updateLevelToggle(equipId) {
         const maxLevel = aircraftSimData.getMaxLevelIndex(equipId);
         if (maxLevel <= 0) {
-            levelToggleContainer.innerHTML = '';
+            levelToggleContainer.replaceChildren();
             return;
         }
 
@@ -382,9 +332,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const levelLabel = `+${currentLevelIndex}`;
         const isMax = currentLevelIndex === maxLevel;
-        levelToggleContainer.innerHTML = `<button id="level-toggle" class="${isMax ? 'level-10' : ''}">${levelLabel}</button>`;
-
-        document.getElementById('level-toggle').addEventListener('click', async () => {
+        renderLevelToggle(levelToggleContainer, levelLabel, isMax, async () => {
             currentLevelIndex = (currentLevelIndex + 1) % (maxLevel + 1);
             await updateAircraftDisplay(currentEquipId);
         });
@@ -393,7 +341,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function updateWeaponCards(equipId) {
         const weaponIds = aircraftSimData.getWeaponIdsForLevel(equipId, currentLevelIndex);
         if (weaponIds.length === 0) {
-            weaponCardsContainer.innerHTML = '<div class="card placeholder-card"><p>무기 데이터가 없습니다.</p></div>';
+            renderPlaceholder(weaponCardsContainer, '무기 데이터가 없습니다.');
             return;
         }
 
@@ -407,87 +355,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             for (const subWid of aircraftData.weapon_ID) {
                 const weapon = aircraftSimData.getWeaponById(subWid);
                 if (!weapon) continue;
-                cards.push(buildWeaponCard(weapon, { weaponId: subWid }, weaponIndex++, true));
+                cards.push(buildWeaponCard(weapon, { weaponId: subWid }, weaponIndex++, true, {
+                    bulletData: simEngine.allBulletData,
+                    barrageData: simEngine.allBarrageData
+                }));
             }
         }
 
         if (cards.length === 0) {
-            weaponCardsContainer.innerHTML = '<div class="card placeholder-card"><p>무기 데이터를 불러올 수 없습니다.</p></div>';
+            renderPlaceholder(weaponCardsContainer, '무기 데이터를 불러올 수 없습니다.');
             return;
         }
 
-        weaponCardsContainer.innerHTML = cards.join('');
-    }
-
-    function buildWeaponCard(weapon, weaponInfo, index, showNumber) {
-        const firstBulletId = weapon.bullet_ID?.[0];
-        const bulletInfo = firstBulletId ? simEngine.allBulletData[firstBulletId] : null;
-        const ammoType = bulletInfo?.ammo_type || 0;
-        const ammoName = AMMO_TYPE_NAMES[ammoType] || '알 수 없음';
-        const bulletType = bulletInfo?.type || 0;
-        const bulletTypeName = BULLET_TYPE_NAMES[bulletType] || '일반';
-
-        let totalBullets = 0;
-        if (weapon.barrage_ID) {
-            weapon.barrage_ID.forEach(bId => {
-                const barrage = simEngine.allBarrageData[bId];
-                if (barrage) totalBullets += (barrage.primal_repeat || 0) + 1;
-            });
-        }
-
-        const reloadMs = weapon.reload_max;
-        const reloadDisplay = reloadMs ? `${(reloadMs / 10).toFixed(1)}s` : '-';
-        const range = weapon.range || bulletInfo?.range || '-';
-        const damage = weapon.damage || '-';
-        const corrected = weapon.corrected ? ` (×${weapon.corrected}%)` : '';
-        const pierce = bulletInfo?.pierce_count || '-';
-        const damageType = bulletInfo?.damage_type;
-
-        let html = `<div class="weapon-card">`;
-
-        html += `<div class="weapon-card-header">
-            <div class="weapon-card-title">${showNumber ? `무기 ${index}` : '무기 정보'}
-                <span class="ammo-badge" style="background:var(--ammo-color-${ammoType})">${ammoName}</span>
-            </div>
-            <span class="weapon-card-id">${weaponInfo.weaponId}</span>
-        </div>`;
-
-        html += `<div class="weapon-stats">
-            <div class="stat-item"><span class="stat-label">탄종</span><span class="stat-value">${bulletTypeName}</span></div>
-            <div class="stat-item"><span class="stat-label">데미지</span><span class="stat-value">${damage}${corrected}</span></div>
-            <div class="stat-item"><span class="stat-label">장전</span><span class="stat-value">${reloadDisplay}</span></div>
-            <div class="stat-item"><span class="stat-label">사거리</span><span class="stat-value">${range}</span></div>
-            <div class="stat-item"><span class="stat-label">발사 수</span><span class="stat-value">${totalBullets}</span></div>
-            <div class="stat-item"><span class="stat-label">관통</span><span class="stat-value">${pierce}</span></div>`;
-
-        if (damageType && Array.isArray(damageType) && damageType.length >= 3) {
-            html += `<div class="armor-row">
-                <div class="armor-chip"><span class="armor-label">경장</span>${damageType[0]}%</div>
-                <div class="armor-chip"><span class="armor-label">중장</span>${damageType[1]}%</div>
-                <div class="armor-chip"><span class="armor-label">중장갑</span>${damageType[2]}%</div>
-            </div>`;
-        }
-
-        html += `</div>`;
-
-        if (weapon.barrage_ID && weapon.barrage_ID.length > 0) {
-            const firstBarrage = simEngine.allBarrageData[weapon.barrage_ID[0]];
-            if (firstBarrage) {
-                html += `<details class="barrage-details">
-                    <summary>탄막 상세 (${weapon.barrage_ID.length}개 패턴)</summary>
-                    <div class="barrage-detail-grid">
-                        <div class="barrage-detail-item"><span class="stat-label">각도</span> ${firstBarrage.angle || 0}°</div>
-                        <div class="barrage-detail-item"><span class="stat-label">Δ각도</span> ${firstBarrage.delta_angle || 0}°</div>
-                        <div class="barrage-detail-item"><span class="stat-label">딜레이</span> ${firstBarrage.delay || 0}s</div>
-                        <div class="barrage-detail-item"><span class="stat-label">반복</span> ${(firstBarrage.primal_repeat || 0) + 1}발</div>
-                        ${firstBarrage.senior_repeat ? `<div class="barrage-detail-item"><span class="stat-label">시니어</span> ${firstBarrage.senior_repeat + 1}회</div>` : ''}
-                    </div>
-                </details>`;
-            }
-        }
-
-        html += `</div>`;
-        return html;
+        weaponCardsContainer.replaceChildren(...cards);
     }
 
     // ===== Firing Logic =====

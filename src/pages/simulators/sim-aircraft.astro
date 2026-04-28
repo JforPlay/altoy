@@ -39,21 +39,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
         <!-- Playback Controls Bar -->
         <div class="playback-bar">
-            <button id="fire-button" class="btn btn-primary">
+            <button id="fire-button" class="btn btn-primary" type="button">
                 <span class="material-symbols-outlined">play_arrow</span>
                 발사
             </button>
-            <div class="speed-control">
-                <button class="speed-btn" data-speed="0.75">0.75x</button>
-                <button class="speed-btn active" data-speed="1.5">1.5x</button>
-                <button class="speed-btn" data-speed="2">2x</button>
-                <button class="speed-btn" data-speed="3">3x</button>
+            <div class="speed-control" role="group" aria-label="재생 속도">
+                <button class="speed-btn" data-speed="0.75" type="button" aria-pressed="false">0.75x</button>
+                <button class="speed-btn active" data-speed="1.5" type="button" aria-pressed="true">1.5x</button>
+                <button class="speed-btn" data-speed="2" type="button" aria-pressed="false">2x</button>
+                <button class="speed-btn" data-speed="3" type="button" aria-pressed="false">3x</button>
             </div>
-            <button id="pause-button" class="btn btn-icon" title="일시정지">
+            <button id="pause-button" class="btn btn-icon" title="일시정지" type="button" aria-label="일시정지" aria-pressed="false">
                 <span class="material-symbols-outlined">pause</span>
             </button>
             <div class="bar-separator"></div>
-            <button id="enemy-toggle" class="btn btn-secondary">적 위치: 상단</button>
+            <button id="enemy-toggle" class="btn btn-secondary" type="button" aria-pressed="false">적 위치: 상단</button>
             <div id="level-toggle-container"></div>
         </div>
 

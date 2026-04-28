@@ -7,7 +7,7 @@
 import {
     debounce, getUrlParam, setUrlParams,
     showElement, hideElement, showToast, createSearchIndex,
-    createImgElement, IMG_FALLBACKS
+    createImgElement, IMG_FALLBACKS, setupFpsDisplay
 } from '../utils.js';
 import { EquipSkinData } from './equip-skin.data.js';
 import { EquipSkinPreview } from './equip-skin.preview.js';
@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- DOM ---
     const themeSearch = document.getElementById('theme-search');
     const themeList = document.getElementById('theme-list');
+    const themeTotalCount = document.getElementById('theme-total-count');
     const skinGridContainer = document.getElementById('skin-grid-container');
     const skinInfo = document.getElementById('skin-info');
     const skinIcon = document.getElementById('skin-icon');
@@ -164,6 +165,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     renderThemeList(data.themeList);
+    if (themeTotalCount) {
+        themeTotalCount.textContent = `${data.themeList.length}개`;
+    }
     updateLoopButton();
     updatePauseButton();
     updateSpeedButtons();
@@ -411,44 +415,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     }, 150));
 
     // --- FPS Display ---
-    const fpsDisplay = document.getElementById('fps-display');
-    if (fpsDisplay) {
-        let lastTime = performance.now();
-        let frameCount = 0;
-        let fpsAnimId = null;
-
-        const updateFPS = () => {
-            const now = performance.now();
-            frameCount++;
-            if (now >= lastTime + 1000) {
-                fpsDisplay.textContent = `FPS: ${Math.round((frameCount * 1000) / (now - lastTime))}`;
-                frameCount = 0;
-                lastTime = now;
-            }
-            fpsAnimId = requestAnimationFrame(updateFPS);
-        };
-
-        const onVisibility = () => {
-            if (document.hidden && fpsAnimId) {
-                cancelAnimationFrame(fpsAnimId);
-                fpsAnimId = null;
-            } else if (!document.hidden && !fpsAnimId) {
-                lastTime = performance.now();
-                frameCount = 0;
-                fpsAnimId = requestAnimationFrame(updateFPS);
-            }
-        };
-        document.addEventListener('visibilitychange', onVisibility);
-
-        // Tear down on page unload so a future Astro view-transition migration doesn't leak this listener / rAF across navigations.
-        window.addEventListener('pagehide', () => {
-            document.removeEventListener('visibilitychange', onVisibility);
-            if (fpsAnimId) {
-                cancelAnimationFrame(fpsAnimId);
-                fpsAnimId = null;
-            }
-        }, { once: true });
-
-        fpsAnimId = requestAnimationFrame(updateFPS);
-    }
+    setupFpsDisplay(document.getElementById('fps-display'));
 });

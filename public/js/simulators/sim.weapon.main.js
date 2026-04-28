@@ -6,31 +6,28 @@
  * Part of the simulators module group; mirrors sim.aircraft.main.js structure.
  */
 
-import { debounce, fetchJSON, getUrlParam, resolveUrl, showElement, hideElement, setupModal, openModal, closeModal } from '../utils.js';
+import { debounce, fetchJSON, getUrlParam, resolveUrl, setUrlParams, showElement, hideElement, setupModal, openModal, closeModal, createImgElement, setupFpsDisplay } from '../utils.js';
 import { SimulationEngine } from './sim.engine.common.js';
 import { WeaponSimData } from './sim.weapon.data.js';
 import { AircraftEntity } from './sim.engine.aircraft.js';
-
-/** Ammo type display names (from bullet_template ammo_type field) */
-const AMMO_TYPE_NAMES = {
-    1: '철갑탄', 2: '고폭탄', 3: '통상탄', 4: '음향 유도', 5: '통상',
-    6: '삼식탄', 7: '반철갑탄(SAP탄)', 8: '자성식', 9: '격발식', 10: '없음', 11: '미사일',
-};
-
-/** Bullet type labels */
-const BULLET_TYPE_NAMES = {
-    1: '포탄', 2: '폭탄', 3: '어뢰', 4: '파편', 5: '미사일',
-    10: '빔', 11: '중력장', 14: '우주레이저', 15: '확장탄',
-};
+import {
+    SIM_DEFAULT_SPEED,
+    SIM_GAME_COORDS,
+    SIM_TARGET_FPS,
+    buildWeaponCard,
+    convertToMs,
+    createMetaRow,
+    makeClickableCard,
+    populateChoicesOrSelect,
+    registerDefaultBattleEntities,
+    renderLevelToggle,
+    renderPlaceholder,
+    setupEnemyToggle,
+    setupPauseButton,
+    setupSpeedControls
+} from './sim.ui.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const GAME_COORDS = {
-        totalArea: { minX: -120, minY: 30, maxX: 80, maxY: 85 },
-        playerArea: { minX: -120, minY: 30, maxX: 15, maxY: 85 }
-    };
-    const TARGET_FPS = 30;
-    const GLOBAL_SPEED_MULTIPLIER = 1.5;
-
     // --- DOM Elements ---
     const simContainer = document.getElementById('simulation-container');
     const vanguard = document.getElementById('vanguard');
@@ -52,8 +49,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentSkillLevel = '1';
     let pendingFireTimers = [];
     let activeAircraft = [];
-    let isPaused = false;
     let classGroupsData = null;
+    let displayToken = 0;
 
     function scheduleFireTimer(fn, delay) {
         const id = setTimeout(() => {
@@ -66,34 +63,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- Engine Initialization ---
     const simEngine = new SimulationEngine({
         container: simContainer,
-        gameCoords: GAME_COORDS,
-        targetFps: TARGET_FPS,
-        gSpeed: GLOBAL_SPEED_MULTIPLIER,
+        gameCoords: SIM_GAME_COORDS,
+        targetFps: SIM_TARGET_FPS,
+        gSpeed: SIM_DEFAULT_SPEED,
         visualLog: visualLog
     });
 
     const weaponSimData = new WeaponSimData(simEngine);
 
-    simEngine.registerEntities({
-        vanguard: { element: vanguard, baseWidth: 6.5, aspectRatio: 178 / 226, gamePos: { x: -36, y: 58 } },
-        mainfleet: { element: mainfleet, baseWidth: 6.5, aspectRatio: 195 / 253, gamePos: { x: -105, y: 58 } },
-        enemy: { element: enemy, baseWidth: 7.0, aspectRatio: 369 / 300 }
-    });
-
-    simEngine.registerEntityState('enemy', {
-        getGamePos: (state) => ({ x: 15, y: state.centered ? 58 : 72 })
-    });
-    simEngine.setEntityState('enemy', 'centered', false);
+    registerDefaultBattleEntities(simEngine, { vanguard, mainfleet, enemy });
 
     let choicesInstance;
 
     // --- Initialize ---
-    await weaponSimData.loadData();
+    try {
+        await weaponSimData.loadData();
+    } catch (error) {
+        renderPlaceholder(weaponCardsContainer, '스킬 데이터를 불러올 수 없습니다. 잠시 후 다시 시도하세요.', 'error');
+        fireButton.disabled = true;
+        shipBrowseBtn.disabled = true;
+        return;
+    }
     simEngine.updateLayoutAndScale(playerAreaDiv);
     populateSkillSelector();
-    initFPSDisplay();
-    initSpeedControls();
-    initPauseButton();
+    setupFpsDisplay(document.getElementById('fps-display'));
+    setupSpeedControls(simEngine);
+    setupPauseButton(simEngine, pauseButton);
+    setupEnemyToggle(simEngine, enemyToggle, playerAreaDiv);
     initShipBrowseModal();
     setupModal('class-group-modal', { closeOnEscape: true, closeOnBackdrop: true, closeButtonSelector: '.modal-close-btn' });
 
@@ -124,51 +120,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         activeAircraft.forEach(a => a.destroy());
         activeAircraft = [];
         simEngine.clearBullets();
-        const selectedSkillId = choicesInstance.getValue(true);
+        const selectedSkillId = getSelectedSkillId();
         if (selectedSkillId && selectedSkillId !== 'none') await fireSkill(selectedSkillId);
         else simEngine.logToScreen("No skill selected to fire.", "error");
     });
-
-    enemyToggle.addEventListener('click', () => {
-        const currentState = simEngine.getEntityState('enemy', 'centered');
-        simEngine.setEntityState('enemy', 'centered', !currentState);
-        const isCentered = simEngine.getEntityState('enemy', 'centered');
-        enemyToggle.textContent = isCentered ? '적 위치: 중앙' : '적 위치: 상단';
-        enemyToggle.classList.toggle('centered', isCentered);
-        simEngine.updateLayoutAndScale(playerAreaDiv);
-    });
-
-    // ===== Controls Initialization =====
-
-    // --- Speed Controls ---
-    function initSpeedControls() {
-        document.querySelectorAll('.speed-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const speed = parseFloat(btn.dataset.speed);
-                simEngine.bulletEngine.gSpeed = speed;
-            });
-        });
-    }
-
-    // --- Pause/Resume ---
-    function initPauseButton() {
-        pauseButton.addEventListener('click', () => {
-            isPaused = !isPaused;
-            const icon = pauseButton.querySelector('.material-symbols-outlined');
-            if (isPaused) {
-                simEngine.bulletEngine.gSpeed = 0;
-                icon.textContent = 'play_arrow';
-                pauseButton.title = '재생';
-            } else {
-                const activeSpeedBtn = document.querySelector('.speed-btn.active');
-                simEngine.bulletEngine.gSpeed = activeSpeedBtn ? parseFloat(activeSpeedBtn.dataset.speed) : 1.5;
-                icon.textContent = 'pause';
-                pauseButton.title = '일시정지';
-            }
-        });
-    }
 
     // ===== Ship Browse Modal =====
 
@@ -189,6 +144,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         searchInput.addEventListener('input', debounce(() => {
             filterShipBrowseList(searchInput.value);
         }, 200));
+
+        document.getElementById('ship-browse-list')?.addEventListener('click', (event) => {
+            const item = event.target.closest('.ship-grid-item');
+            if (!item) return;
+            filterSkillsByShip(item.dataset.ship);
+            closeModal('ship-browse-modal');
+        });
     }
 
     function getShipIconUrl(shipName) {
@@ -204,20 +166,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function populateShipBrowseList() {
         const container = document.getElementById('ship-browse-list');
-        const shipNames = getUniqueShipNames();
-        container.innerHTML = shipNames.map(name => {
+        const fragment = document.createDocumentFragment();
+        for (const name of getUniqueShipNames()) {
             const iconUrl = getShipIconUrl(name);
-            const iconHtml = iconUrl ? `<img src="${iconUrl}" alt="" class="ship-grid-icon" loading="lazy">` : '';
-            return `<div class="ship-grid-item" data-ship="${name}">${iconHtml}<span>${name}</span></div>`;
-        }).join('');
-
-        container.querySelectorAll('.ship-grid-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const shipName = item.dataset.ship;
-                filterSkillsByShip(shipName);
-                closeModal('ship-browse-modal');
-            });
-        });
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'ship-grid-item';
+            button.dataset.ship = name;
+            if (iconUrl) button.appendChild(createImgElement(iconUrl, '', { className: 'ship-grid-icon' }));
+            const label = document.createElement('span');
+            label.textContent = name;
+            button.appendChild(label);
+            fragment.appendChild(button);
+        }
+        container.replaceChildren(fragment);
     }
 
     function filterShipBrowseList(query) {
@@ -252,42 +214,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // ===== FPS Display =====
-
-    // --- FPS Display ---
-    function initFPSDisplay() {
-        const fpsDisplay = document.getElementById('fps-display');
-        if (!fpsDisplay) return;
-        let lastTime = performance.now();
-        let frameCount = 0;
-        let fpsAnimId = null;
-
-        function updateFPS() {
-            const now = performance.now();
-            frameCount++;
-            if (now >= lastTime + 1000) {
-                fpsDisplay.textContent = `FPS: ${Math.round((frameCount * 1000) / (now - lastTime))}`;
-                frameCount = 0;
-                lastTime = now;
-            }
-            fpsAnimId = requestAnimationFrame(updateFPS);
-        }
-        fpsAnimId = requestAnimationFrame(updateFPS);
-
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                if (fpsAnimId) { cancelAnimationFrame(fpsAnimId); fpsAnimId = null; }
-            } else if (!fpsAnimId) {
-                lastTime = performance.now(); frameCount = 0;
-                fpsAnimId = requestAnimationFrame(updateFPS);
-            }
-        });
-    }
-
-    function convertToMs(value, timeUnitIsFrames = false) {
-        return timeUnitIsFrames ? (value / TARGET_FPS) * 1000 : value * 1000;
-    }
-
     // ===== Skill Selector =====
 
     // --- Skill Selector (grouped by shipgirl) ---
@@ -316,35 +242,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             choices: groups[shipName]
         }));
 
-        choicesInstance = new Choices(skillSelect, {
-            choices: choiceGroups,
-            searchEnabled: true,
-            itemSelectText: '선택',
-            shouldSort: false,
-            searchPlaceholderValue: '함순이 또는 스킬 검색...',
-            noResultsText: '검색 결과 없음',
+        const firstSkillId = Object.keys(allSkills)[0];
+        choicesInstance = populateChoicesOrSelect(skillSelect, choiceGroups, {
+            choicesConfig: {
+                searchEnabled: true,
+                itemSelectText: '선택',
+                shouldSort: false,
+                searchPlaceholderValue: '함순이 또는 스킬 검색...',
+                noResultsText: '검색 결과 없음',
+            },
+            firstValue: firstSkillId,
         });
 
-        // Inject shipgirl face icons into group headings
+        // Inject shipgirl face icons into the rendered group headings.
         const headings = skillSelect.closest('.choices')?.querySelectorAll('.choices__heading');
-        if (headings) {
-            headings.forEach(heading => {
-                const name = heading.textContent.trim();
-                const iconUrl = groupIcons[name];
-                if (iconUrl) {
-                    const img = document.createElement('img');
-                    img.src = iconUrl;
-                    img.alt = '';
-                    img.className = 'group-icon';
-                    img.loading = 'lazy';
-                    heading.prepend(img);
-                }
-            });
-        }
-
-        // Select first skill
-        const firstSkillId = Object.keys(allSkills)[0];
-        if (firstSkillId) choicesInstance.setChoiceByValue(firstSkillId);
+        headings?.forEach(heading => {
+            const iconUrl = groupIcons[heading.textContent.trim()];
+            if (iconUrl) heading.prepend(createImgElement(iconUrl, '', { className: 'group-icon' }));
+        });
     }
 
     function hasMultipleLevels(skill) {
@@ -352,11 +267,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         return !!(skill['1']?.effect_list && skill['10']?.effect_list);
     }
 
-    function getEffectList(skill, level) {
-        if (skill[level]?.effect_list) return skill[level].effect_list;
-        if (skill['1']?.effect_list) return skill['1'].effect_list;
-        if (skill.effect_list) return skill.effect_list;
-        return null;
+    function getSelectedSkillId() {
+        return choicesInstance ? choicesInstance.getValue(true) : skillSelect.value;
     }
 
     // ===== Display Update =====
@@ -364,17 +276,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- Update Display (replaces old updateSkillStats) ---
     async function updateSkillDisplay(skillId) {
         if (skillId === 'none' || !skillId) {
-            weaponCardsContainer.innerHTML = '<div class="card placeholder-card"><p>스킬을 선택하여 무기 정보를 확인하세요.</p></div>';
+            renderPlaceholder(weaponCardsContainer, '스킬을 선택하여 무기 정보를 확인하세요.');
             hideElement(shipgirlCard);
             hideElement(skillInfoCard);
-            levelToggleContainer.innerHTML = '';
+            levelToggleContainer.replaceChildren();
             return;
         }
 
+        const token = ++displayToken;
         const skill = weaponSimData.getSkillById(skillId);
         if (!skill) return;
 
         await weaponSimData.ensureSkillWeaponsLoaded(skillId, currentSkillLevel);
+        if (token !== displayToken) return;
+        setUrlParams({ skill_id: skillId }, { replace: true });
 
         // Shipgirl card
         updateShipgirlCard(skill, skillId);
@@ -393,18 +308,33 @@ document.addEventListener('DOMContentLoaded', async () => {
         const skillWeaponData = weaponSimData.getAllSkills()[skillId];
         const shipName = skillWeaponData?.name || '알 수 없음';
         const className = skillWeaponData?.class_name;
-        const shipyardHtml = skill.shipyard ? `<img src="${skill.shipyard}" alt="" class="shipyard-icon">` : '';
-        const classHtml = className ? `<div class="ship-class">${className}</div>` : '';
 
-        shipgirlCard.innerHTML = `
-            ${shipyardHtml}
-            <div class="ship-name">${shipName}</div>
-            ${classHtml}
-            <div class="more-info">${className ? '클릭하여 동급 함순이 보기 →' : '클릭하여 함순이 정보 보기 →'}</div>
-        `;
-        shipgirlCard.onclick = className
-            ? () => openClassGroupModal(className, shipName)
-            : () => { window.location.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(shipName)}`); };
+        const nodes = [];
+        if (skill.shipyard) {
+            nodes.push(createImgElement(skill.shipyard, '', { className: 'shipyard-icon' }));
+        }
+        const name = document.createElement('div');
+        name.className = 'ship-name';
+        name.textContent = shipName;
+        nodes.push(name);
+        if (className) {
+            const shipClass = document.createElement('div');
+            shipClass.className = 'ship-class';
+            shipClass.textContent = className;
+            nodes.push(shipClass);
+        }
+        const moreInfo = document.createElement('div');
+        moreInfo.className = 'more-info';
+        moreInfo.textContent = className ? '클릭하여 동급 함순이 보기 →' : '클릭하여 함순이 정보 보기 →';
+        nodes.push(moreInfo);
+
+        shipgirlCard.replaceChildren(...nodes);
+        makeClickableCard(shipgirlCard, {
+            onActivate: className
+                ? () => openClassGroupModal(className, shipName)
+                : () => { window.location.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(shipName)}`); },
+            ariaLabel: `${shipName} 정보 보기`,
+        });
         showElement(shipgirlCard);
     }
 
@@ -426,12 +356,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         document.getElementById('class-group-title').textContent = className;
         const container = document.getElementById('class-group-list');
-        container.innerHTML = ships.map(s => {
+        const fragment = document.createDocumentFragment();
+        for (const s of ships) {
             const iconUrl = s.shipyard ? s.shipyard.replace('shipyard.png', 'icon.png') : '';
-            const iconHtml = iconUrl ? `<img src="${iconUrl}" alt="" class="ship-grid-icon" loading="lazy">` : '';
-            const activeClass = s.name === currentShipName ? ' class-group-current' : '';
-            return `<a href="${resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(s.name)}`)}" class="ship-grid-item${activeClass}" target="_blank">${iconHtml}<span>${s.name}</span></a>`;
-        }).join('');
+            const link = document.createElement('a');
+            link.href = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(s.name)}`);
+            link.className = `ship-grid-item${s.name === currentShipName ? ' class-group-current' : ''}`;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            if (iconUrl) link.appendChild(createImgElement(iconUrl, '', { className: 'ship-grid-icon' }));
+            const label = document.createElement('span');
+            label.textContent = s.name;
+            link.appendChild(label);
+            fragment.appendChild(link);
+        }
+        container.replaceChildren(fragment);
 
         openModal('class-group-modal');
     }
@@ -439,46 +378,51 @@ document.addEventListener('DOMContentLoaded', async () => {
     function updateSkillInfoCard(skill, skillId) {
         const skillName = weaponSimData.getSkillName(skillId);
         const skillMeta = document.getElementById('skill-meta');
-
-        let html = '';
+        const fragment = document.createDocumentFragment();
         if (skill.icon) {
-            html += `<div class="skill-header">
-                <img src="${skill.icon}" alt="" class="skill-icon">
-                <div>
-                    <div class="skill-name">${skillName}</div>
-                    <div style="font-size:0.75rem;color:var(--text-muted)">ID: ${skillId}</div>
-                </div>
-            </div>`;
+            const header = document.createElement('div');
+            header.className = 'skill-header';
+            const text = document.createElement('div');
+            const name = document.createElement('div');
+            name.className = 'skill-name';
+            name.textContent = skillName;
+            const id = document.createElement('div');
+            id.className = 'sim-muted-text';
+            id.textContent = `ID: ${skillId}`;
+            text.append(name, id);
+            header.append(createImgElement(skill.icon, '', { className: 'skill-icon' }), text);
+            fragment.appendChild(header);
         }
 
-        html += `
-            <div class="skill-meta-row"><span class="meta-label">포지션</span><span class="meta-value">${skill.position || '없음'}</span></div>
-            <div class="skill-meta-row"><span class="meta-label">레벨</span><span class="meta-value">${currentSkillLevel}</span></div>
-        `;
+        fragment.append(
+            createMetaRow('포지션', skill.position || '없음'),
+            createMetaRow('레벨', currentSkillLevel)
+        );
 
         if (skill.requirement) {
-            html += `<div class="skill-meta-row"><span class="meta-label">요구사항</span><span class="meta-value">${skill.requirement}</span></div>`;
+            fragment.appendChild(createMetaRow('요구사항', skill.requirement));
         }
 
         if (skill.desc) {
-            html += `<div class="skill-desc">${skill.desc}</div>`;
+            const desc = document.createElement('div');
+            desc.className = 'skill-desc';
+            desc.textContent = skill.desc;
+            fragment.appendChild(desc);
         }
 
-        skillMeta.innerHTML = html;
+        skillMeta.replaceChildren(fragment);
         showElement(skillInfoCard);
     }
 
     function updateLevelToggle(skillId) {
         const skill = weaponSimData.getSkillById(skillId);
         if (!hasMultipleLevels(skill)) {
-            levelToggleContainer.innerHTML = '';
+            levelToggleContainer.replaceChildren();
             return;
         }
 
         const isLevel10 = currentSkillLevel === '10';
-        levelToggleContainer.innerHTML = `<button id="level-toggle" class="${isLevel10 ? 'level-10' : ''}">Lv.${isLevel10 ? '10' : '1'}</button>`;
-
-        document.getElementById('level-toggle').addEventListener('click', async () => {
+        renderLevelToggle(levelToggleContainer, `Lv.${isLevel10 ? '10' : '1'}`, isLevel10, async () => {
             currentSkillLevel = currentSkillLevel === '1' ? '10' : '1';
             await updateSkillDisplay(skillId);
         });
@@ -487,7 +431,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function updateWeaponCards(skillId) {
         const weaponInfoList = weaponSimData.getWeaponIdsFromSkill(skillId, currentSkillLevel);
         if (weaponInfoList.length === 0) {
-            weaponCardsContainer.innerHTML = '<div class="card placeholder-card"><p>무기 데이터가 없습니다.</p></div>';
+            renderPlaceholder(weaponCardsContainer, '무기 데이터가 없습니다.');
             return;
         }
 
@@ -499,100 +443,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const weapon = weaponSimData.getWeaponById(info.weaponId);
             if (!weapon) continue;
 
-            const card = buildWeaponCard(weapon, info, i + 1, showNumber);
+            const card = buildWeaponCard(weapon, info, i + 1, showNumber, {
+                bulletData: simEngine.allBulletData,
+                barrageData: simEngine.allBarrageData
+            });
             cards.push(card);
         }
 
-        weaponCardsContainer.innerHTML = cards.join('');
-    }
-
-    function buildWeaponCard(weapon, weaponInfo, index, showNumber) {
-        // Get first bullet info for ammo type display
-        const firstBulletId = weapon.bullet_ID?.[0];
-        const bulletInfo = firstBulletId ? simEngine.allBulletData[firstBulletId] : null;
-        const ammoType = bulletInfo?.ammo_type || 0;
-        const ammoName = AMMO_TYPE_NAMES[ammoType] || '알 수 없음';
-        const bulletType = bulletInfo?.type || 0;
-        const bulletTypeName = BULLET_TYPE_NAMES[bulletType] || '일반';
-
-        // Calculate total bullets per fire
-        let totalBullets = 0;
-        if (weapon.barrage_ID) {
-            weapon.barrage_ID.forEach(bId => {
-                const barrage = simEngine.allBarrageData[bId];
-                if (barrage) totalBullets += (barrage.primal_repeat || 0) + 1;
-            });
-        }
-        totalBullets *= (weaponInfo.quota || 1);
-
-        // Reload time
-        const reloadMs = weapon.reload_max;
-        const reloadDisplay = reloadMs ? `${(reloadMs / 10).toFixed(1)}s` : '-';
-
-        // Range
-        const range = weapon.range || bulletInfo?.range || '-';
-
-        // Damage
-        const damage = weapon.damage || '-';
-        const corrected = weapon.corrected ? ` (×${weapon.corrected}%)` : '';
-
-        // Pierce
-        const pierce = bulletInfo?.pierce_count || '-';
-
-        // Armor modifiers
-        const damageType = bulletInfo?.damage_type;
-
-        let html = `<div class="weapon-card">`;
-
-        // Header
-        html += `<div class="weapon-card-header">
-            <div class="weapon-card-title">${showNumber ? `무기 ${index}` : '무기 정보'}
-                <span class="ammo-badge" style="background:var(--ammo-color-${ammoType})">${ammoName}</span>
-            </div>
-            <span class="weapon-card-id">${weaponInfo.weaponId}</span>
-        </div>`;
-
-        // Stats grid
-        html += `<div class="weapon-stats">
-            <div class="stat-item"><span class="stat-label">탄종</span><span class="stat-value">${bulletTypeName}</span></div>
-            <div class="stat-item"><span class="stat-label">데미지</span><span class="stat-value">${damage}${corrected}</span></div>
-            <div class="stat-item"><span class="stat-label">장전</span><span class="stat-value">${reloadDisplay}</span></div>
-            <div class="stat-item"><span class="stat-label">사거리</span><span class="stat-value">${range}</span></div>
-            <div class="stat-item"><span class="stat-label">발사 수</span><span class="stat-value">${totalBullets}</span></div>
-            <div class="stat-item"><span class="stat-label">관통</span><span class="stat-value">${pierce}</span></div>`;
-
-        // Armor modifiers row
-        if (damageType && Array.isArray(damageType) && damageType.length >= 3) {
-            html += `<div class="armor-row">
-                <div class="armor-chip"><span class="armor-label">경장</span>${damageType[0]}%</div>
-                <div class="armor-chip"><span class="armor-label">중장</span>${damageType[1]}%</div>
-                <div class="armor-chip"><span class="armor-label">중장갑</span>${damageType[2]}%</div>
-            </div>`;
-        }
-
-        html += `</div>`; // close weapon-stats
-
-        // Barrage details (expandable)
-        if (weapon.barrage_ID && weapon.barrage_ID.length > 0) {
-            const firstBarrage = simEngine.allBarrageData[weapon.barrage_ID[0]];
-            if (firstBarrage) {
-                html += `<details class="barrage-details">
-                    <summary>탄막 상세 (${weapon.barrage_ID.length}개 패턴)</summary>
-                    <div class="barrage-detail-grid">
-                        <div class="barrage-detail-item"><span class="stat-label">각도</span> ${firstBarrage.angle || 0}°</div>
-                        <div class="barrage-detail-item"><span class="stat-label">Δ각도</span> ${firstBarrage.delta_angle || 0}°</div>
-                        <div class="barrage-detail-item"><span class="stat-label">딜레이</span> ${firstBarrage.delay || 0}s</div>
-                        <div class="barrage-detail-item"><span class="stat-label">반복</span> ${(firstBarrage.primal_repeat || 0) + 1}발</div>
-                        ${firstBarrage.senior_repeat ? `<div class="barrage-detail-item"><span class="stat-label">시니어</span> ${firstBarrage.senior_repeat + 1}회</div>` : ''}
-                        ${weaponInfo.quota ? `<div class="barrage-detail-item"><span class="stat-label">Quota</span> ${weaponInfo.quota}회</div>` : ''}
-                        ${weaponInfo.time ? `<div class="barrage-detail-item"><span class="stat-label">발동</span> ${weaponInfo.time}f</div>` : ''}
-                    </div>
-                </details>`;
-            }
-        }
-
-        html += `</div>`; // close weapon-card
-        return html;
+        weaponCardsContainer.replaceChildren(...cards);
     }
 
     // ===== Firing Logic =====

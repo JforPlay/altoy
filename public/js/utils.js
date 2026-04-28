@@ -1010,6 +1010,58 @@ function showToast(message, type = 'info', duration = 3000) {
     }, duration);
 }
 
+/**
+ * Drive an FPS counter into the given element via requestAnimationFrame, with
+ * automatic pause/resume on tab visibility and teardown on `pagehide`.
+ * @param {HTMLElement|null} fpsDisplay
+ * @returns {() => void} A `stop` function for explicit teardown (HMR/tests).
+ */
+function setupFpsDisplay(fpsDisplay) {
+    if (!fpsDisplay) return () => {};
+
+    let lastTime = performance.now();
+    let frameCount = 0;
+    let fpsAnimId = null;
+
+    const updateFPS = () => {
+        const now = performance.now();
+        frameCount++;
+        if (now >= lastTime + 1000) {
+            fpsDisplay.textContent = `FPS: ${Math.round((frameCount * 1000) / (now - lastTime))}`;
+            frameCount = 0;
+            lastTime = now;
+        }
+        fpsAnimId = requestAnimationFrame(updateFPS);
+    };
+
+    const start = () => {
+        if (fpsAnimId) return;
+        lastTime = performance.now();
+        frameCount = 0;
+        fpsAnimId = requestAnimationFrame(updateFPS);
+    };
+
+    const stop = () => {
+        if (!fpsAnimId) return;
+        cancelAnimationFrame(fpsAnimId);
+        fpsAnimId = null;
+    };
+
+    const onVisibility = () => {
+        if (document.hidden) stop();
+        else start();
+    };
+
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('pagehide', () => {
+        document.removeEventListener('visibilitychange', onVisibility);
+        stop();
+    }, { once: true });
+
+    start();
+    return stop;
+}
+
 // ===== Initialization =====
 
 // Auto-purge old cache entries on page load (7 days)
@@ -1072,5 +1124,8 @@ export {
     createSearchIndex,
 
     // Toast notifications
-    showToast
+    showToast,
+
+    // Performance display
+    setupFpsDisplay
 };

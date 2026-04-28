@@ -426,6 +426,7 @@
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
+  font-family: inherit;
 }
 
 .type-filter-btn:hover {
@@ -437,6 +438,11 @@
   background: var(--primary-color);
   border-color: var(--primary-color);
   color: #fff;
+}
+
+.sim-muted-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
 .placeholder-card {
@@ -508,6 +514,22 @@
   align-items: center;
   gap: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
+}
+
+.aircraft-stats {
+  margin-top: var(--spacing-sm);
+}
+
+.aircraft-equip-icon {
+  border-radius: var(--radius-sm);
+}
+
+.aircraft-rarity-badge {
+  margin-left: auto;
+}
+
+#aircraft-info-card {
+  cursor: pointer;
 }
 
 .skill-icon {
@@ -883,6 +905,8 @@ body.dark-mode {
   background: var(--bg-tertiary);
   border: 1px solid transparent;
   transition: all var(--transition-fast);
+  font-family: inherit;
+  text-decoration: none;
 }
 
 .ship-grid-item .ship-grid-icon {
@@ -895,6 +919,14 @@ body.dark-mode {
 .ship-grid-item:hover {
   border-color: var(--primary-color);
   background: var(--primary-alpha-10);
+}
+
+.shipgirl-card:focus-visible,
+#aircraft-info-card:focus-visible,
+.ship-grid-item:focus-visible {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-alpha-15);
 }
 
 /* ===== RESPONSIVE ===== */

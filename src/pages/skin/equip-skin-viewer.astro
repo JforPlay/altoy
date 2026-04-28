@@ -57,6 +57,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <aside class="esv-sidebar">
                 <div class="esv-sidebar-header">
                     <h3>테마</h3>
+                    <span id="theme-total-count" class="esv-theme-total" aria-live="polite"></span>
                 </div>
                 <input type="text" id="theme-search" class="search-input" placeholder="테마 검색..." aria-label="테마 검색" />
                 <div id="theme-list" class="esv-theme-list" role="group" aria-label="장비 스킨 테마"></div>
