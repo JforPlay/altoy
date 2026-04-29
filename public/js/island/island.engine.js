@@ -34,6 +34,8 @@ const TAB_MODULE_MAP = {
     'restaurant': { key: 'restaurant', module: () => window.RestaurantModule },
     'season-calc': { key: 'seasonCalc', module: () => window.SeasonCalcModule }
 };
+const DEFAULT_TAB = 'characters';
+const VALID_TAB_NAMES = Object.freeze(Object.keys(TAB_MODULE_MAP));
 
 // ===== Initialization =====
 
@@ -85,7 +87,8 @@ function loadSharedData() {
  * season-calc → resources) just await without defensive re-checks.
  */
 function loadModule(tabName) {
-    const config = TAB_MODULE_MAP[tabName];
+    const safeTabName = normalizeTabName(tabName);
+    const config = TAB_MODULE_MAP[safeTabName];
     if (!config) return Promise.resolve();
 
     const { key, module: getModule } = config;
@@ -95,7 +98,7 @@ function loadModule(tabName) {
     moduleLoadPromises[key] = (async () => {
         const module = getModule();
         if (!module) {
-            console.warn(`[Island] Module for ${tabName} not found`);
+            console.warn(`[Island] Module for ${safeTabName} not found`);
             return;
         }
         await loadSharedData();
@@ -106,8 +109,8 @@ function loadModule(tabName) {
         state.modules[key] = module;
         console.log(`[Island] ${key} module initialized successfully`);
     })().catch(error => {
-        console.error(`[Island] Failed to lazy load ${tabName}:`, error);
-        showToast(`${tabName} 모듈을 불러오는데 실패했습니다.`, 'error');
+        console.error(`[Island] Failed to lazy load ${safeTabName}:`, error);
+        showError(`${safeTabName} 모듈을 불러오는데 실패했습니다.`);
         delete moduleLoadPromises[key];  // allow retry on transient failures
     });
 
@@ -121,33 +124,22 @@ function loadModule(tabName) {
  * callers that need to wait for the module to be ready can await it.
  */
 function switchTab(tabName) {
-    state.activeTab = tabName;
-    console.log(`[Island] Switched to tab: ${tabName}`);
-    return loadModule(tabName);
+    const safeTabName = normalizeTabName(tabName);
+
+    state.activeTab = safeTabName;
+    setStorageItem('island-active-tab', safeTabName);
+    console.log(`[Island] Switched to tab: ${safeTabName}`);
+    return loadModule(safeTabName);
 }
 
 /**
  * Programmatically activate a tab (mirrors button click behavior)
  */
 function activateTab(tabName) {
-    // Persist selection for consistency with manual clicks
-    setStorageItem('island-active-tab', tabName);
+    const safeTabName = normalizeTabName(tabName);
 
-    const tabButton = document.querySelector(`.tab-button[data-tab="${tabName}"]`);
-    if (tabButton) {
-        tabButton.click();
-    } else {
-        // Fallback: toggle classes directly if button not found
-        document.querySelectorAll('.tab-content').forEach(content => {
-            const contentId = content.id.replace('tab-', '');
-            content.classList.toggle('active', contentId === tabName);
-        });
-        document.querySelectorAll('.tab-button').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.tab === tabName);
-        });
-    }
-
-    switchTab(tabName);
+    syncTabUi(safeTabName);
+    return switchTab(safeTabName);
 }
 
 /**
@@ -162,6 +154,46 @@ function getActiveTab() {
 /** Return the shared data object (items, loaded flag) for sub-modules that need it. */
 function getSharedData() {
     return state.sharedData;
+}
+
+function normalizeTabName(tabName) {
+    const value = String(tabName || '');
+    return VALID_TAB_NAMES.includes(value) ? value : DEFAULT_TAB;
+}
+
+function syncTabUi(tabName) {
+    document.querySelectorAll('.tab-content').forEach(content => {
+        const contentId = content.id.replace('tab-', '');
+        const isActive = contentId === tabName;
+        content.classList.toggle('active', isActive);
+        content.setAttribute('aria-hidden', String(!isActive));
+        content.hidden = !isActive;
+    });
+
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        const isActive = btn.dataset.tab === tabName;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', String(isActive));
+        btn.tabIndex = isActive ? 0 : -1;
+    });
+}
+
+function showError(message) {
+    showToast(message, 'error');
+}
+
+function searchCharacters(query) {
+    const characterModule = window.CharacterModule;
+    if (!state.modules.character || !characterModule?.searchCharacters) {
+        return [];
+    }
+    return characterModule.searchCharacters(query);
+}
+
+function renderCharacterList(characters = null) {
+    const characterModule = window.CharacterModule;
+    if (!state.modules.character || !characterModule?.renderCharacterList) return;
+    characterModule.renderCharacterList(characters);
 }
 
 
@@ -635,9 +667,12 @@ window.IslandEngine = {
     getActiveTab,
     loadModule,
     getSharedData,
+    showError,
     showToast,
     getItemInfo,
     createSearchIndex: createIslandSearchIndex,
+    searchCharacters,
+    renderCharacterList,
     buildRecipeDependencyTree,
     calculateTreeCost,
     calculateTreePoints,
@@ -656,8 +691,11 @@ export {
     getActiveTab,
     loadModule,
     getSharedData,
+    showError,
     getItemInfo,
     createIslandSearchIndex as createSearchIndex,
+    searchCharacters,
+    renderCharacterList,
     buildRecipeDependencyTree,
     calculateTreeCost,
     calculateTreePoints,

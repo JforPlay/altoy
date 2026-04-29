@@ -58,6 +58,19 @@ const QUEST_TYPE_COLORS = {
     '9': '#FFE66D'  // Gold - Hidden
 };
 
+Object.assign(QUEST_TYPES, {
+    all: '전체 퀘스트',
+    1: '메인 퀘스트',
+    2: '서브 퀘스트',
+    3: '일일 퀘스트',
+    4: '주간 퀘스트',
+    5: '이벤트 서브 퀘스트',
+    6: '이벤트 일일 퀘스트',
+    7: '이벤트 주간 퀘스트',
+    8: '시즌 퀘스트',
+    9: '히든 퀘스트'
+});
+
 // ===== Initialization =====
 
 /**
@@ -156,8 +169,10 @@ function setupEventListeners() {
             if (e.target.closest('#quest-type-dropdown')) {
                 e.stopPropagation();
                 const dropdownMenu = document.getElementById('quest-type-menu');
+                const dropdown = document.getElementById('quest-type-dropdown');
                 if (dropdownMenu) {
-                    dropdownMenu.classList.toggle('visible');
+                    const isVisible = dropdownMenu.classList.toggle('visible');
+                    dropdown?.setAttribute('aria-expanded', String(isVisible));
                 }
                 return;
             }
@@ -194,6 +209,7 @@ function setupEventListeners() {
             !dropdown.contains(e.target) &&
             !dropdownMenu.contains(e.target)) {
             dropdownMenu.classList.remove('visible');
+            dropdown.setAttribute('aria-expanded', 'false');
         }
     });
 
@@ -250,6 +266,7 @@ function setFilter(type) {
     if (dropdownMenu) {
         dropdownMenu.classList.remove('visible');
     }
+    dropdown?.setAttribute('aria-expanded', 'false');
 
     filterAndRenderQuests();
     console.log(`[Quest Module] Filter set to: ${type}`);
@@ -266,8 +283,8 @@ function renderQuestFilter() {
 
     const types = ['all', ...Object.keys(state.groupedQuests).sort((a, b) => parseInt(a) - parseInt(b))];
 
-    const html = `
-        <button class="quest-type-dropdown" id="quest-type-dropdown">
+    container.innerHTML = `
+        <button class="quest-type-dropdown" id="quest-type-dropdown" type="button" aria-expanded="false" aria-controls="quest-type-menu">
             <span class="material-symbols-outlined">${QUEST_TYPE_ICONS['all'] || 'filter_list'}</span>
             <span class="dropdown-text">전체 퀘스트</span>
             <span class="material-symbols-outlined dropdown-arrow">expand_more</span>
@@ -279,17 +296,15 @@ function renderQuestFilter() {
                     : (state.groupedQuests[type] || []).length;
 
                 return `
-                    <div class="quest-type-option ${type === 'all' ? 'active' : ''}" data-type="${type}">
+                    <button class="quest-type-option ${type === 'all' ? 'active' : ''}" type="button" data-type="${type}">
                         <span class="material-symbols-outlined">${QUEST_TYPE_ICONS[type] || 'task'}</span>
                         <span class="option-name">${QUEST_TYPES[type] || `타입 ${type}`}</span>
                         <span class="option-count">${count}</span>
-                    </div>
+                    </button>
                 `;
             }).join('')}
         </div>
     `;
-
-    container.innerHTML = html;
 
     // Event delegation handles clicks - no listeners needed here
 }

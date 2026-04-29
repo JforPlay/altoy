@@ -172,6 +172,13 @@ function searchCharacters(query) {
         return Object.values(state.characters);
     }
 
+    if (!state.fuseInstance) {
+        const normalizedQuery = query.trim().toLowerCase();
+        return Object.values(state.characters).filter(char =>
+            String(char.name || '').toLowerCase().includes(normalizedQuery)
+        );
+    }
+
     const results = state.fuseInstance.search(query);
     return results.map(result => state.characters[result.item.id]);
 }
@@ -222,18 +229,18 @@ function createCharacterCard(char) {
     const isSelected = state.selectedCharacterId === String(char.id);
 
     return `
-        <div class="character-card ${isSelected ? 'selected' : ''}" data-char-id="${char.id}">
+        <button class="character-card ${isSelected ? 'selected' : ''}" type="button" data-char-id="${char.id}" aria-pressed="${isSelected}">
             <div class="character-card-portrait">
                 ${portraitUrl ? createImg(portraitUrl, char.name, { onFail: 'hide' }) : ''}
             </div>
             <div class="character-card-info">
-                <h4 class="character-card-name">${char.name}</h4>
-                <p class="character-card-power">
+                <span class="character-card-name">${char.name}</span>
+                <span class="character-card-power">
                     <span class="material-symbols-outlined">bolt</span>
                     ${char.power}
-                </p>
+                </span>
             </div>
-        </div>
+        </button>
     `;
 }
 
@@ -250,7 +257,9 @@ function selectCharacter(charId) {
 
     // Update card selection visuals
     document.querySelectorAll('.character-card').forEach(card => {
-        card.classList.toggle('selected', card.dataset.charId === charId);
+        const isSelected = card.dataset.charId === charId;
+        card.classList.toggle('selected', isSelected);
+        card.setAttribute('aria-pressed', String(isSelected));
     });
 
     // Render detail panel

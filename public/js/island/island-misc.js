@@ -5,12 +5,12 @@
  * an image gallery with a lightbox. Part of the island module group.
  */
 
-import { hideElement, openModal, closeModal, setupModal } from '../utils.js';
+import { fetchJSONWithCache, openModal, setupModal } from '../utils.js';
 
 // ===== Configuration =====
 const GITHUB_REPO = 'JforPlay/data_for_toy';
-const RAW_BASE_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/island/`;
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'];
+const CATEGORY_CACHE_MAX_AGE = 6 * 60 * 60 * 1000;
 
 const CATEGORIES = [
     { key: 'islanddressicon', path: 'island/islanddressicon' },
@@ -28,6 +28,11 @@ let currentImageIndex = 0;
 const lightbox = document.getElementById('island-misc-lightbox');
 const lightboxImg = lightbox.querySelector('.lightbox-img');
 const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+const lightboxClose = lightbox.querySelector('.lightbox-close');
+const lightboxPrev = lightbox.querySelector('.lightbox-prev');
+const lightboxNext = lightbox.querySelector('.lightbox-next');
+const galleryContainer = document.querySelector('.island-misc-container');
+let previousActiveElement = null;
 
 // ===== Data Fetching =====
 
@@ -37,12 +42,17 @@ const lightboxCaption = lightbox.querySelector('.lightbox-caption');
  */
 async function fetchCategory(category) {
     const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${category.path}`;
-    const response = await fetch(apiUrl);
-    if (!response.ok) throw new Error(`HTTP ${response.status} for ${category.key}`);
-    const files = await response.json();
+    const files = await fetchJSONWithCache(apiUrl, { maxAge: CATEGORY_CACHE_MAX_AGE });
+
+    if (!Array.isArray(files)) {
+        throw new Error(`${category.key} file list was not available`);
+    }
 
     return files
         .filter(file => {
+            if (file.type !== 'file' || typeof file.name !== 'string' || !file.download_url) {
+                return false;
+            }
             const ext = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
             return IMAGE_EXTENSIONS.includes(ext);
         })
@@ -69,15 +79,29 @@ function renderSection(category, images) {
     countEl.textContent = `${images.length}개`;
 
     gallery.innerHTML = '';
+
+    if (images.length === 0) {
+        renderSectionStatus(gallery, '표시할 이미지가 없습니다.', 'island-misc-empty');
+        return;
+    }
+
     const fragment = document.createDocumentFragment();
     images.forEach(image => {
-        const item = document.createElement('div');
+        const item = document.createElement('button');
         item.className = 'island-misc-item';
+        item.type = 'button';
+        item.dataset.galleryIndex = String(image.galleryIndex);
+        item.setAttribute('aria-label', `${image.displayName} 크게 보기`);
 
         const img = document.createElement('img');
         img.src = image.url;
         img.alt = image.displayName;
         img.loading = 'lazy';
+        img.addEventListener('error', () => {
+            item.classList.add('is-image-missing');
+            item.disabled = true;
+            item.setAttribute('aria-label', `${image.displayName} 이미지를 불러올 수 없음`);
+        }, { once: true });
 
         const caption = document.createElement('div');
         caption.className = 'item-caption';
@@ -85,10 +109,6 @@ function renderSection(category, images) {
 
         item.appendChild(img);
         item.appendChild(caption);
-        item.addEventListener('click', () => {
-            const globalIndex = allImages.indexOf(image);
-            openLightbox(globalIndex);
-        });
 
         fragment.appendChild(item);
     });
@@ -100,39 +120,98 @@ function showSectionLoading(category) {
     const section = document.querySelector(`.island-misc-section[data-category="${category}"]`);
     if (!section) return;
     const gallery = section.querySelector('.island-misc-gallery');
-    gallery.innerHTML = '<div class="island-misc-loading"><div class="spinner"></div><p>로딩 중...</p></div>';
+    gallery.innerHTML = '';
+
+    const status = document.createElement('div');
+    status.className = 'island-misc-loading';
+    status.setAttribute('role', 'status');
+
+    const spinner = document.createElement('div');
+    spinner.className = 'spinner';
+    spinner.setAttribute('aria-hidden', 'true');
+
+    const text = document.createElement('p');
+    text.textContent = '로딩 중...';
+
+    status.appendChild(spinner);
+    status.appendChild(text);
+    gallery.appendChild(status);
 }
 
 function showSectionError(category, message) {
     const section = document.querySelector(`.island-misc-section[data-category="${category}"]`);
     if (!section) return;
     const gallery = section.querySelector('.island-misc-gallery');
-    gallery.innerHTML = `<div class="island-misc-loading"><p>오류: ${message}</p></div>`;
+    renderSectionStatus(gallery, `오류: ${message}`, 'island-misc-error');
+}
+
+function renderSectionStatus(gallery, message, className = '') {
+    gallery.innerHTML = '';
+
+    const status = document.createElement('div');
+    status.className = ['island-misc-loading', className].filter(Boolean).join(' ');
+    status.setAttribute('role', className === 'island-misc-error' ? 'alert' : 'status');
+
+    const text = document.createElement('p');
+    text.textContent = message;
+
+    status.appendChild(text);
+    gallery.appendChild(status);
 }
 
 // ===== Lightbox =====
 
 function openLightbox(index) {
+    if (!Number.isInteger(index) || index < 0 || index >= allImages.length) return;
+
+    previousActiveElement = document.activeElement;
     currentImageIndex = index;
     updateLightboxImage();
-    openModal('island-misc-lightbox');
+    openModal('island-misc-lightbox', {
+        onOpen: () => {
+            lightbox.setAttribute('aria-hidden', 'false');
+            lightboxClose?.focus({ preventScroll: true });
+        },
+    });
 }
 
 function updateLightboxImage() {
     const image = allImages[currentImageIndex];
+    if (!image) return;
+
     lightboxImg.src = image.url;
     lightboxImg.alt = image.displayName;
     lightboxCaption.textContent = image.displayName;
+    updateLightboxControls();
 }
 
 function showNextImage() {
+    if (allImages.length < 2) return;
     currentImageIndex = (currentImageIndex + 1) % allImages.length;
     updateLightboxImage();
 }
 
 function showPrevImage() {
+    if (allImages.length < 2) return;
     currentImageIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
     updateLightboxImage();
+}
+
+function updateLightboxControls() {
+    const hasMultipleImages = allImages.length > 1;
+    lightboxPrev.disabled = !hasMultipleImages;
+    lightboxNext.disabled = !hasMultipleImages;
+}
+
+function handleLightboxClose() {
+    lightboxImg.src = '';
+    lightboxImg.alt = '';
+    lightbox.setAttribute('aria-hidden', 'true');
+
+    if (previousActiveElement && document.contains(previousActiveElement)) {
+        previousActiveElement.focus({ preventScroll: true });
+    }
+    previousActiveElement = null;
 }
 
 // ===== Event Listeners =====
@@ -140,16 +219,31 @@ setupModal('island-misc-lightbox', {
     closeButtonSelector: '.lightbox-close',
     closeOnBackdrop: true,
     closeOnEscape: true,
-    onClose: () => { lightboxImg.src = ''; },
+    onClose: handleLightboxClose,
 });
 
-lightbox.querySelector('.lightbox-next').addEventListener('click', showNextImage);
-lightbox.querySelector('.lightbox-prev').addEventListener('click', showPrevImage);
+galleryContainer.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+
+    const item = event.target.closest('.island-misc-item');
+    if (!item || !galleryContainer.contains(item)) return;
+
+    openLightbox(Number(item.dataset.galleryIndex));
+});
+
+lightboxNext.addEventListener('click', showNextImage);
+lightboxPrev.addEventListener('click', showPrevImage);
 
 document.addEventListener('keydown', (e) => {
-    if (lightbox.style.display === 'none' || lightbox.style.display === '') return;
-    if (e.key === 'ArrowLeft') showPrevImage();
-    else if (e.key === 'ArrowRight') showNextImage();
+    if (!lightbox.classList.contains('active')) return;
+
+    if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        showPrevImage();
+    } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        showNextImage();
+    }
 });
 
 // ===== Initialization =====
@@ -166,7 +260,11 @@ async function init() {
     results.forEach((result, i) => {
         const cat = CATEGORIES[i];
         if (result.status === 'fulfilled') {
-            const images = result.value;
+            const startIndex = allImages.length;
+            const images = result.value.map((image, imageIndex) => ({
+                ...image,
+                galleryIndex: startIndex + imageIndex,
+            }));
             allImages.push(...images);
             renderSection(cat.key, images);
         } else {

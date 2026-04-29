@@ -202,6 +202,25 @@ body {
     color: var(--island-accent);
 }
 
+.tab-button:focus-visible,
+.island-btn:focus-visible,
+.category-filter-btn:focus-visible,
+.quest-type-dropdown:focus-visible,
+.quest-type-option:focus-visible,
+.restaurant-tab:focus-visible,
+.rank-btn:focus-visible,
+.action-btn:focus-visible,
+.modal-select-btn:focus-visible,
+.tech-completion-toggle:focus-visible,
+.tech-detail-close:focus-visible,
+.resource-totals-mode-toggle:focus-visible,
+.calc-clear-btn:focus-visible,
+.season-pass-toggle:focus-visible,
+.calc-view-recipe-btn:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--island-accent) 70%, transparent);
+    outline-offset: 2px;
+}
+
 .tab-button.active {
     background: var(--island-accent);
     color: #ffffff;

@@ -210,6 +210,14 @@ function searchTechnologies(query) {
         return Object.values(state.technologies);
     }
 
+    if (!state.fuseInstance) {
+        const normalizedQuery = query.trim().toLowerCase();
+        return Object.values(state.technologies).filter(tech => {
+            const searchText = `${tech.tech_name || ''} ${tech.tech_desc || ''}`.toLowerCase();
+            return searchText.includes(normalizedQuery);
+        });
+    }
+
     const results = state.fuseInstance.search(query);
     return results.map(result => state.technologies[result.item.id]);
 }

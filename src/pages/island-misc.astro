@@ -46,10 +46,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </details>
     </div>
 
-    <div id="island-misc-lightbox" class="island-misc-lightbox">
-        <button class="lightbox-close">&times;</button>
-        <button class="lightbox-prev">&#10094;</button>
-        <button class="lightbox-next">&#10095;</button>
+    <div id="island-misc-lightbox" class="island-misc-lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="이미지 크게 보기">
+        <button class="lightbox-close" type="button" aria-label="닫기">&times;</button>
+        <button class="lightbox-prev" type="button" aria-label="이전 이미지">&#10094;</button>
+        <button class="lightbox-next" type="button" aria-label="다음 이미지">&#10095;</button>
         <img class="lightbox-img" src="" alt="">
         <div class="lightbox-caption"></div>
     </div>

@@ -1,12 +1,10 @@
 ---
 /**
  * Island Management Page
- * Multi-tab hub for characters, technology, quests, resources, restaurant, season calc
- * Converted from pages/island/island.html
+ * Multi-tab hub for characters, technology, quests, resources, restaurant, season calc.
  */
 import Layout from '../layouts/Layout.astro';
 
-// Import all island CSS
 import '../styles/island/island.style.css';
 import '../styles/island/island.character.style.css';
 import '../styles/island/island.technology.style.css';
@@ -28,61 +26,51 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <Layout title="Island" bodyClass="dark-mode" {base}>
     <div class="island-container">
-        <!-- Page Header -->
         <header class="island-header">
             <h1>
                 <span class="material-symbols-outlined">forest</span>
-                벽뜌땨 관리
+                무인도 관리
             </h1>
-            <p class="subtitle">벽타듀에서의 함순이, 연구, 퀘스트 등의 정보를 확인해보세요</p>
+            <p class="subtitle">함순이, 기술, 퀘스트, 자원, 레스토랑, 시즌 계산 정보를 한 곳에서 확인하세요</p>
         </header>
 
-        <!-- Tab Navigation -->
-        <nav class="tab-navigation">
-            <button class="tab-button active" data-tab="characters">
+        <nav class="tab-navigation" role="tablist" aria-label="Island sections">
+            <button class="tab-button active" type="button" data-tab="characters">
                 <span class="material-symbols-outlined">group</span>
                 캐릭터
             </button>
-            <button class="tab-button" data-tab="technology">
+            <button class="tab-button" type="button" data-tab="technology">
                 <span class="material-symbols-outlined">build</span>
-                연구
+                기술
             </button>
-            <button class="tab-button" data-tab="quests">
+            <button class="tab-button" type="button" data-tab="quests">
                 <span class="material-symbols-outlined">task_alt</span>
                 퀘스트
             </button>
-            <button class="tab-button" data-tab="resources">
+            <button class="tab-button" type="button" data-tab="resources">
                 <span class="material-symbols-outlined">inventory</span>
                 자원
             </button>
-            <button class="tab-button" data-tab="restaurant">
+            <button class="tab-button" type="button" data-tab="restaurant">
                 <span class="material-symbols-outlined">restaurant</span>
                 레스토랑
             </button>
-            <button class="tab-button" data-tab="season-calc">
+            <button class="tab-button" type="button" data-tab="season-calc">
                 <span class="material-symbols-outlined">calculate</span>
                 시즌 계산기
             </button>
         </nav>
 
-        <!-- Tab Content -->
         <div class="tab-content-wrapper">
-            <!-- CHARACTERS TAB -->
             <section class="tab-content active" id="tab-characters">
-                <!-- Search Bar -->
                 <div class="search-section">
                     <div class="dropdown-container">
-                        <input type="text"
-                               id="character-search"
-                               placeholder="함순이 이름으로 검색..."
-                               autocomplete="off">
+                        <input type="text" id="character-search" placeholder="함순이 이름으로 검색..." autocomplete="off">
                         <span class="material-symbols-outlined dropdown-icon">search</span>
                     </div>
                 </div>
 
-                <!-- Main Content Area -->
                 <div class="content-layout">
-                    <!-- Left: Character List -->
                     <aside class="character-list" id="character-list">
                         <div class="loading-state">
                             <span class="material-symbols-outlined rotating">progress_activity</span>
@@ -90,219 +78,181 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                         </div>
                     </aside>
 
-                    <!-- Right: Character Detail -->
                     <main class="character-detail" id="character-detail">
                         <div class="empty-state">
                             <span class="material-symbols-outlined">person_search</span>
                             <h3>함순이를 선택하세요</h3>
-                            <p>목록에서 함순이를 선택하여 상세 정보, 스탯, 스킬, 스킨을 확인하세요.</p>
+                            <p>목록에서 함순이를 선택해 상세 정보, 스탯, 스킬, 스킨을 확인하세요.</p>
                         </div>
                     </main>
                 </div>
             </section>
 
-            <!-- TECHNOLOGY TAB -->
             <section class="tab-content" id="tab-technology">
-                <!-- Category Filter -->
                 <div class="tech-category-filter" id="tech-category-filter">
                     <div class="loading-state">
                         <span class="material-symbols-outlined rotating">progress_activity</span>
-                        <p>연구데이터 불러오는 중...</p>
+                        <p>기술 데이터를 불러오는 중...</p>
                     </div>
                 </div>
 
-                <!-- Main Content Area -->
                 <div class="tech-layout">
-                    <!-- Technology Tree Container -->
                     <div class="tech-tree-container" id="tech-tree-container">
                         <div class="loading-state">
                             <span class="material-symbols-outlined rotating">progress_activity</span>
-                            <p>연구트리 불러오는 중...</p>
+                            <p>기술 트리를 불러오는 중...</p>
                         </div>
                     </div>
 
-                    <!-- Resource Totals Container (below tree, shares width) -->
                     <div class="tech-resource-totals-wrapper">
-                        <div id="tech-resource-totals">
-                            <!-- Resource totals will be injected here -->
-                        </div>
+                        <div id="tech-resource-totals"></div>
                     </div>
                 </div>
 
-                <!-- Floating Technology Detail Panel -->
                 <aside class="tech-detail" id="tech-detail">
                     <div class="empty-state">
                         <span class="material-symbols-outlined">developer_board</span>
-                        <h3>연구를 선택하세요</h3>
-                        <p>연구를 선택하여 상세 정보, 필요 조건, 제작 정보를 확인하세요.</p>
+                        <h3>기술을 선택하세요</h3>
+                        <p>기술을 선택해 상세 정보, 필요 조건, 제작 정보를 확인하세요.</p>
                     </div>
                 </aside>
             </section>
 
-            <!-- QUESTS TAB -->
             <section class="tab-content" id="tab-quests">
-                <!-- Search Bar -->
                 <div class="search-section">
                     <div class="dropdown-container">
-                        <input type="text"
-                               id="quest-search"
-                               placeholder="퀘스트 이름으로 검색..."
-                               autocomplete="off">
+                        <input type="text" id="quest-search" placeholder="퀘스트 이름으로 검색..." autocomplete="off">
                         <span class="material-symbols-outlined dropdown-icon">search</span>
                     </div>
                 </div>
 
-                <!-- Type Filter (Dropdown) -->
                 <div class="quest-type-filter" id="quest-type-filter">
                     <div class="loading-state">
                         <span class="material-symbols-outlined rotating">progress_activity</span>
-                        <p>퀘스트 데이터 불러오는 중...</p>
+                        <p>퀘스트 데이터를 불러오는 중...</p>
                     </div>
                 </div>
 
-                <!-- Main Content Area -->
                 <div class="quest-layout">
-                    <!-- Left: Quest List -->
                     <aside class="quest-list" id="quest-list">
                         <div class="loading-state">
                             <span class="material-symbols-outlined rotating">progress_activity</span>
-                            <p>퀘스트 불러오는 중...</p>
+                            <p>퀘스트를 불러오는 중...</p>
                         </div>
                     </aside>
 
-                    <!-- Right: Quest Detail -->
                     <main class="quest-detail" id="quest-detail">
                         <div class="empty-state">
                             <span class="material-symbols-outlined">task_alt</span>
                             <h3>퀘스트를 선택하세요</h3>
-                            <p>목록에서 퀘스트를 선택하여 상세 정보, 조건, 목표를 확인하세요.</p>
+                            <p>목록에서 퀘스트를 선택해 상세 정보, 조건, 목표를 확인하세요.</p>
                         </div>
                     </main>
                 </div>
             </section>
 
-            <!-- RESOURCES TAB -->
             <section class="tab-content" id="tab-resources">
-                <!-- Category Filter (Dropdown) -->
                 <div class="resource-category-filter" id="resource-category-filter">
                     <div class="loading-state">
                         <span class="material-symbols-outlined rotating">progress_activity</span>
-                        <p>레시피 데이터 불러오는 중...</p>
+                        <p>레시피 데이터를 불러오는 중...</p>
                     </div>
                 </div>
 
-                <!-- Main Content Area (3-Column Layout) -->
                 <div class="resource-layout">
-                    <!-- Left: Recipe List -->
                     <aside class="recipe-list" id="recipe-list">
                         <div class="loading-state">
                             <span class="material-symbols-outlined rotating">progress_activity</span>
-                            <p>레시피 불러오는 중...</p>
+                            <p>레시피를 불러오는 중...</p>
                         </div>
                     </aside>
 
-                    <!-- Center: Recipe Detail -->
                     <main class="recipe-detail" id="recipe-detail">
                         <div class="empty-state">
                             <span class="material-symbols-outlined">restaurant</span>
                             <h3>레시피를 선택하세요</h3>
-                            <p>목록에서 레시피를 선택하여 재료, 생산물 및 연관 레시피를 확인하세요.</p>
+                            <p>목록에서 레시피를 선택해 재료, 생산물, 연계 레시피를 확인하세요.</p>
                         </div>
                     </main>
 
-                    <!-- Right: Dependency Chain -->
                     <aside class="dependency-chain" id="dependency-chain">
                         <div class="empty-state">
                             <span class="material-symbols-outlined">account_tree</span>
                             <h3>레시피 체인</h3>
-                            <p>레시피를 선택하면 연관된 상위/하위 레시피를 확인할 수 있습니다.</p>
+                            <p>레시피를 선택하면 연결된 상위/하위 레시피를 확인할 수 있습니다.</p>
                         </div>
                     </aside>
                 </div>
             </section>
 
-            <!-- RESTAURANT TAB -->
             <section class="tab-content" id="tab-restaurant">
-                <!-- Restaurant Sub-tabs -->
                 <div class="restaurant-tabs-container">
                     <div class="restaurant-tabs" id="restaurant-tabs">
                         <div class="loading-state">
                             <span class="material-symbols-outlined rotating">progress_activity</span>
-                            <p>레스토랑 불러오는 중...</p>
+                            <p>레스토랑을 불러오는 중...</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Controls (Rank Selector + Event Toggles + Shipgirl Selectors) -->
                 <div class="restaurant-controls">
-                    <!-- Rank Selector -->
                     <div class="rank-selector-container">
                         <div id="rank-selector">
                             <div class="loading-state">
                                 <span class="material-symbols-outlined rotating">progress_activity</span>
-                                <p>등급 불러오는 중...</p>
+                                <p>등급을 불러오는 중...</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Event Toggles -->
                     <div class="event-toggles-container">
                         <div id="event-toggles">
                             <div class="loading-state">
                                 <span class="material-symbols-outlined rotating">progress_activity</span>
-                                <p>이벤트 불러오는 중...</p>
+                                <p>이벤트를 불러오는 중...</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Shipgirl 1 Selector -->
                     <div class="shipgirl-selector-container">
                         <div id="shipgirl-1-selector">
                             <div class="loading-state">
                                 <span class="material-symbols-outlined rotating">progress_activity</span>
-                                <p>함순이 불러오는 중...</p>
+                                <p>함순이를 불러오는 중...</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Shipgirl 2 Selector -->
                     <div class="shipgirl-selector-container">
                         <div id="shipgirl-2-selector">
                             <div class="loading-state">
                                 <span class="material-symbols-outlined rotating">progress_activity</span>
-                                <p>함순이 불러오는 중...</p>
+                                <p>함순이를 불러오는 중...</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Menu List -->
                 <div class="restaurant-menu-container">
                     <div class="restaurant-menu-list" id="restaurant-menu-list">
                         <div class="loading-state">
                             <span class="material-symbols-outlined rotating">progress_activity</span>
-                            <p>메뉴 불러오는 중...</p>
+                            <p>메뉴를 불러오는 중...</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Planner View Container (New) -->
-                <div id="restaurant-planner-view" class="hidden">
-                    <!-- Dynamic Content injected here -->
-                </div>
+                <div id="restaurant-planner-view" class="hidden"></div>
             </section>
 
-            <!-- SEASON CALCULATOR TAB -->
             <section class="tab-content" id="tab-season-calc">
-                <!-- Season Pass Display (Top) -->
                 <div id="season-calc-pass">
                     <div class="loading-state">
                         <span class="material-symbols-outlined rotating">progress_activity</span>
-                        <p>시즌 패스 불러오는 중...</p>
+                        <p>시즌 패스를 불러오는 중...</p>
                     </div>
                 </div>
 
-                <!-- Total Display (Below Pass) -->
                 <div id="season-calc-total">
                     <div class="loading-state">
                         <span class="material-symbols-outlined rotating">progress_activity</span>
@@ -310,20 +260,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     </div>
                 </div>
 
-                <!-- Controls Bar (Below Total) -->
                 <div id="season-calc-controls">
                     <div class="loading-state">
                         <span class="material-symbols-outlined rotating">progress_activity</span>
-                        <p>계산기 불러오는 중...</p>
+                        <p>계산기를 불러오는 중...</p>
                     </div>
                 </div>
 
-                <!-- Item Grid -->
                 <div class="season-calc-layout">
                     <div class="season-calc-grid" id="season-calc-grid">
                         <div class="loading-state">
                             <span class="material-symbols-outlined rotating">progress_activity</span>
-                            <p>아이템 불러오는 중...</p>
+                            <p>아이템을 불러오는 중...</p>
                         </div>
                     </div>
                 </div>
@@ -331,42 +279,35 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
     </div>
 
-    <!-- Recipe Dependency Modal -->
     <div id="dependency-modal" class="recipe-modal hidden">
         <div class="modal-overlay"></div>
         <div class="modal-container">
             <div class="modal-header">
                 <h3 id="modal-title">Recipe Dependencies</h3>
-                <button class="modal-close-btn" type="button">
+                <button class="modal-close-btn" type="button" aria-label="Close">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
-            <div class="modal-content" id="modal-content">
-                <!-- Dynamic content -->
-            </div>
+            <div class="modal-content" id="modal-content"></div>
         </div>
     </div>
 
-    <!-- Meal Planner Result Modal -->
     <div id="planner-modal" class="recipe-modal hidden">
         <div class="modal-overlay"></div>
         <div class="modal-container planner-modal-container">
             <div class="modal-header">
                 <h3>
                     <span class="material-symbols-outlined">event_note</span>
-                    일일 식단 계획표
+                    일일 식단 계획
                 </h3>
-                <button class="modal-close-btn" id="planner-modal-close">
+                <button class="modal-close-btn" id="planner-modal-close" type="button" aria-label="Close">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
-            <div class="modal-content" id="planner-modal-content">
-                <!-- Dynamic content -->
-            </div>
+            <div class="modal-content" id="planner-modal-content"></div>
         </div>
     </div>
 
-    <!-- Generic Confirmation Modal -->
     <div id="confirm-modal" class="recipe-modal hidden">
         <div class="modal-overlay"></div>
         <div class="modal-container confirm-modal-container">
@@ -375,21 +316,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <span class="material-symbols-outlined">warning</span>
                     확인
                 </h3>
-                <button class="modal-close-btn" id="confirm-modal-close">
+                <button class="modal-close-btn" id="confirm-modal-close" type="button" aria-label="Close">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
             <div class="modal-content">
                 <p id="confirm-message" class="confirm-message">진행하시겠습니까?</p>
                 <div class="confirm-actions">
-                    <button id="confirm-btn-cancel" class="planner-btn reset">취소</button>
-                    <button id="confirm-btn-ok" class="planner-btn calculate">확인</button>
+                    <button id="confirm-btn-cancel" class="planner-btn reset" type="button">취소</button>
+                    <button id="confirm-btn-ok" class="planner-btn calculate" type="button">확인</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Island Scripts -->
     <script is:inline type="module" src={`${base}/js/island/island.engine.js`}></script>
     <script is:inline type="module" src={`${base}/js/island/island.character.engine.js`}></script>
     <script is:inline type="module" src={`${base}/js/island/island.technology.engine.js`}></script>

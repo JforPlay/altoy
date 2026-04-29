@@ -6,7 +6,7 @@
  */
 
 import { init } from './island.engine.js';
-import { getStorageItem, setStorageItem } from '../utils.js';
+import { getStorageItem } from '../utils.js';
 
 // ===== Initialization =====
 
@@ -21,14 +21,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     // re-render hooks in dependent modules — see island.engine.js loadModule.
     await init();
 
-    // Restore the saved tab (or default) via the same activation path as a
-    // manual click: programmatic click → click handler → switchTab → loadModule.
-    const savedTab = getStorageItem('island-active-tab', null);
-    const savedButton = savedTab
-        ? document.querySelector(`.tab-button[data-tab="${savedTab}"]`)
-        : null;
-    const initialTab = savedButton ? savedTab : 'characters';
-    window.IslandEngine.activateTab(initialTab);
+    // activateTab normalizes invalid/missing values, syncs tab DOM/ARIA, and
+    // persists via switchTab — same path manual clicks take.
+    window.IslandEngine.activateTab(getStorageItem('island-active-tab', null));
 
     console.log('[Island Page] Initialization complete');
 });
@@ -43,26 +38,32 @@ function setupTabNavigation() {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');
 
-    tabButtons.forEach(button => {
+    tabButtons.forEach((button, index) => {
+        const isActive = button.classList.contains('active');
+        button.setAttribute('role', 'tab');
+        button.setAttribute('aria-controls', `tab-${button.dataset.tab}`);
+        button.setAttribute('aria-selected', String(isActive));
+        button.tabIndex = isActive ? 0 : -1;
+
         button.addEventListener('click', () => {
-            const targetTab = button.dataset.tab;
-
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
-            tabContents.forEach(content => {
-                const contentId = content.id.replace('tab-', '');
-                content.classList.toggle('active', contentId === targetTab);
-            });
-
-            if (window.IslandEngine) {
-                window.IslandEngine.switchTab(targetTab);
-            }
-
-            setStorageItem('island-active-tab', targetTab);
-
-            console.log(`[Island] Switched to tab: ${targetTab}`);
+            window.IslandEngine?.activateTab(button.dataset.tab);
         });
+
+        button.addEventListener('keydown', (e) => {
+            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+            e.preventDefault();
+            const direction = e.key === 'ArrowRight' ? 1 : -1;
+            const nextIndex = (index + direction + tabButtons.length) % tabButtons.length;
+            tabButtons[nextIndex].focus();
+            tabButtons[nextIndex].click();
+        });
+    });
+
+    tabContents.forEach(content => {
+        const isActive = content.classList.contains('active');
+        content.setAttribute('role', 'tabpanel');
+        content.setAttribute('aria-hidden', String(!isActive));
+        content.hidden = !isActive;
     });
 }
 
@@ -96,6 +97,8 @@ function setupCharacterSearch() {
 
 /** Run a character search and re-render the character list with the results. */
 function performSearch(query) {
+    if (!window.IslandEngine) return;
+
     const results = window.IslandEngine.searchCharacters(query);
     window.IslandEngine.renderCharacterList(results);
 
