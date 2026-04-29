@@ -8,7 +8,7 @@
  * categories. Delegates actual script playback to the shared StoryViewer engine
  * (story-viewer.engine.js) by patching its loadData and returnToMemorySelection.
  */
-import { fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, toggleElement } from '../utils.js';
+import { fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, makeKeyboardActivatable } from '../utils.js';
 
 /**
  * Create a tab-based story viewer instance for a child story page.
@@ -85,26 +85,36 @@ function createTabStoryViewer(config) {
         async init() {
             this.showLoadingState();
 
-            // Add custom category grids to elements
-            this.config.categories.forEach(cat => {
-                this.elements[`${cat.id}Grid`] = document.getElementById(`${cat.id}-grid`);
-                this.customCategoriesData[cat.id] = {};
-            });
+            try {
+                // Add custom category grids to elements
+                this.config.categories.forEach(cat => {
+                    this.elements[`${cat.id}Grid`] = document.getElementById(`${cat.id}-grid`);
+                    this.customCategoriesData[cat.id] = {};
+                });
 
-            await this.loadAllData();
-            this.convertDataForEngine();
-            this.setupEventListeners();
-            this.setupBrowserBackButton();
-            this.populateAllGrids();
-            this.initStoryViewer();
-            this.preloadFirstImages();
-            this.handleUrlParameters();
-            this.hideLoadingState();
+                await this.loadAllData();
+                this.convertDataForEngine();
+                this.setupEventListeners();
+                this.setupBrowserBackButton();
+                this.populateAllGrids();
+                this.initStoryViewer();
+                this.preloadFirstImages();
+                this.handleUrlParameters();
+            } catch (error) {
+                console.error('Failed to initialize child story viewer:', error);
+                this.showError('데이터를 불러오는 데 실패했습니다.');
+            } finally {
+                this.hideLoadingState();
+            }
         },
 
         /** Show a loading indicator while data is being fetched. */
         showLoadingState() {
-            this.elements.memoriesGrid.innerHTML = '<div class="loading">데이터 로딩 중...</div>';
+            this.elements.memoriesGrid.textContent = '';
+            const loading = document.createElement('div');
+            loading.className = 'loading';
+            loading.textContent = '데이터 로딩 중...';
+            this.elements.memoriesGrid.appendChild(loading);
         },
 
         hideLoadingState() {
@@ -146,7 +156,7 @@ function createTabStoryViewer(config) {
 
             } catch (error) {
                 console.error('Failed to load data:', error);
-                this.showError('데이터를 불러오는데 실패했습니다.');
+                throw error;
             }
         },
 
@@ -258,8 +268,22 @@ function createTabStoryViewer(config) {
         // ===== Event Listeners =====
         setupEventListeners() {
             // Tab navigation
-            this.elements.tabBtns.forEach(btn => {
+            this.elements.tabBtns.forEach((btn, index) => {
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-selected', String(btn.classList.contains('active')));
                 btn.addEventListener('click', () => this.switchTab(btn.dataset.tab));
+                btn.addEventListener('keydown', (event) => {
+                    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+                    event.preventDefault();
+                    const offset = event.key === 'ArrowRight' ? 1 : -1;
+                    const nextIndex = (index + offset + this.elements.tabBtns.length) % this.elements.tabBtns.length;
+                    const nextTab = this.elements.tabBtns[nextIndex];
+                    nextTab?.focus();
+                    if (nextTab?.dataset.tab) this.switchTab(nextTab.dataset.tab);
+                });
+            });
+            this.elements.tabContents.forEach(content => {
+                content.setAttribute('role', 'tabpanel');
             });
 
             // Back to tabs button
@@ -279,6 +303,13 @@ function createTabStoryViewer(config) {
             });
             this.elements.flipPolaroidBtn?.addEventListener('click', () => {
                 this.flipPolaroid();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key !== 'Escape') return;
+                if (!this.elements.polaroidModal?.classList.contains('hidden')) {
+                    event.preventDefault();
+                    this.closePolaroidModal();
+                }
             });
         },
 
@@ -301,11 +332,14 @@ function createTabStoryViewer(config) {
             this.currentTab = tabName;
 
             this.elements.tabBtns.forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.tab === tabName);
+                const active = btn.dataset.tab === tabName;
+                btn.classList.toggle('active', active);
+                btn.setAttribute('aria-selected', String(active));
             });
 
             this.elements.tabContents.forEach(content => {
-                content.classList.toggle('active', content.id === `${tabName}-content`);
+                const active = content.id === `${tabName}-content`;
+                content.classList.toggle('active', active);
             });
         },
 
@@ -327,8 +361,7 @@ function createTabStoryViewer(config) {
                 const card = this.createMemoryCard(memory);
                 fragment.appendChild(card);
             });
-            this.elements.memoriesGrid.innerHTML = '';
-            this.elements.memoriesGrid.appendChild(fragment);
+            this.elements.memoriesGrid.replaceChildren(fragment);
         },
 
         populateEndingsGrid() {
@@ -337,8 +370,7 @@ function createTabStoryViewer(config) {
                 const card = this.createEndingCard(ending);
                 fragment.appendChild(card);
             });
-            this.elements.endingsGrid.innerHTML = '';
-            this.elements.endingsGrid.appendChild(fragment);
+            this.elements.endingsGrid.replaceChildren(fragment);
         },
 
         populateCategoryGrid(category) {
@@ -354,8 +386,7 @@ function createTabStoryViewer(config) {
                 fragment.appendChild(card);
             });
 
-            grid.innerHTML = '';
-            grid.appendChild(fragment);
+            grid.replaceChildren(fragment);
         },
 
         populatePolaroidsGrid() {
@@ -364,8 +395,7 @@ function createTabStoryViewer(config) {
                 const card = this.createPolaroidCard(polaroid);
                 fragment.appendChild(card);
             });
-            this.elements.polaroidsGrid.innerHTML = '';
-            this.elements.polaroidsGrid.appendChild(fragment);
+            this.elements.polaroidsGrid.replaceChildren(fragment);
         },
 
         populatePhotosGrid() {
@@ -384,46 +414,75 @@ function createTabStoryViewer(config) {
                 }
             }
 
-            this.elements.photosGrid.innerHTML = '';
-            this.elements.photosGrid.appendChild(fragment);
+            this.elements.photosGrid.replaceChildren(fragment);
         },
 
         // ===== Card Creation =====
-        createMemoryCard(memory) {
+        createInteractiveCard(className, title, onClick) {
             const card = document.createElement('div');
-            card.className = `${this.config.type}-card`;
+            card.className = className;
+            card.dataset.title = title || '';
+            makeKeyboardActivatable(card, onClick);
+            return card;
+        },
 
+        appendCardImage(card, imageUrl, title) {
+            const img = document.createElement('img');
+            img.className = `${this.config.type}-card-image`;
+            img.src = imageUrl;
+            img.alt = title || '';
+            img.loading = 'lazy';
+            card.appendChild(img);
+            this.addImageErrorHandler(img);
+        },
+
+        appendCardContent(card, title, badgeText, description = '') {
+            const content = document.createElement('div');
+            content.className = `${this.config.type}-card-content`;
+
+            const titleEl = document.createElement('h3');
+            titleEl.className = `${this.config.type}-card-title`;
+            titleEl.textContent = title || 'Untitled';
+            content.appendChild(titleEl);
+
+            if (description) {
+                const desc = document.createElement('p');
+                desc.className = `${this.config.type}-card-desc`;
+                desc.textContent = description;
+                content.appendChild(desc);
+            }
+
+            if (badgeText) {
+                const badge = document.createElement('span');
+                badge.className = `${this.config.type}-card-badge`;
+                badge.textContent = badgeText;
+                content.appendChild(badge);
+            }
+
+            card.appendChild(content);
+            return content;
+        },
+
+        createMemoryCard(memory) {
             const storyKey = memory.lua || memory.performance;
             const mappingData = this.storyIconMap[storyKey?.toLowerCase()] || {};
             const title = mappingData.title || memory.desc || 'Untitled';
-
-            card.dataset.title = title;
-            const imageUrl = this.config.placeholderImage;
-
-            card.innerHTML = `
-                <img class="${this.config.type}-card-image" src="${imageUrl}" alt="${title}" loading="lazy">
-                <div class="${this.config.type}-card-content">
-                    <h3 class="${this.config.type}-card-title">${title}</h3>
-                    <span class="${this.config.type}-card-badge">메모리 #${memory.id}</span>
-                </div>
-            `;
-
-            card.addEventListener('click', () => {
+            const card = this.createInteractiveCard(`${this.config.type}-card`, title, () => {
                 this.playStory('memory', memory.id, title);
             });
 
+            this.appendCardImage(card, this.config.placeholderImage, title);
+            this.appendCardContent(card, title, `메모리 #${memory.id}`);
             return card;
         },
 
         createEndingCard(ending) {
-            const card = document.createElement('div');
-            card.className = `${this.config.type}-card`;
-
             const mappingData = this.storyIconMap[ending.performance?.toLowerCase()] || {};
             const title = mappingData.title || ending.name || 'Untitled';
             const icon = mappingData.icon;
-
-            card.dataset.title = title;
+            const card = this.createInteractiveCard(`${this.config.type}-card`, title, () => {
+                this.playStory('ending', ending.id, title);
+            });
 
             let imageUrl;
             if (this.config.type === 'tb') {
@@ -436,28 +495,15 @@ function createTabStoryViewer(config) {
                     : this.config.placeholderImage;
             }
 
-            card.innerHTML = `
-                <img class="${this.config.type}-card-image" src="${imageUrl}" alt="${title}" loading="lazy">
-                <div class="${this.config.type}-card-content">
-                    <h3 class="${this.config.type}-card-title">${title}</h3>
-                    <span class="${this.config.type}-card-badge">엔딩 #${ending.id}</span>
-                </div>
-            `;
-
-            const img = card.querySelector(`.${this.config.type}-card-image`);
-            this.addImageErrorHandler(img);
-
-            card.addEventListener('click', () => {
-                this.playStory('ending', ending.id, title);
-            });
-
+            this.appendCardImage(card, imageUrl, title);
+            this.appendCardContent(card, title, `엔딩 #${ending.id}`);
             return card;
         },
 
         createCategoryCard(categoryId, item) {
-            const card = document.createElement('div');
-            card.className = `${this.config.type}-card`;
-            card.dataset.title = item.title;
+            const card = this.createInteractiveCard(`${this.config.type}-card`, item.title, () => {
+                this.playStory(categoryId, item.id, item.title);
+            });
 
             const imageUrl = item.icon
                 ? `${this.config.imageUrls.icon}${item.icon}.webp`
@@ -466,54 +512,37 @@ function createTabStoryViewer(config) {
             const category = this.config.categories.find(c => c.id === categoryId);
             const badgeText = category ? `${category.badgePrefix} #${item.id}` : `#${item.id}`;
 
-            card.innerHTML = `
-                <img class="${this.config.type}-card-image" src="${imageUrl}" alt="${item.title}" loading="lazy">
-                <div class="${this.config.type}-card-content">
-                    <h3 class="${this.config.type}-card-title">${item.title}</h3>
-                    <span class="${this.config.type}-card-badge">${badgeText}</span>
-                </div>
-            `;
-
-            const img = card.querySelector(`.${this.config.type}-card-image`);
-            this.addImageErrorHandler(img);
-
-            card.addEventListener('click', () => {
-                this.playStory(categoryId, item.id, item.title);
-            });
-
+            this.appendCardImage(card, imageUrl, item.title);
+            this.appendCardContent(card, item.title, badgeText);
             return card;
         },
 
         createPolaroidCard(polaroid) {
-            const card = document.createElement('div');
-            card.className = `${this.config.type}-card polaroid-card`;
-            card.dataset.title = polaroid.title || '';
+            const title = polaroid.title || 'Untitled';
+            const card = this.createInteractiveCard(`${this.config.type}-card polaroid-card`, title, () => {
+                this.showPolaroidDetail(polaroid);
+            });
 
             const imageUrl = polaroid.pic
                 ? `${this.config.imageUrls.base}${polaroid.pic}.webp`
                 : this.config.placeholderImage;
 
-            card.innerHTML = `
-                <img class="${this.config.type}-card-image" src="${imageUrl}" alt="${polaroid.title}" loading="lazy">
-                <div class="${this.config.type}-card-content">
-                    <h3 class="${this.config.type}-card-title">${polaroid.title || 'Untitled'}</h3>
-                    <p class="${this.config.type}-card-desc">${polaroid.condition || ''}</p>
-                    <div class="polaroid-card-footer">
-                        <span class="polaroid-stage">
-                            <span class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle;">star</span>
-                            ${polaroid.stage?.join(', ') || 'N/A'}
-                        </span>
-                        <span class="polaroid-group-badge">그룹 ${polaroid.group || 1}</span>
-                    </div>
-                </div>
-            `;
+            this.appendCardImage(card, imageUrl, title);
+            const content = this.appendCardContent(card, title, '', polaroid.condition || '');
 
-            const img = card.querySelector(`.${this.config.type}-card-image`);
-            this.addImageErrorHandler(img);
-
-            card.addEventListener('click', () => {
-                this.showPolaroidDetail(polaroid);
-            });
+            const footer = document.createElement('div');
+            footer.className = 'polaroid-card-footer';
+            const stage = document.createElement('span');
+            stage.className = 'polaroid-stage';
+            const icon = document.createElement('span');
+            icon.className = 'material-symbols-outlined polaroid-stage-icon';
+            icon.textContent = 'star';
+            stage.append(icon, document.createTextNode(` ${polaroid.stage?.join(', ') || 'N/A'}`));
+            const group = document.createElement('span');
+            group.className = 'polaroid-group-badge';
+            group.textContent = `그룹 ${polaroid.group || 1}`;
+            footer.append(stage, group);
+            content.appendChild(footer);
 
             return card;
         },
@@ -524,9 +553,11 @@ function createTabStoryViewer(config) {
 
             const imageUrl = `${this.config.imageUrls.photo || this.config.imageUrls.base}${filename}.webp`;
 
-            card.innerHTML = `<img src="${imageUrl}" alt="${filename}" loading="lazy">`;
-
-            const img = card.querySelector('img');
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.alt = filename;
+            img.loading = 'lazy';
+            card.appendChild(img);
             this.addImageErrorHandler(img);
 
             return card;
@@ -692,46 +723,49 @@ function createTabStoryViewer(config) {
             this.addImageErrorHandler(this.elements.polaroidImgFront);
             this.addImageErrorHandler(this.elements.polaroidImgBack);
 
-            this.elements.polaroidInfo.innerHTML = `
-                <h3>${polaroid.title || 'Untitled'}</h3>
-                <div class="polaroid-info-grid">
-                    <div class="polaroid-info-item">
-                        <span class="material-symbols-outlined">bookmark</span>
-                        <div>
-                            <strong>조건</strong>
-                            <p>${polaroid.condition || 'N/A'}</p>
-                        </div>
-                    </div>
-                    <div class="polaroid-info-item">
-                        <span class="material-symbols-outlined">star</span>
-                        <div>
-                            <strong>스테이지</strong>
-                            <p>${polaroid.stage?.join(', ') || 'N/A'}</p>
-                        </div>
-                    </div>
-                    <div class="polaroid-info-item">
-                        <span class="material-symbols-outlined">category</span>
-                        <div>
-                            <strong>그룹</strong>
-                            <p>${polaroid.group || 'N/A'}</p>
-                        </div>
-                    </div>
-                    ${polaroid.desc ? `
-                        <div class="polaroid-info-item polaroid-info-full">
-                            <span class="material-symbols-outlined">description</span>
-                            <div>
-                                <strong>설명</strong>
-                                <p>${Array.isArray(polaroid.desc) ? polaroid.desc.join(', ') : polaroid.desc}</p>
-                            </div>
-                        </div>
-                    ` : ''}
-                </div>
-            `;
+            this.elements.polaroidInfo.textContent = '';
+            const title = document.createElement('h3');
+            title.textContent = polaroid.title || 'Untitled';
 
+            const grid = document.createElement('div');
+            grid.className = 'polaroid-info-grid';
+
+            const appendInfoItem = (iconName, label, value, full = false) => {
+                const item = document.createElement('div');
+                item.className = `polaroid-info-item${full ? ' polaroid-info-full' : ''}`;
+                const icon = document.createElement('span');
+                icon.className = 'material-symbols-outlined';
+                icon.textContent = iconName;
+                const text = document.createElement('div');
+                const strong = document.createElement('strong');
+                strong.textContent = label;
+                const p = document.createElement('p');
+                p.textContent = value || 'N/A';
+                text.append(strong, p);
+                item.append(icon, text);
+                grid.appendChild(item);
+            };
+
+            appendInfoItem('bookmark', '조건', polaroid.condition || 'N/A');
+            appendInfoItem('star', '스테이지', polaroid.stage?.join(', ') || 'N/A');
+            appendInfoItem('category', '그룹', polaroid.group || 'N/A');
+            if (polaroid.desc) {
+                appendInfoItem(
+                    'description',
+                    '설명',
+                    Array.isArray(polaroid.desc) ? polaroid.desc.join(', ') : polaroid.desc,
+                    true
+                );
+            }
+
+            this.elements.polaroidInfo.append(title, grid);
+
+            this.elements.polaroidModal?.setAttribute('aria-hidden', 'false');
             showElement(this.elements.polaroidModal);
         },
 
         closePolaroidModal() {
+            this.elements.polaroidModal?.setAttribute('aria-hidden', 'true');
             hideElement(this.elements.polaroidModal);
         },
 

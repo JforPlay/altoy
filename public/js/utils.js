@@ -939,6 +939,41 @@ function setupModal(modalId, options = {}) {
     }
 }
 
+// ===== Interaction Utilities =====
+
+/**
+ * Make a non-button element behave like a button: keyboard-activatable
+ * via Enter or Space, with role and tabindex set correctly. Both click
+ * and keyboard activation route through the same callback.
+ *
+ * Use for clickable <div>/<a> cards, gallery items, custom toggles, etc.
+ * Don't use on real <button> or <a href="..."> — they're already activatable.
+ *
+ * @param {HTMLElement} element - The element to make activatable.
+ * @param {(event: Event) => void} onActivate - Handler invoked on click or Enter/Space.
+ * @param {Object} [options]
+ * @param {string} [options.role='button'] - ARIA role to apply (e.g. 'button', 'checkbox', 'tab').
+ *   Pass `null` to skip setting role (caller manages it).
+ * @param {boolean} [options.preventDefault=true] - Call preventDefault() before invoking onActivate.
+ *   Needed to stop Space-key page scroll; harmless for click on a div.
+ */
+function makeKeyboardActivatable(element, onActivate, options = {}) {
+    const { role = 'button', preventDefault = true } = options;
+    if (!element) return;
+
+    if (role) element.setAttribute('role', role);
+    if (!element.hasAttribute('tabindex')) element.tabIndex = 0;
+
+    const activate = (event) => {
+        if (preventDefault) event.preventDefault();
+        onActivate(event);
+    };
+    element.addEventListener('click', activate);
+    element.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') activate(event);
+    });
+}
+
 // ===== Search Utilities =====
 
 /**
@@ -1110,6 +1145,9 @@ export {
     openModal,
     closeModal,
     setupModal,
+
+    // Interaction utilities
+    makeKeyboardActivatable,
 
     // Storage utilities
     getStorageItem,

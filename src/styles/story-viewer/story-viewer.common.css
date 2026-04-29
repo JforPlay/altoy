@@ -301,6 +301,14 @@ body {
   box-shadow: 0 8px 25px var(--shadow-color);
 }
 
+.grid-card:focus-visible,
+.story-nav-btn:focus-visible,
+.nav-button:focus-visible,
+.option-button:focus-visible {
+  outline: 3px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
 /* Highlighted card (e.g., "Continue Reading" indicator) */
 .grid-card.highlighted-card {
   border: 2px solid var(--accent-color);
@@ -338,6 +346,10 @@ body {
   background-color: #ccc; /* Fallback color */
   background-size: cover;
   background-position: center;
+}
+
+.card-thumbnail.is-placeholder {
+  background-color: #34495e;
 }
 
 .card-content {

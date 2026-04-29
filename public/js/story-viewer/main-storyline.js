@@ -5,7 +5,7 @@
  * faction filter, a scrollable progress bar, and a details modal with BGM preview.
  * Data is loaded from main_story_meta.json on init.
  */
-import { debounce, fetchJSON, hideElement, showElement, resolveUrl, openModal, closeModal as utilsCloseModal, setupModal } from '../utils.js';
+import { debounce, fetchJSON, hideElement, showElement, resolveUrl, openModal, closeModal as utilsCloseModal, setupModal, makeKeyboardActivatable } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // ===== DOM Elements =====
@@ -81,7 +81,12 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error("Failed to load timeline data:", error);
             hideLoading();
-            elements.timelineContainer.innerHTML = `<p style="color: var(--text-color); padding: 20px;">데이터 로드 실패. 페이지를 새로고침 해주세요.</p>`;
+            elements.timelineContainer.textContent = '';
+            const message = document.createElement('p');
+            message.style.color = 'var(--text-color)';
+            message.style.padding = '20px';
+            message.textContent = '데이터 로드 실패. 페이지를 새로고침 해주세요.';
+            elements.timelineContainer.appendChild(message);
         });
 
     function hideLoading() {
@@ -94,8 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * the DOM elements, and redraws connector lines in the next animation frame.
      */
     function renderTimeline(items) {
-        elements.timelineContainer.innerHTML = '';
-        elements.timelineContainer.appendChild(elements.canvas);
+        elements.timelineContainer.replaceChildren(elements.canvas);
         domElementsCache.clear(); // Clear DOM cache when re-rendering
 
         if (items.length === 0) return;
@@ -123,6 +127,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function createTimelineItem(itemData) {
         const itemElement = document.createElement('div');
         itemElement.className = 'timeline-item';
+        itemElement.setAttribute('role', 'button');
+        itemElement.tabIndex = 0;
         itemElement.style.gridColumn = itemData.column;
 
         let gridRowValue;
@@ -165,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function setupChapters(items) {
         const chapterMarkersContainer = document.getElementById('chapter-markers');
-        chapterMarkersContainer.innerHTML = '';
+        chapterMarkersContainer.textContent = '';
 
         const timelineScrollWidth = elements.timelineContainer.scrollWidth;
         if (timelineScrollWidth <= 0) return;
@@ -205,13 +211,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const percentage = scrollableWidth > 0 ? (data.offsetLeft / scrollableWidth) * 100 : 0;
             marker.style.left = `${percentage}%`;
 
-            marker.onclick = () => {
-                // Scroll directly to the item position
+            makeKeyboardActivatable(marker, () => {
                 elements.timelineWrapper.scrollTo({
                     left: data.offsetLeft,
                     behavior: 'smooth'
                 });
-            };
+            });
             chapterMarkersContainer.appendChild(marker);
         });
     }
@@ -233,23 +238,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        let filterHtml = `
-            <div class="filter-option">
-                <input type="checkbox" id="nation-all" value="all" checked>
-                <label for="nation-all">전체</label>
-            </div>`;
+        elements.filterPanel.textContent = '';
+
+        const appendFilterOption = (id, value, labelText, checked = false) => {
+            const option = document.createElement('div');
+            option.className = 'filter-option';
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.id = id;
+            input.value = value;
+            input.checked = checked;
+            const label = document.createElement('label');
+            label.htmlFor = id;
+            label.textContent = labelText;
+            option.append(input, label);
+            elements.filterPanel.appendChild(option);
+        };
+
+        appendFilterOption('nation-all', 'all', '전체', true);
 
         const sortedNations = [...uniqueNations.entries()].sort((a, b) => a[0] - b[0]);
 
         sortedNations.forEach(([id, name]) => {
-            filterHtml += `
-                <div class="filter-option">
-                    <input type="checkbox" id="nation-${id}" value="${id}">
-                    <label for="nation-${id}">${name}</label>
-                </div>`;
+            appendFilterOption(`nation-${id}`, String(id), name);
         });
-
-        elements.filterPanel.innerHTML = filterHtml;
     }
 
     /**
@@ -258,9 +270,11 @@ document.addEventListener('DOMContentLoaded', () => {
      * dragging is disabled while the panel is open to avoid accidental panning.
      */
     function setupFilterListeners() {
+        elements.filterButton.setAttribute('aria-expanded', 'false');
         elements.filterButton.addEventListener('click', (e) => {
             e.stopPropagation();
             const isHidden = elements.filterPanel.classList.toggle('hidden');
+            elements.filterButton.setAttribute('aria-expanded', String(!isHidden));
 
             // Disable dragging when the filter panel is open
             if (!isHidden) {
@@ -276,6 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!elements.filterPanel.contains(e.target) && !elements.filterButton.contains(e.target)) {
                 if (!elements.filterPanel.classList.contains('hidden')) {
                     hideElement(elements.filterPanel);
+                    elements.filterButton.setAttribute('aria-expanded', 'false');
                     // Re-enable dragging when the panel is closed
                     elements.timelineWrapper.style.pointerEvents = 'auto';
                     elements.timelineWrapper.style.cursor = 'grab';
@@ -406,17 +421,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== Details Modal =====
 
-    elements.timelineContainer.addEventListener('click', (event) => {
-        const item = event.target.closest('.timeline-item');
-        if (!item) return;
-
+    function openDetailsModal(item) {
         const { id, name, description, summary, shipnation, bgm } = item.dataset;
 
         elements.modalTitle.textContent = name;
         elements.modalDescription.textContent = description;
         elements.modalSummary.textContent = summary || "요약 정보가 없습니다.";
 
-        const nations = JSON.parse(shipnation).map(id => factionMap[id] || `진영 ${id}`).join(', ');
+        let parsedNations = [];
+        try {
+            parsedNations = JSON.parse(shipnation || '[]');
+        } catch (_) {
+            parsedNations = [];
+        }
+        const nations = parsedNations.map(id => factionMap[id] || `진영 ${id}`).join(', ');
         elements.modalShipNation.textContent = nations;
 
         // Reuse the button element across modal openings to avoid appending duplicates.
@@ -426,13 +444,16 @@ document.addEventListener('DOMContentLoaded', () => {
             elements.storyButton.textContent = '해당 스토리 보러가기';
             elements.storyButton.className = 'chapter-button';
             elements.storyButton.style.marginTop = '1rem';
+            elements.storyButton.addEventListener('click', () => {
+                const eventId = elements.storyButton.dataset.eventId;
+                if (eventId) {
+                    window.location.href = resolveUrl(`story-viewer/main-story/?eventid=${eventId}`);
+                }
+            });
             elements.modalFooter.prepend(elements.storyButton);
         }
 
-        // Update onclick handler
-        elements.storyButton.onclick = () => {
-            window.location.href = resolveUrl(`story-viewer/main-story/?eventid=${id}`);
-        };
+        elements.storyButton.dataset.eventId = id;
 
         if (bgm && bgm.trim() !== "") {
             elements.modalBgm.src = `https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/${bgm}.ogg`;
@@ -443,6 +464,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         openModal('details-modal');
+    }
+
+    elements.timelineContainer.addEventListener('click', (event) => {
+        const item = event.target.closest('.timeline-item');
+        if (!item) return;
+        openDetailsModal(item);
+    });
+
+    elements.timelineContainer.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        const item = event.target.closest('.timeline-item');
+        if (!item) return;
+        event.preventDefault();
+        openDetailsModal(item);
     });
 
     const closeModal = () => {

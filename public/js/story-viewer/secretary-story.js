@@ -6,13 +6,21 @@
  * highlight. Uses a MutationObserver to wire checkboxes whenever the engine
  * re-renders the event grid.
  */
-import { getStorageItem, setStorageItem, createSearchIndex } from '../utils.js';
+import { getStorageItem, setStorageItem, createSearchIndex, makeKeyboardActivatable } from '../utils.js';
 
 const COMPLETION_STORAGE_KEY = 'secretaryStoryCompletion';
 
 function getCompletionData() {
   const data = getStorageItem(COMPLETION_STORAGE_KEY, null);
-  return data ? JSON.parse(data) : {};
+  if (!data) return {};
+  try {
+    const parsed = JSON.parse(data);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch (error) {
+    console.warn('Ignoring corrupt secretary story completion data:', error);
+    setStorageItem(COMPLETION_STORAGE_KEY, JSON.stringify({}));
+    return {};
+  }
 }
 function setCompletionData(data) {
   setStorageItem(COMPLETION_STORAGE_KEY, JSON.stringify(data));
@@ -41,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderEventEntries(entries) {
     const grid = document.getElementById('event-grid');
     if (!grid) return;
-    grid.innerHTML = '';
+    grid.textContent = '';
 
     entries.forEach(([id, event]) => {
       const eventId = event.id || id;
@@ -113,15 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!shipgirlId) return;
 
       // Prevent duplicate UI on grid re-renders
-      if (card.querySelector('.card-checkbox')) {
-        // Also ensure class state reflects storage on first hydration
-        if (completionData[String(shipgirlId)]) {
-          card.classList.add('completed-card');
-          card.querySelector('.card-checkbox')?.classList.add('completed');
-        } else {
-          card.classList.remove('completed-card');
-          card.querySelector('.card-checkbox')?.classList.remove('completed');
-        }
+      const existingCheckbox = card.querySelector('.card-checkbox');
+      if (existingCheckbox) {
+        // Hydrate class + aria state from storage every render
+        const isComplete = !!completionData[String(shipgirlId)];
+        card.classList.toggle('completed-card', isComplete);
+        existingCheckbox.classList.toggle('completed', isComplete);
+        existingCheckbox.setAttribute('aria-checked', String(isComplete));
         return;
       }
 
@@ -133,10 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
         checkbox.classList.add('completed');
         card.classList.add('completed-card');
       }
+      checkbox.setAttribute('aria-checked', String(checkbox.classList.contains('completed')));
 
-      checkbox.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+      makeKeyboardActivatable(checkbox, (e) => {
+        e.stopPropagation(); // don't bubble to the underlying card click
 
         const fresh = getCompletionData();
         const key = String(shipgirlId);
@@ -145,9 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         checkbox.classList.toggle('completed');
         card.classList.toggle('completed-card');
+        checkbox.setAttribute('aria-checked', String(checkbox.classList.contains('completed')));
 
         applyFilter(); // keep filtered view consistent after every toggle
-      });
+      }, { role: 'checkbox' });
 
       card.appendChild(checkbox);
     });
@@ -169,23 +176,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchResults = document.getElementById('search-results');
     if (!searchBar || !searchResults) return;
 
-    function highlightText(text, matches) {
-      let out = '';
+    function appendHighlightedText(target, text, matches) {
       let last = 0;
       (matches || []).forEach((m) => {
         if (m.key !== 'name' || !m.indices || !m.indices.length) return;
         const [start, end] = m.indices[0];
-        out += text.substring(last, start);
-        out += `<mark>${text.substring(start, end + 1)}</mark>`;
+        target.appendChild(document.createTextNode(text.substring(last, start)));
+        const mark = document.createElement('mark');
+        mark.textContent = text.substring(start, end + 1);
+        target.appendChild(mark);
         last = end + 1;
       });
-      out += text.substring(last);
-      return out;
+      target.appendChild(document.createTextNode(text.substring(last)));
     }
 
     searchBar.addEventListener('input', (e) => {
       const term = e.target.value;
-      searchResults.innerHTML = '';
+      searchResults.textContent = '';
 
       if (term) {
         let result = fuse.search(term);
@@ -202,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
           result.forEach((r) => {
             const a = document.createElement('a');
             a.href = '#';
-            a.innerHTML = highlightText(r.item.name, r.matches);
+            appendHighlightedText(a, r.item.name, r.matches);
             a.addEventListener('click', (ev) => {
               ev.preventDefault();
               renderEventEntries([[r.item.id, r.item]]);
@@ -234,9 +241,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== Filter Buttons =====
   const filterButtons = document.querySelectorAll('.filter-btn');
   filterButtons.forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.classList.contains('active')));
     button.addEventListener('click', () => {
-      filterButtons.forEach((btn) => btn.classList.remove('active'));
+      filterButtons.forEach((btn) => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-pressed', 'false');
+      });
       button.classList.add('active');
+      button.setAttribute('aria-pressed', 'true');
       currentFilter = button.dataset.filter || 'all';
       applyFilter();
     });

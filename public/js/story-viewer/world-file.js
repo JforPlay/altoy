@@ -4,7 +4,7 @@
  * Renders a thumbnail gallery on the left; clicking an entry loads its
  * paragraphs into the content area on the right. Includes font-size controls.
  */
-import { fetchJSON, resolveUrl } from '../utils.js';
+import { fetchJSON, resolveUrl, makeKeyboardActivatable } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const galleryContainer = document.getElementById('gallery-container');
@@ -15,12 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
      * Each entry gets a background image from the local assets folder.
      */
     function initialize(data) {
-        galleryContainer.innerHTML = ''; 
+        galleryContainer.textContent = '';
 
         for (const key in data) {
             const itemData = data[key];
             const galleryItem = document.createElement('div');
             galleryItem.className = 'gallery-item';
+            galleryItem.setAttribute('aria-pressed', 'false');
             galleryItem.style.backgroundImage = `url('${resolveUrl(`assets/img/${itemData.id_2}.webp`)}')`;
 
             const itemName = document.createElement('div');
@@ -28,13 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
             itemName.textContent = key;
 
             galleryItem.appendChild(itemName);
-            
-            galleryItem.addEventListener('click', () => {
+
+            makeKeyboardActivatable(galleryItem, () => {
                 const currentActive = document.querySelector('.gallery-item.active');
                 if (currentActive) {
                     currentActive.classList.remove('active');
+                    currentActive.setAttribute('aria-pressed', 'false');
                 }
                 galleryItem.classList.add('active');
+                galleryItem.setAttribute('aria-pressed', 'true');
 
                 displayContent(itemData.child);
 
@@ -72,7 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const content = document.createElement('p');
-            content.innerHTML = paragraph.content.replace(/\n/g, '<br>');
+            String(paragraph.content || '').split('\n').forEach((line, index) => {
+                if (index > 0) content.appendChild(document.createElement('br'));
+                content.appendChild(document.createTextNode(line));
+            });
             paragraphContainer.appendChild(content);
 
             contentContainer.appendChild(paragraphContainer);
@@ -88,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupFontControls() {
         const fontIncreaseBtn = document.getElementById('font-increase');
         const fontDecreaseBtn = document.getElementById('font-decrease');
+        if (!fontIncreaseBtn || !fontDecreaseBtn) return;
 
         let currentFontSize = 16;
         const step = 1;
@@ -122,8 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => {
             console.error('Error loading world data:', error);
-            contentContainer.innerHTML = `<div class="placeholder" style="color: red;">
-                <strong>Error:</strong> 스토리 데이터 파일을 불러올 수 없습니다..<br>
-            </div>`;
+            contentContainer.textContent = '';
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'placeholder';
+            errorMessage.style.color = 'red';
+            const label = document.createElement('strong');
+            label.textContent = 'Error:';
+            errorMessage.append(label, document.createTextNode(' 스토리 데이터 파일을 불러올 수 없습니다.'));
+            contentContainer.appendChild(errorMessage);
         });
 });

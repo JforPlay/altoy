@@ -6,7 +6,7 @@
  * custom grouped gallery (by year/group), and returnToMemorySelection to skip
  * the memory layer and go directly back to the character gallery.
  */
-import { createImg } from '../utils.js';
+import { createImgElement, makeKeyboardActivatable } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Replace the engine's default flat grid with a year-grouped gallery.
     window.StoryViewer.populateEventGrid = function(searchTerm = '') {
         const eventGrid = this.elements.eventGrid;
-        eventGrid.innerHTML = '';
+        eventGrid.textContent = '';
 
         // Create grouped gallery layout
         for (const [groupTitle, characterNames] of Object.entries(CHARACTER_GROUPS)) {
@@ -107,11 +107,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (eventData) {
                     const card = document.createElement('div');
                     card.className = 'hof-character-card story-card';
-                    card.innerHTML = `
-                        ${createImg(eventData.icon, eventData.name, { className: 'hof-card-image' })}
-                        <div class="hof-card-name">${eventData.name}</div>
-                    `;
-                    card.addEventListener('click', () => {
+
+                    card.appendChild(createImgElement(eventData.icon, eventData.name, { className: 'hof-card-image' }));
+                    const name = document.createElement('div');
+                    name.className = 'hof-card-name';
+                    name.textContent = eventData.name;
+                    card.appendChild(name);
+
+                    makeKeyboardActivatable(card, () => {
                         // Skip the memory selection step — HOF characters have only one story.
                         this.currentEventId = characterName;
                         const memoryData = eventData.memory_id[0];

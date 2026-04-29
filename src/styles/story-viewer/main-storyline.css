@@ -317,6 +317,14 @@ body::before {
     0 0 1.5rem var(--accent-color);
 }
 
+.timeline-item:focus-visible,
+.chapter-marker:focus-visible,
+#filter-button:focus-visible,
+.close-button:focus-visible {
+  outline: 3px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
 .timeline-item.dimmed {
   opacity: 0.4;
   filter: saturate(0);
@@ -475,6 +483,8 @@ body::before {
 }
 
 .close-button {
+  background: transparent;
+  border: 0;
   color: var(--text-color);
   opacity: 0.6;
   position: absolute;

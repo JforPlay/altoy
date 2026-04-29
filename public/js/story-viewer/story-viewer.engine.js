@@ -10,7 +10,7 @@
  * rendering, screen shake/flash effects, SFX playback, auto-play, full-script modal,
  * and all keyboard/pointer event wiring.
  */
-import { debounce, fetchJSONWithCache, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl } from '../utils.js';
+import { debounce, fetchJSONWithCache, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, makeKeyboardActivatable } from '../utils.js';
 document.addEventListener('DOMContentLoaded', () => {
     window.StoryViewer = {
         // ===== State & Constants =====
@@ -517,7 +517,7 @@ document.addEventListener('DOMContentLoaded', () => {
          * page's filter logic after it re-renders via renderEventEntries.
          */
         populateEventGrid(searchTerm = '') {
-            this.elements.eventGrid.innerHTML = '';
+            this.elements.eventGrid.textContent = '';
             const filteredEvents = Object.entries(this.storylineData)
                 .filter(([key, event]) => event.name.toLowerCase().includes((searchTerm || '').toLowerCase()));
 
@@ -561,12 +561,16 @@ document.addEventListener('DOMContentLoaded', () => {
         createSkeletonCard() {
             const card = document.createElement('div');
             card.className = 'grid-card skeleton-card';
-            card.innerHTML = `
-                <div class="card-thumbnail skeleton-thumbnail"></div>
-                <div class="card-content">
-                    <div class="skeleton-title"></div>
-                    <div class="skeleton-subtitle"></div>
-                </div>`;
+            const thumbnail = document.createElement('div');
+            thumbnail.className = 'card-thumbnail skeleton-thumbnail';
+            const content = document.createElement('div');
+            content.className = 'card-content';
+            const title = document.createElement('div');
+            title.className = 'skeleton-title';
+            const subtitle = document.createElement('div');
+            subtitle.className = 'skeleton-subtitle';
+            content.append(title, subtitle);
+            card.append(thumbnail, content);
             return card;
         },
 
@@ -580,23 +584,29 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'grid-card';
             if (id) card.dataset.id = id;
 
-            let thumbnailHtml = '';
+            const thumbnail = document.createElement('div');
+            thumbnail.className = 'card-thumbnail';
             if (icon) {
-                let imageUrl = icon.startsWith('http') || icon.startsWith('data:image') || icon.includes('assets/')
+                const imageUrl = icon.startsWith('http') || icon.startsWith('data:image') || icon.includes('assets/')
                     ? icon
                     : `${pathPrefix}${icon}.webp`;
-                thumbnailHtml = `<div class="card-thumbnail" style="background-image: url('${imageUrl}')"></div>`;
+                thumbnail.style.backgroundImage = `url("${imageUrl}")`;
             } else {
-                thumbnailHtml = `<div class="card-thumbnail" style="background-color: #34495e;"></div>`;
+                thumbnail.classList.add('is-placeholder');
             }
 
-            card.innerHTML = `
-                ${thumbnailHtml}
-                <div class="card-content">
-                    <h3 class="card-title">${title}</h3>
-                    <p class="card-subtitle">${subtitle || ''}</p>
-                </div>`;
-            card.addEventListener('click', onClick);
+            const content = document.createElement('div');
+            content.className = 'card-content';
+            const titleEl = document.createElement('h3');
+            titleEl.className = 'card-title';
+            titleEl.textContent = title || '';
+            const subtitleEl = document.createElement('p');
+            subtitleEl.className = 'card-subtitle';
+            subtitleEl.textContent = subtitle || '';
+            content.append(titleEl, subtitleEl);
+            card.append(thumbnail, content);
+
+            makeKeyboardActivatable(card, onClick);
             return card;
         },
 
@@ -611,7 +621,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const eventData = await this.loadChapterData(eventId);
             this.elements.memoryViewTitle.textContent = eventData.name;
-            this.elements.memoryGrid.innerHTML = '';
+            this.elements.memoryGrid.textContent = '';
 
             if (this.config.populateMemoryGridExtras) {
                 this.config.populateMemoryGridExtras(this, this.elements.memoryGrid, eventId);
@@ -932,10 +942,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const line = this.currentStoryScript[this.scriptIndex];
             const el = this.elements;
 
-            el.optionsBox.innerHTML = '';
+            el.optionsBox.textContent = '';
             hideElement(el.dialogueBox);
             hideElement(el.infoScreen);
-            el.infoScreenText.innerHTML = '';
+            el.infoScreenText.textContent = '';
 
             this.updateBackground();
             // Line-level visual/audio effects (game's per-step playback).
@@ -1027,11 +1037,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 hideElement(el.actorPortrait);
                             }
                         };
-                        el.actorPortrait.innerHTML = '';
+                        el.actorPortrait.textContent = '';
                         el.actorPortrait.appendChild(img);
                         showElement(el.actorPortrait);
                     } else {
-                        el.actorPortrait.innerHTML = '';
+                        el.actorPortrait.textContent = '';
                         hideElement(el.actorPortrait);
                     }
                 }
@@ -1073,8 +1083,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 line.options.forEach(opt => {
                     const button = document.createElement('button');
                     button.className = 'option-button';
+                    button.type = 'button';
                     button.textContent = opt.content.replace(/<.*?>/g, '');
-                    button.onclick = (e) => { e.stopPropagation(); this.handleOptionSelect(opt.flag); };
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.handleOptionSelect(opt.flag);
+                    });
                     el.optionsBox.appendChild(button);
                 });
             }
@@ -1142,7 +1156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (sequences.length === 0) return false;
 
             const el = this.elements;
-            el.infoScreenText.innerHTML = '';
+            el.infoScreenText.textContent = '';
 
             sequences.forEach(sequenceLine => {
                 const lineEl = document.createElement('span');
@@ -1810,7 +1824,7 @@ document.addEventListener('DOMContentLoaded', () => {
         /** Clear all paintings when starting a new story. */
         clearPaintings() {
             if (this.elements.paintingLayer) {
-                this.elements.paintingLayer.innerHTML = '';
+                this.elements.paintingLayer.textContent = '';
             }
             this.paintingsBySide.clear();
             this.activeSpeakerSide = null;
@@ -2385,12 +2399,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentLine = this.scriptIndex + 1;
             const percentage = Math.round((currentLine / totalLines) * 100);
 
-            this.elements.progressIndicator.innerHTML = `
-                <div class="progress-text">${currentLine} / ${totalLines}</div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar-fill" style="width: ${percentage}%"></div>
-                </div>
-            `;
+            const indicator = this.elements.progressIndicator;
+            indicator.textContent = '';
+
+            const text = document.createElement('div');
+            text.className = 'progress-text';
+            text.textContent = `${currentLine} / ${totalLines}`;
+
+            const barContainer = document.createElement('div');
+            barContainer.className = 'progress-bar-container';
+            const barFill = document.createElement('div');
+            barFill.className = 'progress-bar-fill';
+            barFill.style.width = `${percentage}%`;
+            barContainer.appendChild(barFill);
+            indicator.append(text, barContainer);
         },
 
         // ===== Modals =====

@@ -248,6 +248,11 @@ body:has(#event-selection-view) {
               0 0 0 1px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
+.hof-character-card:focus-visible {
+  outline: 3px solid var(--accent-color);
+  outline-offset: 4px;
+}
+
 .hof-character-card:hover::before {
   opacity: 1;
 }
