@@ -32882,5 +32882,127 @@
             }
         ],
         "compare_group": 5
+    },
+    {
+        "id": 151080,
+        "name": "치라이 데코 펜",
+        "icon": "151080",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 106,
+        "nation_name": "DOAXVV",
+        "nation_code": "DOA",
+        "speciality": "<[NA]>",
+        "label": [
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "250"
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "640"
+            }
+        ],
+        "compare_group": 5
+    },
+    {
+        "id": 151100,
+        "name": "그라비아 패널",
+        "icon": "151100",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 106,
+        "nation_name": "DOAXVV",
+        "nation_code": "DOA",
+        "speciality": "<[NA]>",
+        "label": [
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "antiaircraft",
+                "name": "대공",
+                "value": "14"
+            },
+            {
+                "key": "hit",
+                "name": "명중",
+                "value": 15
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "antiaircraft",
+                "name": "대공",
+                "value": "44"
+            },
+            {
+                "key": "hit",
+                "name": "명중",
+                "value": 36
+            }
+        ],
+        "compare_group": 5
+    },
+    {
+        "id": 151120,
+        "name": "행복의 클로버",
+        "icon": "151120",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 106,
+        "nation_name": "DOAXVV",
+        "nation_code": "DOA",
+        "speciality": "<[NA]>",
+        "label": [
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "200"
+            },
+            {
+                "key": "luck",
+                "name": "행운",
+                "value": 1
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": "590"
+            },
+            {
+                "key": "luck",
+                "name": "행운",
+                "value": 2
+            }
+        ],
+        "compare_group": 5
     }
 ]

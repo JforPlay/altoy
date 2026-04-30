@@ -4,20 +4,7 @@
             "build_id": 4,
             "build_name": "기간 한정",
             "banner_type": 2,
-            "shipgirls": {
-                "60509": {
-                    "name": "프란체스코 카라치올로",
-                    "rarity": "SSR",
-                    "nationality": 6,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/605090/shipyard.png"
-                },
-                "60204": {
-                    "name": "알베르토 디 주사노",
-                    "rarity": "SR",
-                    "nationality": 6,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/602040/shipyard.png"
-                }
-            }
+            "shipgirls": {}
         },
         {
             "build_id": 10,
