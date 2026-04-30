@@ -59,26 +59,6 @@ const LINKS = {
     ...EXTERNAL_LINKS,
 };
 
-/**
- * Resolve all [data-link] anchors on the page to their full URLs.
- * Reads the LINKS constant above and prepends the correct base path for GitHub Pages.
- */
-function initLinks() {
-    const base = getBasePath();
-    const linkElements = document.querySelectorAll('[data-link]');
-
-    linkElements.forEach(el => {
-        const linkKey = el.getAttribute('data-link');
-        if (LINKS[linkKey]) {
-            const url = LINKS[linkKey];
-            el.href = url.startsWith('http') ? url : `${base}/${url}`;
-        } else {
-            console.warn(`[Links] Key not found: "${linkKey}"`);
-            el.href = '#';
-        }
-    });
-}
-
 // ===== Main Initialization =====
 document.addEventListener('DOMContentLoaded', function () {
     const savedTheme = getStorageItem('theme', 'dark');
@@ -88,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
     setupThemeToggles();
     setupMegaMenuToggles();
     updateNavbarHeight();
-    initLinks();
 
     const navbar = document.querySelector('.navbar');
     if (navbar) {
@@ -337,7 +316,6 @@ export {
     getStorageItem,
     setStorageItem,
     LINKS,
-    initLinks,
     applyTheme,
     setupThemeToggles,
     setupMegaMenuToggles,

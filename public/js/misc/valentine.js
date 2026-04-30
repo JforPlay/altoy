@@ -5,7 +5,7 @@
  * NAME_ALIASES handles spelling mismatches between valentine_data.json and ship_group_data names.
  */
 
-import { debounce, fetchJSON, getUrlParam, setUrlParams, showElement, hideElement, createSearchIndex, normalizeRomanNumerals, createImgElement, requireElements, renderStatus } from '../utils.js';
+import { debounce, fetchJSON, getUrlParam, setUrlParams, showElement, hideElement, createSearchIndex, ensureFuse, normalizeRomanNumerals, createImgElement, requireElements, renderStatus } from '../utils.js';
 
 // ===== State =====
 let valentineData = [];
@@ -86,6 +86,7 @@ async function loadData() {
             return idA - idB;
         });
 
+        await ensureFuse();
         searchIndex = createSearchIndex(valentineData, {
             keys: ['name'],
             threshold: 0.3
@@ -158,6 +159,7 @@ function renderShipgirlList(data) {
             const img = createImgElement(iconUrl, entry.name, {
                 className: 'shipgirl-item-icon',
                 onError() {
+                    this.onerror = null;
                     this.style.display = 'none';
                 }
             });

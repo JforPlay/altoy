@@ -7,7 +7,7 @@
  * The storage event keeps both pages in sync across tabs without circular triggering.
  */
 
-import { fetchJSONWithCache, getStorageItem, setStorageItem, createImg, IMG_FALLBACKS, createSearchIndex, debounce } from '../utils.js';
+import { fetchJSONWithCache, getStorageItem, setStorageItem, createImg, IMG_FALLBACKS, createSearchIndex, ensureFuse, debounce } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 
 const { parseProgress } = ShipgirlTrackerUtils;
@@ -15,6 +15,12 @@ const { parseProgress } = ShipgirlTrackerUtils;
 document.addEventListener('DOMContentLoaded', () => {
     const SAVE_KEY = 'shipgirlTrackerProgress';
     const PINNED_KEY = 'researchTrackerPinned';
+
+    // buildNationSearchIndex below is called from sync render paths. Kick off
+    // the lazy Fuse load now so the index is ready by the time the user opens
+    // a nation tab. If Fuse hasn't loaded yet, createSearchIndex returns null
+    // and the quick-add widget shows no results until the next user input.
+    ensureFuse();
 
     // Descriptions that are NOT map-drops or archive-drops but still grant the ship permanently.
     // Map drops and archive drops are detected via ship_info_lite.json and map_data_full.json
@@ -418,8 +424,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Build a Fuse.js search index of all ships belonging to a nation.
+     * Build a search index of all ships belonging to a nation.
      * Each entry is { gid, name, rarity, typeName, position, icon, isPermanent }.
+     *
+     * Returns a wrapper with a `search(query)` method that mirrors Fuse's
+     * `[{ item }]` shape. If Fuse.js has not finished loading yet, the wrapper
+     * falls back to substring matching and lazily swaps in the real Fuse index
+     * once it resolves — so `renderQuickAdd` callers never see a null index
+     * even if the user opens a tab before the deferred Fuse fetch completes.
      */
     function buildNationSearchIndex(natId) {
         const entries = [];
@@ -437,10 +449,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 isPermanent: isPermanentShip({ ...ship, gid }),
             });
         }
-        return createSearchIndex(entries, {
-            keys: ['name', 'typeName'],
-            threshold: 0.3,
-        });
+
+        const indexOptions = { keys: ['name', 'typeName'], threshold: 0.3 };
+        let fuseIndex = createSearchIndex(entries, indexOptions);
+        if (!fuseIndex) {
+            ensureFuse().then(() => {
+                fuseIndex = createSearchIndex(entries, indexOptions);
+            });
+        }
+
+        return {
+            search(query) {
+                if (fuseIndex) return fuseIndex.search(query);
+                const needle = String(query || '').toLowerCase();
+                if (!needle) return [];
+                return entries
+                    .filter(e =>
+                        (e.name && e.name.toLowerCase().includes(needle)) ||
+                        (e.typeName && e.typeName.toLowerCase().includes(needle))
+                    )
+                    .map(item => ({ item }));
+            },
+        };
     }
 
     /**

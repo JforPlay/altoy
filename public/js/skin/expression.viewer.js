@@ -13,6 +13,7 @@ import {
     hideElement,
     showElement,
     createSearchIndex,
+    ensureFuse,
     setupModal,
     openModal
 } from '../utils.js';
@@ -50,6 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function init() {
         try {
             state.data = await fetchJSON('data/skin/expression_viewer_data.json');
+            await ensureFuse();
             state.fuse = createSearchIndex(state.data, { keys: ['name', 'id'], threshold: 0.4 });
 
             elements.totalCount.textContent = state.data.length;

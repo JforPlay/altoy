@@ -5,7 +5,7 @@
  * utilities (recipe tree building, dependency graphs, item lookups) used by all sub-engines.
  * Exposes itself as window.IslandEngine for cross-module access.
  */
-import { fetchJSON, showToast, setStorageItem, createSearchIndex } from '../utils.js';
+import { fetchJSON, showToast, setStorageItem, createSearchIndex, ensureFuse } from '../utils.js';
 
 'use strict';
 
@@ -47,6 +47,11 @@ async function init() {
 
     try {
         await loadSharedData();
+        // Sub-module initializeSearch() functions are synchronous and call
+        // createIslandSearchIndex(...) (ultimately createSearchIndex) directly.
+        // Kick off the lazy Fuse load alongside shared data so it's ready by
+        // the time any sub-module activates and builds its index.
+        ensureFuse();
         console.log('[Island] Core engine initialized (Lazy loading modules)');
     } catch (error) {
         console.error('[Island] Critical initialization failure:', error);

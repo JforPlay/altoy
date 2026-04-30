@@ -16,7 +16,7 @@
  * Must stay in sync with public/sw.js CACHE_VERSION. Bumping just one
  * leaves the other cache stale on first visit. See CLAUDE.md "Cache & Data Versioning".
  */
-const DATA_VERSION = '1.4.0';
+const DATA_VERSION = '1.5.0';
 
 /**
  * localStorage keys that participate in Google Drive sync.
@@ -315,10 +315,13 @@ function createImgElement(src, alt = '', options = {}) {
     if (onError) {
         img.onerror = onError;
     } else if (fallback) {
+        // Detach the handler before swapping in the fallback so a fallback that
+        // also fails to load does NOT loop. The previous `img.src !== fallback`
+        // guard was unreliable for relative fallback URLs because `img.src` returns
+        // the resolved absolute URL after assignment.
         img.onerror = () => {
-            if (img.src !== fallback) {
-                img.src = fallback;
-            }
+            img.onerror = null;
+            img.src = fallback;
         };
     }
     return img;
@@ -885,11 +888,14 @@ function toggleElement(element, show) {
 
 // Reference-counted body-scroll lock and per-modal state (previously focused
 // element, before-open overflow value). Stacked modals release the lock only
-// when ALL of them have closed.
+// when ALL of them have closed. `activeModalIds` makes open/close idempotent
+// per modal — calling openModal('foo') twice without an intervening close
+// won't double-increment the lock count.
 const _modalState = {
     lockCount: 0,
     bodyOverflowSnapshot: null,
     previousFocus: new Map(),  // modalId → element (or null)
+    activeModalIds: new Set(),
 };
 
 function _lockBodyScroll() {
@@ -929,6 +935,14 @@ function openModal(modalId, options = {}) {
     } = options;
     const modal = document.getElementById(modalId);
     if (!modal) return;
+
+    // Idempotent per modal — repeat opens are no-ops so the body lock count
+    // and previousFocus capture only happen once until a close.
+    if (_modalState.activeModalIds.has(modalId)) {
+        if (onOpen) onOpen(modal);
+        return;
+    }
+    _modalState.activeModalIds.add(modalId);
 
     if (restoreFocus) {
         _modalState.previousFocus.set(modalId, document.activeElement);
@@ -974,20 +988,35 @@ function closeModal(modalId, options = {}) {
     const modal = document.getElementById(modalId);
     if (!modal) return;
 
+    // Match the idempotent guard in openModal — closing a modal that's not
+    // tracked as open mustn't decrement the lock count.
+    if (!_modalState.activeModalIds.has(modalId)) {
+        if (onClose) onClose(modal);
+        return;
+    }
+    _modalState.activeModalIds.delete(modalId);
+
+    // Focus management must run BEFORE we set aria-hidden / display:none.
+    // Setting aria-hidden on an ancestor of the focused element triggers a
+    // browser a11y violation ("Blocked aria-hidden on an element because its
+    // descendant retained focus"). If a previous-focus target was captured,
+    // restore to it; otherwise blur the focused element so it leaves the
+    // modal subtree before the ARIA attribute is applied.
+    const previous = _modalState.previousFocus.get(modalId);
+    _modalState.previousFocus.delete(modalId);
+    const focusedInside = modal.contains(document.activeElement);
+    if (restoreFocus && previous && typeof previous.focus === 'function' && document.contains(previous)) {
+        previous.focus();
+    } else if (focusedInside && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+    }
+
     modal.style.display = 'none';
     modal.classList.remove('active');
     modal.classList.add('hidden');
     if (setAriaHidden) modal.setAttribute('aria-hidden', 'true');
 
     if (unlockBody) _unlockBodyScroll();
-
-    if (restoreFocus) {
-        const previous = _modalState.previousFocus.get(modalId);
-        _modalState.previousFocus.delete(modalId);
-        if (previous && typeof previous.focus === 'function' && document.contains(previous)) {
-            previous.focus();
-        }
-    }
 
     if (onClose) onClose(modal);
 }
@@ -1243,18 +1272,67 @@ function makeKeyboardActivatable(element, onActivate, options = {}) {
 
 // ===== Search Utilities =====
 
+const FUSE_CDN_URL = 'https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js';
+let _fuseLoadPromise = null;
+
 /**
- * Create a Fuse.js search index with common defaults
- * Requires Fuse.js to be loaded
+ * Lazy-load Fuse.js. Resolves to the global `Fuse` constructor (also accessible
+ * as `window.Fuse` after the call) or `null` if loading fails. Concurrent calls
+ * share one network fetch via the cached promise.
+ *
+ * Pages that need fuzzy search should `await ensureFuse()` before calling
+ * `createSearchIndex()`. Pages with substring fallbacks can keep them as
+ * defense-in-depth — `ensureFuse()` resolves to `null` on a network error
+ * (e.g. CDN outage), letting the fallback path engage.
+ *
+ * Reuses an existing `<script>` tag for the same URL if one is already in
+ * the DOM (handles overlap with the eager Layout.astro script during the
+ * staged migration).
+ *
+ * @returns {Promise<Function|null>}
+ */
+function ensureFuse() {
+    if (typeof Fuse !== 'undefined') return Promise.resolve(Fuse);
+    if (_fuseLoadPromise) return _fuseLoadPromise;
+
+    _fuseLoadPromise = new Promise((resolve) => {
+        const finish = () => resolve(typeof Fuse !== 'undefined' ? Fuse : null);
+
+        const existing = document.querySelector(`script[src="${FUSE_CDN_URL}"]`);
+        if (existing) {
+            if (typeof Fuse !== 'undefined') {
+                resolve(Fuse);
+                return;
+            }
+            existing.addEventListener('load', finish, { once: true });
+            existing.addEventListener('error', () => resolve(null), { once: true });
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.src = FUSE_CDN_URL;
+        script.async = true;
+        script.addEventListener('load', finish, { once: true });
+        script.addEventListener('error', () => resolve(null), { once: true });
+        document.head.appendChild(script);
+    });
+
+    return _fuseLoadPromise;
+}
+
+/**
+ * Create a Fuse.js search index with common defaults.
+ * Requires Fuse.js to be loaded — `await ensureFuse()` first to guarantee it.
+ * Returns null silently if Fuse isn't available; callers handle that case
+ * (substring fallback or deferred wrapper). Returning null is a normal
+ * transient state under lazy loading, so no warning is emitted.
  * @param {Array} data - Array of items to search
  * @param {Object} options - Fuse.js options (keys required)
- * @returns {Fuse|null} - Fuse instance or null if Fuse not available
+ * @returns {Fuse|null} - Fuse instance or null if Fuse not loaded yet
+ * @see ensureFuse
  */
 function createSearchIndex(data, options = {}) {
-    if (typeof Fuse === 'undefined') {
-        console.warn('Fuse.js not loaded. Search functionality disabled.');
-        return null;
-    }
+    if (typeof Fuse === 'undefined') return null;
 
     const defaultOptions = {
         threshold: 0.3,
@@ -1539,6 +1617,7 @@ export {
 
     // Search utilities
     createSearchIndex,
+    ensureFuse,
 
     // Toast notifications
     showToast,

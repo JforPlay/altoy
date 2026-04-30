@@ -4,7 +4,7 @@
  * Part of the dorm module group (viewer + data + grid + panel).
  * State is shared via a ref passed to setup() from dorm.viewer.js.
  */
-import { fetchJSON, resolveUrl, createSearchIndex } from '../utils.js';
+import { fetchJSON, resolveUrl, createSearchIndex, ensureFuse } from '../utils.js';
 
 /** @type {import('./dorm.viewer.js').DormState} */
 let state;
@@ -29,6 +29,7 @@ export async function loadData() {
 
         state.furniture = data.furniture && typeof data.furniture === 'object' ? data.furniture : {};
         state.themes = data.themes && typeof data.themes === 'object' ? data.themes : {};
+        await ensureFuse();
         state.searchIndex = createSearchIndex(Object.values(state.furniture), {
             keys: ['name', 'desc'],
             threshold: 0.3

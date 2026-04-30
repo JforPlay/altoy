@@ -6,7 +6,7 @@
  * highlight. Uses a MutationObserver to wire checkboxes whenever the engine
  * re-renders the event grid.
  */
-import { getStorageItem, setStorageItem, createSearchIndex, makeKeyboardActivatable } from '../utils.js';
+import { getStorageItem, setStorageItem, createSearchIndex, ensureFuse, makeKeyboardActivatable } from '../utils.js';
 
 const COMPLETION_STORAGE_KEY = 'secretaryStoryCompletion';
 
@@ -167,7 +167,8 @@ document.addEventListener('DOMContentLoaded', () => {
    * Renders a dropdown of matching results with name-range highlights;
    * respects the active filter when narrowing results.
    */
-  function setupSearch() {
+  async function setupSearch() {
+    await ensureFuse();
     const source = Object.values(window.StoryViewer.storylineData || {});
     const fuse = createSearchIndex(source, { keys: ['name'], threshold: 0.4 });
     if (!fuse) return;

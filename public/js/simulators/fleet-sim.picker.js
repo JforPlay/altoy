@@ -4,7 +4,7 @@
  * Both support fuzzy search (Fuse.js) and filter chips (type, rarity, nationality).
  */
 
-import { createSearchIndex, debounce, setupModal, openModal, closeModal, IMG_FALLBACKS } from '../utils.js';
+import { createSearchIndex, ensureFuse, debounce, setupModal, openModal, closeModal, IMG_FALLBACKS } from '../utils.js';
 import {
     getShipByGid,
     getShipsByPosition,
@@ -73,6 +73,12 @@ export function setup(stateRef, cbs) {
     _cacheDOM();
     _setupModals();
     _setupEventListeners();
+    // Picker functions (openShipPicker / openEquipPicker / openSPWeaponPicker) are
+    // synchronous event handlers that build a Fuse index per picker open. Kick off
+    // the lazy Fuse load now so the indexes are ready by the time a picker opens.
+    // If the user opens a picker before Fuse loads, createSearchIndex returns null
+    // and the picker's substring filter fallback handles it until next open.
+    ensureFuse();
 }
 
 // ===== Public API =====

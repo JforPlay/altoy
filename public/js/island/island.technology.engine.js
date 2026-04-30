@@ -6,7 +6,7 @@
  * Registers as window.TechnologyModule.
  */
 
-import { fetchJSON, formatTime, getStorageItem, setStorageItem } from '../utils.js';
+import { fetchJSON, formatTime, getStorageItem, setStorageItem, ensureFuse } from '../utils.js';
 
 // ===== State =====
 const state = {
@@ -60,8 +60,9 @@ async function init(sharedData) {
         console.log(`[Island Technology] Loaded ${Object.keys(state.technologies).length} technologies`);
         console.log(`[Island Technology] Loaded ${Object.keys(state.resourceData).length} resource types`);
 
-        // Initialize search
-        initializeSearch();
+        // Initialize search — await Fuse so the index is built with the real
+        // constructor instead of falling through to the substring fallback.
+        await initializeSearch();
 
         // Render initial view
         renderCategoryFilter();
@@ -186,13 +187,14 @@ function setupEventDelegation() {
 /**
  * Initialize Fuse.js search
  */
-function initializeSearch() {
+async function initializeSearch() {
     const searchableData = Object.values(state.technologies).map(tech => ({
         id: tech.id,
         name: tech.tech_name,
         desc: tech.tech_desc
     }));
 
+    await ensureFuse();
     state.fuseInstance = window.IslandEngine.createSearchIndex(searchableData, {
         keys: ['name', 'desc'],
         threshold: 0.3,

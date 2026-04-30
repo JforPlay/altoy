@@ -10,7 +10,7 @@ import {
     loadSkillIconData,
     loadSkillDataTemplate
 } from './shipgirl-info.data.js';
-import { openModal, closeModal, createSearchIndex, debounce } from '../utils.js';
+import { openModal, closeModal, createSearchIndex, ensureFuse, debounce } from '../utils.js';
 
 'use strict';
 
@@ -118,10 +118,12 @@ async function buildCorpus() {
     if (skillCorpus) return skillCorpus;
 
     // Wait for full ship data (background-loaded by shipgirl-info.data.js).
+    // Kick off the lazy Fuse load alongside the ship/skill data fetches; getFilteredSkills
+    // can stay synchronous because Fuse will be ready before the corpus is.
     if (!state.fullShipData && state.fullShipDataPromise) {
         await state.fullShipDataPromise;
     }
-    await Promise.all([loadSkillIconData(), loadSkillDataTemplate()]);
+    await Promise.all([loadSkillIconData(), loadSkillDataTemplate(), ensureFuse()]);
 
     if (!state.fullShipData || !state.skillDataTemplate || Object.keys(state.skillDataTemplate).length === 0) {
         throw new Error('데이터 로딩이 완료되지 않았습니다');

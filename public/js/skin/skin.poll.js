@@ -10,7 +10,7 @@
  */
 import {
   debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams,
-  getStorageItem, setStorageItem, showToast, createSearchIndex
+  getStorageItem, setStorageItem, showToast, createSearchIndex, ensureFuse
 } from '../utils.js';
 import { createVirtualScroll } from './skin.poll.virtual-scroll.js';
 
@@ -1567,6 +1567,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Initialize Fuse.js for character search
     const characterDataForFuse = allCharacterNames.map(name => ({ name }));
+    await ensureFuse();
     characterFuse = createSearchIndex(characterDataForFuse, fuseOptions);
 
     // Setup character search dropdown with Fuse.js

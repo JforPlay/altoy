@@ -7,7 +7,7 @@
  */
 
 import {
-    createSearchIndex, debounce, getUrlParam, setUrlParams,
+    createSearchIndex, ensureFuse, debounce, getUrlParam, setUrlParams,
     resolveUrl, showToast, closeModal
 } from '../utils.js';
 import {
@@ -161,6 +161,7 @@ async function init() {
 
         loading.style.display = 'none';
 
+        await ensureFuse();
         state.searchIndex = createSearchIndex(state.equipData, {
             keys: ['name', 'type_name', 'type_name2', 'nation_name', 'nation_code'],
             threshold: 0.3,

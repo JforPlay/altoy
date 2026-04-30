@@ -4,7 +4,7 @@
  * Loads a lightweight index on init (~127KB), then lazy-fetches full per-character
  * data on demand. Exposes both ES module exports and window.SkinData for legacy access.
  */
-import { fetchJSONWithCache, normalizeRomanNumerals, createSearchIndex } from '../utils.js';
+import { fetchJSONWithCache, normalizeRomanNumerals, createSearchIndex, ensureFuse } from '../utils.js';
 
 // @type {{skinIndex: Object, skinDataCache: Object<string, Array>, expressionManifest: Object, characterFuse: Fuse|null, allCharacterNames: string[], releaseDates: Object|null}}
 const state = {
@@ -48,6 +48,7 @@ async function init() {
             .sort(customSort);
 
         const fuseList = state.allCharacterNames.map(name => ({ name }));
+        await ensureFuse();
         state.characterFuse = createSearchIndex(fuseList, { keys: ['name'], threshold: 0.4 });
 
         return true;

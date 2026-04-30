@@ -5,7 +5,7 @@
  * and search. Registers itself as window.CharacterModule for access by island.engine.js.
  */
 
-import { fetchJSON, createImg } from '../utils.js';
+import { fetchJSON, createImg, ensureFuse } from '../utils.js';
 
 // ===== State =====
 const state = {
@@ -58,8 +58,9 @@ async function init(sharedData) {
 
         console.log(`[Island Character] Loaded ${Object.keys(state.characters).length} characters`);
 
-        // Initialize search
-        initializeSearch();
+        // Initialize search — await Fuse so the index is built with the real
+        // constructor instead of falling through to the substring fallback.
+        await initializeSearch();
 
         // Render character list
         renderCharacterList();
@@ -149,12 +150,13 @@ function setupEventDelegation() {
 /**
  * Initialize Fuse.js search
  */
-function initializeSearch() {
+async function initializeSearch() {
     const searchableData = Object.values(state.characters).map(char => ({
         id: char.id,
         name: char.name
     }));
 
+    await ensureFuse();
     state.fuseInstance = window.IslandEngine.createSearchIndex(searchableData, {
         keys: ['name'],
         threshold: 0.3,

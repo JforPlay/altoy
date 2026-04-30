@@ -5,7 +5,7 @@
  * search autocomplete, collection tracking (owned/wanted), a wishlist cart modal, and image lightbox.
  * Cards are built once at load time; filtering rebuilds visible sets and appends in chunks of 50 via IntersectionObserver.
  */
-import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex,
+import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex, ensureFuse,
     openModal, closeModal, setupModal, showToast, getStorageItem, setStorageItem, toggleElement, IMG_FALLBACKS,
     createIcon, createGemIconImg } from '../utils.js';
 
@@ -1396,7 +1396,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchJSONWithCache('data/skin/skin_voiceline_data_subset.json'),
         fetchJSONWithCache('data/skin/skin_release_dates.json').catch(() => ({}))
     ])
-        .then(([skinJson, releaseDateJson]) => {
+        .then(async ([skinJson, releaseDateJson]) => {
             allSkins = skinJson;
             releaseDates = releaseDateJson || {};
             isLoading = false;
@@ -1416,6 +1416,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ChunkController.init(Object.keys(DOM.sections));
 
             const uniqueNames = [...new Set(allSkins.map(skin => skin['한글 함순이 + 스킨 이름']))].sort();
+            await ensureFuse();
             fuse = createSearchIndex(uniqueNames.map(name => ({ name })), fuseOptions);
 
             // Initialize cart badge

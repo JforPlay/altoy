@@ -5,7 +5,7 @@
  * and URL-persisted view/date state.
  */
 
-import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex, getUrlParam, setUrlParams, debounce, createImgElement, createMaterialIcon } from '../utils.js';
+import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex, ensureFuse, getUrlParam, setUrlParams, debounce, createImgElement, createMaterialIcon } from '../utils.js';
 
 (() => {
     /**
@@ -229,7 +229,8 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     // ===== Search =====
 
     /** Initialize the Fuse.js index and attach input/click handlers for the search dropdown. */
-    function initializeSearch() {
+    async function initializeSearch() {
+        await ensureFuse();
         state.fuse = createSearchIndex(state.events, { keys: ['name', 'type', 'faction'] });
         if (searchInitialized) return;
 

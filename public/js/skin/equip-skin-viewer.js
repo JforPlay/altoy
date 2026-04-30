@@ -6,7 +6,7 @@
  */
 import {
     debounce, getUrlParam, setUrlParams,
-    showElement, hideElement, showToast, createSearchIndex,
+    showElement, hideElement, showToast, createSearchIndex, ensureFuse,
     createImgElement, IMG_FALLBACKS, setupFpsDisplay
 } from '../utils.js';
 import { EquipSkinData } from './equip-skin.data.js';
@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     preview.init();
 
     // --- Theme Search Index ---
+    await ensureFuse();
     themeSearchIndex = createSearchIndex(
         data.themeList.map(t => ({ id: t.id, name: t.name })),
         { keys: ['name'], threshold: 0.4 }

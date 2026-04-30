@@ -11,6 +11,7 @@ import {
     fetchJSON,
     resolveUrl,
     createSearchIndex,
+    ensureFuse,
     createImgElement,
     createMaterialIcon,
 } from './utils.js';
@@ -36,12 +37,14 @@ const resultsContainer = document.getElementById('global-search-results');
 
 /**
  * Wire up the global search modal: build the page index, attach trigger/close handlers,
- * bind input search + keyboard navigation.
+ * bind input search + keyboard navigation. Async because Fuse.js is lazy-loaded —
+ * the page index is built once Fuse resolves; if Fuse fails to load, search falls
+ * through to the substring matcher in handleSearch.
  */
-function init() {
+async function init() {
     if (!overlay || !input || !resultsContainer) return;
 
-    // Build page search index
+    await ensureFuse();
     pageIndex = createSearchIndex(PAGE_CATALOG, {
         keys: [
             { name: 'name', weight: 2 },
@@ -128,10 +131,16 @@ async function loadShipData() {
             icon: ship.icon,
             rarity: ship.rarity
         }));
+        await ensureFuse();
         shipIndex = createSearchIndex(shipData, {
             keys: [{ name: 'name', weight: 1 }],
             threshold: 0.3
         });
+        // If the user typed a query while we were loading, ship results were
+        // skipped (shipIndex was null). Re-run the search now that it's ready.
+        if (overlay?.classList.contains('visible') && input?.value.trim()) {
+            handleSearch();
+        }
     } catch (e) {
         console.warn('[GlobalSearch] Failed to load ship data:', e);
     }

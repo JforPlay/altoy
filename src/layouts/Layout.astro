@@ -443,7 +443,7 @@ const csp = `default-src 'self'; script-src ${scriptSrc}; style-src 'self' 'unsa
     </slot>
 
     <!-- Global libraries (must load before page scripts) -->
-    <script is:inline defer src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
+    <!-- Fuse.js is lazy-loaded by utils.js#ensureFuse() on first search use. -->
     <script is:inline type="module" src={`${base}/js/utils.js`}></script>
     <script is:inline type="module" src={`${base}/js/global.script.js`}></script>
     <script is:inline type="module" src={`${base}/js/global-search.js`}></script>
