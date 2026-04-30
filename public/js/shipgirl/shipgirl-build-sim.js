@@ -5,7 +5,7 @@
  * Build stats (total pulls, rarity counts, resources spent) are persisted to localStorage.
  */
 
-import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem, createImgElement, debounce, showToast } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem, createImgElement, createMaterialIcon, debounce, showToast } from '../utils.js';
 (function () {
     'use strict';
 
@@ -574,10 +574,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
             if (isSelected) {
                 const selected = document.createElement('div');
                 selected.className = 'selected-check';
-                const icon = document.createElement('span');
-                icon.className = 'material-symbols-outlined';
-                icon.textContent = 'check_circle';
-                selected.appendChild(icon);
+                selected.appendChild(createMaterialIcon('check_circle'));
                 card.appendChild(selected);
             }
 
@@ -1699,10 +1696,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
             remove.dataset.index = String(index);
             remove.setAttribute('aria-label', `${item.ship.name} 제거`);
 
-            const close = document.createElement('span');
-            close.className = 'material-symbols-outlined';
-            close.textContent = 'close';
-            remove.appendChild(close);
+            remove.appendChild(createMaterialIcon('close'));
             remove.addEventListener('click', () => removeCustomShip(index));
 
             tag.append(img, info, remove);

@@ -6,6 +6,8 @@
  * renderGrid is also called from map.compare.js to show mini grids inside the compare modal.
  */
 
+import { createMaterialIcon } from '../utils.js';
+
 let state;
 let onNodeClick = null;
 
@@ -40,14 +42,6 @@ function renderEmptyGrid(targetEl, message) {
     empty.className = 'map-empty';
     empty.textContent = message;
     targetEl.replaceChildren(empty);
-}
-
-function createMaterialIcon(iconName) {
-    const icon = document.createElement('span');
-    icon.className = 'material-symbols-outlined';
-    icon.textContent = iconName;
-    icon.setAttribute('aria-hidden', 'true');
-    return icon;
 }
 
 function appendNodeIcon(targetEl, info) {

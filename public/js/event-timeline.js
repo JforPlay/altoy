@@ -4,13 +4,20 @@
  * Loads kr_event_timeline.json + ship_group_data.json; shipgirl names are normalized for consistent matching.
  */
 
-import { debounce, fetchJSON, resolveUrl, normalizeRomanNumerals } from './utils.js';
+import {
+    createIcon,
+    createImgElement,
+    debounce,
+    fetchJSON,
+    normalizeRomanNumerals,
+    resolveUrl
+} from './utils.js';
 
 // ===== State =====
 let eventData = [];
-let shipgirlData = {};
 let shipgirlNameMap = new Map(); // Map for O(1) name lookups — see findShipgirlByName
 let filteredEvents = [];
+let controlsReady = false;
 
 // ===== DOM References =====
 const searchInput = document.getElementById('searchInput');
@@ -22,12 +29,28 @@ const rerunStatusFilter = document.getElementById('rerunStatusFilter');
 const showJpDatesFilter = document.getElementById('showJpDatesFilter');
 const eventList = document.getElementById('eventList');
 const eventCount = document.getElementById('eventCount');
+const filterControls = [
+    searchInput,
+    clearBtn,
+    categoryFilter,
+    factionFilter,
+    mudakFilter,
+    rerunStatusFilter,
+    showJpDatesFilter
+].filter(Boolean);
 
 // ===== Data Loading =====
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await loadData();
+    if (!searchInput || !clearBtn || !categoryFilter || !factionFilter || !mudakFilter ||
+        !rerunStatusFilter || !showJpDatesFilter || !eventList || !eventCount) {
+        console.warn('[Event Timeline] Required elements not found');
+        return;
+    }
+
     setupEventListeners();
+    setControlsDisabled(true);
+    await loadData();
 });
 
 /**
@@ -35,53 +58,64 @@ document.addEventListener('DOMContentLoaded', async () => {
  * Handles both array and object formats for ship data, builds a normalized name Map for lookups.
  */
 async function loadData() {
+    eventList.setAttribute('aria-busy', 'true');
+
     try {
         const [eventsData, shipgirlRawData] = await Promise.all([
             fetchJSON('data/kr_event_timeline.json'),
             fetchJSON('data/ship_group_data.json')
         ]);
 
+        if (!Array.isArray(eventsData)) {
+            throw new Error('Event timeline data was not an array');
+        }
+
         eventData = eventsData;
+        shipgirlNameMap = new Map();
 
         // ship_group_data can be an array (some scripts output it that way) or an object keyed by ID
         if (Array.isArray(shipgirlRawData)) {
-            shipgirlData = {};
             shipgirlRawData.forEach(shipgirl => {
-                if (shipgirl.id) shipgirlData[shipgirl.id.toString()] = shipgirl;
-                if (shipgirl.name) {
+                if (shipgirl?.name) {
                     shipgirlNameMap.set(normalizeRomanNumerals(shipgirl.name.trim()), shipgirl);
                 }
             });
-        } else {
-            shipgirlData = shipgirlRawData;
-            Object.values(shipgirlData).forEach(shipgirl => {
-                if (shipgirl.name) {
+        } else if (shipgirlRawData && typeof shipgirlRawData === 'object') {
+            Object.values(shipgirlRawData).forEach(shipgirl => {
+                if (shipgirl?.name) {
                     shipgirlNameMap.set(normalizeRomanNumerals(shipgirl.name.trim()), shipgirl);
                 }
             });
         }
 
-        eventData = eventData.filter(event => event.ID && event.ID.trim() !== '');
+        eventData = eventData.filter(event => String(event?.ID || '').trim() !== '');
 
         // Newest events first (high ID = more recent)
         eventData.sort((a, b) => (parseInt(b.ID) || 0) - (parseInt(a.ID) || 0));
 
         populateFilters();
+        setControlsDisabled(false);
         filterEvents();
     } catch (error) {
-        eventList.innerHTML = `
-            <div class="no-results">
-                <h2>데이터를 불러올 수 없습니다</h2>
-                <p>파일 경로를 확인해주세요: data/kr_event_timeline.json, data/shipgirl_group_data.json</p>
-            </div>
-        `;
+        setControlsDisabled(true);
+        renderState(
+            '데이터를 불러올 수 없습니다',
+            '파일 경로를 확인해주세요: data/kr_event_timeline.json, data/ship_group_data.json',
+            'fas fa-triangle-exclamation'
+        );
+        eventCount.textContent = '총 0개 이벤트';
         console.error('Error loading data:', error);
+    } finally {
+        eventList.setAttribute('aria-busy', 'false');
     }
 }
 
 // ===== Event Listeners & Filters =====
 
 function setupEventListeners() {
+    if (controlsReady) return;
+    controlsReady = true;
+
     const debouncedSearch = debounce(handleSearch, 300);
     searchInput.addEventListener('input', debouncedSearch);
 
@@ -93,12 +127,21 @@ function setupEventListeners() {
     showJpDatesFilter.addEventListener('change', filterEvents);
 }
 
+function setControlsDisabled(disabled) {
+    filterControls.forEach(control => {
+        control.disabled = disabled;
+    });
+}
+
 function populateFilters() {
     const categories = [...new Set(eventData.map(e => e.분류).filter(c => c))];
     const factions = [...new Set(eventData.map(e => e.진영).filter(f => f))];
 
     categories.sort();
     factions.sort();
+
+    categoryFilter.options.length = 1;
+    factionFilter.options.length = 1;
 
     categories.forEach(cat => {
         const option = document.createElement('option');
@@ -118,12 +161,15 @@ function populateFilters() {
 function handleSearch() {
     const query = searchInput.value.trim();
     clearBtn.classList.toggle('visible', query.length > 0);
+    clearBtn.setAttribute('aria-hidden', query.length > 0 ? 'false' : 'true');
     filterEvents();
 }
 
 function clearSearch() {
     searchInput.value = '';
     clearBtn.classList.remove('visible');
+    clearBtn.setAttribute('aria-hidden', 'true');
+    searchInput.focus();
     filterEvents();
 }
 
@@ -181,42 +227,50 @@ function filterEvents() {
 
 function displayEvents() {
     eventCount.textContent = `총 ${filteredEvents.length}개 이벤트`;
+    eventList.setAttribute('aria-busy', 'false');
 
     if (filteredEvents.length === 0) {
-        eventList.innerHTML = `
-            <div class="no-results">
-                <h2>검색 결과가 없습니다</h2>
-                <p>다른 검색어나 필터를 시도해보세요.</p>
-            </div>
-        `;
+        renderState('검색 결과가 없습니다', '다른 검색어나 필터를 시도해보세요.', 'fas fa-magnifying-glass');
         return;
     }
 
-    eventList.innerHTML = filteredEvents.map(event => createEventCard(event)).join('');
+    const fragment = document.createDocumentFragment();
+    filteredEvents.forEach(event => {
+        fragment.appendChild(createEventCard(event));
+    });
+    eventList.replaceChildren(fragment);
 }
 
 /**
- * Build the HTML card for a single event entry.
+ * Build the DOM card for a single event entry.
  * Includes badges (category, faction, rerun status) and optional shipgirl icon row.
  */
 function createEventCard(event) {
-    const badges = [];
+    const card = document.createElement('article');
+    card.className = 'event-card';
 
-    if (event.분류) {
-        badges.push(`<span class="badge badge-category">${event.분류}</span>`);
-    }
+    const header = document.createElement('div');
+    header.className = 'event-header';
 
-    if (event.진영) {
-        badges.push(`<span class="badge badge-faction">${event.진영}</span>`);
-    }
+    const title = document.createElement('h2');
+    title.className = 'event-title';
+    title.textContent = event.이벤트명 || '제목 없음';
+    header.appendChild(title);
 
-    if (event.복각여부 === '신규') {
-        badges.push(`<span class="badge badge-new">신규</span>`);
-    } else if (event.복각여부 === '복각') {
-        badges.push(`<span class="badge badge-rerun">복각</span>`);
-    } else if (event.복각여부 === '상시편입') {
-        badges.push(`<span class="badge badge-permanent">상시</span>`);
-    }
+    const badges = document.createElement('div');
+    badges.className = 'event-badges';
+
+    if (event.분류) badges.appendChild(createBadge(event.분류, 'badge-category'));
+    if (event.진영) badges.appendChild(createBadge(event.진영, 'badge-faction'));
+    if (event.복각여부 === '신규') badges.appendChild(createBadge('신규', 'badge-new'));
+    if (event.복각여부 === '복각') badges.appendChild(createBadge('복각', 'badge-rerun'));
+    if (event.복각여부 === '상시편입') badges.appendChild(createBadge('상시', 'badge-permanent'));
+
+    const externalLink = createEventLink(event.링크);
+    if (externalLink) badges.appendChild(externalLink);
+
+    header.appendChild(badges);
+    card.appendChild(header);
 
     const details = [
         { label: '날짜', value: event.날짜 },
@@ -226,33 +280,17 @@ function createEventCard(event) {
         { label: '복각부터 상시까지?', value: event['복각부터 상시까지?'] }
     ].filter(d => d.value && d.value !== '-');
 
+    const detailsContainer = document.createElement('div');
+    detailsContainer.className = 'event-details';
+    details.forEach(detail => {
+        detailsContainer.appendChild(createDetailRow(detail.label, detail.value));
+    });
+    card.appendChild(detailsContainer);
+
     const shipgirlsSection = createShipgirlsSection(event.함순이);
+    if (shipgirlsSection) card.appendChild(shipgirlsSection);
 
-    const hasLink = event.링크 && event.링크.trim() !== '';
-    const linkButton = hasLink ? `<a href="${event.링크}" target="_blank" rel="noopener" class="event-link-btn">🔗 상세보기</a>` : '';
-
-    return `
-        <div class="event-card">
-            <div class="event-header">
-                <div class="event-title">
-                    ${event.이벤트명 || '제목 없음'}
-                </div>
-                <div class="event-badges">
-                    ${badges.join('')}
-                    ${linkButton}
-                </div>
-            </div>
-            <div class="event-details">
-                ${details.map(d => `
-                    <div class="detail-row">
-                        <div class="detail-label">${d.label}:</div>
-                        <div class="detail-value">${d.value}</div>
-                    </div>
-                `).join('')}
-            </div>
-            ${shipgirlsSection}
-        </div>
-    `;
+    return card;
 }
 
 /**
@@ -261,52 +299,110 @@ function createEventCard(event) {
  */
 function createShipgirlsSection(shipgirlsStr) {
     if (!shipgirlsStr || shipgirlsStr === '-') {
-        return '';
+        return null;
     }
 
     const shipgirlNames = shipgirlsStr.split(',').map(name => name.trim()).filter(name => name);
 
     if (shipgirlNames.length === 0) {
-        return '';
+        return null;
     }
 
-    const icons = shipgirlNames.map(name => {
-        const normalizedName = normalizeRomanNumerals(name.trim());
+    const section = document.createElement('section');
+    section.className = 'shipgirl-icons';
+    section.setAttribute('aria-label', '등장 함순이');
+
+    const title = document.createElement('div');
+    title.className = 'shipgirl-icons-title';
+    title.textContent = '등장 함순이';
+    section.appendChild(title);
+
+    const iconsContainer = document.createElement('div');
+    iconsContainer.className = 'icons-container';
+
+    shipgirlNames.forEach(name => {
         const shipgirl = findShipgirlByName(name);
+        iconsContainer.appendChild(createShipgirlIconLink(name, shipgirl));
+    });
 
-        if (shipgirl) {
-            const rarityClass = getRarityClass(shipgirl.rarity);
-            const shipgirlUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(normalizedName)}`);
-            return `
-                <a href="${shipgirlUrl}" class="shipgirl-icon-link">
-                    <div class="shipgirl-icon ${rarityClass}">
-                        <img src="${shipgirl.icon}" alt="${shipgirl.name}" loading="lazy" data-onfail="hide">
-                        <div class="rarity-indicator">${shipgirl.rarity || '?'}</div>
-                        <div class="tooltip">${shipgirl.name}</div>
-                    </div>
-                </a>
-            `;
-        } else {
-            const shipgirlUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(normalizedName)}`);
-            return `
-                <a href="${shipgirlUrl}" class="shipgirl-icon-link">
-                    <div class="shipgirl-icon rarity-unknown">
-                        <div class="shipgirl-icon-placeholder">${name}</div>
-                        <div class="tooltip">${name}</div>
-                    </div>
-                </a>
-            `;
-        }
-    }).join('');
+    section.appendChild(iconsContainer);
+    return section;
+}
 
-    return `
-        <div class="shipgirl-icons">
-            <div class="shipgirl-icons-title">등장 함순이</div>
-            <div class="icons-container">
-                ${icons}
-            </div>
-        </div>
-    `;
+function createBadge(label, className) {
+    const badge = document.createElement('span');
+    badge.className = `badge ${className}`;
+    badge.textContent = label;
+    return badge;
+}
+
+function createDetailRow(label, value) {
+    const row = document.createElement('div');
+    row.className = 'detail-row';
+
+    const labelEl = document.createElement('div');
+    labelEl.className = 'detail-label';
+    labelEl.textContent = `${label}:`;
+
+    const valueEl = document.createElement('div');
+    valueEl.className = 'detail-value';
+    valueEl.textContent = value;
+
+    row.appendChild(labelEl);
+    row.appendChild(valueEl);
+    return row;
+}
+
+function createEventLink(rawUrl) {
+    const url = getSafeExternalUrl(rawUrl);
+    if (!url) return null;
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.className = 'event-link-btn';
+    link.appendChild(createIcon('fas fa-arrow-up-right-from-square'));
+    link.append('상세보기');
+    return link;
+}
+
+function createShipgirlIconLink(sourceName, shipgirl) {
+    const displayName = shipgirl?.name || sourceName;
+    const linkName = shipgirl?.name || normalizeRomanNumerals(sourceName.trim());
+    const shipgirlUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(linkName)}`);
+
+    const link = document.createElement('a');
+    link.href = shipgirlUrl;
+    link.className = 'shipgirl-icon-link';
+    link.setAttribute('aria-label', `${displayName} 상세 정보 보기`);
+
+    const icon = document.createElement('div');
+    icon.className = `shipgirl-icon ${getRarityClass(shipgirl?.rarity)}`;
+
+    if (shipgirl?.icon) {
+        const img = createImgElement(shipgirl.icon, displayName);
+        img.setAttribute('data-onfail', 'hide');
+        icon.appendChild(img);
+
+        const rarity = document.createElement('div');
+        rarity.className = 'rarity-indicator';
+        rarity.textContent = shipgirl.rarity || '?';
+        icon.appendChild(rarity);
+    } else {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'shipgirl-icon-placeholder';
+        placeholder.textContent = sourceName;
+        icon.appendChild(placeholder);
+    }
+
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    tooltip.textContent = displayName;
+    icon.appendChild(tooltip);
+
+    link.appendChild(icon);
+    return link;
 }
 
 function getRarityClass(rarity) {
@@ -327,6 +423,32 @@ function getRarityClass(rarity) {
 function findShipgirlByName(name) {
     const normalizedName = normalizeRomanNumerals(name.trim());
     return shipgirlNameMap.get(normalizedName) || null;
+}
+
+function getSafeExternalUrl(rawUrl) {
+    if (!rawUrl || typeof rawUrl !== 'string') return '';
+    try {
+        const url = new URL(rawUrl.trim());
+        return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+    } catch {
+        return '';
+    }
+}
+
+function renderState(title, message, iconClass) {
+    const state = document.createElement('div');
+    state.className = 'no-results';
+    if (iconClass) state.appendChild(createIcon(iconClass));
+
+    const heading = document.createElement('h2');
+    heading.textContent = title;
+    state.appendChild(heading);
+
+    const body = document.createElement('p');
+    body.textContent = message;
+    state.appendChild(body);
+
+    eventList.replaceChildren(state);
 }
 
 // Info popup and scroll-to-top are handled globally by global.script.js

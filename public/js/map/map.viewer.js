@@ -6,7 +6,7 @@
  * Covers: tab switching, sidebar rendering, map selection, node overlay, search modal (ship + blueprint).
  */
 
-import { getUrlParam, setUrlParams, showElement, hideElement, openModal, closeModal, setupModal, resolveUrl, debounce } from '../utils.js';
+import { getUrlParam, setUrlParams, showElement, hideElement, openModal, closeModal, setupModal, resolveUrl, debounce, createMaterialIcon } from '../utils.js';
 
 import { setup as setupData, loadLiteData, loadFullData, loadShipInfo, loadWorldTargetData, getWorldTargets, getChapterGroup } from './map.data.js';
 import { setup as setupGrid, renderGrid, renderLegend, renderWorldGrid } from './map.grid.js';
@@ -63,14 +63,6 @@ function cacheDom() {
     mobileMapSelect = document.getElementById('mobileMapSelect');
     searchModalBody = document.getElementById('searchModalBody');
     searchModalInput = document.getElementById('searchModalInput');
-}
-
-function createIcon(iconName, className = 'material-symbols-outlined') {
-    const icon = document.createElement('span');
-    icon.className = className;
-    icon.textContent = iconName;
-    icon.setAttribute('aria-hidden', 'true');
-    return icon;
 }
 
 function renderMessage(container, message, className = 'detail-empty') {
@@ -178,7 +170,7 @@ function renderSidebar(category) {
         header.setAttribute('aria-expanded', 'false');
         const headerText = document.createElement('span');
         headerText.textContent = groupLabel;
-        const chevron = createIcon('expand_more', 'material-symbols-outlined sidebar-chevron');
+        const chevron = createMaterialIcon('expand_more', { className: 'sidebar-chevron' });
         header.append(headerText, chevron);
 
         const groupItems = document.createElement('div');

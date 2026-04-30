@@ -13,6 +13,7 @@ import {
     closeModal,
     getStorageItem,
     setStorageItem,
+    createMaterialIcon,
 } from '../utils.js';
 
 import {
@@ -760,11 +761,7 @@ function _createSaveActionButton(className, saveIndex, iconName, label) {
     button.title = label;
     button.setAttribute('aria-label', label);
 
-    const icon = document.createElement('span');
-    icon.className = 'material-symbols-outlined';
-    icon.setAttribute('aria-hidden', 'true');
-    icon.textContent = iconName;
-    button.appendChild(icon);
+    button.appendChild(createMaterialIcon(iconName));
 
     return button;
 }

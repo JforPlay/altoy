@@ -8,7 +8,7 @@
  * categories. Delegates actual script playback to the shared StoryViewer engine
  * (story-viewer.engine.js) by patching its loadData and returnToMemorySelection.
  */
-import { fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, makeKeyboardActivatable } from '../utils.js';
+import { fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, makeKeyboardActivatable, createMaterialIcon } from '../utils.js';
 
 /**
  * Create a tab-based story viewer instance for a child story page.
@@ -733,9 +733,7 @@ function createTabStoryViewer(config) {
             const appendInfoItem = (iconName, label, value, full = false) => {
                 const item = document.createElement('div');
                 item.className = `polaroid-info-item${full ? ' polaroid-info-full' : ''}`;
-                const icon = document.createElement('span');
-                icon.className = 'material-symbols-outlined';
-                icon.textContent = iconName;
+                const icon = createMaterialIcon(iconName);
                 const text = document.createElement('div');
                 const strong = document.createElement('strong');
                 strong.textContent = label;

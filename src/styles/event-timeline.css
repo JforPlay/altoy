@@ -103,6 +103,16 @@ h1 {
   color: var(--primary-color);
 }
 
+.clear-btn:focus-visible,
+.info-button:focus-visible,
+.close-popup-btn:focus-visible,
+select:focus-visible,
+.event-link-btn:focus-visible,
+.shipgirl-icon-link:focus-visible {
+  outline: 3px solid var(--input-focus);
+  outline-offset: 3px;
+}
+
 .clear-btn.visible {
   display: block;
 }
@@ -202,6 +212,7 @@ select:focus {
   font-weight: bold;
   color: var(--text-primary);
   flex: 1;
+  margin: 0;
   transition: color 0.3s ease;
 }
 
@@ -445,6 +456,13 @@ select:focus {
   border-radius: 0.9375rem;
   box-shadow: 0 0.3125rem 1.25rem var(--shadow-color);
   transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.no-results i {
+  display: block;
+  color: var(--primary-color);
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
 .no-results h2 {

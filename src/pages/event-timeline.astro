@@ -10,11 +10,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Layout title="이벤트 타임라인 - 벽람항로" {base}>
-    <div class="container">
+    <main class="container">
         <header>
             <div class="page-title">
                 <h1>벽람항로 룽섭이벤트 전체보기</h1>
-                <button class="info-button" id="info-button" aria-label="도움말 보기">
+                <button type="button" class="info-button" id="info-button" aria-label="도움말 보기">
                     <i class="fas fa-info-circle"></i>
                 </button>
             </div>
@@ -23,7 +23,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div class="info-popup-content">
                     <div class="popup-header">
                         <h2 id="popup-title">초간단 설명서</h2>
-                        <button class="close-popup-btn" aria-label="닫기"><i class="fas fa-times"></i></button>
+                        <button type="button" class="close-popup-btn" aria-label="닫기"><i class="fas fa-times"></i></button>
                     </div>
                     <div class="popup-body">
                         <div class="info-step">
@@ -59,7 +59,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
             <div class="search-container">
                 <input type="text" id="searchInput" placeholder="이벤트명 또는 함순이 이름으로 검색..." autocomplete="off">
-                <button id="clearBtn" class="clear-btn">×</button>
+                <button type="button" id="clearBtn" class="clear-btn" aria-label="검색어 지우기" aria-hidden="true">×</button>
             </div>
             <div class="filter-container">
                 <select id="categoryFilter" aria-label="이벤트 분류 필터">
@@ -91,10 +91,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <span id="eventCount">총 0개 이벤트</span>
         </div>
 
-        <div id="eventList" class="event-list" role="region" aria-label="이벤트 목록">
+        <div id="eventList" class="event-list" role="region" aria-label="이벤트 목록" aria-busy="true">
             <div class="loading">데이터를 불러오는 중...</div>
         </div>
-    </div>
+    </main>
 
     <script is:inline type="module" src={`${base}/js/event-timeline.js`}></script>
 </Layout>

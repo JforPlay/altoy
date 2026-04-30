@@ -5,7 +5,7 @@
  * and URL-persisted view/date state.
  */
 
-import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex, getUrlParam, setUrlParams, debounce, createImgElement } from '../utils.js';
+import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex, getUrlParam, setUrlParams, debounce, createImgElement, createMaterialIcon } from '../utils.js';
 
 (() => {
     /**
@@ -103,20 +103,13 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         return loading;
     }
 
-    function createIconSpan(iconName) {
-        const icon = document.createElement('span');
-        icon.className = 'material-symbols-outlined';
-        icon.textContent = iconName;
-        return icon;
-    }
-
     function createNavButton(action, iconName, label, extraClass = '') {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = extraClass ? `nav-btn ${extraClass}` : 'nav-btn';
         button.dataset.action = action;
         button.setAttribute('aria-label', label);
-        button.appendChild(createIconSpan(iconName));
+        button.appendChild(createMaterialIcon(iconName));
         return button;
     }
 
@@ -892,7 +885,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
             dayToggleBtn.title = '일간 보기';
             dayToggleBtn.setAttribute('aria-label', '일간 보기로 전환');
             dayToggleBtn.setAttribute('aria-pressed', 'false');
-            dayToggleBtn.append(createIconSpan('event'), document.createTextNode(' 일간'));
+            dayToggleBtn.append(createMaterialIcon('event'), document.createTextNode(' 일간'));
             dayToggleBtn.addEventListener('click', () => { state.currentView = 'day'; renderView(); });
             // Insert before search box to preserve layout feel
             const dropdownContainer = controls.querySelector('.dropdown-container');
@@ -906,7 +899,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
             todayBtn.className = 'today-btn';
             todayBtn.id = 'todayBtn';
             todayBtn.title = '오늘로 이동';
-            todayBtn.append(createIconSpan('calendar_today'), document.createTextNode(' 오늘'));
+            todayBtn.append(createMaterialIcon('calendar_today'), document.createTextNode(' 오늘'));
             todayBtn.addEventListener('click', () => { state.currentDate = new Date(); state.currentView = 'day'; renderView(); });
             controls.appendChild(todayBtn);
         }
