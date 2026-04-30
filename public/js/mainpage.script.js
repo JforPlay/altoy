@@ -59,43 +59,37 @@ const CarouselUtils = {
     },
 
     /**
-     * Autoplay manager for carousels
-     * @param {Function} callback - Function to call on interval
-     * @param {number} interval - Interval in milliseconds
-     * @returns {Object} - Controller object with start, stop, reset methods
+     * Autoplay manager for carousels.
+     * `enabled` tracks intent so resume() (after a tab-visibility pause) only restarts
+     * if start()/reset() was the last call, not stop()/disable().
      */
     createAutoplay(callback, interval = 5000) {
         let timer = null;
         let enabled = false;
 
+        const clear = () => {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+        };
+
         return {
             start() {
                 enabled = true;
-                if (document.hidden) return;
-                this.stop();
-                timer = setInterval(callback, interval);
+                clear();
+                if (!document.hidden) timer = setInterval(callback, interval);
             },
-            stop() {
-                if (timer) {
-                    clearInterval(timer);
-                    timer = null;
+            stop: clear,
+            resume() {
+                if (enabled && !timer && !document.hidden) {
+                    timer = setInterval(callback, interval);
                 }
             },
-            pause() {
-                this.stop();
-            },
-            resume() {
-                if (!enabled || timer || document.hidden) return;
-                timer = setInterval(callback, interval);
-            },
-            reset() {
-                enabled = true;
-                this.stop();
-                this.start();
-            },
+            reset() { this.start(); },
             disable() {
                 enabled = false;
-                this.stop();
+                clear();
             }
         };
     }
@@ -173,36 +167,18 @@ function initHeroCarousel() {
     }
 
     const autoplay = CarouselUtils.createAutoplay(nextSlide, 5000);
+    const userNav = (action) => () => { action(); autoplay.reset(); };
 
-    // Navigation buttons
-    if (nextButton) {
-        nextButton.addEventListener('click', () => {
-            nextSlide();
-            autoplay.reset();
-        });
-    }
-    if (prevButton) {
-        prevButton.addEventListener('click', () => {
-            prevSlide();
-            autoplay.reset();
-        });
-    }
+    nextButton?.addEventListener('click', userNav(nextSlide));
+    prevButton?.addEventListener('click', userNav(prevSlide));
 
-    // Mouse events
     carousel.addEventListener('mouseenter', () => autoplay.stop());
     carousel.addEventListener('mouseleave', () => autoplay.start());
 
-    // Touch events
     CarouselUtils.setupTouchHandlers(
         track,
-        () => {
-            nextSlide();
-            autoplay.reset();
-        },
-        () => {
-            prevSlide();
-            autoplay.reset();
-        },
+        userNav(nextSlide),
+        userNav(prevSlide),
         () => autoplay.stop(),
         () => autoplay.reset()
     );
@@ -211,7 +187,7 @@ function initHeroCarousel() {
     autoplay.start();
 
     document.addEventListener('visibilitychange', () => {
-        if (document.hidden) autoplay.pause();
+        if (document.hidden) autoplay.stop();
         else autoplay.resume();
     });
     window.addEventListener('pagehide', () => autoplay.disable(), { once: true });
@@ -233,6 +209,7 @@ const EventCarousel = (function () {
     let currentIndex = 0;
     let banners = [];
     let autoplay = null;
+    let indicators = [];
     let initializedControls = false;
     let visibilityHandlerBound = false;
 
@@ -318,39 +295,40 @@ const EventCarousel = (function () {
         return indicator;
     }
 
-    function updateCarousel(indicatorsArray) {
+    function updateCarousel() {
         const track = document.querySelector('.event-carousel-track');
         if (!track || banners.length === 0) return;
         track.style.transform = `translateX(${-100 * currentIndex}%)`;
 
-        indicatorsArray.forEach((indicator, index) => {
+        indicators.forEach((indicator, index) => {
             setButtonCurrent(indicator, index === currentIndex);
         });
     }
 
     function goToSlide(index) {
         currentIndex = index;
-        const indicators = Array.from(document.querySelectorAll('.event-indicator'));
-        updateCarousel(indicators);
-        if (autoplay) autoplay.reset();
+        updateCarousel();
+        autoplay?.reset();
     }
 
     function nextSlide() {
         currentIndex = (currentIndex + 1) % banners.length;
-        const indicators = Array.from(document.querySelectorAll('.event-indicator'));
-        updateCarousel(indicators);
+        updateCarousel();
     }
 
     function prevSlide() {
         currentIndex = (currentIndex - 1 + banners.length) % banners.length;
-        const indicators = Array.from(document.querySelectorAll('.event-indicator'));
-        updateCarousel(indicators);
+        updateCarousel();
+    }
+
+    // Wraps a slide change so user-triggered navigation also resets the autoplay timer.
+    function userNav(action) {
+        return () => { action(); autoplay?.reset(); };
     }
 
     function handleVisibilityChange() {
-        if (!autoplay) return;
-        if (document.hidden) autoplay.pause();
-        else autoplay.resume();
+        if (document.hidden) autoplay?.stop();
+        else autoplay?.resume();
     }
 
     function showEmptyState() {
@@ -456,67 +434,53 @@ const EventCarousel = (function () {
             track.replaceChildren();
             indicatorsContainer.replaceChildren();
 
-            const indicatorsArray = [];
-            banners.forEach((banner, index) => {
+            indicators = banners.map((banner, index) => {
                 track.appendChild(createBannerElement(banner));
                 const indicator = createIndicator(index);
                 indicatorsContainer.appendChild(indicator);
-                indicatorsArray.push(indicator);
+                return indicator;
             });
 
             currentIndex = 0;
-            indicatorsContainer.style.display = '';
 
-            if (banners.length > 1) {
-                if (prevButton) prevButton.style.display = 'flex';
-                if (nextButton) nextButton.style.display = 'flex';
+            const hasMultiple = banners.length > 1;
+            if (prevButton) prevButton.style.display = hasMultiple ? 'flex' : 'none';
+            if (nextButton) nextButton.style.display = hasMultiple ? 'flex' : 'none';
+            indicatorsContainer.style.display = hasMultiple ? '' : 'none';
+
+            if (!hasMultiple) {
+                updateCarousel();
+                return;
+            }
+
+            if (!initializedControls) {
+                prevButton?.addEventListener('click', userNav(prevSlide));
+                nextButton?.addEventListener('click', userNav(nextSlide));
 
                 const carousel = document.querySelector('.event-carousel');
-                if (!initializedControls) {
-                    prevButton?.addEventListener('click', () => {
-                        prevSlide();
-                        if (autoplay) autoplay.reset();
-                    });
-                    nextButton?.addEventListener('click', () => {
-                        nextSlide();
-                        if (autoplay) autoplay.reset();
-                    });
-
-                    if (carousel) {
-                        carousel.addEventListener('mouseenter', () => autoplay?.stop());
-                        carousel.addEventListener('mouseleave', () => autoplay?.start());
-                    }
-
-                    CarouselUtils.setupTouchHandlers(
-                        track,
-                        () => {
-                            nextSlide();
-                            if (autoplay) autoplay.reset();
-                        },
-                        () => {
-                            prevSlide();
-                            if (autoplay) autoplay.reset();
-                        },
-                        () => autoplay?.stop(),
-                        () => autoplay?.reset()
-                    );
-
-                    initializedControls = true;
+                if (carousel) {
+                    carousel.addEventListener('mouseenter', () => autoplay?.stop());
+                    carousel.addEventListener('mouseleave', () => autoplay?.start());
                 }
 
-                autoplay = CarouselUtils.createAutoplay(nextSlide, 5000);
-                if (!visibilityHandlerBound) {
-                    document.addEventListener('visibilitychange', handleVisibilityChange);
-                    visibilityHandlerBound = true;
-                }
-                updateCarousel(indicatorsArray);
-                autoplay.start();
-            } else {
-                if (prevButton) prevButton.style.display = 'none';
-                if (nextButton) nextButton.style.display = 'none';
-                indicatorsContainer.style.display = 'none';
-                updateCarousel(indicatorsArray);
+                CarouselUtils.setupTouchHandlers(
+                    track,
+                    userNav(nextSlide),
+                    userNav(prevSlide),
+                    () => autoplay?.stop(),
+                    () => autoplay?.reset()
+                );
+
+                initializedControls = true;
             }
+
+            autoplay = CarouselUtils.createAutoplay(nextSlide, 5000);
+            if (!visibilityHandlerBound) {
+                document.addEventListener('visibilitychange', handleVisibilityChange);
+                visibilityHandlerBound = true;
+            }
+            updateCarousel();
+            autoplay.start();
 
         } catch (error) {
             console.error('[Event Carousel] Error loading banners:', error);

@@ -12,15 +12,12 @@
   padding: 0.5rem 1.5rem;
   box-sizing: border-box;
   background: var(--navbar-bg);
-  backdrop-filter: blur(1.25rem) saturate(180%);
-  -webkit-backdrop-filter: blur(1.25rem) saturate(180%);
   border-radius: 0.5rem;
   border: 1px solid var(--navbar-border);
   box-shadow: 0 2px 10px var(--overlay-light);
   z-index: 1000;
-  transition: top 0.3s ease, background-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  transition: top 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
   margin-bottom: 0;
-  will-change: top;
 }
 
 .navbar.scrolled {
@@ -71,12 +68,11 @@ body.dark-mode .navbar::after {
 
 /* Navbar Logo */
 .nav-logo {
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .nav-logo:hover {
-  transform: scale(1.1);
-  filter: drop-shadow(0 0 12px rgba(0, 113, 235, 0.5));
+  transform: scale(1.08);
 }
 
 .nav-logo .material-symbols-outlined {
@@ -87,13 +83,12 @@ body.dark-mode .navbar::after {
 .nav-portrait {
   border: 2px solid rgba(0, 113, 235, 0.4);
   box-shadow: 0 0 16px rgba(0, 113, 235, 0.25);
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .nav-portrait:hover {
   border-color: var(--primary);
-  box-shadow: 0 0 24px rgba(0, 113, 235, 0.5);
-  transform: scale(1.15);
+  transform: scale(1.12);
 }
 
 /* Navbar Links */
@@ -102,7 +97,7 @@ body.dark-mode .navbar::after {
   border: 1px solid var(--link-border);
   border-radius: 0.5rem;
   color: var(--text-primary);
-  transition: all 0.3s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .nav-links:hover {
@@ -135,16 +130,14 @@ body.dark-mode .nav-links.active {
 
 /* Mega Menu Styling Override */
 .mega-menu {
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background: #ffffff;
   border-top: 2px solid rgba(0, 113, 235, 0.25);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15),
     0 4px 24px rgba(0, 113, 235, 0.15);
 }
 
 body.dark-mode .mega-menu {
-  background: rgba(10, 10, 10, 0.98);
+  background: #0a0a0a;
   border-top: 2px solid var(--primary-alpha-30);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8),
     0 0 0 1px var(--highlight-subtle) inset, 0 4px 24px rgba(0, 113, 235, 0.2);
@@ -166,7 +159,7 @@ body.dark-mode .mega-menu-title {
 /* Mega Menu Links */
 .mega-menu-link {
   border-radius: 8px;
-  transition: all 0.25s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .mega-menu-link:hover {
@@ -180,12 +173,11 @@ body.dark-mode .mega-menu-link:hover {
 
 .mega-menu-link .material-symbols-outlined {
   color: var(--primary);
-  filter: drop-shadow(0 0 8px var(--primary-alpha-30));
+  transition: color 0.2s ease;
 }
 
 .mega-menu-link:hover .material-symbols-outlined {
   color: var(--primary-light);
-  filter: drop-shadow(0 0 12px rgba(0, 113, 235, 0.5));
 }
 
 .mega-menu-link strong {
@@ -210,14 +202,13 @@ body.dark-mode .mega-menu-link small {
   background: var(--primary-alpha-10);
   border: 1px solid var(--primary-alpha-15);
   border-radius: 10px;
-  transition: all 0.3s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .theme-toggle:hover {
   background: var(--primary-alpha-15);
   border-color: var(--primary-alpha-30);
-  transform: scale(1.1);
-  box-shadow: 0 0 16px rgba(0, 113, 235, 0.3);
+  transform: scale(1.08);
 }
 
 body.dark-mode .theme-toggle {
