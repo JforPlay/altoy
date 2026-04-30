@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const handleNavbarScroll = throttle(() => {
             navbar.classList.toggle('scrolled', window.scrollY > 50);
         }, 100);
-        window.addEventListener('scroll', handleNavbarScroll);
+        window.addEventListener('scroll', handleNavbarScroll, { passive: true });
     }
 
     setupScrollToTop();

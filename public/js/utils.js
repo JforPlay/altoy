@@ -192,7 +192,7 @@ function setupScrollToTop(buttonId = 'scroll-to-top') {
         ? throttle(toggleButton, 100)
         : toggleButton;
 
-    window.addEventListener('scroll', handler);
+    window.addEventListener('scroll', handler, { passive: true });
     scrollToTopBtn.addEventListener('click', scrollToTop);
     toggleButton();
 }

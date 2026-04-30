@@ -37,7 +37,7 @@ const CarouselUtils = {
             touchStartX = e.changedTouches[0].screenX;
             touchStartY = e.changedTouches[0].screenY;
             if (onTouchStart) onTouchStart();
-        });
+        }, { passive: true });
 
         element.addEventListener('touchend', (e) => {
             const touchEndX = e.changedTouches[0].screenX;
@@ -55,7 +55,7 @@ const CarouselUtils = {
                 }
             }
             if (onTouchEnd) onTouchEnd();
-        });
+        }, { passive: true });
     },
 
     /**
@@ -66,9 +66,12 @@ const CarouselUtils = {
      */
     createAutoplay(callback, interval = 5000) {
         let timer = null;
+        let enabled = false;
 
         return {
             start() {
+                enabled = true;
+                if (document.hidden) return;
                 this.stop();
                 timer = setInterval(callback, interval);
             },
@@ -78,9 +81,21 @@ const CarouselUtils = {
                     timer = null;
                 }
             },
+            pause() {
+                this.stop();
+            },
+            resume() {
+                if (!enabled || timer || document.hidden) return;
+                timer = setInterval(callback, interval);
+            },
             reset() {
+                enabled = true;
                 this.stop();
                 this.start();
+            },
+            disable() {
+                enabled = false;
+                this.stop();
             }
         };
     }
@@ -194,6 +209,12 @@ function initHeroCarousel() {
 
     updateCarousel();
     autoplay.start();
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) autoplay.pause();
+        else autoplay.resume();
+    });
+    window.addEventListener('pagehide', () => autoplay.disable(), { once: true });
 }
 
 // ===== Event Banner Carousel =====
@@ -213,6 +234,7 @@ const EventCarousel = (function () {
     let banners = [];
     let autoplay = null;
     let initializedControls = false;
+    let visibilityHandlerBound = false;
 
     // Maps banner.type integers to Korean display labels
     const typeNames = {
@@ -323,6 +345,12 @@ const EventCarousel = (function () {
         currentIndex = (currentIndex - 1 + banners.length) % banners.length;
         const indicators = Array.from(document.querySelectorAll('.event-indicator'));
         updateCarousel(indicators);
+    }
+
+    function handleVisibilityChange() {
+        if (!autoplay) return;
+        if (document.hidden) autoplay.pause();
+        else autoplay.resume();
     }
 
     function showEmptyState() {
@@ -477,6 +505,10 @@ const EventCarousel = (function () {
                 }
 
                 autoplay = CarouselUtils.createAutoplay(nextSlide, 5000);
+                if (!visibilityHandlerBound) {
+                    document.addEventListener('visibilitychange', handleVisibilityChange);
+                    visibilityHandlerBound = true;
+                }
                 updateCarousel(indicatorsArray);
                 autoplay.start();
             } else {
@@ -496,7 +528,11 @@ const EventCarousel = (function () {
     }
 
     function cleanup() {
-        if (autoplay) autoplay.stop();
+        if (autoplay) autoplay.disable();
+        if (visibilityHandlerBound) {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            visibilityHandlerBound = false;
+        }
     }
 
     return {
@@ -686,5 +722,5 @@ document.addEventListener('DOMContentLoaded', function () {
     BirthdaySection.init();
     initCardAnimations();
 
-    window.addEventListener('beforeunload', EventCarousel.cleanup);
+    window.addEventListener('pagehide', EventCarousel.cleanup, { once: true });
 });

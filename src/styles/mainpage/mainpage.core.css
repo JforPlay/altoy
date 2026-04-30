@@ -87,7 +87,7 @@ body {
     var(--bg-gradient-mid) 50%,
     var(--bg-gradient-end) 100%
   );
-  background-attachment: fixed;
+  background-attachment: scroll;
   color: var(--text-primary);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;

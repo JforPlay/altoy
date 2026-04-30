@@ -284,6 +284,8 @@ body.dark-mode .patch-notes-content ul {
   gap: 1rem;
   grid-auto-rows: 90px;
   margin-bottom: 5rem;
+  content-visibility: auto;
+  contain-intrinsic-size: 800px;
 }
 
 /* Bento Card Sizes */
@@ -305,13 +307,12 @@ body.dark-mode .patch-notes-content ul {
 /* Base Bento Card */
 .bento-card {
   background: var(--card-bg);
-  backdrop-filter: blur(8px);
   border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 1.2rem;
   text-decoration: none;
   color: var(--text-primary);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
   display: flex;
