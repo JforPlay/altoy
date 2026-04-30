@@ -198,6 +198,12 @@ body {
   color: var(--accent-light);
 }
 
+#character-selection-section h3:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+
 /* Toggle indicator */
 #character-selection-section h3::after {
   content: "▼";

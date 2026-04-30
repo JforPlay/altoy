@@ -7,12 +7,23 @@ import { fetchJSON, resolveUrl, createImgElement, IMG_FALLBACKS } from '../utils
 
 const grid = document.getElementById('hot-issue-grid');
 
+function renderEmptyMessage(message) {
+    if (!grid) return;
+    grid.textContent = '';
+    const p = document.createElement('p');
+    p.className = 'hot-issue-empty';
+    p.textContent = message;
+    grid.appendChild(p);
+}
+
 async function init() {
+    if (!grid) return;
+
     try {
         const data = await fetchJSON(resolveUrl('data/chat-viewer/juus_hot_issue_data.json'));
 
         if (!data || data.length === 0) {
-            grid.innerHTML = '<p class="hot-issue-empty">등록된 핫 이슈가 없습니다.</p>';
+            renderEmptyMessage('등록된 핫 이슈가 없습니다.');
             return;
         }
 
@@ -54,11 +65,11 @@ async function init() {
             fragment.appendChild(card);
         }
 
-        grid.innerHTML = '';
+        grid.textContent = '';
         grid.appendChild(fragment);
     } catch (err) {
         console.error('Failed to load hot issue data:', err);
-        grid.innerHTML = '<p class="hot-issue-empty">데이터를 불러오지 못했습니다.</p>';
+        renderEmptyMessage('데이터를 불러오지 못했습니다.');
     }
 }
 

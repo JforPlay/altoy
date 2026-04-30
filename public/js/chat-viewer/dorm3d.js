@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (lastBubble) {
                     // Add temporary shake animation
                     lastBubble.classList.add('shake-effect');
-                    setTimeout(() => lastBubble.classList.remove('shake-effect'), 700);
+                    this.setTrackedTimeout(() => lastBubble.classList.remove('shake-effect'), 700);
                 }
             }
         }

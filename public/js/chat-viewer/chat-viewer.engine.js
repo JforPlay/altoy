@@ -5,7 +5,22 @@
  * that provides the data URL, timing, group chat icons, and optional type-4 handler.
  * Renders a character selector grid, story dropdown, and auto-advancing message bubbles.
  */
-import { fetchJSON, showElement } from '../utils.js';
+import { fetchJSON, showElement, createImgElement } from '../utils.js';
+
+const PLACEHOLDER_ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
+
+function clearElement(element) {
+    if (element) element.textContent = '';
+}
+
+function appendLoadingMessage(container, message, isError = false) {
+    if (!container) return;
+    clearElement(container);
+    const p = document.createElement('p');
+    p.className = `loading-message${isError ? ' error' : ''}`;
+    p.textContent = message;
+    container.appendChild(p);
+}
 
 export class ChatViewerEngine {
     /**
@@ -54,7 +69,13 @@ export class ChatViewerEngine {
         this.handleStoryChange = this.loadSelectedStory.bind(this);
         this.handleRestart = this.initializeStory.bind(this);
         this.handleSectionToggle = () => {
-            this.characterSelectionSection.classList.toggle('collapsed');
+            const collapsed = this.characterSelectionSection.classList.toggle('collapsed');
+            this.sectionHeader?.setAttribute('aria-expanded', String(!collapsed));
+        };
+        this.handleSectionToggleKeydown = (event) => {
+            if (event.key !== 'Enter' && event.key !== ' ') return;
+            event.preventDefault();
+            this.handleSectionToggle();
         };
 
         this.initialize();
@@ -84,7 +105,7 @@ export class ChatViewerEngine {
             this.attachEventListeners();
         } catch (error) {
             console.error('Error fetching story data:', error);
-            this.characterGrid.innerHTML = '<p class="loading-message error">스토리 정보를 불러오는데 실패했어요.</p>';
+            appendLoadingMessage(this.characterGrid, '스토리 정보를 불러오는데 실패했어요.', true);
         }
     }
     
@@ -97,7 +118,7 @@ export class ChatViewerEngine {
      * Uses a DocumentFragment for a single DOM insertion, then caches the NodeList.
      */
     populateCharacterSelector() {
-        this.characterGrid.innerHTML = '';
+        clearElement(this.characterGrid);
         const fragment = document.createDocumentFragment();
 
         for (const characterName in this.allData) {
@@ -109,23 +130,22 @@ export class ChatViewerEngine {
             const card = document.createElement('div');
             card.className = 'character-card';
             card.dataset.characterName = characterName;
+            card.setAttribute('role', 'button');
+            card.setAttribute('aria-pressed', 'false');
+            card.tabIndex = 0;
 
             let iconSrc = firstStory.icon;
             if (!iconSrc && this.groupChatIcons[firstStory.kr_name]) {
                 iconSrc = this.groupChatIcons[firstStory.kr_name];
             } else if (!iconSrc) {
-                iconSrc = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
+                iconSrc = PLACEHOLDER_ICON;
             }
 
             const shipName = firstStory.ship_name || '';
 
-            const img = document.createElement('img');
-            img.src = iconSrc;
-            img.alt = firstStory.kr_name;
-            img.onerror = () => {
-                // Fallback to placeholder on error
-                img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
-            };
+            const img = createImgElement(iconSrc, firstStory.kr_name, {
+                fallback: PLACEHOLDER_ICON,
+            });
 
             const charNameP = document.createElement('p');
             charNameP.className = 'char-name';
@@ -139,8 +159,20 @@ export class ChatViewerEngine {
             card.appendChild(charNameP);
             card.appendChild(shipNameP);
 
-            card.addEventListener('click', () => this.handleCharacterClick(characterName));
+            const activate = (event) => {
+                event.preventDefault();
+                this.handleCharacterClick(characterName);
+            };
+            card.addEventListener('click', activate);
+            card.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') activate(event);
+            });
             fragment.appendChild(card);
+        }
+
+        if (!fragment.childElementCount) {
+            appendLoadingMessage(this.characterGrid, '표시할 채팅 데이터가 없습니다.');
+            return;
         }
 
         this.characterGrid.appendChild(fragment);
@@ -156,7 +188,9 @@ export class ChatViewerEngine {
 
         if (this.characterCards) {
             this.characterCards.forEach(card => {
-                card.classList.toggle('selected', card.dataset.characterName === characterName);
+                const selected = card.dataset.characterName === characterName;
+                card.classList.toggle('selected', selected);
+                card.setAttribute('aria-pressed', String(selected));
             });
         }
 
@@ -169,23 +203,23 @@ export class ChatViewerEngine {
         }
 
         this.characterSelectionSection.classList.add('collapsed');
+        this.sectionHeader?.setAttribute('aria-expanded', 'false');
 
         showElement(this.storyDisplaySection);
         this.populateStoryDropdown(this.allData[characterName]);
-        this.storyContainer.innerHTML = '';
-        this.optionsContainer.innerHTML = '';
+        clearElement(this.storyContainer);
+        clearElement(this.optionsContainer);
 
-        const scrollTimer = setTimeout(() => {
+        this.setTrackedTimeout(() => {
             this.storyDisplaySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
-        this.activeTimers.push(scrollTimer);
     }
     
     // ===== Story Playback =====
 
     /** Fill the dropdown with all stories for the selected character, then auto-load the first. */
     populateStoryDropdown(characterStories) {
-        this.storyDropdown.innerHTML = '';
+        clearElement(this.storyDropdown);
         
         for (const storyId in characterStories) {
             const story = characterStories[storyId];
@@ -207,15 +241,20 @@ export class ChatViewerEngine {
         if (!this.selectedCharacterName || !storyId) return;
         
         const storyData = this.allData[this.selectedCharacterName][storyId];
-        this.currentStoryScripts = storyData.scripts;
+        this.currentStoryScripts = Array.isArray(storyData.scripts) ? storyData.scripts : [];
         
-        let flavorHTML = `<strong>해금 조건 :</strong> "${storyData.unlock_desc}"`;
-        
+        clearElement(this.unlockDescText);
+        const conditionLabel = document.createElement('strong');
+        conditionLabel.textContent = '해금 조건 :';
+        this.unlockDescText.append(conditionLabel, document.createTextNode(` "${storyData.unlock_desc || ''}"`));
+
         if (storyData.trigger_type === 2 && storyData.trigger_param) {
-            flavorHTML += `<br><strong>요구 호감도 :</strong> ${storyData.trigger_param}`;
+            this.unlockDescText.appendChild(document.createElement('br'));
+            const affectionLabel = document.createElement('strong');
+            affectionLabel.textContent = '요구 호감도 :';
+            this.unlockDescText.append(affectionLabel, document.createTextNode(` ${storyData.trigger_param}`));
         }
-        
-        this.unlockDescText.innerHTML = flavorHTML;
+
         this.initializeStory();
     }
     
@@ -224,8 +263,8 @@ export class ChatViewerEngine {
         // Clear any pending timers
         this.clearTimers();
 
-        this.storyContainer.innerHTML = '';
-        this.optionsContainer.innerHTML = '';
+        clearElement(this.storyContainer);
+        clearElement(this.optionsContainer);
         this.currentScriptIndex = 0;
         this.showNextLineAfterDelay(this.initialDelay);
     }
@@ -316,8 +355,7 @@ export class ChatViewerEngine {
     
     /** Schedule the next script line after `delay` ms; tracks the timer for cleanup. */
     showNextLineAfterDelay(delay = this.defaultDelay) {
-        const timer = setTimeout(() => this.showNextLine(), delay);
-        this.activeTimers.push(timer);
+        this.setTrackedTimeout(() => this.showNextLine(), delay);
     }
     
     /**
@@ -371,7 +409,10 @@ export class ChatViewerEngine {
             
             messageBubble.appendChild(speakerNameElement);
         } else if (speakerName && messageClass !== 'player') {
-            messageBubble.innerHTML += `<p class="speaker-name">${speakerName}</p>`;
+            const speakerNameElement = document.createElement('p');
+            speakerNameElement.className = 'speaker-name';
+            speakerNameElement.textContent = speakerName;
+            messageBubble.appendChild(speakerNameElement);
         }
         
         const messageText = document.createElement('p');
@@ -384,14 +425,10 @@ export class ChatViewerEngine {
             const wrapper = document.createElement('div');
             wrapper.className = 'character-line-wrapper';
 
-            const portrait = document.createElement('img');
-            portrait.className = 'portrait';
-            portrait.src = speakerIcon;
-            portrait.alt = speakerName;
-            // Add error handling for portrait images
-            portrait.onerror = () => {
-                portrait.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
-            };
+            const portrait = createImgElement(speakerIcon, speakerName, {
+                className: 'portrait',
+                fallback: PLACEHOLDER_ICON,
+            });
 
             wrapper.appendChild(portrait);
             wrapper.appendChild(messageBubble);
@@ -413,15 +450,13 @@ export class ChatViewerEngine {
         const container = document.createElement('div');
         container.className = 'sticker-container';
 
-        const sticker = document.createElement('img');
-        sticker.src = stickerUrl;
-        sticker.className = 'sticker-image';
-        sticker.alt = '움짤은 아직 안돼요..';
-        // Add error handling for sticker images
-        sticker.onerror = () => {
-            sticker.alt = '이미지를 불러올 수 없습니다';
-            sticker.style.display = 'none';
-        };
+        const sticker = createImgElement(stickerUrl, '움짤은 아직 안돼요..', {
+            className: 'sticker-image',
+            onError: () => {
+                sticker.alt = '이미지를 불러올 수 없습니다';
+                sticker.style.display = 'none';
+            },
+        });
 
         container.appendChild(sticker);
 
@@ -436,13 +471,10 @@ export class ChatViewerEngine {
             const wrapper = document.createElement('div');
             wrapper.className = 'character-line-wrapper';
 
-            const portrait = document.createElement('img');
-            portrait.className = 'portrait';
-            portrait.src = script.icon;
-            portrait.alt = script.kr_name;
-            portrait.onerror = () => {
-                portrait.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
-            };
+            const portrait = createImgElement(script.icon, script.kr_name, {
+                className: 'portrait',
+                fallback: PLACEHOLDER_ICON,
+            });
 
             wrapper.appendChild(portrait);
             wrapper.appendChild(container);
@@ -474,13 +506,14 @@ export class ChatViewerEngine {
      * (they push earlier bubbles upward and can be clipped without the scroll).
      */
     displayOptions(options) {
-        this.optionsContainer.innerHTML = '';
+        clearElement(this.optionsContainer);
 
         options.forEach(option => {
             const button = document.createElement('button');
+            button.type = 'button';
             button.classList.add('choice-button');
             button.textContent = option.content;
-            button.onclick = () => this.handleChoice(option.flag, option.content);
+            button.addEventListener('click', () => this.handleChoice(option.flag, option.content));
             this.optionsContainer.appendChild(button);
         });
 
@@ -502,7 +535,7 @@ export class ChatViewerEngine {
      */
     handleChoice(chosenFlag, chosenText) {
         this.displaySelectedChoice(chosenText);
-        this.optionsContainer.innerHTML = '';
+        clearElement(this.optionsContainer);
         
         const foundIndex = this.currentStoryScripts.findIndex((script, index) => 
             index > this.currentScriptIndex && script.flag === chosenFlag
@@ -516,7 +549,9 @@ export class ChatViewerEngine {
     displaySelectedChoice(chosenText) {
         const choiceBubble = document.createElement('div');
         choiceBubble.classList.add('message-bubble', 'player', 'selected-choice');
-        choiceBubble.innerHTML = `<p>${chosenText}</p>`;
+        const p = document.createElement('p');
+        p.textContent = chosenText;
+        choiceBubble.appendChild(p);
 
         this.storyContainer.appendChild(choiceBubble);
         this.scrollToLatest(choiceBubble);
@@ -539,10 +574,27 @@ export class ChatViewerEngine {
         this.restartButton.addEventListener('click', this.handleRestart);
 
         // Toggle character selection section
-        const sectionHeader = this.characterSelectionSection.querySelector('h3');
-        if (sectionHeader) {
-            sectionHeader.addEventListener('click', this.handleSectionToggle);
+        this.sectionHeader = this.characterSelectionSection.querySelector('h3');
+        if (this.sectionHeader) {
+            this.sectionHeader.setAttribute('role', 'button');
+            this.sectionHeader.tabIndex = 0;
+            this.sectionHeader.setAttribute('aria-expanded', String(!this.characterSelectionSection.classList.contains('collapsed')));
+            this.sectionHeader.addEventListener('click', this.handleSectionToggle);
+            this.sectionHeader.addEventListener('keydown', this.handleSectionToggleKeydown);
         }
+    }
+
+    /**
+     * Schedule a timeout and remove it from activeTimers once it fires, keeping
+     * long conversations from accumulating stale timer IDs.
+     */
+    setTrackedTimeout(callback, delay) {
+        const timer = setTimeout(() => {
+            this.activeTimers = this.activeTimers.filter(activeTimer => activeTimer !== timer);
+            callback();
+        }, delay);
+        this.activeTimers.push(timer);
+        return timer;
     }
 
     /** Cancel all queued setTimeout calls so switching stories doesn't produce stale messages. */
@@ -566,9 +618,9 @@ export class ChatViewerEngine {
             this.restartButton.removeEventListener('click', this.handleRestart);
         }
 
-        const sectionHeader = this.characterSelectionSection?.querySelector('h3');
-        if (sectionHeader) {
-            sectionHeader.removeEventListener('click', this.handleSectionToggle);
+        if (this.sectionHeader) {
+            this.sectionHeader.removeEventListener('click', this.handleSectionToggle);
+            this.sectionHeader.removeEventListener('keydown', this.handleSectionToggleKeydown);
         }
 
         // Replace card nodes to strip their per-card click listeners without tracking each one
