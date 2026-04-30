@@ -483,6 +483,7 @@ function drawFurnitureSprite(item, furniture, sprite, w, h) {
     const finalY = drawY + offsetY;
 
     if (item.rotated) {
+        ctx.save();
         ctx.translate(centerX, 0);
         ctx.scale(-1, 1);
         ctx.drawImage(sprite, centerX - (finalX + drawW), finalY, drawW, drawH);
@@ -591,8 +592,14 @@ function bindEvents() {
     });
 
     // Zoom buttons
-    state.elements.btnZoomIn?.addEventListener('click', () => zoomAt(canvas.width / 2, canvas.height / 2, ZOOM_STEP));
-    state.elements.btnZoomOut?.addEventListener('click', () => zoomAt(canvas.width / 2, canvas.height / 2, -ZOOM_STEP));
+    state.elements.btnZoomIn?.addEventListener('click', () => {
+        const rect = canvas.getBoundingClientRect();
+        zoomAt(rect.width / 2, rect.height / 2, ZOOM_STEP);
+    });
+    state.elements.btnZoomOut?.addEventListener('click', () => {
+        const rect = canvas.getBoundingClientRect();
+        zoomAt(rect.width / 2, rect.height / 2, -ZOOM_STEP);
+    });
 }
 
 function getMousePos(e) {
@@ -783,6 +790,14 @@ function updateToolbarState() {
     const selectedItem = hasSelection ? state.grid.placed[state.selected] : null;
     const canRotate = selectedItem ? getFurniture(selectedItem.furnitureId)?.canRotate : false;
 
-    if (state.elements.btnRotate) state.elements.btnRotate.disabled = !hasSelection || !canRotate;
-    if (state.elements.btnDelete) state.elements.btnDelete.disabled = !hasSelection;
+    if (state.elements.btnRotate) {
+        const disabled = !hasSelection || !canRotate;
+        state.elements.btnRotate.disabled = disabled;
+        state.elements.btnRotate.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+    }
+    if (state.elements.btnDelete) {
+        const disabled = !hasSelection;
+        state.elements.btnDelete.disabled = disabled;
+        state.elements.btnDelete.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+    }
 }

@@ -47,12 +47,18 @@ async function init() {
     }
 
     cacheElements();
+    if (!hasRequiredElements()) {
+        showToast('숙소 뷰어 초기화 요소를 찾을 수 없습니다.', 'error');
+        return;
+    }
+
     setupData(state);
     setupPanel(state);
     setupGrid(state);
 
     const loaded = await loadData();
     if (!loaded) {
+        showCanvasStatus('데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.', true);
         showToast('데이터 로딩 실패', 'error');
         return;
     }
@@ -68,6 +74,7 @@ function cacheElements() {
     state.elements = {
         dormPanel: document.getElementById('dormPanel'),
         themeList: document.getElementById('themeList'),
+        themeEmptyState: document.getElementById('themeEmptyState'),
         furnitureSearch: document.getElementById('furnitureSearch'),
         hoverInfo: document.getElementById('hoverInfo'),
         dormCanvas: document.getElementById('dormCanvas'),
@@ -81,6 +88,27 @@ function cacheElements() {
         btnZoomOut: document.getElementById('btnZoomOut'),
         btnTogglePanel: document.getElementById('btnTogglePanel'),
     };
+}
+
+function hasRequiredElements() {
+    return Boolean(
+        state.elements.dormPanel &&
+        state.elements.themeList &&
+        state.elements.furnitureSearch &&
+        state.elements.hoverInfo &&
+        state.elements.dormCanvas &&
+        state.elements.canvasLoading &&
+        state.elements.btnRotate &&
+        state.elements.btnDelete &&
+        state.elements.btnClear
+    );
+}
+
+function showCanvasStatus(message, isError = false) {
+    const loading = state.elements.canvasLoading;
+    if (!loading) return;
+    loading.textContent = message;
+    loading.classList.toggle('canvas-loading--error', isError);
 }
 
 function setupToolbar() {

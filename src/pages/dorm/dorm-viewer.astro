@@ -10,7 +10,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div id="dormApp" class="dorm-app">
 
         <!-- Side Panel -->
-        <aside id="dormPanel" class="dorm-panel">
+        <aside id="dormPanel" class="dorm-panel" aria-label="가구 목록">
             <div class="panel-header">
                 <h2 class="panel-title">가구 목록</h2>
                 <input
@@ -19,14 +19,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     class="panel-search"
                     placeholder="가구 검색..."
                     autocomplete="off"
+                    aria-label="가구 검색"
                 />
             </div>
 
             <div id="themeList" class="theme-list">
                 <!-- Theme accordion sections rendered by JS -->
             </div>
+            <div id="themeEmptyState" class="theme-empty-state hidden" role="status">
+                검색 결과가 없습니다.
+            </div>
 
-            <div id="hoverInfo" class="hover-info">
+            <div id="hoverInfo" class="hover-info" aria-live="polite">
                 <div class="hover-info-placeholder">가구에 마우스를 올려보세요</div>
             </div>
         </aside>
@@ -36,16 +40,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <!-- Toolbar -->
             <div id="dormToolbar" class="dorm-toolbar">
                 <div class="toolbar-actions">
-                    <button id="btnRotate" class="toolbar-btn" disabled title="회전 (R)">
-                        <span class="material-symbols-outlined">rotate_right</span>
+                    <button id="btnRotate" class="toolbar-btn" type="button" disabled title="회전 (R)" aria-label="선택한 가구 회전">
+                        <span class="material-symbols-outlined" aria-hidden="true">rotate_right</span>
                         <span class="btn-label">회전</span>
                     </button>
-                    <button id="btnDelete" class="toolbar-btn" disabled title="삭제 (Del)">
-                        <span class="material-symbols-outlined">delete</span>
+                    <button id="btnDelete" class="toolbar-btn" type="button" disabled title="삭제 (Del)" aria-label="선택한 가구 삭제">
+                        <span class="material-symbols-outlined" aria-hidden="true">delete</span>
                         <span class="btn-label">삭제</span>
                     </button>
-                    <button id="btnClear" class="toolbar-btn toolbar-btn--danger" title="전체 삭제">
-                        <span class="material-symbols-outlined">delete_sweep</span>
+                    <button id="btnClear" class="toolbar-btn toolbar-btn--danger" type="button" title="전체 삭제">
+                        <span class="material-symbols-outlined" aria-hidden="true">delete_sweep</span>
                         <span class="btn-label">전체 삭제</span>
                     </button>
                 </div>
@@ -61,20 +65,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
             <!-- Canvas Area -->
             <div id="canvasContainer" class="canvas-container">
-                <canvas id="dormCanvas"></canvas>
+                <canvas id="dormCanvas" role="img" aria-label="숙소 가구 배치 캔버스"></canvas>
                 <div class="zoom-controls">
-                    <button id="btnZoomIn" class="zoom-btn" title="확대">+</button>
-                    <button id="btnZoomOut" class="zoom-btn" title="축소">&minus;</button>
+                    <button id="btnZoomIn" class="zoom-btn" type="button" title="확대" aria-label="확대">+</button>
+                    <button id="btnZoomOut" class="zoom-btn" type="button" title="축소" aria-label="축소">&minus;</button>
                 </div>
-                <div id="canvasLoading" class="canvas-loading">
+                <div id="canvasLoading" class="canvas-loading" role="status" aria-live="polite">
                     <span>데이터 로딩 중...</span>
                 </div>
             </div>
         </main>
 
         <!-- Mobile panel toggle -->
-        <button id="btnTogglePanel" class="mobile-panel-toggle">
-            <span class="material-symbols-outlined">inventory_2</span>
+        <button id="btnTogglePanel" class="mobile-panel-toggle" type="button" aria-controls="dormPanel" aria-expanded="false" aria-label="가구 목록 열기">
+            <span class="material-symbols-outlined" aria-hidden="true">inventory_2</span>
         </button>
     </div>
 

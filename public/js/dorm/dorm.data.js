@@ -23,8 +23,12 @@ export function setup(stateRef) {
 export async function loadData() {
     try {
         const data = await fetchJSON(resolveUrl('data/dorm/dorm_furniture_data.json'));
-        state.furniture = data.furniture || {};
-        state.themes = data.themes || {};
+        if (!data || typeof data !== 'object') {
+            throw new Error('Invalid dorm furniture data');
+        }
+
+        state.furniture = data.furniture && typeof data.furniture === 'object' ? data.furniture : {};
+        state.themes = data.themes && typeof data.themes === 'object' ? data.themes : {};
         state.searchIndex = createSearchIndex(Object.values(state.furniture), {
             keys: ['name', 'desc'],
             threshold: 0.3
@@ -58,7 +62,7 @@ export function getTheme(id) {
  */
 export function getFurnitureIconUrl(iconName) {
     if (!iconName) return '';
-    return `${ASSET_BASE}/furnitureicon/${iconName}.webp`;
+    return `${ASSET_BASE}/furnitureicon/${encodeAssetPath(iconName)}.webp`;
 }
 
 /**
@@ -67,7 +71,7 @@ export function getFurnitureIconUrl(iconName) {
  */
 export function getFurnitureSpriteUrl(picture) {
     if (!picture) return '';
-    return `${ASSET_BASE}/furnitrues/${picture}.webp`;
+    return `${ASSET_BASE}/furnitrues/${encodeAssetPath(picture)}.webp`;
 }
 
 /**
@@ -76,7 +80,14 @@ export function getFurnitureSpriteUrl(picture) {
  */
 export function getThemeIconUrl(iconName) {
     if (!iconName) return '';
-    return `${ASSET_BASE}/furnitureicon/${iconName}.webp`;
+    return `${ASSET_BASE}/furnitureicon/${encodeAssetPath(iconName)}.webp`;
+}
+
+function encodeAssetPath(path) {
+    return String(path)
+        .split('/')
+        .map(segment => encodeURIComponent(segment))
+        .join('/');
 }
 
 /**
@@ -85,13 +96,17 @@ export function getThemeIconUrl(iconName) {
  */
 export function getThemesSorted() {
     const themed = Object.values(state.themes)
-        .sort((a, b) => a.order - b.order);
+        .map(theme => ({
+            ...theme,
+            furnitureIds: Array.isArray(theme.furnitureIds) ? theme.furnitureIds : []
+        }))
+        .sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999));
 
     // Collect furniture IDs that belong to a theme
     const themedIds = new Set();
     for (const theme of themed) {
         for (const fid of theme.furnitureIds) {
-            themedIds.add(fid);
+            themedIds.add(Number(fid));
         }
     }
 
@@ -121,7 +136,24 @@ export function getThemesSorted() {
  * @returns {Set<number>} matching furniture IDs
  */
 export function searchFurniture(query) {
-    if (!query || !state.searchIndex) return null; // null = show all
-    const results = state.searchIndex.search(query);
-    return new Set(results.map(r => r.item.id));
+    const trimmed = query.trim();
+    if (!trimmed) return null; // null = show all
+
+    if (state.searchIndex) {
+        const results = state.searchIndex.search(trimmed);
+        return new Set(results.map(r => r.item.id));
+    }
+
+    const normalizedQuery = normalizeSearchText(trimmed);
+    const matches = Object.values(state.furniture)
+        .filter(item => {
+            const haystack = normalizeSearchText(`${item.name || ''} ${item.desc || ''} ${item.typeName || ''}`);
+            return haystack.includes(normalizedQuery);
+        })
+        .map(item => item.id);
+    return new Set(matches);
+}
+
+function normalizeSearchText(value) {
+    return String(value).toLocaleLowerCase();
 }

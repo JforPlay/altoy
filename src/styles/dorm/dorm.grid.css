@@ -71,3 +71,8 @@
     opacity: 0;
     pointer-events: none;
 }
+
+.canvas-loading--error {
+    color: var(--danger-color);
+    background: var(--card-bg);
+}

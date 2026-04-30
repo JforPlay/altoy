@@ -95,9 +95,15 @@ body.dorm-page .scroll-to-top {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
+    width: 100%;
     padding: var(--spacing-sm);
     cursor: pointer;
+    background: transparent;
+    border: 0;
     border-radius: var(--radius-md);
+    color: inherit;
+    font: inherit;
+    text-align: left;
     transition: background var(--transition-fast);
     user-select: none;
 }
@@ -132,6 +138,7 @@ body.dorm-page .scroll-to-top {
 }
 
 .theme-name {
+    display: block;
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--text-primary);
@@ -141,6 +148,7 @@ body.dorm-page .scroll-to-top {
 }
 
 .theme-meta {
+    display: block;
     font-size: 0.75rem;
     color: var(--text-secondary);
 }
@@ -151,6 +159,9 @@ body.dorm-page .scroll-to-top {
     grid-template-columns: repeat(4, 1fr);
     gap: 6px;
     padding: var(--spacing-xs) var(--spacing-xs) var(--spacing-sm);
+}
+
+.furniture-grid[hidden] {
     display: none;
 }
 
@@ -167,9 +178,11 @@ body.dorm-page .scroll-to-top {
     align-items: center;
     justify-content: center;
     cursor: grab;
+    padding: 0;
     position: relative;
     transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
     overflow: hidden;
+    font: inherit;
 }
 
 .furniture-icon-wrapper:hover {
@@ -185,6 +198,17 @@ body.dorm-page .scroll-to-top {
     width: 85%;
     height: 85%;
     object-fit: contain;
+}
+
+.furniture-icon-fallback {
+    max-width: 90%;
+    padding: 0 4px;
+    color: var(--text-secondary);
+    font-size: 0.6rem;
+    line-height: 1.2;
+    text-align: center;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
 }
 
 .furniture-size-label {
@@ -231,6 +255,16 @@ body.dorm-page .scroll-to-top {
     font-style: italic;
 }
 
+.theme-empty-state {
+    margin: var(--spacing-sm);
+    padding: var(--spacing-md);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-align: center;
+}
+
 /* ===== Rarity Colors / States ===== */
 .furniture-icon-wrapper[data-rarity="4"] {
     border-color: var(--rarity-ssr);
@@ -243,6 +277,15 @@ body.dorm-page .scroll-to-top {
 .furniture-icon-wrapper.selected {
     border-color: var(--input-focus);
     box-shadow: 0 0 0 2px var(--primary-alpha-30);
+}
+
+.theme-header:focus-visible,
+.furniture-icon-wrapper:focus-visible,
+.toolbar-btn:focus-visible,
+.zoom-btn:focus-visible,
+.mobile-panel-toggle:focus-visible {
+    outline: 2px solid var(--input-focus);
+    outline-offset: 2px;
 }
 
 /* ===== Main Area ===== */
