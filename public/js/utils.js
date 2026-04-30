@@ -9,9 +9,12 @@
 // ===== Module Constants =====
 
 /**
- * Centralized data version for IndexedDB cache invalidation.
+ * Centralized data version for IndexedDB cache invalidation (semver).
  * Bump this when ANY data file changes to force fresh fetches.
  * Used by fetchJSONWithCache — when this changes, the entire IndexedDB cache is cleared on next page load.
+ *
+ * Must stay in sync with public/sw.js CACHE_VERSION. Bumping just one
+ * leaves the other cache stale on first visit. See CLAUDE.md "Cache & Data Versioning".
  */
 const DATA_VERSION = '1.4.0';
 
@@ -253,9 +256,22 @@ function handleImgError(e) {
 document.addEventListener('error', handleImgError, true);
 
 /**
+ * Escape characters that would break a double-quoted HTML attribute value.
+ * Used by `createImg` because data-driven URLs/alt text may contain `&`, `"`, or `<`.
+ * Prefer `createImgElement` over `createImg` when possible — it avoids string assembly entirely.
+ */
+function escapeHtmlAttr(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;');
+}
+
+/**
  * Create an image HTML string with lazy loading.
  * Strict CSP forbids inline `onerror=`, so error behavior is encoded as data
  * attributes consumed by the global handler above.
+ * Attribute values are escaped to prevent injection from data-driven inputs.
  * @param {string} src - Image source URL
  * @param {string} alt - Alt text
  * @param {Object} options - Additional options
@@ -269,17 +285,17 @@ document.addEventListener('error', handleImgError, true);
 function createImg(src, alt = '', options = {}) {
     const { className = '', onFail = '', fallback = '', title = '', eager = false } = options;
     const loading = eager ? 'eager' : 'lazy';
-    const classAttr = className ? ` class="${className}"` : '';
-    const titleAttr = title ? ` title="${title}"` : '';
+    const classAttr = className ? ` class="${escapeHtmlAttr(className)}"` : '';
+    const titleAttr = title ? ` title="${escapeHtmlAttr(title)}"` : '';
 
     let errorAttr = '';
     if (fallback) {
-        errorAttr = ` data-fallback="${fallback}"`;
+        errorAttr = ` data-fallback="${escapeHtmlAttr(fallback)}"`;
     } else if (onFail) {
-        errorAttr = ` data-onfail="${onFail}"`;
+        errorAttr = ` data-onfail="${escapeHtmlAttr(onFail)}"`;
     }
 
-    return `<img src="${src}" alt="${alt}" loading="${loading}"${classAttr}${titleAttr}${errorAttr}>`;
+    return `<img src="${escapeHtmlAttr(src)}" alt="${escapeHtmlAttr(alt)}" loading="${loading}"${classAttr}${titleAttr}${errorAttr}>`;
 }
 
 /**
@@ -867,88 +883,152 @@ function toggleElement(element, show) {
 
 // ===== Modal Utilities =====
 
+// Reference-counted body-scroll lock and per-modal state (previously focused
+// element, before-open overflow value). Stacked modals release the lock only
+// when ALL of them have closed.
+const _modalState = {
+    lockCount: 0,
+    bodyOverflowSnapshot: null,
+    previousFocus: new Map(),  // modalId → element (or null)
+};
+
+function _lockBodyScroll() {
+    if (_modalState.lockCount === 0) {
+        _modalState.bodyOverflowSnapshot = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+    }
+    _modalState.lockCount++;
+}
+
+function _unlockBodyScroll() {
+    if (_modalState.lockCount === 0) return;
+    _modalState.lockCount--;
+    if (_modalState.lockCount === 0) {
+        document.body.style.overflow = _modalState.bodyOverflowSnapshot ?? '';
+        _modalState.bodyOverflowSnapshot = null;
+    }
+}
+
 /**
- * Open a modal dialog
+ * Open a modal dialog.
  * @param {string} modalId - The modal element ID
- * @param {Object} options - Options
- * @param {boolean} options.lockBody - Prevent body scroll (default: true)
- * @param {Function} options.onOpen - Callback when modal opens
+ * @param {Object} [options]
+ * @param {boolean} [options.lockBody=true] - Prevent body scroll (reference-counted across stacked modals)
+ * @param {boolean} [options.setAriaHidden=true] - Toggle aria-hidden on the modal
+ * @param {boolean} [options.restoreFocus=false] - Record document.activeElement so closeModal can restore it
+ * @param {boolean} [options.focusFirst=false] - Move focus to the first focusable element inside the modal
+ * @param {Function} [options.onOpen] - Callback receiving the modal element after it opens
  */
 function openModal(modalId, options = {}) {
-    const { lockBody = true, onOpen = null } = options;
+    const {
+        lockBody = true,
+        setAriaHidden = true,
+        restoreFocus = false,
+        focusFirst = false,
+        onOpen = null,
+    } = options;
     const modal = document.getElementById(modalId);
     if (!modal) return;
+
+    if (restoreFocus) {
+        _modalState.previousFocus.set(modalId, document.activeElement);
+    }
 
     modal.style.display = 'flex';
     modal.classList.add('active');
     modal.classList.remove('hidden');
+    if (setAriaHidden) modal.setAttribute('aria-hidden', 'false');
 
-    if (lockBody) {
-        document.body.style.overflow = 'hidden';
+    if (lockBody) _lockBodyScroll();
+
+    if (focusFirst) {
+        // First tabbable element inside the modal — buttons, links, inputs, etc.
+        const focusable = modal.querySelector(
+            'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable) {
+            // Defer until the modal is actually visible; some browsers no-op focus on display:none.
+            requestAnimationFrame(() => focusable.focus());
+        }
     }
 
     if (onOpen) onOpen(modal);
 }
 
 /**
- * Close a modal dialog
+ * Close a modal dialog.
  * @param {string} modalId - The modal element ID
- * @param {Object} options - Options
- * @param {boolean} options.unlockBody - Restore body scroll (default: true)
- * @param {Function} options.onClose - Callback when modal closes
+ * @param {Object} [options]
+ * @param {boolean} [options.unlockBody=true] - Release body-scroll lock (reference-counted)
+ * @param {boolean} [options.setAriaHidden=true] - Toggle aria-hidden on the modal
+ * @param {boolean} [options.restoreFocus=false] - Refocus the element captured by openModal
+ * @param {Function} [options.onClose] - Callback receiving the modal element after it closes
  */
 function closeModal(modalId, options = {}) {
-    const { unlockBody = true, onClose = null } = options;
+    const {
+        unlockBody = true,
+        setAriaHidden = true,
+        restoreFocus = false,
+        onClose = null,
+    } = options;
     const modal = document.getElementById(modalId);
     if (!modal) return;
 
     modal.style.display = 'none';
     modal.classList.remove('active');
     modal.classList.add('hidden');
+    if (setAriaHidden) modal.setAttribute('aria-hidden', 'true');
 
-    if (unlockBody) {
-        document.body.style.overflow = '';
+    if (unlockBody) _unlockBodyScroll();
+
+    if (restoreFocus) {
+        const previous = _modalState.previousFocus.get(modalId);
+        _modalState.previousFocus.delete(modalId);
+        if (previous && typeof previous.focus === 'function' && document.contains(previous)) {
+            previous.focus();
+        }
     }
 
     if (onClose) onClose(modal);
 }
 
 /**
- * Setup modal with common behaviors (close on backdrop click, ESC key)
+ * Setup modal with common behaviors (close on backdrop click, ESC key).
  * @param {string} modalId - The modal element ID
- * @param {Object} options - Options
- * @param {string} options.closeButtonSelector - Selector for close button (default: '.close-button, .modal-close')
- * @param {boolean} options.closeOnBackdrop - Close when clicking backdrop (default: true)
- * @param {boolean} options.closeOnEscape - Close on ESC key (default: true)
- * @param {Function} options.onClose - Callback when modal closes (passed to closeModal)
+ * @param {Object} [options]
+ * @param {string}   [options.closeButtonSelector='.close-button, .modal-close']
+ * @param {boolean}  [options.closeOnBackdrop=true]
+ * @param {boolean}  [options.closeOnEscape=true]
+ * @param {boolean}  [options.setAriaHidden=true] - Forwarded to closeModal
+ * @param {boolean}  [options.restoreFocus=false] - Forwarded to closeModal
+ * @param {Function} [options.onClose] - Forwarded to closeModal
  */
 function setupModal(modalId, options = {}) {
     const {
         closeButtonSelector = '.close-button, .modal-close',
         closeOnBackdrop = true,
         closeOnEscape = true,
-        onClose = null
+        setAriaHidden = true,
+        restoreFocus = false,
+        onClose = null,
     } = options;
 
     const modal = document.getElementById(modalId);
     if (!modal) return;
 
-    const doClose = () => closeModal(modalId, { onClose });
+    const doClose = () => closeModal(modalId, { setAriaHidden, restoreFocus, onClose });
 
-    // Close button handler
     const closeButtons = modal.querySelectorAll(closeButtonSelector);
     closeButtons.forEach(btn => {
         btn.addEventListener('click', doClose);
     });
 
-    // Backdrop click handler
     if (closeOnBackdrop) {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) doClose();
         });
     }
 
-    // ESC key handler
     if (closeOnEscape) {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modal.classList.contains('active')) {
@@ -956,6 +1036,174 @@ function setupModal(modalId, options = {}) {
             }
         });
     }
+}
+
+// ===== Dropdown / Autocomplete Helper =====
+
+/**
+ * Wire a text input to a dropdown of selectable options.
+ * Handles: input/focus → open, typing → filter (substring),
+ * Arrow Up/Down navigation, Enter/click selection, Escape close,
+ * outside-click close, and the matching ARIA combobox attributes.
+ *
+ * Pages with custom dropdown markup pass a `renderItem(item)` callback
+ * that returns the option element; the helper attaches the click+keyboard
+ * wiring for them. Default rendering produces a `<button class="dropdown-option">`
+ * matching the juustagram pattern.
+ *
+ * @param {Object} config
+ * @param {HTMLInputElement} config.input - Input the user types into
+ * @param {HTMLElement} config.dropdown - Container for rendered options
+ * @param {Array} [config.items=[]] - Initial items (replace via the returned setItems)
+ * @param {(item) => string} [config.getLabel] - Maps item → label (default: item.name)
+ * @param {(item) => HTMLElement} [config.renderItem] - Custom option renderer
+ * @param {(item) => void} config.onSelect - Selection handler
+ * @param {(query: string) => void} [config.onInputChange] - Fired on every input
+ * @param {string} [config.emptyMessage='결과 없음'] - Shown when filter has no matches
+ * @param {string} [config.optionSelector='.dropdown-option'] - For keyboard nav lookup
+ * @param {number} [config.maxResults=50] - Cap to avoid rendering huge lists
+ * @returns {{ setItems(items): void, open(): void, close(): void, dispose(): void } | null}
+ */
+function setupDropdown(config) {
+    const {
+        input,
+        dropdown,
+        items = [],
+        getLabel = (item) => item?.name ?? String(item ?? ''),
+        renderItem,
+        onSelect,
+        onInputChange,
+        emptyMessage = '결과 없음',
+        optionSelector = '.dropdown-option',
+        maxResults = 50,
+    } = config || {};
+
+    if (!input || !dropdown || typeof onSelect !== 'function') return null;
+
+    let currentItems = Array.isArray(items) ? items : [];
+
+    input.setAttribute('role', 'combobox');
+    input.setAttribute('aria-autocomplete', 'list');
+    if (dropdown.id) input.setAttribute('aria-controls', dropdown.id);
+    input.setAttribute('aria-expanded', 'false');
+
+    function defaultRenderItem(item) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'dropdown-option';
+        button.setAttribute('role', 'option');
+        button.textContent = getLabel(item);
+        return button;
+    }
+
+    const renderFn = typeof renderItem === 'function' ? renderItem : defaultRenderItem;
+
+    function filter(query) {
+        const trimmed = String(query || '').trim().toLowerCase();
+        if (!trimmed) return currentItems;
+        return currentItems.filter(item => {
+            const label = getLabel(item);
+            return typeof label === 'string' && label.toLowerCase().includes(trimmed);
+        });
+    }
+
+    function getOptions() {
+        return [...dropdown.querySelectorAll(optionSelector)];
+    }
+
+    function render(filtered) {
+        dropdown.replaceChildren();
+        if (filtered.length === 0) {
+            const empty = document.createElement('p');
+            empty.className = 'dropdown-empty';
+            empty.textContent = emptyMessage;
+            dropdown.appendChild(empty);
+            return;
+        }
+        const fragment = document.createDocumentFragment();
+        filtered.slice(0, maxResults).forEach((item) => {
+            const el = renderFn(item);
+            if (!(el instanceof HTMLElement)) return;
+            el.addEventListener('click', () => {
+                onSelect(item);
+                close();
+            });
+            fragment.appendChild(el);
+        });
+        dropdown.appendChild(fragment);
+    }
+
+    function open() {
+        dropdown.classList.add('open');
+        input.setAttribute('aria-expanded', 'true');
+    }
+
+    function close() {
+        dropdown.classList.remove('open');
+        input.setAttribute('aria-expanded', 'false');
+    }
+
+    function onInput() {
+        render(filter(input.value));
+        open();
+        if (typeof onInputChange === 'function') onInputChange(input.value);
+    }
+
+    function onInputKeydown(event) {
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            open();
+            getOptions()[0]?.focus();
+        } else if (event.key === 'Escape') {
+            close();
+        }
+    }
+
+    function onDropdownKeydown(event) {
+        const options = getOptions();
+        const index = options.indexOf(document.activeElement);
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            options[Math.min(index + 1, options.length - 1)]?.focus();
+        } else if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            if (index <= 0) input.focus();
+            else options[index - 1]?.focus();
+        } else if (event.key === 'Escape') {
+            event.preventDefault();
+            close();
+            input.focus();
+        }
+    }
+
+    function onOutsideClick(event) {
+        if (input.contains(event.target) || dropdown.contains(event.target)) return;
+        close();
+    }
+
+    input.addEventListener('focus', open);
+    input.addEventListener('input', onInput);
+    input.addEventListener('keydown', onInputKeydown);
+    dropdown.addEventListener('keydown', onDropdownKeydown);
+    document.addEventListener('click', onOutsideClick);
+
+    render(currentItems);
+
+    return {
+        setItems(next) {
+            currentItems = Array.isArray(next) ? next : [];
+            render(filter(input.value));
+        },
+        open,
+        close,
+        dispose() {
+            input.removeEventListener('focus', open);
+            input.removeEventListener('input', onInput);
+            input.removeEventListener('keydown', onInputKeydown);
+            dropdown.removeEventListener('keydown', onDropdownKeydown);
+            document.removeEventListener('click', onOutsideClick);
+        },
+    };
 }
 
 // ===== Interaction Utilities =====
@@ -1116,11 +1364,121 @@ function setupFpsDisplay(fpsDisplay) {
     return stop;
 }
 
+// ===== DOM Lifecycle Utilities =====
+
+/**
+ * Verify all required DOM elements are present. Logs a diagnostic listing the
+ * missing keys and returns false so callers can early-return cleanly. The element
+ * map's keys serve as the diagnostic labels — pass `{ gallery, lightbox, ... }`
+ * with shorthand property names for the most useful errors.
+ * @param {Record<string, HTMLElement|null>} elements - Map of label → element ref
+ * @param {string} [contextLabel='Page'] - Prefix for the diagnostic
+ * @returns {boolean} True if every value is truthy
+ */
+function requireElements(elements, contextLabel = 'Page') {
+    const missing = Object.entries(elements)
+        .filter(([, el]) => !el)
+        .map(([key]) => key);
+    if (missing.length === 0) return true;
+    console.error(`${contextLabel}: missing required DOM elements (${missing.join(', ')}). Initialization aborted.`);
+    return false;
+}
+
+/**
+ * Render a status/empty/error message into a container, replacing its children
+ * with a single `<p>` element. Pass an empty `message` to clear without inserting.
+ * The status element is given `class="page-status page-status-{type}"` so pages
+ * can style each state via theme tokens. Container should have `aria-live` set
+ * if its updates need to be announced.
+ *
+ * Used by pages that surface "no results", "loading", or "load failed" inside
+ * the gallery container itself. Pages with a separate inline status banner can
+ * keep updating that element directly — this helper is for the replace-children
+ * pattern.
+ *
+ * @param {HTMLElement|null} container - Container to fill
+ * @param {string} message - Text to display (empty string clears)
+ * @param {'info'|'success'|'error'|'empty'|'loading'} [type='info']
+ * @param {Object} [options]
+ * @param {string} [options.tag='p'] - Element tag for the status node
+ * @param {string} [options.className='page-status'] - Base class (variant suffix is auto-appended)
+ * @returns {HTMLElement|null} The created status element, or null if nothing was rendered
+ */
+function renderStatus(container, message, type = 'info', options = {}) {
+    const { tag = 'p', className = 'page-status' } = options;
+    if (!container) return null;
+    if (!message) {
+        container.replaceChildren();
+        return null;
+    }
+    const status = document.createElement(tag);
+    status.className = type ? `${className} ${className}-${type}` : className;
+    status.textContent = message;
+    container.replaceChildren(status);
+    return status;
+}
+
+/**
+ * Observe `<img class="lazy" data-src="...">` descendants of `root` and swap
+ * `data-src` to `src` when each enters the viewport. Falls back to immediate
+ * load when IntersectionObserver is unavailable.
+ *
+ * Caller is responsible for cleanup: hold the returned observer and call
+ * `.disconnect()` on `pagehide` (or before re-rendering the gallery).
+ *
+ * @param {HTMLElement|null} root - Element to scan for `img.lazy`
+ * @param {Object} [options]
+ * @param {string} [options.rootMargin='200px'] - Pre-load margin
+ * @param {number} [options.threshold=0.01]
+ * @param {boolean} [options.useViewportRoot=false] - Observe against viewport instead of `root`
+ * @param {boolean} [options.addLoadedClass=true] - Add `loaded` class after src swap
+ * @returns {IntersectionObserver|null} Observer to disconnect, or null if fallback was used
+ */
+function observeLazyImages(root, options = {}) {
+    const { rootMargin = '200px', threshold = 0.01, useViewportRoot = false, addLoadedClass = true } = options;
+    if (!root) return null;
+    const lazyImages = root.querySelectorAll('img.lazy');
+    if (lazyImages.length === 0) return null;
+
+    const swap = (img) => {
+        if (img.dataset.src) {
+            img.src = img.dataset.src;
+            delete img.dataset.src;
+        }
+        img.classList.remove('lazy');
+        if (addLoadedClass) img.classList.add('loaded');
+    };
+
+    if (!('IntersectionObserver' in window)) {
+        lazyImages.forEach(swap);
+        return null;
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            swap(entry.target);
+            obs.unobserve(entry.target);
+        });
+    }, {
+        root: useViewportRoot ? null : root,
+        rootMargin,
+        threshold,
+    });
+
+    lazyImages.forEach(img => observer.observe(img));
+    return observer;
+}
+
 // ===== Initialization =====
 
-// Auto-purge old cache entries on page load (7 days)
+// Safari pre-16.4 lacks requestIdleCallback. Fall back to setTimeout so module init never throws.
+const _ric = typeof requestIdleCallback === 'function'
+    ? requestIdleCallback
+    : (cb) => setTimeout(cb, 100);
+
 if (typeof indexedDB !== 'undefined') {
-    requestIdleCallback(() => purgeOldCache(), { timeout: 5000 });
+    _ric(() => purgeOldCache(), { timeout: 5000 });
 }
 
 // ===== ES Module Exports =====
@@ -1168,6 +1526,7 @@ export {
 
     // Interaction utilities
     makeKeyboardActivatable,
+    setupDropdown,
 
     // Storage utilities
     getStorageItem,
@@ -1185,5 +1544,10 @@ export {
     showToast,
 
     // Performance display
-    setupFpsDisplay
+    setupFpsDisplay,
+
+    // DOM lifecycle utilities
+    requireElements,
+    renderStatus,
+    observeLazyImages
 };

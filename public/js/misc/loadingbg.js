@@ -1,15 +1,14 @@
 /**
  * loadingbg.js
- * Gallery viewer for in-game loading illustrations (로딩일러).
+ * Gallery viewer for in-game loading illustrations.
  * Image list is fetched from the GitHub API; supports name search and a lightbox with arrow navigation.
  */
 
-import { hideElement, openModal, closeModal, setupModal } from '../utils.js';
+import { IMG_FALLBACKS, createImgElement, debounce, hideElement, openModal, closeModal, setupModal, requireElements } from '../utils.js';
 
 // ===== Configuration & State =====
 const GITHUB_REPO = 'JforPlay/data_for_toy';
 const FOLDER_PATH = 'loadingbg';
-const RAW_BASE_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/${FOLDER_PATH}`;
 
 let images = [];
 let currentImageIndex = 0;
@@ -17,11 +16,53 @@ let filteredImages = [];
 
 // ===== DOM References =====
 const gallery = document.getElementById('gallery');
+const galleryStatus = document.getElementById('gallery-status');
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 const lightboxCaption = document.querySelector('.lightbox-caption');
 const searchInput = document.getElementById('searchInput');
 const loading = document.getElementById('loading');
+const nextButton = document.querySelector('.lightbox-next');
+const prevButton = document.querySelector('.lightbox-prev');
+
+const imageExtensions = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp']);
+
+function setGalleryStatus(message, type = '') {
+    if (!galleryStatus) return;
+    galleryStatus.textContent = message;
+    galleryStatus.className = type ? `gallery-status ${type}` : 'gallery-status';
+    galleryStatus.hidden = !message;
+}
+
+function setLoadingError(error) {
+    if (!loading) return;
+
+    const spinner = document.createElement('div');
+    spinner.className = 'spinner';
+
+    const message = document.createElement('p');
+    message.textContent = 'Could not load images.';
+
+    const detail = document.createElement('p');
+    detail.className = 'loading-detail';
+    detail.textContent = error.message;
+
+    loading.replaceChildren(spinner, message, detail);
+}
+
+function getImageExtension(fileName) {
+    const lastDot = fileName.lastIndexOf('.');
+    return lastDot >= 0 ? fileName.slice(lastDot).toLowerCase() : '';
+}
+
+function toImage(file) {
+    const displayName = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
+    return {
+        name: file.name,
+        url: file.download_url,
+        displayName
+    };
+}
 
 // ===== Data Loading =====
 
@@ -33,81 +74,89 @@ async function fetchImageList() {
     try {
         const apiUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${FOLDER_PATH}`;
         const response = await fetch(apiUrl);
-        
+
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`GitHub API returned ${response.status}`);
         }
-        
+
         const files = await response.json();
-        
-        const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'];
+        if (!Array.isArray(files)) {
+            throw new Error('GitHub API returned an unexpected response.');
+        }
+
         images = files
-            .filter(file => {
-                const ext = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
-                return imageExtensions.includes(ext);
-            })
-            .map(file => ({
-                name: file.name,
-                url: file.download_url,
-                displayName: file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ')
-            }));
-        
+            .filter(file => file && file.type === 'file' && typeof file.name === 'string' && typeof file.download_url === 'string')
+            .filter(file => imageExtensions.has(getImageExtension(file.name)))
+            .map(toImage);
+
         filteredImages = [...images];
         renderGallery();
         hideElement(loading);
-        
     } catch (error) {
         console.error('Error fetching images:', error);
-        loading.innerHTML = `
-            <div class="spinner"></div>
-            <p>이미지를 불러오는 중 오류가 발생했습니다.</p>
-            <p style="font-size: 0.9rem; color: #94a3b8; margin-top: 0.5rem;">
-                ${error.message}
-            </p>
-        `;
+        gallery?.replaceChildren();
+        setGalleryStatus('Could not load loading background images.', 'error');
+        setLoadingError(error);
     }
 }
 
 // ===== Gallery & Lightbox =====
 
-function renderGallery() {
-    gallery.innerHTML = '';
-    
-    filteredImages.forEach((image, index) => {
-        const item = document.createElement('div');
-        item.className = 'gallery-item';
-        item.style.animationDelay = `${index * 0.05}s`;
-        
-        const img = document.createElement('img');
-        img.src = image.url;
-        img.alt = image.displayName;
-        img.loading = 'lazy';
-        
-        const caption = document.createElement('div');
-        caption.className = 'caption';
-        caption.textContent = image.displayName;
-        
-        item.appendChild(img);
-        item.appendChild(caption);
-        
-        item.addEventListener('click', () => openLightbox(index));
-        
-        gallery.appendChild(item);
+function createGalleryItem(image, index) {
+    const item = document.createElement('button');
+    item.type = 'button';
+    item.className = 'gallery-item';
+    item.style.animationDelay = `${Math.min(index, 20) * 0.05}s`;
+    item.dataset.index = String(index);
+    item.setAttribute('aria-label', `Open ${image.displayName}`);
+
+    const img = createImgElement(image.url, image.displayName, {
+        fallback: IMG_FALLBACKS.CARD
     });
+
+    const caption = document.createElement('div');
+    caption.className = 'caption';
+    caption.textContent = image.displayName;
+
+    item.append(img, caption);
+    return item;
+}
+
+function renderGallery() {
+    if (!gallery) return;
+
+    gallery.replaceChildren();
+
+    if (!filteredImages.length) {
+        setGalleryStatus(images.length ? 'No images match your search.' : 'No loading background images were found.', 'empty');
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    filteredImages.forEach((image, index) => {
+        fragment.appendChild(createGalleryItem(image, index));
+    });
+    gallery.appendChild(fragment);
+    setGalleryStatus('');
 }
 
 // ===== Search =====
 
-searchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    filteredImages = images.filter(img => 
+function updateSearch(value) {
+    const searchTerm = value.trim().toLowerCase();
+    filteredImages = images.filter(img =>
         img.displayName.toLowerCase().includes(searchTerm) ||
         img.name.toLowerCase().includes(searchTerm)
     );
     renderGallery();
-});
+
+    if (lightbox?.classList.contains('active') && !filteredImages[currentImageIndex]) {
+        closeLightbox();
+    }
+}
 
 function openLightbox(index) {
+    if (!filteredImages[index]) return;
     currentImageIndex = index;
     updateLightboxImage();
     openModal('lightbox');
@@ -119,36 +168,72 @@ function closeLightbox() {
 
 function updateLightboxImage() {
     const image = filteredImages[currentImageIndex];
+    if (!image || !lightboxImg || !lightboxCaption) return;
+
     lightboxImg.src = image.url;
     lightboxImg.alt = image.displayName;
     lightboxCaption.textContent = image.displayName;
+
+    const hasMultipleImages = filteredImages.length > 1;
+    if (nextButton) nextButton.disabled = !hasMultipleImages;
+    if (prevButton) prevButton.disabled = !hasMultipleImages;
 }
 
 function showNextImage() {
+    if (!filteredImages.length) return;
     currentImageIndex = (currentImageIndex + 1) % filteredImages.length;
     updateLightboxImage();
 }
 
 function showPrevImage() {
+    if (!filteredImages.length) return;
     currentImageIndex = (currentImageIndex - 1 + filteredImages.length) % filteredImages.length;
     updateLightboxImage();
 }
 
 // ===== Event Listeners =====
 
-setupModal('lightbox', {
-    closeButtonSelector: '.lightbox-close',
-    closeOnBackdrop: true,
-    closeOnEscape: true
-});
-document.querySelector('.lightbox-next').addEventListener('click', showNextImage);
-document.querySelector('.lightbox-prev').addEventListener('click', showPrevImage);
-
-// Arrow keys navigate images when the lightbox is open
-document.addEventListener('keydown', (e) => {
+function onLightboxKeydown(event) {
     if (!lightbox.classList.contains('active')) return;
-    if (e.key === 'ArrowLeft') showPrevImage();
-    else if (e.key === 'ArrowRight') showNextImage();
-});
+    if (event.key === 'ArrowLeft') showPrevImage();
+    else if (event.key === 'ArrowRight') showNextImage();
+}
 
-fetchImageList();
+if (!requireElements({ gallery, galleryStatus, lightbox, lightboxImg, lightboxCaption,
+    searchInput, loading, nextButton, prevButton }, 'Loading background viewer')) {
+    // module top-level — nothing further to bind
+} else {
+    setupModal('lightbox', {
+        closeButtonSelector: '.lightbox-close',
+        closeOnBackdrop: true,
+        closeOnEscape: true,
+        onClose: () => {
+            lightboxImg.src = '';
+            lightboxImg.alt = '';
+            lightboxCaption.textContent = '';
+        }
+    });
+
+    gallery.addEventListener('click', (event) => {
+        const item = event.target.closest('.gallery-item');
+        if (!item || !gallery.contains(item)) return;
+
+        const index = Number.parseInt(item.dataset.index, 10);
+        if (Number.isInteger(index)) openLightbox(index);
+    });
+
+    searchInput.addEventListener('input', debounce((event) => {
+        updateSearch(event.target.value);
+    }, 120));
+
+    nextButton.addEventListener('click', showNextImage);
+    prevButton.addEventListener('click', showPrevImage);
+
+    document.addEventListener('keydown', onLightboxKeydown);
+
+    window.addEventListener('pagehide', () => {
+        document.removeEventListener('keydown', onLightboxKeydown);
+    }, { once: true });
+
+    fetchImageList();
+}

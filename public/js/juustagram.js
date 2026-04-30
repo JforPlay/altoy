@@ -2,10 +2,17 @@
  * juustagram.js
  * Instagram-style social feed viewer for Azur Lane's Juustagram feature.
  * Displays posts with gallery thumbnails, author/mentioned-shipgirl filters, lazy loading,
- * and threaded comments. Full post data is loaded in the background after initial render.
+ * and threaded comments. Full post data is loaded before rendering detail views.
  */
 
-import { fetchJSON } from './utils.js';
+import {
+    fetchJSON,
+    createImgElement,
+    IMG_FALLBACKS,
+    requireElements,
+    renderStatus,
+    observeLazyImages,
+} from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // ===== DOM References =====
@@ -17,12 +24,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const mentionedDropdown = document.getElementById('mentioned-dropdown');
     const clearFiltersBtn = document.getElementById('clear-filters-btn');
 
+    if (!requireElements({ galleryView, postDisplayContainer, authorSearchInput, authorDropdown,
+        mentionedSearchInput, mentionedDropdown, clearFiltersBtn }, 'Juustagram')) {
+        return;
+    }
+
     // ===== Data Storage =====
-    let postsData = {};              // Main posts data (initially lite, then full if needed for list)
+    let postsData = {};              // Lite gallery data
     let fullPostsData = null;        // Full detailed post data
-    let fullPostsPromise = null;     // Promise for background loading
+    let fullPostsPromise = null;     // Shared full-data request
     let shipgirlDataMap = {};        // Shipgirl metadata (names, icons) from ship_group_data.json
     let shipgroupTemplateMap = {};   // Template data for usernames from external API
+    let lazyImageObserver = null;
+    let displayRequestId = 0;
+    let currentPostId = null;
+    const currentFilters = {
+        author: '',
+        mentioned: '',
+    };
 
     // Placeholder icon for unknown/missing shipgirls (gray circle SVG)
     const placeholderIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
@@ -31,63 +50,118 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hover preview follows the cursor; positioned with flip logic to stay on-screen
     const imagePreview = document.createElement('img');
     imagePreview.id = 'image-preview';
+    imagePreview.alt = '';
+    imagePreview.setAttribute('aria-hidden', 'true');
     document.body.appendChild(imagePreview);
 
     // ===== Data Fetching & Initialization =====
 
     /**
-     * Fetch three sources in parallel: lite posts (gallery), shipgirl metadata (icons/names),
-     * and AzurLaneTools CN template data (usernames). Full post data loads in the background.
+     * Fetch local lite posts and shipgirl metadata. Username template data is optional:
+     * if GitHub is unavailable, the page still renders with local data.
      */
     Promise.all([
         fetchJSON('data/juustagram_lite.json'),
         fetchJSON('data/ship_group_data.json'),
         fetchJSON('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/CN/ShareCfg/activity_ins_ship_group_template.json')
+            .catch((error) => {
+                console.warn('Optional Juustagram username template data failed to load:', error);
+                return {};
+            }),
     ])
         .then(([posts, shipgirlData, templateData]) => {
+            if (!isRecord(posts)) throw new Error('Invalid Juustagram lite data');
+            if (!isRecord(shipgirlData)) throw new Error('Invalid shipgirl data');
+
             postsData = posts;
             shipgirlDataMap = shipgirlData;
-            shipgroupTemplateMap = templateData;
+            shipgroupTemplateMap = isRecord(templateData) ? templateData : {};
+
+            // Start full-data loading before the first selected post renders.
+            fullPostsPromise = loadFullPosts();
 
             initializeFilters();
             populateGallery();
-
-            // Background-load full post data so detail view is ready when the user clicks
-            fullPostsPromise = loadFullPosts();
         })
         .catch(error => {
             console.error('Error fetching data:', error);
-            galleryView.innerHTML = `<p>데이터를 불러오는 데 실패했습니다. 모든 .json 파일이 있는지 확인해주세요.</p>`;
+            renderStatus(galleryView, '데이터를 불러오는 데 실패했습니다. 모든 .json 파일이 있는지 확인해주세요.', 'error');
+            renderStatus(postDisplayContainer, '게시물을 표시할 수 없습니다.', 'error');
         });
 
     async function loadFullPosts() {
         try {
-            fullPostsData = await fetchJSON('data/juustagram_data.json');
+            const data = await fetchJSON('data/juustagram_data.json');
+            if (!isRecord(data)) throw new Error('Invalid Juustagram full data');
+            fullPostsData = data;
             return fullPostsData;
         } catch (error) {
-            console.warn("Background loading of full data failed:", error);
+            console.warn('Background loading of full data failed:', error);
         }
         return null;
     }
 
+    function ensureFullPosts() {
+        if (fullPostsData) return Promise.resolve(fullPostsData);
+        if (!fullPostsPromise) fullPostsPromise = loadFullPosts();
+        return fullPostsPromise;
+    }
+
     // ===== Helper Functions =====
 
+    function isRecord(value) {
+        return value !== null && typeof value === 'object' && !Array.isArray(value);
+    }
+
+    function clearElement(element) {
+        element.replaceChildren();
+    }
+
+    function setPostBusy(isBusy) {
+        postDisplayContainer.setAttribute('aria-busy', String(isBusy));
+    }
+
+    function createAvatar(src, alt, className) {
+        return createImgElement(src || placeholderIcon, alt, {
+            className,
+            eager: true,
+            fallback: placeholderIcon,
+        });
+    }
+
+    function createSafeImage(src, alt, options = {}) {
+        const fallback = options.fallback || IMG_FALLBACKS.CARD;
+        return createImgElement(src || fallback, alt, {
+            ...options,
+            fallback,
+        });
+    }
+
+    function appendTextElement(parent, tagName, className, text) {
+        const element = document.createElement(tagName);
+        if (className) element.className = className;
+        element.textContent = text ?? '';
+        parent.appendChild(element);
+        return element;
+    }
+
     /**
-     * Retrieve shipgirl display data by ID
-     * Combines data from multiple sources to create complete shipgirl info
+     * Retrieve shipgirl display data by ID.
+     * Combines local shipgirl data and optional username template data.
      *
      * @param {number|string} id - Shipgirl ID or unknown identifier
-     * @returns {Object} Object containing name, icon URL, and username
+     * @returns {{name: string, icon: string, username: string}}
      */
     function getShipgirlData(id) {
         const shipData = shipgirlDataMap[id];
         const templateData = shipgroupTemplateMap[id];
 
         if (shipData) {
+            const name = String(shipData.name || `ID ${id}`).trim();
             return {
-                name: shipData.name.trim(),
-                icon: shipData.icon,
-                username: templateData ? `@${templateData.name}` : ''
+                name,
+                icon: shipData.icon || placeholderIcon,
+                username: templateData ? `@${templateData.name}` : '',
             };
         }
 
@@ -103,246 +177,373 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== Filter Initialization & Logic =====
 
     /**
-     * Initialize filter dropdowns with all available authors and mentioned shipgirls
-     * Sets up event listeners for filter interactions
+     * Initialize filter dropdowns with all available authors and mentioned shipgirls.
+     * Sets up event listeners for filter interactions.
      */
     function initializeFilters() {
-        const allPosts = Object.values(postsData);
+        const allPosts = Object.values(postsData).filter(isRecord);
 
         const allAuthors = [...new Set(
             allPosts.map(p => getShipgirlData(p.ship_group).name).filter(Boolean)
         )].sort();
 
         const allMentioned = [...new Set(
-            allPosts.flatMap(p => (p.shipgirl_names || []).map(id => getShipgirlData(id).name).filter(Boolean))
+            allPosts.flatMap(p => (Array.isArray(p.shipgirl_names) ? p.shipgirl_names : [])
+                .map(id => getShipgirlData(id).name)
+                .filter(Boolean))
         )].sort();
 
-        populateDropdown(authorDropdown, allAuthors, (author) => {
+        populateDropdown(authorSearchInput, authorDropdown, allAuthors, (author) => {
+            currentFilters.author = author;
             authorSearchInput.value = author;
-            populateGallery({ author });
-        });
-
-        populateDropdown(mentionedDropdown, allMentioned, (name) => {
-            mentionedSearchInput.value = name;
-            populateGallery({ mentioned: name });
-        });
-
-        authorSearchInput.addEventListener('keyup', () => filterDropdown(authorSearchInput, authorDropdown));
-        mentionedSearchInput.addEventListener('keyup', () => filterDropdown(mentionedSearchInput, mentionedDropdown));
-
-        setupDropdownToggle(authorSearchInput, authorDropdown);
-        setupDropdownToggle(mentionedSearchInput, mentionedDropdown);
-
-        clearFiltersBtn.addEventListener('click', () => {
-            authorSearchInput.value = '';
-            mentionedSearchInput.value = '';
             populateGallery();
         });
-    }
 
-    /**
-     * Populate a dropdown element with clickable items
-     *
-     * @param {HTMLElement} dropdownElement - The dropdown container to populate
-     * @param {Array} items - Array of item names to display
-     * @param {Function} onSelectCallback - Function to call when an item is selected
-     */
-    function populateDropdown(dropdownElement, items, onSelectCallback) {
-        dropdownElement.innerHTML = '';
-        items.forEach(item => {
-            const a = document.createElement('a');
-            a.textContent = item;
-            a.addEventListener('click', () => {
-                onSelectCallback(item);
-                dropdownElement.style.display = 'none';
-            });
-            dropdownElement.appendChild(a);
+        populateDropdown(mentionedSearchInput, mentionedDropdown, allMentioned, (name) => {
+            currentFilters.mentioned = name;
+            mentionedSearchInput.value = name;
+            populateGallery();
+        });
+
+        setupDropdownToggle(authorSearchInput, authorDropdown, 'author');
+        setupDropdownToggle(mentionedSearchInput, mentionedDropdown, 'mentioned');
+
+        clearFiltersBtn.addEventListener('click', () => {
+            currentFilters.author = '';
+            currentFilters.mentioned = '';
+            authorSearchInput.value = '';
+            mentionedSearchInput.value = '';
+            filterDropdown(authorSearchInput, authorDropdown);
+            filterDropdown(mentionedSearchInput, mentionedDropdown);
+            populateGallery();
+            authorSearchInput.focus();
         });
     }
 
     /**
-     * Filter dropdown items based on input text (live search)
+     * Populate a dropdown element with selectable button items.
+     *
+     * @param {HTMLElement} dropdownElement - The dropdown container to populate
+     * @param {Array<string>} items - Array of item names to display
+     * @param {(item: string) => void} onSelectCallback - Function to call when an item is selected
+     */
+    function populateDropdown(input, dropdownElement, items, onSelectCallback) {
+        clearElement(dropdownElement);
+        items.forEach(item => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'dropdown-option';
+            button.setAttribute('role', 'option');
+            button.textContent = item;
+            button.addEventListener('click', () => {
+                onSelectCallback(item);
+                closeDropdown(input, dropdownElement);
+            });
+            dropdownElement.appendChild(button);
+        });
+    }
+
+    /**
+     * Filter dropdown items based on input text (live search).
      *
      * @param {HTMLInputElement} input - The search input element
      * @param {HTMLElement} dropdown - The dropdown to filter
      */
     function filterDropdown(input, dropdown) {
-        const filter = input.value.toUpperCase();
-        const items = dropdown.getElementsByTagName('a');
+        const filter = input.value.trim().toUpperCase();
+        const items = dropdown.querySelectorAll('.dropdown-option');
 
-        for (let i = 0; i < items.length; i++) {
-            const txtValue = items[i].textContent || items[i].innerText;
-            items[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
-        }
+        items.forEach(item => {
+            const textValue = item.textContent || '';
+            item.hidden = filter !== '' && !textValue.toUpperCase().includes(filter);
+        });
+    }
+
+    function getVisibleDropdownOptions(dropdown) {
+        return [...dropdown.querySelectorAll('.dropdown-option')]
+            .filter(option => !option.hidden);
+    }
+
+    function openDropdown(input, dropdown) {
+        dropdown.classList.add('open');
+        input.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeDropdown(input, dropdown) {
+        dropdown.classList.remove('open');
+        if (input) input.setAttribute('aria-expanded', 'false');
     }
 
     /**
-     * Setup dropdown toggle behavior (show on focus, hide on blur)
+     * Setup dropdown toggle behavior and keyboard navigation.
      *
      * @param {HTMLInputElement} input - The input that triggers the dropdown
      * @param {HTMLElement} dropdown - The dropdown to show/hide
+     * @param {'author'|'mentioned'} filterKey - The currentFilters key controlled by this input
      */
-    function setupDropdownToggle(input, dropdown) {
-        input.addEventListener('focus', () => dropdown.style.display = 'block');
-        input.addEventListener('blur', () => {
-            // Delay lets click events on dropdown items fire before the dropdown hides
-            setTimeout(() => {
-                dropdown.style.display = 'none';
-            }, 150);
+    function setupDropdownToggle(input, dropdown, filterKey) {
+        const container = dropdown.closest('.dropdown-container');
+
+        input.setAttribute('role', 'combobox');
+        input.setAttribute('aria-autocomplete', 'list');
+        input.setAttribute('aria-controls', dropdown.id);
+        input.setAttribute('aria-expanded', 'false');
+
+        input.addEventListener('focus', () => openDropdown(input, dropdown));
+        input.addEventListener('input', () => {
+            filterDropdown(input, dropdown);
+            openDropdown(input, dropdown);
+
+            if (input.value.trim() === '' && currentFilters[filterKey]) {
+                currentFilters[filterKey] = '';
+                populateGallery();
+            }
         });
-    }
-    // ===== Gallery Display & Post Filtering =====
-
-    /**
-     * Populate the image gallery with filtered posts
-     * Displays thumbnails in reverse chronological order (newest first)
-     *
-     * @param {Object} filters - Filter criteria object
-     * @param {string} [filters.author] - Filter by post author name
-     * @param {string} [filters.mentioned] - Filter by mentioned shipgirl name
-     */
-    function populateGallery(filters = {}) {
-        galleryView.innerHTML = '';
-
-        let postEntries = [...Object.entries(postsData)].reverse(); // Newest posts first
-
-        if (filters.author) {
-            postEntries = postEntries.filter(([key, post]) =>
-                getShipgirlData(post.ship_group).name === filters.author
-            );
-        }
-
-        if (filters.mentioned) {
-            postEntries = postEntries.filter(([key, post]) => {
-                const mentionedNames = (post.shipgirl_names || []).map(id => getShipgirlData(id).name);
-                return mentionedNames.includes(filters.mentioned);
-            });
-        }
-
-        if (postEntries.length === 0) {
-            galleryView.innerHTML = '<p>필터와 일치하는 게시물이 없습니다.</p>';
-            postDisplayContainer.innerHTML = '';
-            return;
-        }
-
-        postEntries.forEach(([key, post], index) => {
-            if (post.picture_persist && post.picture_persist.trim() !== '') {
-                const authorData = getShipgirlData(post.ship_group);
-                const img = document.createElement('img');
-
-                // First 12 images load eagerly; the rest use data-src + IntersectionObserver
-                if (index < 12) {
-                    img.src = post.picture_persist;
-                } else {
-                    img.dataset.src = post.picture_persist;
-                    img.classList.add('lazy');
-                }
-
-                img.alt = `Post by ${authorData.name}`;
-                img.dataset.postId = post.id;
-                img.loading = 'lazy';
-                galleryView.appendChild(img);
+        input.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                openDropdown(input, dropdown);
+                getVisibleDropdownOptions(dropdown)[0]?.focus();
+            } else if (event.key === 'Escape') {
+                closeDropdown(input, dropdown);
             }
         });
 
-        observeLazyImages();
+        dropdown.addEventListener('keydown', (event) => {
+            const options = getVisibleDropdownOptions(dropdown);
+            const currentIndex = options.indexOf(document.activeElement);
 
-        const firstPostId = postEntries[0]?.[1]?.id;
-        if (firstPostId) {
-            displayPost(firstPostId);
-            highlightSelectedThumbnail(firstPostId);
+            if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                options[Math.min(currentIndex + 1, options.length - 1)]?.focus();
+            } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                if (currentIndex <= 0) input.focus();
+                else options[currentIndex - 1]?.focus();
+            } else if (event.key === 'Escape') {
+                event.preventDefault();
+                closeDropdown(input, dropdown);
+                input.focus();
+            }
+        });
+
+        container?.addEventListener('focusout', (event) => {
+            if (!container.contains(event.relatedTarget)) {
+                closeDropdown(input, dropdown);
+            }
+        });
+    }
+
+    // ===== Gallery Display & Post Filtering =====
+
+    /**
+     * Populate the image gallery with filtered posts.
+     * Displays thumbnails in reverse chronological order (newest first).
+     */
+    function populateGallery() {
+        if (lazyImageObserver) {
+            lazyImageObserver.disconnect();
+            lazyImageObserver = null;
+        }
+
+        clearElement(galleryView);
+
+        let postEntries = Object.entries(postsData)
+            .filter(([, post]) => isRecord(post))
+            .reverse();
+
+        if (currentFilters.author) {
+            postEntries = postEntries.filter(([, post]) =>
+                getShipgirlData(post.ship_group).name === currentFilters.author
+            );
+        }
+
+        if (currentFilters.mentioned) {
+            postEntries = postEntries.filter(([, post]) => {
+                const mentionedNames = (Array.isArray(post.shipgirl_names) ? post.shipgirl_names : [])
+                    .map(id => getShipgirlData(id).name);
+                return mentionedNames.includes(currentFilters.mentioned);
+            });
+        }
+
+        const visiblePostEntries = postEntries.filter(([, post]) =>
+            typeof post.picture_persist === 'string' && post.picture_persist.trim() !== ''
+        );
+
+        if (visiblePostEntries.length === 0) {
+            renderStatus(galleryView, '필터와 일치하는 게시물이 없습니다.', 'empty');
+            renderStatus(postDisplayContainer, '표시할 게시물이 없습니다.', 'empty');
+            return;
+        }
+
+        visiblePostEntries.forEach(([, post], index) => {
+            const authorData = getShipgirlData(post.ship_group);
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'gallery-thumbnail';
+            button.dataset.postId = String(post.id);
+            button.setAttribute('aria-label', `${authorData.name} 게시물 보기`);
+            button.setAttribute('aria-pressed', 'false');
+
+            const img = createGalleryImage(post.picture_persist, `Post by ${authorData.name}`, index < 12);
+            button.appendChild(img);
+            galleryView.appendChild(button);
+        });
+
+        lazyImageObserver = observeLazyImages(galleryView, { rootMargin: '200px' });
+
+        // Preserve the user's selected post when it's still in the filtered set;
+        // otherwise fall back to the first visible post.
+        const visiblePostIds = visiblePostEntries.map(([, post]) => String(post.id));
+        const targetPostId = currentPostId && visiblePostIds.includes(currentPostId)
+            ? currentPostId
+            : visiblePostIds[0];
+
+        if (targetPostId !== undefined) {
+            void displayPost(targetPostId);
         }
     }
+
+    function createGalleryImage(src, alt, eager) {
+        const img = document.createElement('img');
+        img.alt = alt;
+        img.loading = eager ? 'eager' : 'lazy';
+        img.onerror = () => {
+            if (img.src !== IMG_FALLBACKS.CARD) img.src = IMG_FALLBACKS.CARD;
+        };
+
+        if (eager) {
+            img.src = src;
+        } else {
+            img.dataset.src = src;
+            img.classList.add('lazy');
+        }
+
+        return img;
+    }
+
     /**
-     * Display a full post with all details (image, message, comments, reply options)
+     * Display a full post with all details (image, message, comments, reply options).
      *
      * @param {number|string} postId - The ID of the post to display
      */
     async function displayPost(postId) {
-        // Ensure full data is loaded for details
-        if (!fullPostsData) {
-            postDisplayContainer.innerHTML = '<div style="text-align:center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> 상세 내용 로딩 중...</div>';
-            try {
-                await fullPostsPromise;
-            } catch (e) {
-                postDisplayContainer.innerHTML = '<p>상세 내용을 불러오는데 실패했습니다.</p>';
-                return;
-            }
+        const postIdString = String(postId);
+        currentPostId = postIdString;
+        highlightSelectedThumbnail(postIdString);
+
+        const requestId = ++displayRequestId;
+        setPostBusy(true);
+
+        let source = fullPostsData;
+        if (!source) {
+            renderStatus(postDisplayContainer, '상세 내용 로딩 중...', 'loading');
+            source = await ensureFullPosts();
+            if (requestId !== displayRequestId) return;
         }
 
-        const post = fullPostsData ? fullPostsData[postId] : postsData[postId];
-
-        // Handle invalid post ID
-        if (!post) {
-            postDisplayContainer.innerHTML = `<p>게시물 ID '${postId}'를 찾을 수 없습니다.</p>`;
+        if (!source) {
+            setPostBusy(false);
+            renderStatus(postDisplayContainer, '상세 내용을 불러오는데 실패했습니다.', 'error');
             return;
         }
 
-        postDisplayContainer.innerHTML = '';
+        const post = source[postIdString];
+
+        if (!post) {
+            setPostBusy(false);
+            renderStatus(postDisplayContainer, `게시물 ID '${postIdString}'를 찾을 수 없습니다.`, 'error');
+            return;
+        }
+
+        postDisplayContainer.replaceChildren(createPostDetail(post));
+        setPostBusy(false);
+    }
+
+    function createPostDetail(post) {
+        const fragment = document.createDocumentFragment();
         const postContent = document.createElement('div');
         postContent.className = 'post-content';
 
         const authorData = getShipgirlData(post.ship_group);
         const header = document.createElement('div');
         header.className = 'post-header';
+
         const authorInfo = document.createElement('div');
         authorInfo.className = 'post-author';
-        authorInfo.innerHTML = `
-            <img src="${authorData.icon}" class="author-icon" alt="${authorData.name}">
-            <div>
-                <span class="author-korean-name">${authorData.name}</span>
-                <span class="author-username">${post.name}</span>
-            </div>`;
+        authorInfo.appendChild(createAvatar(authorData.icon, authorData.name, 'author-icon'));
+
+        const authorText = document.createElement('div');
+        appendTextElement(authorText, 'span', 'author-korean-name', authorData.name);
+        appendTextElement(authorText, 'span', 'author-username', post.name || authorData.username);
+        authorInfo.appendChild(authorText);
         header.appendChild(authorInfo);
 
-        const image = document.createElement('img');
-        image.src = post.picture_persist;
-        image.alt = `Post image by ${authorData.name}`;
-        image.className = 'post-image';
+        const image = createSafeImage(post.picture_persist, `Post image by ${authorData.name}`, {
+            className: 'post-image',
+            eager: true,
+            fallback: IMG_FALLBACKS.DETAIL,
+        });
 
         const message = document.createElement('p');
         message.className = 'post-message';
-        message.textContent = post.message;
+        message.textContent = post.message || '';
 
+        postContent.appendChild(header);
+        postContent.appendChild(image);
+        postContent.appendChild(message);
+        postContent.appendChild(createCommentsSection(post));
+        fragment.appendChild(postContent);
+
+        const replySection = createCommanderReplySection(post);
+        if (replySection) fragment.appendChild(replySection);
+
+        return fragment;
+    }
+
+    function createCommentsSection(post) {
         const commentsSection = document.createElement('div');
         commentsSection.className = 'comments-section';
-
         let hasComments = false;
 
-        // Threads are stored as reply_group1, reply_group2, … until a key is missing
-        for (let i = 1; ; i++) {
-            const groupKey = `reply_group${i}`;
-            if (!post[groupKey]) break;
-            hasComments = true;
+        const groupKeys = Object.keys(post)
+            .filter(key => /^reply_group\d+$/.test(key))
+            .sort((a, b) => Number(a.replace('reply_group', '')) - Number(b.replace('reply_group', '')));
+
+        groupKeys.forEach((groupKey) => {
+            const group = post[groupKey];
+            if (!isRecord(group)) return;
 
             const threadContainer = document.createElement('div');
             threadContainer.className = 'comment-thread';
-
             let isFirstInThread = true;
 
-            for (const commentId in post[groupKey]) {
-                const commentData = post[groupKey][commentId];
-                const authorId = Object.keys(commentData)[0];
+            Object.values(group).forEach((commentData) => {
+                if (!isRecord(commentData)) return;
+                const [authorId, text] = Object.entries(commentData)[0] || [];
+                if (authorId === undefined) return;
+
                 const author = getShipgirlData(authorId);
-                const text = commentData[authorId];
-
                 const commentDiv = document.createElement('div');
-                commentDiv.className = 'comment';
+                commentDiv.className = isFirstInThread ? 'comment' : 'comment reply';
+                commentDiv.appendChild(createAvatar(author.icon, author.name, 'comment-icon'));
 
-                if (!isFirstInThread) commentDiv.classList.add('reply');
+                const commentBody = document.createElement('div');
+                commentBody.className = 'comment-body';
+                appendTextElement(commentBody, 'span', 'comment-author-name', author.name);
+                appendTextElement(commentBody, 'span', 'comment-username', `${author.username}:`);
+                appendTextElement(commentBody, 'span', 'comment-text', text);
+                commentDiv.appendChild(commentBody);
 
-                commentDiv.innerHTML = `
-                    <img src="${author.icon}" class="comment-icon" alt="${author.name}">
-                    <div class="comment-body">
-                        <span class="comment-author-name">${author.name}</span>
-                        <span class="comment-username">${author.username}:</span>
-                        <span class="comment-text">${text}</span>
-                    </div>`;
                 threadContainer.appendChild(commentDiv);
                 isFirstInThread = false;
+                hasComments = true;
+            });
+
+            if (threadContainer.hasChildNodes()) {
+                commentsSection.appendChild(threadContainer);
             }
-            commentsSection.appendChild(threadContainer);
-        }
+        });
 
         if (hasComments) {
             const commentsHeader = document.createElement('h3');
@@ -350,116 +551,106 @@ document.addEventListener('DOMContentLoaded', () => {
             commentsSection.prepend(commentsHeader);
         }
 
-        postContent.appendChild(header);
-        postContent.appendChild(image);
-        postContent.appendChild(message);
-        postContent.appendChild(commentsSection);
+        return commentsSection;
+    }
+
+    function createCommanderReplySection(post) {
+        if (!post.op_option1 || post.op_option1 === 'Translation Source Missing') {
+            return null;
+        }
 
         const commanderReplySection = document.createElement('footer');
         commanderReplySection.className = 'commander-reply-section';
 
-        if (post.op_option1 && post.op_option1 !== "Translation Source Missing") {
-            const optionsContainer = document.createElement('div');
-            optionsContainer.className = 'commander-options';
-            const replyContainer = document.createElement('div');
-            replyContainer.className = 'shipgirl-reply';
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'commander-options';
 
-            const createReplyHandler = (optionText, replyText, replierId) => {
-                return () => {
-                    const replierData = getShipgirlData(replierId);
-                    replyContainer.innerHTML = `<strong>지휘관:</strong> ${optionText}<br><strong>${replierData.name}:</strong> ${replyText}`;
-                    optionsContainer.style.display = 'none';
-                    commanderReplySection.appendChild(replyContainer);
-                };
+        const replyContainer = document.createElement('div');
+        replyContainer.className = 'shipgirl-reply';
+        replyContainer.tabIndex = -1;
+
+        const createReplyHandler = (optionText, replyText, replierId) => {
+            return () => {
+                const replierData = getShipgirlData(replierId);
+                replyContainer.replaceChildren(
+                    createReplyLine('지휘관:', optionText),
+                    createReplyLine(`${replierData.name}:`, replyText)
+                );
+                optionsContainer.hidden = true;
+                commanderReplySection.appendChild(replyContainer);
+                replyContainer.focus({ preventScroll: true });
             };
+        };
 
-            const button1 = document.createElement('button');
-            button1.textContent = post.op_option1;
-            button1.addEventListener('click', createReplyHandler(post.op_option1, post.op_reply1, post.reply1_shipgirl));
-            optionsContainer.appendChild(button1);
+        optionsContainer.appendChild(createReplyButton(
+            post.op_option1,
+            createReplyHandler(post.op_option1, post.op_reply1, post.reply1_shipgirl)
+        ));
 
-            if (post.op_option2 && post.op_option2 !== "Translation Source Missing") {
-                const button2 = document.createElement('button');
-                button2.textContent = post.op_option2;
-                button2.addEventListener('click', createReplyHandler(post.op_option2, post.op_reply2, post.reply2_shipgirl));
-                optionsContainer.appendChild(button2);
-            }
-
-            commanderReplySection.appendChild(optionsContainer);
+        if (post.op_option2 && post.op_option2 !== 'Translation Source Missing') {
+            optionsContainer.appendChild(createReplyButton(
+                post.op_option2,
+                createReplyHandler(post.op_option2, post.op_reply2, post.reply2_shipgirl)
+            ));
         }
 
-        postDisplayContainer.appendChild(postContent);
-        if (commanderReplySection.hasChildNodes()) {
-            postDisplayContainer.appendChild(commanderReplySection);
-        }
+        commanderReplySection.appendChild(optionsContainer);
+        return commanderReplySection;
     }
+
+    function createReplyButton(text, onClick) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = text;
+        button.addEventListener('click', onClick);
+        return button;
+    }
+
+    function createReplyLine(label, text) {
+        const line = document.createElement('div');
+        line.className = 'reply-line';
+
+        const strong = document.createElement('strong');
+        strong.textContent = label;
+        line.appendChild(strong);
+        line.appendChild(document.createTextNode(` ${text || ''}`));
+        return line;
+    }
+
     /**
      * Mark a gallery thumbnail as selected and clear all others.
      * @param {number|string} postId - The ID of the post to highlight
      */
     function highlightSelectedThumbnail(postId) {
-        galleryView.querySelectorAll('img').forEach(img => img.classList.remove('selected'));
-        const selectedImg = galleryView.querySelector(`img[data-post-id="${postId}"]`);
-        if (selectedImg) {
-            selectedImg.classList.add('selected');
-        }
-    }
-
-    /**
-     * Set up IntersectionObserver to load gallery images as they approach the viewport.
-     * Falls back to eager loading on browsers without IntersectionObserver support.
-     */
-    function observeLazyImages() {
-        const lazyImages = galleryView.querySelectorAll('img.lazy');
-
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;
-                        img.classList.remove('lazy');
-                        img.classList.add('loaded');
-                        observer.unobserve(img);
-                    }
-                });
-            }, {
-                root: galleryView,
-                rootMargin: '200px', // Pre-load slightly before viewport entry
-                threshold: 0.01
-            });
-
-            lazyImages.forEach(img => imageObserver.observe(img));
-        } else {
-            // Fallback: load all immediately on older browsers
-            lazyImages.forEach(img => {
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-            });
-        }
+        galleryView.querySelectorAll('.gallery-thumbnail').forEach(button => {
+            const isSelected = button.dataset.postId === String(postId);
+            button.classList.toggle('selected', isSelected);
+            button.setAttribute('aria-pressed', String(isSelected));
+        });
     }
 
     // ===== Gallery Interactions =====
 
     galleryView.addEventListener('click', (event) => {
-        if (event.target.tagName === 'IMG') {
-            const postId = event.target.dataset.postId;
-            displayPost(postId);
-            highlightSelectedThumbnail(postId);
-        }
+        const button = event.target.closest('.gallery-thumbnail');
+        if (!button || !galleryView.contains(button)) return;
+
+        void displayPost(button.dataset.postId);
     });
 
     galleryView.addEventListener('mouseover', (event) => {
-        if (event.target.tagName === 'IMG') {
-            imagePreview.src = event.target.src;
-            imagePreview.style.display = 'block';
-        }
+        const img = event.target.closest('.gallery-thumbnail img');
+        if (!img || !galleryView.contains(img)) return;
+
+        imagePreview.src = img.currentSrc || img.src || img.dataset.src || '';
+        imagePreview.style.display = 'block';
     });
 
     galleryView.addEventListener('mouseout', (event) => {
-        if (event.target.tagName === 'IMG') {
-            imagePreview.style.display = 'none';
-        }
+        const img = event.target.closest('.gallery-thumbnail img');
+        if (!img || !galleryView.contains(img)) return;
+
+        imagePreview.style.display = 'none';
     });
 
     // Mouse-follow preview with edge-flip so it stays on-screen
@@ -480,7 +671,12 @@ document.addEventListener('DOMContentLoaded', () => {
             newY = event.clientY - preview.offsetHeight - offsetY;
         }
 
-        preview.style.left = newX + 'px';
-        preview.style.top = newY + 'px';
+        preview.style.left = `${newX}px`;
+        preview.style.top = `${newY}px`;
     });
+
+    window.addEventListener('pagehide', () => {
+        if (lazyImageObserver) lazyImageObserver.disconnect();
+        imagePreview.remove();
+    }, { once: true });
 });

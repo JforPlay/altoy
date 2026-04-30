@@ -1,9 +1,14 @@
 // ============================================
 // ALtoy Service Worker
 // Caches static assets and data for faster loads
+//
+// CACHE_VERSION must stay in sync with public/js/utils.js DATA_VERSION (semver).
+// Bump both whenever data files / deployed JS / CSS changes — a single bump
+// invalidates BOTH the SW caches (here) AND the IndexedDB JSON cache (utils.js).
+// See CLAUDE.md "Cache & Data Versioning" for the bump rules.
 // ============================================
 
-const CACHE_VERSION = 'v4.5';
+const CACHE_VERSION = '1.4.0';
 const STATIC_CACHE = `altoy-static-${CACHE_VERSION}`;
 const DATA_CACHE = `altoy-data-${CACHE_VERSION}`;
 

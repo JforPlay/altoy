@@ -1239,6 +1239,49 @@ body.dark-mode .tooltip-toggle-button:hover {
   display: none !important;
 }
 
+/* ==========================================================================
+   12. PAGE STATUS / EMPTY / ERROR / LOADING MESSAGES
+   ==========================================================================
+
+   Shared style for status messages emitted by `renderStatus()` from utils.js.
+   The base class is `.page-status`; each variant adds `.page-status-<type>`.
+   Pages can override (e.g. `.gallery-container .page-status { ... }`) when
+   they need positioning specific to their layout.
+
+   Usage:
+   <div id="container" aria-live="polite"></div>
+   <script>renderStatus(container, 'Loading…', 'loading')</script>
+   ========================================================================== */
+
+.page-status {
+  margin: 0 auto;
+  padding: var(--spacing-md, 1rem) var(--spacing-md, 1rem);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.page-status[hidden] {
+  display: none;
+}
+
+.page-status-error {
+  color: var(--danger-color);
+}
+
+.page-status-empty {
+  color: var(--text-muted);
+}
+
+.page-status-loading {
+  color: var(--text-muted);
+}
+
+.page-status-success {
+  color: var(--success-color);
+}
+
 /* --- Mobile Responsive (Global Components) ---
    Adjustments for utility components on mobile devices */
 @media (max-width: 768px) {

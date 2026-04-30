@@ -1,53 +1,21 @@
 /**
  * global-search.js
  * Global search modal (Ctrl+K) loaded on every page via Layout.astro.
- * Searches both the page catalog (static list) and shipgirl names (lazy-loaded from ship_group_data.json).
- * Depends on Fuse.js (CDN), utils.js, and global.script.js (for LINKS).
+ * Searches both the page catalog (pages.catalog.js) and shipgirl names
+ * (lazy-loaded from ship_group_data.json).
+ * Depends on Fuse.js (CDN, defer-loaded by Layout), utils.js, and pages.catalog.js.
  */
 
-import { debounce, fetchJSON, resolveUrl, createSearchIndex } from './utils.js';
+import {
+    debounce,
+    fetchJSON,
+    resolveUrl,
+    createSearchIndex,
+    createImgElement,
+    createMaterialIcon,
+} from './utils.js';
 import { LINKS } from './global.script.js';
-
-// ===== Page Catalog =====
-
-const PAGE_CATALOG = [
-    // Ships & Skins
-    { name: '함순이 DB', description: '함순이 상세 정보', icon: 'database', path: LINKS.SHIPGIRL_INFO, category: '함순이' },
-    { name: '함순이 건조확률 보기', description: '배너별 건조확률 상세확인', icon: 'casino', path: LINKS.SHIPGIRL_BUILD, category: '함순이' },
-    { name: '함순이 생일', description: '함순이 생일 확인하기', icon: 'cake', path: LINKS.SHIPGIRL_BIRTHDAY, category: '함순이' },
-    { name: '일러/대사', description: '선택된 스킨의 일러스트 및 대사보기/재생', icon: 'image', path: LINKS.SKIN_DETAIL, category: '스킨' },
-    { name: '스킨 모음집', description: '여러 스킨들을 필터링/판매중 정보와 같이보기', icon: 'photo_library', path: LINKS.SKIN_LIST, category: '스킨' },
-    { name: '스킨 투표', description: '벽챈 스킨선호도 실시간으로 보기', icon: 'poll', path: LINKS.SKIN_POLL, category: '스킨' },
-    { name: '기타 캐릭터 일러 뷰어', description: '적 및 특수상황에서의 함순이들의 표정 일러스트 뷰어', icon: 'face', path: LINKS.SKIN_EXPRESSION, category: '스킨' },
-
-    // Tools
-    { name: '아일랜드 계획 관리', description: '벽타듀 캐릭터, 기술, 퀘스트 관리', icon: 'forest', path: LINKS.ISLAND, category: '도구' },
-    { name: '룽섭 일정보기', description: '과거 룽섭 이벤트 일정들을 검색과 함께 확인', icon: 'event', path: LINKS.EVENT_TIMELINE, category: '도구' },
-    { name: '함순이 육성트래커', description: '기술/진영점수 계산', icon: 'calculate', path: LINKS.SHIPGIRL_TRACKER, category: '도구' },
-    { name: '설비스킨', description: '장비(설비) 스킨 뷰어', icon: 'construction', path: LINKS.SKIN_SD, category: '도구' },
-    { name: '탄막 시뮬레이터', description: '아직 개발중 (현재는 직접 탄막만 제대로 구현)', icon: 'sports_esports', path: LINKS.SIM_WEAPON, category: '도구' },
-
-    // Stories
-    { name: '메인스토리', description: '메인스토리 뷰어', icon: 'menu_book', path: LINKS.MAIN_STORY, category: '스토리' },
-    { name: '메인스토리 타임라인', description: '타임라인으로 스토리 흐름보기', icon: 'timeline', path: LINKS.MAIN_STORYLINE, category: '스토리' },
-    { name: '대작전스토리', description: '대작전스토리 뷰어', icon: 'public', path: LINKS.WORLD_STORY, category: '스토리' },
-    { name: '대작전 파일', description: '파일해역에서 해금되는 파일들 모아보기', icon: 'folder', path: LINKS.WORLD_FILE, category: '스토리' },
-    { name: 'TB 키우기', description: '통베 회상/수집/엔딩 보기', icon: 'woman', path: LINKS.TB_STORY, category: '스토리' },
-    { name: '네비 키우기', description: '네비게이터 회상/수집/엔딩 보기', icon: 'girl', path: LINKS.NAVI_STORY, category: '스토리' },
-    { name: '로라 키우기', description: '스캐빈저 회상/수집/엔딩 보기', icon: 'child_care', path: LINKS.LORA_STORY, category: '스토리' },
-    { name: '비서함 스토리', description: '모항 비서함 클릭시 발생하는 스토리 모음', icon: 'diagnosis', path: LINKS.SECRETARY_STORY, category: '스토리' },
-    { name: '명예의 전당', description: '룽섭 명전 스토리들 모음', icon: 'emoji_events', path: LINKS.HOF, category: '스토리' },
-
-    // In-game Content
-    { name: 'JUUSTAGRAM', description: '쥬스타그램을 글/댓작성자 검색과 같이보기', icon: 'photo_camera', path: LINKS.JUUSTAGRAM, category: '인게임' },
-    { name: 'JUUS 보기', description: '대화형뷰어로 함순이 쥬톡보기', icon: 'chat', path: LINKS.CHAT_JUUS, category: '인게임' },
-    { name: '3D숙소 JUUS', description: '대화형뷰어로 3D숙소 쥬톡보기', icon: 'view_in_ar', path: LINKS.CHAT_DORM3D, category: '인게임' },
-    { name: '로딩일러', description: '인게임 로딩일러스트 모음', icon: 'wallpaper', path: LINKS.LOADINGBG, category: '인게임' },
-    { name: '만화 보기', description: '인게임 만화모음', icon: 'auto_stories', path: LINKS.COMIC_VIEWER, category: '인게임' },
-    { name: '삽화 보기', description: '인게임 삽화모음', icon: 'collections', path: LINKS.GALLERYPIC, category: '인게임' },
-    { name: 'BGM 듣기', description: '배경음악 플레이어', icon: 'music_note', path: LINKS.BGM_PLAYER, category: '인게임' },
-    { name: '발렌타인 편지', description: '함순이별 발렌타인 편지 모음', icon: 'mail', path: 'misc/valentine/', category: '인게임' },
-];
+import { PAGE_CATALOG } from './pages.catalog.js';
 
 // ===== State =====
 
@@ -133,7 +101,14 @@ function closeSearch() {
     input.value = '';
     activeIndex = -1;
     allResults = [];
-    resultsContainer.innerHTML = '<div class="global-search-empty">검색어를 입력하세요</div>';
+    renderEmptyMessage('검색어를 입력하세요');
+}
+
+function renderEmptyMessage(message) {
+    const empty = document.createElement('div');
+    empty.className = 'global-search-empty';
+    empty.textContent = message;
+    resultsContainer.replaceChildren(empty);
 }
 
 // ===== Ship Data Loading =====
@@ -166,98 +141,164 @@ async function loadShipData() {
 // ===== Search Logic =====
 
 /**
+ * Substring fallback for when Fuse.js fails to load. Returns up to `limit`
+ * items whose `name` or `description` includes the query (case-insensitive).
+ * Mimics Fuse's `{ item }` result shape so the renderer can stay agnostic.
+ */
+function simpleSearch(items, query, limit, keys = ['name', 'description']) {
+    if (!items || !query) return [];
+    const needle = query.toLowerCase();
+    const out = [];
+    for (const item of items) {
+        for (const key of keys) {
+            if (typeof item[key] === 'string' && item[key].toLowerCase().includes(needle)) {
+                out.push({ item });
+                break;
+            }
+        }
+        if (out.length >= limit) break;
+    }
+    return out;
+}
+
+/**
  * Run both page and ship indexes against the current input, render combined results.
- * Ship results link to three destinations (info, skin detail, valentine) per entry.
+ * Falls back to substring matching when Fuse.js is unavailable.
  */
 function handleSearch() {
     const query = input.value.trim();
     if (!query) {
         activeIndex = -1;
         allResults = [];
-        resultsContainer.innerHTML = '<div class="global-search-empty">검색어를 입력하세요</div>';
+        renderEmptyMessage('검색어를 입력하세요');
         return;
     }
 
-    const pageResults = pageIndex ? pageIndex.search(query).slice(0, 5) : [];
-    const shipResults = shipIndex ? shipIndex.search(query).slice(0, 8) : [];
+    const pageResults = pageIndex
+        ? pageIndex.search(query).slice(0, 5)
+        : simpleSearch(PAGE_CATALOG, query, 5, ['name', 'description', 'category']);
+    const shipResults = shipIndex
+        ? shipIndex.search(query).slice(0, 8)
+        : simpleSearch(shipData, query, 8, ['name']);
 
     if (pageResults.length === 0 && shipResults.length === 0) {
         activeIndex = -1;
         allResults = [];
-        resultsContainer.innerHTML = '<div class="global-search-empty">검색 결과가 없습니다</div>';
+        renderEmptyMessage('검색 결과가 없습니다');
         return;
     }
 
     allResults = [];
-    let html = '';
+    const fragment = document.createDocumentFragment();
 
-    // Page results
     if (pageResults.length > 0) {
-        html += '<div class="global-search-section">페이지</div>';
+        fragment.appendChild(createSectionHeader('페이지'));
         for (const result of pageResults) {
-            const page = result.item;
-            const url = buildPageUrl(page.path);
-            const idx = allResults.length;
-            allResults.push({ type: 'page', url });
-            html += `
-                <a href="${url}" class="global-search-item" data-index="${idx}" data-url="${url}">
-                    <div class="global-search-item-icon">
-                        <span class="material-symbols-outlined">${page.icon}</span>
-                    </div>
-                    <div class="global-search-item-text">
-                        <div class="global-search-item-name">${escapeHtml(page.name)}</div>
-                        <div class="global-search-item-desc">${escapeHtml(page.description)}</div>
-                    </div>
-                    <span class="global-search-item-badge">${escapeHtml(page.category)}</span>
-                </a>`;
+            fragment.appendChild(createPageResult(result.item));
         }
     }
 
-    // Ship results
     if (shipResults.length > 0) {
-        html += '<div class="global-search-section">함순이</div>';
+        fragment.appendChild(createSectionHeader('함순이'));
         for (const result of shipResults) {
-            const ship = result.item;
-            const idx = allResults.length;
-            const infoUrl = buildPageUrl(LINKS.SHIPGIRL_INFO) + '?ship=' + encodeURIComponent(ship.name);
-            allResults.push({ type: 'ship', url: infoUrl });
-            const skinUrl = buildPageUrl(LINKS.SKIN_DETAIL) + '?character=' + encodeURIComponent(ship.name);
-            const valentineUrl = buildPageUrl('misc/valentine/') + '?name=' + encodeURIComponent(ship.name);
-
-            html += `
-                <div class="global-search-ship" data-index="${idx}" data-url="${infoUrl}">
-                    <img class="global-search-ship-icon" src="${escapeHtml(ship.icon)}" alt="${escapeHtml(ship.name)}" loading="lazy"
-                         data-onfail="hide">
-                    <div class="global-search-ship-info">
-                        <span class="global-search-ship-name">${escapeHtml(ship.name)}</span>
-                        <span class="global-search-rarity rarity-${ship.rarity}">${ship.rarity}</span>
-                    </div>
-                    <div class="global-search-ship-links">
-                        <a href="${infoUrl}" class="global-search-ship-link" title="함순이 정보">
-                            <span class="material-symbols-outlined">database</span>
-                        </a>
-                        <a href="${skinUrl}" class="global-search-ship-link" title="일러/대사">
-                            <span class="material-symbols-outlined">image</span>
-                        </a>
-                        <a href="${valentineUrl}" class="global-search-ship-link" title="발렌타인">
-                            <span class="material-symbols-outlined">mail</span>
-                        </a>
-                    </div>
-                </div>`;
+            fragment.appendChild(createShipResult(result.item));
         }
     }
 
-    resultsContainer.innerHTML = html;
+    resultsContainer.replaceChildren(fragment);
     activeIndex = -1;
+}
 
-    // Clicking the ship row navigates to the default (info) URL; sub-link clicks handle themselves
-    resultsContainer.querySelectorAll('.global-search-ship').forEach(el => {
-        el.addEventListener('click', (e) => {
-            if (e.target.closest('.global-search-ship-link')) return;
-            const url = el.getAttribute('data-url');
-            if (url) window.location.href = url;
-        });
+function createSectionHeader(label) {
+    const header = document.createElement('div');
+    header.className = 'global-search-section';
+    header.textContent = label;
+    return header;
+}
+
+function createPageResult(page) {
+    const url = buildPageUrl(page.path);
+    const idx = allResults.length;
+    allResults.push({ type: 'page', url });
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.className = 'global-search-item';
+    link.dataset.index = String(idx);
+    link.dataset.url = url;
+
+    const iconWrap = document.createElement('div');
+    iconWrap.className = 'global-search-item-icon';
+    iconWrap.appendChild(createMaterialIcon(page.icon));
+
+    const text = document.createElement('div');
+    text.className = 'global-search-item-text';
+    const name = document.createElement('div');
+    name.className = 'global-search-item-name';
+    name.textContent = page.name;
+    const desc = document.createElement('div');
+    desc.className = 'global-search-item-desc';
+    desc.textContent = page.description;
+    text.append(name, desc);
+
+    const badge = document.createElement('span');
+    badge.className = 'global-search-item-badge';
+    badge.textContent = page.category;
+
+    link.append(iconWrap, text, badge);
+    return link;
+}
+
+function createShipResult(ship) {
+    const idx = allResults.length;
+    const infoUrl = buildPageUrl(LINKS.SHIPGIRL_INFO) + '?ship=' + encodeURIComponent(ship.name);
+    const skinUrl = buildPageUrl(LINKS.SKIN_DETAIL) + '?character=' + encodeURIComponent(ship.name);
+    const valentineUrl = buildPageUrl(LINKS.VALENTINE) + '?name=' + encodeURIComponent(ship.name);
+    allResults.push({ type: 'ship', url: infoUrl });
+
+    const row = document.createElement('div');
+    row.className = 'global-search-ship';
+    row.dataset.index = String(idx);
+    row.dataset.url = infoUrl;
+    row.addEventListener('click', (event) => {
+        if (event.target.closest('.global-search-ship-link')) return;
+        window.location.href = infoUrl;
     });
+
+    const icon = createImgElement(ship.icon, ship.name, {
+        className: 'global-search-ship-icon',
+        onError() { this.style.display = 'none'; },
+    });
+
+    const info = document.createElement('div');
+    info.className = 'global-search-ship-info';
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'global-search-ship-name';
+    nameSpan.textContent = ship.name;
+    const raritySpan = document.createElement('span');
+    raritySpan.className = `global-search-rarity rarity-${ship.rarity}`;
+    raritySpan.textContent = ship.rarity;
+    info.append(nameSpan, raritySpan);
+
+    const links = document.createElement('div');
+    links.className = 'global-search-ship-links';
+    links.append(
+        createShipLink(infoUrl, '함순이 정보', 'database'),
+        createShipLink(skinUrl, '일러/대사', 'image'),
+        createShipLink(valentineUrl, '발렌타인', 'mail'),
+    );
+
+    row.append(icon, info, links);
+    return row;
+}
+
+function createShipLink(href, title, iconName) {
+    const link = document.createElement('a');
+    link.href = href;
+    link.className = 'global-search-ship-link';
+    link.title = title;
+    link.appendChild(createMaterialIcon(iconName));
+    return link;
 }
 
 // ===== Keyboard Navigation =====
@@ -317,11 +358,6 @@ function moveHighlight(direction) {
 function buildPageUrl(path) {
     if (path.startsWith('http')) return path;
     return resolveUrl(path);
-}
-
-function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 // ===== Start =====

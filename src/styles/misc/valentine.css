@@ -113,17 +113,23 @@ body.dark-mode .search-box input:focus {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  width: 100%;
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-fast);
   border: 2px solid transparent;
+  background: transparent;
+  text-align: left;
+  font: inherit;
 }
 
-.shipgirl-item:hover {
+.shipgirl-item:hover,
+.shipgirl-item:focus-visible {
   background: var(--section-bg);
   border-color: var(--primary-color);
   transform: translateX(4px);
+  outline: none;
 }
 
 .shipgirl-item.active {
@@ -131,7 +137,8 @@ body.dark-mode .search-box input:focus {
   border-color: var(--val-accent);
 }
 
-body.dark-mode .shipgirl-item:hover {
+body.dark-mode .shipgirl-item:hover,
+body.dark-mode .shipgirl-item:focus-visible {
   background: var(--bg-input);
 }
 
@@ -163,6 +170,7 @@ body.dark-mode .shipgirl-item.active {
 }
 
 .shipgirl-item-name {
+  min-width: 0;
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--text-primary);
@@ -217,9 +225,11 @@ body.dark-mode .shipgirl-item.active {
 }
 
 .letter-header-name {
+  min-width: 0;
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--text-primary);
+  overflow-wrap: anywhere;
 }
 
 /* --- Year Tabs --- */
@@ -244,9 +254,12 @@ body.dark-mode .shipgirl-item.active {
   transition: all var(--transition-fast);
 }
 
-.year-tab:hover {
+.year-tab:hover,
+.year-tab:focus-visible {
   color: var(--text-primary);
   background: var(--bg-input);
+  outline: 2px solid var(--val-accent);
+  outline-offset: 2px;
 }
 
 .year-tab.active {

@@ -1,80 +1,147 @@
 @import url('../theme.css');
 
-/* ============================================
-   GALLERYPIC CUSTOM STYLES
-   Note: Tailwind is used for primary styling.
-   This file contains custom overrides and dark mode support.
-   ============================================ */
-
-/* ============================================
-   THEME SUPPORT
-   ============================================ */
-
-/* Base body styling with smooth transitions */
-body {
-  transition: background-color var(--transition-slow), color var(--transition-slow);
-}
-
-/* Dark mode theme */
-body.dark-mode {
-  background-color: var(--bg-gradient-start);
+.gallerypic-body {
+  background: var(--bg-secondary);
   color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* ============================================
-   TYPOGRAPHY
-   ============================================ */
-
-/* Header title styling */
-h1 {
-  transition: color var(--transition-slow);
+.gallerypic-page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
 }
 
-/* Dark mode header text */
-body.dark-mode h1 {
+.gallerypic-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.gallerypic-header h1 {
+  margin: 0;
   color: var(--text-primary);
+  font-size: 2.5rem;
+  font-weight: 700;
 }
 
-/* ============================================
-   GALLERY ITEMS
-   ============================================ */
+.gallery-status {
+  grid-column: 1 / -1;
+  margin: 0 auto 1.5rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
 
-/* Gallery item container */
+.gallery-status[hidden] {
+  display: none;
+}
+
+.gallery-status.error {
+  color: var(--danger-color);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
 .gallery-item {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
   overflow: hidden;
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
+  background: var(--card-bg);
   box-shadow: var(--shadow-md);
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   cursor: pointer;
-  background-color: var(--card-bg);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
 }
 
-/* Gallery item hover effect */
 .gallery-item:hover {
-  transform: scale(1.05);
+  transform: translateY(-3px);
+  border-color: var(--primary-color);
   box-shadow: var(--shadow-lg);
 }
 
-/* Gallery item image styling */
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.gallery-item:focus-visible,
+.gallery-modal-close:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
+.gallery-item-image {
   display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
 }
 
-/* ============================================
-   MODAL / LIGHTBOX
-   ============================================ */
-
-/* Modal close button positioning and styling */
-#close {
-  right: -1rem;
-  top: -2.5rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+.gallery-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: var(--overlay-opaque);
 }
 
-/* Modal content - dark mode */
-body.dark-mode .modal-content {
-  background-color: var(--card-bg);
+.gallery-modal.active {
+  display: flex;
+}
+
+.gallery-modal.hidden {
+  display: none;
+}
+
+.gallery-modal-content {
+  position: relative;
+  max-width: min(100%, 1200px);
+}
+
+.gallery-modal-image {
+  display: block;
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xl);
+}
+
+.gallery-modal-close {
+  position: absolute;
+  top: -2.75rem;
+  right: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.8);
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.gallery-modal-close:hover {
+  background: rgba(15, 23, 42, 1);
+  color: #fff;
+}
+
+@media (max-width: 640px) {
+  .gallerypic-page {
+    padding-inline: 0.75rem;
+  }
+
+  .gallerypic-header h1 {
+    font-size: 2rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.75rem;
+  }
 }

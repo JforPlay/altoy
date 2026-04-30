@@ -5,14 +5,14 @@
  * NAME_ALIASES handles spelling mismatches between valentine_data.json and ship_group_data names.
  */
 
-import { debounce, fetchJSON, resolveUrl, getUrlParam, setUrlParams, showElement, hideElement, createSearchIndex, normalizeRomanNumerals } from '../utils.js';
+import { debounce, fetchJSON, getUrlParam, setUrlParams, showElement, hideElement, createSearchIndex, normalizeRomanNumerals, createImgElement, requireElements, renderStatus } from '../utils.js';
 
 // ===== State =====
 let valentineData = [];
 let shipgirlNameMap = new Map();
 let searchIndex = null;
 let selectedShipgirl = null;
-let selectedYear = null;
+let loadFailed = false;
 
 // ===== DOM References =====
 const searchInput = document.getElementById('search');
@@ -26,7 +26,17 @@ const letterYearLabel = document.getElementById('letter-year-label');
 const letterText = document.getElementById('letter-text');
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await loadData();
+    if (!requireElements({ searchInput, shipgirlList, letterHeader, yearTabs, letterPlaceholder,
+        letterContentWrapper, letterYearLabel, letterText }, 'Valentine viewer')) {
+        return;
+    }
+
+    const loaded = await loadData();
+    if (!loaded) {
+        renderLoadError();
+        return;
+    }
+
     renderShipgirlList(valentineData);
     setupEventListeners();
     handleInitialSelection();
@@ -43,7 +53,12 @@ async function loadData() {
             fetchJSON('data/ship_group_data.json')
         ]);
 
-        valentineData = valData;
+        valentineData = Array.isArray(valData)
+            ? valData.filter(entry =>
+                entry && typeof entry === 'object' && typeof entry.name === 'string' &&
+                entry.letters && typeof entry.letters === 'object'
+            )
+            : [];
 
         // Build normalized name map for O(1) lookups; ship_group_data may be array or object
         if (Array.isArray(shipGroupData)) {
@@ -53,7 +68,7 @@ async function loadData() {
                     shipgirlNameMap.set(normalized, ship);
                 }
             });
-        } else {
+        } else if (shipGroupData && typeof shipGroupData === 'object') {
             Object.entries(shipGroupData).forEach(([id, ship]) => {
                 ship.id = id;
                 if (ship.name) {
@@ -75,8 +90,11 @@ async function loadData() {
             keys: ['name'],
             threshold: 0.3
         });
+        return true;
     } catch (err) {
         console.error('Failed to load data:', err);
+        loadFailed = true;
+        return false;
     }
 }
 
@@ -112,27 +130,37 @@ function getIconUrl(ship) {
 }
 
 function renderShipgirlList(data) {
-    shipgirlList.innerHTML = '';
+    shipgirlList.replaceChildren();
     if (shipgirlCount) {
         shipgirlCount.textContent = `${data.length}명`;
     }
 
+    if (!data.length) {
+        const message = searchInput?.value.trim()
+            ? '검색 결과가 없습니다.'
+            : '표시할 편지가 없습니다.';
+        renderStatus(shipgirlList, message, 'empty');
+        return;
+    }
+
     const fragment = document.createDocumentFragment();
     data.forEach(entry => {
-        const item = document.createElement('div');
+        const item = document.createElement('button');
+        item.type = 'button';
         item.className = 'shipgirl-item';
         item.dataset.name = entry.name;
+        item.setAttribute('aria-pressed', entry.name === selectedShipgirl ? 'true' : 'false');
 
         const ship = findShipgirl(entry.name);
         const iconUrl = getIconUrl(ship);
 
         if (iconUrl) {
-            const img = document.createElement('img');
-            img.className = 'shipgirl-item-icon';
-            img.src = iconUrl;
-            img.alt = entry.name;
-            img.loading = 'lazy';
-            img.onerror = function() { this.style.display = 'none'; };
+            const img = createImgElement(iconUrl, entry.name, {
+                className: 'shipgirl-item-icon',
+                onError() {
+                    this.style.display = 'none';
+                }
+            });
             item.appendChild(img);
         } else {
             const ph = document.createElement('div');
@@ -146,7 +174,6 @@ function renderShipgirlList(data) {
         nameSpan.textContent = entry.name;
         item.appendChild(nameSpan);
 
-        item.addEventListener('click', () => selectShipgirl(entry.name));
         fragment.appendChild(item);
     });
     shipgirlList.appendChild(fragment);
@@ -158,7 +185,9 @@ function renderShipgirlList(data) {
 
 function highlightActive(name) {
     shipgirlList.querySelectorAll('.shipgirl-item').forEach(el => {
-        el.classList.toggle('active', el.dataset.name === name);
+        const isActive = el.dataset.name === name;
+        el.classList.toggle('active', isActive);
+        el.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
 }
 
@@ -173,13 +202,15 @@ function selectShipgirl(name) {
     const ship = findShipgirl(name);
     const iconUrl = getIconUrl(ship);
 
-    letterHeader.innerHTML = '';
+    letterHeader.replaceChildren();
     if (iconUrl) {
-        const img = document.createElement('img');
-        img.className = 'letter-header-icon';
-        img.src = iconUrl;
-        img.alt = name;
-        img.onerror = function() { this.style.display = 'none'; };
+        const img = createImgElement(iconUrl, name, {
+            className: 'letter-header-icon',
+            eager: true,
+            onError() {
+                this.style.display = 'none';
+            }
+        });
         letterHeader.appendChild(img);
     } else {
         const ph = document.createElement('div');
@@ -192,13 +223,16 @@ function selectShipgirl(name) {
     nameEl.textContent = name;
     letterHeader.appendChild(nameEl);
 
-    const years = Object.keys(entry.letters).sort();
-    yearTabs.innerHTML = '';
+    const years = Object.keys(entry.letters || {}).sort();
+    yearTabs.replaceChildren();
     years.forEach(year => {
         const tab = document.createElement('button');
         tab.className = 'year-tab';
         tab.textContent = year;
         tab.dataset.year = year;
+        tab.type = 'button';
+        tab.setAttribute('role', 'tab');
+        tab.setAttribute('aria-selected', 'false');
         tab.addEventListener('click', () => showLetter(entry, year));
         yearTabs.appendChild(tab);
     });
@@ -207,23 +241,33 @@ function selectShipgirl(name) {
     showElement(letterContentWrapper);
 
     const latestYear = years[years.length - 1];
-    showLetter(entry, latestYear);
+    if (latestYear) {
+        showLetter(entry, latestYear);
+    } else {
+        letterYearLabel.textContent = '';
+        letterText.textContent = '등록된 편지가 없습니다.';
+    }
 }
 
 function showLetter(entry, year) {
-    selectedYear = year;
-
-    // Update active tab
     yearTabs.querySelectorAll('.year-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.year === year);
+        const isActive = tab.dataset.year === year;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
     });
 
-    const text = entry.letters[year];
+    const text = entry.letters?.[year];
     letterYearLabel.textContent = `${year}년 발렌타인`;
     letterText.textContent = text || '';
 }
 
 function setupEventListeners() {
+    shipgirlList.addEventListener('click', (event) => {
+        const item = event.target.closest('.shipgirl-item');
+        if (!item) return;
+        selectShipgirl(item.dataset.name);
+    });
+
     if (searchInput) {
         searchInput.addEventListener('input', debounce(() => {
             const query = searchInput.value.trim();
@@ -234,6 +278,11 @@ function setupEventListeners() {
             if (searchIndex) {
                 const results = searchIndex.search(query);
                 renderShipgirlList(results.map(r => r.item));
+            } else {
+                const normalizedQuery = query.toLocaleLowerCase('ko-KR');
+                renderShipgirlList(valentineData.filter(entry =>
+                    entry.name.toLocaleLowerCase('ko-KR').includes(normalizedQuery)
+                ));
             }
         }, 200));
     }
@@ -250,4 +299,14 @@ function handleInitialSelection() {
             if (item) item.scrollIntoView({ block: 'center' });
         }
     }
+}
+
+function renderLoadError() {
+    if (shipgirlCount) shipgirlCount.textContent = '0명';
+    const message = loadFailed
+        ? '발렌타인 데이터를 불러오지 못했습니다.'
+        : '표시할 편지가 없습니다.';
+    renderStatus(shipgirlList, message, 'error');
+    hideElement(letterContentWrapper);
+    showElement(letterPlaceholder);
 }

@@ -38,64 +38,25 @@ if (SYNC_UI_ENABLED) {
 }
 
 // ===== Centralized Link Configuration =====
-const LINKS = {
-    // Main Pages
-    HOME: '',
+//
+// LINKS is derived from the shared pages catalog so adding a new internal page
+// only requires editing pages.catalog.js. External links live here directly.
+import { PAGE_CATALOG } from './pages.catalog.js';
 
-    // Shipgirl
-    SHIPGIRL_INFO: 'shipgirl/shipgirl-info/',
-    SHIPGIRL_TRACKER: 'shipgirl/shipgirl-tracker/',
-    SHIPGIRL_BUILD: 'shipgirl/shipgirl-build-sim/',
-    SHIPGIRL_BIRTHDAY: 'shipgirl/shipgirl-birthday/',
-    RESEARCH_TRACKER: 'shipgirl/research-tracker/',
-
-    // Skin
-    SKIN_DETAIL: 'skin/skin-detail-viewer/',
-    SKIN_LIST: 'skin/skin-list-viewer/',
-    SKIN_POLL: 'skin/skin-poll/',
-    SKIN_SD: 'skin/skin-sd-viewer/',
-    SKIN_EXPRESSION: 'skin/expression-viewer/',
-
-    // Chat & Social
-    JUUSTAGRAM: 'juustagram/',
-    CHAT_JUUS: 'chat-viewer/juus/',
-    CHAT_DORM3D: 'chat-viewer/dorm3d/',
-
-    // Story
-    MAIN_STORY: 'story-viewer/main-story/',
-    MAIN_STORYLINE: 'story-viewer/main-storyline/',
-    WORLD_STORY: 'story-viewer/world-story/',
-    WORLD_FILE: 'story-viewer/world-file/',
-    NAVI_STORY: 'story-viewer/navi-story/',
-    TB_STORY: 'story-viewer/tb-story/',
-    LORA_STORY: 'story-viewer/lora-story/',
-    SECRETARY_STORY: 'story-viewer/secretary-story/',
-    HOF: 'story-viewer/hof/',
-
-    // Misc
-    EVENT_TIMELINE: 'event-timeline/',
-    COMIC_VIEWER: 'misc/comic-viewer/',
-    LOADINGBG: 'misc/loadingbg/',
-    GALLERYPIC: 'misc/gallerypic/',
-    BGM_PLAYER: 'misc/bgm-player/',
-
-    // Simulators
-    SIM_WEAPON: 'simulators/sim-weapon/',
-
-    // Equip
-    EQUIP_VIEWER: 'equip/equip-viewer/',
-
-    // Island
-    ISLAND: 'island/',
-
-    // External Links
+const EXTERNAL_LINKS = {
     EXTERNAL_HEARING: 'https://999dulgi.github.io/azurlane-hearing/ships',
     EXTERNAL_EQUIPMENT: 'https://gateisbug.github.io/alit/#/item',
     EXTERNAL_ARCA_AZUR: 'https://arca.live/b/azurlane',
     EXTERNAL_ARCA_MANJUU: 'https://arca.live/b/manjuugame',
     EXTERNAL_BUG_REPORT: 'https://arca.live/b/azurlane/148734027',
     EXTERNAL_GODROOKLYN: 'https://godrooklyn.tistory.com/',
-    EXTERNAL_GITHUB: 'https://github.com/JforPlay/altoy'
+    EXTERNAL_GITHUB: 'https://github.com/JforPlay/altoy',
+};
+
+const LINKS = {
+    HOME: '',
+    ...Object.fromEntries(PAGE_CATALOG.map(page => [page.key, page.path])),
+    ...EXTERNAL_LINKS,
 };
 
 /**

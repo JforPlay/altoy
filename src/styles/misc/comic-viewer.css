@@ -80,6 +80,11 @@ body.dark-mode h1 {
   background-color: var(--border-color);
 }
 
+#sort-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 /* Sort button - Dark Mode */
 body.dark-mode #sort-button {
   background-color: var(--card-bg);
@@ -115,6 +120,7 @@ main {
 
 /* Gallery item container */
 .gallery-item {
+  appearance: none;
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-md);
@@ -127,6 +133,10 @@ main {
   align-items: center;
   min-height: 200px;
   position: relative;
+  padding: 0;
+  width: 100%;
+  font: inherit;
+  color: inherit;
 }
 
 /* Gallery item - Dark Mode */
@@ -139,6 +149,26 @@ body.dark-mode .gallery-item {
 .gallery-item:hover {
   transform: scale(1.03);
   cursor: pointer;
+}
+
+.gallery-item.load-error {
+  min-height: 120px;
+}
+
+.gallery-item:focus-visible,
+#sort-button:focus-visible,
+.close-button:focus-visible {
+  outline: 3px solid var(--accent-blue);
+  outline-offset: 3px;
+}
+
+.gallery-container .page-status {
+  grid-column: 1 / -1;
+  margin: 2rem auto;
+  padding: 18px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--card-bg);
 }
 
 /* Gallery item hover effect - Dark Mode */
@@ -178,6 +208,10 @@ body.dark-mode .gallery-item:hover {
   top: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
+  color: var(--danger-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Spinner - Dark Mode */
@@ -201,6 +235,11 @@ body.dark-mode .loader {
   display: none;
 }
 
+.gallery-item.load-error .loader {
+  animation: none;
+  border-color: var(--danger-color);
+}
+
 /* ============================================
    LIGHTBOX / MODAL
    ============================================ */
@@ -217,6 +256,8 @@ body.dark-mode .loader {
   height: 100%;
   overflow: auto;
   background-color: var(--overlay-opaque);
+  align-items: flex-start;
+  justify-content: center;
 }
 
 /* Lightbox image content */
@@ -238,6 +279,10 @@ body.dark-mode .loader {
   font-weight: bold;
   transition: var(--transition-slow);
   cursor: pointer;
+  background: transparent;
+  border: 0;
+  line-height: 1;
+  padding: 4px 8px;
 }
 
 /* Close button hover state */

@@ -1,67 +1,102 @@
 /**
  * gallerypic.js
- * Gallery viewer for in-game illustration images (삽화).
- * Loads image metadata from gallery_data.json; opens a fullscreen modal on click.
+ * Gallery viewer for in-game illustration images.
  */
 
-import { fetchJSON, openModal, setupModal } from '../utils.js';
+import { IMG_FALLBACKS, createImgElement, fetchJSON, openModal, setupModal, requireElements } from '../utils.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const gallery = document.getElementById('gallery');
-    const modal = document.getElementById('modal');
+    const status = document.getElementById('gallery-status');
     const modalImage = document.getElementById('modal-image');
+
+    if (!requireElements({ gallery, status, modalImage }, 'Gallery picture viewer')) {
+        return;
+    }
 
     const baseImageUrl = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/gallerypic/';
 
-    fetchJSON('data/misc/gallery_data.json')
-        .then(data => {
-            Object.values(data).forEach(item => {
-                if (item && typeof item === 'object' && item.illustration) {
-                    const imageName = item.illustration; // "gallerypic1", "gallerypic2", etc.
+    function setStatus(message, isError = false) {
+        status.textContent = message;
+        status.classList.toggle('error', isError);
+        status.hidden = false;
+    }
 
-                    // Repo files use PascalCase: "gallerypic1" → "GalleryPic1"
-                    const formattedName = imageName.replace('gallerypic', 'GalleryPic');
-                    
-                    const thumbnailUrl = `${baseImageUrl}${formattedName}_t.webp`;
-                    const fullImageUrl = `${baseImageUrl}${formattedName}.webp`;
+    function hideStatus() {
+        status.hidden = true;
+    }
 
-                    // Create gallery item container
-                    const galleryItem = document.createElement('div');
-                    galleryItem.className = 'gallery-item bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out';
-                    galleryItem.dataset.fullSrc = fullImageUrl;
+    function normalizeIllustrationName(rawName) {
+        return String(rawName || '').replace(/^gallerypic/i, 'GalleryPic').replace(/[^A-Za-z0-9_-]/g, '');
+    }
 
-                    // Create image element
-                    const img = document.createElement('img');
-                    img.src = thumbnailUrl;
-                    img.alt = `Gallery thumbnail for ${formattedName}`;
-                    img.className = 'w-full h-auto object-cover aspect-square';
-                    img.loading = 'lazy';
-                    img.onerror = () => {
-                        img.src = 'https://placehold.co/400x400/EEE/31343C?text=Image+Not+Found';
-                    };
-                    
-                    galleryItem.appendChild(img);
-                    gallery.appendChild(galleryItem);
-                }
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching or processing gallery data:', error);
-            gallery.innerHTML = `<p class="text-red-500 col-span-full text-center">Could not load gallery images. Please check the console for more information.</p>`;
+    function createGalleryItem(item) {
+        const formattedName = normalizeIllustrationName(item.illustration);
+        if (!formattedName) return null;
+
+        const thumbnailUrl = `${baseImageUrl}${formattedName}_t.webp`;
+        const fullImageUrl = `${baseImageUrl}${formattedName}.webp`;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'gallery-item';
+        button.dataset.fullSrc = fullImageUrl;
+        button.dataset.imageName = formattedName;
+        button.setAttribute('aria-label', `Open gallery image ${formattedName}`);
+
+        const img = createImgElement(thumbnailUrl, `Gallery thumbnail for ${formattedName}`, {
+            className: 'gallery-item-image',
+            fallback: IMG_FALLBACKS.CARD
         });
 
-    gallery.addEventListener('click', (e) => {
-        const item = e.target.closest('.gallery-item');
-        if (item) {
-            modalImage.src = item.dataset.fullSrc;
-            openModal('modal');
+        button.appendChild(img);
+        return button;
+    }
+
+    function renderGallery(data) {
+        const fragment = document.createDocumentFragment();
+        Object.values(data).forEach(item => {
+            if (!item || typeof item !== 'object' || !item.illustration) return;
+            const galleryItem = createGalleryItem(item);
+            if (galleryItem) fragment.appendChild(galleryItem);
+        });
+
+        gallery.replaceChildren(fragment);
+        if (gallery.children.length === 0) {
+            setStatus('No gallery images found.');
+        } else {
+            hideStatus();
         }
+    }
+
+    gallery.addEventListener('click', event => {
+        const item = event.target.closest('.gallery-item');
+        if (!item) return;
+
+        modalImage.src = item.dataset.fullSrc;
+        modalImage.alt = `Full-size gallery image ${item.dataset.imageName || ''}`.trim();
+        openModal('modal');
     });
 
     setupModal('modal', {
         closeButtonSelector: '#close',
         closeOnBackdrop: true,
         closeOnEscape: true,
-        onClose: () => { modalImage.src = ''; }
+        onClose: () => {
+            modalImage.removeAttribute('src');
+            modalImage.alt = '';
+        }
     });
+
+    setStatus('Loading gallery images...');
+    try {
+        const data = await fetchJSON('data/misc/gallery_data.json');
+        if (!data || typeof data !== 'object') {
+            throw new Error('Invalid gallery data payload.');
+        }
+        renderGallery(data);
+    } catch (error) {
+        console.error('Error fetching or processing gallery data:', error);
+        gallery.replaceChildren();
+        setStatus('Could not load gallery images. Please try again later.', true);
+    }
 });

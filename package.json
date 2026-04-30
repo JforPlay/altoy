@@ -7,8 +7,9 @@
     "dev": "astro dev",
     "start": "astro dev",
     "data:split": "node scripts/split_story_data.mjs && node scripts/split_skin_data.mjs && node scripts/split_simulator_data.mjs && node scripts/split_skin_poll_data.mjs",
-    "build": "npm run data:split && astro build && node scripts/minify.mjs",
-    "build:no-minify": "astro build",
+    "check:versions": "node scripts/check-versions.mjs",
+    "build": "npm run check:versions && npm run data:split && astro build && node scripts/minify.mjs",
+    "build:no-minify": "npm run check:versions && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
