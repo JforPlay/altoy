@@ -5,7 +5,7 @@
  */
 
 import { getStorageItem } from '../utils.js';
-import { getShipByGid, getEquipFullById, getWeaponProperty, getSPWeaponById } from './fleet-sim.data.js';
+import { getShipByGid, getEquipFullById, getWeaponProperty, getSPWeaponById, getEffectiveShipType } from './fleet-sim.data.js';
 
 // ===== State =====
 let state;
@@ -130,6 +130,7 @@ const SLOT_LABELS = {
     6:  null,                        // CV — combined airstrike
     7:  null,                        // CVL — combined airstrike
     8:  ['어뢰', '어뢰', '주포'],    // SS
+    10: ['주포', '항공', '대공'],    // BBV (후소/야마시로/이세/휴가 retrofit)
     20: ['주포', '어뢰', '대공'],    // DD (variant)
     21: ['주포', '어뢰', '대공'],    // DD (variant)
 };
@@ -230,7 +231,7 @@ export function calculateShipStats(slotConfig, fleetTechBonuses, fleetPassiveBuf
 
     // --- Step 5: Fleet tech bonuses ---
     if (fleetTechBonuses) {
-        const techBonus = _getFleetTechBonusForShip(ship.type, fleetTechBonuses);
+        const techBonus = _getFleetTechBonusForShip(getEffectiveShipType(ship, useRetrofit), fleetTechBonuses);
         for (const [statKey, value] of Object.entries(techBonus)) {
             if (stats[statKey] !== undefined) {
                 stats[statKey] += value;
@@ -637,7 +638,10 @@ function _getMaxLevelBuffs(passiveSkill) {
  */
 function _calculateReloads(ship, slotConfig, reloadStat) {
     const equips = slotConfig.equips || [];
-    const shipType = ship.type;
+    // Honor retrofit form — BBV/DDG/CA retrofits change the ship type, which flips
+    // both the carrier-vs-standard reload branch and the slot label set.
+    const useRetrofit = slotConfig.retrofit !== false && !!ship.retrofit;
+    const shipType = getEffectiveShipType(ship, useRetrofit);
 
     // Carrier types: combined airstrike calculation
     if (CARRIER_TYPES.has(shipType)) {

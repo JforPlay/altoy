@@ -217,16 +217,42 @@ export function getShipsByPosition(position) {
 }
 
 /**
+ * Get the equip-type array allowed in a slot, honoring retrofit form when toggled on.
+ * Retrofits sometimes alter slot types (e.g., 후소 BBV gains aircraft, 안샨 DDG gains
+ * missile); the retrofit override lives at ship.retrofit.equip_X. Falls back to the
+ * base ship's equip_X when the retrofit form has no override or the toggle is off.
+ */
+export function getSlotAllowedTypes(ship, equipIndex, isRetrofit) {
+    if (!ship) return [];
+    const slotKey = `equip_${equipIndex + 1}`;
+    if (isRetrofit && ship.retrofit && Array.isArray(ship.retrofit[slotKey])) {
+        return ship.retrofit[slotKey];
+    }
+    return ship[slotKey] || [];
+}
+
+/**
+ * Get the ship's effective type. Returns ship.retrofit.type when retrofit toggle is on
+ * AND the retrofit form has a different type (e.g., type 5 BB → type 10 BBV after retrofit).
+ */
+export function getEffectiveShipType(ship, isRetrofit) {
+    if (!ship) return null;
+    if (isRetrofit && ship.retrofit && ship.retrofit.type != null) {
+        return ship.retrofit.type;
+    }
+    return ship.type;
+}
+
+/**
  * Get the slot name for a ship's equip slot.
  * For single-type slots, uses type_name2 for precise names like "함포(구축)".
  * For multi-type slots, joins type_name values with "/" (deduped).
  * Falls back to "슬롯 N".
  */
-export function getSlotName(ship, equipIndex) {
+export function getSlotName(ship, equipIndex, isRetrofit) {
     if (!state.equipTypeData || !ship) return `슬롯 ${equipIndex + 1}`;
-    const slotKey = `equip_${equipIndex + 1}`;
-    const allowedTypes = ship[slotKey];
-    if (!allowedTypes || !allowedTypes.length) return `슬롯 ${equipIndex + 1}`;
+    const allowedTypes = getSlotAllowedTypes(ship, equipIndex, isRetrofit);
+    if (!allowedTypes.length) return `슬롯 ${equipIndex + 1}`;
 
     if (allowedTypes.length === 1) {
         const typeInfo = state.equipTypeData[String(allowedTypes[0])];

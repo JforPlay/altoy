@@ -15,6 +15,8 @@ import {
     getGenericSPWeapons,
     getSPWeaponIconUrl,
     getMaxEnhanceLevel,
+    getSlotAllowedTypes,
+    getEffectiveShipType,
 } from './fleet-sim.data.js';
 
 // ===== State =====
@@ -128,14 +130,17 @@ export function openEquipPicker(slotIndex, equipIndex) {
     const slotConfig = state.ships[slotIndex];
     const ship = slotConfig && slotConfig.gid ? getShipByGid(slotConfig.gid) : null;
 
-    // Determine allowed equip types from ship's equip_X field
+    // Determine allowed equip types from ship's equip_X field, honoring the retrofit
+    // toggle — retrofits sometimes change a slot's allowed types and/or the ship type
+    // (which feeds ship_type_forbidden filtering).
     let filteredEquips = [];
     if (ship) {
-        const slotKey = `equip_${equipIndex + 1}`;
-        const allowedTypes = ship[slotKey];
+        const isRetrofit = slotConfig?.retrofit !== false && !!ship.retrofit;
+        const allowedTypes = getSlotAllowedTypes(ship, equipIndex, isRetrofit);
+        const effectiveType = getEffectiveShipType(ship, isRetrofit);
 
-        if (allowedTypes && Array.isArray(allowedTypes) && allowedTypes.length > 0) {
-            filteredEquips = getEquipsByAllowedTypes(allowedTypes, ship.type);
+        if (allowedTypes.length > 0) {
+            filteredEquips = getEquipsByAllowedTypes(allowedTypes, effectiveType);
         } else {
             // Fallback: show all equips (equip_X field not yet available)
             filteredEquips = state.equipLiteData || [];
@@ -185,7 +190,8 @@ export function openSPWeaponPicker(slotIndex) {
 
     let spWeapons = [];
     if (ship) {
-        spWeapons = getGenericSPWeapons(ship.type);
+        const isRetrofit = slotConfig?.retrofit !== false && !!ship.retrofit;
+        spWeapons = getGenericSPWeapons(getEffectiveShipType(ship, isRetrofit));
     }
 
     // Map SP weapons to equip-like objects for grid rendering

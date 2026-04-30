@@ -13,7 +13,7 @@
  * Bump this when ANY data file changes to force fresh fetches.
  * Used by fetchJSONWithCache — when this changes, the entire IndexedDB cache is cleared on next page load.
  */
-const DATA_VERSION = '1.3.1';
+const DATA_VERSION = '1.4.0';
 
 /**
  * localStorage keys that participate in Google Drive sync.

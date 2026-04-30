@@ -303,11 +303,12 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
  */
 function _buildEquipSlotsHTML(slotIndex, ship, slotConfig) {
     const equips = slotConfig.equips || [];
+    const isRetrofit = slotConfig.retrofit !== false && !!ship.retrofit;
     let slotsHTML = '';
 
     // 5 standard equip slots (indices 0-4)
     for (let i = 0; i < 5; i++) {
-        slotsHTML += _buildSingleEquipSlotHTML(slotIndex, i, equips[i], ship);
+        slotsHTML += _buildSingleEquipSlotHTML(slotIndex, i, equips[i], ship, isRetrofit);
     }
 
     // 6th cell: SP weapon slot
@@ -319,8 +320,8 @@ function _buildEquipSlotsHTML(slotIndex, ship, slotConfig) {
 /**
  * Build a single equip slot cell.
  */
-function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship) {
-    const slotName = getSlotName(ship, equipIndex);
+function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isRetrofit) {
+    const slotName = getSlotName(ship, equipIndex, isRetrofit);
     const safeSlotName = _escapeHtml(slotName);
 
     if (!equipConfig || !equipConfig.id) {
