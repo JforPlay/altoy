@@ -342,6 +342,14 @@ body.dark-mode .patch-notes-content ul {
   box-shadow: 0 12px 40px rgba(0, 113, 235, 0.2);
 }
 
+.bento-card:focus-visible,
+.birthday-item:focus-visible,
+.birthday-more-link:focus-visible,
+.dual-link-item:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 3px;
+}
+
 .bento-card.featured {
   background: linear-gradient(
     135deg,

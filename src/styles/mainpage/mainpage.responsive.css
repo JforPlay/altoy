@@ -33,6 +33,7 @@
 
   .external-links-section {
     grid-template-columns: repeat(4, 1fr);
+    grid-row: span 4;
   }
 
   .bento-card.external-link {

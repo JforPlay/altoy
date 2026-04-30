@@ -11,6 +11,30 @@ import '../styles/mainpage/mainpage.bento.css';
 import '../styles/mainpage/mainpage.responsive.css';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const path = (value: string) => `${base}/${value}`;
+
+// Build-time hrefs so anchors render with correct URLs at first paint.
+// Mirror of LINKS in public/js/global.script.js — keep in sync if either is edited.
+const hrefs = {
+    SKIN_LIST: path('skin/skin-list-viewer/'),
+    EQUIP_VIEWER: path('equip/equip-viewer/'),
+    RESEARCH_TRACKER: path('shipgirl/research-tracker/'),
+    ISLAND: path('island/'),
+    JUUSTAGRAM: path('juustagram/'),
+    SHIPGIRL_BIRTHDAY: path('shipgirl/shipgirl-birthday/'),
+    SKIN_POLL: path('skin/skin-poll/'),
+    EVENT_TIMELINE: path('event-timeline/'),
+    MAIN_STORY: path('story-viewer/main-story/'),
+    CHAT_JUUS: path('chat-viewer/juus/'),
+    COMIC_VIEWER: path('misc/comic-viewer/'),
+    EXTERNAL_HEARING: 'https://999dulgi.github.io/azurlane-hearing/ships',
+    EXTERNAL_EQUIPMENT: 'https://gateisbug.github.io/alit/#/item',
+    EXTERNAL_ARCA_AZUR: 'https://arca.live/b/azurlane',
+    EXTERNAL_ARCA_MANJUU: 'https://arca.live/b/manjuugame',
+    EXTERNAL_BUG_REPORT: 'https://arca.live/b/azurlane/148734027',
+    EXTERNAL_GODROOKLYN: 'https://godrooklyn.tistory.com/',
+    EXTERNAL_GITHUB: 'https://github.com/JforPlay/altoy'
+};
 ---
 
 <Layout title="ALtoy - 벽람 장난감" {base}>
@@ -34,7 +58,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                         <p class="slide-description">
                             1000개 이상의 스킨을 필터링하고 각종 일러스트들을 감상하세요
                         </p>
-                        <a data-link="SKIN_LIST" class="slide-cta">
+                        <a href={hrefs.SKIN_LIST} class="slide-cta">
                             <span>스킨 보러가기</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -54,7 +78,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                         <p class="slide-description">
                             모든 장비의 스펙을 비교하고 분석하세요
                         </p>
-                        <a data-link="EQUIP_VIEWER" class="slide-cta">
+                        <a href={hrefs.EQUIP_VIEWER} class="slide-cta">
                             <span>장비 보러가기</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -74,7 +98,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                         <p class="slide-description">
                             개발함 육성 현황을 한눈에 관리하세요
                         </p>
-                        <a data-link="RESEARCH_TRACKER" class="slide-cta">
+                        <a href={hrefs.RESEARCH_TRACKER} class="slide-cta">
                             <span>트래커 보러가기</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -94,7 +118,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                         <p class="slide-description">
                             벽타듀를 즐기는데 필요한 정보들을 확인해보세요<br>
                         </p>
-                        <a data-link="ISLAND" class="slide-cta">
+                        <a href={hrefs.ISLAND} class="slide-cta">
                             <span>보러가기</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -115,7 +139,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                             함순이들의 일상이 담긴 SNS를 엿보고<br>
                             숨겨진 이야기를 발견해보세요
                         </p>
-                        <a data-link="JUUSTAGRAM" class="slide-cta">
+                        <a href={hrefs.JUUSTAGRAM} class="slide-cta">
                             <span>둘러보기</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -133,11 +157,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </button>
 
             <!-- Carousel Indicators -->
+            <!-- Active indicator must match the .active slide's DOM index (4th here, the Featured slide). -->
             <div class="carousel-indicators">
-                <button class="indicator active" data-slide="0" aria-label="Go to slide 1"></button>
+                <button class="indicator" data-slide="0" aria-label="Go to slide 1"></button>
                 <button class="indicator" data-slide="1" aria-label="Go to slide 2"></button>
                 <button class="indicator" data-slide="2" aria-label="Go to slide 3"></button>
-                <button class="indicator" data-slide="3" aria-label="Go to slide 4"></button>
+                <button class="indicator active" data-slide="3" aria-label="Go to slide 4"></button>
                 <button class="indicator" data-slide="4" aria-label="Go to slide 5"></button>
             </div>
         </section>
@@ -161,7 +186,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                         </div>
                     </div>
                     <div class="card-footer birthday-footer">
-                        <a data-link="SHIPGIRL_BIRTHDAY" class="birthday-more-link">
+                        <a href={hrefs.SHIPGIRL_BIRTHDAY} class="birthday-more-link">
                             생일 캘린더 보기 <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -216,7 +241,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </div>
 
             <!-- Skin Poll (promoted from bento grid) -->
-            <a data-link="SKIN_POLL" class="bento-card medium featured">
+            <a href={hrefs.SKIN_POLL} class="bento-card medium featured">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-square-poll-vertical"></i>
@@ -230,7 +255,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </a>
 
             <!-- Event Timeline (promoted from bento grid) -->
-            <a data-link="EVENT_TIMELINE" class="bento-card medium">
+            <a href={hrefs.EVENT_TIMELINE} class="bento-card medium">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-timeline"></i>
@@ -243,7 +268,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
         <!-- Bento Grid -->
         <div class="bento-grid">
-            <a data-link="MAIN_STORY" class="bento-card medium">
+            <a href={hrefs.MAIN_STORY} class="bento-card medium">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-book-open-reader"></i>
@@ -255,7 +280,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </a>
 
             <!-- Small Cards -->
-            <a data-link="CHAT_JUUS" class="bento-card small">
+            <a href={hrefs.CHAT_JUUS} class="bento-card small">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-comments-dollar"></i>
@@ -264,7 +289,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </div>
             </a>
 
-            <a data-link="EXTERNAL_GODROOKLYN" class="bento-card small featured">
+            <a href={hrefs.EXTERNAL_GODROOKLYN} target="_blank" rel="noopener noreferrer" class="bento-card small featured">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-square-rss"></i>
@@ -273,7 +298,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </div>
             </a>
 
-            <a data-link="COMIC_VIEWER" class="bento-card small">
+            <a href={hrefs.COMIC_VIEWER} class="bento-card small">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-images"></i>
@@ -282,7 +307,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </div>
             </a>
 
-            <a data-link="EXTERNAL_BUG_REPORT" class="bento-card small">
+            <a href={hrefs.EXTERNAL_BUG_REPORT} target="_blank" rel="noopener noreferrer" class="bento-card small">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fa-solid fa-bug"></i>
@@ -293,7 +318,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
             <!-- External Links Section (Auto new row) -->
             <div class="external-links-section">
-                <a data-link="EXTERNAL_HEARING" target="_blank" class="bento-card small external-link">
+                <a href={hrefs.EXTERNAL_HEARING} target="_blank" rel="noopener noreferrer" class="bento-card small external-link">
                     <span class="external-badge">외부</span>
                     <div class="card-header">
                         <i class="fas fa-gavel external-link-icon"></i>
@@ -301,7 +326,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     </div>
                     <div class="external-link-desc">함순이들의 스킬정보 / 간단평을 볼 수 있습니다</div>
                 </a>
-                <a data-link="EXTERNAL_EQUIPMENT" target="_blank" class="bento-card small external-link">
+                <a href={hrefs.EXTERNAL_EQUIPMENT} target="_blank" rel="noopener noreferrer" class="bento-card small external-link">
                     <span class="external-badge">외부</span>
                     <div class="card-header">
                         <i class="fa-solid fa-wrench external-link-icon"></i>
@@ -312,13 +337,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div class="bento-card small external-link dual-external">
                     <span class="external-badge">외부</span>
                     <div class="dual-links-container">
-                        <a data-link="EXTERNAL_ARCA_AZUR" target="_blank" class="dual-link-item">
+                        <a href={hrefs.EXTERNAL_ARCA_AZUR} target="_blank" rel="noopener noreferrer" class="dual-link-item">
                             <img src={`${base}/assets/icon/arca.svg`} alt="Arca" class="dual-link-svg-icon">
                             <div class="dual-link-content">
                                 <div class="dual-link-label">벽챈 바로가기</div>
                             </div>
                         </a>
-                        <a data-link="EXTERNAL_ARCA_MANJUU" target="_blank" class="dual-link-item">
+                        <a href={hrefs.EXTERNAL_ARCA_MANJUU} target="_blank" rel="noopener noreferrer" class="dual-link-item">
                             <img src={`${base}/assets/icon/arca.svg`} alt="Arca" class="dual-link-svg-icon">
                             <div class="dual-link-content">
                                 <div class="dual-link-label">맍챈 바로가기</div>
@@ -326,7 +351,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                         </a>
                     </div>
                 </div>
-                <a data-link="EXTERNAL_GITHUB" target="_blank" class="bento-card small external-link">
+                <a href={hrefs.EXTERNAL_GITHUB} target="_blank" rel="noopener noreferrer" class="bento-card small external-link">
                     <span class="external-badge">외부</span>
                     <div class="card-header">
                         <i class="fab fa-github external-link-icon"></i>

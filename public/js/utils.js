@@ -325,6 +325,25 @@ function createIcon(className, { ariaHidden = true } = {}) {
 }
 
 /**
+ * Create a Material Symbols Outlined icon span with `aria-hidden="true"` by default.
+ * Sibling of `createIcon` for the Material Symbols icon family used across pages.
+ * @param {string} name - Material Symbols glyph name (e.g., 'cake', 'celebration')
+ * @param {Object} [options]
+ * @param {boolean} [options.ariaHidden=true]
+ * @param {string} [options.className=''] - Extra class(es) appended after `material-symbols-outlined`
+ * @returns {HTMLSpanElement}
+ */
+function createMaterialIcon(name, { ariaHidden = true, className = '' } = {}) {
+    const span = document.createElement('span');
+    span.className = className
+        ? `material-symbols-outlined ${className}`
+        : 'material-symbols-outlined';
+    if (ariaHidden) span.setAttribute('aria-hidden', 'true');
+    span.textContent = name;
+    return span;
+}
+
+/**
  * Create the shared gem-icon `<img>` element used across skin pages for price displays.
  * Always uses the canonical Ruby asset and the `gem-icon` class so visual treatment
  * stays consistent (sizing/drop-shadow lives in skin.common.css).
@@ -1123,6 +1142,7 @@ export {
     createImg,
     createImgElement,
     createIcon,
+    createMaterialIcon,
     createGemIconImg,
 
     // Cache utilities

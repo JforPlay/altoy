@@ -139,6 +139,15 @@
   background: linear-gradient(135deg, var(--primary-light), var(--accent));
 }
 
+.slide-cta:focus-visible,
+.carousel-nav:focus-visible,
+.indicator:focus-visible,
+.event-carousel-nav:focus-visible,
+.event-indicator:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 3px;
+}
+
 .slide-cta i {
   font-size: 1.2em;
   transition: transform 0.3s ease;

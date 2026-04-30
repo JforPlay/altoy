@@ -4,7 +4,16 @@
  * Loaded only on index.astro. Event banner data is fetched from AzurLaneTools GitHub (with localStorage cache).
  */
 
-import { hideElement, getStorageItem, setStorageItem, fetchJSONWithCache } from './utils.js';
+import {
+    createIcon,
+    createImgElement,
+    createMaterialIcon,
+    getBasePath,
+    hideElement,
+    getStorageItem,
+    setStorageItem,
+    fetchJSONWithCache
+} from './utils.js';
 
 // ===== Shared Carousel Utilities =====
 
@@ -77,6 +86,11 @@ const CarouselUtils = {
     }
 };
 
+function setButtonCurrent(button, isCurrent) {
+    button.classList.toggle('active', isCurrent);
+    button.setAttribute('aria-current', isCurrent ? 'true' : 'false');
+}
+
 // ===== Hero Carousel =====
 
 /**
@@ -93,12 +107,13 @@ function initHeroCarousel() {
     const prevButton = carousel.querySelector('.carousel-nav.prev');
     const indicatorsContainer = carousel.querySelector('.carousel-indicators');
 
-    if (!track || slides.length === 0) {
+    if (!track || slides.length === 0 || !indicatorsContainer) {
         console.warn('[Hero Carousel] Elements not found');
         return;
     }
 
-    let currentIndex = 0;
+    let currentIndex = slides.findIndex(slide => slide.classList.contains('active'));
+    if (currentIndex < 0) currentIndex = 0;
     const totalSlides = slides.length;
 
     indicatorsContainer.innerHTML = '';
@@ -106,20 +121,22 @@ function initHeroCarousel() {
         const indicator = document.createElement('button');
         indicator.classList.add('indicator');
         indicator.setAttribute('aria-label', `Go to slide ${index + 1}`);
-        if (index === 0) indicator.classList.add('active');
+        setButtonCurrent(indicator, index === currentIndex);
         indicator.addEventListener('click', () => goToSlide(index));
         indicatorsContainer.appendChild(indicator);
         return indicator;
     });
 
-    slides[0].classList.add('active');
-
     function updateCarousel() {
         slides.forEach((slide, i) => {
-            slide.classList.toggle('active', i === currentIndex);
+            const isActive = i === currentIndex;
+            slide.classList.toggle('active', isActive);
+            // `inert` covers focus exclusion, click suppression, and aria-hidden in one
+            // attribute (Chrome 102+ / Firefox 112+ / Safari 15.5+).
+            slide.inert = !isActive;
         });
         indicators.forEach((ind, i) => {
-            ind.classList.toggle('active', i === currentIndex);
+            setButtonCurrent(ind, i === currentIndex);
         });
         track.style.transform = `translateX(${-100 * currentIndex}%)`;
     }
@@ -163,12 +180,19 @@ function initHeroCarousel() {
     // Touch events
     CarouselUtils.setupTouchHandlers(
         track,
-        nextSlide,
-        prevSlide,
+        () => {
+            nextSlide();
+            autoplay.reset();
+        },
+        () => {
+            prevSlide();
+            autoplay.reset();
+        },
         () => autoplay.stop(),
         () => autoplay.reset()
     );
 
+    updateCarousel();
     autoplay.start();
 }
 
@@ -188,6 +212,7 @@ const EventCarousel = (function () {
     let currentIndex = 0;
     let banners = [];
     let autoplay = null;
+    let initializedControls = false;
 
     // Maps banner.type integers to Korean display labels
     const typeNames = {
@@ -197,6 +222,11 @@ const EventCarousel = (function () {
         4: '시스템',
         9: '기타'
     };
+
+    // Transparent fallback — the parent `.event-banner img` already has a themed
+    // dark-gradient background, so omitting the rect lets the gradient show
+    // through in both light and dark modes instead of painting hardcoded #141414.
+    const FALLBACK_SVG = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200"%3E%3Ctext x="400" y="100" font-family="Arial" font-size="20" fill="%23bbb" text-anchor="middle" dy=".3em"%3E%EC%9D%B4%EB%AF%B8%EC%A7%80%EB%A5%BC%20%EB%B6%88%EB%9F%AC%EC%98%AC%20%EC%88%98%20%EC%97%86%EC%8A%B5%EB%8B%88%EB%8B%A4%3C/text%3E%3C/svg%3E';
 
     // Date helpers — banner.time is stored as [[year,month,day],[hour,min,sec]]
     function parseDate(dateArray) {
@@ -229,13 +259,10 @@ const EventCarousel = (function () {
         const bannerDiv = document.createElement('div');
         bannerDiv.className = 'event-banner';
 
-        const img = document.createElement('img');
-        img.src = `${IMAGE_BASE_URL}${banner.pic}.webp`;
-        img.alt = `Event Banner ${banner.id}`;
-        img.loading = 'lazy';
-        img.onerror = function () {
-            this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200"%3E%3Crect fill="%23141414" width="800" height="200"/%3E%3Ctext x="400" y="100" font-family="Arial" font-size="20" fill="%23666" text-anchor="middle"%3E이미지를 불러올 수 없습니다%3C/text%3E%3C/svg%3E';
-        };
+        const pic = encodeURIComponent(String(banner.pic || '').trim());
+        const img = createImgElement(`${IMAGE_BASE_URL}${pic}.webp`, `Event Banner ${banner.id || ''}`, {
+            fallback: FALLBACK_SVG
+        });
 
         const overlay = document.createElement('div');
         overlay.className = 'event-banner-overlay';
@@ -264,18 +291,18 @@ const EventCarousel = (function () {
         const indicator = document.createElement('button');
         indicator.className = 'event-indicator';
         indicator.setAttribute('aria-label', `Go to event ${index + 1}`);
-        if (index === 0) indicator.classList.add('active');
+        setButtonCurrent(indicator, index === 0);
         indicator.addEventListener('click', () => goToSlide(index));
         return indicator;
     }
 
     function updateCarousel(indicatorsArray) {
         const track = document.querySelector('.event-carousel-track');
+        if (!track || banners.length === 0) return;
         track.style.transform = `translateX(${-100 * currentIndex}%)`;
 
-        // Update indicators efficiently
         indicatorsArray.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentIndex);
+            setButtonCurrent(indicator, index === currentIndex);
         });
     }
 
@@ -304,12 +331,18 @@ const EventCarousel = (function () {
         const nextButton = document.querySelector('.event-carousel-nav.next');
         const indicatorsContainer = document.querySelector('.event-carousel-indicators');
 
-        track.innerHTML = `
-            <div class="event-carousel-empty">
-                <i class="fas fa-calendar-xmark"></i>
-                <p>진행중인 이벤트가 없습니다</p>
-            </div>
-        `;
+        if (track) {
+            const empty = document.createElement('div');
+            empty.className = 'event-carousel-empty';
+            empty.appendChild(createIcon('fas fa-calendar-xmark'));
+
+            const message = document.createElement('p');
+            message.textContent = '진행중인 이벤트가 없습니다';
+            empty.appendChild(message);
+
+            track.replaceChildren(empty);
+            track.style.transform = '';
+        }
 
         if (prevButton) prevButton.style.display = 'none';
         if (nextButton) nextButton.style.display = 'none';
@@ -360,6 +393,13 @@ const EventCarousel = (function () {
             return;
         }
 
+        // Defensive cleanup if loadBanners is ever called more than once:
+        // stop any prior interval so it can't keep firing without a reference.
+        if (autoplay) {
+            autoplay.stop();
+            autoplay = null;
+        }
+
         try {
             let data = getCachedData();
 
@@ -370,7 +410,8 @@ const EventCarousel = (function () {
                 setCachedData(data);
             }
 
-            banners = Object.values(data)
+            banners = Object.values(data || {})
+                .filter(banner => banner && banner.pic)
                 .filter(banner => isActiveBanner(banner))
                 .sort((a, b) => {
                     if (a.type !== b.type) return a.type - b.type;
@@ -384,8 +425,8 @@ const EventCarousel = (function () {
                 return;
             }
 
-            track.innerHTML = '';
-            indicatorsContainer.innerHTML = '';
+            track.replaceChildren();
+            indicatorsContainer.replaceChildren();
 
             const indicatorsArray = [];
             banners.forEach((banner, index) => {
@@ -395,38 +436,54 @@ const EventCarousel = (function () {
                 indicatorsArray.push(indicator);
             });
 
+            currentIndex = 0;
+            indicatorsContainer.style.display = '';
+
             if (banners.length > 1) {
-                if (prevButton) {
-                    prevButton.style.display = 'flex';
-                    prevButton.addEventListener('click', prevSlide, { once: false });
-                }
-                if (nextButton) {
-                    nextButton.style.display = 'flex';
-                    nextButton.addEventListener('click', nextSlide, { once: false });
+                if (prevButton) prevButton.style.display = 'flex';
+                if (nextButton) nextButton.style.display = 'flex';
+
+                const carousel = document.querySelector('.event-carousel');
+                if (!initializedControls) {
+                    prevButton?.addEventListener('click', () => {
+                        prevSlide();
+                        if (autoplay) autoplay.reset();
+                    });
+                    nextButton?.addEventListener('click', () => {
+                        nextSlide();
+                        if (autoplay) autoplay.reset();
+                    });
+
+                    if (carousel) {
+                        carousel.addEventListener('mouseenter', () => autoplay?.stop());
+                        carousel.addEventListener('mouseleave', () => autoplay?.start());
+                    }
+
+                    CarouselUtils.setupTouchHandlers(
+                        track,
+                        () => {
+                            nextSlide();
+                            if (autoplay) autoplay.reset();
+                        },
+                        () => {
+                            prevSlide();
+                            if (autoplay) autoplay.reset();
+                        },
+                        () => autoplay?.stop(),
+                        () => autoplay?.reset()
+                    );
+
+                    initializedControls = true;
                 }
 
                 autoplay = CarouselUtils.createAutoplay(nextSlide, 5000);
-
-                const carousel = document.querySelector('.event-carousel');
-                if (carousel) {
-                    carousel.addEventListener('mouseenter', () => autoplay.stop());
-                    carousel.addEventListener('mouseleave', () => autoplay.start());
-                }
-
-                // Touch events
-                CarouselUtils.setupTouchHandlers(
-                    track,
-                    nextSlide,
-                    prevSlide,
-                    () => autoplay.stop(),
-                    () => autoplay.reset()
-                );
-
+                updateCarousel(indicatorsArray);
                 autoplay.start();
             } else {
                 if (prevButton) prevButton.style.display = 'none';
                 if (nextButton) nextButton.style.display = 'none';
                 indicatorsContainer.style.display = 'none';
+                updateCarousel(indicatorsArray);
             }
 
         } catch (error) {
@@ -463,17 +520,25 @@ const BirthdaySection = (function () {
     const moreLink = document.querySelector('.birthday-more-link');
     const dateEl = document.getElementById('birthdayDate');
 
-    function getBasePath() {
-        return window.location.pathname.startsWith('/altoy') ? '/altoy' : '';
+    function getBirthdayDate(item) {
+        const month = Number.parseInt(item?.['월'], 10);
+        const day = Number.parseInt(item?.['일'], 10);
+        if (!Number.isInteger(month) || !Number.isInteger(day)) return null;
+        if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+        // Reject impossible combos (Feb 30, Apr 31, ...). Use a leap year so Feb 29 is accepted.
+        const probe = new Date(2024, month - 1, day);
+        if (probe.getMonth() !== month - 1 || probe.getDate() !== day) return null;
+        return { month, day };
     }
 
     function getTodayBirthdays(data) {
         const now = new Date();
         const month = now.getMonth() + 1;
         const day = now.getDate();
-        return data.filter(item =>
-            parseInt(item['월']) === month && parseInt(item['일']) === day
-        );
+        return data.filter(item => {
+            const date = getBirthdayDate(item);
+            return date && date.month === month && date.day === day;
+        });
     }
 
     function getUpcomingBirthdays(data, limit = 5) {
@@ -481,22 +546,25 @@ const BirthdaySection = (function () {
         now.setHours(0, 0, 0, 0);
         const year = now.getFullYear();
 
-        return data.map(item => {
-            const month = parseInt(item['월']);
-            const day = parseInt(item['일']);
-            let nextDate = new Date(year, month - 1, day);
-            if (nextDate < now) nextDate = new Date(year + 1, month - 1, day);
-            return { ...item, nextDate };
-        })
-        .sort((a, b) => a.nextDate - b.nextDate)
-        .slice(0, limit);
+        return data
+            .map(item => {
+                const date = getBirthdayDate(item);
+                if (!date) return null;
+                let nextDate = new Date(year, date.month - 1, date.day);
+                if (nextDate < now) nextDate = new Date(year + 1, date.month - 1, date.day);
+                return { ...item, nextDate };
+            })
+            .filter(Boolean)
+            .sort((a, b) => a.nextDate - b.nextDate)
+            .slice(0, limit);
     }
 
     function renderBirthdayItem(item, showDate) {
         const base = getBasePath();
-        const name = item['룽섭 이름'];
+        const name = item['룽섭 이름'] || item.name || 'Unknown';
         const rarity = item['레어도'];
         const icon = item.icon || '';
+        const date = getBirthdayDate(item);
 
         const a = document.createElement('a');
         a.className = 'birthday-item';
@@ -514,8 +582,8 @@ const BirthdaySection = (function () {
 
         const nameSpan = document.createElement('span');
         nameSpan.className = 'birthday-item-name';
-        nameSpan.textContent = showDate
-            ? `${name} (${parseInt(item['월'])}/${parseInt(item['일'])})`
+        nameSpan.textContent = showDate && date
+            ? `${name} (${date.month}/${date.day})`
             : name;
 
         const raritySpan = document.createElement('span');
@@ -528,6 +596,18 @@ const BirthdaySection = (function () {
         a.appendChild(raritySpan);
 
         return a;
+    }
+
+    function renderBirthdayEmpty(iconName, messageText) {
+        const empty = document.createElement('div');
+        empty.className = 'birthday-empty';
+        empty.appendChild(createMaterialIcon(iconName));
+
+        const message = document.createElement('span');
+        message.textContent = messageText;
+        empty.appendChild(message);
+
+        birthdayList.replaceChildren(empty);
     }
 
     async function init() {
@@ -544,10 +624,11 @@ const BirthdaySection = (function () {
 
         try {
             const data = await fetchJSONWithCache('data/shipgirl/shipgirl_birthday_data.json', { maxAge: 86400000 });
+            if (!Array.isArray(data)) throw new Error('Birthday data was not an array');
 
             const todayBirthdays = getTodayBirthdays(data);
 
-            birthdayList.innerHTML = '';
+            birthdayList.replaceChildren();
 
             if (todayBirthdays.length > 0) {
                 const frag = document.createDocumentFragment();
@@ -566,22 +647,12 @@ const BirthdaySection = (function () {
                     });
                     birthdayList.appendChild(frag);
                 } else {
-                    birthdayList.innerHTML = `
-                        <div class="birthday-empty">
-                            <span class="material-symbols-outlined">sentiment_dissatisfied</span>
-                            <span>생일 데이터를 찾을 수 없습니다</span>
-                        </div>
-                    `;
+                    renderBirthdayEmpty('sentiment_dissatisfied', '생일 데이터를 찾을 수 없습니다');
                 }
             }
         } catch (err) {
             console.error('[Birthday] Error loading data:', err);
-            birthdayList.innerHTML = `
-                <div class="birthday-empty">
-                    <span class="material-symbols-outlined">error</span>
-                    <span>생일 데이터를 불러올 수 없습니다</span>
-                </div>
-            `;
+            renderBirthdayEmpty('error', '생일 데이터를 불러올 수 없습니다');
         }
     }
 
