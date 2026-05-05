@@ -495,6 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeButtonSelector: '.close-button',
         closeOnBackdrop: true,
         closeOnEscape: false, // ESC handled in keyboard navigation section
+        restoreFocus: true,
         onClose: () => {
             if (elements.modalBgm.src) {
                 elements.modalBgm.pause();

@@ -4,7 +4,7 @@
  * Handles face-expression selectors, base+overlay compositing, lightbox navigation,
  * and thumbnail display. Part of the skin module group; wired by skin.detail.viewer.js.
  */
-import { hideElement, showElement, createImgElement, createIcon } from '../utils.js';
+import { hideElement, showElement, createImgElement, createIcon, lockBodyScroll, unlockBodyScroll } from '../utils.js';
 
 const state = {
     expressionManifest: {},
@@ -62,13 +62,13 @@ function openLightbox(images, startIndex = 0) {
     updateLightboxContent();
     state.lightboxModal.classList.add('active');
     state.lightboxModal.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('no-scroll');
+    lockBodyScroll();
 }
 
 function closeLightbox() {
     state.lightboxModal.classList.remove('active');
     state.lightboxModal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('no-scroll');
+    unlockBodyScroll();
 }
 
 function updateLightboxContent() {

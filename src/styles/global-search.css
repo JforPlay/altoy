@@ -144,6 +144,14 @@
   font-size: 0.9rem;
 }
 
+/* Inline loading placeholder shown under 함순이 header while ship data lazy-loads. */
+.global-search-loading {
+  padding: 0.625rem 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
 /* --- Result item (page) --- */
 .global-search-item {
   display: flex;

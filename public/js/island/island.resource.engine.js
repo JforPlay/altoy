@@ -175,7 +175,7 @@ function buildSeasonalItemsCategory() {
 
 function setupEventListeners() {
     // Recipe-dependency modal close button + backdrop + ESC
-    setupModal('dependency-modal', { closeButtonSelector: '.modal-close-btn' });
+    setupModal('dependency-modal', { closeButtonSelector: '.modal-close-btn', restoreFocus: true });
 
     // Category select
     const categorySelect = document.getElementById('recipe-category-select');

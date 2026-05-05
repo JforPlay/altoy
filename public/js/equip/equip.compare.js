@@ -31,6 +31,7 @@ export function setupCompareModal() {
     setupModal('compareModal', {
         closeOnEscape: true,
         closeOnBackdrop: true,
+        restoreFocus: true,
         onClose: () => {
             state.compareSlots = [null, null];
             state.compareLevels = [0, 0];

@@ -21,6 +21,7 @@ export function setup(stateRef) {
         closeOnEscape: true,
         closeOnBackdrop: true,
         closeButtonSelector: '#compareModalClose, .compare-modal-close',
+        restoreFocus: true,
     });
 }
 

@@ -49,7 +49,6 @@ export function findRecipeCategoryById(id) {
  */
 export function clearTreeCache() {
     state.treeCache = {};
-    console.log('[Resource] Cache cleared');
 }
 
 /**

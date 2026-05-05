@@ -30,12 +30,9 @@ const state = {
  */
 async function init(sharedData) {
     try {
-        console.log('[Island Character] Initializing module...');
-
         // Use shared item data instead of loading again
         if (sharedData && sharedData.items) {
             state.items = sharedData.items;
-            console.log('[Island Character] Using shared item data');
         }
 
         // Load module-specific data in parallel
@@ -55,8 +52,6 @@ async function init(sharedData) {
         state.attRankingsArray = Object.values(attData)
             .filter(rank => rank.id) // Filter out the "all" entry
             .sort((a, b) => b.range[0] - a.range[0]); // Sort by range descending
-
-        console.log(`[Island Character] Loaded ${Object.keys(state.characters).length} characters`);
 
         // Initialize search — await Fuse so the index is built with the real
         // constructor instead of falling through to the substring fallback.
@@ -141,8 +136,6 @@ function setupEventDelegation() {
             }
         }
     });
-
-    console.log('[Island Character] Event delegation set up');
 }
 
 // ===== Search =====
@@ -162,8 +155,6 @@ async function initializeSearch() {
         threshold: 0.3,
         includeScore: true
     });
-
-    console.log('[Island Character] Search initialized');
 }
 
 /**

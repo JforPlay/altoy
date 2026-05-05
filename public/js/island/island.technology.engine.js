@@ -42,12 +42,9 @@ const UNLOCK_TYPES = {
  */
 async function init(sharedData) {
     try {
-        console.log('[Island Technology] Initializing module...');
-
         // Use shared item data instead of loading again
         if (sharedData && sharedData.items) {
             state.resourceData = sharedData.items;
-            console.log('[Island Technology] Using shared item data');
         }
 
         // Load module-specific data
@@ -56,9 +53,6 @@ async function init(sharedData) {
 
         // Load completion state from localStorage
         loadCompletionState();
-
-        console.log(`[Island Technology] Loaded ${Object.keys(state.technologies).length} technologies`);
-        console.log(`[Island Technology] Loaded ${Object.keys(state.resourceData).length} resource types`);
 
         // Initialize search — await Fuse so the index is built with the real
         // constructor instead of falling through to the substring fallback.
@@ -178,8 +172,6 @@ function setupEventDelegation() {
             }
         });
     }
-
-    console.log('[Island Technology] Event delegation set up');
 }
 
 // ===== Search =====
@@ -200,8 +192,6 @@ async function initializeSearch() {
         threshold: 0.3,
         includeScore: true
     });
-
-    console.log('[Island Technology] Search initialized');
 }
 
 /**
@@ -235,7 +225,6 @@ function loadCompletionState() {
     try {
         const saved = getStorageItem(STORAGE_KEY_TECH_COMPLETION, null);
         state.completedTechs = saved ? JSON.parse(saved) : {};
-        console.log(`[Island Technology] Loaded ${Object.keys(state.completedTechs).length} completed techs from storage`);
     } catch (error) {
         console.error('[Island Technology] Failed to load completion state:', error);
         state.completedTechs = {};
@@ -248,7 +237,6 @@ function loadCompletionState() {
 function saveCompletionState() {
     try {
         setStorageItem(STORAGE_KEY_TECH_COMPLETION, JSON.stringify(state.completedTechs));
-        console.log('[Island Technology] Saved completion state');
     } catch (error) {
         console.error('[Island Technology] Failed to save completion state:', error);
     }
@@ -277,8 +265,6 @@ function toggleTechCompletion(techId) {
             element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     }, 100);
-
-    console.log(`[Island Technology] ${tech.tech_name} marked as ${state.completedTechs[techId] ? 'completed' : 'incomplete'}`);
 }
 
 /**
@@ -353,8 +339,6 @@ function filterByCategory(category) {
 
     // Re-render the tree
     renderTechnologyTree();
-
-    console.log(`[Island Technology] Filtered to category: ${category}`);
 }
 
 /**
@@ -792,7 +776,6 @@ function selectTechnology(techId) {
     }
 
     renderTechnologyDetail(tech);
-    console.log(`[Island Technology] Selected: ${tech.tech_name}`);
 }
 
 /**
@@ -811,8 +794,6 @@ function closeTechnologyDetail() {
     document.querySelectorAll('[data-tech-id]').forEach(el => {
         el.classList.remove('selected');
     });
-
-    console.log('[Island Technology] Detail panel closed');
 }
 
 /**

@@ -506,11 +506,6 @@ select:focus {
 
 /* ===== Page Title ===== */
 
-/* Add these styles for the info popup */
-body.no-scroll {
-  overflow: hidden;
-}
-
 .page-title {
   display: flex;
   justify-content: center;

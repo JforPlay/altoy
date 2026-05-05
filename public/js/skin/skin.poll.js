@@ -10,7 +10,8 @@
  */
 import {
   debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams,
-  getStorageItem, setStorageItem, showToast, createSearchIndex, ensureFuse
+  getStorageItem, setStorageItem, showToast, createSearchIndex, ensureFuse,
+  lockBodyScroll, unlockBodyScroll
 } from '../utils.js';
 import { createVirtualScroll } from './skin.poll.virtual-scroll.js';
 
@@ -1285,7 +1286,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     popupCharName.textContent = charName;
     imagePopup.classList.add('visible');
     imagePopup.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('no-scroll');
+    lockBodyScroll();
     closeImagePopupBtn.focus();
   };
 
@@ -1295,7 +1296,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const closeImagePopup = () => {
     imagePopup.classList.remove('visible');
     imagePopup.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('no-scroll');
+    unlockBodyScroll();
     setTimeout(() => {
       popupFullImage.src = '';
     }, 300);

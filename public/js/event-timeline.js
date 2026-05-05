@@ -8,7 +8,7 @@ import {
     createIcon,
     createImgElement,
     debounce,
-    fetchJSON,
+    fetchJSONWithCache,
     normalizeRomanNumerals,
     resolveUrl
 } from './utils.js';
@@ -62,8 +62,8 @@ async function loadData() {
 
     try {
         const [eventsData, shipgirlRawData] = await Promise.all([
-            fetchJSON('data/kr_event_timeline.json'),
-            fetchJSON('data/ship_group_data.json')
+            fetchJSONWithCache('data/kr_event_timeline.json'),
+            fetchJSONWithCache('data/ship_group_data.json')
         ]);
 
         if (!Array.isArray(eventsData)) {
@@ -452,3 +452,11 @@ function renderState(title, message, iconClass) {
 }
 
 // Info popup and scroll-to-top are handled globally by global.script.js
+
+// Release ~700KB of cached event + ship data on page unload so the bfcache
+// snapshot doesn't pin them across navigations.
+window.addEventListener('pagehide', () => {
+    eventData = [];
+    shipgirlNameMap = new Map();
+    filteredEvents = [];
+}, { once: true });

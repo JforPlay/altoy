@@ -5,7 +5,7 @@
  * Exports LINKS and setup functions so page scripts can re-invoke specific behaviors.
  */
 
-import { throttle, setupScrollToTop, getStorageItem, setStorageItem, getUrlParam, getBasePath } from './utils.js';
+import { throttle, setupScrollToTop, getStorageItem, setStorageItem, getUrlParam, getBasePath, lockBodyScroll, unlockBodyScroll } from './utils.js';
 
 // ===== Drive Sync Feature Flag =====
 //
@@ -187,49 +187,52 @@ function updateNavbarHeight() {
  * Setup info popup functionality
  * Handles opening/closing info popups with keyboard and click events
  * Applies to pages that have .info-button and .info-popup elements
+ *
+ * Info popups use the `.visible` class instead of `.active`, so they don't go
+ * through `setupModal`. The wrapper still participates in the ref-counted
+ * body-scroll lock and uses one document ESC listener for ALL popups on the page.
  */
 function setupInfoPopups() {
     // Support both single button or multiple buttons
     const infoButtons = document.querySelectorAll('.info-button, #info-button');
     const infoPopups = document.querySelectorAll('.info-popup, #info-popup');
+    if (!infoButtons.length || !infoPopups.length) return;
 
+    const pairs = [];
     infoButtons.forEach((infoButton, index) => {
-        if (!infoButton) return;
-
-        // Find corresponding popup (either by index or just use the first one)
         const infoPopup = infoPopups[index] || infoPopups[0];
-        if (!infoPopup) return;
+        if (infoPopup) pairs.push({ button: infoButton, popup: infoPopup });
+    });
+    if (!pairs.length) return;
 
-        const closePopupBtn = infoPopup.querySelector('.close-popup-btn');
+    const openPopup = (popup) => {
+        if (popup.classList.contains('visible')) return;
+        popup.classList.add('visible');
+        popup.setAttribute('aria-hidden', 'false');
+        lockBodyScroll();
+        popup.querySelector('.close-popup-btn')?.focus();
+    };
 
-        const openPopup = () => {
-            infoPopup.classList.add('visible');
-            infoPopup.setAttribute('aria-hidden', 'false');
-            document.body.classList.add('no-scroll');
-            if (closePopupBtn) closePopupBtn.focus();
-        };
+    const closePopup = (popup) => {
+        if (!popup.classList.contains('visible')) return;
+        popup.classList.remove('visible');
+        popup.setAttribute('aria-hidden', 'true');
+        unlockBodyScroll();
+    };
 
-        const closePopup = () => {
-            infoPopup.classList.remove('visible');
-            infoPopup.setAttribute('aria-hidden', 'true');
-            document.body.classList.remove('no-scroll');
-        };
-
-        infoButton.addEventListener('click', openPopup);
-
-        if (closePopupBtn) {
-            closePopupBtn.addEventListener('click', closePopup);
-        }
-
-        infoPopup.addEventListener('click', (e) => {
-            if (e.target === infoPopup) closePopup();
+    pairs.forEach(({ button, popup }) => {
+        button.addEventListener('click', () => openPopup(popup));
+        popup.querySelector('.close-popup-btn')?.addEventListener('click', () => closePopup(popup));
+        popup.addEventListener('click', (e) => {
+            if (e.target === popup) closePopup(popup);
         });
+    });
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && infoPopup.classList.contains('visible')) {
-                closePopup();
-            }
-        });
+    // ONE document-level ESC listener for all popups (was N before — one per button).
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        const visible = pairs.find(p => p.popup.classList.contains('visible'));
+        if (visible) closePopup(visible.popup);
     });
 }
 

@@ -27,6 +27,8 @@ export function setupCompareModal() {
         closeButtonSelector: '#compareModalClose',
         closeOnEscape: true,
         closeOnBackdrop: true,
+        restoreFocus: true,
+        setAriaHidden: false,
         onClose: () => {
             state.compareMode = false;
             state.compareMapId = null;

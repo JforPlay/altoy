@@ -99,9 +99,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             closeButtonSelector: '.lightbox-close',
             closeOnBackdrop: true,
             closeOnEscape: true,
+            restoreFocus: true,
+            setAriaHidden: false,
             onClose: () => {
                 elements.lightboxModal.setAttribute('aria-hidden', 'true');
-                document.body.classList.remove('no-scroll');
                 elements.lightboxImage.removeAttribute('src');
             }
         });
@@ -458,10 +459,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         elements.lightboxCaption.textContent = `${item.name} - ${state.currentPaintingType === 'painting' ? '기본 일러' : '확대 일러'}`;
         openModal('lightbox-modal', {
-            lockBody: false,
             onOpen: modal => modal.setAttribute('aria-hidden', 'false')
         });
-        document.body.classList.add('no-scroll');
     }
 
     function updateURL(id) {

@@ -98,10 +98,6 @@ body {
   line-height: 1.6;
 }
 
-body.no-scroll {
-  overflow: hidden;
-}
-
 .main-container {
   max-width: 75rem;
   margin: auto;

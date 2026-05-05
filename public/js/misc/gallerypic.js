@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         closeButtonSelector: '#close',
         closeOnBackdrop: true,
         closeOnEscape: true,
+        restoreFocus: true,
         onClose: () => {
             modalImage.removeAttribute('src');
             modalImage.alt = '';

@@ -17,19 +17,18 @@ const ShipgirlTrackerUtils = {
     },
 
     /**
-     * Validate and normalize a tracker progress payload (from localStorage or a storage event).
+     * Validate and normalize a tracker progress payload from `syncedStorage`.
      * Defines the cross-tab sync contract shared by shipgirl-tracker and research-tracker:
      * a plain object whose values are integers in the 3-bit checkbox-mask range [0, 7].
      * Any malformed entry is silently dropped so a bad write in one tab can't poison the other.
-     * @param {string|null} rawValue - Raw JSON string (e.g. localStorage value or storage event newValue).
+     * @param {unknown} value - The post-JSON.parse value handed in by syncedStorage (or null).
      * @returns {Object<string, number>} Cleaned shipId → state map.
      */
-    parseProgress(rawValue) {
-        const parsed = rawValue ? JSON.parse(rawValue) : {};
-        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {};
+    parseProgress(value) {
+        if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
 
         const cleaned = {};
-        for (const [shipId, state] of Object.entries(parsed)) {
+        for (const [shipId, state] of Object.entries(value)) {
             const numericState = Number(state);
             if (Number.isInteger(numericState) && numericState >= 0 && numericState <= 7) {
                 cleaned[shipId] = numericState;

@@ -43,8 +43,6 @@ const VALID_TAB_NAMES = Object.freeze(Object.keys(TAB_MODULE_MAP));
  * Boot the island engine: load shared item data, then wait for tab activation to lazy-load sub-modules.
  */
 async function init() {
-    console.log('[Island] Initializing core engine...');
-
     try {
         await loadSharedData();
         // Sub-module initializeSearch() functions are synchronous and call
@@ -52,7 +50,6 @@ async function init() {
         // Kick off the lazy Fuse load alongside shared data so it's ready by
         // the time any sub-module activates and builds its index.
         ensureFuse();
-        console.log('[Island] Core engine initialized (Lazy loading modules)');
     } catch (error) {
         console.error('[Island] Critical initialization failure:', error);
         showToast('페이지를 불러오는데 실패했습니다. 페이지를 새로고침해주세요.', 'error');
@@ -67,11 +64,9 @@ function loadSharedData() {
     if (sharedDataPromise) return sharedDataPromise;
 
     sharedDataPromise = (async () => {
-        console.log('[Island] Loading shared data...');
         try {
             state.sharedData.items = await fetchJSON('data/island/island_item_data_template.json');
             state.sharedData.loaded = true;
-            console.log(`[Island] Loaded shared item data: ${Object.keys(state.sharedData.items).length} items`);
         } catch (error) {
             console.error('[Island] Failed to load shared data:', error);
             sharedDataPromise = null;  // allow retry on transient failures
@@ -107,12 +102,10 @@ function loadModule(tabName) {
             return;
         }
         await loadSharedData();
-        console.log(`[Island] Initializing ${key} module...`);
         await module.init(state.sharedData);
         // Mark as initialized only AFTER init resolves, so other callers
         // observing state.modules can trust the module is fully ready.
         state.modules[key] = module;
-        console.log(`[Island] ${key} module initialized successfully`);
     })().catch(error => {
         console.error(`[Island] Failed to lazy load ${safeTabName}:`, error);
         showError(`${safeTabName} 모듈을 불러오는데 실패했습니다.`);
@@ -133,7 +126,6 @@ function switchTab(tabName) {
 
     state.activeTab = safeTabName;
     setStorageItem('island-active-tab', safeTabName);
-    console.log(`[Island] Switched to tab: ${safeTabName}`);
     return loadModule(safeTabName);
 }
 

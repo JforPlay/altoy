@@ -77,8 +77,6 @@ Object.assign(QUEST_TYPES, {
  * Initialize quest module
  */
 async function init(sharedData) {
-    console.log('[Quest Module] Initializing...');
-
     try {
         await loadQuestData();
         groupQuestsByType();
@@ -87,7 +85,6 @@ async function init(sharedData) {
         setupEventListeners();
 
         state.isLoading = false;
-        console.log('[Quest Module] Initialization complete');
     } catch (error) {
         console.error('[Quest Module] Initialization failed:', error);
         window.IslandEngine.showError('퀘스트 데이터를 불러오는데 실패했습니다.');
@@ -98,8 +95,6 @@ async function init(sharedData) {
  * Load quest data from JSON
  */
 async function loadQuestData() {
-    console.log('[Quest Module] Loading quest data...');
-
     const tasksData = await fetchJSON('data/island/tasks.json');
 
     // Convert tasks object to array with IDs
@@ -124,8 +119,6 @@ async function loadQuestData() {
         // Store raw data for debugging
         raw: quest
     }));
-
-    console.log(`[Quest Module] Loaded ${state.allQuests.length} quests`);
 }
 
 /**
@@ -141,8 +134,6 @@ function groupQuestsByType() {
         }
         state.groupedQuests[type].push(quest);
     });
-
-    console.log('[Quest Module] Grouped quests:', state.groupedQuests);
 }
 
 // ===== Event Listeners =====
@@ -212,8 +203,6 @@ function setupEventListeners() {
             dropdown.setAttribute('aria-expanded', 'false');
         }
     });
-
-    console.log('[Quest Module] Event delegation set up');
 }
 
 // ===== Filtering =====
@@ -269,7 +258,6 @@ function setFilter(type) {
     dropdown?.setAttribute('aria-expanded', 'false');
 
     filterAndRenderQuests();
-    console.log(`[Quest Module] Filter set to: ${type}`);
 }
 
 // ===== Rendering =====
@@ -373,7 +361,6 @@ function selectQuest(questId) {
     });
 
     renderQuestDetail(quest);
-    console.log(`[Quest Module] Selected quest: ${questId}`);
 }
 
 /**

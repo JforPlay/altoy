@@ -15,7 +15,7 @@
    CSS Layer Order:
      @layer base       - Reset, typography, theme variables
      @layer components - Navbar, modals, popups, tooltips
-     @layer utilities  - .hidden, .no-scroll, scroll-to-top
+     @layer utilities  - .hidden, scroll-to-top
 
    Note: Some pages override these styles (mainpage.style.css, event-timeline.css)
    Be careful when changing selectors or cascade order.
@@ -1231,10 +1231,6 @@ body.dark-mode .tooltip-toggle-button:hover {
 }
 
 /* --- Utility Classes --- */
-.no-scroll {
-  overflow: hidden;
-}
-
 .hidden {
   display: none !important;
 }

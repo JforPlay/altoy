@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         closeButtonSelector: '.close-button',
         closeOnBackdrop: true,
         closeOnEscape: true,
+        restoreFocus: true,
         onClose: () => {
             lightboxImg.removeAttribute('src');
             lightboxImg.alt = 'Enlarged Manga Image';

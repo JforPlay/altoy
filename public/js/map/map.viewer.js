@@ -712,6 +712,8 @@ async function init() {
         closeButtonSelector: '#searchModalClose',
         closeOnEscape: true,
         closeOnBackdrop: true,
+        restoreFocus: true,
+        setAriaHidden: false,
         onClose: modal => modal.setAttribute('aria-hidden', 'true'),
     });
 

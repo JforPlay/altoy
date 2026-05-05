@@ -7,11 +7,13 @@
 
 import {
     fetchJSON,
+    fetchJSONWithCache,
     createImgElement,
     IMG_FALLBACKS,
     requireElements,
     renderStatus,
     observeLazyImages,
+    debounce,
 } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -61,8 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
      * if GitHub is unavailable, the page still renders with local data.
      */
     Promise.all([
-        fetchJSON('data/juustagram_lite.json'),
-        fetchJSON('data/ship_group_data.json'),
+        fetchJSONWithCache('data/juustagram_lite.json'),
+        fetchJSONWithCache('data/ship_group_data.json'),
+        // External GitHub fetch stays uncached — small, optional, and the silent
+        // failure path already returns {} so the page renders without it.
         fetchJSON('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/CN/ShareCfg/activity_ins_ship_group_template.json')
             .catch((error) => {
                 console.warn('Optional Juustagram username template data failed to load:', error);
@@ -91,7 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadFullPosts() {
         try {
-            const data = await fetchJSON('data/juustagram_data.json');
+            // ~30MB payload — IndexedDB cache cuts the second-visit cost to a
+            // single keyed lookup vs a full network re-fetch.
+            const data = await fetchJSONWithCache('data/juustagram_data.json');
             if (!isRecord(data)) throw new Error('Invalid Juustagram full data');
             fullPostsData = data;
             return fullPostsData;
@@ -289,9 +295,13 @@ document.addEventListener('DOMContentLoaded', () => {
         input.setAttribute('aria-controls', dropdown.id);
         input.setAttribute('aria-expanded', 'false');
 
+        // Debounce only the substring filter — opening the dropdown and
+        // clearing an active filter must stay synchronous so the UI feels
+        // instant on the first keystroke.
+        const debouncedFilter = debounce(() => filterDropdown(input, dropdown), 100);
         input.addEventListener('focus', () => openDropdown(input, dropdown));
         input.addEventListener('input', () => {
-            filterDropdown(input, dropdown);
+            debouncedFilter();
             openDropdown(input, dropdown);
 
             if (input.value.trim() === '' && currentFilters[filterKey]) {
@@ -376,6 +386,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Build all thumbnails into a fragment so the gallery only reflows once
+        // per filter change instead of once per visible post.
+        const fragment = document.createDocumentFragment();
         visiblePostEntries.forEach(([, post], index) => {
             const authorData = getShipgirlData(post.ship_group);
             const button = document.createElement('button');
@@ -387,8 +400,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const img = createGalleryImage(post.picture_persist, `Post by ${authorData.name}`, index < 12);
             button.appendChild(img);
-            galleryView.appendChild(button);
+            fragment.appendChild(button);
         });
+        galleryView.appendChild(fragment);
 
         lazyImageObserver = observeLazyImages(galleryView, { rootMargin: '200px' });
 
@@ -678,5 +692,12 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('pagehide', () => {
         if (lazyImageObserver) lazyImageObserver.disconnect();
         imagePreview.remove();
+        // Release the bulky data maps so bfcache snapshots and long-lived tabs
+        // don't pin ~30MB of full posts data after navigation.
+        fullPostsData = null;
+        fullPostsPromise = null;
+        postsData = {};
+        shipgirlDataMap = {};
+        shipgroupTemplateMap = {};
     }, { once: true });
 });

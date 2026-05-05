@@ -7,7 +7,7 @@
  * The storage event keeps both pages in sync across tabs without circular triggering.
  */
 
-import { fetchJSONWithCache, getStorageItem, setStorageItem, createImg, IMG_FALLBACKS, createSearchIndex, ensureFuse, debounce } from '../utils.js';
+import { fetchJSONWithCache, createImg, IMG_FALLBACKS, createSearchIndex, ensureFuse, debounce, syncedStorage } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 
 const { parseProgress } = ShipgirlTrackerUtils;
@@ -175,14 +175,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebarBody = document.getElementById('sidebar-content');
     const rightPane = document.getElementById('right-pane');
 
-    function loadProgress() {
-        try {
-            return parseProgress(getStorageItem(SAVE_KEY, null));
-        } catch (err) {
-            console.error('Failed to load tracker progress:', err);
-            return {};
-        }
-    }
+    // SAVE_KEY is shared with shipgirl-tracker.js; both pages must share the
+    // same parse contract (parseProgress) so cross-tab writes round-trip cleanly.
+    const progressStore = syncedStorage(SAVE_KEY, {
+        parse: parseProgress,
+        onRemoteChange: (next) => {
+            progress = next;
+            if (activeFaction) {
+                applyProgress();
+                updateSidebarOnChange();
+                refreshGroupHeaders();
+                applyFilters();
+            }
+        },
+    });
+
+    const pinnedStore = syncedStorage(PINNED_KEY, {
+        parse: (v) => new Set(Array.isArray(v) ? v : []),
+        onRemoteChange: (next) => {
+            pinned = next;
+            if (activeFaction) renderFactionContent(activeFaction);
+        },
+    });
 
     function showLoadError() {
         const message = '<p class="rt-error">데이터를 불러오는 데 실패했습니다.</p>';
@@ -288,17 +302,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (label) shopDropLabel.set(gid, label);
             }
 
-            progress = loadProgress();
-            try {
-                const stored = getStorageItem(PINNED_KEY, null);
-                if (stored) {
-                    const arr = JSON.parse(stored);
-                    if (Array.isArray(arr)) pinned = new Set(arr);
-                }
-            } catch (err) {
-                console.error('Failed to load pinned ships:', err);
-                pinned = new Set();
-            }
+            progress = progressStore.load();
+            pinned = pinnedStore.load();
             init();
         } catch (error) {
             console.error('Failed to load data:', error);
@@ -1066,7 +1071,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function saveProgress() {
         // Serialize in-memory progress directly — don't re-derive from DOM
         // (DOM only shows current faction's ships; rebuilding would lose other factions)
-        setStorageItem(SAVE_KEY, JSON.stringify(progress));
+        progressStore.save(progress);
     }
 
     /**
@@ -1090,7 +1095,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function savePinned() {
-        setStorageItem(PINNED_KEY, JSON.stringify([...pinned]));
+        pinnedStore.save([...pinned]);
     }
 
     /** Show/hide ship rows based on active rarity and ownership status filters. */
@@ -1197,36 +1202,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     loadData();
-
-    // Cross-tab sync: shipgirl-tracker.js writes the same SAVE_KEY.
-    // The storage event fires only in other tabs, so there is no circular trigger.
-    window.addEventListener('storage', (e) => {
-        if (e.key === SAVE_KEY) {
-            try {
-                progress = parseProgress(e.newValue);
-            } catch (err) {
-                console.error('Failed to sync progress from storage event:', err);
-                return;
-            }
-            // Targeted update: patch checkboxes + sidebar, don't rebuild the entire page
-            if (activeFaction) {
-                applyProgress();
-                updateSidebarOnChange();
-                refreshGroupHeaders();
-                applyFilters();
-            }
-        } else if (e.key === PINNED_KEY) {
-            try {
-                const arr = JSON.parse(e.newValue || '[]');
-                pinned = new Set(Array.isArray(arr) ? arr : []);
-            } catch (err) {
-                console.error('Failed to sync pinned from storage event:', err);
-                return;
-            }
-            // Pinned changes add/remove rows — full rebuild required
-            if (activeFaction) {
-                renderFactionContent(activeFaction);
-            }
-        }
-    });
 });

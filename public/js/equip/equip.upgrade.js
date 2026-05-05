@@ -648,7 +648,8 @@ function setupListeners() {
     setupModal('matModal', {
         closeButtonSelector: '#matModalClose',
         closeOnBackdrop: true,
-        closeOnEscape: true
+        closeOnEscape: true,
+        restoreFocus: true
     });
 
     // Material browse/equip card clicks (event delegation on modal body)

@@ -6,8 +6,8 @@
  * Cards are built once at load time; filtering rebuilds visible sets and appends in chunks of 50 via IntersectionObserver.
  */
 import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex, ensureFuse,
-    openModal, closeModal, setupModal, showToast, getStorageItem, setStorageItem, toggleElement, IMG_FALLBACKS,
-    createIcon, createGemIconImg } from '../utils.js';
+    openModal, closeModal, setupModal, showToast, toggleElement, IMG_FALLBACKS,
+    createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, syncedStorage } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // ===== DOM Element References =====
@@ -88,29 +88,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== Collection State =====
     const COLLECTION_KEY = 'skinCollection';
-    let collection = loadCollection();
 
-    function loadCollection() {
-        const raw = getStorageItem(COLLECTION_KEY, null);
-        if (raw) {
-            try {
-                const saved = JSON.parse(raw);
-                return {
-                    owned: new Set(saved.owned || []),
-                    wanted: new Set(saved.wanted || [])
-                };
-            } catch (e) {
-                // Corrupted data, start fresh
-            }
-        }
-        return { owned: new Set(), wanted: new Set() };
-    }
+    const parseCollection = (raw) => ({
+        owned: new Set(raw && Array.isArray(raw.owned) ? raw.owned : []),
+        wanted: new Set(raw && Array.isArray(raw.wanted) ? raw.wanted : []),
+    });
+
+    const collectionStore = syncedStorage(COLLECTION_KEY, {
+        parse: parseCollection,
+        onRemoteChange: (next) => {
+            collection = next;
+            CartManager.updateBadge();
+            OwnedShowcase.updateBadge();
+            FilterEngine.apply();
+        },
+    });
+
+    let collection = collectionStore.load();
 
     function saveCollection() {
-        setStorageItem(COLLECTION_KEY, JSON.stringify({
+        collectionStore.save({
             owned: [...collection.owned],
-            wanted: [...collection.wanted]
-        }));
+            wanted: [...collection.wanted],
+        });
     }
 
     // ===== Cached Queries & Constants =====
@@ -674,7 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             DOM.popup.overlay.classList.add('visible');
             DOM.popup.overlay.setAttribute('aria-hidden', 'false');
-            document.body.classList.add('no-scroll');
+            lockBodyScroll();
 
             DOM.popup.image.addEventListener('load', () => {
                 if (gen === this._generation) DOM.popup.image.classList.remove('loading');
@@ -700,7 +700,7 @@ document.addEventListener('DOMContentLoaded', () => {
         close() {
             DOM.popup.overlay.classList.remove('visible');
             DOM.popup.overlay.setAttribute('aria-hidden', 'true');
-            document.body.classList.remove('no-scroll');
+            unlockBodyScroll();
             if (this._errorHandler) {
                 DOM.popup.image.removeEventListener('error', this._errorHandler);
                 this._errorHandler = null;
@@ -1482,23 +1482,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!DOM.search.parentNode.contains(e.target)) Autocomplete.close();
     };
 
-    const handleStorageSync = (e) => {
-        if (e.key !== COLLECTION_KEY) return;
-        try {
-            const newData = JSON.parse(e.newValue || '{}');
-            collection.owned = new Set(newData.owned || []);
-            collection.wanted = new Set(newData.wanted || []);
-            CartManager.updateBadge();
-            OwnedShowcase.updateBadge();
-            FilterEngine.apply();
-        } catch (err) {
-            console.error('Failed to sync collection from storage event:', err);
-        }
-    };
-
     document.addEventListener("click", handleDocumentClick);
     window.addEventListener('popstate', URLState.apply);
-    window.addEventListener('storage', handleStorageSync);
+    // Cross-tab collection sync is wired by collectionStore (syncedStorage).
 
     // Event delegation on skin card containers (4 listeners instead of ~9000)
     Object.values(DOM.containers).forEach(c => c.addEventListener('click', handleContainerClick));
@@ -1517,6 +1503,8 @@ document.addEventListener('DOMContentLoaded', () => {
         closeButtonSelector: '#owned-modal .cart-close-btn',
         closeOnEscape: true,
         closeOnBackdrop: true,
+        restoreFocus: true,
+        setAriaHidden: false,
         onClose: (modal) => modal.setAttribute('aria-hidden', 'true')
     });
 
@@ -1533,6 +1521,8 @@ document.addEventListener('DOMContentLoaded', () => {
         closeButtonSelector: '.cart-close-btn',
         closeOnEscape: true,
         closeOnBackdrop: true,
+        restoreFocus: true,
+        setAriaHidden: false,
         onClose: (modal) => modal.setAttribute('aria-hidden', 'true')
     });
 

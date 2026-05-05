@@ -11,8 +11,6 @@ import { getStorageItem } from '../utils.js';
 // ===== Initialization =====
 
 document.addEventListener('DOMContentLoaded', async function () {
-    console.log('[Island Page] Initializing...');
-
     setupTabNavigation();
     setupCharacterSearch();
 
@@ -24,8 +22,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     // activateTab normalizes invalid/missing values, syncs tab DOM/ARIA, and
     // persists via switchTab — same path manual clicks take.
     window.IslandEngine.activateTab(getStorageItem('island-active-tab', null));
-
-    console.log('[Island Page] Initialization complete');
 });
 
 // ===== Tab Navigation =====
@@ -101,6 +97,4 @@ function performSearch(query) {
 
     const results = window.IslandEngine.searchCharacters(query);
     window.IslandEngine.renderCharacterList(results);
-
-    console.log(`[Island] Search: "${query}" - ${results.length} results`);
 }

@@ -8,7 +8,7 @@
 
 import {
     createSearchIndex, ensureFuse, debounce, getUrlParam, setUrlParams,
-    resolveUrl, showToast, closeModal
+    resolveUrl, showToast, closeModal, lockBodyScroll, unlockBodyScroll
 } from '../utils.js';
 import {
     setup as setupData,
@@ -523,7 +523,7 @@ async function openDetailPanel(equipId) {
 
     detailPanel.classList.add('open');
     detailBackdrop.classList.add('visible');
-    document.body.style.overflow = 'hidden';
+    lockBodyScroll();
 }
 
 /**
@@ -643,7 +643,7 @@ function openSPWeaponDetail(spId) {
 
     detailPanel.classList.add('open');
     detailBackdrop.classList.add('visible');
-    document.body.style.overflow = 'hidden';
+    lockBodyScroll();
 }
 
 /** SP rarity (2=R, 3=SR, 4=SSR) mapped to equip CSS rarity class (3, 4, 5) */
@@ -652,7 +652,7 @@ const SP_RARITY_TO_EQUIP_CLASS = { 2: 3, 3: 4, 4: 5 };
 function closeDetailPanel() {
     detailPanel.classList.remove('open');
     detailBackdrop.classList.remove('visible');
-    document.body.style.overflow = '';
+    unlockBodyScroll();
     setUrlParams({ equip: null }, { replace: true });
 }
 

@@ -8,7 +8,7 @@
 // See CLAUDE.md "Cache & Data Versioning" for the bump rules.
 // ============================================
 
-const CACHE_VERSION = '1.5.0';
+const CACHE_VERSION = '1.7.0';
 const STATIC_CACHE = `altoy-static-${CACHE_VERSION}`;
 const DATA_CACHE = `altoy-data-${CACHE_VERSION}`;
 
@@ -30,18 +30,20 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// Activate: clean up old caches
+// Activate: claim clients FIRST so any in-flight fetch sees the new SW, then
+// clean up old caches. Previous order (clean → claim) left a brief window
+// where the activating SW was responsible for fetches but had no claim yet.
 self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys().then(keys =>
-            Promise.all(
-                keys.filter(key =>
-                    (key.startsWith('altoy-static-') || key.startsWith('altoy-data-')) &&
-                    key !== STATIC_CACHE && key !== DATA_CACHE
-                ).map(key => caches.delete(key))
-            )
-        ).then(() => self.clients.claim())
-    );
+    event.waitUntil((async () => {
+        await self.clients.claim();
+        const keys = await caches.keys();
+        await Promise.all(
+            keys.filter(key =>
+                (key.startsWith('altoy-static-') || key.startsWith('altoy-data-')) &&
+                key !== STATIC_CACHE && key !== DATA_CACHE
+            ).map(key => caches.delete(key))
+        );
+    })());
 });
 
 // Fetch strategy:

@@ -158,19 +158,6 @@ export function gatherRecipeData(recipe) {
     // Calculate season points for ingredients only (new approach)
     const seasonPointsConsumption = window.IslandEngine.calculateTreePoints(upstreamTree);
 
-    // Debug: log tree structure for 우유
-    if (recipe.item_id === 2603) {
-        console.log('[Resource Engine] 우유 upstreamTree:', upstreamTree);
-        console.log('[Resource Engine] 우유 dependencies:', JSON.stringify(upstreamTree.dependencies.map(d => ({
-            itemId: d.itemId,
-            itemName: d.itemInfo?.name,
-            quantityNeeded: d.quantityNeeded,
-            hasRecipe: !!d.recipe,
-            hasShopPurchaseContext: !!d.shopPurchaseContext,
-            shopPurchaseContext: d.shopPurchaseContext
-        })), null, 2));
-    }
-
     // Calculate net gain accumulated from entire tree
     const netGainTotal = window.IslandEngine.calculateTreeNetGain(upstreamTree);
 
@@ -274,20 +261,6 @@ export function gatherRecipeData(recipe) {
 
         currentRecipeGainPerMinAuto = recipeTimeInMinutesAuto > 0 ? (currentRecipeGainPerItemAuto * outputQuantity) / recipeTimeInMinutesAuto : 0;
         netGainPerMinAuto = cumulativeTimeAutoInMinutes > 0 ? (netGainPerItemAuto * outputQuantity) / cumulativeTimeAutoInMinutes : 0;
-
-        // Debug logging for 아이스 커피
-        if (item.id === 3005) {
-            console.log('[Resource Engine] 아이스 커피 calculation:', {
-                itemPtNum: item.pt_num,
-                seasonPointsConsumption,
-                outputQuantity,
-                ptPerItemAuto,
-                currentRecipeGainPerItemAuto,
-                netGainTotal,
-                accumulatedGainPerItem,
-                netGainPerItemAuto
-            });
-        }
     } return {
         item,
         category,

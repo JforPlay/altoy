@@ -14,6 +14,8 @@ import {
     ensureFuse,
     createImgElement,
     createMaterialIcon,
+    lockBodyScroll,
+    unlockBodyScroll,
 } from './utils.js';
 import { LINKS } from './global.script.js';
 import { PAGE_CATALOG } from './pages.catalog.js';
@@ -21,6 +23,7 @@ import { PAGE_CATALOG } from './pages.catalog.js';
 // ===== State =====
 
 let pageIndex = null;
+let pageIndexBuilding = null;
 let shipData = null;
 let shipIndex = null;
 let shipDataLoading = false;
@@ -36,23 +39,13 @@ const resultsContainer = document.getElementById('global-search-results');
 // ===== Initialization =====
 
 /**
- * Wire up the global search modal: build the page index, attach trigger/close handlers,
- * bind input search + keyboard navigation. Async because Fuse.js is lazy-loaded —
- * the page index is built once Fuse resolves; if Fuse fails to load, search falls
- * through to the substring matcher in handleSearch.
+ * Wire up the global search modal: attach trigger/close handlers, bind input
+ * search + keyboard navigation. The page index (and the Fuse.js library it
+ * depends on) are built lazily on first openSearch — pages where the user
+ * never opens search pay no Fuse-load cost.
  */
-async function init() {
+function init() {
     if (!overlay || !input || !resultsContainer) return;
-
-    await ensureFuse();
-    pageIndex = createSearchIndex(PAGE_CATALOG, {
-        keys: [
-            { name: 'name', weight: 2 },
-            { name: 'description', weight: 1 },
-            { name: 'category', weight: 0.5 }
-        ],
-        threshold: 0.4
-    });
 
     // Trigger button
     document.querySelectorAll('.global-search-trigger').forEach(btn => {
@@ -87,9 +80,19 @@ async function init() {
 function openSearch() {
     overlay.classList.add('visible');
     overlay.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('no-scroll');
+    lockBodyScroll();
     // Defer focus until after the visibility transition applies; focusing a still-hidden input is a no-op in some browsers.
     requestAnimationFrame(() => input.focus());
+
+    // Lazy-load Fuse.js + page index on first open
+    if (!pageIndex) {
+        ensurePageIndex().then(() => {
+            // If user typed during the index build, re-run with Fuse results now available.
+            if (overlay?.classList.contains('visible') && input?.value.trim()) {
+                handleSearch();
+            }
+        });
+    }
 
     // Lazy-load ship data on first open
     if (!shipData && !shipDataLoading) {
@@ -97,10 +100,32 @@ function openSearch() {
     }
 }
 
+/**
+ * Build the page-catalog Fuse index on demand. Idempotent and safe to call
+ * concurrently — repeat calls share the same in-flight build promise.
+ */
+async function ensurePageIndex() {
+    if (pageIndex) return;
+    if (!pageIndexBuilding) {
+        pageIndexBuilding = (async () => {
+            await ensureFuse();
+            pageIndex = createSearchIndex(PAGE_CATALOG, {
+                keys: [
+                    { name: 'name', weight: 2 },
+                    { name: 'description', weight: 1 },
+                    { name: 'category', weight: 0.5 }
+                ],
+                threshold: 0.4
+            });
+        })();
+    }
+    await pageIndexBuilding;
+}
+
 function closeSearch() {
     overlay.classList.remove('visible');
     overlay.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('no-scroll');
+    unlockBodyScroll();
     input.value = '';
     activeIndex = -1;
     allResults = [];
@@ -124,13 +149,16 @@ async function loadShipData() {
     shipDataLoading = true;
     try {
         const raw = await fetchJSON('data/ship_group_data.json');
-        // Convert object to array with id
-        shipData = Object.entries(raw).map(([id, ship]) => ({
-            id,
-            name: ship.name,
-            icon: ship.icon,
-            rarity: ship.rarity
-        }));
+        // Convert object to array with id. Skip entries with missing/blank names —
+        // they would otherwise generate `?ship=undefined` URLs on click.
+        shipData = Object.entries(raw)
+            .filter(([, ship]) => typeof ship?.name === 'string' && ship.name.trim().length > 0)
+            .map(([id, ship]) => ({
+                id,
+                name: ship.name,
+                icon: ship.icon,
+                rarity: ship.rarity
+            }));
         await ensureFuse();
         shipIndex = createSearchIndex(shipData, {
             keys: [{ name: 'name', weight: 1 }],
@@ -190,7 +218,10 @@ function handleSearch() {
         ? shipIndex.search(query).slice(0, 8)
         : simpleSearch(shipData, query, 8, ['name']);
 
-    if (pageResults.length === 0 && shipResults.length === 0) {
+    // Don't show "no results" if ship data is still loading — fast typers would
+    // see a flashing empty-state between the page-result render and ship-load
+    // completion. Render a loading placeholder under the 함순이 header instead.
+    if (pageResults.length === 0 && shipResults.length === 0 && !shipDataLoading) {
         activeIndex = -1;
         allResults = [];
         renderEmptyMessage('검색 결과가 없습니다');
@@ -212,10 +243,20 @@ function handleSearch() {
         for (const result of shipResults) {
             fragment.appendChild(createShipResult(result.item));
         }
+    } else if (shipDataLoading) {
+        fragment.appendChild(createSectionHeader('함순이'));
+        fragment.appendChild(createShipLoadingRow());
     }
 
     resultsContainer.replaceChildren(fragment);
     activeIndex = -1;
+}
+
+function createShipLoadingRow() {
+    const row = document.createElement('div');
+    row.className = 'global-search-loading';
+    row.textContent = '함순이 검색 준비 중...';
+    return row;
 }
 
 function createSectionHeader(label) {
@@ -372,3 +413,13 @@ function buildPageUrl(path) {
 // ===== Start =====
 
 document.addEventListener('DOMContentLoaded', init);
+
+// Release module-level indexes/data on page unload so bfcache snapshots and
+// long-lived tabs don't carry the full catalog + ship index across navigations.
+window.addEventListener('pagehide', () => {
+    pageIndex = null;
+    pageIndexBuilding = null;
+    shipData = null;
+    shipIndex = null;
+    allResults.length = 0;
+});

@@ -16,7 +16,7 @@
  * Must stay in sync with public/sw.js CACHE_VERSION. Bumping just one
  * leaves the other cache stale on first visit. See CLAUDE.md "Cache & Data Versioning".
  */
-const DATA_VERSION = '1.5.0';
+const DATA_VERSION = '1.7.0';
 
 /**
  * localStorage keys that participate in Google Drive sync.
@@ -898,7 +898,13 @@ const _modalState = {
     activeModalIds: new Set(),
 };
 
-function _lockBodyScroll() {
+/**
+ * Reference-counted body-scroll lock primitive.
+ * Exported so non-modal slide-in panels (e.g. the equip detail aside) can
+ * participate in the same lock count as openModal/closeModal — preventing
+ * the lock from being released early when a stacked modal closes first.
+ */
+function lockBodyScroll() {
     if (_modalState.lockCount === 0) {
         _modalState.bodyOverflowSnapshot = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
@@ -906,7 +912,7 @@ function _lockBodyScroll() {
     _modalState.lockCount++;
 }
 
-function _unlockBodyScroll() {
+function unlockBodyScroll() {
     if (_modalState.lockCount === 0) return;
     _modalState.lockCount--;
     if (_modalState.lockCount === 0) {
@@ -953,7 +959,7 @@ function openModal(modalId, options = {}) {
     modal.classList.remove('hidden');
     if (setAriaHidden) modal.setAttribute('aria-hidden', 'false');
 
-    if (lockBody) _lockBodyScroll();
+    if (lockBody) lockBodyScroll();
 
     if (focusFirst) {
         // First tabbable element inside the modal — buttons, links, inputs, etc.
@@ -1016,7 +1022,7 @@ function closeModal(modalId, options = {}) {
     modal.classList.add('hidden');
     if (setAriaHidden) modal.setAttribute('aria-hidden', 'true');
 
-    if (unlockBody) _unlockBodyScroll();
+    if (unlockBody) unlockBodyScroll();
 
     if (onClose) onClose(modal);
 }
@@ -1557,6 +1563,11 @@ const _ric = typeof requestIdleCallback === 'function'
 
 if (typeof indexedDB !== 'undefined') {
     _ric(() => purgeOldCache(), { timeout: 5000 });
+    // Re-purge every 6h while the tab is open. Browsers throttle setInterval to
+    // ~1Hz on hidden tabs, so the wake cost on a backgrounded tab is negligible
+    // — but a tab kept open for days won't accumulate stale entries up to the
+    // IndexedDB quota.
+    setInterval(() => _ric(() => purgeOldCache(), { timeout: 5000 }), 6 * 60 * 60 * 1000);
 }
 
 // ===== ES Module Exports =====
@@ -1581,11 +1592,9 @@ export {
     createMaterialIcon,
     createGemIconImg,
 
-    // Cache utilities
-    CacheDB,
+    // Cache utilities (CacheDB / clearJSONCache / purgeOldCache are internal —
+    // not exported; the recurring purge runs from the init block below)
     fetchJSONWithCache,
-    clearJSONCache,
-    purgeOldCache,
 
     // URL parameter utilities
     getUrlParam,
@@ -1601,6 +1610,8 @@ export {
     openModal,
     closeModal,
     setupModal,
+    lockBodyScroll,
+    unlockBodyScroll,
 
     // Interaction utilities
     makeKeyboardActivatable,

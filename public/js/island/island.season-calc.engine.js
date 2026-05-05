@@ -29,8 +29,6 @@ const state = {
  */
 async function init(sharedData) {
     try {
-        console.log('[SeasonCalc] Initializing...');
-
         if (sharedData && sharedData.items) {
             state.items = sharedData.items;
         }
@@ -44,8 +42,6 @@ async function init(sharedData) {
             .filter(item => item.pt_num > 0)
             .sort((a, b) => b.pt_num - a.pt_num);
 
-        console.log(`[SeasonCalc] Found ${state.ptItems.length} items with season points`);
-
         await loadSeasonData();
 
         loadUserQuantities();
@@ -58,8 +54,6 @@ async function init(sharedData) {
         renderTotalDisplay();
 
         setupEventListeners();
-
-        console.log('[SeasonCalc] Initialization complete');
     } catch (error) {
         console.error('[SeasonCalc] Initialization failed:', error);
         window.IslandEngine.showError('Failed to load season calculator data');
@@ -85,8 +79,6 @@ async function loadSeasonData() {
         if (!state.seasonData) {
             throw new Error(`Season data for ID ${seasonId} not found`);
         }
-
-        console.log(`[Island Season] Loaded season data for season ${seasonId}`);
     } catch (e) {
         console.warn('[SeasonCalc] Could not load season data:', e);
         state.seasonData = null;

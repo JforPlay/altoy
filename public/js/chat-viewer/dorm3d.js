@@ -17,8 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
              * Apply a brief shake animation to the last bubble as a substitute.
              */
             handleType4: function(script) {
-                console.log(`[Dorm3D] Special Event: Type ${script.type}, Param: ${script.param}`);
-
                 const lastBubble = this.storyContainer.lastElementChild;
                 if (lastBubble) {
                     // Add temporary shake animation

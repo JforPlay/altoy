@@ -207,6 +207,7 @@ if (!requireElements({ gallery, galleryStatus, lightbox, lightboxImg, lightboxCa
         closeButtonSelector: '.lightbox-close',
         closeOnBackdrop: true,
         closeOnEscape: true,
+        restoreFocus: true,
         onClose: () => {
             lightboxImg.src = '';
             lightboxImg.alt = '';

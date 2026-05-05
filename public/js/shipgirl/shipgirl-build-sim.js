@@ -5,7 +5,7 @@
  * Build stats (total pulls, rarity counts, resources spent) are persisted to localStorage.
  */
 
-import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem, createImgElement, createMaterialIcon, debounce, showToast } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem, createImgElement, createMaterialIcon, debounce, showToast, openModal, closeModal } from '../utils.js';
 (function () {
     'use strict';
 
@@ -499,9 +499,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         state.modalState.selectedShips = state.despairSelections[despairPoolId] || [];
         state.modalState.currentRarityTab = 'UR';
 
-        // Show modal
-        document.getElementById('despair-modal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        // Show modal (openModal handles display + reference-counted body lock)
+        openModal('despair-modal');
 
         // Reset rarity tabs
         document.querySelectorAll('.rarity-tab').forEach(tab => {
@@ -516,8 +515,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
     }
 
     function closeDespairModal() {
-        document.getElementById('despair-modal').style.display = 'none';
-        document.body.style.overflow = '';
+        closeModal('despair-modal');
         state.modalState = {
             basePool: null,
             selectedShips: [],

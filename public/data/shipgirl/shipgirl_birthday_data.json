@@ -7273,5 +7273,77 @@
         "일": "25",
         "group_id": "30717",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307170/icon.png"
+    },
+    {
+        "ID": "732",
+        "룽섭 이름": "엘리제",
+        "레어도": "SSR",
+        "함종": "항모",
+        "진영": "DOAX VV",
+        "연": "",
+        "월": "9",
+        "일": "3",
+        "group_id": "106001",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600100/icon.png"
+    },
+    {
+        "ID": "733",
+        "룽섭 이름": "시즈쿠",
+        "레어도": "SSR",
+        "함종": "전함",
+        "진영": "DOAX VV",
+        "연": "2004",
+        "월": "5",
+        "일": "18",
+        "group_id": "106011",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10601100/icon.png"
+    },
+    {
+        "ID": "734",
+        "룽섭 이름": "샌디",
+        "레어도": "SSR",
+        "함종": "중순",
+        "진영": "DOAX VV",
+        "연": "",
+        "월": "3",
+        "일": "3",
+        "group_id": "106002",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600120/icon.png"
+    },
+    {
+        "ID": "735",
+        "룽섭 이름": "츠쿠시",
+        "레어도": "SSR",
+        "함종": "구축",
+        "진영": "DOAX VV",
+        "연": "",
+        "월": "10",
+        "일": "24",
+        "group_id": "106003",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600130/icon.png"
+    },
+    {
+        "ID": "736",
+        "룽섭 이름": "패티",
+        "레어도": "SSR",
+        "함종": "잠수",
+        "진영": "DOAX VV",
+        "연": "",
+        "월": "7",
+        "일": "31",
+        "group_id": "106004",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600140/icon.png"
+    },
+    {
+        "ID": "737",
+        "룽섭 이름": "유키노",
+        "레어도": "SSR",
+        "함종": "경순",
+        "진영": "DOAX VV",
+        "연": "",
+        "월": "1",
+        "일": "20",
+        "group_id": "106005",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600150/icon.png"
     }
 ]

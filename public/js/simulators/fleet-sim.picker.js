@@ -256,12 +256,14 @@ function _setupModals() {
         closeOnEscape: true,
         closeOnBackdrop: true,
         closeButtonSelector: '.modal-close-btn',
+        restoreFocus: true,
     });
 
     setupModal('equipPickerModal', {
         closeOnEscape: true,
         closeOnBackdrop: true,
         closeButtonSelector: '.modal-close-btn',
+        restoreFocus: true,
     });
 
     // Handle backdrop clicks explicitly (modal-backdrop is a child div,

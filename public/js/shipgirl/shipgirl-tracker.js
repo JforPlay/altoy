@@ -6,7 +6,7 @@
  * faction tech bonus display, and cross-tab sync via the storage event (shares SAVE_KEY with research-tracker.js).
  */
 
-import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal } from '../utils.js';
+import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 document.addEventListener('DOMContentLoaded', () => {
     let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData;
@@ -75,6 +75,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Use utilities from external file
     const { parseDatasetInt, filterSearchDropdown, setupDropdownToggle, createTrackerItem, parseProgress } = ShipgirlTrackerUtils;
+
+    // Progress (SAVE_KEY) is shared with research-tracker.js via cross-tab storage events.
+    // syncedStorage handles persistence + cross-tab sync; onRemoteChange runs only when
+    // ANOTHER tab writes the key.
+    const progressStore = syncedStorage(SAVE_KEY, {
+        parse: parseProgress,
+        onRemoteChange: (next) => {
+            applyProgress(next);
+            if (isProgressFilterActive()) {
+                applyFilters();
+            } else {
+                calculateAndDisplayScores();
+            }
+        },
+    });
 
     /**
      * Lookup ship data by name for goal tracker.
@@ -1047,7 +1062,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function openDrawer() {
         const drawer = document.getElementById('filter-drawer');
         const backdrop = document.getElementById('filter-drawer-backdrop');
-        backdrop.classList.remove('hidden');
+        showElement(backdrop);
         drawer.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
@@ -1056,7 +1071,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const drawer = document.getElementById('filter-drawer');
         const backdrop = document.getElementById('filter-drawer-backdrop');
         drawer.classList.remove('open');
-        backdrop.classList.add('hidden');
+        hideElement(backdrop);
         document.body.style.overflow = '';
     }
 
@@ -1435,12 +1450,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Saves the current progress (checked boxes) to localStorage.
      */
     function autoSaveProgress() {
-        const progress = collectProgressFromCards();
-        try {
-            setStorageItem(SAVE_KEY, JSON.stringify(progress));
-        } catch (err) {
-            console.error('Failed to save progress:', err);
-        }
+        progressStore.save(collectProgressFromCards());
     }
 
     /**
@@ -1462,13 +1472,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Loads progress from localStorage and applies it.
      */
     function loadProgress() {
-        const savedProgress = getStorageItem(SAVE_KEY, null);
-        if (!savedProgress) return;
-        try {
-            applyProgress(parseProgress(savedProgress));
-        } catch (e) {
-            console.error("Failed to parse saved progress:", e);
-        }
+        applyProgress(progressStore.load());
     }
 
     /**
@@ -1601,13 +1605,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update badge + render
         const badge = document.getElementById('filter-badge');
         if (chips.length === 0) {
-            if (badge) badge.classList.add('hidden');
+            if (badge) hideElement(badge);
             return;
         }
 
         if (badge) {
             badge.textContent = chips.length;
-            badge.classList.remove('hidden');
+            showElement(badge);
         }
 
         const fragment = document.createDocumentFragment();
@@ -1880,19 +1884,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 calculateAndDisplayScores();
                 openModal('score-modal');
             });
-            setupModal('score-modal', { closeOnEscape: true, closeOnBackdrop: true });
+            setupModal('score-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
 
             // Setup goal modal
             document.getElementById('goal-modal-btn').addEventListener('click', () => {
                 renderGoalTracker();
                 openModal('goal-modal');
             });
-            setupModal('goal-modal', { closeOnEscape: true, closeOnBackdrop: true });
+            setupModal('goal-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
 
             // Setup confirmation modal
             setupModal('confirmation-modal', {
                 closeOnEscape: true,
                 closeOnBackdrop: true,
+                restoreFocus: true,
                 onClose: () => { currentConfirmCallback = null; }
             });
             setupConfirmationModal();
@@ -1920,24 +1925,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // Cross-tab sync: update when another tab changes progress
+            // Cross-tab sync for GOAL_KEY only — progress sync is handled by progressStore above.
+            // GOAL_KEY stores a bare string (legacy wire format) and is read by drive-sync.summary.js
+            // as such, so it stays outside syncedStorage to preserve format compatibility.
             window.addEventListener('storage', (e) => {
-                if (e.key === SAVE_KEY) {
-                    try {
-                        applyProgress(parseProgress(e.newValue));
-                        if (isProgressFilterActive()) {
-                            applyFilters();
-                        } else {
-                            calculateAndDisplayScores();
-                        }
-                    } catch (err) {
-                        console.error('Failed to sync progress from storage event:', err);
-                    }
-                } else if (e.key === GOAL_KEY) {
-                    const goalModal = document.getElementById('goal-modal');
-                    if (goalModal?.classList.contains('active')) {
-                        renderGoalTracker();
-                    }
+                if (e.key !== GOAL_KEY) return;
+                const goalModal = document.getElementById('goal-modal');
+                if (goalModal?.classList.contains('active')) {
+                    renderGoalTracker();
                 }
             });
 

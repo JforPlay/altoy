@@ -633,7 +633,5 @@ export class ChatViewerEngine {
         this.characterCards = null;
         this.allData = {};
         this.shipGroupIdData = {};
-
-        console.log('[ChatViewerEngine] destroyed');
     }
 }

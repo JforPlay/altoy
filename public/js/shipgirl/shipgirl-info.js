@@ -171,7 +171,8 @@ function setupEventListeners() {
     setupModal('skillSearchModal', {
         closeButtonSelector: '#closeSkillSearchModal',
         closeOnEscape: true,
-        closeOnBackdrop: true
+        closeOnBackdrop: true,
+        restoreFocus: true
     });
 
     // Prev/Next navigation buttons

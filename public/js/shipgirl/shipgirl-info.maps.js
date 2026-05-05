@@ -180,6 +180,7 @@ export function setupMapsModalListeners() {
         closeButtonSelector: '#closeMapsModal',
         closeOnBackdrop: true,
         closeOnEscape: true,
+        restoreFocus: true,
         onClose: () => {
             if (searchInput) searchInput.value = '';
             if (clearSearchBtn) clearSearchBtn.style.display = 'none';
@@ -483,6 +484,7 @@ export function setupMapBrowserListeners() {
         closeButtonSelector: '#closeMapBrowserModal',
         closeOnBackdrop: true,
         closeOnEscape: true,
+        restoreFocus: true,
         onClose: resetMapBrowserFilters
     });
 

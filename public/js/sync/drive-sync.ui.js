@@ -247,7 +247,8 @@ function onExportClick() {
         a.href = url;
         a.download = filename;
         a.click();
-        URL.revokeObjectURL(url);
+        // Defer revoke — Safari can race the click on iOS, breaking the download.
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
         showToast(`백업 파일 저장됨: ${filename}`, 'success');
         closePopover();
     } catch (e) {
@@ -356,7 +357,7 @@ export function mountSyncUI() {
             </div>
         </div>
     `);
-    setupModal('sync-conflict-modal', { closeOnEscape: true, closeOnBackdrop: true });
+    setupModal('sync-conflict-modal', { closeOnEscape: true, closeOnBackdrop: true, restoreFocus: true });
 
     document.getElementById('sync-nav-icon').addEventListener('click', togglePopover);
     document.addEventListener('click', onDocumentClick);

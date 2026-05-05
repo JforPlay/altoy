@@ -219,6 +219,7 @@ setupModal('island-misc-lightbox', {
     closeButtonSelector: '.lightbox-close',
     closeOnBackdrop: true,
     closeOnEscape: true,
+    restoreFocus: true,
     onClose: handleLightboxClose,
 });
 

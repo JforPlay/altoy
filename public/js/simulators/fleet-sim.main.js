@@ -87,6 +87,7 @@ async function init() {
         closeOnEscape: true,
         closeOnBackdrop: true,
         closeButtonSelector: '.modal-close-btn',
+        restoreFocus: true,
     });
 
     // Handle backdrop click explicitly (same pattern as picker module)

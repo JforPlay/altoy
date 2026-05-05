@@ -4,7 +4,7 @@
  * Orchestrates three sub-modules: skin.data.js (data), skin.audio.js (audio), skin.expression.js (gallery).
  * Part of the skin module group.
  */
-import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg } from '../utils.js';
+import { debounce, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, normalizeRomanNumerals, createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll } from '../utils.js';
 import { init as initSkinData, searchCharacters, getSkinsForCharacter, getSkinByName, getManifest, getAllCharacterNames, getReleaseDate, getSkinFilterData } from './skin.data.js';
 import { init as initSkinAudio, stopCurrentAudio, handlePlayClick, createVolumeControlElement, attachVolumeListeners } from './skin.audio.js';
 import { init as initSkinExpression, setManifest, renderImageGallery } from './skin.expression.js';
@@ -557,7 +557,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             modal.style.display = 'flex';
             modal.setAttribute('aria-hidden', 'false');
             randomBtn.setAttribute('aria-expanded', 'true');
-            document.body.classList.add('no-scroll');
+            lockBodyScroll();
             goBtn.focus();
         }
 
@@ -565,7 +565,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             modal.style.display = 'none';
             modal.setAttribute('aria-hidden', 'true');
             randomBtn.setAttribute('aria-expanded', 'false');
-            document.body.classList.remove('no-scroll');
+            unlockBodyScroll();
             randomBtn.focus();
         }
 

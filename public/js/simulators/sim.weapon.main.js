@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupPauseButton(simEngine, pauseButton);
     setupEnemyToggle(simEngine, enemyToggle, playerAreaDiv);
     initShipBrowseModal();
-    setupModal('class-group-modal', { closeOnEscape: true, closeOnBackdrop: true, closeButtonSelector: '.modal-close-btn' });
+    setupModal('class-group-modal', { closeOnEscape: true, closeOnBackdrop: true, closeButtonSelector: '.modal-close-btn', restoreFocus: true });
 
     const skillIdFromUrl = getUrlParam('skill_id');
     if (skillIdFromUrl) {
@@ -132,7 +132,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupModal('ship-browse-modal', {
             closeOnEscape: true,
             closeOnBackdrop: true,
-            closeButtonSelector: '.modal-close-btn'
+            closeButtonSelector: '.modal-close-btn',
+            restoreFocus: true
         });
 
         shipBrowseBtn.addEventListener('click', () => {
