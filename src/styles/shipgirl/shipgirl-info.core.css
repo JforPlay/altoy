@@ -108,25 +108,75 @@ header h1 {
   min-width: 7.5rem;
 }
 
-/* View Toggle */
+/* Retrofit filter — single boolean toggle, sized to match neighboring selects.
+   `aria-pressed` carries on/off state so the button itself is the source of truth. */
+.filter-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.9375rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  background-color: var(--item-bg);
+  color: var(--text-secondary);
+  font-size: 1em;
+  line-height: 1.2;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast),
+              border-color var(--transition-fast);
+}
+
+.filter-toggle-btn:hover {
+  border-color: var(--accent-blue);
+  color: var(--text-primary);
+}
+
+.filter-toggle-btn:focus-visible {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px var(--primary-alpha-20);
+}
+
+/* `--primary-color` is too low-contrast in dark mode (#c0c0c0 light gray);
+   `--accent-blue` reads as "active" cleanly in both light (#0071eb) and dark
+   (#7289da) themes. */
+.filter-toggle-btn[aria-pressed="true"] {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #fff;
+  box-shadow: 0 1px 3px var(--shadow-color);
+}
+
+.filter-toggle-btn[aria-pressed="true"]:hover {
+  filter: brightness(1.08);
+}
+
+.filter-toggle-btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* View Toggle — sized to match the dropdown filters' height (1px border, no
+   wrapper padding; sub-buttons inherit the dropdown's vertical padding). */
 .view-toggle {
   display: flex;
-  gap: 0.3125rem;
-  background: var(--input-bg);
-  border: 2px solid var(--input-border);
+  background: var(--item-bg);
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
-  padding: 0.3125rem;
+  overflow: hidden;
 }
 
 .view-toggle-btn {
   background: transparent;
   border: none;
-  padding: 0.5rem 0.75rem;
+  padding: 0.625rem 0.75rem;
   cursor: pointer;
-  border-radius: 0.375rem;
   color: var(--text-secondary);
   transition: background 0.3s, color 0.3s;
-  font-size: 1.125rem;
+  font-size: 1em;
+  line-height: 1.2;
 }
 
 .view-toggle-btn:hover {

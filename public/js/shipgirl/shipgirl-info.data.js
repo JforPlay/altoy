@@ -37,6 +37,14 @@ export async function loadFullData() {
     try {
         console.log("Starting background load of full ship data...");
         state.fullShipData = await fetchJSONWithCache('data/ship_info_data.json');
+        // Pre-compute the retrofittable-ship lookup once. Used by the listing's
+        // "개조" filter; building it here means filterShipgirls stays a hot loop
+        // over a Set instead of re-scanning fullShipData on every keystroke.
+        state.retrofitGidSet = new Set(
+            state.fullShipData
+                .filter(s => s?.retrofit?.id)
+                .map(s => s.gid)
+        );
         console.log("Full ship data loaded successfully.");
         return state.fullShipData;
     } catch (error) {

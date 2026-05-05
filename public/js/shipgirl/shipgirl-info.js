@@ -58,6 +58,13 @@ const state = {
     // Construction-specific filters
     currentConstructionType: 'all',
 
+    // Retrofit filter: 'all' (default) or 'yes' (only retrofittable). Backed by
+    // retrofitGidSet, which is populated from fullShipData once it finishes its
+    // background load.
+    currentRetrofitFilter: 'all',
+    /** @type {Set<number>|null} */
+    retrofitGidSet: null,
+
     // DOM Elements (set during init)
     elements: {},
 
@@ -144,6 +151,23 @@ function setupEventListeners() {
     if (constructionFilter) {
         constructionFilter.addEventListener('change', (e) => {
             state.currentConstructionType = e.target.value;
+            filterShipgirls();
+        });
+    }
+
+    // Retrofit filter — boolean toggle. Depends on fullShipData (lazy-loaded);
+    // if pressed before that arrives, briefly disable the button until
+    // retrofitGidSet is built so the filter actually has data to work with.
+    const retrofitFilter = document.getElementById('retrofitFilter');
+    if (retrofitFilter) {
+        retrofitFilter.addEventListener('click', async () => {
+            const next = retrofitFilter.getAttribute('aria-pressed') !== 'true';
+            retrofitFilter.setAttribute('aria-pressed', String(next));
+            state.currentRetrofitFilter = next ? 'yes' : 'all';
+            if (next && !state.retrofitGidSet && state.fullShipDataPromise) {
+                retrofitFilter.disabled = true;
+                try { await state.fullShipDataPromise; } finally { retrofitFilter.disabled = false; }
+            }
             filterShipgirls();
         });
     }
@@ -272,7 +296,15 @@ function filterShipgirls() {
         // Construction type filter
         const matchesConstruction = state.currentConstructionType === 'all' || ship[state.currentConstructionType] === true;
 
-        return matchesSearch && matchesRarity && matchesShipType && matchesNationality && matchesConstruction;
+        // Retrofit filter — if the lookup Set isn't built yet (full data still
+        // loading), don't hide anything; the change-handler awaits before applying.
+        let matchesRetrofit = true;
+        if (state.currentRetrofitFilter !== 'all' && state.retrofitGidSet) {
+            const has = state.retrofitGidSet.has(ship.gid);
+            matchesRetrofit = state.currentRetrofitFilter === 'yes' ? has : !has;
+        }
+
+        return matchesSearch && matchesRarity && matchesShipType && matchesNationality && matchesConstruction && matchesRetrofit;
     });
 
     renderShipgirls();

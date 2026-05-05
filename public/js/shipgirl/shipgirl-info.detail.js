@@ -329,39 +329,49 @@ function renderStatsSection(ship, limitBreakOptions) {
 function renderSkillSection(ship) {
     if (!ship.skill || Object.keys(ship.skill).length === 0) return '';
 
-    // Get all skills including retrofit skill if exists
-    const allSkills = [];
+    // Two retrofit data patterns coexist in ship_info_data.json:
+    //   A) ship.skill entries with requirement === 'Retrofit' — post-retrofit versions
+    //      of base/LB skills (e.g. 안샨's 15210 replaces 11040 after retrofit).
+    //   B) ship.retrofit.skill_id — an EXTRA retrofit-only skill that's not in
+    //      ship.skill at all (e.g. 캐신's 2001).
+    // Old logic dropped pattern A entirely; this rebuild includes both.
+    //
+    // The upstream source data ALSO injects a phantom into ship.skill: when a
+    // ship has a transform-based retrofit, the transform record's ID (e.g. 508
+    // for 캐신, which is NOT a real skill_data_template ID) gets written into
+    // ship.skill[transformId] with requirement='Retrofit'. The WSL processor
+    // resolves it into ship.retrofit.skill_id but doesn't strip the phantom.
+    // Filter it out here so it doesn't render as "스킬 508 / 정보 없음".
+    const phantomTransformId =
+        ship.retrofit?.skill &&
+        ship.retrofit?.skill_id &&
+        ship.retrofit.skill !== ship.retrofit.skill_id
+            ? ship.retrofit.skill
+            : null;
 
-    // Add regular skills (ignore skills with "Retrofit" requirement)
-    Object.values(ship.skill).forEach(skill => {
-        if (skill.requirement !== 'Retrofit') {
-            allSkills.push({
-                id: skill.id,
-                parent: skill.parent,
-                requirement: skill.requirement || '없음',
-                isRetrofit: false,
-                weapon_true: skill.weapon_true || false
-            });
-        }
-    });
+    const allSkills = Object.values(ship.skill)
+        .filter(skill => skill.id !== phantomTransformId)
+        .map(skill => ({
+            id: skill.id,
+            parent: skill.parent,
+            requirement: skill.requirement === 'Retrofit' ? '개조' : (skill.requirement || '없음'),
+            isRetrofit: skill.requirement === 'Retrofit',
+            weapon_true: skill.weapon_true || false,
+        }));
 
-    // Add retrofit skill if it exists
-    if (ship.retrofit && ship.retrofit.skill_id) {
-        const retrofitSkillId = ship.retrofit.skill_id;
-        // Check if this skill isn't already in the regular skills
-        const alreadyExists = allSkills.some(s => s.id === retrofitSkillId);
-        if (!alreadyExists) {
-            // Find the retrofit skill to get weapon_true status
-            const retrofitSkillData = Object.values(ship.skill).find(s => s.id === retrofitSkillId);
-            allSkills.push({
-                id: retrofitSkillId,
-                parent: retrofitSkillId,
-                requirement: '개조',
-                isRetrofit: true,
-                weapon_true: retrofitSkillData?.weapon_true || false
-            });
-        }
+    if (ship.retrofit?.skill_id && !allSkills.some(s => s.id === ship.retrofit.skill_id)) {
+        allSkills.push({
+            id: ship.retrofit.skill_id,
+            parent: ship.retrofit.skill_id,
+            requirement: '개조',
+            isRetrofit: true,
+            weapon_true: false,
+        });
     }
+
+    // Group retrofit skills at the end so base/LB ordering stays intact.
+    // Array.prototype.sort is stable in all modern engines.
+    allSkills.sort((a, b) => Number(a.isRetrofit) - Number(b.isRetrofit));
 
     if (allSkills.length === 0) return '';
 
