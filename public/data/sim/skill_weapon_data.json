@@ -1171,74 +1171,6 @@
             ]
         }
     },
-    "30112": {
-        "requirement": "Limit Break 3",
-        "weapon_true": true,
-        "name": "하츠즈키",
-        "position": "전열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301890/shipyard.png",
-        "class_name": "아키즈키급",
-        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/30110.png",
-        "skill_id": 30112,
-        "aniEffect": {
-            "effect": "jineng",
-            "offset": [
-                0,
-                -2,
-                0
-            ]
-        },
-        "1": {
-            "effect_list": [
-                {
-                    "arg_list": {
-                        "emitter": "BattleBulletEmitter",
-                        "weapon_id": 170193
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetNil",
-                    "type": "BattleSkillFire"
-                },
-                {
-                    "arg_list": {
-                        "delay": 0.2,
-                        "emitter": "BattleBulletEmitter",
-                        "weapon_id": 170194
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetNil",
-                    "type": "BattleSkillFire"
-                }
-            ]
-        },
-        "10": {
-            "effect_list": [
-                {
-                    "arg_list": {
-                        "emitter": "BattleBulletEmitter",
-                        "weapon_id": 170193
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetNil",
-                    "type": "BattleSkillFire"
-                },
-                {
-                    "arg_list": {
-                        "delay": 0.2,
-                        "emitter": "BattleBulletEmitter",
-                        "weapon_id": 170194
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetNil",
-                    "type": "BattleSkillFire"
-                }
-            ]
-        }
-    },
     "13130": {
         "requirement": "Default",
         "weapon_true": true,
@@ -8504,12 +8436,12 @@
         }
     },
     "21011": {
-        "requirement": "Retrofit",
+        "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "이세",
-        "position": "후열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305030/shipyard.png",
-        "class_name": "이세급",
+        "name": "아덴트",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201030/shipyard.png",
+        "class_name": "A급",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
         "skill_id": 21011,
         "aniEffect": {
@@ -9094,81 +9026,6 @@
                     "targetAniEffect": "",
                     "target_choise": "TargetNil",
                     "type": "BattleSkillFire"
-                }
-            ]
-        }
-    },
-    "9412": {
-        "requirement": "Retrofit",
-        "weapon_true": true,
-        "attached_weapon_skill_id": [
-            {
-                "id": 9413,
-                "quota": 1,
-                "time": 8
-            }
-        ],
-        "name": "글로우웜",
-        "position": "전열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201140/shipyard.png",
-        "class_name": "G급",
-        "skill_id": 9412,
-        "aniEffect": "",
-        "1": {
-            "effect_list": [
-                {
-                    "arg_list": {
-                        "buff_id": 9414,
-                        "ship_tag_list": [
-                            "Rikka"
-                        ]
-                    },
-                    "target_choise": "TargetShipTag",
-                    "type": "BattleSkillAddBuff"
-                },
-                {
-                    "arg_list": {
-                        "attack_attribute_convert": {
-                            "A": 80,
-                            "B": 400,
-                            "attr_type": "fleetGS"
-                        },
-                        "emitter": "BattleBulletEmitter",
-                        "weapon_id": 840004
-                    },
-                    "target_choise": "TargetNil",
-                    "type": "BattleSkillFire",
-                    "quota": 1,
-                    "time": 8
-                }
-            ]
-        },
-        "10": {
-            "effect_list": [
-                {
-                    "arg_list": {
-                        "buff_id": 9414,
-                        "ship_tag_list": [
-                            "Rikka"
-                        ]
-                    },
-                    "target_choise": "TargetShipTag",
-                    "type": "BattleSkillAddBuff"
-                },
-                {
-                    "arg_list": {
-                        "attack_attribute_convert": {
-                            "A": 80,
-                            "B": 400,
-                            "attr_type": "fleetGS"
-                        },
-                        "emitter": "BattleBulletEmitter",
-                        "weapon_id": 840004
-                    },
-                    "target_choise": "TargetNil",
-                    "type": "BattleSkillFire",
-                    "quota": 1,
-                    "time": 8
                 }
             ]
         }
@@ -11283,12 +11140,12 @@
         }
     },
     "21111": {
-        "requirement": "Retrofit",
+        "requirement": "Limit Break 1",
         "weapon_true": true,
-        "name": "휴가",
-        "position": "후열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305040/shipyard.png",
-        "class_name": "이세급",
+        "name": "에이잭스",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202030/shipyard.png",
+        "class_name": "리엔더급",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20100.png",
         "skill_id": 21111,
         "aniEffect": {
@@ -16664,108 +16521,6 @@
             ]
         }
     },
-    "15512": {
-        "requirement": "Retrofit",
-        "weapon_true": true,
-        "attached_weapon_skill_id": [
-            {
-                "id": 15513
-            }
-        ],
-        "name": "아야나미",
-        "position": "전열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301050/shipyard.png",
-        "class_name": "특II형 아야나미급",
-        "skill_id": 15512,
-        "aniEffect": {
-            "effect": "jineng",
-            "offset": [
-                0,
-                -2,
-                0
-            ]
-        },
-        "1": {
-            "effect_list": [
-                {
-                    "arg_list": {
-                        "buff_id": 15513
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetSelf",
-                    "type": "BattleSkillAddBuff"
-                },
-                {
-                    "arg_list": {
-                        "buff_id": 15514
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetSelf",
-                    "type": "BattleSkillAddBuff"
-                },
-                {
-                    "arg_list": {
-                        "buff_id": 15515
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetSelf",
-                    "type": "BattleSkillAddBuff"
-                },
-                {
-                    "arg_list": {
-                        "weapon_id": 62031
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetHarmRandomByWeight",
-                    "type": "BattleSkillFire"
-                }
-            ]
-        },
-        "10": {
-            "effect_list": [
-                {
-                    "arg_list": {
-                        "buff_id": 15513
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetSelf",
-                    "type": "BattleSkillAddBuff"
-                },
-                {
-                    "arg_list": {
-                        "buff_id": 15514
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetSelf",
-                    "type": "BattleSkillAddBuff"
-                },
-                {
-                    "arg_list": {
-                        "buff_id": 15515
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetSelf",
-                    "type": "BattleSkillAddBuff"
-                },
-                {
-                    "arg_list": {
-                        "weapon_id": 62040
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetHarmRandomByWeight",
-                    "type": "BattleSkillFire"
-                }
-            ]
-        }
-    },
     "22071": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
@@ -18871,6 +18626,74 @@
                         "delay": 0.2,
                         "emitter": "BattleBulletEmitter",
                         "weapon_id": 170192
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "30112": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "하츠즈키",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/301890/shipyard.png",
+        "class_name": "아키즈키급",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/30110.png",
+        "skill_id": 30112,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170193
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.2,
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170194
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170193
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.2,
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 170194
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",
@@ -26427,52 +26250,6 @@
             ]
         }
     },
-    "23312": {
-        "requirement": "Limit Break 3",
-        "weapon_true": true,
-        "name": "U-1206",
-        "position": "잠수",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408120/shipyard.png",
-        "class_name": "ⅦC형",
-        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20300.png",
-        "skill_id": 23312,
-        "aniEffect": {
-            "effect": "jineng",
-            "offset": [
-                0,
-                -2,
-                0
-            ]
-        },
-        "1": {
-            "effect_list": [
-                {
-                    "arg_list": {
-                        "emitter": "BattleBulletEmitter",
-                        "weapon_id": 73312
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetNil",
-                    "type": "BattleSkillFire"
-                }
-            ]
-        },
-        "10": {
-            "effect_list": [
-                {
-                    "arg_list": {
-                        "emitter": "BattleBulletEmitter",
-                        "weapon_id": 73312
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetNil",
-                    "type": "BattleSkillFire"
-                }
-            ]
-        }
-    },
     "23011": {
         "requirement": "Limit Break 1",
         "weapon_true": true,
@@ -26971,52 +26748,6 @@
                     "arg_list": {
                         "emitter": "BattleBulletEmitter",
                         "weapon_id": 79202
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetNil",
-                    "type": "BattleSkillFire"
-                }
-            ]
-        }
-    },
-    "23612": {
-        "requirement": "Limit Break 3",
-        "weapon_true": true,
-        "name": "U-31",
-        "position": "잠수",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408130/shipyard.png",
-        "class_name": "VIIA형",
-        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20300.png",
-        "skill_id": 23612,
-        "aniEffect": {
-            "effect": "jineng",
-            "offset": [
-                0,
-                -2,
-                0
-            ]
-        },
-        "1": {
-            "effect_list": [
-                {
-                    "arg_list": {
-                        "emitter": "BattleBulletEmitter",
-                        "weapon_id": 73612
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetNil",
-                    "type": "BattleSkillFire"
-                }
-            ]
-        },
-        "10": {
-            "effect_list": [
-                {
-                    "arg_list": {
-                        "emitter": "BattleBulletEmitter",
-                        "weapon_id": 73612
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",
@@ -28060,52 +27791,6 @@
                     "arg_list": {
                         "emitter": "BattleBulletEmitter",
                         "weapon_id": 73112
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetNil",
-                    "type": "BattleSkillFire"
-                }
-            ]
-        }
-    },
-    "24011": {
-        "requirement": "Limit Break 1",
-        "weapon_true": true,
-        "name": "타이위안",
-        "position": "전열",
-        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501040/shipyard.png",
-        "class_name": "안샨급",
-        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
-        "skill_id": 24011,
-        "aniEffect": {
-            "effect": "jineng",
-            "offset": [
-                0,
-                -2,
-                0
-            ]
-        },
-        "1": {
-            "effect_list": [
-                {
-                    "arg_list": {
-                        "emitter": "BattleBulletEmitter",
-                        "weapon_id": 74011
-                    },
-                    "casterAniEffect": "",
-                    "targetAniEffect": "",
-                    "target_choise": "TargetNil",
-                    "type": "BattleSkillFire"
-                }
-            ]
-        },
-        "10": {
-            "effect_list": [
-                {
-                    "arg_list": {
-                        "emitter": "BattleBulletEmitter",
-                        "weapon_id": 74011
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",
@@ -31509,6 +31194,52 @@
             ]
         }
     },
+    "23312": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "U-1206",
+        "position": "잠수",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408120/shipyard.png",
+        "class_name": "ⅦC형",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20300.png",
+        "skill_id": 23312,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 73312
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 73312
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
     "12180": {
         "requirement": "Default",
         "weapon_true": true,
@@ -32281,6 +32012,52 @@
                     "arg_list": {
                         "emitter": "BattleBulletEmitter",
                         "weapon_id": 73611
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "23612": {
+        "requirement": "Limit Break 3",
+        "weapon_true": true,
+        "name": "U-31",
+        "position": "잠수",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/408130/shipyard.png",
+        "class_name": "VIIA형",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20300.png",
+        "skill_id": 23612,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 73612
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 73612
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",
@@ -33555,6 +33332,52 @@
                 {
                     "arg_list": {
                         "weapon_id": 168500
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
+    },
+    "24011": {
+        "requirement": "Limit Break 1",
+        "weapon_true": true,
+        "name": "타이위안",
+        "position": "전열",
+        "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/501040/shipyard.png",
+        "class_name": "안샨급",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skill/20000.png",
+        "skill_id": 24011,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 74011
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "emitter": "BattleBulletEmitter",
+                        "weapon_id": 74011
                     },
                     "casterAniEffect": "",
                     "targetAniEffect": "",

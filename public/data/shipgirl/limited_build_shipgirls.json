@@ -36,6 +36,12 @@
                     "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705080/shipyard.png"
                 }
             }
+        },
+        {
+            "build_id": 12,
+            "build_name": "기간 한정",
+            "banner_type": 2,
+            "shipgirls": {}
         }
     ]
 }
