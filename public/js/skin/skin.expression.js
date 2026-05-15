@@ -3,6 +3,10 @@
  * Expression overlay logic and image gallery rendering for the skin detail viewer.
  * Handles face-expression selectors, base+overlay compositing, lightbox navigation,
  * and thumbnail display. Part of the skin module group; wired by skin.detail.viewer.js.
+ *
+ * The base painting (output_expressions/painting.png) has a transparent hole where
+ * the face sits, so it must never be shown alone — the lightbox canvas-composites
+ * the live face overlay onto it before display.
  */
 import { hideElement, showElement, createImgElement, createIcon, lockBodyScroll, unlockBodyScroll } from '../utils.js';
 
@@ -10,6 +14,7 @@ const state = {
     expressionManifest: {},
     currentLightboxImages: [],
     currentLightboxIndex: 0,
+    lightboxGeneration: 0,
     lightboxModal: null,
     lightboxImage: null,
     lightboxCaption: null,
@@ -71,13 +76,28 @@ function closeLightbox() {
     unlockBodyScroll();
 }
 
-function updateLightboxContent() {
+/**
+ * Update the lightbox to show the current image. For face-overlay gallery
+ * entries the base painting has a transparent face hole, so the live overlay is
+ * canvas-composited onto it before display — the bare `painting.png` is never
+ * shown. Async + generation-guarded so fast navigation can't paint a stale image.
+ */
+async function updateLightboxContent() {
     if (state.currentLightboxImages.length === 0) return;
+    const gen = ++state.lightboxGeneration;
     const currentImg = state.currentLightboxImages[state.currentLightboxIndex];
-    state.lightboxImage.src = currentImg.src;
+
     state.lightboxImage.alt = currentImg.alt;
     state.lightboxCaption.textContent = currentImg.caption || '';
     state.lightboxCounter.textContent = `${state.currentLightboxIndex + 1} / ${state.currentLightboxImages.length}`;
+
+    let src = currentImg.src;
+    if (currentImg.overlay) {
+        const composite = await compositeOverlayContainer(currentImg.overlay);
+        if (gen !== state.lightboxGeneration) return; // superseded by newer navigation
+        if (composite) src = composite;
+    }
+    state.lightboxImage.src = src;
 }
 
 /**
@@ -150,8 +170,7 @@ function renderImageGallery(skin, container) {
         const baseImageUrl = `${baseDir}/painting.png`;
         const defaultFaceUrl = `${baseDir}/painting_face_${mainDefaultFace}.png`;
 
-        topNodes.push(buildExpressionSelector(manifestData.faces, mainDefaultFace, baseDir));
-        topNodes.push(buildOverlayContainer({
+        const overlayNode = buildOverlayContainer({
             baseName: 'painting',
             baseImageUrl,
             overlayUrl: defaultFaceUrl,
@@ -159,8 +178,12 @@ function renderImageGallery(skin, container) {
             applyOverlayStyle,
             baseClass: 'base-image gallery-top-banner',
             alt: '전체 일러스트'
-        }));
-        galleryImages.push({ src: baseImageUrl, alt: '전체 일러스트', caption: '전체 일러스트' });
+        });
+        topNodes.push(buildExpressionSelector(manifestData.faces, mainDefaultFace, baseDir));
+        topNodes.push(overlayNode);
+        // `src` (painting.png) has a transparent face hole — the lightbox
+        // composites `overlay`'s live face onto it instead of showing it bare.
+        galleryImages.push({ src: baseImageUrl, alt: '전체 일러스트', caption: '전체 일러스트', overlay: overlayNode });
     } else if (skin['전체 일러']) {
         topNodes.push(createImgElement(skin['전체 일러'], '전체 일러스트', { className: 'gallery-top-banner' }));
         galleryImages.push({ src: skin['전체 일러'], alt: '전체 일러스트', caption: '전체 일러스트' });
@@ -180,7 +203,7 @@ function renderImageGallery(skin, container) {
         const zoomDefaultFace = (mainDefaultFace && zoomedManifest.faces.includes(mainDefaultFace)) ? mainDefaultFace : getDefaultFace(zoomedManifest.faces);
         const defaultFaceUrl = `${baseDir}/painting_n_face_${zoomDefaultFace}.png`;
 
-        bottomLeft.appendChild(buildOverlayContainer({
+        const overlayNode = buildOverlayContainer({
             baseName: 'painting_n',
             baseImageUrl,
             overlayUrl: defaultFaceUrl,
@@ -188,8 +211,10 @@ function renderImageGallery(skin, container) {
             applyOverlayStyle,
             baseClass: 'base-image',
             alt: '확대 일러스트'
-        }));
-        galleryImages.push({ src: baseImageUrl, alt: '확대 일러스트', caption: '확대 일러스트' });
+        });
+        bottomLeft.appendChild(overlayNode);
+        // `src` (painting_n.png) has a transparent face hole — composited in the lightbox.
+        galleryImages.push({ src: baseImageUrl, alt: '확대 일러스트', caption: '확대 일러스트', overlay: overlayNode });
     } else if (skin['확대 일러']) {
         bottomLeft.appendChild(createImgElement(skin['확대 일러'], '확대 일러스트'));
         galleryImages.push({ src: skin['확대 일러'], alt: '확대 일러스트', caption: '확대 일러스트' });
@@ -337,53 +362,51 @@ function attachGalleryHandlers(container, galleryImages, baseDir) {
         });
     });
 
-    // Lightbox Triggers
+    // Lightbox Triggers — overlay-backed entries carry an `overlay` ref and are
+    // composited on display by updateLightboxContent(), so one gallery array is enough.
     const images = container.querySelectorAll('img:not(.face-overlay):not(.expression-thumb)');
     images.forEach((img, index) => {
         img.style.cursor = 'pointer';
-        img.addEventListener('click', () => {
-            const overlayContainer = img.closest('.face-overlay-container');
-            if (overlayContainer) {
-                const composite = buildComposite(overlayContainer);
-                if (composite) {
-                    const newGallery = [...galleryImages];
-                    newGallery[index] = composite;
-                    openLightbox(newGallery, index);
-                    return;
-                }
-            }
-            openLightbox(galleryImages, index);
-        });
+        img.addEventListener('click', () => openLightbox(galleryImages, index));
     });
 }
 
 /**
- * Canvas-composite the base image and face overlay from a face-overlay-container element.
- * Returns null if base image isn't loaded or canvas throws (CORS).
- * @returns {{ src, alt, caption } | null}
+ * Canvas-composite a face-overlay-container's base painting + live face overlay
+ * into a PNG data URL. The base painting has a transparent face hole, so this is
+ * the only correct way to show it standalone (i.e. in the lightbox).
+ *
+ * Awaits `decode()` on both images first, so a not-yet-loaded base (e.g. lazy
+ * zoomed art) composites correctly instead of falling back to the holed bare image.
+ * @param {HTMLElement} container - a `.face-overlay-container` element
+ * @returns {Promise<string|null>} PNG data URL, or null if compositing fails
  */
-function buildComposite(container) {
+async function compositeOverlayContainer(container) {
     const baseImg = container.querySelector('.base-image');
     const overlayImg = container.querySelector('.face-overlay');
-    if (!baseImg || !baseImg.complete) return null;
-
-    const canvas = document.createElement('canvas');
-    canvas.width = baseImg.naturalWidth;
-    canvas.height = baseImg.naturalHeight;
-    const ctx = canvas.getContext('2d');
+    if (!baseImg) return null;
 
     try {
+        await baseImg.decode();
+        if (overlayImg) await overlayImg.decode().catch(() => {});
+
+        const canvas = document.createElement('canvas');
+        canvas.width = baseImg.naturalWidth;
+        canvas.height = baseImg.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        if (!ctx || !canvas.width || !canvas.height) return null;
+
         ctx.drawImage(baseImg, 0, 0);
-        if (overlayImg && overlayImg.complete && overlayImg.style.opacity !== '0') {
+        if (overlayImg && overlayImg.naturalWidth > 0 && overlayImg.style.opacity !== '0') {
             const left = parseFloat(overlayImg.style.left) / 100 * canvas.width;
             const top = parseFloat(overlayImg.style.top) / 100 * canvas.height;
             const width = parseFloat(overlayImg.style.width) / 100 * canvas.width;
             const height = parseFloat(overlayImg.style.height) / 100 * canvas.height;
             ctx.drawImage(overlayImg, left, top, width, height);
         }
-        return { src: canvas.toDataURL('image/png'), alt: baseImg.alt, caption: baseImg.alt };
+        return canvas.toDataURL('image/png');
     } catch (e) {
-        console.warn('Canvas composite failed (CORS)', e);
+        console.warn('Expression composite failed', e);
         return null;
     }
 }

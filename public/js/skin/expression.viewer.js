@@ -4,6 +4,9 @@
  * Shows base-image + face-overlay composites for characters whose expressions
  * are not shown in the skin detail page; includes lightbox with canvas composite.
  * Part of the skin module group.
+ *
+ * The base painting has a transparent face hole, so the lightbox always shows a
+ * canvas-composited base+overlay image — never the bare painting.
  */
 import {
     debounce,
@@ -41,6 +44,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         lightboxImage: document.getElementById('lightbox-image'),
         lightboxCaption: document.querySelector('.lightbox-caption')
     };
+
+    // Bumped on every lightbox open; a stale async composite checks it before
+    // painting, so a reopen/close can't be overwritten by an earlier composite.
+    let lightboxToken = 0;
 
     await init();
 
@@ -414,10 +421,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /**
-     * Open the lightbox with a canvas-composited version of the current base + face overlay.
-     * Falls back to the raw base URL if the base image isn't loaded or canvas fails (CORS).
+     * Open the lightbox with a canvas-composited base painting + face overlay.
+     *
+     * The base painting has a transparent face hole (output_expressions pipeline),
+     * so it must never be shown bare. We `await decode()` on both images, then
+     * composite — this also covers the case where the base wasn't loaded yet
+     * (the old code fell back to the holed `base_url` there). A generation token
+     * guards against a stale composite landing after the user reopened the box.
      */
-    function openLightbox() {
+    async function openLightbox() {
         const item = state.selectedCharacter;
         if (!item) return;
 
@@ -428,39 +440,49 @@ document.addEventListener('DOMContentLoaded', async () => {
         const baseImg = container?.querySelector('.base-image');
         const overlayImg = container?.querySelector('.face-overlay');
 
-        if (baseImg && baseImg.complete) {
-            const canvas = document.createElement('canvas');
-            canvas.width = baseImg.naturalWidth;
-            canvas.height = baseImg.naturalHeight;
-            const ctx = canvas.getContext('2d');
-
-            try {
-                if (!ctx || !canvas.width || !canvas.height) throw new Error('Canvas is not ready');
-                ctx.drawImage(baseImg, 0, 0);
-
-                if (overlayImg && overlayImg.complete) {
-                    const [x, y, w, h] = currentData.box || [0, 0, 0, 0];
-                    const [imgW, imgH] = currentData.size || [1, 1];
-                    const left = (x / imgW) * canvas.width;
-                    const top = (y / imgH) * canvas.height;
-                    const width = (w / imgW) * canvas.width;
-                    const height = (h / imgH) * canvas.height;
-                    ctx.drawImage(overlayImg, left, top, width, height);
-                }
-
-                elements.lightboxImage.src = canvas.toDataURL('image/png');
-            } catch (e) {
-                console.warn('Canvas composite failed', e);
-                elements.lightboxImage.src = currentData.base_url;
-            }
-        } else {
-            elements.lightboxImage.src = currentData.base_url;
-        }
-
+        const token = ++lightboxToken;
         elements.lightboxCaption.textContent = `${item.name} - ${state.currentPaintingType === 'painting' ? '기본 일러' : '확대 일러'}`;
         openModal('lightbox-modal', {
             onOpen: modal => modal.setAttribute('aria-hidden', 'false')
         });
+
+        const composited = await compositeExpression(baseImg, overlayImg, currentData);
+        if (token !== lightboxToken) return; // user reopened/closed before composite finished
+        // Fall back to the bare base only if compositing genuinely failed (rare —
+        // e.g. an overlay network error). decode() removes the not-loaded-yet case.
+        elements.lightboxImage.src = composited || currentData.base_url;
+    }
+
+    /**
+     * Canvas-composite a base painting + face overlay into a PNG data URL.
+     * Awaits `decode()` on both images so an unloaded base still composites.
+     * @returns {Promise<string|null>} data URL, or null if compositing fails
+     */
+    async function compositeExpression(baseImg, overlayImg, data) {
+        if (!baseImg) return null;
+        try {
+            await baseImg.decode();
+            if (overlayImg) await overlayImg.decode().catch(() => {});
+
+            const canvas = document.createElement('canvas');
+            canvas.width = baseImg.naturalWidth;
+            canvas.height = baseImg.naturalHeight;
+            const ctx = canvas.getContext('2d');
+            if (!ctx || !canvas.width || !canvas.height) return null;
+
+            ctx.drawImage(baseImg, 0, 0);
+            if (overlayImg && overlayImg.naturalWidth > 0) {
+                const [x, y, w, h] = data.box || [0, 0, 0, 0];
+                const [imgW, imgH] = data.size || [1, 1];
+                ctx.drawImage(overlayImg,
+                    (x / imgW) * canvas.width, (y / imgH) * canvas.height,
+                    (w / imgW) * canvas.width, (h / imgH) * canvas.height);
+            }
+            return canvas.toDataURL('image/png');
+        } catch (e) {
+            console.warn('Expression composite failed', e);
+            return null;
+        }
     }
 
     function updateURL(id) {
