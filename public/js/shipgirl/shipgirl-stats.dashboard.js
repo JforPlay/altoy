@@ -52,7 +52,27 @@ function createChart(key, canvas, config) {
 
     canvas.hidden = false;
     canvas.closest('.chart-container')?.classList.remove('chart-empty');
-    charts[key] = new window.Chart(canvas, config);
+    try {
+        charts[key] = new window.Chart(canvas, config);
+    } catch (err) {
+        console.error(`Chart "${key}" failed to render:`, err);
+        canvas.hidden = true;
+        canvas.closest('.chart-container')?.classList.add('chart-empty');
+    }
+}
+
+// Horizontal bar charts size their container to the category count so that
+// y-axis labels never overlap (a fixed height clips them — see spec #3).
+const BAR_ROW_PX = 28;
+const BAR_AXIS_PX = 44;
+const BAR_MIN_PX = 180;
+const BAR_MAX_PX = 560;
+
+function _sizeBarContainer(canvas, count) {
+    const container = canvas.closest('.chart-container');
+    if (!container) return;
+    const px = Math.max(BAR_MIN_PX, Math.min(BAR_MAX_PX, count * BAR_ROW_PX + BAR_AXIS_PX));
+    container.style.height = `${px}px`;
 }
 
 function getFilteredData() {
@@ -94,6 +114,7 @@ export function renderShipDashboard() {
     _renderShipTypeChart(data);
     _renderNationalityChart(data);
     renderTopStatChart();
+    _renderRarityTypeHeatmap(data);
 }
 
 function _renderShipSummary(data) {
@@ -124,6 +145,7 @@ function _renderShipTypeChart(data) {
 
     const counts = countBy(data, d => getShipTypeName(d.ship.type));
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    _sizeBarContainer(canvas, sorted.length);
     const colors = getChartColors();
 
     createChart('shipType', canvas, {
@@ -143,6 +165,7 @@ function _renderNationalityChart(data) {
 
     const counts = countBy(data, d => getNationalityName(d.ship.nationality));
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 15);
+    _sizeBarContainer(canvas, sorted.length);
     const colors = getChartColors();
 
     createChart('nationality', canvas, {
@@ -175,6 +198,7 @@ export function renderTopStatChart() {
         .sort((a, b) => (b.combat[statKey] || 0) - (a.combat[statKey] || 0))
         .slice(0, 10)
         .reverse();
+    _sizeBarContainer(canvas, sorted.length);
 
     createChart('topStat', canvas, {
         type: 'bar',
@@ -197,6 +221,95 @@ export function renderTopStatChart() {
     });
 }
 
+/**
+ * Render the rarity × ship-type heatmap. Cell color intensity = shipgirl count.
+ * Uses the chartjs-chart-matrix plugin (CDN). Respects the shared filters.
+ */
+function _renderRarityTypeHeatmap(data) {
+    const canvas = document.getElementById('rarityTypeHeatmap');
+    if (!canvas) return;
+    destroyChart('rarityTypeHeatmap');
+
+    const rarities = ['N', 'R', 'SR', 'SSR', 'UR'];
+
+    // Ship types present, ordered by overall count (busiest first).
+    const typeTotals = new Map();
+    for (const d of data) {
+        const t = getShipTypeName(d.ship.type);
+        typeTotals.set(t, (typeTotals.get(t) || 0) + 1);
+    }
+    const types = [...typeTotals.keys()].sort((a, b) => typeTotals.get(b) - typeTotals.get(a));
+
+    // Count per (rarity, type) cell.
+    const counts = {};
+    for (const d of data) {
+        const key = `${d.ship.rarity}|${getShipTypeName(d.ship.type)}`;
+        counts[key] = (counts[key] || 0) + 1;
+    }
+
+    let maxV = 0;
+    const matrixData = [];
+    for (const r of rarities) {
+        for (const t of types) {
+            const v = counts[`${r}|${t}`] || 0;
+            if (v > maxV) maxV = v;
+            matrixData.push({ x: t, y: r, v });
+        }
+    }
+
+    const colors = getChartColors();
+    createChart('rarityTypeHeatmap', canvas, {
+        type: 'matrix',
+        data: {
+            datasets: [{
+                label: '등급 × 함종',
+                data: matrixData,
+                backgroundColor: (ctx) => {
+                    const v = ctx.raw?.v || 0;
+                    if (!v) return colors.gridColor;
+                    const alpha = 0.15 + 0.85 * (v / (maxV || 1));
+                    return `rgba(91,155,213,${alpha.toFixed(3)})`;
+                },
+                borderColor: colors.gridColor,
+                borderWidth: 1,
+                width: (ctx) => {
+                    const area = ctx.chart.chartArea;
+                    return area ? area.width / types.length - 2 : 16;
+                },
+                height: (ctx) => {
+                    const area = ctx.chart.chartArea;
+                    return area ? area.height / rarities.length - 2 : 16;
+                },
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        title: () => '',
+                        label: (ctx) => ` ${ctx.raw.y} · ${ctx.raw.x}: ${ctx.raw.v}명`,
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    type: 'category', labels: types, offset: true,
+                    grid: { display: false },
+                    ticks: { color: colors.textSecondary, font: { size: 10 }, maxRotation: 45 },
+                },
+                y: {
+                    type: 'category', labels: rarities, offset: true,
+                    grid: { display: false },
+                    ticks: { color: colors.textSecondary, font: { size: 11 } },
+                },
+            },
+        },
+    });
+}
+
 // ===== Skin Info Dashboard =====
 /**
  * Render all skin-info dashboard charts: summary totals, skin-type doughnut,
@@ -211,6 +324,7 @@ export function renderSkinDashboard() {
     _renderSkinTypeChart(data);
     _renderTimelineChart(data);
     _renderTrendChart(data);
+    _renderSkinDensityChart(data);
 }
 
 function _renderSkinSummary(data) {
@@ -287,6 +401,7 @@ function _renderTopSkinChart(data) {
     destroyChart('topSkin');
 
     const sorted = [...data].sort((a, b) => b.skin.total - a.skin.total).slice(0, 10).reverse();
+    _sizeBarContainer(canvas, sorted.length);
     const colors = getChartColors();
 
     createChart('topSkin', canvas, {
@@ -312,16 +427,51 @@ function _renderSkinTypeChart(data) {
         }
     }
 
-    const sorted = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]).slice(0, 15);
+    const tree = Object.entries(typeCounts)
+        .map(([type, count]) => ({ type, count }))
+        .sort((a, b) => b.count - a.count);
+    if (tree.length === 0) return;
+
     const colors = getChartColors();
 
+    // Treemap cell labels are white; restrict to palette colors dark enough
+    // for white text to stay legible (drops the light gold/blue/green entries).
+    const treemapPalette = ['#5B9BD5', '#ED7D31', '#70AD47', '#4472C4', '#FF6B6B', '#47B39C', '#C55A89'];
+
     createChart('skinType', canvas, {
-        type: 'bar',
+        type: 'treemap',
         data: {
-            labels: sorted.map(e => e[0]),
-            datasets: [{ data: sorted.map(e => e[1]), backgroundColor: colors.palette, borderRadius: 4 }],
+            datasets: [{
+                tree,
+                key: 'count',
+                groups: ['type'],
+                spacing: 1,
+                borderWidth: 0,
+                backgroundColor: (ctx) => {
+                    if (ctx.type !== 'data') return 'transparent';
+                    return treemapPalette[ctx.dataIndex % treemapPalette.length];
+                },
+                labels: {
+                    display: true,
+                    color: '#ffffff',
+                    font: { size: 11, weight: 700 },
+                    formatter: (ctx) => [String(ctx.raw.g), `${ctx.raw.v}개`],
+                },
+            }],
         },
-        options: defaultChartOptions(true),
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        title: (items) => String(items[0]?.raw?.g ?? ''),
+                        label: (ctx) => ` ${ctx.raw.v}개`,
+                    },
+                },
+            },
+        },
     });
 }
 
@@ -336,6 +486,7 @@ function _renderTimelineChart(data) {
         const normalizedName = normalizeRomanNumerals(entry.ship.name);
         const skins = state.skinByShip.get(normalizedName) || [];
         for (const skin of skins) {
+            if (state.skinFilterPredicate && !state.skinFilterPredicate(skin)) continue;
             const skinId = String(skin['클뜯 id']);
             const dateStr = (state.skinReleaseDates || {})[skinId];
             if (!dateStr) continue;
@@ -384,6 +535,7 @@ function _renderTrendChart(data) {
         const normalizedName = normalizeRomanNumerals(entry.ship.name);
         const skins = state.skinByShip.get(normalizedName) || [];
         for (const skin of skins) {
+            if (state.skinFilterPredicate && !state.skinFilterPredicate(skin)) continue;
             const dateStr = (state.skinReleaseDates || {})[String(skin['클뜯 id'])];
             if (!dateStr) continue;
             const tags = (skin['스킨 태그'] || '').split(',').map(t => t.trim());
@@ -446,6 +598,104 @@ function _renderTrendChart(data) {
             scales: {
                 x: { ticks: { color: colors.textSecondary, font: { size: 10 }, maxRotation: 45, autoSkip: true, maxTicksLimit: 24 }, grid: { display: false } },
                 y: { ticks: { color: colors.textSecondary, font: { size: 11 } }, grid: { color: colors.gridColor } },
+            },
+        },
+    });
+}
+
+/**
+ * Render the skin-recency bubble chart: X = days since last skin, Y = total
+ * skins. Shipgirls sharing the same point are grouped into one bubble whose
+ * radius grows with the group size; bubbles are colored/outlined by rarity.
+ */
+function _renderSkinDensityChart(data) {
+    const canvas = document.getElementById('skinDensityChart');
+    if (!canvas) return;
+    destroyChart('skinDensity');
+
+    const rarities = ['N', 'R', 'SR', 'SSR', 'UR'];
+    const colors = getChartColors();
+
+    // Group shipgirls landing on the same (경과일, 스킨 수) point per rarity so a
+    // cluster renders as one larger bubble instead of overplotted dots.
+    const cellsByRarity = {};
+    for (const r of rarities) cellsByRarity[r] = new Map();
+    for (const d of data) {
+        const days = d.skin.daysSinceLast;
+        if (days == null) continue;
+        const cells = cellsByRarity[d.ship.rarity];
+        if (!cells) continue;
+        const key = `${days}|${d.skin.total}`;
+        const cell = cells.get(key);
+        if (cell) {
+            cell.count++;
+            if (cell.names.length < 8) cell.names.push(d.ship.name);
+        } else {
+            cells.set(key, { x: days, y: d.skin.total, count: 1, names: [d.ship.name] });
+        }
+    }
+
+    if (rarities.every(r => cellsByRarity[r].size === 0)) return;
+
+    // Bubble radius grows with the number of shipgirls sharing the point.
+    const radiusFor = (count) => 3 + Math.sqrt(count - 1) * 2.4;
+
+    const datasets = rarities.map(r => ({
+        label: r,
+        data: [...cellsByRarity[r].values()].map(c => ({
+            x: c.x, y: c.y, r: radiusFor(c.count), count: c.count, names: c.names,
+        })),
+        backgroundColor: `${colors.rarityColors[r]}55`,
+        borderColor: colors.rarityColors[r],
+        borderWidth: 1,
+        hoverBorderWidth: 2,
+    }));
+
+    createChart('skinDensity', canvas, {
+        type: 'bubble',
+        data: { datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: '보유 스킨 수 × 마지막 스킨 경과일',
+                    color: colors.textSecondary,
+                    font: { size: 12, weight: 700 },
+                    padding: { bottom: 4 },
+                },
+                legend: { labels: { color: colors.text, font: { size: 11 }, usePointStyle: true } },
+                tooltip: {
+                    callbacks: {
+                        label: (ctx) => {
+                            const { x, y, count } = ctx.raw;
+                            return count === 1
+                                ? ` ${ctx.raw.names[0]}: 스킨 ${y}개 · ${x}일 경과`
+                                : ` 스킨 ${y}개 · ${x}일 경과 · 함순이 ${count}명`;
+                        },
+                        afterLabel: (ctx) => {
+                            const { count, names } = ctx.raw;
+                            if (count === 1) return '';
+                            return count > names.length
+                                ? `${names.join(', ')} 외 ${count - names.length}명`
+                                : names.join(', ');
+                        },
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    min: 0,
+                    title: { display: true, text: '마지막 스킨 경과일', color: colors.textSecondary, font: { size: 10 } },
+                    grid: { color: colors.gridColor },
+                    ticks: { color: colors.textSecondary, font: { size: 10 } },
+                },
+                y: {
+                    title: { display: true, text: '보유 스킨 수', color: colors.textSecondary, font: { size: 10 } },
+                    grid: { color: colors.gridColor },
+                    ticks: { color: colors.textSecondary, font: { size: 10 }, precision: 0 },
+                },
             },
         },
     });

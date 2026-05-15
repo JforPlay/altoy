@@ -112,12 +112,30 @@ function parseSkinTags(tagStr) {
 }
 
 /**
+ * Classify a skin into its gimmick label(s). A skin can carry several
+ * (e.g. 듀얼 + L2D). Returns '일반' when it has no special gimmick.
+ *
+ * @param {Object} skin - a skin entry from skin_voiceline_data_subset
+ * @returns {Set<string>}
+ */
+export function classifyGimmick(skin) {
+    const tags = parseSkinTags(skin['스킨 태그']);
+    const result = new Set();
+    if (tags.includes('L2D+'))      result.add('L2D+');
+    else if (tags.includes('L2D'))  result.add('L2D');
+    if (tags.includes('듀얼'))      result.add('듀얼');
+    if (tags.includes('쁘띠모션')) result.add('쁘띠모션');
+    if (result.size === 0)          result.add('일반');
+    return result;
+}
+
+/**
  * Compute skin aggregation data for a single shipgirl by name.
  *
  * @param {string} shipName - Normalized ship name
  * @returns {Object} Skin aggregation object
  */
-function computeSkinStats(shipName) {
+function computeSkinStats(shipName, predicate) {
     const normalizedName = normalizeRomanNumerals(shipName);
     const skins = state.skinByShip.get(normalizedName) || [];
 
@@ -132,6 +150,7 @@ function computeSkinStats(shipName) {
     const skinTypes  = {};
 
     for (const skin of skins) {
+        if (predicate && !predicate(skin)) continue;
         total++;
 
         // Tag counting — check L2D+ BEFORE L2D since L2D+ contains "L2D" as a substring
@@ -229,15 +248,18 @@ function computeAll() {
         state.skinByShip.get(key).push(skin);
     }
 
-    // 2. Build shipStats array
+    // 2. Build shipStats array. skinFull is the unfiltered aggregate (never
+    //    mutated); skin is the current view, swapped by recomputeSkinStats.
     state.shipStats = [];
     for (const ship of state.shipInfoData) {
         if (!ship.name || !ship.rarity) continue;
 
+        const skinFull = computeSkinStats(ship.name);
         const entry = {
             ship,
-            combat: computeShipStats(ship),
-            skin:   computeSkinStats(ship.name),
+            combat:   computeShipStats(ship),
+            skin:     skinFull,
+            skinFull,
         };
         state.shipStats.push(entry);
     }
@@ -346,5 +368,32 @@ export function getAttrIcon(statName) {
  */
 export function getShipIconUrl(ship) {
     return ship?.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
+}
+
+/**
+ * Distinct non-null skin types (스킨 타입 - 한글) across all skins, ko-sorted.
+ * @returns {string[]}
+ */
+export function getSkinTypeList() {
+    const set = new Set();
+    for (const skin of state.skinSubsetData) {
+        const t = skin['스킨 타입 - 한글'];
+        if (t) set.add(t);
+    }
+    return [...set].sort((a, b) => a.localeCompare(b, 'ko'));
+}
+
+/**
+ * Re-point every entry.skin at either a freshly filtered aggregate (when a
+ * predicate is given) or the cached unfiltered aggregate (when predicate is null).
+ *
+ * @param {?Function} predicate - predicate(skin) → boolean, or null for "all skins"
+ */
+export function recomputeSkinStats(predicate) {
+    for (const entry of state.shipStats) {
+        entry.skin = predicate
+            ? computeSkinStats(entry.ship.name, predicate)
+            : entry.skinFull;
+    }
 }
 

@@ -44,22 +44,47 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
         <!-- Filter bar -->
         <div class="filter-bar">
+            <div class="filter-summary">
+                <div id="shipSummaryContent" class="summary-content"></div>
+                <div id="skinSummaryContent" class="summary-content hidden"></div>
+            </div>
             <div class="filter-bar-inner">
-                <input type="search" id="searchInput" class="filter-search" placeholder="이름 검색..." aria-label="함순이 이름 검색">
-                <div id="rarityChips" class="rarity-chips">
-                    <button type="button" class="rarity-chip active" data-rarity="" aria-pressed="true">전체</button>
-                    <button type="button" class="rarity-chip" data-rarity="N" aria-pressed="false">N</button>
-                    <button type="button" class="rarity-chip" data-rarity="R" aria-pressed="false">R</button>
-                    <button type="button" class="rarity-chip" data-rarity="SR" aria-pressed="false">SR</button>
-                    <button type="button" class="rarity-chip" data-rarity="SSR" aria-pressed="false">SSR</button>
-                    <button type="button" class="rarity-chip" data-rarity="UR" aria-pressed="false">UR</button>
+                <div class="filter-row">
+                    <input type="search" id="searchInput" class="filter-search" placeholder="이름 검색..." aria-label="함순이 이름 검색">
+                    <div class="filter-group">
+                        <span class="filter-group-label">등급</span>
+                        <div id="rarityChips" class="rarity-chips">
+                            <button type="button" class="rarity-chip active" data-rarity="" aria-pressed="true">전체</button>
+                            <button type="button" class="rarity-chip" data-rarity="N" aria-pressed="false">N</button>
+                            <button type="button" class="rarity-chip" data-rarity="R" aria-pressed="false">R</button>
+                            <button type="button" class="rarity-chip" data-rarity="SR" aria-pressed="false">SR</button>
+                            <button type="button" class="rarity-chip" data-rarity="SSR" aria-pressed="false">SSR</button>
+                            <button type="button" class="rarity-chip" data-rarity="UR" aria-pressed="false">UR</button>
+                        </div>
+                    </div>
+                    <select id="shipTypeFilter" class="filter-select">
+                        <option value="">모든 함종</option>
+                    </select>
+                    <select id="nationalityFilter" class="filter-select">
+                        <option value="">모든 진영</option>
+                    </select>
                 </div>
-                <select id="shipTypeFilter" class="filter-select">
-                    <option value="">모든 함종</option>
-                </select>
-                <select id="nationalityFilter" class="filter-select">
-                    <option value="">모든 진영</option>
-                </select>
+                <div class="filter-row skin-only-filter hidden">
+                    <div class="filter-group">
+                        <span class="filter-group-label">기믹</span>
+                        <div id="gimmickChips" class="rarity-chips" aria-label="스킨 기믹 타입 필터">
+                            <button type="button" class="rarity-chip active" data-gimmick="" aria-pressed="true">전체</button>
+                            <button type="button" class="rarity-chip" data-gimmick="일반" aria-pressed="false">일반</button>
+                            <button type="button" class="rarity-chip" data-gimmick="L2D" aria-pressed="false">L2D</button>
+                            <button type="button" class="rarity-chip" data-gimmick="L2D+" aria-pressed="false">L2D+</button>
+                            <button type="button" class="rarity-chip" data-gimmick="듀얼" aria-pressed="false">듀얼</button>
+                            <button type="button" class="rarity-chip" data-gimmick="쁘띠모션" aria-pressed="false">쁘띠모션</button>
+                        </div>
+                    </div>
+                    <select id="skinTypeFilter" class="filter-select" aria-label="스킨 타입 필터">
+                        <option value="">모든 스킨 타입</option>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -68,13 +93,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <!-- Dashboard -->
             <section id="shipDashboard" class="dashboard-section">
                 <div class="dashboard-grid">
-                    <div class="dashboard-card summary-card">
-                        <h3 class="dashboard-card-title">
-                            <span class="material-symbols-outlined">summarize</span>
-                            요약
-                        </h3>
-                        <div id="shipSummaryContent" class="summary-content"></div>
-                    </div>
                     <div class="dashboard-card">
                         <h3 class="dashboard-card-title">
                             <span class="material-symbols-outlined">category</span>
@@ -114,6 +132,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                             <canvas id="topStatChart"></canvas>
                         </div>
                     </div>
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card-title">
+                            <span class="material-symbols-outlined">grid_on</span>
+                            등급 × 함종 분포
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="rarityTypeHeatmap"></canvas>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -150,13 +177,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <!-- Dashboard -->
             <section id="skinDashboard" class="dashboard-section">
                 <div class="dashboard-grid">
-                    <div class="dashboard-card summary-card">
-                        <h3 class="dashboard-card-title">
-                            <span class="material-symbols-outlined">summarize</span>
-                            요약
-                        </h3>
-                        <div id="skinSummaryContent" class="summary-content"></div>
-                    </div>
                     <div class="dashboard-card">
                         <h3 class="dashboard-card-title">
                             <span class="material-symbols-outlined">sell</span>
@@ -180,8 +200,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                             <span class="material-symbols-outlined">style</span>
                             스킨 타입 분포
                         </h3>
-                        <div class="chart-container">
+                        <div class="chart-container chart-container-tall">
                             <canvas id="skinTypeChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3 class="dashboard-card-title">
+                            <span class="material-symbols-outlined">scatter_plot</span>
+                            스킨 보유 현황
+                        </h3>
+                        <div class="chart-container chart-container-tall">
+                            <canvas id="skinDensityChart"></canvas>
                         </div>
                     </div>
                     <div class="dashboard-card wide-card">
@@ -263,6 +292,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@2"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@3"></script>
     <script is:inline type="module" src={`${base}/js/shipgirl/shipgirl-stats.data.js`}></script>
     <script is:inline type="module" src={`${base}/js/shipgirl/shipgirl-stats.dashboard.js`}></script>
     <script is:inline type="module" src={`${base}/js/shipgirl/shipgirl-stats.table.js`}></script>

@@ -7,8 +7,8 @@
  * ship type, nationality), threshold filters, and compare mode event wiring.
  */
 
-import { debounce, hideElement, showToast, setupScrollToTop } from '../utils.js';
-import { setup as setupData, loadAllData, PRIMARY_STATS } from './shipgirl-stats.data.js';
+import { debounce, hideElement, showToast, setupScrollToTop, toggleElement } from '../utils.js';
+import { setup as setupData, loadAllData, PRIMARY_STATS, getSkinTypeList, classifyGimmick, recomputeSkinStats } from './shipgirl-stats.data.js';
 import { setup as setupDashboard, renderShipDashboard, renderSkinDashboard, renderTopStatChart, destroyAllCharts } from './shipgirl-stats.dashboard.js';
 import { setup as setupTable, renderShipTable, renderSkinTable } from './shipgirl-stats.table.js';
 import { setup as setupCompare, updateCompareBar, openCompareModal } from './shipgirl-stats.compare.js';
@@ -27,6 +27,11 @@ const state = {
     // UI state
     activeTab: 'ship',
     compareList: [],
+    // Filter state
+    rarityFilter: new Set(),
+    gimmickFilter: new Set(),
+    skinTypeFilter: '',
+    skinFilterPredicate: null,
     // Sort/page state (populated by table module)
     shipSort: null, skinSort: null,
     shipPage: 1, skinPage: 1, shipExpanded: false,
@@ -97,6 +102,15 @@ function populateFilterDropdowns() {
         nationalitySelect.replaceChildren(createOption('', '모든 진영'));
         for (const entry of natEntries) {
             nationalitySelect.appendChild(createOption(entry.id, entry.name));
+        }
+    }
+
+    // Skin type filter
+    const skinTypeSelect = document.getElementById('skinTypeFilter');
+    if (skinTypeSelect) {
+        skinTypeSelect.replaceChildren(createOption('', '모든 스킨 타입'));
+        for (const type of getSkinTypeList()) {
+            skinTypeSelect.appendChild(createOption(type, type));
         }
     }
 }
@@ -215,14 +229,21 @@ function applyFilters() {
     const searchEl = document.getElementById('searchInput');
     const search = searchEl ? searchEl.value.toLowerCase().trim() : '';
 
-    const activeChip = document.querySelector('#rarityChips .rarity-chip.active');
-    const rarity = activeChip ? activeChip.dataset.rarity : '';
-
     const shipTypeEl = document.getElementById('shipTypeFilter');
     const shipType = shipTypeEl ? shipTypeEl.value : '';
 
     const nationalityEl = document.getElementById('nationalityFilter');
     const nationality = nationalityEl ? nationalityEl.value : '';
+
+    // Skin re-aggregation: on the skin tab, rebuild each entry.skin over only
+    // the skins matching the gimmick/skin-type filters; on the ship tab, restore
+    // the full aggregate so the compare modal stays consistent.
+    if (state.activeTab === 'skin') {
+        state.skinFilterPredicate = buildSkinPredicate();
+    } else {
+        state.skinFilterPredicate = null;
+    }
+    recomputeSkinStats(state.skinFilterPredicate);
 
     let result = state.shipStats || [];
 
@@ -234,9 +255,9 @@ function applyFilters() {
         });
     }
 
-    // 2. Rarity
-    if (rarity) {
-        result = result.filter(entry => entry.ship && entry.ship.rarity === rarity);
+    // 2. Rarity (multi-select; empty Set = all rarities)
+    if (state.rarityFilter.size > 0) {
+        result = result.filter(entry => entry.ship && state.rarityFilter.has(entry.ship.rarity));
     }
 
     // 3. Ship type
@@ -247,6 +268,11 @@ function applyFilters() {
     // 4. Nationality
     if (nationality) {
         result = result.filter(entry => entry.ship && String(entry.ship.nationality) === nationality);
+    }
+
+    // 4b. Skin filter — drop shipgirls with no matching skins
+    if (state.activeTab === 'skin' && state.skinFilterPredicate) {
+        result = result.filter(entry => entry.skin && entry.skin.total > 0);
     }
 
     // 5. Ship stat thresholds (only when ship tab is active)
@@ -304,6 +330,15 @@ function switchTab(tab) {
     if (shipTab) shipTab.classList.toggle('active', tab === 'ship');
     if (skinTab) skinTab.classList.toggle('active', tab === 'skin');
 
+    // Skin-only filters are visible on the skin tab only
+    document.querySelectorAll('.skin-only-filter').forEach(el => {
+        toggleElement(el, tab === 'skin');
+    });
+
+    // Summary strip swaps with the active tab
+    toggleElement('shipSummaryContent', tab === 'ship');
+    toggleElement('skinSummaryContent', tab === 'skin');
+
     applyFilters();
 }
 
@@ -333,19 +368,24 @@ function setupEventListeners() {
         searchInput.addEventListener('input', debouncedApplyFilters);
     }
 
-    // Rarity chips — delegated on container
-    const rarityChips = document.getElementById('rarityChips');
-    if (rarityChips) {
-        rarityChips.addEventListener('click', e => {
-            const chip = e.target.closest('.rarity-chip');
-            if (!chip) return;
-            rarityChips.querySelectorAll('.rarity-chip').forEach(c => {
-                c.classList.remove('active');
-                c.setAttribute('aria-pressed', 'false');
-            });
-            chip.classList.add('active');
-            chip.setAttribute('aria-pressed', 'true');
-            state.shipPage = 1;
+    // Rarity chips — multi-select chip group
+    setupChipGroup('rarityChips', 'rarity', state.rarityFilter, () => {
+        state.shipPage = 1;
+        state.skinPage = 1;
+        applyFilters();
+    });
+
+    // Gimmick chips — multi-select chip group (skin tab)
+    setupChipGroup('gimmickChips', 'gimmick', state.gimmickFilter, () => {
+        state.skinPage = 1;
+        applyFilters();
+    });
+
+    // Skin type dropdown (skin tab)
+    const skinTypeFilter = document.getElementById('skinTypeFilter');
+    if (skinTypeFilter) {
+        skinTypeFilter.addEventListener('change', () => {
+            state.skinTypeFilter = skinTypeFilter.value;
             state.skinPage = 1;
             applyFilters();
         });
@@ -462,6 +502,85 @@ function _setupCompareCheckboxes(tbodyId) {
 }
 
 // ===== Internal Helpers =====
+
+/**
+ * Wire a multi-select chip group that has one "전체" (all) chip + N category chips.
+ *
+ * Rules:
+ *  - empty selectedSet  → All mode: "전체" is .active, no category chip active.
+ *  - 1+ (but not all) category chips → subset mode: "전체" loses .active (still clickable).
+ *  - clicking "전체" clears the set (→ All mode).
+ *  - clicking a category chip toggles it; if that selects every category, the set
+ *    is cleared (collapse to All mode); if it empties the set, that is All mode too.
+ *
+ * @param {string} containerId  - id of the chip container
+ * @param {string} attr         - dataset attribute holding each chip's value ('rarity' | 'gimmick')
+ * @param {Set<string>} selectedSet - state Set the group reads/writes
+ * @param {Function} onChange   - called after every selection change
+ */
+function setupChipGroup(containerId, attr, selectedSet, onChange) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const chips = [...container.querySelectorAll('.rarity-chip')];
+    const allChip = chips.find(c => !c.dataset[attr]);
+    const catChips = chips.filter(c => c.dataset[attr]);
+
+    function render() {
+        const allMode = selectedSet.size === 0;
+        if (allChip) {
+            allChip.classList.toggle('active', allMode);
+            allChip.setAttribute('aria-pressed', String(allMode));
+        }
+        for (const chip of catChips) {
+            const on = selectedSet.has(chip.dataset[attr]);
+            chip.classList.toggle('active', on);
+            chip.setAttribute('aria-pressed', String(on));
+        }
+    }
+
+    container.addEventListener('click', (e) => {
+        const chip = e.target.closest('.rarity-chip');
+        if (!chip || !container.contains(chip)) return;
+
+        const value = chip.dataset[attr];
+        if (!value) {
+            selectedSet.clear();
+        } else {
+            if (selectedSet.has(value)) selectedSet.delete(value);
+            else selectedSet.add(value);
+            if (selectedSet.size === catChips.length) selectedSet.clear();
+        }
+        render();
+        onChange();
+    });
+
+    render();
+}
+
+/**
+ * Build a skin predicate from the current gimmick/skin-type filter state.
+ * Returns null when no skin filter is active.
+ * @returns {?Function} predicate(skin) → boolean
+ */
+function buildSkinPredicate() {
+    const gimmicks = state.gimmickFilter;
+    const skinType = state.skinTypeFilter;
+    if (gimmicks.size === 0 && !skinType) return null;
+
+    return (skin) => {
+        if (skinType && skin['스킨 타입 - 한글'] !== skinType) return false;
+        if (gimmicks.size > 0) {
+            const labels = classifyGimmick(skin);
+            let hit = false;
+            for (const label of labels) {
+                if (gimmicks.has(label)) { hit = true; break; }
+            }
+            if (!hit) return false;
+        }
+        return true;
+    };
+}
 
 /**
  * Get the Korean display label for a stat key from attrTypeData.

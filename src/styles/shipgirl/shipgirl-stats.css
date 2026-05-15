@@ -178,9 +178,44 @@ body {
 
 .filter-bar-inner {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: var(--spacing-sm);
+}
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
+    gap: var(--spacing-md);
+}
+
+/* Summary strip merged into the top of the filter card */
+.filter-summary {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-summary .summary-content {
+    justify-content: center;
+    align-items: center;
+}
+
+.filter-summary .summary-stat {
+    padding: 0.25rem 0.7rem;
+    min-width: auto;
+}
+
+.filter-summary .summary-stat-value {
+    font-size: 1.05rem;
+}
+
+.filter-summary .rarity-breakdown {
+    width: auto;
 }
 
 .filter-search {
@@ -232,6 +267,22 @@ body {
     min-width: unset;
 }
 
+/* -- Filter Groups -- */
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.filter-group-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
 /* -- Rarity Chips -- */
 .rarity-chips {
     display: flex;
@@ -273,6 +324,12 @@ body {
 .rarity-chip[data-rarity="SR"].active  { background: var(--rarity-sr);  color: var(--rarity-sr-text); }
 .rarity-chip[data-rarity="R"].active   { background: var(--rarity-r);   color: var(--rarity-r-text); }
 .rarity-chip[data-rarity="N"].active   { background: var(--rarity-n);   color: var(--rarity-n-text); }
+
+/* Gimmick chips reuse .rarity-chip; they have no rarity color, so give the
+   active state the default primary fill. */
+.rarity-chip[data-gimmick].active {
+    background: var(--primary-color);
+}
 
 /* -- Dashboard -- */
 .dashboard-section {
@@ -322,6 +379,7 @@ body {
 .chart-container {
     position: relative;
     height: 14rem;
+    min-height: 14rem;
     width: 100%;
 }
 
@@ -339,6 +397,11 @@ body {
 
 .chart-container-wide {
     height: 16rem;
+}
+
+.chart-container-tall {
+    height: 20rem;
+    min-height: 20rem;
 }
 
 /* -- Summary Card -- */
@@ -1125,6 +1188,10 @@ body.dark-mode .tab-toggle-btn.active {
 }
 
 body.dark-mode .rarity-chip[data-rarity=""].active {
+    color: #1a1a1a;
+}
+
+body.dark-mode .rarity-chip[data-gimmick].active {
     color: #1a1a1a;
 }
 
