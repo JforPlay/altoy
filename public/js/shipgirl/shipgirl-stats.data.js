@@ -9,6 +9,7 @@
  */
 
 import { fetchJSON, fetchJSONWithCache, normalizeRomanNumerals } from '../utils.js';
+import { mergeReleaseDates, releaseSortKey } from '../skin/skin.dates.js';
 
 // ===== Constants =====
 
@@ -46,6 +47,7 @@ export async function loadAllData() {
         shipInfoData,
         skinSubsetData,
         skinReleaseDates,
+        skinReleaseDatesLegacy,
         nationalityData,
         shipTypeData,
         attrTypeData,
@@ -53,6 +55,7 @@ export async function loadAllData() {
         fetchJSONWithCache('data/ship_info_data.json'),
         fetchJSON('data/skin/skin_voiceline_data_subset.json'),
         fetchJSON('data/skin/skin_release_dates.json'),
+        fetchJSON('data/skin/skin_release_dates_legacy.json').catch(() => ({})),
         fetchJSON('data/mapping/nationality_mapping.json'),
         fetchJSON('data/mapping/ship_type_mapping.json'),
         fetchJSON('data/mapping/attr_type_mapping.json'),
@@ -60,7 +63,7 @@ export async function loadAllData() {
 
     state.shipInfoData      = shipInfoData;
     state.skinSubsetData    = skinSubsetData;
-    state.skinReleaseDates  = skinReleaseDates;
+    state.skinReleaseDates  = mergeReleaseDates(skinReleaseDates, skinReleaseDatesLegacy);
     state.nationalityData   = nationalityData;
     state.shipTypeData      = shipTypeData;
     state.attrTypeData      = attrTypeData;
@@ -166,7 +169,7 @@ function computeSkinStats(shipName, predicate) {
 
         // Release date tracking
         const skinId   = String(skin['클뜯 id']);
-        const dateStr  = state.skinReleaseDates[skinId];
+        const dateStr  = releaseSortKey(state.skinReleaseDates[skinId]);
         if (dateStr) {
             if (!latestDate || dateStr > latestDate) latestDate = dateStr;
 

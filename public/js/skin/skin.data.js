@@ -5,6 +5,7 @@
  * data on demand. Exposes both ES module exports and window.SkinData for legacy access.
  */
 import { fetchJSONWithCache, normalizeRomanNumerals, createSearchIndex, ensureFuse } from '../utils.js';
+import { mergeReleaseDates, formatReleaseDate } from './skin.dates.js';
 
 // @type {{skinIndex: Object, skinDataCache: Object<string, Array>, expressionManifest: Object, characterFuse: Fuse|null, allCharacterNames: string[], releaseDates: Object|null}}
 const state = {
@@ -16,6 +17,30 @@ const state = {
     releaseDates: null       // skinId (string) -> date string
 };
 
+
+/**
+ * Load skin release dates: fetch the live lua-derived map and the static legacy
+ * backfill, return them merged. Either fetch failing degrades gracefully.
+ * @returns {Promise<Object<string,string>>} merged skinId → raw-value map
+ */
+async function loadReleaseDates() {
+    const [luaMap, legacyMap] = await Promise.all([
+        fetchJSONWithCache('data/skin/skin_release_dates.json').catch(e => {
+            console.warn('Release dates missing', e);
+            return {};
+        }),
+        fetchJSONWithCache('data/skin/skin_release_dates_legacy.json').catch(e => {
+            console.warn('Legacy release dates missing', e);
+            return {};
+        })
+    ]);
+    try {
+        return mergeReleaseDates(luaMap, legacyMap);
+    } catch (e) {
+        console.warn('Release date merge failed', e);
+        return {};
+    }
+}
 
 /**
  * Load the skin index, expression manifest, and release dates.
@@ -30,10 +55,7 @@ async function init() {
                 console.warn('Expression manifest missing', e);
                 return {};
             }),
-            fetchJSONWithCache('data/skin/skin_release_dates.json').catch(e => {
-                console.warn('Release dates missing', e);
-                return {};
-            })
+            loadReleaseDates()
         ]);
 
         state.skinIndex = skinIndex;
@@ -178,10 +200,7 @@ async function getSkinByName(skinName) {
  */
 function getReleaseDate(skinId) {
     if (!state.releaseDates) return null;
-    const date = state.releaseDates[String(skinId)];
-    if (!date) return null;
-    if (date === '2021-08-14') return '2021-08-14 이전';
-    return date;
+    return formatReleaseDate(state.releaseDates[String(skinId)]);
 }
 
 /**
@@ -265,5 +284,6 @@ export {
     getManifest,
     getAllCharacterNames,
     getReleaseDate,
+    loadReleaseDates,
     getSkinFilterData
 };

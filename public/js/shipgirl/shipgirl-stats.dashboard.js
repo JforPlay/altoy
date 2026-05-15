@@ -9,6 +9,7 @@
 
 import { normalizeRomanNumerals } from '../utils.js';
 import { getAttrKoreanName, getNationalityName, getShipTypeName } from './shipgirl-stats.data.js';
+import { releaseSortKey } from '../skin/skin.dates.js';
 
 // ===== State =====
 let state;
@@ -488,7 +489,7 @@ function _renderTimelineChart(data) {
         for (const skin of skins) {
             if (state.skinFilterPredicate && !state.skinFilterPredicate(skin)) continue;
             const skinId = String(skin['클뜯 id']);
-            const dateStr = (state.skinReleaseDates || {})[skinId];
+            const dateStr = releaseSortKey((state.skinReleaseDates || {})[skinId]);
             if (!dateStr) continue;
             const month = dateStr.slice(0, 7);
             monthlyCounts[month] = (monthlyCounts[month] || 0) + 1;
@@ -536,7 +537,7 @@ function _renderTrendChart(data) {
         const skins = state.skinByShip.get(normalizedName) || [];
         for (const skin of skins) {
             if (state.skinFilterPredicate && !state.skinFilterPredicate(skin)) continue;
-            const dateStr = (state.skinReleaseDates || {})[String(skin['클뜯 id'])];
+            const dateStr = releaseSortKey((state.skinReleaseDates || {})[String(skin['클뜯 id'])]);
             if (!dateStr) continue;
             const tags = (skin['스킨 태그'] || '').split(',').map(t => t.trim());
             skinEntries.push({ date: dateStr, tags });

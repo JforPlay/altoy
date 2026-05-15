@@ -8,6 +8,8 @@
 import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex, ensureFuse,
     openModal, closeModal, setupModal, showToast, toggleElement, IMG_FALLBACKS,
     createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, syncedStorage } from '../utils.js';
+import { loadReleaseDates } from './skin.data.js';
+import { formatReleaseDate, releaseSortKey } from './skin.dates.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // ===== DOM Element References =====
@@ -251,13 +253,6 @@ document.addEventListener('DOMContentLoaded', () => {
             DOM.progressBar.classList.remove('visible');
         }
     };
-
-    function formatReleaseDate(skinId) {
-        const date = releaseDates[String(skinId)];
-        if (!date) return null;
-        if (date === '2021-08-14') return '2021-08-14 이전';
-        return date;
-    }
 
     function normalizeFactions(skins) {
         for (const skin of skins) {
@@ -509,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         _getSortComparator(sortMode) {
-            const releaseDate = (entry) => releaseDates[String(entry.skin['클뜯 id'])] || '';
+            const releaseDate = (entry) => releaseSortKey(releaseDates[String(entry.skin['클뜯 id'])]);
             const rerunDate = (entry) => this._parseRerunDate(entry.skin['기간']) || '';
 
             if (sortMode === 'release-desc') return this._makeDateComparator(releaseDate, true);
@@ -1168,7 +1163,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const charName = skin['함순이 이름'] || '';
             const skinOnlyName = fullName.startsWith(charName) ? fullName.slice(charName.length).trim() : fullName;
 
-            const releaseDate = formatReleaseDate(skinId);
+            const releaseDate = formatReleaseDate(releaseDates[String(skinId)]);
             const skinInfo = document.createElement('div');
             skinInfo.className = 'skin-info';
 
@@ -1394,7 +1389,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     Promise.all([
         fetchJSONWithCache('data/skin/skin_voiceline_data_subset.json'),
-        fetchJSONWithCache('data/skin/skin_release_dates.json').catch(() => ({}))
+        loadReleaseDates()
     ])
         .then(async ([skinJson, releaseDateJson]) => {
             allSkins = skinJson;
