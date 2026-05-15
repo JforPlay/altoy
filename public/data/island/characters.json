@@ -103,7 +103,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -167,17 +167,17 @@
             ]
         ],
         "id": 1,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 0,
         "name": "작업 만쥬",
         "power": 999,
         "power_recover": 5,
         "skill_id": {
             "desc": "작업 만쥬는 체력이 존재하지 않으며, 또한 여러 배치 슬롯에 동시 배치 가능",
-            "desc_add": [],
+            "desc_add": {},
             "icon": "chara_all_skill_8",
             "id": 99999,
-            "material": [],
+            "material": {},
             "name": "무한 체력"
         },
         "skill_unlock": 0,
@@ -325,7 +325,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -389,7 +389,7 @@
             ]
         ],
         "id": 10110,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200016,
         "name": "윌리엄 D 포터",
         "power": 100,
@@ -649,7 +649,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -713,7 +713,7 @@
             ]
         ],
         "id": 10205,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200019,
         "name": "헬레나",
         "power": 100,
@@ -973,7 +973,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -1037,7 +1037,7 @@
             ]
         ],
         "id": 10517,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200005,
         "name": "뉴저지",
         "power": 100,
@@ -1183,7 +1183,7 @@
                 "icon": "skin_1051701",
                 "icon_normal": "props/skin_1051701",
                 "id": 1051701,
-                "jump_page": [],
+                "jump_page": {},
                 "model": 1051701,
                 "name": "가벼운 일상",
                 "ship_group": 10517,
@@ -1297,7 +1297,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -1361,7 +1361,7 @@
             ]
         ],
         "id": 10703,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200002,
         "name": "새러토가",
         "power": 100,
@@ -1507,7 +1507,7 @@
                 "icon": "skin_1070301",
                 "icon_normal": "props/skin_1070301",
                 "id": 1070301,
-                "jump_page": [],
+                "jump_page": {},
                 "model": 1070301,
                 "name": "순수한 캠퍼스",
                 "ship_group": 10703,
@@ -1621,7 +1621,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -1685,7 +1685,7 @@
             ]
         ],
         "id": 20403,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200011,
         "name": "후드",
         "power": 100,
@@ -1931,7 +1931,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -1995,7 +1995,7 @@
             ]
         ],
         "id": 20603,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200009,
         "name": "유니콘",
         "power": 100,
@@ -2141,7 +2141,7 @@
                 "icon": "skin_2060301",
                 "icon_normal": "props/skin_2060301",
                 "id": 2060301,
-                "jump_page": [],
+                "jump_page": {},
                 "model": 2060301,
                 "name": "동경의 별빛",
                 "ship_group": 20603,
@@ -2255,7 +2255,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -2319,7 +2319,7 @@
             ]
         ],
         "id": 29903,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200001,
         "name": "체셔",
         "power": 100,
@@ -2465,7 +2465,7 @@
                 "icon": "skin_2990301",
                 "icon_normal": "props/skin_2990301",
                 "id": 2990301,
-                "jump_page": [],
+                "jump_page": {},
                 "model": 2990301,
                 "name": "씨솔트 레저",
                 "ship_group": 29903,
@@ -2579,7 +2579,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -2643,7 +2643,7 @@
             ]
         ],
         "id": 30129,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200006,
         "name": "시마카제",
         "power": 100,
@@ -2889,7 +2889,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -2953,7 +2953,7 @@
             ]
         ],
         "id": 30312,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200018,
         "name": "아타고",
         "power": 100,
@@ -3213,7 +3213,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -3277,7 +3277,7 @@
             ]
         ],
         "id": 30407,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200012,
         "name": "꼬마 아마기",
         "power": 100,
@@ -3423,7 +3423,7 @@
                 "icon": "skin_3040701",
                 "icon_normal": "props/skin_3040701",
                 "id": 3040701,
-                "jump_page": [],
+                "jump_page": {},
                 "model": 3040701,
                 "name": "동화 속 병아리",
                 "ship_group": 30407,
@@ -3537,7 +3537,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -3601,7 +3601,7 @@
             ]
         ],
         "id": 30707,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200004,
         "name": "다이호",
         "power": 100,
@@ -3847,7 +3847,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -4062,7 +4062,7 @@
                 "icon": "skin_3120101",
                 "icon_normal": "props/skin_3120101",
                 "id": 3120101,
-                "jump_page": [],
+                "jump_page": {},
                 "model": 3120101,
                 "name": "밤의 방울소리",
                 "ship_group": 31201,
@@ -4176,7 +4176,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -4240,7 +4240,7 @@
             ]
         ],
         "id": 40303,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200013,
         "name": "프린츠 오이겐",
         "power": 100,
@@ -4500,7 +4500,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -4564,7 +4564,7 @@
             ]
         ],
         "id": 49902,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200020,
         "name": "프리드리히 데어 그로세",
         "power": 100,
@@ -4824,7 +4824,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -4888,7 +4888,7 @@
             ]
         ],
         "id": 50204,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200007,
         "name": "잉 루이",
         "power": 100,
@@ -5134,7 +5134,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -5198,7 +5198,7 @@
             ]
         ],
         "id": 50205,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200014,
         "name": "차오 호",
         "power": 100,
@@ -5444,7 +5444,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -5508,7 +5508,7 @@
             ]
         ],
         "id": 50601,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200017,
         "name": "젠하이",
         "power": 100,
@@ -5768,7 +5768,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -5832,7 +5832,7 @@
             ]
         ],
         "id": 60802,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200015,
         "name": "레오나르도 다 빈치",
         "power": 100,
@@ -6078,7 +6078,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -6142,7 +6142,7 @@
             ]
         ],
         "id": 70104,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200010,
         "name": "타슈켄트",
         "power": 100,
@@ -6388,7 +6388,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -6452,7 +6452,7 @@
             ]
         ],
         "id": 90111,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200008,
         "name": "르 말랭",
         "power": 100,
@@ -6698,7 +6698,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -6762,7 +6762,7 @@
             ]
         ],
         "id": 990001,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200021,
         "name": "네비게이터",
         "power": 100,
@@ -7035,7 +7035,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -7099,7 +7099,7 @@
             ]
         ],
         "id": 990002,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200022,
         "name": "TB",
         "power": 100,
@@ -7372,7 +7372,7 @@
                 ]
             ]
         ],
-        "gift_id": [],
+        "gift_id": {},
         "growth_att": [
             [
                 1,
@@ -7436,7 +7436,7 @@
             ]
         ],
         "id": 990003,
-        "in_task": [],
+        "in_task": {},
         "invite_item": 200023,
         "name": "스캐빈저",
         "power": 100,

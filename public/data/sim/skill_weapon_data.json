@@ -5760,7 +5760,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -5788,7 +5787,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -6650,7 +6648,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -6678,7 +6675,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -59807,7 +59803,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "gulitejineng_feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -59856,7 +59851,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "gulitejineng_feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 3
                     },
                     "targetAniEffect": "",
@@ -59921,7 +59915,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "gulitejineng_feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -59970,7 +59963,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "gulitejineng_feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 3
                     },
                     "targetAniEffect": "",

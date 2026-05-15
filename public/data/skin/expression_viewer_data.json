@@ -149,30 +149,6 @@
     "painting_n": null
   },
   {
-    "id": "900182",
-    "name": "U-556",
-    "painting": {
-      "faces": [
-        "1",
-        "3",
-        "2"
-      ],
-      "box": [
-        309,
-        409,
-        159,
-        159
-      ],
-      "size": [
-        1024,
-        1023
-      ],
-      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900182/painting.png",
-      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900182/painting_face_{faceId}.png"
-    },
-    "painting_n": null
-  },
-  {
     "id": "900180",
     "name": "U-556",
     "painting": {
@@ -217,6 +193,30 @@
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900181/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900181/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900182",
+    "name": "U-556",
+    "painting": {
+      "faces": [
+        "1",
+        "3",
+        "2"
+      ],
+      "box": [
+        309,
+        409,
+        159,
+        159
+      ],
+      "size": [
+        1024,
+        1023
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900182/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900182/painting_face_{faceId}.png"
     },
     "painting_n": null
   },
@@ -562,31 +562,6 @@
     }
   },
   {
-    "id": "900041",
-    "name": "未本地化",
-    "painting": {
-      "faces": [
-        "1",
-        "2",
-        "3",
-        "4"
-      ],
-      "box": [
-        1238,
-        283,
-        135,
-        145
-      ],
-      "size": [
-        1967,
-        2048
-      ],
-      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900041/painting.png",
-      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900041/painting_face_{faceId}.png"
-    },
-    "painting_n": null
-  },
-  {
     "id": "900045",
     "name": "未本地化",
     "painting": {
@@ -608,6 +583,31 @@
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900045/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900045/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900041",
+    "name": "未本地化",
+    "painting": {
+      "faces": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "box": [
+        1238,
+        283,
+        135,
+        145
+      ],
+      "size": [
+        1967,
+        2048
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900041/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900041/painting_face_{faceId}.png"
     },
     "painting_n": null
   },
@@ -2125,31 +2125,6 @@
     "painting_n": null
   },
   {
-    "id": "900272",
-    "name": "리슐리외",
-    "painting": {
-      "faces": [
-        "1",
-        "3",
-        "4",
-        "2"
-      ],
-      "box": [
-        964,
-        469,
-        76,
-        66
-      ],
-      "size": [
-        2048,
-        1408
-      ],
-      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900272/painting.png",
-      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900272/painting_face_{faceId}.png"
-    },
-    "painting_n": null
-  },
-  {
     "id": "900052",
     "name": "리슐리외",
     "painting": {
@@ -2171,6 +2146,31 @@
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900052/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900052/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900272",
+    "name": "리슐리외",
+    "painting": {
+      "faces": [
+        "1",
+        "3",
+        "4",
+        "2"
+      ],
+      "box": [
+        964,
+        469,
+        76,
+        66
+      ],
+      "size": [
+        2048,
+        1408
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900272/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900272/painting_face_{faceId}.png"
     },
     "painting_n": null
   },
@@ -2903,34 +2903,6 @@
     "painting_n": null
   },
   {
-    "id": "900479",
-    "name": "본험 리차드",
-    "painting": {
-      "faces": [
-        "6",
-        "5",
-        "7",
-        "3",
-        "4",
-        "1",
-        "2"
-      ],
-      "box": [
-        311,
-        93,
-        242,
-        250
-      ],
-      "size": [
-        756,
-        2048
-      ],
-      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900479/painting.png",
-      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900479/painting_face_{faceId}.png"
-    },
-    "painting_n": null
-  },
-  {
     "id": "900534",
     "name": "본험 리차드",
     "painting": {
@@ -2955,6 +2927,34 @@
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900534/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900534/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900479",
+    "name": "본험 리차드",
+    "painting": {
+      "faces": [
+        "6",
+        "5",
+        "7",
+        "3",
+        "4",
+        "1",
+        "2"
+      ],
+      "box": [
+        311,
+        93,
+        242,
+        250
+      ],
+      "size": [
+        756,
+        2048
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900479/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900479/painting_face_{faceId}.png"
     },
     "painting_n": null
   },
@@ -4104,31 +4104,6 @@
     "painting_n": null
   },
   {
-    "id": "900258",
-    "name": "아크 로열",
-    "painting": {
-      "faces": [
-        "2",
-        "3",
-        "1",
-        "4"
-      ],
-      "box": [
-        540,
-        127,
-        112,
-        98
-      ],
-      "size": [
-        1166,
-        1327
-      ],
-      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900258/painting.png",
-      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900258/painting_face_{faceId}.png"
-    },
-    "painting_n": null
-  },
-  {
     "id": "900008",
     "name": "아크 로열",
     "painting": {
@@ -4150,6 +4125,31 @@
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900008/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900008/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900258",
+    "name": "아크 로열",
+    "painting": {
+      "faces": [
+        "2",
+        "3",
+        "1",
+        "4"
+      ],
+      "box": [
+        540,
+        127,
+        112,
+        98
+      ],
+      "size": [
+        1166,
+        1327
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900258/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900258/painting_face_{faceId}.png"
     },
     "painting_n": null
   },
@@ -4426,31 +4426,6 @@
     }
   },
   {
-    "id": "900252",
-    "name": "엔터프라이즈",
-    "painting": {
-      "faces": [
-        "4",
-        "1",
-        "3",
-        "2"
-      ],
-      "box": [
-        655,
-        694,
-        76,
-        82
-      ],
-      "size": [
-        1518,
-        2064
-      ],
-      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900252/painting.png",
-      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900252/painting_face_{faceId}.png"
-    },
-    "painting_n": null
-  },
-  {
     "id": "900184",
     "name": "엔터프라이즈",
     "painting": {
@@ -4472,6 +4447,31 @@
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900184/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900184/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900252",
+    "name": "엔터프라이즈",
+    "painting": {
+      "faces": [
+        "4",
+        "1",
+        "3",
+        "2"
+      ],
+      "box": [
+        655,
+        694,
+        76,
+        82
+      ],
+      "size": [
+        1518,
+        2064
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900252/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900252/painting_face_{faceId}.png"
     },
     "painting_n": null
   },
@@ -4673,18 +4673,17 @@
         "3",
         "1",
         "6",
-        "2",
-        "7"
+        "2"
       ],
       "box": [
-        1069,
-        752,
-        92,
-        94
+        1952,
+        940,
+        135,
+        154
       ],
       "size": [
-        1904,
-        2048
+        4106,
+        2770
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900316/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900316/painting_face_{faceId}.png"
@@ -5016,31 +5015,6 @@
     "painting_n": null
   },
   {
-    "id": "900395",
-    "name": "일러스트리어스",
-    "painting": {
-      "faces": [
-        "2",
-        "4",
-        "1",
-        "3"
-      ],
-      "box": [
-        280,
-        131,
-        91,
-        89
-      ],
-      "size": [
-        951,
-        895
-      ],
-      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900395/painting.png",
-      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900395/painting_face_{faceId}.png"
-    },
-    "painting_n": null
-  },
-  {
     "id": "900264",
     "name": "일러스트리어스",
     "painting": {
@@ -5062,6 +5036,31 @@
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900264/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900264/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900395",
+    "name": "일러스트리어스",
+    "painting": {
+      "faces": [
+        "2",
+        "4",
+        "1",
+        "3"
+      ],
+      "box": [
+        280,
+        131,
+        91,
+        89
+      ],
+      "size": [
+        951,
+        895
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900395/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900395/painting_face_{faceId}.png"
     },
     "painting_n": null
   },
@@ -5568,31 +5567,6 @@
     "painting_n": null
   },
   {
-    "id": "900506",
-    "name": "컴파일러",
-    "painting": {
-      "faces": [
-        "3",
-        "2",
-        "1",
-        "4"
-      ],
-      "box": [
-        974,
-        702,
-        66,
-        80
-      ],
-      "size": [
-        2048,
-        2031
-      ],
-      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900506/painting.png",
-      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900506/painting_face_{faceId}.png"
-    },
-    "painting_n": null
-  },
-  {
     "id": "900230",
     "name": "컴파일러",
     "painting": {
@@ -5614,6 +5588,31 @@
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900230/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900230/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900506",
+    "name": "컴파일러",
+    "painting": {
+      "faces": [
+        "3",
+        "2",
+        "1",
+        "4"
+      ],
+      "box": [
+        974,
+        702,
+        66,
+        80
+      ],
+      "size": [
+        2048,
+        2031
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900506/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900506/painting_face_{faceId}.png"
     },
     "painting_n": null
   },
@@ -6725,31 +6724,6 @@
     "painting_n": null
   },
   {
-    "id": "900257",
-    "name": "후드",
-    "painting": {
-      "faces": [
-        "4",
-        "2",
-        "3",
-        "1"
-      ],
-      "box": [
-        956,
-        230,
-        168,
-        161
-      ],
-      "size": [
-        2048,
-        1683
-      ],
-      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900257/painting.png",
-      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900257/painting_face_{faceId}.png"
-    },
-    "painting_n": null
-  },
-  {
     "id": "900006",
     "name": "후드",
     "painting": {
@@ -6771,6 +6745,31 @@
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900006/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900006/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900257",
+    "name": "후드",
+    "painting": {
+      "faces": [
+        "4",
+        "2",
+        "3",
+        "1"
+      ],
+      "box": [
+        956,
+        230,
+        168,
+        161
+      ],
+      "size": [
+        2048,
+        1683
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900257/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900257/painting_face_{faceId}.png"
     },
     "painting_n": null
   },

@@ -1,12 +1,6 @@
 {
     "banners": [
         {
-            "build_id": 4,
-            "build_name": "기간 한정",
-            "banner_type": 2,
-            "shipgirls": {}
-        },
-        {
             "build_id": 10,
             "build_name": "기간 한정",
             "banner_type": 2,
@@ -39,6 +33,18 @@
         },
         {
             "build_id": 12,
+            "build_name": "기간 한정",
+            "banner_type": 2,
+            "shipgirls": {}
+        },
+        {
+            "build_id": 13,
+            "build_name": "기간 한정",
+            "banner_type": 2,
+            "shipgirls": {}
+        },
+        {
+            "build_id": 4,
             "build_name": "기간 한정",
             "banner_type": 2,
             "shipgirls": {}
