@@ -97,6 +97,16 @@ export async function loadAircraftTemplateData() {
     return null;
 }
 
+export async function loadBarrageTemplateData() {
+    try {
+        state.barrageTemplateData = await fetchJSONWithCache('data/sim/barrage_template.json', { maxAge: 86400000 });
+        return state.barrageTemplateData;
+    } catch (error) {
+        console.warn('Failed to load barrage template data:', error);
+    }
+    return null;
+}
+
 export async function loadSkillData() {
     try {
         state.skillData = await fetchJSONWithCache('data/sim/skill_data_template.json', { maxAge: 86400000 });
@@ -269,6 +279,168 @@ export function getBulletTemplate(bulletId) {
 export function getAircraftTemplate(aircraftId) {
     if (!state.aircraftTemplateData) return null;
     return state.aircraftTemplateData[String(aircraftId)] || null;
+}
+
+/** Get barrage template by barrage ID */
+export function getBarrageTemplate(barrageId) {
+    if (!state.barrageTemplateData) return null;
+    return state.barrageTemplateData[String(barrageId)] || null;
+}
+
+/**
+ * Build a Korean firing-pattern description for a weapon from its barrage(s).
+ * A barrage fires (senior_repeat+1) waves of (primal_repeat+1) bullets each;
+ * `delay` spaces bullets within a wave, `senior_delay` spaces the waves.
+ * Returns null when there is nothing meaningful to describe (single shot only).
+ * For multi-barrage weapons, distinct per-barrage phrases are joined with " + ".
+ */
+export function getFiringPattern(weaponProperty) {
+    if (!weaponProperty || !Array.isArray(weaponProperty.barrage_ID)) return null;
+
+    const phrases = [];
+    for (const barrageId of weaponProperty.barrage_ID) {
+        const barrage = getBarrageTemplate(barrageId);
+        if (!barrage) continue;
+
+        const waves = (barrage.senior_repeat || 0) + 1;
+        const bulletsPerWave = (barrage.primal_repeat || 0) + 1;
+        const total = waves * bulletsPerWave;
+        if (total <= 1) continue;
+
+        const delay = barrage.delay || 0;
+        const seniorDelay = barrage.senior_delay || 0;
+        // A spacing only matters when there is more than one item to space.
+        const intraMatters = bulletsPerWave > 1 && delay > 0;
+        const interMatters = waves > 1 && seniorDelay > 0;
+
+        let phrase;
+        if (!intraMatters && !interMatters) {
+            phrase = `${total}발 동시 발사`;
+        } else if (intraMatters && !interMatters) {
+            phrase = `${total}발 · ${delay}s 간격 연사`;
+        } else if (!intraMatters && bulletsPerWave === 1) {
+            phrase = `${total}발 · ${seniorDelay}s 간격 연사`;
+        } else if (!intraMatters) {
+            phrase = `${bulletsPerWave}발씩 ${seniorDelay}s 간격, ${waves}회 연사`;
+        } else {
+            phrase = `${bulletsPerWave}발씩 ${waves}회 · 묶음간 ${seniorDelay}s / 탄간 ${delay}s`;
+        }
+        phrases.push(phrase);
+    }
+
+    if (!phrases.length) return null;
+    return [...new Set(phrases)].join(' + ');
+}
+
+// ===== Enhance Levels =====
+
+/** Rarity → max enhance level index. Some equips carry synthetic max-enhance
+ *  level entries beyond the real cap; those must not be selectable. */
+const ENHANCE_CAP = { 2: 3, 3: 6, 4: 11, 5: 13, 6: 13 };
+
+/** Number of selectable enhance levels for an equip, capped by rarity. */
+export function getVisibleLevelCount(equip) {
+    const rarityCap = (ENHANCE_CAP[equip.rarity] ?? 13) + 1;
+    return Math.min(equip.levels.length, rarityCap);
+}
+
+/** Format an enhance level index for display: 0 → "0", 1+ → "+1", "+2", etc. */
+export function formatLevel(index) {
+    return index === 0 ? '0' : `+${index}`;
+}
+
+// ===== Weapon / Aircraft Resolution =====
+
+// Two-path model — see CLAUDE.md "Aircraft Equipment Data Resolution".
+// Standard equipment resolves weapon_id → weapon_property directly; aircraft
+// types resolve weapon_id → aircraft_template → weapon_ID[] → weapon_property.
+
+/** Equipment types that use aircraft_template for bullet resolution */
+export const AIRCRAFT_TYPES = new Set([7, 8, 9, 12, 15]);
+
+/** Merge base and current weapon properties, skipping null overrides */
+export function getMergedWeaponProperty(baseWpId, currentWpId) {
+    const baseWp = baseWpId ? getWeaponProperty(baseWpId) : null;
+    const currentWp = currentWpId ? getWeaponProperty(currentWpId) : null;
+
+    if (!baseWp && !currentWp) return null;
+    if (!baseWp) return currentWp;
+    if (!currentWp) return baseWp;
+
+    const merged = { ...baseWp };
+    for (const [key, val] of Object.entries(currentWp)) {
+        if (val != null) merged[key] = val;
+    }
+    return merged;
+}
+
+/** Merge base and current aircraft template properties, skipping null overrides */
+export function getMergedAircraftTemplate(baseAcId, currentAcId) {
+    const baseAc = baseAcId ? getAircraftTemplate(baseAcId) : null;
+    const currentAc = currentAcId ? getAircraftTemplate(currentAcId) : null;
+
+    if (!baseAc && !currentAc) return null;
+    if (!baseAc) return currentAc;
+    if (!currentAc) return baseAc;
+
+    const merged = { ...baseAc };
+    for (const [key, val] of Object.entries(currentAc)) {
+        if (val != null) merged[key] = val;
+    }
+    return merged;
+}
+
+/** Get merged weapon properties for all weapon_ids in a level.
+ *  For aircraft types (7,8,9,12,15): weapon_id → aircraft_template → weapon_ID → weapon_property
+ *  For others: weapon_id → weapon_property directly */
+export function getMergedWeaponProperties(equip, level) {
+    const weaponIds = level.weapon_id;
+    if (!weaponIds || !weaponIds.length) return [];
+
+    const baseIds = equip.levels[0].weapon_id || [];
+
+    if (AIRCRAFT_TYPES.has(equip.type)) {
+        // Aircraft path: each weapon_id maps to aircraft_template → weapon_ID list
+        // Deduplicate by base weapon ID since multiple aircraft slots can share weapons
+        const results = [];
+        const seen = new Set();
+        for (let i = 0; i < weaponIds.length; i++) {
+            const aircraft = getAircraftTemplate(weaponIds[i]);
+            if (!aircraft || !aircraft.weapon_ID) continue;
+            const baseAircraft = getAircraftTemplate(baseIds[i] || baseIds[0]);
+            const baseAcWeaponIds = baseAircraft ? (baseAircraft.weapon_ID || []) : [];
+            for (let j = 0; j < aircraft.weapon_ID.length; j++) {
+                const acWid = aircraft.weapon_ID[j];
+                const acBaseWid = baseAcWeaponIds[j] || baseAcWeaponIds[0];
+                if (seen.has(acBaseWid)) continue;
+                seen.add(acBaseWid);
+                const merged = getMergedWeaponProperty(acBaseWid, acWid);
+                if (merged) {
+                    merged._weaponId = acWid;
+                    results.push(merged);
+                }
+            }
+        }
+        return results;
+    }
+
+    // Standard path
+    return weaponIds.map((wid, i) => {
+        const baseWpId = baseIds[i] || baseIds[0];
+        const merged = getMergedWeaponProperty(baseWpId, wid);
+        if (merged) merged._weaponId = wid;
+        return merged;
+    }).filter(Boolean);
+}
+
+/** Get the weapon_property for the primary (first) weapon_id of a level.
+ *  Always uses weapon_id → weapon_property directly (not through aircraft chain). */
+export function getPrimaryWeaponProperty(equip, level) {
+    const weaponIds = level.weapon_id;
+    if (!weaponIds || !weaponIds.length) return null;
+
+    const baseWid = (equip.levels[0].weapon_id || [])[0];
+    return getMergedWeaponProperty(baseWid, weaponIds[0]);
 }
 
 /** Load weapon name data (maps weapon_property IDs to Korean names) */
