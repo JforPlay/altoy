@@ -574,7 +574,10 @@
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-lg);
     transition: transform var(--transition-base);
-    border: 2px solid var(--border-color);
+    /* No border: a content-box border insets the painting from the container
+       while the face overlay positions against the container — the offset
+       exposes the transparent face hole as a thin black frame. */
+    border: none;
 }
 
 .face-overlay-container:hover img.base-image {

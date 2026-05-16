@@ -1,14 +1,33 @@
 /**
  * skin.expression.js
  * Expression overlay logic and image gallery rendering for the skin detail viewer.
- * Handles face-expression selectors, base+overlay compositing, lightbox navigation,
+ * Handles face-expression selectors, base+face compositing, lightbox navigation,
  * and thumbnail display. Part of the skin module group; wired by skin.detail.viewer.js.
  *
  * The base painting (output_expressions/painting.png) has a transparent hole where
- * the face sits, so it must never be shown alone — the lightbox canvas-composites
- * the live face overlay onto it before display.
+ * the face sits, so it must never be shown alone. The inline preview is a <canvas>
+ * with base + face composited onto it (the lightbox snapshots that canvas) —
+ * compositing into ONE element instead of CSS-stacking a base <img> + face <img>
+ * means no border or sub-pixel offset between layers can reopen the hole. The
+ * decoded base is cached per container so an expression switch only redraws.
  */
-import { hideElement, showElement, createImgElement, createIcon, lockBodyScroll, unlockBodyScroll } from '../utils.js';
+import { hideElement, showElement, createImgElement, createIcon, lockBodyScroll, unlockBodyScroll, DATA_VERSION } from '../utils.js';
+
+// Cap the composite canvas — some paintings are 100+ megapixels (e.g. 이404
+// 317020 is 11830×10224). A canvas that large overflows browser decode/canvas
+// limits and yields a blank (black) result, so downscale the longest side.
+const MAX_COMPOSITE_DIM = 4096;
+
+/**
+ * Append the data version to an output_expressions URL. The paintings live in a
+ * separate repo served via GitHub raw (Cache-Control: max-age=300), so a base
+ * painting can change while browsers keep serving a stale copy — which renders
+ * the OLD rectangular face hole as a black box around the face. Versioning the
+ * URL forces a fresh fetch whenever DATA_VERSION bumps.
+ */
+function expUrl(url) {
+    return `${url}?v=${DATA_VERSION}`;
+}
 
 const state = {
     expressionManifest: {},
@@ -77,10 +96,10 @@ function closeLightbox() {
 }
 
 /**
- * Update the lightbox to show the current image. For face-overlay gallery
- * entries the base painting has a transparent face hole, so the live overlay is
- * canvas-composited onto it before display — the bare `painting.png` is never
- * shown. Async + generation-guarded so fast navigation can't paint a stale image.
+ * Update the lightbox to show the current image. Face-overlay gallery entries
+ * snapshot the <canvas> the inline preview already composited, so the lightbox
+ * shows identical pixels. Async + generation-guarded so fast navigation can't
+ * paint a stale image.
  */
 async function updateLightboxContent() {
     if (state.currentLightboxImages.length === 0) return;
@@ -93,9 +112,12 @@ async function updateLightboxContent() {
 
     let src = currentImg.src;
     if (currentImg.overlay) {
-        const composite = await compositeOverlayContainer(currentImg.overlay);
+        // Wait for the inline composite, then snapshot its <canvas> to a PNG —
+        // a one-off encode on lightbox open, never on an expression switch.
+        if (currentImg.overlay._composePromise) await currentImg.overlay._composePromise;
         if (gen !== state.lightboxGeneration) return; // superseded by newer navigation
-        if (composite) src = composite;
+        const cv = currentImg.overlay.querySelector('canvas.base-image');
+        if (currentImg.overlay._composed && cv) src = cv.toDataURL('image/png');
     }
     state.lightboxImage.src = src;
 }
@@ -140,17 +162,6 @@ function renderImageGallery(skin, container) {
     const galleryImages = [];
     const skinId = skin['클뜯 id'];
 
-    // Apply manifest box/size as percentage-based positioning to an overlay element.
-    const applyOverlayStyle = (el, entry) => {
-        if (!entry || !entry.box || !entry.size) return;
-        const [x, y, w, h] = entry.box;
-        const [imgW, imgH] = entry.size;
-        el.style.left = `${(x / imgW) * 100}%`;
-        el.style.top = `${(y / imgH) * 100}%`;
-        el.style.width = `${(w / imgW) * 100}%`;
-        el.style.height = `${(h / imgH) * 100}%`;
-    };
-
     const getDefaultFace = (faces) => (faces && faces.includes('0') ? '0' : (faces ? faces[0] : '0'));
 
     let manifestData = null;
@@ -167,16 +178,14 @@ function renderImageGallery(skin, container) {
 
     // Top Banner (Full Art)
     if (manifestData && manifestData.faces && manifestData.faces.length > 0) {
-        const baseImageUrl = `${baseDir}/painting.png`;
-        const defaultFaceUrl = `${baseDir}/painting_face_${mainDefaultFace}.png`;
+        const baseImageUrl = expUrl(`${baseDir}/painting.png`);
+        const defaultFaceUrl = expUrl(`${baseDir}/painting_face_${mainDefaultFace}.png`);
 
         const overlayNode = buildOverlayContainer({
             baseName: 'painting',
             baseImageUrl,
             overlayUrl: defaultFaceUrl,
             manifest: manifestData,
-            applyOverlayStyle,
-            baseClass: 'base-image gallery-top-banner',
             alt: '전체 일러스트'
         });
         topNodes.push(buildExpressionSelector(manifestData.faces, mainDefaultFace, baseDir));
@@ -199,17 +208,15 @@ function renderImageGallery(skin, container) {
     const hasZoomedExpressionArt = !!(zoomedManifest && zoomedManifest.faces && zoomedManifest.faces.length > 0);
 
     if (hasZoomedExpressionArt) {
-        const baseImageUrl = `${baseDir}/painting_n.png`;
+        const baseImageUrl = expUrl(`${baseDir}/painting_n.png`);
         const zoomDefaultFace = (mainDefaultFace && zoomedManifest.faces.includes(mainDefaultFace)) ? mainDefaultFace : getDefaultFace(zoomedManifest.faces);
-        const defaultFaceUrl = `${baseDir}/painting_n_face_${zoomDefaultFace}.png`;
+        const defaultFaceUrl = expUrl(`${baseDir}/painting_n_face_${zoomDefaultFace}.png`);
 
         const overlayNode = buildOverlayContainer({
             baseName: 'painting_n',
             baseImageUrl,
             overlayUrl: defaultFaceUrl,
             manifest: zoomedManifest,
-            applyOverlayStyle,
-            baseClass: 'base-image',
             alt: '확대 일러스트'
         });
         bottomLeft.appendChild(overlayNode);
@@ -305,7 +312,7 @@ function buildExpressionSelector(faces, defaultFace, baseDir) {
     selector.className = 'expression-selector';
     faces.forEach(faceId => {
         const thumb = createImgElement(
-            `${baseDir}/painting_face_${faceId}.png`,
+            expUrl(`${baseDir}/painting_face_${faceId}.png`),
             `Face ${faceId}`,
             { className: faceId === defaultFace ? 'expression-thumb active' : 'expression-thumb' }
         );
@@ -317,27 +324,43 @@ function buildExpressionSelector(faces, defaultFace, baseDir) {
     return selectorContainer;
 }
 
-/** Build a base-image + face-overlay container that the lightbox can canvas-composite. */
-function buildOverlayContainer({ baseName, baseImageUrl, overlayUrl, manifest, applyOverlayStyle, baseClass, alt }) {
+/**
+ * Build a `.face-overlay-container` holding a <canvas> that shows the base
+ * painting + face composited together. Using one <canvas> (not a CSS-stacked
+ * base <img> + face <img>) means no inter-layer offset can reopen the face hole.
+ * The canvas is sized up front from the manifest so layout stays stable while
+ * the (async) composite runs.
+ */
+function buildOverlayContainer({ baseName, baseImageUrl, overlayUrl, manifest, alt }) {
     const wrapper = document.createElement('div');
     wrapper.className = 'face-overlay-container';
     wrapper.dataset.baseName = baseName;
 
-    const baseImg = createImgElement(baseImageUrl, alt, { className: baseClass });
-    baseImg.crossOrigin = 'anonymous';
+    const canvas = document.createElement('canvas');
+    canvas.className = 'base-image';
+    canvas.setAttribute('role', 'img');
+    canvas.setAttribute('aria-label', alt);
+    canvas.style.display = 'block';
+    canvas.style.width = '100%';
+    canvas.style.height = 'auto';
+    if (manifest && manifest.size) {
+        const [sw, sh] = manifest.size;
+        const scale = Math.min(1, MAX_COMPOSITE_DIM / Math.max(sw, sh));
+        canvas.width = Math.round(sw * scale);
+        canvas.height = Math.round(sh * scale);
+    }
+    wrapper.appendChild(canvas);
 
-    const overlayImg = createImgElement(overlayUrl, 'Expression', { className: 'face-overlay' });
-    overlayImg.crossOrigin = 'anonymous';
-    applyOverlayStyle(overlayImg, manifest);
-
-    wrapper.append(baseImg, overlayImg);
+    wrapper._overlay = { baseUrl: baseImageUrl, faceUrl: overlayUrl, manifest };
+    wrapper._gen = 0;
+    wrapper._composePromise = composeOverlay(wrapper);
     return wrapper;
 }
 
 
 /**
- * Attach expression-thumb click handlers (update all face-overlay imgs) and
- * lightbox triggers on gallery images. Canvas-composites overlay+base on click when loaded.
+ * Attach expression-thumb click handlers (re-composite every overlay container
+ * with the picked face) and lightbox triggers on gallery images.
  */
 function attachGalleryHandlers(container, galleryImages, baseDir) {
     // Expression Selectors
@@ -351,9 +374,9 @@ function attachGalleryHandlers(container, galleryImages, baseDir) {
 
             overlays.forEach(ov => {
                 const baseName = ov.getAttribute('data-base-name');
-                const img = ov.querySelector('.face-overlay');
-                if (img && baseName) {
-                    img.src = `${baseDir}/${baseName}_face_${faceId}.png`;
+                if (ov._overlay && baseName) {
+                    ov._overlay.faceUrl = expUrl(`${baseDir}/${baseName}_face_${faceId}.png`);
+                    ov._composePromise = composeOverlay(ov);
                 }
             });
 
@@ -362,59 +385,115 @@ function attachGalleryHandlers(container, galleryImages, baseDir) {
         });
     });
 
-    // Lightbox Triggers — overlay-backed entries carry an `overlay` ref and are
-    // composited on display by updateLightboxContent(), so one gallery array is enough.
-    const images = container.querySelectorAll('img:not(.face-overlay):not(.expression-thumb)');
-    images.forEach((img, index) => {
-        img.style.cursor = 'pointer';
-        img.addEventListener('click', () => openLightbox(galleryImages, index));
+    // Lightbox triggers — gallery <img>s plus the overlay <canvas>es, in document
+    // order so each index lines up with the galleryImages array.
+    const clickable = container.querySelectorAll('img:not(.expression-thumb), canvas.base-image');
+    clickable.forEach((el, index) => {
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', () => openLightbox(galleryImages, index));
     });
 }
 
 /**
- * Canvas-composite a face-overlay-container's base painting + live face overlay
- * into a PNG data URL. The base painting has a transparent face hole, so this is
- * the only correct way to show it standalone (i.e. in the lightbox).
- *
- * Awaits `decode()` on both images first, so a not-yet-loaded base (e.g. lazy
- * zoomed art) composites correctly instead of falling back to the holed bare image.
- * @param {HTMLElement} container - a `.face-overlay-container` element
- * @returns {Promise<string|null>} PNG data URL, or null if compositing fails
+ * Load an image cross-origin. crossOrigin is set before src so the response is
+ * CORS-enabled and a canvas drawn from it stays untainted (toDataURL works).
+ * @param {string} url
+ * @returns {Promise<HTMLImageElement>}
  */
-async function compositeOverlayContainer(container) {
-    const baseImg = container.querySelector('.base-image');
-    const overlayImg = container.querySelector('.face-overlay');
-    if (!baseImg) return null;
+function loadImage(url) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error(`failed to load ${url}`));
+        img.src = url;
+    });
+}
+
+/**
+ * Decode the base painting once into an offscreen canvas at composite resolution.
+ * Expression switches then redraw from this canvas, never touching the (possibly
+ * 100+ MP) source again — so a switch costs only a small face load + two draws.
+ * Capped at MAX_COMPOSITE_DIM: a canvas past browser limits composites to blank.
+ * @param {string} url - base painting URL
+ * @returns {Promise<HTMLCanvasElement>}
+ */
+async function buildBaseCanvas(url) {
+    const base = await loadImage(url);
+    const nw = base.naturalWidth;
+    const nh = base.naturalHeight;
+    if (!nw || !nh) throw new Error('base painting has no dimensions');
+
+    const scale = Math.min(1, MAX_COMPOSITE_DIM / Math.max(nw, nh));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(nw * scale);
+    canvas.height = Math.round(nh * scale);
+    const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(base, 0, 0, canvas.width, canvas.height);
+    return canvas; // the decoded source Image falls out of scope and can be freed
+}
+
+/**
+ * Draw the container's base painting + current face onto its display <canvas>.
+ * The base painting has a transparent face hole; compositing base + face onto one
+ * <canvas> means no border or sub-pixel offset between layers can reopen it.
+ *
+ * The decoded base is cached per container (see buildBaseCanvas), so an expression
+ * switch only loads the small face and redraws — no re-download, no re-decode, no
+ * PNG re-encode. A per-container generation counter discards a run superseded by
+ * a faster switch.
+ * @param {HTMLElement} wrapper - a `.face-overlay-container` element
+ * @returns {Promise<void>}
+ */
+async function composeOverlay(wrapper) {
+    const canvas = wrapper.querySelector('canvas.base-image');
+    const ov = wrapper._overlay;
+    if (!canvas || !ov) return;
+    const gen = ++wrapper._gen;
 
     try {
-        await baseImg.decode();
-        if (overlayImg) await overlayImg.decode().catch(() => {});
+        if (!wrapper._baseCanvasPromise) wrapper._baseCanvasPromise = buildBaseCanvas(ov.baseUrl);
+        const [baseCanvas, face] = await Promise.all([
+            wrapper._baseCanvasPromise,
+            loadImage(ov.faceUrl).catch(() => null)
+        ]);
+        if (gen !== wrapper._gen) return; // a newer expression superseded this run
 
-        const canvas = document.createElement('canvas');
-        canvas.width = baseImg.naturalWidth;
-        canvas.height = baseImg.naturalHeight;
-        const ctx = canvas.getContext('2d');
-        if (!ctx || !canvas.width || !canvas.height) return null;
-
-        ctx.drawImage(baseImg, 0, 0);
-        if (overlayImg && overlayImg.naturalWidth > 0 && overlayImg.style.opacity !== '0') {
-            const left = parseFloat(overlayImg.style.left) / 100 * canvas.width;
-            const top = parseFloat(overlayImg.style.top) / 100 * canvas.height;
-            const width = parseFloat(overlayImg.style.width) / 100 * canvas.width;
-            const height = parseFloat(overlayImg.style.height) / 100 * canvas.height;
-            ctx.drawImage(overlayImg, left, top, width, height);
+        if (canvas.width !== baseCanvas.width || canvas.height !== baseCanvas.height) {
+            canvas.width = baseCanvas.width;
+            canvas.height = baseCanvas.height;
         }
-        return canvas.toDataURL('image/png');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(baseCanvas, 0, 0);
+        if (face && ov.manifest && ov.manifest.box && ov.manifest.size) {
+            const [bx, by, bw, bh] = ov.manifest.box;
+            const [sw, sh] = ov.manifest.size;
+            // box is in manifest-size space; scale it into the (capped) canvas.
+            const sx = canvas.width / sw;
+            const sy = canvas.height / sh;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(face, bx * sx, by * sy, bw * sx, bh * sy);
+        }
+        wrapper._composed = true;
     } catch (e) {
         console.warn('Expression composite failed', e);
-        return null;
+        if (gen === wrapper._gen && wrapper.parentElement) {
+            const box = document.createElement('div');
+            box.className = 'dummy-image-box';
+            box.textContent = '이미지를 불러올 수 없습니다';
+            wrapper.parentElement.replaceChild(box, wrapper);
+        }
     }
 }
 
 function addImageErrorHandlers(container) {
+    // Overlay base images are <canvas> (failures handled in composeOverlay), so
+    // this only covers plain gallery <img>s; a broken expression thumb is non-fatal.
     container.querySelectorAll('img').forEach(img => {
         img.addEventListener('error', function() {
-            if (this.classList.contains('face-overlay') || this.classList.contains('expression-thumb')) return;
+            if (this.classList.contains('expression-thumb')) return;
             const box = document.createElement('div');
             box.className = 'dummy-image-box';
             box.textContent = '이미지를 불러올 수 없습니다';
