@@ -49,6 +49,16 @@ if (fs.existsSync(OUTPUT_DIR)) {
 const weaponIds = Object.keys(weaponData).sort((a, b) => Number(a) - Number(b));
 
 /**
+ * Coerce an ID field into an array. Upstream data gives barrage_ID / bullet_ID
+ * as an array for most weapons but occasionally as a bare scalar — guarding
+ * here keeps `.forEach` from throwing and aborting the whole build.
+ */
+function toIdArray(v) {
+    if (Array.isArray(v)) return v;
+    return v == null ? [] : [v];
+}
+
+/**
  * Collect all barrage and bullet IDs referenced by a weapon (including base weapon).
  * Also follows shrapnel chains in bullet extra_param.
  */
@@ -65,7 +75,7 @@ function collectReferencedIds(weaponId, collectedBarrages, collectedBullets, vis
     }
 
     // Collect barrage IDs
-    const barrageIds = weapon.barrage_ID || [];
+    const barrageIds = toIdArray(weapon.barrage_ID);
     barrageIds.forEach(id => {
         collectedBarrages.add(String(id));
         // Check barrage for transform_ID chains
@@ -76,7 +86,7 @@ function collectReferencedIds(weaponId, collectedBarrages, collectedBullets, vis
     });
 
     // Collect bullet IDs
-    const bulletIds = weapon.bullet_ID || [];
+    const bulletIds = toIdArray(weapon.bullet_ID);
     bulletIds.forEach(id => {
         const bulletId = String(id);
         collectedBullets.add(bulletId);
