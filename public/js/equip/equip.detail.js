@@ -9,8 +9,9 @@
 import { showToast, resolveUrl } from '../utils.js';
 import {
     getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics,
-    replaceEquipCodes, getWeaponProperty, getBulletTemplate, getSkillData,
-    getWeaponName, getAircraftTemplate
+    replaceEquipCodes, getBulletTemplate, getSkillData, getWeaponName,
+    getFiringPattern, formatLevel, getVisibleLevelCount, AIRCRAFT_TYPES,
+    getMergedAircraftTemplate, getMergedWeaponProperties, getPrimaryWeaponProperty
 } from './equip.data.js';
 
 /** Ammo type name mapping (matches equip.ammo field / equip_ammo_type_X i18n keys) */
@@ -35,11 +36,6 @@ let iconCanvas = null;
 /** Receive shared state from equip.viewer.js. */
 export function setup(stateRef) {
     state = stateRef;
-}
-
-/** Format level index for display: 0 → "0", 1+ → "+1", "+2", etc. */
-function formatLevel(index) {
-    return index === 0 ? '0' : `+${index}`;
 }
 
 // ===== Show Detail View =====
@@ -81,9 +77,7 @@ function renderDetail(equip) {
 
     const level = equip.levels[state.currentLevel] || equip.levels[0];
     const iconUrl = getEquipIconUrl(equip.icon);
-    const ENHANCE_CAP = { 2: 3, 3: 6, 4: 11, 5: 13, 6: 13 };
-    const rarityCap = (ENHANCE_CAP[equip.rarity] ?? 13) + 1;
-    const maxLevel = Math.min(equip.levels.length, rarityCap);
+    const maxLevel = getVisibleLevelCount(equip);
 
     let html = `
         <div class="panel-detail-top">
@@ -306,87 +300,6 @@ function compositeIcon(equip) {
 
 // ===== Render Helpers =====
 
-// Weapon/aircraft resolution helpers — see CLAUDE.md "Aircraft Equipment Data Resolution"
-// for the two-path model (standard vs. aircraft chain).
-
-/** Merge base and current weapon properties, skipping null overrides */
-function getMergedWeaponProperty(baseWpId, currentWpId) {
-    const baseWp = baseWpId ? getWeaponProperty(baseWpId) : null;
-    const currentWp = currentWpId ? getWeaponProperty(currentWpId) : null;
-
-    if (!baseWp && !currentWp) return null;
-    if (!baseWp) return currentWp;
-    if (!currentWp) return baseWp;
-
-    const merged = { ...baseWp };
-    for (const [key, val] of Object.entries(currentWp)) {
-        if (val != null) merged[key] = val;
-    }
-    return merged;
-}
-
-/** Equipment types that use aircraft_template for bullet resolution */
-const AIRCRAFT_TYPES = new Set([7, 8, 9, 12, 15]);
-
-/** Get merged weapon properties for all weapon_ids in a level.
- *  For aircraft types (7,8,9,12,15): weapon_id → aircraft_template → weapon_ID → weapon_property
- *  For others: weapon_id → weapon_property directly */
-function getMergedWeaponProperties(equip, level) {
-    const weaponIds = level.weapon_id;
-    if (!weaponIds || !weaponIds.length) return [];
-
-    const baseIds = equip.levels[0].weapon_id || [];
-
-    if (AIRCRAFT_TYPES.has(equip.type)) {
-        // Aircraft path: each weapon_id maps to aircraft_template → weapon_ID list
-        // Deduplicate by base weapon ID since multiple aircraft slots can share weapons
-        const results = [];
-        const seen = new Set();
-        for (let i = 0; i < weaponIds.length; i++) {
-            const aircraft = getAircraftTemplate(weaponIds[i]);
-            if (!aircraft || !aircraft.weapon_ID) continue;
-            const baseAircraft = getAircraftTemplate(baseIds[i] || baseIds[0]);
-            const baseAcWeaponIds = baseAircraft ? (baseAircraft.weapon_ID || []) : [];
-            for (let j = 0; j < aircraft.weapon_ID.length; j++) {
-                const acWid = aircraft.weapon_ID[j];
-                const acBaseWid = baseAcWeaponIds[j] || baseAcWeaponIds[0];
-                if (seen.has(acBaseWid)) continue;
-                seen.add(acBaseWid);
-                const merged = getMergedWeaponProperty(acBaseWid, acWid);
-                if (merged) {
-                    merged._weaponId = acWid;
-                    results.push(merged);
-                }
-            }
-        }
-        return results;
-    }
-
-    // Standard path
-    return weaponIds.map((wid, i) => {
-        const baseWpId = baseIds[i] || baseIds[0];
-        const merged = getMergedWeaponProperty(baseWpId, wid);
-        if (merged) merged._weaponId = wid;
-        return merged;
-    }).filter(Boolean);
-}
-
-/** Merge base and current aircraft template properties, skipping null overrides */
-function getMergedAircraftTemplate(baseAcId, currentAcId) {
-    const baseAc = baseAcId ? getAircraftTemplate(baseAcId) : null;
-    const currentAc = currentAcId ? getAircraftTemplate(currentAcId) : null;
-
-    if (!baseAc && !currentAc) return null;
-    if (!baseAc) return currentAc;
-    if (!currentAc) return baseAc;
-
-    const merged = { ...baseAc };
-    for (const [key, val] of Object.entries(currentAc)) {
-        if (val != null) merged[key] = val;
-    }
-    return merged;
-}
-
 /**
  * Render aircraft-level stats (speed, dodge, dodge_limit, crash_DMG) for aircraft equip types.
  * Uses the first weapon_id → aircraft_template, merged with the base level's template.
@@ -457,6 +370,12 @@ function renderWeaponParamsRows(wp) {
     if (wp.reload_max != null) {
         const reload = Math.floor((wp.reload_max / 150) * 100) / 100;
         rows += `<tr><th>무기 사속</th><td>${reload}s</td></tr>`;
+    }
+
+    // Firing pattern (barrage timing)
+    const firingPattern = getFiringPattern(wp);
+    if (firingPattern) {
+        rows += `<tr><th>발사 패턴</th><td>${firingPattern}</td></tr>`;
     }
 
     // Attack attribute ratio
@@ -572,16 +491,6 @@ function renderSkillSection(level) {
     `;
 }
 
-/** Get the weapon_property for the primary (first) weapon_id of a level.
- *  Always uses weapon_id → weapon_property directly (not through aircraft chain). */
-function getPrimaryWeaponProperty(equip, level) {
-    const weaponIds = level.weapon_id;
-    if (!weaponIds || !weaponIds.length) return null;
-
-    const baseWid = (equip.levels[0].weapon_id || [])[0];
-    return getMergedWeaponProperty(baseWid, weaponIds[0]);
-}
-
 /**
  * Build attribute stat rows for the current level, appending reload speed and anti_siren if present.
  * Reload is sourced from the primary weapon (not aircraft chain) — see getPrimaryWeaponProperty.
@@ -665,8 +574,7 @@ function updateLevelDisplay(equip) {
 
     const levelDisplay = document.getElementById('levelDisplay');
     if (levelDisplay) {
-        const ENHANCE_CAP = { 2: 3, 3: 6, 4: 11, 5: 13, 6: 13 };
-        const capMax = Math.min(equip.levels.length, (ENHANCE_CAP[equip.rarity] ?? 13) + 1) - 1;
+        const capMax = getVisibleLevelCount(equip) - 1;
         levelDisplay.textContent = `${formatLevel(state.currentLevel)} / +${capMax}`;
     }
 

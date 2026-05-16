@@ -15,6 +15,7 @@ import {
     loadLiteData, loadFullData, loadStatisticsData, loadEquipTypeData,
     loadNationalityData, loadShipTypeData, loadEquipCodeData,
     loadWeaponPropertyData, loadBulletTemplateData, loadSkillData, loadWeaponNameData, loadAircraftTemplateData,
+    loadBarrageTemplateData,
     loadUpgradeTemplateData, isInUpgradeTree,
     getEquipIconUrl, getRarityBgUrl, getSPWeaponIconUrl, getUniqueTypes, getUniqueNationalities, getUniqueLabels,
     getFullEquipData, getSkillData, loadSPWeaponData, normalizeSPWeapons, getSPWeaponRawData,
@@ -148,6 +149,7 @@ async function init() {
         loadStatisticsData();
         const wpPromise = loadWeaponPropertyData();
         loadBulletTemplateData();
+        loadBarrageTemplateData();
         loadSkillData();
         loadWeaponNameData();
         loadAircraftTemplateData();

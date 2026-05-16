@@ -7,18 +7,13 @@
  */
 
 import { showToast, openModal, closeModal, setupModal, setUrlParams } from '../utils.js';
-import { getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics, replaceEquipCodes, getWeaponProperty, getBulletTemplate } from './equip.data.js';
+import { getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics, replaceEquipCodes, getBulletTemplate, getFiringPattern, getVisibleLevelCount, formatLevel, getMergedWeaponProperties, getPrimaryWeaponProperty } from './equip.data.js';
 
 let state;
 
 /** Receive shared state from equip.viewer.js. */
 export function setup(stateRef) {
     state = stateRef;
-}
-
-/** Format level index for display: 0 → "0", 1+ → "+1", "+2", etc. */
-function formatLevel(index) {
-    return index === 0 ? '0' : `+${index}`;
 }
 
 // ===== Setup Compare Modal =====
@@ -99,7 +94,7 @@ export async function loadCompareFromUrl(compareParam) {
  */
 function renderCompareSlot(equip, slotIndex) {
     const iconUrl = getEquipIconUrl(equip.icon);
-    const maxLevel = equip.levels.length;
+    const maxLevel = getVisibleLevelCount(equip);
     const currentLevel = state.compareLevels[slotIndex];
 
     // Build selector options from same compare_group
@@ -134,7 +129,7 @@ function renderCompareSlot(equip, slotIndex) {
             <div class="compare-level-selector">
                 <label>단계</label>
                 <input type="range" min="0" max="${maxLevel - 1}" value="${currentLevel}" data-slot="${slotIndex}" class="compare-level-input">
-                <span class="compare-level-value" id="compareLevelValue${slotIndex}">${formatLevel(currentLevel)}</span>
+                <span class="compare-level-value" id="compareLevelValue${slotIndex}">${formatLevel(currentLevel)} / +${maxLevel - 1}</span>
             </div>
         ` : ''}
     `;
@@ -204,6 +199,17 @@ function renderCompareTable(slot0, slot1) {
         </tr>`;
     }
 
+    // Firing pattern comparison (plain text, no better/worse)
+    const pattern0 = getFiringPatternValue(slot0, level0);
+    const pattern1 = getFiringPatternValue(slot1, level1);
+    if (pattern0 || pattern1) {
+        rows += `<tr>
+            <td>발사 패턴</td>
+            <td>${pattern0 || '-'}</td>
+            <td>${pattern1 || '-'}</td>
+        </tr>`;
+    }
+
     // Armor modifiers (대갑 배율) comparison
     const armor0 = getArmorModifiers(slot0, level0);
     const armor1 = getArmorModifiers(slot1, level1);
@@ -270,39 +276,18 @@ function getAttrValue(equip, level, attrKey) {
     return 0;
 }
 
-/** Merge base and current weapon properties, skipping null overrides */
-function getMergedWeaponProperty(baseWpId, currentWpId) {
-    const baseWp = baseWpId ? getWeaponProperty(baseWpId) : null;
-    const currentWp = currentWpId ? getWeaponProperty(currentWpId) : null;
-    if (!baseWp && !currentWp) return null;
-    if (!baseWp) return currentWp;
-    if (!currentWp) return baseWp;
-    const merged = { ...baseWp };
-    for (const [key, val] of Object.entries(currentWp)) {
-        if (val != null) merged[key] = val;
-    }
-    return merged;
-}
-
-/** Get merged weapon properties for all weapon_ids in a level */
-function getMergedWeaponProperties(equip, level) {
-    const weaponIds = level.weapon_id;
-    if (!weaponIds || !weaponIds.length) return [];
-    const baseIds = equip.levels[0].weapon_id || [];
-    return weaponIds.map((wid, i) => {
-        const baseWpId = baseIds[i] || baseIds[0];
-        return getMergedWeaponProperty(baseWpId, wid);
-    }).filter(Boolean);
-}
-
-/** Get reload value (사속) from merged weapon properties */
+/** Get reload value (사속) from the primary weapon — standard path, matching
+ *  the detail panel's 사속 row (never resolved through the aircraft chain). */
 function getReloadValue(equip, level) {
-    const weapons = getMergedWeaponProperties(equip, level);
-    if (!weapons.length) return null;
-    // Use first weapon's reload_max
-    const wp = weapons[0];
-    if (wp.reload_max == null) return null;
+    const wp = getPrimaryWeaponProperty(equip, level);
+    if (!wp || wp.reload_max == null) return null;
     return Math.floor((wp.reload_max / 150) * 100) / 100;
+}
+
+/** Get the firing-pattern string from a slot's primary weapon, or null. */
+function getFiringPatternValue(equip, level) {
+    const weapons = getMergedWeaponProperties(equip, level);
+    return weapons.length ? getFiringPattern(weapons[0]) : null;
 }
 
 /** Get armor modifiers (대갑 배율) from merged weapon properties */
@@ -334,7 +319,7 @@ function setupCompareListeners() {
             const slot = parseInt(e.target.dataset.slot);
             state.compareLevels[slot] = parseInt(e.target.value);
             const valueEl = document.getElementById(`compareLevelValue${slot}`);
-            if (valueEl) valueEl.textContent = formatLevel(state.compareLevels[slot]);
+            if (valueEl) valueEl.textContent = `${formatLevel(state.compareLevels[slot])} / +${e.target.max}`;
             updateCompareTable();
         });
     });
