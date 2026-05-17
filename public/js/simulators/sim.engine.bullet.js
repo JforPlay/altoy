@@ -11,6 +11,29 @@
 
 import { BehaviorFactory } from './sim.engine.bullet.factory.js';
 
+// Bullet sprites are keyed by the game's modle_ID. BULLET_SPRITE_BASE is the
+// single asset insertion point — set it once sprites are extracted from client
+// AssetBundles and placed (bundled under public/ or on an external host).
+// While empty, resolveBulletSprite() returns null and bullets use the CSS
+// placeholder rendering.
+const BULLET_SPRITE_BASE = '';
+
+function resolveBulletSprite(modleId) {
+    if (!BULLET_SPRITE_BASE || !modleId || modleId === 'None') return null;
+    return `${BULLET_SPRITE_BASE}/${modleId}.webp`;
+}
+
+// Bullet type → CSS placeholder class. Keys are game BattleConst.BulletType.
+const BULLET_TYPE_CLASSES = {
+    2: 'bomb-bullet',        // BOMB
+    3: 'torpedo-bullet',     // TORPEDO
+    5: 'shrapnel-bullet',    // SHRAPNEL
+    9: 'effect-bullet',      // EFFECT
+    13: 'missile-bullet',    // MISSILE
+    14: 'space-laser-bullet',// SPACE_LASER
+    15: 'scale-bullet',      // SCALE
+};
+
 export class BulletEngine {
     constructor(options) {
         this.container = options.container;
@@ -111,18 +134,24 @@ export class BulletEngine {
         // Create bullet DOM element
         const bulletElement = document.createElement('div');
         bulletElement.className = 'bullet';
-        if (bulletInfo.modle_ID) bulletElement.classList.add(bulletInfo.modle_ID);
 
-        const bulletTypeClasses = {
-            2: 'bomb-bullet',
-            3: 'torpedo-bullet',
-            4: 'shrapnel-bullet',
-            5: 'missile-bullet',
-            14: 'space-laser-bullet',
-            15: 'scale-bullet',
-        };
-        const typeClass = bulletTypeClasses[bulletInfo.type];
-        if (typeClass) bulletElement.classList.add(typeClass);
+        // The equip-skin preview tags its bullets with this synthetic modle_ID;
+        // a runtime stylesheet in equip-skin.preview.js keys its sprite styling
+        // off the matching class.
+        if (bulletInfo.modle_ID === 'esv-skin-bullet') {
+            bulletElement.classList.add('esv-skin-bullet');
+        }
+
+        // A modle_ID sprite takes precedence; otherwise fall back to the
+        // type-based CSS placeholder so a bullet is never invisible.
+        const spriteUrl = resolveBulletSprite(bulletInfo.modle_ID);
+        if (spriteUrl) {
+            bulletElement.classList.add('sprite-bullet');
+            bulletElement.style.backgroundImage = `url("${spriteUrl}")`;
+        } else {
+            const typeClass = BULLET_TYPE_CLASSES[bulletInfo.type];
+            if (typeClass) bulletElement.classList.add(typeClass);
+        }
 
         const bulletWidth = bulletInfo.cld_box[0] * this.scale;
         const bulletHeight = bulletInfo.cld_box[1] * this.scale;
