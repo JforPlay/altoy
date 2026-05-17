@@ -198,6 +198,24 @@
 }
 @keyframes laserPrecast { 0%,100% { opacity: 0.3; } 50% { opacity: 0.7; } }
 
+/* Sprite bullet: a modle_ID sprite drawn via inline background-image.
+   Neutralises the base .bullet gradient/glow so the sprite shows cleanly. */
+.bullet.sprite-bullet {
+  background-color: transparent;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* Effect bullet (type 9): placeholder until a sprite is available. */
+.bullet.effect-bullet {
+  background: linear-gradient(135deg, rgba(220,230,255,0.85), rgba(150,170,210,0.55));
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(200, 220, 255, 0.5);
+}
+
 /* Aircraft */
 .aircraft-entity { width: 20px; height: 20px; pointer-events: none; }
 .aircraft-entity:not(.has-icon) {
