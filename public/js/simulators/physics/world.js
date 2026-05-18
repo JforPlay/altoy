@@ -16,14 +16,15 @@ export class World {
 
   /**
    * Create a bullet, resolve its range and initial speed, and add it to the
-   * simulation. Rejects a non-finite spawn position or heading (mirrors the
-   * NaN guard in the current sim.engine.bullet.js createBullet) and returns
-   * null in that case.
+   * simulation. Rejects a non-finite spawn position, heading or velocity — a
+   * NaN velocity yields a bullet whose squared-distance range check never
+   * trips, so it would leak — and returns null in that case.
    */
   spawnBullet(opts) {
     if (!Number.isFinite(opts.spawnX) ||
         !Number.isFinite(opts.spawnY) ||
-        !Number.isFinite(opts.yAngle)) {
+        !Number.isFinite(opts.yAngle) ||
+        !Number.isFinite(opts.velocity)) {
       return null;
     }
     const unit = createBulletUnit(opts.type, opts);
@@ -33,7 +34,14 @@ export class World {
     return unit;
   }
 
-  /** Advance the whole simulation by one fixed tick, then cull expired units. */
+  /**
+   * Advance the whole simulation by one fixed tick, then cull expired units.
+   *
+   * Invariant: no unit is spawned mid-tick — every bullet present at the start
+   * of step() is stepped exactly once. Phase 3 (shrapnel split, transform)
+   * introduces mid-tick spawning; when it does, decide explicitly whether a
+   * freshly-spawned unit steps in the same tick or the next.
+   */
   step() {
     for (const bullet of this.bullets) {
       bullet.timeElapsed += TICK_SECONDS;
