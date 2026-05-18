@@ -48,3 +48,30 @@ test('spawnBullet rejects a non-finite spawn coordinate', () => {
   assert.equal(b, null);
   assert.equal(world.bullets.length, 0);
 });
+
+test('spawnBullet rejects a non-finite velocity', () => {
+  // A NaN velocity yields NaN speed -> NaN position -> the squared-distance
+  // range check never trips, so the bullet would leak forever. Reject it.
+  const world = new World();
+  const b = world.spawnBullet({
+    type: 1, velocity: NaN, yAngle: 0, range: 10, spawnX: 0, spawnY: 0,
+  });
+  assert.equal(b, null);
+  assert.equal(world.bullets.length, 0);
+});
+
+test('a type-8 STRAY bullet flies straight and is culled at its range', () => {
+  // STRAY (8) shares CannonBulletUnit with CANNON (1). This pins type 8
+  // explicitly rather than relying on transitivity through the shared class.
+  const world = new World();
+  // velocity 50 -> speed 10/tick; range 25 -> sqrRange 625.
+  world.spawnBullet({
+    type: 8, velocity: 50, yAngle: 0, range: 25, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+  });
+  world.step();                         // x=10, sqrDist 100
+  world.step();                         // x=20, sqrDist 400 < 625
+  assert.equal(world.bullets.length, 1, 'still in flight');
+  world.step();                         // x=30, sqrDist 900 > 625 -> expire
+  assert.equal(world.bullets.length, 0, 'STRAY culled at range');
+});
