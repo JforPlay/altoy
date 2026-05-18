@@ -129,6 +129,14 @@ export class BulletEngine {
             return;
         }
 
+        // Route a plain straight cannon to the faithful physics core; every
+        // other bullet — and any cannon with acceleration / gravity / missile
+        // / shrapnel / a transform chain / inherited speed — stays on the
+        // legacy path below until later phases migrate it.
+        if (this._isPlainCannon(bulletInfo, options)) {
+            return this._createWorldBullet(options);
+        }
+
         // Create bullet DOM element
         const bulletElement = document.createElement('div');
         bulletElement.className = 'bullet';
