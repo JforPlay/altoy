@@ -480,20 +480,38 @@ export class BulletEngine {
     // ===== Physics-Core Render Path =====
 
     /**
+     * True when a bullet's `acceleration` carries no movement data. The field
+     * is present on virtually every bullet — overwhelmingly as an inert empty
+     * object `{}` — so a plain `!bulletInfo.acceleration` test is always false
+     * and would route nothing. A non-empty `acceleration` (tracker, circle,
+     * orbit, or u/v values) drives a curving movement the physics core's plain
+     * CannonBulletUnit does not reproduce, so such a bullet stays on the legacy
+     * path.
+     */
+    _hasEmptyAcceleration(bulletInfo) {
+        const accel = bulletInfo.acceleration;
+        if (!accel) return true;
+        return Array.isArray(accel)
+            ? accel.length === 0
+            : Object.keys(accel).length === 0;
+    }
+
+    /**
      * True only for a bullet the Phase-2 physics path provably renders
-     * correctly: a migrated type (cannon/stray) with no acceleration, gravity,
-     * missile, shrapnel, transform chain or inherited speed. Anything fancier
-     * stays on the legacy path — the conservative test keeps the migration
-     * regression-free (a bullet the new core cannot yet handle is never routed
-     * to it).
+     * correctly: a migrated type (cannon/stray) with no acceleration data,
+     * gravity, missile, shrapnel, airdrop, transform chain or inherited speed.
+     * Anything fancier stays on the legacy path — the conservative test keeps
+     * the migration regression-free (a bullet the new core cannot yet handle
+     * is never routed to it).
      */
     _isPlainCannon(bulletInfo, options) {
         return MIGRATED_BULLET_TYPES.has(bulletInfo.type)
-            && !bulletInfo.acceleration
+            && this._hasEmptyAcceleration(bulletInfo)
             && !bulletInfo.extra_param?.gravity
             && !bulletInfo.extra_param?.missile
             && !bulletInfo.extra_param?.shrapnel
             && options.inheritSpeed == null
+            && options.airdropData == null
             && (!options.transformChain || options.transformChain.length === 0);
     }
 
