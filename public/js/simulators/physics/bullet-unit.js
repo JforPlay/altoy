@@ -9,6 +9,7 @@
  */
 
 import { BULLET_SPEED_CONVERT } from './constants.js';
+import { sqrDistance } from './vec.js';
 
 const DEG_TO_RAD = Math.PI / 180;
 
@@ -65,5 +66,48 @@ export class BulletUnit {
       : this._baseRange + this._rangeOffset * (this.rng() - 0.5);
     this.range = Math.max(0, this.range);
     this.sqrRange = this.range * this.range;
+  }
+
+  /**
+   * Pick the single per-tick movement function. Mirrors InitSpeed
+   * (battlebulletunit.lua:738-768). The game's priority chain is
+   * HasAcceleration -> doAccelerate, IsTracker -> doTrack, IsCircle -> doCircle,
+   * else doNothing. Acceleration/tracker/circle are added in Phase 2; for now
+   * every bullet resolves to doNothing.
+   */
+  InitSpeed() {
+    this.calcSpeed();
+    this.updateSpeed = this.doNothing;
+  }
+
+  /**
+   * The movement function for a non-accel/track/circle bullet. Mirrors doNothing
+   * (battlebulletunit.lua:115-119): it is the gravity integrator. GetSpeedRatio()
+   * is 1 in all default cases, so it is omitted.
+   */
+  doNothing() {
+    if (this.gravity !== 0) {
+      this.verticalSpeed += this.gravity;
+    }
+  }
+
+  /**
+   * Advance the bullet one fixed tick. Mirrors Update (battlebulletunit.lua:
+   * 139-157): run the chosen movement function, integrate position by `speed`
+   * and altitude by `verticalSpeed`, then test range expiry.
+   *
+   * Only the non-gravity (`gravity === 0`) expiry branch is implemented here;
+   * the gravity-bullet detonation branch (`altitude <= BombDetonateHeight`)
+   * arrives with the bomb work in Phase 2.
+   */
+  Update() {
+    this.updateSpeed();
+    this.position.x += this.speed.x;
+    this.position.y += this.speed.y;
+    this.altitude += this.verticalSpeed;
+
+    if (this.gravity === 0) {
+      this.reachDestFlag = this.sqrRange < sqrDistance(this.spawnPos, this.position);
+    }
   }
 }

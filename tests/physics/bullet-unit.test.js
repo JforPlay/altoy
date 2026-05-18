@@ -38,3 +38,47 @@ test('FixRange: a negative roll is clamped to 0', () => {
   assert.equal(b.range, 0);
   assert.equal(b.sqrRange, 0);
 });
+
+test('InitSpeed: calcSpeed runs and updateSpeed defaults to doNothing', () => {
+  const b = new BulletUnit({ velocity: 50, yAngle: 0 });
+  b.InitSpeed();
+  assert.equal(b.speed.x, 10, 'InitSpeed calls calcSpeed');
+  assert.equal(b.updateSpeed, b.doNothing, 'cannon uses the doNothing path');
+});
+
+test('doNothing: no gravity -> verticalSpeed stays 0', () => {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0, gravity: 0 });
+  b.doNothing();
+  assert.equal(b.verticalSpeed, 0);
+});
+
+test('doNothing: with gravity -> verticalSpeed accrues gravity per tick', () => {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0, gravity: -0.05 });
+  b.doNothing();
+  assert.equal(b.verticalSpeed, -0.05);
+  b.doNothing();
+  assert.equal(b.verticalSpeed, -0.1);
+});
+
+test('Update: a cannon advances position by speed each tick', () => {
+  const b = new BulletUnit({ velocity: 50, yAngle: 0, range: 40, rangeOffset: 0 });
+  b.FixRange();
+  b.InitSpeed();
+  b.Update();
+  assert.equal(b.position.x, 10);
+  assert.equal(b.position.y, 0);
+  b.Update();
+  assert.equal(b.position.x, 20);
+});
+
+test('Update: reachDestFlag trips when squared distance passes sqrRange', () => {
+  // range 25 -> sqrRange 625. speed.x = 10/tick.
+  const b = new BulletUnit({ velocity: 50, yAngle: 0, range: 25, rangeOffset: 0 });
+  b.FixRange();
+  b.InitSpeed();
+  b.Update();                       // x=10, sqrDist 100
+  b.Update();                       // x=20, sqrDist 400 < 625
+  assert.equal(b.reachDestFlag, false);
+  b.Update();                       // x=30, sqrDist 900 > 625
+  assert.equal(b.reachDestFlag, true);
+});
