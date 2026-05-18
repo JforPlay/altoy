@@ -10,6 +10,16 @@
  */
 
 import { BehaviorFactory } from './sim.engine.bullet.factory.js';
+import { World } from './physics/world.js';
+import { drainAccumulator } from './physics/accumulator.js';
+
+/**
+ * Bullet types routed through the faithful physics core (physics/). Cannon (1)
+ * and Stray (8) share the plain straight-line CannonBulletUnit. Every other
+ * type still runs the legacy BehaviorFactory path until later phases migrate
+ * it. This set grows one phase at a time.
+ */
+const MIGRATED_BULLET_TYPES = new Set([1, 8]);
 
 export class BulletEngine {
     constructor(options) {
@@ -28,6 +38,16 @@ export class BulletEngine {
         this.allBarrages = {};
         this.allBullets = {};
         this.activeBullets = new Set();
+
+        // --- Faithful physics-core render path (Phase 2: cannon types 1, 8) ---
+        // The pure fixed-timestep core (physics/) runs migrated bullet types
+        // through one shared loop; the legacy per-bullet rAF path runs
+        // everything else. See dev/active/2026-05-17-weapon-physics-rework.md.
+        this.world = new World();
+        this._worldViews = new Map();   // BulletUnit -> { element, bulletInfo, baseWidth, baseHeight }
+        this._worldLoopId = null;       // rAF id of the shared loop, null when idle
+        this._worldAccumulatorMs = 0;   // unspent real time carried between frames
+        this._worldLastTime = 0;        // performance.now() of the previous loop frame
 
         this.frameTime = 1000 / this.targetFps;
 
@@ -448,10 +468,181 @@ export class BulletEngine {
         return bulletElement;
     }
 
+    // ===== Physics-Core Render Path =====
+
+    /**
+     * True only for a bullet the Phase-2 physics path provably renders
+     * correctly: a migrated type (cannon/stray) with no acceleration, gravity,
+     * shrapnel, transform chain or inherited speed. Anything fancier stays on
+     * the legacy path — the conservative test keeps the migration
+     * regression-free (a bullet the new core cannot yet handle is never routed
+     * to it).
+     */
+    _isPlainCannon(bulletInfo, options) {
+        return MIGRATED_BULLET_TYPES.has(bulletInfo.type)
+            && !bulletInfo.acceleration
+            && !bulletInfo.extra_param?.gravity
+            && !bulletInfo.extra_param?.shrapnel
+            && options.inheritSpeed == null
+            && (!options.transformChain || options.transformChain.length === 0);
+    }
+
+    /**
+     * Spawn a bullet into the physics core and build its DOM element. Mirrors
+     * the legacy createBullet element setup for a plain bullet, so a migrated
+     * cannon is visually identical to a legacy one. Receives screen-space
+     * coordinates and converts to game space for the core. Returns the
+     * element, or null if the core rejected the spawn (non-finite input).
+     */
+    _createWorldBullet(options) {
+        const { startX, startY, angle, bulletInfo } = options;
+        const startGamePos = this.screenToGame(startX, startY);
+
+        const unit = this.world.spawnBullet({
+            type: bulletInfo.type,
+            velocity: bulletInfo.velocity,
+            yAngle: angle,
+            range: bulletInfo.range,
+            rangeOffset: bulletInfo.range_offset || 0,
+            spawnX: startGamePos.x,
+            spawnY: startGamePos.y,
+        });
+        if (!unit) return null;
+
+        const element = document.createElement('div');
+        element.className = 'bullet';
+        if (bulletInfo.modle_ID) element.classList.add(bulletInfo.modle_ID);
+
+        const baseWidth = bulletInfo.cld_box[0] * this.scale;
+        const baseHeight = bulletInfo.cld_box[1] * this.scale;
+        const spawnScreen = this.gameToScreen(startGamePos.x, startGamePos.y);
+        Object.assign(element.style, {
+            width: `${baseWidth}px`,
+            height: `${baseHeight}px`,
+            opacity: 0.85,
+            zIndex: Math.floor(spawnScreen.depth * 0.1) + 5,
+        });
+        this.container.appendChild(element);
+
+        this._worldViews.set(unit, { element, bulletInfo, baseWidth, baseHeight });
+        this._renderWorldBullet(unit);
+        this._ensureWorldLoop();
+        return element;
+    }
+
+    /**
+     * Draw one physics unit to its DOM element. The transform mirrors the
+     * legacy path's non-beam render: face the velocity vector unless
+     * extra_param.dontRotate. zIndex is fixed at spawn (set in
+     * _createWorldBullet) and only refreshed here when perspective is on,
+     * matching the legacy path.
+     */
+    _renderWorldBullet(unit) {
+        const view = this._worldViews.get(unit);
+        if (!view) return;
+
+        const screenPos = this.gameToScreen(unit.position.x, unit.position.y);
+        const w = view.baseWidth * screenPos.scale;
+        const h = view.baseHeight * screenPos.scale;
+
+        view.element.style.left = `${screenPos.x - w / 2}px`;
+        view.element.style.top = `${screenPos.y - h / 2}px`;
+
+        if (view.bulletInfo.extra_param?.dontRotate === true) {
+            view.element.style.transform = `scale(${screenPos.scale})`;
+        } else {
+            const visualAngle = Math.atan2(unit.speed.y, unit.speed.x) * 180 / Math.PI;
+            view.element.style.transform = `rotate(${visualAngle}deg) scale(${screenPos.scale})`;
+        }
+
+        if (this.perspective.enabled) {
+            view.element.style.filter = screenPos.blur > 0 ? `blur(${screenPos.blur}px)` : 'none';
+            view.element.style.zIndex = Math.floor(screenPos.depth * 0.1) + 5;
+        }
+    }
+
+    /**
+     * Off-viewport safety cull, mirroring the legacy isOutOfBounds check: a
+     * bullet past an edge and still heading further out. The timeElapsed gate
+     * ignores the first few ticks so a bullet spawned near an edge is not
+     * killed instantly.
+     */
+    _isUnitOffScreen(unit, view) {
+        if (unit.timeElapsed <= 0.1) return false;
+        const screenPos = this.gameToScreen(unit.position.x, unit.position.y);
+        const w = view.baseWidth * screenPos.scale;
+        const h = view.baseHeight * screenPos.scale;
+        return (screenPos.x < -w && unit.speed.x <= 0)
+            || (screenPos.x > this.container.offsetWidth + w && unit.speed.x >= 0)
+            || (screenPos.y < -h && unit.speed.y >= 0)
+            || (screenPos.y > this.container.offsetHeight + h && unit.speed.y <= 0);
+    }
+
+    /**
+     * Render every live physics unit and reap finished ones. A unit the core
+     * has culled (reachDestFlag) has its element removed; a unit that has left
+     * the viewport is flagged so the core culls it on the next step.
+     */
+    _renderWorld() {
+        for (const [unit, view] of this._worldViews) {
+            if (unit.reachDestFlag) {
+                view.element.remove();
+                this._worldViews.delete(unit);
+                continue;
+            }
+            this._renderWorldBullet(unit);
+            if (this._isUnitOffScreen(unit, view)) {
+                unit.reachDestFlag = true;   // world.step() culls it next tick
+            }
+        }
+    }
+
+    /**
+     * Start the shared world loop if it is not already running. One rAF loop
+     * drives every migrated bullet: it converts elapsed real time (scaled by
+     * gSpeed playback speed) into whole 1/30 s ticks, steps the core, renders,
+     * and stops itself when no migrated bullets remain — matching the legacy
+     * path's on-demand model (no rAF runs while the page is idle).
+     */
+    _ensureWorldLoop() {
+        if (this._worldLoopId !== null) return;
+        this._worldLastTime = performance.now();
+        this._worldAccumulatorMs = 0;
+
+        const loop = () => {
+            const now = performance.now();
+            const realMs = Math.max(now - this._worldLastTime, 0);
+            this._worldLastTime = now;
+
+            this._worldAccumulatorMs += realMs * this.gSpeed;
+            const { ticks, remainder } = drainAccumulator(this._worldAccumulatorMs);
+            this._worldAccumulatorMs = remainder;
+            for (let i = 0; i < ticks; i++) this.world.step();
+
+            this._renderWorld();
+
+            if (this.world.bullets.length === 0) {
+                this._worldLoopId = null;   // idle — stop until the next spawn
+                return;
+            }
+            this._worldLoopId = requestAnimationFrame(loop);
+        };
+        this._worldLoopId = requestAnimationFrame(loop);
+    }
+
     // ===== Cleanup =====
 
     clearAllBullets() {
         this.activeBullets.forEach(b => { b.shouldRemove = true; });
+
+        // Faithful-core path: drop every unit, remove its element, stop the loop.
+        this.world.bullets = [];
+        for (const view of this._worldViews.values()) view.element.remove();
+        this._worldViews.clear();
+        if (this._worldLoopId !== null) {
+            cancelAnimationFrame(this._worldLoopId);
+            this._worldLoopId = null;
+        }
     }
 
     destroy() {
