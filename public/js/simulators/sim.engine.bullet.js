@@ -12,6 +12,7 @@
 import { BehaviorFactory } from './sim.engine.bullet.factory.js';
 import { World } from './physics/world.js';
 import { drainAccumulator } from './physics/accumulator.js';
+import { TICK_SECONDS } from './physics/constants.js';
 
 /**
  * Bullet types routed through the faithful physics core (physics/). Cannon (1)
@@ -473,8 +474,8 @@ export class BulletEngine {
     /**
      * True only for a bullet the Phase-2 physics path provably renders
      * correctly: a migrated type (cannon/stray) with no acceleration, gravity,
-     * shrapnel, transform chain or inherited speed. Anything fancier stays on
-     * the legacy path — the conservative test keeps the migration
+     * missile, shrapnel, transform chain or inherited speed. Anything fancier
+     * stays on the legacy path — the conservative test keeps the migration
      * regression-free (a bullet the new core cannot yet handle is never routed
      * to it).
      */
@@ -482,6 +483,7 @@ export class BulletEngine {
         return MIGRATED_BULLET_TYPES.has(bulletInfo.type)
             && !bulletInfo.acceleration
             && !bulletInfo.extra_param?.gravity
+            && !bulletInfo.extra_param?.missile
             && !bulletInfo.extra_param?.shrapnel
             && options.inheritSpeed == null
             && (!options.transformChain || options.transformChain.length === 0);
@@ -511,6 +513,8 @@ export class BulletEngine {
 
         const element = document.createElement('div');
         element.className = 'bullet';
+        // Cannon (type 1/8) has no entry in the legacy bulletTypeClasses map,
+        // so — by design — a migrated cannon gets no bullet-type CSS class.
         if (bulletInfo.modle_ID) element.classList.add(bulletInfo.modle_ID);
 
         const baseWidth = bulletInfo.cld_box[0] * this.scale;
@@ -563,12 +567,13 @@ export class BulletEngine {
 
     /**
      * Off-viewport safety cull, mirroring the legacy isOutOfBounds check: a
-     * bullet past an edge and still heading further out. The timeElapsed gate
-     * ignores the first few ticks so a bullet spawned near an edge is not
-     * killed instantly.
+     * bullet past an edge and still heading further out. The gate ignores the
+     * first few ticks (legacy used framesLived > 3) so a bullet spawned near an
+     * edge is not culled instantly; the exact tick is immaterial for a safety
+     * net, so a plain time threshold is fine.
      */
     _isUnitOffScreen(unit, view) {
-        if (unit.timeElapsed <= 0.1) return false;
+        if (unit.timeElapsed < 4 * TICK_SECONDS) return false;
         const screenPos = this.gameToScreen(unit.position.x, unit.position.y);
         const w = view.baseWidth * screenPos.scale;
         const h = view.baseHeight * screenPos.scale;
@@ -621,6 +626,9 @@ export class BulletEngine {
 
             this._renderWorld();
 
+            // Invariant: _renderWorld (just above) drains every culled unit
+            // from _worldViews each frame, so when world.bullets is empty the
+            // view map is empty too — the loop can safely stop.
             if (this.world.bullets.length === 0) {
                 this._worldLoopId = null;   // idle — stop until the next spawn
                 return;
