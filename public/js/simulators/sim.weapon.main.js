@@ -662,36 +662,43 @@ document.addEventListener('DOMContentLoaded', async () => {
             finalX_game = startX_game;
             finalY_game = startY_game;
         } else if (isAirdrop) {
-            const explodePos = { x: enemyGamePos.x, y: enemyGamePos.y };
-            const airdrop = effectiveBulletInfo.extra_param.airdrop;
-            const randomOffsetX = airdrop?.randomOffsetX || 0;
-            const randomOffsetZ = airdrop?.randomOffsetZ || 0;
-            if (randomOffsetX) explodePos.x += (Math.random() - 0.5) * randomOffsetX;
-            if (randomOffsetZ) explodePos.y += (Math.random() - 0.5) * randomOffsetZ;
-            explodePos.x += airdrop?.targetOffsetX || 0;
-            explodePos.y += airdrop?.targetOffsetZ || 0;
-            if (airdrop?.targetFixX !== undefined) explodePos.x = airdrop.targetFixX;
-            if (airdrop?.targetFixZ !== undefined) explodePos.y = airdrop.targetFixZ;
+            // Airdrop bomb. extra_param.airdrop is a boolean flag — the airdrop
+            // parameters are FLAT on extra_param, NOT nested under .airdrop.
+            // Assemble the explode point faithfully: SetTemplateData's
+            // randomOffset plus SetExplodePosition (battlebombbulletunit.lua).
+            // accuracy has no buff source (treated as 0); barragePriority /
+            // barrageLowPriority / fixToRange appear on 0 airdrop bombs and are
+            // not modelled.
+            const ep = effectiveBulletInfo.extra_param;
+            const explodePos = (ep.targetFixX !== undefined && ep.targetFixZ !== undefined)
+                ? { x: ep.targetFixX, y: ep.targetFixZ }
+                : { x: enemyGamePos?.x ?? startX_game, y: enemyGamePos?.y ?? startY_game };
 
-            if (barrage.offset_prioritise && airdrop?.barragePriority) {
-                const bOffsetX = (barrage.offset_x || 0) + bulletIndex * (barrage.delta_offset_x || 0);
-                const bOffsetZ = (barrage.offset_z || 0) + bulletIndex * (barrage.delta_offset_z || 0);
-                explodePos.x += bOffsetX;
-                explodePos.y += bOffsetZ;
-            }
+            const rOffX = ep.randomOffsetX || 0;
+            const rOffZ = ep.randomOffsetZ || 0;
+            let scatterX = 0, scatterZ = 0;
+            if (rOffX !== 0) scatterX = rOffX * (Math.random() - 0.5) + (ep.offsetX || 0);
+            if (rOffZ !== 0) scatterZ = rOffZ * (Math.random() - 0.5) + (ep.offsetZ || 0);
+            explodePos.x += scatterX + (ep.targetOffsetX || 0);
+            explodePos.y += scatterZ + (ep.targetOffsetZ || 0);
 
-            const gravity = effectiveBulletInfo.extra_param?.gravity || -0.0005;
-            const offsetY = airdrop?.offsetY || 0;
-            const dropOffset = airdrop?.dropOffset;
+            // The faithful physics core (BombBulletUnit) derives the bomb's
+            // spawn point, drop height and vertical speed from explodePos.
+            airdropData = { explodePos, direction };
+
+            // finalX/Y feed createBullet's NaN guard and the legacy path (a
+            // non-migrated airdrop bomb — e.g. airdrop + shrapnel). The
+            // physics-core bomb path ignores them and uses airdropData.
+            const gravity = ep.gravity ?? -0.05;
+            const offsetY = ep.offsetY || 0;
             let horizontalOffset = 0;
-            if (dropOffset) {
+            if (ep.dropOffset) {
                 const convertedVelocity = effectiveBulletInfo.velocity * 0.2;
                 horizontalOffset = Math.sqrt(Math.abs(offsetY * 2 / gravity)) * convertedVelocity;
                 if (direction < 0) horizontalOffset *= -1;
             }
             finalX_game = explodePos.x - horizontalOffset;
             finalY_game = explodePos.y + offsetY;
-            airdropData = { explodePos, gravity, offsetY, horizontalOffset };
         } else {
             const offsetX = ((barrage.offset_x || 0) + (bulletIndex * (barrage.delta_offset_x || 0))) * direction;
             finalX_game = startX_game + offsetX;
