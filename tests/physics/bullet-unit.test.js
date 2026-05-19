@@ -143,3 +143,81 @@ test('_accTable: a plain bullet has an empty table — every predicate false', (
   assert.equal(b.IsCircle(), false);
   assert.equal(b.IsOrbit(), false);
 });
+
+test('GetAcceleration: returns the latest record whose t has elapsed', () => {
+  const b = new BulletUnit({ acceleration: [{ t: 0, u: 1, v: 0 }, { t: 0.5, u: 5, v: 0 }] });
+  b.timeElapsed = 0.1;
+  assert.deepEqual(b.GetAcceleration(), { u: 1, v: 0 });
+  b.timeElapsed = 0.6;
+  assert.deepEqual(b.GetAcceleration(), { u: 5, v: 0 });
+});
+
+test('GetAcceleration: before the first record, returns zero', () => {
+  const b = new BulletUnit({ acceleration: [{ t: 1, u: 9, v: 0 }] });
+  b.timeElapsed = 0.5;
+  assert.deepEqual(b.GetAcceleration(), { u: 0, v: 0 });
+});
+
+test('doAccelerate: a positive u accelerates along the forward vector', () => {
+  const b = new BulletUnit({ acceleration: [{ t: 0, u: 0.5, v: 0 }] });
+  b.speed = { x: 1, y: 0 };
+  b._speedNormal = { x: 1, y: 0 };
+  b._speedCross = { x: 0, y: 1 };
+  b._speedLength = 1;
+  b.doAccelerate();
+  assert.deepEqual(b.speed, { x: 1.5, y: 0 });
+  assert.equal(b._speedLength, 1.5);
+});
+
+test('doAccelerate: a v adds a cross-vector component and re-derives the basis', () => {
+  const b = new BulletUnit({ acceleration: [{ t: 0, u: 0, v: 0.5 }] });
+  b.speed = { x: 1, y: 0 };
+  b._speedNormal = { x: 1, y: 0 };
+  b._speedCross = { x: 0, y: 1 };
+  b._speedLength = 1;
+  b.doAccelerate();
+  assert.deepEqual(b.speed, { x: 1, y: 0.5 });          // (1,0) + (0,1)*0.5
+  const len = Math.sqrt(1.25);
+  assert.ok(Math.abs(b._speedLength - len) < 1e-9);
+  assert.ok(Math.abs(b._speedNormal.x - 1 / len) < 1e-9);
+  assert.ok(Math.abs(b._speedNormal.y - 0.5 / len) < 1e-9);
+  assert.ok(Math.abs(b._speedCross.x - (-0.5 / len)) < 1e-9, 'cross = (-normal.y, normal.x)');
+  assert.ok(Math.abs(b._speedCross.y - 1 / len) < 1e-9);
+});
+
+test('doAccelerate: u=0 and v=0 is a no-op', () => {
+  const b = new BulletUnit({ acceleration: [{ t: 0, u: 0, v: 0 }] });
+  b.speed = { x: 2, y: 0 };
+  b._speedNormal = { x: 1, y: 0 };
+  b._speedCross = { x: 0, y: 1 };
+  b._speedLength = 2;
+  b.doAccelerate();
+  assert.deepEqual(b.speed, { x: 2, y: 0 });
+});
+
+test('doAccelerate: a negative u that would reverse the speed flips every u', () => {
+  // u -2 against forward speed 1: _speedLength + u = -1 < 0 -> reverseAcceleration.
+  const b = new BulletUnit({ acceleration: [{ t: 0, u: -2, v: 0 }] });
+  b.speed = { x: 1, y: 0 };
+  b._speedNormal = { x: 1, y: 0 };
+  b._speedCross = { x: 0, y: 1 };
+  b._speedLength = 1;
+  b.doAccelerate();
+  // reverseAcceleration flips the stored record, but `u` was already
+  // destructured locally before the flip, so this tick still applies -2.
+  assert.deepEqual(b.speed, { x: -1, y: 0 });
+  assert.equal(b._accTable.accels[0].u, 2, 'future records are flipped positive');
+});
+
+test('doAccelerate: u and v applied together compose correctly along forward and cross', () => {
+  // speed (1,0), normal (1,0), cross (0,1); u=0.3, v=0.4
+  // -> speed = (1+1*0.3+0*0.4, 0+0*0.3+1*0.4) = (1.3, 0.4)
+  const b = new BulletUnit({ acceleration: [{ t: 0, u: 0.3, v: 0.4 }] });
+  b.speed = { x: 1, y: 0 };
+  b._speedNormal = { x: 1, y: 0 };
+  b._speedCross = { x: 0, y: 1 };
+  b._speedLength = 1;
+  b.doAccelerate();
+  assert.ok(Math.abs(b.speed.x - 1.3) < 1e-9);
+  assert.ok(Math.abs(b.speed.y - 0.4) < 1e-9);
+});

@@ -9,7 +9,7 @@
  */
 
 import { BULLET_SPEED_CONVERT, BOMB_DETONATE_HEIGHT } from './constants.js';
-import { sqrDistance } from './vec.js';
+import { sqrDistance, magnitude, scale } from './vec.js';
 import { parseAccTable } from './acc-table.js';
 
 const DEG_TO_RAD = Math.PI / 180;
@@ -123,6 +123,69 @@ export class BulletUnit {
     if (this.gravity !== 0) {
       this.verticalSpeed += this.gravity;
     }
+  }
+
+  /**
+   * The acceleration (u, v) active at the current time. Mirrors GetAcceleration
+   * (battlebulletunit.lua:427-442): the latest record whose `t` has elapsed.
+   * The game quantises the lookup to ACC_INTERVAL because it can be called at a
+   * variable rate; the fixed-timestep core advances `timeElapsed` by exactly
+   * one ACC_INTERVAL per tick, so the quantisation is structural and the lookup
+   * is a plain threshold test. `accels` is pre-sorted ascending by `t`.
+   *
+   * `GetSpeedRatio()` multiplies u and v in the game; the simulator has no buff
+   * system so the ratio is always 1 and is omitted (same rationale as calcSpeed).
+   */
+  GetAcceleration() {
+    const accels = this._accTable.accels;
+    // Scan from the LAST record backward, matching the game's loop direction
+    // (battlebulletunit.lua:432-439). accels is sorted ascending by t, so the
+    // first record found with t <= timeElapsed IS the latest active one.
+    // O(1) in the steady state — typically the last or second-to-last record.
+    for (let i = accels.length - 1; i >= 0; i--) {
+      const rec = accels[i];
+      if (rec.t <= this.timeElapsed) return { u: rec.u, v: rec.v };
+    }
+    return { u: 0, v: 0 };
+  }
+
+  /**
+   * Flip every acceleration record's u sign. Mirrors reverseAcceleration
+   * (battlebulletunit.lua:444-448) — the bounce when a negative u would drive
+   * the forward speed below zero. Safe to mutate: parseAccTable returns fresh
+   * record objects.
+   */
+  reverseAcceleration() {
+    for (const rec of this._accTable.accels) rec.u = -rec.u;
+  }
+
+  /**
+   * Movement function for an accelerating bullet. Mirrors doAccelerate
+   * (battlebulletunit.lua:18-38) — the spec §B4 fix. Adds u along the forward
+   * unit vector `_speedNormal` and v along the cross vector `_speedCross` as
+   * velocity-vector components, then re-derives the basis from the new speed.
+   * The turn a given v produces therefore scales with the speed magnitude —
+   * the serpentine weave the legacy fixed-degree turn could not reproduce.
+   */
+  doAccelerate() {
+    const { u, v } = this.GetAcceleration();
+    if (u === 0 && v === 0) return;
+
+    if (u < 0 && this._speedLength + u < 0) {
+      this.reverseAcceleration();
+    }
+
+    this.speed = {
+      x: this.speed.x + this._speedNormal.x * u + this._speedCross.x * v,
+      y: this.speed.y + this._speedNormal.y * u + this._speedCross.y * v,
+    };
+
+    this._speedLength = magnitude(this.speed);
+    if (this._speedLength !== 0) {
+      this._speedNormal = scale(this.speed, 1 / this._speedLength);
+    }
+    // _speedCross = _speedNormal rotated 90deg (game: Cross with Vector3.up).
+    this._speedCross = { x: -this._speedNormal.y, y: this._speedNormal.x };
   }
 
   /**
