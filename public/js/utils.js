@@ -16,7 +16,7 @@
  * Must stay in sync with public/sw.js CACHE_VERSION. Bumping just one
  * leaves the other cache stale on first visit. See CLAUDE.md "Cache & Data Versioning".
  */
-const DATA_VERSION = '1.9.0';
+const DATA_VERSION = '1.10.0';
 
 /**
  * localStorage keys that participate in Google Drive sync.
@@ -374,6 +374,33 @@ function createGemIconImg() {
     img.className = 'gem-icon';
     img.alt = 'Gem';
     return img;
+}
+
+// ===== Game item / material icons =====
+
+/** Base for the JforPlay/data_for_toy icon host. */
+const DATA_FOR_TOY_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main';
+
+/**
+ * Resolve an in-game item/material icon to its hosted webp URL.
+ *
+ * Accepts either a bare numeric item id (e.g. 18002 — treated as a `props`
+ * item) or a config icon path (`Props/18002`, `Equips/85120`,
+ * `islandprops/xxxx`). The `domain` argument overrides the folder for a bare
+ * id ('props' | 'equips' | 'islandprops').
+ *
+ * @param {string|number} ref - item id, or a `Domain/id` path
+ * @param {string} [domain='props'] - icon folder for a bare id
+ * @returns {string} the webp URL, or '' for a falsy ref
+ */
+function getItemIconUrl(ref, domain = 'props') {
+    if (ref === null || ref === undefined || ref === '') return '';
+    const s = String(ref);
+    const m = s.match(/^([A-Za-z]+)\/(.+)$/);
+    if (m) {
+        return `${DATA_FOR_TOY_BASE}/${m[1].toLowerCase()}/${m[2]}.webp`;
+    }
+    return `${DATA_FOR_TOY_BASE}/${domain}/${s}.webp`;
 }
 
 // ===== IndexedDB Caching =====
@@ -1591,6 +1618,7 @@ export {
     createIcon,
     createMaterialIcon,
     createGemIconImg,
+    getItemIconUrl,
 
     // Cache utilities (CacheDB / clearJSONCache / purgeOldCache are internal —
     // not exported; the recurring purge runs from the init block below)
