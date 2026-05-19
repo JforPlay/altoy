@@ -493,7 +493,6 @@ function resetCurrentPositions() {
 function makeSpineDraggable(spine) {
     spine.interactive = true;
     spine.buttonMode = true;
-    spine.eventMode = 'static';
     spine.cursor = 'pointer';
     spine.on('pointerdown', onDragStart);
     spine.on('pointerup', onDragEnd);
@@ -650,14 +649,16 @@ function renderSelectableList({ container, countEl, itemClass, items, getName, a
 
 function onDragStart(e) {
     dragTarget = e.currentTarget;
-    const pos = e.global;
+    // PixiJS v5 dispatches a legacy InteractionEvent — the pointer position lives
+    // on e.data.global (e.global only exists in v7+ federated events).
+    const pos = e.data.global;
     dragOffset.x = pos.x - dragTarget.x;
     dragOffset.y = pos.y - dragTarget.y;
 }
 
 function onDragMove(e) {
     if (!dragTarget) return;
-    const pos = e.global;
+    const pos = e.data.global;
     const newX = pos.x - dragOffset.x;
     const newY = pos.y - dragOffset.y;
 
