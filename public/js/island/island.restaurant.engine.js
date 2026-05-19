@@ -115,7 +115,9 @@ async function init(sharedData) {
         ]);
 
         state.restaurants = restaurantData;
-        state.recipes = recipesData;
+        // normalizeArrayFields() repairs recipe array fields the Lua→JSON
+        // pipeline emits as `{}` for empty values (see resource engine).
+        state.recipes = window.IslandEngine.normalizeArrayFields(recipesData);
 
         // Build data structures for tree-based cost calculation
         buildMenuIndex();
