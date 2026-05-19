@@ -47,6 +47,34 @@ function formatEffect(effect) {
     return parts.join(', ');
 }
 
+/** Sum gold and every material across all nodes — the full retrofit cost. */
+function buildTotals(entry) {
+    let gold = 0;
+    const items = new Map();   // id -> { name, qty }
+    for (const n of entry.nodes) {
+        gold += n.cost.gold || 0;
+        for (const it of n.cost.items || []) {
+            const cur = items.get(it.id);
+            if (cur) cur.qty += it.qty;
+            else items.set(it.id, { name: it.name, qty: it.qty });
+        }
+    }
+    const mats = [...items.entries()].map(([id, m]) => `
+            <span class="retrofit-mat">
+              <img src="${getItemIconUrl(id)}" alt="" loading="lazy"
+                   data-onfail="hide" class="retrofit-mat__icon">
+              <span>${m.name} ×${m.qty}</span>
+            </span>`).join('');
+    return `
+        <div class="retrofit-total">
+          <span class="retrofit-total__label">총 필요 재료</span>
+          <div class="retrofit-total__mats">
+            ${gold ? `<span class="retrofit-mat">💰 ${gold.toLocaleString()}</span>` : ''}
+            ${mats}
+          </div>
+        </div>`;
+}
+
 /** Build the grid HTML for one ship's retrofit map entry. */
 function buildGrid(entry) {
     const { rows, cols } = entry.grid;
@@ -104,6 +132,7 @@ function buildGrid(entry) {
           <div class="retrofit-grid"
                style="grid-template-columns:repeat(${rows},1fr)">${cells}</div>
         </div>
+        ${buildTotals(entry)}
         <div class="retrofit-detail" id="retrofitNodeDetail"
              aria-live="polite">노드를 선택하세요</div>`;
 }

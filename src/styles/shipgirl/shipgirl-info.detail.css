@@ -150,7 +150,8 @@ body.dark-mode .back-button:hover:not(:disabled) {
 .gift-section,
 .stat-controls,
 .stats-section,
-.sp-weapon-section {
+.sp-weapon-section,
+.retrofit-section {
   background: var(--card-bg);
   padding: 1.125rem;
   border-radius: 0.625rem;

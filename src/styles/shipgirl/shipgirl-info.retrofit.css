@@ -60,9 +60,26 @@
 .retrofit-node__mark { font-size: 0.65rem; line-height: 1; }
 .retrofit-node__lv { font-weight: 600; }
 
+.retrofit-total {
+    margin: 12px auto 0;
+    max-width: 300px;
+    font-size: 0.8rem;
+}
+.retrofit-total__label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text-secondary, #8b93a4);
+}
+.retrofit-total__mats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
 .retrofit-detail {
     margin: 10px auto 0;
-    max-width: 360px;
+    max-width: 300px;
     padding: 10px 12px;
     border-radius: 8px;
     background: var(--bg-elevated, #21262f);
