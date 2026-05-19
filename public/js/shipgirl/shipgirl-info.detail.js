@@ -16,6 +16,7 @@ import {
     loadSkillDataTemplate
 } from './shipgirl-info.data.js';
 import { showMapsModal } from './shipgirl-info.maps.js';
+import { renderRetrofitMap } from './shipgirl-info.retrofit.js';
 
 'use strict';
 
@@ -133,6 +134,7 @@ function renderDetailView(ship) {
         code: '',
         image: ''
     };
+    const hasRetrofit = !!(ship.retrofit && ship.retrofit.id);
 
     const detailContent = document.getElementById('detailContent');
     detailContent.innerHTML = `
@@ -141,10 +143,12 @@ function renderDetailView(ship) {
         ${renderStatsSection(ship, limitBreakOptions)}
         ${renderSkillSection(ship)}
         ${renderSpWeaponSection(ship)}
+        ${hasRetrofit ? `<div class="retrofit-section" id="retrofitMapSection"></div>` : ''}
     `;
 
     setupDetailEventListeners();
     updateStats();
+    if (hasRetrofit) renderRetrofitMap(ship.gid);
 }
 
 /**
@@ -205,12 +209,6 @@ function renderDetailHeader(ship, nationalityInfo) {
                             ${nationalityInfo.name}${nationalityInfo.code ? ` (${nationalityInfo.code})` : ''}
                         </div>
                     </div>
-                    ${hasRetrofit ? `
-                        <div class="info-item">
-                            <div class="info-label">개조 레벨 요구</div>
-                            <div class="info-value">${ship.retrofit.level}</div>
-                        </div>
-                    ` : ''}
                 </div>
                 ${ship.description && ship.description.length > 0 ? `
                     <div style="margin-top: 20px;">
