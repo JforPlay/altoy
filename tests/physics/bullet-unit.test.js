@@ -98,3 +98,48 @@ test('Update: a gravity bullet detonates at the bomb-detonation height', () => {
   b.Update();                 // altitude -1.0
   assert.equal(b.reachDestFlag, true, 'detonates at/below 1.2');
 });
+
+test('_accTable: an array of records makes HasAcceleration true', () => {
+  const b = new BulletUnit({ acceleration: [{ t: 0, u: 1, v: 0 }] });
+  assert.equal(b.HasAcceleration(), true);
+  assert.equal(b.IsTracker(), false);
+  assert.equal(b.IsCircle(), false);
+  assert.equal(b.IsOrbit(), false);
+});
+
+test('_accTable: a tracker object makes IsTracker true, HasAcceleration false', () => {
+  const b = new BulletUnit({ acceleration: { tracker: { angular: 3, range: 50 } } });
+  assert.equal(b.IsTracker(), true);
+  assert.equal(b.HasAcceleration(), false);
+});
+
+test('_accTable: a circle object makes IsCircle true', () => {
+  const b = new BulletUnit({ acceleration: { circle: { centripetalSpeed: -1 } } });
+  assert.equal(b.IsCircle(), true);
+});
+
+test('_accTable: an orbit object makes IsOrbit true', () => {
+  const b = new BulletUnit({ acceleration: { orbit: { radius: 10 } } });
+  assert.equal(b.IsOrbit(), true);
+  assert.equal(b.HasAcceleration(), false);
+  assert.equal(b.IsTracker(), false);
+  assert.equal(b.IsCircle(), false);
+});
+
+test('_accTable: accel records AND a tracker — both predicates true', () => {
+  // The game priority chain (InitSpeed) resolves this to doAccelerate; the
+  // predicates themselves just report what data is present.
+  const b = new BulletUnit({
+    acceleration: { 1: { t: 0, u: 1, v: 0 }, tracker: { angular: 3, range: 50 } },
+  });
+  assert.equal(b.HasAcceleration(), true);
+  assert.equal(b.IsTracker(), true);
+});
+
+test('_accTable: a plain bullet has an empty table — every predicate false', () => {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0 });
+  assert.equal(b.HasAcceleration(), false);
+  assert.equal(b.IsTracker(), false);
+  assert.equal(b.IsCircle(), false);
+  assert.equal(b.IsOrbit(), false);
+});

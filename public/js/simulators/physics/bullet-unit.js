@@ -10,6 +10,7 @@
 
 import { BULLET_SPEED_CONVERT, BOMB_DETONATE_HEIGHT } from './constants.js';
 import { sqrDistance } from './vec.js';
+import { parseAccTable } from './acc-table.js';
 
 const DEG_TO_RAD = Math.PI / 180;
 
@@ -37,6 +38,17 @@ export class BulletUnit {
     this.sqrRange = 0;
     this.timeElapsed = 0;
     this.reachDestFlag = false;
+
+    // Movement data. _accTable mirrors the game's mixed _accTable Lua table:
+    // an `accels` list for doAccelerate plus optional tracker / circle / orbit
+    // entries. The base-class InitSpeed reads it to pick the single
+    // updateSpeed function; subclasses that override InitSpeed (e.g.
+    // BombBulletUnit) bypass it.
+    this._accTable = parseAccTable(opts.acceleration, opts.barrageAngle);
+    // Homing target / circle-centre fallback. {x, y} game coords (horizontal plane).
+    this._target = opts.target ?? null;
+    // Live weapon position for the harness-only doOrbit. {x, y} game coords.
+    this._weaponPos = opts.weaponPos ?? null;
   }
 
   /**
@@ -68,12 +80,34 @@ export class BulletUnit {
     this.sqrRange = this.range * this.range;
   }
 
+  // PascalCase mirrors the Lua originals (battlebulletunit.lua:411-423) to
+  // keep the priority chain in InitSpeed readable against the source.
+  /** #_accTable ~= 0 — the array part is non-empty (battlebulletunit.lua:411). */
+  HasAcceleration() {
+    return this._accTable.accels.length > 0;
+  }
+
+  /** _accTable.tracker is set (battlebulletunit.lua:415). */
+  IsTracker() {
+    return this._accTable.tracker != null;
+  }
+
+  /** _accTable.circle is set (battlebulletunit.lua:423). */
+  IsCircle() {
+    return this._accTable.circle != null;
+  }
+
+  /** _accTable.orbit is set (battlebulletunit.lua:419). */
+  IsOrbit() {
+    return this._accTable.orbit != null;
+  }
+
   /**
    * Pick the single per-tick movement function. Mirrors InitSpeed
    * (battlebulletunit.lua:738-768). The game's priority chain is
    * HasAcceleration -> doAccelerate, IsTracker -> doTrack, IsCircle -> doCircle,
-   * else doNothing. Acceleration/tracker/circle are added in Phase 2; for now
-   * every bullet resolves to doNothing.
+   * else doNothing. The accel / tracker / circle branches are wired in the
+   * following tasks; for now every bullet still resolves to doNothing.
    */
   InitSpeed() {
     this.calcSpeed();
