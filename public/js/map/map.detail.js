@@ -6,7 +6,7 @@
  * calcClearEstimate is also exported and used by map.compare.js for the compare table.
  */
 
-import { showElement, hideElement, resolveUrl } from '../utils.js';
+import { showElement, hideElement, resolveUrl, getItemIconUrl } from '../utils.js';
 import { getShipDropsForChapter, getShipInfo, getShipInfoByGid } from './map.data.js';
 
 let state;
@@ -32,18 +32,6 @@ const SHIP_TYPE_NAMES = {
     zhan: '전함', hang: '항모', qinghang: '경항모',
     qianting: '잠수', hangzhan: '항전', hangxun: '항순',
 };
-
-/** Star condition values → Korean descriptions */
-const DATA_FOR_TOY_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main';
-
-// Converts Props/XXXX or Equips/XXXX path (from item_drops data) to a hosted WebP URL
-/** Convert item icon path to image URL. Props/XXXX -> props/XXXX.webp, Equips/XXXX -> equips/XXXX.webp */
-function getItemIconUrl(iconPath) {
-    if (!iconPath) return '';
-    // Normalize: Props/17003 -> props/17003, Equips/85120 -> equips/85120
-    const normalized = iconPath.replace(/^Props\//, 'props/').replace(/^Equips\//, 'equips/').replace(/^props\//, 'props/');
-    return `${DATA_FOR_TOY_BASE}/${normalized}.webp`;
-}
 
 /** Star condition types from chapterconst.lua GetAchieveDesc */
 const STAR_CONDITIONS = {

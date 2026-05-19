@@ -26,6 +26,11 @@ const TICK_MS = 1000 / VIEW_FPS;
  *   into the next frame.
  */
 export function drainAccumulator(accumulatedMs, maxTicks = 4) {
+  // Guard non-positive / non-finite input. A negative or NaN accumulator
+  // would yield negative or NaN ticks and poison the carried remainder
+  // permanently. The view-driver loop feeds clamped finite input, so this
+  // is defensive — matching the non-finite rigour of world.js spawnBullet.
+  if (!(accumulatedMs > 0)) return { ticks: 0, remainder: 0 };
   const rawTicks = Math.floor(accumulatedMs / TICK_MS);
   const ticks = Math.min(Math.max(rawTicks, 0), maxTicks);
   const remainder = accumulatedMs - rawTicks * TICK_MS;

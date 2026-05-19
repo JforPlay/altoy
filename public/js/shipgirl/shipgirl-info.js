@@ -21,6 +21,7 @@ import {
     setupMapsModalListeners, setupMapBrowserListeners
 } from './shipgirl-info.maps.js';
 import { setup as setupSkillSearch } from './shipgirl-info.skill-search.js';
+import { setup as setupRetrofit } from './shipgirl-info.retrofit.js';
 
 // ===== State =====
 const state = {
@@ -90,6 +91,7 @@ setupData(state);
 setupDetail(state);
 setupMaps(state);
 setupSkillSearch(state);
+setupRetrofit(state);
 
 // ===== Initialization =====
 

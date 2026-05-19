@@ -1,0 +1,119 @@
+/* shipgirl-info.retrofit.css — retrofit node-map section */
+
+.retrofit-map {
+    position: relative;
+    max-width: 300px;
+    margin: 12px auto;
+}
+
+/* SVG connector overlay sits behind the node grid. */
+.retrofit-connectors {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+.retrofit-connectors line {
+    stroke: var(--border-color, #4a5163);
+    stroke-width: 0.6;
+}
+
+.retrofit-grid {
+    position: relative;
+    display: grid;
+    gap: 7px;
+}
+.retrofit-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+}
+
+.retrofit-node {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    border: 1px solid var(--border-color, #4a5163);
+    border-radius: 6px;
+    background: var(--bg-elevated, #2c313c);
+    color: var(--text-primary, #cfd6e4);
+    font-size: 0.55rem;
+    cursor: pointer;
+}
+.retrofit-node--selected {
+    outline: 2px solid var(--primary, #5a8fb0);
+}
+.retrofit-node--modernization {
+    border-color: var(--rarity-ssr, #c79a3e);
+    color: var(--rarity-ssr, #f0c674);
+}
+.retrofit-node--skill {
+    border-color: var(--primary, #5a8fb0);
+    color: var(--primary, #8fc9e8);
+}
+.retrofit-node__mark { font-size: 0.65rem; line-height: 1; }
+.retrofit-node__lv { font-weight: 600; }
+
+/* Selected-node detail (left) + total materials (right), side by side. */
+.retrofit-mats {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+    max-width: 620px;
+    margin: 12px auto 0;
+}
+.retrofit-detail,
+.retrofit-total {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--bg-elevated, #21262f);
+    border: 1px solid var(--border-color, #3a4150);
+    font-size: 0.8rem;
+}
+.retrofit-total__label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text-secondary, #8b93a4);
+}
+.retrofit-total__mats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Mobile: stack the two panels — selected-node detail stays on top. */
+@media (max-width: 768px) {
+    .retrofit-mats { flex-direction: column; }
+}
+.retrofit-detail__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-weight: 600;
+}
+.retrofit-detail__reward { margin: 6px 0; color: var(--success, #7fd18f); }
+.retrofit-detail__cost {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: var(--text-secondary, #8b93a4);
+}
+.retrofit-mat {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.retrofit-mat__icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
