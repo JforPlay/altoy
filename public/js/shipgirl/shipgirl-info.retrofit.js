@@ -116,7 +116,7 @@ function renderNodeDetail(node) {
     const reward = node.kind === 'modernization'
         ? `근대화 — ${formatEffect(node.grant.effect) || '함종/스킬 강화'}`
         : node.kind === 'skill'
-            ? `스킬 강화 (#${node.grant.skill})`
+            ? '스킬 강화'
             : (formatEffect(node.grant.effect) || '—');
     return `
         <div class="retrofit-detail__head">
