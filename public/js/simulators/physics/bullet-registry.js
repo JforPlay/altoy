@@ -7,10 +7,12 @@
 
 import { BulletUnit } from './bullet-unit.js';
 import { CannonBulletUnit } from './bullets/cannon.js';
+import { TorpedoBulletUnit } from './bullets/torpedo.js';
 
 const BULLET_CLASSES = {
-  1: CannonBulletUnit,  // CANNON
-  8: CannonBulletUnit,  // STRAY — same straight-line movement
+  1: CannonBulletUnit,   // CANNON
+  8: CannonBulletUnit,   // STRAY — same straight-line movement
+  3: TorpedoBulletUnit,  // TORPEDO
 };
 
 /** Construct the BulletUnit subclass for `type`, forwarding `opts`. */

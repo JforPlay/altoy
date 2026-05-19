@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createBulletUnit } from '../../public/js/simulators/physics/bullet-registry.js';
 import { CannonBulletUnit } from '../../public/js/simulators/physics/bullets/cannon.js';
+import { TorpedoBulletUnit } from '../../public/js/simulators/physics/bullets/torpedo.js';
 import { BulletUnit } from '../../public/js/simulators/physics/bullet-unit.js';
 
 test('type 1 (CANNON) resolves to a CannonBulletUnit', () => {
@@ -24,4 +25,14 @@ test('createBulletUnit forwards the options to the constructor', () => {
   const u = createBulletUnit(1, { velocity: 25, yAngle: 90 });
   assert.equal(u.velocity, 25);
   assert.equal(u.yAngle, 90);
+});
+
+test('type 3 (TORPEDO) resolves to a TorpedoBulletUnit', () => {
+  const u = createBulletUnit(3, { velocity: 10, yAngle: 0 });
+  assert.ok(u instanceof TorpedoBulletUnit);
+});
+
+test('a TorpedoBulletUnit is also a BulletUnit', () => {
+  const u = createBulletUnit(3, { velocity: 10, yAngle: 0 });
+  assert.ok(u instanceof BulletUnit);
 });

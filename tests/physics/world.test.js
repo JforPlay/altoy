@@ -75,3 +75,18 @@ test('a type-8 STRAY bullet flies straight and is culled at its range', () => {
   world.step();                         // x=30, sqrDist 900 > 625 -> expire
   assert.equal(world.bullets.length, 0, 'STRAY culled at range');
 });
+
+test('a type-3 torpedo flies straight and is culled at its range', () => {
+  // Torpedo (3) uses TorpedoBulletUnit — plain straight-line movement.
+  const world = new World();
+  // velocity 50 -> speed 10/tick; range 25 -> sqrRange 625.
+  world.spawnBullet({
+    type: 3, velocity: 50, yAngle: 0, range: 25, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+  });
+  world.step();                         // x=10, sqrDist 100
+  world.step();                         // x=20, sqrDist 400 < 625
+  assert.equal(world.bullets.length, 1, 'still in flight');
+  world.step();                         // x=30, sqrDist 900 > 625 -> expire
+  assert.equal(world.bullets.length, 0, 'torpedo culled at range');
+});
