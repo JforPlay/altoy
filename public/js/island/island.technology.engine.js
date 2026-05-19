@@ -47,9 +47,12 @@ async function init(sharedData) {
             state.resourceData = sharedData.items;
         }
 
-        // Load module-specific data
+        // Load module-specific data. normalizeArrayFields() repairs array fields
+        // the Lua→JSON pipeline emits as `{}` (e.g. sys_unlock for a tech with no
+        // dependencies), which would otherwise crash canCompleteTech and the
+        // requirement/connection renderers.
         const techData = await fetchJSON('data/island/technology.json');
-        state.technologies = techData;
+        state.technologies = window.IslandEngine.normalizeArrayFields(techData);
 
         // Load completion state from localStorage
         loadCompletionState();
