@@ -1,0 +1,128 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { BombBulletUnit } from '../../public/js/simulators/physics/bullets/bomb.js';
+
+test('SetSpawnPosition: a no-dropOffset bomb spawns directly above the explode point', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: false,
+    explodePos: { x: 20, y: 0 }, direction: 1,
+  });
+  b.SetSpawnPosition();
+  assert.deepEqual(b.position, { x: 20, y: 0 }, 'spawn x = explode x');
+  assert.deepEqual(b.spawnPos, { x: 20, y: 0 });
+  assert.equal(b.altitude, 8, 'spawn altitude = offsetY');
+});
+
+test('SetSpawnPosition: a dropOffset bomb spawns above and behind the explode point', () => {
+  // convertedVelocity = 5 * 0.2 = 1.0
+  // dropOffsetX = sqrt(|2*8 / -0.25|) * 1.0 = sqrt(64) = 8 -> spawn x = 20 - 8
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: true,
+    explodePos: { x: 20, y: 0 }, direction: 1,
+  });
+  b.SetSpawnPosition();
+  assert.equal(b.position.x, 12, 'spawn x = explode x - dropOffsetX');
+  assert.equal(b.position.y, 0);
+  assert.equal(b.altitude, 8);
+});
+
+test('SetSpawnPosition: direction -1 mirrors the drop offset', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: true,
+    explodePos: { x: 20, y: 0 }, direction: -1,
+  });
+  b.SetSpawnPosition();
+  assert.equal(b.position.x, 28, 'dropOffsetX is negated for a left-facing host');
+});
+
+test('SetSpawnPosition: solves verticalSpeed so the bomb lands on the explode point', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: false,
+    explodePos: { x: 20, y: 0 }, direction: 1,
+  });
+  b.SetSpawnPosition();
+  // Overhead bomb (planar distance 0): flightTime = sqrt(0 + 1.2^2) / cv
+  //   = 1.2 / 1.0 = 1.2 ticks. verticalSpeed solves the parabola.
+  const flightTime = 1.2;
+  const expected = (1.2 - 8) / flightTime - 0.5 * (-0.25) * flightTime;
+  assert.ok(Math.abs(b.verticalSpeed - expected) < 1e-9,
+    `verticalSpeed ~= ${expected}, got ${b.verticalSpeed}`);
+});
+
+test('SetSpawnPosition: launchVrtSpeed overrides the solved vertical speed', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: false,
+    explodePos: { x: 20, y: 0 }, direction: 1, launchVrtSpeed: -0.5,
+  });
+  b.SetSpawnPosition();
+  assert.equal(b.verticalSpeed, -0.5);
+});
+
+test('InitSpeed: a bomb aims along x toward the explode point (heading 0)', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: true,
+    explodePos: { x: 20, y: 0 }, direction: 1,
+  });
+  b.SetSpawnPosition();   // spawn x = 12 (behind the explode point)
+  b.InitSpeed();
+  assert.equal(b.yAngle, 0, 'spawn shares the explode point planar y -> heading 0');
+  assert.equal(b.speed.x, 1, 'speed magnitude = velocity * 0.2 = 1.0');
+  assert.ok(Math.abs(b.speed.y) < 1e-9, 'no cross-axis drift');
+  assert.equal(b.updateSpeed, b.doNothing, 'bomb uses the doNothing gravity integrator');
+});
+
+test('InitSpeed: a left-facing bomb aims back along -x (heading 180)', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: true,
+    explodePos: { x: 20, y: 0 }, direction: -1,
+  });
+  b.SetSpawnPosition();   // spawn x = 28 (drop offset mirrored)
+  b.InitSpeed();
+  assert.equal(b.yAngle, 180);
+  assert.ok(Math.abs(b.speed.x - (-1)) < 1e-9);
+});
+
+test('Update: a timeToExplode bomb detonates on the timer, not on altitude', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: false,
+    explodePos: { x: 20, y: 0 }, direction: 1, explodeTime: 0.5,
+  });
+  b.SetSpawnPosition();
+  b.InitSpeed();
+  // Force the bomb below the detonation height: without explodeTime the base
+  // Update would flag it at once — explodeTime must suppress that.
+  b.altitude = 0;
+  b.timeElapsed = 0.3;
+  b.Update();
+  assert.equal(b.reachDestFlag, false, 'altitude detonation suppressed before the timer');
+  b.timeElapsed = 0.5;
+  b.Update();
+  assert.equal(b.reachDestFlag, true, 'detonates once timeElapsed reaches explodeTime');
+});
+
+test('Update: a bomb with no timeToExplode detonates on altitude', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: false,
+    explodePos: { x: 20, y: 0 }, direction: 1,   // no explodeTime
+  });
+  b.SetSpawnPosition();
+  b.InitSpeed();
+  b.altitude = 0;             // below BOMB_DETONATE_HEIGHT
+  b.timeElapsed = 0.01;
+  b.Update();
+  assert.equal(b.reachDestFlag, true, 'altitude detonation applies when no timer is set');
+});
+
+test('SetSpawnPosition: a velocity-0 bomb skips the vertical-speed solve and falls from rest', () => {
+  // ~half of all airdrop bombs have velocity 0 (the "drops straight down"
+  // case). convertedVelocity 0 -> dropOffsetX is 0 and the solve is skipped,
+  // so verticalSpeed stays 0; gravity then accrues it tick by tick (doNothing).
+  const b = new BombBulletUnit({
+    velocity: 0, gravity: -0.25, offsetY: 8, dropOffset: true,
+    explodePos: { x: 20, y: 0 }, direction: 1,
+  });
+  b.SetSpawnPosition();
+  assert.deepEqual(b.position, { x: 20, y: 0 }, 'no horizontal drop offset when convertedVelocity is 0');
+  assert.equal(b.altitude, 8, 'spawn altitude = offsetY');
+  assert.equal(b.verticalSpeed, 0, 'vertical-speed solve skipped — falls from rest');
+});

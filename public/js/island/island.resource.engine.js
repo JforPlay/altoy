@@ -64,7 +64,10 @@ async function init(sharedData) {
             fetchJSON('data/island/island_shop_goods.json')
         ]);
 
-        state.recipes = recipesData;
+        // normalizeArrayFields() repairs recipe array fields (commission_cost,
+        // cost, drop_display, …) the Lua→JSON pipeline emits as `{}` for empty
+        // values, which would crash buildDependencyGraph and the cost renderers.
+        state.recipes = window.IslandEngine.normalizeArrayFields(recipesData);
 
         // Process shop data using shared function
         state.shopPurchaseData = window.IslandEngine.buildShopDataIndex(shopData);

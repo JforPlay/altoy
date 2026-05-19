@@ -152,7 +152,10 @@ export function getSkillIconUrl(skillId) {
  */
 export function processSkillDescription(desc, descGetAdd) {
     if (!desc) return '설명 없음';
-    if (!descGetAdd || descGetAdd.length === 0) return desc;
+    // desc_get_add is Lua-derived: a parameterless skill serializes to an empty
+    // table — JSON {} or "" — not []. Anything that isn't a populated array means
+    // "no params", so bail before forEach (objects/strings have no .forEach).
+    if (!Array.isArray(descGetAdd) || descGetAdd.length === 0) return desc;
 
     let processed = desc;
     descGetAdd.forEach((params, index) => {

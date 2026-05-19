@@ -581,6 +581,41 @@ function calculateTreeNetGain(tree, direction = 'dependencies', parentRecipeCate
 // ===== Shared Data Structure Builders =====
 
 /**
+ * Array-typed fields that the upstream Lua→JSON pipeline can emit as an empty
+ * object `{}` instead of `[]`. Lua tables have no distinct empty-array form, so
+ * the converter serializes an empty table as an object. The common defensive
+ * idioms do NOT catch this: `(field || []).forEach` fails because `{}` is
+ * truthy, and `for...of {}` throws "is not iterable".
+ */
+const LUA_ARRAY_FIELDS = new Set([
+    'sys_unlock', 'cost', 'commission_cost', 'commission_product',
+    'second_product', 'second_product_display', 'drop_display'
+]);
+
+/**
+ * Recursively coerce known array-typed fields from `{}` to `[]` in freshly
+ * loaded island JSON, so every downstream consumer can rely on them being
+ * arrays. Mutates the node in place; idempotent (a real array is left as-is).
+ * @param {*} node - A loaded JSON value (object, array, or primitive).
+ * @returns {*} The same node, for convenient inline use at the fetch site.
+ */
+function normalizeArrayFields(node) {
+    if (Array.isArray(node)) {
+        for (const item of node) normalizeArrayFields(item);
+    } else if (node && typeof node === 'object') {
+        for (const key of Object.keys(node)) {
+            const value = node[key];
+            if (LUA_ARRAY_FIELDS.has(key) && value && typeof value === 'object' && !Array.isArray(value)) {
+                node[key] = [];
+            } else {
+                normalizeArrayFields(value);
+            }
+        }
+    }
+    return node;
+}
+
+/**
  * Build dependency graph from recipes
  * Used by resource and restaurant modules
  */
@@ -677,6 +712,7 @@ window.IslandEngine = {
     buildDependencyGraph,
     buildShopDataIndex,
     buildRecipeIndices,
+    normalizeArrayFields,
     GOLD_ITEM_ID,
     state: () => state
 };
@@ -700,5 +736,6 @@ export {
     buildDependencyGraph,
     buildShopDataIndex,
     buildRecipeIndices,
+    normalizeArrayFields,
     GOLD_ITEM_ID
 };
