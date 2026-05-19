@@ -11531,6 +11531,16 @@
         ],
         "rarity": "SSR"
     },
+    "30517": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305170/icon.png",
+        "name": "꼬마 무사시",
+        "nationality": 4,
+        "type": 5,
+        "description": [
+            "이벤트: 아직 미숙한 수호자"
+        ],
+        "rarity": "SR"
+    },
     "30601": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306010/icon.png",
         "name": "히요",

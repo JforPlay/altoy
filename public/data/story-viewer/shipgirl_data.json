@@ -5651,6 +5651,10 @@
         "name": "탈출 실패…?",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305161/icon.png"
     },
+    "305170": {
+        "name": "꼬마 무사시",
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305170/icon.png"
+    },
     "306010": {
         "name": "{namecode:85}",
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306010/icon.png"

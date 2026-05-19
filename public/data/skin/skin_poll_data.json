@@ -14711,6 +14711,18 @@
         "진영": "IJN",
         "레어도": "SSR"
     },
+    "1226": {
+        "클뜯 id": 305170,
+        "함순이 이름": "꼬마 무사시",
+        "한글 함순이 + 스킨 이름": "꼬마 무사시",
+        "깔끔한 일러": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305170/shipyard.png",
+        "전체 일러": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/305170/painting.png",
+        "ASMR 일러": null,
+        "스킨 타입 - 한글": null,
+        "스킨 태그": "X",
+        "진영": "IJN",
+        "레어도": "SR"
+    },
     "1227": {
         "클뜯 id": 306010,
         "함순이 이름": "히요",
