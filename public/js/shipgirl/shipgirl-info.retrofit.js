@@ -55,10 +55,14 @@ function buildGrid(entry) {
     const byPos = new Map();
     entry.nodes.forEach((n) => byPos.set(`${n.row},${n.col}`, n));
 
+    // The config grid runs level top→bottom, branch left→right. The map is
+    // shown rotated 90° counter-clockwise then flipped, so on screen the level
+    // axis runs left→right (low level at the left) and branches stack down.
+    // Display cell: column = config row (level), row = config branch index.
     let cells = '';
-    for (let r = 0; r < rows; r++) {
-        for (let c = minCol; c < minCol + span; c++) {
-            const n = byPos.get(`${r},${c}`);
+    for (let br = 0; br < span; br++) {
+        for (let lv = 0; lv < rows; lv++) {
+            const n = byPos.get(`${lv},${minCol + br}`);
             if (!n) {
                 cells += '<div class="retrofit-cell retrofit-cell--empty"></div>';
                 continue;
@@ -75,9 +79,10 @@ function buildGrid(entry) {
         }
     }
 
+    // Connector centres in the rotated display space (x = level, y = branch).
     const center = (n) => ({
-        x: ((n.col - minCol + 0.5) / span) * 100,
-        y: ((n.row + 0.5) / rows) * 100,
+        x: ((n.row + 0.5) / rows) * 100,
+        y: ((n.col - minCol + 0.5) / span) * 100,
     });
     const nodeById = new Map(entry.nodes.map((n) => [n.id, n]));
     let lines = '';
@@ -93,11 +98,11 @@ function buildGrid(entry) {
 
     return `
         <h3 class="section-title">개조 맵</h3>
-        <div class="retrofit-map" style="--retrofit-cols:${span}">
+        <div class="retrofit-map">
           <svg class="retrofit-connectors" viewBox="0 0 100 100"
                preserveAspectRatio="none" aria-hidden="true">${lines}</svg>
           <div class="retrofit-grid"
-               style="grid-template-columns:repeat(${span},1fr)">${cells}</div>
+               style="grid-template-columns:repeat(${rows},1fr)">${cells}</div>
         </div>
         <div class="retrofit-detail" id="retrofitNodeDetail"
              aria-live="polite">노드를 선택하세요</div>`;
