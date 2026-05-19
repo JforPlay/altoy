@@ -18813,7 +18813,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 151823
+                    }
+                ]
             },
             "151830": {
                 "id": 151830,
@@ -22387,7 +22392,7 @@
             ],
             "attribute_1": "cannon",
             "attribute_2": "reload",
-            "weapon_true": false
+            "weapon_true": true
         },
         "class_name": "볼티모어급 ",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/103160/shipyard.png",
@@ -22951,7 +22956,15 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 16335
+                    },
+                    {
+                        "id": 16336
+                    }
+                ]
             },
             "20281": {
                 "id": 20281,
@@ -23722,7 +23735,27 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 17371,
+                        "quota": 2,
+                        "time": 0.6
+                    },
+                    {
+                        "id": 17372
+                    },
+                    {
+                        "id": 17371,
+                        "quota": 3,
+                        "time": 0.6
+                    },
+                    {
+                        "id": 17371,
+                        "quota": 4,
+                        "time": 0.6
+                    }
+                ]
             },
             "17380": {
                 "id": 17380,
@@ -25100,7 +25133,13 @@
             ],
             "attribute_1": "cannon",
             "attribute_2": "reload",
-            "weapon_true": false
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1010143,
+                    "quota": 1
+                }
+            ]
         },
         "class_name": "펜실베이니아급",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105040/shipyard.png",
@@ -27164,7 +27203,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 150301
+                    }
+                ]
             }
         },
         "description": [
@@ -29670,7 +29714,7 @@
             ],
             "attribute_1": "air",
             "attribute_2": "reload",
-            "weapon_true": false
+            "weapon_true": true
         },
         "class_name": "렉싱턴급",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107030/shipyard.png",
@@ -31426,13 +31470,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": true,
-                "attached_weapon_skill_id": [
-                    {
-                        "id": 16210,
-                        "time": 12
-                    }
-                ]
+                "weapon_true": true
             },
             "16220": {
                 "id": 16220,
@@ -33026,7 +33064,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 13711
+                    }
+                ]
             },
             "13720": {
                 "id": 13720,
@@ -35523,7 +35566,15 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 14744
+                    },
+                    {
+                        "id": 14745
+                    }
+                ]
             },
             "14750": {
                 "id": 14750,
@@ -35722,7 +35773,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 17411,
+                        "quota": 1
+                    }
+                ]
             },
             "17420": {
                 "id": 17420,
@@ -36363,7 +36420,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 17341
+                    }
+                ]
             },
             "17350": {
                 "id": 17350,
@@ -37827,7 +37889,7 @@
                 14
             ],
             "type": 1,
-            "weapon_true": false
+            "weapon_true": true
         },
         "base": {
             "201011": {
@@ -38136,7 +38198,7 @@
                 14
             ],
             "type": 1,
-            "weapon_true": false
+            "weapon_true": true
         },
         "base": {
             "201021": {
@@ -43398,7 +43460,7 @@
             ],
             "attribute_1": "cannon",
             "attribute_2": "torpedo",
-            "weapon_true": false
+            "weapon_true": true
         },
         "class_name": "M급",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/201260/shipyard.png",
@@ -45137,7 +45199,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": true
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 151251
+                    }
+                ]
             },
             "151260": {
                 "id": 151260,
@@ -45145,7 +45212,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 151262
+                    }
+                ]
             },
             "151270": {
                 "id": 151270,
@@ -47754,7 +47826,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": true
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 4102,
+                        "time": 20
+                    }
+                ]
             },
             "29101": {
                 "id": 29101,
@@ -57551,7 +57629,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 12152,
+                        "time": 24
+                    }
+                ]
             },
             "12160": {
                 "id": 12160,
@@ -59674,7 +59758,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             }
         },
         "description": [
@@ -60546,7 +60630,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "13430": {
                 "id": 13430,
@@ -61920,7 +62004,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 12571
+                    }
+                ]
             },
             "12580": {
                 "id": 12580,
@@ -61961,7 +62050,12 @@
             ],
             "attribute_1": "air",
             "attribute_2": "reload",
-            "weapon_true": false
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1012571
+                }
+            ]
         },
         "class_name": "일러스트리어스급",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207050/shipyard.png",
@@ -76640,7 +76734,13 @@
                 "upgrade": null,
                 "downgrade": 12890,
                 "requirement": "Retrofit",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 14703,
+                        "time": 20
+                    }
+                ]
             }
         },
         "description": [
@@ -80835,7 +80935,12 @@
             ],
             "attribute_1": "cannon",
             "attribute_2": "dodge",
-            "weapon_true": false
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1090171
+                }
+            ]
         },
         "class_name": "모가미급",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/302100/shipyard.png",
@@ -82781,7 +82886,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 150422
+                    }
+                ]
             },
             "150430": {
                 "id": 150430,
@@ -82989,7 +83099,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "22131": {
                 "id": 22131,
@@ -90707,7 +90817,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "13170": {
                 "id": 13170,
@@ -90896,7 +91006,25 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 16031,
+                        "quota": 6,
+                        "time": 0.5
+                    },
+                    {
+                        "id": 16032
+                    },
+                    {
+                        "id": 16033,
+                        "quota": 6,
+                        "time": 0.5
+                    },
+                    {
+                        "id": 16034
+                    }
+                ]
             },
             "16040": {
                 "id": 16040,
@@ -91454,7 +91582,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 17064
+                    }
+                ]
             },
             "17070": {
                 "id": 17070,
@@ -91462,7 +91595,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 17071
+                    }
+                ]
             }
         },
         "description": [
@@ -92452,7 +92590,14 @@
             ],
             "attribute_1": "air",
             "attribute_2": "reload",
-            "weapon_true": false
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1090363,
+                    "quota": 3,
+                    "time": 1
+                }
+            ]
         },
         "class_name": "호쇼",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/306030/shipyard.png",
@@ -93097,7 +93242,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 11762
+                    }
+                ]
             }
         },
         "description": [
@@ -95135,7 +95285,15 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 11628
+                    },
+                    {
+                        "id": 11627
+                    }
+                ]
             },
             "11630": {
                 "id": 11630,
@@ -96814,7 +96972,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 151542,
+                        "quota": 1
+                    }
+                ]
             },
             "151550": {
                 "id": 151550,
@@ -99264,7 +99428,19 @@
             ],
             "attribute_1": "torpedo",
             "attribute_2": "dodge",
-            "weapon_true": true
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1019061,
+                    "quota": 4,
+                    "time": 0.5
+                },
+                {
+                    "id": 1019062,
+                    "quota": 1,
+                    "time": 2
+                }
+            ]
         },
         "class_name": "이부키급",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/399010/shipyard.png",
@@ -100376,7 +100552,19 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": true
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 19752,
+                        "quota": 4,
+                        "time": 0.5
+                    },
+                    {
+                        "id": 19754,
+                        "quota": 1,
+                        "time": 4
+                    }
+                ]
             },
             "19760": {
                 "id": 19760,
@@ -100610,7 +100798,18 @@
                 "upgrade": 18860,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 19861
+                    },
+                    {
+                        "id": 19864
+                    },
+                    {
+                        "id": 19865
+                    }
+                ]
             },
             "19870": {
                 "id": 19870,
@@ -104984,7 +105183,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "150690": {
                 "id": 150690,
@@ -106174,10 +106373,16 @@
                     "id": 1090404
                 },
                 {
+                    "id": 1090405
+                },
+                {
                     "id": 1090406
                 },
                 {
                     "id": 1090407
+                },
+                {
+                    "id": 1090408
                 },
                 {
                     "id": 1090409
@@ -106698,7 +106903,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "13980": {
                 "id": 13980,
@@ -106946,7 +107151,7 @@
             ],
             "attribute_1": "cannon",
             "attribute_2": "torpedo",
-            "weapon_true": false
+            "weapon_true": true
         },
         "class_name": "M급",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/402060/shipyard.png",
@@ -107524,6 +107729,9 @@
                 "requirement": "Default",
                 "weapon_true": true,
                 "attached_weapon_skill_id": [
+                    {
+                        "id": 16713
+                    },
                     {
                         "id": 16711
                     }
@@ -108140,7 +108348,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "15940": {
                 "id": 15940,
@@ -109127,7 +109335,14 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": true
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 13732,
+                        "quota": 1,
+                        "time": 2
+                    }
+                ]
             },
             "13740": {
                 "id": 13740,
@@ -110725,7 +110940,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "151160": {
                 "id": 151160,
@@ -111319,7 +111534,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             }
         },
         "description": [
@@ -112246,7 +112461,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 12131
+                    }
+                ]
             },
             "12140": {
                 "id": 12140,
@@ -117175,7 +117395,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 150202,
+                        "quota": 1
+                    }
+                ]
             },
             "3611": {
                 "id": 3611,
@@ -118114,7 +118340,13 @@
                 "upgrade": null,
                 "downgrade": 19320,
                 "requirement": "Fate Simulation 5",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 18322,
+                        "time": 15
+                    }
+                ]
             }
         },
         "description": [
@@ -118961,7 +119193,12 @@
                 "upgrade": 18550,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": true
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 19551
+                    }
+                ]
             },
             "19560": {
                 "id": 19560,
@@ -119001,7 +119238,12 @@
                 "upgrade": null,
                 "downgrade": 19550,
                 "requirement": "Fate Simulation 5",
-                "weapon_true": true
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 18551
+                    }
+                ]
             }
         },
         "description": [
@@ -119432,7 +119674,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": true
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 19721,
+                        "time": 15
+                    }
+                ]
             },
             "19000": {
                 "id": 19000,
@@ -120306,7 +120554,7 @@
                 "upgrade": null,
                 "downgrade": 24012,
                 "requirement": "Retrofit",
-                "weapon_true": false
+                "weapon_true": true
             },
             "150870": {
                 "id": 150870,
@@ -121748,7 +121996,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 150802,
+                        "time": 1
+                    }
+                ]
             },
             "28231": {
                 "id": 28231,
@@ -124846,7 +125100,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 17581,
+                        "time": 15
+                    }
+                ]
             }
         },
         "description": [
@@ -125721,7 +125981,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 19582
+                    }
+                ]
             },
             "19590": {
                 "id": 19590,
@@ -126366,7 +126631,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 14402
+                    }
+                ]
             },
             "14410": {
                 "id": 14410,
@@ -126566,7 +126836,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 14422
+                    }
+                ]
             },
             "14430": {
                 "id": 14430,
@@ -129605,7 +129880,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": true
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 5042,
+                        "time": 20
+                    }
+                ]
             },
             "25213": {
                 "id": 25213,
@@ -129993,7 +130274,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 16832
+                    }
+                ]
             },
             "16840": {
                 "id": 16840,
@@ -130380,7 +130666,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 12601
+                    }
+                ]
             },
             "12610": {
                 "id": 12610,
@@ -132489,7 +132780,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "150990": {
                 "id": 150990,
@@ -133795,7 +134086,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 12981,
+                        "time": 2
+                    }
+                ]
             },
             "12990": {
                 "id": 12990,
@@ -134008,7 +134305,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 13831,
+                        "time": 2
+                    }
+                ]
             },
             "13840": {
                 "id": 13840,
@@ -136501,7 +136804,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": true
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 14171,
+                        "time": 15
+                    }
+                ]
             },
             "14180": {
                 "id": 14180,
@@ -144393,7 +144702,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "13260": {
                 "id": 13260,
@@ -144767,7 +145076,14 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 150026,
+                        "quota": 8,
+                        "time": 0.2
+                    }
+                ]
             },
             "150030": {
                 "id": 150030,
@@ -144783,7 +145099,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 150043,
+                        "quota": 1
+                    }
+                ]
             }
         },
         "description": [
@@ -150492,7 +150814,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 16971
+                    }
+                ]
             },
             "16980": {
                 "id": 16980,
@@ -152552,7 +152879,7 @@
             ],
             "attribute_1": "cannon",
             "attribute_2": "dodge",
-            "weapon_true": false
+            "weapon_true": true
         },
         "class_name": "골든 하인드",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600030/shipyard.png",
@@ -152714,7 +153041,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 17161
+                    }
+                ]
             },
             "17170": {
                 "id": 17170,
@@ -152761,7 +153093,12 @@
             ],
             "attribute_1": "durability",
             "attribute_2": "hit",
-            "weapon_true": false
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1017161
+                }
+            ]
         },
         "class_name": "메리 셀러스트",
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9600040/shipyard.png",
@@ -153974,7 +154311,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "150640": {
                 "id": 150640,
@@ -154585,7 +154922,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "151810": {
                 "id": 151810,
@@ -155632,7 +155969,14 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 800613,
+                        "quota": 1,
+                        "time": 10
+                    }
+                ]
             },
             "800620": {
                 "id": 800620,
@@ -155640,7 +155984,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 800622,
+                        "quota": 1
+                    }
+                ]
             }
         },
         "description": [
@@ -156642,7 +156992,18 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 801712,
+                        "quota": 2
+                    },
+                    {
+                        "id": 801713,
+                        "quota": 1,
+                        "time": 10
+                    }
+                ]
             },
             "801720": {
                 "id": 801720,
@@ -157674,7 +158035,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 800091,
+                        "time": 20
+                    }
+                ]
             },
             "800100": {
                 "id": 800100,
@@ -158733,7 +159100,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": true
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 801041,
+                        "time": 15
+                    }
+                ]
             }
         },
         "description": [
@@ -159970,7 +160343,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 800502
+                    }
+                ]
             },
             "800510": {
                 "id": 800510,
@@ -162902,7 +163280,15 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 800653
+                    },
+                    {
+                        "id": 800654
+                    }
+                ]
             },
             "800660": {
                 "id": 800660,
@@ -163544,7 +163930,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 801371
+                    }
+                ]
             }
         },
         "description": [
@@ -164350,7 +164741,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": true
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 802081
+                    }
+                ]
             },
             "802090": {
                 "id": 802090,
@@ -164988,7 +165384,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 800971
+                    }
+                ]
             }
         },
         "description": [
@@ -165813,7 +166214,15 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 800131
+                    },
+                    {
+                        "id": 800132
+                    }
+                ]
             },
             "800140": {
                 "id": 800140,
@@ -166026,6 +166435,12 @@
                 "attached_weapon_skill_id": [
                     {
                         "id": 801202
+                    },
+                    {
+                        "id": 801203
+                    },
+                    {
+                        "id": 801204
                     }
                 ]
             },
@@ -166668,7 +167083,13 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 801778,
+                        "quota": 1
+                    }
+                ]
             }
         },
         "description": [
@@ -167092,7 +167513,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 800803
+                    }
+                ]
             }
         },
         "description": [
@@ -170761,7 +171187,14 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 105132,
+                        "quota": 1,
+                        "time": 7
+                    }
+                ]
             }
         },
         "description": [
@@ -171151,7 +171584,7 @@
             ],
             "attribute_1": "torpedo",
             "attribute_2": "cannon",
-            "weapon_true": false
+            "weapon_true": true
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10600010/shipyard.png",
         "equip_1": [
@@ -171314,7 +171747,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "106040": {
                 "id": 106040,
@@ -172288,7 +172721,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "106120": {
                 "id": 106120,
@@ -172872,7 +173305,14 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 106492,
+                        "quota": 3,
+                        "time": 0.5
+                    }
+                ]
             },
             "106500": {
                 "id": 106500,
@@ -177368,7 +177808,7 @@
             ],
             "attribute_1": "air",
             "attribute_2": "reload",
-            "weapon_true": false
+            "weapon_true": true
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10900020/shipyard.png",
         "equip_1": [
@@ -178381,7 +178821,15 @@
             ],
             "attribute_1": "cannon",
             "attribute_2": "torpedo",
-            "weapon_true": false
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 110031
+                },
+                {
+                    "id": 110032
+                }
+            ]
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11000010/shipyard.png",
         "equip_1": [
@@ -178586,7 +179034,15 @@
             "weapon_true": true,
             "attached_weapon_skill_id": [
                 {
+                    "id": 110063,
+                    "quota": 1
+                },
+                {
                     "id": 110064,
+                    "quota": 1
+                },
+                {
+                    "id": 110062,
                     "quota": 1
                 }
             ]
@@ -179367,7 +179823,7 @@
             ],
             "attribute_1": "air",
             "attribute_2": "antiaircraft",
-            "weapon_true": false
+            "weapon_true": true
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11000060/shipyard.png",
         "equip_1": [
@@ -180110,7 +180566,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 111071
+                    }
+                ]
             },
             "111090": {
                 "id": 111090,
@@ -180141,7 +180602,12 @@
             ],
             "attribute_1": "cannon",
             "attribute_2": "reload",
-            "weapon_true": false
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 111081
+                }
+            ]
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11100030/shipyard.png",
         "equip_1": [
@@ -180511,6 +180977,17 @@
                 "attached_weapon_skill_id": [
                     {
                         "id": 111151
+                    },
+                    {
+                        "id": 111156
+                    },
+                    {
+                        "id": 111156,
+                        "quota": 1
+                    },
+                    {
+                        "id": 111151,
+                        "quota": 1
                     }
                 ]
             }
@@ -181083,7 +181560,7 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true
             },
             "112060": {
                 "id": 112060,
@@ -181275,7 +181752,17 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 112092,
+                        "quota": 1
+                    },
+                    {
+                        "id": 112093,
+                        "quota": 1
+                    }
+                ]
             },
             "112100": {
                 "id": 112100,
@@ -181291,7 +181778,21 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 112114
+                    },
+                    {
+                        "id": 112115
+                    },
+                    {
+                        "id": 112116
+                    },
+                    {
+                        "id": 112117
+                    }
+                ]
             }
         },
         "description": [
@@ -181314,7 +181815,21 @@
             ],
             "attribute_1": "air",
             "attribute_2": "hit",
-            "weapon_true": false
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 112134
+                },
+                {
+                    "id": 112135
+                },
+                {
+                    "id": 112136
+                },
+                {
+                    "id": 112137
+                }
+            ]
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11300010/shipyard.png",
         "equip_1": [
@@ -181487,7 +182002,12 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 112282
+                    }
+                ]
             }
         },
         "description": [
@@ -181510,7 +182030,15 @@
             ],
             "attribute_1": "cannon",
             "attribute_2": "reload",
-            "weapon_true": false
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 112292
+                },
+                {
+                    "id": 112291
+                }
+            ]
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11300020/shipyard.png",
         "equip_1": [
@@ -182287,7 +182815,14 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 114103,
+                        "quota": 1,
+                        "time": 10
+                    }
+                ]
             },
             "114110": {
                 "id": 114110,
@@ -182315,7 +182850,7 @@
             ],
             "attribute_1": "cannon",
             "attribute_2": "dodge",
-            "weapon_true": false
+            "weapon_true": true
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11400020/shipyard.png",
         "equip_1": [
@@ -182876,7 +183411,20 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 115053
+                    },
+                    {
+                        "id": 115054,
+                        "quota": 1,
+                        "time": 4
+                    },
+                    {
+                        "id": 115055
+                    }
+                ]
             },
             "115060": {
                 "id": 115060,
@@ -183459,7 +184007,21 @@
                 "upgrade": null,
                 "downgrade": null,
                 "requirement": "Default",
-                "weapon_true": false
+                "weapon_true": true,
+                "attached_weapon_skill_id": [
+                    {
+                        "id": 115091,
+                        "time": 8
+                    },
+                    {
+                        "id": 115093,
+                        "time": 3
+                    },
+                    {
+                        "id": 115092,
+                        "time": 8
+                    }
+                ]
             },
             "115100": {
                 "id": 115100,
@@ -183490,7 +184052,21 @@
             ],
             "attribute_1": "cannon",
             "attribute_2": "hit",
-            "weapon_true": false
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 115111,
+                    "time": 8
+                },
+                {
+                    "id": 115113,
+                    "time": 3
+                },
+                {
+                    "id": 115112,
+                    "time": 8
+                }
+            ]
         },
         "shipyard": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/11500060/shipyard.png",
         "equip_1": [
