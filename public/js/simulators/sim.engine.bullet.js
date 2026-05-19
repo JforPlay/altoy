@@ -23,20 +23,6 @@ import { TICK_SECONDS } from './physics/constants.js';
  */
 const MIGRATED_BULLET_TYPES = new Set([1, 8, 3]);
 
-/**
- * Bullet type -> CSS class. Shared by the legacy createBullet path and the
- * physics-core render path so a migrated bullet keeps its type styling.
- * Cannon / Stray (1 / 8) have no entry by design.
- */
-const BULLET_TYPE_CLASSES = {
-    2: 'bomb-bullet',
-    3: 'torpedo-bullet',
-    4: 'shrapnel-bullet',
-    5: 'missile-bullet',
-    14: 'space-laser-bullet',
-    15: 'scale-bullet',
-};
-
 // Bullet sprites are keyed by the game's modle_ID. BULLET_SPRITE_BASE is the
 // single asset insertion point — set it once sprites are extracted from client
 // AssetBundles and placed (bundled under public/ or on an external host).
