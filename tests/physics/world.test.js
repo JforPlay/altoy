@@ -125,3 +125,17 @@ test('spawnBomb rejects a non-finite explode point', () => {
   assert.equal(b, null);
   assert.equal(world.bullets.length, 0);
 });
+
+test('a velocity-0 bomb free-falls under gravity and detonates', () => {
+  const world = new World();
+  // verticalSpeed 0 at spawn; doNothing accrues gravity -0.5/tick, so altitude
+  // drops by 0.5, 1.0, 1.5, 2.0, 2.5 -> 7.5, 6.5, 5.0, 3.0, 0.5; detonates <= 1.2.
+  world.spawnBomb({
+    type: 2, velocity: 0, gravity: -0.5, offsetY: 8, dropOffset: false,
+    range: 50, rangeOffset: 0, explodePos: { x: 20, y: 0 }, direction: 1,
+  });
+  let steps = 0;
+  while (world.bullets.length > 0 && steps < 100) { world.step(); steps++; }
+  assert.equal(world.bullets.length, 0, 'velocity-0 bomb detonated');
+  assert.ok(steps > 1, 'it took multiple ticks to fall (not instant)');
+});

@@ -112,3 +112,17 @@ test('Update: a bomb with no timeToExplode detonates on altitude', () => {
   b.Update();
   assert.equal(b.reachDestFlag, true, 'altitude detonation applies when no timer is set');
 });
+
+test('SetSpawnPosition: a velocity-0 bomb skips the vertical-speed solve and falls from rest', () => {
+  // ~half of all airdrop bombs have velocity 0 (the "drops straight down"
+  // case). convertedVelocity 0 -> dropOffsetX is 0 and the solve is skipped,
+  // so verticalSpeed stays 0; gravity then accrues it tick by tick (doNothing).
+  const b = new BombBulletUnit({
+    velocity: 0, gravity: -0.25, offsetY: 8, dropOffset: true,
+    explodePos: { x: 20, y: 0 }, direction: 1,
+  });
+  b.SetSpawnPosition();
+  assert.deepEqual(b.position, { x: 20, y: 0 }, 'no horizontal drop offset when convertedVelocity is 0');
+  assert.equal(b.altitude, 8, 'spawn altitude = offsetY');
+  assert.equal(b.verticalSpeed, 0, 'vertical-speed solve skipped — falls from rest');
+});

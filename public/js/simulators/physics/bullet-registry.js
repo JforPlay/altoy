@@ -15,7 +15,7 @@ const BULLET_CLASSES = {
   8: CannonBulletUnit,   // STRAY — same straight-line movement
   3: TorpedoBulletUnit,  // TORPEDO
   2: BombBulletUnit,     // BOMB
-  16: BombBulletUnit,    // bomb-family (non-airdrop; registered, not dispatched here)
+  16: BombBulletUnit,    // bomb-family (airdrop-dispatched only if flagged; none in current data)
 };
 
 /** Construct the BulletUnit subclass for `type`, forwarding `opts`. */
