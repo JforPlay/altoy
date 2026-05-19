@@ -38,3 +38,26 @@ test('a long stall is clamped to maxTicks (no catch-up burst)', () => {
 test('the clamp is configurable', () => {
   assert.equal(drainAccumulator(10000, 2).ticks, 2);
 });
+
+test('a negative accumulator runs no ticks and carries nothing', () => {
+  const r = drainAccumulator(-50);
+  assert.equal(r.ticks, 0);
+  assert.equal(r.remainder, 0);
+});
+
+test('a NaN accumulator is neutralised, not propagated', () => {
+  const r = drainAccumulator(NaN);
+  assert.equal(r.ticks, 0);
+  assert.equal(r.remainder, 0);   // NaN must not poison the carried remainder
+});
+
+test('the carried remainder stays sub-tick even when ticks are clamped', () => {
+  // 10 s banks ~300 ticks; ticks clamp to 4, but the remainder is computed
+  // from the UNCLAMPED count, so it is still a valid sub-tick value. A
+  // regression computing remainder from the clamped count would return a
+  // multi-second remainder — this pins against that.
+  const r = drainAccumulator(10000);
+  assert.equal(r.ticks, 4);
+  assert.ok(r.remainder >= 0 && r.remainder < TICK_MS,
+    'clamped-call remainder is still in [0, TICK_MS)');
+});
