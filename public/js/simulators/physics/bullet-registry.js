@@ -8,11 +8,14 @@
 import { BulletUnit } from './bullet-unit.js';
 import { CannonBulletUnit } from './bullets/cannon.js';
 import { TorpedoBulletUnit } from './bullets/torpedo.js';
+import { BombBulletUnit } from './bullets/bomb.js';
 
 const BULLET_CLASSES = {
   1: CannonBulletUnit,   // CANNON
   8: CannonBulletUnit,   // STRAY — same straight-line movement
   3: TorpedoBulletUnit,  // TORPEDO
+  2: BombBulletUnit,     // BOMB
+  16: BombBulletUnit,    // bomb-family (non-airdrop; registered, not dispatched here)
 };
 
 /** Construct the BulletUnit subclass for `type`, forwarding `opts`. */
