@@ -9,7 +9,8 @@
 import {
     fetchJSON, fetchJSONWithCache, debounce, getUrlParam, setUrlParams,
     getStorageItem, setStorageItem, setupScrollToTop,
-    openModal, closeModal, setupModal, resolveUrl
+    openModal, closeModal, setupModal, resolveUrl,
+    getItemIconUrl
 } from '../utils.js';
 import { getEquipIconUrl, getRarityBgUrl } from './equip.data.js';
 
@@ -39,8 +40,6 @@ const CAT2_NAMES = {
     5: '어뢰', 6: '대공포', 7: '전투기', 8: '뇌격기/폭격기',
     13: '잠수어뢰', 31: '경순함포'
 };
-
-const PROP_ICON_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/props';
 
 function escapeHtml(value) {
     return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -297,10 +296,6 @@ function selectNode(equipId) {
 // Prop name/icon lookups — item_data_lite is optional; IDs are shown as fallback
 function getItemName(propId) {
     return itemData[String(propId)]?.name || `아이템 #${propId}`;
-}
-
-function getItemIconUrl(propId) {
-    return `${PROP_ICON_URL}/${propId}.webp`;
 }
 
 // ===== Equip Info Panel =====
