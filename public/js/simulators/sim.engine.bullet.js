@@ -152,6 +152,14 @@ export class BulletEngine {
             return this._createWorldBullet(options);
         }
 
+        // Route a plain airdrop bomb to the faithful physics core — the fix for
+        // the overhead-drop bugs: the bomb now falls from above onto its
+        // explode point. An airdrop bomb with shrapnel / a transform chain
+        // stays on the legacy path.
+        if (this._isAirdropBomb(bulletInfo, options)) {
+            return this._createWorldBomb(options);
+        }
+
         // Create bullet DOM element
         const bulletElement = document.createElement('div');
         bulletElement.className = 'bullet';
