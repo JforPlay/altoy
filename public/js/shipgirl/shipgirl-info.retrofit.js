@@ -132,9 +132,11 @@ function buildGrid(entry) {
           <div class="retrofit-grid"
                style="grid-template-columns:repeat(${rows},1fr)">${cells}</div>
         </div>
-        ${buildTotals(entry)}
-        <div class="retrofit-detail" id="retrofitNodeDetail"
-             aria-live="polite">노드를 선택하세요</div>`;
+        <div class="retrofit-mats">
+          <div class="retrofit-detail" id="retrofitNodeDetail"
+               aria-live="polite">노드를 선택하세요</div>
+          ${buildTotals(entry)}
+        </div>`;
 }
 
 /** Render the detail panel for a selected node. */

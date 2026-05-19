@@ -60,9 +60,22 @@
 .retrofit-node__mark { font-size: 0.65rem; line-height: 1; }
 .retrofit-node__lv { font-weight: 600; }
 
-.retrofit-total {
+/* Selected-node detail (left) + total materials (right), side by side. */
+.retrofit-mats {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+    max-width: 620px;
     margin: 12px auto 0;
-    max-width: 300px;
+}
+.retrofit-detail,
+.retrofit-total {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--bg-elevated, #21262f);
+    border: 1px solid var(--border-color, #3a4150);
     font-size: 0.8rem;
 }
 .retrofit-total__label {
@@ -77,14 +90,9 @@
     gap: 8px;
 }
 
-.retrofit-detail {
-    margin: 10px auto 0;
-    max-width: 300px;
-    padding: 10px 12px;
-    border-radius: 8px;
-    background: var(--bg-elevated, #21262f);
-    border: 1px solid var(--border-color, #3a4150);
-    font-size: 0.85rem;
+/* Mobile: stack the two panels — selected-node detail stays on top. */
+@media (max-width: 768px) {
+    .retrofit-mats { flex-direction: column; }
 }
 .retrofit-detail__head {
     display: flex;
