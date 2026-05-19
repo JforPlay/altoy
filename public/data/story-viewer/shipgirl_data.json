@@ -925,51 +925,51 @@
     },
     "10300010": {
         "name": "쿠온",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300010/icon.png"
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300010/icon.png"
     },
     "10300011": {
         "name": "쿠온 (칭송받는 자)",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300011/icon.png"
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300011/icon.png"
     },
     "10300020": {
         "name": "네코네",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300020/icon.png"
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300020/icon.png"
     },
     "10300021": {
         "name": "네코네 (칭송받는 자)",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300021/icon.png"
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300021/icon.png"
     },
     "10300030": {
         "name": "루루티에",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300030/icon.png"
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300030/icon.png"
     },
     "10300031": {
         "name": "루루티에 (칭송받는 자)",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300031/icon.png"
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300031/icon.png"
     },
     "10300040": {
         "name": "우루루",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300040/icon.png"
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300040/icon.png"
     },
     "10300041": {
         "name": "우루루 (칭송받는 자)",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300041/icon.png"
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300041/icon.png"
     },
     "10300050": {
         "name": "사라나",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300050/icon.png"
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300050/icon.png"
     },
     "10300051": {
         "name": "사라나 (칭송받는 자)",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300051/icon.png"
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300051/icon.png"
     },
     "10300060": {
         "name": "후미뤼르",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300060/icon.png"
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300060/icon.png"
     },
     "10300061": {
         "name": "후미뤼르 (칭송받는 자)",
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300061/icon.png"
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300061/icon.png"
     },
     "103010": {
         "name": "펜사콜라",
@@ -7629,7 +7629,7 @@
     },
     "502122": {
         "name": "잠을 깨우는 진한 향기",
-        "icon": null
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/502122/icon.png"
     },
     "503010": {
         "name": "지엔우",
@@ -8649,7 +8649,7 @@
     },
     "802033": {
         "name": "Milk&Kiss",
-        "icon": null
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/802033/icon.png"
     },
     "802040": {
         "name": "뒤게 트루앵",

@@ -445,7 +445,7 @@
             7
         ],
         "bgm": "bgm-cccp3",
-        "link_event": {},
+        "link_event": [],
         "chapter": 1,
         "column": 21,
         "row": 1,
@@ -554,7 +554,7 @@
             6
         ],
         "bgm": "stoy-6",
-        "link_event": {},
+        "link_event": [],
         "chapter": 1,
         "column": 26,
         "row": 1,
@@ -604,7 +604,7 @@
             1
         ],
         "bgm": "xinnong-2",
-        "link_event": {},
+        "link_event": [],
         "chapter": 1,
         "column": 27,
         "row": 1,
@@ -639,7 +639,7 @@
             6
         ],
         "bgm": "story-italy",
-        "link_event": {},
+        "link_event": [],
         "chapter": 1,
         "column": 28,
         "row": 1,
@@ -942,7 +942,7 @@
             1
         ],
         "bgm": "theme-threat-typeV",
-        "link_event": {},
+        "link_event": [],
         "chapter": 2,
         "column": 37,
         "row": 1,
@@ -975,7 +975,7 @@
             10
         ],
         "bgm": "theme-vichy-church",
-        "link_event": {},
+        "link_event": [],
         "chapter": 2,
         "column": 37,
         "row": 2,
@@ -1047,7 +1047,7 @@
             7
         ],
         "bgm": "bgm-cccp2",
-        "link_event": {},
+        "link_event": [],
         "chapter": 2,
         "column": 38,
         "row": 1,
@@ -1062,7 +1062,7 @@
             6
         ],
         "bgm": "story-italy",
-        "link_event": {},
+        "link_event": [],
         "chapter": 2,
         "column": 39,
         "row": -1,

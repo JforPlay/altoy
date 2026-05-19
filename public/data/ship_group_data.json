@@ -21900,6 +21900,66 @@
         ],
         "rarity": "SSR"
     },
+    "1030001": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300010/icon.png",
+        "name": "쿠온",
+        "nationality": 103,
+        "type": 3,
+        "description": [
+            "이벤트：저편에서의 만남"
+        ],
+        "rarity": "SSR"
+    },
+    "1030002": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300020/icon.png",
+        "name": "네코네",
+        "nationality": 103,
+        "type": 1,
+        "description": [
+            "이벤트：저편에서의 만남"
+        ],
+        "rarity": "SSR"
+    },
+    "1030003": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300030/icon.png",
+        "name": "루루티에",
+        "nationality": 103,
+        "type": 2,
+        "description": [
+            "이벤트：저편에서의 만남"
+        ],
+        "rarity": "SSR"
+    },
+    "1030004": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300040/icon.png",
+        "name": "우루루",
+        "nationality": 103,
+        "type": 6,
+        "description": [
+            "이벤트：저편에서의 만남"
+        ],
+        "rarity": "SR"
+    },
+    "1030005": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300050/icon.png",
+        "name": "사라나",
+        "nationality": 103,
+        "type": 6,
+        "description": [
+            "이벤트：저편에서의 만남"
+        ],
+        "rarity": "SR"
+    },
+    "1030006": {
+        "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10300060/icon.png",
+        "name": "후미뤼르",
+        "nationality": 103,
+        "type": 7,
+        "description": [
+            "이벤트：저편에서의 만남"
+        ],
+        "rarity": "SR"
+    },
     "1040001": {
         "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/10400010/icon.png",
         "name": "키즈나 아이",
@@ -22649,65 +22709,5 @@
             "이벤트: DATE A LANE"
         ],
         "rarity": "SSR"
-    },
-    "1030001": {
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300010/icon.png",
-        "name": "쿠온",
-        "nationality": 103,
-        "type": 3,
-        "description": [
-            "이벤트：저편에서의 만남"
-        ],
-        "rarity": "SSR"
-    },
-    "1030002": {
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300020/icon.png",
-        "name": "네코네",
-        "nationality": 103,
-        "type": 1,
-        "description": [
-            "이벤트：저편에서의 만남"
-        ],
-        "rarity": "SSR"
-    },
-    "1030003": {
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300030/icon.png",
-        "name": "루루티에",
-        "nationality": 103,
-        "type": 2,
-        "description": [
-            "이벤트：저편에서의 만남"
-        ],
-        "rarity": "SSR"
-    },
-    "1030004": {
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300040/icon.png",
-        "name": "우루루",
-        "nationality": 103,
-        "type": 6,
-        "description": [
-            "이벤트：저편에서의 만남"
-        ],
-        "rarity": "SR"
-    },
-    "1030005": {
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300050/icon.png",
-        "name": "사라나",
-        "nationality": 103,
-        "type": 6,
-        "description": [
-            "이벤트：저편에서의 만남"
-        ],
-        "rarity": "SR"
-    },
-    "1030006": {
-        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/missingno//10300060/icon.png",
-        "name": "후미뤼르",
-        "nationality": 103,
-        "type": 7,
-        "description": [
-            "이벤트：저편에서의 만남"
-        ],
-        "rarity": "SR"
     }
 }
