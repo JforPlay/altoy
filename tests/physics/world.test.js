@@ -90,3 +90,38 @@ test('a type-3 torpedo flies straight and is culled at its range', () => {
   world.step();                         // x=30, sqrDist 900 > 625 -> expire
   assert.equal(world.bullets.length, 0, 'torpedo culled at range');
 });
+
+test('spawnBomb resolves airdrop geometry, vertical speed, and aim', () => {
+  const world = new World();
+  const b = world.spawnBomb({
+    type: 2, velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: false,
+    range: 50, rangeOffset: 0, explodePos: { x: 20, y: 0 }, direction: 1,
+  });
+  assert.ok(b, 'spawn succeeds');
+  assert.equal(world.bullets.length, 1);
+  assert.deepEqual(b.position, { x: 20, y: 0 }, 'SetSpawnPosition ran');
+  assert.equal(b.altitude, 8, 'altitude seeded to offsetY');
+  assert.ok(b.verticalSpeed < 0, 'verticalSpeed solved (descending)');
+  assert.equal(b.yAngle, 0, 'InitSpeed ran');
+});
+
+test('a spawned bomb falls under gravity and is culled when it detonates', () => {
+  const world = new World();
+  // Overhead bomb: flightTime ~1.2 ticks; it descends past the detonation
+  // height within two ticks.
+  world.spawnBomb({
+    type: 2, velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: false,
+    range: 50, rangeOffset: 0, explodePos: { x: 20, y: 0 }, direction: 1,
+  });
+  world.step();
+  assert.equal(world.bullets.length, 1, 'still falling');
+  world.step();
+  assert.equal(world.bullets.length, 0, 'detonated and culled');
+});
+
+test('spawnBomb rejects a non-finite explode point', () => {
+  const world = new World();
+  const b = world.spawnBomb({ type: 2, velocity: 5, explodePos: { x: NaN, y: 0 } });
+  assert.equal(b, null);
+  assert.equal(world.bullets.length, 0);
+});
