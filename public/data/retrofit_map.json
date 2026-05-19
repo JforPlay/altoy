@@ -225,7 +225,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18002,
@@ -331,7 +331,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18002,
@@ -619,7 +619,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18002,
@@ -725,7 +725,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18002,
@@ -945,7 +945,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18002,
@@ -983,7 +983,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -1020,7 +1020,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -1057,7 +1057,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -1094,7 +1094,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -1132,7 +1132,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 9000,
           "items": [
             {
               "id": 18003,
@@ -1401,7 +1401,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18002,
@@ -1439,7 +1439,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -1476,7 +1476,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -1514,7 +1514,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -1551,7 +1551,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -1588,7 +1588,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 9000,
           "items": [
             {
               "id": 18003,
@@ -1857,7 +1857,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18002,
@@ -1895,7 +1895,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -1932,7 +1932,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -1969,7 +1969,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -2006,7 +2006,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -2044,7 +2044,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 9000,
           "items": [
             {
               "id": 18003,
@@ -2348,7 +2348,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18001,
@@ -2385,7 +2385,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -2491,7 +2491,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -2746,7 +2746,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18001,
@@ -2783,7 +2783,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -2889,7 +2889,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -3109,7 +3109,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -3147,7 +3147,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -3184,7 +3184,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -3221,7 +3221,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18003,
@@ -3258,7 +3258,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 4000,
+          "gold": 8000,
           "items": [
             {
               "id": 18003,
@@ -3296,7 +3296,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 5000,
+          "gold": 15000,
           "items": [
             {
               "id": 18003,
@@ -3595,7 +3595,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18001,
@@ -3632,7 +3632,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -3738,7 +3738,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -3958,7 +3958,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18002,
@@ -3996,7 +3996,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -4033,7 +4033,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -4071,7 +4071,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -4108,7 +4108,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -4145,7 +4145,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 9000,
           "items": [
             {
               "id": 18003,
@@ -4483,7 +4483,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -4554,7 +4554,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -4592,7 +4592,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18013,
@@ -4927,7 +4927,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -4964,7 +4964,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18012,
@@ -5001,7 +5001,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -5039,7 +5039,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -5227,7 +5227,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -5264,7 +5264,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -5301,7 +5301,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -5338,7 +5338,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -5381,7 +5381,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18013,
@@ -5418,7 +5418,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 4000,
+          "gold": 8000,
           "items": [
             {
               "id": 18013,
@@ -5456,7 +5456,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 5000,
+          "gold": 15000,
           "items": [
             {
               "id": 18013,
@@ -5721,7 +5721,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18011,
@@ -5860,7 +5860,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 6000,
           "items": [
             {
               "id": 18012,
@@ -5901,7 +5901,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -6189,7 +6189,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18022,
@@ -6260,7 +6260,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18022,
@@ -6298,7 +6298,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18022,
@@ -6586,7 +6586,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18022,
@@ -6657,7 +6657,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18022,
@@ -6695,7 +6695,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18022,
@@ -6983,7 +6983,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18022,
@@ -7021,7 +7021,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18022,
@@ -7058,7 +7058,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18023,
@@ -7096,7 +7096,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18023,
@@ -7430,7 +7430,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18022,
@@ -7468,7 +7468,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18022,
@@ -7505,7 +7505,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18023,
@@ -7543,7 +7543,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18023,
@@ -7877,7 +7877,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18022,
@@ -7915,7 +7915,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18022,
@@ -7952,7 +7952,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18023,
@@ -7990,7 +7990,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18023,
@@ -8324,7 +8324,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18032,
@@ -8396,7 +8396,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18032,
@@ -8434,7 +8434,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18032,
@@ -8721,7 +8721,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18032,
@@ -8793,7 +8793,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18032,
@@ -8831,7 +8831,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18032,
@@ -9119,7 +9119,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18032,
@@ -9191,7 +9191,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18032,
@@ -9231,7 +9231,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18032,
@@ -9519,7 +9519,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18032,
@@ -9557,7 +9557,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18032,
@@ -9594,7 +9594,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18033,
@@ -9633,7 +9633,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18033,
@@ -9965,7 +9965,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18032,
@@ -10037,7 +10037,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18032,
@@ -10077,7 +10077,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18032,
@@ -10330,7 +10330,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18032,
@@ -10367,7 +10367,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18033,
@@ -10405,7 +10405,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18033,
@@ -10442,7 +10442,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 4000,
+          "gold": 8000,
           "items": [
             {
               "id": 18033,
@@ -10479,7 +10479,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 5000,
+          "gold": 15000,
           "items": [
             {
               "id": 18033,
@@ -10816,7 +10816,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18032,
@@ -10854,7 +10854,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18032,
@@ -10891,7 +10891,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18033,
@@ -10928,7 +10928,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18033,
@@ -11262,7 +11262,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -11334,7 +11334,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -11659,7 +11659,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -11765,7 +11765,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -12053,7 +12053,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -12159,7 +12159,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -12447,7 +12447,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18002,
@@ -12554,7 +12554,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18002,
@@ -12841,7 +12841,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18002,
@@ -12948,7 +12948,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18002,
@@ -13235,7 +13235,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18002,
@@ -13341,7 +13341,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18002,
@@ -13629,7 +13629,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18002,
@@ -13735,7 +13735,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18002,
@@ -14023,7 +14023,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -14129,7 +14129,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -14452,7 +14452,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -14489,7 +14489,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -14526,7 +14526,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18003,
@@ -14895,7 +14895,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -14932,7 +14932,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -14969,7 +14969,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18003,
@@ -15300,7 +15300,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18012,
@@ -15372,7 +15372,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18012,
@@ -15410,7 +15410,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18012,
@@ -15697,7 +15697,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -15769,7 +15769,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -15807,7 +15807,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -16094,7 +16094,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -16166,7 +16166,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -16204,7 +16204,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -16492,7 +16492,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -16564,7 +16564,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -16602,7 +16602,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -16891,7 +16891,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -16963,7 +16963,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -17003,7 +17003,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -17292,7 +17292,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -17364,7 +17364,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -17404,7 +17404,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -17691,7 +17691,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -17729,7 +17729,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -17766,7 +17766,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18013,
@@ -17804,7 +17804,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -18138,7 +18138,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -18209,7 +18209,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -18247,7 +18247,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -18538,7 +18538,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -18609,7 +18609,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -18647,7 +18647,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -18935,7 +18935,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -18973,7 +18973,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -19010,7 +19010,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18013,
@@ -19048,7 +19048,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -19379,7 +19379,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -19451,7 +19451,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18013,
@@ -19488,7 +19488,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -19751,7 +19751,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18022,
@@ -19789,7 +19789,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18022,
@@ -19826,7 +19826,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18023,
@@ -19869,7 +19869,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18023,
@@ -19906,7 +19906,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 4000,
+          "gold": 8000,
           "items": [
             {
               "id": 18023,
@@ -19944,7 +19944,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 5000,
+          "gold": 10000,
           "items": [
             {
               "id": 18023,
@@ -20273,7 +20273,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18022,
@@ -20311,7 +20311,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18022,
@@ -20348,7 +20348,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18023,
@@ -20386,7 +20386,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18023,
@@ -20721,7 +20721,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18032,
@@ -20793,7 +20793,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18032,
@@ -20833,7 +20833,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18032,
@@ -21120,7 +21120,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18032,
@@ -21192,7 +21192,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18033,
@@ -21229,7 +21229,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18033,
@@ -21272,7 +21272,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18033,
@@ -21567,7 +21567,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18032,
@@ -21639,7 +21639,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18033,
@@ -21676,7 +21676,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18033,
@@ -22042,7 +22042,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -22079,7 +22079,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -22117,7 +22117,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18003,
@@ -22449,7 +22449,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -22555,7 +22555,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -22778,7 +22778,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18002,
@@ -22816,7 +22816,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -22853,7 +22853,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -22890,7 +22890,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -22927,7 +22927,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -22965,7 +22965,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 9000,
           "items": [
             {
               "id": 18003,
@@ -23233,7 +23233,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18002,
@@ -23271,7 +23271,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -23308,7 +23308,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -23345,7 +23345,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -23382,7 +23382,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -23420,7 +23420,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 9000,
           "items": [
             {
               "id": 18003,
@@ -23753,7 +23753,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -23858,7 +23858,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -24213,7 +24213,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18002,
@@ -24251,7 +24251,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18002,
@@ -24538,7 +24538,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -24644,7 +24644,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -24932,7 +24932,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -25038,7 +25038,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -25326,7 +25326,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -25432,7 +25432,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -25720,7 +25720,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -25826,7 +25826,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -26182,7 +26182,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -26220,7 +26220,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -26576,7 +26576,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -26614,7 +26614,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18002,
@@ -26970,7 +26970,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18002,
@@ -27008,7 +27008,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18002,
@@ -27364,7 +27364,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18002,
@@ -27402,7 +27402,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18002,
@@ -27758,7 +27758,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18002,
@@ -27796,7 +27796,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18002,
@@ -28156,7 +28156,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18002,
@@ -28194,7 +28194,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18002,
@@ -28521,7 +28521,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -28558,7 +28558,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -28596,7 +28596,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18003,
@@ -28639,7 +28639,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18003,
@@ -28930,7 +28930,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -28968,7 +28968,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -29005,7 +29005,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -29043,7 +29043,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -29365,7 +29365,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -29436,7 +29436,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -29474,7 +29474,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -29762,7 +29762,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -29833,7 +29833,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -29871,7 +29871,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18013,
@@ -30203,7 +30203,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18012,
@@ -30274,7 +30274,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18012,
@@ -30312,7 +30312,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18012,
@@ -30600,7 +30600,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -30671,7 +30671,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -30709,7 +30709,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18013,
@@ -31044,7 +31044,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -31116,7 +31116,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -31154,7 +31154,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -31442,7 +31442,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -31513,7 +31513,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -31551,7 +31551,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18013,
@@ -31882,7 +31882,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18012,
@@ -31953,7 +31953,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18012,
@@ -31991,7 +31991,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18012,
@@ -32278,7 +32278,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18012,
@@ -32349,7 +32349,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18012,
@@ -32387,7 +32387,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18012,
@@ -32674,7 +32674,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -32745,7 +32745,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -32783,7 +32783,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -33071,7 +33071,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18022,
@@ -33108,7 +33108,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18022,
@@ -33146,7 +33146,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18022,
@@ -33476,7 +33476,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18022,
@@ -33513,7 +33513,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18022,
@@ -33551,7 +33551,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18022,
@@ -33778,7 +33778,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 500,
+          "gold": 1000,
           "items": [
             {
               "id": 18021,
@@ -33927,7 +33927,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18022,
@@ -33965,7 +33965,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18022,
@@ -34003,7 +34003,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18022,
@@ -34186,7 +34186,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 500,
+          "gold": 1000,
           "items": [
             {
               "id": 18021,
@@ -34335,7 +34335,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18022,
@@ -34373,7 +34373,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18022,
@@ -34411,7 +34411,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18022,
@@ -34697,7 +34697,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18032,
@@ -34769,7 +34769,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18032,
@@ -34807,7 +34807,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18032,
@@ -35094,7 +35094,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18032,
@@ -35132,7 +35132,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18032,
@@ -35169,7 +35169,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18033,
@@ -35206,7 +35206,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18033,
@@ -35537,7 +35537,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18032,
@@ -35575,7 +35575,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18032,
@@ -35612,7 +35612,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18033,
@@ -35649,7 +35649,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18033,
@@ -35912,7 +35912,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18002,
@@ -35949,7 +35949,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -35986,7 +35986,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -36023,7 +36023,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -36060,7 +36060,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -36098,7 +36098,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 9000,
           "items": [
             {
               "id": 18003,
@@ -36329,7 +36329,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18001,
@@ -36366,7 +36366,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18002,
@@ -36403,7 +36403,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -36440,7 +36440,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -36477,7 +36477,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18002,
@@ -36514,7 +36514,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -36552,7 +36552,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 9000,
           "items": [
             {
               "id": 18003,
@@ -36885,7 +36885,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18012,
@@ -36956,7 +36956,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18012,
@@ -36994,7 +36994,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1600,
+          "gold": 3200,
           "items": [
             {
               "id": 18012,
@@ -37282,7 +37282,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1000,
+          "gold": 2000,
           "items": [
             {
               "id": 18012,
@@ -37319,7 +37319,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18012,
@@ -37357,7 +37357,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1400,
+          "gold": 2800,
           "items": [
             {
               "id": 18012,
@@ -37648,7 +37648,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18011,
@@ -37685,7 +37685,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -37757,7 +37757,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -37795,7 +37795,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18012,
@@ -38014,7 +38014,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18002,
@@ -38052,7 +38052,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -38089,7 +38089,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -38126,7 +38126,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 6000,
           "items": [
             {
               "id": 18002,
@@ -38166,7 +38166,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -38204,7 +38204,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 9000,
           "items": [
             {
               "id": 18003,
@@ -38487,7 +38487,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18002,
@@ -38525,7 +38525,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -38562,7 +38562,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -38599,7 +38599,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 6000,
           "items": [
             {
               "id": 18002,
@@ -38639,7 +38639,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -38677,7 +38677,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 9000,
           "items": [
             {
               "id": 18003,
@@ -38960,7 +38960,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18002,
@@ -38998,7 +38998,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -39035,7 +39035,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -39072,7 +39072,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 6000,
           "items": [
             {
               "id": 18002,
@@ -39112,7 +39112,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -39150,7 +39150,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 9000,
           "items": [
             {
               "id": 18003,
@@ -39433,7 +39433,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18002,
@@ -39471,7 +39471,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18002,
@@ -39508,7 +39508,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -39545,7 +39545,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 6000,
           "items": [
             {
               "id": 18002,
@@ -39585,7 +39585,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18003,
@@ -39623,7 +39623,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 9000,
           "items": [
             {
               "id": 18003,
@@ -39976,7 +39976,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -40013,7 +40013,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -40050,7 +40050,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -40090,7 +40090,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18013,
@@ -40426,7 +40426,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -40463,7 +40463,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -40500,7 +40500,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -40538,7 +40538,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18013,
@@ -40871,7 +40871,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -40908,7 +40908,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -40945,7 +40945,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -40983,7 +40983,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18013,
@@ -41316,7 +41316,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -41353,7 +41353,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -41390,7 +41390,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -41428,7 +41428,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18013,
@@ -41761,7 +41761,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -41798,7 +41798,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18012,
@@ -41835,7 +41835,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -41873,7 +41873,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18013,
@@ -42205,7 +42205,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18032,
@@ -42243,7 +42243,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18032,
@@ -42280,7 +42280,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18033,
@@ -42317,7 +42317,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18033,
@@ -42651,7 +42651,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18032,
@@ -42689,7 +42689,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2000,
+          "gold": 4000,
           "items": [
             {
               "id": 18032,
@@ -42726,7 +42726,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18033,
@@ -42763,7 +42763,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18033,
@@ -43064,7 +43064,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1500,
+          "gold": 3000,
           "items": [
             {
               "id": 18012,
@@ -43101,7 +43101,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -43172,7 +43172,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -43210,7 +43210,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18013,
@@ -43512,7 +43512,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18001,
@@ -43583,7 +43583,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
@@ -43939,7 +43939,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18012,
@@ -44010,7 +44010,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 2500,
+          "gold": 5000,
           "items": [
             {
               "id": 18013,
@@ -44048,7 +44048,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 3000,
+          "gold": 6000,
           "items": [
             {
               "id": 18013,
@@ -44346,7 +44346,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1200,
+          "gold": 2400,
           "items": [
             {
               "id": 18001,
@@ -44417,7 +44417,7 @@
         ],
         "useShip": false,
         "cost": {
-          "gold": 1800,
+          "gold": 3600,
           "items": [
             {
               "id": 18002,
