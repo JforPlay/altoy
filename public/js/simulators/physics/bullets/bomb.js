@@ -87,4 +87,19 @@ export class BombBulletUnit extends BulletUnit {
     this.calcSpeed();
     this.updateSpeed = this.doNothing;
   }
+
+  /**
+   * Advance one tick, then apply the bomb detonation rule. The base Update
+   * already sets reachDestFlag from the altitude check; BattleBombBulletUnit.
+   * IsOutRange (battlebombbulletunit.lua:37-51) overrides it — a bomb with a
+   * timeToExplode deadline detonates ONLY on the timer, never on altitude. The
+   * precast `_exist` gate is not modelled (the sim spawns a bomb only once it
+   * exists).
+   */
+  Update() {
+    super.Update();
+    if (this.explodeTime != null) {
+      this.reachDestFlag = this.timeElapsed >= this.explodeTime;
+    }
+  }
 }

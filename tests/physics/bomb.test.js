@@ -81,3 +81,34 @@ test('InitSpeed: a left-facing bomb aims back along -x (heading 180)', () => {
   assert.equal(b.yAngle, 180);
   assert.ok(Math.abs(b.speed.x - (-1)) < 1e-9);
 });
+
+test('Update: a timeToExplode bomb detonates on the timer, not on altitude', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: false,
+    explodePos: { x: 20, y: 0 }, direction: 1, explodeTime: 0.5,
+  });
+  b.SetSpawnPosition();
+  b.InitSpeed();
+  // Force the bomb below the detonation height: without explodeTime the base
+  // Update would flag it at once — explodeTime must suppress that.
+  b.altitude = 0;
+  b.timeElapsed = 0.3;
+  b.Update();
+  assert.equal(b.reachDestFlag, false, 'altitude detonation suppressed before the timer');
+  b.timeElapsed = 0.5;
+  b.Update();
+  assert.equal(b.reachDestFlag, true, 'detonates once timeElapsed reaches explodeTime');
+});
+
+test('Update: a bomb with no timeToExplode detonates on altitude', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, offsetY: 8, dropOffset: false,
+    explodePos: { x: 20, y: 0 }, direction: 1,   // no explodeTime
+  });
+  b.SetSpawnPosition();
+  b.InitSpeed();
+  b.altitude = 0;             // below BOMB_DETONATE_HEIGHT
+  b.timeElapsed = 0.01;
+  b.Update();
+  assert.equal(b.reachDestFlag, true, 'altitude detonation applies when no timer is set');
+});
