@@ -15,12 +15,27 @@ import { drainAccumulator } from './physics/accumulator.js';
 import { TICK_SECONDS } from './physics/constants.js';
 
 /**
- * Bullet types routed through the faithful physics core (physics/). Cannon (1)
- * and Stray (8) share the plain straight-line CannonBulletUnit. Every other
- * type still runs the legacy BehaviorFactory path until later phases migrate
- * it. This set grows one phase at a time.
+ * Straight-line bullet types routed through the faithful physics core
+ * (physics/). Cannon (1) and Stray (8) use CannonBulletUnit; Torpedo (3) uses
+ * TorpedoBulletUnit — all plain straight-line movement. Airdrop bombs route
+ * through a separate predicate (_isAirdropBomb). Every other type still runs
+ * the legacy BehaviorFactory path until later phases migrate it.
  */
-const MIGRATED_BULLET_TYPES = new Set([1, 8]);
+const MIGRATED_BULLET_TYPES = new Set([1, 8, 3]);
+
+/**
+ * Bullet type -> CSS class. Shared by the legacy createBullet path and the
+ * physics-core render path so a migrated bullet keeps its type styling.
+ * Cannon / Stray (1 / 8) have no entry by design.
+ */
+const BULLET_TYPE_CLASSES = {
+    2: 'bomb-bullet',
+    3: 'torpedo-bullet',
+    4: 'shrapnel-bullet',
+    5: 'missile-bullet',
+    14: 'space-laser-bullet',
+    15: 'scale-bullet',
+};
 
 export class BulletEngine {
     constructor(options) {
@@ -129,11 +144,11 @@ export class BulletEngine {
             return;
         }
 
-        // Route a plain straight cannon to the faithful physics core; every
-        // other bullet — and any cannon with acceleration / gravity / missile
-        // / shrapnel / a transform chain / inherited speed — stays on the
-        // legacy path below until later phases migrate it.
-        if (this._isPlainCannon(bulletInfo, options)) {
+        // Route a plain straight-line bullet (cannon / stray / torpedo) to the
+        // faithful physics core; anything with acceleration / gravity / missile
+        // / shrapnel / a transform chain / inherited speed stays on the legacy
+        // path below until later phases migrate it.
+        if (this._isPlainStraightBullet(bulletInfo, options)) {
             return this._createWorldBullet(options);
         }
 
@@ -142,15 +157,7 @@ export class BulletEngine {
         bulletElement.className = 'bullet';
         if (bulletInfo.modle_ID) bulletElement.classList.add(bulletInfo.modle_ID);
 
-        const bulletTypeClasses = {
-            2: 'bomb-bullet',
-            3: 'torpedo-bullet',
-            4: 'shrapnel-bullet',
-            5: 'missile-bullet',
-            14: 'space-laser-bullet',
-            15: 'scale-bullet',
-        };
-        const typeClass = bulletTypeClasses[bulletInfo.type];
+        const typeClass = BULLET_TYPE_CLASSES[bulletInfo.type];
         if (typeClass) bulletElement.classList.add(typeClass);
 
         const bulletWidth = bulletInfo.cld_box[0] * this.scale;
@@ -497,14 +504,14 @@ export class BulletEngine {
     }
 
     /**
-     * True only for a bullet the Phase-2 physics path provably renders
-     * correctly: a migrated type (cannon/stray) with no acceleration data,
-     * gravity, missile, shrapnel, airdrop, transform chain or inherited speed.
-     * Anything fancier stays on the legacy path — the conservative test keeps
-     * the migration regression-free (a bullet the new core cannot yet handle
-     * is never routed to it).
+     * True only for a bullet the physics path provably renders correctly: a
+     * migrated straight-line type (cannon / stray / torpedo) with no
+     * acceleration data, gravity, missile, shrapnel, airdrop, transform chain
+     * or inherited speed. Anything fancier stays on the legacy path — the
+     * conservative test keeps the migration regression-free (a bullet the new
+     * core cannot yet handle is never routed to it).
      */
-    _isPlainCannon(bulletInfo, options) {
+    _isPlainStraightBullet(bulletInfo, options) {
         return MIGRATED_BULLET_TYPES.has(bulletInfo.type)
             && this._hasEmptyAcceleration(bulletInfo)
             && !bulletInfo.extra_param?.gravity
@@ -516,9 +523,23 @@ export class BulletEngine {
     }
 
     /**
-     * Spawn a bullet into the physics core and build its DOM element. Mirrors
-     * the legacy createBullet element setup for a plain bullet, so a migrated
-     * cannon is visually identical to a legacy one. Receives screen-space
+     * Build the DOM element for a physics-core bullet: the base `bullet`
+     * class, the skin modle_ID class, and the bullet-type class so a migrated
+     * bullet keeps its type styling. Size and position are set by the caller.
+     */
+    _createBulletElement(bulletInfo) {
+        const element = document.createElement('div');
+        element.className = 'bullet';
+        if (bulletInfo.modle_ID) element.classList.add(bulletInfo.modle_ID);
+        const typeClass = BULLET_TYPE_CLASSES[bulletInfo.type];
+        if (typeClass) element.classList.add(typeClass);
+        return element;
+    }
+
+    /**
+     * Spawn a straight-line bullet into the physics core and build its DOM
+     * element. Mirrors the legacy createBullet element setup, so a migrated
+     * bullet is visually identical to a legacy one. Receives screen-space
      * coordinates and converts to game space for the core. Returns the
      * element, or null if the core rejected the spawn (non-finite input).
      */
@@ -537,12 +558,7 @@ export class BulletEngine {
         });
         if (!unit) return null;
 
-        const element = document.createElement('div');
-        element.className = 'bullet';
-        // Cannon (type 1/8) has no entry in the legacy bulletTypeClasses map,
-        // so — by design — a migrated cannon gets no bullet-type CSS class.
-        if (bulletInfo.modle_ID) element.classList.add(bulletInfo.modle_ID);
-
+        const element = this._createBulletElement(bulletInfo);
         const baseWidth = bulletInfo.cld_box[0] * this.scale;
         const baseHeight = bulletInfo.cld_box[1] * this.scale;
         const spawnScreen = this.gameToScreen(startGamePos.x, startGamePos.y);
