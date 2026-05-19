@@ -523,6 +523,24 @@ export class BulletEngine {
     }
 
     /**
+     * True only for a plain airdrop bomb the physics path provably renders
+     * correctly: a bomb type (2 / 16) flagged extra_param.airdrop, carrying the
+     * firing pipeline's airdropData (the explode point), with no acceleration
+     * data, shrapnel, missile, transform chain or inherited speed. An airdrop
+     * bomb with any of those stays on the legacy path.
+     */
+    _isAirdropBomb(bulletInfo, options) {
+        return (bulletInfo.type === 2 || bulletInfo.type === 16)
+            && bulletInfo.extra_param?.airdrop
+            && options.airdropData != null
+            && this._hasEmptyAcceleration(bulletInfo)
+            && !bulletInfo.extra_param?.shrapnel
+            && !bulletInfo.extra_param?.missile
+            && options.inheritSpeed == null
+            && (!options.transformChain || options.transformChain.length === 0);
+    }
+
+    /**
      * Build the DOM element for a physics-core bullet: the base `bullet`
      * class, the skin modle_ID class, and the bullet-type class so a migrated
      * bullet keeps its type styling. Size and position are set by the caller.
@@ -577,11 +595,57 @@ export class BulletEngine {
     }
 
     /**
+     * Spawn an airdrop bomb into the physics core and build its DOM element.
+     * The core derives the bomb's spawn point, drop height and vertical speed
+     * from the explode point (airdropData.explodePos, in game coordinates), so
+     * — unlike _createWorldBullet — this path never reads the screen-space
+     * startX/startY. Returns the element, or null if the core rejected the
+     * spawn (non-finite input).
+     */
+    _createWorldBomb(options) {
+        const { bulletInfo, airdropData } = options;
+        const ep = bulletInfo.extra_param || {};
+
+        const unit = this.world.spawnBomb({
+            type: bulletInfo.type,
+            velocity: bulletInfo.velocity,
+            range: bulletInfo.range,
+            rangeOffset: bulletInfo.range_offset || 0,
+            gravity: ep.gravity,             // undefined -> BombBulletUnit uses GRAVITY
+            offsetY: ep.offsetY,             // undefined -> BombBulletUnit uses AIRCRAFT_HEIGHT
+            dropOffset: ep.dropOffset,
+            launchVrtSpeed: ep.launchVrtSpeed,
+            explodeTime: ep.timeToExplode,
+            explodePos: airdropData.explodePos,
+            direction: airdropData.direction,
+        });
+        if (!unit) return null;
+
+        const element = this._createBulletElement(bulletInfo);
+        const baseWidth = bulletInfo.cld_box[0] * this.scale;
+        const baseHeight = bulletInfo.cld_box[1] * this.scale;
+        const spawnScreen = this.gameToScreen(unit.position.x, unit.position.y);
+        Object.assign(element.style, {
+            width: `${baseWidth}px`,
+            height: `${baseHeight}px`,
+            opacity: 0.85,
+            zIndex: Math.floor(spawnScreen.depth * 0.1) + 5,
+        });
+        this.container.appendChild(element);
+
+        this._worldViews.set(unit, { element, bulletInfo, baseWidth, baseHeight, shadowEl: null });
+        this._renderWorldBullet(unit);
+        this._ensureWorldLoop();
+        return element;
+    }
+
+    /**
      * Draw one physics unit to its DOM element. The transform mirrors the
      * legacy path's non-beam render: face the velocity vector unless
-     * extra_param.dontRotate. zIndex is fixed at spawn (set in
-     * _createWorldBullet) and only refreshed here when perspective is on,
-     * matching the legacy path.
+     * extra_param.dontRotate. A unit with altitude (a bomb) is lifted up the
+     * screen and casts a ground shadow — both inert for a straight bullet,
+     * whose altitude never leaves 0. zIndex is fixed at spawn and only
+     * refreshed here when perspective is on, matching the legacy path.
      */
     _renderWorldBullet(unit) {
         const view = this._worldViews.get(unit);
@@ -590,9 +654,10 @@ export class BulletEngine {
         const screenPos = this.gameToScreen(unit.position.x, unit.position.y);
         const w = view.baseWidth * screenPos.scale;
         const h = view.baseHeight * screenPos.scale;
+        const altitudeOffset = unit.altitude * this.scale;
 
         view.element.style.left = `${screenPos.x - w / 2}px`;
-        view.element.style.top = `${screenPos.y - h / 2}px`;
+        view.element.style.top = `${screenPos.y - h / 2 - altitudeOffset}px`;
 
         if (view.bulletInfo.extra_param?.dontRotate === true) {
             view.element.style.transform = `scale(${screenPos.scale})`;
@@ -604,6 +669,23 @@ export class BulletEngine {
         if (this.perspective.enabled) {
             view.element.style.filter = screenPos.blur > 0 ? `blur(${screenPos.blur}px)` : 'none';
             view.element.style.zIndex = Math.floor(screenPos.depth * 0.1) + 5;
+        }
+
+        // Ground shadow while a bomb is airborne (mirrors the legacy path).
+        if (altitudeOffset > 1) {
+            if (!view.shadowEl) {
+                view.shadowEl = document.createElement('div');
+                view.shadowEl.className = 'bullet-shadow';
+                this.container.appendChild(view.shadowEl);
+            }
+            const shadowScale = Math.max(0.3, 1 - unit.altitude * 0.05);
+            Object.assign(view.shadowEl.style, {
+                left: `${screenPos.x - (w * shadowScale) / 2}px`,
+                top: `${screenPos.y - 1}px`,
+                width: `${w * shadowScale}px`,
+                height: '2px',
+                opacity: `${shadowScale * 0.5}`,
+            });
         }
     }
 
@@ -634,6 +716,7 @@ export class BulletEngine {
         for (const [unit, view] of this._worldViews) {
             if (unit.reachDestFlag) {
                 view.element.remove();
+                if (view.shadowEl) view.shadowEl.remove();
                 this._worldViews.delete(unit);
                 continue;
             }
@@ -685,9 +768,13 @@ export class BulletEngine {
     clearAllBullets() {
         this.activeBullets.forEach(b => { b.shouldRemove = true; });
 
-        // Faithful-core path: drop every unit, remove its element, stop the loop.
+        // Faithful-core path: drop every unit, remove its element + shadow,
+        // stop the loop.
         this.world.bullets = [];
-        for (const view of this._worldViews.values()) view.element.remove();
+        for (const view of this._worldViews.values()) {
+            view.element.remove();
+            if (view.shadowEl) view.shadowEl.remove();
+        }
         this._worldViews.clear();
         if (this._worldLoopId !== null) {
             cancelAnimationFrame(this._worldLoopId);
