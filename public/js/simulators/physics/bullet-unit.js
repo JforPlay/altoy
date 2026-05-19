@@ -8,7 +8,7 @@
  * (the game's x/z); `altitude` is the vertical axis (the game's _position.y).
  */
 
-import { BULLET_SPEED_CONVERT } from './constants.js';
+import { BULLET_SPEED_CONVERT, BOMB_DETONATE_HEIGHT } from './constants.js';
 import { sqrDistance } from './vec.js';
 
 const DEG_TO_RAD = Math.PI / 180;
@@ -94,11 +94,11 @@ export class BulletUnit {
   /**
    * Advance the bullet one fixed tick. Mirrors Update (battlebulletunit.lua:
    * 139-157): run the chosen movement function, integrate position by `speed`
-   * and altitude by `verticalSpeed`, then test range expiry.
-   *
-   * Only the non-gravity (`gravity === 0`) expiry branch is implemented here;
-   * the gravity-bullet detonation branch (`altitude <= BombDetonateHeight`)
-   * arrives with the bomb work in Phase 2.
+   * and altitude by `verticalSpeed`, then test expiry — squared-distance range
+   * for a straight bullet (`gravity === 0`), descent past the bomb-detonation
+   * height for a gravity bullet (`battlebulletunit.lua:155`, where the game's
+   * `_position.y` is this core's `altitude`). The fieldSwitchHeight / dive
+   * branch is out of scope.
    */
   Update() {
     this.updateSpeed();
@@ -108,6 +108,8 @@ export class BulletUnit {
 
     if (this.gravity === 0) {
       this.reachDestFlag = this.sqrRange < sqrDistance(this.spawnPos, this.position);
+    } else {
+      this.reachDestFlag = this.altitude <= BOMB_DETONATE_HEIGHT;
     }
   }
 }

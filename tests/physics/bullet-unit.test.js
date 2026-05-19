@@ -82,3 +82,19 @@ test('Update: reachDestFlag trips when squared distance passes sqrRange', () => 
   b.Update();                       // x=30, sqrDist 900 > 625
   assert.equal(b.reachDestFlag, true);
 });
+
+test('Update: a gravity bullet detonates at the bomb-detonation height', () => {
+  // gravity -0.5 is an exaggerated test value chosen for exact arithmetic.
+  // spawnAltitude 12, verticalSpeed -2: doNothing accrues gravity each tick,
+  // so altitude falls by 2.5, 3.0, 3.5, 4.0 -> 9.5, 6.5, 3.0, -1.0; the bullet
+  // detonates once altitude <= BOMB_DETONATE_HEIGHT (1.2).
+  const b = new BulletUnit({ velocity: 0, yAngle: 0, gravity: -0.5, spawnAltitude: 12 });
+  b.InitSpeed();
+  b.verticalSpeed = -2;       // seeded as SetSpawnPosition would
+  b.Update();                 // altitude 9.5
+  b.Update();                 // altitude 6.5
+  b.Update();                 // altitude 3.0
+  assert.equal(b.reachDestFlag, false, 'still above the detonation height');
+  b.Update();                 // altitude -1.0
+  assert.equal(b.reachDestFlag, true, 'detonates at/below 1.2');
+});
