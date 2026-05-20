@@ -9,6 +9,7 @@ import { BulletUnit } from './bullet-unit.js';
 import { CannonBulletUnit } from './bullets/cannon.js';
 import { TorpedoBulletUnit } from './bullets/torpedo.js';
 import { BombBulletUnit } from './bullets/bomb.js';
+import { EffectBulletUnit } from './bullets/effect.js';
 
 const BULLET_CLASSES = {
   1: CannonBulletUnit,   // CANNON
@@ -16,6 +17,7 @@ const BULLET_CLASSES = {
   3: TorpedoBulletUnit,  // TORPEDO
   2: BombBulletUnit,     // BOMB
   16: BombBulletUnit,    // bomb-family (airdrop-dispatched only if flagged; none in current data)
+  9: EffectBulletUnit,   // EFFECT — lifetime cap by hit_type.time
 };
 
 /** Construct the BulletUnit subclass for `type`, forwarding `opts`. */
