@@ -102,14 +102,17 @@ export class ShrapnelBulletUnit extends BulletUnit {
    * Returns true if every group has emitted.
    */
   _drainSplitSchedule() {
+    const skipEmit = this._extraParam.fragile === 1;
     for (let i = 0; i < this._splitGroups.length; i++) {
       const group = this._splitGroups[i];
       if (group.emitted) continue;
       const delay = (group.info.shift_split_delay ?? 0) * i;
       if (this.timeElapsed < this._splitEntryTime + delay) continue;
-      const count = (group.barrage.primal_repeat ?? 0) + 1;
-      for (let k = 0; k < count; k++) {
-        this._emitChild(group.info, group.barrage, group.child, k);
+      if (!skipEmit) {
+        const count = (group.barrage.primal_repeat ?? 0) + 1;
+        for (let k = 0; k < count; k++) {
+          this._emitChild(group.info, group.barrage, group.child, k);
+        }
       }
       group.emitted = true;
     }

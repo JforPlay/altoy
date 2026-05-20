@@ -361,3 +361,28 @@ test('Split: after all groups emit -> FINAL_SPLIT -> EXPIRE -> reachDestFlag', (
   assert.equal(b.GetCurrentState(), STATE.EXPIRE);
   assert.equal(b.reachDestFlag, true);
 });
+
+test('fragile=1: SPLIT trigger emits no children but completes the lattice to EXPIRE', () => {
+  const child = { type: 1, velocity: 10, range: 50 };
+  const barrage = { barrage_ID: 1, primal_repeat: 0, angle: 0, delta_angle: 0 };
+  const extraParam = {
+    fragile: 1,
+    shrapnel: [{ initialSplit: false, barrage_ID: 1, bullet_ID: 'B' }],
+  };
+  const b = new ShrapnelBulletUnit({
+    velocity: 10, yAngle: 0, range: 10000, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+    extraParam,
+    bulletTemplates: { B: child },
+    barrages: { 1: barrage },
+  });
+  b.FixRange();
+  b.InitSpeed();
+  b.ChangeShrapnelState(STATE.SPLIT);
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  assert.equal(b.drainEmits().length, 0, 'no children emitted');
+  // Visual-only split: the bullet still completes the lattice, just without
+  // child specs.
+  assert.equal(b.GetCurrentState(), STATE.EXPIRE);
+});
