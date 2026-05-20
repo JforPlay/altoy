@@ -19,6 +19,10 @@ export class World {
    * simulation. Rejects a non-finite spawn position, heading or velocity — a
    * NaN velocity yields a bullet whose squared-distance range check never
    * trips, so it would leak — and returns null in that case.
+   *
+   * Curving bullets need no extra spawn path: `opts.acceleration` (plus
+   * `barrageAngle` and `target`) flows straight through to the BulletUnit
+   * constructor, and InitSpeed picks doAccelerate / doTrack / doCircle.
    */
   spawnBullet(opts) {
     if (!Number.isFinite(opts.spawnX) ||

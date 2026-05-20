@@ -15,11 +15,12 @@ import { drainAccumulator } from './physics/accumulator.js';
 import { TICK_SECONDS } from './physics/constants.js';
 
 /**
- * Straight-line bullet types routed through the faithful physics core
- * (physics/). Cannon (1) and Stray (8) use CannonBulletUnit; Torpedo (3) uses
- * TorpedoBulletUnit — all plain straight-line movement. Airdrop bombs route
- * through a separate predicate (_isAirdropBomb). Every other type still runs
- * the legacy BehaviorFactory path until later phases migrate it.
+ * Bullet types routed through the faithful physics core (physics/). Cannon (1)
+ * and Stray (8) use CannonBulletUnit; Torpedo (3) uses TorpedoBulletUnit. All
+ * three support straight and curving movement (doAccelerate / doTrack /
+ * doCircle resolved by InitSpeed — Phase 2c). Airdrop bombs route through a
+ * separate predicate (_isAirdropBomb). Every other type still runs the legacy
+ * BehaviorFactory path until later phases migrate it.
  */
 const MIGRATED_BULLET_TYPES = new Set([1, 8, 3]);
 
@@ -153,11 +154,11 @@ export class BulletEngine {
             return;
         }
 
-        // Route a plain straight-line bullet (cannon / stray / torpedo) to the
-        // faithful physics core; anything with acceleration / gravity / missile
-        // / shrapnel / a transform chain / inherited speed stays on the legacy
-        // path below until later phases migrate it.
-        if (this._isPlainStraightBullet(bulletInfo, options)) {
+        // Route a migrated-type bullet (cannon / stray / torpedo) — straight OR
+        // curving (acceleration / tracker / circle) — to the faithful physics
+        // core; anything with gravity / missile / shrapnel / a transform chain
+        // / inherited speed stays on the legacy path until later phases.
+        if (this._isMigratedMovementBullet(bulletInfo, options)) {
             return this._createWorldBullet(options);
         }
 
@@ -536,15 +537,15 @@ export class BulletEngine {
 
     /**
      * True only for a bullet the physics path provably renders correctly: a
-     * migrated straight-line type (cannon / stray / torpedo) with no
-     * acceleration data, gravity, missile, shrapnel, airdrop, transform chain
-     * or inherited speed. Anything fancier stays on the legacy path — the
-     * conservative test keeps the migration regression-free (a bullet the new
-     * core cannot yet handle is never routed to it).
+     * migrated type (cannon / stray / torpedo) — straight OR curving — with no
+     * gravity, missile, shrapnel, airdrop, transform chain or inherited speed.
+     * Acceleration data is now welcome (Phase 2c): the core's InitSpeed
+     * priority chain resolves it to doAccelerate / doTrack / doCircle. Anything
+     * still excluded has no faithful core path and stays on the legacy path —
+     * the conservative test keeps the migration regression-free.
      */
-    _isPlainStraightBullet(bulletInfo, options) {
+    _isMigratedMovementBullet(bulletInfo, options) {
         return MIGRATED_BULLET_TYPES.has(bulletInfo.type)
-            && this._hasEmptyAcceleration(bulletInfo)
             && !bulletInfo.extra_param?.gravity
             && !bulletInfo.extra_param?.missile
             && !bulletInfo.extra_param?.shrapnel
@@ -586,14 +587,15 @@ export class BulletEngine {
     }
 
     /**
-     * Spawn a straight-line bullet into the physics core and build its DOM
-     * element. Mirrors the legacy createBullet element setup, so a migrated
-     * bullet is visually identical to a legacy one. Receives screen-space
-     * coordinates and converts to game space for the core. Returns the
-     * element, or null if the core rejected the spawn (non-finite input).
+     * Spawn a migrated-type bullet (straight or curving) into the physics core
+     * and build its DOM element. Mirrors the legacy createBullet element setup,
+     * so a migrated bullet is visually identical to a legacy one. Receives
+     * screen-space coordinates and converts to game space for the core.
+     * Returns the element, or null if the core rejected the spawn (non-finite
+     * input).
      */
     _createWorldBullet(options) {
-        const { startX, startY, angle, bulletInfo } = options;
+        const { startX, startY, angle, bulletInfo, barrageAngle, enemyTarget } = options;
         const startGamePos = this.screenToGame(startX, startY);
 
         const unit = this.world.spawnBullet({
@@ -604,6 +606,14 @@ export class BulletEngine {
             rangeOffset: bulletInfo.range_offset || 0,
             spawnX: startGamePos.x,
             spawnY: startGamePos.y,
+            // Curving-movement data (Phase 2c). `acceleration` drives the core's
+            // InitSpeed priority chain; `barrageAngle` resolves the per-record
+            // `flip`; `target` (enemyTarget — already game coords) is the
+            // homing / circle-centre target. A plain bullet has empty
+            // acceleration and ignores all three.
+            acceleration: bulletInfo.acceleration,
+            barrageAngle: barrageAngle,
+            target: enemyTarget,
         });
         if (!unit) return null;
 
