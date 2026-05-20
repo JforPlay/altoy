@@ -221,3 +221,42 @@ test('doAccelerate: u and v applied together compose correctly along forward and
   assert.ok(Math.abs(b.speed.x - 1.3) < 1e-9);
   assert.ok(Math.abs(b.speed.y - 0.4) < 1e-9);
 });
+
+test('InitSpeed: an accelerating bullet resolves to doAccelerate', () => {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0, acceleration: [{ t: 0, u: 1, v: 0 }] });
+  b.InitSpeed();
+  assert.equal(b.updateSpeed, b.doAccelerate);
+  assert.ok(Math.abs(b._speedNormal.x - 1) < 1e-9);
+  assert.ok(Math.abs(b._speedNormal.y - 0) < 1e-9);
+  assert.ok(Math.abs(b._speedCross.x - 0) < 1e-9);
+  assert.ok(Math.abs(b._speedCross.y - 1) < 1e-9);
+  assert.equal(b._speedLength, 2, 'velocity 10 * 0.2');
+});
+
+test('InitSpeed: the accel basis follows yAngle 90 deg', () => {
+  const b = new BulletUnit({ velocity: 10, yAngle: 90, acceleration: [{ t: 0, u: 1, v: 0 }] });
+  b.InitSpeed();
+  assert.ok(Math.abs(b._speedNormal.x - 0) < 1e-9);
+  assert.ok(Math.abs(b._speedNormal.y - 1) < 1e-9);
+  assert.ok(Math.abs(b._speedCross.x - (-1)) < 1e-9);
+  assert.ok(Math.abs(b._speedCross.y - 0) < 1e-9);
+});
+
+test('InitSpeed: a plain bullet still resolves to doNothing', () => {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0 });
+  b.InitSpeed();
+  assert.equal(b.updateSpeed, b.doNothing);
+});
+
+test('Update: an accelerating bullet curves off the firing axis', () => {
+  // Fired along +x with a constant cross-acceleration v=0.5 -> it curves +y.
+  const b = new BulletUnit({
+    velocity: 5, yAngle: 0, range: 500, rangeOffset: 0,
+    acceleration: [{ t: 0, u: 0, v: 0.5 }],
+  });
+  b.FixRange();
+  b.InitSpeed();
+  b.Update();
+  b.Update();
+  assert.ok(b.position.y > 0, 'the bullet has curved off the x-axis');
+});
