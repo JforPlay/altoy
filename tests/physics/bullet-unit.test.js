@@ -352,3 +352,60 @@ test('InitSpeed: a tracker with no fields falls back to defaults', () => {
   assert.equal(b._trackRange, 50);
   assert.ok(Math.abs(b._trackerAngularRad - 3 * Math.PI / 180) < 1e-12);
 });
+
+// doCircle test harness: seed the fields InitSpeed's circle branch will set.
+function circleBullet({ position, originPos, convertedVelocity, centripetalSpeed = 0,
+                        antiClockwise = false, inverseFlag = 1 }) {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0 });
+  b.position = { ...position };
+  b._originPos = originPos;
+  b._convertedVelocity = convertedVelocity;
+  b._centripetalSpeed = centripetalSpeed;
+  b._circleAntiClockwise = antiClockwise;
+  b._inverseFlag = inverseFlag;
+  return b;
+}
+
+test('doCircle: with no centripetal pull, the radius is pinned exactly', () => {
+  const b = circleBullet({
+    position: { x: 10, y: 0 }, originPos: { x: 0, y: 0 }, convertedVelocity: 2,
+  });
+  b.doCircle();
+  // speed is a displacement; the next position must stay on the radius-10 circle.
+  const next = { x: b.position.x + b.speed.x, y: b.position.y + b.speed.y };
+  const newRadius = Math.hypot(next.x, next.y);
+  assert.ok(Math.abs(newRadius - 10) < 1e-9, `radius pinned at 10, got ${newRadius}`);
+});
+
+test('doCircle: an inward spiral shrinks the radius by centripetalSpeed', () => {
+  // radius 10, centripetal 2, flag 1: 10 - 2*1 = 8 (>= 0, flag stays +1).
+  // newRadius = 8 -> next position lands on the radius-8 circle.
+  const b = circleBullet({
+    position: { x: 10, y: 0 }, originPos: { x: 0, y: 0 },
+    convertedVelocity: 2, centripetalSpeed: 2, inverseFlag: 1,
+  });
+  b.doCircle();
+  const next = { x: b.position.x + b.speed.x, y: b.position.y + b.speed.y };
+  const newRadius = Math.hypot(next.x, next.y);
+  assert.ok(Math.abs(newRadius - 8) < 1e-9, `expected radius 8, got ${newRadius}`);
+  assert.equal(b._inverseFlag, 1, 'flag does not flip when radius - centripetal >= 0');
+});
+
+test('doCircle: the inverse flag flips when the radius would go negative', () => {
+  // radius 10, centripetal 15, flag 1: 10 - 15*1 = -5 < 0 -> flag flips to -1.
+  const b = circleBullet({
+    position: { x: 10, y: 0 }, originPos: { x: 0, y: 0 }, convertedVelocity: 2,
+    centripetalSpeed: 15, inverseFlag: 1,
+  });
+  b.doCircle();
+  assert.equal(b._inverseFlag, -1);
+});
+
+test('doCircle: with no origin, it is a no-op', () => {
+  const b = circleBullet({
+    position: { x: 10, y: 0 }, originPos: null, convertedVelocity: 2,
+  });
+  b.speed = { x: 7, y: 7 };
+  b.doCircle();
+  assert.deepEqual(b.speed, { x: 7, y: 7 });
+});

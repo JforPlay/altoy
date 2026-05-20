@@ -269,6 +269,33 @@ export class BulletUnit {
   }
 
   /**
+   * Movement function for a circling bullet. Mirrors doCircle
+   * (battlebulletunit.lua:100-113) — the spec §B7 fix. Rotates the
+   * position-offset vector around the orbit centre and emits speed as the
+   * resulting displacement, which pins an exact radius (the legacy
+   * velocity-rotation drifts). _inverseFlag is the radial in/out oscillation;
+   * _centripetalSpeed already carries the game's per-tick (1/30 s) scaling
+   * applied by InitSpeed. GetSpeedRatio() is 1 and is omitted.
+   */
+  doCircle() {
+    if (!this._originPos) return;
+
+    const offset = sub(this.position, this._originPos);
+    const radius = magnitude(offset);
+    if (radius - this._centripetalSpeed * this._inverseFlag < 0) {
+      this._inverseFlag = -this._inverseFlag;
+    }
+    if (radius <= 1e-5) return;
+
+    const newRadius = radius - this._centripetalSpeed * this._inverseFlag;
+    const angle = (this._convertedVelocity / radius)
+      * (this._circleAntiClockwise ? 1 : -1);
+    const rotated = rotate(offset, Math.cos(angle), Math.sin(angle));
+    const newOffset = scale(rotated, newRadius / radius);
+    this.speed = sub(newOffset, offset);
+  }
+
+  /**
    * Advance the bullet one fixed tick. Mirrors Update (battlebulletunit.lua:
    * 139-157): run the chosen movement function, integrate position by `speed`
    * and altitude by `verticalSpeed`, then test expiry — squared-distance range
