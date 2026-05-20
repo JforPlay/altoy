@@ -104,6 +104,9 @@ test('Update: movement does NOT run outside NORMAL', () => {
 test('Update: range expiry does NOT fire outside NORMAL', () => {
   // Pre-stretch the bullet past its range, then leave NORMAL — IsOutRange
   // must be inert so the bullet survives in SPLIT until SPLIT-driven expiry.
+  // With zero split groups, SPLIT auto-forwards to EXPIRE (vacuously all
+  // groups emitted). reachDestFlag is set by the SPLIT->EXPIRE path, not
+  // by IsOutRange — the range check is still muted outside NORMAL.
   const b = new ShrapnelBulletUnit({
     velocity: 50, yAngle: 0, range: 5, rangeOffset: 0,
     spawnX: 0, spawnY: 0, extraParam: {},
@@ -114,7 +117,9 @@ test('Update: range expiry does NOT fire outside NORMAL', () => {
   b.ChangeShrapnelState(STATE.SPLIT);
   b.timeElapsed += TICK_SECONDS;
   b.Update();
-  assert.equal(b.reachDestFlag, false, 'IsOutRange muted outside NORMAL');
+  // SPLIT with no groups -> immediate EXPIRE via split completion, not IsOutRange.
+  assert.equal(b.GetCurrentState(), STATE.EXPIRE, 'SPLIT auto-expires when no groups');
+  assert.equal(b.reachDestFlag, true, 'reachDestFlag set by SPLIT->EXPIRE, not IsOutRange');
 });
 
 test('NORMAL -> SPLIT on apex (clean sign-flip without zero crossing)', () => {
@@ -255,4 +260,104 @@ test('Trailing: no trailing record -> no emission', () => {
     b.Update();
   }
   assert.equal(b.drainEmits().length, 0);
+});
+
+test('Split: a single group emits primal_repeat+1 children at SPLIT entry', () => {
+  // primal_repeat = 2 -> 3 children at the same tick.
+  const child = { type: 1, velocity: 10, range: 50 };
+  const barrage = {
+    barrage_ID: 1, primal_repeat: 2,
+    first_delay: 0, delay: 0, delta_delay: 0,
+    angle: 0, delta_angle: 10,
+  };
+  const extraParam = {
+    shrapnel: [
+      { initialSplit: false, barrage_ID: 1, bullet_ID: 'B' },
+    ],
+  };
+  const b = new ShrapnelBulletUnit({
+    velocity: 10, yAngle: 0, range: 10000, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+    extraParam,
+    bulletTemplates: { B: child },
+    barrages: { 1: barrage },
+  });
+  b.FixRange();
+  b.InitSpeed();
+  b.ChangeShrapnelState(STATE.SPLIT);                       // external trigger
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  const emits = b.drainEmits();
+  assert.equal(emits.length, 3, 'primal_repeat+1 children at one instant');
+  // delta_angle spread: 0, 10, 20.
+  assert.equal(emits[0].angle, 0);
+  assert.equal(emits[1].angle, 10);
+  assert.equal(emits[2].angle, 20);
+});
+
+test('Split: shift_split_delay staggers different groups by group index', () => {
+  // Two groups, both 1 child, shift_split_delay = 2 ticks each.
+  const child = { type: 1, velocity: 10, range: 50 };
+  const barrage = {
+    barrage_ID: 1, primal_repeat: 0, first_delay: 0, delay: 0, delta_delay: 0,
+    angle: 0, delta_angle: 0,
+  };
+  const extraParam = {
+    shrapnel: [
+      { initialSplit: false, barrage_ID: 1, bullet_ID: 'B', shift_split_delay: 2 * TICK_SECONDS },
+      { initialSplit: false, barrage_ID: 1, bullet_ID: 'B', shift_split_delay: 2 * TICK_SECONDS },
+    ],
+  };
+  const b = new ShrapnelBulletUnit({
+    velocity: 10, yAngle: 0, range: 10000, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+    extraParam,
+    bulletTemplates: { B: child },
+    barrages: { 1: barrage },
+  });
+  b.FixRange();
+  b.InitSpeed();
+  b.ChangeShrapnelState(STATE.SPLIT);
+  // Tick 1: group 0 (delay 0 * 2 = 0) fires.
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  let emits = b.drainEmits();
+  assert.equal(emits.length, 1);
+  // Tick 2: group 1 deadline = 0 + 2 ticks = 2/30. timeElapsed = 2/30 -> fires.
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  emits = b.drainEmits();
+  assert.equal(emits.length, 1);
+  // Tick 3: nothing left.
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  emits = b.drainEmits();
+  assert.equal(emits.length, 0);
+});
+
+test('Split: after all groups emit -> FINAL_SPLIT -> EXPIRE -> reachDestFlag', () => {
+  const child = { type: 1, velocity: 10, range: 50 };
+  const barrage = {
+    barrage_ID: 1, primal_repeat: 0, first_delay: 0, delay: 0, delta_delay: 0,
+    angle: 0, delta_angle: 0,
+  };
+  const extraParam = {
+    shrapnel: [
+      { initialSplit: false, barrage_ID: 1, bullet_ID: 'B' },
+    ],
+  };
+  const b = new ShrapnelBulletUnit({
+    velocity: 10, yAngle: 0, range: 10000, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+    extraParam,
+    bulletTemplates: { B: child },
+    barrages: { 1: barrage },
+  });
+  b.FixRange();
+  b.InitSpeed();
+  b.ChangeShrapnelState(STATE.SPLIT);
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  assert.equal(b.GetCurrentState(), STATE.EXPIRE);
+  assert.equal(b.reachDestFlag, true);
 });

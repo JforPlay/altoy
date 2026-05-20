@@ -96,6 +96,27 @@ export class ShrapnelBulletUnit extends BulletUnit {
   }
 
   /**
+   * Walk the split-group list. Each not-yet-emitted group whose deadline
+   * (splitEntry + shift_split_delay * groupIndex) has elapsed fires
+   * primal_repeat+1 children at the same instant, spread by delta_angle.
+   * Returns true if every group has emitted.
+   */
+  _drainSplitSchedule() {
+    for (let i = 0; i < this._splitGroups.length; i++) {
+      const group = this._splitGroups[i];
+      if (group.emitted) continue;
+      const delay = (group.info.shift_split_delay ?? 0) * i;
+      if (this.timeElapsed < this._splitEntryTime + delay) continue;
+      const count = (group.barrage.primal_repeat ?? 0) + 1;
+      for (let k = 0; k < count; k++) {
+        this._emitChild(group.info, group.barrage, group.child, k);
+      }
+      group.emitted = true;
+    }
+    return this._splitGroups.every((g) => g.emitted);
+  }
+
+  /**
    * Build one child spec from a shrapnel record (trailing or split) and push
    * it onto _pendingEmits. The angle composes:
    *   - reaim:        atan2(target - spawnAtFire) + barrage.angle
@@ -150,9 +171,11 @@ export class ShrapnelBulletUnit extends BulletUnit {
     this._currentState = next;
     if (next === STATE.SPIN) {
       this._spinStartTime = this.timeElapsed;
+    } else if (next === STATE.SPLIT) {
+      this._splitEntryTime = this.timeElapsed;
+    } else if (next === STATE.EXPIRE) {
+      this.reachDestFlag = true;
     }
-    // SPLIT side effect: handled in Task 10.
-    // EXPIRE side effect: handled in Task 8.
   }
 
   /**
@@ -167,8 +190,8 @@ export class ShrapnelBulletUnit extends BulletUnit {
    *  - SPIN: transition to SPLIT if extra_param.lastTime is falsy (immediate)
    *    or if (timeElapsed - _spinStartTime) >= lastTime (Lua line 79).
    *
-   *  - SPLIT / FINAL_SPLIT / EXPIRE: emission scheduling lands in Task 10.
-   *    For now, no-op so the lattice exits live and tests run.
+   *  - SPLIT: _drainSplitSchedule fires each group at its deadline; when all
+   *    groups have emitted, immediately forwards SPLIT -> FINAL_SPLIT -> EXPIRE.
    */
   Update() {
     if (this._currentState === STATE.NORMAL) {
@@ -190,7 +213,21 @@ export class ShrapnelBulletUnit extends BulletUnit {
       return;
     }
 
-    // SPLIT / FINAL_SPLIT / EXPIRE — see Task 10 for emission scheduling.
+    if (this._currentState === STATE.SPLIT) {
+      const allEmitted = this._drainSplitSchedule();
+      if (allEmitted) {
+        // Forward-only lattice: SPLIT -> FINAL_SPLIT -> EXPIRE within one
+        // Update. The Lua's emitter coordination doesn't exist here, so
+        // collapsing to immediate transition is the minimal faithful
+        // interpretation (design §State lattice).
+        this.ChangeShrapnelState(STATE.FINAL_SPLIT);
+        this.ChangeShrapnelState(STATE.EXPIRE);
+      }
+      return;
+    }
+
+    // FINAL_SPLIT / EXPIRE: nothing to do; reachDestFlag is set on entry
+    // to EXPIRE and the world culls next.
   }
 
   /**
