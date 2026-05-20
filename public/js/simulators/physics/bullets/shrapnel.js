@@ -36,16 +36,102 @@ export class ShrapnelBulletUnit extends BulletUnit {
     this._extraParam = opts.extraParam ?? {};
     this._explodePos = opts.explodePos ?? null;
     this._bulletTemplates = opts.bulletTemplates ?? {};
+    this._barrages = opts.barrages ?? {};
     this._currentState = STATE.NORMAL;
     this._spinStartTime = -1;
     this._pendingEmits = [];
 
-    // Emission state is initialised by _setupEmissions() — implemented in
-    // Task 9 (trailing) and Task 10 (split). For Task 7 these fields are
-    // declared so the rest of the class can refer to them safely.
     this._trailing = [];
     this._splitGroups = [];
     this._splitEntryTime = -1;
+
+    this._setupEmissions();
+  }
+
+  /**
+   * Walk extra_param.shrapnel[] (a numeric-keyed object in data, plus a
+   * conventional FXID string field that's not an entry) and partition into
+   * trailing (initialSplit=true) and split groups. Each trailing entry gets
+   * its own scheduler; split groups land in Task 10.
+   */
+  _setupEmissions() {
+    const shrapnel = this._extraParam.shrapnel;
+    if (!shrapnel) return;
+    for (const key of Object.keys(shrapnel)) {
+      if (key === 'FXID') continue;
+      const info = shrapnel[key];
+      if (!info || info === '') continue;
+      const barrage = this._barrages[info.barrage_ID];
+      const child = this._bulletTemplates[info.bullet_ID];
+      if (!barrage || !child) continue;
+
+      if (info.initialSplit) {
+        this._trailing.push({
+          info, barrage, child,
+          shotsFired: 0,
+          totalShots: (barrage.primal_repeat ?? 0) + 1,
+          nextShotTime: barrage.first_delay ?? 0,
+          currentInterval: barrage.delay ?? 0,
+          deltaInterval: barrage.delta_delay ?? 0,
+        });
+      } else {
+        this._splitGroups.push({ info, barrage, child, emitted: false });
+      }
+    }
+  }
+
+  /**
+   * Drain a trailing record's queue against the current timeElapsed. Each
+   * fire pushes one child spec onto _pendingEmits. The interval is the
+   * arithmetic series delay, delay+delta, delay+2*delta, ... matching the
+   * Lua factory's per-record scheduler.
+   */
+  _drainTrailing(rec) {
+    while (rec.shotsFired < rec.totalShots && this.timeElapsed > rec.nextShotTime) {
+      this._emitChild(rec.info, rec.barrage, rec.child, rec.shotsFired);
+      rec.shotsFired += 1;
+      rec.nextShotTime += rec.currentInterval;
+      rec.currentInterval += rec.deltaInterval;
+    }
+  }
+
+  /**
+   * Build one child spec from a shrapnel record (trailing or split) and push
+   * it onto _pendingEmits. The angle composes:
+   *   - reaim:        atan2(target - spawnAtFire) + barrage.angle
+   *   - inheritAngle: current heading + barrage.angle
+   *   - else:         barrage.angle
+   * plus a per-index delta_angle for spread, plus shrapnelInfo.rotateOffset.
+   *
+   * Position: child spawns at the parent's current position (game coords);
+   * the engine's onEmit adapter converts to screen for createBullet.
+   */
+  _emitChild(info, barrage, child, index) {
+    let baseAngleDeg;
+    if (info.reaim && this._target) {
+      const dx = this._target.x - this.position.x;
+      const dy = this._target.y - this.position.y;
+      baseAngleDeg = Math.atan2(dy, dx) * 180 / Math.PI;
+    } else if (info.inheritAngle) {
+      baseAngleDeg = Math.atan2(this.speed.y, this.speed.x) * 180 / Math.PI;
+    } else {
+      baseAngleDeg = 0;
+    }
+    const angle = baseAngleDeg
+      + (barrage.angle ?? 0)
+      + index * (barrage.delta_angle ?? 0)
+      + (info.rotateOffset ?? 0);
+
+    this._pendingEmits.push({
+      startX: this.position.x,                       // game coords
+      startY: this.position.y,
+      angle,
+      bulletInfo: child,
+      enemyTarget: this._target ?? null,
+      inheritSpeed: info.inheritSpeed ? this.velocity : null,
+      transformChain: [],
+      parentBullet: null,
+    });
   }
 
   GetCurrentState() {
@@ -73,10 +159,10 @@ export class ShrapnelBulletUnit extends BulletUnit {
    * Mirrors Update (battleshrapnelbulletunit.lua:60-82). Branches by state:
    *
    *  - NORMAL: capture pre-Update verticalSpeed, run super.Update (which
-   *    integrates movement and tests range expiry), then check the Lua's
-   *    apex condition: vs != 0 AND prevVs * vs < 0 -> ChangeShrapnelState(SPLIT).
-   *    The `vs != 0` guard is implicit in `prevVs * vs < 0` (a product is
-   *    negative only when both factors are non-zero).
+   *    integrates movement and tests range expiry), drain trailing schedulers,
+   *    then check the Lua's apex condition: vs != 0 AND prevVs * vs < 0 ->
+   *    ChangeShrapnelState(SPLIT). The `vs != 0` guard is implicit in
+   *    `prevVs * vs < 0` (a product is negative only when both are non-zero).
    *
    *  - SPIN: transition to SPLIT if extra_param.lastTime is falsy (immediate)
    *    or if (timeElapsed - _spinStartTime) >= lastTime (Lua line 79).
@@ -88,12 +174,14 @@ export class ShrapnelBulletUnit extends BulletUnit {
     if (this._currentState === STATE.NORMAL) {
       const prevVerticalSpeed = this.verticalSpeed;
       super.Update();
+      for (const rec of this._trailing) this._drainTrailing(rec);
       if (prevVerticalSpeed * this.verticalSpeed < 0) {
         this.ChangeShrapnelState(STATE.SPLIT);
       }
       return;
     }
 
+    // SPIN branch unchanged
     if (this._currentState === STATE.SPIN) {
       const lastTime = this._extraParam.lastTime;
       if (!lastTime || (this.timeElapsed - this._spinStartTime) >= lastTime) {

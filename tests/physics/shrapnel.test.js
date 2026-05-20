@@ -165,3 +165,94 @@ test('SPIN -> SPLIT after lastTime seconds when positive', () => {
   b.Update();
   assert.equal(b.GetCurrentState(), STATE.SPLIT, 'transition at lastTime');
 });
+
+test('Trailing: a record with initialSplit=true emits during NORMAL', () => {
+  // Two-shot trailing record: shots at t = first_delay and t = first_delay + delay.
+  const child = { type: 1, velocity: 10, range: 50 };
+  const barrage = {
+    barrage_ID: 1, primal_repeat: 1, first_delay: 0, delay: TICK_SECONDS, delta_delay: 0,
+    angle: 0, delta_angle: 0,
+  };
+  const extraParam = {
+    shrapnel: [
+      { initialSplit: true, barrage_ID: 1, bullet_ID: 'B', inheritAngle: false, reaim: false },
+    ],
+  };
+  const b = new ShrapnelBulletUnit({
+    velocity: 10, yAngle: 0, range: 10000, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+    extraParam,
+    bulletTemplates: { B: child },
+    barrages: { 1: barrage },
+  });
+  b.FixRange();
+  b.InitSpeed();
+
+  // Tick 1: t = 1/30 >= first_delay 0 -> emit child #0
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  let emits = b.drainEmits();
+  assert.equal(emits.length, 1, 'first shot fired');
+  assert.equal(emits[0].bulletInfo, child);
+  // Tick 2: t = 2/30. next shot was scheduled at first_delay + delay = 1/30. Emit #1.
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  emits = b.drainEmits();
+  assert.equal(emits.length, 1, 'second shot fired');
+  // Tick 3: no more shots queued (totalShots = primal_repeat+1 = 2 fired).
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  emits = b.drainEmits();
+  assert.equal(emits.length, 0);
+});
+
+test('Trailing: delta_delay grows the interval each shot', () => {
+  const child = { type: 1, velocity: 10, range: 50 };
+  const barrage = {
+    barrage_ID: 1, primal_repeat: 2,         // -> 3 shots
+    first_delay: 0,
+    delay: TICK_SECONDS,                     // initial interval
+    delta_delay: TICK_SECONDS,               // each subsequent interval grows by 1 tick
+    angle: 0, delta_angle: 0,
+  };
+  const extraParam = {
+    shrapnel: [
+      { initialSplit: true, barrage_ID: 1, bullet_ID: 'B' },
+    ],
+  };
+  const b = new ShrapnelBulletUnit({
+    velocity: 10, yAngle: 0, range: 10000, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+    extraParam,
+    bulletTemplates: { B: child },
+    barrages: { 1: barrage },
+  });
+  b.FixRange();
+  b.InitSpeed();
+
+  const shotTicks = [];
+  for (let tick = 1; tick <= 10; tick++) {
+    b.timeElapsed += TICK_SECONDS;
+    b.Update();
+    const emits = b.drainEmits();
+    if (emits.length > 0) shotTicks.push(tick);
+  }
+  // Shot 0 at first_delay (0)        -> tick 1
+  // Shot 1 at 0 + delay (1)          -> tick 2
+  // Shot 2 at 0 + delay + (delay+delta) (1 + 2) -> tick 4
+  assert.deepEqual(shotTicks, [1, 2, 4]);
+});
+
+test('Trailing: no trailing record -> no emission', () => {
+  const b = new ShrapnelBulletUnit({
+    velocity: 10, yAngle: 0, range: 10000, rangeOffset: 0,
+    spawnX: 0, spawnY: 0, extraParam: {},
+  });
+  b.FixRange();
+  b.InitSpeed();
+  for (let i = 0; i < 5; i++) {
+    b.timeElapsed += TICK_SECONDS;
+    b.Update();
+  }
+  assert.equal(b.drainEmits().length, 0);
+});
