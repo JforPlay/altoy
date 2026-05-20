@@ -170,6 +170,14 @@ export class BulletEngine {
             return this._createWorldBomb(options);
         }
 
+        // Route a type-9 effect bullet to the faithful physics core — fixes
+        // the lingering red-dot bug. The shared _createWorldBullet handles
+        // DOM and rendering; EffectBulletUnit's hit_type.time cap drives
+        // expiry alongside the base range check.
+        if (this._isMigratedEffect(bulletInfo, options)) {
+            return this._createWorldBullet(options);
+        }
+
         // Create bullet DOM element
         const bulletElement = document.createElement('div');
         bulletElement.className = 'bullet';
@@ -573,6 +581,19 @@ export class BulletEngine {
     }
 
     /**
+     * True for a type-9 EFFECT bullet routed through the faithful physics
+     * core. EffectBulletUnit inherits the base movement and adds a lifetime
+     * cap from hit_type.time — fixes the lingering red-dot bug (spec §C8 /
+     * bug map row 4). Stays predicate-conservative: a type-9 with inherited
+     * speed or a transform chain stays on the legacy path.
+     */
+    _isMigratedEffect(bulletInfo, options) {
+        return bulletInfo.type === 9
+            && options.inheritSpeed == null
+            && (!options.transformChain || options.transformChain.length === 0);
+    }
+
+    /**
      * Build the DOM element for a physics-core bullet: the base `bullet`
      * class, the skin modle_ID class, and the bullet-type class so a migrated
      * bullet keeps its type styling. Size and position are set by the caller.
@@ -614,6 +635,12 @@ export class BulletEngine {
             acceleration: bulletInfo.acceleration,
             barrageAngle: barrageAngle,
             target: enemyTarget,
+            // Phase 3a additions — subclasses pick what they need; base ignores.
+            extraParam: bulletInfo.extra_param,
+            hitTypeTime: bulletInfo.hit_type?.time,
+            explodePos: options.explodePos ?? options.airdropData?.explodePos,
+            bulletTemplates: this.allBullets,
+            parentBullet: options.parentBullet,
         });
         if (!unit) return null;
 
