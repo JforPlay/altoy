@@ -41,6 +41,9 @@ export class World {
     }
     const unit = createBulletUnit(opts.type, opts);
     unit.FixRange();
+    if (typeof unit.SetSpawnPosition === 'function') {
+      unit.SetSpawnPosition();
+    }
     unit.InitSpeed();
     this.bullets.push(unit);
     return unit;

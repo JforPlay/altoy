@@ -158,6 +158,41 @@ export class ShrapnelBulletUnit extends BulletUnit {
     });
   }
 
+  /**
+   * Mirrors BattleShrapnelBulletUnit:SetSpawnPosition (battleshrapnelbulletunit.lua:122-149).
+   * Only the `flare` branch is implemented in Phase 3a (directHit is
+   * 0-reached after VISION exclusion). When `flare` is set, solve
+   * convertedVelocity and verticalSpeed so the bullet lands at explodePos
+   * exactly when the first shrapnel child's hit_type.time elapses.
+   */
+  SetSpawnPosition() {
+    if (this._extraParam.flare && this._explodePos) {
+      // SetSpawnPosition runs at construction — this.altitude is still the spawn altitude.
+      const shrapnelArr = this._extraParam.shrapnel;
+      const firstKey = shrapnelArr
+        ? Object.keys(shrapnelArr).find((k) => k !== 'FXID')
+        : null;
+      const firstEntry = firstKey ? shrapnelArr[firstKey] : null;
+      const childTpl = firstEntry
+        ? this._bulletTemplates[firstEntry.bullet_ID]
+        : null;
+      if (childTpl) {
+        const CALC_FPS = 30;
+        const childGrav = Math.abs(childTpl.extra_param?.gravity ?? -0.0005);
+        const childTime = childTpl.hit_type?.time ?? 0;
+        const dx = this._explodePos.x - this.spawnPos.x;
+        const dy = this._explodePos.y - this.spawnPos.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const h = 0.5 * childGrav * (childTime * CALC_FPS) ** 2 - this.altitude;
+        this._convertedVelocity = Math.sqrt(
+          -0.5 * this.gravity * dist * dist / h
+        );
+        const t = dist / this._convertedVelocity;
+        this.verticalSpeed = h / t - 0.5 * this.gravity * t;
+      }
+    }
+  }
+
   GetCurrentState() {
     return this._currentState;
   }

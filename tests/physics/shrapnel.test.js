@@ -386,3 +386,29 @@ test('fragile=1: SPLIT trigger emits no children but completes the lattice to EX
   // child specs.
   assert.equal(b.GetCurrentState(), STATE.EXPIRE);
 });
+
+test('flare: solves convertedVelocity and verticalSpeed to land on explodePos at child hit_type.time', () => {
+  // Pinpoint the formula:
+  //   childGrav = |-0.0005| = 0.0005, childHitTime = 60/30 s = 2 s, CALC_FPS = 30
+  //   spawnAlt = 0, dist = sqrt((10-0)^2 + 0^2) = 10
+  //   h = 0.5 * 0.0005 * (2*30)^2 - 0 = 0.5 * 0.0005 * 3600 = 0.9
+  //   convertedVelocity = sqrt(-0.5 * -0.0001 * 100 / 0.9) = sqrt(0.0055..) ~ 0.0745
+  //   t = 10 / 0.0745 = 134.16
+  //   verticalSpeed = 0.9 / 134.16 - 0.5 * -0.0001 * 134.16 = 0.00671 + 0.00671 = 0.01342
+  const childTpl = { extra_param: { gravity: -0.0005 }, hit_type: { time: 2 } };
+  const b = new ShrapnelBulletUnit({
+    velocity: 50, yAngle: 0, range: 100, rangeOffset: 0, gravity: -0.0001,
+    spawnX: 0, spawnY: 0,
+    extraParam: { flare: true, shrapnel: [{ bullet_ID: 'C', barrage_ID: 1 }] },
+    explodePos: { x: 10, y: 0 },
+    bulletTemplates: { C: childTpl },
+    barrages: { 1: { barrage_ID: 1, primal_repeat: 0, angle: 0, delta_angle: 0 } },
+  });
+  b.FixRange();
+  b.SetSpawnPosition();
+  // Tolerate small floating-point drift.
+  assert.ok(Math.abs(b._convertedVelocity - 0.07453559924999298) < 1e-6,
+    `expected ~0.0745, got ${b._convertedVelocity}`);
+  assert.ok(Math.abs(b.verticalSpeed - 0.01341640786499874) < 1e-6,
+    `expected ~0.01342, got ${b.verticalSpeed}`);
+});
