@@ -16,7 +16,7 @@
  * Must stay in sync with public/sw.js CACHE_VERSION. Bumping just one
  * leaves the other cache stale on first visit. See CLAUDE.md "Cache & Data Versioning".
  */
-const DATA_VERSION = '1.10.2';
+const DATA_VERSION = '1.11.0';
 
 /**
  * localStorage keys that participate in Google Drive sync.
