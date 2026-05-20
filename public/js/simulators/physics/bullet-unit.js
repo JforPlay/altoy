@@ -111,7 +111,7 @@ export class BulletUnit {
    * Pick the single per-tick movement function. Mirrors InitSpeed
    * (battlebulletunit.lua:738-768). The game's priority chain is
    * HasAcceleration -> doAccelerate, IsTracker -> doTrack, IsCircle -> doCircle,
-   * else doNothing. The tracker / circle branches are wired in following tasks.
+   * else doNothing. The circle branch is wired in a following task.
    */
   InitSpeed() {
     this.calcSpeed();
@@ -124,6 +124,13 @@ export class BulletUnit {
       this._speedNormal = { x: Math.cos(rad), y: Math.sin(rad) };
       this._speedCross = { x: -this._speedNormal.y, y: this._speedNormal.x };
       this.updateSpeed = this.doAccelerate;
+    } else if (this.IsTracker()) {
+      // doTrack: seed the homing parameters (battlebulletunit.lua:751-758).
+      const tracker = this._accTable.tracker;
+      this._trackRange = tracker.range ?? 50;
+      this._trackerAngularRad = (tracker.angular ?? 3) * DEG_TO_RAD;
+      this._trackingTarget = null;
+      this.updateSpeed = this.doTrack;
     } else {
       this.updateSpeed = this.doNothing;
     }

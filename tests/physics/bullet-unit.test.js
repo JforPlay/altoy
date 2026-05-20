@@ -325,3 +325,30 @@ test('doTrack: with no target at all, it is a no-op', () => {
   b.doTrack();
   assert.deepEqual(b.speed, { x: 2, y: 0 });
 });
+
+test('InitSpeed: a tracker bullet resolves to doTrack', () => {
+  const b = new BulletUnit({
+    velocity: 10, yAngle: 0, acceleration: { tracker: { angular: 3, range: 50 } },
+  });
+  b.InitSpeed();
+  assert.equal(b.updateSpeed, b.doTrack);
+  assert.equal(b._trackRange, 50);
+  assert.ok(Math.abs(b._trackerAngularRad - 3 * Math.PI / 180) < 1e-12);
+  assert.equal(b._trackingTarget, null);
+});
+
+test('InitSpeed: accel records outrank a tracker key (game priority)', () => {
+  const b = new BulletUnit({
+    velocity: 10, yAngle: 0,
+    acceleration: { 1: { t: 0, u: 1, v: 0 }, tracker: { angular: 3, range: 50 } },
+  });
+  b.InitSpeed();
+  assert.equal(b.updateSpeed, b.doAccelerate, 'HasAcceleration wins over IsTracker');
+});
+
+test('InitSpeed: a tracker with no fields falls back to defaults', () => {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0, acceleration: { tracker: {} } });
+  b.InitSpeed();
+  assert.equal(b._trackRange, 50);
+  assert.ok(Math.abs(b._trackerAngularRad - 3 * Math.PI / 180) < 1e-12);
+});
