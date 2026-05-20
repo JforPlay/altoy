@@ -260,3 +260,68 @@ test('Update: an accelerating bullet curves off the firing axis', () => {
   b.Update();
   assert.ok(b.position.y > 0, 'the bullet has curved off the x-axis');
 });
+
+// doTrack test harness: seed the fields InitSpeed's tracker branch will set
+// (Task 7), then drive doTrack directly.
+function trackerBullet({ speed, target, trackRange = 100, angularDeg = 30 }) {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0 });
+  b.speed = { ...speed };
+  b.position = { x: 0, y: 0 };
+  b._target = target;
+  b._trackRange = trackRange;
+  b._trackerAngularRad = angularDeg * (Math.PI / 180);
+  b._trackingTarget = null;
+  return b;
+}
+
+test('doTrack: turns toward a target more than one angular step away', () => {
+  // Heading +x, target at 45deg, angular step 30deg -> turn 30deg toward +y.
+  const b = trackerBullet({ speed: { x: 2, y: 0 }, target: { x: 10, y: 10 }, angularDeg: 30 });
+  b.doTrack();
+  // rotate((2,0), cos30, -sin30): cross is negative so s = -sin30.
+  assert.ok(Math.abs(b.speed.x - 2 * Math.cos(Math.PI / 6)) < 1e-9);
+  assert.ok(Math.abs(b.speed.y - 2 * Math.sin(Math.PI / 6)) < 1e-9);
+  assert.ok(Math.abs(Math.hypot(b.speed.x, b.speed.y) - 2) < 1e-9, 'speed preserved');
+});
+
+test('doTrack: snaps onto the target when within one angular step', () => {
+  // Heading +x, target at 45deg, angular step 90deg -> snap straight to 45deg.
+  const b = trackerBullet({ speed: { x: 2, y: 0 }, target: { x: 10, y: 10 }, angularDeg: 90 });
+  b.doTrack();
+  assert.ok(Math.abs(b.speed.x - Math.SQRT2) < 1e-9, 'heading lands on the target');
+  assert.ok(Math.abs(b.speed.y - Math.SQRT2) < 1e-9);
+});
+
+test('doTrack: no turn inside the 10deg deadzone', () => {
+  // Target ~2.86deg off the heading -> within cos(10deg) -> no turn.
+  const b = trackerBullet({ speed: { x: 2, y: 0 }, target: { x: 100, y: 5 } });
+  b.doTrack();
+  assert.deepEqual(b.speed, { x: 2, y: 0 });
+});
+
+test('doTrack: a target beyond trackRange is never acquired', () => {
+  const b = trackerBullet({
+    speed: { x: 2, y: 0 }, target: { x: 20, y: 20 }, trackRange: 5,
+  });
+  b.doTrack();
+  assert.deepEqual(b.speed, { x: 2, y: 0 }, 'unacquired -> no turn');
+});
+
+test('doTrack: a target that leaves trackRange is dropped permanently', () => {
+  const b = trackerBullet({ speed: { x: 2, y: 0 }, target: { x: 5, y: 5 }, trackRange: 10 });
+  b.doTrack();                                  // acquired (dist ~7.07 < 10), turns
+  const turned = { ...b.speed };
+  b._target = { x: 80, y: 80 };                 // dist ~113 > 10 -> dropped
+  b.doTrack();
+  b._target = { x: 3, y: 3 };                   // back in range...
+  const before = { ...b.speed };
+  b.doTrack();
+  assert.deepEqual(b.speed, before, 'a dropped target is never re-acquired');
+  assert.notDeepEqual(turned, { x: 2, y: 0 });  // sanity: the first call did turn
+});
+
+test('doTrack: with no target at all, it is a no-op', () => {
+  const b = trackerBullet({ speed: { x: 2, y: 0 }, target: null });
+  b.doTrack();
+  assert.deepEqual(b.speed, { x: 2, y: 0 });
+});

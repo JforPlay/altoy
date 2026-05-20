@@ -8,11 +8,16 @@
  * (the game's x/z); `altitude` is the vertical axis (the game's _position.y).
  */
 
-import { BULLET_SPEED_CONVERT, BOMB_DETONATE_HEIGHT } from './constants.js';
-import { sqrDistance, magnitude, scale } from './vec.js';
+import { BULLET_SPEED_CONVERT, BOMB_DETONATE_HEIGHT, TRACKER_ANGLE } from './constants.js';
+import { sqrDistance, magnitude, scale, sub, normalize, dot, rotate } from './vec.js';
 import { parseAccTable } from './acc-table.js';
 
 const DEG_TO_RAD = Math.PI / 180;
+
+// _trackingTarget state machine: null (unacquired) -> the live target (acquired)
+// -> DROPPED (left _trackRange after acquisition; never re-acquired). Mirrors
+// the game's setTrackingTarget(-1) sentinel (battlebulletunit.lua:48,52).
+const DROPPED = Symbol('dropped');
 
 export class BulletUnit {
   constructor(opts = {}) {
@@ -196,6 +201,64 @@ export class BulletUnit {
     }
     // _speedCross = _speedNormal rotated 90deg (game: Cross with Vector3.up).
     this._speedCross = { x: -this._speedNormal.y, y: this._speedNormal.x };
+  }
+
+  /**
+   * Resolve the live tracking target, running the game's acquire / drop
+   * lifecycle (battlebulletunit.lua:41-55). _trackingTarget is null until the
+   * target first enters _trackRange; once bound, leaving _trackRange drops it
+   * permanently (the DROPPED sentinel — the game's setTrackingTarget(-1)).
+   * Returns the target to home on, or null. Caller guarantees this._target.
+   *
+   * Boundary: acquire uses `<= _trackRange`, drop uses `_trackRange <` —
+   * faithful to the Lua. A target sitting exactly on the range edge acquires
+   * and then never drops.
+   */
+  _resolveTrackingTarget() {
+    const distance = magnitude(sub(this._target, this.position));
+    if (this._trackingTarget === null && distance <= this._trackRange) {
+      this._trackingTarget = this._target;
+    }
+    if (this._trackingTarget === null || this._trackingTarget === DROPPED) {
+      return null;
+    }
+    if (this._trackRange < distance) {
+      this._trackingTarget = DROPPED;
+      return null;
+    }
+    return this._trackingTarget;
+  }
+
+  /**
+   * Movement function for a homing bullet. Mirrors doTrack
+   * (battlebulletunit.lua:40-83) — the spec §B5 fix. Holds heading inside the
+   * cos(10deg) deadzone; otherwise turns toward the target, capped at one
+   * angular step, and SNAPS exactly onto the target when within one step
+   * (the game's dot/cross rotation branch — no oscillation or overshoot).
+   */
+  doTrack() {
+    if (!this._target) return;
+    const target = this._resolveTrackingTarget();
+    if (!target) return;
+
+    const toTarget = normalize(sub(target, this.position));
+    const speedDir = normalize(this.speed);
+    const dotValue = dot(speedDir, toTarget);
+    if (dotValue >= TRACKER_ANGLE) return;        // inside the 10deg deadzone
+
+    // Game cross with the z->y mapping: slot4.z*slot3.x - slot4.x*slot3.z.
+    const crossValue = speedDir.y * toTarget.x - speedDir.x * toTarget.y;
+
+    let cos = dotValue;
+    let sin = crossValue;
+    if (dotValue < Math.cos(this._trackerAngularRad)) {
+      // Target more than one step away: turn by the fixed step toward it.
+      cos = Math.cos(this._trackerAngularRad);
+      sin = Math.sin(this._trackerAngularRad) * (crossValue >= 0 ? 1 : -1);
+    }
+    // Within one step (dotValue >= cos(step)): cos/sin stay dot/cross, which
+    // rotates the heading by the exact remaining angle — the snap.
+    this.speed = rotate(this.speed, cos, sin);
   }
 
   /**
