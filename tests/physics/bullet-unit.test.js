@@ -409,3 +409,33 @@ test('doCircle: with no origin, it is a no-op', () => {
   b.doCircle();
   assert.deepEqual(b.speed, { x: 7, y: 7 });
 });
+
+test('InitSpeed: a circle bullet resolves to doCircle', () => {
+  const b = new BulletUnit({
+    velocity: 10, yAngle: 0,
+    acceleration: { circle: { centripetalSpeed: -1, antiClockWise: true,
+                              center: { x: 5, y: 0, z: 7 } } },
+  });
+  b.InitSpeed();
+  assert.equal(b.updateSpeed, b.doCircle);
+  assert.deepEqual(b._originPos, { x: 5, y: 7 }, 'center {x,z} -> planar {x,y}');
+  assert.equal(b._circleAntiClockwise, true);
+  assert.ok(Math.abs(b._centripetalSpeed - (-1 / 30)) < 1e-12, 'scaled by 1/30');
+  assert.equal(b._convertedVelocity, 2, 'velocity 10 * 0.2');
+  assert.equal(b._inverseFlag, 1);
+});
+
+test('InitSpeed: a circle with no center falls back to the bullet target', () => {
+  const b = new BulletUnit({
+    velocity: 10, yAngle: 0, target: { x: 9, y: 9 },
+    acceleration: { circle: { centripetalSpeed: 0 } },
+  });
+  b.InitSpeed();
+  assert.deepEqual(b._originPos, { x: 9, y: 9 });
+});
+
+test('InitSpeed: a plain bullet still resolves to doNothing (circle branch added)', () => {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0 });
+  b.InitSpeed();
+  assert.equal(b.updateSpeed, b.doNothing);
+});

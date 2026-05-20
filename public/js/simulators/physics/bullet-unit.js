@@ -8,7 +8,9 @@
  * (the game's x/z); `altitude` is the vertical axis (the game's _position.y).
  */
 
-import { BULLET_SPEED_CONVERT, BOMB_DETONATE_HEIGHT, TRACKER_ANGLE } from './constants.js';
+import {
+  BULLET_SPEED_CONVERT, BOMB_DETONATE_HEIGHT, TRACKER_ANGLE, TICK_SECONDS,
+} from './constants.js';
 import { sqrDistance, magnitude, scale, sub, normalize, dot, rotate } from './vec.js';
 import { parseAccTable } from './acc-table.js';
 
@@ -111,7 +113,7 @@ export class BulletUnit {
    * Pick the single per-tick movement function. Mirrors InitSpeed
    * (battlebulletunit.lua:738-768). The game's priority chain is
    * HasAcceleration -> doAccelerate, IsTracker -> doTrack, IsCircle -> doCircle,
-   * else doNothing. The circle branch is wired in a following task.
+   * else doNothing.
    */
   InitSpeed() {
     this.calcSpeed();
@@ -131,6 +133,24 @@ export class BulletUnit {
       this._trackerAngularRad = (tracker.angular ?? 3) * DEG_TO_RAD;
       this._trackingTarget = null;
       this.updateSpeed = this.doTrack;
+    } else if (this.IsCircle()) {
+      // doCircle: seed the orbit state (battlebulletunit.lua:759-764). A data
+      // `center` is {x,y,z}; its planar projection is {x: center.x, y:
+      // center.z} (game z is the core's y). _centripetalSpeed carries the
+      // game's per-tick (1/30 s) scale here so doCircle stays scale-free.
+      const circle = this._accTable.circle;
+      const center = circle.center;
+      this._originPos = center
+        ? { x: center.x, y: center.z ?? 0 }
+        : this._target;
+      this._circleAntiClockwise = !!circle.antiClockWise;
+      this._centripetalSpeed = (circle.centripetalSpeed ?? 0) * TICK_SECONDS;
+      // The Lua sets _convertedVelocity in ResetVelocity / SetTemplateData
+      // before InitSpeed; the core collapses those into construction, and
+      // `velocity` is immutable post-construction, so this seeding is safe.
+      this._convertedVelocity = this.velocity * BULLET_SPEED_CONVERT;
+      this._inverseFlag = 1;
+      this.updateSpeed = this.doCircle;
     } else {
       this.updateSpeed = this.doNothing;
     }
