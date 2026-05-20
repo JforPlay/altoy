@@ -12,6 +12,14 @@ import { createBulletUnit } from './bullet-registry.js';
 export class World {
   constructor() {
     this.bullets = [];
+    /**
+     * Optional emit callback. A unit that produces children mid-tick (e.g.
+     * ShrapnelBulletUnit on SPLIT) pushes child specs onto its own
+     * _pendingEmits queue and returns them from drainEmits(); step() routes
+     * each through onEmit so the view driver can run them through its
+     * existing createBullet dispatch. Null = no children supported.
+     */
+    this.onEmit = null;
   }
 
   /**
@@ -62,17 +70,31 @@ export class World {
   }
 
   /**
-   * Advance the whole simulation by one fixed tick, then cull expired units.
+   * Advance the whole simulation by one fixed tick.
    *
-   * Invariant: no unit is spawned mid-tick — every bullet present at the start
-   * of step() is stepped exactly once. Phase 3 (shrapnel split, transform)
-   * introduces mid-tick spawning; when it does, decide explicitly whether a
-   * freshly-spawned unit steps in the same tick or the next.
+   * Three phases: (1) Update every bullet alive at tick start, (2) drain
+   * each one's emit queue through onEmit, (3) cull expired units.
+   *
+   * Length-cached iteration is the mid-tick spawn invariant: a child
+   * spawned via onEmit appends to `bullets` past index `n` and Updates on
+   * the NEXT step(), not this one. This matches the Lua's loop semantics —
+   * `for ... in pairs(BulletList)` does not see newly-inserted entries on
+   * the current iteration — and it makes split timing deterministic.
    */
   step() {
-    for (const bullet of this.bullets) {
-      bullet.timeElapsed += TICK_SECONDS;
-      bullet.Update();
+    const n = this.bullets.length;
+    for (let i = 0; i < n; i++) {
+      this.bullets[i].timeElapsed += TICK_SECONDS;
+      this.bullets[i].Update();
+    }
+    if (this.onEmit) {
+      for (let i = 0; i < n; i++) {
+        const b = this.bullets[i];
+        if (b.drainEmits) {
+          const emits = b.drainEmits();
+          for (const spec of emits) this.onEmit(spec);
+        }
+      }
     }
     this.bullets = this.bullets.filter((b) => !b.reachDestFlag);
   }

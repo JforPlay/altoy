@@ -190,3 +190,78 @@ test('a plain cannon is unaffected by the curving machinery', () => {
   assert.equal(bullet.position.y, 0, 'a plain cannon flies dead straight');
   assert.equal(bullet.position.x, 20, 'velocity 50 * 0.2 = 10/tick, 2 ticks');
 });
+
+test('world.step drains drainEmits() into onEmit, after all Updates', () => {
+  const world = new World();
+  const events = [];
+  world.onEmit = (spec) => events.push(spec);
+
+  // Hand-rolled fake unit — emits two specs every tick.
+  const fake = {
+    timeElapsed: 0,
+    reachDestFlag: false,
+    Update() {},
+    drainEmits() {
+      const out = [{ id: 'a' }, { id: 'b' }];
+      return out;
+    },
+  };
+  world.bullets.push(fake);
+  world.step();
+  assert.deepEqual(events, [{ id: 'a' }, { id: 'b' }]);
+});
+
+test('world.step does NOT step a child spawned mid-tick (length-cached loop)', () => {
+  const world = new World();
+  let childStepped = false;
+  const child = {
+    timeElapsed: 0,
+    reachDestFlag: false,
+    Update() { childStepped = true; },
+  };
+  world.onEmit = () => { world.bullets.push(child); };
+
+  const parent = {
+    timeElapsed: 0,
+    reachDestFlag: false,
+    Update() {},
+    drainEmits() { return [{}]; },           // one emit -> spawns child
+  };
+  world.bullets.push(parent);
+  world.step();
+  assert.equal(childStepped, false, 'mid-tick child Update deferred to next step');
+  assert.ok(world.bullets.includes(child), 'child is queued for the next tick');
+});
+
+test('world.step still culls reachDestFlag units when onEmit is set', () => {
+  const world = new World();
+  world.onEmit = () => {};                   // no-op, just exercise the path
+  const dead = {
+    timeElapsed: 0,
+    reachDestFlag: false,
+    Update() { this.reachDestFlag = true; },
+  };
+  world.bullets.push(dead);
+  world.step();
+  assert.equal(world.bullets.length, 0);
+});
+
+test('world.step handles a reentrant onEmit that calls spawnBullet', () => {
+  const world = new World();
+  world.onEmit = (spec) => {
+    world.spawnBullet({
+      type: 1, velocity: 50, yAngle: 0, range: 10, rangeOffset: 0,
+      spawnX: spec.x, spawnY: spec.y,
+    });
+  };
+  const parent = {
+    timeElapsed: 0,
+    reachDestFlag: false,
+    Update() {},
+    drainEmits() { return [{ x: 0, y: 0 }]; },
+  };
+  world.bullets.push(parent);
+  world.step();
+  // parent stayed alive (no reachDestFlag); spawned child also alive.
+  assert.equal(world.bullets.length, 2);
+});
