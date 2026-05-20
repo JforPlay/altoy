@@ -139,3 +139,54 @@ test('a velocity-0 bomb free-falls under gravity and detonates', () => {
   assert.equal(world.bullets.length, 0, 'velocity-0 bomb detonated');
   assert.ok(steps > 1, 'it took multiple ticks to fall (not instant)');
 });
+
+test('a serpentine accelerating bullet weaves off its firing axis and back', () => {
+  // Type-1 cannon fired along +x with an oscillating cross-acceleration — the
+  // shape of Alsace's bullets 160907/160908. v=+0.27 for the first 0.5 s curves
+  // it +y; v=-0.27 then curves it back. (Reachability audit: doAccelerate is
+  // exercised in-page by 514 reached bullets.)
+  const world = new World();
+  world.spawnBullet({
+    type: 1, velocity: 8, yAngle: 0, range: 500, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+    acceleration: [{ t: 0, u: 0, v: 0.27 }, { t: 0.5, u: 0, v: -0.27 }],
+  });
+  const bullet = world.bullets[0];
+
+  for (let i = 0; i < 14; i++) world.step();      // v=+0.27 phase
+  assert.ok(bullet.position.y > 0, 'weaved off the +x axis');
+  assert.ok(bullet.speed.y > 0, 'still curving up at the end of the + phase');
+
+  for (let i = 0; i < 20; i++) world.step();      // into the v=-0.27 phase
+  assert.ok(bullet.speed.y < 0, 'the - phase has fully reversed the weave');
+});
+
+test('a homing tracker bullet curves toward its target', () => {
+  // Type-1 cannon fired along +x at a target up and to the right.
+  const world = new World();
+  world.spawnBullet({
+    type: 1, velocity: 10, yAngle: 0, range: 300, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+    acceleration: { tracker: { angular: 90, range: 200 } },
+    target: { x: 40, y: 40 },
+  });
+  const bullet = world.bullets[0];
+
+  for (let i = 0; i < 6; i++) world.step();
+  assert.ok(bullet.position.y > 0, 'curved off the +x axis toward the target');
+  assert.ok(bullet.speed.y > 0, 'heading now has an upward component');
+});
+
+test('a plain cannon is unaffected by the curving machinery', () => {
+  // Regression: no acceleration data -> doNothing -> dead-straight, as Phase 2.
+  const world = new World();
+  world.spawnBullet({
+    type: 1, velocity: 50, yAngle: 0, range: 100, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+  });
+  const bullet = world.bullets[0];
+  world.step();
+  world.step();
+  assert.equal(bullet.position.y, 0, 'a plain cannon flies dead straight');
+  assert.equal(bullet.position.x, 20, 'velocity 50 * 0.2 = 10/tick, 2 ticks');
+});
