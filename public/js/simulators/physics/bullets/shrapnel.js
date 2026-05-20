@@ -70,6 +70,42 @@ export class ShrapnelBulletUnit extends BulletUnit {
   }
 
   /**
+   * Mirrors Update (battleshrapnelbulletunit.lua:60-82). Branches by state:
+   *
+   *  - NORMAL: capture pre-Update verticalSpeed, run super.Update (which
+   *    integrates movement and tests range expiry), then check the Lua's
+   *    apex condition: vs != 0 AND prevVs * vs < 0 -> ChangeShrapnelState(SPLIT).
+   *    The `vs != 0` guard is implicit in `prevVs * vs < 0` (a product is
+   *    negative only when both factors are non-zero).
+   *
+   *  - SPIN: transition to SPLIT if extra_param.lastTime is falsy (immediate)
+   *    or if (timeElapsed - _spinStartTime) >= lastTime (Lua line 79).
+   *
+   *  - SPLIT / FINAL_SPLIT / EXPIRE: emission scheduling lands in Task 10.
+   *    For now, no-op so the lattice exits live and tests run.
+   */
+  Update() {
+    if (this._currentState === STATE.NORMAL) {
+      const prevVerticalSpeed = this.verticalSpeed;
+      super.Update();
+      if (prevVerticalSpeed * this.verticalSpeed < 0) {
+        this.ChangeShrapnelState(STATE.SPLIT);
+      }
+      return;
+    }
+
+    if (this._currentState === STATE.SPIN) {
+      const lastTime = this._extraParam.lastTime;
+      if (!lastTime || (this.timeElapsed - this._spinStartTime) >= lastTime) {
+        this.ChangeShrapnelState(STATE.SPLIT);
+      }
+      return;
+    }
+
+    // SPLIT / FINAL_SPLIT / EXPIRE — see Task 10 for emission scheduling.
+  }
+
+  /**
    * Returns the queued child specs and clears the queue. Called once per
    * tick by World.step() after all Updates.
    */
