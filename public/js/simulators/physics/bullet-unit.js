@@ -11,7 +11,7 @@
 import {
   BULLET_SPEED_CONVERT, BOMB_DETONATE_HEIGHT, TRACKER_ANGLE, TICK_SECONDS,
 } from './constants.js';
-import { sqrDistance, magnitude, scale, sub, normalize, dot, rotate } from './vec.js';
+import { sqrDistance, magnitude, scale, sub, normalize, dot, rotate, add } from './vec.js';
 import { parseAccTable } from './acc-table.js';
 
 const DEG_TO_RAD = Math.PI / 180;
@@ -313,6 +313,32 @@ export class BulletUnit {
     const rotated = rotate(offset, Math.cos(angle), Math.sin(angle));
     const newOffset = scale(rotated, newRadius / radius);
     this.speed = sub(newOffset, offset);
+  }
+
+  /**
+   * Movement function for an orbiting bullet. Mirrors doOrbit
+   * (battlebulletunit.lua:85-91), spec §B6 — the two-mode blend: far from the
+   * weapon blend the heading toward it, near (planar distance <= 10) blend it
+   * perpendicular. Emits a unit vector.
+   *
+   * HARNESS-ONLY: InitSpeed never assigns doOrbit — the game's base InitSpeed
+   * has no orbit branch and 0 bullets carry acceleration.orbit (spec Open
+   * item 1). Built for fidelity / possible future subclass use; dead in-page.
+   */
+  doOrbit() {
+    if (!this._weaponPos) return;
+
+    // Reuse one sub for both the direction and the distance — magnitude
+    // ignores sign, so we don't need the reversed (position - weapon) call.
+    const offset = sub(this._weaponPos, this.position);
+    const distance = magnitude(offset);
+    const toWeapon = normalize(offset);
+    const headingDir = normalize(this.speed);
+
+    const blendBase = distance > 10
+      ? toWeapon                                      // far: toward the weapon
+      : { x: -toWeapon.y, y: toWeapon.x };            // near: perpendicular
+    this.speed = normalize(add(blendBase, headingDir));
   }
 
   /**

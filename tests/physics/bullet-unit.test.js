@@ -439,3 +439,48 @@ test('InitSpeed: a plain bullet still resolves to doNothing (circle branch added
   b.InitSpeed();
   assert.equal(b.updateSpeed, b.doNothing);
 });
+
+test('doOrbit: far from the weapon, blends the heading toward it', () => {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0 });
+  b.position = { x: 0, y: 0 };
+  b.speed = { x: 1, y: 0 };
+  b._weaponPos = { x: 100, y: 0 };          // distance 100 > 10 -> far mode
+  b.doOrbit();
+  // toward (1,0) + heading (1,0), normalised -> (1,0); unit vector.
+  assert.ok(Math.abs(b.speed.x - 1) < 1e-9);
+  assert.ok(Math.abs(b.speed.y - 0) < 1e-9);
+});
+
+test('doOrbit: near the weapon, blends the heading perpendicular', () => {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0 });
+  b.position = { x: 0, y: 0 };
+  b.speed = { x: 1, y: 0 };
+  b._weaponPos = { x: 5, y: 0 };            // distance 5 <= 10 -> near mode
+  b.doOrbit();
+  // perp of toward(1,0) is (0,1); + heading (1,0) -> normalise (1,1).
+  assert.ok(Math.abs(b.speed.x - Math.SQRT1_2) < 1e-9);
+  assert.ok(Math.abs(b.speed.y - Math.SQRT1_2) < 1e-9);
+});
+
+test('doOrbit: always emits a unit vector', () => {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0 });
+  b.position = { x: 0, y: 0 };
+  b.speed = { x: 4, y: 0 };
+  b._weaponPos = { x: 5, y: 0 };
+  b.doOrbit();
+  assert.ok(Math.abs(Math.hypot(b.speed.x, b.speed.y) - 1) < 1e-9);
+});
+
+test('doOrbit: with no weapon position, it is a no-op', () => {
+  const b = new BulletUnit({ velocity: 10, yAngle: 0 });
+  b.speed = { x: 3, y: 0 };
+  b.doOrbit();
+  assert.deepEqual(b.speed, { x: 3, y: 0 });
+});
+
+test('InitSpeed: an orbit bullet resolves to doNothing — doOrbit is never wired', () => {
+  // Spec Open item 1: base InitSpeed has no orbit branch; 0 bullets carry it.
+  const b = new BulletUnit({ velocity: 10, yAngle: 0, acceleration: { orbit: {} } });
+  b.InitSpeed();
+  assert.equal(b.updateSpeed, b.doNothing);
+});
