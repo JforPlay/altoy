@@ -107,6 +107,9 @@ export class BombBulletUnit extends BulletUnit {
    * modelled (0 airdrop bombs use it — Task 1).
    */
   InitSpeed() {
+    // TODO(Phase 3c Task 4): null-guard for non-airdrop path; defer to super
+    // for priority chain. This dereferences explodePos unconditionally and
+    // will throw for non-airdrop bombs whose firing pipeline has no target.
     this.yAngle = Math.atan2(
       this.explodePos.y - this.spawnPos.y,
       this.explodePos.x - this.spawnPos.x,
