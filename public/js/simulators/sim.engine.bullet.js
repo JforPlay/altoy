@@ -860,8 +860,12 @@ export class BulletEngine {
 
         const baseSize = (bulletInfo.cld_box?.[0] ?? 5) * this.scale * 3;
         const pulsePhase = (elapsed % hitInterval) / hitInterval;
+        // Alert phase: scale draws INWARD (1.0 -> 0.6) — visually a vortex
+        // gathering / pulling in. The legacy did 0.5 -> 1.0 (outward grow);
+        // we reverse direction to match the in-game whirlpool's "drawing
+        // things toward the center" feel.
         const pulseScale = inAlert
-            ? 0.5 + (elapsed / alertDuration) * 0.5
+            ? 1.0 - (elapsed / alertDuration) * 0.4
             : 0.8 + pulsePhase * 0.2;
         const size = baseSize * pulseScale;
 

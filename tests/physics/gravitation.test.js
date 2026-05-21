@@ -3,37 +3,57 @@ import assert from 'node:assert/strict';
 import { GravitationBulletUnit } from '../../public/js/simulators/physics/bullets/gravitation.js';
 import { TICK_SECONDS } from '../../public/js/simulators/physics/constants.js';
 
-test('GravitationBulletUnit: extends BulletUnit movement (calcSpeed + Update advances position)', () => {
-  // Mirrors the visible payoff: a migrated gravitation MOVES (the legacy
-  // FALLING/ACTIVE state machine froze it at spawn). At velocity 10, the
-  // bullet covers 10 * 0.2 = 2 units per tick along x.
+test('GravitationBulletUnit: stays at spawn (game-observed: target-locked, does not travel)', () => {
+  // The game's whirlpool stays at target-lock; the bullet does not travel.
+  // We skip super.Update — even with velocity 10, position must not advance.
   const b = new GravitationBulletUnit({
     velocity: 10, yAngle: 0, range: 50, rangeOffset: 0,
-    spawnX: 0, spawnY: 0,
+    spawnX: 7, spawnY: 3,
   });
   b.FixRange();
   b.InitSpeed();
-  b.timeElapsed += TICK_SECONDS;
-  b.Update();
-  assert.equal(b.position.x, 2);
-});
-
-test('GravitationBulletUnit: range expiry from base BulletUnit', () => {
-  // range 5 -> sqrRange 25; speed 2/tick -> sqrDist at tick 3 = 36 > 25.
-  const b = new GravitationBulletUnit({
-    velocity: 10, yAngle: 0, range: 5, rangeOffset: 0,
-    spawnX: 0, spawnY: 0,
-  });
-  b.FixRange();
-  b.InitSpeed();
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 10; i++) {
     b.timeElapsed += TICK_SECONDS;
     b.Update();
   }
-  assert.equal(b.reachDestFlag, false, 'still alive at sqrDist 16 < 25');
+  assert.deepEqual(b.position, { x: 7, y: 3 }, 'position never changes');
+});
+
+test('GravitationBulletUnit: range expiry never fires (bullet stationary)', () => {
+  // With movement skipped, sqrDistance(spawn, position) is always 0, so the
+  // base's range check would never set reachDestFlag — but base Update isn't
+  // called either. Either way: range-only bullet (no cap) lives forever.
+  const b = new GravitationBulletUnit({
+    velocity: 10, yAngle: 0, range: 1, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+    hitTypeTime: null,                         // no cap; range is the only candidate
+  });
+  b.FixRange();
+  b.InitSpeed();
+  for (let i = 0; i < 100; i++) {
+    b.timeElapsed += TICK_SECONDS;
+    b.Update();
+  }
+  assert.equal(b.reachDestFlag, false, 'range expiry cannot fire on a stationary bullet');
+});
+
+test('GravitationBulletUnit: spawns at opts.target when provided (target-lock)', () => {
+  // "Random target lock" — bullet appears at the enemy's position. The
+  // firing pipeline passes the target as opts.target (game coords).
+  const b = new GravitationBulletUnit({
+    velocity: 10, yAngle: 0, range: 50, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,                      // firing weapon position
+    target: { x: 42, y: 13 },                  // enemy lock
+  });
+  b.FixRange();
+  b.InitSpeed();
+  assert.deepEqual(b.position, { x: 42, y: 13 }, 'position jumped to target');
+  assert.deepEqual(b.spawnPos, { x: 42, y: 13 }, 'spawnPos also moved (range origin)');
+
+  // And then it stays put.
   b.timeElapsed += TICK_SECONDS;
-  b.Update();                                  // x=6, sqrDist 36 > 25 -> expire
-  assert.equal(b.reachDestFlag, true);
+  b.Update();
+  assert.deepEqual(b.position, { x: 42, y: 13 });
 });
 
 test('GravitationBulletUnit: lifetime cap expires the bullet at hit_type.time', () => {
