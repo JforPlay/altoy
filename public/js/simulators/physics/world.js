@@ -50,24 +50,37 @@ export class World {
   }
 
   /**
-   * Create an airdrop bomb, resolve its airdrop spawn geometry and detonation,
-   * and add it to the simulation. Unlike spawnBullet, a bomb's spawn position
-   * is derived from its explode point — the firing pipeline supplies a planar
-   * explodePos — so this validates explodePos (and velocity) rather than
-   * spawnX/spawnY. Returns null on non-finite input. Precondition: opts.type is
-   * a registered bomb type (2 or 16); the sim.engine.bullet.js dispatch
-   * guarantees it.
+   * Create a bomb and add it to the simulation. Two modes:
+   *
+   * Airdrop (default): position derived from explodePos by BombBulletUnit's
+   * SetSpawnPosition; validates explodePos and velocity.
+   *
+   * Non-airdrop (opts.airdrop === false): position from spawnX/spawnY like
+   * spawnBullet; validates spawnX/spawnY/yAngle/velocity. explodePos may be
+   * null (bomb falls along yAngle). Returns null on non-finite input.
+   *
+   * Precondition: opts.type is a registered bomb type (2 or 16); the
+   * sim.engine.bullet.js dispatch guarantees it.
    */
   spawnBomb(opts) {
-    if (!Number.isFinite(opts.explodePos?.x) ||
-        !Number.isFinite(opts.explodePos?.y) ||
-        !Number.isFinite(opts.velocity)) {
-      return null;
+    if (opts.airdrop === false) {
+      if (!Number.isFinite(opts.spawnX) ||
+          !Number.isFinite(opts.spawnY) ||
+          !Number.isFinite(opts.yAngle) ||
+          !Number.isFinite(opts.velocity)) {
+        return null;
+      }
+    } else {
+      if (!Number.isFinite(opts.explodePos?.x) ||
+          !Number.isFinite(opts.explodePos?.y) ||
+          !Number.isFinite(opts.velocity)) {
+        return null;
+      }
     }
     const unit = createBulletUnit(opts.type, opts);
     unit.FixRange();
-    unit.SetSpawnPosition();   // airdrop geometry + vertical-speed solve
-    unit.InitSpeed();          // aim toward the explode point
+    unit.SetSpawnPosition();   // mode-branched inside BombBulletUnit
+    unit.InitSpeed();          // priority chain via base
     this.bullets.push(unit);
     return unit;
   }
