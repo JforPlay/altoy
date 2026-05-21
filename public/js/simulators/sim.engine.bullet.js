@@ -199,6 +199,14 @@ export class BulletEngine {
             return this._createWorldBullet(options);
         }
 
+        // Route a type-11 GRAVITATION through the faithful physics core (spec §D3).
+        // Replaces the legacy GravitationBehavior's invented FALLING/ACTIVE
+        // position-lock. The bullet now MOVES under base velocity while the
+        // type-11 render branch below preserves the pulsing alert->active visual.
+        if (this._isMigratedGravitation(bulletInfo, options)) {
+            return this._createWorldBullet(options);
+        }
+
         // Create bullet DOM element
         const bulletElement = document.createElement('div');
         bulletElement.className = 'bullet';
@@ -631,6 +639,22 @@ export class BulletEngine {
     }
 
     /**
+     * True for a type-11 GRAVITATION bullet routed through the faithful
+     * physics core (spec §D3). Predicate-conservative — excludes:
+     *   - inheritSpeed and transform chains (legacy carries these)
+     *
+     * Acceleration is intentionally NOT excluded: all 3 reached gravitation
+     * bullets have empty acceleration anyway, and if data drift introduces a
+     * curving gravitation, base BulletUnit's InitSpeed priority chain handles
+     * it (HasAcceleration -> doAccelerate).
+     */
+    _isMigratedGravitation(bulletInfo, options) {
+        return bulletInfo.type === 11
+            && options.inheritSpeed == null
+            && (!options.transformChain || options.transformChain.length === 0);
+    }
+
+    /**
      * Build the DOM element for a physics-core bullet: the base `bullet`
      * class, the skin modle_ID class, and the bullet-type class so a migrated
      * bullet keeps its type styling. Size and position are set by the caller.
@@ -762,6 +786,15 @@ export class BulletEngine {
         if (!view) return;
 
         const screenPos = this.gameToScreen(unit.position.x, unit.position.y);
+
+        // Type-11 gravitation owns the element's geometry via the pulse helper —
+        // size, position and borderRadius are all set there. Skip the default
+        // rotate/scale render below.
+        if (view.bulletInfo.type === 11) {
+            this._renderGravitationPulse(unit, view, screenPos);
+            return;
+        }
+
         const w = view.baseWidth * screenPos.scale;
         const h = view.baseHeight * screenPos.scale;
         const altitudeOffset = unit.altitude * this.scale;
@@ -797,6 +830,48 @@ export class BulletEngine {
                 opacity: `${shadowScale * 0.5}`,
             });
         }
+    }
+
+    /**
+     * Render a gravitation (type-11) bullet's pulsing alert -> active ring,
+     * porting the legacy block at sim.engine.bullet.js _animate (the
+     * "Gravitation bullet rendering: pulsing area effect" comment block).
+     *
+     * The legacy keyed `elapsed` off `gravitationBehavior.activeStartTime` —
+     * the moment the legacy's invented FALLING phase ended. In the migrated
+     * model there is no FALLING phase, so `elapsed` is simply the unit's
+     * `timeElapsed` (spawn-relative). Alert phase covers
+     * `timeElapsed < alert_duration`; active phase comes after.
+     *
+     * cld_box[0] is the legacy's base size index. The `* 3` multiplier
+     * matches the legacy block exactly.
+     */
+    _renderGravitationPulse(unit, view, screenPos) {
+        const { bulletInfo } = view;
+        const alertDuration = bulletInfo.extra_param?.alert_duration ?? 0.1;
+        const hitInterval = bulletInfo.hit_type?.interval ?? 0.2;
+        const elapsed = unit.timeElapsed;
+        const inAlert = elapsed < alertDuration;
+
+        view.element.classList.add('gravitation-bullet');
+        if (!inAlert) {
+            view.element.classList.add('gravitation-active');
+        }
+
+        const baseSize = (bulletInfo.cld_box?.[0] ?? 5) * this.scale * 3;
+        const pulsePhase = (elapsed % hitInterval) / hitInterval;
+        const pulseScale = inAlert
+            ? 0.5 + (elapsed / alertDuration) * 0.5
+            : 0.8 + pulsePhase * 0.2;
+        const size = baseSize * pulseScale;
+
+        Object.assign(view.element.style, {
+            width: `${size}px`,
+            height: `${size}px`,
+            left: `${screenPos.x - size / 2}px`,
+            top: `${screenPos.y - size / 2}px`,
+            borderRadius: '50%',
+        });
     }
 
     /**
