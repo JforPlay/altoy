@@ -174,10 +174,12 @@ export class BulletEngine {
             return this._createWorldBullet(options);
         }
 
-        // Route a plain airdrop bomb to the faithful physics core — the fix for
-        // the overhead-drop bugs: the bomb now falls from above onto its
-        // explode point. An airdrop bomb with shrapnel / a transform chain
-        // stays on the legacy path.
+        // Route a qualifying airdrop bomb to the faithful physics core — the
+        // fix for the overhead-drop bugs: the bomb now falls from above onto
+        // its explode point. Curving airdrop bombs (bullet 170838) are
+        // included as of Phase 3c (BombBulletUnit.InitSpeed defers to the
+        // base priority chain). An airdrop bomb with shrapnel / a transform
+        // chain stays on the legacy path.
         if (this._isAirdropBomb(bulletInfo, options)) {
             return this._createWorldBomb({ ...options, mode: 'airdrop' });
         }
