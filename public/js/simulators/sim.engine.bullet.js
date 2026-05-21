@@ -179,7 +179,7 @@ export class BulletEngine {
         // explode point. An airdrop bomb with shrapnel / a transform chain
         // stays on the legacy path.
         if (this._isAirdropBomb(bulletInfo, options)) {
-            return this._createWorldBomb(options);
+            return this._createWorldBomb({ ...options, mode: 'airdrop' });
         }
 
         // Route a type-9 effect bullet to the faithful physics core — fixes
@@ -205,6 +205,13 @@ export class BulletEngine {
         // type-11 render branch below preserves the pulsing alert->active visual.
         if (this._isMigratedGravitation(bulletInfo, options)) {
             return this._createWorldBullet(options);
+        }
+
+        // Phase 3c: non-airdrop bombs (plain, timeToExplode, curving). Mutually
+        // exclusive with _isAirdropBomb on extra_param.airdrop, so insertion
+        // order vs the other predicates doesn't affect correctness.
+        if (this._isNonAirdropBomb(bulletInfo, options)) {
+            return this._createWorldBomb({ ...options, mode: 'non-airdrop' });
         }
 
         // Create bullet DOM element
@@ -749,30 +756,69 @@ export class BulletEngine {
     }
 
     /**
-     * Spawn an airdrop bomb into the physics core and build its DOM element.
-     * The core derives the bomb's spawn point, drop height and vertical speed
-     * from the explode point (airdropData.explodePos, in game coordinates), so
-     * — unlike _createWorldBullet — this path never reads the screen-space
-     * startX/startY. Returns the element, or null if the core rejected the
-     * spawn (non-finite input).
+     * Spawn a bomb into the physics core and build its DOM element. Two modes
+     * differ only in how the spawn point is derived; everything from spawnBomb
+     * onward (validation, FixRange, InitSpeed) is in BombBulletUnit /
+     * world.spawnBomb. The DOM tail is identical for both modes.
+     *
+     * - 'airdrop' (default for back-compat): airdropData.explodePos drives
+     *   SetSpawnPosition. Used by _isAirdropBomb hits.
+     * - 'non-airdrop': passes spawnX/spawnY/yAngle through like
+     *   _createWorldBullet, plus enemyTarget as the (nullable) explodePos.
+     *   Acceleration + barrageAngle + target flow through for curving bombs.
+     *   Used by _isNonAirdropBomb hits.
+     *
+     * Returns the element, or null if the core rejected the spawn (non-finite
+     * input).
      */
     _createWorldBomb(options) {
-        const { bulletInfo, airdropData } = options;
+        const { mode, bulletInfo } = options;
         const ep = bulletInfo.extra_param || {};
 
-        const unit = this.world.spawnBomb({
-            type: bulletInfo.type,
-            velocity: bulletInfo.velocity,
-            range: bulletInfo.range,
-            rangeOffset: bulletInfo.range_offset || 0,
-            gravity: ep.gravity,             // undefined -> BombBulletUnit uses GRAVITY
-            offsetY: ep.offsetY,             // undefined -> BombBulletUnit uses AIRCRAFT_HEIGHT
-            dropOffset: ep.dropOffset,
-            launchVrtSpeed: ep.launchVrtSpeed,
-            explodeTime: ep.timeToExplode,
-            explodePos: airdropData.explodePos,
-            direction: airdropData.direction,
-        });
+        let unit;
+        if (mode === 'non-airdrop') {
+            const { startX, startY, angle, barrageAngle, enemyTarget } = options;
+            const startGamePos = this.screenToGame(startX, startY);
+            unit = this.world.spawnBomb({
+                type: bulletInfo.type,
+                airdrop: false,
+                velocity: bulletInfo.velocity,
+                yAngle: angle,
+                range: bulletInfo.range,
+                rangeOffset: bulletInfo.range_offset || 0,
+                spawnX: startGamePos.x,
+                spawnY: startGamePos.y,
+                gravity: ep.gravity,
+                launchVrtSpeed: ep.launchVrtSpeed,
+                explodeTime: ep.timeToExplode,
+                explodePos: enemyTarget || null,
+                acceleration: bulletInfo.acceleration,
+                barrageAngle: barrageAngle,
+                target: enemyTarget,
+            });
+        } else {
+            // Airdrop path. The acceleration / barrageAngle / target fields
+            // are new to this path in Phase 3c — needed for curving airdrop
+            // bomb 170838. Plain airdrops have empty acceleration and ignore
+            // them via the base priority chain's fallback to doNothing.
+            const { airdropData } = options;
+            unit = this.world.spawnBomb({
+                type: bulletInfo.type,
+                velocity: bulletInfo.velocity,
+                range: bulletInfo.range,
+                rangeOffset: bulletInfo.range_offset || 0,
+                gravity: ep.gravity,             // undefined -> BombBulletUnit uses GRAVITY
+                offsetY: ep.offsetY,             // undefined -> BombBulletUnit uses AIRCRAFT_HEIGHT
+                dropOffset: ep.dropOffset,
+                launchVrtSpeed: ep.launchVrtSpeed,
+                explodeTime: ep.timeToExplode,
+                explodePos: airdropData.explodePos,
+                direction: airdropData.direction,
+                acceleration: bulletInfo.acceleration,
+                barrageAngle: options.barrageAngle,
+                target: options.enemyTarget,
+            });
+        }
         if (!unit) return null;
 
         const element = this._createBulletElement(bulletInfo);
