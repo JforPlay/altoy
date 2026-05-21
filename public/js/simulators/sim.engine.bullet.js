@@ -592,17 +592,19 @@ export class BulletEngine {
     }
 
     /**
-     * True only for a plain airdrop bomb the physics path provably renders
-     * correctly: a bomb type (2 / 16) flagged extra_param.airdrop, carrying the
-     * firing pipeline's airdropData (the explode point), with no acceleration
-     * data, shrapnel, missile, transform chain or inherited speed. An airdrop
-     * bomb with any of those stays on the legacy path.
+     * True only for an airdrop bomb the physics path provably renders
+     * correctly: a bomb type (2 / 16) flagged extra_param.airdrop, carrying
+     * the firing pipeline's airdropData (the explode point), with no shrapnel,
+     * missile, transform chain or inherited speed.
+     *
+     * Phase 3c relaxed the _hasEmptyAcceleration gate: curving airdrop bombs
+     * (1 reached, bullet 170838) now ride the base priority chain via
+     * BombBulletUnit.InitSpeed deferring to super.
      */
     _isAirdropBomb(bulletInfo, options) {
         return (bulletInfo.type === 2 || bulletInfo.type === 16)
             && bulletInfo.extra_param?.airdrop
             && options.airdropData != null
-            && this._hasEmptyAcceleration(bulletInfo)
             && !bulletInfo.extra_param?.shrapnel
             && !bulletInfo.extra_param?.missile
             && options.inheritSpeed == null
@@ -650,6 +652,24 @@ export class BulletEngine {
      */
     _isMigratedGravitation(bulletInfo, options) {
         return bulletInfo.type === 11
+            && options.inheritSpeed == null
+            && (!options.transformChain || options.transformChain.length === 0);
+    }
+
+    /**
+     * True for a non-airdrop bomb (type 2/16 without extra_param.airdrop)
+     * routed through the faithful physics core. Acceleration is welcome —
+     * BombBulletUnit.InitSpeed defers to the base priority chain, so
+     * doAccelerate fires for curving bombs (gravity is suppressed for those
+     * ticks, matching §B3 mutual exclusivity). Predicate-conservative:
+     *   - inheritSpeed and transform chains stay on legacy
+     *   - shrapnel and missile flags stay on legacy (orthogonal concerns)
+     */
+    _isNonAirdropBomb(bulletInfo, options) {
+        return (bulletInfo.type === 2 || bulletInfo.type === 16)
+            && !bulletInfo.extra_param?.airdrop
+            && !bulletInfo.extra_param?.shrapnel
+            && !bulletInfo.extra_param?.missile
             && options.inheritSpeed == null
             && (!options.transformChain || options.transformChain.length === 0);
     }
