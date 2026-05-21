@@ -12,7 +12,7 @@
 import { BehaviorFactory } from './sim.engine.bullet.factory.js';
 import { World } from './physics/world.js';
 import { drainAccumulator } from './physics/accumulator.js';
-import { TICK_SECONDS } from './physics/constants.js';
+import { TICK_SECONDS, AIRCRAFT_HEIGHT } from './physics/constants.js';
 
 /**
  * Bullet types routed through the faithful physics core (physics/). Cannon (1)
@@ -781,6 +781,12 @@ export class BulletEngine {
         if (mode === 'non-airdrop') {
             const { startX, startY, angle, barrageAngle, enemyTarget } = options;
             const startGamePos = this.screenToGame(startX, startY);
+            // spawnAltitude approximates the host weapon's deck altitude. Base
+            // BulletUnit defaults to 0, but the absolute-altitude detonation
+            // (`altitude <= BOMB_DETONATE_HEIGHT`) trips on tick 1 from altitude
+            // 0, so non-airdrop bombs need runway. ep.offsetY (set on some bomb
+            // templates as a host-altitude hint) wins; otherwise AIRCRAFT_HEIGHT
+            // is the same convention airdrop bombs use.
             unit = this.world.spawnBomb({
                 type: bulletInfo.type,
                 airdrop: false,
@@ -790,6 +796,7 @@ export class BulletEngine {
                 rangeOffset: bulletInfo.range_offset || 0,
                 spawnX: startGamePos.x,
                 spawnY: startGamePos.y,
+                spawnAltitude: ep.offsetY ?? AIRCRAFT_HEIGHT,
                 gravity: ep.gravity,
                 launchVrtSpeed: ep.launchVrtSpeed,
                 explodeTime: ep.timeToExplode,
