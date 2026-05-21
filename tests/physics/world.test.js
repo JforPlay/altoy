@@ -265,3 +265,41 @@ test('world.step handles a reentrant onEmit that calls spawnBullet', () => {
   // parent stayed alive (no reachDestFlag); spawned child also alive.
   assert.equal(world.bullets.length, 2);
 });
+
+test('spawnBomb non-airdrop validates spawnX/spawnY/yAngle/velocity', () => {
+  const world = new World();
+  // NaN spawnX -> reject.
+  const a = world.spawnBomb({
+    type: 2, airdrop: false, velocity: 5, yAngle: 0,
+    spawnX: NaN, spawnY: 0, range: 50, rangeOffset: 0,
+  });
+  assert.equal(a, null);
+  assert.equal(world.bullets.length, 0);
+
+  // NaN velocity -> reject.
+  const b = world.spawnBomb({
+    type: 2, airdrop: false, velocity: NaN, yAngle: 0,
+    spawnX: 0, spawnY: 0, range: 50, rangeOffset: 0,
+  });
+  assert.equal(b, null);
+});
+
+test('spawnBomb non-airdrop with null explodePos succeeds (falls along yAngle)', () => {
+  const world = new World();
+  const b = world.spawnBomb({
+    type: 2, airdrop: false, velocity: 5, yAngle: 0,
+    spawnX: 0, spawnY: 0, range: 50, rangeOffset: 0,
+    gravity: -0.05, explodePos: null,
+  });
+  assert.ok(b, 'spawn succeeds with null explodePos');
+  assert.equal(world.bullets.length, 1);
+  assert.equal(b.yAngle, 0, 'yAngle preserved from caller (no aim override)');
+});
+
+test('spawnBomb airdrop validation still rejects NaN explodePos (regression)', () => {
+  const world = new World();
+  const b = world.spawnBomb({
+    type: 2, velocity: 5, explodePos: { x: NaN, y: 0 },
+  });
+  assert.equal(b, null);
+});

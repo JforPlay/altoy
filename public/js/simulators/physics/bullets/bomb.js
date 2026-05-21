@@ -26,7 +26,11 @@ export class BombBulletUnit extends BulletUnit {
     super(opts);
     // The base defaults gravity to 0; a bomb defaults to BattleConfig.GRAVITY.
     if (opts.gravity == null) this.gravity = GRAVITY;
-    this.explodePos = opts.explodePos ?? { x: 0, y: 0 };  // planar aim point
+    // Mode flag: airdrop (default true for back-compat) repositions the bomb
+    // above explodePos and aims at it; non-airdrop spawns at spawnX/spawnY
+    // (already placed by super) and aims at explodePos only if one is supplied.
+    this.airdrop = opts.airdrop ?? true;
+    this.explodePos = opts.explodePos ?? null;            // both modes; null = aim-by-yAngle
     this.direction = opts.direction ?? 1;                 // host facing (+1 / -1)
     this.offsetY = opts.offsetY ?? AIRCRAFT_HEIGHT;       // drop height; game uses host y
     this.dropOffset = opts.dropOffset ?? false;           // spawn behind the aim point?
@@ -35,31 +39,54 @@ export class BombBulletUnit extends BulletUnit {
   }
 
   /**
-   * Resolve the airdrop spawn position. Mirrors getHeightAdjust
-   * (battlebullet.lua:226-239): an airdrop bomb spawns at `offsetY` altitude
-   * above the explode point and, with dropOffset set, behind it by
+   * Resolve the spawn geometry. Two modes:
+   *
+   * Airdrop (this.airdrop === true): mirrors getHeightAdjust
+   * (battlebullet.lua:226-239). The bomb spawns at `offsetY` altitude above
+   * the explode point and, with dropOffset set, behind it by
    *   sqrt(|2 * offsetY / gravity|) * convertedVelocity
-   * (the horizontal distance a projectile covers while falling offsetY),
-   * mirrored by host facing — then solves verticalSpeed so the descent passes
-   * through the explode point. Called once at spawn, before InitSpeed.
+   * mirrored by host facing. Then solves verticalSpeed for parabolic arrival.
+   *
+   * Non-airdrop: spawn position was already placed by base BulletUnit from
+   * spawnX/spawnY; altitude defaults to spawnAltitude (the firing weapon's
+   * altitude). If an explodePos was supplied, solves verticalSpeed for the
+   * parabola (battlebombbulletunit.lua:73-76). Without one, verticalSpeed
+   * stays 0 and the bomb falls under gravity only (doNothing).
    */
   SetSpawnPosition() {
-    const convertedVelocity = this.velocity * BULLET_SPEED_CONVERT;
-    const dropOffsetX = this.dropOffset
-      ? Math.sqrt(Math.abs(2 * this.offsetY / this.gravity))
-          * convertedVelocity * Math.sign(this.direction || 1)
-      : 0;
-    this.position = { x: this.explodePos.x - dropOffsetX, y: this.explodePos.y };
-    this.spawnPos = { x: this.position.x, y: this.position.y };
-    this.altitude = this.offsetY;
+    if (this.airdrop) {
+      const convertedVelocity = this.velocity * BULLET_SPEED_CONVERT;
+      const dropOffsetX = this.dropOffset
+        ? Math.sqrt(Math.abs(2 * this.offsetY / this.gravity))
+            * convertedVelocity * Math.sign(this.direction || 1)
+        : 0;
+      this.position = { x: this.explodePos.x - dropOffsetX, y: this.explodePos.y };
+      this.spawnPos = { x: this.position.x, y: this.position.y };
+      this.altitude = this.offsetY;
 
-    // SetSpawnPosition (battlebombbulletunit.lua:73-76): solve verticalSpeed
-    // so the parabola passes through the explode point at BOMB_DETONATE_HEIGHT.
-    // flightTime is in TICKS (convertedVelocity is per-tick displacement). The
-    // game's 3D distance keeps the explode point's vertical un-filtered, so the
-    // BOMB_DETONATE_HEIGHT term is load-bearing when the bomb is directly
-    // overhead (planar distance 0 — flightTime would otherwise be 0).
-    if (convertedVelocity !== 0) {
+      // SetSpawnPosition (battlebombbulletunit.lua:73-76): solve verticalSpeed
+      // so the parabola passes through the explode point at BOMB_DETONATE_HEIGHT.
+      // flightTime is in TICKS (convertedVelocity is per-tick displacement). The
+      // game's 3D distance keeps the explode point's vertical un-filtered, so the
+      // BOMB_DETONATE_HEIGHT term is load-bearing when the bomb is directly
+      // overhead (planar distance 0 — flightTime would otherwise be 0).
+      if (convertedVelocity !== 0) {
+        const flightTime = Math.sqrt(
+          sqrDistance(this.spawnPos, this.explodePos)
+          + BOMB_DETONATE_HEIGHT * BOMB_DETONATE_HEIGHT,
+        ) / convertedVelocity;
+        this.verticalSpeed = this.launchVrtSpeed != null
+          ? this.launchVrtSpeed
+          : (BOMB_DETONATE_HEIGHT - this.altitude) / flightTime
+            - 0.5 * this.gravity * flightTime;
+      }
+      return;
+    }
+
+    // Non-airdrop branch. position/spawnPos/altitude already set by super.
+    // Only the parabola solve runs, and only if an explodePos was supplied.
+    if (this.explodePos && this.velocity !== 0) {
+      const convertedVelocity = this.velocity * BULLET_SPEED_CONVERT;
       const flightTime = Math.sqrt(
         sqrDistance(this.spawnPos, this.explodePos)
         + BOMB_DETONATE_HEIGHT * BOMB_DETONATE_HEIGHT,
@@ -72,20 +99,25 @@ export class BombBulletUnit extends BulletUnit {
   }
 
   /**
-   * Aim the bomb from its spawn to the explode point and pick the movement
-   * function. Mirrors BattleBombBulletUnit.InitSpeed (battlebombbulletunit.lua:
-   * 15-25). getHeightAdjust spawns the bomb at the explode point's planar y, so
-   * the heading is 0 (or 180 for a left-facing host): the bomb drifts purely
-   * along x while verticalSpeed carries the descent. _barrageLowPriority is not
-   * modelled (0 airdrop bombs use it — Task 1).
+   * Aim the bomb (when an explodePos is supplied) and pick the movement
+   * function via the base priority chain. Mirrors BattleBombBulletUnit.InitSpeed
+   * (battlebombbulletunit.lua:15-25) plus the §B3 mutual-exclusivity rule:
+   * a bomb with HasAcceleration runs doAccelerate (gravity suppressed for those
+   * ticks because gravity integration lives inside doNothing).
+   *
+   * CRITICAL ORDERING: aim is set BEFORE super.InitSpeed() because the priority
+   * chain's doAccelerate branch seeds _speedNormal from yAngle.
+   *
+   * _barrageLowPriority is not modelled (0 reached bombs use it).
    */
   InitSpeed() {
-    this.yAngle = Math.atan2(
-      this.explodePos.y - this.spawnPos.y,
-      this.explodePos.x - this.spawnPos.x,
-    ) * DEG_PER_RAD;
-    this.calcSpeed();
-    this.updateSpeed = this.doNothing;
+    if (this.explodePos) {
+      this.yAngle = Math.atan2(
+        this.explodePos.y - this.spawnPos.y,
+        this.explodePos.x - this.spawnPos.x,
+      ) * DEG_PER_RAD;
+    }
+    super.InitSpeed();
   }
 
   /**
