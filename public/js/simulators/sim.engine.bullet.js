@@ -673,6 +673,10 @@ export class BulletEngine {
             barrageAngle: barrageAngle,
             target: enemyTarget,
             // Phase 3a additions — subclasses pick what they need; base ignores.
+            // gravity comes from extra_param for shrapnel parents (e.g. bullet
+            // 19920 carries `-0.05`). Undefined for cannon / torpedo / effect
+            // → BulletUnit defaults to 0, no change.
+            gravity: bulletInfo.extra_param?.gravity,
             extraParam: bulletInfo.extra_param,
             hitTypeTime: bulletInfo.hit_type?.time,
             explodePos: options.explodePos ?? options.airdropData?.explodePos,

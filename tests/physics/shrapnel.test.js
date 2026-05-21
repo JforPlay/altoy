@@ -74,8 +74,12 @@ test('Update: movement runs in NORMAL — position advances', () => {
   assert.equal(b.position.x, 10);
 });
 
-test('Update: range expiry fires in NORMAL (sets reachDestFlag)', () => {
-  // range 5 -> sqrRange 25; speed 10/tick -> expires in 1 tick.
+test('Update: range expiry in NORMAL transitions to SPLIT; empty groups -> EXPIRE next tick', () => {
+  // range 5 -> sqrRange 25; speed 10/tick -> range exceeded in 1 tick.
+  // Range expiry is the legacy ShrapnelBehavior's primary split trigger
+  // (apex is secondary, for gravity-bullets with vertical motion). With
+  // empty extraParam.shrapnel, SPLIT vacuously forwards to EXPIRE on the
+  // next tick.
   const b = new ShrapnelBulletUnit({
     velocity: 50, yAngle: 0, range: 5, rangeOffset: 0,
     spawnX: 0, spawnY: 0, extraParam: {},
@@ -84,6 +88,11 @@ test('Update: range expiry fires in NORMAL (sets reachDestFlag)', () => {
   b.InitSpeed();
   b.timeElapsed += TICK_SECONDS;
   b.Update();
+  assert.equal(b.GetCurrentState(), STATE.SPLIT, 'range expiry triggers SPLIT');
+  assert.equal(b.reachDestFlag, false, 'lattice not yet at EXPIRE');
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  assert.equal(b.GetCurrentState(), STATE.EXPIRE);
   assert.equal(b.reachDestFlag, true);
 });
 

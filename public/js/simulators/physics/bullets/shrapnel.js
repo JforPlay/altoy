@@ -13,6 +13,8 @@
  */
 
 import { BulletUnit } from '../bullet-unit.js';
+import { sqrDistance } from '../vec.js';
+import { BULLET_SPEED_CONVERT } from '../constants.js';
 
 export const STATE = Object.freeze({
   NORMAL: 'normal',
@@ -160,10 +162,18 @@ export class ShrapnelBulletUnit extends BulletUnit {
 
   /**
    * Mirrors BattleShrapnelBulletUnit:SetSpawnPosition (battleshrapnelbulletunit.lua:122-149).
-   * Only the `flare` branch is implemented in Phase 3a (directHit is
-   * 0-reached after VISION exclusion). When `flare` is set, solve
-   * convertedVelocity and verticalSpeed so the bullet lands at explodePos
-   * exactly when the first shrapnel child's hit_type.time elapses.
+   * Two branches:
+   *
+   *  - `flare` (§C8): solve convertedVelocity + verticalSpeed so the bullet
+   *    lands at explodePos exactly when the first shrapnel child's
+   *    hit_type.time elapses. (directHit is 0-reached after VISION exclusion.)
+   *
+   *  - Default (gravity bullet, no flare): apply the base game's gravity
+   *    initial vertical speed `-0.5 * gravity * 60 / convertedVelocity`
+   *    (battlebulletunit.lua:511-523, spec §B8). Without this the parent
+   *    launches with verticalSpeed=0, immediately falls under gravity,
+   *    never arcs — Kirishima skill 11270 was hitting this. The legacy
+   *    GravityBehavior applies the same formula (sim.engine.bullet.factory.js:371).
    */
   SetSpawnPosition() {
     if (this._extraParam.flare && this._explodePos) {
@@ -190,6 +200,15 @@ export class ShrapnelBulletUnit extends BulletUnit {
         const t = dist / this._convertedVelocity;
         this.verticalSpeed = h / t - 0.5 * this.gravity * t;
       }
+      return;
+    }
+
+    // Default gravity-init for a non-flare shrapnel parent. Gates on
+    // gravity != 0 and velocity > 0 to avoid div-by-zero for gravity-less
+    // shrapnel (rare; would otherwise misbehave silently).
+    if (this.gravity !== 0 && this.velocity > 0) {
+      const convertedVelocity = this.velocity * BULLET_SPEED_CONVERT;
+      this.verticalSpeed = -0.5 * this.gravity * 60 / convertedVelocity;
     }
   }
 
@@ -217,13 +236,15 @@ export class ShrapnelBulletUnit extends BulletUnit {
   }
 
   /**
-   * Mirrors Update (battleshrapnelbulletunit.lua:60-82). Branches by state:
+   * Mirrors Update (battleshrapnelbulletunit.lua:60-82). Branches by state.
    *
-   *  - NORMAL: capture pre-Update verticalSpeed, run super.Update (which
-   *    integrates movement and tests range expiry), drain trailing schedulers,
-   *    then check the Lua's apex condition: vs != 0 AND prevVs * vs < 0 ->
-   *    ChangeShrapnelState(SPLIT). The `vs != 0` guard is implicit in
-   *    `prevVs * vs < 0` (a product is negative only when both are non-zero).
+   *  - NORMAL: integrate position + altitude inline (NOT via super.Update —
+   *    the base's `altitude <= BOMB_DETONATE_HEIGHT` branch is wrong for
+   *    shrapnel, which spawn at altitude 0 and would die on tick 1 once
+   *    gravity is applied; shrapnel use range expiry instead). Range expiry
+   *    OR apex sign-flip transitions to SPLIT — the legacy ShrapnelBehavior's
+   *    primary trigger was range, secondary was apex; the spec's apex-only
+   *    framing was incomplete.
    *
    *  - SPIN: transition to SPLIT if extra_param.lastTime is falsy (immediate)
    *    or if (timeElapsed - _spinStartTime) >= lastTime (Lua line 79).
@@ -234,9 +255,19 @@ export class ShrapnelBulletUnit extends BulletUnit {
   Update() {
     if (this._currentState === STATE.NORMAL) {
       const prevVerticalSpeed = this.verticalSpeed;
-      super.Update();
+      // Inline the base integration order (updateSpeed → position →
+      // altitude) but skip the base's range-OR-altitude expiry check.
+      this.updateSpeed();
+      this.position.x += this.speed.x;
+      this.position.y += this.speed.y;
+      this.altitude += this.verticalSpeed;
+
       for (const rec of this._trailing) this._drainTrailing(rec);
-      if (prevVerticalSpeed * this.verticalSpeed < 0) {
+
+      const rangeExpired =
+        sqrDistance(this.spawnPos, this.position) > this.sqrRange;
+      const apexFlip = prevVerticalSpeed * this.verticalSpeed < 0;
+      if (rangeExpired || apexFlip) {
         this.ChangeShrapnelState(STATE.SPLIT);
       }
       return;
