@@ -39,31 +39,54 @@ export class BombBulletUnit extends BulletUnit {
   }
 
   /**
-   * Resolve the airdrop spawn position. Mirrors getHeightAdjust
-   * (battlebullet.lua:226-239): an airdrop bomb spawns at `offsetY` altitude
-   * above the explode point and, with dropOffset set, behind it by
+   * Resolve the spawn geometry. Two modes:
+   *
+   * Airdrop (this.airdrop === true): mirrors getHeightAdjust
+   * (battlebullet.lua:226-239). The bomb spawns at `offsetY` altitude above
+   * the explode point and, with dropOffset set, behind it by
    *   sqrt(|2 * offsetY / gravity|) * convertedVelocity
-   * (the horizontal distance a projectile covers while falling offsetY),
-   * mirrored by host facing — then solves verticalSpeed so the descent passes
-   * through the explode point. Called once at spawn, before InitSpeed.
+   * mirrored by host facing. Then solves verticalSpeed for parabolic arrival.
+   *
+   * Non-airdrop: spawn position was already placed by base BulletUnit from
+   * spawnX/spawnY; altitude defaults to spawnAltitude (the firing weapon's
+   * altitude). If an explodePos was supplied, solves verticalSpeed for the
+   * parabola (battlebombbulletunit.lua:73-76). Without one, verticalSpeed
+   * stays 0 and the bomb falls under gravity only (doNothing).
    */
   SetSpawnPosition() {
-    const convertedVelocity = this.velocity * BULLET_SPEED_CONVERT;
-    const dropOffsetX = this.dropOffset
-      ? Math.sqrt(Math.abs(2 * this.offsetY / this.gravity))
-          * convertedVelocity * Math.sign(this.direction || 1)
-      : 0;
-    this.position = { x: this.explodePos.x - dropOffsetX, y: this.explodePos.y };
-    this.spawnPos = { x: this.position.x, y: this.position.y };
-    this.altitude = this.offsetY;
+    if (this.airdrop) {
+      const convertedVelocity = this.velocity * BULLET_SPEED_CONVERT;
+      const dropOffsetX = this.dropOffset
+        ? Math.sqrt(Math.abs(2 * this.offsetY / this.gravity))
+            * convertedVelocity * Math.sign(this.direction || 1)
+        : 0;
+      this.position = { x: this.explodePos.x - dropOffsetX, y: this.explodePos.y };
+      this.spawnPos = { x: this.position.x, y: this.position.y };
+      this.altitude = this.offsetY;
 
-    // SetSpawnPosition (battlebombbulletunit.lua:73-76): solve verticalSpeed
-    // so the parabola passes through the explode point at BOMB_DETONATE_HEIGHT.
-    // flightTime is in TICKS (convertedVelocity is per-tick displacement). The
-    // game's 3D distance keeps the explode point's vertical un-filtered, so the
-    // BOMB_DETONATE_HEIGHT term is load-bearing when the bomb is directly
-    // overhead (planar distance 0 — flightTime would otherwise be 0).
-    if (convertedVelocity !== 0) {
+      // SetSpawnPosition (battlebombbulletunit.lua:73-76): solve verticalSpeed
+      // so the parabola passes through the explode point at BOMB_DETONATE_HEIGHT.
+      // flightTime is in TICKS (convertedVelocity is per-tick displacement). The
+      // game's 3D distance keeps the explode point's vertical un-filtered, so the
+      // BOMB_DETONATE_HEIGHT term is load-bearing when the bomb is directly
+      // overhead (planar distance 0 — flightTime would otherwise be 0).
+      if (convertedVelocity !== 0) {
+        const flightTime = Math.sqrt(
+          sqrDistance(this.spawnPos, this.explodePos)
+          + BOMB_DETONATE_HEIGHT * BOMB_DETONATE_HEIGHT,
+        ) / convertedVelocity;
+        this.verticalSpeed = this.launchVrtSpeed != null
+          ? this.launchVrtSpeed
+          : (BOMB_DETONATE_HEIGHT - this.altitude) / flightTime
+            - 0.5 * this.gravity * flightTime;
+      }
+      return;
+    }
+
+    // Non-airdrop branch. position/spawnPos/altitude already set by super.
+    // Only the parabola solve runs, and only if an explodePos was supplied.
+    if (this.explodePos && this.velocity !== 0) {
+      const convertedVelocity = this.velocity * BULLET_SPEED_CONVERT;
       const flightTime = Math.sqrt(
         sqrDistance(this.spawnPos, this.explodePos)
         + BOMB_DETONATE_HEIGHT * BOMB_DETONATE_HEIGHT,

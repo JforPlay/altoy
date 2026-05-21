@@ -144,3 +144,23 @@ test('constructor: airdrop:false is honored, explodePos may be null', () => {
   assert.equal(b.position.x, 10, 'spawnX flowed through super');
   assert.equal(b.yAngle, 45, 'yAngle flowed through super');
 });
+
+test('SetSpawnPosition non-airdrop: no reposition, no parabola solve when explodePos is null', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, airdrop: false, spawnX: 10, spawnY: 7, yAngle: 30,
+    gravity: -0.05,
+  });
+  b.SetSpawnPosition();
+  assert.deepEqual(b.position, { x: 10, y: 7 }, 'spawn position unchanged');
+  assert.deepEqual(b.spawnPos, { x: 10, y: 7 });
+  assert.equal(b.altitude, 0, 'altitude defaults to spawnAltitude (0)');
+  assert.equal(b.verticalSpeed, 0, 'no explodePos -> no parabola solve');
+});
+
+test('SetSpawnPosition non-airdrop: spawnAltitude is honored when supplied', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, airdrop: false, spawnX: 0, spawnY: 0, spawnAltitude: 15,
+  });
+  b.SetSpawnPosition();
+  assert.equal(b.altitude, 15, 'host weapon altitude propagates from super');
+});
