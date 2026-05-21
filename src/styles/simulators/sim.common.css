@@ -164,20 +164,74 @@
   box-shadow: 0 0 8px rgba(255, 200, 100, 0.4), 0 2px 4px rgba(255, 100, 0, 0.3);
 }
 
+/* Gravitation (type 11) — the "whirlpool" look, modelled after the
+   in-game vortex (skill 15090): a bright white/cyan conic spiral over a
+   dark navy center, with a strong cyan halo glow. The bullet is
+   target-locked at the enemy's position, so the inline z-index from
+   `_createWorldBullet` would otherwise put it at the same depth as the
+   enemy sprite — we lift it above with `z-index: 50` so the whirlpool is
+   always visible. The JS-driven inline `width`/`height`/`left`/`top` from
+   `_renderGravitationPulse` does NOT set `transform`, so the CSS rotation
+   animation runs independently. */
 .bullet.gravitation-bullet {
-  background: radial-gradient(circle, rgba(128,0,255,0.6) 0%, rgba(128,0,255,0.1) 70%, transparent 100%);
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.85) 10%,
+      rgba(180, 230, 255, 0.4) 18%,
+      transparent 25%,
+      rgba(255, 255, 255, 0.85) 35%,
+      rgba(180, 230, 255, 0.4) 43%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.85) 60%,
+      rgba(180, 230, 255, 0.4) 68%,
+      transparent 75%,
+      rgba(255, 255, 255, 0.85) 85%,
+      rgba(180, 230, 255, 0.4) 93%,
+      transparent 100%
+    ),
+    radial-gradient(circle,
+      rgba(0, 20, 40, 0.95) 0%,
+      rgba(0, 60, 100, 0.75) 30%,
+      rgba(50, 180, 220, 0.5) 65%,
+      rgba(150, 220, 255, 0.2) 85%,
+      transparent 100%
+    );
   border-radius: 50%;
-  box-shadow: 0 0 20px rgba(128, 0, 255, 0.4);
+  box-shadow:
+    0 0 32px rgba(120, 220, 255, 0.85),
+    0 0 64px rgba(60, 180, 240, 0.5),
+    inset 0 0 28px rgba(0, 30, 60, 0.85);
   pointer-events: none;
+  z-index: 50 !important;   /* sit above enemy sprites, overriding the inline depth-based zIndex */
+  animation: gravitationSpin 0.8s linear infinite;
 }
 
 .bullet.gravitation-bullet.gravitation-active {
-  animation: gravitationPulse 0.3s ease-in-out infinite;
+  animation:
+    gravitationSpin 0.4s linear infinite,
+    gravitationPulse 0.3s ease-in-out infinite;
+}
+
+@keyframes gravitationSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 @keyframes gravitationPulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(128,0,255,0.4); }
-  50% { box-shadow: 0 0 40px rgba(128,0,255,0.8), 0 0 60px rgba(128,0,255,0.3); }
+  0%, 100% {
+    box-shadow:
+      0 0 32px rgba(120, 220, 255, 0.75),
+      0 0 64px rgba(60, 180, 240, 0.4),
+      inset 0 0 28px rgba(0, 30, 60, 0.85);
+  }
+  50% {
+    box-shadow:
+      0 0 56px rgba(180, 240, 255, 1),
+      0 0 100px rgba(80, 200, 255, 0.55),
+      inset 0 0 44px rgba(0, 40, 80, 0.95);
+  }
 }
 
 .bullet.scale-bullet {
