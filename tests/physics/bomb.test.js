@@ -126,3 +126,21 @@ test('SetSpawnPosition: a velocity-0 bomb skips the vertical-speed solve and fal
   assert.equal(b.altitude, 8, 'spawn altitude = offsetY');
   assert.equal(b.verticalSpeed, 0, 'vertical-speed solve skipped — falls from rest');
 });
+
+test('constructor: airdrop defaults to true (back-compat for existing callers)', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, offsetY: 8,
+    explodePos: { x: 20, y: 0 }, direction: 1,
+  });
+  assert.equal(b.airdrop, true, 'airdrop defaults to true');
+});
+
+test('constructor: airdrop:false is honored, explodePos may be null', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, airdrop: false, spawnX: 10, spawnY: 0, yAngle: 45,
+  });
+  assert.equal(b.airdrop, false);
+  assert.equal(b.explodePos, null, 'non-airdrop with no explodePos -> null');
+  assert.equal(b.position.x, 10, 'spawnX flowed through super');
+  assert.equal(b.yAngle, 45, 'yAngle flowed through super');
+});

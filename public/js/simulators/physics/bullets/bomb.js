@@ -26,7 +26,11 @@ export class BombBulletUnit extends BulletUnit {
     super(opts);
     // The base defaults gravity to 0; a bomb defaults to BattleConfig.GRAVITY.
     if (opts.gravity == null) this.gravity = GRAVITY;
-    this.explodePos = opts.explodePos ?? { x: 0, y: 0 };  // planar aim point
+    // Mode flag: airdrop (default true for back-compat) repositions the bomb
+    // above explodePos and aims at it; non-airdrop spawns at spawnX/spawnY
+    // (already placed by super) and aims at explodePos only if one is supplied.
+    this.airdrop = opts.airdrop ?? true;
+    this.explodePos = opts.explodePos ?? null;            // both modes; null = aim-by-yAngle
     this.direction = opts.direction ?? 1;                 // host facing (+1 / -1)
     this.offsetY = opts.offsetY ?? AIRCRAFT_HEIGHT;       // drop height; game uses host y
     this.dropOffset = opts.dropOffset ?? false;           // spawn behind the aim point?
