@@ -99,23 +99,25 @@ export class BombBulletUnit extends BulletUnit {
   }
 
   /**
-   * Aim the bomb from its spawn to the explode point and pick the movement
-   * function. Mirrors BattleBombBulletUnit.InitSpeed (battlebombbulletunit.lua:
-   * 15-25). getHeightAdjust spawns the bomb at the explode point's planar y, so
-   * the heading is 0 (or 180 for a left-facing host): the bomb drifts purely
-   * along x while verticalSpeed carries the descent. _barrageLowPriority is not
-   * modelled (0 airdrop bombs use it — Task 1).
+   * Aim the bomb (when an explodePos is supplied) and pick the movement
+   * function via the base priority chain. Mirrors BattleBombBulletUnit.InitSpeed
+   * (battlebombbulletunit.lua:15-25) plus the §B3 mutual-exclusivity rule:
+   * a bomb with HasAcceleration runs doAccelerate (gravity suppressed for those
+   * ticks because gravity integration lives inside doNothing).
+   *
+   * CRITICAL ORDERING: aim is set BEFORE super.InitSpeed() because the priority
+   * chain's doAccelerate branch seeds _speedNormal from yAngle.
+   *
+   * _barrageLowPriority is not modelled (0 reached bombs use it).
    */
   InitSpeed() {
-    // TODO(Phase 3c Task 4): null-guard for non-airdrop path; defer to super
-    // for priority chain. This dereferences explodePos unconditionally and
-    // will throw for non-airdrop bombs whose firing pipeline has no target.
-    this.yAngle = Math.atan2(
-      this.explodePos.y - this.spawnPos.y,
-      this.explodePos.x - this.spawnPos.x,
-    ) * DEG_PER_RAD;
-    this.calcSpeed();
-    this.updateSpeed = this.doNothing;
+    if (this.explodePos) {
+      this.yAngle = Math.atan2(
+        this.explodePos.y - this.spawnPos.y,
+        this.explodePos.x - this.spawnPos.x,
+      ) * DEG_PER_RAD;
+    }
+    super.InitSpeed();
   }
 
   /**

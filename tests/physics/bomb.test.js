@@ -197,3 +197,36 @@ test('SetSpawnPosition non-airdrop: velocity-0 skips the parabola solve', () => 
   b.SetSpawnPosition();
   assert.equal(b.verticalSpeed, 0, 'velocity 0 -> no solve, no division-by-zero');
 });
+
+test('InitSpeed non-airdrop with no explodePos: yAngle preserved from caller', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.05, airdrop: false,
+    spawnX: 0, spawnY: 0, yAngle: 30,
+  });
+  b.SetSpawnPosition();
+  b.InitSpeed();
+  assert.equal(b.yAngle, 30, 'no explodePos -> no override, yAngle from caller stands');
+  assert.equal(b.updateSpeed, b.doNothing, 'no acceleration -> doNothing (gravity integrator)');
+});
+
+test('InitSpeed non-airdrop with explodePos: yAngle overridden to aim', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.05, airdrop: false,
+    spawnX: 0, spawnY: 0, yAngle: 30, explodePos: { x: 10, y: 10 },
+  });
+  b.SetSpawnPosition();
+  b.InitSpeed();
+  assert.equal(b.yAngle, 45, 'atan2(10-0, 10-0) * 180/pi = 45');
+});
+
+test('InitSpeed with acceleration: priority chain picks doAccelerate', () => {
+  const b = new BombBulletUnit({
+    velocity: 15, gravity: -0.05, airdrop: false,
+    spawnX: 0, spawnY: 0, yAngle: 0,
+    acceleration: [{ t: 0.5, u: -1, v: 0, flip: false }],
+  });
+  b.SetSpawnPosition();
+  b.InitSpeed();
+  assert.equal(b.updateSpeed, b.doAccelerate,
+    'HasAcceleration -> doAccelerate per the base priority chain');
+});
