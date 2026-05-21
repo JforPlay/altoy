@@ -164,3 +164,36 @@ test('SetSpawnPosition non-airdrop: spawnAltitude is honored when supplied', () 
   b.SetSpawnPosition();
   assert.equal(b.altitude, 15, 'host weapon altitude propagates from super');
 });
+
+test('SetSpawnPosition non-airdrop: parabola solve when explodePos is supplied', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, airdrop: false,
+    spawnX: 0, spawnY: 0, explodePos: { x: 20, y: 0 },
+  });
+  b.SetSpawnPosition();
+  // convertedVelocity = 5 * 0.2 = 1.0
+  // flightTime = sqrt(20^2 + 1.2^2) / 1.0 = sqrt(401.44) ~= 20.036 ticks
+  // verticalSpeed = (1.2 - 0) / 20.036 - 0.5 * (-0.25) * 20.036
+  const flightTime = Math.sqrt(400 + 1.44);
+  const expected = (1.2 - 0) / flightTime - 0.5 * (-0.25) * flightTime;
+  assert.ok(Math.abs(b.verticalSpeed - expected) < 1e-9,
+    `non-airdrop parabola solve: expected ${expected}, got ${b.verticalSpeed}`);
+});
+
+test('SetSpawnPosition non-airdrop: launchVrtSpeed overrides the parabola solve', () => {
+  const b = new BombBulletUnit({
+    velocity: 5, gravity: -0.25, airdrop: false,
+    spawnX: 0, spawnY: 0, explodePos: { x: 20, y: 0 }, launchVrtSpeed: -2,
+  });
+  b.SetSpawnPosition();
+  assert.equal(b.verticalSpeed, -2, 'explicit override wins over the solve');
+});
+
+test('SetSpawnPosition non-airdrop: velocity-0 skips the parabola solve', () => {
+  const b = new BombBulletUnit({
+    velocity: 0, gravity: -0.25, airdrop: false,
+    spawnX: 0, spawnY: 0, explodePos: { x: 20, y: 0 },
+  });
+  b.SetSpawnPosition();
+  assert.equal(b.verticalSpeed, 0, 'velocity 0 -> no solve, no division-by-zero');
+});
