@@ -216,7 +216,7 @@ test('InitSpeed non-airdrop with explodePos: yAngle overridden to aim', () => {
   });
   b.SetSpawnPosition();
   b.InitSpeed();
-  assert.equal(b.yAngle, 45, 'atan2(10-0, 10-0) * 180/pi = 45');
+  assert.equal(b.yAngle, 45, 'atan2(dy=10, dx=10) * 180/pi = 45');
 });
 
 test('InitSpeed with acceleration: priority chain picks doAccelerate', () => {
