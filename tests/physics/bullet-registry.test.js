@@ -52,3 +52,23 @@ test('type 5 maps to ShrapnelBulletUnit', async () => {
   const unit = createBulletUnit(5, { velocity: 10, yAngle: 0, range: 10 });
   assert.ok(unit instanceof ShrapnelBulletUnit);
 });
+
+test('type 11 maps to GravitationBulletUnit', async () => {
+  const { GravitationBulletUnit } = await import(
+    '../../public/js/simulators/physics/bullets/gravitation.js'
+  );
+  const unit = createBulletUnit(11, { velocity: 10, yAngle: 0, range: 50 });
+  assert.ok(unit instanceof GravitationBulletUnit);
+});
+
+test('type 13 (MISSILE) falls through to BulletUnit (harness-only — deliberately unregistered)', () => {
+  // MissileBulletUnit exists in physics/bullets/missile.js but is intentionally
+  // NOT registered (the doOrbit precedent — 0 reached against current data).
+  const unit = createBulletUnit(13, { velocity: 10, yAngle: 0, range: 50 });
+  assert.ok(unit.constructor.name === 'BulletUnit', 'type 13 must fall through to base');
+});
+
+test('type 15 (SCALE) falls through to BulletUnit (harness-only — deliberately unregistered)', () => {
+  const unit = createBulletUnit(15, { velocity: 10, yAngle: 0, range: 50 });
+  assert.ok(unit.constructor.name === 'BulletUnit', 'type 15 must fall through to base');
+});
