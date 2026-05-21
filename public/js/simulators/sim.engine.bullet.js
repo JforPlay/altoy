@@ -70,6 +70,18 @@ export class BulletEngine {
         // through one shared loop; the legacy per-bullet rAF path runs
         // everything else. See dev/active/2026-05-17-weapon-physics-rework.md.
         this.world = new World();
+        // ShrapnelBulletUnit.drainEmits returns child specs in GAME coords.
+        // createBullet's contract is SCREEN coords; convert once here so the
+        // engine's existing dispatch (predicates -> _createWorldBullet ->
+        // screenToGame, or legacy path -> screen) keeps its interface.
+        this.world.onEmit = (spec) => {
+            const screen = this.gameToScreen(spec.startX, spec.startY);
+            this.createBullet({
+                ...spec,
+                startX: screen.x,
+                startY: screen.y,
+            });
+        };
         this._worldViews = new Map();   // BulletUnit -> { element, bulletInfo, baseWidth, baseHeight }
         this._worldLoopId = null;       // rAF id of the shared loop, null when idle
         this._worldAccumulatorMs = 0;   // unspent real time carried between frames
@@ -168,6 +180,23 @@ export class BulletEngine {
         // stays on the legacy path.
         if (this._isAirdropBomb(bulletInfo, options)) {
             return this._createWorldBomb(options);
+        }
+
+        // Route a type-9 effect bullet to the faithful physics core — fixes
+        // the lingering red-dot bug. The shared _createWorldBullet handles
+        // DOM and rendering; EffectBulletUnit's hit_type.time cap drives
+        // expiry alongside the base range check.
+        if (this._isMigratedEffect(bulletInfo, options)) {
+            return this._createWorldBullet(options);
+        }
+
+        // Route a type-5 SHRAPNEL through the faithful physics core. Children
+        // emit via the world's onEmit callback (wired in this task's Step 4),
+        // which routes each child through createBullet so they too flow through
+        // the strangler — a child of a migrated type goes to the core, a child
+        // of an unmigrated type goes to the legacy path.
+        if (this._isMigratedShrapnel(bulletInfo, options)) {
+            return this._createWorldBullet(options);
         }
 
         // Create bullet DOM element
@@ -573,6 +602,35 @@ export class BulletEngine {
     }
 
     /**
+     * True for a type-9 EFFECT bullet routed through the faithful physics
+     * core. EffectBulletUnit inherits the base movement and adds a lifetime
+     * cap from hit_type.time — fixes the lingering red-dot bug (spec §C8 /
+     * bug map row 4). Stays predicate-conservative: a type-9 with inherited
+     * speed or a transform chain stays on the legacy path.
+     */
+    _isMigratedEffect(bulletInfo, options) {
+        return bulletInfo.type === 9
+            && options.inheritSpeed == null
+            && (!options.transformChain || options.transformChain.length === 0);
+    }
+
+    /**
+     * True for a type-5 SHRAPNEL routed through the faithful physics core
+     * (spec §C6 / §C7 / §C8). Predicate-conservative — excludes:
+     *   - rangeAA  (AA-adjacent, out of scope per parent spec)
+     *   - out_bound === 3 (VISION) — covers the 6 reached VISION shrapnel
+     *     including the 2 directHit cases (skill_weapon scan, 2026-05-20)
+     *   - inheritSpeed and transform chains (legacy carries these)
+     */
+    _isMigratedShrapnel(bulletInfo, options) {
+        return bulletInfo.type === 5
+            && !bulletInfo.extra_param?.rangeAA
+            && bulletInfo.out_bound !== 3
+            && options.inheritSpeed == null
+            && (!options.transformChain || options.transformChain.length === 0);
+    }
+
+    /**
      * Build the DOM element for a physics-core bullet: the base `bullet`
      * class, the skin modle_ID class, and the bullet-type class so a migrated
      * bullet keeps its type styling. Size and position are set by the caller.
@@ -614,6 +672,17 @@ export class BulletEngine {
             acceleration: bulletInfo.acceleration,
             barrageAngle: barrageAngle,
             target: enemyTarget,
+            // Phase 3a additions — subclasses pick what they need; base ignores.
+            // gravity comes from extra_param for shrapnel parents (e.g. bullet
+            // 19920 carries `-0.05`). Undefined for cannon / torpedo / effect
+            // → BulletUnit defaults to 0, no change.
+            gravity: bulletInfo.extra_param?.gravity,
+            extraParam: bulletInfo.extra_param,
+            hitTypeTime: bulletInfo.hit_type?.time,
+            explodePos: options.explodePos ?? options.airdropData?.explodePos,
+            bulletTemplates: this.allBullets,
+            barrages: this.allBarrages,                  // NEW for shrapnel
+            parentBullet: options.parentBullet,
         });
         if (!unit) return null;
 

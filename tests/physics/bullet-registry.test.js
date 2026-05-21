@@ -36,3 +36,19 @@ test('a TorpedoBulletUnit is also a BulletUnit', () => {
   const u = createBulletUnit(3, { velocity: 10, yAngle: 0 });
   assert.ok(u instanceof BulletUnit);
 });
+
+test('type 9 maps to EffectBulletUnit', async () => {
+  const { EffectBulletUnit } = await import(
+    '../../public/js/simulators/physics/bullets/effect.js'
+  );
+  const unit = createBulletUnit(9, { velocity: 10, yAngle: 0, range: 10 });
+  assert.ok(unit instanceof EffectBulletUnit);
+});
+
+test('type 5 maps to ShrapnelBulletUnit', async () => {
+  const { ShrapnelBulletUnit } = await import(
+    '../../public/js/simulators/physics/bullets/shrapnel.js'
+  );
+  const unit = createBulletUnit(5, { velocity: 10, yAngle: 0, range: 10 });
+  assert.ok(unit instanceof ShrapnelBulletUnit);
+});

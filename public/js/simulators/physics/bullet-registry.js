@@ -9,13 +9,17 @@ import { BulletUnit } from './bullet-unit.js';
 import { CannonBulletUnit } from './bullets/cannon.js';
 import { TorpedoBulletUnit } from './bullets/torpedo.js';
 import { BombBulletUnit } from './bullets/bomb.js';
+import { EffectBulletUnit } from './bullets/effect.js';
+import { ShrapnelBulletUnit } from './bullets/shrapnel.js';
 
 const BULLET_CLASSES = {
-  1: CannonBulletUnit,   // CANNON
-  8: CannonBulletUnit,   // STRAY — same straight-line movement
-  3: TorpedoBulletUnit,  // TORPEDO
-  2: BombBulletUnit,     // BOMB
-  16: BombBulletUnit,    // bomb-family (airdrop-dispatched only if flagged; none in current data)
+  1: CannonBulletUnit,      // CANNON
+  8: CannonBulletUnit,      // STRAY — same straight-line movement
+  3: TorpedoBulletUnit,     // TORPEDO
+  2: BombBulletUnit,        // BOMB
+  16: BombBulletUnit,       // bomb-family (airdrop-dispatched only if flagged; none in current data)
+  9: EffectBulletUnit,      // EFFECT — lifetime cap by hit_type.time
+  5: ShrapnelBulletUnit,    // SHRAPNEL — fan-fired child bullets from a parent burst
 };
 
 /** Construct the BulletUnit subclass for `type`, forwarding `opts`. */
