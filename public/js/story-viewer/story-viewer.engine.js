@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         COMMANDER_ICON_PATH: resolveUrl('assets/icon/commander.webp'),
         BASE_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/",
+        // TODO(sub-project-3): de-Fernando audio. BGM hosting moves to data_for_toy_audio
+        // when the audio extraction pipeline lands.
         BGM_URL_PREFIX: "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/",
 
         // ===== DOM Elements =====
