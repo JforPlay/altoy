@@ -1477,7 +1477,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
                     sid: ship.sid.toString(),
                     name: ship.name,
                     rarity: ship.rarity,
-                    icon: ship.shipyard || `https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/${ship.sid}/icon.png`
+                    icon: ship.shipyard || `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/${ship.sid}.webp`
                 }));
 
             console.log(`Loaded ${state.shipDatabase.length} ships from database`);

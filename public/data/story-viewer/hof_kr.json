@@ -1,7 +1,7 @@
 {
   "에기르": {
     "kr_name": "에기르",
-    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499050/icon.png",
+    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/499050.webp",
     "fadeOut": 1.5,
     "fadeType": 2,
     "fadein": 1.5,
@@ -899,7 +899,7 @@
   },
   "벨파스트": {
     "kr_name": "벨파스트",
-    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/202120/icon.png",
+    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/202120.webp",
     "fadeOut": 1.5,
     "fadeType": 2,
     "fadein": 1.5,
@@ -1675,7 +1675,7 @@
   },
   "체셔": {
     "kr_name": "체셔",
-    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299030/icon.png",
+    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/299030.webp",
     "fadeOut": 1.5,
     "fadeType": 2,
     "fadein": 1.5,
@@ -2602,7 +2602,7 @@
   },
   "모나크": {
     "kr_name": "모나크",
-    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/299020/icon.png",
+    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/299020.webp",
     "fadeOut": 1.5,
     "fadeType": 2,
     "fadein": 1.5,
@@ -3617,7 +3617,7 @@
   },
   "엔터프라이즈": {
     "kr_name": "엔터프라이즈",
-    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/107060/icon.png",
+    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/107060.webp",
     "fadeOut": 1.5,
     "fadeType": 2,
     "fadein": 1.5,
@@ -4475,7 +4475,7 @@
   },
   "뉴저지": {
     "kr_name": "뉴저지",
-    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/105170/icon.png",
+    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/105170.webp",
     "fadeOut": 1.5,
     "fadeType": 2,
     "fadein": 1.5,
@@ -5692,7 +5692,7 @@
   },
   "임플래커블": {
     "kr_name": "임플래커블",
-    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/207070/icon.png",
+    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/207070.webp",
     "fadeOut": 1.5,
     "id": "RENQIYUANCHOU",
     "mode": 2,
@@ -6481,7 +6481,7 @@
   },
   "다이호": {
     "kr_name": "다이호",
-    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/307070/icon.png",
+    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307070.webp",
     "fadeOut": 1.5,
     "id": "RENQIDAFENG",
     "mode": 2,
@@ -7248,7 +7248,7 @@
   },
   "힌덴부르크": {
     "kr_name": "힌덴부르크",
-    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/499090/icon.png",
+    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/499090.webp",
     "fadeOut": 1.5,
     "id": "RENQIXINGDENGBAO",
     "mode": 2,

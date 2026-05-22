@@ -456,6 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.storyButton.dataset.eventId = id;
 
         if (bgm && bgm.trim() !== "") {
+            // TODO(sub-project-3): de-Fernando audio
             elements.modalBgm.src = `https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/${bgm}.ogg`;
             elements.modalBgm.volume = 0.01;
             elements.modalBgm.play().catch(e => console.warn("Audio playback blocked or failed:", e));

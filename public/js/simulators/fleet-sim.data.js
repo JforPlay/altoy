@@ -170,7 +170,7 @@ export function getPassiveSkill(skillId) {
 
 const EQUIP_ICON_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips';
 const EQUIP_FRAME_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/weaponframes';
-const SHIP_SKIN_BASE = 'https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin';
+const SHIP_SKIN_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon';
 const SP_WEAPON_ICON_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/spweapon';
 
 /** Get equip icon URL from icon ID */
@@ -187,7 +187,7 @@ export function getRarityBgUrl(rarity) {
 /** Get ship portrait URL from skin ID */
 export function getShipPortraitUrl(skinId) {
     if (!skinId) return '';
-    return `${SHIP_SKIN_BASE}/${skinId}/icon.png`;
+    return `${SHIP_SKIN_BASE}/${skinId}.webp`;
 }
 
 /** Get SP weapon icon URL */

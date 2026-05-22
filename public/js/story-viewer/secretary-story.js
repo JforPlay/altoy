@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: shipgirlId,
             name: '아카시',
             icon:
-              'https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/312010/icon.png',
+              'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/312010.webp',
             rarity: 'SSR',
             description: '아카시 상점<br> 진행퀘스트'
           };

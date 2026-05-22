@@ -9,25 +9,25 @@
                     "name": "소비에츠키 소유즈",
                     "rarity": "UR",
                     "nationality": 7,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705020/shipyard.png"
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/705020.webp"
                 },
                 "70111": {
                     "name": "오그네보이",
                     "rarity": "SSR",
                     "nationality": 7,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/701110/shipyard.png"
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/701110.webp"
                 },
                 "970207": {
                     "name": "파먀티 메르쿠리야·META",
                     "rarity": "SSR",
                     "nationality": 97,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/9702070/shipyard.png"
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9702070.webp"
                 },
                 "70508": {
                     "name": "폴타바",
                     "rarity": "SR",
                     "nationality": 7,
-                    "icon": "https://raw.githubusercontent.com/Fernando2603/AzurLane/main/images/skin/705080/shipyard.png"
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/705080.webp"
                 }
             }
         },
