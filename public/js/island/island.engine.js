@@ -6,6 +6,7 @@
  * Exposes itself as window.IslandEngine for cross-module access.
  */
 import { fetchJSON, showToast, setStorageItem, createSearchIndex, ensureFuse } from '../utils.js';
+import { initSeasonMap } from './island.season-map.js';
 
 'use strict';
 
@@ -14,7 +15,8 @@ const state = {
     activeTab: 'characters',
     modules: {},  // populated only after each module's init() resolves
     sharedData: {
-        items: null,  // Shared across all modules
+        items: null,   // Shared across all modules
+        seasons: null, // island_season.json — feeds island.season-map.js
         loaded: false
     }
 };
@@ -57,15 +59,22 @@ async function init() {
 }
 
 /**
- * Load island_item_data_template.json once and store in shared state.
- * Concurrent callers share the same in-flight promise.
+ * Load island_item_data_template.json + island_season.json once and store
+ * in shared state, then initialize the season map. Concurrent callers
+ * share the same in-flight promise.
  */
 function loadSharedData() {
     if (sharedDataPromise) return sharedDataPromise;
 
     sharedDataPromise = (async () => {
         try {
-            state.sharedData.items = await fetchJSON('data/island/island_item_data_template.json');
+            const [items, seasons] = await Promise.all([
+                fetchJSON('data/island/island_item_data_template.json'),
+                fetchJSON('data/island/island_season.json'),
+            ]);
+            state.sharedData.items = items;
+            state.sharedData.seasons = seasons;
+            initSeasonMap(seasons, { items });
             state.sharedData.loaded = true;
         } catch (error) {
             console.error('[Island] Failed to load shared data:', error);

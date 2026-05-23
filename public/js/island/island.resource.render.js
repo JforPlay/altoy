@@ -6,6 +6,7 @@
  */
 
 import { formatTime } from '../utils.js';
+import { renderSeasonBadge } from './island.season-map.js';
 import {
     CONSTANTS, findRecipeById, findRecipeCategoryById,
     buildDownstreamTree, calculateTreeStats,
@@ -108,6 +109,7 @@ export function renderRecipeList() {
                 <div class="recipe-meta">
                     <span class="recipe-time">⏱ ${formatTime(recipe.workload)}</span>
                     <span class="recipe-exp">⚡ ${recipe.ship_exp}</span>
+                    ${renderSeasonBadge(recipe.item_id)}
                 </div>
             </div>
             </div>
@@ -314,6 +316,7 @@ export function renderRecipeHeader(recipe, data) {
                     <span class="stat-badge exp">⚡ ${recipe.ship_exp} EXP</span>
                     <span class="stat-badge stamina">🔋 ${recipe.stamina_cost} Stamina</span>
                     <span class="stat-badge points">🎯 ${item.pt_num} pt</span>
+                    ${renderSeasonBadge(recipe.item_id)}
                 </div>
             </div>
             <div class="recipe-header-actions">
@@ -780,6 +783,7 @@ export function renderSeasonalItemDetail(recipe, container) {
                 <div class="recipe-meta-badges">
                     <span class="recipe-category">시즌템 (Seasonal)</span>
                     <span class="stat-badge rarity-${item.rarity || 1}">★ ${item.rarity || 1}</span>
+                    ${renderSeasonBadge(itemId)}
                 </div>
                 <p class="item-description">${item.desc || '시즌 한정 아이템입니다.'}</p>
             </div>
