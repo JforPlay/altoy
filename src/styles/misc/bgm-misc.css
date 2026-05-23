@@ -175,6 +175,25 @@ body {
     overflow: hidden;
 }
 
+.bgm-misc-play svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    position: relative;
+    z-index: 1;
+}
+
+.bgm-misc-play .bgm-misc-icon-pause {
+    display: none;
+}
+
+.bgm-misc-play.playing .bgm-misc-icon-play {
+    display: none;
+}
+
+.bgm-misc-play.playing .bgm-misc-icon-pause {
+    display: inline-block;
+}
+
 .bgm-misc-play::before {
     content: "";
     position: absolute;
@@ -217,4 +236,477 @@ body {
     text-align: center;
     padding: 2rem;
     list-style: none;
+}
+
+/* ===== Player bar (sticky bottom) ===== */
+.bgm-misc-page {
+    padding-bottom: 6rem;  /* clears the player bar */
+}
+
+.bgm-misc-player-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 80;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(8px);
+}
+
+.bgm-misc-player-bar[hidden] {
+    display: none;
+}
+
+.bgm-misc-player-controls,
+.bgm-misc-player-toggles {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+}
+
+.bgm-misc-pbtn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background var(--transition-fast, 150ms ease),
+                color var(--transition-fast, 150ms ease),
+                transform var(--transition-fast, 150ms ease);
+}
+
+.bgm-misc-pbtn svg {
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.bgm-misc-pbtn-main svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.bgm-misc-pbtn-main .bgm-misc-icon-pause {
+    display: none;
+}
+
+.bgm-misc-pbtn-main[aria-pressed="true"] .bgm-misc-icon-play {
+    display: none;
+}
+
+.bgm-misc-pbtn-main[aria-pressed="true"] .bgm-misc-icon-pause {
+    display: inline-block;
+}
+
+.bgm-misc-pbtn:hover:not(:disabled) {
+    background: var(--primary-alpha-10);
+}
+
+.bgm-misc-pbtn:active:not(:disabled) {
+    transform: scale(0.92);
+}
+
+.bgm-misc-pbtn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.bgm-misc-pbtn-main {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-blue));
+    color: white;
+    width: 2.75rem;
+    height: 2.75rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.bgm-misc-pbtn-main:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+.bgm-misc-toggle {
+    color: var(--text-secondary);
+    position: relative;
+}
+
+.bgm-misc-toggle[aria-pressed="true"],
+.bgm-misc-toggle.is-on {
+    color: var(--primary-color);
+    background: var(--primary-alpha-15);
+}
+
+.bgm-misc-toggle[aria-pressed="true"]:hover,
+.bgm-misc-toggle.is-on:hover {
+    background: var(--primary-alpha-20, var(--primary-alpha-15));
+}
+
+.bgm-misc-visualizer {
+    width: 200px;
+    height: 2.5rem;
+    flex-shrink: 0;
+}
+
+.bgm-misc-now-playing {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.bgm-misc-now-label {
+    display: block;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ===== Queue drawer ===== */
+.bgm-misc-queue-drawer {
+    position: fixed;
+    bottom: 4.25rem;  /* sits above the bar */
+    left: 0;
+    right: 0;
+    z-index: 79;
+    max-height: 50vh;
+    overflow-y: auto;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    animation: bgm-misc-drawer-slide-up 180ms ease-out;
+}
+
+.bgm-misc-queue-drawer[hidden] {
+    display: none;
+}
+
+@keyframes bgm-misc-drawer-slide-up {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.bgm-misc-drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    position: sticky;
+    top: 0;
+    background: var(--bg-secondary);
+}
+
+.bgm-misc-clear-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-md, 0.5rem);
+    cursor: pointer;
+    font-size: 0.8125rem;
+    transition: all var(--transition-fast, 150ms ease);
+}
+
+.bgm-misc-clear-btn:hover {
+    background: var(--primary-alpha-10);
+    color: var(--text-primary);
+}
+
+.bgm-misc-queue-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.bgm-misc-queue-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background var(--transition-fast, 150ms ease);
+}
+
+.bgm-misc-queue-item:hover {
+    background: var(--primary-alpha-10);
+}
+
+.bgm-misc-queue-item.is-current {
+    background: var(--primary-alpha-15);
+}
+
+.bgm-misc-queue-marker {
+    width: 1.25rem;
+    color: var(--primary-color);
+    font-size: 0.75rem;
+}
+
+.bgm-misc-queue-name {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+}
+
+.bgm-misc-queue-remove {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 50%;
+    transition: all var(--transition-fast, 150ms ease);
+}
+
+.bgm-misc-queue-remove:hover {
+    background: var(--primary-alpha-10);
+    color: var(--text-primary);
+}
+
+/* ===== ♥ favorite button on rows ===== */
+.bgm-misc-fav {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all var(--transition-fast, 150ms ease);
+}
+
+.bgm-misc-fav:hover {
+    background: var(--primary-alpha-10);
+    transform: scale(1.1);
+}
+
+.bgm-misc-fav[aria-pressed="true"] {
+    color: #e74c3c;  /* heart red — kept as literal because there is no "heart" token in theme.css */
+}
+
+/* ===== Pause-color fix on row ▶ ===== */
+/* Override: .playing should be visually distinct from idle play. Warm gradient. */
+.bgm-misc-play.playing {
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+}
+
+/* ===== Player bar layout (seek above, body row below) ===== */
+.bgm-misc-player-body {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md, 1rem);
+    padding: 0.5rem 1rem;
+}
+
+/* ===== Seek bar (top edge) ===== */
+.bgm-misc-seek {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--primary-alpha-15);
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    transition: height var(--transition-fast, 150ms ease);
+}
+
+.bgm-misc-seek:hover {
+    height: 6px;
+}
+
+.bgm-misc-seek::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: none;
+    margin-top: -4px;
+}
+
+.bgm-misc-seek::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: none;
+}
+
+.bgm-misc-seek::-webkit-slider-runnable-track {
+    background: linear-gradient(
+        to right,
+        var(--primary-color) 0%,
+        var(--primary-color) var(--bgm-misc-seek-pct, 0%),
+        var(--primary-alpha-15) var(--bgm-misc-seek-pct, 0%),
+        var(--primary-alpha-15) 100%
+    );
+    height: 100%;
+}
+
+.bgm-misc-seek::-moz-range-track {
+    background: linear-gradient(
+        to right,
+        var(--primary-color) 0%,
+        var(--primary-color) var(--bgm-misc-seek-pct, 0%),
+        var(--primary-alpha-15) var(--bgm-misc-seek-pct, 0%),
+        var(--primary-alpha-15) 100%
+    );
+    height: 100%;
+}
+
+.bgm-misc-seek:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ===== Time label (under now-playing) ===== */
+.bgm-misc-time-label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    margin-top: 0.125rem;
+}
+
+/* ===== Volume ===== */
+.bgm-misc-volume {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+}
+
+.bgm-misc-mute-btn .bgm-misc-icon-mute {
+    display: none;
+}
+
+.bgm-misc-mute-btn[aria-pressed="true"] .bgm-misc-icon-volume {
+    display: none;
+}
+
+.bgm-misc-mute-btn[aria-pressed="true"] .bgm-misc-icon-mute {
+    display: inline-block;
+}
+
+.bgm-misc-volume-slider {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 80px;
+    height: 4px;
+    background: var(--primary-alpha-15);
+    border-radius: 999px;
+    cursor: pointer;
+    outline: none;
+}
+
+.bgm-misc-volume-slider::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: none;
+}
+
+.bgm-misc-volume-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: none;
+}
+
+/* ===== Repeat icon swap (off/all use plain loop; single uses loop-with-1) ===== */
+.bgm-misc-icon-repeat-one {
+    display: none;
+}
+
+#bgm-misc-repeat[data-mode="single"] .bgm-misc-icon-repeat {
+    display: none;
+}
+
+#bgm-misc-repeat[data-mode="single"] .bgm-misc-icon-repeat-one {
+    display: inline-block;
+}
+
+/* ===== Drawer toggle icon swap (list/closed → x/open) ===== */
+.bgm-misc-drawer-btn .bgm-misc-icon-close {
+    display: none;
+}
+
+.bgm-misc-drawer-btn[aria-expanded="true"] .bgm-misc-icon-list {
+    display: none;
+}
+
+.bgm-misc-drawer-btn[aria-expanded="true"] .bgm-misc-icon-close {
+    display: inline-block;
+}
+
+/* ===== Mode-change toast ===== */
+.bgm-misc-toast {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    bottom: 5rem;
+    z-index: 81;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg, 0.75rem);
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    box-shadow: var(--shadow-md);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.bgm-misc-toast.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 640px) {
+    .bgm-misc-visualizer {
+        width: 60px;
+    }
+    .bgm-misc-volume-slider {
+        display: none;  /* mobile: just the mute toggle, no slider */
+    }
+    .bgm-misc-queue-drawer {
+        max-height: 70vh;
+    }
+    .bgm-misc-toast {
+        bottom: 6rem;
+    }
 }

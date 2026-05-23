@@ -28,5 +28,121 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <ul id="bgm-misc-list" class="bgm-misc-list" aria-live="polite"></ul>
         <audio id="bgm-misc-audio" preload="none"></audio>
     </main>
+
+    <aside id="bgm-misc-player-bar" class="bgm-misc-player-bar" role="region" aria-label="BGM 플레이어" hidden>
+        <input
+            type="range"
+            id="bgm-misc-seek"
+            class="bgm-misc-seek"
+            min="0"
+            max="0"
+            step="0.1"
+            value="0"
+            aria-label="재생 위치"
+            disabled
+        />
+        <div class="bgm-misc-player-body">
+            <div class="bgm-misc-player-controls">
+                <button type="button" id="bgm-misc-prev" class="bgm-misc-pbtn" aria-label="이전 트랙">
+                    <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">
+                        <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                        <line x1="5" x2="5" y1="19" y2="5"></line>
+                    </svg>
+                </button>
+                <button type="button" id="bgm-misc-playpause" class="bgm-misc-pbtn bgm-misc-pbtn-main" aria-label="재생" aria-pressed="false">
+                    <svg class="bgm-misc-icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <svg class="bgm-misc-icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <rect x="6" y="4" width="4" height="16"></rect>
+                        <rect x="14" y="4" width="4" height="16"></rect>
+                    </svg>
+                </button>
+                <button type="button" id="bgm-misc-next" class="bgm-misc-pbtn" aria-label="다음 트랙">
+                    <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">
+                        <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                        <line x1="19" x2="19" y1="5" y2="19"></line>
+                    </svg>
+                </button>
+            </div>
+            <canvas id="bgm-misc-visualizer" class="bgm-misc-visualizer" aria-hidden="true"></canvas>
+            <div class="bgm-misc-now-playing">
+                <span id="bgm-misc-now-label" class="bgm-misc-now-label">-</span>
+                <span id="bgm-misc-time-label" class="bgm-misc-time-label" aria-live="off">0:00 / 0:00</span>
+            </div>
+            <div class="bgm-misc-volume">
+                <button type="button" id="bgm-misc-mute" class="bgm-misc-pbtn bgm-misc-mute-btn" aria-label="음소거" aria-pressed="false">
+                    <svg class="bgm-misc-icon-volume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polygon points="11 4 6 9 2 9 2 15 6 15 11 20 11 4"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                    <svg class="bgm-misc-icon-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polygon points="11 4 6 9 2 9 2 15 6 15 11 20 11 4"></polygon>
+                        <line x1="22" x2="16" y1="9" y2="15"></line>
+                        <line x1="16" x2="22" y1="9" y2="15"></line>
+                    </svg>
+                </button>
+                <input
+                    type="range"
+                    id="bgm-misc-volume"
+                    class="bgm-misc-volume-slider"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value="0.1"
+                    aria-label="음량"
+                />
+            </div>
+            <div class="bgm-misc-player-toggles">
+                <button type="button" id="bgm-misc-shuffle" class="bgm-misc-pbtn bgm-misc-toggle" aria-label="셔플 끔" aria-pressed="false">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"></path>
+                        <path d="m18 2 4 4-4 4"></path>
+                        <path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"></path>
+                        <path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8"></path>
+                        <path d="m18 14 4 4-4 4"></path>
+                    </svg>
+                </button>
+                <button type="button" id="bgm-misc-repeat" class="bgm-misc-pbtn bgm-misc-toggle" aria-label="반복 끔">
+                    <svg class="bgm-misc-icon-repeat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m17 2 4 4-4 4"></path>
+                        <path d="M3 11v-1a4 4 0 0 1 4-4h14"></path>
+                        <path d="m7 22-4-4 4-4"></path>
+                        <path d="M21 13v1a4 4 0 0 1-4 4H3"></path>
+                    </svg>
+                    <svg class="bgm-misc-icon-repeat-one" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m17 2 4 4-4 4"></path>
+                        <path d="M3 11v-1a4 4 0 0 1 4-4h14"></path>
+                        <path d="m7 22-4-4 4-4"></path>
+                        <path d="M21 13v1a4 4 0 0 1-4 4H3"></path>
+                        <path d="M11 10h1v4"></path>
+                    </svg>
+                </button>
+                <button type="button" id="bgm-misc-drawer-toggle" class="bgm-misc-pbtn bgm-misc-drawer-btn" aria-label="재생 목록 열기" aria-expanded="false" aria-controls="bgm-misc-queue-drawer">
+                    <svg class="bgm-misc-icon-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="3" x2="21" y1="6" y2="6"></line>
+                        <line x1="3" x2="21" y1="12" y2="12"></line>
+                        <line x1="3" x2="21" y1="18" y2="18"></line>
+                    </svg>
+                    <svg class="bgm-misc-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M18 6 6 18"></path>
+                        <path d="m6 6 12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <div id="bgm-misc-toast" class="bgm-misc-toast" aria-live="polite" aria-atomic="true"></div>
+
+    <section id="bgm-misc-queue-drawer" class="bgm-misc-queue-drawer" hidden aria-label="재생 목록">
+        <header class="bgm-misc-drawer-header">
+            <span>재생 목록 (<span id="bgm-misc-queue-count">0</span>)</span>
+            <button type="button" id="bgm-misc-clear" class="bgm-misc-clear-btn">지우기</button>
+        </header>
+        <ol id="bgm-misc-queue-list" class="bgm-misc-queue-list"></ol>
+    </section>
+
     <script is:inline type="module" src={`${base}/js/misc/bgm-misc.js`}></script>
 </Layout>
