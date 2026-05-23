@@ -13,6 +13,7 @@ import {
     getShipType,
     createAttrMapping,
     loadSkillIconData,
+    loadSkillToIconId,
     loadSkillDataTemplate
 } from './shipgirl-info.data.js';
 import { showMapsModal } from './shipgirl-info.maps.js';
@@ -108,7 +109,7 @@ export async function showDetailView(shipName) {
 
     state.elements.loading.style.display = 'block';
     try {
-        await Promise.all([loadSkillIconData(), loadSkillDataTemplate()]);
+        await Promise.all([loadSkillIconData(), loadSkillToIconId(), loadSkillDataTemplate()]);
     } finally {
         state.elements.loading.style.display = 'none';
     }

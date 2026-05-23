@@ -9,7 +9,7 @@ import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorag
 import {
     setup as setupData,
     loadData, loadNationalityData, loadAttrTypeData,
-    loadShipTypeData, loadSkillIconData, loadSkillDataTemplate
+    loadShipTypeData, loadSkillIconData, loadSkillToIconId, loadSkillDataTemplate
 } from './shipgirl-info.data.js';
 import {
     setup as setupDetail,
@@ -51,6 +51,8 @@ const state = {
     shipTypeData: {},
     /** @type {Object<string, string>} */
     skillIconData: {},
+    /** @type {Object<string, number>} */
+    skillToIconId: {},
     /** @type {Object} */
     skillDataTemplate: {},
     /** @type {string} */
@@ -128,7 +130,7 @@ async function init() {
 
         // Warm skill assets after first render. Detail/skill search also await these
         // explicitly, so this improves repeat interactions without delaying the grid.
-        const loadSkillAssets = () => Promise.all([loadSkillIconData(), loadSkillDataTemplate()]);
+        const loadSkillAssets = () => Promise.all([loadSkillIconData(), loadSkillToIconId(), loadSkillDataTemplate()]);
         if ('requestIdleCallback' in window) {
             requestIdleCallback(loadSkillAssets, { timeout: 3000 });
         } else {

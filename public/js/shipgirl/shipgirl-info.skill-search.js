@@ -8,6 +8,7 @@ import {
     processSkillDescription,
     getSkillIconUrl,
     loadSkillIconData,
+    loadSkillToIconId,
     loadSkillDataTemplate
 } from './shipgirl-info.data.js';
 import { openModal, closeModal, createSearchIndex, ensureFuse, debounce } from '../utils.js';
@@ -123,7 +124,7 @@ async function buildCorpus() {
     if (!state.fullShipData && state.fullShipDataPromise) {
         await state.fullShipDataPromise;
     }
-    await Promise.all([loadSkillIconData(), loadSkillDataTemplate(), ensureFuse()]);
+    await Promise.all([loadSkillIconData(), loadSkillToIconId(), loadSkillDataTemplate(), ensureFuse()]);
 
     if (!state.fullShipData || !state.skillDataTemplate || Object.keys(state.skillDataTemplate).length === 0) {
         throw new Error('데이터 로딩이 완료되지 않았습니다');

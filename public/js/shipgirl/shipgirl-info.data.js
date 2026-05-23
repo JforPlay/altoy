@@ -14,6 +14,7 @@ import { fetchJSON, fetchJSONWithCache } from '../utils.js';
 // ============================================
 let state;
 let skillIconDataPromise = null;
+let skillToIconIdPromise = null;
 let skillDataTemplatePromise = null;
 
 export function setup(stateRef) {
@@ -85,6 +86,29 @@ async function doLoadSkillIconData() {
     }
 }
 
+/** Load skill_id → icon_id resolution map. Emitted by build_skill_icons.py from
+ *  gamecfg/buff.json — `buff_<skill>.icon` is the in-game source of truth for
+ *  which `skillicon/{N}.webp` family bundle a skill renders with. Without this
+ *  file, getSkillIconUrl falls back to a floor(id/10)*10 heuristic that breaks
+ *  for ~35% of skills (e.g. Fletcher's 20041/20042 should resolve to 20000,
+ *  not 20040). Optional — old pipeline runs without this file degrade to the
+ *  legacy heuristic. */
+export async function loadSkillToIconId() {
+    if (skillToIconIdPromise) return skillToIconIdPromise;
+    skillToIconIdPromise = doLoadSkillToIconId();
+    return skillToIconIdPromise;
+}
+
+async function doLoadSkillToIconId() {
+    try {
+        state.skillToIconId = await fetchJSON('data/skill_to_icon_id.json');
+        console.log('Loaded skill → icon id map:', Object.keys(state.skillToIconId).length, 'entries');
+    } catch (error) {
+        console.warn('skill_to_icon_id.json missing — falling back to icon-id heuristic', error);
+        state.skillToIconId = {};
+    }
+}
+
 /**
  * Load skill_data_template; falls back to AzurLaneData KR remote if local copy is missing.
  * Normalizes both array and object formats to a keyed object { id: skill }.
@@ -137,8 +161,21 @@ async function doLoadSkillDataTemplate() {
 
 // ===== Skill Helper Functions =====
 
+/**
+ * Resolve a skill ID to its icon URL. Mirrors the game's own lookup
+ * (`pg.buffCfg["buff_<id>"].icon` in model/vo/shipskill.lua) via the
+ * pre-built skill_to_icon_id.json map.
+ *
+ * Falls back to a direct/family-base lookup for two cases:
+ *   1. The skill_to_icon_id map wasn't loaded (pipeline pre-dating this fix).
+ *   2. The skill has no entry there (4 skills have no buff_<id>.lua at all).
+ */
 export function getSkillIconUrl(skillId) {
     const id = String(skillId);
+    const iconId = state.skillToIconId?.[id];
+    if (iconId !== undefined) {
+        return state.skillIconData[String(iconId)] ?? null;
+    }
     const baseId = String(Math.floor(Number(skillId) / 10) * 10);
     return state.skillIconData[id] || state.skillIconData[baseId] || null;
 }
