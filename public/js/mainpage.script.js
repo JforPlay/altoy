@@ -1,7 +1,8 @@
 /**
  * mainpage.script.js
  * Main page entry point: hero carousel, live event banner carousel, birthday widget, card animations.
- * Loaded only on index.astro. Event banner data is fetched from AzurLaneTools GitHub (with localStorage cache).
+ * Loaded only on index.astro. Event banner data comes from the local lua2json pipeline
+ * (public/data/activity_banner.json), cached in localStorage for 30 minutes.
  */
 
 import {
@@ -197,13 +198,19 @@ function initHeroCarousel() {
 
 /**
  * IIFE module managing the live event banner carousel.
- * Fetches active banners from AzurLaneTools, caches in localStorage for 30 minutes.
- * Banners are filtered by current date and sorted by type then ID.
+ * Banners come from public/data/activity_banner.json (built by the WSL lua2json
+ * pipeline) and are cached in localStorage for 30 minutes. Filtered by current
+ * date and sorted by type then ID.
  */
 const EventCarousel = (function () {
-    const API_URL = 'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/activity_banner.json';
+    // Local data source — the upstream AzurLaneTools/AzurLaneData KR feed went
+    // stale (last refresh 2026-05-08); the WSL pipeline now ships this file from
+    // the lua2json conversion of KR/sharecfg/activity_banner.lua.
+    const API_URL = `${getBasePath()}/data/activity_banner.json`;
     const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/activitybanner/';
-    const CACHE_KEY = 'eventBannersCache';
+    // Bumped (v2) when the source moved from upstream GitHub to the local file —
+    // forces a fresh fetch for users still holding the 30-min stale-cache entry.
+    const CACHE_KEY = 'eventBannersCacheV2';
     const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
     let currentIndex = 0;
