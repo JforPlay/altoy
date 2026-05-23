@@ -705,6 +705,23 @@ function updateEnhancementDisplay() {
 // ===== Skill Section =====
 
 /**
+ * Substitute $1, $2, ... placeholders in skill.desc with the bonus value from
+ * each desc_add[N-1][skillLevelIndex][0]. Each desc_add slot drives one $N
+ * placeholder — e.g. 라피's skill has two slots so the desc references both
+ * $1 (HP recovery penalty) and $2 (work speed bonus).
+ */
+function formatSkillDescription(skill, skillLevelIndex) {
+    if (!skill || !skill.desc) return '';
+    if (!Array.isArray(skill.desc_add)) return skill.desc;
+
+    return skill.desc_add.reduce((desc, levelTable, slotIndex) => {
+        const entry = levelTable && levelTable[skillLevelIndex];
+        const bonus = entry && entry[0] != null ? entry[0] : '?';
+        return desc.replaceAll(`$${slotIndex + 1}`, `<strong>${bonus}</strong>`);
+    }, skill.desc);
+}
+
+/**
  * Render skill section
  */
 function renderSkillSection(char) {
@@ -727,11 +744,7 @@ function renderSkillSection(char) {
 
     // Get current skill level value (1-10, index 0-9)
     const skillLevelIndex = state.selectedSkillLevel - 1;
-    const currentBonus = skill.desc_add && skill.desc_add[0] && skill.desc_add[0][skillLevelIndex]
-        ? skill.desc_add[0][skillLevelIndex][0]
-        : '?';
-
-    const description = skill.desc.replace('$1', `<strong>${currentBonus}</strong>`);
+    const description = formatSkillDescription(skill, skillLevelIndex);
 
     // Get material for current skill level
     const currentMaterial = skill.material && skill.material[skillLevelIndex]
@@ -809,10 +822,7 @@ function updateSkillDisplay(char) {
     }
 
     // Update description
-    const currentBonus = skill.desc_add && skill.desc_add[0] && skill.desc_add[0][skillLevelIndex]
-        ? skill.desc_add[0][skillLevelIndex][0]
-        : '?';
-    const description = skill.desc.replace('$1', `<strong>${currentBonus}</strong>`);
+    const description = formatSkillDescription(skill, skillLevelIndex);
 
     const descElement = document.getElementById('skill-description');
     if (descElement) {
