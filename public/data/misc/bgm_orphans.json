@@ -1,0 +1,5822 @@
+{
+    "airraidalarm": {
+        "name": "airraidalarm",
+        "cues": [
+            "airRaidAlarm"
+        ],
+        "tracks": [
+            {
+                "cue": "airRaidAlarm",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/airraidalarm/airRaidAlarm.opus"
+            }
+        ]
+    },
+    "aoi hougeki-full": {
+        "name": "aoi hougeki-full",
+        "cues": [
+            "Aoi Hougeki-full"
+        ],
+        "tracks": [
+            {
+                "cue": "Aoi Hougeki-full",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/aoi hougeki-full/Aoi%20Hougeki-full.opus"
+            }
+        ]
+    },
+    "aoi hougeki-inst-short": {
+        "name": "aoi hougeki-inst-short",
+        "cues": [
+            "Aoi Hougeki-inst-short"
+        ],
+        "tracks": [
+            {
+                "cue": "Aoi Hougeki-inst-short",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/aoi hougeki-inst-short/Aoi%20Hougeki-inst-short.opus"
+            }
+        ]
+    },
+    "aoi hougeki-short": {
+        "name": "aoi hougeki-short",
+        "cues": [
+            "Aoi Hougeki-short"
+        ],
+        "tracks": [
+            {
+                "cue": "Aoi Hougeki-short",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/aoi hougeki-short/Aoi%20Hougeki-short.opus"
+            }
+        ]
+    },
+    "azumaster": {
+        "name": "azumaster",
+        "cues": [
+            "main_AZURLANE_0918 mix"
+        ],
+        "tracks": [
+            {
+                "cue": "main_AZURLANE_0918 mix",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/azumaster/main_AZURLANE_0918%20mix.opus"
+            }
+        ]
+    },
+    "azumaster-ins": {
+        "name": "azumaster-ins",
+        "cues": [
+            "inst_AZURLANE_1018 mix"
+        ],
+        "tracks": [
+            {
+                "cue": "inst_AZURLANE_1018 mix",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/azumaster-ins/inst_AZURLANE_1018%20mix.opus"
+            }
+        ]
+    },
+    "bar-soft": {
+        "name": "bar-soft",
+        "cues": [
+            "bgm-bar-soft"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-bar-soft",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/bar-soft/bgm-bar-soft.opus"
+            }
+        ]
+    },
+    "battle-af": {
+        "name": "battle-af",
+        "cues": [
+            "AZR03_08_R2"
+        ],
+        "tracks": [
+            {
+                "cue": "AZR03_08_R2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-af/AZR03_08_R2.opus"
+            }
+        ]
+    },
+    "battle-againstfate": {
+        "name": "battle-againstfate",
+        "cues": [
+            "01_ワタツミを越えて"
+        ],
+        "tracks": [
+            {
+                "cue": "01_ワタツミを越えて",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-againstfate/01_%E3%83%AF%E3%82%BF%E3%83%84%E3%83%9F%E3%82%92%E8%B6%8A%E3%81%88%E3%81%A6.opus"
+            }
+        ]
+    },
+    "battle-arbitrator-type1": {
+        "name": "battle-arbitrator-type1",
+        "cues": [
+            "world_02_re1"
+        ],
+        "tracks": [
+            {
+                "cue": "world_02_re1",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-arbitrator-type1/world_02_re1.opus"
+            }
+        ]
+    },
+    "battle-arcticocean": {
+        "name": "battle-arcticocean",
+        "cues": [
+            "11.battle in arctic ocean"
+        ],
+        "tracks": [
+            {
+                "cue": "11.battle in arctic ocean",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-arcticocean/11.battle%20in%20arctic%20ocean.opus"
+            }
+        ]
+    },
+    "battle-ash-strong": {
+        "name": "battle-ash-strong",
+        "cues": [
+            "battle-ash-strong迫りくる敵"
+        ],
+        "tracks": [
+            {
+                "cue": "battle-ash-strong迫りくる敵",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-ash-strong/battle-ash-strong%E8%BF%AB%E3%82%8A%E3%81%8F%E3%82%8B%E6%95%B5.opus"
+            }
+        ]
+    },
+    "battle-ashes-theme": {
+        "name": "battle-ashes-theme",
+        "cues": [
+            "13_re1_余烬"
+        ],
+        "tracks": [
+            {
+                "cue": "13_re1_余烬",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-ashes-theme/13_re1_%E4%BD%99%E7%83%AC.opus"
+            }
+        ]
+    },
+    "battle-boss-5": {
+        "name": "battle-boss-5",
+        "cues": [
+            "皇家战斗女仆团，出击！"
+        ],
+        "tracks": [
+            {
+                "cue": "皇家战斗女仆团，出击！",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-boss-5/%E7%9A%87%E5%AE%B6%E6%88%98%E6%96%97%E5%A5%B3%E4%BB%86%E5%9B%A2%EF%BC%8C%E5%87%BA%E5%87%BB%EF%BC%81.opus"
+            }
+        ]
+    },
+    "battle-boss-6": {
+        "name": "battle-boss-6",
+        "cues": [
+            "17-强敌"
+        ],
+        "tracks": [
+            {
+                "cue": "17-强敌",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-boss-6/17-%E5%BC%BA%E6%95%8C.opus"
+            }
+        ]
+    },
+    "battle-boss-camelot": {
+        "name": "battle-boss-camelot",
+        "cues": [
+            "battle-boss-camelot"
+        ],
+        "tracks": [
+            {
+                "cue": "battle-boss-camelot",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-boss-camelot/battle-boss-camelot.opus"
+            }
+        ]
+    },
+    "battle-boss-deepecho": {
+        "name": "battle-boss-deepecho",
+        "cues": [
+            "bgm-battle-boss-deepecho"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-battle-boss-deepecho",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-boss-deepecho/bgm-battle-boss-deepecho.opus"
+            }
+        ]
+    },
+    "battle-boss-longgong": {
+        "name": "battle-boss-longgong",
+        "cues": [
+            "battle-boss-longgong"
+        ],
+        "tracks": [
+            {
+                "cue": "battle-boss-longgong",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-boss-longgong/battle-boss-longgong.opus"
+            }
+        ]
+    },
+    "battle-boss-nep1": {
+        "name": "battle-boss-nep1",
+        "cues": [
+            "nepu_048_URANUS_1411"
+        ],
+        "tracks": [
+            {
+                "cue": "nepu_048_URANUS_1411",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-boss-nep1/nepu_048_URANUS_1411.opus"
+            }
+        ]
+    },
+    "battle-boss-nep2": {
+        "name": "battle-boss-nep2",
+        "cues": [
+            "nepu_004_Outside The Dimension"
+        ],
+        "tracks": [
+            {
+                "cue": "nepu_004_Outside The Dimension",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-boss-nep2/nepu_004_Outside%20The%20Dimension.opus"
+            }
+        ]
+    },
+    "battle-boss-nep3": {
+        "name": "battle-boss-nep3",
+        "cues": [
+            "nepu_008_ABSOLUTE_1411"
+        ],
+        "tracks": [
+            {
+                "cue": "nepu_008_ABSOLUTE_1411",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-boss-nep3/nepu_008_ABSOLUTE_1411.opus"
+            }
+        ]
+    },
+    "battle-boss-temepest-1": {
+        "name": "battle-boss-temepest-1",
+        "cues": [
+            "黑水死斗_eden"
+        ],
+        "tracks": [
+            {
+                "cue": "黑水死斗_eden",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-boss-temepest-1/%E9%BB%91%E6%B0%B4%E6%AD%BB%E6%96%97_eden.opus"
+            }
+        ]
+    },
+    "battle-boss-tiancheng": {
+        "name": "battle-boss-tiancheng",
+        "cues": [
+            "al日系bossR"
+        ],
+        "tracks": [
+            {
+                "cue": "al日系bossR",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-boss-tiancheng/al%E6%97%A5%E7%B3%BBbossR.opus"
+            }
+        ]
+    },
+    "battle-boss-ucnf": {
+        "name": "battle-boss-ucnf",
+        "cues": [
+            "理事会舰队_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "理事会舰队_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-boss-ucnf/%E7%90%86%E4%BA%8B%E4%BC%9A%E8%88%B0%E9%98%9F_G.K_loop.opus"
+            }
+        ]
+    },
+    "battle-boss-uta": {
+        "name": "battle-boss-uta",
+        "cues": [
+            "uta-battle-boss-戦火の狼煙"
+        ],
+        "tracks": [
+            {
+                "cue": "uta-battle-boss-戦火の狼煙",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-boss-uta/uta-battle-boss-%E6%88%A6%E7%81%AB%E3%81%AE%E7%8B%BC%E7%85%99.opus"
+            }
+        ]
+    },
+    "battle-camelot": {
+        "name": "battle-camelot",
+        "cues": [
+            "battle-camelot"
+        ],
+        "tracks": [
+            {
+                "cue": "battle-camelot",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-camelot/battle-camelot.opus"
+            }
+        ]
+    },
+    "battle-crosstheline-elegant": {
+        "name": "battle-crosstheline-elegant",
+        "cues": [
+            "跨越界限_6th3"
+        ],
+        "tracks": [
+            {
+                "cue": "跨越界限_6th3",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-crosstheline-elegant/%E8%B7%A8%E8%B6%8A%E7%95%8C%E9%99%90_6th3.opus"
+            }
+        ]
+    },
+    "battle-deepecho": {
+        "name": "battle-deepecho",
+        "cues": [
+            "bgm-battle-deepecho"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-battle-deepecho",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-deepecho/bgm-battle-deepecho.opus"
+            }
+        ]
+    },
+    "battle-deepecho2": {
+        "name": "battle-deepecho2",
+        "cues": [
+            "bgm-battle-deepecho2"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-battle-deepecho2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-deepecho2/bgm-battle-deepecho2.opus"
+            }
+        ]
+    },
+    "battle-donghuang-static": {
+        "name": "battle-donghuang-static",
+        "cues": [
+            "四海游龙_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "四海游龙_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-donghuang-static/%E5%9B%9B%E6%B5%B7%E6%B8%B8%E9%BE%99_AL.opus"
+            }
+        ]
+    },
+    "battle-dos-onstage": {
+        "name": "battle-dos-onstage",
+        "cues": [
+            "维序展开_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "维序展开_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-dos-onstage/%E7%BB%B4%E5%BA%8F%E5%B1%95%E5%BC%80_PX.opus"
+            }
+        ]
+    },
+    "battle-eagleunion": {
+        "name": "battle-eagleunion",
+        "cues": [
+            "鹰击长空_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "鹰击长空_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-eagleunion/%E9%B9%B0%E5%87%BB%E9%95%BF%E7%A9%BA_AL.opus"
+            }
+        ]
+    },
+    "battle-executor-type1": {
+        "name": "battle-executor-type1",
+        "cues": [
+            "world_07"
+        ],
+        "tracks": [
+            {
+                "cue": "world_07",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-executor-type1/world_07.opus"
+            }
+        ]
+    },
+    "battle-heroines-image": {
+        "name": "battle-heroines-image",
+        "cues": [
+            "11_超弩級_HEROINES"
+        ],
+        "tracks": [
+            {
+                "cue": "11_超弩級_HEROINES",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-heroines-image/11_%E8%B6%85%E5%BC%A9%E7%B4%9A_HEROINES.opus"
+            }
+        ]
+    },
+    "battle-highseasfleet-reborn": {
+        "name": "battle-highseasfleet-reborn",
+        "cues": [
+            "battle-highseasfleet-reborn"
+        ],
+        "tracks": [
+            {
+                "cue": "battle-highseasfleet-reborn",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-highseasfleet-reborn/battle-highseasfleet-reborn.opus"
+            }
+        ]
+    },
+    "battle-hightech": {
+        "name": "battle-hightech",
+        "cues": [
+            "battle-hightech"
+        ],
+        "tracks": [
+            {
+                "cue": "battle-hightech",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-hightech/battle-hightech.opus"
+            }
+        ]
+    },
+    "battle-inthememory": {
+        "name": "battle-inthememory",
+        "cues": [
+            "battle in the memory"
+        ],
+        "tracks": [
+            {
+                "cue": "battle in the memory",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-inthememory/battle%20in%20the%20memory.opus"
+            }
+        ]
+    },
+    "battle-ironblood-brisk": {
+        "name": "battle-ironblood-brisk",
+        "cues": [
+            "04_ブリッツクリーグ"
+        ],
+        "tracks": [
+            {
+                "cue": "04_ブリッツクリーグ",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-ironblood-brisk/04_%E3%83%96%E3%83%AA%E3%83%83%E3%83%84%E3%82%AF%E3%83%AA%E3%83%BC%E3%82%B0.opus"
+            }
+        ]
+    },
+    "battle-ironblood-defence": {
+        "name": "battle-ironblood-defence",
+        "cues": [
+            "集结抵抗舰队_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "集结抵抗舰队_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-ironblood-defence/%E9%9B%86%E7%BB%93%E6%8A%B5%E6%8A%97%E8%88%B0%E9%98%9F_AL.opus"
+            }
+        ]
+    },
+    "battle-longgong": {
+        "name": "battle-longgong",
+        "cues": [
+            "battle-longgong"
+        ],
+        "tracks": [
+            {
+                "cue": "battle-longgong",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-longgong/battle-longgong.opus"
+            }
+        ]
+    },
+    "battle-maid": {
+        "name": "battle-maid",
+        "cues": [
+            "05_華麗なるロイヤルメイド隊 (1)"
+        ],
+        "tracks": [
+            {
+                "cue": "05_華麗なるロイヤルメイド隊 (1)",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-maid/05_%E8%8F%AF%E9%BA%97%E3%81%AA%E3%82%8B%E3%83%AD%E3%82%A4%E3%83%A4%E3%83%AB%E3%83%A1%E3%82%A4%E3%83%89%E9%9A%8A%20%281%29.opus"
+            }
+        ]
+    },
+    "battle-midgard": {
+        "name": "battle-midgard",
+        "cues": [
+            "battle-midgard"
+        ],
+        "tracks": [
+            {
+                "cue": "battle-midgard",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-midgard/battle-midgard.opus"
+            }
+        ]
+    },
+    "battle-midgard-hunting": {
+        "name": "battle-midgard-hunting",
+        "cues": [
+            "battle-midgard-hunting"
+        ],
+        "tracks": [
+            {
+                "cue": "battle-midgard-hunting",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-midgard-hunting/battle-midgard-hunting.opus"
+            }
+        ]
+    },
+    "battle-midgard-up": {
+        "name": "battle-midgard-up",
+        "cues": [
+            "battle-midgard-up"
+        ],
+        "tracks": [
+            {
+                "cue": "battle-midgard-up",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-midgard-up/battle-midgard-up.opus"
+            }
+        ]
+    },
+    "battle-nep": {
+        "name": "battle-nep",
+        "cues": [
+            "nepu_025_The Code~Noisy And Calm~"
+        ],
+        "tracks": [
+            {
+                "cue": "nepu_025_The Code~Noisy And Calm~",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-nep/nepu_025_The%20Code~Noisy%20And%20Calm~.opus"
+            }
+        ]
+    },
+    "battle-nep2": {
+        "name": "battle-nep2",
+        "cues": [
+            "nepu_009_VOLTAGE_1411"
+        ],
+        "tracks": [
+            {
+                "cue": "nepu_009_VOLTAGE_1411",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-nep2/nepu_009_VOLTAGE_1411.opus"
+            }
+        ]
+    },
+    "battle-newwind": {
+        "name": "battle-newwind",
+        "cues": [
+            "迎向新风_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "迎向新风_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-newwind/%E8%BF%8E%E5%90%91%E6%96%B0%E9%A3%8E_PX.opus"
+            }
+        ]
+    },
+    "battle-nightmare-theme": {
+        "name": "battle-nightmare-theme",
+        "cues": [
+            "众魂汇聚之地_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "众魂汇聚之地_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-nightmare-theme/%E4%BC%97%E9%AD%82%E6%B1%87%E8%81%9A%E4%B9%8B%E5%9C%B0_AL.opus"
+            }
+        ]
+    },
+    "battle-pacific": {
+        "name": "battle-pacific",
+        "cues": [
+            "10.battle in pacific"
+        ],
+        "tracks": [
+            {
+                "cue": "10.battle in pacific",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-pacific/10.battle%20in%20pacific.opus"
+            }
+        ]
+    },
+    "battle-roma-image": {
+        "name": "battle-roma-image",
+        "cues": [
+            "bgm-battle-roma-image"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-battle-roma-image",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-roma-image/bgm-battle-roma-image.opus"
+            }
+        ]
+    },
+    "battle-roma-sky": {
+        "name": "battle-roma-sky",
+        "cues": [
+            "bgm-battle-roma-sky"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-battle-roma-sky",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-roma-sky/bgm-battle-roma-sky.opus"
+            }
+        ]
+    },
+    "battle-seiren-theme": {
+        "name": "battle-seiren-theme",
+        "cues": [
+            "16_血塗られた輪廻の果てに_～SEIREN"
+        ],
+        "tracks": [
+            {
+                "cue": "16_血塗られた輪廻の果てに_～SEIREN",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-seiren-theme/16_%E8%A1%80%E5%A1%97%E3%82%89%E3%82%8C%E3%81%9F%E8%BC%AA%E5%BB%BB%E3%81%AE%E6%9E%9C%E3%81%A6%E3%81%AB_%EF%BD%9ESEIREN.opus"
+            }
+        ]
+    },
+    "battle-seirenbasicsystam-theme": {
+        "name": "battle-seirenbasicsystam-theme",
+        "cues": [
+            "06_コンダクターのテーマ"
+        ],
+        "tracks": [
+            {
+                "cue": "06_コンダクターのテーマ",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-seirenbasicsystam-theme/06_%E3%82%B3%E3%83%B3%E3%83%80%E3%82%AF%E3%82%BF%E3%83%BC%E3%81%AE%E3%83%86%E3%83%BC%E3%83%9E.opus"
+            }
+        ]
+    },
+    "battle-seirencleaner-theme": {
+        "name": "battle-seirencleaner-theme",
+        "cues": [
+            "05_オミッターのテーマ"
+        ],
+        "tracks": [
+            {
+                "cue": "05_オミッターのテーマ",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-seirencleaner-theme/05_%E3%82%AA%E3%83%9F%E3%83%83%E3%82%BF%E3%83%BC%E3%81%AE%E3%83%86%E3%83%BC%E3%83%9E.opus"
+            }
+        ]
+    },
+    "battle-shenguang-freely": {
+        "name": "battle-shenguang-freely",
+        "cues": [
+            "自由驰骋_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "自由驰骋_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-shenguang-freely/%E8%87%AA%E7%94%B1%E9%A9%B0%E9%AA%8B_PX.opus"
+            }
+        ]
+    },
+    "battle-shenguang-holy": {
+        "name": "battle-shenguang-holy",
+        "cues": [
+            "重塑正典_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "重塑正典_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-shenguang-holy/%E9%87%8D%E5%A1%91%E6%AD%A3%E5%85%B8_AL.opus"
+            }
+        ]
+    },
+    "battle-starsea-elec": {
+        "name": "battle-starsea-elec",
+        "cues": [
+            "星海的战斗_2nd2"
+        ],
+        "tracks": [
+            {
+                "cue": "星海的战斗_2nd2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-starsea-elec/%E6%98%9F%E6%B5%B7%E7%9A%84%E6%88%98%E6%96%97_2nd2.opus"
+            }
+        ]
+    },
+    "battle-temepest-1": {
+        "name": "battle-temepest-1",
+        "cues": [
+            "水栖构造体_eden2nd11"
+        ],
+        "tracks": [
+            {
+                "cue": "水栖构造体_eden2nd11",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-temepest-1/%E6%B0%B4%E6%A0%96%E6%9E%84%E9%80%A0%E4%BD%93_eden2nd11.opus"
+            }
+        ]
+    },
+    "battle-temepest-2": {
+        "name": "battle-temepest-2",
+        "cues": [
+            "陨星坠落之刻_eden5th09"
+        ],
+        "tracks": [
+            {
+                "cue": "陨星坠落之刻_eden5th09",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-temepest-2/%E9%99%A8%E6%98%9F%E5%9D%A0%E8%90%BD%E4%B9%8B%E5%88%BB_eden5th09.opus"
+            }
+        ]
+    },
+    "battle-thechariotvii": {
+        "name": "battle-thechariotvii",
+        "cues": [
+            "审判机来袭_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "审判机来袭_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-thechariotvii/%E5%AE%A1%E5%88%A4%E6%9C%BA%E6%9D%A5%E8%A2%AD_PX.opus"
+            }
+        ]
+    },
+    "battle-thehierophantv": {
+        "name": "battle-thehierophantv",
+        "cues": [
+            "Call me Hierophant_shade"
+        ],
+        "tracks": [
+            {
+                "cue": "Call me Hierophant_shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-thehierophantv/Call%20me%20Hierophant_shade.opus"
+            }
+        ]
+    },
+    "battle-torch-theme": {
+        "name": "battle-torch-theme",
+        "cues": [
+            "16_re1_火炬"
+        ],
+        "tracks": [
+            {
+                "cue": "16_re1_火炬",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-torch-theme/16_re1_%E7%81%AB%E7%82%AC.opus"
+            }
+        ]
+    },
+    "battle-tulipa": {
+        "name": "battle-tulipa",
+        "cues": [
+            "鲜花与藤蔓之歌_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "鲜花与藤蔓之歌_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-tulipa/%E9%B2%9C%E8%8A%B1%E4%B8%8E%E8%97%A4%E8%94%93%E4%B9%8B%E6%AD%8C_AL.opus"
+            }
+        ]
+    },
+    "battle-ucnf": {
+        "name": "battle-ucnf",
+        "cues": [
+            "浮空战舰_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "浮空战舰_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-ucnf/%E6%B5%AE%E7%A9%BA%E6%88%98%E8%88%B0_G.K_loop.opus"
+            }
+        ]
+    },
+    "battle-undermoon": {
+        "name": "battle-undermoon",
+        "cues": [
+            "09_月下の安眠"
+        ],
+        "tracks": [
+            {
+                "cue": "09_月下の安眠",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-undermoon/09_%E6%9C%88%E4%B8%8B%E3%81%AE%E5%AE%89%E7%9C%A0.opus"
+            }
+        ]
+    },
+    "battle-unknown-approaching": {
+        "name": "battle-unknown-approaching",
+        "cues": [
+            "SOMETHINGISAPPROACHING_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "SOMETHINGISAPPROACHING_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-unknown-approaching/SOMETHINGISAPPROACHING_G.K_loop.opus"
+            }
+        ]
+    },
+    "battle-unzen-1": {
+        "name": "battle-unzen-1",
+        "cues": [
+            "一叶渡黄泉_eden5th07"
+        ],
+        "tracks": [
+            {
+                "cue": "一叶渡黄泉_eden5th07",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-unzen-1/%E4%B8%80%E5%8F%B6%E6%B8%A1%E9%BB%84%E6%B3%89_eden5th07.opus"
+            }
+        ]
+    },
+    "battle-unzen-2": {
+        "name": "battle-unzen-2",
+        "cues": [
+            "蝶影翩然_eden5th08"
+        ],
+        "tracks": [
+            {
+                "cue": "蝶影翩然_eden5th08",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-unzen-2/%E8%9D%B6%E5%BD%B1%E7%BF%A9%E7%84%B6_eden5th08.opus"
+            }
+        ]
+    },
+    "battle-uta": {
+        "name": "battle-uta",
+        "cues": [
+            "uta-battle-天啓の地"
+        ],
+        "tracks": [
+            {
+                "cue": "uta-battle-天啓の地",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-uta/uta-battle-%E5%A4%A9%E5%95%93%E3%81%AE%E5%9C%B0.opus"
+            }
+        ]
+    },
+    "battle-warprotocol": {
+        "name": "battle-warprotocol",
+        "cues": [
+            "战争协议已接入_eden5th12"
+        ],
+        "tracks": [
+            {
+                "cue": "战争协议已接入_eden5th12",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-warprotocol/%E6%88%98%E4%BA%89%E5%8D%8F%E8%AE%AE%E5%B7%B2%E6%8E%A5%E5%85%A5_eden5th12.opus"
+            }
+        ]
+    },
+    "battle-xinnong-image": {
+        "name": "battle-xinnong-image",
+        "cues": [
+            "battle-xinnong-image"
+        ],
+        "tracks": [
+            {
+                "cue": "battle-xinnong-image",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-xinnong-image/battle-xinnong-image.opus"
+            }
+        ]
+    },
+    "beverly_short_eng": {
+        "name": "beverly_short_eng",
+        "cues": [
+            "Beverly_short_eng"
+        ],
+        "tracks": [
+            {
+                "cue": "Beverly_short_eng",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/beverly_short_eng/Beverly_short_eng.opus"
+            }
+        ]
+    },
+    "beverly_short_inst": {
+        "name": "beverly_short_inst",
+        "cues": [
+            "Beverly_short_inst"
+        ],
+        "tracks": [
+            {
+                "cue": "Beverly_short_inst",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/beverly_short_inst/Beverly_short_inst.opus"
+            }
+        ]
+    },
+    "beverly_short_jp": {
+        "name": "beverly_short_jp",
+        "cues": [
+            "Beverly_short_jp"
+        ],
+        "tracks": [
+            {
+                "cue": "Beverly_short_jp",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/beverly_short_jp/Beverly_short_jp.opus"
+            }
+        ]
+    },
+    "bgm-cccp": {
+        "name": "bgm-cccp",
+        "cues": [
+            "bgm-cccp"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-cccp",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/bgm-cccp/bgm-cccp.opus"
+            }
+        ]
+    },
+    "bgm-cccp2": {
+        "name": "bgm-cccp2",
+        "cues": [
+            "bgm-cccp2"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-cccp2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/bgm-cccp2/bgm-cccp2.opus"
+            }
+        ]
+    },
+    "bgm-cccp3": {
+        "name": "bgm-cccp3",
+        "cues": [
+            "bgm-cccp3"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-cccp3",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/bgm-cccp3/bgm-cccp3.opus"
+            }
+        ]
+    },
+    "bgm-royalnavy": {
+        "name": "bgm-royalnavy",
+        "cues": [
+            "06我らの栄光に集え　～ROYAL NAVY"
+        ],
+        "tracks": [
+            {
+                "cue": "06我らの栄光に集え　～ROYAL NAVY",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/bgm-royalnavy/06%E6%88%91%E3%82%89%E3%81%AE%E6%A0%84%E5%85%89%E3%81%AB%E9%9B%86%E3%81%88%E3%80%80%EF%BD%9EROYAL%20NAVY.opus"
+            }
+        ]
+    },
+    "bgm-waterwave": {
+        "name": "bgm-waterwave",
+        "cues": [
+            "bgm-waterwave"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-waterwave",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/bgm-waterwave/bgm-waterwave.opus"
+            }
+        ]
+    },
+    "blueocean-image": {
+        "name": "blueocean-image",
+        "cues": [
+            "大洋"
+        ],
+        "tracks": [
+            {
+                "cue": "大洋",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/blueocean-image/%E5%A4%A7%E6%B4%8B.opus"
+            }
+        ]
+    },
+    "brs-1": {
+        "name": "brs-1",
+        "cues": [
+            "ブラック★ロックシューター"
+        ],
+        "tracks": [
+            {
+                "cue": "ブラック★ロックシューター",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/brs-1/%E3%83%96%E3%83%A9%E3%83%83%E3%82%AF%E2%98%85%E3%83%AD%E3%83%83%E3%82%AF%E3%82%B7%E3%83%A5%E3%83%BC%E3%82%BF%E3%83%BC.opus"
+            }
+        ]
+    },
+    "brs-1-inst": {
+        "name": "brs-1-inst",
+        "cues": [
+            "ブラック★ロックシューター_Inst"
+        ],
+        "tracks": [
+            {
+                "cue": "ブラック★ロックシューター_Inst",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/brs-1-inst/%E3%83%96%E3%83%A9%E3%83%83%E3%82%AF%E2%98%85%E3%83%AD%E3%83%83%E3%82%AF%E3%82%B7%E3%83%A5%E3%83%BC%E3%82%BF%E3%83%BC_Inst.opus"
+            }
+        ]
+    },
+    "bsm-10": {
+        "name": "bsm-10",
+        "cues": [
+            "b10-PV01_remix"
+        ],
+        "tracks": [
+            {
+                "cue": "b10-PV01_remix",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/bsm-10/b10-PV01_remix.opus"
+            }
+        ]
+    },
+    "bsm-4": {
+        "name": "bsm-4",
+        "cues": [
+            "b4-Also sprach Zarathustra"
+        ],
+        "tracks": [
+            {
+                "cue": "b4-Also sprach Zarathustra",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/bsm-4/b4-Also%20sprach%20Zarathustra.opus"
+            }
+        ]
+    },
+    "bsm-5": {
+        "name": "bsm-5",
+        "cues": [
+            "b5-回旋曲"
+        ],
+        "tracks": [
+            {
+                "cue": "b5-回旋曲",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/bsm-5/b5-%E5%9B%9E%E6%97%8B%E6%9B%B2.opus"
+            }
+        ]
+    },
+    "bsm-6": {
+        "name": "bsm-6",
+        "cues": [
+            "b6-铁血(piano)"
+        ],
+        "tracks": [
+            {
+                "cue": "b6-铁血(piano)",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/bsm-6/b6-%E9%93%81%E8%A1%80%28piano%29.opus"
+            }
+        ]
+    },
+    "bsm-7": {
+        "name": "bsm-7",
+        "cues": [
+            "b7-土耳其进行曲"
+        ],
+        "tracks": [
+            {
+                "cue": "b7-土耳其进行曲",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/bsm-7/b7-%E5%9C%9F%E8%80%B3%E5%85%B6%E8%BF%9B%E8%A1%8C%E6%9B%B2.opus"
+            }
+        ]
+    },
+    "bsm-8": {
+        "name": "bsm-8",
+        "cues": [
+            "b8-18_cut"
+        ],
+        "tracks": [
+            {
+                "cue": "b8-18_cut",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/bsm-8/b8-18_cut.opus"
+            }
+        ]
+    },
+    "china-party": {
+        "name": "china-party",
+        "cues": [
+            "bgm-china-party"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-china-party",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/china-party/bgm-china-party.opus"
+            }
+        ]
+    },
+    "cw-battle-boss": {
+        "name": "cw-battle-boss",
+        "cues": [
+            "12_響け撃音、轟かせ雷光　～SAKURA EMPIRE"
+        ],
+        "tracks": [
+            {
+                "cue": "12_響け撃音、轟かせ雷光　～SAKURA EMPIRE",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/cw-battle-boss/12_%E9%9F%BF%E3%81%91%E6%92%83%E9%9F%B3%E3%80%81%E8%BD%9F%E3%81%8B%E3%81%9B%E9%9B%B7%E5%85%89%E3%80%80%EF%BD%9ESAKURA%20EMPIRE.opus"
+            }
+        ]
+    },
+    "cw-level": {
+        "name": "cw-level",
+        "cues": [
+            "bgm-cw-level"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-cw-level",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/cw-level/bgm-cw-level.opus"
+            }
+        ]
+    },
+    "cw-story": {
+        "name": "cw-story",
+        "cues": [
+            "bgm-cw-story"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-cw-story",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/cw-story/bgm-cw-story.opus"
+            }
+        ]
+    },
+    "dal-az-battle": {
+        "name": "dal-az-battle",
+        "cues": [
+            "Ancient Realm_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "Ancient Realm_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/dal-az-battle/Ancient%20Realm_AL.opus"
+            }
+        ]
+    },
+    "dal-az-story-up": {
+        "name": "dal-az-story-up",
+        "cues": [
+            "A.L.Shining Date_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "A.L.Shining Date_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/dal-az-story-up/A.L.Shining%20Date_AL.opus"
+            }
+        ]
+    },
+    "dal-az-theme": {
+        "name": "dal-az-theme",
+        "cues": [
+            "Date a Lane_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "Date a Lane_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/dal-az-theme/Date%20a%20Lane_AL.opus"
+            }
+        ]
+    },
+    "danmachi-1": {
+        "name": "danmachi-1",
+        "cues": [
+            "1.M01B_迷宮都市オラリオ"
+        ],
+        "tracks": [
+            {
+                "cue": "1.M01B_迷宮都市オラリオ",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/danmachi-1/1.M01B_%E8%BF%B7%E5%AE%AE%E9%83%BD%E5%B8%82%E3%82%AA%E3%83%A9%E3%83%AA%E3%82%AA.opus"
+            }
+        ]
+    },
+    "danmachi-2": {
+        "name": "danmachi-2",
+        "cues": [
+            "2.M159_ココノエ"
+        ],
+        "tracks": [
+            {
+                "cue": "2.M159_ココノエ",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/danmachi-2/2.M159_%E3%82%B3%E3%82%B3%E3%83%8E%E3%82%A8.opus"
+            }
+        ]
+    },
+    "danmachi-3": {
+        "name": "danmachi-3",
+        "cues": [
+            "3.M166_TheVesta"
+        ],
+        "tracks": [
+            {
+                "cue": "3.M166_TheVesta",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/danmachi-3/3.M166_TheVesta.opus"
+            }
+        ]
+    },
+    "danmachi-az-story": {
+        "name": "danmachi-az-story",
+        "cues": [
+            "街巷酒馆_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "街巷酒馆_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/danmachi-az-story/%E8%A1%97%E5%B7%B7%E9%85%92%E9%A6%86_AL.opus"
+            }
+        ]
+    },
+    "deepblue-image": {
+        "name": "deepblue-image",
+        "cues": [
+            "08_月下の戦闘"
+        ],
+        "tracks": [
+            {
+                "cue": "08_月下の戦闘",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/deepblue-image/08_%E6%9C%88%E4%B8%8B%E3%81%AE%E6%88%A6%E9%97%98.opus"
+            }
+        ]
+    },
+    "diego": {
+        "name": "diego",
+        "cues": [
+            "私はNo"
+        ],
+        "tracks": [
+            {
+                "cue": "私はNo",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/diego/%E7%A7%81%E3%81%AFNo.opus"
+            }
+        ]
+    },
+    "doa-az-pv-1": {
+        "name": "doa-az-pv-1",
+        "cues": [
+            "假日航线~启航~_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "假日航线~启航~_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa-az-pv-1/%E5%81%87%E6%97%A5%E8%88%AA%E7%BA%BF~%E5%90%AF%E8%88%AA~_PV.opus"
+            }
+        ]
+    },
+    "doa-az-story-1": {
+        "name": "doa-az-story-1",
+        "cues": [
+            "闪耀海滨漫步曲_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "闪耀海滨漫步曲_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa-az-story-1/%E9%97%AA%E8%80%80%E6%B5%B7%E6%BB%A8%E6%BC%AB%E6%AD%A5%E6%9B%B2_AL.opus"
+            }
+        ]
+    },
+    "doa-song-day03": {
+        "name": "doa-song-day03",
+        "cues": [
+            "2_When I Think About You（bgm_home_day03_doaxvv）"
+        ],
+        "tracks": [
+            {
+                "cue": "2_When I Think About You（bgm_home_day03_doaxvv）",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa-song-day03/2_When%20I%20Think%20About%20You%EF%BC%88bgm_home_day03_doaxvv%EF%BC%89.opus"
+            }
+        ]
+    },
+    "doa-song-day05": {
+        "name": "doa-song-day05",
+        "cues": [
+            "6_Put Me On Top（bgm_home_day05_doaxvv）"
+        ],
+        "tracks": [
+            {
+                "cue": "6_Put Me On Top（bgm_home_day05_doaxvv）",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa-song-day05/6_Put%20Me%20On%20Top%EF%BC%88bgm_home_day05_doaxvv%EF%BC%89.opus"
+            }
+        ]
+    },
+    "doa-song-night03": {
+        "name": "doa-song-night03",
+        "cues": [
+            "9_Eye To Eye（bgm_act_night03_doaxvv）"
+        ],
+        "tracks": [
+            {
+                "cue": "9_Eye To Eye（bgm_act_night03_doaxvv）",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa-song-night03/9_Eye%20To%20Eye%EF%BC%88bgm_act_night03_doaxvv%EF%BC%89.opus"
+            }
+        ]
+    },
+    "doa-song-night06": {
+        "name": "doa-song-night06",
+        "cues": [
+            "3_Suddenly（bgm_home_night06_doaxvv）"
+        ],
+        "tracks": [
+            {
+                "cue": "3_Suddenly（bgm_home_night06_doaxvv）",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa-song-night06/3_Suddenly%EF%BC%88bgm_home_night06_doaxvv%EF%BC%89.opus"
+            }
+        ]
+    },
+    "doa_boss": {
+        "name": "doa_boss",
+        "cues": [
+            "bgm_doa_boss"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm_doa_boss",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa_boss/bgm_doa_boss.opus"
+            }
+        ]
+    },
+    "doa_daozhong": {
+        "name": "doa_daozhong",
+        "cues": [
+            "bgm_doa_daozhong"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm_doa_daozhong",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa_daozhong/bgm_doa_daozhong.opus"
+            }
+        ]
+    },
+    "doa_guanqia": {
+        "name": "doa_guanqia",
+        "cues": [
+            "bgm_doa_guanqia"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm_doa_guanqia",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa_guanqia/bgm_doa_guanqia.opus"
+            }
+        ]
+    },
+    "doa_huanzhuang": {
+        "name": "doa_huanzhuang",
+        "cues": [
+            "bgm_doa_huanzhuang"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm_doa_huanzhuang",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa_huanzhuang/bgm_doa_huanzhuang.opus"
+            }
+        ]
+    },
+    "doa_main_day": {
+        "name": "doa_main_day",
+        "cues": [
+            "bgm_doa_main_day"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm_doa_main_day",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa_main_day/bgm_doa_main_day.opus"
+            }
+        ]
+    },
+    "doa_main_night": {
+        "name": "doa_main_night",
+        "cues": [
+            "bgm_doa_main_night"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm_doa_main_night",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa_main_night/bgm_doa_main_night.opus"
+            }
+        ]
+    },
+    "doa_minigame": {
+        "name": "doa_minigame",
+        "cues": [
+            "bgm_doa_minigame"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm_doa_minigame",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa_minigame/bgm_doa_minigame.opus"
+            }
+        ]
+    },
+    "doa_story1": {
+        "name": "doa_story1",
+        "cues": [
+            "bgm_doa_story1"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm_doa_story1",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa_story1/bgm_doa_story1.opus"
+            }
+        ]
+    },
+    "doa_story3": {
+        "name": "doa_story3",
+        "cues": [
+            "bgm_doa_story3"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm_doa_story3",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/doa_story3/bgm_doa_story3.opus"
+            }
+        ]
+    },
+    "echo-loop": {
+        "name": "echo-loop",
+        "cues": [
+            "声呐扫描"
+        ],
+        "tracks": [
+            {
+                "cue": "声呐扫描",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/echo-loop/%E5%A3%B0%E5%91%90%E6%89%AB%E6%8F%8F.opus"
+            }
+        ]
+    },
+    "guangbo": {
+        "name": "guangbo",
+        "cues": [
+            "guangbo"
+        ],
+        "tracks": [
+            {
+                "cue": "guangbo",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/guangbo/guangbo.opus"
+            }
+        ]
+    },
+    "holo-aqua": {
+        "name": "holo-aqua",
+        "cues": [
+            "holo_湊阿库娅_楽しい時間はあっという間に"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_湊阿库娅_楽しい時間はあっという間に",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-aqua/holo_%E6%B9%8A%E9%98%BF%E5%BA%93%E5%A8%85_%E6%A5%BD%E3%81%97%E3%81%84%E6%99%82%E9%96%93%E3%81%AF%E3%81%82%E3%81%A3%E3%81%A8%E3%81%84%E3%81%86%E9%96%93%E3%81%AB.opus"
+            }
+        ]
+    },
+    "holo-ayame": {
+        "name": "holo-ayame",
+        "cues": [
+            "holo_百鬼绫目_Yumesakura【和風EDM】"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_百鬼绫目_Yumesakura【和風EDM】",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-ayame/holo_%E7%99%BE%E9%AC%BC%E7%BB%AB%E7%9B%AE_Yumesakura%E3%80%90%E5%92%8C%E9%A2%A8EDM%E3%80%91.opus"
+            }
+        ]
+    },
+    "holo-control": {
+        "name": "holo-control",
+        "cues": [
+            "holo_I_can't_control_my_self"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_I_can't_control_my_self",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-control/holo_I_can%27t_control_my_self.opus"
+            }
+        ]
+    },
+    "holo-control-inst": {
+        "name": "holo-control-inst",
+        "cues": [
+            "holo_I_can't_control_my_self_inst"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_I_can't_control_my_self_inst",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-control-inst/holo_I_can%27t_control_my_self_inst.opus"
+            }
+        ]
+    },
+    "holo-fbk": {
+        "name": "holo-fbk",
+        "cues": [
+            "holo_白上吹雪_Brand New Life_inst"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_白上吹雪_Brand New Life_inst",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-fbk/holo_%E7%99%BD%E4%B8%8A%E5%90%B9%E9%9B%AA_Brand%20New%20Life_inst.opus"
+            }
+        ]
+    },
+    "holo-fff": {
+        "name": "holo-fff",
+        "cues": [
+            "holo_Fake_Fake_Fake"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_Fake_Fake_Fake",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-fff/holo_Fake_Fake_Fake.opus"
+            }
+        ]
+    },
+    "holo-fff-inst": {
+        "name": "holo-fff-inst",
+        "cues": [
+            "holo_Fake_Fake_Fake_inst"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_Fake_Fake_Fake_inst",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-fff-inst/holo_Fake_Fake_Fake_inst.opus"
+            }
+        ]
+    },
+    "holo-inochi": {
+        "name": "holo-inochi",
+        "cues": [
+            "holo_inochi"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_inochi",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-inochi/holo_inochi.opus"
+            }
+        ]
+    },
+    "holo-inochi-inst": {
+        "name": "holo-inochi-inst",
+        "cues": [
+            "holo_inochi_inst"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_inochi_inst",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-inochi-inst/holo_inochi_inst.opus"
+            }
+        ]
+    },
+    "holo-matsuri": {
+        "name": "holo-matsuri",
+        "cues": [
+            "holo_夏色祭_お祭りディスコ"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_夏色祭_お祭りディスコ",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-matsuri/holo_%E5%A4%8F%E8%89%B2%E7%A5%AD_%E3%81%8A%E7%A5%AD%E3%82%8A%E3%83%87%E3%82%A3%E3%82%B9%E3%82%B3.opus"
+            }
+        ]
+    },
+    "holo-mio": {
+        "name": "holo-mio",
+        "cues": [
+            "holo_大神澪_Hometown"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_大神澪_Hometown",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-mio/holo_%E5%A4%A7%E7%A5%9E%E6%BE%AA_Hometown.opus"
+            }
+        ]
+    },
+    "holo-shion": {
+        "name": "holo-shion",
+        "cues": [
+            "holo_紫咲诗音_Shopping day"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_紫咲诗音_Shopping day",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-shion/holo_%E7%B4%AB%E5%92%B2%E8%AF%97%E9%9F%B3_Shopping%20day.opus"
+            }
+        ]
+    },
+    "holo-sora": {
+        "name": "holo-sora",
+        "cues": [
+            "holo_时乃空_あめあがりのカレイドスコープ"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_时乃空_あめあがりのカレイドスコープ",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-sora/holo_%E6%97%B6%E4%B9%83%E7%A9%BA_%E3%81%82%E3%82%81%E3%81%82%E3%81%8C%E3%82%8A%E3%81%AE%E3%82%AB%E3%83%AC%E3%82%A4%E3%83%89%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%97.opus"
+            }
+        ]
+    },
+    "holo-sss": {
+        "name": "holo-sss",
+        "cues": [
+            "holo_ShinySmilyStory"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_ShinySmilyStory",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-sss/holo_ShinySmilyStory.opus"
+            }
+        ]
+    },
+    "holo-sss-inst": {
+        "name": "holo-sss-inst",
+        "cues": [
+            "holo_ShinySmilyStory_inst"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_ShinySmilyStory_inst",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-sss-inst/holo_ShinySmilyStory_inst.opus"
+            }
+        ]
+    },
+    "holo-tokiwa": {
+        "name": "holo-tokiwa",
+        "cues": [
+            "holo_TOKIWA"
+        ],
+        "tracks": [
+            {
+                "cue": "holo_TOKIWA",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/holo-tokiwa/holo_TOKIWA.opus"
+            }
+        ]
+    },
+    "hunhe-battle": {
+        "name": "hunhe-battle",
+        "cues": [
+            "bgm-hunhe-battle"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-hunhe-battle",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/hunhe-battle/bgm-hunhe-battle.opus"
+            }
+        ]
+    },
+    "hunhe-boss": {
+        "name": "hunhe-boss",
+        "cues": [
+            "bgm-hunhe-boss"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-hunhe-boss",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/hunhe-boss/bgm-hunhe-boss.opus"
+            }
+        ]
+    },
+    "hunhe-eagle": {
+        "name": "hunhe-eagle",
+        "cues": [
+            "07輝ける大海を征く翼　～EAGLEUNION"
+        ],
+        "tracks": [
+            {
+                "cue": "07輝ける大海を征く翼　～EAGLEUNION",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/hunhe-eagle/07%E8%BC%9D%E3%81%91%E3%82%8B%E5%A4%A7%E6%B5%B7%E3%82%92%E5%BE%81%E3%81%8F%E7%BF%BC%E3%80%80%EF%BD%9EEAGLEUNION.opus"
+            }
+        ]
+    },
+    "hunhe-level": {
+        "name": "hunhe-level",
+        "cues": [
+            "bgm-hunhe-level"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-hunhe-level",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/hunhe-level/bgm-hunhe-level.opus"
+            }
+        ]
+    },
+    "hunhe-story": {
+        "name": "hunhe-story",
+        "cues": [
+            "BGM002"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM002",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/hunhe-story/BGM002.opus"
+            }
+        ]
+    },
+    "idol-bluespirit-inst": {
+        "name": "idol-bluespirit-inst",
+        "cues": [
+            "Blue Spirit ShortSize Inst Mixed"
+        ],
+        "tracks": [
+            {
+                "cue": "Blue Spirit ShortSize Inst Mixed",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/idol-bluespirit-inst/Blue%20Spirit%20ShortSize%20Inst%20Mixed.opus"
+            }
+        ]
+    },
+    "idol-inorinouta-inst": {
+        "name": "idol-inorinouta-inst",
+        "cues": [
+            "祈りノウタ ShortSize Inst Mixed"
+        ],
+        "tracks": [
+            {
+                "cue": "祈りノウタ ShortSize Inst Mixed",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/idol-inorinouta-inst/%E7%A5%88%E3%82%8A%E3%83%8E%E3%82%A6%E3%82%BF%20ShortSize%20Inst%20Mixed.opus"
+            }
+        ]
+    },
+    "idol-kannjouloyalty-inst": {
+        "name": "idol-kannjouloyalty-inst",
+        "cues": [
+            "艦上LOYALTY ShortSize Inst Mixed"
+        ],
+        "tracks": [
+            {
+                "cue": "艦上LOYALTY ShortSize Inst Mixed",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/idol-kannjouloyalty-inst/%E8%89%A6%E4%B8%8ALOYALTY%20ShortSize%20Inst%20Mixed.opus"
+            }
+        ]
+    },
+    "idol-wishness-inst": {
+        "name": "idol-wishness-inst",
+        "cues": [
+            "アズールレーン_WISHNESS_ShortSize_Final_Inst"
+        ],
+        "tracks": [
+            {
+                "cue": "アズールレーン_WISHNESS_ShortSize_Final_Inst",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/idol-wishness-inst/%E3%82%A2%E3%82%BA%E3%83%BC%E3%83%AB%E3%83%AC%E3%83%BC%E3%83%B3_WISHNESS_ShortSize_Final_Inst.opus"
+            }
+        ]
+    },
+    "idom-appeal": {
+        "name": "idom-appeal",
+        "cues": [
+            "APPEAL_RMX"
+        ],
+        "tracks": [
+            {
+                "cue": "APPEAL_RMX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/idom-appeal/APPEAL_RMX.opus"
+            }
+        ]
+    },
+    "idom-gomyway": {
+        "name": "idom-gomyway",
+        "cues": [
+            "34 GO MY WAY!! (SHORT VERSION)"
+        ],
+        "tracks": [
+            {
+                "cue": "34 GO MY WAY!! (SHORT VERSION)",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/idom-gomyway/34%20GO%20MY%20WAY%21%21%20%28SHORT%20VERSION%29.opus"
+            }
+        ]
+    },
+    "idom-mainbgm": {
+        "name": "idom-mainbgm",
+        "cues": [
+            "MAINBGM_RMX"
+        ],
+        "tracks": [
+            {
+                "cue": "MAINBGM_RMX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/idom-mainbgm/MAINBGM_RMX.opus"
+            }
+        ]
+    },
+    "idom-speed": {
+        "name": "idom-speed",
+        "cues": [
+            "SPEED_RMX"
+        ],
+        "tracks": [
+            {
+                "cue": "SPEED_RMX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/idom-speed/SPEED_RMX.opus"
+            }
+        ]
+    },
+    "idom-tender": {
+        "name": "idom-tender",
+        "cues": [
+            "TENDER_RMX"
+        ],
+        "tracks": [
+            {
+                "cue": "TENDER_RMX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/idom-tender/TENDER_RMX.opus"
+            }
+        ]
+    },
+    "idom-theidolm@ster": {
+        "name": "idom-theidolm@ster",
+        "cues": [
+            "THE IDOLM@STER(Movie ver)"
+        ],
+        "tracks": [
+            {
+                "cue": "THE IDOLM@STER(Movie ver)",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/idom-theidolm@ster/THE%20IDOLM%40STER%28Movie%20ver%29.opus"
+            }
+        ]
+    },
+    "idom-thinking": {
+        "name": "idom-thinking",
+        "cues": [
+            "THINKING_RMX"
+        ],
+        "tracks": [
+            {
+                "cue": "THINKING_RMX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/idom-thinking/THINKING_RMX.opus"
+            }
+        ]
+    },
+    "idom-town": {
+        "name": "idom-town",
+        "cues": [
+            "TOWN_RMX"
+        ],
+        "tracks": [
+            {
+                "cue": "TOWN_RMX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/idom-town/TOWN_RMX.opus"
+            }
+        ]
+    },
+    "level-french2": {
+        "name": "level-french2",
+        "cues": [
+            "bgm-level-french2"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-level-french2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/level-french2/bgm-level-french2.opus"
+            }
+        ]
+    },
+    "level-nep": {
+        "name": "level-nep",
+        "cues": [
+            "nepu_001_Sailing Of A Day dream"
+        ],
+        "tracks": [
+            {
+                "cue": "nepu_001_Sailing Of A Day dream",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/level-nep/nepu_001_Sailing%20Of%20A%20Day%20dream.opus"
+            }
+        ]
+    },
+    "level-nep2": {
+        "name": "level-nep2",
+        "cues": [
+            "nepu_037_WILL BE VENUS_1411"
+        ],
+        "tracks": [
+            {
+                "cue": "nepu_037_WILL BE VENUS_1411",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/level-nep2/nepu_037_WILL%20BE%20VENUS_1411.opus"
+            }
+        ]
+    },
+    "level-uta": {
+        "name": "level-uta",
+        "cues": [
+            "uta-level-乱世の到来"
+        ],
+        "tracks": [
+            {
+                "cue": "uta-level-乱世の到来",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/level-uta/uta-level-%E4%B9%B1%E4%B8%96%E3%81%AE%E5%88%B0%E6%9D%A5.opus"
+            }
+        ]
+    },
+    "level03": {
+        "name": "level03",
+        "cues": [
+            "皇家主场BGM"
+        ],
+        "tracks": [
+            {
+                "cue": "皇家主场BGM",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/level03/%E7%9A%87%E5%AE%B6%E4%B8%BB%E5%9C%BABGM.opus"
+            }
+        ]
+    },
+    "login-2022401jp": {
+        "name": "login-2022401jp",
+        "cues": [
+            "Azurlane2022_BGM16_EDEN_2mix_0214"
+        ],
+        "tracks": [
+            {
+                "cue": "Azurlane2022_BGM16_EDEN_2mix_0214",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/login-2022401jp/Azurlane2022_BGM16_EDEN_2mix_0214.opus"
+            }
+        ]
+    },
+    "login-2022401us": {
+        "name": "login-2022401us",
+        "cues": [
+            "Azur Lane - Remix - Loading Page JoJo April Fools - SMAMIX1B (Vocals Up)"
+        ],
+        "tracks": [
+            {
+                "cue": "Azur Lane - Remix - Loading Page JoJo April Fools - SMAMIX1B (Vocals Up)",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/login-2022401us/Azur%20Lane%20-%20Remix%20-%20Loading%20Page%20JoJo%20April%20Fools%20-%20SMAMIX1B%20%28Vocals%20Up%29.opus"
+            }
+        ]
+    },
+    "login-20240401jp": {
+        "name": "login-20240401jp",
+        "cues": [
+            "AZ6_M6_2mix_20240220"
+        ],
+        "tracks": [
+            {
+                "cue": "AZ6_M6_2mix_20240220",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/login-20240401jp/AZ6_M6_2mix_20240220.opus"
+            }
+        ]
+    },
+    "login-20240401us": {
+        "name": "login-20240401us",
+        "cues": [
+            "24年美服愚人节-热烈的碧海决斗者"
+        ],
+        "tracks": [
+            {
+                "cue": "24年美服愚人节-热烈的碧海决斗者",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/login-20240401us/24%E5%B9%B4%E7%BE%8E%E6%9C%8D%E6%84%9A%E4%BA%BA%E8%8A%82-%E7%83%AD%E7%83%88%E7%9A%84%E7%A2%A7%E6%B5%B7%E5%86%B3%E6%96%97%E8%80%85.opus"
+            }
+        ]
+    },
+    "login-20250401us": {
+        "name": "login-20250401us",
+        "cues": [
+            "25年美服愚人节-决战机甲准备中"
+        ],
+        "tracks": [
+            {
+                "cue": "25年美服愚人节-决战机甲准备中",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/login-20250401us/25%E5%B9%B4%E7%BE%8E%E6%9C%8D%E6%84%9A%E4%BA%BA%E8%8A%82-%E5%86%B3%E6%88%98%E6%9C%BA%E7%94%B2%E5%87%86%E5%A4%87%E4%B8%AD.opus"
+            }
+        ]
+    },
+    "login-jp-20230914": {
+        "name": "login-jp-20230914",
+        "cues": [
+            "日服6周年登陆界面主题曲"
+        ],
+        "tracks": [
+            {
+                "cue": "日服6周年登陆界面主题曲",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/login-jp-20230914/%E6%97%A5%E6%9C%8D6%E5%91%A8%E5%B9%B4%E7%99%BB%E9%99%86%E7%95%8C%E9%9D%A2%E4%B8%BB%E9%A2%98%E6%9B%B2.opus"
+            }
+        ]
+    },
+    "login-jp7th": {
+        "name": "login-jp7th",
+        "cues": [
+            "日服7周年登录bgm"
+        ],
+        "tracks": [
+            {
+                "cue": "日服7周年登录bgm",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/login-jp7th/%E6%97%A5%E6%9C%8D7%E5%91%A8%E5%B9%B4%E7%99%BB%E5%BD%95bgm.opus"
+            }
+        ]
+    },
+    "login-orchestral-ver": {
+        "name": "login-orchestral-ver",
+        "cues": [
+            "azln_qo_pr_azjam_出航_母港"
+        ],
+        "tracks": [
+            {
+                "cue": "azln_qo_pr_azjam_出航_母港",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/login-orchestral-ver/azln_qo_pr_azjam_%E5%87%BA%E8%88%AA_%E6%AF%8D%E6%B8%AF.opus"
+            }
+        ]
+    },
+    "login_0401": {
+        "name": "login_0401",
+        "cues": [
+            "8bit"
+        ],
+        "tracks": [
+            {
+                "cue": "8bit",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/login_0401/8bit.opus"
+            }
+        ]
+    },
+    "login_us_0401": {
+        "name": "login_us_0401",
+        "cues": [
+            "login_us_0401"
+        ],
+        "tracks": [
+            {
+                "cue": "login_us_0401",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/login_us_0401/login_us_0401.opus"
+            }
+        ]
+    },
+    "logo-amagi": {
+        "name": "logo-amagi",
+        "cues": [
+            "苍红印象_AZ"
+        ],
+        "tracks": [
+            {
+                "cue": "苍红印象_AZ",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/logo-amagi/%E8%8B%8D%E7%BA%A2%E5%8D%B0%E8%B1%A1_AZ.opus"
+            }
+        ]
+    },
+    "main-arbitrationsystem-theme": {
+        "name": "main-arbitrationsystem-theme",
+        "cues": [
+            "14_仲裁机关"
+        ],
+        "tracks": [
+            {
+                "cue": "14_仲裁机关",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/main-arbitrationsystem-theme/14_%E4%BB%B2%E8%A3%81%E6%9C%BA%E5%85%B3.opus"
+            }
+        ]
+    },
+    "main-ashes-theme": {
+        "name": "main-ashes-theme",
+        "cues": [
+            "12_余烬_2"
+        ],
+        "tracks": [
+            {
+                "cue": "12_余烬_2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/main-ashes-theme/12_%E4%BD%99%E7%83%AC_2.opus"
+            }
+        ]
+    },
+    "main-christmas": {
+        "name": "main-christmas",
+        "cues": [
+            "BGM-圣诞"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM-圣诞",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/main-christmas/BGM-%E5%9C%A3%E8%AF%9E.opus"
+            }
+        ]
+    },
+    "main-chunjie": {
+        "name": "main-chunjie",
+        "cues": [
+            "bgm-spring"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-spring",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/main-chunjie/bgm-spring.opus"
+            }
+        ]
+    },
+    "main-chunjie-pv": {
+        "name": "main-chunjie-pv",
+        "cues": [
+            "main-chunjie-pv"
+        ],
+        "tracks": [
+            {
+                "cue": "main-chunjie-pv",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/main-chunjie-pv/main-chunjie-pv.opus"
+            }
+        ]
+    },
+    "main-chunjie2": {
+        "name": "main-chunjie2",
+        "cues": [
+            "spring_2021"
+        ],
+        "tracks": [
+            {
+                "cue": "spring_2021",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/main-chunjie2/spring_2021.opus"
+            }
+        ]
+    },
+    "main-chunjie3": {
+        "name": "main-chunjie3",
+        "cues": [
+            "main-chunjie3"
+        ],
+        "tracks": [
+            {
+                "cue": "main-chunjie3",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/main-chunjie3/main-chunjie3.opus"
+            }
+        ]
+    },
+    "main-chunjie4-1": {
+        "name": "main-chunjie4-1",
+        "cues": [
+            "main-chunjie4-1"
+        ],
+        "tracks": [
+            {
+                "cue": "main-chunjie4-1",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/main-chunjie4-1/main-chunjie4-1.opus"
+            }
+        ]
+    },
+    "main-chunjie4-2": {
+        "name": "main-chunjie4-2",
+        "cues": [
+            "main-chunjie4-2"
+        ],
+        "tracks": [
+            {
+                "cue": "main-chunjie4-2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/main-chunjie4-2/main-chunjie4-2.opus"
+            }
+        ]
+    },
+    "main-chunjie5-1": {
+        "name": "main-chunjie5-1",
+        "cues": [
+            "寰昌宇定家事忙_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "寰昌宇定家事忙_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/main-chunjie5-1/%E5%AF%B0%E6%98%8C%E5%AE%87%E5%AE%9A%E5%AE%B6%E4%BA%8B%E5%BF%99_G.K_PV.opus"
+            }
+        ]
+    },
+    "main-newyear": {
+        "name": "main-newyear",
+        "cues": [
+            "bgm-新年2"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-新年2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/main-newyear/bgm-%E6%96%B0%E5%B9%B42.opus"
+            }
+        ]
+    },
+    "main-uta": {
+        "name": "main-uta",
+        "cues": [
+            "uta-main-ウタツグミ"
+        ],
+        "tracks": [
+            {
+                "cue": "uta-main-ウタツグミ",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/main-uta/uta-main-%E3%82%A6%E3%82%BF%E3%83%84%E3%82%B0%E3%83%9F.opus"
+            }
+        ]
+    },
+    "map-longgong": {
+        "name": "map-longgong",
+        "cues": [
+            "map-longgong"
+        ],
+        "tracks": [
+            {
+                "cue": "map-longgong",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/map-longgong/map-longgong.opus"
+            }
+        ]
+    },
+    "musashi-1": {
+        "name": "musashi-1",
+        "cues": [
+            "bgm-musashi-1"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-musashi-1",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/musashi-1/bgm-musashi-1.opus"
+            }
+        ]
+    },
+    "musashi-2": {
+        "name": "musashi-2",
+        "cues": [
+            "bgm-musashi-2"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-musashi-2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/musashi-2/bgm-musashi-2.opus"
+            }
+        ]
+    },
+    "nagato-boss": {
+        "name": "nagato-boss",
+        "cues": [
+            "nagato_boss"
+        ],
+        "tracks": [
+            {
+                "cue": "nagato_boss",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/nagato-boss/nagato_boss.opus"
+            }
+        ]
+    },
+    "nagato-map": {
+        "name": "nagato-map",
+        "cues": [
+            "nagato_map"
+        ],
+        "tracks": [
+            {
+                "cue": "nagato_map",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/nagato-map/nagato_map.opus"
+            }
+        ]
+    },
+    "newyear": {
+        "name": "newyear",
+        "cues": [
+            "BGM-新年"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM-新年",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/newyear/BGM-%E6%96%B0%E5%B9%B4.opus"
+            }
+        ]
+    },
+    "newyear2": {
+        "name": "newyear2",
+        "cues": [
+            "BGM-新年"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM-新年",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/newyear2/BGM-%E6%96%B0%E5%B9%B4.opus"
+            }
+        ]
+    },
+    "qe-ova-1": {
+        "name": "qe-ova-1",
+        "cues": [
+            "01_Divertimento"
+        ],
+        "tracks": [
+            {
+                "cue": "01_Divertimento",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/qe-ova-1/01_Divertimento.opus"
+            }
+        ]
+    },
+    "qe-ova-10": {
+        "name": "qe-ova-10",
+        "cues": [
+            "10_Barcarole con gioia"
+        ],
+        "tracks": [
+            {
+                "cue": "10_Barcarole con gioia",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/qe-ova-10/10_Barcarole%20con%20gioia.opus"
+            }
+        ]
+    },
+    "qe-ova-12": {
+        "name": "qe-ova-12",
+        "cues": [
+            "12_Merci mille fois"
+        ],
+        "tracks": [
+            {
+                "cue": "12_Merci mille fois",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/qe-ova-12/12_Merci%20mille%20fois.opus"
+            }
+        ]
+    },
+    "qe-ova-13": {
+        "name": "qe-ova-13",
+        "cues": [
+            "13_Trèfle à quatre feuilles_48000_24"
+        ],
+        "tracks": [
+            {
+                "cue": "13_Trèfle à quatre feuilles_48000_24",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/qe-ova-13/13_Tr%C3%A8fle%20%C3%A0%20quatre%20feuilles_48000_24.opus"
+            }
+        ]
+    },
+    "qe-ova-15": {
+        "name": "qe-ova-15",
+        "cues": [
+            "15_Waltz of Water Ripples (Elizabeth size)"
+        ],
+        "tracks": [
+            {
+                "cue": "15_Waltz of Water Ripples (Elizabeth size)",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/qe-ova-15/15_Waltz%20of%20Water%20Ripples%20%28Elizabeth%20size%29.opus"
+            }
+        ]
+    },
+    "qe-ova-2": {
+        "name": "qe-ova-2",
+        "cues": [
+            "02_Waltz of Water Ripples"
+        ],
+        "tracks": [
+            {
+                "cue": "02_Waltz of Water Ripples",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/qe-ova-2/02_Waltz%20of%20Water%20Ripples.opus"
+            }
+        ]
+    },
+    "qe-ova-3": {
+        "name": "qe-ova-3",
+        "cues": [
+            "03_Minuetto"
+        ],
+        "tracks": [
+            {
+                "cue": "03_Minuetto",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/qe-ova-3/03_Minuetto.opus"
+            }
+        ]
+    },
+    "qe-ova-4": {
+        "name": "qe-ova-4",
+        "cues": [
+            "04_March Scherzando"
+        ],
+        "tracks": [
+            {
+                "cue": "04_March Scherzando",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/qe-ova-4/04_March%20Scherzando.opus"
+            }
+        ]
+    },
+    "qe-ova-9": {
+        "name": "qe-ova-9",
+        "cues": [
+            "09_Allegro alla marcia"
+        ],
+        "tracks": [
+            {
+                "cue": "09_Allegro alla marcia",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/qe-ova-9/09_Allegro%20alla%20marcia.opus"
+            }
+        ]
+    },
+    "ryza-1": {
+        "name": "ryza-1",
+        "cues": [
+            "ryza-1"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-1",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-1/ryza-1.opus"
+            }
+        ]
+    },
+    "ryza-10": {
+        "name": "ryza-10",
+        "cues": [
+            "ryza-10"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-10",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-10/ryza-10.opus"
+            }
+        ]
+    },
+    "ryza-11": {
+        "name": "ryza-11",
+        "cues": [
+            "ryza-11"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-11",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-11/ryza-11.opus"
+            }
+        ]
+    },
+    "ryza-12": {
+        "name": "ryza-12",
+        "cues": [
+            "ryza-12"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-12",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-12/ryza-12.opus"
+            }
+        ]
+    },
+    "ryza-13": {
+        "name": "ryza-13",
+        "cues": [
+            "ryza-13"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-13",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-13/ryza-13.opus"
+            }
+        ]
+    },
+    "ryza-2": {
+        "name": "ryza-2",
+        "cues": [
+            "ryza-2"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-2/ryza-2.opus"
+            }
+        ]
+    },
+    "ryza-3": {
+        "name": "ryza-3",
+        "cues": [
+            "ryza-3"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-3",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-3/ryza-3.opus"
+            }
+        ]
+    },
+    "ryza-4": {
+        "name": "ryza-4",
+        "cues": [
+            "ryza-4"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-4",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-4/ryza-4.opus"
+            }
+        ]
+    },
+    "ryza-5": {
+        "name": "ryza-5",
+        "cues": [
+            "ryza-5"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-5",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-5/ryza-5.opus"
+            }
+        ]
+    },
+    "ryza-6": {
+        "name": "ryza-6",
+        "cues": [
+            "ryza-6"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-6",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-6/ryza-6.opus"
+            }
+        ]
+    },
+    "ryza-7": {
+        "name": "ryza-7",
+        "cues": [
+            "ryza-7"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-7",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-7/ryza-7.opus"
+            }
+        ]
+    },
+    "ryza-8": {
+        "name": "ryza-8",
+        "cues": [
+            "ryza-8"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-8",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-8/ryza-8.opus"
+            }
+        ]
+    },
+    "ryza-9": {
+        "name": "ryza-9",
+        "cues": [
+            "ryza-9"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-9",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-9/ryza-9.opus"
+            }
+        ]
+    },
+    "ryza-az-battle": {
+        "name": "ryza-az-battle",
+        "cues": [
+            "ryza-az-battle"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-az-battle",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-az-battle/ryza-az-battle.opus"
+            }
+        ]
+    },
+    "ryza-az-pv": {
+        "name": "ryza-az-pv",
+        "cues": [
+            "ryza-az-pv"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-az-pv",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-az-pv/ryza-az-pv.opus"
+            }
+        ]
+    },
+    "ryza-az-theme": {
+        "name": "ryza-az-theme",
+        "cues": [
+            "ryza-az-theme"
+        ],
+        "tracks": [
+            {
+                "cue": "ryza-az-theme",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ryza-az-theme/ryza-az-theme.opus"
+            }
+        ]
+    },
+    "sailawayjustice": {
+        "name": "sailawayjustice",
+        "cues": [
+            "アズールレーン_Sail Away Justice_Final mix"
+        ],
+        "tracks": [
+            {
+                "cue": "アズールレーン_Sail Away Justice_Final mix",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sailawayjustice/%E3%82%A2%E3%82%BA%E3%83%BC%E3%83%AB%E3%83%AC%E3%83%BC%E3%83%B3_Sail%20Away%20Justice_Final%20mix.opus"
+            }
+        ]
+    },
+    "sailawayjustice-inst": {
+        "name": "sailawayjustice-inst",
+        "cues": [
+            "アズールレーン_Sail Away Justice_Final mix_inst"
+        ],
+        "tracks": [
+            {
+                "cue": "アズールレーン_Sail Away Justice_Final mix_inst",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sailawayjustice-inst/%E3%82%A2%E3%82%BA%E3%83%BC%E3%83%AB%E3%83%AC%E3%83%BC%E3%83%B3_Sail%20Away%20Justice_Final%20mix_inst.opus"
+            }
+        ]
+    },
+    "sk-az-battle": {
+        "name": "sk-az-battle",
+        "cues": [
+            "突入！风云城！_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "突入！风云城！_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-az-battle/%E7%AA%81%E5%85%A5%EF%BC%81%E9%A3%8E%E4%BA%91%E5%9F%8E%EF%BC%81_G.K_loop.opus"
+            }
+        ]
+    },
+    "sk-az-battle-2": {
+        "name": "sk-az-battle-2",
+        "cues": [
+            "激战！风云城！_eden5th11"
+        ],
+        "tracks": [
+            {
+                "cue": "激战！风云城！_eden5th11",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-az-battle-2/%E6%BF%80%E6%88%98%EF%BC%81%E9%A3%8E%E4%BA%91%E5%9F%8E%EF%BC%81_eden5th11.opus"
+            }
+        ]
+    },
+    "sk-az-battle-boss": {
+        "name": "sk-az-battle-boss",
+        "cues": [
+            "实验型战忍机铠武装_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "实验型战忍机铠武装_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-az-battle-boss/%E5%AE%9E%E9%AA%8C%E5%9E%8B%E6%88%98%E5%BF%8D%E6%9C%BA%E9%93%A0%E6%AD%A6%E8%A3%85_G.K_loop.opus"
+            }
+        ]
+    },
+    "sk-az-pv1": {
+        "name": "sk-az-pv1",
+        "cues": [
+            "闪乱缤纷大作战_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "闪乱缤纷大作战_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-az-pv1/%E9%97%AA%E4%B9%B1%E7%BC%A4%E7%BA%B7%E5%A4%A7%E4%BD%9C%E6%88%98_G.K_PV.opus"
+            }
+        ]
+    },
+    "sk-az-pv2": {
+        "name": "sk-az-pv2",
+        "cues": [
+            "悠然夏日_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "悠然夏日_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-az-pv2/%E6%82%A0%E7%84%B6%E5%A4%8F%E6%97%A5_G.K_PV.opus"
+            }
+        ]
+    },
+    "sk-az-story": {
+        "name": "sk-az-story",
+        "cues": [
+            "苍闪风云城_G.K"
+        ],
+        "tracks": [
+            {
+                "cue": "苍闪风云城_G.K",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-az-story/%E8%8B%8D%E9%97%AA%E9%A3%8E%E4%BA%91%E5%9F%8E_G.K.opus"
+            }
+        ]
+    },
+    "sk-gachamenu": {
+        "name": "sk-gachamenu",
+        "cues": [
+            "sk-gachamenu"
+        ],
+        "tracks": [
+            {
+                "cue": "sk-gachamenu",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-gachamenu/sk-gachamenu.opus"
+            }
+        ]
+    },
+    "sk-home": {
+        "name": "sk-home",
+        "cues": [
+            "sk-home"
+        ],
+        "tracks": [
+            {
+                "cue": "sk-home",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-home/sk-home.opus"
+            }
+        ]
+    },
+    "sk-menu": {
+        "name": "sk-menu",
+        "cues": [
+            "sk-menu"
+        ],
+        "tracks": [
+            {
+                "cue": "sk-menu",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-menu/sk-menu.opus"
+            }
+        ]
+    },
+    "sk-theme": {
+        "name": "sk-theme",
+        "cues": [
+            "sk-江戸の華"
+        ],
+        "tracks": [
+            {
+                "cue": "sk-江戸の華",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-theme/sk-%E6%B1%9F%E6%88%B8%E3%81%AE%E8%8F%AF.opus"
+            }
+        ]
+    },
+    "sk-theme-gessen": {
+        "name": "sk-theme-gessen",
+        "cues": [
+            "sk-theme-gessen"
+        ],
+        "tracks": [
+            {
+                "cue": "sk-theme-gessen",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-theme-gessen/sk-theme-gessen.opus"
+            }
+        ]
+    },
+    "sk-theme-guren": {
+        "name": "sk-theme-guren",
+        "cues": [
+            "sk-theme-guren"
+        ],
+        "tracks": [
+            {
+                "cue": "sk-theme-guren",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-theme-guren/sk-theme-guren.opus"
+            }
+        ]
+    },
+    "sk-theme-hanzo": {
+        "name": "sk-theme-hanzo",
+        "cues": [
+            "sk-theme-hanzo"
+        ],
+        "tracks": [
+            {
+                "cue": "sk-theme-hanzo",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-theme-hanzo/sk-theme-hanzo.opus"
+            }
+        ]
+    },
+    "sk-theme-hebijo": {
+        "name": "sk-theme-hebijo",
+        "cues": [
+            "sk-theme-hebijo"
+        ],
+        "tracks": [
+            {
+                "cue": "sk-theme-hebijo",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-theme-hebijo/sk-theme-hebijo.opus"
+            }
+        ]
+    },
+    "sk-theme-touno": {
+        "name": "sk-theme-touno",
+        "cues": [
+            "sk-theme-touno"
+        ],
+        "tracks": [
+            {
+                "cue": "sk-theme-touno",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/sk-theme-touno/sk-theme-touno.opus"
+            }
+        ]
+    },
+    "song-alizarin-full": {
+        "name": "song-alizarin-full",
+        "cues": [
+            "盲目リフレイン_FinalMix[Full]"
+        ],
+        "tracks": [
+            {
+                "cue": "盲目リフレイン_FinalMix[Full]",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song-alizarin-full/%E7%9B%B2%E7%9B%AE%E3%83%AA%E3%83%95%E3%83%AC%E3%82%A4%E3%83%B3_FinalMix%5BFull%5D.opus"
+            }
+        ]
+    },
+    "song-alizarin-full-inst": {
+        "name": "song-alizarin-full-inst",
+        "cues": [
+            "盲目リフレイン_FinalInst[Full]"
+        ],
+        "tracks": [
+            {
+                "cue": "盲目リフレイン_FinalInst[Full]",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song-alizarin-full-inst/%E7%9B%B2%E7%9B%AE%E3%83%AA%E3%83%95%E3%83%AC%E3%82%A4%E3%83%B3_FinalInst%5BFull%5D.opus"
+            }
+        ]
+    },
+    "song-cyanidin-full": {
+        "name": "song-cyanidin-full",
+        "cues": [
+            "無限大HearT_FinalMix[Full]"
+        ],
+        "tracks": [
+            {
+                "cue": "無限大HearT_FinalMix[Full]",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song-cyanidin-full/%E7%84%A1%E9%99%90%E5%A4%A7HearT_FinalMix%5BFull%5D.opus"
+            }
+        ]
+    },
+    "song-cyanidin-full-inst": {
+        "name": "song-cyanidin-full-inst",
+        "cues": [
+            "無限大HearT_FinalInst[Full]"
+        ],
+        "tracks": [
+            {
+                "cue": "無限大HearT_FinalInst[Full]",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song-cyanidin-full-inst/%E7%84%A1%E9%99%90%E5%A4%A7HearT_FinalInst%5BFull%5D.opus"
+            }
+        ]
+    },
+    "song01": {
+        "name": "song01",
+        "cues": [
+            "s01_band"
+        ],
+        "tracks": [
+            {
+                "cue": "s01_band",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song01/s01_band.opus"
+            }
+        ]
+    },
+    "song02": {
+        "name": "song02",
+        "cues": [
+            "s02_私はNo_1！"
+        ],
+        "tracks": [
+            {
+                "cue": "s02_私はNo_1！",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song02/s02_%E7%A7%81%E3%81%AFNo_1%EF%BC%81.opus"
+            }
+        ]
+    },
+    "song03": {
+        "name": "song03",
+        "cues": [
+            "s03_Unicorn_FinalMix"
+        ],
+        "tracks": [
+            {
+                "cue": "s03_Unicorn_FinalMix",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song03/s03_Unicorn_FinalMix.opus"
+            }
+        ]
+    },
+    "song04": {
+        "name": "song04",
+        "cues": [
+            "s04_Phantom9"
+        ],
+        "tracks": [
+            {
+                "cue": "s04_Phantom9",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song04/s04_Phantom9.opus"
+            }
+        ]
+    },
+    "song05": {
+        "name": "song05",
+        "cues": [
+            "s05_Cleveland_13 BRIGHT BATTLE STARS"
+        ],
+        "tracks": [
+            {
+                "cue": "s05_Cleveland_13 BRIGHT BATTLE STARS",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song05/s05_Cleveland_13%20BRIGHT%20BATTLE%20STARS.opus"
+            }
+        ]
+    },
+    "song06": {
+        "name": "song06",
+        "cues": [
+            "Blue Spirit ShortSize Final Mixed"
+        ],
+        "tracks": [
+            {
+                "cue": "Blue Spirit ShortSize Final Mixed",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song06/Blue%20Spirit%20ShortSize%20Final%20Mixed.opus"
+            }
+        ]
+    },
+    "song07": {
+        "name": "song07",
+        "cues": [
+            "祈りノウタ ShortSize Final Mixed"
+        ],
+        "tracks": [
+            {
+                "cue": "祈りノウタ ShortSize Final Mixed",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song07/%E7%A5%88%E3%82%8A%E3%83%8E%E3%82%A6%E3%82%BF%20ShortSize%20Final%20Mixed.opus"
+            }
+        ]
+    },
+    "song08": {
+        "name": "song08",
+        "cues": [
+            "艦上LOYALTY ShortSize Final Mixed"
+        ],
+        "tracks": [
+            {
+                "cue": "艦上LOYALTY ShortSize Final Mixed",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song08/%E8%89%A6%E4%B8%8ALOYALTY%20ShortSize%20Final%20Mixed.opus"
+            }
+        ]
+    },
+    "song09": {
+        "name": "song09",
+        "cues": [
+            "加斯科涅remix_short"
+        ],
+        "tracks": [
+            {
+                "cue": "加斯科涅remix_short",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song09/%E5%8A%A0%E6%96%AF%E7%A7%91%E6%B6%85remix_short.opus"
+            }
+        ]
+    },
+    "song10": {
+        "name": "song10",
+        "cues": [
+            "アズールレーン_WISHNESS_ShortSize_Final"
+        ],
+        "tracks": [
+            {
+                "cue": "アズールレーン_WISHNESS_ShortSize_Final",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song10/%E3%82%A2%E3%82%BA%E3%83%BC%E3%83%AB%E3%83%AC%E3%83%BC%E3%83%B3_WISHNESS_ShortSize_Final.opus"
+            }
+        ]
+    },
+    "song11": {
+        "name": "song11",
+        "cues": [
+            "無限大HearT_Short_FinalMix[9632]"
+        ],
+        "tracks": [
+            {
+                "cue": "無限大HearT_Short_FinalMix[9632]",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song11/%E7%84%A1%E9%99%90%E5%A4%A7HearT_Short_FinalMix%5B9632%5D.opus"
+            }
+        ]
+    },
+    "song12": {
+        "name": "song12",
+        "cues": [
+            "盲目リフレイン_FinalMix[GameSize]"
+        ],
+        "tracks": [
+            {
+                "cue": "盲目リフレイン_FinalMix[GameSize]",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/song12/%E7%9B%B2%E7%9B%AE%E3%83%AA%E3%83%95%E3%83%AC%E3%82%A4%E3%83%B3_FinalMix%5BGameSize%5D.opus"
+            }
+        ]
+    },
+    "ssss-1114a": {
+        "name": "ssss-1114a",
+        "cues": [
+            "ssss-1114A"
+        ],
+        "tracks": [
+            {
+                "cue": "ssss-1114A",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ssss-1114a/ssss-1114A.opus"
+            }
+        ]
+    },
+    "ssss-strobememory": {
+        "name": "ssss-strobememory",
+        "cues": [
+            "ssss-StrobeMemory"
+        ],
+        "tracks": [
+            {
+                "cue": "ssss-StrobeMemory",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/ssss-strobememory/ssss-StrobeMemory.opus"
+            }
+        ]
+    },
+    "star": {
+        "name": "star",
+        "cues": [
+            "05 雪之花2"
+        ],
+        "tracks": [
+            {
+                "cue": "05 雪之花2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/star/05%20%E9%9B%AA%E4%B9%8B%E8%8A%B12.opus"
+            }
+        ]
+    },
+    "story-3": {
+        "name": "story-3",
+        "cues": [
+            "BGM12-剧情BGM3-自然结尾"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM12-剧情BGM3-自然结尾",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-3/BGM12-%E5%89%A7%E6%83%85BGM3-%E8%87%AA%E7%84%B6%E7%BB%93%E5%B0%BE.opus"
+            }
+        ]
+    },
+    "story-4": {
+        "name": "story-4",
+        "cues": [
+            "AL_theme_japanese_style_cut"
+        ],
+        "tracks": [
+            {
+                "cue": "AL_theme_japanese_style_cut",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-4/AL_theme_japanese_style_cut.opus"
+            }
+        ]
+    },
+    "story-5": {
+        "name": "story-5",
+        "cues": [
+            "AL_theme_siren_2_cut"
+        ],
+        "tracks": [
+            {
+                "cue": "AL_theme_siren_2_cut",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-5/AL_theme_siren_2_cut.opus"
+            }
+        ]
+    },
+    "story-6": {
+        "name": "story-6",
+        "cues": [
+            "AL_theme_siren_NEW"
+        ],
+        "tracks": [
+            {
+                "cue": "AL_theme_siren_NEW",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-6/AL_theme_siren_NEW.opus"
+            }
+        ]
+    },
+    "story-7": {
+        "name": "story-7",
+        "cues": [
+            "Az_check_T2"
+        ],
+        "tracks": [
+            {
+                "cue": "Az_check_T2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-7/Az_check_T2.opus"
+            }
+        ]
+    },
+    "story-8": {
+        "name": "story-8",
+        "cues": [
+            "18G"
+        ],
+        "tracks": [
+            {
+                "cue": "18G",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-8/18G.opus"
+            }
+        ]
+    },
+    "story-afterrain-soft": {
+        "name": "story-afterrain-soft",
+        "cues": [
+            "晴空细雨_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "晴空细雨_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-afterrain-soft/%E6%99%B4%E7%A9%BA%E7%BB%86%E9%9B%A8_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-amagi-up": {
+        "name": "story-amagi-up",
+        "cues": [
+            "苏醒的苍红之炎_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "苏醒的苍红之炎_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-amagi-up/%E8%8B%8F%E9%86%92%E7%9A%84%E8%8B%8D%E7%BA%A2%E4%B9%8B%E7%82%8E_AL.opus"
+            }
+        ]
+    },
+    "story-amahara-stage1": {
+        "name": "story-amahara-stage1",
+        "cues": [
+            "天域之引_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "天域之引_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-amahara-stage1/%E5%A4%A9%E5%9F%9F%E4%B9%8B%E5%BC%95_AL.opus"
+            }
+        ]
+    },
+    "story-amahara-stage2": {
+        "name": "story-amahara-stage2",
+        "cues": [
+            "云海天原_AL_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "云海天原_AL_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-amahara-stage2/%E4%BA%91%E6%B5%B7%E5%A4%A9%E5%8E%9F_AL_PV.opus"
+            }
+        ]
+    },
+    "story-amahara-stage3": {
+        "name": "story-amahara-stage3",
+        "cues": [
+            "天原宴乐_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "天原宴乐_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-amahara-stage3/%E5%A4%A9%E5%8E%9F%E5%AE%B4%E4%B9%90_AL.opus"
+            }
+        ]
+    },
+    "story-antarctica-serious": {
+        "name": "story-antarctica-serious",
+        "cues": [
+            "晦暗明星_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "晦暗明星_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-antarctica-serious/%E6%99%A6%E6%9A%97%E6%98%8E%E6%98%9F_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-antix-past": {
+        "name": "story-antix-past",
+        "cues": [
+            "被遗忘的英雄_shade"
+        ],
+        "tracks": [
+            {
+                "cue": "被遗忘的英雄_shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-antix-past/%E8%A2%AB%E9%81%97%E5%BF%98%E7%9A%84%E8%8B%B1%E9%9B%84_shade.opus"
+            }
+        ]
+    },
+    "story-battle-16bit": {
+        "name": "story-battle-16bit",
+        "cues": [
+            "AZ6_M2_20240126"
+        ],
+        "tracks": [
+            {
+                "cue": "AZ6_M2_20240126",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-battle-16bit/AZ6_M2_20240126.opus"
+            }
+        ]
+    },
+    "story-battle-16bit-sfc": {
+        "name": "story-battle-16bit-sfc",
+        "cues": [
+            "AZ6_M2_SFC_20240126"
+        ],
+        "tracks": [
+            {
+                "cue": "AZ6_M2_SFC_20240126",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-battle-16bit-sfc/AZ6_M2_SFC_20240126.opus"
+            }
+        ]
+    },
+    "story-cccp-soft": {
+        "name": "story-cccp-soft",
+        "cues": [
+            "晨雾中的行军_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "晨雾中的行军_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-cccp-soft/%E6%99%A8%E9%9B%BE%E4%B8%AD%E7%9A%84%E8%A1%8C%E5%86%9B_PX.opus"
+            }
+        ]
+    },
+    "story-china": {
+        "name": "story-china",
+        "cues": [
+            "BGM-China"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM-China",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-china/BGM-China.opus"
+            }
+        ]
+    },
+    "story-china-0226-pv": {
+        "name": "story-china-0226-pv",
+        "cues": [
+            "一堂春色_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "一堂春色_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-china-0226-pv/%E4%B8%80%E5%A0%82%E6%98%A5%E8%89%B2_PV.opus"
+            }
+        ]
+    },
+    "story-chunjie2025-1": {
+        "name": "story-chunjie2025-1",
+        "cues": [
+            "华裳巧裁迎新春_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "华裳巧裁迎新春_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-chunjie2025-1/%E5%8D%8E%E8%A3%B3%E5%B7%A7%E8%A3%81%E8%BF%8E%E6%96%B0%E6%98%A5_AL.opus"
+            }
+        ]
+    },
+    "story-clemenceau-judgement": {
+        "name": "story-clemenceau-judgement",
+        "cues": [
+            "宣告裁决之日_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "宣告裁决之日_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-clemenceau-judgement/%E5%AE%A3%E5%91%8A%E8%A3%81%E5%86%B3%E4%B9%8B%E6%97%A5_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-commander-up": {
+        "name": "story-commander-up",
+        "cues": [
+            "自变量_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "自变量_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-commander-up/%E8%87%AA%E5%8F%98%E9%87%8F_PX.opus"
+            }
+        ]
+    },
+    "story-concert-delight": {
+        "name": "story-concert-delight",
+        "cues": [
+            "庆典与金色乐音_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "庆典与金色乐音_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-concert-delight/%E5%BA%86%E5%85%B8%E4%B8%8E%E9%87%91%E8%89%B2%E4%B9%90%E9%9F%B3_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-dailyfuture-soft": {
+        "name": "story-dailyfuture-soft",
+        "cues": [
+            "旧城的天空_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "旧城的天空_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-dailyfuture-soft/%E6%97%A7%E5%9F%8E%E7%9A%84%E5%A4%A9%E7%A9%BA_PX.opus"
+            }
+        ]
+    },
+    "story-dailyfuture-upspeed": {
+        "name": "story-dailyfuture-upspeed",
+        "cues": [
+            "在这日新月异的时代_shade"
+        ],
+        "tracks": [
+            {
+                "cue": "在这日新月异的时代_shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-dailyfuture-upspeed/%E5%9C%A8%E8%BF%99%E6%97%A5%E6%96%B0%E6%9C%88%E5%BC%82%E7%9A%84%E6%97%B6%E4%BB%A3_shade.opus"
+            }
+        ]
+    },
+    "story-darkplan": {
+        "name": "story-darkplan",
+        "cues": [
+            "阴谋_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "阴谋_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-darkplan/%E9%98%B4%E8%B0%8B_PX.opus"
+            }
+        ]
+    },
+    "story-date-light": {
+        "name": "story-date-light",
+        "cues": [
+            "有你在的世界_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "有你在的世界_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-date-light/%E6%9C%89%E4%BD%A0%E5%9C%A8%E7%9A%84%E4%B8%96%E7%95%8C_PX.opus"
+            }
+        ]
+    },
+    "story-dazy-style": {
+        "name": "story-dazy-style",
+        "cues": [
+            "港区喧嚣夜_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "港区喧嚣夜_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-dazy-style/%E6%B8%AF%E5%8C%BA%E5%96%A7%E5%9A%A3%E5%A4%9C_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-egypt-mystic": {
+        "name": "story-egypt-mystic",
+        "cues": [
+            "尼罗河之宴_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "尼罗河之宴_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-egypt-mystic/%E5%B0%BC%E7%BD%97%E6%B2%B3%E4%B9%8B%E5%AE%B4_AL.opus"
+            }
+        ]
+    },
+    "story-enzecheng-theme": {
+        "name": "story-enzecheng-theme",
+        "cues": [
+            "奇渊奇境_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "奇渊奇境_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-enzecheng-theme/%E5%A5%87%E6%B8%8A%E5%A5%87%E5%A2%83_AL.opus"
+            }
+        ]
+    },
+    "story-expo-lastday": {
+        "name": "story-expo-lastday",
+        "cues": [
+            "盛大的闭幕日_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "盛大的闭幕日_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-expo-lastday/%E7%9B%9B%E5%A4%A7%E7%9A%84%E9%97%AD%E5%B9%95%E6%97%A5_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-fantasyland-light": {
+        "name": "story-fantasyland-light",
+        "cues": [
+            "梦幻乐园的梦幻天空_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "梦幻乐园的梦幻天空_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-fantasyland-light/%E6%A2%A6%E5%B9%BB%E4%B9%90%E5%9B%AD%E7%9A%84%E6%A2%A6%E5%B9%BB%E5%A4%A9%E7%A9%BA_AL.opus"
+            }
+        ]
+    },
+    "story-fantasyland-summer": {
+        "name": "story-fantasyland-summer",
+        "cues": [
+            "梦幻乐园的缤纷海滩_GK_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "梦幻乐园的缤纷海滩_GK_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-fantasyland-summer/%E6%A2%A6%E5%B9%BB%E4%B9%90%E5%9B%AD%E7%9A%84%E7%BC%A4%E7%BA%B7%E6%B5%B7%E6%BB%A9_GK_PV.opus"
+            }
+        ]
+    },
+    "story-finalbattle-unity": {
+        "name": "story-finalbattle-unity",
+        "cues": [
+            "凡人的伟业_eden4th13"
+        ],
+        "tracks": [
+            {
+                "cue": "凡人的伟业_eden4th13",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-finalbattle-unity/%E5%87%A1%E4%BA%BA%E7%9A%84%E4%BC%9F%E4%B8%9A_eden4th13.opus"
+            }
+        ]
+    },
+    "story-flowerdust-soft": {
+        "name": "story-flowerdust-soft",
+        "cues": [
+            "汇聚于此岸之尘_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "汇聚于此岸之尘_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-flowerdust-soft/%E6%B1%87%E8%81%9A%E4%BA%8E%E6%AD%A4%E5%B2%B8%E4%B9%8B%E5%B0%98_PX.opus"
+            }
+        ]
+    },
+    "story-french2": {
+        "name": "story-french2",
+        "cues": [
+            "bgm-story-french2"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-french2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-french2/bgm-story-french2.opus"
+            }
+        ]
+    },
+    "story-game-rhythm": {
+        "name": "story-game-rhythm",
+        "cues": [
+            "港区律动_EN"
+        ],
+        "tracks": [
+            {
+                "cue": "港区律动_EN",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-game-rhythm/%E6%B8%AF%E5%8C%BA%E5%BE%8B%E5%8A%A8_EN.opus"
+            }
+        ]
+    },
+    "story-ghostnight-fascinsting": {
+        "name": "story-ghostnight-fascinsting",
+        "cues": [
+            "幽灵洋馆奇妙夜_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "幽灵洋馆奇妙夜_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-ghostnight-fascinsting/%E5%B9%BD%E7%81%B5%E6%B4%8B%E9%A6%86%E5%A5%87%E5%A6%99%E5%A4%9C_AL.opus"
+            }
+        ]
+    },
+    "story-hospital-light": {
+        "name": "story-hospital-light",
+        "cues": [
+            "明亮病房_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "明亮病房_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-hospital-light/%E6%98%8E%E4%BA%AE%E7%97%85%E6%88%BF_AL.opus"
+            }
+        ]
+    },
+    "story-ironblood-light": {
+        "name": "story-ironblood-light",
+        "cues": [
+            "理性与秩序之国_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "理性与秩序之国_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-ironblood-light/%E7%90%86%E6%80%A7%E4%B8%8E%E7%A7%A9%E5%BA%8F%E4%B9%8B%E5%9B%BD_AL.opus"
+            }
+        ]
+    },
+    "story-ironblood-strong": {
+        "name": "story-ironblood-strong",
+        "cues": [
+            "公国的铁与血_shade"
+        ],
+        "tracks": [
+            {
+                "cue": "公国的铁与血_shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-ironblood-strong/%E5%85%AC%E5%9B%BD%E7%9A%84%E9%93%81%E4%B8%8E%E8%A1%80_shade.opus"
+            }
+        ]
+    },
+    "story-island-soft": {
+        "name": "story-island-soft",
+        "cues": [
+            "帕克菲克洋诸岛风光_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "帕克菲克洋诸岛风光_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-island-soft/%E5%B8%95%E5%85%8B%E8%8F%B2%E5%85%8B%E6%B4%8B%E8%AF%B8%E5%B2%9B%E9%A3%8E%E5%85%89_PX.opus"
+            }
+        ]
+    },
+    "story-kezhan-china": {
+        "name": "story-kezhan-china",
+        "cues": [
+            "春满客栈~开业大吉~_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "春满客栈~开业大吉~_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-kezhan-china/%E6%98%A5%E6%BB%A1%E5%AE%A2%E6%A0%88~%E5%BC%80%E4%B8%9A%E5%A4%A7%E5%90%89~_AL.opus"
+            }
+        ]
+    },
+    "story-lightheven-up": {
+        "name": "story-lightheven-up",
+        "cues": [
+            "登临天国之阶_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "登临天国之阶_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-lightheven-up/%E7%99%BB%E4%B8%B4%E5%A4%A9%E5%9B%BD%E4%B9%8B%E9%98%B6_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-lion-up": {
+        "name": "story-lion-up",
+        "cues": [
+            "辉翼翔天_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "辉翼翔天_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-lion-up/%E8%BE%89%E7%BF%BC%E7%BF%94%E5%A4%A9_PV.opus"
+            }
+        ]
+    },
+    "story-marcopolo-dream": {
+        "name": "story-marcopolo-dream",
+        "cues": [
+            "虚伪的圣座_eden2nd14"
+        ],
+        "tracks": [
+            {
+                "cue": "虚伪的圣座_eden2nd14",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-marcopolo-dream/%E8%99%9A%E4%BC%AA%E7%9A%84%E5%9C%A3%E5%BA%A7_eden2nd14.opus"
+            }
+        ]
+    },
+    "story-masazhusai": {
+        "name": "story-masazhusai",
+        "cues": [
+            "bgm-story-masazhusai"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-masazhusai",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-masazhusai/bgm-story-masazhusai.opus"
+            }
+        ]
+    },
+    "story-mayrain": {
+        "name": "story-mayrain",
+        "cues": [
+            "bgm-story-mayrain"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-mayrain",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-mayrain/bgm-story-mayrain.opus"
+            }
+        ]
+    },
+    "story-maystorm": {
+        "name": "story-maystorm",
+        "cues": [
+            "bgm-story-maystorm"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-maystorm",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-maystorm/bgm-story-maystorm.opus"
+            }
+        ]
+    },
+    "story-memory-grief": {
+        "name": "story-memory-grief",
+        "cues": [
+            "褪色的琉璃_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "褪色的琉璃_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-memory-grief/%E8%A4%AA%E8%89%B2%E7%9A%84%E7%90%89%E7%92%83_PX.opus"
+            }
+        ]
+    },
+    "story-midgard": {
+        "name": "story-midgard",
+        "cues": [
+            "story-midgard"
+        ],
+        "tracks": [
+            {
+                "cue": "story-midgard",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-midgard/story-midgard.opus"
+            }
+        ]
+    },
+    "story-mirrorheart-mystic": {
+        "name": "story-mirrorheart-mystic",
+        "cues": [
+            "镜中之心_shade"
+        ],
+        "tracks": [
+            {
+                "cue": "镜中之心_shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-mirrorheart-mystic/%E9%95%9C%E4%B8%AD%E4%B9%8B%E5%BF%83_shade.opus"
+            }
+        ]
+    },
+    "story-mmorpg": {
+        "name": "story-mmorpg",
+        "cues": [
+            "从零开始的魔王讨伐之旅_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "从零开始的魔王讨伐之旅_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-mmorpg/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%9A%84%E9%AD%94%E7%8E%8B%E8%AE%A8%E4%BC%90%E4%B9%8B%E6%97%85_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-nailuo-theme": {
+        "name": "story-nailuo-theme",
+        "cues": [
+            "奈落之渊_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "奈落之渊_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-nailuo-theme/%E5%A5%88%E8%90%BD%E4%B9%8B%E6%B8%8A_AL.opus"
+            }
+        ]
+    },
+    "story-nepu1": {
+        "name": "story-nepu1",
+        "cues": [
+            "nepu_024_Let's Bake The Cookie!"
+        ],
+        "tracks": [
+            {
+                "cue": "nepu_024_Let's Bake The Cookie!",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-nepu1/nepu_024_Let%27s%20Bake%20The%20Cookie%21.opus"
+            }
+        ]
+    },
+    "story-nepu2": {
+        "name": "story-nepu2",
+        "cues": [
+            "nepu_031_TUTORIAL_1411"
+        ],
+        "tracks": [
+            {
+                "cue": "nepu_031_TUTORIAL_1411",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-nepu2/nepu_031_TUTORIAL_1411.opus"
+            }
+        ]
+    },
+    "story-newsakura": {
+        "name": "story-newsakura",
+        "cues": [
+            "新生之风_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "新生之风_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-newsakura/%E6%96%B0%E7%94%9F%E4%B9%8B%E9%A3%8E_PX.opus"
+            }
+        ]
+    },
+    "story-niceship-soft": {
+        "name": "story-niceship-soft",
+        "cues": [
+            "假日邮轮_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "假日邮轮_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-niceship-soft/%E5%81%87%E6%97%A5%E9%82%AE%E8%BD%AE_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-ninjacity": {
+        "name": "story-ninjacity",
+        "cues": [
+            "激战！忍者之城_AL_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "激战！忍者之城_AL_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-ninjacity/%E6%BF%80%E6%88%98%EF%BC%81%E5%BF%8D%E8%80%85%E4%B9%8B%E5%9F%8E_AL_PV.opus"
+            }
+        ]
+    },
+    "story-nonightcity": {
+        "name": "story-nonightcity",
+        "cues": [
+            "暗金不夜城_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "暗金不夜城_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-nonightcity/%E6%9A%97%E9%87%91%E4%B8%8D%E5%A4%9C%E5%9F%8E_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-oldcastle-carnival": {
+        "name": "story-oldcastle-carnival",
+        "cues": [
+            "雨夜狂欢_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "雨夜狂欢_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-oldcastle-carnival/%E9%9B%A8%E5%A4%9C%E7%8B%82%E6%AC%A2_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-richang-1": {
+        "name": "story-richang-1",
+        "cues": [
+            "bgm-story-richang-1"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-richang-1",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-1/bgm-story-richang-1.opus"
+            }
+        ]
+    },
+    "story-richang-10": {
+        "name": "story-richang-10",
+        "cues": [
+            "BZM_03"
+        ],
+        "tracks": [
+            {
+                "cue": "BZM_03",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-10/BZM_03.opus"
+            }
+        ]
+    },
+    "story-richang-11": {
+        "name": "story-richang-11",
+        "cues": [
+            "BZM_06"
+        ],
+        "tracks": [
+            {
+                "cue": "BZM_06",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-11/BZM_06.opus"
+            }
+        ]
+    },
+    "story-richang-12": {
+        "name": "story-richang-12",
+        "cues": [
+            "BZM_09"
+        ],
+        "tracks": [
+            {
+                "cue": "BZM_09",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-12/BZM_09.opus"
+            }
+        ]
+    },
+    "story-richang-13": {
+        "name": "story-richang-13",
+        "cues": [
+            "BZM_16"
+        ],
+        "tracks": [
+            {
+                "cue": "BZM_16",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-13/BZM_16.opus"
+            }
+        ]
+    },
+    "story-richang-2": {
+        "name": "story-richang-2",
+        "cues": [
+            "bgm-story-richang-2"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-richang-2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-2/bgm-story-richang-2.opus"
+            }
+        ]
+    },
+    "story-richang-3": {
+        "name": "story-richang-3",
+        "cues": [
+            "bgm-story-richang-3"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-richang-3",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-3/bgm-story-richang-3.opus"
+            }
+        ]
+    },
+    "story-richang-4": {
+        "name": "story-richang-4",
+        "cues": [
+            "bgm-story-richang-4"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-richang-4",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-4/bgm-story-richang-4.opus"
+            }
+        ]
+    },
+    "story-richang-5": {
+        "name": "story-richang-5",
+        "cues": [
+            "bgm-story-richang-5"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-richang-5",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-5/bgm-story-richang-5.opus"
+            }
+        ]
+    },
+    "story-richang-6": {
+        "name": "story-richang-6",
+        "cues": [
+            "bgm-story-richang-6"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-richang-6",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-6/bgm-story-richang-6.opus"
+            }
+        ]
+    },
+    "story-richang-7": {
+        "name": "story-richang-7",
+        "cues": [
+            "bgm-story-richang-7"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-richang-7",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-7/bgm-story-richang-7.opus"
+            }
+        ]
+    },
+    "story-richang-8": {
+        "name": "story-richang-8",
+        "cues": [
+            "bgm-story-richang-8"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-richang-8",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-8/bgm-story-richang-8.opus"
+            }
+        ]
+    },
+    "story-richang-9": {
+        "name": "story-richang-9",
+        "cues": [
+            "BZM_02"
+        ],
+        "tracks": [
+            {
+                "cue": "BZM_02",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-9/BZM_02.opus"
+            }
+        ]
+    },
+    "story-richang-fashion-pv": {
+        "name": "story-richang-fashion-pv",
+        "cues": [
+            "光影风尚_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "光影风尚_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-fashion-pv/%E5%85%89%E5%BD%B1%E9%A3%8E%E5%B0%9A_PV.opus"
+            }
+        ]
+    },
+    "story-richang-flexible": {
+        "name": "story-richang-flexible",
+        "cues": [
+            "BZM_24"
+        ],
+        "tracks": [
+            {
+                "cue": "BZM_24",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-flexible/BZM_24.opus"
+            }
+        ]
+    },
+    "story-richang-light": {
+        "name": "story-richang-light",
+        "cues": [
+            "暖日晴空_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "暖日晴空_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-light/%E6%9A%96%E6%97%A5%E6%99%B4%E7%A9%BA_PX.opus"
+            }
+        ]
+    },
+    "story-richang-partynight": {
+        "name": "story-richang-partynight",
+        "cues": [
+            "游戏之夜_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "游戏之夜_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-partynight/%E6%B8%B8%E6%88%8F%E4%B9%8B%E5%A4%9C_AL.opus"
+            }
+        ]
+    },
+    "story-richang-quiet": {
+        "name": "story-richang-quiet",
+        "cues": [
+            "BZM_05"
+        ],
+        "tracks": [
+            {
+                "cue": "BZM_05",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-quiet/BZM_05.opus"
+            }
+        ]
+    },
+    "story-richang-refreshing": {
+        "name": "story-richang-refreshing",
+        "cues": [
+            "本日17°C_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "本日17°C_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-refreshing/%E6%9C%AC%E6%97%A517%C2%B0C_AL.opus"
+            }
+        ]
+    },
+    "story-richang-relax": {
+        "name": "story-richang-relax",
+        "cues": [
+            "BZM_28"
+        ],
+        "tracks": [
+            {
+                "cue": "BZM_28",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-relax/BZM_28.opus"
+            }
+        ]
+    },
+    "story-richang-rosy-short": {
+        "name": "story-richang-rosy-short",
+        "cues": [
+            "bgm-story-richang-rosy-short"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-richang-rosy-short",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-rosy-short/bgm-story-richang-rosy-short.opus"
+            }
+        ]
+    },
+    "story-richang-sooth": {
+        "name": "story-richang-sooth",
+        "cues": [
+            "BZM_29"
+        ],
+        "tracks": [
+            {
+                "cue": "BZM_29",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-sooth/BZM_29.opus"
+            }
+        ]
+    },
+    "story-richang-westdaily": {
+        "name": "story-richang-westdaily",
+        "cues": [
+            "美服六周年主题曲_90sINST_EN"
+        ],
+        "tracks": [
+            {
+                "cue": "美服六周年主题曲_90sINST_EN",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-westdaily/%E7%BE%8E%E6%9C%8D%E5%85%AD%E5%91%A8%E5%B9%B4%E4%B8%BB%E9%A2%98%E6%9B%B2_90sINST_EN.opus"
+            }
+        ]
+    },
+    "story-roma-inside": {
+        "name": "story-roma-inside",
+        "cues": [
+            "bgm-story-roma-inside"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-roma-inside",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-roma-inside/bgm-story-roma-inside.opus"
+            }
+        ]
+    },
+    "story-roma-outside": {
+        "name": "story-roma-outside",
+        "cues": [
+            "bgm-story-roma-outside"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-story-roma-outside",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-roma-outside/bgm-story-roma-outside.opus"
+            }
+        ]
+    },
+    "story-room-agir": {
+        "name": "story-room-agir",
+        "cues": [
+            "深渊的晴天_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "深渊的晴天_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-agir/%E6%B7%B1%E6%B8%8A%E7%9A%84%E6%99%B4%E5%A4%A9_AL.opus"
+            }
+        ]
+    },
+    "story-room-anchorage": {
+        "name": "story-room-anchorage",
+        "cues": [
+            "天真烂漫又好奇_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "天真烂漫又好奇_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-anchorage/%E5%A4%A9%E7%9C%9F%E7%83%82%E6%BC%AB%E5%8F%88%E5%A5%BD%E5%A5%87_AL.opus"
+            }
+        ]
+    },
+    "story-room-bar": {
+        "name": "story-room-bar",
+        "cues": [
+            "宿舍休闲吧_shade"
+        ],
+        "tracks": [
+            {
+                "cue": "宿舍休闲吧_shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-bar/%E5%AE%BF%E8%88%8D%E4%BC%91%E9%97%B2%E5%90%A7_shade.opus"
+            }
+        ]
+    },
+    "story-room-dance-1": {
+        "name": "story-room-dance-1",
+        "cues": [
+            "舞池旋律1_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "舞池旋律1_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-dance-1/%E8%88%9E%E6%B1%A0%E6%97%8B%E5%BE%8B1_AL.opus"
+            }
+        ]
+    },
+    "story-room-dance-2": {
+        "name": "story-room-dance-2",
+        "cues": [
+            "舞池旋律2_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "舞池旋律2_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-dance-2/%E8%88%9E%E6%B1%A0%E6%97%8B%E5%BE%8B2_AL.opus"
+            }
+        ]
+    },
+    "story-room-dance-3": {
+        "name": "story-room-dance-3",
+        "cues": [
+            "舞池旋律3_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "舞池旋律3_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-dance-3/%E8%88%9E%E6%B1%A0%E6%97%8B%E5%BE%8B3_AL.opus"
+            }
+        ]
+    },
+    "story-room-newjersey": {
+        "name": "story-room-newjersey",
+        "cues": [
+            "黑龙懒洋洋_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "黑龙懒洋洋_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-newjersey/%E9%BB%91%E9%BE%99%E6%87%92%E6%B4%8B%E6%B4%8B_AL.opus"
+            }
+        ]
+    },
+    "story-room-noshiro": {
+        "name": "story-room-noshiro",
+        "cues": [
+            "story-room-noshiro"
+        ],
+        "tracks": [
+            {
+                "cue": "story-room-noshiro",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-noshiro/story-room-noshiro.opus"
+            }
+        ]
+    },
+    "story-room-sirius": {
+        "name": "story-room-sirius",
+        "cues": [
+            "story-room-sirius"
+        ],
+        "tracks": [
+            {
+                "cue": "story-room-sirius",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-sirius/story-room-sirius.opus"
+            }
+        ]
+    },
+    "story-room-taiho": {
+        "name": "story-room-taiho",
+        "cues": [
+            "今日之凤_shade"
+        ],
+        "tracks": [
+            {
+                "cue": "今日之凤_shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-room-taiho/%E4%BB%8A%E6%97%A5%E4%B9%8B%E5%87%A4_shade.opus"
+            }
+        ]
+    },
+    "story-royalnavy-serious": {
+        "name": "story-royalnavy-serious",
+        "cues": [
+            "日不落的远征_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "日不落的远征_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-royalnavy-serious/%E6%97%A5%E4%B8%8D%E8%90%BD%E7%9A%84%E8%BF%9C%E5%BE%81_PX.opus"
+            }
+        ]
+    },
+    "story-shenguang-holy": {
+        "name": "story-shenguang-holy",
+        "cues": [
+            "樊笼内的神光_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "樊笼内的神光_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-shenguang-holy/%E6%A8%8A%E7%AC%BC%E5%86%85%E7%9A%84%E7%A5%9E%E5%85%89_AL.opus"
+            }
+        ]
+    },
+    "story-spycity-fashion": {
+        "name": "story-spycity-fashion",
+        "cues": [
+            "迷彩都市行动_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "迷彩都市行动_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-spycity-fashion/%E8%BF%B7%E5%BD%A9%E9%83%BD%E5%B8%82%E8%A1%8C%E5%8A%A8_PV.opus"
+            }
+        ]
+    },
+    "story-startravel": {
+        "name": "story-startravel",
+        "cues": [
+            "星间飞驰_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "星间飞驰_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-startravel/%E6%98%9F%E9%97%B4%E9%A3%9E%E9%A9%B0_AL.opus"
+            }
+        ]
+    },
+    "story-temepest-1": {
+        "name": "story-temepest-1",
+        "cues": [
+            "云墙之下_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "云墙之下_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-temepest-1/%E4%BA%91%E5%A2%99%E4%B9%8B%E4%B8%8B_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-temepest-2": {
+        "name": "story-temepest-2",
+        "cues": [
+            "往日幽影_eden5th10"
+        ],
+        "tracks": [
+            {
+                "cue": "往日幽影_eden5th10",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-temepest-2/%E5%BE%80%E6%97%A5%E5%B9%BD%E5%BD%B1_eden5th10.opus"
+            }
+        ]
+    },
+    "story-tempest-freedom": {
+        "name": "story-tempest-freedom",
+        "cues": [
+            "积蓄自由之光_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "积蓄自由之光_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-tempest-freedom/%E7%A7%AF%E8%93%84%E8%87%AA%E7%94%B1%E4%B9%8B%E5%85%89_PV.opus"
+            }
+        ]
+    },
+    "story-tempest-light": {
+        "name": "story-tempest-light",
+        "cues": [
+            "刺破风暴之人_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "刺破风暴之人_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-tempest-light/%E5%88%BA%E7%A0%B4%E9%A3%8E%E6%9A%B4%E4%B9%8B%E4%BA%BA_AL.opus"
+            }
+        ]
+    },
+    "story-tempest-marching": {
+        "name": "story-tempest-marching",
+        "cues": [
+            "穿越风雨之人_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "穿越风雨之人_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-tempest-marching/%E7%A9%BF%E8%B6%8A%E9%A3%8E%E9%9B%A8%E4%B9%8B%E4%BA%BA_AL.opus"
+            }
+        ]
+    },
+    "story-thehierophantv": {
+        "name": "story-thehierophantv",
+        "cues": [
+            "Listen to my voice_eden5th05"
+        ],
+        "tracks": [
+            {
+                "cue": "Listen to my voice_eden5th05",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-thehierophantv/Listen%20to%20my%20voice_eden5th05.opus"
+            }
+        ]
+    },
+    "story-theme-sardinia": {
+        "name": "story-theme-sardinia",
+        "cues": [
+            "神光照耀下的撒丁尼亚_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "神光照耀下的撒丁尼亚_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-theme-sardinia/%E7%A5%9E%E5%85%89%E7%85%A7%E8%80%80%E4%B8%8B%E7%9A%84%E6%92%92%E4%B8%81%E5%B0%BC%E4%BA%9A_AL.opus"
+            }
+        ]
+    },
+    "story-tiancheng": {
+        "name": "story-tiancheng",
+        "cues": [
+            "AL005_jpStory_fin"
+        ],
+        "tracks": [
+            {
+                "cue": "AL005_jpStory_fin",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-tiancheng/AL005_jpStory_fin.opus"
+            }
+        ]
+    },
+    "story-tulipa": {
+        "name": "story-tulipa",
+        "cues": [
+            "新芽破土日_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "新芽破土日_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-tulipa/%E6%96%B0%E8%8A%BD%E7%A0%B4%E5%9C%9F%E6%97%A5_AL.opus"
+            }
+        ]
+    },
+    "story-tulipa-pv": {
+        "name": "story-tulipa-pv",
+        "cues": [
+            "扬起郁金之旗_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "扬起郁金之旗_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-tulipa-pv/%E6%89%AC%E8%B5%B7%E9%83%81%E9%87%91%E4%B9%8B%E6%97%97_PV.opus"
+            }
+        ]
+    },
+    "story-unzen": {
+        "name": "story-unzen",
+        "cues": [
+            "须臾无间_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "须臾无间_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-unzen/%E9%A1%BB%E8%87%BE%E6%97%A0%E9%97%B4_G.K_PV.opus"
+            }
+        ]
+    },
+    "story-unzen-heart": {
+        "name": "story-unzen-heart",
+        "cues": [
+            "清明澄澈之心_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "清明澄澈之心_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-unzen-heart/%E6%B8%85%E6%98%8E%E6%BE%84%E6%BE%88%E4%B9%8B%E5%BF%83_G.K_loop.opus"
+            }
+        ]
+    },
+    "story-uta": {
+        "name": "story-uta",
+        "cues": [
+            "uta-story-遊楽"
+        ],
+        "tracks": [
+            {
+                "cue": "uta-story-遊楽",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-uta/uta-story-%E9%81%8A%E6%A5%BD.opus"
+            }
+        ]
+    },
+    "story-villaisland-daliy": {
+        "name": "story-villaisland-daliy",
+        "cues": [
+            "别墅岛的假日_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "别墅岛的假日_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-villaisland-daliy/%E5%88%AB%E5%A2%85%E5%B2%9B%E7%9A%84%E5%81%87%E6%97%A5_PV.opus"
+            }
+        ]
+    },
+    "story-villaisland-light": {
+        "name": "story-villaisland-light",
+        "cues": [
+            "重建！假日别墅岛_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "重建！假日别墅岛_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-villaisland-light/%E9%87%8D%E5%BB%BA%EF%BC%81%E5%81%87%E6%97%A5%E5%88%AB%E5%A2%85%E5%B2%9B_AL.opus"
+            }
+        ]
+    },
+    "story-villaisland-night": {
+        "name": "story-villaisland-night",
+        "cues": [
+            "别墅岛之夜_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "别墅岛之夜_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-villaisland-night/%E5%88%AB%E5%A2%85%E5%B2%9B%E4%B9%8B%E5%A4%9C_PV.opus"
+            }
+        ]
+    },
+    "story-wanderingcity-future": {
+        "name": "story-wanderingcity-future",
+        "cues": [
+            "漫游之城_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "漫游之城_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-wanderingcity-future/%E6%BC%AB%E6%B8%B8%E4%B9%8B%E5%9F%8E_AL.opus"
+            }
+        ]
+    },
+    "story-wanderingcity-pv": {
+        "name": "story-wanderingcity-pv",
+        "cues": [
+            "重电子流_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "重电子流_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-wanderingcity-pv/%E9%87%8D%E7%94%B5%E5%AD%90%E6%B5%81_PV.opus"
+            }
+        ]
+    },
+    "story-weimu-link": {
+        "name": "story-weimu-link",
+        "cues": [
+            "天穹乐章_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "天穹乐章_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-weimu-link/%E5%A4%A9%E7%A9%B9%E4%B9%90%E7%AB%A0_AL.opus"
+            }
+        ]
+    },
+    "story-worldα-brokenlight": {
+        "name": "story-worldα-brokenlight",
+        "cues": [
+            "弦中微光_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "弦中微光_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-worldα-brokenlight/%E5%BC%A6%E4%B8%AD%E5%BE%AE%E5%85%89_AL.opus"
+            }
+        ]
+    },
+    "story-worldα-grief": {
+        "name": "story-worldα-grief",
+        "cues": [
+            "阴云下的微光_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "阴云下的微光_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-worldα-grief/%E9%98%B4%E4%BA%91%E4%B8%8B%E7%9A%84%E5%BE%AE%E5%85%89_PX.opus"
+            }
+        ]
+    },
+    "story-zhangwu-china": {
+        "name": "story-zhangwu-china",
+        "cues": [
+            "春宴怀玉香满庭_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "春宴怀玉香满庭_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-zhangwu-china/%E6%98%A5%E5%AE%B4%E6%80%80%E7%8E%89%E9%A6%99%E6%BB%A1%E5%BA%AD_AL.opus"
+            }
+        ]
+    },
+    "theme": {
+        "name": "theme",
+        "cues": [
+            "壮絶激昂_FinlMix[Main]"
+        ],
+        "tracks": [
+            {
+                "cue": "壮絶激昂_FinlMix[Main]",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme/%E5%A3%AE%E7%B5%B6%E6%BF%80%E6%98%82_FinlMix%5BMain%5D.opus"
+            }
+        ]
+    },
+    "theme-akagi-inside": {
+        "name": "theme-akagi-inside",
+        "cues": [
+            "朱红雨夜_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "朱红雨夜_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-akagi-inside/%E6%9C%B1%E7%BA%A2%E9%9B%A8%E5%A4%9C_PX.opus"
+            }
+        ]
+    },
+    "theme-akagi-meta": {
+        "name": "theme-akagi-meta",
+        "cues": [
+            "燃烧的彼岸花_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "燃烧的彼岸花_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-akagi-meta/%E7%87%83%E7%83%A7%E7%9A%84%E5%BD%BC%E5%B2%B8%E8%8A%B1_AL.opus"
+            }
+        ]
+    },
+    "theme-amagi-cv": {
+        "name": "theme-amagi-cv",
+        "cues": [
+            "苍红的新生_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "苍红的新生_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-amagi-cv/%E8%8B%8D%E7%BA%A2%E7%9A%84%E6%96%B0%E7%94%9F_PX.opus"
+            }
+        ]
+    },
+    "theme-antarctica": {
+        "name": "theme-antarctica",
+        "cues": [
+            "雪境迷踪_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "雪境迷踪_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-antarctica/%E9%9B%AA%E5%A2%83%E8%BF%B7%E8%B8%AA_G.K_loop.opus"
+            }
+        ]
+    },
+    "theme-aostelab": {
+        "name": "theme-aostelab",
+        "cues": [
+            "彼方的星与海_2nd3"
+        ],
+        "tracks": [
+            {
+                "cue": "彼方的星与海_2nd3",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-aostelab/%E5%BD%BC%E6%96%B9%E7%9A%84%E6%98%9F%E4%B8%8E%E6%B5%B7_2nd3.opus"
+            }
+        ]
+    },
+    "theme-arbitrator-tower": {
+        "name": "theme-arbitrator-tower",
+        "cues": [
+            "theme-arbitrator-tower"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-arbitrator-tower",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-arbitrator-tower/theme-arbitrator-tower.opus"
+            }
+        ]
+    },
+    "theme-brokenworld-sad": {
+        "name": "theme-brokenworld-sad",
+        "cues": [
+            "凋零的世界_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "凋零的世界_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-brokenworld-sad/%E5%87%8B%E9%9B%B6%E7%9A%84%E4%B8%96%E7%95%8C_AL.opus"
+            }
+        ]
+    },
+    "theme-camelot": {
+        "name": "theme-camelot",
+        "cues": [
+            "theme-camelot"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-camelot",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-camelot/theme-camelot.opus"
+            }
+        ]
+    },
+    "theme-camelot-up": {
+        "name": "theme-camelot-up",
+        "cues": [
+            "卡美洛之光_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "卡美洛之光_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-camelot-up/%E5%8D%A1%E7%BE%8E%E6%B4%9B%E4%B9%8B%E5%85%89_G.K_PV.opus"
+            }
+        ]
+    },
+    "theme-china-jianwu": {
+        "name": "theme-china-jianwu",
+        "cues": [
+            "华裳巧展喜事长_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "华裳巧展喜事长_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-china-jianwu/%E5%8D%8E%E8%A3%B3%E5%B7%A7%E5%B1%95%E5%96%9C%E4%BA%8B%E9%95%BF_PX.opus"
+            }
+        ]
+    },
+    "theme-china-zhangwu": {
+        "name": "theme-china-zhangwu",
+        "cues": [
+            "玉满春华_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "玉满春华_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-china-zhangwu/%E7%8E%89%E6%BB%A1%E6%98%A5%E5%8D%8E_PV.opus"
+            }
+        ]
+    },
+    "theme-chunjie2025-2": {
+        "name": "theme-chunjie2025-2",
+        "cues": [
+            "流波卷月_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "流波卷月_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-chunjie2025-2/%E6%B5%81%E6%B3%A2%E5%8D%B7%E6%9C%88_AL.opus"
+            }
+        ]
+    },
+    "theme-dailyfuture": {
+        "name": "theme-dailyfuture",
+        "cues": [
+            "bgm-theme-dailyfuture"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-theme-dailyfuture",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-dailyfuture/bgm-theme-dailyfuture.opus"
+            }
+        ]
+    },
+    "theme-designfleet": {
+        "name": "theme-designfleet",
+        "cues": [
+            "theme-designfleet"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-designfleet",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-designfleet/theme-designfleet.opus"
+            }
+        ]
+    },
+    "theme-designfleet-vii": {
+        "name": "theme-designfleet-vii",
+        "cues": [
+            "环帕克菲克洋联合计划_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "环帕克菲克洋联合计划_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-designfleet-vii/%E7%8E%AF%E5%B8%95%E5%85%8B%E8%8F%B2%E5%85%8B%E6%B4%8B%E8%81%94%E5%90%88%E8%AE%A1%E5%88%92_AL.opus"
+            }
+        ]
+    },
+    "theme-designshipvi": {
+        "name": "theme-designshipvi",
+        "cues": [
+            "计划于未来_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "计划于未来_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-designshipvi/%E8%AE%A1%E5%88%92%E4%BA%8E%E6%9C%AA%E6%9D%A5_G.K_PV.opus"
+            }
+        ]
+    },
+    "theme-donghuang": {
+        "name": "theme-donghuang",
+        "cues": [
+            "锦绣山河_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "锦绣山河_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-donghuang/%E9%94%A6%E7%BB%A3%E5%B1%B1%E6%B2%B3_AL.opus"
+            }
+        ]
+    },
+    "theme-dos": {
+        "name": "theme-dos",
+        "cues": [
+            "Dimensional Ordering System_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "Dimensional Ordering System_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-dos/Dimensional%20Ordering%20System_AL.opus"
+            }
+        ]
+    },
+    "theme-fool23-en": {
+        "name": "theme-fool23-en",
+        "cues": [
+            "Avenger's April Fool"
+        ],
+        "tracks": [
+            {
+                "cue": "Avenger's April Fool",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-fool23-en/Avenger%27s%20April%20Fool.opus"
+            }
+        ]
+    },
+    "theme-fool23-en-long": {
+        "name": "theme-fool23-en-long",
+        "cues": [
+            "Avenger's April Fool-long"
+        ],
+        "tracks": [
+            {
+                "cue": "Avenger's April Fool-long",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-fool23-en-long/Avenger%27s%20April%20Fool-long.opus"
+            }
+        ]
+    },
+    "theme-fool23-en-short": {
+        "name": "theme-fool23-en-short",
+        "cues": [
+            "Avenger's April Fool-short"
+        ],
+        "tracks": [
+            {
+                "cue": "Avenger's April Fool-short",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-fool23-en-short/Avenger%27s%20April%20Fool-short.opus"
+            }
+        ]
+    },
+    "theme-frederick": {
+        "name": "theme-frederick",
+        "cues": [
+            "theme-frederick深海の魔女"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-frederick深海の魔女",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-frederick/theme-frederick%E6%B7%B1%E6%B5%B7%E3%81%AE%E9%AD%94%E5%A5%B3.opus"
+            }
+        ]
+    },
+    "theme-fushun-adventure": {
+        "name": "theme-fushun-adventure",
+        "cues": [
+            "大家一起大冒险_shade"
+        ],
+        "tracks": [
+            {
+                "cue": "大家一起大冒险_shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-fushun-adventure/%E5%A4%A7%E5%AE%B6%E4%B8%80%E8%B5%B7%E5%A4%A7%E5%86%92%E9%99%A9_shade.opus"
+            }
+        ]
+    },
+    "theme-ganjisawai": {
+        "name": "theme-ganjisawai",
+        "cues": [
+            "风雨祭祀之舞_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "风雨祭祀之舞_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-ganjisawai/%E9%A3%8E%E9%9B%A8%E7%A5%AD%E7%A5%80%E4%B9%8B%E8%88%9E_AL.opus"
+            }
+        ]
+    },
+    "theme-glorious-meta": {
+        "name": "theme-glorious-meta",
+        "cues": [
+            "蔷薇的囚徒_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "蔷薇的囚徒_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-glorious-meta/%E8%94%B7%E8%96%87%E7%9A%84%E5%9B%9A%E5%BE%92_AL.opus"
+            }
+        ]
+    },
+    "theme-helena": {
+        "name": "theme-helena",
+        "cues": [
+            "海蓝色的光_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "海蓝色的光_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-helena/%E6%B5%B7%E8%93%9D%E8%89%B2%E7%9A%84%E5%85%89_AL.opus"
+            }
+        ]
+    },
+    "theme-highseasfleet": {
+        "name": "theme-highseasfleet",
+        "cues": [
+            "theme-highseasfleet "
+        ],
+        "tracks": [
+            {
+                "cue": "theme-highseasfleet ",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-highseasfleet/theme-highseasfleet%20.opus"
+            }
+        ]
+    },
+    "theme-highseasfleet-reborn": {
+        "name": "theme-highseasfleet-reborn",
+        "cues": [
+            "theme-highseasfleet-reborn"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-highseasfleet-reborn",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-highseasfleet-reborn/theme-highseasfleet-reborn.opus"
+            }
+        ]
+    },
+    "theme-hospital-deep": {
+        "name": "theme-hospital-deep",
+        "cues": [
+            "深谷来客_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "深谷来客_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-hospital-deep/%E6%B7%B1%E8%B0%B7%E6%9D%A5%E5%AE%A2_AL.opus"
+            }
+        ]
+    },
+    "theme-ijndailymeeting": {
+        "name": "theme-ijndailymeeting",
+        "cues": [
+            "05_鮮やかな権謀術数"
+        ],
+        "tracks": [
+            {
+                "cue": "05_鮮やかな権謀術数",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-ijndailymeeting/05_%E9%AE%AE%E3%82%84%E3%81%8B%E3%81%AA%E6%A8%A9%E8%AC%80%E8%A1%93%E6%95%B0.opus"
+            }
+        ]
+    },
+    "theme-lightheven": {
+        "name": "theme-lightheven",
+        "cues": [
+            "辉光之城_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "辉光之城_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-lightheven/%E8%BE%89%E5%85%89%E4%B9%8B%E5%9F%8E_AL.opus"
+            }
+        ]
+    },
+    "theme-lion": {
+        "name": "theme-lion",
+        "cues": [
+            "辉翼慑世_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "辉翼慑世_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-lion/%E8%BE%89%E7%BF%BC%E6%85%91%E4%B8%96_AL.opus"
+            }
+        ]
+    },
+    "theme-longgong": {
+        "name": "theme-longgong",
+        "cues": [
+            "theme-longgong"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-longgong",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-longgong/theme-longgong.opus"
+            }
+        ]
+    },
+    "theme-longgong-another": {
+        "name": "theme-longgong-another",
+        "cues": [
+            "碧海光鳞~幻舞~_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "碧海光鳞~幻舞~_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-longgong-another/%E7%A2%A7%E6%B5%B7%E5%85%89%E9%B3%9E~%E5%B9%BB%E8%88%9E~_AL.opus"
+            }
+        ]
+    },
+    "theme-longgong-loop": {
+        "name": "theme-longgong-loop",
+        "cues": [
+            "theme-longgong-loop"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-longgong-loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-longgong-loop/theme-longgong-loop.opus"
+            }
+        ]
+    },
+    "theme-marcopolo": {
+        "name": "theme-marcopolo",
+        "cues": [
+            "杰出并非凡且伟大_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "杰出并非凡且伟大_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-marcopolo/%E6%9D%B0%E5%87%BA%E5%B9%B6%E9%9D%9E%E5%87%A1%E4%B8%94%E4%BC%9F%E5%A4%A7_G.K_loop.opus"
+            }
+        ]
+    },
+    "theme-merkuriameta": {
+        "name": "theme-merkuriameta",
+        "cues": [
+            "来自往昔的敬意_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "来自往昔的敬意_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-merkuriameta/%E6%9D%A5%E8%87%AA%E5%BE%80%E6%98%94%E7%9A%84%E6%95%AC%E6%84%8F_PX.opus"
+            }
+        ]
+    },
+    "theme-midgard-hunting": {
+        "name": "theme-midgard-hunting",
+        "cues": [
+            "theme-midgard-hunting"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-midgard-hunting",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-midgard-hunting/theme-midgard-hunting.opus"
+            }
+        ]
+    },
+    "theme-misaka": {
+        "name": "theme-misaka",
+        "cues": [
+            "军神的决意_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "军神的决意_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-misaka/%E5%86%9B%E7%A5%9E%E7%9A%84%E5%86%B3%E6%84%8F_AL.opus"
+            }
+        ]
+    },
+    "theme-musashi-inside": {
+        "name": "theme-musashi-inside",
+        "cues": [
+            "bgm-theme-musashi-inside"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-theme-musashi-inside",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-musashi-inside/bgm-theme-musashi-inside.opus"
+            }
+        ]
+    },
+    "theme-musashi-marching": {
+        "name": "theme-musashi-marching",
+        "cues": [
+            "theme-musashi-marching"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-musashi-marching",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-musashi-marching/theme-musashi-marching.opus"
+            }
+        ]
+    },
+    "theme-musashi-outside": {
+        "name": "theme-musashi-outside",
+        "cues": [
+            "bgm-theme-musashi-outside"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-theme-musashi-outside",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-musashi-outside/bgm-theme-musashi-outside.opus"
+            }
+        ]
+    },
+    "theme-myisland": {
+        "name": "theme-myisland",
+        "cues": [
+            "和风暖阳与海岛_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "和风暖阳与海岛_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-myisland/%E5%92%8C%E9%A3%8E%E6%9A%96%E9%98%B3%E4%B8%8E%E6%B5%B7%E5%B2%9B_AL.opus"
+            }
+        ]
+    },
+    "theme-nagato-meta": {
+        "name": "theme-nagato-meta",
+        "cues": [
+            "御狐的军势_shade"
+        ],
+        "tracks": [
+            {
+                "cue": "御狐的军势_shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-nagato-meta/%E5%BE%A1%E7%8B%90%E7%9A%84%E5%86%9B%E5%8A%BF_shade.opus"
+            }
+        ]
+    },
+    "theme-objectx-spread": {
+        "name": "theme-objectx-spread",
+        "cues": [
+            "拟态物"
+        ],
+        "tracks": [
+            {
+                "cue": "拟态物",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-objectx-spread/%E6%8B%9F%E6%80%81%E7%89%A9.opus"
+            }
+        ]
+    },
+    "theme-partydress": {
+        "name": "theme-partydress",
+        "cues": [
+            "bgm-theme-partydress"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-theme-partydress",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-partydress/bgm-theme-partydress.opus"
+            }
+        ]
+    },
+    "theme-richang-fashion": {
+        "name": "theme-richang-fashion",
+        "cues": [
+            "光影律动_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "光影律动_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-richang-fashion/%E5%85%89%E5%BD%B1%E5%BE%8B%E5%8A%A8_AL.opus"
+            }
+        ]
+    },
+    "theme-richard": {
+        "name": "theme-richard",
+        "cues": [
+            "theme-richard狂乱のMETA"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-richard狂乱のMETA",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-richard/theme-richard%E7%8B%82%E4%B9%B1%E3%81%AEMETA.opus"
+            }
+        ]
+    },
+    "theme-roma-image": {
+        "name": "theme-roma-image",
+        "cues": [
+            "bgm-theme-roma-image"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-theme-roma-image",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-roma-image/bgm-theme-roma-image.opus"
+            }
+        ]
+    },
+    "theme-room-rosy": {
+        "name": "theme-room-rosy",
+        "cues": [
+            "theme-room-rosy"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-room-rosy",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-room-rosy/theme-room-rosy.opus"
+            }
+        ]
+    },
+    "theme-royalknights-battle": {
+        "name": "theme-royalknights-battle",
+        "cues": [
+            "theme-royalknights-battle騎士団進撃"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-royalknights-battle騎士団進撃",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-royalknights-battle/theme-royalknights-battle%E9%A8%8E%E5%A3%AB%E5%9B%A3%E9%80%B2%E6%92%83.opus"
+            }
+        ]
+    },
+    "theme-sakuraholyplace": {
+        "name": "theme-sakuraholyplace",
+        "cues": [
+            "神木之殇_eden5th06"
+        ],
+        "tracks": [
+            {
+                "cue": "神木之殇_eden5th06",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-sakuraholyplace/%E7%A5%9E%E6%9C%A8%E4%B9%8B%E6%AE%87_eden5th06.opus"
+            }
+        ]
+    },
+    "theme-schoolfuture": {
+        "name": "theme-schoolfuture",
+        "cues": [
+            "SF学院_Shade"
+        ],
+        "tracks": [
+            {
+                "cue": "SF学院_Shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-schoolfuture/SF%E5%AD%A6%E9%99%A2_Shade.opus"
+            }
+        ]
+    },
+    "theme-shallowoftheworld": {
+        "name": "theme-shallowoftheworld",
+        "cues": [
+            "theme-shallowoftheworld"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-shallowoftheworld",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-shallowoftheworld/theme-shallowoftheworld.opus"
+            }
+        ]
+    },
+    "theme-shinanometa": {
+        "name": "theme-shinanometa",
+        "cues": [
+            "bgm-theme-shinanometa"
+        ],
+        "tracks": [
+            {
+                "cue": "bgm-theme-shinanometa",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-shinanometa/bgm-theme-shinanometa.opus"
+            }
+        ]
+    },
+    "theme-sovietunion": {
+        "name": "theme-sovietunion",
+        "cues": [
+            "迎向曙光_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "迎向曙光_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-sovietunion/%E8%BF%8E%E5%90%91%E6%9B%99%E5%85%89_PX.opus"
+            }
+        ]
+    },
+    "theme-starbeast": {
+        "name": "theme-starbeast",
+        "cues": [
+            "星之兽_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "星之兽_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-starbeast/%E6%98%9F%E4%B9%8B%E5%85%BD_AL.opus"
+            }
+        ]
+    },
+    "theme-starsea-core": {
+        "name": "theme-starsea-core",
+        "cues": [
+            "银河之心_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "银河之心_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-starsea-core/%E9%93%B6%E6%B2%B3%E4%B9%8B%E5%BF%83_G.K_loop.opus"
+            }
+        ]
+    },
+    "theme-starsea-explo": {
+        "name": "theme-starsea-explo",
+        "cues": [
+            "迈向未来的探索_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "迈向未来的探索_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-starsea-explo/%E8%BF%88%E5%90%91%E6%9C%AA%E6%9D%A5%E7%9A%84%E6%8E%A2%E7%B4%A2_PV.opus"
+            }
+        ]
+    },
+    "theme-summersky": {
+        "name": "theme-summersky",
+        "cues": [
+            "海滩与假日"
+        ],
+        "tracks": [
+            {
+                "cue": "海滩与假日",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-summersky/%E6%B5%B7%E6%BB%A9%E4%B8%8E%E5%81%87%E6%97%A5.opus"
+            }
+        ]
+    },
+    "theme-tempest-light": {
+        "name": "theme-tempest-light",
+        "cues": [
+            "七海赞颂_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "七海赞颂_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-tempest-light/%E4%B8%83%E6%B5%B7%E8%B5%9E%E9%A2%82_AL.opus"
+            }
+        ]
+    },
+    "theme-tempest-up": {
+        "name": "theme-tempest-up",
+        "cues": [
+            "驰骋七海_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "驰骋七海_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-tempest-up/%E9%A9%B0%E9%AA%8B%E4%B8%83%E6%B5%B7_G.K_loop.opus"
+            }
+        ]
+    },
+    "theme-thechariotvii": {
+        "name": "theme-thechariotvii",
+        "cues": [
+            "仲裁者提尔瑞特_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "仲裁者提尔瑞特_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-thechariotvii/%E4%BB%B2%E8%A3%81%E8%80%85%E6%8F%90%E5%B0%94%E7%91%9E%E7%89%B9_AL.opus"
+            }
+        ]
+    },
+    "theme-thedeathxiii": {
+        "name": "theme-thedeathxiii",
+        "cues": [
+            "死神的圆舞曲_eden2th7"
+        ],
+        "tracks": [
+            {
+                "cue": "死神的圆舞曲_eden2th7",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-thedeathxiii/%E6%AD%BB%E7%A5%9E%E7%9A%84%E5%9C%86%E8%88%9E%E6%9B%B2_eden2th7.opus"
+            }
+        ]
+    },
+    "theme-thedevilxv": {
+        "name": "theme-thedevilxv",
+        "cues": [
+            "仲裁者迪贝路_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "仲裁者迪贝路_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-thedevilxv/%E4%BB%B2%E8%A3%81%E8%80%85%E8%BF%AA%E8%B4%9D%E8%B7%AF_G.K_loop.opus"
+            }
+        ]
+    },
+    "theme-theempressiii": {
+        "name": "theme-theempressiii",
+        "cues": [
+            "仲裁者恩普雷斯_shade"
+        ],
+        "tracks": [
+            {
+                "cue": "仲裁者恩普雷斯_shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-theempressiii/%E4%BB%B2%E8%A3%81%E8%80%85%E6%81%A9%E6%99%AE%E9%9B%B7%E6%96%AF_shade.opus"
+            }
+        ]
+    },
+    "theme-thehierophantv": {
+        "name": "theme-thehierophantv",
+        "cues": [
+            "仲裁者海洛芬特_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "仲裁者海洛芬特_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-thehierophantv/%E4%BB%B2%E8%A3%81%E8%80%85%E6%B5%B7%E6%B4%9B%E8%8A%AC%E7%89%B9_G.K_loop.opus"
+            }
+        ]
+    },
+    "theme-theloversvi": {
+        "name": "theme-theloversvi",
+        "cues": [
+            "theme-theloversVI"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-theloversVI",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-theloversvi/theme-theloversVI.opus"
+            }
+        ]
+    },
+    "theme-themagiciani": {
+        "name": "theme-themagiciani",
+        "cues": [
+            "仲裁者麦纪莎_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "仲裁者麦纪莎_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-themagiciani/%E4%BB%B2%E8%A3%81%E8%80%85%E9%BA%A6%E7%BA%AA%E8%8E%8E_G.K_loop.opus"
+            }
+        ]
+    },
+    "theme-threat-typev": {
+        "name": "theme-threat-typev",
+        "cues": [
+            "第五类威胁_2nd2"
+        ],
+        "tracks": [
+            {
+                "cue": "第五类威胁_2nd2",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-threat-typev/%E7%AC%AC%E4%BA%94%E7%B1%BB%E5%A8%81%E8%83%81_2nd2.opus"
+            }
+        ]
+    },
+    "theme-tulipa": {
+        "name": "theme-tulipa",
+        "cues": [
+            "郁金盛放之国_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "郁金盛放之国_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-tulipa/%E9%83%81%E9%87%91%E7%9B%9B%E6%94%BE%E4%B9%8B%E5%9B%BD_AL.opus"
+            }
+        ]
+    },
+    "theme-uc": {
+        "name": "theme-uc",
+        "cues": [
+            "联合理事会_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "联合理事会_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-uc/%E8%81%94%E5%90%88%E7%90%86%E4%BA%8B%E4%BC%9A_PX.opus"
+            }
+        ]
+    },
+    "theme-ucnf-beacon": {
+        "name": "theme-ucnf-beacon",
+        "cues": [
+            "深潜式信标_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "深潜式信标_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-ucnf-beacon/%E6%B7%B1%E6%BD%9C%E5%BC%8F%E4%BF%A1%E6%A0%87_G.K_PV.opus"
+            }
+        ]
+    },
+    "theme-ucnf-flagship": {
+        "name": "theme-ucnf-flagship",
+        "cues": [
+            "联合理事会之骄傲_eden5th13"
+        ],
+        "tracks": [
+            {
+                "cue": "联合理事会之骄傲_eden5th13",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-ucnf-flagship/%E8%81%94%E5%90%88%E7%90%86%E4%BA%8B%E4%BC%9A%E4%B9%8B%E9%AA%84%E5%82%B2_eden5th13.opus"
+            }
+        ]
+    },
+    "theme-ucnf-image": {
+        "name": "theme-ucnf-image",
+        "cues": [
+            "星海逐光_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "星海逐光_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-ucnf-image/%E6%98%9F%E6%B5%B7%E9%80%90%E5%85%89_G.K_loop.opus"
+            }
+        ]
+    },
+    "theme-umieyuku": {
+        "name": "theme-umieyuku",
+        "cues": [
+            "海を征く"
+        ],
+        "tracks": [
+            {
+                "cue": "海を征く",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-umieyuku/%E6%B5%B7%E3%82%92%E5%BE%81%E3%81%8F.opus"
+            }
+        ]
+    },
+    "theme-undead": {
+        "name": "theme-undead",
+        "cues": [
+            "不死者的恐怖_shade"
+        ],
+        "tracks": [
+            {
+                "cue": "不死者的恐怖_shade",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-undead/%E4%B8%8D%E6%AD%BB%E8%80%85%E7%9A%84%E6%81%90%E6%80%96_shade.opus"
+            }
+        ]
+    },
+    "theme-underheaven": {
+        "name": "theme-underheaven",
+        "cues": [
+            "陆上天国_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "陆上天国_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-underheaven/%E9%99%86%E4%B8%8A%E5%A4%A9%E5%9B%BD_G.K_loop.opus"
+            }
+        ]
+    },
+    "theme-unknown-undefined": {
+        "name": "theme-unknown-undefined",
+        "cues": [
+            "forTheNewWorld_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "forTheNewWorld_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-unknown-undefined/forTheNewWorld_AL.opus"
+            }
+        ]
+    },
+    "theme-unzen": {
+        "name": "theme-unzen",
+        "cues": [
+            "云中有仙_G.K_loop"
+        ],
+        "tracks": [
+            {
+                "cue": "云中有仙_G.K_loop",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-unzen/%E4%BA%91%E4%B8%AD%E6%9C%89%E4%BB%99_G.K_loop.opus"
+            }
+        ]
+    },
+    "theme-vanguard": {
+        "name": "theme-vanguard",
+        "cues": [
+            "theme-vanguard白と黒の王家騎士"
+        ],
+        "tracks": [
+            {
+                "cue": "theme-vanguard白と黒の王家騎士",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-vanguard/theme-vanguard%E7%99%BD%E3%81%A8%E9%BB%92%E3%81%AE%E7%8E%8B%E5%AE%B6%E9%A8%8E%E5%A3%AB.opus"
+            }
+        ]
+    },
+    "theme-warmwinter-daily": {
+        "name": "theme-warmwinter-daily",
+        "cues": [
+            "烟幕与雪_G.K_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "烟幕与雪_G.K_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-warmwinter-daily/%E7%83%9F%E5%B9%95%E4%B8%8E%E9%9B%AA_G.K_PV.opus"
+            }
+        ]
+    },
+    "theme-weimu": {
+        "name": "theme-weimu",
+        "cues": [
+            "帷幕之音_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "帷幕之音_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-weimu/%E5%B8%B7%E5%B9%95%E4%B9%8B%E9%9F%B3_AL.opus"
+            }
+        ]
+    },
+    "tl-battle": {
+        "name": "tl-battle",
+        "cues": [
+            "天真爛漫!オトメ冥利☆"
+        ],
+        "tracks": [
+            {
+                "cue": "天真爛漫!オトメ冥利☆",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/tl-battle/%E5%A4%A9%E7%9C%9F%E7%88%9B%E6%BC%AB%21%E3%82%AA%E3%83%88%E3%83%A1%E5%86%A5%E5%88%A9%E2%98%86.opus"
+            }
+        ]
+    },
+    "tl-battle-inst": {
+        "name": "tl-battle-inst",
+        "cues": [
+            "天真爛漫!オトメ冥利☆ (Instrumental)"
+        ],
+        "tracks": [
+            {
+                "cue": "天真爛漫!オトメ冥利☆ (Instrumental)",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/tl-battle-inst/%E5%A4%A9%E7%9C%9F%E7%88%9B%E6%BC%AB%21%E3%82%AA%E3%83%88%E3%83%A1%E5%86%A5%E5%88%A9%E2%98%86%20%28Instrumental%29.opus"
+            }
+        ]
+    },
+    "tl-theme-1": {
+        "name": "tl-theme-1",
+        "cues": [
+            "そして君と恋をする"
+        ],
+        "tracks": [
+            {
+                "cue": "そして君と恋をする",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/tl-theme-1/%E3%81%9D%E3%81%97%E3%81%A6%E5%90%9B%E3%81%A8%E6%81%8B%E3%82%92%E3%81%99%E3%82%8B.opus"
+            }
+        ]
+    },
+    "tl-theme-2": {
+        "name": "tl-theme-2",
+        "cues": [
+            "Beyond The Darkness"
+        ],
+        "tracks": [
+            {
+                "cue": "Beyond The Darkness",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/tl-theme-2/Beyond%20The%20Darkness.opus"
+            }
+        ]
+    },
+    "votefes-start": {
+        "name": "votefes-start",
+        "cues": [
+            "耀眼晴空_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "耀眼晴空_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/votefes-start/%E8%80%80%E7%9C%BC%E6%99%B4%E7%A9%BA_PX.opus"
+            }
+        ]
+    },
+    "votefes-up": {
+        "name": "votefes-up",
+        "cues": [
+            "决赛夜_PX"
+        ],
+        "tracks": [
+            {
+                "cue": "决赛夜_PX",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/votefes-up/%E5%86%B3%E8%B5%9B%E5%A4%9C_PX.opus"
+            }
+        ]
+    },
+    "wavyflow-full": {
+        "name": "wavyflow-full",
+        "cues": [
+            "wavyflow-full"
+        ],
+        "tracks": [
+            {
+                "cue": "wavyflow-full",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/wavyflow-full/wavyflow-full.opus"
+            }
+        ]
+    },
+    "wavyflow-inst-full": {
+        "name": "wavyflow-inst-full",
+        "cues": [
+            "wavyflow-inst-full"
+        ],
+        "tracks": [
+            {
+                "cue": "wavyflow-inst-full",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/wavyflow-inst-full/wavyflow-inst-full.opus"
+            }
+        ]
+    },
+    "wavyflow-inst-short": {
+        "name": "wavyflow-inst-short",
+        "cues": [
+            "wavyflow-inst-short"
+        ],
+        "tracks": [
+            {
+                "cue": "wavyflow-inst-short",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/wavyflow-inst-short/wavyflow-inst-short.opus"
+            }
+        ]
+    },
+    "wavyflow-short": {
+        "name": "wavyflow-short",
+        "cues": [
+            "wavyflow-short"
+        ],
+        "tracks": [
+            {
+                "cue": "wavyflow-short",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/wavyflow-short/wavyflow-short.opus"
+            }
+        ]
+    },
+    "xinnong-1": {
+        "name": "xinnong-1",
+        "cues": [
+            "BGM003"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM003",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/xinnong-1/BGM003.opus"
+            }
+        ]
+    },
+    "xinnong-2": {
+        "name": "xinnong-2",
+        "cues": [
+            "15_鋼鉄の裁き_～METALBLOOD"
+        ],
+        "tracks": [
+            {
+                "cue": "15_鋼鉄の裁き_～METALBLOOD",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/xinnong-2/15_%E9%8B%BC%E9%89%84%E3%81%AE%E8%A3%81%E3%81%8D_%EF%BD%9EMETALBLOOD.opus"
+            }
+        ]
+    },
+    "xinnong-3": {
+        "name": "xinnong-3",
+        "cues": [
+            "BGM013"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM013",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/xinnong-3/BGM013.opus"
+            }
+        ]
+    },
+    "xinnong-4": {
+        "name": "xinnong-4",
+        "cues": [
+            "BGM014"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM014",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/xinnong-4/BGM014.opus"
+            }
+        ]
+    },
+    "yumia-1": {
+        "name": "yumia-1",
+        "cues": [
+            "BGM_001_FM01_FOREST_01_A"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_001_FM01_FOREST_01_A",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-1/BGM_001_FM01_FOREST_01_A.opus"
+            }
+        ]
+    },
+    "yumia-20": {
+        "name": "yumia-20",
+        "cues": [
+            "BGM_020_FM20_ROTTENSEA_03_A"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_020_FM20_ROTTENSEA_03_A",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-20/BGM_020_FM20_ROTTENSEA_03_A.opus"
+            }
+        ]
+    },
+    "yumia-28": {
+        "name": "yumia-28",
+        "cues": [
+            "BGM_028_FM28_METALS_02_A"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_028_FM28_METALS_02_A",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-28/BGM_028_FM28_METALS_02_A.opus"
+            }
+        ]
+    },
+    "yumia-43": {
+        "name": "yumia-43",
+        "cues": [
+            "BGM_043_FM43_FRONTLINE01_A"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_043_FM43_FRONTLINE01_A",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-43/BGM_043_FM43_FRONTLINE01_A.opus"
+            }
+        ]
+    },
+    "yumia-44": {
+        "name": "yumia-44",
+        "cues": [
+            "BGM_044_FM44_FRONTLINE01_B"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_044_FM44_FRONTLINE01_B",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-44/BGM_044_FM44_FRONTLINE01_B.opus"
+            }
+        ]
+    },
+    "yumia-46": {
+        "name": "yumia-46",
+        "cues": [
+            "BGM_046_FM46_ATELIER_01"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_046_FM46_ATELIER_01",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-46/BGM_046_FM46_ATELIER_01.opus"
+            }
+        ]
+    },
+    "yumia-49": {
+        "name": "yumia-49",
+        "cues": [
+            "BGM_049_BT01_NORMAL_01"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_049_BT01_NORMAL_01",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-49/BGM_049_BT01_NORMAL_01.opus"
+            }
+        ]
+    },
+    "yumia-51": {
+        "name": "yumia-51",
+        "cues": [
+            "BGM_051_BT03_NORMAL_03"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_051_BT03_NORMAL_03",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-51/BGM_051_BT03_NORMAL_03.opus"
+            }
+        ]
+    },
+    "yumia-53": {
+        "name": "yumia-53",
+        "cues": [
+            "BGM_053_BT05_BOSS_USUALLY_01"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_053_BT05_BOSS_USUALLY_01",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-53/BGM_053_BT05_BOSS_USUALLY_01.opus"
+            }
+        ]
+    },
+    "yumia-61": {
+        "name": "yumia-61",
+        "cues": [
+            "BGM_061_EV01_MAINTHEME_01"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_061_EV01_MAINTHEME_01",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-61/BGM_061_EV01_MAINTHEME_01.opus"
+            }
+        ]
+    },
+    "yumia-7": {
+        "name": "yumia-7",
+        "cues": [
+            "BGM_007_FM07_FOREST_02_A"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_007_FM07_FOREST_02_A",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-7/BGM_007_FM07_FOREST_02_A.opus"
+            }
+        ]
+    },
+    "yumia-70": {
+        "name": "yumia-70",
+        "cues": [
+            "BGM_070_EV10_DEPARTURE_01"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_070_EV10_DEPARTURE_01",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-70/BGM_070_EV10_DEPARTURE_01.opus"
+            }
+        ]
+    },
+    "yumia-79": {
+        "name": "yumia-79",
+        "cues": [
+            "BGM_079_EV19_YUMIA_01"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_079_EV19_YUMIA_01",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-79/BGM_079_EV19_YUMIA_01.opus"
+            }
+        ]
+    },
+    "yumia-81": {
+        "name": "yumia-81",
+        "cues": [
+            "BGM_081_EV21_ISRA_01"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_081_EV21_ISRA_01",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-81/BGM_081_EV21_ISRA_01.opus"
+            }
+        ]
+    },
+    "yumia-83": {
+        "name": "yumia-83",
+        "cues": [
+            "BGM_083_EV23_NINA_01"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_083_EV23_NINA_01",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-83/BGM_083_EV23_NINA_01.opus"
+            }
+        ]
+    },
+    "yumia-84": {
+        "name": "yumia-84",
+        "cues": [
+            "BGM_084_EV24_LENJA_01"
+        ],
+        "tracks": [
+            {
+                "cue": "BGM_084_EV24_LENJA_01",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-84/BGM_084_EV24_LENJA_01.opus"
+            }
+        ]
+    },
+    "yumia-az-battle": {
+        "name": "yumia-az-battle",
+        "cues": [
+            "冷泠雨_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "冷泠雨_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-az-battle/%E5%86%B7%E6%B3%A0%E9%9B%A8_AL.opus"
+            }
+        ]
+    },
+    "yumia-az-story": {
+        "name": "yumia-az-story",
+        "cues": [
+            "天际之塔的大冒险_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "天际之塔的大冒险_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-az-story/%E5%A4%A9%E9%99%85%E4%B9%8B%E5%A1%94%E7%9A%84%E5%A4%A7%E5%86%92%E9%99%A9_AL.opus"
+            }
+        ]
+    },
+    "yumia-az-theme-pv": {
+        "name": "yumia-az-theme-pv",
+        "cues": [
+            "交汇于天际之塔_AL_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "交汇于天际之塔_AL_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/yumia-az-theme-pv/%E4%BA%A4%E6%B1%87%E4%BA%8E%E5%A4%A9%E9%99%85%E4%B9%8B%E5%A1%94_AL_PV.opus"
+            }
+        ]
+    }
+}

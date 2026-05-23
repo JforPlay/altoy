@@ -1,0 +1,220 @@
+/**
+ * bgm-misc.css
+ * Minimal list page for orphan BGM stems. No carousel, no covers.
+ * Themed via theme.css tokens — auto-adapts to dark mode.
+ * Play button + row hover style mirror skin.detail.viewer.css.
+ */
+body {
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    min-height: 100vh;
+    color: var(--text-primary);
+}
+
+.bgm-misc-page {
+    max-width: 720px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    color: var(--text-primary);
+}
+
+.bgm-misc-header h1 {
+    margin: 0 0 0.25rem;
+    color: var(--text-primary);
+}
+
+.bgm-misc-subtitle {
+    margin: 0 0 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.bgm-misc-search-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md, 1rem);
+    margin: 0 0 1.25rem;
+}
+
+.bgm-misc-search {
+    flex: 1;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg, 0.75rem);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9375rem;
+    transition: border-color var(--transition-fast, 150ms ease),
+                box-shadow var(--transition-fast, 150ms ease);
+}
+
+.bgm-misc-search:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px var(--primary-alpha-20);
+}
+
+.bgm-misc-search::placeholder {
+    color: var(--text-secondary);
+}
+
+.bgm-misc-search-count {
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    white-space: nowrap;
+    min-width: 6ch;
+    text-align: right;
+}
+
+.bgm-misc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm, 0.5rem);
+}
+
+.bgm-misc-row {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg, 0.75rem);
+    padding: var(--spacing-md, 1rem);
+    transition: all var(--transition-fast, 150ms ease);
+}
+
+.bgm-misc-row:hover {
+    background: var(--primary-alpha-10);
+    border-color: var(--primary-alpha-30);
+    transform: scale(1.005);
+    box-shadow: var(--shadow-sm);
+}
+
+.bgm-misc-row-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md, 1rem);
+    user-select: none;
+}
+
+.bgm-misc-row-header[role="button"] {
+    cursor: pointer;
+}
+
+.bgm-misc-row-header:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+}
+
+.bgm-misc-titles {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.bgm-misc-stem {
+    font-family: monospace;
+    font-size: 0.9375rem;
+    color: var(--text-primary);
+    word-break: break-all;
+}
+
+.bgm-misc-cue-line {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+.bgm-misc-count {
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    flex-shrink: 0;
+}
+
+.bgm-misc-tracks {
+    list-style: decimal;
+    margin: var(--spacing-sm, 0.5rem) 0 0;
+    padding-left: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.bgm-misc-tracks li {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm, 0.5rem);
+    padding: 0.25rem 0;
+}
+
+.bgm-misc-cue-name {
+    flex: 1;
+    word-break: break-word;
+    color: var(--text-secondary);
+}
+
+/* --- Play button: mirrors .play-voice-btn from skin.detail.viewer.css --- */
+.bgm-misc-play {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-blue));
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all var(--transition-fast, 150ms ease);
+    padding: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+.bgm-misc-play::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: var(--highlight-strong, rgba(255, 255, 255, 0.3));
+    transform: translate(-50%, -50%);
+    transition: width var(--transition-base, 250ms ease), height var(--transition-base, 250ms ease);
+}
+
+.bgm-misc-play:hover::before {
+    width: 100%;
+    height: 100%;
+}
+
+.bgm-misc-play:hover {
+    transform: scale(1.15);
+    box-shadow: var(--shadow-md);
+}
+
+.bgm-misc-play:active {
+    transform: scale(0.95);
+}
+
+.bgm-misc-play.playing {
+    background: linear-gradient(135deg, var(--accent-blue), var(--primary-color));
+    animation: bgm-misc-playing-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes bgm-misc-playing-pulse {
+    0%, 100% { box-shadow: var(--shadow-sm); }
+    50% { box-shadow: 0 0 0 6px var(--primary-alpha-15); }
+}
+
+.bgm-misc-message {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 2rem;
+    list-style: none;
+}

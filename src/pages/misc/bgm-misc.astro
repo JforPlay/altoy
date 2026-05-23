@@ -1,0 +1,32 @@
+---
+/**
+ * BGM 보관소 — 앨범에 포함되지 않은 BGM 모음.
+ * Single audio element shared across the page; rows are expandable for
+ * multi-cue bundles.
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/misc/bgm-misc.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Layout title="기타 BGM" {base}>
+    <main class="bgm-misc-page" aria-labelledby="bgm-misc-title">
+        <header class="bgm-misc-header">
+            <h1 id="bgm-misc-title">기타 BGM</h1>
+            <p class="bgm-misc-subtitle">앨범에 포함되지 않은 BGM 보관소</p>
+        </header>
+        <div class="bgm-misc-search-row">
+            <input
+                type="search"
+                id="bgm-misc-search"
+                class="bgm-misc-search"
+                placeholder="이름 또는 원제목으로 검색…"
+                aria-label="BGM 검색"
+                autocomplete="off"
+            />
+            <span id="bgm-misc-search-count" class="bgm-misc-search-count" aria-live="polite"></span>
+        </div>
+        <ul id="bgm-misc-list" class="bgm-misc-list" aria-live="polite"></ul>
+        <audio id="bgm-misc-audio" preload="none"></audio>
+    </main>
+    <script is:inline type="module" src={`${base}/js/misc/bgm-misc.js`}></script>
+</Layout>
