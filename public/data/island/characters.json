@@ -219,7 +219,8 @@
             10,
             20
         ],
-        "skin": []
+        "skin": [],
+        "chara_pic_code": "gongzuojiu"
     },
     "10110": {
         "att_item": [
@@ -543,7 +544,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "bote"
     },
     "10117": {
         "att_item": [
@@ -899,7 +901,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "lafei"
     },
     "10205": {
         "att_item": [
@@ -1223,7 +1226,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "hailunna"
     },
     "10517": {
         "att_item": [
@@ -1547,7 +1551,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "xinzexi"
     },
     "10703": {
         "att_item": [
@@ -1871,7 +1876,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "salatuojia"
     },
     "20121": {
         "att_item": [
@@ -2195,7 +2201,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "biaoqiang"
     },
     "20403": {
         "att_item": [
@@ -2505,7 +2512,8 @@
             10,
             20
         ],
-        "skin": []
+        "skin": [],
+        "chara_pic_code": "hude"
     },
     "20603": {
         "att_item": [
@@ -2829,7 +2837,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "dujiaoshou"
     },
     "29903": {
         "att_item": [
@@ -3153,7 +3162,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "chaijun"
     },
     "30129": {
         "att_item": [
@@ -3463,7 +3473,8 @@
             10,
             20
         ],
-        "skin": []
+        "skin": [],
+        "chara_pic_code": "daofeng"
     },
     "30311": {
         "att_item": [
@@ -3787,7 +3798,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "gaoxiong"
     },
     "30312": {
         "att_item": [
@@ -4111,7 +4123,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "aidang"
     },
     "30407": {
         "att_item": [
@@ -4435,7 +4448,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "tiancheng_younv"
     },
     "30707": {
         "att_item": [
@@ -4745,7 +4759,8 @@
             10,
             20
         ],
-        "skin": []
+        "skin": [],
+        "chara_pic_code": "dafeng"
     },
     "31201": {
         "att_item": [
@@ -5074,7 +5089,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "mingshi"
     },
     "40303": {
         "att_item": [
@@ -5398,7 +5414,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "ougen"
     },
     "49902": {
         "att_item": [
@@ -5722,7 +5739,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "feiteliedadi"
     },
     "49906": {
         "att_item": [
@@ -6046,7 +6064,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "aogusite"
     },
     "50107": {
         "att_item": [
@@ -6370,7 +6389,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "feiyun"
     },
     "50201": {
         "att_item": [
@@ -6694,7 +6714,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "yixian"
     },
     "50204": {
         "att_item": [
@@ -7004,7 +7025,8 @@
             10,
             20
         ],
-        "skin": []
+        "skin": [],
+        "chara_pic_code": "yingrui"
     },
     "50205": {
         "att_item": [
@@ -7314,7 +7336,8 @@
             10,
             20
         ],
-        "skin": []
+        "skin": [],
+        "chara_pic_code": "zhaohe"
     },
     "50601": {
         "att_item": [
@@ -7638,7 +7661,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "zhenhai"
     },
     "60802": {
         "att_item": [
@@ -7948,7 +7972,8 @@
             10,
             20
         ],
-        "skin": []
+        "skin": [],
+        "chara_pic_code": "dafenqi"
     },
     "70104": {
         "att_item": [
@@ -8258,7 +8283,8 @@
             10,
             20
         ],
-        "skin": []
+        "skin": [],
+        "chara_pic_code": "tashigan"
     },
     "90111": {
         "att_item": [
@@ -8568,7 +8594,8 @@
             10,
             20
         ],
-        "skin": []
+        "skin": [],
+        "chara_pic_code": "edu"
     },
     "990001": {
         "att_item": [
@@ -8905,7 +8932,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "lingyangzhe32_1"
     },
     "990002": {
         "att_item": [
@@ -9242,7 +9270,8 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "linghangyuan32_1"
     },
     "990003": {
         "att_item": [
@@ -9579,6 +9608,7 @@
                 "shop_id": 0,
                 "tech_id": 0
             }
-        ]
+        ],
+        "chara_pic_code": "tansuozhe21_1"
     }
 }

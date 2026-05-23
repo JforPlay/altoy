@@ -18,8 +18,7 @@ const state = {
     selectedEnhancement: 0, // 0 = no enhancement, 1 = 1st enhancement, 2 = 2nd enhancement
     selectedSkillLevel: 1, // Skill level 1-10
     fuseInstance: null,
-    items: {}, // Item data from island_item_data_template.json
-    characterIcons: {} // Icon data from character_icon.json
+    items: {} // Item data from island_item_data_template.json
 };
 
 // ===== Data Loading =====
@@ -36,17 +35,15 @@ async function init(sharedData) {
         }
 
         // Load module-specific data in parallel
-        const [charactersData, attData, levelData, iconData] = await Promise.all([
+        const [charactersData, attData, levelData] = await Promise.all([
             fetchJSON('data/island/characters.json'),
             fetchJSON('data/island/island_chara_att.json'),
-            fetchJSON('data/island/island_chara_level.json'),
-            fetchJSON('data/island/character_icon.json')
+            fetchJSON('data/island/island_chara_level.json')
         ]);
 
         state.characters = charactersData;
         state.attRankings = attData;
         state.levelData = levelData;
-        state.characterIcons = iconData;
 
         // Convert rankings to sorted array for easy lookup
         state.attRankingsArray = Object.values(attData)
@@ -214,9 +211,8 @@ function renderCharacterList(characters = null) {
  * Create HTML for a character card
  */
 function createCharacterCard(char) {
-    const iconPath = state.characterIcons[char.name];
-    const portraitUrl = iconPath
-        ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandshipicon/${iconPath}.webp`
+    const portraitUrl = char.chara_pic_code
+        ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandshipicon/${char.chara_pic_code}.webp`
         : '';
 
     const isSelected = state.selectedCharacterId === String(char.id);
