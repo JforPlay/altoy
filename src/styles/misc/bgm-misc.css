@@ -261,6 +261,19 @@ body {
     display: none;
 }
 
+/* Lift the global scroll-to-top above the player bar while it is visible.
+   Falls back to the default 2rem (1rem on mobile) when the bar is [hidden].
+   Anchored on body because .bgm-misc-player-bar is a sibling of .bgm-misc-page,
+   not a descendant. */
+body:has(.bgm-misc-player-bar:not([hidden])) .scroll-to-top {
+    bottom: 5.5rem;
+}
+@media (max-width: 768px) {
+    body:has(.bgm-misc-player-bar:not([hidden])) .scroll-to-top {
+        bottom: 5rem;
+    }
+}
+
 .bgm-misc-player-controls,
 .bgm-misc-player-toggles {
     display: flex;
