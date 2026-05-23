@@ -2258,6 +2258,76 @@
             0
         ]
     },
+    "120008": {
+        "auto_finish": 1,
+        "axis": [
+            28,
+            3
+        ],
+        "complete_character_id": "",
+        "complete_map_id": 1007,
+        "complete_tips": "<color=#1E8FFE>아일랜드 권한 인증 장치</color>로 동료를 가입시킬 수 있습니다.",
+        "complete_title": "<color=#1E8FFE>아일랜드 권한 인증 장치</color>로 동료를 가입시킬 수 있습니다.",
+        "formula_id": {
+            "affected_vfx": "",
+            "affected_vfx_offset": "",
+            "attribute": 6,
+            "collectable_vfx": 0,
+            "commission_cost": [
+                [
+                    1,
+                    400000
+                ]
+            ],
+            "commission_product": [],
+            "cost": [
+                [
+                    1,
+                    400000
+                ]
+            ],
+            "drop_display": [],
+            "harvest_vfx": 0,
+            "hitpoint": 0,
+            "id": 7120008,
+            "is_condition": 0,
+            "item_id": 0,
+            "name": "인증 추가",
+            "production_limit": 1,
+            "pt_award": 0,
+            "second_product": [],
+            "second_product_display": [],
+            "ship_exp": 720,
+            "stamina_cost": 144,
+            "task_filiter": "",
+            "unitid": "",
+            "unlock_type": 37120008,
+            "vfx_offset": "",
+            "workload": 432000
+        },
+        "id": 120008,
+        "island_level": 50,
+        "sys_unlock": [
+            [
+                3,
+                110310
+            ],
+            [
+                3,
+                120007
+            ]
+        ],
+        "tech_belong": 1,
+        "tech_chara": 1,
+        "tech_desc": "타카오의 아일랜드 권한 인증 장치를 생산한다. 더 많은 동료를 초대하자!",
+        "tech_icon": "tech_120001",
+        "tech_level": "1",
+        "tech_name": "인증 추가",
+        "tech_repeat": [
+            0,
+            0
+        ]
+    },
     "130301": {
         "auto_finish": 1,
         "axis": [

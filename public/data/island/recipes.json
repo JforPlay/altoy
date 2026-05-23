@@ -1679,6 +1679,140 @@
       "unlock_type": 0,
       "vfx_offset": "",
       "workload": 54000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          4034,
+          3
+        ]
+      ],
+      "commission_product": [
+        [
+          4033,
+          18
+        ]
+      ],
+      "cost": [
+        [
+          4034,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          4033,
+          6
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 9900017,
+      "is_condition": 0,
+      "item_id": 4033,
+      "name": "토마토",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 120,
+      "stamina_cost": 24,
+      "task_filiter": [
+        1,
+        2
+      ],
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20165
+        ],
+        [
+          1,
+          20166
+        ]
+      ],
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 72000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 1,
+      "collectable_vfx": 60002,
+      "commission_cost": [
+        [
+          4036,
+          3
+        ]
+      ],
+      "commission_product": [
+        [
+          4035,
+          12
+        ]
+      ],
+      "cost": [
+        [
+          4036,
+          1
+        ]
+      ],
+      "drop_display": [
+        [
+          4035,
+          4
+        ]
+      ],
+      "harvest_vfx": 60021,
+      "hitpoint": 0,
+      "id": 9900018,
+      "is_condition": 0,
+      "item_id": 4035,
+      "name": "오이",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 60,
+      "stamina_cost": 12,
+      "task_filiter": [
+        1,
+        2
+      ],
+      "unitid": [
+        [
+          0,
+          20100
+        ],
+        [
+          0.7,
+          20101
+        ],
+        [
+          0.9,
+          20167
+        ],
+        [
+          1,
+          20168
+        ]
+      ],
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 36000
     }
   ],
   "3": [
@@ -3403,7 +3537,9 @@
       "second_product_display": [],
       "ship_exp": 10,
       "stamina_cost": 2,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -3444,7 +3580,9 @@
       "second_product_display": [],
       "ship_exp": 10,
       "stamina_cost": 2,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -3727,7 +3865,9 @@
       "second_product_display": [],
       "ship_exp": 5,
       "stamina_cost": 1,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -3768,7 +3908,9 @@
       "second_product_display": [],
       "ship_exp": 5,
       "stamina_cost": 1,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -3809,7 +3951,9 @@
       "second_product_display": [],
       "ship_exp": 5,
       "stamina_cost": 1,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -4145,7 +4289,9 @@
       "second_product_display": [],
       "ship_exp": 5,
       "stamina_cost": 1,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -4186,7 +4332,9 @@
       "second_product_display": [],
       "ship_exp": 5,
       "stamina_cost": 1,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -4227,7 +4375,9 @@
       "second_product_display": [],
       "ship_exp": 5,
       "stamina_cost": 1,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -4551,7 +4701,9 @@
       "second_product_display": [],
       "ship_exp": 10,
       "stamina_cost": 2,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -4592,7 +4744,9 @@
       "second_product_display": [],
       "ship_exp": 10,
       "stamina_cost": 2,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -4916,7 +5070,9 @@
       "second_product_display": [],
       "ship_exp": 10,
       "stamina_cost": 2,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -4957,7 +5113,9 @@
       "second_product_display": [],
       "ship_exp": 10,
       "stamina_cost": 2,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -4998,7 +5156,9 @@
       "second_product_display": [],
       "ship_exp": 10,
       "stamina_cost": 2,
-      "task_filiter": "",
+      "task_filiter": [
+        1001
+      ],
       "unitid": "",
       "unlock_type": -1,
       "vfx_offset": "",
@@ -5343,6 +5503,174 @@
       "unlock_type": 0,
       "vfx_offset": "",
       "workload": 12000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4035,
+          4
+        ]
+      ],
+      "commission_product": [
+        [
+          4037,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900019,
+      "is_condition": 0,
+      "item_id": 4037,
+      "name": "오이 주스",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "task_filiter": [
+        1,
+        5
+      ],
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4031,
+          1
+        ]
+      ],
+      "commission_product": [
+        [
+          4038,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900020,
+      "is_condition": 0,
+      "item_id": 4038,
+      "name": "수박 주스",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "task_filiter": [
+        1,
+        5
+      ],
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 6000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4032,
+          4
+        ],
+        [
+          2002,
+          6
+        ]
+      ],
+      "commission_product": [
+        [
+          4039,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900021,
+      "is_condition": 0,
+      "item_id": 4039,
+      "name": "적비름 주먹밥",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 30,
+      "stamina_cost": 6,
+      "task_filiter": [
+        1,
+        3
+      ],
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 4,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4033,
+          4
+        ],
+        [
+          2601,
+          8
+        ]
+      ],
+      "commission_product": [
+        [
+          4040,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900022,
+      "is_condition": 0,
+      "item_id": 4040,
+      "name": "토마토 달걀볶음",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 15,
+      "stamina_cost": 3,
+      "task_filiter": [
+        1,
+        3
+      ],
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 9000
     }
   ],
   "6": [
@@ -6452,6 +6780,90 @@
       "unlock_type": 0,
       "vfx_offset": "",
       "workload": 18000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4029,
+          3
+        ]
+      ],
+      "commission_product": [
+        [
+          4041,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900023,
+      "is_condition": 0,
+      "item_id": 4041,
+      "name": "자스민 에센셜 오일",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 80,
+      "stamina_cost": 16,
+      "task_filiter": [
+        1,
+        4
+      ],
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 48000
+    },
+    {
+      "affected_vfx": "",
+      "affected_vfx_offset": "",
+      "attribute": 6,
+      "collectable_vfx": 0,
+      "commission_cost": [
+        [
+          4029,
+          2
+        ],
+        [
+          4030,
+          2
+        ]
+      ],
+      "commission_product": [
+        [
+          4042,
+          1
+        ]
+      ],
+      "cost": [],
+      "drop_display": [],
+      "harvest_vfx": 0,
+      "hitpoint": 0,
+      "id": 9900024,
+      "is_condition": 0,
+      "item_id": 4042,
+      "name": "여름 꽃다발",
+      "production_limit": 5,
+      "pt_award": 0,
+      "second_product": [],
+      "second_product_display": [],
+      "ship_exp": 10,
+      "stamina_cost": 2,
+      "task_filiter": [
+        1,
+        4
+      ],
+      "unitid": "",
+      "unlock_type": 0,
+      "vfx_offset": "",
+      "workload": 6000
     }
   ]
 }

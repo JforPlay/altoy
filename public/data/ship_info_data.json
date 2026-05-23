@@ -41605,6 +41605,26 @@
             180002
         ],
         "skin_id": 201130,
+        "sp_weapon": {
+            "icon": "15340",
+            "name": "슈퍼 아츠 리볼버",
+            "skill_upgrade": [
+                [
+                    0,
+                    1090460
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "reload",
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1090461,
+                    "quota": 6,
+                    "time": 0.4
+                }
+            ]
+        },
         "class_name": "G급",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/201130.webp",
         "equip_1": [
@@ -138897,6 +138917,30 @@
             180008
         ],
         "skin_id": 702040,
+        "sp_weapon": {
+            "icon": "15320",
+            "name": "숭고와 명예의 검",
+            "skill_upgrade": [
+                [
+                    0,
+                    1014170
+                ]
+            ],
+            "attribute_1": "cannon",
+            "attribute_2": "hit",
+            "weapon_true": true,
+            "attached_weapon_skill_id": [
+                {
+                    "id": 1014171
+                },
+                {
+                    "id": 14171
+                },
+                {
+                    "id": 14170
+                }
+            ]
+        },
         "class_name": "키로프급",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/702040.webp",
         "equip_1": [
@@ -151724,7 +151768,8 @@
         },
         "armor": 1,
         "description": [
-            "한정 이벤트: 불타는 아이리스 회상곡"
+            "한정 이벤트: 불타는 아이리스 회상곡",
+            "소형함 건조"
         ],
         "name": "마르세예즈",
         "gift_dislike": [
