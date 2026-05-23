@@ -11,6 +11,7 @@ import {
     aggregateIngredients,
     groupIngredientsByLocation
 } from './island.restaurant.calc.js';
+import { renderSeasonBadge } from './island.season-map.js';
 
 'use strict';
 
@@ -422,6 +423,7 @@ function renderPlannerSlot(restaurantId, slotIndex, slot, menuOptions) {
                         <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${selectedMenu.icon}" alt="${selectedMenu.name}">
                     </div>
                     <div class="slot-name">${selectedMenu.name}</div>
+                    ${renderSeasonBadge(selectedMenu.itemId)}
                 ` : `
                     <div class="slot-placeholder">
                         <span class="material-symbols-outlined">add</span>
@@ -493,6 +495,7 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
                                     </div>
                                     <div class="menu-option-details">
                                         <div class="menu-option-name">${opt.name}</div>
+                                        ${renderSeasonBadge(opt.itemId)}
                                         ${ingredients.length > 0 ? `
                                             <div class="menu-option-ingredients">
                                                 ${ingredients.slice(0, 6).map(ing => `

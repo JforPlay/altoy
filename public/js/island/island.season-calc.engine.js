@@ -6,6 +6,7 @@
  */
 
 import { fetchJSON, getStorageItem, setStorageItem } from '../utils.js';
+import { renderSeasonBadge } from './island.season-map.js';
 
 'use strict';
 
@@ -488,6 +489,7 @@ function renderItemGrid() {
                     </div>
                     <div class="calc-item-info">
                         <div class="calc-item-name">${item.name || `가구 ${item.id}`}</div>
+                        ${renderSeasonBadge(item.id)}
                         <div class="calc-item-pt">
                             <span class="material-symbols-outlined">grade</span>
                             ${item.pt_num} pt
