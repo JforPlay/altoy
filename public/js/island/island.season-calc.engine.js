@@ -6,7 +6,7 @@
  */
 
 import { fetchJSON, getStorageItem, setStorageItem } from '../utils.js';
-import { renderSeasonBadge } from './island.season-map.js';
+import { renderSeasonBadge, findCurrentSeasonId, getSeasonThematicName } from './island.season-map.js';
 
 'use strict';
 
@@ -18,6 +18,7 @@ const state = {
     ownedPoints: 0,         // User's already owned season points
     sortBy: 'pt_desc',      // pt_desc, pt_asc, gain_desc, gain_asc, gain_per_min_desc, gain_per_min_asc, name_asc, name_desc
     seasonData: null,       // Season pass data from island_season.json
+    currentSeasonId: null,  // Numeric id of the season backing state.seasonData
     seasonPassCollapsed: true, // Track if season pass is collapsed
     recipeIndex: null       // Recipe index for calculations
 };
@@ -65,24 +66,31 @@ async function init(sharedData) {
 
 async function loadSeasonData() {
     try {
-        // Load module-specific data
         const rawData = await fetchJSON('data/island/island_season.json');
 
-        // The JSON structure has keys like "1", "2" and an "all" array.
-        // We want the latest season or specific season.
-        let seasonId = 1;
-        if (rawData.all && Array.isArray(rawData.all) && rawData.all.length > 0) {
-            seasonId = rawData.all[rawData.all.length - 1];
+        // Pick the season whose KST time window contains now (canonical, matches
+        // the badge module). island_season.json has no `all` index, so fall back
+        // to the highest numeric key only when no season is currently live.
+        const nowMs = Date.now();
+        let seasonId = findCurrentSeasonId(rawData, nowMs);
+        if (seasonId === null) {
+            const numericKeys = Object.keys(rawData)
+                .filter(k => /^\d+$/.test(k))
+                .map(Number)
+                .sort((a, b) => b - a);
+            seasonId = numericKeys[0] ?? null;
         }
 
-        state.seasonData = rawData[seasonId];
+        state.currentSeasonId = seasonId;
+        state.seasonData = seasonId !== null ? rawData[String(seasonId)] : null;
 
         if (!state.seasonData) {
-            throw new Error(`Season data for ID ${seasonId} not found`);
+            throw new Error('No season data resolved');
         }
     } catch (e) {
         console.warn('[SeasonCalc] Could not load season data:', e);
         state.seasonData = null;
+        state.currentSeasonId = null;
     }
 }
 
@@ -220,14 +228,20 @@ function hasRecipeForItem(itemId) {
 function formatSeasonTime() {
     if (!state.seasonData || !state.seasonData.time) return '';
 
-    const [[startYear, startMonth, startDay], [startHour, startMin, startSec]] = state.seasonData.time[0];
-    const [[endYear, endMonth, endDay], [endHour, endMin, endSec]] = state.seasonData.time[1];
+    const [[startYear, startMonth, startDay], [startHour]] = state.seasonData.time[0];
+    const [[endYear, endMonth, endDay], [endHour]] = state.seasonData.time[1];
+
+    // KR maintenance gap convention in island_season.json:
+    //   hour <  12 → window begins right after maintenance ("점검 후")
+    //   hour >= 12 → window ends right before maintenance  ("점검 전")
+    const startSuffix = startHour < 12 ? ' 점검 후' : ' 점검 전';
+    const endSuffix = endHour < 12 ? ' 점검 후' : ' 점검 전';
 
     return `
         <div class="season-time">
             <span class="material-symbols-outlined">schedule</span>
-            ${startYear}.${String(startMonth).padStart(2, '0')}.${String(startDay).padStart(2, '0')} ~
-            ${endYear}.${String(endMonth).padStart(2, '0')}.${String(endDay).padStart(2, '0')}
+            ${startYear}.${String(startMonth).padStart(2, '0')}.${String(startDay).padStart(2, '0')}${startSuffix} ~
+            ${endYear}.${String(endMonth).padStart(2, '0')}.${String(endDay).padStart(2, '0')}${endSuffix}
         </div>
     `;
 }
@@ -353,13 +367,23 @@ function renderSeasonPass() {
     `;
     }).join('');
 
+    // Generic data name (e.g. "개발 시즌Ⅲ") + thematic in-game subtitle when
+    // we have one for this season id (override table in island.season-map.js).
+    const seasonName = state.seasonData.name || '개발 시즌';
+    const thematicName = state.currentSeasonId !== null
+        ? getSeasonThematicName(state.currentSeasonId)
+        : null;
+    const headerTitle = thematicName
+        ? `아일랜드 ${seasonName} - ${thematicName}`
+        : `아일랜드 ${seasonName}`;
+
     container.innerHTML = `
         <div class="season-pass-container ${state.seasonPassCollapsed ? 'collapsed' : ''}">
             <div class="season-pass-header">
                 <div class="season-pass-title">
                     <h2>
                         <span class="material-symbols-outlined">celebration</span>
-                        아일랜드 개발 시즌 I - 개막!
+                        ${headerTitle}
                     </h2>
                     ${formatSeasonTime()}
                 </div>

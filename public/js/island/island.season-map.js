@@ -26,6 +26,16 @@ export const SEASON_ID_RANGES = [
     { season: 3,    min: 4029, max: 4099 }, // Ⅲ — anchored by 4029 자스민 / 4031 수박
 ];
 
+/**
+ * Thematic season titles — not in island_season.json (data only carries the
+ * generic "개발 시즌Ⅲ"). When a new season launches, add one line below.
+ *
+ *   <season id>: '<KR thematic title>',   // e.g. 4: '겨울 ○○ 경영',
+ */
+export const SEASON_THEMATIC_NAMES = {
+    3: '여름 특산물 경영',
+};
+
 // ===== Pure Helpers (testable) =====
 
 /**
@@ -158,6 +168,15 @@ export function getCurrentSeasonId() {
     return _state?.currentSeasonId ?? null;
 }
 
+/**
+ * Returns the thematic name for a given season id (e.g. "여름 특산물 경영"
+ * for S3) or null if no override is registered. Callers should fall back
+ * to the data's generic `name` field when this returns null.
+ */
+export function getSeasonThematicName(seasonId) {
+    return SEASON_THEMATIC_NAMES[seasonId] ?? null;
+}
+
 // Test-only reset hook. Production callers should never invoke this — calling
 // it from app code would re-trigger the orphan scan and reset memoization.
 export function _resetForTests() {
@@ -173,5 +192,6 @@ if (typeof window !== 'undefined') {
         getItemSeason,
         renderSeasonBadge,
         getCurrentSeasonId,
+        getSeasonThematicName,
     };
 }
