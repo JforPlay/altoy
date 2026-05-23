@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function collectVoiceLines(skin) {
         const normal = [];
         const oath = [];
-        
+
         const addLine = (target, key, label) => {
             const val = skin[key];
             if (!val || !val.voiceline) return;
@@ -355,13 +355,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Priority keys
         const priority = ["입수시", "상세확인", "실망", "낯섦", "호감", "기쁨", "사랑", "서약"];
         priority.forEach(k => addLine(normal, k, k));
-        
+
+        // Gift voice lines: audio-only (game ships voice, no transcript).
+        const giftKeys = ['선호 선물', '비선호 선물'];
+        giftKeys.forEach(k => {
+            const val = skin[k];
+            if (!val) return;
+            if (val.voicelink || val.voiceline) {
+                normal.push({ label: k, text: val.voiceline || '', src: val.voicelink || '' });
+            }
+        });
+
+        const skipFromAuto = new Set(['설명', '자기소개', '드랍 설명', '함대 특수대사', ...giftKeys]);
         // Other keys
         Object.keys(skin).forEach(k => {
             if (priority.includes(k)) return;
             if (k.endsWith('_ex')) {
                 addLine(oath, k, k.replace('_ex', ' EX'));
-            } else if (skin[k] && skin[k].voiceline && !['설명', '자기소개', '드랍 설명', '함대 특수대사'].includes(k)) {
+            } else if (skin[k] && skin[k].voiceline && !skipFromAuto.has(k)) {
                 addLine(normal, k, k);
             }
         });
