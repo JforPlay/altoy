@@ -701,10 +701,10 @@
     border-radius: var(--radius-md);
 }
 
-.lightbox-close {
+.lightbox-close,
+.lightbox-download {
     position: absolute;
     top: var(--spacing-lg);
-    right: var(--spacing-lg);
     background: var(--bg-secondary);
     color: var(--text-primary);
     border: none;
@@ -721,10 +721,27 @@
     z-index: 2001;
 }
 
-.lightbox-close:hover {
+.lightbox-close {
+    right: var(--spacing-lg);
+}
+
+/* Sit immediately left of the close button — same row, same size. */
+.lightbox-download {
+    right: calc(var(--spacing-lg) + 3rem + var(--spacing-sm));
+}
+
+.lightbox-close:hover,
+.lightbox-download:hover {
     background: var(--primary-color);
-    transform: scale(1.1) rotate(90deg);
     box-shadow: var(--shadow-lg);
+}
+
+.lightbox-close:hover {
+    transform: scale(1.1) rotate(90deg);
+}
+
+.lightbox-download:hover {
+    transform: scale(1.1) translateY(2px);
 }
 
 /* --- Responsive Styles --- */
@@ -795,11 +812,19 @@
         height: 48px;
     }
 
-    .lightbox-close {
+    .lightbox-close,
+    .lightbox-download {
         top: var(--spacing-sm);
-        right: var(--spacing-sm);
         width: 2.5rem;
         height: 2.5rem;
+    }
+
+    .lightbox-close {
+        right: var(--spacing-sm);
+    }
+
+    .lightbox-download {
+        right: calc(var(--spacing-sm) + 2.5rem + var(--spacing-sm));
     }
 }
 

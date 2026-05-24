@@ -1478,6 +1478,78 @@ function setupFpsDisplay(fpsDisplay) {
     return stop;
 }
 
+// ===== File Download =====
+
+/**
+ * Make a string safe for use as a filename across Windows / macOS / Linux.
+ * Strips reserved characters, collapses whitespace, caps length, and falls
+ * back to a sensible default for empty input.
+ * @param {string} name
+ * @param {string} [fallback='image']
+ * @returns {string}
+ */
+function sanitizeFilename(name, fallback = 'image') {
+    if (!name) return fallback;
+    const cleaned = String(name)
+        .replace(/[\\/:*?"<>|]+/g, '_')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 100);
+    return cleaned || fallback;
+}
+
+/**
+ * Decode a base64 `data:` URL into a Blob without going through fetch().
+ * The CSP `connect-src` directive doesn't list `data:`, so fetch() on a data
+ * URL is blocked — atob + Uint8Array is the CSP-safe path.
+ * @param {string} dataUrl
+ * @returns {Blob}
+ */
+function dataUrlToBlob(dataUrl) {
+    const [header, b64] = dataUrl.split(',');
+    const mime = header.match(/data:([^;]+)/)?.[1] || 'application/octet-stream';
+    const binary = atob(b64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new Blob([bytes], { type: mime });
+}
+
+/**
+ * Trigger a browser download for an image given its URL.
+ *
+ * Why this exists: canvas-derived `data:` URLs (used by the expression
+ * composite lightboxes) don't reliably surface the long-press "Save Image"
+ * menu on mobile — iOS Safari and Chrome Android frequently show no menu at
+ * all for large data URLs. Converting to a Blob → object URL → `<a download>`
+ * is the reliable cross-platform save path. Data URLs are decoded directly
+ * (CSP blocks fetch on `data:`); http(s) sources go through fetch.
+ *
+ * @param {string} src - image URL (data: or http(s))
+ * @param {string} [filename='image.png'] - suggested filename
+ * @returns {Promise<boolean>} resolves true on success
+ */
+async function downloadImage(src, filename = 'image.png') {
+    if (!src) return false;
+    try {
+        const blob = src.startsWith('data:')
+            ? dataUrlToBlob(src)
+            : await (await fetch(src)).blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        // Revoke on next tick so the browser has finished kicking off the download.
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        return true;
+    } catch (e) {
+        console.warn('Image download failed', e);
+        return false;
+    }
+}
+
 // ===== DOM Lifecycle Utilities =====
 
 /**
@@ -1663,6 +1735,10 @@ export {
 
     // Toast notifications
     showToast,
+
+    // File download
+    downloadImage,
+    sanitizeFilename,
 
     // Performance display
     setupFpsDisplay,

@@ -437,6 +437,7 @@
 }
 
 .lightbox-close,
+.lightbox-download,
 .lightbox-prev,
 .lightbox-next {
   position: absolute;
@@ -461,6 +462,12 @@
   left: var(--spacing-lg);
 }
 
+/* Sit immediately right of the close button — same row, same size. */
+.lightbox-download {
+  top: var(--spacing-lg);
+  left: calc(var(--spacing-lg) + 3rem + var(--spacing-sm));
+}
+
 .lightbox-prev {
   left: var(--spacing-xl);
   top: 50%;
@@ -474,6 +481,7 @@
 }
 
 .lightbox-close:hover,
+.lightbox-download:hover,
 .lightbox-prev:hover,
 .lightbox-next:hover {
   background: var(--primary-color);
@@ -483,6 +491,10 @@
 
 .lightbox-close:hover {
   transform: scale(1.1) rotate(90deg);
+}
+
+.lightbox-download:hover {
+  transform: scale(1.1) translateY(2px);
 }
 
 .lightbox-prev:hover {
@@ -898,6 +910,13 @@
   .lightbox-close {
     top: var(--spacing-sm);
     left: var(--spacing-sm);
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .lightbox-download {
+    top: var(--spacing-sm);
+    left: calc(var(--spacing-sm) + 2.5rem + var(--spacing-sm));
     width: 2.5rem;
     height: 2.5rem;
   }

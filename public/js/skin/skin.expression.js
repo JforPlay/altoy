@@ -11,7 +11,7 @@
  * means no border or sub-pixel offset between layers can reopen the hole. The
  * decoded base is cached per container so an expression switch only redraws.
  */
-import { hideElement, showElement, createImgElement, createIcon, lockBodyScroll, unlockBodyScroll, DATA_VERSION } from '../utils.js';
+import { hideElement, showElement, createImgElement, createIcon, lockBodyScroll, unlockBodyScroll, downloadImage, sanitizeFilename, DATA_VERSION } from '../utils.js';
 
 // Cap the composite canvas — some paintings are 100+ megapixels (e.g. 이404
 // 317020 is 11830×10224). A canvas that large overflows browser decode/canvas
@@ -52,10 +52,12 @@ function init() {
     const closeBtn = state.lightboxModal.querySelector('.lightbox-close');
     const prevBtn = state.lightboxModal.querySelector('.lightbox-prev');
     const nextBtn = state.lightboxModal.querySelector('.lightbox-next');
+    const downloadBtn = state.lightboxModal.querySelector('.lightbox-download');
 
     closeBtn.addEventListener('click', closeLightbox);
     prevBtn.addEventListener('click', showPrevImage);
     nextBtn.addEventListener('click', showNextImage);
+    if (downloadBtn) downloadBtn.addEventListener('click', downloadCurrentImage);
 
     state.lightboxModal.addEventListener('click', (e) => {
         if (e.target === state.lightboxModal) closeLightbox();
@@ -134,6 +136,19 @@ function animateSlide(direction) {
         state.lightboxImage.classList.add('animating');
         state.lightboxImage.classList.remove(`slide-from-${direction}`);
     });
+}
+
+/**
+ * Save the current lightbox image — the displayed src is already the composite
+ * (or a plain URL for non-overlay gallery items), so the helper just blob-fetches
+ * it and triggers a download. Mobile long-press on data URLs is unreliable, so
+ * this button is the canonical save path.
+ */
+function downloadCurrentImage() {
+    const src = state.lightboxImage?.src;
+    if (!src) return;
+    const caption = state.lightboxCaption?.textContent || 'altoy-image';
+    downloadImage(src, `${sanitizeFilename(caption)}.png`);
 }
 
 function showPrevImage() {

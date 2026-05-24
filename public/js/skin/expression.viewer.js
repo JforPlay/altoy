@@ -18,7 +18,9 @@ import {
     createSearchIndex,
     ensureFuse,
     setupModal,
-    openModal
+    openModal,
+    downloadImage,
+    sanitizeFilename
 } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -114,7 +116,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
 
+        const downloadBtn = elements.lightboxModal.querySelector('.lightbox-download');
+        if (downloadBtn) downloadBtn.addEventListener('click', downloadCurrentImage);
+
         window.addEventListener('popstate', applyURLParams);
+    }
+
+    /**
+     * Save the current lightbox image. The displayed src is the canvas composite
+     * data URL — mobile long-press doesn't reliably surface the save menu for
+     * those, so this button is the canonical save path.
+     */
+    function downloadCurrentImage() {
+        const src = elements.lightboxImage.src;
+        if (!src) return;
+        const caption = elements.lightboxCaption.textContent || 'altoy-expression';
+        downloadImage(src, `${sanitizeFilename(caption)}.png`);
     }
 
     function handleSearch() {
