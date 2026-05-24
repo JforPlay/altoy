@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Render Info
             renderSkinInfoBox(skin);
             // Render Gallery
-            renderImageGallery(skin, elements.imageGallery);
+            renderImageGallery(skin, elements.imageGallery, skinName);
             // Render Voice Lines
             renderVoiceLines(skin);
 

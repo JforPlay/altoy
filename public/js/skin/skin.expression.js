@@ -171,11 +171,16 @@ function showNextImage() {
  * Build and mount the full image gallery for a skin into the given container.
  * Renders: expression selector (if manifest entry exists), main painting with overlay,
  * zoomed painting with overlay, and thumbnail panels. Attaches expression/lightbox handlers.
+ *
+ * `skinName` is the human-readable skin name (e.g. "프린츠 오이겐 (기본)"); it's
+ * prefixed onto each lightbox caption so the user sees which skin they're viewing
+ * AND so the saved-image filename ends up specific.
  */
-function renderImageGallery(skin, container) {
+function renderImageGallery(skin, container, skinName = '') {
     const topNodes = [];
     const galleryImages = [];
     const skinId = skin['클뜯 id'];
+    const captionFor = (label) => skinName ? `${skinName} - ${label}` : label;
 
     const getDefaultFace = (faces) => (faces && faces.includes('0') ? '0' : (faces ? faces[0] : '0'));
 
@@ -207,10 +212,10 @@ function renderImageGallery(skin, container) {
         topNodes.push(overlayNode);
         // `src` (painting.png) has a transparent face hole — the lightbox
         // composites `overlay`'s live face onto it instead of showing it bare.
-        galleryImages.push({ src: baseImageUrl, alt: '전체 일러스트', caption: '전체 일러스트', overlay: overlayNode });
+        galleryImages.push({ src: baseImageUrl, alt: '전체 일러스트', caption: captionFor('전체 일러스트'), overlay: overlayNode });
     } else if (skin['전체 일러']) {
         topNodes.push(createImgElement(skin['전체 일러'], '전체 일러스트', { className: 'gallery-top-banner' }));
-        galleryImages.push({ src: skin['전체 일러'], alt: '전체 일러스트', caption: '전체 일러스트' });
+        galleryImages.push({ src: skin['전체 일러'], alt: '전체 일러스트', caption: captionFor('전체 일러스트') });
     }
 
     // Bottom Panel
@@ -236,10 +241,10 @@ function renderImageGallery(skin, container) {
         });
         bottomLeft.appendChild(overlayNode);
         // `src` (painting_n.png) has a transparent face hole — composited in the lightbox.
-        galleryImages.push({ src: baseImageUrl, alt: '확대 일러스트', caption: '확대 일러스트', overlay: overlayNode });
+        galleryImages.push({ src: baseImageUrl, alt: '확대 일러스트', caption: captionFor('확대 일러스트'), overlay: overlayNode });
     } else if (skin['확대 일러']) {
         bottomLeft.appendChild(createImgElement(skin['확대 일러'], '확대 일러스트'));
-        galleryImages.push({ src: skin['확대 일러'], alt: '확대 일러스트', caption: '확대 일러스트' });
+        galleryImages.push({ src: skin['확대 일러'], alt: '확대 일러스트', caption: captionFor('확대 일러스트') });
     } else {
         const dummy = document.createElement('div');
         dummy.className = 'dummy-image-box';
@@ -252,12 +257,12 @@ function renderImageGallery(skin, container) {
     bottomRight.className = 'bottom-right-panel';
 
     const tallSources = [
-        { src: skin['깔끔한 일러'], caption: '깔끔한 일러스트' },
-        { src: skin['sd 일러'], caption: 'SD 일러스트' }
+        { src: skin['깔끔한 일러'], caption: captionFor('깔끔한 일러스트') },
+        { src: skin['sd 일러'], caption: captionFor('SD 일러스트') }
     ].filter(i => i.src);
     const smallSources = [
-        { src: skin['아이콘 일러'], caption: '아이콘' },
-        { src: skin['쥬스타 아이콘 일러'], caption: '쥬스타 아이콘' }
+        { src: skin['아이콘 일러'], caption: captionFor('아이콘') },
+        { src: skin['쥬스타 아이콘 일러'], caption: captionFor('쥬스타 아이콘') }
     ].filter(i => i.src);
 
     if (tallSources.length > 0) {
