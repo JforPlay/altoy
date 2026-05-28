@@ -2,13 +2,17 @@
  * secretary-story.js
  * Page script for the secretary story viewer, layered on top of the shared
  * StoryViewer engine. Adds per-shipgirl completion tracking (localStorage),
- * a three-state filter (all / completed / unmarked), and Fuse.js search with
- * highlight. Uses a MutationObserver to wire checkboxes whenever the engine
- * re-renders the event grid.
+ * a three-state completion filter, multi-select faction + rarity chip filters,
+ * a visible-count indicator, and Fuse.js search with highlight. Uses a
+ * MutationObserver to wire checkboxes whenever the engine re-renders the grid.
  */
 import { getStorageItem, setStorageItem, createSearchIndex, ensureFuse, makeKeyboardActivatable } from '../utils.js';
 
 const COMPLETION_STORAGE_KEY = 'secretaryStoryCompletion';
+
+/* Rarity tier order, low → high. Used to render chips in a predictable order
+   regardless of which rarities happen to appear first in the data. */
+const RARITY_ORDER = ['N', 'R', 'SR', 'SSR', 'UR', 'PR', 'DR'];
 
 function getCompletionData() {
   const data = getStorageItem(COMPLETION_STORAGE_KEY, null);
@@ -27,7 +31,6 @@ function setCompletionData(data) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Guard: engine must be present
   if (typeof window.StoryViewer === 'undefined') {
     console.error(
       'StoryViewer engine not loaded. Include story-viewer.engine.js before this script.'
@@ -37,15 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ===== State =====
   let currentFilter = 'all'; // 'all' | 'completed' | 'unmarked'
-  let initialHydrateDone = false; // guard: ensure first render uses our filter, not the engine's default
+  let initialHydrateDone = false;
+  const selectedFactions = new Set(); // empty = no faction filter
+  const selectedRarities = new Set(); // empty = no rarity filter
+  let chipsBuilt = false;
 
   // ===== Grid Rendering =====
 
-  /**
-   * Re-render the event grid for the given [id, event] entries using the
-   * engine's card factory, then immediately inject completion checkboxes.
-   * Called by applyFilter so the grid always reflects the current filter state.
-   */
   function renderEventEntries(entries) {
     const grid = document.getElementById('event-grid');
     if (!grid) return;
@@ -59,44 +60,203 @@ document.addEventListener('DOMContentLoaded', () => {
         event.icon,
         window.StoryViewer.config.getEventIconPath(event),
         () => window.StoryViewer.selectEvent(eventId),
-        eventId // ensure data-id is present for checkbox logic
+        eventId
       );
+
+      // Layer a skin_icon fallback under the shipyard portrait: a few skins
+      // (notably alt forms / collab outfits) lack a skin_shipyard file and
+      // would otherwise render as a blank card. CSS stacks the top URL over
+      // the second, so a 404 on top falls through transparently.
+      if (event.iconFallback && event.icon) {
+        const thumb = card.querySelector('.card-thumbnail');
+        if (thumb) {
+          thumb.style.backgroundImage =
+            `url("${event.icon}"), url("${event.iconFallback}")`;
+        }
+      }
+
       grid.appendChild(card);
     });
 
     setupCompletionTracking();
+    updateVisibleCount(entries.length);
   }
 
   // ===== Filter =====
 
   /**
-   * Re-render the event grid filtered by `currentFilter`.
-   * Reads a fresh completion snapshot on every call so the filter reflects
-   * any checkbox toggle that happened since the last render.
-   * Keys are string-normalized to avoid "0" vs 0 mismatches.
+   * Re-render the event grid filtered by the active completion state,
+   * faction chips, and rarity chips. Reads a fresh completion snapshot each
+   * call so toggles since the last render are reflected. Chip sets being
+   * empty means "no constraint" for that dimension.
    */
   function applyFilter() {
     const done = getCompletionData();
     const allEntries = Object.entries(window.StoryViewer.storylineData || {});
-    let entries = allEntries;
 
-    if (currentFilter === 'completed') {
-      entries = allEntries.filter(([id]) => !!done[String(id)]);
-    } else if (currentFilter === 'unmarked') {
-      entries = allEntries.filter(([id]) => !done[String(id)]);
-    }
+    const entries = allEntries.filter(([id, ev]) => {
+      if (currentFilter === 'completed' && !done[String(id)]) return false;
+      if (currentFilter === 'unmarked' && done[String(id)]) return false;
+
+      if (selectedFactions.size > 0) {
+        // Entries without a nationality (e.g. 아카시) get hidden when any
+        // faction is selected — they simply don't match the user's choice.
+        if (ev.nationality == null) return false;
+        if (!selectedFactions.has(String(ev.nationality))) return false;
+      }
+
+      if (selectedRarities.size > 0) {
+        if (!ev.rarity || !selectedRarities.has(ev.rarity)) return false;
+      }
+
+      return true;
+    });
 
     renderEventEntries(entries);
   }
 
-  // ===== Completion Tracking =====
+  // ===== Visible Count Indicator =====
+
+  function updateVisibleCount(visible) {
+    const el = document.getElementById('visible-count');
+    if (!el) return;
+    const total = Object.keys(window.StoryViewer.storylineData || {}).length;
+    el.textContent = '';
+    const num = document.createElement('strong');
+    num.textContent = String(visible);
+    el.append('표시된 함순이 ', num, ` / ${total}명`);
+  }
+
+  // ===== Chip Filter Rows =====
 
   /**
-   * Inject a completion checkbox into each card that lacks one, and sync the
-   * visual state of existing checkboxes with localStorage. Called after every
-   * grid render. Derives the shipgirl ID from data-id, the name-to-id map,
-   * or the special case "아카시" → "0" when the engine hasn't set it.
+   * Build the faction and rarity chip rows from the rarities and nationalities
+   * actually present in storylineData. Idempotent — bails out after the first
+   * successful build. Called once we know storylineData and nationality
+   * mapping are both available.
    */
+  function buildChipRows() {
+    if (chipsBuilt) return;
+    const storylineData = window.StoryViewer.storylineData || {};
+    const nationalityMap = window.StoryViewer.nationalityMap || {};
+    if (!Object.keys(storylineData).length) return;
+
+    const factionIds = new Set();
+    const rarities = new Set();
+    Object.values(storylineData).forEach((ev) => {
+      if (ev.nationality != null) factionIds.add(String(ev.nationality));
+      if (ev.rarity) rarities.add(ev.rarity);
+    });
+
+    const factionContainer = document.getElementById('faction-chips');
+    if (factionContainer) {
+      factionContainer.textContent = '';
+      // Sort numerically for stable, intuitive ordering (USS=1, HMS=2, …)
+      const sorted = Array.from(factionIds).sort((a, b) => Number(a) - Number(b));
+      sorted.forEach((natId) => {
+        const info = nationalityMap[natId];
+        if (!info) return; // skip unknown nationality IDs
+        const chip = makeChip({
+          extraClass: 'chip-faction',
+          ariaLabel: info.name || info.code || `faction ${natId}`,
+          title: info.name || info.code || '',
+          dataAttr: { name: 'data-faction', value: natId },
+          children: [
+            (() => {
+              if (!info.image) return null;
+              const img = document.createElement('img');
+              img.src = info.image;
+              img.alt = '';
+              img.loading = 'lazy';
+              return img;
+            })(),
+            (() => {
+              const label = document.createElement('span');
+              label.textContent = info.code || info.name || natId;
+              return label;
+            })()
+          ].filter(Boolean),
+          onToggle: (active) => {
+            if (active) selectedFactions.add(natId);
+            else selectedFactions.delete(natId);
+            applyFilter();
+          }
+        });
+        factionContainer.appendChild(chip);
+      });
+      factionContainer.appendChild(makeResetChip(selectedFactions, factionContainer));
+    }
+
+    const rarityContainer = document.getElementById('rarity-chips');
+    if (rarityContainer) {
+      rarityContainer.textContent = '';
+      // Render in canonical tier order, then any unknown tiers at the end.
+      const known = RARITY_ORDER.filter((r) => rarities.has(r));
+      const unknown = Array.from(rarities).filter((r) => !RARITY_ORDER.includes(r));
+      [...known, ...unknown].forEach((rarity) => {
+        const chip = makeChip({
+          extraClass: 'chip-rarity',
+          ariaLabel: rarity,
+          dataAttr: { name: 'data-rarity', value: rarity },
+          children: [(() => {
+            const label = document.createElement('span');
+            label.textContent = rarity;
+            return label;
+          })()],
+          onToggle: (active) => {
+            if (active) selectedRarities.add(rarity);
+            else selectedRarities.delete(rarity);
+            applyFilter();
+          }
+        });
+        rarityContainer.appendChild(chip);
+      });
+      rarityContainer.appendChild(makeResetChip(selectedRarities, rarityContainer));
+    }
+
+    chipsBuilt = true;
+  }
+
+  /** Build one toggle chip. onToggle receives the new active state. */
+  function makeChip({ extraClass, ariaLabel, title, dataAttr, children, onToggle }) {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = `chip ${extraClass || ''}`.trim();
+    if (title) chip.title = title;
+    if (ariaLabel) chip.setAttribute('aria-label', ariaLabel);
+    if (dataAttr) chip.setAttribute(dataAttr.name, dataAttr.value);
+    chip.setAttribute('aria-pressed', 'false');
+    children.forEach((c) => chip.appendChild(c));
+    chip.addEventListener('click', () => {
+      const next = !chip.classList.contains('active');
+      chip.classList.toggle('active', next);
+      chip.setAttribute('aria-pressed', String(next));
+      onToggle(next);
+    });
+    return chip;
+  }
+
+  /** "전체" reset chip: clears the bound Set and visually deactivates siblings. */
+  function makeResetChip(boundSet, container) {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'chip chip-reset';
+    chip.textContent = '전체';
+    chip.title = '필터 해제';
+    chip.addEventListener('click', () => {
+      if (boundSet.size === 0) return; // already cleared, nothing to do
+      boundSet.clear();
+      container.querySelectorAll('.chip.active').forEach((c) => {
+        c.classList.remove('active');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      applyFilter();
+    });
+    return chip;
+  }
+
+  // ===== Completion Tracking =====
+
   function setupCompletionTracking() {
     const grid = document.getElementById('event-grid');
     if (!grid) return;
@@ -107,12 +267,11 @@ document.addEventListener('DOMContentLoaded', () => {
       (window.StoryViewer && window.StoryViewer.shipgirlNameMap) || {};
 
     cards.forEach((card) => {
-      // Ensure card has a usable id
       if (!card.dataset.id) {
         const titleEl = card.querySelector('.card-title');
         const name = titleEl ? titleEl.textContent.trim() : '';
         let derivedId = nameMap[name];
-        if (!derivedId && name === '아카시') derivedId = '0'; // special case
+        if (!derivedId && name === '아카시') derivedId = '0';
         if (derivedId) card.dataset.id = String(derivedId);
       }
 
@@ -120,10 +279,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const shipgirlId = String(shipgirlIdRaw);
       if (!shipgirlId) return;
 
-      // Prevent duplicate UI on grid re-renders
       const existingCheckbox = card.querySelector('.card-checkbox');
       if (existingCheckbox) {
-        // Hydrate class + aria state from storage every render
         const isComplete = !!completionData[String(shipgirlId)];
         card.classList.toggle('completed-card', isComplete);
         existingCheckbox.classList.toggle('completed', isComplete);
@@ -131,7 +288,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Create checkbox UI
       const checkbox = document.createElement('div');
       checkbox.className = 'card-checkbox';
 
@@ -142,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
       checkbox.setAttribute('aria-checked', String(checkbox.classList.contains('completed')));
 
       makeKeyboardActivatable(checkbox, (e) => {
-        e.stopPropagation(); // don't bubble to the underlying card click
+        e.stopPropagation();
 
         const fresh = getCompletionData();
         const key = String(shipgirlId);
@@ -153,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.toggle('completed-card');
         checkbox.setAttribute('aria-checked', String(checkbox.classList.contains('completed')));
 
-        applyFilter(); // keep filtered view consistent after every toggle
+        applyFilter();
       }, { role: 'checkbox' });
 
       card.appendChild(checkbox);
@@ -162,11 +318,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ===== Search =====
 
-  /**
-   * Initialize Fuse.js search on the shipgirl event list.
-   * Renders a dropdown of matching results with name-range highlights;
-   * respects the active filter when narrowing results.
-   */
   async function setupSearch() {
     await ensureFuse();
     const source = Object.values(window.StoryViewer.storylineData || {});
@@ -227,11 +378,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } else {
         searchResults.style.display = 'none';
-        applyFilter(); // reset to current filter when cleared
+        applyFilter();
       }
     });
 
-    // Hide dropdown when clicking outside
     document.addEventListener('click', (e) => {
       if (e.target !== searchBar && !searchResults.contains(e.target)) {
         searchResults.style.display = 'none';
@@ -264,19 +414,20 @@ document.addEventListener('DOMContentLoaded', () => {
       'data/story-viewer/secretary_task_data.json',
       'data/story-viewer/secretary_story_data.json',
       'data/ship_group_data.json',
-      'data/story-viewer/shipgirl_data.json'
+      'data/story-viewer/shipgirl_data.json',
+      'data/mapping/nationality_mapping.json'
     ],
 
     processLoadedData(viewer, jsonDataArray) {
-      const [taskGroups, taskData, storyData, shipgirlGroupData, shipgirlStoryData] =
+      const [taskGroups, taskData, storyData, shipgirlGroupData, shipgirlStoryData, nationalityMap] =
         jsonDataArray;
 
-      // shipgirlGroupData (ship_group_data) takes priority over shipgirlStoryData for shared keys
       const shipgirlData = {};
       Object.assign(shipgirlData, shipgirlStoryData, shipgirlGroupData);
 
       viewer.secretaryTaskGroups = taskGroups;
       viewer.shipgirlData = shipgirlData;
+      viewer.nationalityMap = nationalityMap || {};
 
       viewer.secretaryMemories = {};
       for (const taskId in taskData) {
@@ -294,23 +445,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const shipgirlId = groupId;
 
         if (shipgirlId === '0') {
-          // Akashi (ID 0) uses a hardcoded icon; she's not in the normal shipgirl data.
+          // Plain-text descriptions: the engine renders via textContent, so
+          // any HTML tags would show as literal characters in the card.
           viewer.storylineData[shipgirlId] = {
             id: shipgirlId,
             name: '아카시',
             icon:
+              'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/312010.webp',
+            iconFallback:
               'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/312010.webp',
             rarity: 'SSR',
-            description: '아카시 상점<br> 진행퀘스트'
+            description: '아카시 상점 진행퀘스트'
           };
         } else if (viewer.shipgirlData[shipgirlId]) {
           const s = viewer.shipgirlData[shipgirlId];
+          // skin_shipyard is the same filename as skin_icon but a taller 3:4
+          // portrait — far more recognisable on the card. Some skins lack
+          // shipyard files; keep skin_icon as the bg-image fallback layer.
+          const portrait = typeof s.icon === 'string'
+            ? s.icon.replace('/skin_icon/', '/skin_shipyard/')
+            : s.icon;
           viewer.storylineData[shipgirlId] = {
             id: shipgirlId,
             name: s.name,
-            icon: s.icon,
+            icon: portrait,
+            iconFallback: s.icon,
             rarity: s.rarity,
-            description: `${s.name}의 <br> 비서함 스토리`
+            nationality: s.nationality,
+            description: '비서함 스토리'
           };
         }
       }
@@ -320,27 +482,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const n = viewer.shipgirlData[id]?.name;
         if (n) viewer.shipgirlNameMap[n] = id;
       }
-      viewer.shipgirlNameMap['아카시'] = '0'; // Akashi is not in shipgirlData by name
+      viewer.shipgirlNameMap['아카시'] = '0';
     },
 
     getEventIconPath(event) {
-      // Icons are absolute URLs in this page config
       return event.icon;
     },
 
-    /**
-     * Return the memory card list for a shipgirl.
-     * The task group may be an array of IDs or an object with a `tasks` array;
-     * both shapes are handled for forward compatibility.
-     */
     getEventMemories(eventData) {
       const memories = [];
       const groupId = String(eventData.id);
       const group = window.StoryViewer.secretaryTaskGroups[groupId];
 
-      // Accept both shapes:
-      //   A) { [id]: { tasks: [...] } }
-      //   B) { [id]: [...] }
       const taskIds = Array.isArray(group) ? group : (group?.tasks || []);
       if (!taskIds.length) return memories;
 
@@ -365,7 +518,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return memories;
     },
 
-    /** Look up a memory by ID, used when deep-linking via URL params. */
     findMemory(eventData, memoryId) {
       const mems = this.getEventMemories(eventData) || [];
       return mems.find((m) => String(m.id) === String(memoryId));
@@ -380,12 +532,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ===== MutationObserver Wiring =====
 
-  /**
-   * Watch the event grid for engine-triggered renders. On first paint,
-   * replace the engine's default card list with our filtered/annotated view.
-   * On subsequent renders, ensure checkboxes stay in sync with storage.
-   * Search is initialized once on the first observed render.
-   */
   const observer = new MutationObserver((mutationsList) => {
     for (const m of mutationsList) {
       if (m.type === 'childList' && m.addedNodes.length > 0) {
@@ -394,12 +540,12 @@ document.addEventListener('DOMContentLoaded', () => {
           window.StoryViewer.searchInitialized = true;
         }
 
-        // If this is the engine's first paint, immediately re-render via our filter
+        buildChipRows();
+
         if (!initialHydrateDone) {
           initialHydrateDone = true;
-          applyFilter(); // this calls renderEventEntries() -> setupCompletionTracking()
+          applyFilter();
         } else {
-          // For subsequent engine renders (if any), ensure checkboxes match storage
           setupCompletionTracking();
         }
         break;
@@ -411,17 +557,15 @@ document.addEventListener('DOMContentLoaded', () => {
   if (eventGrid) {
     observer.observe(eventGrid, { childList: true });
 
-    // If engine populated before we started observing, hydrate now
     if (eventGrid.children.length > 0 && !initialHydrateDone) {
       initialHydrateDone = true;
+      buildChipRows();
       applyFilter();
     }
   }
 
-  // Disconnect on pagehide so it doesn't fire on stale grids in back-forward cache.
   window.addEventListener('pagehide', () => observer.disconnect(), { once: true });
 
-  // If data is already present very early, render immediately
   if (
     window.StoryViewer &&
     window.StoryViewer.storylineData &&
@@ -429,6 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
     !initialHydrateDone
   ) {
     initialHydrateDone = true;
+    buildChipRows();
     applyFilter();
   }
 });
