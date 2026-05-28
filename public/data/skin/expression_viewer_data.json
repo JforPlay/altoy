@@ -4476,6 +4476,35 @@
     "painting_n": null
   },
   {
+    "id": "900540",
+    "name": "엘베·META",
+    "painting": {
+      "faces": [
+        "1",
+        "3",
+        "6",
+        "8",
+        "7",
+        "4",
+        "5",
+        "2"
+      ],
+      "box": [
+        1705,
+        790,
+        371,
+        326
+      ],
+      "size": [
+        4424,
+        2973
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900540/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900540/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
     "id": "900429",
     "name": "엠덴",
     "painting": null,
@@ -5666,6 +5695,34 @@
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900408/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900408/painting_face_{faceId}.png"
+    },
+    "painting_n": null
+  },
+  {
+    "id": "900541",
+    "name": "쾨니히스베르크·META",
+    "painting": {
+      "faces": [
+        "7",
+        "4",
+        "3",
+        "6",
+        "2",
+        "5",
+        "1"
+      ],
+      "box": [
+        1760,
+        333,
+        185,
+        216
+      ],
+      "size": [
+        3892,
+        2554
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900541/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900541/painting_face_{faceId}.png"
     },
     "painting_n": null
   },

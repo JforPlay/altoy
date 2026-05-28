@@ -33004,5 +33004,50 @@
             }
         ],
         "compare_group": 5
+    },
+    {
+        "id": 151140,
+        "name": "심판호 기동키",
+        "icon": "151140",
+        "rarity": 4,
+        "rarity_name": "SR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 9,
+        "nation_name": "비시아 성좌",
+        "nation_code": "MNF",
+        "speciality": "<[NA]>",
+        "label": [
+            "FFNF",
+            "DEV"
+        ],
+        "tech": 0,
+        "level_count": 12,
+        "attrs": [
+            {
+                "key": "dodge",
+                "name": "기동",
+                "value": "10"
+            },
+            {
+                "key": "hit",
+                "name": "명중",
+                "value": 6
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "dodge",
+                "name": "기동",
+                "value": "21"
+            },
+            {
+                "key": "hit",
+                "name": "명중",
+                "value": 16
+            }
+        ],
+        "compare_group": 5
     }
 ]

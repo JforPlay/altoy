@@ -6479,6 +6479,10 @@
         "name": "달리는 바니걸!",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401521.webp"
     },
+    "401522": {
+        "name": "Sprintender Sommer！",
+        "icon": null
+    },
     "401990": {
         "name": "오토 폰 알벤슬레벤",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401990.webp"
@@ -10273,6 +10277,14 @@
     },
     "900539": {
         "name": "{namecode:311}",
+        "icon": null
+    },
+    "900540": {
+        "name": "{namecode:556}",
+        "icon": null
+    },
+    "900541": {
+        "name": "{namecode:555}",
         "icon": null
     },
     "901010": {

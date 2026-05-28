@@ -18031,6 +18031,123 @@
         "value_1": "590",
         "value_2": 2
     },
+    "151140": {
+        "ammo": 10,
+        "ammo_icon": [],
+        "ammo_info": [],
+        "attribute_1": "dodge",
+        "attribute_2": "hit",
+        "descrip": "아이리스 심판정 전용기의 기동 키. 이제는 당신 것이다",
+        "equip_info": [
+            6
+        ],
+        "equip_parameters": [],
+        "hidden_skill_id": [],
+        "icon": "151140",
+        "id": 151140,
+        "label": [
+            "FFNF",
+            "DEV"
+        ],
+        "name": "심판호 기동키",
+        "nationality": 9,
+        "part_main": [],
+        "part_sub": [],
+        "property_rate": [],
+        "rarity": 4,
+        "skill_id": [
+            [
+                61100,
+                1
+            ]
+        ],
+        "speciality": "<[NA]>",
+        "tech": 0,
+        "torpedo_ammo": 0,
+        "type": 10,
+        "value_1": "10",
+        "value_2": 6,
+        "value_3": 0,
+        "weapon_id": []
+    },
+    "151141": {
+        "base": 151140,
+        "hidden_skill_id": [],
+        "id": 151141,
+        "value_1": "11",
+        "value_2": 7
+    },
+    "151142": {
+        "base": 151140,
+        "hidden_skill_id": [],
+        "id": 151142,
+        "value_1": "12",
+        "value_2": 7
+    },
+    "151143": {
+        "base": 151140,
+        "hidden_skill_id": [],
+        "id": 151143,
+        "value_1": "13",
+        "value_2": 8
+    },
+    "151144": {
+        "base": 151140,
+        "hidden_skill_id": [],
+        "id": 151144,
+        "value_1": "14",
+        "value_2": 9
+    },
+    "151145": {
+        "base": 151140,
+        "hidden_skill_id": [],
+        "id": 151145,
+        "value_1": "15",
+        "value_2": 10
+    },
+    "151146": {
+        "base": 151140,
+        "hidden_skill_id": [],
+        "id": 151146,
+        "value_1": "16",
+        "value_2": 11
+    },
+    "151147": {
+        "base": 151140,
+        "hidden_skill_id": [],
+        "id": 151147,
+        "value_1": "17",
+        "value_2": 12
+    },
+    "151148": {
+        "base": 151140,
+        "hidden_skill_id": [],
+        "id": 151148,
+        "value_1": "18",
+        "value_2": 13
+    },
+    "151149": {
+        "base": 151140,
+        "hidden_skill_id": [],
+        "id": 151149,
+        "value_1": "19",
+        "value_2": 14
+    },
+    "151150": {
+        "base": 151140,
+        "hidden_skill_id": [],
+        "id": 151150,
+        "value_1": "20",
+        "value_2": 15
+    },
+    "151151": {
+        "anti_siren": 100,
+        "base": 151140,
+        "hidden_skill_id": [],
+        "id": 151151,
+        "value_1": "21",
+        "value_2": 16
+    },
     "15120": {
         "ammo": 5,
         "ammo_icon": [],

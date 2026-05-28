@@ -1724,7 +1724,8 @@
         ],
         "bgm": "story-weimu-link",
         "link_event": [
-            94
+            94,
+            95
         ],
         "chapter": 4,
         "column": 58,
@@ -1733,8 +1734,28 @@
     },
     "94": {
         "id": 94,
-        "name": "기대해주세요",
-        "description": "기대해주세요",
+        "name": "회점의 전조",
+        "description": "쇠퇴한 대지, 썩어 무너진 성채, 빛 없는 대낮, 뼛속을 파고드는 매서운 바람……\n떠오르는 잿빛 점 너머로 보이는 것은 무엇인가?",
+        "summary": "",
+        "shipnation": [
+            1,
+            10,
+            4,
+            7
+        ],
+        "bgm": "battle-pacific",
+        "link_event": [
+            95
+        ],
+        "chapter": 5,
+        "column": 59,
+        "row": -1,
+        "icon": "InterludeOne_1"
+    },
+    "95": {
+        "id": 95,
+        "name": "敬请期待",
+        "description": "敬请期待",
         "summary": "",
         "shipnation": 0,
         "bgm": "",
