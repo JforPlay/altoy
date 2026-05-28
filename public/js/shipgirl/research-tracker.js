@@ -60,6 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
         /^훈장 교환/,
     ];
 
+    // NOTE: the 상시 건조 group is driven by buildPoolGids (MrLar), not this test.
+    // BUILD_TEST now only guards OTHER_TEST so a construction-described ship is never
+    // mislabeled as 기타 획득.
     const BUILD_TEST = d => /건조/.test(d) && !/한정/.test(d) && !/이벤트/.test(d) && !/기간/.test(d);
     const SHOP_TEST = d => SHOP_PATTERNS.some(p => p.test(d));
     const OTHER_TEST = d => {
@@ -129,10 +132,15 @@ document.addEventListener('DOMContentLoaded', () => {
             test: ship => archiveDropGids.has(ship.gid),
         },
         {
+            // 상시 건조 membership comes from MrLar's live build-pool flags
+            // (buildPoolGids), NOT the ship_data_group description. The game's
+            // description is frozen at a ship's debut event, so it misses every
+            // 상시편입 ship (event-debut → later added to permanent construction,
+            // e.g. 지엔우/무사시/로마) and wrongly keeps limited-event builds.
             key: 'build',
             label: '상시 건조',
             icon: 'construction',
-            test: ship => (ship.description || []).some(BUILD_TEST),
+            test: ship => buildPoolGids.has(ship.gid),
         },
         {
             key: 'shop',
@@ -159,6 +167,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // "홍염의 방문자" for archive drops.
     let mapDropGids = new Set();
     let archiveDropGids = new Set();
+    // 상시 건조 (permanent construction) pool, sourced from MrLar's light/heavy/special
+    // flags in ship_info_lite.json — see the build group in SOURCE_GROUPS for why the
+    // game's ship_data_group description can't drive this.
+    const buildPoolGids = new Set();
     const mapDropLabel = new Map();
     const archiveDropLabel = new Map();
     const shopDropLabel = new Map();
@@ -209,6 +221,8 @@ document.addEventListener('DOMContentLoaded', () => {
      *
      * Map drops come from ship_info_lite.json (each ship has a `maps` array of
      * main-story areas; any non-empty entry means the ship drops somewhere).
+     * The 상시 건조 build pool also comes from ship_info_lite.json via MrLar's
+     * light/heavy/special flags (→ buildPoolGids).
      * Archive drops come from map_data_full.json archive chapters (keys prefixed
      * "a_"), using `ship_drops_archive` (ship.id) and `special_drop` (type 4).
      * Both sources use the same approach as the map viewer in map.data.js.
@@ -231,6 +245,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const idToGid = new Map();
             for (const ship of shipInfoLite || []) {
                 if (ship.gid != null) idToGid.set(ship.id, String(ship.gid));
+                // 상시 건조 pool: MrLar light/heavy/special. Must run before the maps
+                // early-continue below, since construction-only ships have empty maps.
+                if (ship.gid != null && (ship.light || ship.heavy || ship.special)) {
+                    buildPoolGids.add(String(ship.gid));
+                }
                 const maps = ship.maps;
                 if (!Array.isArray(maps) || ship.gid == null) continue;
                 const stages = [];
