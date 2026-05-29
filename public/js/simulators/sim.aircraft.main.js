@@ -513,7 +513,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const enemyGamePos = simEngine.getEntityGameCoords('enemy');
         let angleModifier;
         if (barrage.random_angle) {
-            angleModifier = (Math.random() * 2 - 1) * (bulletIndex * (barrage.delta_angle || 0) + (barrage.angle || 0));
+            // §E7: ±Angle/2 cone via (random − 0.5). Mirrors battlebulletemitter.lua:97.
+            angleModifier = (Math.random() - 0.5) * (bulletIndex * (barrage.delta_angle || 0) + (barrage.angle || 0));
         } else {
             angleModifier = bulletIndex * (barrage.delta_angle || 0) + (barrage.angle || 0);
         }

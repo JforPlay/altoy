@@ -220,7 +220,10 @@ export function createWeaponSim({ container, entities, visualLog }) {
         const enemyGamePos = simEngine.getEntityGameCoords('enemy');
         let angleModifier;
         if (barrage.random_angle) {
-            angleModifier = (Math.random() * 2 - 1) * (bulletIndex * (barrage.delta_angle || 0) + (barrage.angle || 0));
+            // §E7: game jitters the per-bullet angle by (random − 0.5), giving
+            // a ±Angle/2 cone — NOT (random·2 − 1) which doubles the width.
+            // Mirrors battlebulletemitter.lua:97.
+            angleModifier = (Math.random() - 0.5) * (bulletIndex * (barrage.delta_angle || 0) + (barrage.angle || 0));
         } else {
             angleModifier = bulletIndex * (barrage.delta_angle || 0) + (barrage.angle || 0);
         }
