@@ -271,8 +271,105 @@ test('Trailing: no trailing record -> no emission', () => {
   assert.equal(b.drainEmits().length, 0);
 });
 
-test('Split: a single group emits primal_repeat+1 children at SPLIT entry', () => {
-  // primal_repeat = 2 -> 3 children at the same tick.
+test('Split (shotgun): children replace angle with a random spread; delta_angle ignored', () => {
+  // Shrapnel sub-emitters default to BattleShotgunEmitter, fired with
+  // angleRange = barrage.angle. The shotgun REPLACES the per-bullet angle
+  // with rng()*angleRange − angleRange/2 and never fans by delta_angle.
+  const child = { type: 1, velocity: 10, range: 50 };
+  const barrage = {
+    barrage_ID: 1, primal_repeat: 2,            // 3 children
+    first_delay: 0, delay: 0, delta_delay: 0,
+    angle: 20, delta_angle: 10,                 // delta_angle MUST be ignored
+  };
+  const extraParam = { shrapnel: [{ initialSplit: false, barrage_ID: 1, bullet_ID: 'B' }] };
+  // Deterministic rng: 0, 0.5, 1 across the 3 draws -> spreads -10, 0, +10.
+  const seq = [0, 0.5, 1];
+  let i = 0;
+  const b = new ShrapnelBulletUnit({
+    velocity: 10, yAngle: 0, range: 10000, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+    extraParam,
+    bulletTemplates: { B: child },
+    barrages: { 1: barrage },
+    random: () => seq[i++],
+  });
+  b.FixRange();
+  b.InitSpeed();
+  b.ChangeShrapnelState(STATE.SPLIT);
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  const emits = b.drainEmits();
+  assert.equal(emits.length, 3, 'primal_repeat+1 children');
+  // Shotgun replacement: [-angle/2, +angle/2]; additive fan would be 20,30,40.
+  assert.equal(emits[0].angle, -10);
+  assert.equal(emits[1].angle, 0);
+  assert.equal(emits[2].angle, 10);
+});
+
+test('Split (shotgun): random_angle uses the two-draw weighted spread', () => {
+  // random_angle branch: (rng()−0.5)*(rng()*angleRange) − angleRange/2.
+  // rng sequence 1, 1 for the single child -> (1−0.5)*(1*20) − 10 = 10 − 10 = 0.
+  const child = { type: 1, velocity: 10, range: 50 };
+  const barrage = {
+    barrage_ID: 1, primal_repeat: 0,
+    first_delay: 0, delay: 0, delta_delay: 0,
+    angle: 20, delta_angle: 0, random_angle: true,
+  };
+  const extraParam = { shrapnel: [{ initialSplit: false, barrage_ID: 1, bullet_ID: 'B' }] };
+  const seq = [1, 1];
+  let i = 0;
+  const b = new ShrapnelBulletUnit({
+    velocity: 10, yAngle: 0, range: 10000, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+    extraParam,
+    bulletTemplates: { B: child },
+    barrages: { 1: barrage },
+    random: () => seq[i++],
+  });
+  b.FixRange();
+  b.InitSpeed();
+  b.ChangeShrapnelState(STATE.SPLIT);
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  const emits = b.drainEmits();
+  assert.equal(emits.length, 1);
+  assert.equal(emits[0].angle, 0);
+});
+
+test('Split (shotgun): random_angle reaches the negative bound (asymmetric range)', () => {
+  // (rng()−0.5)*(rng()*angleRange) − angleRange/2 with rng [0, 1], angleRange 20:
+  //   (0−0.5)*(1*20) − 10 = −10 − 10 = −20 = −angleRange  (the distribution minimum;
+  //   the range is [−angleRange, 0], NOT symmetric — faithful to battleshotgunemitter.lua:26).
+  const child = { type: 1, velocity: 10, range: 50 };
+  const barrage = {
+    barrage_ID: 1, primal_repeat: 0,
+    first_delay: 0, delay: 0, delta_delay: 0,
+    angle: 20, delta_angle: 0, random_angle: true,
+  };
+  const extraParam = { shrapnel: [{ initialSplit: false, barrage_ID: 1, bullet_ID: 'B' }] };
+  const seq = [0, 1];
+  let i = 0;
+  const b = new ShrapnelBulletUnit({
+    velocity: 10, yAngle: 0, range: 10000, rangeOffset: 0,
+    spawnX: 0, spawnY: 0,
+    extraParam,
+    bulletTemplates: { B: child },
+    barrages: { 1: barrage },
+    random: () => seq[i++],
+  });
+  b.FixRange();
+  b.InitSpeed();
+  b.ChangeShrapnelState(STATE.SPLIT);
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  const emits = b.drainEmits();
+  assert.equal(emits.length, 1);
+  assert.equal(emits[0].angle, -20);
+});
+
+test('Split (normal override): emitterType BattleBulletEmitter keeps the additive fan', () => {
+  // A shrapnel record that explicitly names the normal emitter retains the
+  // deterministic base + angle + index*delta_angle + rotateOffset shape.
   const child = { type: 1, velocity: 10, range: 50 };
   const barrage = {
     barrage_ID: 1, primal_repeat: 2,
@@ -280,9 +377,7 @@ test('Split: a single group emits primal_repeat+1 children at SPLIT entry', () =
     angle: 0, delta_angle: 10,
   };
   const extraParam = {
-    shrapnel: [
-      { initialSplit: false, barrage_ID: 1, bullet_ID: 'B' },
-    ],
+    shrapnel: [{ initialSplit: false, barrage_ID: 1, bullet_ID: 'B', emitterType: 'BattleBulletEmitter' }],
   };
   const b = new ShrapnelBulletUnit({
     velocity: 10, yAngle: 0, range: 10000, rangeOffset: 0,
@@ -290,18 +385,16 @@ test('Split: a single group emits primal_repeat+1 children at SPLIT entry', () =
     extraParam,
     bulletTemplates: { B: child },
     barrages: { 1: barrage },
+    random: () => 0.5,               // unused on the normal path
   });
   b.FixRange();
   b.InitSpeed();
-  b.ChangeShrapnelState(STATE.SPLIT);                       // external trigger
+  b.ChangeShrapnelState(STATE.SPLIT);
   b.timeElapsed += TICK_SECONDS;
   b.Update();
   const emits = b.drainEmits();
-  assert.equal(emits.length, 3, 'primal_repeat+1 children at one instant');
-  // delta_angle spread: 0, 10, 20.
-  assert.equal(emits[0].angle, 0);
-  assert.equal(emits[1].angle, 10);
-  assert.equal(emits[2].angle, 20);
+  assert.equal(emits.length, 3);
+  assert.deepEqual(emits.map((e) => e.angle), [0, 10, 20]);
 });
 
 test('Split: shift_split_delay staggers different groups by group index', () => {

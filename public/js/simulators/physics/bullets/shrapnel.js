@@ -39,6 +39,10 @@ export class ShrapnelBulletUnit extends BulletUnit {
     this._explodePos = opts.explodePos ?? null;
     this._bulletTemplates = opts.bulletTemplates ?? {};
     this._barrages = opts.barrages ?? {};
+    // Injectable RNG so the shotgun spread (below) is deterministic in tests.
+    // Production defaults to Math.random; physics stays free of ambient state
+    // by taking randomness as a parameter, not reading a global directly.
+    this._random = opts.random ?? Math.random;
     this._currentState = STATE.NORMAL;
     this._spinStartTime = -1;
     this._pendingEmits = [];
@@ -100,8 +104,9 @@ export class ShrapnelBulletUnit extends BulletUnit {
   /**
    * Walk the split-group list. Each not-yet-emitted group whose deadline
    * (splitEntry + shift_split_delay * groupIndex) has elapsed fires
-   * primal_repeat+1 children at the same instant, spread by delta_angle.
-   * Returns true if every group has emitted.
+   * primal_repeat+1 children at the same instant, spread by the shotgun
+   * random draw (delta_angle applies only when emitterType is explicitly
+   * 'BattleBulletEmitter'). Returns true if every group has emitted.
    */
   _drainSplitSchedule() {
     const skipEmit = this._extraParam.fragile === 1;
@@ -123,11 +128,26 @@ export class ShrapnelBulletUnit extends BulletUnit {
 
   /**
    * Build one child spec from a shrapnel record (trailing or split) and push
-   * it onto _pendingEmits. The angle composes:
-   *   - reaim:        atan2(target - spawnAtFire) + barrage.angle
-   *   - inheritAngle: current heading + barrage.angle
-   *   - else:         barrage.angle
-   * plus a per-index delta_angle for spread, plus shrapnelInfo.rotateOffset.
+   * it onto _pendingEmits.
+   *
+   * Shrapnel sub-emitters default to BattleShotgunEmitter
+   * (battleshrapnelbulletfactory.lua:143), fired with angleRange =
+   * child barrage.angle (line 212). The shotgun REPLACES the per-bullet angle
+   * with a random draw — no index·delta_angle fan. Two cases
+   * (battleshotgunemitter.lua:26):
+   *   Standard:      uniform in [−angleRange/2, +angleRange/2].
+   *   random_angle:  two-draw weighted variant, asymmetric range [−angleRange, 0]
+   *                  (formula: (rng()−0.5)*(rng()*angleRange) − angleRange/2).
+   *                  Faithfully mirrors battleshotgunemitter.lua:26; 0-reached
+   *                  for shrapnel in deployed data today.
+   * A record may opt back into the normal additive emitter via
+   * emitterType = 'BattleBulletEmitter'.
+   *
+   * Base angle:
+   *   - reaim:        atan2(target − position)
+   *   - inheritAngle: current heading
+   *   - else:         0
+   * plus shrapnelInfo.rotateOffset in all cases.
    *
    * Position: child spawns at the parent's current position (game coords);
    * the engine's onEmit adapter converts to screen for createBullet.
@@ -143,10 +163,21 @@ export class ShrapnelBulletUnit extends BulletUnit {
     } else {
       baseAngleDeg = 0;
     }
-    const angle = baseAngleDeg
-      + (barrage.angle ?? 0)
-      + index * (barrage.delta_angle ?? 0)
-      + (info.rotateOffset ?? 0);
+
+    // See doc-comment above for the two-branch shotgun vs. additive spread logic.
+    const angleRange = barrage.angle ?? 0;
+    let angle;
+    if (info.emitterType === 'BattleBulletEmitter') {
+      angle = baseAngleDeg
+        + angleRange
+        + index * (barrage.delta_angle ?? 0)
+        + (info.rotateOffset ?? 0);
+    } else {
+      const spread = barrage.random_angle
+        ? (this._random() - 0.5) * (this._random() * angleRange) - angleRange / 2
+        : this._random() * angleRange - angleRange / 2;
+      angle = baseAngleDeg + (info.rotateOffset ?? 0) + spread;
+    }
 
     this._pendingEmits.push({
       startX: this.position.x,                       // game coords
