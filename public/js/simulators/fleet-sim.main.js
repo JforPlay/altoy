@@ -55,7 +55,41 @@ const state = {
     nationalityData: {},
     attrTypeData: {},
     equipTypeData: {},
+
+    // Damage target selection (UI pref; persisted — see _loadDamageTarget)
+    damageTarget: _loadDamageTarget(),
 };
+
+// ===== Damage Target =====
+
+/**
+ * Load the persisted damage target. getStorageItem returns a RAW string and
+ * setStorageItem stores AS-IS (no JSON), so we JSON-parse on read and stringify
+ * on write. Falls back to defaults if absent or malformed — including the
+ * stringified "[object Object]" that an earlier build persisted. Hoisted
+ * (function declaration) so the state initializer above can call it.
+ */
+function _loadDamageTarget() {
+    const fallback = { presetKey: 'heavy', adapt: 'base', overrides: {}, window: 90 };
+    const raw = getStorageItem('fleetSimDamageTarget', null);
+    if (raw) {
+        try {
+            const t = JSON.parse(raw);
+            if (t && t.presetKey) return { ...fallback, ...t, overrides: { ...(t.overrides || {}) } };
+        } catch { /* malformed — fall through to defaults */ }
+    }
+    return fallback;
+}
+
+/**
+ * Merge a patch into state.damageTarget, persist to localStorage, and re-render.
+ * Called from click/input handlers when the user changes target preset/adapt/overrides.
+ */
+export function setDamageTarget(patch) {
+    state.damageTarget = { ...state.damageTarget, ...patch };
+    setStorageItem('fleetSimDamageTarget', JSON.stringify(state.damageTarget));
+    renderFleet();
+}
 
 // ===== Initialization =====
 
@@ -174,6 +208,14 @@ function setupEventListeners() {
                 if (slot !== -1) toggleStats(slot);
                 break;
             }
+            case 'dmg-armor': {
+                setDamageTarget({ presetKey: actionEl.dataset.armor });
+                break;
+            }
+            case 'dmg-adapt': {
+                setDamageTarget({ adapt: actionEl.dataset.adapt });
+                break;
+            }
         }
     });
 
@@ -216,7 +258,29 @@ function setupEventListeners() {
         }
     });
 
-    // (Input delegation removed — replaced by step-level/edit-level actions)
+    // --- Input delegation (dmg-edit: editable enemy overrides), debounced ---
+    // Each edit triggers a full renderFleet + 4 async damage calcs, so coalesce
+    // rapid keystrokes; capture field+value at fire time (element may change).
+    let _dmgEditTimer = null;
+    page.addEventListener('input', (e) => {
+        const actionEl = e.target.closest('[data-action="dmg-edit"]');
+        if (!actionEl) return;
+        const field = actionEl.dataset.field;
+        if (!field) return;
+        const raw = actionEl.value.trim();
+        clearTimeout(_dmgEditTimer);
+        _dmgEditTimer = setTimeout(() => {
+            const overrides = { ...state.damageTarget.overrides };
+            if (raw === '') {
+                delete overrides[field];
+            } else {
+                overrides[field] = Number(raw);
+            }
+            setDamageTarget({ overrides });
+        }, 250);
+    });
+
+    // (Other input delegation removed — replaced by step-level/edit-level actions)
 
     // --- Drag and drop (Task 6) — event delegation on grid containers ---
     const mainGrid = document.getElementById('main-fleet-grid');

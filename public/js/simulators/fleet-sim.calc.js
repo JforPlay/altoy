@@ -499,6 +499,16 @@ function _getStatsForLB(ship, field, useRetrofit) {
 }
 
 /**
+ * Resolve a ship's per-slot mount/plane count array (base_list) for its LB tier,
+ * using the same selection as base/growth. Returns [slot1, slot2, slot3] or null.
+ * base_list multiplies bullets-per-wave (gun mounts) / plane count; it is absent
+ * from ship data until the pipeline emits it — callers must default to ×1.
+ */
+export function getShipBaseList(ship, useRetrofit) {
+    return _getStatsForLB(ship, 'base_list', useRetrofit);
+}
+
+/**
  * Get SP weapon stat bonuses for a ship slot.
  * Handles both dedicated (unique) SP weapons and user-selected generic ones.
  */

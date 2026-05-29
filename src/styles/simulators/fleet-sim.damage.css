@@ -1,0 +1,304 @@
+/* =================================================================
+   FLEET BUILD SIMULATOR — Damage Panel
+   Styles for the #damage-results section: target chips, adapt
+   buttons, editable enemy fields, per-ship rows, fleet totals,
+   L/M/H compare strip, and per-weapon breakdown table.
+
+   Token mapping (from theme.css, no hardcoded rgba):
+     spacing  → --spacing-xs / --spacing-sm / --spacing-md
+     surface  → --section-bg / --surface-card / --bg-secondary
+     border   → --border-color / --overlay-medium / --overlay-light
+     primary  → --accent-blue / --primary-alpha-20
+     radius   → --radius-sm / --radius-md
+     text     → --text-primary / --text-secondary / --text-muted
+   ================================================================= */
+
+/* ===== Section wrapper ===== */
+
+.damage-results-section {
+  margin-top: var(--spacing-md);
+}
+
+/* ===== Panel container ===== */
+
+.dmg-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.dmg-panel--loading {
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 0.9em;
+  padding: var(--spacing-md);
+}
+
+/* ===== Panel header ===== */
+
+.dmg-panel-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.dmg-panel-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+/* ===== Armor preset chips ===== */
+
+.dmg-target-row {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+}
+
+.dmg-armor-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--section-bg);
+  cursor: pointer;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.dmg-armor-chip:hover {
+  border-color: var(--accent-blue);
+  background: var(--primary-alpha-10);
+}
+
+.dmg-armor-chip.active {
+  border-color: var(--accent-blue);
+  background: var(--primary-alpha-20);
+  color: var(--text-primary);
+}
+
+.dmg-armor-class {
+  font-size: 0.75em;
+  opacity: 0.7;
+  font-variant: small-caps;
+}
+
+/* ===== Adapt buttons ===== */
+
+.dmg-adapt-row {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+}
+
+.dmg-adapt-btn {
+  padding: 2px var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--section-bg);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.dmg-adapt-btn:hover {
+  border-color: var(--accent-blue);
+}
+
+.dmg-adapt-btn.active {
+  border-color: var(--accent-blue);
+  background: var(--primary-alpha-15);
+  color: var(--text-primary);
+}
+
+/* ===== Editable enemy-profile fields ===== */
+
+.dmg-edit-row {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.dmg-edit-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.dmg-edit-input {
+  width: 5rem;
+  padding: 2px var(--spacing-xs);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+.dmg-edit-input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+
+/* Hide number spinners for cleaner look */
+.dmg-edit-input[type="number"]::-webkit-inner-spin-button,
+.dmg-edit-input[type="number"]::-webkit-outer-spin-button {
+  opacity: 0.4;
+}
+
+/* ===== Per-ship result rows ===== */
+
+.dmg-ship-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dmg-ship-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 0.875rem;
+  padding: 3px var(--spacing-xs);
+  border-radius: var(--radius-sm);
+}
+
+.dmg-ship-row:hover {
+  background: var(--section-bg);
+}
+
+.dmg-ship-name {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dmg-oneshot {
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.dmg-dps {
+  color: var(--text-primary);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ===== Fleet totals ===== */
+
+.dmg-fleet-total {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+.dmg-total-label {
+  color: var(--text-secondary);
+}
+
+.dmg-total-val {
+  color: var(--text-primary);
+  font-size: 1.05em;
+}
+
+/* ===== L/M/H compare strip ===== */
+
+.dmg-compare {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  padding-top: var(--spacing-xs);
+}
+
+.dmg-cmp-cell {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.dmg-cmp-cell em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-variant: small-caps;
+}
+
+/* ===== Per-weapon breakdown table (inside ship card stats collapsible) ===== */
+
+.dmg-weapon-table {
+  width: 100%;
+  font-size: 0.82em;
+  border-collapse: collapse;
+  margin-top: var(--spacing-sm);
+  color: var(--text-secondary);
+}
+
+.dmg-weapon-table th,
+.dmg-weapon-table td {
+  text-align: right;
+  padding: 2px var(--spacing-xs);
+  border-bottom: 1px solid var(--overlay-light);
+}
+
+.dmg-weapon-table th:first-child,
+.dmg-weapon-table td:first-child {
+  text-align: start;
+}
+
+.dmg-weapon-table thead th {
+  color: var(--text-muted);
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dmg-weapon-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ===== Dark mode overrides ===== */
+/* (tokens already handle most of it; only override where tokens don't flip) */
+
+body.dark-mode .dmg-armor-chip,
+body.dark-mode .dmg-adapt-btn {
+  background: var(--bg-secondary);
+}
+
+body.dark-mode .dmg-armor-chip.active,
+body.dark-mode .dmg-adapt-btn.active {
+  background: var(--primary-alpha-20);
+}
+
+/* ===== Equipment efficiency badge (under weapon-slot icons, slots 0-2) ===== */
+
+.equip-eff-badge {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.7em;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--text-secondary);
+}

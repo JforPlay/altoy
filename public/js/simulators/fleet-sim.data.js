@@ -52,13 +52,17 @@ export async function loadAllData() {
     _buildEquipIndex(equipLiteData);
 
     // Phase 2: Extended data (parallel, all cached — non-fatal failures)
-    const [equipFullData, weaponPropertyData, passiveSkillData, fleetTechData, shipGroupData, spWeaponData] = await Promise.all([
+    const [equipFullData, weaponPropertyData, passiveSkillData, fleetTechData, shipGroupData, spWeaponData,
+           barrageData, bulletData, aircraftData] = await Promise.all([
         _loadCached('data/equip/equip_data_full.json'),
         _loadCached('data/sim/weapon_property.json'),
         _loadCached('data/sim/fleet_sim_passive_skills.json'),
         _loadCached('data/shipgirl/fleet_tech_template.json'),
         _loadCached('data/ship_group_data.json'),
         _loadCached('data/sim/spweapon_data.json'),
+        _loadCached('data/sim/barrage_template.json'),
+        _loadCached('data/sim/bullet_template.json'),
+        _loadCached('data/sim/aircraft_template.json'),
     ]);
 
     state.equipFullData = equipFullData;
@@ -67,6 +71,9 @@ export async function loadAllData() {
     state.fleetTechData = fleetTechData;
     state.shipGroupData = shipGroupData;
     state.spWeaponData = spWeaponData;
+    state.barrageData = barrageData;
+    state.bulletData = bulletData;
+    state.aircraftData = aircraftData;
 
     // Build SP weapon lookup indexes
     _buildSPWeaponIndex(spWeaponData);
@@ -158,6 +165,24 @@ export function getEquipFullById(id) {
 export function getWeaponProperty(weaponId) {
     if (!state.weaponPropertyData) return null;
     return state.weaponPropertyData[String(weaponId)] || null;
+}
+
+/** Get barrage template by ID (keyed by string ID). */
+export function getBarrage(barrageId) {
+    if (!state.barrageData) return null;
+    return state.barrageData[String(barrageId)] || null;
+}
+
+/** Get bullet template by ID. */
+export function getBullet(bulletId) {
+    if (!state.bulletData) return null;
+    return state.bulletData[String(bulletId)] || null;
+}
+
+/** Get aircraft template by weapon ID. */
+export function getAircraftTemplate(weaponId) {
+    if (!state.aircraftData) return null;
+    return state.aircraftData[String(weaponId)] || null;
 }
 
 /** Get passive skill by skill ID */

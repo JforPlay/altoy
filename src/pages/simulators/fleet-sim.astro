@@ -6,6 +6,7 @@ import Layout from '../../layouts/Layout.astro';
 import '../../styles/skin/skin.common.css';
 import '../../styles/simulators/sim.common.css';
 import '../../styles/simulators/fleet-sim.css';
+import '../../styles/simulators/fleet-sim.damage.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -87,6 +88,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </div>
             </section>
         </div>
+
+        <!-- Damage Results (filled async by fleet-sim.ui.js renderDamagePanel) -->
+        <section id="damage-results" class="damage-results-section"></section>
 
         <!-- Fleet Summary (hidden by default, shown when ships are populated) -->
         <section id="fleet-summary" class="fleet-summary hidden">

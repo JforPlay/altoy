@@ -10039,7 +10039,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -10067,7 +10066,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -11600,7 +11598,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -11628,7 +11625,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -11697,7 +11693,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -11743,7 +11738,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -11811,7 +11805,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -11857,7 +11850,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -15711,7 +15703,56 @@
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/201130.webp",
         "class_name": "G급",
-        "skill_id": 1090460
+        "skill_id": 1090460,
+        "aniEffect": "",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 1000
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetPlayerVanguardFleet",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 161591
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire",
+                    "quota": 6,
+                    "time": 0.4
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 1000
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetPlayerVanguardFleet",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 161600
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire",
+                    "quota": 6,
+                    "time": 0.4
+                }
+            ]
+        }
     },
     "29061": {
         "requirement": "Limit Break 1",
@@ -36187,7 +36228,113 @@
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/305170.webp",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/152250.webp",
-        "skill_id": 152250
+        "skill_id": 152250,
+        "aniEffect": {
+            "effect": "jineng",
+            "offset": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183751
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183771
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183761
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183791
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183781
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "weapon_id": 183760
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183780
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183761
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183800
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "weapon_id": 183781
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFire"
+                }
+            ]
+        }
     },
     "11260": {
         "requirement": "Default",
@@ -67922,6 +68069,73 @@
                 {
                     "arg_list": {
                         "delay": 0.2,
+                        "weapon_id": 161601
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.4,
+                        "weapon_id": 161601
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.6,
+                        "weapon_id": 161601
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 1014172
+                    },
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.2,
+                        "weapon_id": 161611
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.4,
+                        "weapon_id": 161611
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.6,
+                        "weapon_id": 161611
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.2,
                         "weapon_id": 65811
                     },
                     "casterAniEffect": "",
@@ -67990,6 +68204,113 @@
         },
         "10": {
             "effect_list": [
+                {
+                    "arg_list": {
+                        "delay": 0.2,
+                        "weapon_id": 161610
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.4,
+                        "weapon_id": 161610
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.6,
+                        "weapon_id": 161610
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.8,
+                        "weapon_id": 161610
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 1,
+                        "weapon_id": 161610
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 1014172
+                    },
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.2,
+                        "weapon_id": 161620
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.4,
+                        "weapon_id": 161620
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.6,
+                        "weapon_id": 161620
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 0.8,
+                        "weapon_id": 161620
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
+                {
+                    "arg_list": {
+                        "delay": 1,
+                        "weapon_id": 161620
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFire"
+                },
                 {
                     "arg_list": {
                         "delay": 0.2,
@@ -98886,7 +99207,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "gulitejineng_feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -98935,7 +99255,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "gulitejineng_feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 3
                     },
                     "targetAniEffect": "",
@@ -99000,7 +99319,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "gulitejineng_feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 2
                     },
                     "targetAniEffect": "",
@@ -99049,7 +99367,6 @@
                     },
                     "casterAniEffect": {
                         "effect": "gulitejineng_feijiyingzi",
-                        "posFun": "-- lua function:\nreturn Vector3(-100, 0, slot1.z) - slot0",
                         "time": 3
                     },
                     "targetAniEffect": "",
