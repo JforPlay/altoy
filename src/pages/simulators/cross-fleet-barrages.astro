@@ -1,0 +1,80 @@
+---
+/**
+ * Cross-Fleet Barrages (지원 탄막) — catalog of skills that fire/buff in a battle
+ * the 함순이 is not deployed in. Embedded barrage render on top (full width),
+ * sortable/filterable catalogue below.
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/skin/skin.common.css';
+import '../../styles/simulators/sim.common.css';
+import '../../styles/simulators/cross-fleet.style.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="지원 탄막 카탈로그" {base}>
+    <div class="sim-page cf-page">
+        <header class="sim-header">
+            <div class="header-title-container">
+                <span class="material-symbols-outlined header-icon">groups</span>
+                <h1>지원 탄막 (교차 함대)</h1>
+            </div>
+        </header>
+
+        <!-- Simulator on top (full width) -->
+        <div class="cf-render">
+            <div id="simulation-container">
+                <div id="fps-display">FPS: --</div>
+                <div id="player-area"></div>
+                <div id="vanguard"><img src={`${base}/assets/img/vanguard_chibi.webp`} alt="vanguard"></div>
+                <div id="mainfleet"><img src={`${base}/assets/img/mainfleet_chibi.webp`} alt="mainfleet"></div>
+                <div id="enemy"><img src={`${base}/assets/img/enemy_chibi.webp`} alt="enemy"></div>
+                <div id="visual-log"></div>
+            </div>
+            <div class="playback-bar">
+                <button id="fire-button" class="btn btn-primary" type="button" disabled>
+                    <span class="material-symbols-outlined">play_arrow</span> 발사
+                </button>
+                <div class="speed-control" role="group" aria-label="재생 속도">
+                    <button class="speed-btn" data-speed="0.5" type="button" aria-pressed="false">0.5x</button>
+                    <button class="speed-btn active" data-speed="1" type="button" aria-pressed="true">1x</button>
+                    <button class="speed-btn" data-speed="2" type="button" aria-pressed="false">2x</button>
+                    <button class="speed-btn" data-speed="3" type="button" aria-pressed="false">3x</button>
+                </div>
+                <button id="pause-button" class="btn btn-icon" title="일시정지" type="button" aria-label="일시정지" aria-pressed="false">
+                    <span class="material-symbols-outlined">pause</span>
+                </button>
+                <button id="enemy-toggle" class="btn btn-secondary" type="button" aria-pressed="false">적 위치: 상단</button>
+                <div id="cf-now-firing" class="cf-now-firing"></div>
+            </div>
+        </div>
+
+        <!-- Catalogue below -->
+        <div class="cf-filters">
+            <div id="cf-faction-filter" class="cf-chip-row" role="group" aria-label="진영 필터"></div>
+            <div id="cf-type-filter" class="cf-chip-row" role="group" aria-label="타입 필터"></div>
+        </div>
+
+        <div class="cf-table-wrap">
+            <table class="cf-table">
+                <thead>
+                    <tr>
+                        <th data-sort="ship_name">함순이</th>
+                        <th data-sort="skill_name">스킬</th>
+                        <th data-sort="faction">진영</th>
+                        <th data-sort="type">타입</th>
+                        <th data-sort="retrofit">개조</th>
+                        <th class="cf-col-trigger">트리거</th>
+                        <th>동작</th>
+                    </tr>
+                </thead>
+                <tbody id="cf-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script is:inline type="module" src={`${base}/js/simulators/sim.engine.oceanbg.js`}></script>
+    <script is:inline type="module" src={`${base}/js/simulators/sim.engine.bullet.factory.js`}></script>
+    <script is:inline type="module" src={`${base}/js/simulators/sim.engine.bullet.js`}></script>
+    <script is:inline type="module" src={`${base}/js/simulators/sim.engine.common.js`}></script>
+    <script is:inline type="module" src={`${base}/js/simulators/cross-fleet.main.js`}></script>
+</Layout>

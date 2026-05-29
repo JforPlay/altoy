@@ -10,7 +10,7 @@ export const SIM_GAME_COORDS = {
 };
 
 export const SIM_TARGET_FPS = 30;
-export const SIM_DEFAULT_SPEED = 1.5;
+export const SIM_DEFAULT_SPEED = 1;
 
 const AMMO_TYPE_NAMES = {
     1: '철갑탄', 2: '고폭탄', 3: '통상탄', 4: '음향 유도', 5: '통상',

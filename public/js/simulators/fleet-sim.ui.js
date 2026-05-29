@@ -13,6 +13,8 @@ import {
     resolvePassiveBuffs,
     computeHighlights,
 } from './fleet-sim.calc.js';
+import { simulateFleetDamage, effectiveProficiency } from './fleet-sim.damage.js';
+import { ARMOR_PRESETS } from '../engine/damage/index.js';
 
 // ===== State =====
 let state;
@@ -23,9 +25,13 @@ let summarySection = null;
 let techBonusList = null;
 let passiveSkillList = null;
 let loadingOverlay = null;
+let damageResultsEl = null;
 
 /** Track which slots have stats collapsed (persists across re-renders) */
 const statsCollapsed = new Set([0, 1, 2, 3, 4, 5]);
+
+/** Last successfully computed damage result — used for per-weapon card breakdown */
+let _lastDamageResult = null;
 
 // ===== Constants =====
 
@@ -126,7 +132,7 @@ export function renderFleet() {
     // 4. Compute stat highlights across all slots
     const highlights = computeHighlights(allStats);
 
-    // 5. Render each card
+    // 5. Render each card (uses _lastDamageResult from previous calc for breakdown)
     for (let i = 0; i < 6; i++) {
         _renderCard(i, allResults[i], highlights);
     }
@@ -137,6 +143,18 @@ export function renderFleet() {
     // 7. Hide loading overlay
     if (loadingOverlay) {
         hideElement(loadingOverlay);
+    }
+
+    // 8. Trigger async damage panel (fire-and-forget; updates DOM when resolved)
+    const hasAnyShip = fleetShips.some(s => s !== null);
+    if (damageResultsEl) {
+        if (hasAnyShip) {
+            renderDamagePanel(damageResultsEl).catch((err) => {
+                console.warn('[fleet-sim] damage panel error:', err);
+            });
+        } else {
+            damageResultsEl.innerHTML = '';
+        }
     }
 }
 
@@ -162,7 +180,12 @@ function _renderCard(slotIndex, calcResult, highlights) {
         return;
     }
 
-    _renderPopulatedCard(card, slotIndex, ship, slotConfig, calcResult, highlights);
+    // Look up this ship's per-weapon result from the last damage calc (may be null on first render)
+    const shipDmgResult = _lastDamageResult
+        ? (_lastDamageResult.perShip.find(s => s.ref === slotConfig.gid) || null)
+        : null;
+
+    _renderPopulatedCard(card, slotIndex, ship, slotConfig, calcResult, highlights, shipDmgResult);
 }
 
 /**
@@ -184,7 +207,7 @@ function _renderEmptyCard(card, slotIndex) {
 /**
  * Render a populated card with all sections.
  */
-function _renderPopulatedCard(card, slotIndex, ship, slotConfig, calcResult, highlights) {
+function _renderPopulatedCard(card, slotIndex, ship, slotConfig, calcResult, highlights, shipDmgResult = null) {
     const rarity = (ship.rarity || '').toLowerCase();
     card.className = 'ship-card';
     card.dataset.slot = slotIndex;
@@ -203,6 +226,7 @@ function _renderPopulatedCard(card, slotIndex, ship, slotConfig, calcResult, hig
         _buildStatsToggleHTML(slotIndex, isCollapsed),
         `<div class="ship-stats-collapsible${isCollapsed ? ' collapsed' : ''}"><div class="ship-stats-collapsible-inner">`,
         _buildStatsHTML(slotIndex, calcResult, highlights),
+        _buildWeaponBreakdownHTML(shipDmgResult),
         `</div></div>`,
     ].join('');
 
@@ -366,6 +390,14 @@ function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isR
     const enhanceLevel = equipConfig.level || 0;
     const safeEquipName = _escapeHtml(equip.name || '');
 
+    // Weapon slots (0-2) carry an equipment-efficiency multiplier (max-LB + retrofit);
+    // surface it under the icon so the slot's damage contribution is legible.
+    let effBadge = '';
+    if (equipIndex < 3) {
+        const eff = effectiveProficiency(ship, isRetrofit)[equipIndex];
+        if (eff != null) effBadge = `<span class="equip-eff-badge" title="장비 효율">효율 ${Math.round(eff * 100)}%</span>`;
+    }
+
     return `
         <div class="equip-slot equipped"
              role="button"
@@ -386,6 +418,7 @@ function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isR
                       data-slot="${slotIndex}"
                       data-equip-index="${equipIndex}">+${enhanceLevel}</span>
             </div>
+            ${effBadge}
         </div>
     `;
 }
@@ -693,6 +726,7 @@ function _cacheDOM() {
     techBonusList = document.querySelector('#fleet-tech-bonuses .tech-bonus-list');
     passiveSkillList = document.querySelector('#fleet-passive-skills .passive-skill-list');
     loadingOverlay = document.getElementById('loading-overlay');
+    damageResultsEl = document.getElementById('damage-results');
 }
 
 /**
@@ -732,4 +766,185 @@ function _escapeHtml(str) {
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
+}
+
+// ===== Damage Panel =====
+
+/** Format number with thousands separators, rounded to nearest integer. */
+const _fmt = (n) => Math.round(n).toLocaleString('en-US');
+
+/**
+ * Build per-weapon breakdown table HTML for a ship's damage result.
+ * Shown inside the stats collapsible. Returns empty string if no data.
+ */
+function _buildWeaponBreakdownHTML(shipResult) {
+    if (!shipResult || !Array.isArray(shipResult.perWeapon) || shipResult.perWeapon.length === 0) return '';
+    const rows = shipResult.perWeapon.map((w) => `
+        <tr>
+            <td>${_escapeHtml(w.label || '')}</td>
+            <td>${_fmt(w.oneSalvoExpected)}</td>
+            <td>${w.reloadInterval.toFixed(2)}s</td>
+            <td>${w.salvoCount}</td>
+            <td>${_fmt(w.dps)}</td>
+            <td>${Math.round(w.hitRate * 100)}%</td>
+            <td>${Math.round(w.critRate * 100)}%</td>
+        </tr>`).join('');
+    return `<table class="dmg-weapon-table">
+        <thead><tr>
+            <th>무기</th><th>일격</th><th>장전</th><th title="90초 동안의 발사(살보) 횟수">발사/90초</th><th>DPS</th><th>명중</th><th>치명</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+    </table>`;
+}
+
+/**
+ * Async render of the damage results section.
+ * Runs three async calls (active target + L/M/H compare) and updates the DOM.
+ * Mount point: #damage-results.
+ */
+let _renderToken = 0;   // serializes async damage renders — only the latest call writes the DOM
+
+export async function renderDamagePanel(container) {
+    if (!state.damageTarget) return;
+    const hasAnyShip = (state.ships || []).some(Boolean);
+    if (!hasAnyShip) {
+        container.innerHTML = '';
+        return;
+    }
+
+    const tgt = state.damageTarget;
+    const myToken = ++_renderToken;   // a newer render will supersede this one
+
+    // Show brief loading state
+    container.innerHTML = '<div class="dmg-panel dmg-panel--loading"><span>계산 중...</span></div>';
+
+    // Resolve active preset result + L/M/H compare strip in parallel
+    let result, compareResults;
+    try {
+        [result, ...compareResults] = await Promise.all([
+            simulateFleetDamage(state.ships, {
+                presetKey: tgt.presetKey,
+                overrides: { ...tgt.overrides, adapt: tgt.adapt },
+                window: tgt.window,
+            }),
+            ...['light', 'medium', 'heavy'].map((k) =>
+                simulateFleetDamage(state.ships, {
+                    presetKey: k,
+                    overrides: { ...tgt.overrides, adapt: tgt.adapt },
+                    window: tgt.window,
+                }).catch(() => null)
+            ),
+        ]);
+    } catch (err) {
+        console.warn('[fleet-sim] damage panel calc failed:', err);
+        container.innerHTML = '';
+        return;
+    }
+
+    // Drop a stale result if a newer render started while we awaited (latest wins).
+    if (myToken !== _renderToken) return;
+
+    // Store for next renderFleet card pass (per-weapon breakdown)
+    _lastDamageResult = result;
+
+    // Armor chips
+    const chips = ['light', 'medium', 'heavy'].map((k) => {
+        const preset = ARMOR_PRESETS[k];
+        const active = k === tgt.presetKey ? ' active' : '';
+        return `<button class="dmg-armor-chip${active}" data-action="dmg-armor" data-armor="${k}">${_escapeHtml(preset.name)}<span class="dmg-armor-class">${_escapeHtml(preset.shipClass)}</span></button>`;
+    }).join('');
+
+    // Adapt buttons
+    const adaptLabels = { base: '기본', noAdapt: '무적응', full: '완전적응' };
+    const adaptBtns = ['base', 'noAdapt', 'full'].map((a) =>
+        `<button class="dmg-adapt-btn${a === tgt.adapt ? ' active' : ''}" data-action="dmg-adapt" data-adapt="${a}">${adaptLabels[a] || a}</button>`
+    ).join('');
+
+    // Editable enemy overrides
+    const ov = tgt.overrides || {};
+    const editFields = [
+        ['level', '레벨'],
+        ['evasion', '회피'],
+        ['antiAir', '대공'],
+        ['armorReduce', '경감'],
+    ];
+    const editRow = editFields.map(([k, lab]) =>
+        `<label class="dmg-edit-label">${_escapeHtml(lab)}<input class="dmg-edit-input" type="number" data-action="dmg-edit" data-field="${k}" value="${ov[k] != null ? ov[k] : ''}" placeholder="기본" /></label>`
+    ).join('');
+
+    // Per-ship rows
+    const perShipRows = result.perShip.map((s) => {
+        const ship = getShipByGid(s.ref);
+        const name = ship ? _escapeHtml(ship.name) : String(s.ref);
+        return `<div class="dmg-ship-row">
+            <span class="dmg-ship-name">${name}</span>
+            <span class="dmg-oneshot">일격 ${_fmt(s.oneShotExpected)}</span>
+            <span class="dmg-dps">DPS ${_fmt(s.dps)}</span>
+        </div>`;
+    }).join('');
+
+    // L/M/H compare strip
+    const compareStrip = ['light', 'medium', 'heavy'].map((k, i) => {
+        const r = compareResults[i];
+        const preset = ARMOR_PRESETS[k];
+        if (!r) return '';
+        return `<span class="dmg-cmp-cell"><em>${_escapeHtml(preset.shipClass)}</em>${_fmt(r.dps)}</span>`;
+    }).join('');
+
+    container.innerHTML = `
+        <div class="dmg-panel">
+            <div class="dmg-panel-header">
+                <span class="dmg-panel-title">피해 계산 (90초)</span>
+            </div>
+            <div class="dmg-target-row">${chips}</div>
+            <div class="dmg-adapt-row">${adaptBtns}</div>
+            <div class="dmg-edit-row">${editRow}</div>
+            <div class="dmg-ship-list">${perShipRows}</div>
+            <div class="dmg-fleet-total">
+                <span class="dmg-total-label">함대 90초 누적</span>
+                <strong class="dmg-total-val">${_fmt(result.total)}</strong>
+                <span class="dmg-total-label">함대 DPS</span>
+                <strong class="dmg-total-val">${_fmt(result.dps)}</strong>
+            </div>
+            <div class="dmg-compare">${compareStrip}</div>
+        </div>`;
+
+    // After updating the panel DOM, re-render the per-weapon breakdown in ship cards
+    // (without triggering a full re-render — just update the breakdown tables in-place)
+    _updateCardBreakdowns(result);
+}
+
+/**
+ * Update per-weapon breakdown tables in already-rendered ship cards.
+ * Called after the async damage result arrives so cards reflect the new data
+ * without a full re-render (which would reset the expanded/collapsed toggle).
+ */
+function _updateCardBreakdowns(damageResult) {
+    for (let i = 0; i < 6; i++) {
+        const slotConfig = state.ships[i];
+        if (!slotConfig || !slotConfig.gid) continue;
+
+        const card = cardElements[i];
+        if (!card) continue;
+
+        const collapsibleInner = card.querySelector('.ship-stats-collapsible-inner');
+        if (!collapsibleInner) continue;
+
+        // Remove existing breakdown table if any
+        const existing = collapsibleInner.querySelector('.dmg-weapon-table');
+        if (existing) existing.remove();
+
+        const shipResult = damageResult
+            ? (damageResult.perShip.find(s => s.ref === slotConfig.gid) || null)
+            : null;
+
+        const html = _buildWeaponBreakdownHTML(shipResult);
+        if (html) {
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = html;
+            while (wrapper.firstChild) {
+                collapsibleInner.appendChild(wrapper.firstChild);
+            }
+        }
+    }
 }

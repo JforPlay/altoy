@@ -113761,5 +113761,2139 @@
                 }
             ]
         }
+    },
+    "800211": {
+        "skill_id": 800211,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "후소·META",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9705010.webp",
+        "position": "후열",
+        "class_name": "후소·META",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/800180.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "FusoMETA"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 63151
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "FusoMETA"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 63160
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "152166": {
+        "skill_id": 152166,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "모스크바",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/703030.webp",
+        "position": "전열",
+        "class_name": "모스크바",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/152160.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "MOSKVA"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 183431
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "MOSKVA"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 183440
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "17641": {
+        "skill_id": 17641,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "소비에츠키 소유즈",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/705020.webp",
+        "position": "후열",
+        "class_name": "소비에츠키 소유즈급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/17610.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Sovetsky Soyuz"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 164031
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Sovetsky Soyuz"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 164041
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSameToLastEffect",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Sovetsky Soyuz"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 164040
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Sovetsky Soyuz"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 164050
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSameToLastEffect",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "15351": {
+        "skill_id": 15351,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "크론시타트",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/718010.webp",
+        "position": "전열",
+        "class_name": "크론시타트",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/15310.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Kronshtadt"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 63771
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Kronshtadt"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 63780
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "151301": {
+        "skill_id": 151301,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "라이온",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/205160.webp",
+        "position": "후열",
+        "class_name": "라이온급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/151230.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Lion"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 167891
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Lion"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 167900
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "15711": {
+        "skill_id": 15711,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "뱅가드",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/205130.webp",
+        "position": "후열",
+        "class_name": "뱅가드",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/15690.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Vanguard"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 62081
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 15713
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetAllHelp"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Vanguard"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 62090
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 15713
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetAllHelp"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
+    "150701": {
+        "skill_id": 150701,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "Z52",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401520.webp",
+        "position": "전열",
+        "class_name": "1944형",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/150680.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Z52"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 167121
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Z52"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 167130
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "16781": {
+        "skill_id": 16781,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "비스마르크 Zwei",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405050.webp",
+        "position": "후열",
+        "class_name": "비스마르크Zwei",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/16770.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "BSMZ"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 161131
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "BSMZ"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 161131
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandom",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "BSMZ"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 161140
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "BSMZ"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 161140
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandom",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "15082": {
+        "skill_id": 15082,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "울리히 폰 후텐",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405030.webp",
+        "position": "후열",
+        "class_name": "울리히 폰 후텐",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/15070.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "H39"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 63531
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmNearest",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "H39"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 63521
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 15083
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetSelf"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "H39"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 63540
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmNearest",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "H39"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 63530
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 15083
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetSelf"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
+    "150781": {
+        "skill_id": 150781,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "프리츠 루메이",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/407040.webp",
+        "position": "후열",
+        "class_name": "프리츠 루메이",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/150750.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Rumey"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 167021
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Rumey"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 167030
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "150968": {
+        "skill_id": 150968,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "라파엘로",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/605080.webp",
+        "position": "후열",
+        "class_name": "라파엘로",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/150960.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Raffaello"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 167441
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "delay": 0.6,
+                                "ship_tag_list": [
+                                    "Raffaello"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 167441
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Raffaello"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 167450
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "delay": 0.6,
+                                "ship_tag_list": [
+                                    "Raffaello"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 167450
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "19522": {
+        "skill_id": 19522,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "마르코 폴로",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/699010.webp",
+        "position": "후열",
+        "class_name": "마르코 폴로",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/19510.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "MarcoPolo"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 64451
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "MarcoPolo"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 64460
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "16061": {
+        "skill_id": 16061,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "무사시",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/305100.webp",
+        "position": "후열",
+        "class_name": "야마토급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/16050.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Musashi"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 62851
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "delay": 1,
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Musashi"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 62851
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Musashi"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 62861
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Musashi"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 61529
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Musashi"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 62860
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "delay": 1,
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Musashi"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 62860
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Musashi"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 62870
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Musashi"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 61529
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "13701": {
+        "skill_id": 13701,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "시나노",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/307080.webp",
+        "position": "후열",
+        "class_name": "야마토급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/13590.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Shinano"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 65041
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Shinano"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 65050
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "14881": {
+        "skill_id": 14881,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "시마카제",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/301290.webp",
+        "position": "전열",
+        "class_name": "시마카제급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/14870.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Shimakaze-Class"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 63121
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Shimakaze-Class"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 63130
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "150474": {
+        "skill_id": 150474,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "아마기(항공모함)",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/307150.webp",
+        "position": "후열",
+        "class_name": "아마기",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/150470.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Amagicv"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 165281
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Amagicv"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 165290
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "17051": {
+        "skill_id": 17051,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "운젠",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/303190.webp",
+        "position": "전열",
+        "class_name": "운젠급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/17030.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "yunxianzhiyuan"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 163191
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "yunxianzhiyuan"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 163201
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "yunxianzhiyuan"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 163200
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "yunxianzhiyuan"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 163210
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "151601": {
+        "skill_id": 151601,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "이404",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/317020.webp",
+        "position": "잠수",
+        "class_name": "특잠형",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/151590.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "I404"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 169061
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "I404"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 169070
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "13220": {
+        "skill_id": 13220,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "토사",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/305080.webp",
+        "position": "후열",
+        "class_name": "카가급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/13170.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Tosa"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 69371
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Tosa"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 69380
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "150091": {
+        "skill_id": 150091,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "알자스",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/805030.webp",
+        "position": "후열",
+        "class_name": "알자스급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/150020.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 150022
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Alsace"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 164561
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSameToLastEffect",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Alsace"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 164541
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 150092
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "buff_id": 150022
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillAddBuff"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Alsace"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 164570
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSameToLastEffect",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Alsace"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 164550
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 150092
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetSelf",
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
+    "150092": {
+        "skill_id": 150092,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "알자스",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/805030.webp",
+        "position": "후열",
+        "class_name": "알자스급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/150020.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Alsace"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 164521
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Alsace"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 164530
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "17362": {
+        "skill_id": 17362,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "괌",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/118020.webp",
+        "position": "전열",
+        "class_name": "알래스카급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/17350.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "GUAM"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 163811
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmNearest",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "GUAM"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 163851
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandom",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 17364
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetSelf"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "GUAM"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 163820
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmNearest",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "GUAM"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 163860
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandom",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "buff_id": 17364
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": [
+                        "TargetSelf"
+                    ],
+                    "type": "BattleSkillAddBuff"
+                }
+            ]
+        }
+    },
+    "14641": {
+        "skill_id": 14641,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "뉴저지",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/105170.webp",
+        "position": "후열",
+        "class_name": "아이오와급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/14520.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "New Jersey"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 64201
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "New Jersey"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 65981
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "New Jersey"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 64210
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "New Jersey"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 65990
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "151471": {
+        "skill_id": 151471,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "에식스",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107090.webp",
+        "position": "후열",
+        "class_name": "에식스급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/151460.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "EssexG"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 168821
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "EssexG"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 180015
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "EssexG"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 168830
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetHarmRandomByWeight",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "EssexG"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 180015
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "16240": {
+        "skill_id": 16240,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "요크타운Ⅱ",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107100.webp",
+        "position": "후열",
+        "class_name": "에식스급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/16220.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Yorktown II"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 160391
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "Yorktown II"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 160400
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
+    },
+    "151926": {
+        "skill_id": 151926,
+        "weapon_true": true,
+        "cross_fleet": true,
+        "name": "윌리엄 D 포터",
+        "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101100.webp",
+        "position": "전열",
+        "class_name": "플레처급",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/151930.webp",
+        "1": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "WDP"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 183021
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "WDP"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 180023
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        },
+        "10": {
+            "effect_list": [
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "WDP"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 183030
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                },
+                {
+                    "arg_list": {
+                        "supportTarget": {
+                            "arg_list": {
+                                "ship_tag_list": [
+                                    "WDP"
+                                ]
+                            },
+                            "targetChoice": [
+                                "TargetPlayerAidUnit",
+                                "TargetShipTag"
+                            ]
+                        },
+                        "weapon_id": 180023
+                    },
+                    "casterAniEffect": "",
+                    "targetAniEffect": "",
+                    "target_choise": "TargetNil",
+                    "type": "BattleSkillFireSupport"
+                }
+            ]
+        }
     }
 }
