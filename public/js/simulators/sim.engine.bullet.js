@@ -14,21 +14,6 @@ import { World } from './physics/world.js';
 import { drainAccumulator } from './physics/accumulator.js';
 import { TICK_SECONDS, AIRCRAFT_HEIGHT } from './physics/constants.js';
 
-/**
- * Bullet types routed through the faithful physics core (physics/). Cannon (1)
- * and Stray (8) use CannonBulletUnit; Torpedo (3) uses TorpedoBulletUnit. All
- * three support straight and curving movement (doAccelerate / doTrack /
- * doCircle resolved by InitSpeed — Phase 2c). Airdrop bombs route through a
- * separate predicate (_isAirdropBomb). Every other type still runs the legacy
- * BehaviorFactory path until later phases migrate it.
- */
-// 1/8/3 migrated in Phase 2a/2b; 4 (DIRECT) / 6 (ANTIAIR) / 7 (ANTISEA) added in
-// Phase 5a — they carry no dedicated factory behavior (StandardMovement only), so
-// the core base BulletUnit reproduces them exactly. The _isMigratedMovementBullet
-// exclusions (gravity*/missile/shrapnel/inheritSpeed/airdrop/transform) still gate
-// the edges. (*gravity dropped in Task 3.)
-const MIGRATED_BULLET_TYPES = new Set([1, 8, 3, 4, 6, 7]);
-
 // Bullet sprites are keyed by the game's modle_ID. BULLET_SPRITE_BASE is the
 // single asset insertion point — set it once sprites are extracted from client
 // AssetBundles and placed (bundled under public/ or on an external host).
@@ -171,55 +156,20 @@ export class BulletEngine {
             return;
         }
 
-        // Route a migrated-type bullet (cannon / stray / torpedo) — straight OR
-        // curving (acceleration / tracker / circle) — including gravity cannons
-        // (Phase 5a) — to the faithful physics core; anything with missile /
-        // shrapnel / a transform chain / inherited speed stays on the legacy path.
-        if (this._isMigratedMovementBullet(bulletInfo, options)) {
-            return this._createWorldBullet(options);
-        }
-
-        // Route a qualifying airdrop bomb to the faithful physics core — the
-        // fix for the overhead-drop bugs: the bomb now falls from above onto
-        // its explode point. Curving airdrop bombs (bullet 170838) are
-        // included as of Phase 3c (BombBulletUnit.InitSpeed defers to the
-        // base priority chain). An airdrop bomb with shrapnel / a transform
-        // chain stays on the legacy path.
+        // Phase 5b: the physics core is the only bullet pipeline. Bombs (type
+        // 2/16) need the parabolic spawn solve, so they route to _createWorldBomb;
+        // everything else — straight/curving movers, effect, shrapnel, gravitation,
+        // and the synthetic esv-skin preview bullet — routes to _createWorldBullet,
+        // whose base BulletUnit handles any unregistered type as a straight bullet.
         if (this._isAirdropBomb(bulletInfo, options)) {
             return this._createWorldBomb({ ...options, mode: 'airdrop' });
         }
-
-        // Route a type-9 effect bullet to the faithful physics core — fixes
-        // the lingering red-dot bug. The shared _createWorldBullet handles
-        // DOM and rendering; EffectBulletUnit's hit_type.time cap drives
-        // expiry alongside the base range check.
-        if (this._isMigratedEffect(bulletInfo, options)) {
-            return this._createWorldBullet(options);
-        }
-
-        // Route a type-5 SHRAPNEL through the faithful physics core. Children
-        // emit via the world's onEmit callback (wired in this task's Step 4),
-        // which routes each child through createBullet so they too flow through
-        // the strangler — a child of a migrated type goes to the core, a child
-        // of an unmigrated type goes to the legacy path.
-        if (this._isMigratedShrapnel(bulletInfo, options)) {
-            return this._createWorldBullet(options);
-        }
-
-        // Route a type-11 GRAVITATION through the faithful physics core (spec §D3).
-        // Replaces the legacy GravitationBehavior's invented FALLING/ACTIVE
-        // position-lock. The bullet now MOVES under base velocity while the
-        // type-11 render branch below preserves the pulsing alert->active visual.
-        if (this._isMigratedGravitation(bulletInfo, options)) {
-            return this._createWorldBullet(options);
-        }
-
-        // Phase 3c: non-airdrop bombs (plain, timeToExplode, curving). Mutually
-        // exclusive with _isAirdropBomb on extra_param.airdrop, so insertion
-        // order vs the other predicates doesn't affect correctness.
-        if (this._isNonAirdropBomb(bulletInfo, options)) {
+        if (bulletInfo.type === 2 || bulletInfo.type === 16) {
+            // All non-airdrop bombs (incl. the 0-reached shrapnel/missile-bomb edge)
+            // take the bomb path — never the straight catch-all.
             return this._createWorldBomb({ ...options, mode: 'non-airdrop' });
         }
+        return this._createWorldBullet(options);
 
         // Create bullet DOM element
         const bulletElement = document.createElement('div');
@@ -587,31 +537,6 @@ export class BulletEngine {
     }
 
     /**
-     * True only for a bullet the physics path provably renders correctly: a
-     * migrated type (cannon / stray / torpedo) — straight OR curving — with no
-     * missile, shrapnel, airdrop, transform chain or inherited speed.
-     * Acceleration data is now welcome (Phase 2c): the core's InitSpeed
-     * priority chain resolves it to doAccelerate / doTrack / doCircle.
-     * Gravity bullets are now welcome (Phase 5a Task 3): base
-     * BulletUnit.SetSpawnPosition seeds the §B8 launch arc and doNothing
-     * integrates it. Anything still excluded has no faithful core path and
-     * stays on the legacy path — the conservative test keeps the migration
-     * regression-free.
-     */
-    _isMigratedMovementBullet(bulletInfo, options) {
-        // gravity is no longer excluded — base BulletUnit.SetSpawnPosition seeds the
-        // §B8 launch arc and doNothing integrates it (Phase 5a). This routes the lone
-        // reached gravity cannon (19921, Kirishima skill 11270) to the core. Bombs
-        // (type 2/16) are not in MIGRATED_BULLET_TYPES, so they still take the bomb path.
-        return MIGRATED_BULLET_TYPES.has(bulletInfo.type)
-            && !bulletInfo.extra_param?.missile
-            && !bulletInfo.extra_param?.shrapnel
-            && options.inheritSpeed == null
-            && options.airdropData == null
-            && (!options.transformChain || options.transformChain.length === 0);
-    }
-
-    /**
      * True only for an airdrop bomb the physics path provably renders
      * correctly: a bomb type (2 / 16) flagged extra_param.airdrop, carrying
      * the firing pipeline's airdropData (the explode point), with no shrapnel,
@@ -625,72 +550,6 @@ export class BulletEngine {
         return (bulletInfo.type === 2 || bulletInfo.type === 16)
             && bulletInfo.extra_param?.airdrop
             && options.airdropData != null
-            && !bulletInfo.extra_param?.shrapnel
-            && !bulletInfo.extra_param?.missile
-            && options.inheritSpeed == null
-            && (!options.transformChain || options.transformChain.length === 0);
-    }
-
-    /**
-     * True for a type-9 EFFECT bullet routed through the faithful physics
-     * core. EffectBulletUnit inherits the base movement and adds a lifetime
-     * cap from hit_type.time — fixes the lingering red-dot bug (spec §C8 /
-     * bug map row 4). Stays predicate-conservative: a type-9 with inherited
-     * speed or a transform chain stays on the legacy path.
-     */
-    _isMigratedEffect(bulletInfo, options) {
-        return bulletInfo.type === 9
-            && options.inheritSpeed == null
-            && (!options.transformChain || options.transformChain.length === 0);
-    }
-
-    /**
-     * True for a type-5 SHRAPNEL routed through the faithful physics core
-     * (spec §C6 / §C7 / §C8). Predicate-conservative — excludes:
-     *   - rangeAA  (AA-adjacent, out of scope per parent spec; 0-reached)
-     *   - inheritSpeed and transform chains (0-reached; legacy carried these)
-     *
-     * Phase 5a: the former `out_bound !== 3` (VISION) gate is dropped. `out_bound`
-     * only affects the game's out-of-bounds culling bound (battledataproxy.lua:797);
-     * the core ShrapnelBulletUnit never reads it. This routes the 13 reached VISION
-     * shrapnel (e.g. 161051-161059 / skill 801650, 168279 directHit / 152220) to the
-     * core. directHit relocation stays deferred (explodePos is not threaded).
-     */
-    _isMigratedShrapnel(bulletInfo, options) {
-        return bulletInfo.type === 5
-            && !bulletInfo.extra_param?.rangeAA
-            && options.inheritSpeed == null
-            && (!options.transformChain || options.transformChain.length === 0);
-    }
-
-    /**
-     * True for a type-11 GRAVITATION bullet routed through the faithful
-     * physics core (spec §D3). Predicate-conservative — excludes:
-     *   - inheritSpeed and transform chains (legacy carries these)
-     *
-     * Acceleration is intentionally NOT excluded: all 3 reached gravitation
-     * bullets have empty acceleration anyway, and if data drift introduces a
-     * curving gravitation, base BulletUnit's InitSpeed priority chain handles
-     * it (HasAcceleration -> doAccelerate).
-     */
-    _isMigratedGravitation(bulletInfo, options) {
-        return bulletInfo.type === 11
-            && options.inheritSpeed == null
-            && (!options.transformChain || options.transformChain.length === 0);
-    }
-
-    /**
-     * True for a non-airdrop bomb (type 2/16 without extra_param.airdrop)
-     * routed through the faithful physics core. Acceleration is welcome —
-     * BombBulletUnit.InitSpeed defers to the base priority chain, so
-     * doAccelerate fires for curving bombs (gravity is suppressed for those
-     * ticks, matching §B3 mutual exclusivity). Predicate-conservative:
-     *   - inheritSpeed and transform chains stay on legacy
-     *   - shrapnel and missile flags stay on legacy (orthogonal concerns)
-     */
-    _isNonAirdropBomb(bulletInfo, options) {
-        return (bulletInfo.type === 2 || bulletInfo.type === 16)
-            && !bulletInfo.extra_param?.airdrop
             && !bulletInfo.extra_param?.shrapnel
             && !bulletInfo.extra_param?.missile
             && options.inheritSpeed == null
@@ -788,7 +647,7 @@ export class BulletEngine {
      * - 'non-airdrop': passes spawnX/spawnY/yAngle through like
      *   _createWorldBullet, plus enemyTarget as the (nullable) explodePos.
      *   Acceleration + barrageAngle + target flow through for curving bombs.
-     *   Used by _isNonAirdropBomb hits.
+     *   Used by the Phase 5b non-airdrop bomb route.
      *
      * Returns the element, or null if the core rejected the spawn (non-finite
      * input).
