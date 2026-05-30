@@ -849,6 +849,21 @@ export class BulletEngine {
     }
 
     /**
+     * Spawn a weapon-driver (beam type 24 / space-laser type 28) into the physics
+     * core and start the shared world loop so it ticks. HARNESS-ONLY + DOM
+     * DEFERRED (Phase 4b): the unit is ticked and culled by world.step() but has
+     * NO view — nothing renders a beam/space-laser yet, so there is intentionally
+     * no element created here. Returns the unit, or null if the core rejected it
+     * (unresolved type / non-finite host).
+     */
+    spawnWeaponDriver(opts) {
+        const unit = this.world.spawnWeapon(opts);
+        if (!unit) return null;
+        this._ensureWorldLoop();
+        return unit;
+    }
+
+    /**
      * Draw one physics unit to its DOM element. The transform mirrors the
      * legacy path's non-beam render: face the velocity vector unless
      * extra_param.dontRotate. A unit with altitude (a bomb) is lifted up the
@@ -1018,7 +1033,9 @@ export class BulletEngine {
             // Invariant: _renderWorld (just above) drains every culled unit
             // from _worldViews each frame, so when world.bullets is empty the
             // view map is empty too — the loop can safely stop.
-            if (this.world.bullets.length === 0) {
+            // A weapon-driver (no view) ticks via world.step() with no bullets
+            // present, so keep the loop alive while either list is non-empty.
+            if (this.world.bullets.length === 0 && this.world.weapons.length === 0) {
                 this._worldLoopId = null;   // idle — stop until the next spawn
                 return;
             }
@@ -1035,6 +1052,7 @@ export class BulletEngine {
         // Faithful-core path: drop every unit, remove its element + shadow,
         // stop the loop.
         this.world.bullets = [];
+        this.world.weapons = [];
         for (const view of this._worldViews.values()) {
             view.element.remove();
             if (view.shadowEl) view.shadowEl.remove();

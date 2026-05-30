@@ -9,6 +9,7 @@ import { SimulationEngine } from './sim.engine.common.js';
 import { WeaponSimData } from './sim.weapon.data.js';
 import { AircraftEntity } from './sim.engine.aircraft.js';
 import { SIM_DEFAULT_SPEED, SIM_GAME_COORDS, SIM_TARGET_FPS, convertToMs, registerDefaultBattleEntities } from './sim.ui.js';
+import { isWeaponDriverType, buildWeaponDriverOpts } from './physics/weapons/weapon-registry.js';
 
 export function createWeaponSim({ container, entities, visualLog }) {
     const simEngine = new SimulationEngine({
@@ -70,6 +71,23 @@ export function createWeaponSim({ container, entities, visualLog }) {
         if (!weapon || !Array.isArray(weapon.barrage_ID)) {
             simEngine.logToScreen(`Weapon ${weaponInfo.weaponId} has invalid data`, 'error');
             return;
+        }
+
+        // §D1/§D5 weapon-driver routing (Phase 4b — harness-only, DOM deferred).
+        // A BEAM (type 24) or SPACE_LASER (type 28) weapon ADDITIONALLY spawns a
+        // physics weapon-driver for its state/geometry. It runs ALONGSIDE the
+        // normal barrage below (e.g. skill 112130 keeps firing its bomb payload
+        // unchanged), so in-browser behaviour is identical until a renderer is
+        // added in Phase 5. weapon.type undefined -> isWeaponDriverType false -> no-op.
+        if (isWeaponDriverType(weapon.type)) {
+            const hostPos = simEngine.getEntityGamePos(
+                skillPosition === '전열' ? 'vanguard' : 'mainfleet');
+            const enemyPos = simEngine.getEntityGameCoords('enemy') || null;
+            simEngine.bulletEngine.spawnWeaponDriver(buildWeaponDriverOpts(weapon, {
+                hostPos, enemyPos,
+                barrageTemplates: simEngine.allBarrageData,
+                bulletTemplates: simEngine.allBulletData,
+            }));
         }
 
         const aircraftData = simEngine.allAircraftData?.[weaponInfo.weaponId];
