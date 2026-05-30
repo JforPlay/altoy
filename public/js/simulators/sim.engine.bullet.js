@@ -641,15 +641,18 @@ export class BulletEngine {
     /**
      * True for a type-5 SHRAPNEL routed through the faithful physics core
      * (spec §C6 / §C7 / §C8). Predicate-conservative — excludes:
-     *   - rangeAA  (AA-adjacent, out of scope per parent spec)
-     *   - out_bound === 3 (VISION) — covers the 6 reached VISION shrapnel
-     *     including the 2 directHit cases (skill_weapon scan, 2026-05-20)
-     *   - inheritSpeed and transform chains (legacy carries these)
+     *   - rangeAA  (AA-adjacent, out of scope per parent spec; 0-reached)
+     *   - inheritSpeed and transform chains (0-reached; legacy carried these)
+     *
+     * Phase 5a: the former `out_bound !== 3` (VISION) gate is dropped. `out_bound`
+     * only affects the game's out-of-bounds culling bound (battledataproxy.lua:797);
+     * the core ShrapnelBulletUnit never reads it. This routes the 13 reached VISION
+     * shrapnel (e.g. 161051-161059 / skill 801650, 168279 directHit / 152220) to the
+     * core. directHit relocation stays deferred (explodePos is not threaded).
      */
     _isMigratedShrapnel(bulletInfo, options) {
         return bulletInfo.type === 5
             && !bulletInfo.extra_param?.rangeAA
-            && bulletInfo.out_bound !== 3
             && options.inheritSpeed == null
             && (!options.transformChain || options.transformChain.length === 0);
     }
