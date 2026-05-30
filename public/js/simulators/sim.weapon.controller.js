@@ -342,30 +342,13 @@ export function createWeaponSim({ container, entities, visualLog }) {
 
         const screenPos = simEngine.bulletEngine.gameToScreen(finalX_game, finalY_game);
         const transformChain = simEngine.generateTransformBarrages(weapon.barrage_ID?.[0] || barrage.id, direction, bulletIndex);
-        const weaponScreenPos = simEngine.bulletEngine.gameToScreen(startX_game, startY_game);
         simEngine.bulletEngine.createBullet({
-            startX: screenPos.x, startY: screenPos.y, startZ: finalY_game, angle: finalAngle,
+            startX: screenPos.x, startY: screenPos.y, angle: finalAngle,
             bulletInfo: effectiveBulletInfo,
-            transformChain, shrapnelCallback: handleShrapnel, airdropData,
-            weaponPos: { x: weaponScreenPos.x, y: weaponScreenPos.y },
-            enemyTarget: enemyGamePos, aimType: weapon.aim_type,
+            transformChain, airdropData,
+            enemyTarget: enemyGamePos,
             barrageAngle: angleModifier
         });
-    }
-
-    function handleShrapnel(parentBulletInfo, finalPos) {
-        const shrapnel = parentBulletInfo.extra_param.shrapnel;
-        for (const key in shrapnel) {
-            if (!isNaN(key) && shrapnel[key] && !shrapnel[key].initialSplit) {
-                const entry = shrapnel[key];
-                const barrage = simEngine.allBarrageData[entry.barrage_ID];
-                const bullet = simEngine.allBulletData[entry.bullet_ID];
-                if (barrage && bullet) {
-                    const fakeWeapon = { id: `shrapnel_${key}`, angle: 0, aim_type: entry.reaim ? 1 : 0 };
-                    fireBarrage(fakeWeapon, barrage, bullet, finalPos);
-                }
-            }
-        }
     }
 
     return {
