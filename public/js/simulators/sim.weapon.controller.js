@@ -82,7 +82,7 @@ export function createWeaponSim({ container, entities, visualLog }) {
         if (isWeaponDriverType(weapon.type)) {
             const hostPos = simEngine.getEntityGamePos(
                 skillPosition === '전열' ? 'vanguard' : 'mainfleet');
-            const enemyPos = simEngine.getEntityGameCoords('enemy') || null;
+            const enemyPos = simEngine.getEntityGameCoords('enemy');
             simEngine.bulletEngine.spawnWeaponDriver(buildWeaponDriverOpts(weapon, {
                 hostPos, enemyPos,
                 barrageTemplates: simEngine.allBarrageData,

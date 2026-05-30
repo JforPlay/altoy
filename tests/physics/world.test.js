@@ -356,3 +356,31 @@ test('step() ticks bullets and weapons independently', () => {
   assert.equal(world.bullets[0].position.x, 10, 'bullet advanced');
   assert.equal(world.weapons[0].timeElapsed, TICK_SECONDS, 'weapon clock advanced');
 });
+
+test('spawnWeapon drives a space-laser (type 28) through alert->attack handoff to cull', () => {
+  const world = new World();
+  const w = world.spawnWeapon({
+    type: 28,
+    hostPos: { x: 3, y: 4 },
+    bulletTemplate: {
+      cld_box: [6, 99, 2],
+      hit_type: { interval: 0.1 },
+      extra_param: { aim_time: 0.07, attack_time: 0.07 },   // ~3 ticks each
+    },
+    beamCount: 1,
+  });
+  assert.ok(w, 'spawn succeeds');
+  assert.equal(world.weapons.length, 1);
+  assert.equal(w.getColumns()[0].stage, 'alert', 'starts aiming');
+
+  // aim_time 0.07: alert survives ticks 1,2 then hands off to attack on tick 3.
+  world.step(); world.step();
+  assert.equal(w.getColumns()[0].stage, 'alert', 'still aiming through the alert window');
+  world.step();
+  assert.equal(w.getColumns()[0].stage, 'attack', 'handed off to the attack column');
+
+  // attack_time 0.07: a few more ticks, then EnterCoolDown -> finished -> culled.
+  let guard = 0;
+  while (world.weapons.length > 0 && guard < 50) { world.step(); guard++; }
+  assert.equal(world.weapons.length, 0, 'space-laser culled after its attack window');
+});

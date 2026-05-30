@@ -26,7 +26,11 @@ export class WeaponUnit {
       : { x: 0, y: 0 };                              // game plane (x, y <- Lua z)
   }
 
-  /** Re-anchor to the live host. Driver calls this each tick before step(). */
+  /**
+   * Re-anchor to the live host. Driver calls this each tick before step().
+   * No production caller yet — the per-tick re-anchor lands with the Phase 5
+   * renderer; until then a driver stays anchored to its spawn-time host position.
+   */
   updateHostPos(pos) {
     if (pos && Number.isFinite(pos.x) && Number.isFinite(pos.y)) {
       this.hostPos = { x: pos.x, y: pos.y };

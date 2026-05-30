@@ -110,8 +110,9 @@ export class World {
   /**
    * Advance the whole simulation by one fixed tick.
    *
-   * Three phases: (1) Update every bullet alive at tick start, (2) drain
-   * each one's emit queue through onEmit, (3) cull expired units.
+   * Bullets advance in three phases: (1) Update every bullet alive at tick
+   * start, (2) drain each one's emit queue through onEmit, (3) cull expired
+   * units. Weapons then take an independent update + cull pass (no emit queue).
    *
    * Length-cached iteration is the mid-tick spawn invariant: a child
    * spawned via onEmit appends to `bullets` past index `n` and Updates on
