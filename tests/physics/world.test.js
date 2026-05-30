@@ -303,3 +303,56 @@ test('spawnBomb airdrop validation still rejects NaN explodePos (regression)', (
   });
   assert.equal(b, null);
 });
+
+test('spawnWeapon adds a live weapon, DoAttack runs, and step() ticks + culls it', () => {
+  const world = new World();
+  const w = world.spawnWeapon({
+    type: 24,
+    hostPos: { x: 0, y: 0 },
+    weaponTemplate: { bullet_ID: [9001], barrage_ID: [8001] },
+    bulletTemplates: { 9001: { extra_param: {} } },
+    barrageTemplates: { 8001: {
+      angle: 0, delta_angle: 5, first_delay: 0,
+      offset_x: 0, offset_z: 0, delta_offset_x: 10, delta_offset_z: 10,
+      delay: 0.05, senior_delay: 0, delta_delay: 1,   // ~2-tick lifetime
+    } },
+    aimPos: null,
+  });
+  assert.ok(w, 'spawn succeeds');
+  assert.equal(world.weapons.length, 1);
+  assert.equal(w.getBeams().length, 1, 'first_delay==0 beam created at DoAttack');
+
+  // delay 0.05 -> active tick 1 (0.033) then inactive on tick 2 (0.067) -> finished + culled.
+  world.step();
+  assert.equal(world.weapons.length, 1, 'still attacking after one tick');
+  world.step();
+  assert.equal(world.weapons.length, 0, 'finished weapon is culled');
+});
+
+test('spawnWeapon rejects a non-finite host position', () => {
+  const world = new World();
+  const w = world.spawnWeapon({ type: 24, hostPos: { x: NaN, y: 0 }, weaponTemplate: {} });
+  assert.equal(w, null);
+  assert.equal(world.weapons.length, 0);
+});
+
+test('spawnWeapon rejects an unresolved weapon type', () => {
+  const world = new World();
+  const w = world.spawnWeapon({ type: 1, hostPos: { x: 0, y: 0 } });
+  assert.equal(w, null);
+  assert.equal(world.weapons.length, 0);
+});
+
+test('step() ticks bullets and weapons independently', () => {
+  const world = new World();
+  world.spawnBullet({ type: 1, velocity: 50, yAngle: 0, range: 100, rangeOffset: 0, spawnX: 0, spawnY: 0 });
+  world.spawnWeapon({
+    type: 24, hostPos: { x: 0, y: 0 },
+    weaponTemplate: { bullet_ID: [9001], barrage_ID: [8001] },
+    bulletTemplates: { 9001: { extra_param: {} } },
+    barrageTemplates: { 8001: { angle: 0, delta_angle: 0, first_delay: 0, offset_x: 0, offset_z: 0, delta_offset_x: 1, delta_offset_z: 1, delay: 1 } },
+  });
+  world.step();
+  assert.equal(world.bullets[0].position.x, 10, 'bullet advanced');
+  assert.equal(world.weapons[0].timeElapsed, TICK_SECONDS, 'weapon clock advanced');
+});

@@ -8,10 +8,12 @@
 
 import { TICK_SECONDS } from './constants.js';
 import { createBulletUnit } from './bullet-registry.js';
+import { createWeaponUnit } from './weapons/weapon-registry.js';
 
 export class World {
   constructor() {
     this.bullets = [];
+    this.weapons = [];
     /**
      * Optional emit callback. A unit that produces children mid-tick (e.g.
      * ShrapnelBulletUnit on SPLIT) pushes child specs onto its own
@@ -86,6 +88,26 @@ export class World {
   }
 
   /**
+   * Create a long-lived weapon driver (beam type 24 / space-laser type 28),
+   * begin its attack, and add it to the simulation. Mirrors spawnBullet's
+   * validate-then-init shape. Returns null on a non-finite host position or an
+   * unresolved weapon type.
+   *
+   * Unlike a bullet, a weapon unit re-anchors to a live host each tick: the
+   * driver writes unit.hostPos (via updateHostPos) before each step().
+   */
+  spawnWeapon(opts) {
+    if (!Number.isFinite(opts.hostPos?.x) || !Number.isFinite(opts.hostPos?.y)) {
+      return null;
+    }
+    const unit = createWeaponUnit(opts.type, opts);
+    if (!unit) return null;
+    unit.DoAttack();
+    this.weapons.push(unit);
+    return unit;
+  }
+
+  /**
    * Advance the whole simulation by one fixed tick.
    *
    * Three phases: (1) Update every bullet alive at tick start, (2) drain
@@ -113,5 +135,14 @@ export class World {
       }
     }
     this.bullets = this.bullets.filter((b) => !b.reachDestFlag);
+
+    // Weapons run their own update + cull, independent of bullets. Length-cached
+    // like the bullet loop (a unit added mid-tick Updates on the next step()).
+    const wn = this.weapons.length;
+    for (let i = 0; i < wn; i++) {
+      this.weapons[i].timeElapsed += TICK_SECONDS;
+      this.weapons[i].Update();
+    }
+    this.weapons = this.weapons.filter((w) => !w.finished);
   }
 }
