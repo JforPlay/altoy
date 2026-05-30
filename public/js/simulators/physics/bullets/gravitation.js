@@ -4,12 +4,11 @@
  * (battlegravitationbulletunit.lua). Thin: inherits all movement from
  * BulletUnit and adds a lifetime cap from hit_type.time.
  *
- * The visible payoff is what this class does NOT do: the legacy
- * GravitationBehavior in sim.engine.bullet.factory.js invents a
- * FALLING -> ACTIVE -> EXPIRED state machine that position-locks the bullet
- * at spawn. The game Lua has no FALLING phase — the bullet travels at its
- * own velocity and damages on overlap (spec §D3). Migrating it means the
- * bullet now MOVES.
+ * The visible payoff is what this class does NOT do: the deleted legacy
+ * GravitationBehavior invented a FALLING -> ACTIVE -> EXPIRED state machine
+ * that position-locked the bullet at spawn. The game Lua has no FALLING phase
+ * — the bullet travels at its own velocity and damages on overlap (spec §D3).
+ * Replacing it means the bullet now MOVES.
  */
 
 import { BulletUnit } from '../bullet-unit.js';

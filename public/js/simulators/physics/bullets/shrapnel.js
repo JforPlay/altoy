@@ -210,8 +210,8 @@ export class ShrapnelBulletUnit extends BulletUnit {
    *    initial vertical speed `-0.5 * gravity * 60 / convertedVelocity`
    *    (battlebulletunit.lua:511-523, spec §B8). Without this the parent
    *    launches with verticalSpeed=0, immediately falls under gravity,
-   *    never arcs — Kirishima skill 11270 was hitting this. The legacy
-   *    GravityBehavior applies the same formula (sim.engine.bullet.factory.js:371).
+   *    never arcs — Kirishima skill 11270 was hitting this. The deleted legacy
+   *    GravityBehavior applied the same formula.
    */
   SetSpawnPosition() {
     if (this._extraParam.flare && this._explodePos) {

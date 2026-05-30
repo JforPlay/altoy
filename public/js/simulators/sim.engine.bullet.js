@@ -29,14 +29,10 @@ export class BulletEngine {
         this.container = options.container;
         this.gameCoords = options.gameCoords;
         this.targetFps = options.targetFps || 30;
-        this.gSpeed = options.gSpeed || 1.5;
-
-        // Game formula: velocity * (60/30 * 0.1) = velocity * 0.2
-        this.bulletSpeedConvert = 0.2;
-        this.bulletHeight = 1;
-        this.gravity = -0.05;
-        // Gravity bullets detonate when altitude <= this (BattleConfig.BombDetonateHeight)
-        this.bombDetonateHeight = 1.2;
+        // Pure playback-speed multiplier: 1.0 = real game time. Only use is
+        // scaling real elapsed ms in the world-loop accumulator. Use ?? so
+        // an explicit 0 (pause) is preserved rather than coerced to the default.
+        this.gSpeed = options.gSpeed ?? 1.0;
 
         this.allBarrages = {};
         this.allBullets = {};
@@ -62,8 +58,6 @@ export class BulletEngine {
         this._worldLoopId = null;       // rAF id of the shared loop, null when idle
         this._worldAccumulatorMs = 0;   // unspent real time carried between frames
         this._worldLastTime = 0;        // performance.now() of the previous loop frame
-
-        this.frameTime = 1000 / this.targetFps;
 
         this.perspective = {
             enabled: false,
@@ -185,8 +179,8 @@ export class BulletEngine {
 
     /**
      * Build the DOM element for a physics-core bullet: the base `bullet`
-     * class, the skin modle_ID class, and the bullet-type class so a migrated
-     * bullet keeps its type styling. Size and position are set by the caller.
+     * class, the skin modle_ID class, and the bullet-type class so a bullet
+     * keeps its type styling. Size and position are set by the caller.
      */
     _createBulletElement(bulletInfo) {
         const element = document.createElement('div');
@@ -546,8 +540,7 @@ export class BulletEngine {
     // ===== Cleanup =====
 
     clearAllBullets() {
-        // Faithful-core path: drop every unit, remove its element + shadow,
-        // stop the loop.
+        // Drop every unit, remove its element + shadow, stop the loop.
         this.world.bullets = [];
         this.world.weapons = [];
         for (const view of this._worldViews.values()) {
