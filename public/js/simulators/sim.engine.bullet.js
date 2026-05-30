@@ -22,7 +22,12 @@ import { TICK_SECONDS, AIRCRAFT_HEIGHT } from './physics/constants.js';
  * separate predicate (_isAirdropBomb). Every other type still runs the legacy
  * BehaviorFactory path until later phases migrate it.
  */
-const MIGRATED_BULLET_TYPES = new Set([1, 8, 3]);
+// 1/8/3 migrated in Phase 2a/2b; 4 (DIRECT) / 6 (ANTIAIR) / 7 (ANTISEA) added in
+// Phase 5a — they carry no dedicated factory behavior (StandardMovement only), so
+// the core base BulletUnit reproduces them exactly. The _isMigratedMovementBullet
+// exclusions (gravity*/missile/shrapnel/inheritSpeed/airdrop/transform) still gate
+// the edges. (*gravity dropped in Task 3.)
+const MIGRATED_BULLET_TYPES = new Set([1, 8, 3, 4, 6, 7]);
 
 // Bullet sprites are keyed by the game's modle_ID. BULLET_SPRITE_BASE is the
 // single asset insertion point — set it once sprites are extracted from client

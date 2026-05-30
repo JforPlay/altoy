@@ -72,3 +72,27 @@ test('type 15 (SCALE) falls through to BulletUnit (harness-only — deliberately
   const unit = createBulletUnit(15, { velocity: 10, yAngle: 0, range: 50 });
   assert.ok(unit.constructor.name === 'BulletUnit', 'type 15 must fall through to base');
 });
+
+test('type 4 (DIRECT) falls through to the BulletUnit base (straight mover)', () => {
+  const u = createBulletUnit(4, { velocity: 10, yAngle: 0, range: 50 });
+  assert.equal(u.constructor.name, 'BulletUnit', 'type 4 must use the straight base');
+});
+
+test('type 6 (ANTIAIR) falls through to the BulletUnit base (straight mover)', () => {
+  const u = createBulletUnit(6, { velocity: 10, yAngle: 0, range: 50 });
+  assert.equal(u.constructor.name, 'BulletUnit', 'type 6 must use the straight base');
+});
+
+test('type 7 (ANTISEA) falls through to the BulletUnit base (straight mover)', () => {
+  const u = createBulletUnit(7, { velocity: 10, yAngle: 0, range: 50 });
+  assert.equal(u.constructor.name, 'BulletUnit', 'type 7 must use the straight base');
+});
+
+test('a base type-4 bullet advances straight by speed each tick', () => {
+  const b = createBulletUnit(4, { velocity: 50, yAngle: 0, range: 100, rangeOffset: 0 });
+  b.FixRange();
+  b.InitSpeed();
+  b.Update();
+  assert.equal(b.position.x, 10);   // 50 * 0.2
+  assert.equal(b.position.y, 0);
+});
