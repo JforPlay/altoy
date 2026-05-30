@@ -165,8 +165,11 @@ export class BulletEngine {
             return this._createWorldBomb({ ...options, mode: 'airdrop' });
         }
         if (bulletInfo.type === 2 || bulletInfo.type === 16) {
-            // All non-airdrop bombs (incl. the 0-reached shrapnel/missile-bomb edge)
-            // take the bomb path — never the straight catch-all.
+            // Every type-2/16 bomb takes the bomb path — never the straight
+            // catch-all. This also catches an airdrop bomb that failed
+            // _isAirdropBomb's shrapnel/missile/inheritSpeed/transformChain
+            // exclusions; verified 0-reached (Phase 5a audit: 0 reached bombs
+            // carry shrapnel or missile), so the non-airdrop route is safe here.
             return this._createWorldBomb({ ...options, mode: 'non-airdrop' });
         }
         return this._createWorldBullet(options);
