@@ -2,29 +2,16 @@
  * sim.engine.bullet.js
  * Low-level bullet engine: coordinate transforms, bullet DOM creation,
  * per-frame physics dispatch, and rendering for all bullet types.
- * Part of the simulators shared engine (common → bullet → bullet.factory + aircraft + oceanbg).
+ * Part of the simulators shared engine (common → bullet + aircraft + oceanbg).
  *
  * Game constants (from BattleConfig):
  *   bulletSpeedConvert = 0.2  (velocity * 0.2 → game units per frame)
  *   bombDetonateHeight = 1.2  (gravity bullets detonate below this altitude)
  */
 
-import { BehaviorFactory } from './sim.engine.bullet.factory.js';
 import { World } from './physics/world.js';
 import { drainAccumulator } from './physics/accumulator.js';
 import { TICK_SECONDS, AIRCRAFT_HEIGHT } from './physics/constants.js';
-
-// Bullet sprites are keyed by the game's modle_ID. BULLET_SPRITE_BASE is the
-// single asset insertion point — set it once sprites are extracted from client
-// AssetBundles and placed (bundled under public/ or on an external host).
-// While empty, resolveBulletSprite() returns null and bullets use the CSS
-// placeholder rendering.
-const BULLET_SPRITE_BASE = '';
-
-function resolveBulletSprite(modleId) {
-    if (!BULLET_SPRITE_BASE || !modleId || modleId === 'None') return null;
-    return `${BULLET_SPRITE_BASE}/${modleId}.webp`;
-}
 
 // Bullet type → CSS placeholder class. Keys are game BattleConst.BulletType.
 const BULLET_TYPE_CLASSES = {
@@ -54,15 +41,15 @@ export class BulletEngine {
         this.allBarrages = {};
         this.allBullets = {};
 
-        // --- Faithful physics-core render path (Phase 2: cannon types 1, 8) ---
-        // The pure fixed-timestep core (physics/) runs migrated bullet types
-        // through one shared loop; the legacy per-bullet rAF path runs
-        // everything else. See dev/active/2026-05-17-weapon-physics-rework.md.
+        // --- Physics core (the sole bullet pipeline as of Phase 5b) ---
+        // The pure fixed-timestep core (physics/) runs EVERY bullet through one
+        // shared 30 fps loop (world.step). The legacy per-bullet rAF path was
+        // deleted in Phase 5b. See dev/active/2026-05-17-weapon-physics-rework.md.
         this.world = new World();
         // ShrapnelBulletUnit.drainEmits returns child specs in GAME coords.
         // createBullet's contract is SCREEN coords; convert once here so the
-        // engine's existing dispatch (predicates -> _createWorldBullet ->
-        // screenToGame, or legacy path -> screen) keeps its interface.
+        // engine's dispatch (_createWorldBullet/_createWorldBomb -> screenToGame)
+        // receives screen coordinates as expected.
         this.world.onEmit = (spec) => {
             const screen = this.gameToScreen(spec.startX, spec.startY);
             this.createBullet({
@@ -145,9 +132,9 @@ export class BulletEngine {
     createBullet(options) {
         const {
             startX, startY, angle, bulletInfo,
-            transformChain = [], shrapnelCallback, parentBullet = null,
-            inheritSpeed = null, airdropData = null, weaponPos = null,
-            enemyTarget = null, aimType = null, barrageAngle = null
+            transformChain = [], parentBullet = null,
+            inheritSpeed = null, airdropData = null,
+            enemyTarget = null, barrageAngle = null
         } = options;
 
         if (isNaN(startX) || isNaN(startY) || isNaN(angle)) {
@@ -175,23 +162,6 @@ export class BulletEngine {
     }
 
     // ===== Physics-Core Render Path =====
-
-    /**
-     * True when a bullet's `acceleration` carries no movement data. The field
-     * is present on virtually every bullet — overwhelmingly as an inert empty
-     * object `{}` — so a plain `!bulletInfo.acceleration` test is always false
-     * and would route nothing. A non-empty `acceleration` (tracker, circle,
-     * orbit, or u/v values) drives a curving movement the physics core's plain
-     * CannonBulletUnit does not reproduce, so such a bullet stays on the legacy
-     * path.
-     */
-    _hasEmptyAcceleration(bulletInfo) {
-        const accel = bulletInfo.acceleration;
-        if (!accel) return true;
-        return Array.isArray(accel)
-            ? accel.length === 0
-            : Object.keys(accel).length === 0;
-    }
 
     /**
      * True only for an airdrop bomb the physics path provably renders
@@ -228,12 +198,10 @@ export class BulletEngine {
     }
 
     /**
-     * Spawn a migrated-type bullet (straight or curving) into the physics core
-     * and build its DOM element. Mirrors the legacy createBullet element setup,
-     * so a migrated bullet is visually identical to a legacy one. Receives
-     * screen-space coordinates and converts to game space for the core.
-     * Returns the element, or null if the core rejected the spawn (non-finite
-     * input).
+     * Spawn a bullet (straight or curving) into the physics core and build its
+     * DOM element. Receives screen-space coordinates and converts to game space
+     * for the core. Returns the element, or null if the core rejected the spawn
+     * (non-finite input).
      */
     _createWorldBullet(options) {
         const { startX, startY, angle, bulletInfo, barrageAngle, enemyTarget } = options;
@@ -400,12 +368,11 @@ export class BulletEngine {
     }
 
     /**
-     * Draw one physics unit to its DOM element. The transform mirrors the
-     * legacy path's non-beam render: face the velocity vector unless
-     * extra_param.dontRotate. A unit with altitude (a bomb) is lifted up the
-     * screen and casts a ground shadow — both inert for a straight bullet,
-     * whose altitude never leaves 0. zIndex is fixed at spawn and only
-     * refreshed here when perspective is on, matching the legacy path.
+     * Draw one physics unit to its DOM element. The transform faces the
+     * velocity vector unless extra_param.dontRotate. A unit with altitude
+     * (a bomb) is lifted up the screen and casts a ground shadow — both
+     * inert for a straight bullet, whose altitude never leaves 0. zIndex is
+     * fixed at spawn and only refreshed here when perspective is on.
      */
     _renderWorldBullet(unit) {
         const view = this._worldViews.get(unit);
@@ -440,7 +407,7 @@ export class BulletEngine {
             view.element.style.zIndex = Math.floor(screenPos.depth * 0.1) + 5;
         }
 
-        // Ground shadow while a bomb is airborne (mirrors the legacy path).
+        // Ground shadow while a bomb is airborne.
         if (altitudeOffset > 1) {
             if (!view.shadowEl) {
                 view.shadowEl = document.createElement('div');
@@ -459,18 +426,16 @@ export class BulletEngine {
     }
 
     /**
-     * Render a gravitation (type-11) bullet's pulsing alert -> active ring,
-     * porting the legacy block at sim.engine.bullet.js _animate (the
-     * "Gravitation bullet rendering: pulsing area effect" comment block).
+     * Render a gravitation (type-11) bullet's pulsing alert -> active ring.
+     * Ported from the deleted _animate "Gravitation bullet rendering" block.
      *
-     * The legacy keyed `elapsed` off `gravitationBehavior.activeStartTime` —
-     * the moment the legacy's invented FALLING phase ended. In the migrated
-     * model there is no FALLING phase, so `elapsed` is simply the unit's
-     * `timeElapsed` (spawn-relative). Alert phase covers
-     * `timeElapsed < alert_duration`; active phase comes after.
+     * The deleted path keyed `elapsed` off `gravitationBehavior.activeStartTime`
+     * — the moment its invented FALLING phase ended. There is no FALLING phase
+     * in the physics core, so `elapsed` is simply the unit's `timeElapsed`
+     * (spawn-relative). Alert phase covers `timeElapsed < alert_duration`;
+     * active phase comes after.
      *
-     * cld_box[0] is the legacy's base size index. The `* 3` multiplier
-     * matches the legacy block exactly.
+     * cld_box[0] is the original size index; the `* 3` multiplier is unchanged.
      */
     _renderGravitationPulse(unit, view, screenPos) {
         const { bulletInfo } = view;
@@ -505,11 +470,10 @@ export class BulletEngine {
     }
 
     /**
-     * Off-viewport safety cull, mirroring the legacy isOutOfBounds check: a
-     * bullet past an edge and still heading further out. The gate ignores the
-     * first few ticks (legacy used framesLived > 3) so a bullet spawned near an
-     * edge is not culled instantly; the exact tick is immaterial for a safety
-     * net, so a plain time threshold is fine.
+     * Off-viewport safety cull: a bullet past an edge and still heading further
+     * out. The gate ignores the first few ticks (matching the deleted path's
+     * framesLived > 3 threshold) so a bullet spawned near an edge is not culled
+     * instantly; a plain time threshold is fine for a safety net.
      */
     _isUnitOffScreen(unit, view) {
         if (unit.timeElapsed < 4 * TICK_SECONDS) return false;
@@ -544,10 +508,9 @@ export class BulletEngine {
 
     /**
      * Start the shared world loop if it is not already running. One rAF loop
-     * drives every migrated bullet: it converts elapsed real time (scaled by
+     * drives every live bullet: it converts elapsed real time (scaled by
      * gSpeed playback speed) into whole 1/30 s ticks, steps the core, renders,
-     * and stops itself when no migrated bullets remain — matching the legacy
-     * path's on-demand model (no rAF runs while the page is idle).
+     * and stops itself when no live bullets remain (no rAF runs while idle).
      */
     _ensureWorldLoop() {
         if (this._worldLoopId !== null) return;
