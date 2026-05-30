@@ -142,6 +142,12 @@ export function createWeaponSim({ container, entities, visualLog }) {
         const rawAngle = weapon.axis_angle ?? weapon.angle ?? 0;
         baseAngle = direction === -1 ? rawAngle + 180 : rawAngle;
 
+        // §E6: BattleShotgunEmitter replaces the barrage angle with a random
+        // shotgun spread (vs the normal additive fan). 0 reached skills select
+        // it today. Threaded as a param to the fireWave*/fireSingleBullet
+        // siblings (they are NOT closures over fireBarrage).
+        const isShotgunEmitter = weaponInfo.emitter === 'BattleShotgunEmitter';
+
         const seniorRepeatCount = weaponInfo.quota ?? ((barrage.senior_repeat || 0) + 1);
         const seniorDelay = barrage.senior_delay || 0;
         const firstDelay = barrage.first_delay || 0;
@@ -164,11 +170,11 @@ export function createWeaponSim({ container, entities, visualLog }) {
             const actualStartTime = (waveIndex === 0) ? firstDelay : waveStartTime;
 
             if (barrage.delta_delay && barrage.delta_delay !== 0) {
-                fireWaveWithAdvancingDelay(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction);
+                fireWaveWithAdvancingDelay(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter);
             } else if (barrage.delay && barrage.delay !== 0) {
-                fireWaveWithConstantDelay(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction);
+                fireWaveWithConstantDelay(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter);
             } else {
-                fireWaveImmediate(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction);
+                fireWaveImmediate(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter);
             }
 
             if (waveIndex + 1 < seniorRepeatCount) {
@@ -187,39 +193,49 @@ export function createWeaponSim({ container, entities, visualLog }) {
         }
     }
 
-    function fireWaveWithAdvancingDelay(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1) {
+    function fireWaveWithAdvancingDelay(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1, isShotgunEmitter = false) {
         const primalRepeatCount = (barrage.primal_repeat || 0) + 1;
         let totalPrimalDelay = 0, currentPrimalInterval = barrage.delay || 0;
         for (let i = 0; i < primalRepeatCount; i++) {
             const bulletFireTime = waveStartTime + totalPrimalDelay;
-            scheduleFireTimer(() => { fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction); }, convertToMs(bulletFireTime));
+            scheduleFireTimer(() => { fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter); }, convertToMs(bulletFireTime));
             totalPrimalDelay += currentPrimalInterval;
             currentPrimalInterval += (barrage.delta_delay || 0);
         }
     }
 
-    function fireWaveWithConstantDelay(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1) {
+    function fireWaveWithConstantDelay(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1, isShotgunEmitter = false) {
         const primalRepeatCount = (barrage.primal_repeat || 0) + 1;
         const constantInterval = barrage.delay || 0;
         for (let i = 0; i < primalRepeatCount; i++) {
             const bulletFireTime = waveStartTime + (i * constantInterval);
-            scheduleFireTimer(() => { fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction); }, convertToMs(bulletFireTime));
+            scheduleFireTimer(() => { fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter); }, convertToMs(bulletFireTime));
         }
     }
 
-    function fireWaveImmediate(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1) {
+    function fireWaveImmediate(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1, isShotgunEmitter = false) {
         const primalRepeatCount = (barrage.primal_repeat || 0) + 1;
         scheduleFireTimer(() => {
             for (let i = 0; i < primalRepeatCount; i++) {
-                fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction);
+                fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter);
             }
         }, convertToMs(waveStartTime));
     }
 
-    function fireSingleBullet(bulletIndex, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1) {
+    function fireSingleBullet(bulletIndex, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1, isShotgunEmitter = false) {
         const enemyGamePos = simEngine.getEntityGameCoords('enemy');
         let angleModifier;
-        if (barrage.random_angle) {
+        if (isShotgunEmitter) {
+            // §E6: shotgun REPLACES the angle with a random spread
+            // (battleshotgunemitter.lua:26); no index fan. Standard: uniform
+            // [−angle/2, +angle/2]. Under random_angle: a two-draw weighted
+            // variant with asymmetric range [−angle, 0] (0-reached for a
+            // shotgun barrage today).
+            const angleRange = barrage.angle || 0;
+            angleModifier = barrage.random_angle
+                ? (Math.random() - 0.5) * (Math.random() * angleRange) - angleRange / 2
+                : Math.random() * angleRange - angleRange / 2;
+        } else if (barrage.random_angle) {
             // §E7: game jitters the per-bullet angle by (random − 0.5), giving
             // a ±Angle/2 cone — NOT (random·2 − 1) which doubles the width.
             // Mirrors battlebulletemitter.lua:97.

@@ -178,6 +178,12 @@ export class WeaponSimData {
                         weaponInfo.time = effect.time;
                     }
 
+                    // §E6: carry the Lua emitter class so the firing pipeline can
+                    // pick the shotgun (replace-angle) emitter when selected.
+                    if (effect.arg_list.emitter !== undefined) {
+                        weaponInfo.emitter = effect.arg_list.emitter;
+                    }
+
                     weaponInfoList.push(weaponInfo);
                     foundWeaponIds.add(weaponId);
                 }
