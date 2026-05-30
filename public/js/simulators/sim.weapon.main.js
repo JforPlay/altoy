@@ -19,6 +19,7 @@ import {
     setupPauseButton,
     setupSpeedControls
 } from './sim.ui.js';
+import { formatSkillDesc } from './sim.weapon.stats.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     // --- DOM Elements ---
@@ -384,7 +385,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (skill.desc) {
             const desc = document.createElement('div');
             desc.className = 'skill-desc';
-            desc.textContent = skill.desc;
+            desc.textContent = formatSkillDesc(skill.desc, {
+                descGetAdd: skill.desc_get_add,
+                descGet: skill.desc_get,
+            });
             fragment.appendChild(desc);
         }
 

@@ -4,6 +4,8 @@
  * selector population consistent across the weapon and aircraft simulators.
  */
 
+import { computeBarrageStats, weaponCooldownSeconds } from './sim.weapon.stats.js';
+
 export const SIM_GAME_COORDS = {
     totalArea: { minX: -120, minY: 30, maxX: 80, maxY: 85 },
     playerArea: { minX: -120, minY: 30, maxX: 15, maxY: 85 }
@@ -214,10 +216,10 @@ function populateChoicesOrSelect(selectEl, choiceGroups, options = {}) {
 
 function createStatItem(label, value) {
     const item = createElement('div', 'stat-item');
-    item.append(
-        createElement('span', 'stat-label', label),
-        createElement('span', 'stat-value', value)
-    );
+    const valueEl = createElement('span', 'stat-value');
+    if (value instanceof Node) valueEl.appendChild(value);
+    else valueEl.textContent = String(value);
+    item.append(createElement('span', 'stat-label', label), valueEl);
     return item;
 }
 
@@ -232,31 +234,28 @@ function buildArmorRow(damageType) {
     return row;
 }
 
-function appendBarrageItem(grid, label, value) {
-    const item = createElement('div', 'barrage-detail-item');
-    item.append(createElement('span', 'stat-label', label), document.createTextNode(` ${value}`));
-    grid.appendChild(item);
-}
+// Inline barrage breakdown (replaces the old <details> collapsible). Rows follow
+// the game's firing model via computeBarrageStats; zero-valued rows are omitted.
+function buildBarrageRows(weapon, weaponInfo, barrageData) {
+    const stats = computeBarrageStats(weapon, { barrageData }, weaponInfo);
+    if (!stats) return null;
 
-function buildBarrageDetails(weapon, weaponInfo, barrageData) {
-    if (!Array.isArray(weapon.barrage_ID) || weapon.barrage_ID.length === 0) return null;
-    const firstBarrage = barrageData[weapon.barrage_ID[0]];
-    if (!firstBarrage) return null;
+    const wrap = createElement('div', 'barrage-rows');
+    const addRow = (cls, label, value) => {
+        const row = createElement('div', cls);
+        row.append(createElement('span', 'stat-label', label), createElement('span', 'stat-value', value));
+        wrap.appendChild(row);
+    };
 
-    const details = createElement('details', 'barrage-details');
-    details.appendChild(createElement('summary', '', `탄막 상세 (${weapon.barrage_ID.length}개 패턴)`));
-
-    const grid = createElement('div', 'barrage-detail-grid');
-    appendBarrageItem(grid, '각도', `${firstBarrage.angle || 0}°`);
-    appendBarrageItem(grid, 'Δ각도', `${firstBarrage.delta_angle || 0}°`);
-    appendBarrageItem(grid, '딜레이', `${firstBarrage.delay || 0}s`);
-    appendBarrageItem(grid, '반복', `${(firstBarrage.primal_repeat || 0) + 1}발`);
-    if (firstBarrage.senior_repeat) appendBarrageItem(grid, '시니어', `${firstBarrage.senior_repeat + 1}회`);
-    if (weaponInfo.quota) appendBarrageItem(grid, 'Quota', `${weaponInfo.quota}회`);
-    if (weaponInfo.time) appendBarrageItem(grid, '발동', `${weaponInfo.time}f`);
-
-    details.appendChild(grid);
-    return details;
+    addRow('barrage-row', '연사 횟수', `${stats.waves}회`);
+    addRow('barrage-row', '1연사당 발수', `${stats.bulletsPerWave}발`);
+    if (stats.delay) addRow('barrage-row', '탄 간격', `${stats.delay}s`);
+    if (stats.seniorDelay) addRow('barrage-row', '연사 간격', `${stats.seniorDelay}s`);
+    if (stats.scatterAngle) addRow('barrage-row', '산포각', `${stats.scatterAngle}°`);
+    if (weaponInfo.time) addRow('barrage-row', '발동 딜레이', `${(weaponInfo.time / SIM_TARGET_FPS).toFixed(2)}s`);
+    if (stats.patternCount > 1) addRow('barrage-row', '탄막 패턴', `${stats.patternCount}개`);
+    addRow('barrage-total', '총 발사 수', `${stats.totalBullets}발`);
+    return wrap;
 }
 
 function buildWeaponCard(weapon, weaponInfo, index, showNumber, dataStores) {
@@ -270,17 +269,7 @@ function buildWeaponCard(weapon, weaponInfo, index, showNumber, dataStores) {
     const bulletType = bulletInfo?.type || 0;
     const bulletTypeName = BULLET_TYPE_NAMES[bulletType] || '일반';
 
-    let totalBullets = 0;
-    if (Array.isArray(weapon.barrage_ID)) {
-        for (const barrageId of weapon.barrage_ID) {
-            const barrage = dataStores.barrageData[barrageId];
-            if (barrage) totalBullets += (barrage.primal_repeat || 0) + 1;
-        }
-    }
-    totalBullets *= (weaponInfo.quota || 1);
-
-    const reloadMs = weapon.reload_max;
-    const reloadDisplay = reloadMs ? `${(reloadMs / 10).toFixed(1)}s` : '-';
+    const cooldown = weaponCooldownSeconds(weapon.reload_max);
     const range = weapon.range || bulletInfo?.range || '-';
     const damage = weapon.damage || '-';
     const corrected = weapon.corrected ? ` (×${weapon.corrected}%)` : '';
@@ -294,15 +283,24 @@ function buildWeaponCard(weapon, weaponInfo, index, showNumber, dataStores) {
     title.append(document.createTextNode(' '), ammoBadge);
     header.append(title, createElement('span', 'weapon-card-id', weaponInfo.weaponId));
 
+    // 쿨타임 cell: computed cooldown primary + muted raw reload_max secondary.
+    let cooldownValue = '-';
+    if (cooldown != null) {
+        cooldownValue = createElement('span');
+        cooldownValue.append(
+            document.createTextNode(`${cooldown.toFixed(2)}s`),
+            createElement('span', 'stat-sub', `reload ${weapon.reload_max}`)
+        );
+    }
+
     const stats = createElement('div', 'weapon-stats');
-    [
-        ['탄종', bulletTypeName],
-        ['데미지', `${damage}${corrected}`],
-        ['장전', reloadDisplay],
-        ['사거리', range],
-        ['발사 수', totalBullets],
-        ['관통', pierce],
-    ].forEach(([label, value]) => stats.appendChild(createStatItem(label, value)));
+    stats.append(
+        createStatItem('탄종', bulletTypeName),
+        createStatItem('데미지', `${damage}${corrected}`),
+        createStatItem('쿨타임', cooldownValue),
+        createStatItem('사거리', range),
+        createStatItem('관통', pierce),
+    );
 
     const damageType = bulletInfo?.damage_type;
     if (Array.isArray(damageType) && damageType.length >= 3) {
@@ -310,8 +308,8 @@ function buildWeaponCard(weapon, weaponInfo, index, showNumber, dataStores) {
     }
 
     card.append(header, stats);
-    const details = buildBarrageDetails(weapon, weaponInfo, dataStores.barrageData);
-    if (details) card.appendChild(details);
+    const rows = buildBarrageRows(weapon, weaponInfo, dataStores.barrageData);
+    if (rows) card.appendChild(rows);
     return card;
 }
 

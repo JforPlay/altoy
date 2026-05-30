@@ -202,7 +202,8 @@ export class WeaponSimData {
                 ...skillData,
                 name: templateData.name || skillData.name,
                 desc: templateData.desc || skillData.desc,
-                desc_get_add: templateData.desc_get_add
+                desc_get_add: templateData.desc_get_add,
+                desc_get: templateData.desc_get
             };
         }
 

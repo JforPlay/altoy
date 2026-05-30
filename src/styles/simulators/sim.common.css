@@ -778,34 +778,43 @@ body.dark-mode {
   font-weight: 400;
 }
 
-/* Barrage detail (expandable) */
-.barrage-details {
+/* Barrage breakdown rows (inline; replaces the old <details>) */
+.barrage-rows {
   margin-top: var(--spacing-sm);
   padding-top: var(--spacing-sm);
   border-top: 1px solid var(--surface-border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.barrage-details summary {
-  cursor: pointer;
+.barrage-row,
+.barrage-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 3px var(--spacing-xs);
   font-size: 0.8rem;
+}
+
+.barrage-total {
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--surface-border);
+  font-weight: 700;
+}
+
+.barrage-total .stat-value {
+  font-size: 0.95rem;
+  color: var(--primary-color);
+}
+
+/* Muted secondary value (raw reload_max beside the cooldown) */
+.stat-sub {
+  margin-left: 6px;
+  font-size: 0.7rem;
+  font-weight: 400;
   color: var(--text-muted);
-  font-weight: 500;
-}
-
-.barrage-details summary:hover { color: var(--text-primary); }
-
-.barrage-detail-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-xs);
-  margin-top: var(--spacing-xs);
-  font-size: 0.75rem;
-}
-
-.barrage-detail-item {
-  padding: 4px var(--spacing-xs);
-  background: var(--bg-tertiary);
-  border-radius: var(--radius-xs);
 }
 
 /* ===== CHOICES.JS THEMING ===== */
@@ -817,11 +826,13 @@ body.dark-mode {
 
 .choices { width: 100%; }
 
-.choices__inner {
+.sim-page .choices__inner {
   width: 100%;
-  background: var(--bg-input);
+  /* !important: beat the CDN choices.min.css, which loads after this bundle and
+     otherwise reverts the background to #f9f9f9 (white-on-white in dark mode). */
+  background: var(--bg-input) !important;
   border: 1px solid var(--input-border);
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
   border-radius: var(--radius-md);
   padding: 0 var(--spacing-sm);
   font-size: 14px;
@@ -910,9 +921,11 @@ body.dark-mode {
 
 .choices__item { color: var(--text-primary); padding: 8px 12px; }
 
-.choices__input {
-  background-color: var(--bg-input);
-  color: var(--text-primary);
+.sim-page .choices__input {
+  /* !important: the typed-search text. CDN choices.min.css overrides the
+     background back to near-white on later load; force both so it stays legible. */
+  background-color: var(--bg-input) !important;
+  color: var(--text-primary) !important;
   border-radius: var(--radius-sm);
   padding: 6px;
 }
