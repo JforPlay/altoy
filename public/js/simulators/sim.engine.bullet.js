@@ -4,9 +4,9 @@
  * per-frame physics dispatch, and rendering for all bullet types.
  * Part of the simulators shared engine (common → bullet + aircraft + oceanbg).
  *
- * Game constants (from BattleConfig):
- *   bulletSpeedConvert = 0.2  (velocity * 0.2 → game units per frame)
- *   bombDetonateHeight = 1.2  (gravity bullets detonate below this altitude)
+ * The physics core (physics/) is the sole bullet pipeline; BattleConfig game
+ * constants (bullet-speed convert, bomb-detonate height, …) live in
+ * physics/constants.js.
  */
 
 import { World } from './physics/world.js';
