@@ -12,7 +12,9 @@ export class SimulationEngine {
         this.container = options.container;
         this.gameCoords = options.gameCoords;
         this.targetFps = options.targetFps || 30;
-        this.gSpeed = options.gSpeed || 1;
+        // Pure playback multiplier (Phase 5b). `??` not `||` so an explicit 0
+        // (pause) is preserved rather than coerced to the default.
+        this.gSpeed = options.gSpeed ?? 1.0;
 
         // Data stores
         this.allBarrageData = {};
