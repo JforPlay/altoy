@@ -220,6 +220,40 @@ test('Trailing: a record with initialSplit=true emits during NORMAL', () => {
   assert.equal(emits.length, 0);
 });
 
+test('Shrapnel children inherit the parent altitude (gravity-rain fix, Kirishima 11270)', () => {
+  // The game spawns each shrapnel child at the parent's _position, INCLUDING the
+  // vertical _position.y. A gravity child uses the base `altitude <=
+  // BOMB_DETONATE_HEIGHT` expiry, so a child spawned at altitude 0 dies on tick 1
+  // — the regression where Kirishima's 삼식탄 fragments instantly vanished once the
+  // gravity child routed to the core. The emitted spec must carry the parent's
+  // altitude. spawnAltitude=7 + gravity=0 keeps the parent's altitude fixed at 7.
+  const child = { type: 1, velocity: 10, range: 50 };
+  const barrage = {
+    barrage_ID: 1, primal_repeat: 0, first_delay: 0, delay: 0, delta_delay: 0,
+    angle: 0, delta_angle: 0,
+  };
+  const extraParam = {
+    shrapnel: [
+      { initialSplit: true, barrage_ID: 1, bullet_ID: 'B', inheritAngle: false, reaim: false },
+    ],
+  };
+  const b = new ShrapnelBulletUnit({
+    velocity: 10, yAngle: 0, range: 10000, rangeOffset: 0,
+    spawnX: 0, spawnY: 0, spawnAltitude: 7, gravity: 0,
+    extraParam,
+    bulletTemplates: { B: child },
+    barrages: { 1: barrage },
+  });
+  b.FixRange();
+  b.InitSpeed();
+
+  b.timeElapsed += TICK_SECONDS;
+  b.Update();
+  const emits = b.drainEmits();
+  assert.equal(emits.length, 1, 'trailing child emitted');
+  assert.equal(emits[0].spawnAltitude, 7, 'child inherits the parent burst altitude, not 0');
+});
+
 test('Trailing: delta_delay grows the interval each shot', () => {
   const child = { type: 1, velocity: 10, range: 50 };
   const barrage = {

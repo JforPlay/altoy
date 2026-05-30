@@ -731,6 +731,12 @@ export class BulletEngine {
             rangeOffset: bulletInfo.range_offset || 0,
             spawnX: startGamePos.x,
             spawnY: startGamePos.y,
+            // Shrapnel children carry the parent's burst altitude (set by
+            // ShrapnelBulletUnit._emitChild). Without it a gravity child spawns at
+            // altitude 0 and the base `altitude <= BOMB_DETONATE_HEIGHT` expiry
+            // culls it on tick 1 — the Kirishima 11270 fragment-vanish regression.
+            // Top-level bullets pass no spawnAltitude → 0, unchanged.
+            spawnAltitude: options.spawnAltitude ?? 0,
             // Curving-movement data (Phase 2c). `acceleration` drives the core's
             // InitSpeed priority chain; `barrageAngle` resolves the per-record
             // `flip`; `target` (enemyTarget — already game coords) is the

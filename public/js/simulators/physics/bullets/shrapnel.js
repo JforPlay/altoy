@@ -182,6 +182,13 @@ export class ShrapnelBulletUnit extends BulletUnit {
     this._pendingEmits.push({
       startX: this.position.x,                       // game coords
       startY: this.position.y,
+      // The game spawns the child at the parent's full _position, INCLUDING the
+      // vertical _position.y. A gravity child uses the base `altitude <=
+      // BOMB_DETONATE_HEIGHT` expiry, so it MUST inherit the parent's burst
+      // altitude — spawned at 0 it would detonate on tick 1 (the Kirishima 11270
+      // "fragments instantly vanish" regression). A non-gravity parent sits at
+      // altitude 0, so its children inherit 0 and nothing changes.
+      spawnAltitude: this.altitude,
       angle,
       bulletInfo: child,
       enemyTarget: this._target ?? null,
