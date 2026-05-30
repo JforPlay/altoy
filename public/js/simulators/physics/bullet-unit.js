@@ -87,6 +87,27 @@ export class BulletUnit {
     this.sqrRange = this.range * this.range;
   }
 
+  /**
+   * Seed the launch vertical speed for a gravity bullet. Mirrors the game's base
+   * SetSpawnPosition (battlebulletunit.lua:511-523, spec §B8): a non-gravity
+   * bullet is untouched (verticalSpeed stays 0); a gravity bullet launches with
+   *   verticalSpeed = -0.5 * gravity * 60 / convertedVelocity
+   * so it ARCS (rises, then falls under gravity in doNothing) instead of dropping
+   * straight down. The world calls this before InitSpeed; `velocity` is immutable,
+   * so computing convertedVelocity inline is order-safe. BombBulletUnit and
+   * ShrapnelBulletUnit override this with their own spawn geometry.
+   *
+   * The zero-convertedVelocity guard stands in for the game's atan2 degenerate
+   * check (a bullet with no horizontal motion gets verticalSpeed 0).
+   */
+  SetSpawnPosition() {
+    if (this.gravity === 0) return;
+    const convertedVelocity = this.velocity * BULLET_SPEED_CONVERT;
+    this.verticalSpeed = convertedVelocity !== 0
+      ? -0.5 * this.gravity * 60 / convertedVelocity
+      : 0;
+  }
+
   // PascalCase mirrors the Lua originals (battlebulletunit.lua:411-423) to
   // keep the priority chain in InitSpeed readable against the source.
   /** #_accTable ~= 0 — the array part is non-empty (battlebulletunit.lua:411). */

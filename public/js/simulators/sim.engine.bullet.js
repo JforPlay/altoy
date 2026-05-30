@@ -172,9 +172,9 @@ export class BulletEngine {
         }
 
         // Route a migrated-type bullet (cannon / stray / torpedo) — straight OR
-        // curving (acceleration / tracker / circle) — to the faithful physics
-        // core; anything with gravity / missile / shrapnel / a transform chain
-        // / inherited speed stays on the legacy path until later phases.
+        // curving (acceleration / tracker / circle) — including gravity cannons
+        // (Phase 5a) — to the faithful physics core; anything with missile /
+        // shrapnel / a transform chain / inherited speed stays on the legacy path.
         if (this._isMigratedMovementBullet(bulletInfo, options)) {
             return this._createWorldBullet(options);
         }
@@ -589,15 +589,21 @@ export class BulletEngine {
     /**
      * True only for a bullet the physics path provably renders correctly: a
      * migrated type (cannon / stray / torpedo) — straight OR curving — with no
-     * gravity, missile, shrapnel, airdrop, transform chain or inherited speed.
+     * missile, shrapnel, airdrop, transform chain or inherited speed.
      * Acceleration data is now welcome (Phase 2c): the core's InitSpeed
-     * priority chain resolves it to doAccelerate / doTrack / doCircle. Anything
-     * still excluded has no faithful core path and stays on the legacy path —
-     * the conservative test keeps the migration regression-free.
+     * priority chain resolves it to doAccelerate / doTrack / doCircle.
+     * Gravity bullets are now welcome (Phase 5a Task 3): base
+     * BulletUnit.SetSpawnPosition seeds the §B8 launch arc and doNothing
+     * integrates it. Anything still excluded has no faithful core path and
+     * stays on the legacy path — the conservative test keeps the migration
+     * regression-free.
      */
     _isMigratedMovementBullet(bulletInfo, options) {
+        // gravity is no longer excluded — base BulletUnit.SetSpawnPosition seeds the
+        // §B8 launch arc and doNothing integrates it (Phase 5a). This routes the lone
+        // reached gravity cannon (19921, Kirishima skill 11270) to the core. Bombs
+        // (type 2/16) are not in MIGRATED_BULLET_TYPES, so they still take the bomb path.
         return MIGRATED_BULLET_TYPES.has(bulletInfo.type)
-            && !bulletInfo.extra_param?.gravity
             && !bulletInfo.extra_param?.missile
             && !bulletInfo.extra_param?.shrapnel
             && options.inheritSpeed == null

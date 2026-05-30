@@ -484,3 +484,35 @@ test('InitSpeed: an orbit bullet resolves to doNothing — doOrbit is never wire
   b.InitSpeed();
   assert.equal(b.updateSpeed, b.doNothing);
 });
+
+test('SetSpawnPosition: gravity bullet seeds the §B8 launch vertical speed', () => {
+  // convertedVelocity = 50 * 0.2 = 10; gravity = -0.05
+  // verticalSpeed = -0.5 * (-0.05) * 60 / 10 = 0.15
+  const b = new BulletUnit({ velocity: 50, yAngle: 0, gravity: -0.05 });
+  b.SetSpawnPosition();
+  assert.ok(Math.abs(b.verticalSpeed - 0.15) < 1e-9, `got ${b.verticalSpeed}`);
+});
+
+test('SetSpawnPosition: no gravity -> verticalSpeed stays 0 (no-op for straight bullets)', () => {
+  const b = new BulletUnit({ velocity: 50, yAngle: 0, gravity: 0 });
+  b.SetSpawnPosition();
+  assert.equal(b.verticalSpeed, 0);
+});
+
+test('SetSpawnPosition: zero velocity is guarded against div-by-zero', () => {
+  const b = new BulletUnit({ velocity: 0, yAngle: 0, gravity: -0.05 });
+  b.SetSpawnPosition();
+  assert.equal(b.verticalSpeed, 0);
+});
+
+test('a gravity cannon arcs: verticalSpeed positive at spawn, altitude rises then falls', () => {
+  const b = new BulletUnit({ velocity: 50, yAngle: 0, gravity: -0.05, range: 1000, rangeOffset: 0 });
+  b.FixRange();
+  b.SetSpawnPosition();   // seeds verticalSpeed = 0.15
+  b.InitSpeed();          // doNothing path (no acceleration)
+  assert.ok(b.verticalSpeed > 0, 'launches upward');
+  b.Update();
+  assert.ok(b.altitude > 0, 'rises on the first tick');
+  for (let i = 0; i < 10; i++) b.Update();
+  assert.ok(b.verticalSpeed < 0.15, 'gravity has decelerated the climb');
+});
