@@ -7,6 +7,7 @@
 import { fetchJSONWithCache, resolveUrl, createImgElement, setupFpsDisplay } from '../utils.js';
 import { setupSpeedControls, setupPauseButton, setupEnemyToggle } from './sim.ui.js';
 import { createWeaponSim } from './sim.weapon.controller.js';
+import { formatSkillDesc } from './sim.weapon.stats.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const tbody = document.getElementById('cf-tbody');
@@ -101,8 +102,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         typeTd.appendChild(badge);
         const rtTd = td(r.retrofit ? '✓' : '');
 
-        // 트리거
-        const trigTd = td(r.trigger_excerpt || '');
+        // 트리거 — trigger_excerpt is a slice of the player skill's template desc,
+        // so its $1,$2,… resolve against that skill's desc_get_add (same as weapon-sim).
+        const tpl = sim.data.getSkillTemplate(String(r.player_skill_id));
+        const trigText = r.trigger_excerpt
+            ? formatSkillDesc(r.trigger_excerpt, { descGetAdd: tpl?.desc_get_add })
+            : '';
+        const trigTd = td(trigText);
         trigTd.className = 'cf-col-trigger';
 
         // 동작
