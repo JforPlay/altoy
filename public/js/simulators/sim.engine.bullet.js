@@ -55,6 +55,9 @@ export class BulletEngine {
             });
         };
         this._worldViews = new Map();   // BulletUnit -> { element, bulletInfo, baseWidth, baseHeight }
+        // Weapon-driver (beam type 24 / space-laser type 28) DOM views:
+        // unit -> { beamEls: Map<i, el>, columnEls: Map<i, el> }.
+        this._worldWeaponViews = new Map();
         this._worldLoopId = null;       // rAF id of the shared loop, null when idle
         this._worldAccumulatorMs = 0;   // unspent real time carried between frames
         this._worldLastTime = 0;        // performance.now() of the previous loop frame
@@ -348,17 +351,93 @@ export class BulletEngine {
 
     /**
      * Spawn a weapon-driver (beam type 24 / space-laser type 28) into the physics
-     * core and start the shared world loop so it ticks. HARNESS-ONLY + DOM
-     * DEFERRED (Phase 4b): the unit is ticked and culled by world.step() but has
-     * NO view — nothing renders a beam/space-laser yet, so there is intentionally
-     * no element created here. Returns the unit, or null if the core rejected it
-     * (unresolved type / non-finite host).
+     * core and start the shared world loop so it ticks. Registers a view entry so
+     * _renderWeaponDrivers draws the driver's geometry each frame (beam lines /
+     * space-laser columns). Both types are 0-reached in current data, so this
+     * renders nothing in normal use — it completes the deferred Phase 4b renderer.
+     * Returns the unit, or null if the core rejected it (unresolved type /
+     * non-finite host).
      */
     spawnWeaponDriver(opts) {
         const unit = this.world.spawnWeapon(opts);
         if (!unit) return null;
+        this._worldWeaponViews.set(unit, { beamEls: new Map(), columnEls: new Map() });
         this._ensureWorldLoop();
         return unit;
+    }
+
+    /**
+     * Render every live weapon-driver (beam type 24 / space-laser type 28) from
+     * its geometry getters, and cull drivers that have left world.weapons (i.e.
+     * finished). Beams: one rotated line per getBeams() entry. Space-laser:
+     * one column per getColumns() entry, styled by stage (alert/attack).
+     */
+    _renderWeaponDrivers() {
+        const world = this.world;
+        if (!world) return;
+        const live = new Set(world.weapons);
+
+        // Cull drivers no longer live.
+        for (const [unit, view] of this._worldWeaponViews) {
+            if (!live.has(unit)) {
+                for (const el of view.beamEls.values()) el.remove();
+                for (const el of view.columnEls.values()) el.remove();
+                this._worldWeaponViews.delete(unit);
+            }
+        }
+
+        for (const unit of world.weapons) {
+            let view = this._worldWeaponViews.get(unit);
+            if (!view) { view = { beamEls: new Map(), columnEls: new Map() }; this._worldWeaponViews.set(unit, view); }
+
+            if (typeof unit.getBeams === 'function') {
+                this._renderBeams(unit, view);
+            } else if (typeof unit.getColumns === 'function') {
+                this._renderColumns(unit, view);
+            }
+        }
+    }
+
+    /** Draw/refresh one line per live beam; remove stale ones. */
+    _renderBeams(unit, view) {
+        const beams = unit.getBeams();
+        const seen = new Set();
+        beams.forEach((b, i) => {
+            seen.add(i);
+            let el = view.beamEls.get(i);
+            if (!el) { el = document.createElement('div'); el.className = 'beam-segment'; this.container.appendChild(el); view.beamEls.set(i, el); }
+            const s = this.gameToScreen(b.position.x, b.position.y);
+            const lengthPx = Math.abs(b.dims.dx) * this.scale * s.scale;
+            const widthPx = Math.max(2, Math.abs(b.dims.dy) * this.scale * s.scale);
+            el.style.left = `${s.x}px`;
+            el.style.top = `${s.y - widthPx / 2}px`;
+            el.style.width = `${lengthPx}px`;
+            el.style.height = `${widthPx}px`;
+            el.style.transform = `rotate(${b.angle}deg)`;
+            el.style.transformOrigin = '0 50%';
+        });
+        for (const [i, el] of view.beamEls) { if (!seen.has(i)) { el.remove(); view.beamEls.delete(i); } }
+    }
+
+    /** Draw/refresh one column per live space-laser column; remove stale ones. */
+    _renderColumns(unit, view) {
+        const cols = unit.getColumns();
+        const seen = new Set();
+        cols.forEach((c, i) => {
+            seen.add(i);
+            let el = view.columnEls.get(i);
+            if (!el) { el = document.createElement('div'); el.className = 'space-laser-column'; this.container.appendChild(el); view.columnEls.set(i, el); }
+            el.classList.toggle('is-alert', c.stage === 'alert');
+            el.classList.toggle('is-attack', c.stage === 'attack');
+            const s = this.gameToScreen(c.position.x, c.position.y);
+            const rPx = Math.max(4, c.cylinder.radius * this.scale * s.scale);
+            const tPx = Math.max(4, c.cylinder.thickness * this.scale * s.scale);
+            el.style.left = `${s.x - rPx}px`;
+            el.style.top = `${s.y - tPx / 2}px`;
+            el.style.width = `${rPx * 2}px`;
+            el.style.height = `${tPx}px`;
+        });
+        for (const [i, el] of view.columnEls) { if (!seen.has(i)) { el.remove(); view.columnEls.delete(i); } }
     }
 
     /**
@@ -498,6 +577,7 @@ export class BulletEngine {
                 unit.reachDestFlag = true;   // world.step() culls it next tick
             }
         }
+        this._renderWeaponDrivers();
     }
 
     /**
@@ -548,6 +628,13 @@ export class BulletEngine {
             if (view.shadowEl) view.shadowEl.remove();
         }
         this._worldViews.clear();
+        // Weapon-driver views aren't culled by the loop once it stops, so drop
+        // their beam/column elements here too (else orphan DOM survives a clear).
+        for (const view of this._worldWeaponViews.values()) {
+            for (const el of view.beamEls.values()) el.remove();
+            for (const el of view.columnEls.values()) el.remove();
+        }
+        this._worldWeaponViews.clear();
         if (this._worldLoopId !== null) {
             cancelAnimationFrame(this._worldLoopId);
             this._worldLoopId = null;
