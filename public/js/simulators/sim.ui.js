@@ -269,7 +269,11 @@ function buildWeaponCard(weapon, weaponInfo, index, showNumber, dataStores) {
     const bulletType = bulletInfo?.type || 0;
     const bulletTypeName = BULLET_TYPE_NAMES[bulletType] || '일반';
 
-    const cooldown = weaponCooldownSeconds(weapon.reload_max);
+    // Reload time (장전), NOT the skill firing cadence: skill-fired weapons fire
+    // once per skill trigger (BattleSkillFire bypasses reload), so this reload_max-
+    // derived value is the weapon's intrinsic reload, not how often the skill fires.
+    // The skill's real trigger cooldown is shown on the skill-info card instead.
+    const reloadSeconds = weaponCooldownSeconds(weapon.reload_max);
     const range = weapon.range || bulletInfo?.range || '-';
     const damage = weapon.damage || '-';
     const corrected = weapon.corrected ? ` (×${weapon.corrected}%)` : '';
@@ -283,12 +287,12 @@ function buildWeaponCard(weapon, weaponInfo, index, showNumber, dataStores) {
     title.append(document.createTextNode(' '), ammoBadge);
     header.append(title, createElement('span', 'weapon-card-id', weaponInfo.weaponId));
 
-    // 쿨타임 cell: computed cooldown primary + muted raw reload_max secondary.
-    let cooldownValue = '-';
-    if (cooldown != null) {
-        cooldownValue = createElement('span');
-        cooldownValue.append(
-            document.createTextNode(`${cooldown.toFixed(2)}s`),
+    // 장전 cell: computed reload time primary + muted raw reload_max secondary.
+    let reloadValue = '-';
+    if (reloadSeconds != null) {
+        reloadValue = createElement('span');
+        reloadValue.append(
+            document.createTextNode(`${reloadSeconds.toFixed(2)}s`),
             createElement('span', 'stat-sub', `reload ${weapon.reload_max}`)
         );
     }
@@ -297,7 +301,7 @@ function buildWeaponCard(weapon, weaponInfo, index, showNumber, dataStores) {
     stats.append(
         createStatItem('탄종', bulletTypeName),
         createStatItem('데미지', `${damage}${corrected}`),
-        createStatItem('쿨타임', cooldownValue),
+        createStatItem('장전', reloadValue),
         createStatItem('사거리', range),
         createStatItem('관통', pierce),
     );

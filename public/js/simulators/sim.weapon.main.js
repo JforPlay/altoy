@@ -378,6 +378,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             createMetaRow('레벨', currentSkillLevel)
         );
 
+        // The skill's real firing cadence (trigger cooldown), distinct from the
+        // weapon's reload time shown on the weapon card. Surfaced by the pipeline
+        // (skill.trigger_cd / trigger_condition); absent until that data lands, so
+        // this renders nothing for now rather than the misleading reload value.
+        if (skill.trigger_cd != null) {
+            const cond = skill.trigger_condition ? ` (${skill.trigger_condition})` : '';
+            fragment.appendChild(createMetaRow('발동 쿨타임', `${skill.trigger_cd}초${cond}`));
+        }
+
         if (skill.requirement) {
             fragment.appendChild(createMetaRow('요구사항', skill.requirement));
         }
