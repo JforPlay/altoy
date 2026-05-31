@@ -220,6 +220,49 @@ test('Trailing: a record with initialSplit=true emits during NORMAL', () => {
   assert.equal(emits.length, 0);
 });
 
+test('trailing child honors senior_repeat: (primal+1)*(senior+1) emits over staggered waves', () => {
+  const childBarrage = {
+    primal_repeat: 0, senior_repeat: 4,
+    first_delay: 0, senior_delay: 0.1, delay: 0, delta_delay: 0,
+    angle: 0,
+  };
+  const childBullet = { type: 1, velocity: 30, range: 100 };
+  const parent = new ShrapnelBulletUnit({
+    velocity: 30, yAngle: 0, range: 1000, rangeOffset: 0, spawnX: 0, spawnY: 0,
+    extraParam: {
+      shrapnel: { 1: { initialSplit: true, emitterType: 'BattleBulletEmitter',
+        inheritAngle: 1, barrage_ID: 901, bullet_ID: 801 } },
+    },
+    barrages: { 901: childBarrage },
+    bulletTemplates: { 801: childBullet },
+  });
+  parent.FixRange();
+  parent.InitSpeed();
+  const emitted = [];
+  for (let i = 0; i < 30; i++) {
+    parent.timeElapsed += 1 / 30;
+    parent.Update();
+    emitted.push(...parent.drainEmits());
+  }
+  assert.equal(emitted.length, 5);   // 5 waves * 1 primal
+});
+
+test('trailing waves stagger by senior_delay (not all at once)', () => {
+  const parent = new ShrapnelBulletUnit({
+    velocity: 30, yAngle: 0, range: 1000, rangeOffset: 0, spawnX: 0, spawnY: 0,
+    extraParam: { shrapnel: { 1: { initialSplit: true, emitterType: 'BattleBulletEmitter',
+      inheritAngle: 1, barrage_ID: 901, bullet_ID: 801 } } },
+    barrages: { 901: { primal_repeat: 0, senior_repeat: 2,
+      first_delay: 0, senior_delay: 0.2, delay: 0, delta_delay: 0, angle: 0 } },
+    bulletTemplates: { 801: { type: 1, velocity: 30, range: 100 } },
+  });
+  parent.FixRange();
+  parent.InitSpeed();
+  parent.timeElapsed += 1 / 30;
+  parent.Update();
+  assert.equal(parent.drainEmits().length, 1);  // only wave 0 (first_delay 0) so far
+});
+
 test('Shrapnel children inherit the parent altitude (gravity-rain fix, Kirishima 11270)', () => {
   // The game spawns each shrapnel child at the parent's _position, INCLUDING the
   // vertical _position.y. A gravity child uses the base `altitude <=

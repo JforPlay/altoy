@@ -72,11 +72,20 @@ export class ShrapnelBulletUnit extends BulletUnit {
       if (!barrage || !child) continue;
 
       if (info.initialSplit) {
+        const primalCount = (barrage.primal_repeat ?? 0) + 1;
+        const seniorCount = (barrage.senior_repeat ?? 0) + 1;
         this._trailing.push({
           info, barrage, child,
-          shotsFired: 0,
-          totalShots: (barrage.primal_repeat ?? 0) + 1,
-          nextShotTime: barrage.first_delay ?? 0,
+          primalCount,
+          seniorCount,
+          // Wave (senior) scheduling. Wave 0 is gated by first_delay; later
+          // waves arrive every senior_delay. Mirrors SeniorIteration.
+          waveFired: 0,
+          nextWaveTime: barrage.first_delay ?? 0,
+          seniorDelay: barrage.senior_delay ?? 0,
+          // Per-wave primal scheduling (reset at each wave start).
+          shotsFired: primalCount,           // start "drained" so a wave must open first
+          nextShotTime: 0,
           currentInterval: barrage.delay ?? 0,
           deltaInterval: barrage.delta_delay ?? 0,
         });
@@ -87,13 +96,27 @@ export class ShrapnelBulletUnit extends BulletUnit {
   }
 
   /**
-   * Drain a trailing record's queue against the current timeElapsed. Each
-   * fire pushes one child spec onto _pendingEmits. The interval is the
-   * arithmetic series delay, delay+delta, delay+2*delta, ... matching the
-   * Lua factory's per-record scheduler.
+   * Drain a trailing record against timeElapsed. Mirrors the emitter's
+   * SeniorIteration x PrimalIteration: open up to seniorCount waves (staggered
+   * by seniorDelay, wave 0 by first_delay), and within the open wave fire up to
+   * primalCount shots (staggered by delay/delta_delay). Each shot pushes one
+   * child spec.
    */
   _drainTrailing(rec) {
-    while (rec.shotsFired < rec.totalShots && this.timeElapsed > rec.nextShotTime) {
+    // Open new waves whose start time has elapsed.
+    while (
+      rec.waveFired < rec.seniorCount &&
+      this.timeElapsed > rec.nextWaveTime &&
+      rec.shotsFired >= rec.primalCount
+    ) {
+      rec.waveFired += 1;
+      rec.shotsFired = 0;
+      rec.nextShotTime = rec.nextWaveTime;
+      rec.currentInterval = rec.barrage.delay ?? 0;
+      rec.nextWaveTime += rec.seniorDelay;
+    }
+    // Fire primal shots within the currently open wave.
+    while (rec.shotsFired < rec.primalCount && this.timeElapsed > rec.nextShotTime) {
       this._emitChild(rec.info, rec.barrage, rec.child, rec.shotsFired);
       rec.shotsFired += 1;
       rec.nextShotTime += rec.currentInterval;
