@@ -49,6 +49,46 @@ export function targetChoiceAimsAtEnemy(targetChoise) {
 }
 
 /**
+ * Base explode point for an AIRDROP bomb, before random scatter / offsets.
+ *
+ * WHY this mirrors the same target-resolution as aim: a skill-fired bomb spawns
+ * via weapon:Spawn (battleweaponunit.lua:914), which passes the resolved target's
+ * position — or, with no target, a ZERO vector. _createBombBullet
+ * (battlebulletdatafunction.lua:104-112) then turns that zero into "host position
+ * + weapon range, forward" (the EqualZero() fallback), while a real target lands
+ * the bomb on the target. So a bomb follows target_choise exactly like SingleFire's
+ * aim does — NOT weapon.aim_type (볼가's 64981 is aim_type=1 yet TargetNil → forward).
+ *
+ * Priority, per battlebombbulletunit.lua SetExplodePosition (:79):
+ *   1. extra_param.targetFixX/Z present → that fixed world point.
+ *   2. skill resolved an enemy (aimAtEnemy) → the enemy's position.
+ *   3. otherwise (TargetNil etc.) → host + range·direction, same depth as host.
+ * The caller layers extra_param's randomOffset/targetOffset on top of this base.
+ *
+ * NOTE: the aircraft-dropped-bomb path (dive bombers) also fires forward-from-host
+ * in-game, but the host there is the MOVING plane — that path is deferred.
+ *
+ * @param {object} opts
+ * @param {boolean} opts.aimAtEnemy   from targetChoiceAimsAtEnemy(targetChoise)
+ * @param {{x:number,y:number}} opts.host   firing ship's game pos (sim y = game depth/z)
+ * @param {{x:number,y:number}|null} opts.enemy  enemy game pos, or null if none
+ * @param {number} [opts.range]       weapon range (game units), default 0
+ * @param {number} [opts.direction]   1 = forward/right, -1 = left; default 1
+ * @param {number} [opts.targetFixX]  extra_param.targetFixX (undefined = absent)
+ * @param {number} [opts.targetFixZ]  extra_param.targetFixZ (undefined = absent)
+ * @returns {{x:number,y:number}}
+ */
+export function airdropExplodeBase({ aimAtEnemy, host, enemy, range = 0, direction = 1, targetFixX, targetFixZ }) {
+    if (targetFixX !== undefined && targetFixZ !== undefined) {
+        return { x: targetFixX, y: targetFixZ };
+    }
+    if (aimAtEnemy && enemy) {
+        return { x: enemy.x, y: enemy.y };
+    }
+    return { x: host.x + range * direction, y: host.y };
+}
+
+/**
  * Bullet-count + geometry for a weapon's barrage(s), mirroring the firing loop
  * in sim.weapon.controller.js (fireWeapon → fireBarrage → fireWave*).
  * Representative rows (waves/bulletsPerWave/delay/seniorDelay/scatter) come from

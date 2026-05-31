@@ -5,6 +5,7 @@ import {
     computeBarrageStats,
     formatSkillDesc,
     targetChoiceAimsAtEnemy,
+    airdropExplodeBase,
 } from '../../public/js/simulators/sim.weapon.stats.js';
 
 // ===== weaponCooldownSeconds =====
@@ -140,4 +141,57 @@ test('self / ally / bare same-IFF tag → forward', () => {
 test('Amagi 봉황의 연으로 부익하리 (skill 150480, TargetNil) fires forward', () => {
     // The bug report: aim_type=1 weapon, but the skill resolves no target → forward.
     assert.equal(targetChoiceAimsAtEnemy('TargetNil'), false);
+});
+
+// ===== airdropExplodeBase =====
+// A skill-fired bomb lands on the resolved target, else forward-from-host
+// (battlebulletdatafunction.lua _createBombBullet EqualZero() fallback) — the
+// same target_choise resolution as the launch aim, NOT weapon.aim_type.
+
+const HOST = { x: -105, y: 58 };   // mainfleet (backline) game pos; sim y = game depth
+const ENEMY = { x: 15, y: 72 };
+
+test('aimAtEnemy with an enemy → explode at the enemy', () => {
+    const p = airdropExplodeBase({ aimAtEnemy: true, host: HOST, enemy: ENEMY, range: 90 });
+    assert.deepEqual(p, { x: 15, y: 72 });
+});
+
+test('no target (forward) → host + range·direction, host depth', () => {
+    // 소비에츠카야 러시아 wid 69081: backline host, range 80 → −105 + 80 = −25.
+    const p = airdropExplodeBase({ aimAtEnemy: false, host: HOST, enemy: ENEMY, range: 80 });
+    assert.deepEqual(p, { x: -25, y: 58 });
+});
+
+test('forward is a FIXED distance, independent of the enemy position', () => {
+    const near = airdropExplodeBase({ aimAtEnemy: false, host: HOST, enemy: { x: 5, y: 60 }, range: 90 });
+    const far = airdropExplodeBase({ aimAtEnemy: false, host: HOST, enemy: { x: 80, y: 40 }, range: 90 });
+    assert.deepEqual(near, far);                 // enemy moved, drop point did not
+    assert.deepEqual(near, { x: -15, y: 58 });
+});
+
+test('볼가-style aim_type=1 but TargetNil → forward (helper sees only aimAtEnemy)', () => {
+    // 볼가 wid 64981: aim_type=1 yet target_choise=TargetNil ⇒ aimAtEnemy=false.
+    const p = airdropExplodeBase({ aimAtEnemy: false, host: HOST, enemy: ENEMY, range: 90 });
+    assert.deepEqual(p, { x: -15, y: 58 });
+});
+
+test('targetFixX/Z override both target and forward', () => {
+    const p = airdropExplodeBase({ aimAtEnemy: true, host: HOST, enemy: ENEMY, range: 90, targetFixX: 7, targetFixZ: 33 });
+    assert.deepEqual(p, { x: 7, y: 33 });
+});
+
+test('direction -1 fires the forward drop to the left', () => {
+    const p = airdropExplodeBase({ aimAtEnemy: false, host: { x: 50, y: 58 }, enemy: ENEMY, range: 90, direction: -1 });
+    assert.deepEqual(p, { x: -40, y: 58 });
+});
+
+test('aimAtEnemy but no enemy resolved → forward fallback', () => {
+    // Harm choice that found nothing alive → game falls back to forward, not (0,0).
+    const p = airdropExplodeBase({ aimAtEnemy: true, host: HOST, enemy: null, range: 100 });
+    assert.deepEqual(p, { x: -5, y: 58 });
+});
+
+test('missing range defaults to 0 → drop at host', () => {
+    const p = airdropExplodeBase({ aimAtEnemy: false, host: HOST, enemy: ENEMY });
+    assert.deepEqual(p, { x: -105, y: 58 });
 });

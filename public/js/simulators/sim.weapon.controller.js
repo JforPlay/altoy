@@ -7,7 +7,7 @@
  */
 import { SimulationEngine } from './sim.engine.common.js';
 import { WeaponSimData } from './sim.weapon.data.js';
-import { targetChoiceAimsAtEnemy } from './sim.weapon.stats.js';
+import { targetChoiceAimsAtEnemy, airdropExplodeBase } from './sim.weapon.stats.js';
 import { AircraftEntity } from './sim.engine.aircraft.js';
 import { SIM_DEFAULT_SPEED, SIM_GAME_COORDS, SIM_TARGET_FPS, convertToMs, registerDefaultBattleEntities } from './sim.ui.js';
 import { isWeaponDriverType, buildWeaponDriverOpts } from './physics/weapons/weapon-registry.js';
@@ -294,15 +294,23 @@ export function createWeaponSim({ container, entities, visualLog }) {
         } else if (isAirdrop) {
             // Airdrop bomb. extra_param.airdrop is a boolean flag — the airdrop
             // parameters are FLAT on extra_param, NOT nested under .airdrop.
-            // Assemble the explode point faithfully: SetTemplateData's
-            // randomOffset plus SetExplodePosition (battlebombbulletunit.lua).
+            // Assemble the explode point faithfully: the base (target / fixed /
+            // forward-from-host — see airdropExplodeBase, which keys off the
+            // SKILL's target_choise just like the launch aim does) plus
+            // SetTemplateData's randomOffset (battlebombbulletunit.lua).
             // accuracy has no buff source (treated as 0); barragePriority /
             // barrageLowPriority / fixToRange appear on 0 airdrop bombs and are
             // not modelled.
             const ep = effectiveBulletInfo.extra_param;
-            const explodePos = (ep.targetFixX !== undefined && ep.targetFixZ !== undefined)
-                ? { x: ep.targetFixX, y: ep.targetFixZ }
-                : { x: enemyGamePos?.x ?? startX_game, y: enemyGamePos?.y ?? startY_game };
+            const explodePos = airdropExplodeBase({
+                aimAtEnemy,
+                host: { x: startX_game, y: startY_game },
+                enemy: enemyGamePos,
+                range: weapon.range || 0,
+                direction,
+                targetFixX: ep.targetFixX,
+                targetFixZ: ep.targetFixZ,
+            });
 
             const rOffX = ep.randomOffsetX || 0;
             const rOffZ = ep.randomOffsetZ || 0;
