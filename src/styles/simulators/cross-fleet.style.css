@@ -2,7 +2,20 @@
    sortable/filterable catalogue below. Colors use theme-aware tokens (light
    defaults + body.dark-mode overrides live in theme.css), so no per-rule dark
    overrides are needed here. */
-.cf-render { margin-top: var(--spacing-md); }
+/* Pin the sim + playback bar to the top so the barrage stays visible while the
+   catalogue table scrolls underneath. Offset sits below the global sticky
+   .navbar (--navbar-height set at runtime by global.script.js; 64px fallback);
+   z-index clears the table's own sticky th (z-index 1) but stays under the
+   navbar (1000). Opaque card-bg + bottom shadow keep scrolling rows from
+   peeking through the gap between canvas and playback bar. */
+.cf-render {
+    margin-top: var(--spacing-md);
+    position: sticky;
+    top: calc(var(--navbar-height, 64px) + var(--spacing-sm));
+    z-index: 50;
+    background: var(--card-bg);
+    box-shadow: 0 6px 12px -6px var(--overlay-medium);
+}
 
 .cf-filters { display: flex; flex-direction: column; gap: 0.5rem; margin: var(--spacing-md) 0 0.75rem; }
 .cf-chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
