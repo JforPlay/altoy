@@ -166,10 +166,11 @@ export class ShrapnelBulletUnit extends BulletUnit {
    * A record may opt back into the normal additive emitter via
    * emitterType = 'BattleBulletEmitter'.
    *
-   * Base angle:
-   *   - reaim:        atan2(target − position)
-   *   - inheritAngle: current heading
-   *   - else:         0
+   * Base angle (mirrors bulletSplit's INHERIT_* branch):
+   *   - reaim:           atan2(target − position)
+   *   - inheritAngle 1:  this.yAngle — frozen firing angle (Lua INHERIT_ANGLE/GetYAngle)
+   *   - inheritAngle 2:  atan2(speed) — live velocity heading (Lua NORMALIZE/GetCurrentYAngle)
+   *   - else:            0
    * plus shrapnelInfo.rotateOffset in all cases.
    *
    * Position: child spawns at the parent's current position (game coords);
@@ -181,8 +182,15 @@ export class ShrapnelBulletUnit extends BulletUnit {
       const dx = this._target.x - this.position.x;
       const dy = this._target.y - this.position.y;
       baseAngleDeg = Math.atan2(dy, dx) * 180 / Math.PI;
-    } else if (info.inheritAngle) {
+    } else if (info.inheritAngle === 2) {
+      // INHERIT_SPEED_NORMALIZE: the live heading from the velocity vector
+      // (mirrors GetCurrentYAngle in bulletSplit).
       baseAngleDeg = Math.atan2(this.speed.y, this.speed.x) * 180 / Math.PI;
+    } else if (info.inheritAngle) {
+      // INHERIT_ANGLE (1): the frozen firing angle (this.yAngle), sign-independent
+      // of the velocity vector. A negative-velocity parent's speed points opposite
+      // its firing angle, so atan2(speed) would flip children 180° (시나노 81788).
+      baseAngleDeg = this.yAngle;
     } else {
       baseAngleDeg = 0;
     }

@@ -613,3 +613,29 @@ test('inheritAngle child cancels parent heading + child barrage angle to forward
   const fwdErr = Math.min(norm, 360 - norm);
   assert.ok(fwdErr < 0.001, `expected ~0deg forward, got ${spec.angle}`);
 });
+
+test('inheritAngle uses the firing angle, not velocity heading (negative-velocity parent)', () => {
+  // 시나노 stream 81788: parent fired at −60° with NEGATIVE velocity (−7) — its
+  // speed vector points ~+120°, opposite the firing angle. INHERIT_ANGLE (1)
+  // inherits the frozen firing angle (this.yAngle = −60), NOT atan2(speed)
+  // (battleshrapnelbulletfactory.lua bulletSplit). Child barrage +60 → net 0°
+  // forward. The old atan2(speed) path gave 120 + 60 = 180° backward — the
+  // reported butterfly-barrage regression.
+  const parent = new ShrapnelBulletUnit({
+    velocity: -7, yAngle: -60, range: 1000, rangeOffset: 0, spawnX: 0, spawnY: 0,
+    extraParam: { shrapnel: { 1: { initialSplit: true, emitterType: 'BattleBulletEmitter',
+      inheritAngle: 1, barrage_ID: 901, bullet_ID: 801 } } },
+    barrages: { 901: { primal_repeat: 0, senior_repeat: 0, angle: 60,
+      first_delay: 0, senior_delay: 0, delay: 0, delta_delay: 0 } },
+    bulletTemplates: { 801: { type: 1, velocity: 30, range: 100 } },
+  });
+  parent.FixRange();
+  parent.InitSpeed();
+  parent.timeElapsed += 1 / 30;
+  parent.Update();
+  const [spec] = parent.drainEmits();
+  assert.ok(spec, 'a child was emitted');
+  const norm = ((spec.angle % 360) + 360) % 360;
+  const fwdErr = Math.min(norm, 360 - norm);
+  assert.ok(fwdErr < 0.001, `expected ~0deg forward, got ${spec.angle}`);
+});
