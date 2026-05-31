@@ -126,11 +126,19 @@ export class WeaponSimData {
 
         // Find unique chunks needed
         const chunksNeeded = new Set();
-        weaponInfoList.forEach(info => {
-            const chunkNum = this.chunkIndex?.weaponToChunk[info.weaponId];
+        const addChunk = (weaponId) => {
+            const chunkNum = this.chunkIndex?.weaponToChunk[String(weaponId)];
             if (chunkNum !== undefined && !this.loadedChunks.has(chunkNum)) {
                 chunksNeeded.add(chunkNum);
             }
+        };
+        weaponInfoList.forEach(info => {
+            addChunk(info.weaponId);
+            // An aircraft launcher (weapon_id is an aircraft_template) carries its real
+            // payload on sub-weapons; pull those chunks too so both the weapon cards and
+            // the spawnAircraft firing path can resolve the bomb/torpedo data.
+            const aircraftData = this.simEngine.allAircraftData?.[info.weaponId];
+            if (aircraftData?.weapon_ID) aircraftData.weapon_ID.forEach(addChunk);
         });
 
         // Load all needed chunks in parallel
@@ -225,5 +233,14 @@ export class WeaponSimData {
     getSkillName(skillId) {
         const templateData = this.skillTemplateData[skillId];
         return templateData?.name || this.allSkillData[skillId]?.name || `Skill ${skillId}`;
+    }
+
+    /**
+     * Raw skill_data_template entry (name/desc/desc_get/desc_get_add).
+     * Unlike getSkillById, this does NOT require the skill to be in
+     * skill_weapon_data — cross-fleet trigger skills live only in the template.
+     */
+    getSkillTemplate(skillId) {
+        return this.skillTemplateData[skillId] || null;
     }
 }

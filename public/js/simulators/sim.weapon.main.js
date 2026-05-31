@@ -417,20 +417,40 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        const cards = [];
-        const showNumber = weaponInfoList.length > 1;
-
-        for (let i = 0; i < weaponInfoList.length; i++) {
-            const info = weaponInfoList[i];
-            const weapon = weaponSimData.getWeaponById(info.weaponId);
-            if (!weapon) continue;
-
-            const card = buildWeaponCard(weapon, info, i + 1, showNumber, {
-                bulletData: simEngine.allBulletData,
-                barrageData: simEngine.allBarrageData
-            });
-            cards.push(card);
+        // Resolve each skill weapon to the entries we actually card. An aircraft
+        // launcher (weapon_id is an aircraft_template) carries its real damage on its
+        // sub-weapons (bombs/torpedoes), so expand it into those — mirroring the
+        // aircraft simulator and the spawnAircraft firing path. The launcher's own
+        // `damage` is a placeholder and must not be shown. Normal weapons pass through.
+        const displayWeapons = [];
+        for (const info of weaponInfoList) {
+            const aircraftData = simEngine.allAircraftData?.[info.weaponId];
+            // Only expand when the plane actually carries payload sub-weapons. Some
+            // launchers (e.g. 다이호 彩云 61016/recon) have an empty weapon_ID — their
+            // attack is the launcher's own barrage, so fall through to its card.
+            if (aircraftData?.weapon_ID?.length) {
+                for (const subWid of aircraftData.weapon_ID) {
+                    const subWeapon = weaponSimData.getWeaponById(subWid);
+                    if (subWeapon) displayWeapons.push({ weapon: subWeapon, info: { weaponId: String(subWid) } });
+                }
+            } else {
+                const weapon = weaponSimData.getWeaponById(info.weaponId);
+                if (weapon) displayWeapons.push({ weapon, info });
+            }
         }
+
+        if (displayWeapons.length === 0) {
+            renderPlaceholder(weaponCardsContainer, '무기 데이터를 불러올 수 없습니다.');
+            return;
+        }
+
+        const showNumber = displayWeapons.length > 1;
+        const cards = displayWeapons.map(({ weapon, info }, i) =>
+            buildWeaponCard(weapon, info, i + 1, showNumber, {
+                bulletData: simEngine.allBulletData,
+                barrageData: simEngine.allBarrageData,
+            })
+        );
 
         weaponCardsContainer.replaceChildren(...cards);
     }
