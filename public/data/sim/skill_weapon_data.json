@@ -1336,6 +1336,7 @@
     "150310": {
         "requirement": "Retrofit",
         "weapon_true": true,
+        "trigger_cd": 5,
         "name": "엘드릿지",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101260.webp",
@@ -1695,6 +1696,7 @@
                 "id": 14271
             }
         ],
+        "trigger_cd": 3,
         "name": "알렌 M. 섬너",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101450.webp",
@@ -1974,6 +1976,7 @@
                 "id": 14721
             }
         ],
+        "trigger_cd": 10,
         "name": "잉그레이엄",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101480.webp",
@@ -2319,6 +2322,7 @@
                 "id": 15161
             }
         ],
+        "trigger_cd": 10,
         "name": "브리스톨",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101490.webp",
@@ -2646,6 +2650,7 @@
                 "id": 17309
             }
         ],
+        "trigger_cd": 2,
         "name": "라피Ⅱ",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101510.webp",
@@ -3002,6 +3007,7 @@
                 "id": 151843
             }
         ],
+        "trigger_cd": 5,
         "name": "클래런스 K 브론슨",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101550.webp",
@@ -3706,6 +3712,7 @@
                 "id": 1090391
             }
         ],
+        "trigger_cd": 3,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/102100.webp",
         "class_name": "클리블랜드급",
@@ -3772,6 +3779,7 @@
                 "id": 1010884
             }
         ],
+        "trigger_cd": 5,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/102130.webp",
         "class_name": "브루클린급",
@@ -4768,6 +4776,7 @@
                 "id": 150281
             }
         ],
+        "trigger_cd": 5,
         "name": "파고",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/102330.webp",
@@ -4932,6 +4941,7 @@
                 "id": 5042
             }
         ],
+        "trigger_cd": 1,
         "name": "산타페",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/102340.webp",
@@ -5135,6 +5145,7 @@
                 "id": 151823
             }
         ],
+        "trigger_cd": 3,
         "name": "패서디나",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/102350.webp",
@@ -5606,6 +5617,7 @@
                 "id": 10121
             }
         ],
+        "trigger_cd": 5,
         "name": "인디애나폴리스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/103070.webp",
@@ -6336,6 +6348,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/1012480.webp",
         "name": "볼티모어",
         "weapon_true": true,
+        "trigger_cd": 5,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/103160.webp",
         "class_name": "볼티모어급 ",
@@ -6628,6 +6641,7 @@
                 "id": 16336
             }
         ],
+        "trigger_cd": 3,
         "name": "노샘프턴Ⅱ",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/103260.webp",
@@ -7193,6 +7207,7 @@
                 "time": 0.6
             }
         ],
+        "trigger_cd": 6,
         "name": "컨스텔레이션",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/104010.webp",
@@ -7334,6 +7349,7 @@
                 "id": 10131
             }
         ],
+        "trigger_cd": 4,
         "name": "펜실베이니아",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/105030.webp",
@@ -7676,6 +7692,7 @@
                 "id": 16942
             }
         ],
+        "trigger_cd": 1,
         "name": "웨스트버지니아",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/105110.webp",
@@ -7786,6 +7803,7 @@
                 "id": 1010983
             }
         ],
+        "trigger_cd": 3,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/105120.webp",
         "class_name": "노스캐롤라이나급",
@@ -7833,6 +7851,7 @@
                 "id": 11001
             }
         ],
+        "trigger_cd": 5,
         "name": "워싱턴",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/105130.webp",
@@ -7948,6 +7967,7 @@
                 "id": 11001
             }
         ],
+        "trigger_cd": 5,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/105130.webp",
         "class_name": "노스캐롤라이나급",
@@ -8296,6 +8316,7 @@
                 "id": 14511
             }
         ],
+        "trigger_cd": 8,
         "name": "뉴저지",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/105170.webp",
@@ -8506,6 +8527,7 @@
                 "id": 1011561
             }
         ],
+        "trigger_cd": 8,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/105190.webp",
         "class_name": "사우스다코타급",
@@ -8571,6 +8593,7 @@
                 "id": 12431
             }
         ],
+        "trigger_cd": 3,
         "name": "앨라배마",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/105200.webp",
@@ -8661,6 +8684,7 @@
                 "id": 1012431
             }
         ],
+        "trigger_cd": 3,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/105200.webp",
         "class_name": "사우스다코타급",
@@ -8772,6 +8796,7 @@
                 "id": 1090283
             }
         ],
+        "trigger_cd": 5,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/106010.webp",
         "class_name": "롱 아일랜드급",
@@ -10590,6 +10615,7 @@
                 "id": 151062
             }
         ],
+        "trigger_cd": 1,
         "name": "프랭클린",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107130.webp",
@@ -11194,6 +11220,7 @@
                 "id": 13711
             }
         ],
+        "trigger_cd": 3,
         "name": "프린스턴",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107230.webp",
@@ -11323,6 +11350,7 @@
                 "id": 12501
             }
         ],
+        "trigger_cd": 3,
         "name": "바탄",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107290.webp",
@@ -11390,6 +11418,7 @@
                 "id": 17391
             }
         ],
+        "trigger_cd": 3,
         "name": "샌 재신토",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107300.webp",
@@ -11477,6 +11506,7 @@
                 "id": 17401
             }
         ],
+        "trigger_cd": 0.1,
         "name": "샌 재신토",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107300.webp",
@@ -12966,6 +12996,7 @@
                 "id": 17411
             }
         ],
+        "trigger_cd": 10,
         "name": "플래셔",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/108080.webp",
@@ -13450,6 +13481,7 @@
                 "id": 19161
             }
         ],
+        "trigger_cd": 5,
         "name": "조지아",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/199020.webp",
@@ -13766,6 +13798,7 @@
                 "id": 19441
             }
         ],
+        "trigger_cd": 3,
         "name": "앵커리지",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/199030.webp",
@@ -14009,6 +14042,7 @@
                 "id": 18441
             }
         ],
+        "trigger_cd": 3,
         "name": "앵커리지",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/199030.webp",
@@ -14126,6 +14160,7 @@
                 "id": 19685
             }
         ],
+        "trigger_cd": 1,
         "name": "키어사지",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/199040.webp",
@@ -14701,6 +14736,7 @@
                 "id": 20007
             }
         ],
+        "trigger_cd": 5,
         "name": "캔자스",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/199060.webp",
@@ -15700,6 +15736,7 @@
                 "time": 0.4
             }
         ],
+        "trigger_cd": 3,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/201130.webp",
         "class_name": "G급",
@@ -17669,6 +17706,7 @@
                 "id": 16561
             }
         ],
+        "trigger_cd": 5,
         "name": "히어로",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/201360.webp",
@@ -17997,6 +18035,7 @@
                 "id": 151262
             }
         ],
+        "trigger_cd": 3,
         "name": "트라팔가",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/201380.webp",
@@ -18575,6 +18614,7 @@
                 "time": 3.5
             }
         ],
+        "trigger_cd": 5,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/202080.webp",
         "class_name": "사우스햄튼급",
@@ -18848,6 +18888,7 @@
                 "id": 4102
             }
         ],
+        "trigger_cd": 1,
         "name": "벨파스트",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/202120.webp",
@@ -19839,6 +19880,7 @@
                 "id": 1013477
             }
         ],
+        "trigger_cd": 5,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/202270.webp",
         "class_name": "다이도급 ",
@@ -20169,6 +20211,7 @@
                 "id": 15091
             }
         ],
+        "trigger_cd": 1.1,
         "name": "카리브디스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/202300.webp",
@@ -20601,6 +20644,7 @@
                 "id": 17792
             }
         ],
+        "trigger_cd": 1,
         "name": "리버풀",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/202340.webp",
@@ -21281,6 +21325,7 @@
                 "id": 1010261
             }
         ],
+        "trigger_cd": 8,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/203070.webp",
         "class_name": "요크급",
@@ -21564,6 +21609,7 @@
                 "id": 17694
             }
         ],
+        "trigger_cd": 3,
         "name": "데본셔",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/203130.webp",
@@ -21991,6 +22037,7 @@
                 "time": 10
             }
         ],
+        "trigger_cd": 15,
         "name": "워스파이트",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/205020.webp",
@@ -22510,6 +22557,7 @@
                 "id": 16691
             }
         ],
+        "trigger_cd": 2,
         "name": "넬슨",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/205030.webp",
@@ -22587,6 +22635,7 @@
                 "id": 12171
             }
         ],
+        "trigger_cd": 3,
         "name": "킹 조지 5세",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/205050.webp",
@@ -23129,6 +23178,7 @@
                 "id": 16493
             }
         ],
+        "trigger_cd": 10,
         "name": "로열 오크",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/205140.webp",
@@ -23269,6 +23319,7 @@
                 "time": 0.2
             }
         ],
+        "trigger_cd": 3,
         "name": "라이온",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/205160.webp",
@@ -23670,6 +23721,7 @@
                 "id": 13423
             }
         ],
+        "trigger_cd": 10,
         "name": "퍼시어스",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/206060.webp",
@@ -24293,6 +24345,7 @@
                 "id": 12571
             }
         ],
+        "trigger_cd": 3,
         "name": "포미더블",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/207050.webp",
@@ -24361,6 +24414,7 @@
                 "id": 1012571
             }
         ],
+        "trigger_cd": 3,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/207050.webp",
         "class_name": "일러스트리어스급",
@@ -24785,6 +24839,7 @@
                 "id": 16664
             }
         ],
+        "trigger_cd": 3,
         "name": "꼬마 포미더블",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/207130.webp",
@@ -27967,6 +28022,7 @@
                 "id": 14703
             }
         ],
+        "trigger_cd": 3,
         "name": "카스미",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/301810.webp",
@@ -28069,6 +28125,7 @@
                 "id": 13642
             }
         ],
+        "trigger_cd": 5,
         "name": "스즈츠키",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/301840.webp",
@@ -29132,6 +29189,7 @@
                 "id": 4081
             }
         ],
+        "trigger_cd": 1,
         "name": "타에카제",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/301920.webp",
@@ -29244,6 +29302,7 @@
                 "quota": 1
             }
         ],
+        "trigger_cd": 1.5,
         "name": "후지나미",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/301940.webp",
@@ -29635,6 +29694,7 @@
                 "id": 1090355
             }
         ],
+        "trigger_cd": 1,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/302010.webp",
         "class_name": "유바리",
@@ -30106,6 +30166,7 @@
                 "id": 14762
             }
         ],
+        "trigger_cd": 8,
         "name": "유라",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/302070.webp",
@@ -30330,6 +30391,7 @@
                 "id": 1090171
             }
         ],
+        "trigger_cd": 1,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/302100.webp",
         "class_name": "모가미급",
@@ -30752,6 +30814,7 @@
                 "id": 15985
             }
         ],
+        "trigger_cd": 15,
         "name": "사카와",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/302230.webp",
@@ -30951,6 +31014,7 @@
                 "id": 17852
             }
         ],
+        "trigger_cd": 1,
         "name": "노시로(μ장비)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/302240.webp",
@@ -31145,6 +31209,7 @@
                 "id": 150422
             }
         ],
+        "trigger_cd": 5,
         "name": "와타라세",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/302250.webp",
@@ -31531,6 +31596,7 @@
                 "id": 150492
             }
         ],
+        "trigger_cd": 3,
         "name": "아야세",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/302260.webp",
@@ -31675,6 +31741,7 @@
                 "id": 151671
             }
         ],
+        "trigger_cd": 2,
         "name": "미나세",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/302270.webp",
@@ -32057,6 +32124,7 @@
                 "id": 14783
             }
         ],
+        "trigger_cd": 5,
         "name": "치쿠마",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/303060.webp",
@@ -32416,6 +32484,7 @@
                 "id": 16071
             }
         ],
+        "trigger_cd": 3,
         "name": "하구로",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/303100.webp",
@@ -33225,6 +33294,7 @@
                 "time": 3.5
             }
         ],
+        "trigger_cd": 5,
         "name": "운젠",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/303190.webp",
@@ -33715,6 +33785,7 @@
                 "id": 151641
             }
         ],
+        "trigger_cd": 5,
         "name": "아사마",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/303200.webp",
@@ -34479,6 +34550,7 @@
                 "id": 17882
             }
         ],
+        "trigger_cd": 5,
         "name": "콘고(μ장비)",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/304080.webp",
@@ -35306,6 +35378,7 @@
                 "id": 13171
             }
         ],
+        "trigger_cd": 10,
         "name": "토사",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/305080.webp",
@@ -35422,6 +35495,7 @@
                 "id": 16034
             }
         ],
+        "trigger_cd": 5,
         "name": "무사시",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/305100.webp",
@@ -35700,6 +35774,7 @@
                 "id": 17064
             }
         ],
+        "trigger_cd": 1,
         "name": "오와리",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/305130.webp",
@@ -35787,6 +35862,7 @@
                 "id": 17071
             }
         ],
+        "trigger_cd": 2,
         "name": "오와리",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/305130.webp",
@@ -36224,6 +36300,7 @@
                 "id": 152252
             }
         ],
+        "trigger_cd": 5,
         "name": "꼬마 무사시",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/305170.webp",
@@ -36389,6 +36466,7 @@
                 "id": 1090363
             }
         ],
+        "trigger_cd": 0.1,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/306030.webp",
         "class_name": "호쇼",
@@ -36598,6 +36676,7 @@
                 "id": 11762
             }
         ],
+        "trigger_cd": 3,
         "name": "류조",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/306060.webp",
@@ -37054,6 +37133,7 @@
                 "id": 11626
             }
         ],
+        "trigger_cd": 6,
         "name": "다이호",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/307070.webp",
@@ -37472,6 +37552,7 @@
                 "id": 1011625
             }
         ],
+        "trigger_cd": 6,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/307070.webp",
         "class_name": "다이호",
@@ -37933,6 +38014,7 @@
                 "id": 13581
             }
         ],
+        "trigger_cd": 3,
         "name": "시나노",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/307080.webp",
@@ -38284,6 +38366,7 @@
                 "id": 13751
             }
         ],
+        "trigger_cd": 5,
         "name": "다이호(μ장비)",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/307110.webp",
@@ -40406,6 +40489,7 @@
                 "time": 2
             }
         ],
+        "trigger_cd": 3,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/399010.webp",
         "class_name": "이부키급",
@@ -41602,6 +41686,7 @@
                 "time": 4
             }
         ],
+        "trigger_cd": 5,
         "name": "시만토",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/399060.webp",
@@ -42084,6 +42169,7 @@
                 "id": 19866
             }
         ],
+        "trigger_cd": 3,
         "name": "다이센",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/399070.webp",
@@ -42813,6 +42899,7 @@
                 "id": 150741
             }
         ],
+        "trigger_cd": 1,
         "name": "Z11",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401110.webp",
@@ -42888,6 +42975,7 @@
                 "id": 151345
             }
         ],
+        "trigger_cd": 3,
         "name": "Z13",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401130.webp",
@@ -43522,6 +43610,7 @@
                 "id": 13571
             }
         ],
+        "trigger_cd": 20,
         "name": "Z26",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401260.webp",
@@ -43643,6 +43732,7 @@
                 "id": 4081
             }
         ],
+        "trigger_cd": 1,
         "name": "Z28",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401280.webp",
@@ -44028,6 +44118,7 @@
                 "id": 29214
             }
         ],
+        "trigger_cd": 1,
         "name": "Z46",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401460.webp",
@@ -44918,6 +45009,7 @@
                 "id": 1090410
             }
         ],
+        "trigger_cd": 1,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402030.webp",
         "class_name": "쾨니히스베르크급",
@@ -46672,6 +46764,7 @@
                 "id": 16713
             }
         ],
+        "trigger_cd": 4,
         "name": "레겐스부르크",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402100.webp",
@@ -47257,6 +47350,7 @@
                 "id": 1010723
             }
         ],
+        "trigger_cd": 2,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/403010.webp",
         "class_name": "아드미랄 히퍼급",
@@ -47641,6 +47735,7 @@
                 "id": 13732
             }
         ],
+        "trigger_cd": 5,
         "name": "론(μ장비)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/403080.webp",
@@ -48182,6 +48277,7 @@
                 "id": 17761
             }
         ],
+        "trigger_cd": 0.5,
         "name": "프리드리히 카를",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/403140.webp",
@@ -48282,6 +48378,7 @@
                 "id": 17783
             }
         ],
+        "trigger_cd": 3,
         "name": "프린츠 오이겐(μ장비)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/403150.webp",
@@ -48460,6 +48557,7 @@
                 "id": 151151
             }
         ],
+        "trigger_cd": 0.1,
         "name": "꼬마 에기르",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/403160.webp",
@@ -48761,6 +48859,7 @@
                 "id": 1010661
             }
         ],
+        "trigger_cd": 1,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/404010.webp",
         "class_name": "샤른호르스트급",
@@ -49199,6 +49298,7 @@
                 "id": 150141
             }
         ],
+        "trigger_cd": 5,
         "name": "알비트",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/404060.webp",
@@ -49266,6 +49366,7 @@
                 "id": 150151
             }
         ],
+        "trigger_cd": 5,
         "name": "알비트",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/404060.webp",
@@ -49335,6 +49436,7 @@
                 "id": 151321
             }
         ],
+        "trigger_cd": 3,
         "name": "아드미랄 젠커",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/404070.webp",
@@ -49405,6 +49507,7 @@
                 "id": 12132
             }
         ],
+        "trigger_cd": 5,
         "name": "비스마르크",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405010.webp",
@@ -49608,6 +49711,7 @@
                 "id": 15052
             }
         ],
+        "trigger_cd": 10,
         "name": "울리히 폰 후텐",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405030.webp",
@@ -49787,6 +49891,7 @@
                 "time": 0.5
             }
         ],
+        "trigger_cd": 5,
         "name": "비스마르크 Zwei",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405050.webp",
@@ -49912,6 +50017,7 @@
                 "id": 150121
             }
         ],
+        "trigger_cd": 10,
         "name": "꼬마 프리드리히",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405060.webp",
@@ -49996,6 +50102,7 @@
                 "id": 150131
             }
         ],
+        "trigger_cd": 3,
         "name": "꼬마 프리드리히",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405060.webp",
@@ -50077,6 +50184,7 @@
                 "id": 13955
             }
         ],
+        "trigger_cd": 3,
         "name": "베저",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/406010.webp",
@@ -50206,6 +50314,7 @@
                 "id": 16732
             }
         ],
+        "trigger_cd": 3,
         "name": "야드",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/406030.webp",
@@ -52272,6 +52381,7 @@
                 "time": 3
             }
         ],
+        "trigger_cd": 10,
         "name": "U-552",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/408140.webp",
@@ -52810,6 +52920,7 @@
                 "id": 19221
             }
         ],
+        "trigger_cd": 10,
         "name": "프리드리히 데어 그로세",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/499020.webp",
@@ -52949,6 +53060,7 @@
                 "id": 18222
             }
         ],
+        "trigger_cd": 10,
         "name": "프리드리히 데어 그로세",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/499020.webp",
@@ -53052,6 +53164,7 @@
                 "id": 19312
             }
         ],
+        "trigger_cd": 10,
         "name": "마인츠",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/499030.webp",
@@ -53101,6 +53214,7 @@
                 "id": 19322
             }
         ],
+        "trigger_cd": 5,
         "name": "마인츠",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/499030.webp",
@@ -53278,6 +53392,7 @@
                 "id": 18322
             }
         ],
+        "trigger_cd": 5,
         "name": "마인츠",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/499030.webp",
@@ -53841,6 +53956,7 @@
                 "id": 19563
             }
         ],
+        "trigger_cd": 5,
         "name": "프린츠 루프레히트",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/499070.webp",
@@ -54769,6 +54885,7 @@
                 "time": 0.5
             }
         ],
+        "trigger_cd": 5,
         "name": "메클렌부르크",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/499100.webp",
@@ -54903,6 +55020,7 @@
                 "id": 24051
             }
         ],
+        "trigger_cd": 3,
         "name": "타이위안",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501040.webp",
@@ -55043,6 +55161,7 @@
                 "id": 24052
             }
         ],
+        "trigger_cd": 3,
         "name": "타이위안",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501040.webp",
@@ -55174,6 +55293,7 @@
                 "id": 29800
             }
         ],
+        "trigger_cd": 3,
         "name": "안샨",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501010.webp",
@@ -55311,6 +55431,7 @@
                 "id": 29803
             }
         ],
+        "trigger_cd": 3,
         "name": "안샨",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501010.webp",
@@ -55407,6 +55528,7 @@
                 "id": 30415
             }
         ],
+        "trigger_cd": 3,
         "name": "푸슌",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501020.webp",
@@ -55542,6 +55664,7 @@
                 "id": 30416
             }
         ],
+        "trigger_cd": 3,
         "name": "푸슌",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501020.webp",
@@ -55613,6 +55736,7 @@
                 "id": 29810
             }
         ],
+        "trigger_cd": 3,
         "name": "창춘",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501030.webp",
@@ -55750,6 +55874,7 @@
                 "id": 29813
             }
         ],
+        "trigger_cd": 3,
         "name": "창춘",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501030.webp",
@@ -55843,6 +55968,7 @@
                 "id": 30190
             }
         ],
+        "trigger_cd": 3,
         "name": "타이위안",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501040.webp",
@@ -56000,6 +56126,7 @@
                 "id": 30193
             }
         ],
+        "trigger_cd": 3,
         "name": "타이위안",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501040.webp",
@@ -56356,6 +56483,7 @@
                 "id": 17482
             }
         ],
+        "trigger_cd": 1,
         "name": "페이윈",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501070.webp",
@@ -56689,6 +56817,7 @@
                 "id": 150802
             }
         ],
+        "trigger_cd": 14,
         "name": "창펑",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501080.webp",
@@ -56928,6 +57057,7 @@
                 "id": 150881
             }
         ],
+        "trigger_cd": 1,
         "name": "푸보",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501090.webp",
@@ -58083,6 +58213,7 @@
                 "id": 4081
             }
         ],
+        "trigger_cd": 1,
         "name": "하이치",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/502080.webp",
@@ -58637,6 +58768,7 @@
                 "id": 152096
             }
         ],
+        "trigger_cd": 2,
         "name": "장우",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/503020.webp",
@@ -59303,6 +59435,7 @@
                 "id": 17583
             }
         ],
+        "trigger_cd": 3,
         "name": "환창",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/504010.webp",
@@ -59745,6 +59878,7 @@
                 "id": 19582
             }
         ],
+        "trigger_cd": 1,
         "name": "하얼빈",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/599010.webp",
@@ -60529,6 +60663,7 @@
                 "id": 14402
             }
         ],
+        "trigger_cd": 1,
         "name": "마에스트라레",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/601040.webp",
@@ -60688,6 +60823,7 @@
                 "id": 14422
             }
         ],
+        "trigger_cd": 1,
         "name": "리베치오",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/601050.webp",
@@ -61088,6 +61224,7 @@
                 "id": 5042
             }
         ],
+        "trigger_cd": 1,
         "name": "알프레도 오리아니",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/601080.webp",
@@ -61723,6 +61860,7 @@
                 "id": 14341
             }
         ],
+        "trigger_cd": 3,
         "name": "두카 델리 아브루치",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/602010.webp",
@@ -61903,6 +62041,7 @@
                 "id": 1014341
             }
         ],
+        "trigger_cd": 3,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/602010.webp",
         "class_name": "두카 델리 아브루치급",
@@ -62352,6 +62491,7 @@
                 "id": 152054
             }
         ],
+        "trigger_cd": 3,
         "name": "알베르토 디 주사노",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/602040.webp",
@@ -62643,6 +62783,7 @@
                 "id": 5042
             }
         ],
+        "trigger_cd": 1,
         "name": "트리에스테",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/603040.webp",
@@ -62962,6 +63103,7 @@
                 "id": 16832
             }
         ],
+        "trigger_cd": 3,
         "name": "고리치아",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/603060.webp",
@@ -63079,6 +63221,7 @@
                 "id": 12608
             }
         ],
+        "trigger_cd": 5,
         "name": "리토리오",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/605020.webp",
@@ -63710,6 +63853,7 @@
                 "id": 150963
             }
         ],
+        "trigger_cd": 5,
         "name": "라파엘로",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/605080.webp",
@@ -64184,6 +64328,7 @@
                 "id": 15371
             }
         ],
+        "trigger_cd": 3,
         "name": "임페로",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/607020.webp",
@@ -64446,6 +64591,7 @@
                 "id": 15791
             }
         ],
+        "trigger_cd": 8.6,
         "name": "레오나르도 다 빈치",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/608020.webp",
@@ -64719,6 +64865,7 @@
                 "id": 150992
             }
         ],
+        "trigger_cd": 4.5,
         "name": "마조레 바라카",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/608030.webp",
@@ -64896,6 +65043,7 @@
                 "id": 18490
             }
         ],
+        "trigger_cd": 3,
         "name": "마르코 폴로",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/699010.webp",
@@ -65092,6 +65240,7 @@
                 "time": 0.5
             }
         ],
+        "trigger_cd": 5.1,
         "name": "나폴리",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/699020.webp",
@@ -65326,6 +65475,7 @@
                 "time": 0.5
             }
         ],
+        "trigger_cd": 3.5,
         "name": "비토리오 쿠니베르티",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/699030.webp",
@@ -65648,6 +65798,7 @@
                 "id": 1090421
             }
         ],
+        "trigger_cd": 2,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/701020.webp",
         "class_name": "그녜브니급",
@@ -65810,6 +65961,7 @@
                 "time": 2
             }
         ],
+        "trigger_cd": 20,
         "name": "타슈켄트",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/701040.webp",
@@ -66054,6 +66206,7 @@
                 "time": 2
             }
         ],
+        "trigger_cd": 20,
         "name": "타슈켄트(μ장비)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/701050.webp",
@@ -66359,6 +66512,7 @@
                 "id": 4081
             }
         ],
+        "trigger_cd": 1,
         "name": "소브라지텔니",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/701090.webp",
@@ -66426,6 +66580,7 @@
                 "id": 15281
             }
         ],
+        "trigger_cd": 3,
         "name": "소브라지텔니",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/701090.webp",
@@ -67103,6 +67258,7 @@
                 "id": 152064
             }
         ],
+        "trigger_cd": 0.5,
         "name": "오조르노이",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/701130.webp",
@@ -67728,6 +67884,7 @@
                 "id": 14171
             }
         ],
+        "trigger_cd": 3,
         "name": "키로프",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/702040.webp",
@@ -68052,6 +68209,7 @@
                 "id": 14170
             }
         ],
+        "trigger_cd": 3,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/702040.webp",
         "class_name": "키로프급",
@@ -68850,6 +69008,7 @@
                 "id": 151114
             }
         ],
+        "trigger_cd": 9,
         "name": "올레그",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/702080.webp",
@@ -69207,6 +69366,7 @@
                 "id": 14191
             }
         ],
+        "trigger_cd": 8,
         "name": "탈린",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/703010.webp",
@@ -70085,6 +70245,7 @@
                 "id": 1013023
             }
         ],
+        "trigger_cd": 3,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/705050.webp",
         "class_name": "소비에츠키 소유즈급",
@@ -70632,6 +70793,7 @@
                 "id": 15321
             }
         ],
+        "trigger_cd": 3,
         "name": "볼가",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/707010.webp",
@@ -70965,6 +71127,7 @@
                 "id": 19602
             }
         ],
+        "trigger_cd": 3,
         "name": "치칼로프",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/799010.webp",
@@ -72007,6 +72170,7 @@
                 "id": 1012353
             }
         ],
+        "trigger_cd": 3,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/801040.webp",
         "class_name": "랑트레피드급",
@@ -72075,6 +72239,7 @@
                 "id": 151492
             }
         ],
+        "trigger_cd": 2,
         "name": "르 아르디",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/801050.webp",
@@ -73037,6 +73202,7 @@
                 "time": 0.5
             }
         ],
+        "trigger_cd": 2,
         "name": "기샹",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/802030.webp",
@@ -73527,6 +73693,7 @@
                 "id": 150006
             }
         ],
+        "trigger_cd": 5,
         "name": "브렌누스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/803020.webp",
@@ -73865,6 +74032,7 @@
                 "id": 150018
             }
         ],
+        "trigger_cd": 6,
         "name": "브렌누스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/803020.webp",
@@ -74951,6 +75119,7 @@
                 "quota": 3
             }
         ],
+        "trigger_cd": 5,
         "name": "마세나",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/804010.webp",
@@ -75046,6 +75215,7 @@
                 "id": 13251
             }
         ],
+        "trigger_cd": 3,
         "name": "리슐리외",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/805010.webp",
@@ -75250,6 +75420,7 @@
                 "id": 150022
             }
         ],
+        "trigger_cd": 5,
         "name": "알자스",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/805030.webp",
@@ -75871,6 +76042,7 @@
                 "id": 13351
             }
         ],
+        "trigger_cd": 3,
         "name": "베아른",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/807010.webp",
@@ -76546,6 +76718,7 @@
                 "id": 19772
             }
         ],
+        "trigger_cd": 5,
         "name": "바야르",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/899040.webp",
@@ -76834,6 +77007,7 @@
                 "id": 150083
             }
         ],
+        "trigger_cd": 5,
         "name": "에페",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/901060.webp",
@@ -76910,6 +77084,7 @@
     "17940": {
         "requirement": "Default",
         "weapon_true": true,
+        "trigger_cd": 2,
         "name": "모가도르",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/901070.webp",
@@ -77280,6 +77455,7 @@
                 "time": 2
             }
         ],
+        "trigger_cd": 3.1,
         "name": "르 말랭(μ장비)",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/901120.webp",
@@ -78213,6 +78389,7 @@
                 "id": 16872
             }
         ],
+        "trigger_cd": 8,
         "name": "마르세예즈",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/902020.webp",
@@ -78634,6 +78811,7 @@
                 "id": 150211
             }
         ],
+        "trigger_cd": 3,
         "name": "듀플렉스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/903030.webp",
@@ -78819,6 +78997,7 @@
                 "time": 1.2
             }
         ],
+        "trigger_cd": 2,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/904010.webp",
         "class_name": "됭케르크급",
@@ -78917,6 +79096,7 @@
                 "id": 150251
             }
         ],
+        "trigger_cd": 3,
         "name": "스트라스부르",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/904020.webp",
@@ -79093,6 +79273,7 @@
                 "id": 16971
             }
         ],
+        "trigger_cd": 1,
         "name": "클레망소",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/905020.webp",
@@ -79303,6 +79484,7 @@
                 "id": 19261
             }
         ],
+        "trigger_cd": 5,
         "name": "가스코뉴",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/999010.webp",
@@ -79527,6 +79709,7 @@
                 "id": 1019261
             }
         ],
+        "trigger_cd": 5,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/999010.webp",
         "class_name": "리슐리외급",
@@ -80032,6 +80215,7 @@
                 "id": 151091
             }
         ],
+        "trigger_cd": 10,
         "name": "드 제번 프로빈시엔",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/1102010.webp",
@@ -80211,6 +80395,7 @@
                 "id": 19922
             }
         ],
+        "trigger_cd": 1.5,
         "name": "하우덴 리우",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/1199010.webp",
@@ -80884,6 +81069,7 @@
                 "id": 17161
             }
         ],
+        "trigger_cd": 1,
         "name": "메리 셀러스트",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600040.webp",
@@ -81090,6 +81276,7 @@
                 "id": 1017161
             }
         ],
+        "trigger_cd": 1,
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600040.webp",
         "class_name": "메리 셀러스트",
@@ -83165,6 +83352,7 @@
                 "id": 151722
             }
         ],
+        "trigger_cd": 1,
         "name": "어드벤처",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9600160.webp",
@@ -85025,6 +85213,7 @@
                 "quota": 1
             }
         ],
+        "trigger_cd": 1.5,
         "name": "그렌빌·META",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9701070.webp",
@@ -85445,6 +85634,7 @@
                 "quota": 1
             }
         ],
+        "trigger_cd": 10,
         "name": "카와카제·META",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9701080.webp",
@@ -86030,6 +86220,7 @@
                 "id": 800091
             }
         ],
+        "trigger_cd": 3,
         "name": "헬레나·META",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9702010.webp",
@@ -86958,6 +87149,7 @@
                 "id": 801041
             }
         ],
+        "trigger_cd": 3,
         "name": "키로프·META",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9702060.webp",
@@ -88298,6 +88490,7 @@
                 "id": 800502
             }
         ],
+        "trigger_cd": 0.1,
         "name": "트렌토·META",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9703010.webp",
@@ -88830,6 +89023,7 @@
                 "id": 801302
             }
         ],
+        "trigger_cd": 8,
         "name": "위치타·META",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9703040.webp",
@@ -89700,6 +89894,7 @@
                 "id": 800473
             }
         ],
+        "trigger_cd": 10,
         "name": "리펄스·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9704030.webp",
@@ -89807,6 +90002,7 @@
                 "time": 2
             }
         ],
+        "trigger_cd": 3,
         "name": "리나운·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9704040.webp",
@@ -90212,6 +90408,7 @@
                 "id": 800381
             }
         ],
+        "trigger_cd": 5,
         "name": "야마시로·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9705020.webp",
@@ -90318,6 +90515,7 @@
                 "id": 800654
             }
         ],
+        "trigger_cd": 12,
         "name": "애리조나·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9705030.webp",
@@ -90433,6 +90631,7 @@
                 "id": 800711
             }
         ],
+        "trigger_cd": 3,
         "name": "퀸 엘리자베스·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9705040.webp",
@@ -90783,6 +90982,7 @@
                 "id": 801152
             }
         ],
+        "trigger_cd": 3,
         "name": "로드니·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9705050.webp",
@@ -91099,6 +91299,7 @@
                 "id": 801602
             }
         ],
+        "trigger_cd": 10,
         "name": "안드레아 도리아·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9705080.webp",
@@ -91599,6 +91800,7 @@
                 "id": 800971
             }
         ],
+        "trigger_cd": 3,
         "name": "프린스턴·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9706030.webp",
@@ -91669,6 +91871,7 @@
                 "id": 801432
             }
         ],
+        "trigger_cd": 3,
         "name": "호쇼·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9706040.webp",
@@ -91754,6 +91957,7 @@
                 "id": 800041
             }
         ],
+        "trigger_cd": 5,
         "name": "히류·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9707010.webp",
@@ -91824,6 +92028,7 @@
                 "id": 800052
             }
         ],
+        "trigger_cd": 5,
         "name": "히류·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9707010.webp",
@@ -92023,6 +92228,7 @@
                 "id": 800021
             }
         ],
+        "trigger_cd": 3,
         "name": "아크 로열·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9707020.webp",
@@ -92160,6 +92366,7 @@
                 "id": 800132
             }
         ],
+        "trigger_cd": 5,
         "name": "소류·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9707030.webp",
@@ -92343,6 +92550,7 @@
                 "id": 801204
             }
         ],
+        "trigger_cd": 6,
         "name": "베아른·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9707040.webp",
@@ -92796,6 +93004,7 @@
     "801650": {
         "requirement": "Default",
         "weapon_true": true,
+        "trigger_cd": 8,
         "name": "호넷·META",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9707060.webp",
@@ -93232,6 +93441,7 @@
                 "id": 800803
             }
         ],
+        "trigger_cd": 1,
         "name": "U-556·META",
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9708010.webp",
@@ -93861,6 +94071,7 @@
                 "time": 88
             }
         ],
+        "trigger_cd": 90,
         "name": "루루티에",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10300030.webp",
@@ -94753,6 +94964,7 @@
                 "time": 7
             }
         ],
+        "trigger_cd": 10,
         "name": "무라사키 시온",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10500060.webp",
@@ -95241,6 +95453,7 @@
                 "id": 106033
             }
         ],
+        "trigger_cd": 5,
         "name": "호노카",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10600020.webp",
@@ -95642,6 +95855,7 @@
                 "id": 106131
             }
         ],
+        "trigger_cd": 3,
         "name": "뇨텐구",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10600060.webp",
@@ -95719,6 +95933,7 @@
                 "id": 106114
             }
         ],
+        "trigger_cd": 5,
         "name": "모니카",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10600070.webp",
@@ -96204,6 +96419,7 @@
                 "time": 0.8
             }
         ],
+        "trigger_cd": 6,
         "name": "타마키",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10600090.webp",
@@ -96349,6 +96565,7 @@
                 "time": 0.8
             }
         ],
+        "trigger_cd": 6,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10600090.webp",
         "skill_id": 106340,
@@ -96481,6 +96698,7 @@
                 "time": 0.5
             }
         ],
+        "trigger_cd": 3,
         "name": "엘리제",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10600100.webp",
@@ -96987,6 +97205,7 @@
                 "time": 3
             }
         ],
+        "trigger_cd": 16,
         "name": "샌디",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10600120.webp",
@@ -97084,6 +97303,7 @@
                 "time": 3
             }
         ],
+        "trigger_cd": 16,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10600120.webp",
         "skill_id": 106550,
@@ -97647,6 +97867,7 @@
                 "id": 107071
             }
         ],
+        "trigger_cd": 3,
         "name": "미나세 이오리",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10700030.webp",
@@ -97741,6 +97962,7 @@
                 "time": 1
             }
         ],
+        "trigger_cd": 2,
         "name": "미우라 아즈사",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10700040.webp",
@@ -98069,6 +98291,7 @@
     "108010": {
         "requirement": "Default",
         "weapon_true": true,
+        "trigger_cd": 10,
         "name": "타카라다 릿카",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10800010.webp",
@@ -98120,6 +98343,7 @@
                 "id": 108022
             }
         ],
+        "trigger_cd": 10,
         "name": "타카라다 릿카",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10800010.webp",
@@ -98201,6 +98425,7 @@
     "108030": {
         "requirement": "Default",
         "weapon_true": true,
+        "trigger_cd": 3.5,
         "name": "타카라다 릿카",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10800010.webp",
@@ -98263,6 +98488,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/108010.webp",
         "name": "타카라다 릿카",
         "weapon_true": true,
+        "trigger_cd": 10,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10800010.webp",
         "skill_id": 108210
@@ -98874,6 +99100,7 @@
     "108110": {
         "requirement": "Default",
         "weapon_true": true,
+        "trigger_cd": 8,
         "name": "미나미 유메",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10800050.webp",
@@ -99017,6 +99244,7 @@
     "108120": {
         "requirement": "Default",
         "weapon_true": true,
+        "trigger_cd": 10,
         "name": "미나미 유메",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10800050.webp",
@@ -99026,6 +99254,7 @@
     "108130": {
         "requirement": "Default",
         "weapon_true": true,
+        "trigger_cd": 8,
         "name": "미나미 유메",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10800050.webp",
@@ -99110,6 +99339,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/108120.webp",
         "name": "미나미 유메",
         "weapon_true": true,
+        "trigger_cd": 10,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10800050.webp",
         "skill_id": 108250
@@ -99564,6 +99794,7 @@
     "108300": {
         "requirement": "Default",
         "weapon_true": true,
+        "trigger_cd": 3.5,
         "name": "2대",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10800080.webp",
@@ -99627,6 +99858,7 @@
     "108310": {
         "requirement": "Default",
         "weapon_true": true,
+        "trigger_cd": 3.5,
         "name": "2대",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10800080.webp",
@@ -99697,6 +99929,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/108300.webp",
         "name": "2대",
         "weapon_true": true,
+        "trigger_cd": 3.5,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10800080.webp",
         "skill_id": 108280,
@@ -99919,6 +100152,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/109040.webp",
         "name": "라이잘린 스타우트",
         "weapon_true": true,
+        "trigger_cd": 6,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10900010.webp",
         "skill_id": 109040,
@@ -99963,6 +100197,7 @@
                 "id": 109055
             }
         ],
+        "trigger_cd": 3,
         "name": "클라우디아 발렌츠",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10900020.webp",
@@ -100186,6 +100421,7 @@
                 "id": 109095
             }
         ],
+        "trigger_cd": 3,
         "name": "파트리샤 아벨하임",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10900030.webp",
@@ -100456,6 +100692,7 @@
                 "id": 109174
             }
         ],
+        "trigger_cd": 1,
         "name": "릴라 디자이어스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10900040.webp",
@@ -100897,6 +101134,7 @@
                 "id": 109174
             }
         ],
+        "trigger_cd": 1,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10900040.webp",
         "skill_id": 109200,
@@ -101436,6 +101674,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/109160.webp",
         "name": "세리 글로스",
         "weapon_true": true,
+        "trigger_cd": 10,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10900050.webp",
         "skill_id": 109160,
@@ -101480,6 +101719,7 @@
                 "id": 109211
             }
         ],
+        "trigger_cd": 3,
         "name": "칼라 이데아스",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10900060.webp",
@@ -101594,6 +101834,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/109240.webp",
         "name": "칼라 이데아스",
         "weapon_true": true,
+        "trigger_cd": 5,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/10900060.webp",
         "skill_id": 109240,
@@ -101652,6 +101893,7 @@
                 "quota": 1
             }
         ],
+        "trigger_cd": 10,
         "name": "아스카",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11000010.webp",
@@ -102077,6 +102319,7 @@
                 "id": 110022
             }
         ],
+        "trigger_cd": 0.5,
         "name": "아스카",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11000010.webp",
@@ -102213,6 +102456,7 @@
                 "quota": 1
             }
         ],
+        "trigger_cd": 2,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11000010.webp",
         "skill_id": 110030,
@@ -102916,6 +103160,7 @@
                 "quota": 1
             }
         ],
+        "trigger_cd": 3.1,
         "name": "이카루가",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11000020.webp",
@@ -103040,6 +103285,7 @@
                 "id": 110063
             }
         ],
+        "trigger_cd": 3.1,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11000020.webp",
         "skill_id": 110060,
@@ -103354,6 +103600,7 @@
                 "quota": 1
             }
         ],
+        "trigger_cd": 3,
         "position": "잠수",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11000030.webp",
         "skill_id": 110090,
@@ -103506,6 +103753,7 @@
     "110110": {
         "requirement": "Default",
         "weapon_true": true,
+        "trigger_cd": 3,
         "name": "유미",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11000040.webp",
@@ -103972,6 +104220,7 @@
                 "id": 110202
             }
         ],
+        "trigger_cd": 2,
         "name": "유우야키",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11000070.webp",
@@ -104258,6 +104507,7 @@
                 "id": 111071
             }
         ],
+        "trigger_cd": 4,
         "name": "모모 베리아 데빌룩",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11100030.webp",
@@ -104379,6 +104629,7 @@
                 "id": 111081
             }
         ],
+        "trigger_cd": 2,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11100030.webp",
         "skill_id": 111080,
@@ -104636,6 +104887,7 @@
                 "id": 111106
             }
         ],
+        "trigger_cd": 3,
         "name": "금빛 어둠",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11100040.webp",
@@ -104760,6 +105012,7 @@
                 "id": 111116
             }
         ],
+        "trigger_cd": 3,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11100040.webp",
         "skill_id": 111110,
@@ -105143,6 +105396,7 @@
                 "id": 112013
             }
         ],
+        "trigger_cd": 5,
         "name": "BLACK★ROCK SHOOTER",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11200010.webp",
@@ -105214,6 +105468,7 @@
                 "id": 112023
             }
         ],
+        "trigger_cd": 5,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11200010.webp",
         "skill_id": 112020,
@@ -105560,6 +105815,7 @@
                 "id": 112123
             }
         ],
+        "trigger_cd": 0.6,
         "name": "유미아 리스펠트",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11300010.webp",
@@ -106532,6 +106788,7 @@
                 "id": 112117
             }
         ],
+        "trigger_cd": 0.1,
         "name": "유미아 리스펠트",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11300010.webp",
@@ -107199,6 +107456,7 @@
                 "time": 1.1
             }
         ],
+        "trigger_cd": 0.1,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11300010.webp",
         "skill_id": 112130,
@@ -111058,6 +111316,7 @@
                 "id": 112272
             }
         ],
+        "trigger_cd": 0.7,
         "name": "아일라 폰 뒤러",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11300020.webp",
@@ -111454,6 +111713,7 @@
                 "id": 112224
             }
         ],
+        "trigger_cd": 0.5,
         "name": "니나 프리드",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11300030.webp",
@@ -111569,6 +111829,7 @@
                 "time": 1
             }
         ],
+        "trigger_cd": 5,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11300030.webp",
         "skill_id": 112240,
@@ -111721,6 +111982,7 @@
                 "id": 112182
             }
         ],
+        "trigger_cd": 1,
         "name": "레이냐",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11300040.webp",
@@ -112082,6 +112344,7 @@
                 "id": 114022
             }
         ],
+        "trigger_cd": 3.1,
         "name": "헤스티아",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11400010.webp",
@@ -112197,6 +112460,7 @@
                 "id": 114032
             }
         ],
+        "trigger_cd": 3.1,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11400010.webp",
         "skill_id": 114030,
@@ -112309,6 +112573,7 @@
                 "id": 114103
             }
         ],
+        "trigger_cd": 3,
         "name": "류 리온",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11400020.webp",
@@ -112377,6 +112642,7 @@
                 "id": 114111
             }
         ],
+        "trigger_cd": 2,
         "name": "류 리온",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11400020.webp",
@@ -112454,6 +112720,7 @@
                 "id": 114122
             }
         ],
+        "trigger_cd": 2,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11400020.webp",
         "skill_id": 114120,
@@ -112597,6 +112864,7 @@
                 "id": 115021
             }
         ],
+        "trigger_cd": 20,
         "name": "야토가미 토카",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11500010.webp",
@@ -112785,6 +113053,7 @@
                 "id": 115172
             }
         ],
+        "trigger_cd": 5,
         "name": "토비이치 오리가미",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11500020.webp",
@@ -112868,6 +113137,7 @@
     "115180": {
         "requirement": "Default",
         "weapon_true": true,
+        "trigger_cd": 3,
         "name": "토비이치 오리가미",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11500020.webp",
@@ -112912,6 +113182,7 @@
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skillicon/115180.webp",
         "name": "토비이치 오리가미",
         "weapon_true": true,
+        "trigger_cd": 3,
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11500020.webp",
         "skill_id": 115250,
@@ -112966,6 +113237,7 @@
                 "id": 115055
             }
         ],
+        "trigger_cd": 10,
         "name": "이츠카 코토리",
         "position": "후열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11500030.webp",
@@ -113165,6 +113437,7 @@
                 "id": 115143
             }
         ],
+        "trigger_cd": 3,
         "name": "토키사키 쿠루미",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11500050.webp",
@@ -113332,6 +113605,7 @@
                 "time": 3
             }
         ],
+        "trigger_cd": 9,
         "name": "야마이 카구야 · 야마이 유즈루",
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11500060.webp",
@@ -113528,6 +113802,7 @@
                 "time": 3
             }
         ],
+        "trigger_cd": 9,
         "position": "전열",
         "shipyard": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/11500060.webp",
         "skill_id": 115110,
