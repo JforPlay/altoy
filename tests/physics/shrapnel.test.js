@@ -591,3 +591,25 @@ test('flare: solves convertedVelocity and verticalSpeed to land on explodePos at
   assert.ok(Math.abs(b.verticalSpeed - 0.01341640786499874) < 1e-6,
     `expected ~0.01342, got ${b.verticalSpeed}`);
 });
+
+test('inheritAngle child cancels parent heading + child barrage angle to forward', () => {
+  // Parent travelling at +60deg; child barrage angle -60 -> net 0 (forward).
+  const parent = new ShrapnelBulletUnit({
+    velocity: 30, yAngle: 60, range: 1000, rangeOffset: 0, spawnX: 0, spawnY: 0,
+    extraParam: { shrapnel: { 1: { initialSplit: true, emitterType: 'BattleBulletEmitter',
+      inheritAngle: 1, barrage_ID: 901, bullet_ID: 801 } } },
+    barrages: { 901: { primal_repeat: 0, senior_repeat: 0, angle: -60,
+      first_delay: 0, senior_delay: 0, delay: 0, delta_delay: 0 } },
+    bulletTemplates: { 801: { type: 1, velocity: 30, range: 100 } },
+  });
+  parent.FixRange();
+  parent.InitSpeed();
+  parent.timeElapsed += 1 / 30;
+  parent.Update();
+  const [spec] = parent.drainEmits();
+  assert.ok(spec, 'a child was emitted');
+  // Net heading ~0 (forward); allow tiny float error.
+  const norm = ((spec.angle % 360) + 360) % 360;
+  const fwdErr = Math.min(norm, 360 - norm);
+  assert.ok(fwdErr < 0.001, `expected ~0deg forward, got ${spec.angle}`);
+});
