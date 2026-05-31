@@ -171,7 +171,18 @@ export class WeaponSimData {
 
         if (!effectList) return weaponInfoList;
 
+        // Track the last effect's target_choise so "TargetSameToLastEffect"
+        // inherits it, mirroring battleskillunit.lua:68 (_lastEffectTarget is set
+        // per effect; TargetSameToLastEffect returns it). The resolved choise
+        // drives the firing aim decision — NOT weapon.aim_type — because skill
+        // weapons fire via SingleFire, which ignores aim_type (see
+        // targetChoiceAimsAtEnemy + sim.weapon.controller.js fireSingleBullet).
+        let lastTargetChoise;
         for (const effect of effectList) {
+            let targetChoise = effect.target_choise;
+            if (targetChoise === 'TargetSameToLastEffect') targetChoise = lastTargetChoise;
+            if (targetChoise !== undefined) lastTargetChoise = targetChoise;
+
             if (effect.arg_list && effect.arg_list.weapon_id) {
                 const weaponId = effect.arg_list.weapon_id.toString();
 
@@ -191,6 +202,12 @@ export class WeaponSimData {
                     if (effect.arg_list.emitter !== undefined) {
                         weaponInfo.emitter = effect.arg_list.emitter;
                     }
+
+                    // Resolved target_choise (null = a skill effect that resolved
+                    // no enemy → fire forward). Stays absent only for non-skill
+                    // fire paths (e.g. aircraft sub-weapons) so they can fall back
+                    // to aim_type in the controller.
+                    weaponInfo.targetChoise = targetChoise ?? null;
 
                     weaponInfoList.push(weaponInfo);
                     foundWeaponIds.add(weaponId);

@@ -4,6 +4,7 @@ import {
     weaponCooldownSeconds,
     computeBarrageStats,
     formatSkillDesc,
+    targetChoiceAimsAtEnemy,
 } from '../../public/js/simulators/sim.weapon.stats.js';
 
 // ===== weaponCooldownSeconds =====
@@ -103,4 +104,40 @@ test('falls back to raw desc when no data', () => {
 
 test('empty desc → 설명 없음', () => {
     assert.equal(formatSkillDesc('', {}), '설명 없음');
+});
+
+// ===== targetChoiceAimsAtEnemy =====
+// Skill weapons fire via SingleFire, which aims iff the skill resolved an enemy
+// target — NOT by weapon.aim_type. "Harm" target choices select enemies.
+
+test('TargetNil / TargetNull / null / undefined → forward (no aim)', () => {
+    assert.equal(targetChoiceAimsAtEnemy('TargetNil'), false);
+    assert.equal(targetChoiceAimsAtEnemy('TargetNull'), false);
+    assert.equal(targetChoiceAimsAtEnemy(null), false);
+    assert.equal(targetChoiceAimsAtEnemy(undefined), false);
+    assert.equal(targetChoiceAimsAtEnemy(''), false);
+});
+
+test('Harm family → aim at enemy', () => {
+    for (const tc of ['TargetHarmNearest', 'TargetHarmFarthest', 'TargetHarmRandom', 'TargetHarmRandomByWeight']) {
+        assert.equal(targetChoiceAimsAtEnemy(tc), true, tc);
+    }
+});
+
+test('comma-joined combos containing Harm → aim', () => {
+    assert.equal(targetChoiceAimsAtEnemy('TargetAllHarm,TargetShipTag'), true);
+    assert.equal(targetChoiceAimsAtEnemy('TargetAllHarm,TargetShipTag,TargetRandom'), true);
+    assert.equal(targetChoiceAimsAtEnemy('TargetShipTag,TargetHarmRandomByWeight'), true);
+    assert.equal(targetChoiceAimsAtEnemy('TargetAllHarm,TargetLowestHP'), true);
+});
+
+test('self / ally / bare same-IFF tag → forward', () => {
+    assert.equal(targetChoiceAimsAtEnemy('TargetSelf'), false);
+    assert.equal(targetChoiceAimsAtEnemy('TargetPlayerFlagShip'), false);
+    assert.equal(targetChoiceAimsAtEnemy('TargetShipTag'), false);
+});
+
+test('Amagi 봉황의 연으로 부익하리 (skill 150480, TargetNil) fires forward', () => {
+    // The bug report: aim_type=1 weapon, but the skill resolves no target → forward.
+    assert.equal(targetChoiceAimsAtEnemy('TargetNil'), false);
 });

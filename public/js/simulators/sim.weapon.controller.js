@@ -7,6 +7,7 @@
  */
 import { SimulationEngine } from './sim.engine.common.js';
 import { WeaponSimData } from './sim.weapon.data.js';
+import { targetChoiceAimsAtEnemy } from './sim.weapon.stats.js';
 import { AircraftEntity } from './sim.engine.aircraft.js';
 import { SIM_DEFAULT_SPEED, SIM_GAME_COORDS, SIM_TARGET_FPS, convertToMs, registerDefaultBattleEntities } from './sim.ui.js';
 import { isWeaponDriverType, buildWeaponDriverOpts } from './physics/weapons/weapon-registry.js';
@@ -160,6 +161,16 @@ export function createWeaponSim({ container, entities, visualLog }) {
         const rawAngle = weapon.axis_angle ?? weapon.angle ?? 0;
         baseAngle = direction === -1 ? rawAngle + 180 : rawAngle;
 
+        // AIM vs FORWARD is decided by the SKILL effect's target_choise, NOT
+        // weapon.aim_type: skill weapons fire via SingleFire (battleweaponunit.lua
+        // :738), which aims iff the skill resolved a target and never reads
+        // aim_type. weaponInfo.targetChoise is set for every skill-fired barrage
+        // (null = resolved no enemy → forward); it is absent only on the aircraft
+        // sub-weapon path, which fires via the aircraft unit (aim_type applies).
+        const aimAtEnemy = weaponInfo.targetChoise !== undefined
+            ? targetChoiceAimsAtEnemy(weaponInfo.targetChoise)
+            : (weapon.aim_type === 1);
+
         // §E6: BattleShotgunEmitter replaces the barrage angle with a random
         // shotgun spread (vs the normal additive fan). 0 reached skills select
         // it today. Threaded as a param to the fireWave*/fireSingleBullet
@@ -188,11 +199,11 @@ export function createWeaponSim({ container, entities, visualLog }) {
             const actualStartTime = (waveIndex === 0) ? firstDelay : waveStartTime;
 
             if (barrage.delta_delay && barrage.delta_delay !== 0) {
-                fireWaveWithAdvancingDelay(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter);
+                fireWaveWithAdvancingDelay(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter, aimAtEnemy);
             } else if (barrage.delay && barrage.delay !== 0) {
-                fireWaveWithConstantDelay(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter);
+                fireWaveWithConstantDelay(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter, aimAtEnemy);
             } else {
-                fireWaveImmediate(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter);
+                fireWaveImmediate(actualStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter, aimAtEnemy);
             }
 
             if (waveIndex + 1 < seniorRepeatCount) {
@@ -211,36 +222,36 @@ export function createWeaponSim({ container, entities, visualLog }) {
         }
     }
 
-    function fireWaveWithAdvancingDelay(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1, isShotgunEmitter = false) {
+    function fireWaveWithAdvancingDelay(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1, isShotgunEmitter = false, aimAtEnemy = false) {
         const primalRepeatCount = (barrage.primal_repeat || 0) + 1;
         let totalPrimalDelay = 0, currentPrimalInterval = barrage.delay || 0;
         for (let i = 0; i < primalRepeatCount; i++) {
             const bulletFireTime = waveStartTime + totalPrimalDelay;
-            scheduleFireTimer(() => { fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter); }, convertToMs(bulletFireTime));
+            scheduleFireTimer(() => { fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter, aimAtEnemy); }, convertToMs(bulletFireTime));
             totalPrimalDelay += currentPrimalInterval;
             currentPrimalInterval += (barrage.delta_delay || 0);
         }
     }
 
-    function fireWaveWithConstantDelay(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1, isShotgunEmitter = false) {
+    function fireWaveWithConstantDelay(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1, isShotgunEmitter = false, aimAtEnemy = false) {
         const primalRepeatCount = (barrage.primal_repeat || 0) + 1;
         const constantInterval = barrage.delay || 0;
         for (let i = 0; i < primalRepeatCount; i++) {
             const bulletFireTime = waveStartTime + (i * constantInterval);
-            scheduleFireTimer(() => { fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter); }, convertToMs(bulletFireTime));
+            scheduleFireTimer(() => { fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter, aimAtEnemy); }, convertToMs(bulletFireTime));
         }
     }
 
-    function fireWaveImmediate(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1, isShotgunEmitter = false) {
+    function fireWaveImmediate(waveStartTime, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1, isShotgunEmitter = false, aimAtEnemy = false) {
         const primalRepeatCount = (barrage.primal_repeat || 0) + 1;
         scheduleFireTimer(() => {
             for (let i = 0; i < primalRepeatCount; i++) {
-                fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter);
+                fireSingleBullet(i, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction, isShotgunEmitter, aimAtEnemy);
             }
         }, convertToMs(waveStartTime));
     }
 
-    function fireSingleBullet(bulletIndex, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1, isShotgunEmitter = false) {
+    function fireSingleBullet(bulletIndex, weapon, barrage, bulletInfo, startX_game, startY_game, baseAngle, direction = 1, isShotgunEmitter = false, aimAtEnemy = false) {
         const enemyGamePos = simEngine.getEntityGameCoords('enemy');
         let angleModifier;
         if (isShotgunEmitter) {
@@ -329,9 +340,12 @@ export function createWeaponSim({ container, entities, visualLog }) {
             if (rloZ) finalY_game += Math.random() * rloZ * 2 - rloZ;
         }
 
-        // AIM type: compute angle toward enemy from bullet's actual spawn position
+        // AIM vs FORWARD: aimAtEnemy comes from the skill effect's target_choise
+        // (see fireBarrage), faithfully mirroring SingleFire — which aims at the
+        // resolved target or fires forward, ignoring weapon.aim_type. When aiming,
+        // compute the angle toward the enemy from the bullet's actual spawn point.
         let finalAngle;
-        if (weapon.aim_type === 1 && enemyGamePos) {
+        if (aimAtEnemy && enemyGamePos) {
             const aimDx = enemyGamePos.x - finalX_game;
             const aimDy = enemyGamePos.y - finalY_game;
             const aimAngle = Math.atan2(aimDy, aimDx) * 180 / Math.PI;

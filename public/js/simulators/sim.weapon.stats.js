@@ -24,6 +24,31 @@ export function weaponCooldownSeconds(reloadMax, loadSpeed = 100) {
 }
 
 /**
+ * Does a skill effect's target_choise resolve to an aimable ENEMY target?
+ *
+ * WHY this, not weapon.aim_type: skill weapons fire via BattleSkillFire →
+ * weapon:SingleFire (battleweaponunit.lua:738), which aims iff a target was
+ * passed and NEVER reads aim_type. The target is the skill effect's resolved
+ * target list (battleskilleffect.lua Effect():27 — non-empty → DataEffect/aim;
+ * empty → DataEffectWithoutTarget → fire forward at baseAngle).
+ *
+ * The "Harm" family (TargetHarm…, TargetAllHarm, incl. comma-joined combos like
+ * "TargetAllHarm,TargetShipTag,TargetRandom") selects opposite-IFF units, i.e.
+ * enemies (battletargetchoise.lua: GetIFF()*iff == -1 / TargetFoeUncloak), so it
+ * aims. TargetNil/TargetNull (the common "deploy a barrage" case), self, ally
+ * (TargetPlayerFlagShip), and bare same-IFF ship-tag choices have no enemy to
+ * aim at → forward. TargetSameToLastEffect must be resolved to the prior effect's
+ * choise by the caller before reaching here.
+ *
+ * @param {string|null|undefined} targetChoise resolved target_choise of the effect
+ * @returns {boolean} true → aim at enemy; false → fire forward
+ */
+export function targetChoiceAimsAtEnemy(targetChoise) {
+    if (!targetChoise) return false;
+    return /Harm/.test(targetChoise);
+}
+
+/**
  * Bullet-count + geometry for a weapon's barrage(s), mirroring the firing loop
  * in sim.weapon.controller.js (fireWeapon → fireBarrage → fireWave*).
  * Representative rows (waves/bulletsPerWave/delay/seniorDelay/scatter) come from
