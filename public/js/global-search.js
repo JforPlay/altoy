@@ -62,13 +62,18 @@ function init() {
 
     // Close button (mobile)
     document.querySelectorAll('.global-search-close').forEach(btn => {
-        btn.addEventListener('click', closeSearch);
+        btn.addEventListener('click', () => overlay.close());
     });
 
-    // Backdrop click to close
+    // Backdrop click: a click whose target is the dialog itself (i.e. the padding
+    // around the panel, not the panel) means "outside" — close.
     overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeSearch();
+        if (e.target === overlay) overlay.close();
     });
+
+    // Single cleanup funnel: native Esc fires `cancel`→`close`, and close()/backdrop
+    // also fire `close`, so every close route resets state through one handler.
+    overlay.addEventListener('close', onClose);
 
     // Input events
     input.addEventListener('input', debounce(handleSearch, 150));
@@ -78,17 +83,20 @@ function init() {
 // ===== Open / Close =====
 
 function openSearch() {
-    overlay.classList.add('visible');
-    overlay.setAttribute('aria-hidden', 'false');
-    lockBodyScroll();
-    // Defer focus until after the visibility transition applies; focusing a still-hidden input is a no-op in some browsers.
-    requestAnimationFrame(() => input.focus());
+    if (overlay.open) return;
+    // showModal() renders the dialog on the top layer, moves focus to the
+    // [autofocus] input, inerts the background, and enables native Esc-to-close —
+    // all browser guarantees, so the old reflow/rAF focus dance is gone. The
+    // explicit focus() is a harmless backstop now that the dialog is truly shown.
+    overlay.showModal();
+    lockBodyScroll();   // showModal inerts the background but doesn't stop it scrolling
+    input.focus({ preventScroll: true });
 
     // Lazy-load Fuse.js + page index on first open
     if (!pageIndex) {
         ensurePageIndex().then(() => {
             // If user typed during the index build, re-run with Fuse results now available.
-            if (overlay?.classList.contains('visible') && input?.value.trim()) {
+            if (overlay.open && input.value.trim()) {
                 handleSearch();
             }
         });
@@ -122,9 +130,10 @@ async function ensurePageIndex() {
     await pageIndexBuilding;
 }
 
-function closeSearch() {
-    overlay.classList.remove('visible');
-    overlay.setAttribute('aria-hidden', 'true');
+// Runs on the dialog's `close` event — the single funnel for every close route
+// (native Esc, backdrop click, close button). Releases the scroll lock and resets
+// transient search state so the next open starts clean.
+function onClose() {
     unlockBodyScroll();
     input.value = '';
     activeIndex = -1;
@@ -166,7 +175,7 @@ async function loadShipData() {
         });
         // If the user typed a query while we were loading, ship results were
         // skipped (shipIndex was null). Re-run the search now that it's ready.
-        if (overlay?.classList.contains('visible') && input?.value.trim()) {
+        if (overlay.open && input.value.trim()) {
             handleSearch();
         }
     } catch (e) {
@@ -354,15 +363,10 @@ function createShipLink(href, title, iconName) {
 // ===== Keyboard Navigation =====
 
 /**
- * Handle Escape (close), ArrowUp/Down (move highlight), Enter (navigate to result).
+ * Handle ArrowUp/Down (move highlight) and Enter (navigate to result).
+ * Escape is handled natively by <dialog> (cancel → close → onClose).
  */
 function handleKeydown(e) {
-    if (e.key === 'Escape') {
-        e.preventDefault();
-        closeSearch();
-        return;
-    }
-
     if (e.key === 'ArrowDown') {
         e.preventDefault();
         moveHighlight(1);

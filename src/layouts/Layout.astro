@@ -468,12 +468,12 @@ const csp = `default-src 'self'; script-src ${scriptSrc}; worker-src 'self' blob
     <!-- Main content -->
     <slot />
 
-    <!-- Global Search Modal -->
-    <div id="global-search-modal" class="global-search-overlay" aria-hidden="true">
+    <!-- Global Search Modal (native <dialog>; opened with showModal()) -->
+    <dialog id="global-search-modal" class="global-search-overlay">
         <div class="global-search-container">
             <div class="global-search-header">
                 <span class="material-symbols-outlined">search</span>
-                <input type="text" id="global-search-input"
+                <input type="text" id="global-search-input" autofocus
                        placeholder="함순이 이름 또는 페이지 검색..." autocomplete="off">
                 <kbd class="global-search-esc">ESC</kbd>
                 <button class="global-search-close" aria-label="닫기">
@@ -489,7 +489,7 @@ const csp = `default-src 'self'; script-src ${scriptSrc}; worker-src 'self' blob
                 <span><kbd>ESC</kbd> 닫기</span>
             </div>
         </div>
-    </div>
+    </dialog>
 
     <!-- Footer -->
     <footer class="site-footer">

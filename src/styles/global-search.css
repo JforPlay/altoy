@@ -7,25 +7,54 @@
    Two result categories: Pages and Shipgirls.
    ========================================================================== */
 
-/* --- Overlay --- */
+/* --- Overlay (native <dialog>, opened via showModal) --- */
+/* showModal() renders on the top layer (no z-index races), moves focus into the
+   dialog, wires native Esc-to-close, and inerts the background — all for free.
+   The dim + blur live on ::backdrop; the dialog itself is a transparent
+   full-screen flex box so the panel sits near the top and clicks outside it
+   (which land on the dialog) close the modal. */
 .global-search-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1001;
-  background: var(--overlay-heavy);
-  backdrop-filter: blur(4px);
-  display: flex;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  padding: 15vh 1rem 0;
+  border: none;
+  background: transparent;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 15vh;
   opacity: 0;
-  visibility: hidden;
-  transition: opacity var(--transition-base), visibility var(--transition-base);
+  /* allow-discrete animates display/overlay so the fade also plays on close */
+  transition:
+    opacity var(--transition-base),
+    overlay var(--transition-base) allow-discrete,
+    display var(--transition-base) allow-discrete;
 }
 
-.global-search-overlay.visible {
+/* The UA stylesheet hides a closed dialog (display:none); show as flex while open. */
+.global-search-overlay[open] {
+  display: flex;
   opacity: 1;
-  visibility: visible;
+}
+
+/* Animation origin: the dialog enters from display:none, so a @starting-style is
+   required for the open transition to have a "from" state to animate out of. */
+@starting-style {
+  .global-search-overlay[open] {
+    opacity: 0;
+  }
+
+  .global-search-overlay[open] .global-search-container {
+    transform: scale(0.96) translateY(-8px);
+  }
+}
+
+.global-search-overlay::backdrop {
+  background: var(--overlay-heavy);
+  backdrop-filter: blur(4px);
 }
 
 /* --- Container --- */
@@ -41,7 +70,7 @@
   transition: transform var(--transition-base);
 }
 
-.global-search-overlay.visible .global-search-container {
+.global-search-overlay[open] .global-search-container {
   transform: scale(1) translateY(0);
 }
 
@@ -411,7 +440,7 @@
    DARK MODE OVERRIDES
    ========================================================================== */
 
-body.dark-mode .global-search-overlay {
+body.dark-mode .global-search-overlay::backdrop {
   background: var(--overlay-intense);
 }
 
