@@ -11,6 +11,7 @@ import {
     getSkillInfo,
     getAttrKoreanName,
     getShipType,
+    getEquipTypeName,
     createAttrMapping,
     loadSkillIconData,
     loadSkillToIconId,
@@ -18,6 +19,7 @@ import {
 } from './shipgirl-info.data.js';
 import { showMapsModal } from './shipgirl-info.maps.js';
 import { renderRetrofitMap } from './shipgirl-info.retrofit.js';
+import { renderEquipSlotSection } from './shipgirl-info.equip-slots.js';
 
 'use strict';
 
@@ -142,6 +144,7 @@ function renderDetailView(ship) {
         ${renderDetailHeader(ship, nationalityInfo)}
         ${renderGiftSection(ship)}
         ${renderStatsSection(ship, limitBreakOptions)}
+        ${renderEquipSlotSection(ship, getEquipTypeName)}
         ${renderSkillSection(ship)}
         ${renderSpWeaponSection(ship)}
         ${hasRetrofit ? `<div class="retrofit-section" id="retrofitMapSection"></div>` : ''}

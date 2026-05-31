@@ -218,3 +218,65 @@ body.dark-mode .back-button:hover:not(:disabled) {
   box-shadow: 0 4px 12px var(--shadow-hover);
 }
 
+/* ===== Equipment Slot Efficiency ===== */
+.equip-slot-section {
+  background: var(--card-bg);
+  padding: 1.125rem;
+  border-radius: 0.625rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.equip-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.625rem;
+  margin-top: 0.75rem;
+}
+
+/* Mobile: stack one slot per row. */
+@media (max-width: 768px) {
+  .equip-slot-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.equip-slot-card {
+  padding: 0.625rem 0.75rem;
+  background: var(--section-bg);
+  border-radius: 0.5rem;
+  border-left: 3px solid var(--primary-color);
+  font-size: 0.8125rem;
+}
+
+.equip-slot-head {
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: 0.3125rem;
+}
+
+.equip-slot-eff {
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 0.95em;
+}
+
+.equip-slot-eff-retrofit {
+  color: #4caf50;
+  font-weight: bold;
+  font-size: 0.85em;
+}
+
+.equip-slot-mounts {
+  margin-top: 0.25rem;
+  color: var(--text-secondary);
+  font-size: 0.88em;
+}
+
+.equip-slot-retrofit-note {
+  margin-top: 0.25rem;
+  color: #4caf50;
+  font-size: 0.85em;
+}
+

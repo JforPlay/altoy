@@ -9,7 +9,7 @@ import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorag
 import {
     setup as setupData,
     loadData, loadNationalityData, loadAttrTypeData,
-    loadShipTypeData, loadSkillIconData, loadSkillToIconId, loadSkillDataTemplate
+    loadShipTypeData, loadEquipTypeData, loadSkillIconData, loadSkillToIconId, loadSkillDataTemplate
 } from './shipgirl-info.data.js';
 import {
     setup as setupDetail,
@@ -114,7 +114,8 @@ async function init() {
             loadData(),
             loadNationalityData(),
             loadAttrTypeData(),
-            loadShipTypeData()
+            loadShipTypeData(),
+            loadEquipTypeData()
         ]);
         loading.style.display = 'none';
 
