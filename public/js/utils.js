@@ -1089,8 +1089,21 @@ function setupModal(modalId, options = {}) {
     });
 
     if (closeOnBackdrop) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) doClose();
+        // Close only when BOTH the press and the release land on the backdrop.
+        // A `click` targets the common ancestor of its mousedown/mouseup nodes, so a
+        // text-selection drag that starts in the dialog and ends on the dim area would
+        // otherwise resolve to the overlay and wrongly close the modal. Pairing the
+        // down/up targets also makes the intended click-to-close work for markup that
+        // uses a dedicated `.modal-backdrop` child (where the overlay never is e.target).
+        const isBackdrop = (node) =>
+            node === modal || (node instanceof Element && node.classList.contains('modal-backdrop'));
+        let pressedOnBackdrop = false;
+        modal.addEventListener('mousedown', (e) => {
+            pressedOnBackdrop = isBackdrop(e.target);
+        });
+        modal.addEventListener('mouseup', (e) => {
+            if (pressedOnBackdrop && isBackdrop(e.target)) doClose();
+            pressedOnBackdrop = false;
         });
     }
 

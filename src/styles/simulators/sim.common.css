@@ -986,6 +986,7 @@ body.dark-mode {
 
 .search-input {
   width: 100%;
+  box-sizing: border-box; /* keep padding + border inside the 100% so it never overflows the dialog */
   padding: 10px var(--spacing-sm);
   background: var(--bg-input);
   border: 1px solid var(--input-border);
@@ -1010,6 +1011,27 @@ body.dark-mode {
   overflow-y: auto;
   max-height: 50vh;
   padding-right: var(--spacing-xs);
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.ship-grid::-webkit-scrollbar {
+  width: 10px;
+}
+.ship-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+.ship-grid::-webkit-scrollbar-thumb {
+  /* 2px transparent border + padding-box clip leaves the thumb floating inside the gutter */
+  background-color: var(--border-color);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: var(--radius-full);
+  transition: background-color var(--transition-fast);
+}
+.ship-grid::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-secondary);
 }
 
 .ship-grid-item {
