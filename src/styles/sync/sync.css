@@ -114,7 +114,7 @@
     position: fixed;
     inset: 0;
     background: var(--overlay-intense);
-    z-index: 2000;
+    z-index: var(--z-modal);
     align-items: center;
     justify-content: center;
     padding: var(--spacing-md);

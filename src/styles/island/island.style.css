@@ -85,7 +85,7 @@
     --island-z-sticky: 10;
     --island-z-dropdown: 100;
     --island-z-floating: 1000;
-    --island-z-modal: 9999;
+    --island-z-modal: var(--z-modal);
 }
 
 /* Dark Mode Override */

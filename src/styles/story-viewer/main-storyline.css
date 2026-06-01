@@ -62,7 +62,7 @@ body::before {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: var(--z-modal);
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
@@ -443,7 +443,7 @@ body::before {
 .modal {
   display: none;
   position: fixed;
-  z-index: 1000;
+  z-index: var(--z-modal);
   left: 0;
   top: 0;
   width: 100%;

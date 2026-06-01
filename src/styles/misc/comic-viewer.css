@@ -248,7 +248,7 @@ body.dark-mode .loader {
 .lightbox {
   display: none;
   position: fixed;
-  z-index: 1000;
+  z-index: var(--z-modal);
   padding-top: 50px;
   left: 0;
   top: 0;

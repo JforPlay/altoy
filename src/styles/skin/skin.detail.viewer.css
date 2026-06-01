@@ -96,7 +96,7 @@
 .random-skin-modal {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: var(--z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -454,7 +454,7 @@
   justify-content: center;
   transition: all var(--transition-fast);
   box-shadow: var(--shadow-md);
-  z-index: 2001;
+  z-index: calc(var(--z-modal) + 1);
 }
 
 .lightbox-close {

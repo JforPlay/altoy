@@ -379,7 +379,7 @@ section h3 {
     border-radius: 8px;
     padding: 0.75rem 1rem;
     box-shadow: var(--build-sim-shadow-lg);
-    z-index: 10000;
+    z-index: var(--z-modal);
     pointer-events: none;
     min-width: 200px;
 }
@@ -1070,7 +1070,7 @@ section h3 {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10000;
+    z-index: var(--z-modal);
     padding: 1rem;
 }
 

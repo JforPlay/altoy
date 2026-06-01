@@ -4,7 +4,7 @@
   position: fixed;
   inset: 0;
   background: var(--overlay-intense);
-  z-index: 10000;
+  z-index: var(--z-modal);
   justify-content: center;
   align-items: center;
   padding: 1.25rem;
