@@ -6,7 +6,7 @@
  * Exports all data-layer functions used by detail, compare, and upgrade modules.
  */
 
-import { fetchJSON, fetchJSONWithCache } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, DATA_FOR_TOY_BASE } from '../utils.js';
 
 // State reference (set via setup)
 let state;
@@ -146,8 +146,8 @@ export function isInUpgradeTree(equipId) {
 
 // ===== URL Helpers =====
 
-const EQUIP_BASE_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips';
-const SP_WEAPON_BASE_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/spweapon';
+const EQUIP_BASE_URL = `${DATA_FOR_TOY_BASE}/equips`;
+const SP_WEAPON_BASE_URL = `${DATA_FOR_TOY_BASE}/spweapon`;
 
 /** Get equipment icon URL from icon ID */
 export function getEquipIconUrl(iconId) {
@@ -163,7 +163,7 @@ export function getSPWeaponIconUrl(iconId) {
 
 /** Get rarity background image URL (N=1, R=2, SR=3, SSR=4, UR=5) */
 export function getRarityBgUrl(rarity) {
-    return `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/weaponframes/bg${rarity - 1}.webp`;
+    return `${DATA_FOR_TOY_BASE}/weaponframes/bg${rarity - 1}.webp`;
 }
 
 /** Get all unique equipment types from loaded data */
@@ -480,7 +480,7 @@ export function getSkillData(skillId) {
 
 /** SP weapon rarity is shifted: 2=R, 3=SR, 4=SSR */
 const SP_RARITY_TO_EQUIP = { 2: 3, 3: 4, 4: 5 };
-const SP_RARITY_NAMES = { 2: 'R', 3: 'SR', 4: 'SSR' };
+export const SP_RARITY_NAMES = { 2: 'R', 3: 'SR', 4: 'SSR' };
 
 /** SP weapon type → display name mapping */
 const SP_TYPE_NAMES = {

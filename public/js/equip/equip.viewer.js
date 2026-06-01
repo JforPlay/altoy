@@ -19,7 +19,7 @@ import {
     loadUpgradeTemplateData, isInUpgradeTree,
     getEquipIconUrl, getRarityBgUrl, getSPWeaponIconUrl, getUniqueTypes, getUniqueNationalities, getUniqueLabels,
     getFullEquipData, getSkillData, loadSPWeaponData, normalizeSPWeapons, getSPWeaponRawData,
-    enrichEquipDataWithReload
+    enrichEquipDataWithReload, SP_RARITY_NAMES
 } from './equip.data.js';
 import {
     setup as setupDetail,
@@ -546,7 +546,6 @@ function openSPWeaponDetail(spId) {
         reload: '장전', hit: '명중', dodge: '기동', durability: '내구',
         speed: '속력', luck: '행운', antisub: '대잠',
     };
-    const SP_RARITY_NAMES = { 2: 'R', 3: 'SR', 4: 'SSR' };
 
     const iconUrl = getSPWeaponIconUrl(spWeapon.icon);
     const maxLvl = spWeapon.levels ? spWeapon.levels[spWeapon.levels.length - 1] : null;

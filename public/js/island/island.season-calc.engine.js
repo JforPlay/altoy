@@ -5,7 +5,7 @@
  * and pt-per-minute using the resource module's dependency trees. Registers as window.SeasonCalcModule.
  */
 
-import { fetchJSON, getStorageItem, setStorageItem } from '../utils.js';
+import { fetchJSON, getStorageItem, setStorageItem, DATA_FOR_TOY_BASE } from '../utils.js';
 import { renderSeasonBadge, findCurrentSeasonId, getSeasonThematicName } from './island.season-map.js';
 
 'use strict';
@@ -335,10 +335,10 @@ function renderSeasonPass() {
         let iconSrc = '';
         if (tier.isFurniture) {
             // Furniture uses furniture_{id}.png
-            iconSrc = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandfurnitureicon/furniture_${tier.itemId}.webp`;
+            iconSrc = `${DATA_FOR_TOY_BASE}/island/islandfurnitureicon/furniture_${tier.itemId}.webp`;
         } else if (tier.itemInfo.icon) {
             // Regular items use their icon path
-            iconSrc = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${tier.itemInfo.icon.split('/').pop()}.webp`;
+            iconSrc = `${DATA_FOR_TOY_BASE}/island/islandprops/${tier.itemInfo.icon.split('/').pop()}.webp`;
         }
 
         return `
@@ -495,7 +495,7 @@ function renderItemGrid() {
         const hasRecipe = item._hasRecipe || false;
 
         const iconSrc = item.icon
-            ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.webp`
+            ? `${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp`
             : '';
 
         return `

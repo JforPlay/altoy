@@ -4,7 +4,7 @@
  * Both support fuzzy search (Fuse.js) and filter chips (type, rarity, nationality).
  */
 
-import { createSearchIndex, ensureFuse, debounce, setupModal, openModal, closeModal, IMG_FALLBACKS } from '../utils.js';
+import { createSearchIndex, ensureFuse, debounce, setupModal, openModal, closeModal, IMG_FALLBACKS, RARITY_TIERS_DESC as RARITY_ORDER } from '../utils.js';
 import {
     getShipByGid,
     getShipsByPosition,
@@ -50,8 +50,6 @@ let equipRarityChips = null;
 let equipGrid = null;
 
 // ===== Constants =====
-const RARITY_ORDER = ['UR', 'SSR', 'SR', 'R', 'N'];
-
 const RARITY_DISPLAY = {
     UR: 'UR',
     SSR: 'SSR',

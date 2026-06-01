@@ -6,7 +6,7 @@
  * faction tech bonus display, and cross-tab sync via the storage event (shares SAVE_KEY with research-tracker.js).
  */
 
-import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage } from '../utils.js';
+import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, RARITY_TIERS_DESC as rarityOrder } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 document.addEventListener('DOMContentLoaded', () => {
     let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData;
@@ -1096,7 +1096,6 @@ document.addEventListener('DOMContentLoaded', () => {
         rarityChips.id = 'rarity-filter';
 
         const rarities = [...new Set(Object.values(fullShipData).map(s => s.rarity).filter(Boolean))];
-        const rarityOrder = ['UR', 'SSR', 'SR', 'R', 'N'];
         rarities.sort((a, b) => rarityOrder.indexOf(a) - rarityOrder.indexOf(b));
 
         rarities.forEach(r => {

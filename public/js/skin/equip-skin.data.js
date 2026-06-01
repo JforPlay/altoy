@@ -4,7 +4,7 @@
  * Part of the equip skin viewer group (equip-skin-viewer.js + equip-skin.data.js + equip-skin.preview.js).
  * Loads equip skin/theme JSON on init; sim data (weapon/barrage/bullet) deferred to first preview fire.
  */
-import { fetchJSON, fetchJSONWithCache, resolveUrl } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, resolveUrl, DATA_FOR_TOY_BASE } from '../utils.js';
 
 /** Equipment type display names */
 const EQUIP_TYPE_NAMES = {
@@ -17,8 +17,8 @@ const EQUIP_TYPE_NAMES = {
 const RARITY_STARS = { 2: '★★', 3: '★★★', 4: '★★★★', 5: '★★★★★', 6: '★★★★★★' };
 
 /** External asset base URLs */
-const EQUIP_ICON_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/';
-const SKIN_SPRITE_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equip_skin_sprites/';
+const EQUIP_ICON_BASE = `${DATA_FOR_TOY_BASE}/equips/`;
+const SKIN_SPRITE_BASE = `${DATA_FOR_TOY_BASE}/equip_skin_sprites/`;
 
 class EquipSkinData {
     constructor() {

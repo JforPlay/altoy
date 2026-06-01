@@ -6,7 +6,7 @@
  * Covers: tab switching, sidebar rendering, map selection, node overlay, search modal (ship + blueprint).
  */
 
-import { getUrlParam, setUrlParams, showElement, hideElement, openModal, closeModal, setupModal, resolveUrl, debounce, createMaterialIcon } from '../utils.js';
+import { getUrlParam, setUrlParams, showElement, hideElement, openModal, closeModal, setupModal, resolveUrl, debounce, createMaterialIcon, DATA_FOR_TOY_BASE, RARITY_ORDER } from '../utils.js';
 
 import { setup as setupData, loadLiteData, loadFullData, loadShipInfo, loadWorldTargetData, getWorldTargets, getChapterGroup } from './map.data.js';
 import { setup as setupGrid, renderGrid, renderLegend, renderWorldGrid } from './map.grid.js';
@@ -451,7 +451,6 @@ function renderShipSearchResults(query, body) {
     }
 
     // Sort by rarity
-    const RARITY_ORDER = { 'UR': 0, 'SSR': 1, 'SR': 2, 'R': 3, 'N': 4 };
     results.sort((a, b) => (RARITY_ORDER[a.rarity] ?? 5) - (RARITY_ORDER[b.rarity] ?? 5));
 
     if (results.length === 0) {
@@ -556,8 +555,6 @@ function renderBlueprintSearchResults(query, body) {
         renderMessage(body, q ? '검색 결과가 없습니다.' : '설계도 데이터가 없습니다.');
         return;
     }
-
-    const DATA_FOR_TOY_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main';
 
     const BP_RARITY_MAP = { 5: 'UR', 4: 'SSR', 3: 'SR', 2: 'R' };
 

@@ -5,7 +5,7 @@
  * that provides the data URL, timing, group chat icons, and optional type-4 handler.
  * Renders a character selector grid, story dropdown, and auto-advancing message bubbles.
  */
-import { fetchJSON, showElement, createImgElement } from '../utils.js';
+import { fetchJSON, showElement, createImgElement, DATA_FOR_TOY_BASE } from '../utils.js';
 
 const PLACEHOLDER_ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
 
@@ -445,7 +445,7 @@ export class ChatViewerEngine {
     /** Render a sticker image fetched from the emoji asset repo. Wraps in player or character layout. */
     displaySticker(script) {
         const isPlayer = script.ship_group === 0;
-        const stickerUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/emoji/${script.param}.webp`;
+        const stickerUrl = `${DATA_FOR_TOY_BASE}/emoji/${script.param}.webp`;
 
         const container = document.createElement('div');
         container.className = 'sticker-container';

@@ -6,7 +6,7 @@
  * World exploration data requires cross-referencing world_chapter_random.json for Korean names.
  */
 
-import { fetchJSON, fetchJSONWithCache } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, RARITY_ORDER } from '../utils.js';
 
 let state;
 
@@ -180,7 +180,6 @@ export function getShipDropsForChapter(chapterId) {
         }
     }
     // Sort by rarity (UR > SSR > SR > R > N), then boss-only first
-    const RARITY_ORDER = { 'UR': 0, 'SSR': 1, 'SR': 2, 'R': 3, 'N': 4 };
     result.sort((a, b) => {
         const ra = RARITY_ORDER[a.rarity] ?? 5;
         const rb = RARITY_ORDER[b.rarity] ?? 5;

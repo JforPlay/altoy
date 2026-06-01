@@ -7,7 +7,7 @@
  * and L2D/dual cumulative trend charts. Chart.js is loaded via CDN (window.Chart).
  */
 
-import { normalizeRomanNumerals } from '../utils.js';
+import { normalizeRomanNumerals, RARITY_TIERS_DESC as rarityOrder } from '../utils.js';
 import { getAttrKoreanName, getNationalityName, getShipTypeName } from './shipgirl-stats.data.js';
 import { releaseSortKey } from '../skin/skin.dates.js';
 
@@ -123,7 +123,6 @@ function _renderShipSummary(data) {
     if (!container) return;
 
     const rarityCounts = countBy(data, d => d.ship.rarity);
-    const rarityOrder = ['UR', 'SSR', 'SR', 'R', 'N'];
 
     const tags = rarityOrder
         .filter(r => rarityCounts[r])

@@ -18,6 +18,7 @@ import {
 
 const ROWS_PER_PAGE = 50;
 
+// Inverted (rarest=highest) for descending table sort; not utils.RARITY_ORDER.
 const RARITY_ORDER = { UR: 5, SSR: 4, SR: 3, R: 2, N: 1 };
 
 // ===== Column Definitions =====

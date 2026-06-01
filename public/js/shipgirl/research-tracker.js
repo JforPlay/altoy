@@ -7,7 +7,7 @@
  * The storage event keeps both pages in sync across tabs without circular triggering.
  */
 
-import { fetchJSONWithCache, createImg, IMG_FALLBACKS, createSearchIndex, ensureFuse, debounce, syncedStorage } from '../utils.js';
+import { fetchJSONWithCache, createImg, IMG_FALLBACKS, createSearchIndex, ensureFuse, debounce, syncedStorage, RARITY_ORDER as rarityOrder } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 
 const { parseProgress } = ShipgirlTrackerUtils;
@@ -851,7 +851,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        const rarityOrder = { UR: 0, SSR: 1, SR: 2, R: 3, N: 4 };
         for (const key of Object.keys(grouped)) {
             grouped[key].sort((a, b) => {
                 const ra = rarityOrder[a.rarity] ?? 5;
@@ -951,7 +950,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (ships.length === 0) return null;
 
-        const rarityOrder = { UR: 0, SSR: 1, SR: 2, R: 3, N: 4 };
         ships.sort((a, b) => {
             const ra = rarityOrder[a.rarity] ?? 5;
             const rb = rarityOrder[b.rarity] ?? 5;

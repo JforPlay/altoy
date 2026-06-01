@@ -12,6 +12,8 @@
  *   spawn_brownian: depth-axis random wander (0=no, 1=yes, -1=fixed)
  */
 
+import { DATA_FOR_TOY_BASE } from '../utils.js';
+
 export class AircraftEntity {
     constructor(options) {
         this.engine = options.engine;
@@ -68,7 +70,7 @@ export class AircraftEntity {
         const modelId = this.aircraftData.model_ID;
         if (modelId) {
             const img = document.createElement('img');
-            img.src = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/aircrafticon/${modelId}.webp`;
+            img.src = `${DATA_FOR_TOY_BASE}/aircrafticon/${modelId}.webp`;
             img.alt = modelId;
             img.draggable = false;
             img.className = 'aircraft-icon';

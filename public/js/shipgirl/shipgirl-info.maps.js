@@ -7,7 +7,7 @@
  * State is shared via a ref passed to setup() from shipgirl-info.js.
  */
 
-import { showToast, openModal, closeModal, setupModal, IMG_FALLBACKS } from '../utils.js';
+import { showToast, openModal, closeModal, setupModal, IMG_FALLBACKS, RARITY_ORDER } from '../utils.js';
 
 'use strict';
 
@@ -416,7 +416,6 @@ function renderMapBrowserContent() {
     });
 
     // Sort ships within each map by rarity (high to low)
-    const RARITY_ORDER = { 'UR': 0, 'SSR': 1, 'SR': 2, 'R': 3, 'N': 4 };
     filteredData.forEach(data => {
         data.ships.sort((a, b) => (RARITY_ORDER[a.rarity] ?? 5) - (RARITY_ORDER[b.rarity] ?? 5));
     });

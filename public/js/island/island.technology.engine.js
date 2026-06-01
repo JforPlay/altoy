@@ -6,7 +6,7 @@
  * Registers as window.TechnologyModule.
  */
 
-import { fetchJSON, formatTime, getStorageItem, setStorageItem, ensureFuse } from '../utils.js';
+import { fetchJSON, formatTime, getStorageItem, setStorageItem, ensureFuse, DATA_FOR_TOY_BASE } from '../utils.js';
 
 // ===== State =====
 const state = {
@@ -671,7 +671,7 @@ function createSkillTreeNode(tech, x, y, externalDeps = null, currentTechs = [])
             ${topLeftBadges}
             ${toggleButton}
             <div class="node-icon">
-                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandtechnology/${tech.tech_icon}.webp" alt="${tech.tech_name}" />
+                <img src="${DATA_FOR_TOY_BASE}/island/islandtechnology/${tech.tech_icon}.webp" alt="${tech.tech_name}" />
             </div>
             <div class="node-name">
                 <span class="node-level-badge">Lv.${tech.island_level}</span>
@@ -715,7 +715,7 @@ function createTechCard(tech, currentTechs = []) {
             ${lockBadge}
             ${toggleButton}
             <div class="tech-card-icon">
-                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandtechnology/${tech.tech_icon}.webp" alt="${tech.tech_name}" />
+                <img src="${DATA_FOR_TOY_BASE}/island/islandtechnology/${tech.tech_icon}.webp" alt="${tech.tech_name}" />
             </div>
             <div class="tech-card-content">
                 <h4 class="tech-card-name">
@@ -819,7 +819,7 @@ function renderTechnologyDetail(tech) {
             <!-- Header -->
             <div class="tech-detail-header">
                 <div class="tech-detail-icon">
-                    <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandtechnology/${tech.tech_icon}.webp" alt="${tech.tech_name}" />
+                    <img src="${DATA_FOR_TOY_BASE}/island/islandtechnology/${tech.tech_icon}.webp" alt="${tech.tech_name}" />
                 </div>
                 <div class="tech-detail-title">
                     <h2>${tech.tech_name}</h2>
@@ -986,7 +986,7 @@ function renderFormulaDetails(formula) {
                         ${costs.map(([resourceId, amount]) => {
         const resource = state.resourceData[resourceId];
         const resourceName = resource?.name || `Resource #${resourceId}`;
-        const resourceIcon = resource?.icon ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${resource.icon.split('/').pop()}.webp` : '';
+        const resourceIcon = resource?.icon ? `${DATA_FOR_TOY_BASE}/island/islandprops/${resource.icon.split('/').pop()}.webp` : '';
         return `
                             <div class="cost-item">
                                 <div class="cost-resource-display">
@@ -1114,7 +1114,7 @@ function renderResourceTotals(techs) {
         return `
                         <div class="resource-total-item">
                             <div class="resource-total-icon">
-                                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${resourceIcon.split('/').pop()}.webp" alt="${resourceName}" />
+                                <img src="${DATA_FOR_TOY_BASE}/island/islandprops/${resourceIcon.split('/').pop()}.webp" alt="${resourceName}" />
                             </div>
                             <div class="resource-total-info">
                                 <span class="resource-total-name">${resourceName}</span>

@@ -6,7 +6,7 @@
  * and skin counts. Shared state is injected via setup(stateRef).
  */
 
-import { IMG_FALLBACKS, createImgElement, openModal, setupModal } from '../utils.js';
+import { IMG_FALLBACKS, createImgElement, openModal, setupModal, sanitizeClassToken } from '../utils.js';
 import {
     ALL_STATS,
     getAttrKoreanName, getShipIconUrl,
@@ -232,10 +232,6 @@ function createStatRow(label, cells, colClass) {
     row.appendChild(values);
 
     return row;
-}
-
-function sanitizeClassToken(value) {
-    return String(value ?? '').replace(/[^a-z0-9_-]/gi, '');
 }
 
 function getGlobalMax(stat, type) {

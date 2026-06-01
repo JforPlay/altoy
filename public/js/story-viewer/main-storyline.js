@@ -5,7 +5,7 @@
  * faction filter, a scrollable progress bar, and a details modal with BGM preview.
  * Data is loaded from main_story_meta.json on init.
  */
-import { debounce, fetchJSON, hideElement, showElement, resolveUrl, openModal, closeModal as utilsCloseModal, setupModal, makeKeyboardActivatable } from '../utils.js';
+import { debounce, fetchJSON, hideElement, showElement, resolveUrl, openModal, closeModal as utilsCloseModal, setupModal, makeKeyboardActivatable, DATA_FOR_TOY_BASE } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // ===== DOM Elements =====
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const icon = document.createElement('div');
         icon.className = 'item-icon';
         if (itemData.icon) {
-            icon.style.backgroundImage = `url('https://raw.githubusercontent.com/JforPlay/data_for_toy/main/memorystoryline/${itemData.icon}.webp')`;
+            icon.style.backgroundImage = `url('${DATA_FOR_TOY_BASE}/memorystoryline/${itemData.icon}.webp')`;
             icon.style.backgroundSize = 'cover';
             icon.style.backgroundPosition = 'center';
             icon.style.backgroundColor = 'transparent'; // Remove placeholder color if image exists

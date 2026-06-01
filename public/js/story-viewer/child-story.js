@@ -8,7 +8,7 @@
  * categories. Delegates actual script playback to the shared StoryViewer engine
  * (story-viewer.engine.js) by patching its loadData and returnToMemorySelection.
  */
-import { fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, makeKeyboardActivatable, createMaterialIcon } from '../utils.js';
+import { fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, makeKeyboardActivatable, createMaterialIcon, DATA_FOR_TOY_BASE } from '../utils.js';
 
 /**
  * Create a tab-based story viewer instance for a child story page.
@@ -846,7 +846,7 @@ function createTabStoryViewer(config) {
                     const firstBgLine = story.scripts.find(line => line.bgName);
                     if (firstBgLine) {
                         const img = new Image();
-                        img.src = `${window.StoryViewer?.BASE_URL || 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/'}bg/${firstBgLine.bgName}.webp`;
+                        img.src = `${window.StoryViewer?.BASE_URL || `${DATA_FOR_TOY_BASE}/`}bg/${firstBgLine.bgName}.webp`;
                     }
                 }
             }

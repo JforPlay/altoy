@@ -4,7 +4,7 @@
  * Passes Lora-specific data paths, image URLs, and categories to
  * window.createTabStoryViewer (defined in child-story.js).
  */
-import { resolveUrl } from '../utils.js';
+import { resolveUrl, DATA_FOR_TOY_BASE } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const loraConfig = {
@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         imageUrls: {
-            base: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/neweducateicon/',
-            icon: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/memoryicon/',
-            photo: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/neweducateicon/'
+            base: `${DATA_FOR_TOY_BASE}/neweducateicon/`,
+            icon: `${DATA_FOR_TOY_BASE}/memoryicon/`,
+            photo: `${DATA_FOR_TOY_BASE}/neweducateicon/`
         },
 
         placeholderImage: resolveUrl('assets/img/lora_placeholder.webp'),

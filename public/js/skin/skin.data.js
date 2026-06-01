@@ -240,6 +240,7 @@ function getSkinFilterData() {
         });
     }
 
+    // Ascending (common→rare); not utils.RARITY_TIERS_DESC.
     const rarityOrder = ['N', 'R', 'SR', 'SSR', 'UR'];
     return {
         pool,

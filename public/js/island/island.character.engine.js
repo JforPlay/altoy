@@ -5,7 +5,7 @@
  * and search. Registers itself as window.CharacterModule for access by island.engine.js.
  */
 
-import { fetchJSON, createImg, ensureFuse } from '../utils.js';
+import { fetchJSON, createImg, ensureFuse, DATA_FOR_TOY_BASE } from '../utils.js';
 
 // ===== State =====
 const state = {
@@ -212,7 +212,7 @@ function renderCharacterList(characters = null) {
  */
 function createCharacterCard(char) {
     const portraitUrl = char.chara_pic_code
-        ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandshipicon/${char.chara_pic_code}.webp`
+        ? `${DATA_FOR_TOY_BASE}/island/islandshipicon/${char.chara_pic_code}.webp`
         : '';
 
     const isSelected = state.selectedCharacterId === String(char.id);
@@ -275,7 +275,7 @@ function renderCharacterDetail() {
     }
 
     const portraitUrl = char.unit_id
-        ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandcharicon/${char.unit_id}.webp`
+        ? `${DATA_FOR_TOY_BASE}/island/islandcharicon/${char.unit_id}.webp`
         : '';
 
     const currentPower = calculatePower(char, state.selectedLevel);
@@ -739,7 +739,7 @@ function renderSkillSection(char) {
 
     const skill = char.skill_id;
     const iconUrl = skill.icon
-        ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandskillicon/${skill.icon}.webp`
+        ? `${DATA_FOR_TOY_BASE}/island/islandskillicon/${skill.icon}.webp`
         : '';
 
     // Get current skill level value (1-10, index 0-9)
@@ -864,7 +864,7 @@ function renderSkinSection(char) {
 
     const skinCards = char.skin.map(skin => {
         const iconUrl = skin.icon
-            ? `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islanddressicon/${skin.icon}.webp`
+            ? `${DATA_FOR_TOY_BASE}/island/islanddressicon/${skin.icon}.webp`
             : '';
 
         return `
@@ -922,7 +922,7 @@ function renderSkillMaterial(material) {
             </label>
             <div class="skill-material-item">
                 <div class="skill-material-icon">
-                    ${item.icon ? createImg(`https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.webp`, item.name) : '<div class="icon-placeholder">📦</div>'}
+                    ${item.icon ? createImg(`${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp`, item.name) : '<div class="icon-placeholder">📦</div>'}
                 </div>
                 <div class="skill-material-info">
                     <div class="skill-material-name">${item.name}</div>

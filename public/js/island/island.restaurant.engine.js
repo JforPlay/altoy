@@ -6,7 +6,7 @@
  * Registers as window.RestaurantModule.
  */
 
-import { fetchJSON, showElement, hideElement, formatTime, getStorageItem, setStorageItem } from '../utils.js';
+import { fetchJSON, showElement, hideElement, formatTime, getStorageItem, setStorageItem, DATA_FOR_TOY_BASE, dataForToyUrl } from '../utils.js';
 import {
     RANK_COEFFICIENTS, RANK_NAMES, ATTRIBUTE_NAMES, ATTRIBUTE_RANK_VALUES,
     EVENT_BONUSES,
@@ -21,7 +21,8 @@ import {
     calculateDailyPlan,
     openMenuSelectionModal, selectMenusFromModal, selectSlotForModal,
     closeMenuSelectionModal, adjustGlobalQty, selectPresetSlot,
-    closePlannerModal, copyPresetFrom, closeCopyPresetModal
+    closePlannerModal, copyPresetFrom, closeCopyPresetModal,
+    RARITY_BACKGROUNDS
 } from './island.restaurant.planner.js';
 
 'use strict';
@@ -29,10 +30,10 @@ import {
 // ===== Constants (engine-only) =====
 
 const RANK_ICONS = {
-    bronze: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_tong.webp',
-    silver: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_yin.webp',
-    gold: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_jin.webp',
-    diamond: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandrestaurant/rank_zuanshi.webp'
+    bronze: dataForToyUrl('island/islandrestaurant/rank_tong.webp'),
+    silver: dataForToyUrl('island/islandrestaurant/rank_yin.webp'),
+    gold: dataForToyUrl('island/islandrestaurant/rank_jin.webp'),
+    diamond: dataForToyUrl('island/islandrestaurant/rank_zuanshi.webp')
 };
 
 const RANK_COLORS = {
@@ -40,13 +41,6 @@ const RANK_COLORS = {
     silver: '#c0c0c0',
     gold: '#ffd700',
     diamond: '#b9f2ff'
-};
-
-const RARITY_BACKGROUNDS = {
-    1: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_gray.webp',
-    2: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_blue.webp',
-    3: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_purple.webp',
-    4: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_orange.webp'
 };
 
 const STORAGE_KEY_RANK = 'island-restaurant-rank';
@@ -654,7 +648,7 @@ function createMenuCard(itemId, formulaId, restaurantId) {
             <!-- Header -->
             <div class="menu-card-header">
                 <div class="restaurant-menu-icon" style="background-image: url('${rarityBackground}')">
-                    ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '<span class="material-symbols-outlined">restaurant_menu</span>'}
+                    ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '<span class="material-symbols-outlined">restaurant_menu</span>'}
                 </div>
                 <div class="menu-info">
                     <h4 class="menu-name">${profitData.itemName}</h4>

@@ -5,7 +5,7 @@
  * State is shared via a ref passed to setup() from shipgirl-info.js.
  */
 
-import { createImg, IMG_FALLBACKS, showToast, resolveUrl } from '../utils.js';
+import { createImg, IMG_FALLBACKS, showToast, resolveUrl, DATA_FOR_TOY_BASE } from '../utils.js';
 import { setupTooltipToggles } from '../global.script.js';
 import {
     getSkillInfo,
@@ -424,7 +424,7 @@ function renderSpWeaponSection(ship) {
     if (!ship.sp_weapon) return '';
 
     const spWeapon = ship.sp_weapon;
-    const iconUrl = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/spweapon/${spWeapon.icon}.webp`;
+    const iconUrl = `${DATA_FOR_TOY_BASE}/spweapon/${spWeapon.icon}.webp`;
 
     const skillUpgradeIds = (spWeapon.skill_upgrade || [])
         .filter(skillArray => Array.isArray(skillArray) && skillArray.length > 1)
@@ -541,7 +541,7 @@ function generateGiftIcons(dislikedGifts, type) {
     // IDs run from 180001 to 180009
     const allGiftIds = Array.from({ length: 9 }, (_, i) => 180001 + i);
     const dislikedSet = new Set(dislikedGifts || []);
-    const baseUrl = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/props/';
+    const baseUrl = `${DATA_FOR_TOY_BASE}/props/`;
 
     let targetGiftIds;
 

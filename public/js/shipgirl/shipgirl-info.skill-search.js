@@ -226,6 +226,7 @@ function renderShell() {
     }).join('');
 
     // Rarity chips: [전체] [UR] [SSR] [SR] [R] [N].
+    // Has an extra 'all' filter entry; not utils.RARITY_TIERS_DESC.
     const rarityOptions = ['all', 'UR', 'SSR', 'SR', 'R', 'N'];
     const rarityChips = rarityOptions.map(r => {
         const label = r === 'all' ? '전체' : r;

@@ -381,8 +381,18 @@ function createGemIconImg() {
 
 // ===== Game item / material icons =====
 
-/** Base for the JforPlay/data_for_toy icon host. */
-const DATA_FOR_TOY_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main';
+/** Base for the JforPlay/data_for_toy asset host (icons, illustrations, audio, …). */
+export const DATA_FOR_TOY_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main';
+
+/**
+ * Build a data_for_toy asset URL from a repo-relative path.
+ * Centralizes the CDN host so it lives in exactly one place.
+ * @param {string} path - e.g. "memoryicon/akashi.webp" (a leading slash is fine)
+ * @returns {string} absolute raw.githubusercontent URL
+ */
+export function dataForToyUrl(path) {
+    return `${DATA_FOR_TOY_BASE}/${String(path).replace(/^\/+/, '')}`;
+}
 
 /**
  * Resolve an in-game item/material icon to its hosted webp URL.
@@ -404,6 +414,31 @@ function getItemIconUrl(ref, domain = 'props') {
         return `${DATA_FOR_TOY_BASE}/${m[1].toLowerCase()}/${m[2]}.webp`;
     }
     return `${DATA_FOR_TOY_BASE}/${domain}/${s}.webp`;
+}
+
+// ===== Rarity =====
+
+/** Canonical rarity rank, rarest first (UR=0 … N=4). Lower value = rarer. */
+export const RARITY_ORDER = { UR: 0, SSR: 1, SR: 2, R: 3, N: 4 };
+
+/** Canonical rarity tiers, rarest → most common. */
+export const RARITY_TIERS_DESC = ['UR', 'SSR', 'SR', 'R', 'N'];
+
+/**
+ * Sort comparator by rarity, rarest first. Unknown rarities sort last.
+ * @param {string} a @param {string} b @returns {number}
+ */
+export function compareByRarity(a, b) {
+    return (RARITY_ORDER[a] ?? 99) - (RARITY_ORDER[b] ?? 99);
+}
+
+/**
+ * Sanitize an arbitrary value into a safe CSS class token.
+ * Strips everything outside [A-Za-z0-9_-]. Mirrors the former per-page copies.
+ * @param {string} value @returns {string}
+ */
+export function sanitizeClassToken(value) {
+    return String(value ?? '').replace(/[^a-z0-9_-]/gi, '');
 }
 
 // ===== IndexedDB Caching =====

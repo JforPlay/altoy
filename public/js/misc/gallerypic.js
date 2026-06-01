@@ -3,7 +3,7 @@
  * Gallery viewer for in-game illustration images.
  */
 
-import { IMG_FALLBACKS, createImgElement, fetchJSON, openModal, setupModal, requireElements } from '../utils.js';
+import { IMG_FALLBACKS, createImgElement, fetchJSON, openModal, setupModal, requireElements, DATA_FOR_TOY_BASE } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const gallery = document.getElementById('gallery');
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    const baseImageUrl = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/gallerypic/';
+    const baseImageUrl = `${DATA_FOR_TOY_BASE}/gallerypic/`;
 
     function setStatus(message, isError = false) {
         status.textContent = message;

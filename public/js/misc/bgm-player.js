@@ -5,7 +5,7 @@
  * The visualizer is purely cosmetic (sine-wave animation) and does not use Web Audio API analysis.
  */
 
-import { IMG_FALLBACKS, createImgElement, debounce, fetchJSON, makeKeyboardActivatable, requireElements } from '../utils.js';
+import { IMG_FALLBACKS, createImgElement, debounce, fetchJSON, makeKeyboardActivatable, requireElements, DATA_FOR_TOY_BASE } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const albumListEl = document.getElementById('album-list');
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             item.setAttribute('aria-label', album.album_name || `Album ${albumId}`);
 
             const img = createImgElement(
-                `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/musiccover/${encodeURIComponent(album.cover)}.webp`,
+                `${DATA_FOR_TOY_BASE}/musiccover/${encodeURIComponent(album.cover)}.webp`,
                 album.album_name || `Album ${albumId}`,
                 { fallback: IMG_FALLBACKS.CARD }
             );

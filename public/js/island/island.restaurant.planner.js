@@ -6,7 +6,7 @@
  * State is shared via setup() called from island.restaurant.engine.js.
  */
 
-import { showElement, hideElement, getStorageItem, setStorageItem } from '../utils.js';
+import { showElement, hideElement, getStorageItem, setStorageItem, DATA_FOR_TOY_BASE, dataForToyUrl } from '../utils.js';
 import {
     aggregateIngredients,
     groupIngredientsByLocation
@@ -23,11 +23,12 @@ const STORAGE_KEY_PLANNER_PRESETS = 'island-restaurant-planner-presets-v2';
 const PLANNER_SLOTS_PER_RESTAURANT = 4;
 const PLANNER_PRESET_COUNT = 5;
 
-const RARITY_BACKGROUNDS = {
-    1: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_gray.webp',
-    2: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_blue.webp',
-    3: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_purple.webp',
-    4: 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/rarity_orange.webp'
+/** Rarity (1–4) → menu-background image. Shared with the restaurant engine (imported there). */
+export const RARITY_BACKGROUNDS = {
+    1: dataForToyUrl('island/rarity_gray.webp'),
+    2: dataForToyUrl('island/rarity_blue.webp'),
+    3: dataForToyUrl('island/rarity_purple.webp'),
+    4: dataForToyUrl('island/rarity_orange.webp')
 };
 
 // ===== State Reference (set via setup) =====
@@ -329,7 +330,7 @@ function renderPlannerRestaurantCard(restaurantId) {
         }).filter(Boolean) : [];
 
         const iconsHtml = icons.length > 0
-            ? `<div class="preset-mini-grid">${icons.slice(0, 4).map(icon => `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${icon}">`).join('')}</div>`
+            ? `<div class="preset-mini-grid">${icons.slice(0, 4).map(icon => `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${icon}">`).join('')}</div>`
             : `<div class="preset-empty-dash">-</div>`;
 
         return `
@@ -420,7 +421,7 @@ function renderPlannerSlot(restaurantId, slotIndex, slot, menuOptions) {
             <div class="slot-content">
                 ${selectedMenu ? `
                     <div class="slot-icon" style="background-image: url('${rarityBg}')">
-                        <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${selectedMenu.icon}" alt="${selectedMenu.name}">
+                        <img src="${DATA_FOR_TOY_BASE}/island/islandprops/${selectedMenu.icon}" alt="${selectedMenu.name}">
                     </div>
                     <div class="slot-name">${selectedMenu.name}</div>
                     ${renderSeasonBadge(selectedMenu.itemId)}
@@ -468,7 +469,7 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
                                     <div class="slot-number">슬롯 ${idx + 1}</div>
                                     <div class="slot-current">
                                         ${selected ? `
-                                            <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${selected.icon}" alt="${selected.name}">
+                                            <img src="${DATA_FOR_TOY_BASE}/island/islandprops/${selected.icon}" alt="${selected.name}">
                                             <span>${selected.name}</span>
                                         ` : '<span class="empty-text">없음</span>'}
                                     </div>
@@ -491,7 +492,7 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
         return `
                                 <div class="menu-option-item" data-formula-id="${opt.formulaId}">
                                     <div class="menu-option-icon" style="background-image: url('${RARITY_BACKGROUNDS[opt.rarity || 1]}')">
-                                        <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${opt.icon}" alt="${opt.name}">
+                                        <img src="${DATA_FOR_TOY_BASE}/island/islandprops/${opt.icon}" alt="${opt.name}">
                                     </div>
                                     <div class="menu-option-details">
                                         <div class="menu-option-name">${opt.name}</div>
@@ -499,7 +500,7 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
                                         ${ingredients.length > 0 ? `
                                             <div class="menu-option-ingredients">
                                                 ${ingredients.slice(0, 6).map(ing => `
-                                                    <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${ing.icon}" alt="${ing.name}" data-name="${ing.name}">
+                                                    <img src="${DATA_FOR_TOY_BASE}/island/islandprops/${ing.icon}" alt="${ing.name}" data-name="${ing.name}">
                                                 `).join('')}
                                                 ${ingredients.length > 6 ? `<span class="more-count">+${ingredients.length - 6}</span>` : ''}
                                             </div>
@@ -630,7 +631,7 @@ function refreshModalSlots(restaurantId) {
         if (selected) {
             slotEl.classList.add('selected');
             slotCurrent.innerHTML = `
-                <img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${selected.icon}" alt="${selected.name}">
+                <img src="${DATA_FOR_TOY_BASE}/island/islandprops/${selected.icon}" alt="${selected.name}">
                 <span>${selected.name}</span>
             `;
         } else {
@@ -809,7 +810,7 @@ function openCopyPresetModal(restaurantId, targetPresetIndex) {
         }).filter(Boolean) : [];
 
         const iconsHtml = icons.length > 0
-            ? `<div class="preset-mini-grid">${icons.slice(0, 4).map(icon => `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${icon}">`).join('')}</div>`
+            ? `<div class="preset-mini-grid">${icons.slice(0, 4).map(icon => `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${icon}">`).join('')}</div>`
             : `<div class="preset-empty-dash">-</div>`;
 
         return `
@@ -1094,7 +1095,7 @@ function renderPlannerResultsContent() {
         return `
                     <div class="ingredient-card mini rarity-${item.rarity || 1} ${isActive ? 'active' : ''}" data-name="${item.name}">
                         <div class="ingredient-icon">
-                            ${item.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '<span class="material-symbols-outlined">inventory_2</span>'}
+                            ${item.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${item.icon.split('/').pop()}.webp" alt="${item.name}">` : '<span class="material-symbols-outlined">inventory_2</span>'}
                             ${isActive ? `<span class="ingredient-qty">${Math.ceil(qty).toLocaleString()}</span>` : ''}
                         </div>
                     </div>

@@ -6,7 +6,7 @@
  * Registers as window.ResourceModule.
  */
 
-import { fetchJSON, formatTime, openModal, closeModal, setupModal } from '../utils.js';
+import { fetchJSON, formatTime, openModal, closeModal, setupModal, DATA_FOR_TOY_BASE } from '../utils.js';
 import {
     CONSTANTS,
     setup as setupTree,
@@ -439,7 +439,7 @@ function showDependencyModal(title, recipes, direction, sourceRecipe) {
                     <div class="modal-recipe-group">
                         <div class="modal-item-header">
                             <div class="modal-item-icon">
-                                ${itemInfo.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${itemInfo.icon.split('/').pop()}.webp" alt="${itemInfo.name}">` : '📦'}
+                                ${itemInfo.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${itemInfo.icon.split('/').pop()}.webp" alt="${itemInfo.name}">` : '📦'}
                             </div>
                             <div class="modal-item-info">
                                 <h4>${itemInfo.name}</h4>
@@ -452,7 +452,7 @@ function showDependencyModal(title, recipes, direction, sourceRecipe) {
             return `
                                     <div class="modal-recipe-card" data-recipe-id="${recipe.id}">
                                         <div class="modal-recipe-icon">
-                                            ${recipeItem.icon ? `<img src="https://raw.githubusercontent.com/JforPlay/data_for_toy/main/island/islandprops/${recipeItem.icon.split('/').pop()}.webp" alt="${recipeItem.name}">` : '📦'}
+                                            ${recipeItem.icon ? `<img src="${DATA_FOR_TOY_BASE}/island/islandprops/${recipeItem.icon.split('/').pop()}.webp" alt="${recipeItem.name}">` : '📦'}
                                         </div>
                                         <div class="modal-recipe-info">
                                             <div class="modal-recipe-name">${recipe.name || recipeItem.name}</div>

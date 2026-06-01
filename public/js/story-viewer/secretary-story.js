@@ -6,12 +6,13 @@
  * a visible-count indicator, and Fuse.js search with highlight. Uses a
  * MutationObserver to wire checkboxes whenever the engine re-renders the grid.
  */
-import { getStorageItem, setStorageItem, createSearchIndex, ensureFuse, makeKeyboardActivatable } from '../utils.js';
+import { getStorageItem, setStorageItem, createSearchIndex, ensureFuse, makeKeyboardActivatable, DATA_FOR_TOY_BASE, dataForToyUrl } from '../utils.js';
 
 const COMPLETION_STORAGE_KEY = 'secretaryStoryCompletion';
 
 /* Rarity tier order, low → high. Used to render chips in a predictable order
    regardless of which rarities happen to appear first in the data. */
+// Ascending + PR/DR tiers; not utils.RARITY_TIERS_DESC.
 const RARITY_ORDER = ['N', 'R', 'SR', 'SSR', 'UR', 'PR', 'DR'];
 
 function getCompletionData() {
@@ -451,9 +452,9 @@ document.addEventListener('DOMContentLoaded', () => {
             id: shipgirlId,
             name: '아카시',
             icon:
-              'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/312010.webp',
+              dataForToyUrl('skin_shipyard/312010.webp'),
             iconFallback:
-              'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/312010.webp',
+              dataForToyUrl('skin_icon/312010.webp'),
             rarity: 'SSR',
             description: '아카시 상점 진행퀘스트'
           };
@@ -503,8 +504,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const icon =
           memory.story_icon === 'akashi'
-            ? 'https://raw.githubusercontent.com/JForPlay/data_for_toy/main/memoryicon/akashi.webp'
-            : `https://raw.githubusercontent.com/JForPlay/data_for_toy/main/memoryicon/memory_${memory.story_icon}.webp`;
+            ? dataForToyUrl('memoryicon/akashi.webp')
+            : `${DATA_FOR_TOY_BASE}/memoryicon/memory_${memory.story_icon}.webp`;
 
         memories.push({
           id: memory.id || taskId,

@@ -9,6 +9,7 @@ import {
     createIcon,
     createImgElement,
     createMaterialIcon,
+    DATA_FOR_TOY_BASE,
     getBasePath,
     hideElement,
     getStorageItem,
@@ -207,7 +208,7 @@ const EventCarousel = (function () {
     // stale (last refresh 2026-05-08); the WSL pipeline now ships this file from
     // the lua2json conversion of KR/sharecfg/activity_banner.lua.
     const API_URL = `${getBasePath()}/data/activity_banner.json`;
-    const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/activitybanner/';
+    const IMAGE_BASE_URL = `${DATA_FOR_TOY_BASE}/activitybanner/`;
     // Bumped (v2) when the source moved from upstream GitHub to the local file —
     // forces a fresh fetch for users still holding the 30-min stale-cache entry.
     const CACHE_KEY = 'eventBannersCacheV2';

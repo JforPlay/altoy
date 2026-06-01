@@ -4,7 +4,7 @@
  * Image list is fetched dynamically from the GitHub API; supports sort toggle and lightbox.
  */
 
-import { openModal, setupModal, requireElements, renderStatus, observeLazyImages } from '../utils.js';
+import { openModal, setupModal, requireElements, renderStatus, observeLazyImages, DATA_FOR_TOY_BASE } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const gallery = document.getElementById('gallery');
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    const imageBaseUrl = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/mangapic/';
+    const imageBaseUrl = `${DATA_FOR_TOY_BASE}/mangapic/`;
     const apiUrl = 'https://api.github.com/repos/JforPlay/data_for_toy/contents/mangapic';
     const placeholderSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });

@@ -5,7 +5,7 @@
  * then loadAllData() populates it with data and lookup indexes.
  */
 
-import { fetchJSON, fetchJSONWithCache } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, DATA_FOR_TOY_BASE } from '../utils.js';
 
 // State reference (set via setup)
 let state;
@@ -193,10 +193,10 @@ export function getPassiveSkill(skillId) {
 
 // ===== URL Helpers =====
 
-const EQUIP_ICON_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips';
-const EQUIP_FRAME_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/weaponframes';
-const SHIP_SKIN_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon';
-const SP_WEAPON_ICON_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/spweapon';
+const EQUIP_ICON_BASE = `${DATA_FOR_TOY_BASE}/equips`;
+const EQUIP_FRAME_BASE = `${DATA_FOR_TOY_BASE}/weaponframes`;
+const SHIP_SKIN_BASE = `${DATA_FOR_TOY_BASE}/skin_icon`;
+const SP_WEAPON_ICON_BASE = `${DATA_FOR_TOY_BASE}/spweapon`;
 
 /** Get equip icon URL from icon ID */
 export function getEquipIconUrl(iconId) {

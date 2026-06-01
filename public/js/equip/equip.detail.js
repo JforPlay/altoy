@@ -6,7 +6,7 @@
  * Covers: canvas icon compositing, stat rows, weapon/aircraft params, skills, upgrade costs, scrap info.
  */
 
-import { showToast, resolveUrl } from '../utils.js';
+import { showToast, resolveUrl, DATA_FOR_TOY_BASE } from '../utils.js';
 import {
     getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics,
     replaceEquipCodes, getBulletTemplate, getSkillData, getWeaponName,
@@ -526,7 +526,7 @@ function renderStatsRows(equip, level) {
 
 /** Get prop icon URL from property ID */
 function getPropIconUrl(propId) {
-    return `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/props/${propId}.webp`;
+    return `${DATA_FOR_TOY_BASE}/props/${propId}.webp`;
 }
 
 /** Render a list of [propId, quantity] pairs as icon + quantity chips */

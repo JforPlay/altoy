@@ -5,7 +5,7 @@
  * and URL-persisted view/date state.
  */
 
-import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex, ensureFuse, getUrlParam, setUrlParams, debounce, createImgElement, createMaterialIcon } from '../utils.js';
+import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex, ensureFuse, getUrlParam, setUrlParams, debounce, createImgElement, createMaterialIcon, sanitizeClassToken } from '../utils.js';
 
 (() => {
     /**
@@ -111,10 +111,6 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         button.setAttribute('aria-label', label);
         button.appendChild(createMaterialIcon(iconName));
         return button;
-    }
-
-    function sanitizeClassToken(value) {
-        return String(value ?? '').replace(/[^a-z0-9_-]/gi, '');
     }
 
     // ===== Data Loading =====

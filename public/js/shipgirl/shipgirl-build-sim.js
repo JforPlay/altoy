@@ -5,7 +5,8 @@
  * Build stats (total pulls, rarity counts, resources spent) are persisted to localStorage.
  */
 
-import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem, createImgElement, createMaterialIcon, debounce, showToast, openModal, closeModal } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem, createImgElement, createMaterialIcon, debounce, showToast, openModal, closeModal, DATA_FOR_TOY_BASE, RARITY_ORDER, RARITY_TIERS_DESC, sanitizeClassToken } from '../utils.js';
+import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cumulativeChance, formatPercent } from './build-sim.probability.js';
 (function () {
     'use strict';
 
@@ -108,18 +109,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         }
     };
 
-    // N probability is derived as the remainder so all rarities always sum to 100%
-    const POOL_PROBABILITIES = {};
-    Object.keys(POOL_PROBABILITIES_BASE).forEach(poolId => {
-        const baseProbs = POOL_PROBABILITIES_BASE[poolId];
-        const total = Object.values(baseProbs).reduce((sum, val) => sum + val, 0);
-        const nProb = Math.max(0, 100 - total); // Ensure non-negative
-
-        POOL_PROBABILITIES[poolId] = {
-            ...baseProbs,
-            N: nProb
-        };
-    });
+    // N probability is derived as the remainder so all rarities always sum to 100%.
+    const POOL_PROBABILITIES = buildPoolProbabilities(POOL_PROBABILITIES_BASE);
 
     // ===== Pool Probability & Cost Helpers =====
 
@@ -178,10 +169,6 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         empty.className = 'build-sim-empty';
         empty.textContent = message;
         return empty;
-    }
-
-    function sanitizeClassToken(value) {
-        return String(value ?? '').replace(/[^a-z0-9_-]/gi, '');
     }
 
     // ===== Initialization =====
@@ -867,30 +854,13 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
     function getEffectiveProbabilities(poolId) {
         const baseProbs = getPoolProbability(poolId);
 
-        // For despair pools, calculate actual probabilities based on selected ships
+        // For despair pools, a hand-picked UR rises to the pickup rate (N absorbs the diff).
         if (poolId.startsWith('despair-') && state.despairSelections[poolId]) {
-            const selectedShips = state.despairSelections[poolId];
-            const hasUR = selectedShips.some(s => s.rarity === 'UR');
-            const effectiveProbs = { ...baseProbs };
-
-            // If UR is selected, its probability becomes 2%
-            if (hasUR) {
-                const urIncrease = DESPAIR_PICKUP_RATES.UR - baseProbs.UR;
-                effectiveProbs.UR = DESPAIR_PICKUP_RATES.UR;
-                // Reduce N by the UR increase to maintain 100% total
-                effectiveProbs.N = Math.max(0, baseProbs.N - urIncrease);
-            }
-
-            return effectiveProbs;
+            const hasUR = state.despairSelections[poolId].some(s => s.rarity === 'UR');
+            return applyDespairUrPickup(baseProbs, DESPAIR_PICKUP_RATES, hasUR);
         }
 
         return baseProbs;
-    }
-
-    // Format a percent number for display: drops float drift (e.g. 28.7999... → 28.8)
-    // and trims trailing zeros (2 → "2", 2.5 → "2.5", 1.20 → "1.2").
-    function formatPercent(p) {
-        return Number(p.toFixed(2)).toString();
     }
 
     // Update Probability Chart
@@ -904,8 +874,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         legend.replaceChildren();
 
         // Render stacked bar segments
-        const rarityOrder = ['UR', 'SSR', 'SR', 'R', 'N'];
-        rarityOrder.forEach(rarity => {
+        RARITY_TIERS_DESC.forEach(rarity => {
             const percentage = probs[rarity];
 
             if (percentage > 0) {
@@ -966,8 +935,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         });
 
         // Add options by rarity order
-        const rarityOrder = ['UR', 'SSR', 'SR', 'R', 'N'];
-        rarityOrder.forEach(rarity => {
+        RARITY_TIERS_DESC.forEach(rarity => {
             if (groupedShips[rarity]) {
                 const optgroup = document.createElement('optgroup');
                 optgroup.label = rarity;
@@ -1037,20 +1005,14 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
                 .filter(s => (s.isPickup || s.isCustom) && s.pickupRate)
                 .reduce((sum, s) => sum + s.pickupRate, 0);
 
-            // Remaining probability is distributed among non-pickup ships
+            // Remaining probability is distributed evenly among non-pickup ships
             const regularShipsCount = sameRarityShips.filter(s => !s.isPickup && !s.isCustom).length;
-            const remainingProb = Math.max(0, rarityProb * 100 - pickupTotal);
-
-            if (regularShipsCount > 0) {
-                singleProb = remainingProb / regularShipsCount;
-            } else {
-                singleProb = 0;
-            }
+            singleProb = regularShipSingleProb(rarityProb * 100, pickupTotal, regularShipsCount);
         }
 
         // Probability of getting at least 1 in n tries: 1 - (1-p)^n
-        const tenProb = (1 - Math.pow(1 - (singleProb / 100), 10)) * 100;
-        const hundredProb = (1 - Math.pow(1 - (singleProb / 100), 100)) * 100;
+        const tenProb = cumulativeChance(singleProb, 10);
+        const hundredProb = cumulativeChance(singleProb, 100);
 
         document.getElementById('single-prob').textContent = `${singleProb.toFixed(4)}%`;
         document.getElementById('ten-prob').textContent = `${tenProb.toFixed(2)}%`;
@@ -1477,7 +1439,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
                     sid: ship.sid.toString(),
                     name: ship.name,
                     rarity: ship.rarity,
-                    icon: ship.shipyard || `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/${ship.sid}.webp`
+                    icon: ship.shipyard || `${DATA_FOR_TOY_BASE}/skin_icon/${ship.sid}.webp`
                 }));
 
             console.log(`Loaded ${state.shipDatabase.length} ships from database`);
@@ -1785,8 +1747,7 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         let cumulative = 0;
         let selectedRarity = 'N';
 
-        const rarityOrder = ['UR', 'SSR', 'SR', 'R', 'N'];
-        for (const rarity of rarityOrder) {
+        for (const rarity of RARITY_TIERS_DESC) {
             cumulative += probs[rarity];
             if (rand <= cumulative) {
                 selectedRarity = rarity;
@@ -1976,9 +1937,8 @@ import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageIt
         }
 
         // Sort by rarity then name
-        const rarityOrder = { UR: 0, SSR: 1, SR: 2, R: 3, N: 4 };
         filteredShips.sort((a, b) => {
-            const rarityDiff = rarityOrder[a[1].rarity] - rarityOrder[b[1].rarity];
+            const rarityDiff = RARITY_ORDER[a[1].rarity] - RARITY_ORDER[b[1].rarity];
             if (rarityDiff !== 0) return rarityDiff;
             return a[1].name.localeCompare(b[1].name);
         });

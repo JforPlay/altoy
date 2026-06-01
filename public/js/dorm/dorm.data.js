@@ -4,12 +4,12 @@
  * Part of the dorm module group (viewer + data + grid + panel).
  * State is shared via a ref passed to setup() from dorm.viewer.js.
  */
-import { fetchJSON, resolveUrl, createSearchIndex, ensureFuse } from '../utils.js';
+import { fetchJSON, resolveUrl, createSearchIndex, ensureFuse, DATA_FOR_TOY_BASE } from '../utils.js';
 
 /** @type {import('./dorm.viewer.js').DormState} */
 let state;
 
-const ASSET_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main';
+const ASSET_BASE = DATA_FOR_TOY_BASE;
 
 /** Receive the shared state reference from dorm.viewer.js. */
 export function setup(stateRef) {

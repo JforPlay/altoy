@@ -10,7 +10,7 @@
  * rendering, screen shake/flash effects, SFX playback, auto-play, full-script modal,
  * and all keyboard/pointer event wiring.
  */
-import { debounce, fetchJSONWithCache, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, makeKeyboardActivatable } from '../utils.js';
+import { debounce, fetchJSONWithCache, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, makeKeyboardActivatable, DATA_FOR_TOY_BASE } from '../utils.js';
 document.addEventListener('DOMContentLoaded', () => {
     window.StoryViewer = {
         // ===== State & Constants =====
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         COMMANDER_ICON_PATH: resolveUrl('assets/icon/commander.webp'),
-        BASE_URL: "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/",
+        BASE_URL: `${DATA_FOR_TOY_BASE}/`,
         // TODO(sub-project-3): de-Fernando audio. BGM hosting moves to data_for_toy_audio
         // when the audio extraction pipeline lands.
         BGM_URL_PREFIX: "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/",

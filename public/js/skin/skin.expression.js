@@ -11,7 +11,7 @@
  * means no border or sub-pixel offset between layers can reopen the hole. The
  * decoded base is cached per container so an expression switch only redraws.
  */
-import { hideElement, showElement, createImgElement, createIcon, lockBodyScroll, unlockBodyScroll, downloadImage, sanitizeFilename, DATA_VERSION } from '../utils.js';
+import { hideElement, showElement, createImgElement, createIcon, lockBodyScroll, unlockBodyScroll, downloadImage, sanitizeFilename, DATA_VERSION, DATA_FOR_TOY_BASE } from '../utils.js';
 
 // Cap the composite canvas — some paintings are 100+ megapixels (e.g. 이404
 // 317020 is 11830×10224). A canvas that large overflows browser decode/canvas
@@ -188,7 +188,7 @@ function renderImageGallery(skin, container, skinName = '') {
     let baseDir = '';
 
     if (skinId) {
-        baseDir = `https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/${skinId}`;
+        baseDir = `${DATA_FOR_TOY_BASE}/output_expressions/${skinId}`;
         if (state.expressionManifest[skinId]) {
             manifestData = state.expressionManifest[skinId];
         }

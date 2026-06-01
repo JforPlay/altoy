@@ -6,7 +6,7 @@
  * Part of the simulators module group; mirrors sim.weapon.main.js structure.
  */
 
-import { debounce, getUrlParam, setUrlParams, resolveUrl, showElement, hideElement, createImgElement, setupFpsDisplay } from '../utils.js';
+import { debounce, getUrlParam, setUrlParams, resolveUrl, showElement, hideElement, createImgElement, setupFpsDisplay, DATA_FOR_TOY_BASE } from '../utils.js';
 import { SimulationEngine } from './sim.engine.common.js';
 import { AircraftSimData } from './sim.aircraft.data.js';
 import { AircraftEntity } from './sim.engine.aircraft.js';
@@ -27,7 +27,7 @@ import {
     setupSpeedControls
 } from './sim.ui.js';
 
-const EQUIP_ICON_BASE = 'https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips';
+const EQUIP_ICON_BASE = `${DATA_FOR_TOY_BASE}/equips`;
 
 const RARITY_COLORS = {
     2: 'var(--rarity-n)', 3: 'var(--rarity-r)', 4: 'var(--rarity-sr)',
