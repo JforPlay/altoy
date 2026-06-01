@@ -6,7 +6,9 @@
  *  - global.script.js  → derives the LINKS map (so {data-link} anchors and
  *                        page scripts that import LINKS keep working).
  *  - global-search.js  → drives the global search modal (Ctrl+K) results.
- *  - (future)            Layout.astro nav, homepage cards.
+ *  - Layout.astro      → builds the top-nav mega-menus from NAV_STRUCTURE
+ *                        (below), looking each key up in this catalog.
+ *  - (future)            homepage cards.
  *
  * Each entry:
  *  - key         SCREAMING_SNAKE_CASE identifier exposed via LINKS[key]
@@ -16,9 +18,8 @@
  *  - icon        Material Symbols glyph name (matches the layout nav)
  *  - category    High-level grouping (drives the search section)
  *
- * When adding a new page: add an entry here. LINKS auto-derives.
- * The static layout nav in Layout.astro still has to be updated by hand —
- * a future pass will data-drive the nav from this catalog too.
+ * When adding a new page: add an entry here (LINKS + global search auto-derive),
+ * then add its `key` to NAV_STRUCTURE below to place it in the top nav.
  */
 
 export const PAGE_CATALOG = [
@@ -51,6 +52,7 @@ export const PAGE_CATALOG = [
     // ===== Simulators =====
     { key: 'FLEET_SIM',    path: 'simulators/fleet-sim/',    name: '편성 시뮬레이터', description: '함대 편성, 스탯, 장전 시간', icon: 'groups',         category: '시뮬레이터' },
     { key: 'SIM_WEAPON',   path: 'simulators/sim-weapon/',   name: '탄막 시뮬레이터', description: '각종 스킬의 탄막 구경하기',  icon: 'rocket_launch',  category: '시뮬레이터' },
+    { key: 'CROSS_FLEET_BARRAGES', path: 'simulators/cross-fleet-barrages/', name: '지원 탄막 시뮬레이터', description: '타함대 지원 버프/탄막 모아보기', icon: 'blur_on', category: '시뮬레이터' },
     { key: 'SIM_AIRCRAFT', path: 'simulators/sim-aircraft/', name: '함재기 시뮬레이터', description: '함재기 비행 및 무장 시뮬레이션', icon: 'flight',     category: '시뮬레이터' },
 
     // ===== Story =====
@@ -77,6 +79,58 @@ export const PAGE_CATALOG = [
 
     // ===== Other in-game =====
     { key: 'BGM_PLAYER',  path: 'misc/bgm-player/',  name: 'BGM 듣기',     description: '배경음악 플레이어',                  icon: 'music_note', category: '인게임' },
+    { key: 'BGM_MISC',    path: 'misc/bgm-misc/',    name: '기타 BGM',     description: '앨범에 포함되지 않은 BGM',          icon: 'library_music', category: '인게임' },
     { key: 'VALENTINE',   path: 'misc/valentine/',   name: '발렌타인 편지', description: '함순이별 발렌타인 편지 모음',       icon: 'mail',        category: '인게임' },
     { key: 'DORM_VIEWER', path: 'dorm/dorm-viewer/', name: '숙소 가구',     description: '가구 뷰어 & 배치 시뮬',              icon: 'chair',       category: '인게임' },
+];
+
+/** Catalog entry keyed by `key`, for O(1) lookup (nav rendering, future cards). */
+export const PAGE_BY_KEY = new Map(PAGE_CATALOG.map(page => [page.key, page]));
+
+/**
+ * Top-nav layout: how PAGE_CATALOG entries are arranged into the navbar's
+ * mega-menus. Each dropdown → ordered columns → ordered catalog `key`s.
+ *
+ * Layout.astro renders the nav from this structure, resolving each key against
+ * PAGE_CATALOG — so name / path / icon / description stay single-sourced and
+ * cannot drift from search. Placing a page in a menu = add its `key` here.
+ *
+ * Every `key` MUST exist in PAGE_CATALOG; Layout.astro throws at build time on
+ * an unknown key, surfacing typos immediately. Note a catalog `category` does
+ * NOT have to match the dropdown it sits in (e.g. some '스킨' pages live under
+ * the '장비 관련' column) — this structure is the presentation grouping.
+ */
+export const NAV_STRUCTURE = [
+    {
+        label: '함순이/스킨/대사',
+        columns: [
+            { title: '함순이 정보', keys: ['SHIPGIRL_INFO', 'SHIPGIRL_BUILD', 'SHIPGIRL_BIRTHDAY', 'SHIPGIRL_STATS'] },
+            { title: '스킨 & 대사', keys: ['SKIN_DETAIL', 'SKIN_LIST', 'SKIN_POLL', 'SKIN_EXPRESSION'] },
+            { title: '함순이 트래커', keys: ['SHIPGIRL_TRACKER', 'RESEARCH_TRACKER'] },
+        ],
+    },
+    {
+        label: '정보/도구모음',
+        columns: [
+            { title: '각종 계산기/도구', keys: ['MAP_VIEWER', 'ISLAND', 'ISLAND_MISC', 'EVENT_TIMELINE'] },
+            { title: '장비 관련', keys: ['EQUIP_VIEWER', 'EQUIP_UPGRADE', 'SKIN_SD', 'EQUIP_SKIN'] },
+            { title: '각종 시뮬레이터들', keys: ['FLEET_SIM', 'SIM_WEAPON', 'CROSS_FLEET_BARRAGES', 'SIM_AIRCRAFT'] },
+        ],
+    },
+    {
+        label: '스토리보기',
+        columns: [
+            { title: '주요 스토리', keys: ['MAIN_STORY', 'MAIN_STORYLINE', 'WORLD_STORY', 'WORLD_FILE'] },
+            { title: '딸내미 키우기', keys: ['TB_STORY', 'NAVI_STORY', 'LORA_STORY'] },
+            { title: '기타 스토리 컨텐츠', keys: ['SECRETARY_STORY', 'HOF'] },
+        ],
+    },
+    {
+        label: '인게임 컨텐츠',
+        columns: [
+            { title: '소셜 컨텐츠', keys: ['JUUSTAGRAM', 'CHAT_JUUS', 'CHAT_JUUS_HOT_ISSUE', 'CHAT_DORM3D'] },
+            { title: '인게임 일러스트들', keys: ['LOADINGBG', 'COMIC_VIEWER', 'GALLERYPIC'] },
+            { title: '그 외 컨텐츠', keys: ['BGM_PLAYER', 'BGM_MISC', 'VALENTINE', 'DORM_VIEWER'] },
+        ],
+    },
 ];
