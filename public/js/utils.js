@@ -4,7 +4,14 @@
  * Loaded as an ES module via Layout.astro on every page; all page scripts import from here.
  * Provides: data fetching, IndexedDB caching, URL params, visibility, modals, search, toast,
  * cross-tab synchronized localStorage.
+ *
+ * The IndexedDB cache (./cache.db.js) and cross-tab syncedStorage
+ * (./synced-storage.js) live in sibling modules and are re-exported below.
+ * Importing utils.js has NO side effects — call initUtils() once from global.init.js.
  */
+
+import { fetchJSONWithCache, purgeOldCache } from './cache.db.js';
+import { syncedStorage } from './synced-storage.js';
 
 // ===== Module Constants =====
 
@@ -256,7 +263,8 @@ function handleImgError(e) {
         IMG_ONFAIL_ACTIONS[action](img);
     }
 }
-document.addEventListener('error', handleImgError, true);
+// The capture-phase listener for handleImgError is registered in initUtils()
+// (not at import time) so importing utils.js stays side-effect-free.
 
 /**
  * Escape characters that would break a double-quoted HTML attribute value.
@@ -442,232 +450,12 @@ export function sanitizeClassToken(value) {
 }
 
 // ===== IndexedDB Caching =====
-
-/**
- * IndexedDB cache for JSON data.
- * Caches fetched JSON in IndexedDB for fast repeat visits.
- * @namespace CacheDB
- */
-const CacheDB = {
-    DB_NAME: 'altoy-cache',
-    DB_VERSION: 1,
-    STORE_NAME: 'json-cache',
-    _db: null,
-
-    /**
-     * Open (or reuse) the IndexedDB connection
-     * @returns {Promise<IDBDatabase>}
-     */
-    async open() {
-        if (this._db) return this._db;
-
-        return new Promise((resolve, reject) => {
-            const request = indexedDB.open(this.DB_NAME, this.DB_VERSION);
-
-            request.onupgradeneeded = (e) => {
-                const db = e.target.result;
-                if (!db.objectStoreNames.contains(this.STORE_NAME)) {
-                    const store = db.createObjectStore(this.STORE_NAME, { keyPath: 'url' });
-                    store.createIndex('timestamp', 'timestamp', { unique: false });
-                }
-            };
-
-            request.onsuccess = (e) => {
-                this._db = e.target.result;
-                resolve(this._db);
-            };
-
-            request.onerror = (e) => {
-                console.warn('IndexedDB open failed:', e.target.error);
-                reject(e.target.error);
-            };
-        });
-    },
-
-    /**
-     * Get cached data by URL key
-     * @param {string} url - The cache key
-     * @returns {Promise<{url: string, data: any, timestamp: number}|null>}
-     */
-    async get(url) {
-        const db = await this.open();
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction(this.STORE_NAME, 'readonly');
-            const store = tx.objectStore(this.STORE_NAME);
-            const request = store.get(url);
-            request.onsuccess = () => resolve(request.result || null);
-            request.onerror = () => reject(request.error);
-        });
-    },
-
-    /**
-     * Store data in cache
-     * @param {string} url - The cache key
-     * @param {any} data - The data to cache
-     * @returns {Promise<void>}
-     */
-    async put(url, data) {
-        const db = await this.open();
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction(this.STORE_NAME, 'readwrite');
-            const store = tx.objectStore(this.STORE_NAME);
-            store.put({ url, data, timestamp: Date.now() });
-            tx.oncomplete = () => resolve();
-            tx.onerror = () => reject(tx.error);
-        });
-    },
-
-    /**
-     * Delete a specific cache entry
-     * @param {string} url - The cache key to delete
-     * @returns {Promise<void>}
-     */
-    async delete(url) {
-        const db = await this.open();
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction(this.STORE_NAME, 'readwrite');
-            const store = tx.objectStore(this.STORE_NAME);
-            store.delete(url);
-            tx.oncomplete = () => resolve();
-            tx.onerror = () => reject(tx.error);
-        });
-    },
-
-    /**
-     * Clear all cached data
-     * @returns {Promise<void>}
-     */
-    async clear() {
-        const db = await this.open();
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction(this.STORE_NAME, 'readwrite');
-            const store = tx.objectStore(this.STORE_NAME);
-            store.clear();
-            tx.oncomplete = () => resolve();
-            tx.onerror = () => reject(tx.error);
-        });
-    },
-
-    /**
-     * Remove entries older than maxAge
-     * @param {number} maxAge - Maximum age in milliseconds
-     * @returns {Promise<number>} - Number of entries removed
-     */
-    async purgeOld(maxAge) {
-        const db = await this.open();
-        const cutoff = Date.now() - maxAge;
-        let removed = 0;
-
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction(this.STORE_NAME, 'readwrite');
-            const store = tx.objectStore(this.STORE_NAME);
-            const index = store.index('timestamp');
-            const range = IDBKeyRange.upperBound(cutoff);
-            const cursor = index.openCursor(range);
-
-            cursor.onsuccess = (e) => {
-                const c = e.target.result;
-                if (c) {
-                    c.delete();
-                    removed++;
-                    c.continue();
-                }
-            };
-
-            tx.oncomplete = () => resolve(removed);
-            tx.onerror = () => reject(tx.error);
-        });
-    }
-};
-
-/**
- * One-time check: if DATA_VERSION changed since last visit, clear all cached data.
- * This guarantees users always get fresh data after a deploy that bumps the version.
- */
-let _cacheVersionChecked = false;
-async function _ensureCacheVersion() {
-    if (_cacheVersionChecked) return;
-    _cacheVersionChecked = true;
-    try {
-        const key = '__data_version__';
-        const cached = await CacheDB.get(key);
-        if (!cached || cached.data !== DATA_VERSION) {
-            await CacheDB.clear();
-            await CacheDB.put(key, DATA_VERSION);
-        }
-    } catch (e) { /* IndexedDB unavailable, skip */ }
-}
-
-/**
- * Fetch JSON with IndexedDB caching.
- * On first load, fetches from network and stores in IndexedDB.
- * On subsequent loads, returns cached data if within maxAge.
- * Automatically clears all cached data when DATA_VERSION changes.
- *
- * @param {string} url - The URL to fetch (relative or absolute)
- * @param {Object} [options] - Cache options
- * @param {number} [options.maxAge=86400000] - Cache duration in ms (default: 24 hours)
- * @param {boolean} [options.forceRefresh=false] - Skip cache and fetch fresh data
- * @returns {Promise<any>} - The parsed JSON data
- */
-async function fetchJSONWithCache(url, options = {}) {
-    const { maxAge = 24 * 60 * 60 * 1000, forceRefresh = false } = options;
-
-    // Clear stale cache if DATA_VERSION changed (runs once per page load)
-    await _ensureCacheVersion();
-
-    // Resolve the URL for consistent cache keys
-    let cacheKey = url;
-    if (!url.startsWith('http') && !url.startsWith('/')) {
-        cacheKey = `${getBasePath()}/${url}`;
-    }
-
-    // Try cache first (unless forced refresh)
-    if (!forceRefresh) {
-        try {
-            const cached = await CacheDB.get(cacheKey);
-            if (cached && (Date.now() - cached.timestamp) < maxAge) {
-                return cached.data;
-            }
-        } catch (e) {
-            // IndexedDB unavailable, fall through to network
-        }
-    }
-
-    // Fetch from network
-    const data = await fetchJSON(url);
-
-    // Store in cache (fire-and-forget — no await so we return data immediately)
-    CacheDB.put(cacheKey, data).catch(() => {});
-
-    return data;
-}
-
-/**
- * Clear all cached JSON data
- * @returns {Promise<void>}
- */
-async function clearJSONCache() {
-    try {
-        await CacheDB.clear();
-    } catch (e) {
-        console.warn('Failed to clear cache:', e);
-    }
-}
-
-/**
- * Purge old cache entries (call periodically or on app start)
- * @param {number} [maxAge=604800000] - Max age in ms (default: 7 days)
- * @returns {Promise<number>} - Number of entries removed
- */
-async function purgeOldCache(maxAge = 7 * 24 * 60 * 60 * 1000) {
-    try {
-        return await CacheDB.purgeOld(maxAge);
-    } catch (e) {
-        console.warn('Failed to purge cache:', e);
-        return 0;
-    }
-}
+//
+// The IndexedDB JSON cache (CacheDB, fetchJSONWithCache, clearJSONCache,
+// purgeOldCache) lives in ./cache.db.js. utils.js imports fetchJSONWithCache +
+// purgeOldCache from there: fetchJSONWithCache is re-exported below; purgeOldCache
+// is scheduled by initUtils(). The utils <-> cache.db import cycle is import-safe
+// (no cross-module reads at module-eval time).
 
 // ===== Storage Utilities =====
 
@@ -711,124 +499,11 @@ function setStorageItem(key, value) {
 }
 
 // ===== Cross-Tab Synchronized Storage =====
-
-/**
- * Cross-tab synchronized localStorage primitive.
- * Wraps localStorage with: storage-event subscription (cross-tab updates),
- * try/catch isolation, optional write debouncing, and optional schema versioning.
- *
- * Use this for any feature that wants other open tabs to see its writes
- * (trackers, planners, fleet sim saves, restaurant menus, etc.). Each feature
- * defines the *contract* (parse/onRemoteChange callbacks); this helper owns
- * the *transport* (storage event, JSON, envelope, debounce).
- *
- * Goes through setStorageItem on writes, so keys listed in SYNCED_KEYS
- * still trigger the Drive-sync dirty flag.
- *
- * @param {string} key - localStorage key. Caller defines the constant.
- * @param {object} options
- * @param {(value: any) => any} options.parse - Validate untrusted JS value (post-JSON.parse,
- *   post-envelope-unwrap) into clean state. Receives null when storage is empty/malformed.
- *   Must never throw — return a sane empty state for null input.
- * @param {(newState: any) => void} [options.onRemoteChange] - Called when another tab writes
- *   this key. Receives the post-parse state. Not called for writes from the current tab.
- * @param {number} [options.debounce] - If > 0, coalesce save() calls within this many ms.
- * @param {number} [options.version] - If set, wrap writes in {v, d} envelope. Lets future
- *   schema changes detect old payloads via `migrate`.
- * @param {(oldVersion: number, oldData: any) => any} [options.migrate] - Run on read when
- *   stored version differs. For legacy un-versioned payloads, oldVersion is 0.
- * @returns {{ load(): any, save(state: any): void, close(): void }}
- *
- * @example
- *   const store = syncedStorage('myFeatureProgress', {
- *       parse: (v) => (v && typeof v === 'object') ? v : {},
- *       onRemoteChange: (next) => { state = next; render(); },
- *       debounce: 200,
- *       version: 1,
- *   });
- *   state = store.load();
- *   store.save(state);
- */
-function syncedStorage(key, options) {
-    const {
-        parse,
-        onRemoteChange,
-        debounce: debounceMs,
-        version,
-        migrate,
-    } = options || {};
-
-    if (!key || typeof parse !== 'function') {
-        throw new Error('syncedStorage requires a key and a parse function');
-    }
-
-    function unwrap(raw) {
-        if (raw == null || raw === '') return null;
-        let parsed;
-        try {
-            parsed = JSON.parse(raw);
-        } catch {
-            return null;
-        }
-        if (version == null) return parsed;
-        const isEnvelope = parsed && typeof parsed === 'object' && !Array.isArray(parsed)
-            && 'v' in parsed && 'd' in parsed;
-        if (isEnvelope) {
-            if (parsed.v === version) return parsed.d;
-            return typeof migrate === 'function' ? migrate(parsed.v, parsed.d) : parsed.d;
-        }
-        // Un-versioned (legacy) payload — let migrate decide what to do with it.
-        return typeof migrate === 'function' ? migrate(0, parsed) : parsed;
-    }
-
-    function wrap(state) {
-        const payload = version != null ? { v: version, d: state } : state;
-        return JSON.stringify(payload);
-    }
-
-    function load() {
-        try {
-            return parse(unwrap(getStorageItem(key, null)));
-        } catch (err) {
-            console.error(`syncedStorage(${key}): load failed`, err);
-            return parse(null);
-        }
-    }
-
-    function writeNow(state) {
-        try {
-            setStorageItem(key, wrap(state));
-        } catch (err) {
-            console.error(`syncedStorage(${key}): save failed`, err);
-        }
-    }
-
-    const save = debounceMs > 0 ? debounce(writeNow, debounceMs) : writeNow;
-
-    function onStorage(e) {
-        if (e.key !== key || typeof onRemoteChange !== 'function') return;
-        // storage event fires only in OTHER tabs — always remote.
-        try {
-            onRemoteChange(parse(unwrap(e.newValue)));
-        } catch (err) {
-            console.error(`syncedStorage(${key}): onRemoteChange failed`, err);
-        }
-    }
-
-    if (typeof window !== 'undefined') {
-        window.addEventListener('storage', onStorage);
-    }
-
-    return {
-        load,
-        save,
-        close() {
-            if (typeof window !== 'undefined') {
-                window.removeEventListener('storage', onStorage);
-            }
-        },
-    };
-}
+//
+// The syncedStorage primitive lives in ./synced-storage.js (it builds on
+// getStorageItem/setStorageItem + debounce, which stay here). utils.js imports
+// and re-exports syncedStorage below. SYNCED_KEYS stays in this module (its only
+// consumer is setStorageItem above).
 
 // ===== String Normalization =====
 
@@ -1706,24 +1381,48 @@ function observeLazyImages(root, options = {}) {
 
 // ===== Initialization =====
 
-// Safari pre-16.4 lacks requestIdleCallback. Fall back to setTimeout so module init never throws.
+// Safari pre-16.4 lacks requestIdleCallback. Fall back to setTimeout so init never throws.
 const _ric = typeof requestIdleCallback === 'function'
     ? requestIdleCallback
     : (cb) => setTimeout(cb, 100);
 
-if (typeof indexedDB !== 'undefined') {
-    _ric(() => purgeOldCache(), { timeout: 5000 });
-    // Re-purge every 6h while the tab is open. Browsers throttle setInterval to
-    // ~1Hz on hidden tabs, so the wake cost on a backgrounded tab is negligible
-    // — but a tab kept open for days won't accumulate stale entries up to the
-    // IndexedDB quota.
-    setInterval(() => _ric(() => purgeOldCache(), { timeout: 5000 }), 6 * 60 * 60 * 1000);
+let _initialized = false;
+/**
+ * Register utils.js's runtime side effects. Call ONCE per page — global.init.js
+ * does this on every page. Kept out of module-eval so importing utils.js (or
+ * anything importing it) is side-effect-free and safe in a non-DOM context such
+ * as node tests.
+ *
+ * Registers the document-level image-error fallback handler (data-fallback /
+ * data-onfail) and schedules the periodic IndexedDB stale-entry purge.
+ */
+function initUtils() {
+    if (_initialized) return;
+    _initialized = true;
+
+    // Image fallback handler. The `error` event doesn't bubble — listen in capture phase.
+    if (typeof document !== 'undefined') {
+        document.addEventListener('error', handleImgError, true);
+    }
+
+    // Periodic IndexedDB cache purge.
+    if (typeof indexedDB !== 'undefined') {
+        _ric(() => purgeOldCache(), { timeout: 5000 });
+        // Re-purge every 6h while the tab is open. Browsers throttle setInterval to
+        // ~1Hz on hidden tabs, so the wake cost on a backgrounded tab is negligible
+        // — but a tab kept open for days won't accumulate stale entries up to the
+        // IndexedDB quota.
+        setInterval(() => _ric(() => purgeOldCache(), { timeout: 5000 }), 6 * 60 * 60 * 1000);
+    }
 }
 
 // ===== ES Module Exports =====
 export {
     // Module constants
     DATA_VERSION,
+
+    // Initialization (call once per page from global.init.js)
+    initUtils,
 
     // Core utilities
     debounce,
@@ -1743,8 +1442,9 @@ export {
     createGemIconImg,
     getItemIconUrl,
 
-    // Cache utilities (CacheDB / clearJSONCache / purgeOldCache are internal —
-    // not exported; the recurring purge runs from the init block below)
+    // Cache utilities — implemented in ./cache.db.js, re-exported here.
+    // (CacheDB / clearJSONCache / purgeOldCache stay internal to that module;
+    //  the recurring purge is scheduled from initUtils().)
     fetchJSONWithCache,
 
     // URL parameter utilities
