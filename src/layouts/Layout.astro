@@ -6,6 +6,7 @@
 interface Props {
     title?: string;
     bodyClass?: string;
+    theme?: string;
     description?: string;
     base?: string;
 }
@@ -13,6 +14,7 @@ interface Props {
 const {
     title = "벽람 장난감",
     bodyClass = "",
+    theme,
     description = "ALtoy - Azur Lane KR fan-made web viewer",
     base = "/altoy"
 } = Astro.props;
@@ -65,7 +67,7 @@ const csp = `default-src 'self'; script-src ${scriptSrc}; worker-src 'self' blob
     <slot name="head" />
 </head>
 
-<body class={bodyClass}>
+<body class={bodyClass} data-theme={theme || undefined}>
     <!-- Navigation -->
     <slot name="nav">
         <nav class="navbar">

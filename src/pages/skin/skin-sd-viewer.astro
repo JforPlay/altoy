@@ -9,7 +9,7 @@ import '../../styles/skin/skin.sd.viewer.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="벽람항로 설비스킨 뷰어" {base}>
+<Layout title="벽람항로 설비스킨 뷰어" theme="accent" {base}>
     <Fragment slot="head">
         <script is:inline src="https://cdn.jsdelivr.net/npm/pixi.js@5.3.12/dist/pixi.min.js"></script>
         <!-- Patches PIXI's ShaderSystem so it doesn't use new Function() — required under our strict CSP (no 'unsafe-eval'). Must load before pixi-spine. -->
