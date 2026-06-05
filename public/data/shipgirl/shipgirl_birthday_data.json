@@ -7345,5 +7345,41 @@
         "일": "20",
         "group_id": "106005",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/10600150.webp"
+    },
+    {
+        "ID": "738",
+        "룽섭 이름": "U-2501",
+        "레어도": "UR",
+        "함종": "잠수",
+        "진영": "철혈",
+        "연": "1944",
+        "월": "5",
+        "일": "12",
+        "group_id": "40815",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/408150.webp"
+    },
+    {
+        "ID": "739",
+        "룽섭 이름": "Z14",
+        "레어도": "SR",
+        "함종": "구축",
+        "진영": "철혈",
+        "연": "1935",
+        "월": "11",
+        "일": "5",
+        "group_id": "40114",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401140.webp"
+    },
+    {
+        "ID": "740",
+        "룽섭 이름": "Z15",
+        "레어도": "SR",
+        "함종": "구축",
+        "진영": "철혈",
+        "연": "1936",
+        "월": "9",
+        "일": "26",
+        "group_id": "40115",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401150.webp"
     }
 ]
