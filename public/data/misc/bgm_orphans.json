@@ -431,6 +431,18 @@
             }
         ]
     },
+    "battle-hrr": {
+        "name": "battle-hrr",
+        "cues": [
+            "圣印同盟军_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "圣印同盟军_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-hrr/%E5%9C%A3%E5%8D%B0%E5%90%8C%E7%9B%9F%E5%86%9B_AL.opus"
+            }
+        ]
+    },
     "battle-inthememory": {
         "name": "battle-inthememory",
         "cues": [
@@ -716,6 +728,18 @@
             {
                 "cue": "审判机来袭_PX",
                 "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-thechariotvii/%E5%AE%A1%E5%88%A4%E6%9C%BA%E6%9D%A5%E8%A2%AD_PX.opus"
+            }
+        ]
+    },
+    "battle-theemperoriv-question": {
+        "name": "battle-theemperoriv-question",
+        "cues": [
+            "皇帝质询_Eden"
+        ],
+        "tracks": [
+            {
+                "cue": "皇帝质询_Eden",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/battle-theemperoriv-question/%E7%9A%87%E5%B8%9D%E8%B4%A8%E8%AF%A2_Eden.opus"
             }
         ]
     },
@@ -3419,6 +3443,30 @@
             }
         ]
     },
+    "story-hrr": {
+        "name": "story-hrr",
+        "cues": [
+            "皇冠之重_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "皇冠之重_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-hrr/%E7%9A%87%E5%86%A0%E4%B9%8B%E9%87%8D_AL.opus"
+            }
+        ]
+    },
+    "story-hrr-pv": {
+        "name": "story-hrr-pv",
+        "cues": [
+            "未分晨昏的启明星_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "未分晨昏的启明星_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-hrr-pv/%E6%9C%AA%E5%88%86%E6%99%A8%E6%98%8F%E7%9A%84%E5%90%AF%E6%98%8E%E6%98%9F_PV.opus"
+            }
+        ]
+    },
     "story-ironblood-light": {
         "name": "story-ironblood-light",
         "cues": [
@@ -3935,6 +3983,18 @@
             }
         ]
     },
+    "story-richang-softlight": {
+        "name": "story-richang-softlight",
+        "cues": [
+            "浮金暖梦_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "浮金暖梦_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-softlight/%E6%B5%AE%E9%87%91%E6%9A%96%E6%A2%A6_PV.opus"
+            }
+        ]
+    },
     "story-richang-sooth": {
         "name": "story-richang-sooth",
         "cues": [
@@ -3944,6 +4004,18 @@
             {
                 "cue": "BZM_29",
                 "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-sooth/BZM_29.opus"
+            }
+        ]
+    },
+    "story-richang-wavelight": {
+        "name": "story-richang-wavelight",
+        "cues": [
+            "悠然一夏_PV"
+        ],
+        "tracks": [
+            {
+                "cue": "悠然一夏_PV",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/story-richang-wavelight/%E6%82%A0%E7%84%B6%E4%B8%80%E5%A4%8F_PV.opus"
             }
         ]
     },
@@ -4727,6 +4799,18 @@
             }
         ]
     },
+    "theme-goldensea": {
+        "name": "theme-goldensea",
+        "cues": [
+            "奢华！享梦！浮金湾_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "奢华！享梦！浮金湾_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-goldensea/%E5%A5%A2%E5%8D%8E%EF%BC%81%E4%BA%AB%E6%A2%A6%EF%BC%81%E6%B5%AE%E9%87%91%E6%B9%BE_AL.opus"
+            }
+        ]
+    },
     "theme-helena": {
         "name": "theme-helena",
         "cues": [
@@ -4772,6 +4856,18 @@
             {
                 "cue": "深谷来客_AL",
                 "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-hospital-deep/%E6%B7%B1%E8%B0%B7%E6%9D%A5%E5%AE%A2_AL.opus"
+            }
+        ]
+    },
+    "theme-hrr": {
+        "name": "theme-hrr",
+        "cues": [
+            "神圣联合帝国之诗_AL"
+        ],
+        "tracks": [
+            {
+                "cue": "神圣联合帝国之诗_AL",
+                "music_link": "https://raw.githubusercontent.com/JforPlay/audio_for_toy/main/bgm/theme-hrr/%E7%A5%9E%E5%9C%A3%E8%81%94%E5%90%88%E5%B8%9D%E5%9B%BD%E4%B9%8B%E8%AF%97_AL.opus"
             }
         ]
     },

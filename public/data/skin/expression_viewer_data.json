@@ -3170,6 +3170,58 @@
     "painting_n": null
   },
   {
+    "id": "900545",
+    "name": "생 루이",
+    "painting": {
+      "faces": [
+        "1",
+        "6",
+        "3",
+        "2",
+        "7",
+        "4",
+        "5",
+        "8"
+      ],
+      "box": [
+        672,
+        505,
+        305,
+        305
+      ],
+      "size": [
+        2512,
+        1482
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900545/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900545/painting_face_{faceId}.png"
+    },
+    "painting_n": {
+      "faces": [
+        "1",
+        "6",
+        "3",
+        "2",
+        "7",
+        "4",
+        "5",
+        "8"
+      ],
+      "box": [
+        672,
+        505,
+        305,
+        305
+      ],
+      "size": [
+        2512,
+        1482
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900545/painting_n.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900545/painting_n_face_{faceId}.png"
+    }
+  },
+  {
     "id": "900397",
     "name": "샹파뉴",
     "painting": {
@@ -3692,6 +3744,54 @@
     "painting_n": null
   },
   {
+    "id": "900546",
+    "name": "아비터·엠퍼러·IV",
+    "painting": {
+      "faces": [
+        "5",
+        "2",
+        "3",
+        "6",
+        "1",
+        "4"
+      ],
+      "box": [
+        2149,
+        749,
+        149,
+        151
+      ],
+      "size": [
+        4500,
+        4150
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900546/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900546/painting_face_{faceId}.png"
+    },
+    "painting_n": {
+      "faces": [
+        "5",
+        "2",
+        "3",
+        "6",
+        "1",
+        "4"
+      ],
+      "box": [
+        2149,
+        749,
+        149,
+        151
+      ],
+      "size": [
+        4500,
+        4150
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900546/painting_n.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900546/painting_n_face_{faceId}.png"
+    }
+  },
+  {
     "id": "900478",
     "name": "아비터·채리엇·VII",
     "painting": {
@@ -3815,6 +3915,60 @@
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900286/painting_face_{faceId}.png"
     },
     "painting_n": null
+  },
+  {
+    "id": "900542",
+    "name": "아우구스트 폰 파르제팔",
+    "painting": {
+      "faces": [
+        "8",
+        "5",
+        "4",
+        "3",
+        "6",
+        "1",
+        "7",
+        "9",
+        "2"
+      ],
+      "box": [
+        2709,
+        655,
+        197,
+        196
+      ],
+      "size": [
+        5458,
+        3142
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900542/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900542/painting_face_{faceId}.png"
+    },
+    "painting_n": {
+      "faces": [
+        "8",
+        "5",
+        "4",
+        "3",
+        "6",
+        "1",
+        "7",
+        "9",
+        "2"
+      ],
+      "box": [
+        2709,
+        655,
+        197,
+        196
+      ],
+      "size": [
+        5458,
+        3142
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900542/painting_n.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900542/painting_n_face_{faceId}.png"
+    }
   },
   {
     "id": "900517",
@@ -4528,6 +4682,56 @@
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900429/painting_n.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900429/painting_n_face_{faceId}.png"
+    }
+  },
+  {
+    "id": "900544",
+    "name": "엠덴",
+    "painting": {
+      "faces": [
+        "1",
+        "6",
+        "4",
+        "3",
+        "2",
+        "5",
+        "7"
+      ],
+      "box": [
+        1607,
+        616,
+        1001,
+        393
+      ],
+      "size": [
+        4340,
+        2582
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900544/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900544/painting_face_{faceId}.png"
+    },
+    "painting_n": {
+      "faces": [
+        "1",
+        "6",
+        "4",
+        "3",
+        "2",
+        "5",
+        "7"
+      ],
+      "box": [
+        1607,
+        616,
+        1001,
+        393
+      ],
+      "size": [
+        4340,
+        2582
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900544/painting_n.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900544/painting_n_face_{faceId}.png"
     }
   },
   {
@@ -5260,6 +5464,56 @@
       ],
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900328/painting_n.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900328/painting_n_face_{faceId}.png"
+    }
+  },
+  {
+    "id": "900543",
+    "name": "재너스",
+    "painting": {
+      "faces": [
+        "5",
+        "3",
+        "7",
+        "1",
+        "4",
+        "6",
+        "2"
+      ],
+      "box": [
+        955,
+        659,
+        392,
+        365
+      ],
+      "size": [
+        3660,
+        2134
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900543/painting.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900543/painting_face_{faceId}.png"
+    },
+    "painting_n": {
+      "faces": [
+        "5",
+        "3",
+        "7",
+        "1",
+        "4",
+        "6",
+        "2"
+      ],
+      "box": [
+        955,
+        659,
+        392,
+        365
+      ],
+      "size": [
+        3660,
+        2134
+      ],
+      "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900543/painting_n.png",
+      "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900543/painting_n_face_{faceId}.png"
     }
   },
   {

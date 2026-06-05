@@ -1754,6 +1754,25 @@
     },
     "95": {
         "id": 95,
+        "name": "성인 전의 동맹",
+        "description": "「기사, 괴츠 폰 베를리힝겐.」\n「이 성인 앞에서 엄숙히 맹세합니다.」\n「어떤 대가를 치르더라도 목숨을 아끼지 않고」\n「반드시 이 신성한 대지를 지키겠습니다.」\n「계속 싸워, 이윽고――」",
+        "summary": "",
+        "shipnation": [
+            4,
+            10,
+            6
+        ],
+        "bgm": "theme-hrr",
+        "link_event": [
+            96
+        ],
+        "chapter": 5,
+        "column": 59,
+        "row": 0,
+        "icon": "InterludeOne_2"
+    },
+    "96": {
+        "id": 96,
         "name": "敬请期待",
         "description": "敬请期待",
         "summary": "",
@@ -1761,7 +1780,7 @@
         "bgm": "",
         "link_event": "",
         "chapter": 0,
-        "column": 59,
+        "column": 60,
         "row": 0,
         "icon": ""
     }

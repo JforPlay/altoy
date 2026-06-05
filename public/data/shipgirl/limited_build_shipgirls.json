@@ -5,29 +5,29 @@
             "build_name": "기간 한정",
             "banner_type": 2,
             "shipgirls": {
-                "70502": {
-                    "name": "소비에츠키 소유즈",
+                "40507": {
+                    "name": "괴츠 폰 베를리힝겐",
                     "rarity": "UR",
-                    "nationality": 7,
-                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/705020.webp"
+                    "nationality": 4,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405070.webp"
                 },
-                "70111": {
-                    "name": "오그네보이",
+                "40317": {
+                    "name": "프린츠 모리츠",
                     "rarity": "SSR",
-                    "nationality": 7,
-                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/701110.webp"
+                    "nationality": 4,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/403170.webp"
                 },
-                "970207": {
-                    "name": "파먀티 메르쿠리야·META",
+                "970605": {
+                    "name": "엘베·META",
                     "rarity": "SSR",
                     "nationality": 97,
-                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9702070.webp"
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/9706050.webp"
                 },
-                "70508": {
-                    "name": "폴타바",
+                "40115": {
+                    "name": "Z15",
                     "rarity": "SR",
-                    "nationality": 7,
-                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/705080.webp"
+                    "nationality": 4,
+                    "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401150.webp"
                 }
             }
         },

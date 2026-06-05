@@ -12821,6 +12821,66 @@
         ],
         "rarity": "SR"
     },
+    "40114": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401140.webp",
+        "name": "Z14",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 2,
+        "add_level_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_level_value": 1,
+        "class": 40106,
+        "id": 40114,
+        "max_star": 5,
+        "pt_get": 10,
+        "pt_level": 16,
+        "pt_upgrage": 22,
+        "nationality": 4,
+        "type": 1,
+        "description": [
+            "이벤트: 성인 전의 동맹"
+        ],
+        "rarity": "SR"
+    },
+    "40115": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401150.webp",
+        "name": "Z15",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 2,
+        "add_level_shiptype": [
+            1,
+            20,
+            21
+        ],
+        "add_level_value": 1,
+        "class": 40106,
+        "id": 40115,
+        "max_star": 5,
+        "pt_get": 10,
+        "pt_level": 16,
+        "pt_upgrage": 22,
+        "nationality": 4,
+        "type": 1,
+        "description": [
+            "이벤트: 성인 전의 동맹"
+        ],
+        "rarity": "SR"
+    },
     "40116": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401160.webp",
         "name": "Z16",
@@ -13953,6 +14013,36 @@
         ],
         "rarity": "SR"
     },
+    "40317": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403170.webp",
+        "name": "프린츠 모리츠",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            3,
+            13,
+            18
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 2,
+        "add_level_shiptype": [
+            3,
+            13,
+            18
+        ],
+        "add_level_value": 1,
+        "class": 40304,
+        "id": 40317,
+        "max_star": 6,
+        "pt_get": 22,
+        "pt_level": 32,
+        "pt_upgrage": 44,
+        "nationality": 4,
+        "type": 3,
+        "description": [
+            "이벤트: 성인 전의 동맹"
+        ],
+        "rarity": "SSR"
+    },
     "40401": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/404010.webp",
         "name": "샤른호르스트",
@@ -14325,6 +14415,36 @@
             "이벤트: 오늘의 지휘 연습"
         ],
         "rarity": "SR"
+    },
+    "40507": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/405070.webp",
+        "name": "괴츠 폰 베를리힝겐",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            4,
+            5,
+            10
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 2,
+        "add_level_shiptype": [
+            4,
+            5,
+            10
+        ],
+        "add_level_value": 2,
+        "class": 40503,
+        "id": 40507,
+        "max_star": 6,
+        "pt_get": 56,
+        "pt_level": 86,
+        "pt_upgrage": 114,
+        "nationality": 4,
+        "type": 5,
+        "description": [
+            "이벤트: 성인 전의 동맹"
+        ],
+        "rarity": "UR"
     },
     "40601": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/406010.webp",
@@ -14905,6 +15025,34 @@
             "이벤트: 네온시티의 탐색자"
         ],
         "rarity": "SSR"
+    },
+    "40815": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/408150.webp",
+        "name": "U-2501",
+        "add_get_attr": 8,
+        "add_get_shiptype": [
+            8,
+            17
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 3,
+        "add_level_shiptype": [
+            8,
+            17
+        ],
+        "add_level_value": 2,
+        "class": 40807,
+        "id": 40815,
+        "max_star": 6,
+        "pt_get": 19,
+        "pt_level": 29,
+        "pt_upgrage": 39,
+        "nationality": 4,
+        "type": 8,
+        "description": [
+            "이벤트: 성인 전의 동맹"
+        ],
+        "rarity": "UR"
     },
     "49901": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/499010.webp",
@@ -20767,6 +20915,32 @@
         ],
         "rarity": "SSR"
     },
+    "970212": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702120.webp",
+        "name": "쾨니히스베르크·META",
+        "add_get_attr": 1,
+        "add_get_shiptype": [
+            2
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 1,
+        "add_level_shiptype": [
+            2
+        ],
+        "add_level_value": 1,
+        "class": 970212,
+        "id": 970212,
+        "max_star": 5,
+        "pt_get": 10,
+        "pt_level": 16,
+        "pt_upgrage": 21,
+        "nationality": 97,
+        "type": 2,
+        "description": [
+            "META 연구실·정보 동기화"
+        ],
+        "rarity": "SR"
+    },
     "970301": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9703010.webp",
         "name": "트렌토·META",
@@ -21522,6 +21696,32 @@
             "META 연구실·월드 투어"
         ],
         "rarity": "SR"
+    },
+    "970605": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9706050.webp",
+        "name": "엘베·META",
+        "add_get_attr": 5,
+        "add_get_shiptype": [
+            6
+        ],
+        "add_get_value": 1,
+        "add_level_attr": 6,
+        "add_level_shiptype": [
+            6
+        ],
+        "add_level_value": 1,
+        "class": 970605,
+        "id": 970605,
+        "max_star": 6,
+        "pt_get": 17,
+        "pt_level": 26,
+        "pt_upgrage": 35,
+        "nationality": 97,
+        "type": 6,
+        "description": [
+            "이벤트: 성인 전의 동맹"
+        ],
+        "rarity": "SSR"
     },
     "970701": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9707010.webp",

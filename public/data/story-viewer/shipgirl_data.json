@@ -3495,6 +3495,10 @@
         "name": "숙녀와 서러브레드",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/204034.webp"
     },
+    "204035": {
+        "name": "그녀를 위한 엘레강스",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/204035.webp"
+    },
     "204038": {
         "name": "순결한 사랑",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/204038.webp"
@@ -4146,6 +4150,10 @@
     "301042": {
         "name": "푸른 하늘과 크레이프",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301042.webp"
+    },
+    "301043": {
+        "name": "떡과 해프닝",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/301043.webp"
     },
     "301050": {
         "name": "아야나미",
@@ -5959,6 +5967,10 @@
         "name": "옥좌 위에 핀 꽃",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307151.webp"
     },
+    "307152": {
+        "name": "푸른 물결의 인어",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307152.webp"
+    },
     "307158": {
         "name": "물빛 달의 화촉",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/307158.webp"
@@ -6295,6 +6307,22 @@
         "name": "전략적 데이트 솔루션",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401131.webp"
     },
+    "401140": {
+        "name": "{namecode:560}",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401140.webp"
+    },
+    "401141": {
+        "name": "여름날의 미아",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401141.webp"
+    },
+    "401150": {
+        "name": "{namecode:561}",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401150.webp"
+    },
+    "401151": {
+        "name": "벌룬 댄스",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401151.webp"
+    },
     "401160": {
         "name": "Z16",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/401160.webp"
@@ -6607,6 +6635,10 @@
         "name": "햇빛 아래의 온천 거리",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403012.webp"
     },
+    "403019": {
+        "name": "아드미랄 히퍼·改",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403019.webp"
+    },
     "403020": {
         "name": "블뤼허",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403020.webp"
@@ -6779,6 +6811,14 @@
         "name": "꼬마 에기르",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403160.webp"
     },
+    "403170": {
+        "name": "{namecode:559}",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403170.webp"
+    },
+    "403171": {
+        "name": "램프 마인의 소원 게임",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/403171.webp"
+    },
     "404010": {
         "name": "샤른호르스트",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/404010.webp"
@@ -6942,6 +6982,14 @@
     "405060": {
         "name": "꼬마 프리드리히",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/405060.webp"
+    },
+    "405070": {
+        "name": "{namecode:557}",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/405070.webp"
+    },
+    "405071": {
+        "name": "환상에 잠긴 붉은 달",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/405071.webp"
     },
     "406010": {
         "name": "베저",
@@ -7191,6 +7239,14 @@
         "name": "특별 관광 서비스",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/408141.webp"
     },
+    "408150": {
+        "name": "{namecode:558}",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/408150.webp"
+    },
+    "408151": {
+        "name": "물의 장막 너머의 보물",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/408151.webp"
+    },
     "431230": {
         "name": "시크릿 리빙룸",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/431230.webp"
@@ -7218,6 +7274,10 @@
     "499012": {
         "name": "초록과 파랑의 편안함",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/499012.webp"
+    },
+    "499013": {
+        "name": "암청빛 두근거림",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/499013.webp"
     },
     "499018": {
         "name": "포옹 속의 심연",
@@ -10287,6 +10347,26 @@
         "name": "{namecode:555}",
         "icon": null
     },
+    "900542": {
+        "name": "{namecode:481}",
+        "icon": null
+    },
+    "900543": {
+        "name": "재너스",
+        "icon": null
+    },
+    "900544": {
+        "name": "{namecode:448}",
+        "icon": null
+    },
+    "900545": {
+        "name": "생 루이",
+        "icon": null
+    },
+    "900546": {
+        "name": "아비터·엠퍼러·IV",
+        "icon": null
+    },
     "901010": {
         "name": "르 마르스 ",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/901010.webp"
@@ -10370,6 +10450,14 @@
     "901072": {
         "name": "후각 진단 너스콜",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/901072.webp"
+    },
+    "901073": {
+        "name": "스웨티 다이빙",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/901073.webp"
+    },
+    "901074": {
+        "name": "스웨티 다이빙",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/901074.webp"
     },
     "901110": {
         "name": "르 말랭 ",
@@ -10759,6 +10847,10 @@
         "name": "레겐스부르크·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702110.webp"
     },
+    "9702120": {
+        "name": "{namecode:421}·META",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9702120.webp"
+    },
     "9703010": {
         "name": "트렌토·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9703010.webp"
@@ -10862,6 +10954,10 @@
     "9706040": {
         "name": "호쇼·META",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9706040.webp"
+    },
+    "9706050": {
+        "name": "{namecode:468}·META",
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/9706050.webp"
     },
     "9707010": {
         "name": "히류·META",

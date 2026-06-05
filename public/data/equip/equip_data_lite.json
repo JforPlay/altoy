@@ -33049,5 +33049,60 @@
             }
         ],
         "compare_group": 5
+    },
+    {
+        "id": 151160,
+        "name": "선체 개량 설계안",
+        "icon": "800",
+        "rarity": 5,
+        "rarity_name": "SSR",
+        "type": 10,
+        "type_name": "기타",
+        "type_name2": "기타",
+        "nationality": 4,
+        "nation_name": "메탈 블러드",
+        "nation_code": "KMS",
+        "speciality": "<[NA]>",
+        "label": [
+            "KMS",
+            "DEV"
+        ],
+        "tech": 3,
+        "level_count": 14,
+        "attrs": [
+            {
+                "key": "torpedo",
+                "name": "뇌장",
+                "value": "18"
+            },
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": 48
+            },
+            {
+                "key": "raid_distance",
+                "name": "raid_distance",
+                "value": -8
+            }
+        ],
+        "max_attrs": [
+            {
+                "key": "torpedo",
+                "name": "뇌장",
+                "value": "50"
+            },
+            {
+                "key": "durability",
+                "name": "내구",
+                "value": 142
+            },
+            {
+                "key": "raid_distance",
+                "name": "raid_distance",
+                "value": -8
+            }
+        ],
+        "compare_group": 5
     }
 ]
