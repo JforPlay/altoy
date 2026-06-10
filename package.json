@@ -11,6 +11,7 @@
     "check:data": "node scripts/check-data-shape.mjs",
     "check:orphans": "node scripts/check-orphans.mjs",
     "test": "node --test",
+    "test:smoke": "playwright test",
     "build": "npm run check:versions && npm run check:data && npm run data:split && astro build && node scripts/minify.mjs",
     "build:no-minify": "npm run check:versions && npm run check:data && astro build",
     "preview": "astro preview",
@@ -20,6 +21,7 @@
     "astro": "^6.1.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "sharp": "^0.34.5",
     "terser": "^5.46.0"
   }

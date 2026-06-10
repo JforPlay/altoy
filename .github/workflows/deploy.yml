@@ -46,6 +46,22 @@ jobs:
       - name: Build Astro site
         run: npm run build
 
+      # Smoke layer: boots every PAGE_CATALOG page from `astro preview` in
+      # headless Chromium; fails on uncaught exceptions / same-origin non-image
+      # HTTP failures (see tests/smoke/pages.spec.mjs). Hard gate — a page that
+      # doesn't boot blocks the deploy.
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Smoke test (every page boots)
+        run: npm run test:smoke
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
