@@ -1278,6 +1278,23 @@ body.dark-mode .tooltip-toggle-button:hover {
   color: var(--success-color);
 }
 
+/* Retry button appended by loadPageData() inside a .page-status-error */
+.page-status-retry {
+  display: block;
+  margin: var(--spacing-sm, 0.5rem) auto 0;
+  padding: 0.4rem 1.1rem;
+  border: none;
+  border-radius: var(--radius-md, 0.5rem);
+  background: var(--primary-color);
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.page-status-retry:hover {
+  filter: brightness(1.1);
+}
+
 /* --- Mobile Responsive (Global Components) ---
    Adjustments for utility components on mobile devices */
 @media (max-width: 768px) {

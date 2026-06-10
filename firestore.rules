@@ -14,15 +14,26 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // Vote queue: authenticated users can only create their own votes
+    // Vote queue: authenticated users can only create their own votes.
+    // Doc ID is bound to {uid}_{clientId} and only `create` is allowed, so a
+    // second vote for the same skin is rejected here — no Cloud Function
+    // invocation, no quota cost. The function's transaction dedup remains as
+    // the backstop for the brief window after it deletes a processed doc.
     match /vote_queue/{voteId} {
       allow create: if request.auth != null
         && request.resource.data.userId == request.auth.uid
+        && request.resource.data.clientId is string
+        && request.resource.data.clientId.matches('^[0-9]{1,12}$')
+        && voteId == request.auth.uid + '_' + request.resource.data.clientId
+        && request.resource.data.rating is int
         && request.resource.data.rating >= 1
         && request.resource.data.rating <= 5
-        && request.resource.data.clientId is string
         && request.resource.data.skinName is string
-        && request.resource.data.characterName is string;
+        && request.resource.data.skinName.size() <= 200
+        && request.resource.data.characterName is string
+        && request.resource.data.characterName.size() <= 200
+        && request.resource.data.keys().hasOnly(
+             ['userId', 'clientId', 'rating', 'skinName', 'characterName', 'timestamp']);
       allow read, update, delete: if false;
     }
 

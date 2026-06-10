@@ -35,6 +35,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run tests
+        run: npm test
+
+      # Advisory by design (see scripts/check-orphans.mjs) — surfaced in logs, never blocks deploy
+      - name: Check orphans (advisory)
+        run: npm run check:orphans
+        continue-on-error: true
+
       - name: Build Astro site
         run: npm run build
 

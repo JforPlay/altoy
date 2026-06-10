@@ -23,7 +23,7 @@ import { syncedStorage } from './synced-storage.js';
  * Must stay in sync with public/sw.js CACHE_VERSION. Bumping just one
  * leaves the other cache stale on first visit. See CLAUDE.md "Cache & Data Versioning".
  */
-const DATA_VERSION = '1.27.2';
+const DATA_VERSION = '1.28.0';
 
 /**
  * localStorage keys that participate in Google Drive sync.
@@ -441,6 +441,22 @@ export function compareByRarity(a, b) {
 }
 
 /**
+ * Escape a value for safe interpolation into HTML text or a double-quoted
+ * attribute. Full &<>"' set — safe in both contexts. Mirrors the former
+ * per-page copies (equip.upgrade / shipgirl-info / fleet-sim.ui / skill-search).
+ * @param {*} value @returns {string}
+ */
+export function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[char]));
+}
+
+/**
  * Sanitize an arbitrary value into a safe CSS class token.
  * Strips everything outside [A-Za-z0-9_-]. Mirrors the former per-page copies.
  * @param {string} value @returns {string}
@@ -778,6 +794,14 @@ function closeModal(modalId, options = {}) {
  * @param {boolean}  [options.restoreFocus=false] - Forwarded to closeModal
  * @param {Function} [options.onClose] - Forwarded to closeModal
  */
+/**
+ * Modal elements already wired by setupModal. Repeat calls on the same element
+ * are no-ops — without this, each call stacks another document-level Escape
+ * listener and re-binds close buttons. Keyed on the element (not the id) so a
+ * re-rendered replacement modal still gets wired.
+ */
+const setupModalRegistry = new WeakSet();
+
 function setupModal(modalId, options = {}) {
     const {
         closeButtonSelector = '.close-button, .modal-close',
@@ -790,6 +814,8 @@ function setupModal(modalId, options = {}) {
 
     const modal = document.getElementById(modalId);
     if (!modal) return;
+    if (setupModalRegistry.has(modal)) return;
+    setupModalRegistry.add(modal);
 
     const doClose = () => closeModal(modalId, { setAriaHidden, restoreFocus, onClose });
 
@@ -1328,6 +1354,66 @@ function renderStatus(container, message, type = 'info', options = {}) {
 }
 
 /**
+ * Standard page-data bootstrap: shows a loading status in `container`, runs
+ * `load()`, and on failure replaces it with a standardized error message plus
+ * a retry button that re-runs `load()`. Resolves with load()'s return value
+ * once it (eventually) succeeds, so page init stays linear:
+ *
+ *   const data = await loadPageData(() => fetchJSONWithCache('data/x.json'), listEl,
+ *       { contextLabel: 'My page' });
+ *   if (data === null) return; // only when container is missing
+ *   render(data);
+ *
+ * The loader must THROW (reject) on failure — don't pre-catch inside it.
+ * On success the container is cleared; render content into it right after.
+ * Without a container there is nowhere to mount the retry UI, so a failure
+ * resolves null and the caller should abort init.
+ *
+ * @template T
+ * @param {() => Promise<T>} load - Data loader; rejects on failure
+ * @param {HTMLElement|null} container - Status host (the page's list/gallery/status element)
+ * @param {Object} [options]
+ * @param {string} [options.loadingMessage='데이터를 불러오는 중...']
+ * @param {string} [options.errorMessage='데이터를 불러오지 못했습니다.']
+ * @param {string} [options.retryLabel='다시 시도']
+ * @param {string} [options.contextLabel='Page'] - Console diagnostic prefix
+ * @param {(err: Error) => void} [options.onError] - Per-attempt failure hook (toast etc.)
+ * @returns {Promise<T|null>}
+ */
+function loadPageData(load, container, options = {}) {
+    const {
+        loadingMessage = '데이터를 불러오는 중...',
+        errorMessage = '데이터를 불러오지 못했습니다.',
+        retryLabel = '다시 시도',
+        contextLabel = 'Page',
+        onError,
+    } = options;
+
+    return new Promise((resolve) => {
+        const attempt = async () => {
+            renderStatus(container, loadingMessage, 'loading');
+            try {
+                const data = await load();
+                renderStatus(container, '');
+                resolve(data);
+            } catch (err) {
+                console.error(`${contextLabel}: data load failed`, err);
+                if (typeof onError === 'function') onError(err);
+                const status = renderStatus(container, errorMessage, 'error');
+                if (!status) { resolve(null); return; }
+                const retry = document.createElement('button');
+                retry.type = 'button';
+                retry.className = 'page-status-retry';
+                retry.textContent = retryLabel;
+                retry.addEventListener('click', attempt, { once: true });
+                status.appendChild(retry);
+            }
+        };
+        attempt();
+    });
+}
+
+/**
  * Observe `<img class="lazy" data-src="...">` descendants of `root` and swap
  * `data-src` to `src` when each enters the viewport. Falls back to immediate
  * load when IntersectionObserver is unavailable.
@@ -1494,5 +1580,6 @@ export {
     // DOM lifecycle utilities
     requireElements,
     renderStatus,
+    loadPageData,
     observeLazyImages
 };

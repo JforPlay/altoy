@@ -1557,6 +1557,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (bgmName && bgmName !== this.currentBgm) {
                 const requested = bgmName;
+                // Pause before swapping src — a slow load of the new track must not
+                // leave the previous one audible in the gap.
+                this.audio.pause();
                 this.audio.src = `${this.BGM_URL_PREFIX}${requested}.ogg`;
                 this.audio.play()
                     .then(() => { this.currentBgm = requested; })
