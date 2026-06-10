@@ -3,7 +3,7 @@
  * Run after `astro build` to minify all JS files
  */
 import { readdir, readFile, writeFile, stat } from 'fs/promises';
-import { join } from 'path';
+import { join, basename } from 'path';
 import { minify } from 'terser';
 
 const DIST_SCRIPTS = './dist/js';
@@ -41,10 +41,18 @@ async function minifyFile(filePath) {
         const code = await readFile(filePath, 'utf-8');
         const originalSize = Buffer.byteLength(code, 'utf-8');
 
-        const result = await minify(code, terserOptions);
+        // Keyed input + sourceMap options give prod stack traces a readable
+        // source: a self-contained <name>.js.map (includeSources embeds the
+        // original) deployed next to each file — only fetched when DevTools opens.
+        const name = basename(filePath);
+        const result = await minify({ [name]: code }, {
+            ...terserOptions,
+            sourceMap: { filename: name, url: `${name}.map`, includeSources: true }
+        });
 
         if (result.code) {
             await writeFile(filePath, result.code);
+            if (result.map) await writeFile(`${filePath}.map`, result.map);
             const newSize = Buffer.byteLength(result.code, 'utf-8');
             const savings = ((1 - newSize / originalSize) * 100).toFixed(1);
             console.log(`  ✓ ${filePath} (${savings}% smaller)`);

@@ -7,7 +7,7 @@
  * ship type, nationality), threshold filters, and compare mode event wiring.
  */
 
-import { debounce, hideElement, showToast, setupScrollToTop, toggleElement } from '../utils.js';
+import { debounce, hideElement, showToast, setupScrollToTop, toggleElement, onThemeChange } from '../utils.js';
 import { setup as setupData, loadAllData, PRIMARY_STATS, getSkinTypeList, classifyGimmick, recomputeSkinStats } from './shipgirl-stats.data.js';
 import { setup as setupDashboard, renderShipDashboard, renderSkinDashboard, renderTopStatChart, destroyAllCharts } from './shipgirl-stats.dashboard.js';
 import { setup as setupTable, renderShipTable, renderSkinTable } from './shipgirl-stats.table.js';
@@ -449,22 +449,10 @@ function setupEventListeners() {
         });
     }
 
-    // Theme change detection via MutationObserver
-    const observer = new MutationObserver(mutations => {
-        const relevant = mutations.some(m =>
-            m.type === 'attributes' &&
-            m.attributeName === 'class' &&
-            (m.oldValue || '').includes('dark-mode') !== document.body.classList.contains('dark-mode')
-        );
-        if (relevant) {
-            destroyAllCharts();
-            renderActiveTab();
-        }
-    });
-    observer.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['class'],
-        attributeOldValue: true,
+    // Chart.js bakes colors in at creation — rebuild the active tab on theme flip
+    onThemeChange(() => {
+        destroyAllCharts();
+        renderActiveTab();
     });
 }
 

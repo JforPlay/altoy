@@ -4,9 +4,11 @@
  * pure triple-sine animation. Same vibe as bgm-player.js, sized for a bar.
  *
  * Colors are read from CSS custom properties once on start() and re-read when
- * the body's dark-mode class toggles (observed via MutationObserver). Cached
+ * the body's dark-mode class toggles (via utils.js onThemeChange). Cached
  * colors avoid recomputing per frame.
  */
+
+import { onThemeChange } from '../utils.js';
 
 export function createVisualizer(canvas, { barCount = 32 } = {}) {
     const ctx = canvas.getContext('2d');
@@ -14,7 +16,7 @@ export function createVisualizer(canvas, { barCount = 32 } = {}) {
 
     let rafId = null;
     let colors = null;
-    let observer = null;
+    let themeSubscribed = false;
 
     function readColors() {
         const style = getComputedStyle(document.body);
@@ -67,9 +69,9 @@ export function createVisualizer(canvas, { barCount = 32 } = {}) {
     function start() {
         if (rafId != null) return;
         if (!colors) readColors();
-        if (!observer) {
-            observer = new MutationObserver(() => readColors());
-            observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        if (!themeSubscribed) {
+            themeSubscribed = true;
+            onThemeChange(() => readColors());
         }
         resize();
         loop();

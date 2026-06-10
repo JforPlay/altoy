@@ -23,7 +23,7 @@ import { syncedStorage } from './synced-storage.js';
  * Must stay in sync with public/sw.js CACHE_VERSION. Bumping just one
  * leaves the other cache stale on first visit. See CLAUDE.md "Cache & Data Versioning".
  */
-const DATA_VERSION = '1.28.0';
+const DATA_VERSION = '1.29.0';
 
 /**
  * localStorage keys that participate in Google Drive sync.
@@ -1465,6 +1465,45 @@ function observeLazyImages(root, options = {}) {
     return observer;
 }
 
+// ===== Theme =====
+
+let _themeObserver = null;
+let _themeIsDark = null;
+const _themeListeners = new Set();
+
+/**
+ * Subscribe to dark-mode toggles. CSS handles theme switches declaratively, but
+ * canvas/Chart.js pages bake colors in at draw time and must redraw — use this
+ * instead of a per-page MutationObserver on body's class.
+ *
+ * The single shared observer is created lazily on first subscription (keeps the
+ * module side-effect-free on import) and filters out unrelated body-class
+ * changes, so callbacks fire only when `dark-mode` actually flips.
+ *
+ * @param {(isDark: boolean) => void} callback - Invoked with the new state
+ * @returns {() => void} Unsubscribe function
+ */
+function onThemeChange(callback) {
+    _themeListeners.add(callback);
+    if (!_themeObserver && typeof MutationObserver !== 'undefined' && typeof document !== 'undefined') {
+        _themeIsDark = document.body.classList.contains('dark-mode');
+        _themeObserver = new MutationObserver(() => {
+            const isDark = document.body.classList.contains('dark-mode');
+            if (isDark === _themeIsDark) return;
+            _themeIsDark = isDark;
+            _themeListeners.forEach(listener => {
+                try {
+                    listener(isDark);
+                } catch (err) {
+                    console.error('onThemeChange listener failed:', err);
+                }
+            });
+        });
+        _themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    }
+    return () => _themeListeners.delete(callback);
+}
+
 // ===== Initialization =====
 
 // Safari pre-16.4 lacks requestIdleCallback. Fall back to setTimeout so init never throws.
@@ -1581,5 +1620,8 @@ export {
     requireElements,
     renderStatus,
     loadPageData,
-    observeLazyImages
+    observeLazyImages,
+
+    // Theme
+    onThemeChange
 };

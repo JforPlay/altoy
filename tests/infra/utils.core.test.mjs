@@ -12,6 +12,7 @@ import {
     dataForToyUrl, DATA_FOR_TOY_BASE, getItemIconUrl, sanitizeFilename,
     debounce, throttle, getBasePath, resolveUrl,
     getStorageItem, setStorageItem, SYNCED_KEYS, DATA_VERSION,
+    onThemeChange,
 } from '../../public/js/utils.js';
 
 // --- escaping ---
@@ -188,4 +189,38 @@ test('setStorageItem flags Drive-sync dirty only for SYNCED_KEYS', (t) => {
 
 test('DATA_VERSION is semver-shaped', () => {
     assert.match(DATA_VERSION, /^\d+\.\d+\.\d+$/);
+});
+
+// --- theme (MutationObserver + document.body stubbed) ---
+
+// Single test: onThemeChange's observer is created once per module instance,
+// so subscribe/filter/flip/unsubscribe are exercised in one sequence.
+test('onThemeChange fires only on real dark-mode flips and supports unsubscribe', (t) => {
+    let observerCallback = null;
+    let darkMode = false;
+    globalThis.MutationObserver = class {
+        constructor(cb) { observerCallback = cb; }
+        observe() {}
+        disconnect() {}
+    };
+    globalThis.document = {
+        body: { classList: { contains: (cls) => cls === 'dark-mode' && darkMode } },
+    };
+    t.after(() => { delete globalThis.MutationObserver; delete globalThis.document; });
+
+    const calls = [];
+    const unsubscribe = onThemeChange(isDark => calls.push(isDark));
+    assert.ok(observerCallback, 'observer should be created on first subscription');
+
+    observerCallback(); // body class mutated, theme unchanged → filtered out
+    assert.deepEqual(calls, []);
+
+    darkMode = true;
+    observerCallback();
+    assert.deepEqual(calls, [true]);
+
+    unsubscribe();
+    darkMode = false;
+    observerCallback();
+    assert.deepEqual(calls, [true]);
 });

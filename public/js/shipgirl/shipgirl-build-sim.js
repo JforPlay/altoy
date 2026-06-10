@@ -5,7 +5,7 @@
  * Build stats (total pulls, rarity counts, resources spent) are persisted to localStorage.
  */
 
-import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem, createImgElement, createMaterialIcon, debounce, showToast, openModal, closeModal, DATA_FOR_TOY_BASE, RARITY_ORDER, RARITY_TIERS_DESC, sanitizeClassToken } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem, createImgElement, createMaterialIcon, debounce, showToast, openModal, closeModal, DATA_FOR_TOY_BASE, RARITY_ORDER, RARITY_TIERS_DESC, sanitizeClassToken, onThemeChange } from '../utils.js';
 import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cumulativeChance, formatPercent } from './build-sim.probability.js';
 (function () {
     'use strict';
@@ -769,16 +769,11 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
             }, 250);
         });
 
-        // Redraw graph on theme change. global.script.js toggles the `dark-mode`
-        // class on <body>, so observe that — not data-theme on <html>.
-        const observer = new MutationObserver(() => {
+        // Graph colors are baked in at draw time — redraw on theme flip
+        onThemeChange(() => {
             if (probabilityGraphEl && probabilityGraphEl.dataset.shipName) {
                 renderGraph(probabilityGraphEl, null);
             }
-        });
-        observer.observe(document.body, {
-            attributes: true,
-            attributeFilter: ['class']
         });
 
         // Despair Pool Modal

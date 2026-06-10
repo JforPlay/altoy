@@ -8,6 +8,7 @@
 
 import { SYNCED_KEYS, getStorageItem } from '../utils.js';
 import { STORAGE_KEYS, SCHEMA_VERSION } from './drive-sync.config.js';
+import { validateSyncedValue } from './drive-sync.validate.js';
 import { hasToken, requestToken } from './drive-sync.auth.js';
 import { findSyncFile, getContent, createFile, updateFile } from './drive-sync.api.js';
 
@@ -38,9 +39,11 @@ function collectLocalData() {
  * Removes any currently-set synced keys that are NOT in the remote
  * payload — required for "delete propagation" to work correctly.
  *
- * Writes only keys in SYNCED_KEYS with string values. Entries outside
- * the allowlist or with non-string values are dropped, so a malformed
- * import file can't overwrite unrelated localStorage keys.
+ * Writes only keys in SYNCED_KEYS whose value passes per-key shape
+ * validation (drive-sync.validate.js). Entries outside the allowlist,
+ * non-strings, and values whose root shape can't be what the consumer
+ * writes are dropped, so a malformed or malicious import file can't
+ * overwrite unrelated localStorage keys or plant junk in synced ones.
  */
 function applyRemoteData(data) {
     // Browsers only fire 'storage' events in OTHER tabs, not the one making
@@ -57,7 +60,10 @@ function applyRemoteData(data) {
     }
     for (const [key, value] of Object.entries(data)) {
         if (!SYNCED_KEYS.has(key)) continue;
-        if (typeof value !== 'string') continue;
+        if (!validateSyncedValue(key, value)) {
+            console.warn(`Drive sync: dropped value for "${key}" — failed shape validation`);
+            continue;
+        }
         const oldValue = localStorage.getItem(key);
         if (oldValue !== value) {
             localStorage.setItem(key, value);

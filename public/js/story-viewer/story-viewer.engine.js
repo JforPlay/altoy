@@ -1557,16 +1557,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (bgmName && bgmName !== this.currentBgm) {
                 const requested = bgmName;
+                // Dedupe on the REQUESTED track, set before play() settles —
+                // advancing lines that repeat the same BGM while it's still
+                // loading must no-op, not restart the load each click.
+                this.currentBgm = requested;
                 // Pause before swapping src — a slow load of the new track must not
                 // leave the previous one audible in the gap.
                 this.audio.pause();
                 this.audio.src = `${this.BGM_URL_PREFIX}${requested}.ogg`;
                 this.audio.play()
-                    .then(() => { this.currentBgm = requested; })
                     .catch(e => {
-                        // Playback failed (autoplay policy, network, etc.) — keep currentBgm null
-                        // so a retry can re-attempt this track next time handleBgm is called.
-                        this.currentBgm = null;
+                        // AbortError = a pending play() superseded by our own
+                        // pause()/load() (track switch, BGM-stop line, view
+                        // change) or the user's pause — intentional, not a failure.
+                        if (e.name === 'AbortError') return;
+                        // Genuine failure (autoplay policy, network/decode).
+                        // Clear the dedupe key — only if a newer request hasn't
+                        // claimed it — so the next handleBgm call retries.
+                        if (this.currentBgm === requested) this.currentBgm = null;
                         console.warn("Audio playback failed.", e);
                     });
             } else if (!bgmName && this.currentBgm) {

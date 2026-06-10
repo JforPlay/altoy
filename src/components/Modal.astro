@@ -1,0 +1,109 @@
+---
+/**
+ * Modal.astro — standard modal shell for the utils.js modal helpers.
+ *
+ * Renders the overlay/backdrop/dialog/close-button boilerplate that page
+ * modals previously hand-rolled. The markup honors the utils.js contracts:
+ * - root `id` + initial `hidden` class → openModal/closeModal toggle it
+ * - `.modal-backdrop` child → setupModal backdrop-click close
+ * - `.modal-close` button → setupModal's default closeButtonSelector
+ *
+ * Page JS:
+ *   import { openModal, setupModal } from '../utils.js';
+ *   setupModal('my-modal');   // wires close button + backdrop + ESC
+ *   openModal('my-modal');
+ *
+ * Slots: default → dialog body; `footer` → rendered after the body.
+ * Shell styles are Astro-scoped and use theme.css tokens, so they can't
+ * collide with per-section modal CSS; style slotted content from the page's
+ * own CSS. Reference usage: story-viewer/main-storyline.astro.
+ */
+interface Props {
+    /** Element id passed to openModal/closeModal/setupModal */
+    id: string;
+    /** Static dialog title; omit and put a heading in the slot for dynamic titles */
+    title?: string;
+    /** Dialog max-width (any CSS length) */
+    maxWidth?: string;
+}
+const { id, title, maxWidth = '37.5rem' } = Astro.props;
+---
+
+<div id={id} class="c-modal hidden" role="dialog" aria-modal="true" aria-hidden="true"
+     aria-labelledby={title ? `${id}-title` : undefined}>
+    <div class="modal-backdrop"></div>
+    <div class="c-modal-dialog" style={`max-width: ${maxWidth}`}>
+        <button class="modal-close" type="button" aria-label="닫기">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        {title && <h2 id={`${id}-title`} class="c-modal-title">{title}</h2>}
+        <slot />
+        <slot name="footer" />
+    </div>
+</div>
+
+<style>
+    /* display is owned by utils.js: openModal sets inline flex, closeModal
+       sets inline none; the global .hidden utility covers the initial state. */
+    .c-modal {
+        position: fixed;
+        inset: 0;
+        z-index: var(--z-modal);
+        justify-content: center;
+        align-items: flex-start;
+        overflow: auto;
+    }
+
+    .modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: var(--overlay-heavy);
+        backdrop-filter: blur(4px);
+    }
+
+    .c-modal-dialog {
+        position: relative;
+        width: 100%;
+        margin: 10vh 1rem 2rem;
+        padding: 1.5rem;
+        max-height: 80vh;
+        overflow: auto;
+        background: var(--card-bg);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 0.625rem 1.875rem var(--overlay-strong);
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        padding: 0.25rem;
+        background: transparent;
+        border: 0;
+        line-height: 1;
+        color: var(--text-primary);
+        opacity: 0.6;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+
+    .modal-close:hover,
+    .modal-close:focus-visible {
+        opacity: 1;
+    }
+
+    .c-modal-title {
+        margin: 0 2rem 1rem 0;
+        padding-bottom: 0.625rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    @media (max-width: 768px) {
+        .c-modal-dialog {
+            margin: 5vh 0.5rem 1rem;
+            padding: 1rem;
+        }
+    }
+</style>
