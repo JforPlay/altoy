@@ -11,17 +11,9 @@ import {
     loadSkillToIconId,
     loadSkillDataTemplate
 } from './shipgirl-info.data.js';
-import { openModal, closeModal, createSearchIndex, ensureFuse, debounce } from '../utils.js';
+import { openModal, closeModal, createSearchIndex, ensureFuse, debounce, escapeHtml } from '../utils.js';
 
 'use strict';
-
-/** Escape a string so it is safe inside a double-quoted HTML attribute. */
-function attr(s) {
-    return String(s ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/"/g, '&quot;');
-}
 
 // ============================================
 // TAG KEYWORD MAP
@@ -432,13 +424,13 @@ function renderSkillCard(skill) {
     const visibleShips = ships.slice(0, 8);
     const hiddenCount = ships.length - visibleShips.length;
     const avatarHtml = visibleShips.map(s => `
-        <button type="button" class="skill-result-ship-btn" data-ship-name="${attr(s.name)}" title="${attr(s.name)}">
-            <img src="${attr(s.shipyard)}" alt="${attr(s.name)}" loading="lazy" data-onfail="invisible">
+        <button type="button" class="skill-result-ship-btn" data-ship-name="${escapeHtml(s.name)}" title="${escapeHtml(s.name)}">
+            <img src="${escapeHtml(s.shipyard)}" alt="${escapeHtml(s.name)}" loading="lazy" data-onfail="invisible">
         </button>
     `).join('') + (hiddenCount > 0 ? `<span class="skill-result-ship-more">+${hiddenCount}</span>` : '');
 
     const iconHtml = skill.iconUrl
-        ? `<img class="skill-result-icon" src="${attr(skill.iconUrl)}" alt="" loading="lazy" data-onfail="hide">`
+        ? `<img class="skill-result-icon" src="${escapeHtml(skill.iconUrl)}" alt="" loading="lazy" data-onfail="hide">`
         : `<div class="skill-result-icon-placeholder">${skill.id}</div>`;
 
     return `
@@ -488,7 +480,7 @@ function renderShipCard({ ship, skills }) {
     const rows = skills.map(s => {
         const inlineDesc = s.desc.replace(/\s+/g, ' ').trim();
         return `
-            <div class="skill-result-ship-skill-row" title="${attr(inlineDesc)}">
+            <div class="skill-result-ship-skill-row" title="${escapeHtml(inlineDesc)}">
                 <strong class="skill-row-name">${s.name}</strong>
                 <span class="skill-row-sep">·</span>
                 <span class="skill-row-desc">${inlineDesc}</span>
@@ -497,8 +489,8 @@ function renderShipCard({ ship, skills }) {
     }).join('');
 
     return `
-        <button type="button" class="skill-result-ship-card" data-ship-name="${attr(ship.name)}">
-            <img class="skill-result-ship-portrait" src="${attr(ship.shipyard)}" alt="${attr(ship.name)}" loading="lazy" data-onfail="invisible">
+        <button type="button" class="skill-result-ship-card" data-ship-name="${escapeHtml(ship.name)}">
+            <img class="skill-result-ship-portrait" src="${escapeHtml(ship.shipyard)}" alt="${escapeHtml(ship.name)}" loading="lazy" data-onfail="invisible">
             <div class="skill-result-ship-info">
                 <div class="skill-result-ship-name">
                     <strong>${ship.name}</strong>

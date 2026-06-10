@@ -4,7 +4,7 @@
  * and fleet summary (tech bonuses + passive skills).
  */
 
-import { showElement, hideElement, IMG_FALLBACKS, resolveUrl } from '../utils.js';
+import { showElement, hideElement, IMG_FALLBACKS, resolveUrl, escapeHtml } from '../utils.js';
 import { getShipByGid, getEquipById, getEquipIconUrl, getRarityBgUrl, getShipPortraitUrl, getSlotName, getSPWeaponIconUrl, getDedicatedSPWeapon } from './fleet-sim.data.js';
 import {
     DISPLAY_STATS,
@@ -254,8 +254,8 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
     const shipType = _getShipTypeName(ship.type);
     const shipNation = _getNationalityName(ship.nationality);
     const typeNation = [shipType, shipNation].filter(Boolean).join(' · ');
-    const safeShipName = _escapeHtml(ship.name || '');
-    const safeTypeNation = _escapeHtml(typeNation);
+    const safeShipName = escapeHtml(ship.name || '');
+    const safeTypeNation = escapeHtml(typeNation);
     const level = slotConfig.level || 125;
     const affinity = slotConfig.affinity || 'love';
 
@@ -346,7 +346,7 @@ function _buildEquipSlotsHTML(slotIndex, ship, slotConfig) {
  */
 function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isRetrofit) {
     const slotName = getSlotName(ship, equipIndex, isRetrofit);
-    const safeSlotName = _escapeHtml(slotName);
+    const safeSlotName = escapeHtml(slotName);
 
     if (!equipConfig || !equipConfig.id) {
         // Empty slot
@@ -388,7 +388,7 @@ function _buildSingleEquipSlotHTML(slotIndex, equipIndex, equipConfig, ship, isR
     const bgUrl = getRarityBgUrl(equip.rarity);
     const rarityAttr = EQUIP_RARITY_MAP[equip.rarity] || '';
     const enhanceLevel = equipConfig.level || 0;
-    const safeEquipName = _escapeHtml(equip.name || '');
+    const safeEquipName = escapeHtml(equip.name || '');
 
     // Weapon slots (0-2) carry an equipment-efficiency multiplier (max-LB + retrofit);
     // surface it under the icon so the slot's damage contribution is legible.
@@ -436,7 +436,7 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
         if (spWeapon) {
             const iconUrl = getSPWeaponIconUrl(spWeapon.icon);
             const bgUrl = getRarityBgUrl(spWeapon.rarity + 1);
-            const safeName = _escapeHtml(spWeapon.name || '');
+            const safeName = escapeHtml(spWeapon.name || '');
             return `
                 <div class="equip-slot equipped sp-slot"
                      role="button"
@@ -467,7 +467,7 @@ function _buildSPSlotHTML(slotIndex, ship, slotConfig) {
         const name = dedicated ? dedicated.name : (ship.sp_weapon.name || 'SP 무기');
         const spRarity = dedicated ? dedicated.rarity : 4;
         const bgUrl = getRarityBgUrl(spRarity + 1);
-        const safeName = _escapeHtml(name);
+        const safeName = escapeHtml(name);
 
         return `
             <div class="equip-slot equipped sp-slot sp-dedicated" data-equip-rarity="${SP_RARITY_MAP[spRarity] || 'ssr'}" title="${safeName} (전용)">
@@ -760,14 +760,6 @@ function _getNationalityName(natId) {
     return natInfo ? natInfo.name : '';
 }
 
-function _escapeHtml(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-}
-
 // ===== Damage Panel =====
 
 /** Format number with thousands separators, rounded to nearest integer. */
@@ -781,7 +773,7 @@ function _buildWeaponBreakdownHTML(shipResult) {
     if (!shipResult || !Array.isArray(shipResult.perWeapon) || shipResult.perWeapon.length === 0) return '';
     const rows = shipResult.perWeapon.map((w) => `
         <tr>
-            <td>${_escapeHtml(w.label || '')}</td>
+            <td>${escapeHtml(w.label || '')}</td>
             <td>${_fmt(w.oneSalvoExpected)}</td>
             <td>${w.reloadInterval.toFixed(2)}s</td>
             <td>${w.salvoCount}</td>
@@ -851,7 +843,7 @@ export async function renderDamagePanel(container) {
     const chips = ['light', 'medium', 'heavy'].map((k) => {
         const preset = ARMOR_PRESETS[k];
         const active = k === tgt.presetKey ? ' active' : '';
-        return `<button class="dmg-armor-chip${active}" data-action="dmg-armor" data-armor="${k}">${_escapeHtml(preset.name)}<span class="dmg-armor-class">${_escapeHtml(preset.shipClass)}</span></button>`;
+        return `<button class="dmg-armor-chip${active}" data-action="dmg-armor" data-armor="${k}">${escapeHtml(preset.name)}<span class="dmg-armor-class">${escapeHtml(preset.shipClass)}</span></button>`;
     }).join('');
 
     // Adapt buttons
@@ -869,13 +861,13 @@ export async function renderDamagePanel(container) {
         ['armorReduce', '경감'],
     ];
     const editRow = editFields.map(([k, lab]) =>
-        `<label class="dmg-edit-label">${_escapeHtml(lab)}<input class="dmg-edit-input" type="number" data-action="dmg-edit" data-field="${k}" value="${ov[k] != null ? ov[k] : ''}" placeholder="기본" /></label>`
+        `<label class="dmg-edit-label">${escapeHtml(lab)}<input class="dmg-edit-input" type="number" data-action="dmg-edit" data-field="${k}" value="${ov[k] != null ? ov[k] : ''}" placeholder="기본" /></label>`
     ).join('');
 
     // Per-ship rows
     const perShipRows = result.perShip.map((s) => {
         const ship = getShipByGid(s.ref);
-        const name = ship ? _escapeHtml(ship.name) : String(s.ref);
+        const name = ship ? escapeHtml(ship.name) : String(s.ref);
         return `<div class="dmg-ship-row">
             <span class="dmg-ship-name">${name}</span>
             <span class="dmg-oneshot">일격 ${_fmt(s.oneShotExpected)}</span>
@@ -888,7 +880,7 @@ export async function renderDamagePanel(container) {
         const r = compareResults[i];
         const preset = ARMOR_PRESETS[k];
         if (!r) return '';
-        return `<span class="dmg-cmp-cell"><em>${_escapeHtml(preset.shipClass)}</em>${_fmt(r.dps)}</span>`;
+        return `<span class="dmg-cmp-cell"><em>${escapeHtml(preset.shipClass)}</em>${_fmt(r.dps)}</span>`;
     }).join('');
 
     container.innerHTML = `

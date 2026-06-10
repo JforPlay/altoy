@@ -10,7 +10,7 @@ import {
     fetchJSON, fetchJSONWithCache, debounce, getUrlParam, setUrlParams,
     getStorageItem, setStorageItem, setupScrollToTop,
     openModal, closeModal, setupModal, resolveUrl,
-    getItemIconUrl
+    getItemIconUrl, escapeHtml
 } from '../utils.js';
 import { getEquipIconUrl, getRarityBgUrl } from './equip.data.js';
 
@@ -40,16 +40,6 @@ const CAT2_NAMES = {
     5: '어뢰', 6: '대공포', 7: '전투기', 8: '뇌격기/폭격기',
     13: '잠수어뢰', 31: '경순함포'
 };
-
-function escapeHtml(value) {
-    return String(value ?? '').replace(/[&<>"']/g, char => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-    }[char]));
-}
 
 function isActivationKey(event) {
     return event.key === 'Enter' || event.key === ' ';

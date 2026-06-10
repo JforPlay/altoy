@@ -5,14 +5,13 @@
  * NAME_ALIASES handles spelling mismatches between valentine_data.json and ship_group_data names.
  */
 
-import { debounce, fetchJSON, getUrlParam, setUrlParams, showElement, hideElement, createSearchIndex, ensureFuse, normalizeRomanNumerals, createImgElement, requireElements, renderStatus } from '../utils.js';
+import { debounce, fetchJSON, getUrlParam, setUrlParams, showElement, hideElement, createSearchIndex, ensureFuse, normalizeRomanNumerals, createImgElement, requireElements, renderStatus, loadPageData } from '../utils.js';
 
 // ===== State =====
 let valentineData = [];
 let shipgirlNameMap = new Map();
 let searchIndex = null;
 let selectedShipgirl = null;
-let loadFailed = false;
 
 // ===== DOM References =====
 const searchInput = document.getElementById('search');
@@ -31,11 +30,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    const loaded = await loadData();
-    if (!loaded) {
-        renderLoadError();
-        return;
-    }
+    const loaded = await loadPageData(loadData, shipgirlList, {
+        loadingMessage: '발렌타인 편지를 불러오는 중...',
+        errorMessage: '발렌타인 데이터를 불러오지 못했습니다.',
+        contextLabel: 'Valentine viewer',
+    });
+    if (loaded === null) return;
 
     renderShipgirlList(valentineData);
     setupEventListeners();
@@ -45,58 +45,53 @@ document.addEventListener('DOMContentLoaded', async () => {
 /**
  * Load valentine letters and ship group data in parallel.
  * Sorts the valentine list by ship ID (unmatched names go to the end), then creates a Fuse.js index.
+ * Throws on fetch failure — loadPageData owns the error/retry UI.
  */
 async function loadData() {
-    try {
-        const [valData, shipGroupData] = await Promise.all([
-            fetchJSON('data/valentine_data.json'),
-            fetchJSON('data/ship_group_data.json')
-        ]);
+    const [valData, shipGroupData] = await Promise.all([
+        fetchJSON('data/valentine_data.json'),
+        fetchJSON('data/ship_group_data.json')
+    ]);
 
-        valentineData = Array.isArray(valData)
-            ? valData.filter(entry =>
-                entry && typeof entry === 'object' && typeof entry.name === 'string' &&
-                entry.letters && typeof entry.letters === 'object'
-            )
-            : [];
+    valentineData = Array.isArray(valData)
+        ? valData.filter(entry =>
+            entry && typeof entry === 'object' && typeof entry.name === 'string' &&
+            entry.letters && typeof entry.letters === 'object'
+        )
+        : [];
 
-        // Build normalized name map for O(1) lookups; ship_group_data may be array or object
-        if (Array.isArray(shipGroupData)) {
-            shipGroupData.forEach(ship => {
-                if (ship.name) {
-                    const normalized = normalizeRomanNumerals(ship.name.trim());
-                    shipgirlNameMap.set(normalized, ship);
-                }
-            });
-        } else if (shipGroupData && typeof shipGroupData === 'object') {
-            Object.entries(shipGroupData).forEach(([id, ship]) => {
-                ship.id = id;
-                if (ship.name) {
-                    const normalized = normalizeRomanNumerals(ship.name.trim());
-                    shipgirlNameMap.set(normalized, ship);
-                }
-            });
-        }
-
-        valentineData.sort((a, b) => {
-            const shipA = findShipgirl(a.name);
-            const shipB = findShipgirl(b.name);
-            const idA = shipA ? parseInt(shipA.id) || Infinity : Infinity;
-            const idB = shipB ? parseInt(shipB.id) || Infinity : Infinity;
-            return idA - idB;
+    // Build normalized name map for O(1) lookups; ship_group_data may be array or object
+    if (Array.isArray(shipGroupData)) {
+        shipGroupData.forEach(ship => {
+            if (ship.name) {
+                const normalized = normalizeRomanNumerals(ship.name.trim());
+                shipgirlNameMap.set(normalized, ship);
+            }
         });
-
-        await ensureFuse();
-        searchIndex = createSearchIndex(valentineData, {
-            keys: ['name'],
-            threshold: 0.3
+    } else if (shipGroupData && typeof shipGroupData === 'object') {
+        Object.entries(shipGroupData).forEach(([id, ship]) => {
+            ship.id = id;
+            if (ship.name) {
+                const normalized = normalizeRomanNumerals(ship.name.trim());
+                shipgirlNameMap.set(normalized, ship);
+            }
         });
-        return true;
-    } catch (err) {
-        console.error('Failed to load data:', err);
-        loadFailed = true;
-        return false;
     }
+
+    valentineData.sort((a, b) => {
+        const shipA = findShipgirl(a.name);
+        const shipB = findShipgirl(b.name);
+        const idA = shipA ? parseInt(shipA.id) || Infinity : Infinity;
+        const idB = shipB ? parseInt(shipB.id) || Infinity : Infinity;
+        return idA - idB;
+    });
+
+    await ensureFuse();
+    searchIndex = createSearchIndex(valentineData, {
+        keys: ['name'],
+        threshold: 0.3
+    });
+    return true;
 }
 
 // Spelling mismatches between valentine_data.json and ship_group_data — map to canonical names
@@ -301,14 +296,4 @@ function handleInitialSelection() {
             if (item) item.scrollIntoView({ block: 'center' });
         }
     }
-}
-
-function renderLoadError() {
-    if (shipgirlCount) shipgirlCount.textContent = '0명';
-    const message = loadFailed
-        ? '발렌타인 데이터를 불러오지 못했습니다.'
-        : '표시할 편지가 없습니다.';
-    renderStatus(shipgirlList, message, 'error');
-    hideElement(letterContentWrapper);
-    showElement(letterPlaceholder);
 }

@@ -5,7 +5,7 @@
  * and sets up keyboard/swipe/touch navigation between ship detail views.
  */
 
-import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorageItem, setStorageItem, setupModal, debounce } from '../utils.js';
+import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorageItem, setStorageItem, setupModal, debounce, escapeHtml } from '../utils.js';
 import {
     setup as setupData,
     loadData, loadNationalityData, loadAttrTypeData,
@@ -325,13 +325,6 @@ function renderShipgirls() {
     shipgirls.innerHTML = state.filteredData.map(ship => createShipgirlCard(ship)).join('');
 }
 
-function escapeAttr(value) {
-    return String(value ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/"/g, '&quot;')
-        .replace(/</g, '&lt;');
-}
-
 function createShipgirlCard(ship) {
     if (state.viewMode === 'list') {
         return createListCard(ship);
@@ -373,7 +366,7 @@ function createGridCard(ship) {
     const mapsDisplay = compactMaps ? `<span class="maps-badge" title="드랍 지역: ${compactMaps}"><i class="fas fa-map-marker-alt"></i> ${compactMaps}</span>` : '';
 
     return `
-        <div class="shipgirl-card" data-ship-name="${escapeAttr(ship.name)}">
+        <div class="shipgirl-card" data-ship-name="${escapeHtml(ship.name)}">
             ${createImg(ship.shipyard || '', ship.name || '알 수 없음', { className: 'shipgirl-image', fallback: IMG_FALLBACKS.CARD })}
             ${constructionBadges ? `<div class="construction-badges-overlay">${constructionBadges}</div>` : ''}
             <div class="shipgirl-info">
@@ -426,7 +419,7 @@ function createListCard(ship) {
     const mapsDisplay = compactMaps ? `<span class="maps-badge" title="드랍 지역: ${compactMaps}"><i class="fas fa-map-marker-alt"></i> ${compactMaps}</span>` : '';
 
     return `
-        <div class="shipgirl-card" data-ship-name="${escapeAttr(ship.name)}">
+        <div class="shipgirl-card" data-ship-name="${escapeHtml(ship.name)}">
             ${createImg(ship.shipyard || '', ship.name || '알 수 없음', { className: 'shipgirl-image', fallback: IMG_FALLBACKS.CARD })}
             <div class="shipgirl-info">
                 <div class="left-info">

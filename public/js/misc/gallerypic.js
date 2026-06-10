@@ -3,7 +3,7 @@
  * Gallery viewer for in-game illustration images.
  */
 
-import { IMG_FALLBACKS, createImgElement, fetchJSON, openModal, setupModal, requireElements, DATA_FOR_TOY_BASE } from '../utils.js';
+import { IMG_FALLBACKS, createImgElement, fetchJSON, openModal, setupModal, requireElements, renderStatus, loadPageData, DATA_FOR_TOY_BASE } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const gallery = document.getElementById('gallery');
@@ -15,16 +15,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const baseImageUrl = `${DATA_FOR_TOY_BASE}/gallerypic/`;
-
-    function setStatus(message, isError = false) {
-        status.textContent = message;
-        status.classList.toggle('error', isError);
-        status.hidden = false;
-    }
-
-    function hideStatus() {
-        status.hidden = true;
-    }
 
     function normalizeIllustrationName(rawName) {
         return String(rawName || '').replace(/^gallerypic/i, 'GalleryPic').replace(/[^A-Za-z0-9_-]/g, '');
@@ -62,9 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         gallery.replaceChildren(fragment);
         if (gallery.children.length === 0) {
-            setStatus('No gallery images found.');
-        } else {
-            hideStatus();
+            renderStatus(status, '표시할 갤러리 이미지가 없습니다.', 'empty');
         }
     }
 
@@ -88,16 +76,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    setStatus('Loading gallery images...');
-    try {
-        const data = await fetchJSON('data/misc/gallery_data.json');
-        if (!data || typeof data !== 'object') {
+    const data = await loadPageData(async () => {
+        const payload = await fetchJSON('data/misc/gallery_data.json');
+        if (!payload || typeof payload !== 'object') {
             throw new Error('Invalid gallery data payload.');
         }
-        renderGallery(data);
-    } catch (error) {
-        console.error('Error fetching or processing gallery data:', error);
-        gallery.replaceChildren();
-        setStatus('Could not load gallery images. Please try again later.', true);
-    }
+        return payload;
+    }, status, {
+        loadingMessage: '갤러리 이미지를 불러오는 중...',
+        errorMessage: '갤러리 이미지를 불러오지 못했습니다.',
+        contextLabel: 'Gallery picture viewer',
+    });
+    if (data === null) return;
+    renderGallery(data);
 });

@@ -68,7 +68,17 @@ export function init(canvasElement) {
     resizeCanvas();
     centerCamera();
     bindEvents();
-    requestAnimationFrame(renderLoop);
+    rafId = requestAnimationFrame(renderLoop);
+    // Pause the continuous render loop while the tab is hidden — the canvas
+    // isn't visible and the loop would otherwise burn CPU/GPU in the background.
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            if (rafId !== null) cancelAnimationFrame(rafId);
+            rafId = null;
+        } else if (rafId === null) {
+            rafId = requestAnimationFrame(renderLoop);
+        }
+    });
 }
 
 // Drag-from-panel and click-to-place enter/exit the same internal state,
@@ -312,9 +322,11 @@ function getSprite(picture) {
 
 // ===== Rendering =====
 
+let rafId = null;
+
 function renderLoop() {
     render();
-    requestAnimationFrame(renderLoop);
+    rafId = requestAnimationFrame(renderLoop);
 }
 
 function resizeCanvas() {

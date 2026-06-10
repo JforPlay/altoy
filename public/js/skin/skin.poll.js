@@ -513,8 +513,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log(`Submitting vote: User=${userId}, Skin=${clientId}, Rating=${rating}`);
 
     try {
-      // Single write to vote_queue — Cloud Function handles the rest
-      await db.collection('vote_queue').add({
+      // Single write to vote_queue — Cloud Function handles the rest.
+      // Deterministic doc ID {uid}_{clientId}: security rules only allow `create`
+      // on exactly this ID, so duplicate votes for the same skin are rejected at
+      // the rules layer (no Cloud Function invocation, no quota cost).
+      await db.collection('vote_queue').doc(`${userId}_${clientId}`).set({
         userId: userId,
         clientId: clientId,
         rating: rating,
@@ -582,7 +585,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     } catch (error) {
       console.error("Vote submission failed:", error);
-      showToast("투표를 저장하는 데 실패했습니다. 다시 시도해 주세요.", "error");
+      // permission-denied on this path = the {uid}_{clientId} queue doc already
+      // exists (double-submit racing the Cloud Function) — i.e. already voted.
+      if (error.code === 'permission-denied') {
+        showToast("이미 이 스킨에 투표하셨습니다!", "error");
+      } else {
+        showToast("투표를 저장하는 데 실패했습니다. 다시 시도해 주세요.", "error");
+      }
 
       if (error.code) {
         connectionStatus.lastError = error;

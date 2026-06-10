@@ -18,27 +18,23 @@ export function setup(stateRef) {
 
 /**
  * Load furniture and theme data.
+ * Throws on fetch/shape failure — loadPageData in dorm.viewer.js owns the error/retry UI.
  * @returns {Promise<boolean>}
  */
 export async function loadData() {
-    try {
-        const data = await fetchJSON(resolveUrl('data/dorm/dorm_furniture_data.json'));
-        if (!data || typeof data !== 'object') {
-            throw new Error('Invalid dorm furniture data');
-        }
-
-        state.furniture = data.furniture && typeof data.furniture === 'object' ? data.furniture : {};
-        state.themes = data.themes && typeof data.themes === 'object' ? data.themes : {};
-        await ensureFuse();
-        state.searchIndex = createSearchIndex(Object.values(state.furniture), {
-            keys: ['name', 'desc'],
-            threshold: 0.3
-        });
-        return true;
-    } catch (err) {
-        console.error('[Dorm] Failed to load data:', err);
-        return false;
+    const data = await fetchJSON(resolveUrl('data/dorm/dorm_furniture_data.json'));
+    if (!data || typeof data !== 'object') {
+        throw new Error('Invalid dorm furniture data');
     }
+
+    state.furniture = data.furniture && typeof data.furniture === 'object' ? data.furniture : {};
+    state.themes = data.themes && typeof data.themes === 'object' ? data.themes : {};
+    await ensureFuse();
+    state.searchIndex = createSearchIndex(Object.values(state.furniture), {
+        keys: ['name', 'desc'],
+        threshold: 0.3
+    });
+    return true;
 }
 
 /**

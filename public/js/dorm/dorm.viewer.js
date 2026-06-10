@@ -4,7 +4,7 @@
  * Creates the shared state object and passes it to dorm.data, dorm.panel,
  * and dorm.grid via their setup() calls, then wires toolbar button listeners.
  */
-import { showToast, hideElement } from '../utils.js';
+import { showToast, hideElement, loadPageData } from '../utils.js';
 import { setup as setupData, loadData } from './dorm.data.js';
 import { setup as setupPanel, init as initPanel } from './dorm.panel.js';
 import {
@@ -56,12 +56,13 @@ async function init() {
     setupPanel(state);
     setupGrid(state);
 
-    const loaded = await loadData();
-    if (!loaded) {
-        showCanvasStatus('데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.', true);
-        showToast('데이터 로딩 실패', 'error');
-        return;
-    }
+    const loaded = await loadPageData(loadData, state.elements.canvasLoading, {
+        loadingMessage: '가구 데이터를 불러오는 중...',
+        errorMessage: '데이터를 불러오지 못했습니다.',
+        contextLabel: 'Dorm',
+        onError: () => showToast('데이터 로딩 실패', 'error'),
+    });
+    if (loaded === null) return;
 
     initPanel();
     initGrid(state.elements.dormCanvas);
@@ -102,13 +103,6 @@ function hasRequiredElements() {
         state.elements.btnDelete &&
         state.elements.btnClear
     );
-}
-
-function showCanvasStatus(message, isError = false) {
-    const loading = state.elements.canvasLoading;
-    if (!loading) return;
-    loading.textContent = message;
-    loading.classList.toggle('canvas-loading--error', isError);
 }
 
 function setupToolbar() {

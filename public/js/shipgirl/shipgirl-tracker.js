@@ -6,7 +6,7 @@
  * faction tech bonus display, and cross-tab sync via the storage event (shares SAVE_KEY with research-tracker.js).
  */
 
-import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, RARITY_TIERS_DESC as rarityOrder } from '../utils.js';
+import { debounce, fetchJSON, getStorageItem, setStorageItem, openModal, closeModal, setupModal, showElement, hideElement, syncedStorage, escapeHtml, RARITY_TIERS_DESC as rarityOrder } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 document.addEventListener('DOMContentLoaded', () => {
     let fullShipData, nationalityData, shipTypeData, attrTypeData, fleetTechGoalData, factionTechData;
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const infoItem = document.createElement('div');
             infoItem.className = 'info-item';
             infoItem.title = nationInfo.name;
-            infoItem.innerHTML = `<img src="${nationInfo.image}" alt="${nationInfo.name}" class="info-icon"><span>${nationInfo.code || nationInfo.name}</span>`;
+            infoItem.innerHTML = `<img src="${escapeHtml(nationInfo.image)}" alt="${escapeHtml(nationInfo.name)}" class="info-icon"><span>${escapeHtml(nationInfo.code || nationInfo.name)}</span>`;
             infoSection.appendChild(infoItem);
         }
 
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const infoItem = document.createElement('div');
             infoItem.className = 'info-item';
             infoItem.title = primaryTypeInfo.type_name;
-            infoItem.innerHTML = `<img src="${primaryTypeInfo.icon}" alt="${primaryTypeInfo.type_name}" class="info-icon"><span>${primaryTypeInfo.type_name}</span>`;
+            infoItem.innerHTML = `<img src="${escapeHtml(primaryTypeInfo.icon)}" alt="${escapeHtml(primaryTypeInfo.type_name)}" class="info-icon"><span>${escapeHtml(primaryTypeInfo.type_name)}</span>`;
             infoSection.appendChild(infoItem);
         }
 
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const types = ship.add_get_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
                 const line = document.createElement('div');
                 line.className = 'stat-info-line';
-                line.innerHTML = `<span class="stat-label">입수</span><span class="stat-types-wrap" data-tooltip="${types}" tabindex="0"><span class="stat-types">${types}</span></span>${attrName} <span class="stat-value">+${ship.add_get_value}</span>`;
+                line.innerHTML = `<span class="stat-label">입수</span><span class="stat-types-wrap" data-tooltip="${escapeHtml(types)}" tabindex="0"><span class="stat-types">${escapeHtml(types)}</span></span>${escapeHtml(attrName)} <span class="stat-value">+${escapeHtml(ship.add_get_value)}</span>`;
                 statInfo.appendChild(line);
             }
             if (ship.add_level_attr) {
@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const types = ship.add_level_shiptype.map(t => shipTypeData[t]?.type_name || '').filter(Boolean).join('/');
                 const line = document.createElement('div');
                 line.className = 'stat-info-line';
-                line.innerHTML = `<span class="stat-label">120렙</span><span class="stat-types-wrap" data-tooltip="${types}" tabindex="0"><span class="stat-types">${types}</span></span>${attrName} <span class="stat-value">+${ship.add_level_value}</span>`;
+                line.innerHTML = `<span class="stat-label">120렙</span><span class="stat-types-wrap" data-tooltip="${escapeHtml(types)}" tabindex="0"><span class="stat-types">${escapeHtml(types)}</span></span>${escapeHtml(attrName)} <span class="stat-value">+${escapeHtml(ship.add_level_value)}</span>`;
                 statInfo.appendChild(line);
             }
             card.appendChild(statInfo);
@@ -294,8 +294,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const fleetTechByName = {}; // For goal tracker (by nationality name)
         const positionCounts = {}; // For goal tracker (by position)
 
-        // Iterate over all ship cards to calculate scores (use cached container for better performance)
-        const shipCards = cachedElements.shipListContainer?.querySelectorAll('.ship-card') || [];
+        // Iterate over all ship cards to calculate scores (cached card map — no DOM query)
+        const shipCards = getShipCards();
         shipCards.forEach(card => {
             const data = card.dataset;
             const nationId = data.nationality;
@@ -1154,8 +1154,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const uniqueId = `nationality-filter-${item.id}`;
             const checkboxItem = document.createElement('div');
             checkboxItem.className = 'checkbox-filter-item';
-            const iconHTML = item.image ? `<img src="${item.image}" class="filter-icon">` : '';
-            checkboxItem.innerHTML = `<input type="checkbox" id="${uniqueId}" value="${item.id}" data-filter-type="individual"><label for="${uniqueId}">${iconHTML} ${item.name}</label>`;
+            const iconHTML = item.image ? `<img src="${escapeHtml(item.image)}" class="filter-icon">` : '';
+            checkboxItem.innerHTML = `<input type="checkbox" id="${uniqueId}" value="${escapeHtml(item.id)}" data-filter-type="individual"><label for="${uniqueId}">${iconHTML} ${escapeHtml(item.name)}</label>`;
             natWrapper.appendChild(checkboxItem);
         });
 
@@ -1225,8 +1225,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const uniqueId = `type-filter-${item.ship_type}`;
                 const checkboxItem = document.createElement('div');
                 checkboxItem.className = 'checkbox-filter-item';
-                const iconHTML = item.icon ? `<img src="${item.icon}" class="filter-icon">` : '';
-                checkboxItem.innerHTML = `<input type="checkbox" id="${uniqueId}" value="${item.ship_type}" data-filter-type="individual" data-position="${position}"><label for="${uniqueId}">${iconHTML} ${item.type_name}</label>`;
+                const iconHTML = item.icon ? `<img src="${escapeHtml(item.icon)}" class="filter-icon">` : '';
+                checkboxItem.innerHTML = `<input type="checkbox" id="${uniqueId}" value="${escapeHtml(item.ship_type)}" data-filter-type="individual" data-position="${position}"><label for="${uniqueId}">${iconHTML} ${escapeHtml(item.type_name)}</label>`;
                 positionGroupWrapper.appendChild(checkboxItem);
             });
 
@@ -1617,7 +1617,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chips.forEach(chip => {
             const el = document.createElement('button');
             el.className = 'st-chip';
-            el.innerHTML = `${chip.label} <span class="material-symbols-outlined" style="font-size:14px">close</span>`;
+            el.innerHTML = `${escapeHtml(chip.label)} <span class="material-symbols-outlined" style="font-size:14px">close</span>`;
             el.addEventListener('click', () => removeFilterChip(chip));
             fragment.appendChild(el);
         });
@@ -1852,11 +1852,9 @@ document.addEventListener('DOMContentLoaded', () => {
      * Updates visibility of ship cards based on current filters (show/hide instead of recreate).
      */
     function renderVisibleCards() {
-        const container = cachedElements.shipListContainer;
-        if (!container) return;
         const visibleSet = new Set(filteredShipIds);
-        container.querySelectorAll('.ship-card').forEach(card => {
-            card.style.display = visibleSet.has(card.dataset.shipId) ? '' : 'none';
+        shipCardById.forEach((card, shipId) => {
+            card.style.display = visibleSet.has(shipId) ? '' : 'none';
         });
     }
 
