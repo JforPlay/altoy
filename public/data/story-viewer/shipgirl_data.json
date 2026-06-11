@@ -1931,6 +1931,10 @@
         "name": "해풍의 Lucky Time",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/107224.webp"
     },
+    "107225": {
+        "name": "릴랙세이션 비치",
+        "icon": null
+    },
     "107229": {
         "name": "인디펜던스·改",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/107229.webp"
@@ -2894,6 +2898,10 @@
     "201354": {
         "name": "당구 레슨",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/201354.webp"
+    },
+    "201355": {
+        "name": "구름 위의 물보라",
+        "icon": null
     },
     "201358": {
         "name": "아침놀에 빛나는 맹세",
@@ -5351,6 +5359,10 @@
         "name": "요괴의 밤에 피어나",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/303201.webp"
     },
+    "303210": {
+        "name": "꼬마 운젠",
+        "icon": null
+    },
     "304010": {
         "name": "콘고 ",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/304010.webp"
@@ -6591,6 +6603,14 @@
         "name": "별을 이끄는 이중창",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/402073.webp"
     },
+    "402074": {
+        "name": "물가의 칸초네",
+        "icon": null
+    },
+    "402075": {
+        "name": "물가의 칸초네",
+        "icon": null
+    },
     "402080": {
         "name": "엘빙",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/402080.webp"
@@ -7355,6 +7375,10 @@
         "name": "마녀의 오후",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/499062.webp"
     },
+    "499063": {
+        "name": "위치 스타 랑데부",
+        "icon": null
+    },
     "499070": {
         "name": "프린츠 루프레히트",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/499070.webp"
@@ -7514,6 +7538,10 @@
     "502012": {
         "name": "청차의 향기",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/502012.webp"
+    },
+    "502013": {
+        "name": "부풍에 이는 흰 파도",
+        "icon": null
     },
     "502018": {
         "name": "봉관하피",
@@ -7758,6 +7786,10 @@
     "506021": {
         "name": "강시 함선의 봄날 밤",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/506021.webp"
+    },
+    "506022": {
+        "name": "옻칠의 광채",
+        "icon": null
     },
     "506029": {
         "name": "화지아·改",
@@ -8850,6 +8882,10 @@
     "899012": {
         "name": "귀려한 집행자",
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/899012.webp"
+    },
+    "899013": {
+        "name": "평온한 시간에 취해",
+        "icon": null
     },
     "899020": {
         "name": "샹파뉴 ",
