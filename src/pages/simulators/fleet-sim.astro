@@ -3,6 +3,7 @@
  * Fleet Build Simulator — 6-ship fleet composition with equipment, stats, and reload timings
  */
 import Layout from '../../layouts/Layout.astro';
+import Modal from '../../components/Modal.astro';
 import '../../styles/skin/skin.common.css';
 import '../../styles/simulators/sim.common.css';
 import '../../styles/simulators/fleet-sim.css';
@@ -112,82 +113,55 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <!-- Ship Picker Modal -->
-    <div id="shipPickerModal" class="modal-overlay hidden">
-        <div class="modal-backdrop"></div>
-        <div class="modal-dialog fleet-picker-dialog">
-            <div class="modal-header">
-                <h3>함순이 선택</h3>
-                <button class="modal-close-btn btn btn-icon">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
+    <Modal id="shipPickerModal" title="함순이 선택">
+        <input type="text" id="ship-picker-search" class="picker-search-input" placeholder="함순이 이름 검색..." autocomplete="off" />
+        <div class="picker-filters">
+            <div class="filter-row">
+                <label class="filter-label">함종</label>
+                <div id="ship-type-filters" class="filter-chips"></div>
             </div>
-            <input type="text" id="ship-picker-search" class="picker-search-input" placeholder="함순이 이름 검색..." autocomplete="off" />
-            <div class="picker-filters">
-                <div class="filter-row">
-                    <label class="filter-label">함종</label>
-                    <div id="ship-type-filters" class="filter-chips"></div>
-                </div>
-                <div class="filter-row">
-                    <label class="filter-label">레어도</label>
-                    <div id="ship-rarity-filters" class="filter-chips"></div>
-                </div>
-                <div class="filter-row">
-                    <label class="filter-label">진영</label>
-                    <div id="ship-nation-filters" class="filter-chips"></div>
-                </div>
+            <div class="filter-row">
+                <label class="filter-label">레어도</label>
+                <div id="ship-rarity-filters" class="filter-chips"></div>
             </div>
-            <div id="ship-picker-grid" class="picker-grid"></div>
+            <div class="filter-row">
+                <label class="filter-label">진영</label>
+                <div id="ship-nation-filters" class="filter-chips"></div>
+            </div>
         </div>
-    </div>
+        <div id="ship-picker-grid" class="picker-grid scroll-styled"></div>
+    </Modal>
 
     <!-- Equipment Picker Modal -->
-    <div id="equipPickerModal" class="modal-overlay hidden">
-        <div class="modal-backdrop"></div>
-        <div class="modal-dialog fleet-picker-dialog">
-            <div class="modal-header">
-                <h3>장비 선택</h3>
-                <button class="modal-close-btn btn btn-icon">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
+    <Modal id="equipPickerModal" title="장비 선택">
+        <input type="text" id="equip-picker-search" class="picker-search-input" placeholder="장비 이름 검색..." autocomplete="off" />
+        <div class="picker-filters">
+            <div class="filter-row">
+                <label class="filter-label">레어도</label>
+                <div id="equip-rarity-filters" class="filter-chips"></div>
             </div>
-            <input type="text" id="equip-picker-search" class="picker-search-input" placeholder="장비 이름 검색..." autocomplete="off" />
-            <div class="picker-filters">
-                <div class="filter-row">
-                    <label class="filter-label">레어도</label>
-                    <div id="equip-rarity-filters" class="filter-chips"></div>
-                </div>
-            </div>
-            <div id="equip-picker-grid" class="picker-grid"></div>
         </div>
-    </div>
+        <div id="equip-picker-grid" class="picker-grid scroll-styled"></div>
+    </Modal>
 
     <!-- Save/Load Modal -->
-    <div id="saveLoadModal" class="modal-overlay hidden">
-        <div class="modal-backdrop"></div>
-        <div class="modal-dialog fleet-save-dialog">
-            <div class="modal-header">
-                <h3>편성 저장/불러오기</h3>
-                <button class="modal-close-btn btn btn-icon">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
+    <Modal id="saveLoadModal" title="편성 저장/불러오기">
+        <div class="save-load-content">
+            <div class="save-section">
+                <div class="save-input-row">
+                    <input type="text" id="save-name-input" class="picker-search-input" placeholder="편성 이름 입력..." maxlength="30" />
+                    <button id="save-btn" class="btn btn-primary">
+                        <span class="material-symbols-outlined">save</span>
+                        저장
+                    </button>
+                </div>
             </div>
-            <div class="save-load-content">
-                <div class="save-section">
-                    <div class="save-input-row">
-                        <input type="text" id="save-name-input" class="picker-search-input" placeholder="편성 이름 입력..." maxlength="30" />
-                        <button id="save-btn" class="btn btn-primary">
-                            <span class="material-symbols-outlined">save</span>
-                            저장
-                        </button>
-                    </div>
-                </div>
-                <div class="save-divider"></div>
-                <div id="save-slot-list" class="save-slot-list">
-                    <p class="save-empty-msg">저장된 편성이 없습니다.</p>
-                </div>
+            <div class="save-divider"></div>
+            <div id="save-slot-list" class="save-slot-list scroll-styled">
+                <p class="save-empty-msg">저장된 편성이 없습니다.</p>
             </div>
         </div>
-    </div>
+    </Modal>
 
     <!-- Loading Overlay -->
     <div id="loading-overlay" class="loading-overlay">

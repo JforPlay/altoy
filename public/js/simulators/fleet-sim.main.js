@@ -116,19 +116,9 @@ async function init() {
     // 4. Setup event listeners
     setupEventListeners();
 
-    // 5. Setup save/load modal
-    setupModal('saveLoadModal', {
-        closeOnEscape: true,
-        closeOnBackdrop: true,
-        closeButtonSelector: '.modal-close-btn',
-        restoreFocus: true,
-    });
-
-    // Handle backdrop click explicitly (same pattern as picker module)
-    const saveBackdrop = document.querySelector('#saveLoadModal .modal-backdrop');
-    if (saveBackdrop) {
-        saveBackdrop.addEventListener('click', () => closeModal('saveLoadModal'));
-    }
+    // 5. Setup save/load modal (Modal.astro shell — setupModal defaults
+    // cover the .modal-close button and .modal-backdrop clicks)
+    setupModal('saveLoadModal', { restoreFocus: true });
 
     // 6. Initial render
     renderFleet();

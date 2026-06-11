@@ -1235,6 +1235,34 @@ body.dark-mode .tooltip-toggle-button:hover {
   display: none !important;
 }
 
+/* Polished scrollbar for any scrollable region — apply this class instead of
+   leaving the native scrollbar or hand-rolling ::-webkit-scrollbar per page.
+   The standard properties cover Firefox and Chromium; the ::-webkit-* rules
+   below only take effect in Safari (Chromium ignores them once
+   scrollbar-width/scrollbar-color are set). */
+.scroll-styled {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.scroll-styled::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scroll-styled::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-styled::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.scroll-styled::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
 /* ==========================================================================
    12. PAGE STATUS / EMPTY / ERROR / LOADING MESSAGES
    ==========================================================================

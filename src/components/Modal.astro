@@ -17,22 +17,29 @@
  * Shell styles are Astro-scoped and use theme.css tokens, so they can't
  * collide with per-section modal CSS; style slotted content from the page's
  * own CSS. Reference usage: story-viewer/main-storyline.astro.
+ *
+ * Dialog-level layout overrides (pinned header with inner scroll region,
+ * full-screen on mobile, custom max-height) go in page CSS via
+ * `#<id> .c-modal-dialog` — the ID outranks the scoped shell styles.
+ * Reference: simulators/fleet-sim.astro picker modals.
  */
 interface Props {
     /** Element id passed to openModal/closeModal/setupModal */
     id: string;
     /** Static dialog title; omit and put a heading in the slot for dynamic titles */
     title?: string;
-    /** Dialog max-width (any CSS length) */
+    /** Dialog max-width (any CSS length); defaults to 37.5rem via CSS.
+     *  Omit it when page CSS needs to own max-width (e.g. media-query
+     *  overrides) — an inline style would be unbeatable from a stylesheet. */
     maxWidth?: string;
 }
-const { id, title, maxWidth = '37.5rem' } = Astro.props;
+const { id, title, maxWidth } = Astro.props;
 ---
 
-<div id={id} class="c-modal hidden" role="dialog" aria-modal="true" aria-hidden="true"
+<div id={id} class="c-modal scroll-styled hidden" role="dialog" aria-modal="true" aria-hidden="true"
      aria-labelledby={title ? `${id}-title` : undefined}>
     <div class="modal-backdrop"></div>
-    <div class="c-modal-dialog" style={`max-width: ${maxWidth}`}>
+    <div class="c-modal-dialog scroll-styled" style={maxWidth ? `max-width: ${maxWidth}` : undefined}>
         <button class="modal-close" type="button" aria-label="닫기">
             <span class="material-symbols-outlined">close</span>
         </button>
@@ -64,6 +71,7 @@ const { id, title, maxWidth = '37.5rem' } = Astro.props;
     .c-modal-dialog {
         position: relative;
         width: 100%;
+        max-width: 37.5rem;
         margin: 10vh 1rem 2rem;
         padding: 1.5rem;
         max-height: 80vh;

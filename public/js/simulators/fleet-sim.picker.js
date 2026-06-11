@@ -218,8 +218,8 @@ export function openSPWeaponPicker(slotIndex) {
 
     if (equipSearchInput) equipSearchInput.value = '';
 
-    // Update modal header
-    const header = document.querySelector('#equipPickerModal .modal-header h3');
+    // Update modal title (Modal.astro shell renders it as #<id>-title)
+    const header = document.getElementById('equipPickerModal-title');
     if (header) header.textContent = '특수 장비 선택';
 
     _renderEquipGrid();
@@ -250,31 +250,10 @@ function _cacheDOM() {
 // ===== Internal: Modal Setup =====
 
 function _setupModals() {
-    setupModal('shipPickerModal', {
-        closeOnEscape: true,
-        closeOnBackdrop: true,
-        closeButtonSelector: '.modal-close-btn',
-        restoreFocus: true,
-    });
-
-    setupModal('equipPickerModal', {
-        closeOnEscape: true,
-        closeOnBackdrop: true,
-        closeButtonSelector: '.modal-close-btn',
-        restoreFocus: true,
-    });
-
-    // Handle backdrop clicks explicitly (modal-backdrop is a child div,
-    // so setupModal's e.target === modal check may not fire)
-    const shipBackdrop = document.querySelector('#shipPickerModal .modal-backdrop');
-    if (shipBackdrop) {
-        shipBackdrop.addEventListener('click', () => closeModal('shipPickerModal'));
-    }
-
-    const equipBackdrop = document.querySelector('#equipPickerModal .modal-backdrop');
-    if (equipBackdrop) {
-        equipBackdrop.addEventListener('click', () => closeModal('equipPickerModal'));
-    }
+    // Modal.astro shell: setupModal's defaults cover the .modal-close button
+    // and .modal-backdrop clicks; ESC/backdrop close default to enabled.
+    setupModal('shipPickerModal', { restoreFocus: true });
+    setupModal('equipPickerModal', { restoreFocus: true });
 }
 
 // ===== Internal: Event Listeners =====
@@ -409,7 +388,7 @@ function _setupEventListeners() {
                     }
                 }
                 closeModal('equipPickerModal');
-                const header = document.querySelector('#equipPickerModal .modal-header h3');
+                const header = document.getElementById('equipPickerModal-title');
                 if (header) header.textContent = '장비 선택';
                 return;
             }
@@ -432,8 +411,8 @@ function _setupEventListeners() {
 
             closeModal('equipPickerModal');
 
-            // Restore modal header
-            const header = document.querySelector('#equipPickerModal .modal-header h3');
+            // Restore modal title
+            const header = document.getElementById('equipPickerModal-title');
             if (header) header.textContent = '장비 선택';
         });
     }
