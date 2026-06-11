@@ -6,8 +6,11 @@
  *
  * These are the visual/audio "effects" a script line can request (line.shakeTime,
  * line.dialogShake, line.shake / line.action[].shake, line.flashN, line.flashout/
- * flashin, line.soundeffect). All mirror the game's storymgr.lua / dialoguestory-
- * player.lua behavior; see each function's doc for the exact data shape.
+ * flashin/flash, line.soundeffect). All mirror the game's storymgr.lua /
+ * dialoguestoryplayer.lua / storyplayer.lua behavior; see each function's doc for
+ * the exact data shape. NOTE the split: playFlashoutCover runs BEFORE its line
+ * renders (the game covers the OLD scene and swaps content behind the curtain);
+ * handleLineFlash runs at step start AFTER the render (flashin reveal + blink).
  *
  * Every function takes the StoryViewer engine instance as an explicit `ctx`
  * argument. Transient effect state (timers, running Web-Animations, lazily-built
@@ -357,8 +360,9 @@ function _ensureFlashNOverlay(ctx) {
  *
  * FMOD event paths ('event:/battle/boom2') can't be loaded as web audio
  * — they reference FMOD Studio event IDs compiled into the game's audio
- * bank. We skip those and play only plain ID paths. (The existing
- * playSfx URL convention is `${BGM_URL_PREFIX}${id}.ogg`.)
+ * bank. We skip those and play only plain ID paths. (ctx.playSfx resolves
+ * the cue to an audio_for_toy URL via story.bgm.js, which also returns
+ * null for event:/ cues as a second line of defense.)
  */
 export function handleLineSoundEffect(ctx, line) {
     if (ctx._sfxTimer) { clearTimeout(ctx._sfxTimer); ctx._sfxTimer = null; }
@@ -394,10 +398,88 @@ export function clearFlashOverlay(ctx) {
 }
 
 /**
- * Animate the step-level flashout/flashin curtain sequence.
- * `flashout` fades a full-screen overlay IN (black or white) and `flashin`
- * fades it OUT, with an optional delay between them. Distinct from the
- * `flashN` multi-phase blink — uses a separate overlay element.
+ * Play `line.flashout` as a PRE-render cover over the *current* (old)
+ * content. Game sequencing (storyplayer.lua Play :323-360): when leaving
+ * step N-1 the player reads the NEXT step's flashout (GetNextStep →
+ * Flashout(nextStep)) and tweens the curtain over the old scene; the new
+ * step's content (UpdateBg/paintings) swaps behind the cover, and the
+ * step's own flashin then reveals it. So flashout belongs BEFORE its
+ * line's render — playing it after (the old behavior) shows the new
+ * scene pop in, THEN a redundant blackout, which reads as a spurious
+ * extra blackout on every transition (×4,698 in current story data).
+ *
+ * Returns the cover duration in ms (0 when the line has no flashout —
+ * caller renders immediately). The CALLER owns the completion timer so
+ * pending renders can be cancelled by back-nav/jumps.
+ */
+export function playFlashoutCover(ctx, line) {
+    const spec = line && line.flashout;
+    if (!spec) return 0;
+
+    clearFlashOverlay(ctx);
+    const overlay = _ensureFlashOverlay(ctx);
+    ctx._flashAnims = [];
+    ctx._flashTimers = [];
+
+    const a = Array.isArray(spec.alpha) ? spec.alpha : [0, 1];
+    const durMs = Math.max(0, (spec.dur || 0.5) * 1000);
+    overlay.style.backgroundColor = spec.black ? 'rgb(0,0,0)' : 'rgb(255,255,255)';
+    overlay.style.opacity = String(a[0]);
+    if (durMs === 0) {
+        overlay.style.opacity = String(a[1]);
+        return 0;
+    }
+    const anim = overlay.animate(
+        [{ opacity: a[0] }, { opacity: a[1] }],
+        { duration: durMs, easing: 'linear', fill: 'forwards' }
+    );
+    ctx._flashAnims.push(anim);
+    anim.onfinish = () => { overlay.style.opacity = String(a[1]); };
+    return durMs;
+}
+
+/**
+ * Build the phase plan for a `line.flash` blink (Lua StartBlinkAnimation,
+ * storyplayer.lua:1484-1515): `number` cycles, each tweening alpha[0]→
+ * alpha[1] over dur/2, holding `wait` seconds, then falling back to
+ * alpha[0] over dur/2. `delay` offsets the whole sequence. Crucially the
+ * blink always comes back DOWN — it never ends with the screen covered.
+ * Returns [{at, from, to, dur}] with times in ms. Pure — node-testable.
+ */
+export function buildBlinkPlan(spec) {
+    if (!spec || typeof spec !== 'object') return [];
+    const a = Array.isArray(spec.alpha) ? spec.alpha : [0, 1];
+    const number = Math.max(1, parseInt(spec.number, 10) || 1);
+    const halfMs = Math.max(0, ((spec.dur || 0.5) * 1000) / 2);
+    const waitMs = Math.max(0, (spec.wait || 0) * 1000);
+    const phases = [];
+    let at = Math.max(0, (spec.delay || 0) * 1000);
+    for (let i = 0; i < number; i++) {
+        phases.push({ at, from: a[0], to: a[1], dur: halfMs });
+        at += halfMs + waitMs;
+        phases.push({ at, from: a[1], to: a[0], dur: halfMs });
+        at += halfMs;
+    }
+    return phases;
+}
+
+/**
+ * Step-START flash effects: `flashin` reveal + `flash` blink. (The
+ * flashout cover runs BEFORE the render — see playFlashoutCover.)
+ *
+ * `flashin` (storyplayer.lua flashEffect :1085-1091) pins the curtain at
+ * alpha[0] IMMEDIATELY — even during its `delay`; the game sets
+ * flashCg.alpha before starting the delayed tween. That pin is what
+ * holds a post-flashout cover up while the new scene settles, then the
+ * tween reveals it.
+ *
+ * `flash` is the Lua blink (storystep.lua:17 `blink = flash`,
+ * {alpha, dur, number, wait, delay}) — white unless `black` (none of
+ * the 26 lines in current data set it). See buildBlinkPlan.
+ *
+ * A step with NEITHER resets the overlay to transparent: the game's
+ * per-step Reset (:1373) deactivates the flash panel, so a flashout
+ * cover with no flashin disappears with a hard cut at the new step.
  */
 export function handleLineFlash(ctx, line) {
     if (ctx._flashAnims) {
@@ -409,7 +491,10 @@ export function handleLineFlash(ctx, line) {
         ctx._flashTimers = null;
     }
 
-    if (!line.flashout && !line.flashin) {
+    const flashin = line.flashin;
+    const blink = line.flash;
+
+    if (!flashin && !blink) {
         if (ctx._flashOverlay) ctx._flashOverlay.style.opacity = '0';
         return;
     }
@@ -418,40 +503,45 @@ export function handleLineFlash(ctx, line) {
     ctx._flashAnims = [];
     ctx._flashTimers = [];
 
-    let offset = 0; // ms since this call
-
-    const schedulePhase = (spec) => {
-        const a = spec.alpha || [0, 1];
-        const durMs = Math.max(0, (spec.dur || 0.5) * 1000);
-        const color = spec.black ? 'rgb(0,0,0)' : 'rgb(255,255,255)';
-        const startAt = offset;
-        // We queue the start with setTimeout so phases run sequentially.
+    if (flashin) {
+        const a = Array.isArray(flashin.alpha) ? flashin.alpha : [1, 0];
+        const durMs = Math.max(0, (flashin.dur || 0.5) * 1000);
+        const delayMs = Math.max(0, (flashin.delay || 0) * 1000);
+        overlay.style.backgroundColor = flashin.black ? 'rgb(0,0,0)' : 'rgb(255,255,255)';
+        overlay.style.opacity = String(a[0]); // pinned through the delay
         const startTimer = setTimeout(() => {
-            overlay.style.backgroundColor = color;
-            // Pin the starting opacity before the animation so we don't
-            // see a flash of the wrong intensity.
-            overlay.style.opacity = String(a[0]);
+            if (durMs === 0) {
+                overlay.style.opacity = String(a[1]);
+                return;
+            }
             const anim = overlay.animate(
                 [{ opacity: a[0] }, { opacity: a[1] }],
                 { duration: durMs, easing: 'linear', fill: 'forwards' }
             );
             ctx._flashAnims?.push(anim);
-            anim.onfinish = () => {
-                // Commit the end opacity inline so removing `fill` later
-                // won't snap the overlay back.
-                overlay.style.opacity = String(a[1]);
-            };
-        }, startAt);
+            anim.onfinish = () => { overlay.style.opacity = String(a[1]); };
+        }, delayMs);
         ctx._flashTimers.push(startTimer);
-        offset += durMs;
-    };
+    } else {
+        // Reset semantics: no flashin → any leftover cover hard-cuts away.
+        overlay.style.opacity = '0';
+    }
 
-    if (line.flashout) schedulePhase(line.flashout);
-
-    if (line.flashin) {
-        const delayMs = Math.max(0, (line.flashin.delay || 0) * 1000);
-        offset += delayMs;
-        schedulePhase(line.flashin);
+    if (blink) {
+        const color = blink.black ? 'rgb(0,0,0)' : 'rgb(255,255,255)';
+        for (const phase of buildBlinkPlan(blink)) {
+            const startTimer = setTimeout(() => {
+                overlay.style.backgroundColor = color;
+                overlay.style.opacity = String(phase.from);
+                const anim = overlay.animate(
+                    [{ opacity: phase.from }, { opacity: phase.to }],
+                    { duration: phase.dur, easing: 'linear', fill: 'forwards' }
+                );
+                ctx._flashAnims?.push(anim);
+                anim.onfinish = () => { overlay.style.opacity = String(phase.to); };
+            }, phase.at);
+            ctx._flashTimers.push(startTimer);
+        }
     }
 }
 

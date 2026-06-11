@@ -11,8 +11,10 @@
  * and all keyboard/pointer event wiring.
  */
 import { debounce, fetchJSONWithCache, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, makeKeyboardActivatable, DATA_FOR_TOY_BASE } from '../utils.js';
-import { getExpressionData, updatePaintings, clearPaintings } from './story.painting.js';
-import { clearLineEffects, handleLineShake, handleLineDialogShake, handleLinePaintingShake, handleLineFlashN, handleLineSoundEffect, clearFlashOverlay, handleLineFlash } from './story.effects.js';
+import { getExpressionData, updatePaintings, clearPaintings, pickFaceCandidates } from './story.painting.js';
+import { clearLineEffects, handleLineShake, handleLineDialogShake, handleLinePaintingShake, handleLineFlashN, handleLineSoundEffect, clearFlashOverlay, handleLineFlash, playFlashoutCover } from './story.effects.js';
+import { correctKrNameColor } from './story.text.js';
+import { resolveAudioCueUrl } from './story.bgm.js';
 document.addEventListener('DOMContentLoaded', () => {
     window.StoryViewer = {
         // ===== State & Constants =====
@@ -52,9 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         COMMANDER_ICON_PATH: resolveUrl('assets/icon/commander.webp'),
         BASE_URL: `${DATA_FOR_TOY_BASE}/`,
-        // TODO(sub-project-3): de-Fernando audio. BGM hosting moves to data_for_toy_audio
-        // when the audio extraction pipeline lands.
-        BGM_URL_PREFIX: "https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/",
 
         // ===== DOM Elements =====
         elements: {
@@ -117,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // step's painting.alpha; the active speaker is always at 1.0.
         paintingsBySide: new Map(), // Map<side:number, {actorId, element, expression, side, dir}>
         activeSpeakerSide: null,
-        PAINTING_FADE_OUT_MS: 250,
+        PAINTING_FADE_OUT_MS: 150, // game fadeOutPaintingTime default (dialoguestep.lua:71)
 
         // Effect tuning. Shake "speed" in game data is a small-int tier; we map
         // it to a per-cycle duration. Flash duration caps keep runaway 'number:
@@ -125,6 +124,10 @@ document.addEventListener('DOMContentLoaded', () => {
         SHAKE_DEFAULT_X_PX: 8,
         SHAKE_MAX_TOTAL_MS: 8000,
         FLASH_MAX_TOTAL_MS: 8000,
+        // Hard cap on how long a flashout cover may defer the next line's
+        // render (covers in data are ~1s; a bad dur must not lock input).
+        FLASH_COVER_MAX_MS: 3000,
+        _flashTransition: null, // pending {timer} while a flashout cover plays
 
         // ===== Initialization =====
 
@@ -249,8 +252,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
 
                 // If a modal is open, let Escape close it but ignore other keys.
-                const scriptOpen = !this.elements.scriptModalOverlay?.classList.contains('hidden');
-                const summaryOpen = !this.elements.summaryModalOverlay?.classList.contains('hidden');
+                // A page without the modal element counts as CLOSED — the
+                // `!...?.` form turned missing modals into "open" and silently
+                // swallowed all story keyboard nav (main-story has no summary
+                // modal, so Space/Enter/arrows were dead there).
+                const scriptOpen = this.elements.scriptModalOverlay
+                    ? !this.elements.scriptModalOverlay.classList.contains('hidden') : false;
+                const summaryOpen = this.elements.summaryModalOverlay
+                    ? !this.elements.summaryModalOverlay.classList.contains('hidden') : false;
                 if (scriptOpen || summaryOpen) {
                     if (e.key === 'Escape') {
                         e.preventDefault();
@@ -874,7 +883,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 (line.sequence && line.sequence[0] && line.sequence[0][0]) ||
                 (line.signDate && line.signDate[0]) ||
                 (line.options && line.options.length > 0) ||
-                line.flashin || line.flashout
+                line.flashin || line.flashout || line.flash
             );
         },
 
@@ -883,6 +892,10 @@ document.addEventListener('DOMContentLoaded', () => {
          * Sets _playFlashOnNextRender so flash/shake effects trigger on forward nav only.
          */
         advanceStory() {
+            // A flashout cover is mid-transition: the step change is already
+            // in flight, so further advance input is consumed (the game also
+            // doesn't accept input during the exit-transition stages).
+            if (this._flashTransition) return;
             if (this.scriptIndex >= this.currentStoryScript.length - 1) return;
 
             const currentLine = this.currentStoryScript[this.scriptIndex];
@@ -895,10 +908,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Only forward advance replays flash curtains — backward nav,
                 // resume, and jumps should NOT re-trigger blackouts.
                 this._playFlashOnNextRender = true;
-                this.renderScriptLine();
+                this.renderAfterFlashCover();
             } else {
                 // At end of reachable path
                 this.renderScriptLine();
+            }
+        },
+
+        /**
+         * Render the (already-set) current line, playing its flashout as a
+         * PRE-render cover when present. Game order (storyplayer.lua Play
+         * :323-360): the curtain covers the OLD scene, content swaps behind
+         * it, then the step's flashin reveals. Only natural forward advance
+         * (advanceStory / selectOption) comes through here.
+         */
+        renderAfterFlashCover() {
+            const line = this.currentStoryScript[this.scriptIndex];
+            const coverMs = line ? this.playFlashoutCover(line) : 0;
+            if (coverMs > 0) {
+                const timer = setTimeout(() => {
+                    this._flashTransition = null;
+                    this.renderScriptLine();
+                }, Math.min(coverMs, this.FLASH_COVER_MAX_MS));
+                this._flashTransition = { timer };
+            } else {
+                this.renderScriptLine();
+            }
+        },
+
+        /**
+         * Abort a pending cover transition (back-nav, jumps, story switch).
+         * The interrupted advance never rendered, so its effect flag must not
+         * leak onto the unrelated render that interrupted it.
+         */
+        cancelFlashTransition() {
+            if (this._flashTransition) {
+                clearTimeout(this._flashTransition.timer);
+                this._flashTransition = null;
+                this._playFlashOnNextRender = false;
             }
         },
 
@@ -942,6 +989,10 @@ document.addEventListener('DOMContentLoaded', () => {
          * This is the central render function called after every index change.
          */
         renderScriptLine() {
+            // Any render NOT coming from a cover-transition completion kills
+            // the pending transition (the completion callback nulls the
+            // handle before calling us, so this no-ops on that path).
+            this.cancelFlashTransition();
             if (this.scriptIndex >= this.currentStoryScript.length) return;
             const line = this.currentStoryScript[this.scriptIndex];
             const el = this.elements;
@@ -952,6 +1003,7 @@ document.addEventListener('DOMContentLoaded', () => {
             el.infoScreenText.textContent = '';
 
             this.updateBackground();
+            this.updateOldPhoto(line);
             // Line-level visual/audio effects (game's per-step playback).
             // Gated to forward-advance only (same rule as flashout/flashin) —
             // replaying shake/flash/sfx on backward nav feels like the story is
@@ -977,13 +1029,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // Re-sync BGM from the script position (not just the current line)
             // so back-navigation and resume jumps land on the correct track.
             this.updateBgm();
-            // flashin/flashout are top-level fields that bracket the step with a
-            // black (or white) curtain — independent from the `effects` array.
-            // Only replay curtains on natural forward advance (set by
-            // advanceStory) — backward nav, jumps, and resumes should NOT
-            // retrigger blackouts the user has already seen. We still clear
-            // any lingering flash overlay on non-advance renders so the screen
-            // doesn't stay black if we jumped away mid-animation.
+            // Step-start curtain effects: flashin reveal + `flash` blink. The
+            // flashout COVER already played before this render (see
+            // renderAfterFlashCover — game plays it while leaving the previous
+            // step). Only natural forward advance replays these — backward
+            // nav, jumps, and resumes should NOT retrigger blackouts the user
+            // has already seen; those paths clear any lingering overlay
+            // instead so the screen never stays covered.
             if (this._playFlashOnNextRender) {
                 this._playFlashOnNextRender = false;
                 this.handleLineFlash(line);
@@ -1018,15 +1070,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     displayedName = '';
                 }
 
-                if (actorInfo.id !== this.lastActorId) {
-                    el.actorName.textContent = displayedName;
+                // Name text + faction tag refresh on every line (cheap, and
+                // actorName/factiontag can change while the speaker id stays
+                // the same); the portrait <img> below only reloads when the
+                // speaker actually changes.
+                this.renderActorName(displayedName, line);
 
+                if (actorInfo.id !== this.lastActorId) {
                     let portraitIcon = actorInfo.icon;
                     if (typeof line.actor === 'number' && line.actor > 0) {
                         const expressionData = this.getExpressionData(line.actor);
                         if (expressionData) {
-                            const expression = line.expression !== undefined ? String(line.expression) : '0';
-                            portraitIcon = expressionData.faceUrlTemplate.replace('{faceId}', expression);
+                            // Same candidate chain as the painting compositor —
+                            // a hardcoded '0' here guaranteed a 404 for most
+                            // skins (only ~6% have a face '0').
+                            const candidates = pickFaceCandidates(
+                                expressionData,
+                                line.expression !== undefined ? String(line.expression) : undefined
+                            );
+                            if (candidates.length) {
+                                portraitIcon = expressionData.faceUrlTemplate.replace('{faceId}', candidates[0]);
+                            }
                         }
                     }
 
@@ -1050,11 +1114,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                if (line.nameColor) {
-                    el.actorName.style.color = line.nameColor;
-                } else {
-                    el.actorName.style.color = '';
-                }
+                // The KR client remaps several legacy nameColor values
+                // (dialoguestep.lua:14-32) — apply the same correction.
+                el.actorName.style.color = line.nameColor ? correctKrNameColor(line.nameColor) : '';
 
                 el.actorPortrait.classList.toggle('actor-shadow', line.actorShadow === true);
 
@@ -1142,7 +1204,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Treat option selection as a forward advance so flash curtains baked
                 // into the first line of the chosen branch play on the natural path.
                 this._playFlashOnNextRender = true;
-                this.renderScriptLine();
+                this.renderAfterFlashCover();
             } else {
                 // No reachable line — this branch ends immediately; render to show end state.
                 this.scriptIndex = currentLineIndex;
@@ -1202,6 +1264,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             return collected;
+        },
+
+        /**
+         * Render the speaker name plus the optional faction tag suffix
+         * (game's factiontag/subText — dialoguestep.lua GetSubActorName).
+         * factiontagColor is used raw (the Lua applies no correction map to
+         * it); when unset we inherit the theme color rather than forcing the
+         * game's #FFFFFF default onto a possibly-light panel.
+         */
+        renderActorName(displayedName, line) {
+            const el = this.elements.actorName;
+            el.textContent = displayedName;
+            if (line.factiontag) {
+                const tag = document.createElement('span');
+                tag.className = 'actor-faction-tag';
+                tag.textContent = ` ${line.factiontag}`;
+                if (line.factiontagColor) tag.style.color = line.factiontagColor;
+                el.appendChild(tag);
+            }
         },
 
         /**
@@ -1417,6 +1498,37 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         /**
+         * Toggle the per-step oldPhoto sepia tint (storyplayer.lua:1157-1169 —
+         * flashback scenes). `oldPhoto` is `true` for the default vintage
+         * color or an [r,g,b,a] array (0..1) for a custom tint. The overlay is
+         * created on first use and toggled per line afterwards.
+         */
+        updateOldPhoto(line) {
+            const spec = line?.oldPhoto;
+            let overlay = this.elements.oldPhotoOverlay;
+            if (!overlay) {
+                if (!spec) return;
+                overlay = document.createElement('div');
+                overlay.className = 'story-oldphoto-overlay';
+                overlay.setAttribute('aria-hidden', 'true');
+                this.elements.viewerContainer.appendChild(overlay);
+                this.elements.oldPhotoOverlay = overlay;
+            }
+            if (spec) {
+                if (Array.isArray(spec) && spec.length >= 3) {
+                    const [r, g, b, a] = spec;
+                    overlay.style.backgroundColor =
+                        `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${a ?? 0.36})`;
+                } else {
+                    overlay.style.backgroundColor = ''; // CSS default vintage tint
+                }
+                showElement(overlay);
+            } else {
+                hideElement(overlay);
+            }
+        },
+
+        /**
          * Resolve which BGM should be playing at the current script position by
          * scanning backwards for the most recent `bgm`/`stopbgm` directive, and
          * apply it. This makes backward navigation and resume-jumps land on the
@@ -1435,7 +1547,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const line = this.currentStoryScript[i];
                 if (!line) continue;
                 if (line.stopbgm) { resolved = false; resolvedOnCurrentLine = (i === this.scriptIndex); break; }
-                if (line.bgm) { resolved = line.bgm; resolvedOnCurrentLine = (i === this.scriptIndex); break; }
+                if (line.bgm) {
+                    // A few game scripts write the stop directive as the bgm
+                    // VALUE (`bgm = "stopbgm"`, e.g. jufengyuqingchunzhiquan3)
+                    // — no such bundle exists, the in-game result is silence.
+                    resolved = line.bgm === 'stopbgm' ? false : line.bgm;
+                    resolvedOnCurrentLine = (i === this.scriptIndex);
+                    break;
+                }
             }
             if (resolved === null) return;
 
@@ -1463,10 +1582,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // ===== Painting & Expression Rendering =====
         // Implemented in ./story.painting.js — computePaintingStateAt,
         // applyPaintingState, createPaintingContainer, evictSidePainting,
-        // applyFaceOverlayPosition, and updatePaintingExpression live there as
-        // module-private helpers. These thin wrappers are the engine entry
-        // points; the painting module takes the engine instance as an explicit
-        // `ctx` argument instead of relying on `this`.
+        // and the canvas compositing pipeline live there as module helpers.
+        // These thin wrappers are the engine entry points; the painting
+        // module takes the engine instance as an explicit `ctx` argument
+        // instead of relying on `this`.
         getExpressionData(actorId) { return getExpressionData(this, actorId); },
         updatePaintings() { return updatePaintings(this); },
         clearPaintings() { return clearPaintings(this); },
@@ -1506,6 +1625,7 @@ document.addEventListener('DOMContentLoaded', () => {
         handleLineSoundEffect(line) { return handleLineSoundEffect(this, line); },
         clearFlashOverlay() { return clearFlashOverlay(this); },
         handleLineFlash(line) { return handleLineFlash(this, line); },
+        playFlashoutCover(line) { return playFlashoutCover(this, line); },
 
         /**
          * Play a short sound effect with bounded concurrency and guaranteed cleanup.
@@ -1513,6 +1633,15 @@ document.addEventListener('DOMContentLoaded', () => {
          * timeout fallback so the activeSfx array cannot grow unbounded.
          */
         playSfx(audioId) {
+            resolveAudioCueUrl(audioId).then(url => {
+                // FMOD `event:/...` cues and unextracted bundles resolve to
+                // null — skip silently (these never resolved on the legacy
+                // host either; a warn here would spam every battle scene).
+                if (url) this._playSfxUrl(url);
+            });
+        },
+
+        _playSfxUrl(url) {
             const MAX_CONCURRENT_SFX = 3;
             const MAX_SFX_LIFETIME_MS = 15000;
 
@@ -1525,7 +1654,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (oldest._cleanup) oldest._cleanup();
             }
 
-            const sfx = new Audio(`${this.BGM_URL_PREFIX}${audioId}.ogg`);
+            const sfx = new Audio(url);
             sfx.volume = this.audio.volume;
 
             let released = false;
@@ -1564,19 +1693,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Pause before swapping src — a slow load of the new track must not
                 // leave the previous one audible in the gap.
                 this.audio.pause();
-                this.audio.src = `${this.BGM_URL_PREFIX}${requested}.ogg`;
-                this.audio.play()
-                    .catch(e => {
-                        // AbortError = a pending play() superseded by our own
-                        // pause()/load() (track switch, BGM-stop line, view
-                        // change) or the user's pause — intentional, not a failure.
-                        if (e.name === 'AbortError') return;
-                        // Genuine failure (autoplay policy, network/decode).
-                        // Clear the dedupe key — only if a newer request hasn't
-                        // claimed it — so the next handleBgm call retries.
-                        if (this.currentBgm === requested) this.currentBgm = null;
-                        console.warn("Audio playback failed.", e);
-                    });
+                resolveAudioCueUrl(requested).then(url => {
+                    // A newer request (or a stop) may have claimed the dedupe
+                    // key while the cue map loaded — only the latest touches
+                    // the audio element.
+                    if (this.currentBgm !== requested) return;
+                    if (!url) {
+                        // Cue missing from audio_for_toy (game-data typo or a
+                        // bundle newer than the last extraction) — stay silent,
+                        // keep the dedupe key so repeats of the line don't spam.
+                        console.warn(`BGM cue not in audio map: ${requested}`);
+                        return;
+                    }
+                    this.audio.src = url;
+                    this.audio.play()
+                        .catch(e => {
+                            // AbortError = a pending play() superseded by our own
+                            // pause()/load() (track switch, BGM-stop line, view
+                            // change) or the user's pause — intentional, not a failure.
+                            if (e.name === 'AbortError') return;
+                            // Genuine failure (autoplay policy, network/decode).
+                            // Clear the dedupe key — only if a newer request hasn't
+                            // claimed it — so the next handleBgm call retries.
+                            if (this.currentBgm === requested) this.currentBgm = null;
+                            console.warn("Audio playback failed.", e);
+                        });
+                });
             } else if (!bgmName && this.currentBgm) {
                 this.currentBgm = null;
                 this.audio.pause();

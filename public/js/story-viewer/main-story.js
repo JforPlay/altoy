@@ -8,10 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainStoryConfig = {
         viewerType: 'main',
 
+        // {namecode:N} placeholders are resolved at build time by the pipeline;
+        // the engine's getActorInfo handles the rare leftovers tolerantly, so no
+        // runtime name_code.json fetch (the old AzurLaneData ShareCfg source is
+        // stale and put an external dependency in the init path).
         dataPaths: [
             'data/story-viewer/main_story_index.json',
-            'data/story-viewer/shipgirl_data.json',
-            'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json'
+            'data/story-viewer/shipgirl_data.json'
         ],
 
         // Path pattern for lazy-loading individual chapters ({id} is replaced with chapter ID)
@@ -20,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
         processLoadedData: (viewer, dataArray) => {
             viewer.storylineData = dataArray[0];
             viewer.shipgirlData = dataArray[1];
-            viewer.nameCodeData = dataArray[2];
         },
 
         getEventMemories: (eventData) => eventData?.memory_id,

@@ -128,13 +128,16 @@ function createTabStoryViewer(config) {
          */
         async loadAllData() {
             try {
-                const [memoriesData, endingsData, polaroidsData, storyData, shipgirlData, nameCodeData, iconMappingData] = await Promise.all([
+                // namecodes are pipeline-resolved in the child story data; no
+                // runtime name_code.json fetch (the old AzurLaneData ShareCfg
+                // source is stale — see main-story.js). nameCodeData stays {}
+                // and the engine's placeholder fallback no-ops.
+                const [memoriesData, endingsData, polaroidsData, storyData, shipgirlData, iconMappingData] = await Promise.all([
                     fetchJSON(this.config.dataPaths.memories),
                     fetchJSON(this.config.dataPaths.endings),
                     fetchJSON(this.config.dataPaths.polaroids),
                     fetchJSON(this.config.dataPaths.stories),
                     fetchJSON(this.config.dataPaths.shipgirls),
-                    fetchJSON('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json'),
                     fetchJSON(this.config.dataPaths.iconMapping)
                 ]);
 
@@ -143,7 +146,6 @@ function createTabStoryViewer(config) {
                 this.polaroidsData = polaroidsData;
                 this.storyData = storyData;
                 this.shipgirlData = shipgirlData;
-                this.nameCodeData = nameCodeData;
                 this.iconMappingData = iconMappingData;
 
                 // Build reverse lookup map

@@ -11,18 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const worldStoryConfig = {
         viewerType: 'world',
 
+        // namecodes are pipeline-resolved; no runtime name_code.json fetch
+        // (the old AzurLaneData ShareCfg source is stale — see main-story.js).
         dataPaths: [
             'data/story-viewer/world_story_data.json',
             'data/story-viewer/world_story_summary_data.json',
-            'data/story-viewer/shipgirl_data.json',
-            'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/refs/heads/main/KR/ShareCfg/name_code.json'
+            'data/story-viewer/shipgirl_data.json'
         ],
 
         processLoadedData: (viewer, dataArray) => {
             viewer.storylineData = dataArray[0];
             viewer.storylineSummaryData = dataArray[1];
             viewer.shipgirlData = dataArray[2];
-            viewer.nameCodeData = dataArray[3];
         },
 
         getEventMemories: (eventData) => eventData?.child,

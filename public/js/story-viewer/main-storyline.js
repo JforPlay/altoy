@@ -6,6 +6,7 @@
  * Data is loaded from main_story_meta.json on init.
  */
 import { debounce, fetchJSON, hideElement, showElement, resolveUrl, openModal, closeModal as utilsCloseModal, setupModal, makeKeyboardActivatable, DATA_FOR_TOY_BASE } from '../utils.js';
+import { resolveAudioCueUrl } from './story.bgm.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // ===== DOM Elements =====
@@ -456,11 +457,17 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.storyButton.dataset.eventId = id;
 
         if (bgm && bgm.trim() !== "") {
-            // TODO(sub-project-3): de-Fernando audio
-            elements.modalBgm.src = `https://github.com/Fernando2603/AzurLane/raw/refs/heads/main/audio/bgm/${bgm}.ogg`;
-            elements.modalBgm.volume = 0.01;
-            elements.modalBgm.play().catch(e => console.warn("Audio playback blocked or failed:", e));
+            elements.modalBgm.dataset.cue = bgm;
+            resolveAudioCueUrl(bgm).then(url => {
+                // Modal may have closed (or reopened on another chapter)
+                // while the cue map loaded — only set src if still wanted.
+                if (!url || elements.modalBgm.dataset.cue !== bgm) return;
+                elements.modalBgm.src = url;
+                elements.modalBgm.volume = 0.01;
+                elements.modalBgm.play().catch(e => console.warn("Audio playback blocked or failed:", e));
+            });
         } else {
+            elements.modalBgm.dataset.cue = "";
             elements.modalBgm.src = "";
         }
 
@@ -484,6 +491,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModal = () => {
         utilsCloseModal('details-modal', {
             onClose: () => {
+                elements.modalBgm.dataset.cue = "";
                 if (elements.modalBgm.src) {
                     elements.modalBgm.pause();
                     elements.modalBgm.currentTime = 0;
@@ -498,6 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeOnEscape: false, // ESC handled in keyboard navigation section
         restoreFocus: true,
         onClose: () => {
+            elements.modalBgm.dataset.cue = "";
             if (elements.modalBgm.src) {
                 elements.modalBgm.pause();
                 elements.modalBgm.currentTime = 0;

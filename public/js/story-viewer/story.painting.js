@@ -8,13 +8,24 @@
  * every render so Back/Resume navigation always produces the correct visual
  * state without "undoing" transitions.
  *
+ * Rendering composites base painting + face onto a single <canvas> at native
+ * resolution (same approach as skin.expression.js): the extracted base has a
+ * transparent face hole, and stacking two separately-scaled <img>s leaves a
+ * semi-transparent seam where their downscaled edges meet. One canvas draw,
+ * scaled once by CSS, can't reopen it.
+ *
  * Every function takes the StoryViewer engine instance as an explicit `ctx`
  * argument (state lives on `ctx`: elements, paintingsBySide, currentStoryScript,
  * expressionManifest, scriptIndex, activeOptionFlag, activeSpeakerSide,
  * BASE_URL, PAINTING_FADE_OUT_MS) rather than relying on `this`. The engine
- * exposes getExpressionData / updatePaintings / clearPaintings as thin wrappers;
- * the remaining functions here are module-private helpers.
+ * exposes getExpressionData / updatePaintings / clearPaintings as thin wrappers.
+ * computePaintingStateAt is exported for node tests — it reads only plain data
+ * off ctx and touches no DOM.
  */
+
+// =========================================================================
+// Expression manifest lookup
+// =========================================================================
 
 /**
  * Look up expression manifest data for a character.
@@ -51,6 +62,10 @@ export function getExpressionData(ctx, actorId) {
     return null;
 }
 
+// =========================================================================
+// Painting state (pure — node-testable)
+// =========================================================================
+
 /**
  * Rebuild the painting state for the current script position and apply
  * it to the DOM. Mirrors the game's dialoguestoryplayer.lua model:
@@ -58,13 +73,18 @@ export function getExpressionData(ctx, actorId) {
  *   - Each side (0=LEFT, 1=RIGHT, 2=CENTER) holds at most one painting.
  *   - When a new step lands on CENTER, LEFT and RIGHT paintings are
  *     cleared (game's GetRecycleActorList rule for SIDE_MIDDLE).
- *   - Lines with `hideOther:true`, `hidePainting:true`, or no renderable
- *     actor clear ALL sides (game's hidePainting/actor==nil path).
+ *   - `withoutPainting:true`, `hidePainting:true`, or no actor/actorName
+ *     clear ALL sides and render nothing (DialogueStep.Ctor :127-139 nulls
+ *     the actor for all three; `hidePainting` keeps only the name box).
+ *   - `hideOther:true` clears ALL sides but the current speaker is then
+ *     re-rendered (GetRecycleActorList :102-107 recycles everything, then
+ *     UpdatePainting reloads the current step's painting).
  *   - `paintingFadeOut = {side, time}` MOVES the previous painting from
  *     its current side to the specified side.
  *   - The active speaker's painting is at alpha=1.0.
- *   - All other paintings dim to the CURRENT step's `painting.alpha`
- *     (the game fades prev speakers to the current step's alpha).
+ *   - All other paintings dim to the CURRENT step's `painting.alpha`,
+ *     default 0.3 over `painting.time` (default 1s) — GetPaintingData
+ *     defaults apply even when the step carries no painting field.
  *
  * We rebuild the full state on every render rather than tracking deltas
  * so that Back/Resume navigation always produces the correct visual
@@ -76,15 +96,21 @@ export function updatePaintings(ctx) {
     applyPaintingState(ctx, target);
 }
 
-function computePaintingStateAt(ctx, index) {
+export function computePaintingStateAt(ctx, index) {
     /** @type {Map<number, {actorId:number, side:number, dir:number, expression:string, paintingNoise:boolean}>} */
     const paintings = new Map();
     let activeSide = null;
-    let dimAlpha = 1; // non-speakers get this alpha (set by latest step with painting.alpha)
+    let dimAlpha = 0.3; // game default: GetPaintingData → alpha or 0.3
+    let dimTime = 1;    // game default: GetPaintingData → time or 1 (seconds)
     let prevSide = null; // side of the previously-placed painting (for paintingFadeOut)
 
     const resolveActor = (line) => {
         if (typeof line.actor === 'number') return line.actor;
+        // The pipeline emits actor/actorName as numeric STRINGS when the raw
+        // value carried a {namecode:N} placeholder it resolved to a ship id.
+        if (typeof line.actor === 'string' && !isNaN(parseInt(line.actor, 10))) {
+            return parseInt(line.actor, 10);
+        }
         if (line.actorName && !isNaN(parseInt(line.actorName, 10))) {
             return parseInt(line.actorName, 10);
         }
@@ -107,10 +133,10 @@ function computePaintingStateAt(ctx, index) {
         if (!line) continue;
         if (!lineReachable(line)) continue;
 
-        const actorId = resolveActor(line);
-        const hasRenderableActor = actorId != null && getExpressionData(ctx, actorId) != null;
+        // withoutPainting / hidePainting / narration → hide everything,
+        // including the current speaker (the game nulls the actor).
         const hideAll =
-            line.hideOther === true ||
+            line.withoutPainting === true ||
             line.hidePainting === true ||
             (line.actor === undefined && line.actorName === undefined);
 
@@ -119,6 +145,23 @@ function computePaintingStateAt(ctx, index) {
             activeSide = null;
             prevSide = null;
             continue;
+        }
+
+        // hideOther → clear every side, then fall through so the current
+        // speaker's painting is placed fresh (game re-renders it).
+        if (line.hideOther === true) {
+            paintings.clear();
+            prevSide = null;
+        }
+
+        const actorId = resolveActor(line);
+        const hasRenderableActor = actorId != null && getExpressionData(ctx, actorId) != null;
+
+        // Dim parameters come from the CURRENT step (defaults apply when the
+        // painting field is absent — Lua GetPaintingData).
+        if (actorId != null) {
+            dimAlpha = line.painting?.alpha ?? 0.3;
+            dimTime = line.painting?.time ?? 1;
         }
 
         // Actor exists but has no expression data (missing from manifest).
@@ -133,8 +176,6 @@ function computePaintingStateAt(ctx, index) {
         const dir = line.dir !== undefined ? line.dir : 1;
         const expression = line.expression !== undefined ? String(line.expression) : '0';
         const paintingNoise = line.paintingNoise === true;
-
-        if (line.painting?.alpha !== undefined) dimAlpha = line.painting.alpha;
 
         // paintingFadeOut: move the previously-placed painting to a new side.
         // This runs BEFORE recycle, so the moved painting survives the recycle pass.
@@ -168,8 +209,174 @@ function computePaintingStateAt(ctx, index) {
         prevSide = targetSide;
     }
 
-    return { paintings, activeSide, dimAlpha };
+    return { paintings, activeSide, dimAlpha, dimTime };
 }
+
+// =========================================================================
+// Canvas compositing (same approach as skin.expression.js)
+// =========================================================================
+
+// Composite at native resolution so face/hole edges align pixel-perfect;
+// CSS then scales the single composite. Past this dim a canvas risks
+// browser limits and composites to blank.
+const MAX_COMPOSITE_DIM = 4096;
+// Decoded base canvases are ~16 MB each at 2048² — keep only a few. Story
+// navigation evicts/recreates containers constantly, so caching by URL is
+// what makes Back/expression swaps cheap.
+const BASE_CANVAS_CACHE_MAX = 4;
+const baseCanvasCache = new Map(); // baseUrl -> Promise<HTMLCanvasElement>
+
+/**
+ * Load an image cross-origin. crossOrigin is set before src so the response
+ * is CORS-enabled and a canvas drawn from it stays untainted.
+ */
+function loadImage(url) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error(`failed to load ${url}`));
+        img.src = url;
+    });
+}
+
+/** Decode the base painting once into an offscreen canvas at composite resolution. */
+async function buildBaseCanvas(url) {
+    const base = await loadImage(url);
+    const nw = base.naturalWidth;
+    const nh = base.naturalHeight;
+    if (!nw || !nh) throw new Error('base painting has no dimensions');
+
+    const scale = Math.min(1, MAX_COMPOSITE_DIM / Math.max(nw, nh));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(nw * scale);
+    canvas.height = Math.round(nh * scale);
+    const c2d = canvas.getContext('2d');
+    c2d.imageSmoothingQuality = 'high';
+    c2d.drawImage(base, 0, 0, canvas.width, canvas.height);
+    return canvas;
+}
+
+/** Get (or build) the cached base canvas for a painting URL. LRU on access. */
+function getBaseCanvas(url) {
+    let promise = baseCanvasCache.get(url);
+    if (promise) {
+        // Refresh recency (Map iteration order doubles as the LRU order).
+        baseCanvasCache.delete(url);
+        baseCanvasCache.set(url, promise);
+        return promise;
+    }
+    promise = buildBaseCanvas(url);
+    promise.catch(() => baseCanvasCache.delete(url)); // don't cache failures
+    baseCanvasCache.set(url, promise);
+    if (baseCanvasCache.size > BASE_CANVAS_CACHE_MAX) {
+        baseCanvasCache.delete(baseCanvasCache.keys().next().value);
+    }
+    return promise;
+}
+
+/**
+ * Face-id candidates for a painting, in game-priority order:
+ *   1. the step's expression — sprite name == script value, 1:1, no
+ *      remapping (dialoguestoryplayer.lua :866 uses the raw value as the
+ *      paintingface atlas sprite name);
+ *   2. the manifest's `default` — ship_skin_expression[painting].default,
+ *      the game's no-expression face (non-empty for ~106 paintings;
+ *      pipeline TODO: not yet baked into expression_manifest.json — this
+ *      lights up when it lands);
+ *   3. '0', then the numerically smallest face — web-only fallback. The
+ *      game HIDES the face layer when a step has no expression and the
+ *      painting has no config default (the in-game base has the face
+ *      baked in), but every EXTRACTED base has the face region cut out
+ *      (verified: alpha=0 across the face box even for paintings whose
+ *      in-game base is complete), so the viewer must always composite
+ *      something; the lowest face id is the most neutral stand-in.
+ * Candidates are filtered to faces that actually exist in the manifest,
+ * so no fetch is wasted on known-missing face files. Pure — node-testable.
+ */
+export function pickFaceCandidates(expressionData, expression) {
+    const faces = (expressionData?.faces || []).map(String);
+    if (!faces.length) return [];
+
+    const chain = [];
+    if (expression !== undefined && expression !== null) chain.push(String(expression));
+    if (typeof expressionData.default === 'string' && expressionData.default !== '') {
+        chain.push(expressionData.default);
+    }
+    chain.push('0');
+    const numeric = faces
+        .filter(f => !Number.isNaN(Number(f)))
+        .sort((x, y) => Number(x) - Number(y));
+    if (numeric.length) chain.push(numeric[0]);
+
+    const seen = new Set();
+    const out = [];
+    for (const c of chain) {
+        if (faces.includes(c) && !seen.has(c)) {
+            seen.add(c);
+            out.push(c);
+        }
+    }
+    // Last resort (e.g. all-non-numeric face names): first listed face.
+    if (!out.length) out.push(faces[0]);
+    return out;
+}
+
+/**
+ * Draw base painting + face for `expression` onto the container's <canvas>.
+ * Face candidates come from pickFaceCandidates; later candidates are only
+ * tried if an earlier fetch fails (stale manifest). A per-canvas generation
+ * counter discards superseded runs (rapid expression swaps / navigation).
+ */
+async function composePainting(container, expressionData, expression) {
+    const canvas = container.querySelector('canvas.painting-base');
+    if (!canvas) return;
+    const gen = (canvas._gen = (canvas._gen || 0) + 1);
+
+    let baseCanvas;
+    try {
+        baseCanvas = await getBaseCanvas(expressionData.baseUrl);
+    } catch (e) {
+        console.warn('Painting base load failed', e);
+        return;
+    }
+    if (gen !== canvas._gen) return;
+
+    // Resolve the face image, falling back through the candidate chain.
+    let face = null;
+    if (expressionData.faces && expressionData.faces.length > 0) {
+        const candidates = pickFaceCandidates(expressionData, expression);
+        for (const faceId of candidates) {
+            try {
+                face = await loadImage(expressionData.faceUrlTemplate.replace('{faceId}', faceId));
+                break;
+            } catch (_) { /* try next candidate */ }
+        }
+        if (gen !== canvas._gen) return;
+    }
+
+    if (canvas.width !== baseCanvas.width || canvas.height !== baseCanvas.height) {
+        canvas.width = baseCanvas.width;
+        canvas.height = baseCanvas.height;
+    }
+    const c2d = canvas.getContext('2d');
+    c2d.clearRect(0, 0, canvas.width, canvas.height);
+    c2d.drawImage(baseCanvas, 0, 0);
+
+    if (face && expressionData.box && expressionData.size) {
+        const [bx, by, bw, bh] = expressionData.box;
+        const [sw, sh] = expressionData.size;
+        // box is in manifest-size space; scale it into the (capped) canvas.
+        const sx = canvas.width / sw;
+        const sy = canvas.height / sh;
+        c2d.imageSmoothingQuality = 'high';
+        c2d.drawImage(face, bx * sx, by * sy, bw * sx, bh * sy);
+    }
+}
+
+// =========================================================================
+// DOM reconciliation
+// =========================================================================
 
 /**
  * Reconcile the DOM with a target painting state. Paintings already
@@ -178,7 +385,7 @@ function computePaintingStateAt(ctx, index) {
  * visible (1.0) and every other painting is dimmed to dimAlpha.
  */
 function applyPaintingState(ctx, target) {
-    const { paintings: targetMap, activeSide, dimAlpha } = target;
+    const { paintings: targetMap, activeSide, dimAlpha, dimTime } = target;
 
     // Evict paintings that don't belong in the target state.
     const currentSides = Array.from(ctx.paintingsBySide.keys());
@@ -199,7 +406,7 @@ function applyPaintingState(ctx, target) {
         if (current && current.actorId === want.actorId) {
             // Same actor, same side — reuse the element and update fields.
             if (current.expression !== want.expression) {
-                updatePaintingExpression(current.element, expressionData, want.expression);
+                composePainting(current.element, expressionData, want.expression);
                 current.expression = want.expression;
             }
             if (current.dir !== want.dir) {
@@ -215,7 +422,6 @@ function applyPaintingState(ctx, target) {
                 expressionData,
                 expression: want.expression,
                 hasNoise: want.paintingNoise,
-                fadeInSec: 0.25,
             });
             ctx.elements.paintingLayer.appendChild(container);
             ctx.paintingsBySide.set(side, {
@@ -238,10 +444,14 @@ function applyPaintingState(ctx, target) {
     // containers update immediately — no flash possible there.
     ctx.activeSpeakerSide = activeSide;
     for (const [side, p] of ctx.paintingsBySide) {
-        // Touch offsetHeight to flush the '0' baseline if present.
-        if (p.element.style.getPropertyValue('--painting-opacity') === '0') {
-            void p.element.offsetHeight; // force reflow
+        const isNew = p.element.style.getPropertyValue('--painting-opacity') === '0';
+        if (isNew) {
+            void p.element.offsetHeight; // force reflow to flush the '0' baseline
         }
+        // New paintings fade in over the game's fadeInPaintingTime default
+        // (0.15s); dim changes on existing paintings run at the current
+        // step's painting.time (default 1s — Lua GetPaintingData).
+        p.element.style.setProperty('--painting-fade-duration', isNew ? '0.15s' : `${dimTime}s`);
         const isActive = side === activeSide;
         p.element.classList.toggle('active', isActive);
         p.element.classList.toggle('inactive', !isActive);
@@ -250,12 +460,11 @@ function applyPaintingState(ctx, target) {
 }
 
 /**
- * Build a detached painting-container DOM node. Alpha is controlled
- * entirely by --painting-opacity (set by applyPaintingState); this
- * function only handles the initial fade-in from 0 to the target alpha.
+ * Build a detached painting-container DOM node holding the composite
+ * <canvas>. Alpha is controlled entirely by --painting-opacity (set by
+ * applyPaintingState); the container is seeded at 0 for the fade-in.
  */
-function createPaintingContainer({ actorId, side, dir, expressionData, expression,
-                                  hasNoise, fadeInSec }) {
+function createPaintingContainer({ actorId, side, dir, expressionData, expression, hasNoise }) {
     const container = document.createElement('div');
     container.className = 'painting-container';
     container.dataset.side = side;
@@ -263,19 +472,15 @@ function createPaintingContainer({ actorId, side, dir, expressionData, expressio
     container.dataset.actorId = actorId;
     if (hasNoise) container.classList.add('painting-noise');
 
-    if (fadeInSec && fadeInSec > 0) {
-        // Seed the custom property to 0 so the CSS-driven transition
-        // animates up to whatever applyPaintingState() sets next frame.
-        container.style.setProperty('--painting-opacity', 0);
-        container.style.transition = `opacity ${fadeInSec}s ease-in`;
-    }
+    // Seed the custom property to 0 so the CSS-driven transition
+    // animates up to whatever applyPaintingState() sets next frame.
+    container.style.setProperty('--painting-opacity', 0);
 
     const wrapper = document.createElement('div');
     wrapper.className = 'painting-image-wrapper';
-    // Publish the painting's natural dimensions so CSS can compute a
-    // box that matches the rendered image exactly (see .painting-image-
-    // wrapper rules). Face overlay percentages are derived from these
-    // same dims, so aligning wrapper to image guarantees face placement.
+    // Publish the painting's natural dimensions so CSS can compute a box
+    // that matches the rendered composite exactly (see .painting-image-
+    // wrapper rules).
     if (expressionData.size && expressionData.size[0] && expressionData.size[1]) {
         const [imgW, imgH] = expressionData.size;
         wrapper.style.setProperty('--painting-w', String(imgW));
@@ -283,38 +488,15 @@ function createPaintingContainer({ actorId, side, dir, expressionData, expressio
         wrapper.style.aspectRatio = `${imgW} / ${imgH}`;
     }
 
-    const baseImg = document.createElement('img');
-    baseImg.className = 'painting-base';
-    baseImg.src = expressionData.baseUrl;
-    baseImg.alt = '';
-    baseImg.loading = 'eager';
-    wrapper.appendChild(baseImg);
-
-    if (expressionData.faces && expressionData.faces.length > 0) {
-        const faceImg = document.createElement('img');
-        faceImg.className = 'painting-face-overlay';
-        const defaultFaceId = expressionData.faces[0] || '0';
-        faceImg.src = expressionData.faceUrlTemplate.replace('{faceId}', expression);
-        faceImg.alt = '';
-        faceImg.loading = 'eager';
-
-        faceImg.addEventListener('error', () => {
-            const defaultSrc = expressionData.faceUrlTemplate.replace('{faceId}', defaultFaceId);
-            if (faceImg.src !== defaultSrc) {
-                faceImg.src = defaultSrc;
-            } else {
-                faceImg.style.display = 'none';
-            }
-        }, { once: true });
-
-        // Positioning uses percentages, so we can set it immediately —
-        // no need to wait for the base image to load.
-        applyFaceOverlayPosition(faceImg, expressionData);
-
-        wrapper.appendChild(faceImg);
-    }
-
+    const canvas = document.createElement('canvas');
+    canvas.className = 'painting-base';
+    canvas.setAttribute('role', 'img');
+    wrapper.appendChild(canvas);
     container.appendChild(wrapper);
+
+    // After appendChild — composePainting locates the canvas via the container.
+    composePainting(container, expressionData, expression);
+
     return container;
 }
 
@@ -330,53 +512,6 @@ function evictSidePainting(ctx, side) {
     const removeAfter = ctx.PAINTING_FADE_OUT_MS + 20;
     setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, removeAfter);
     ctx.paintingsBySide.delete(side);
-}
-
-/**
- * Apply face overlay positioning based on expression data.
- *
- * The face overlay is positioned relative to the painting-image-wrapper,
- * which sizes itself to the rendered base image. Using percentages of the
- * original image dimensions therefore maps 1:1 to percentages of the
- * rendered image — it's automatic, aspect-ratio-correct, and doesn't
- * depend on offsetWidth/offsetHeight being resolved at load time (which
- * can return 0 or stale values if layout hasn't settled).
- */
-function applyFaceOverlayPosition(faceImg, expressionData /*, baseImg */) {
-    if (!expressionData.box || !expressionData.size) return;
-    const [x, y, w, h] = expressionData.box;
-    const [imgW, imgH] = expressionData.size;
-    if (!imgW || !imgH) return;
-
-    faceImg.style.left = `${(x / imgW) * 100}%`;
-    faceImg.style.top = `${(y / imgH) * 100}%`;
-    faceImg.style.width = `${(w / imgW) * 100}%`;
-    faceImg.style.height = `${(h / imgH) * 100}%`;
-}
-
-/**
- * Swap the face overlay src on an existing painting container when only
- * the expression changes (actor and side are the same). Falls back to the
- * default face ID if the requested expression image fails to load.
- */
-function updatePaintingExpression(container, expressionData, newExpression) {
-    const faceImg = container.querySelector('.painting-face-overlay');
-    if (!faceImg) return;
-
-    faceImg.style.display = '';
-
-    const newSrc = expressionData.faceUrlTemplate.replace('{faceId}', newExpression);
-    const defaultFaceId = expressionData.faces?.[0] || '0';
-    const defaultSrc = expressionData.faceUrlTemplate.replace('{faceId}', defaultFaceId);
-
-    faceImg.src = newSrc;
-    faceImg.onerror = () => {
-        if (faceImg.src !== defaultSrc) {
-            faceImg.src = defaultSrc;
-        } else {
-            faceImg.style.display = 'none';
-        }
-    };
 }
 
 /** Clear all paintings when starting a new story. */
