@@ -174,7 +174,10 @@ export function computePaintingStateAt(ctx, index) {
 
         const targetSide = line.side !== undefined ? line.side : 0;
         const dir = line.dir !== undefined ? line.dir : 1;
-        const expression = line.expression !== undefined ? String(line.expression) : '0';
+        // No expression on the step → null sentinel. pickFaceCandidates then
+        // ranks the manifest `default` first; coercing to '0' here would
+        // shadow it (face '0' outranks `default` when both exist).
+        const expression = line.expression != null ? String(line.expression) : null;
         const paintingNoise = line.paintingNoise === true;
 
         // paintingFadeOut: move the previously-placed painting to a new side.
@@ -320,6 +323,24 @@ export function pickFaceCandidates(expressionData, expression) {
     // Last resort (e.g. all-non-numeric face names): first listed face.
     if (!out.length) out.push(faces[0]);
     return out;
+}
+
+/**
+ * Resolve the dialog-portrait face URL for a speaker's expression data and
+ * the step's raw `expression` value (number, string, or absent). Runs the
+ * SAME candidate chain as the painting compositor so the dialog face and
+ * the mid-screen face can't drift apart. Returns null when the painting has
+ * no usable face (caller falls back to the ship icon). Pure — node-testable.
+ */
+export function resolvePortraitFaceUrl(expressionData, expression) {
+    if (!expressionData) return null;
+    const candidates = pickFaceCandidates(
+        expressionData,
+        expression != null ? String(expression) : null
+    );
+    return candidates.length
+        ? expressionData.faceUrlTemplate.replace('{faceId}', candidates[0])
+        : null;
 }
 
 /**

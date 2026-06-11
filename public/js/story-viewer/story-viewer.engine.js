@@ -11,7 +11,7 @@
  * and all keyboard/pointer event wiring.
  */
 import { debounce, fetchJSONWithCache, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, resolveUrl, makeKeyboardActivatable, DATA_FOR_TOY_BASE } from '../utils.js';
-import { getExpressionData, updatePaintings, clearPaintings, pickFaceCandidates } from './story.painting.js';
+import { getExpressionData, updatePaintings, clearPaintings, resolvePortraitFaceUrl } from './story.painting.js';
 import { clearLineEffects, handleLineShake, handleLineDialogShake, handleLinePaintingShake, handleLineFlashN, handleLineSoundEffect, clearFlashOverlay, handleLineFlash, playFlashoutCover } from './story.effects.js';
 import { correctKrNameColor } from './story.text.js';
 import { resolveAudioCueUrl } from './story.bgm.js';
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentMemoryId: null,
         currentStoryScript: [],
         scriptIndex: 0,
-        lastActorId: null,
+        lastPortraitUrl: null,
         nextMemory: null,
         currentBgm: null,
         currentStoryDefaultBgUrl: null, // Only used by main viewer
@@ -810,7 +810,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.currentStoryScript = story.scripts;
             this.currentMemoryId = memory.id;
             this.scriptIndex = 0;
-            this.lastActorId = null;
+            this.lastPortraitUrl = null;
             this.currentBgm = null;
             this.currentStoryDefaultBgUrl = null;
             this.activeOptionFlag = null;
@@ -1072,28 +1072,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Name text + faction tag refresh on every line (cheap, and
                 // actorName/factiontag can change while the speaker id stays
-                // the same); the portrait <img> below only reloads when the
-                // speaker actually changes.
+                // the same).
                 this.renderActorName(displayedName, line);
 
-                if (actorInfo.id !== this.lastActorId) {
-                    let portraitIcon = actorInfo.icon;
-                    if (typeof line.actor === 'number' && line.actor > 0) {
-                        const expressionData = this.getExpressionData(line.actor);
-                        if (expressionData) {
-                            // Same candidate chain as the painting compositor —
-                            // a hardcoded '0' here guaranteed a 404 for most
-                            // skins (only ~6% have a face '0').
-                            const candidates = pickFaceCandidates(
-                                expressionData,
-                                line.expression !== undefined ? String(line.expression) : undefined
-                            );
-                            if (candidates.length) {
-                                portraitIcon = expressionData.faceUrlTemplate.replace('{faceId}', candidates[0]);
-                            }
-                        }
-                    }
+                // Resolve the portrait URL on EVERY line — same candidate
+                // chain as the painting compositor, so the dialog face tracks
+                // per-line expression changes instead of freezing on the
+                // first face of a same-speaker run (the old speaker-id gate).
+                // Cheap: two manifest lookups + a small array scan; the <img>
+                // below is only rebuilt when the resolved URL changes, so
+                // same-face runs cause no reload or flicker.
+                let portraitIcon = actorInfo.icon;
+                if (typeof line.actor === 'number' && line.actor > 0) {
+                    const faceUrl = resolvePortraitFaceUrl(this.getExpressionData(line.actor), line.expression);
+                    if (faceUrl) portraitIcon = faceUrl;
+                }
 
+                if (portraitIcon !== this.lastPortraitUrl) {
                     if (portraitIcon) {
                         const img = document.createElement('img');
                         img.src = portraitIcon;
@@ -1112,6 +1107,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         el.actorPortrait.textContent = '';
                         hideElement(el.actorPortrait);
                     }
+                    this.lastPortraitUrl = portraitIcon;
                 }
 
                 // The KR client remaps several legacy nameColor values
@@ -1119,8 +1115,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.actorName.style.color = line.nameColor ? correctKrNameColor(line.nameColor) : '';
 
                 el.actorPortrait.classList.toggle('actor-shadow', line.actorShadow === true);
-
-                this.lastActorId = actorInfo.id;
             }
 
             const hasOptions = line.options && line.options.length > 0;

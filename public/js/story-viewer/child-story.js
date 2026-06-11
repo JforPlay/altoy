@@ -651,7 +651,7 @@ function createTabStoryViewer(config) {
                 window.StoryViewer.currentMemoryId = storyId;
                 window.StoryViewer.currentStoryScript = memory.story.scripts;
                 window.StoryViewer.scriptIndex = 0;
-                window.StoryViewer.lastActorId = null;
+                window.StoryViewer.lastPortraitUrl = null;
                 window.StoryViewer.currentBgm = null;
                 window.StoryViewer.currentStoryDefaultBgUrl = null;
                 window.StoryViewer.activeOptionFlag = null;
