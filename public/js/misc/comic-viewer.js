@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function updateSortButton() {
-        sortButton.textContent = isAscending ? 'Sort: oldest first' : 'Sort: newest first';
+        sortButton.textContent = isAscending ? '정렬: 1화부터' : '정렬: 최신화부터';
         sortButton.setAttribute('aria-pressed', String(isAscending));
     }
 
