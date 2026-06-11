@@ -43913,7 +43913,7 @@
         "스킨 태그":"배경",
         "입수 영상":"O",
         "재화":780.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"한정 (2026\/06\/27)",
         "진영":"USS",
         "레어도":"SR",
         "ex_chat_status":0
@@ -44389,7 +44389,7 @@
         "스킨 태그":"배경",
         "입수 영상":"O",
         "재화":780.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"한정 (2026\/06\/27)",
         "진영":"USS",
         "레어도":"SR",
         "ex_chat_status":0
@@ -59378,6 +59378,135 @@
         "ex_chat_status":0
     },
     {
+        "클뜯 id":107225,
+        "클뜯 함순이 id":10722,
+        "함순이 이름":"인디펜던스",
+        "한글 함순이 + 스킨 이름":"릴랙세이션 비치",
+        "영문 함순이 + 스킨 이름":"릴랙세이션 비치",
+        "스킨 타입":"Swimsuits",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/107225\/painting.png",
+        "확대 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/107225\/painting_n.png",
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_chibi\/107225.webp",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_icon\/107225.webp",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_qicon\/107225.webp",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/107225.webp",
+        "설명":"지휘관도 해변에…? 엄청난 우연이군…… 나는 바다에서 막 올라온 참이다. 수영에 집중했더니 너무 신나게 논 것 같군……",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"후우…… 거기… 으음…… 뭉친 부분이 풀린 것 같군…… 개운해… 지휘관, 대단한데……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/10722\/main_1_5.opus"
+        },
+        "메인2":{
+            "voiceline":"(음… 아까부터 지휘관이 발바닥을 계속 쳐다봐서…… 부끄럽네…… 발바닥 혈자리라는 게 그렇게 복잡한 건가……)",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/10722\/main_2_5.opus"
+        },
+        "메인3":{
+            "voiceline":"이렇게 딱딱해진 걸 뭉쳤다고 하는 건가? 손바닥으로 감싸듯 엄지손가락에 힘을 주고, 천천히 근육을 따라 풀어준다…… 확실히 편해졌을지도…? 이거 효과가 있군…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/10722\/main_3_5.opus"
+        },
+        "전투개시":null,
+        "상세확인":{
+            "voiceline":"지휘관, 마사지 실력이 대단하군…… 마사지는 그저 상태가 안 좋은 곳을 누르기만 하면 되는 줄 알았는데…… 이렇게 받아 보니까 위치나 힘 조절, 순서 등… 전부 심오한 것이로군.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/10722\/detail_5.opus"
+        },
+        "드랍 설명":{
+            "voiceline":"지휘관도 해변에…? 엄청난 우연이군…… 나는 바다에서 막 올라온 참이다. 수영에 집중했더니 너무 신나게 논 것 같군……",
+            "voicelink":null
+        },
+        "의뢰 완료":null,
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"원래는 스스로 어떻게든 해야 하지만…… 지휘관 앞이라면 볼품없는 내 모습을 보여도 괜찮다는 생각이 들어서…… 이것이 연인 사이의 신뢰, 라는 건가……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/10722\/feeling5_5.opus"
+        },
+        "선호 선물":null,
+        "비선호 선물":null,
+        "터치3":{
+            "voiceline":"머리가 젖었다고? 아아, 걱정 마라. 바닷바람을 맞고 있으면 금방 마르니까. ……머리 모양은 좀 흐트러지겠지만 말이지.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/10722\/touch_head_5.opus"
+        },
+        "모항귀환":{
+            "voiceline":"지휘관, 고생했다. 응? 그 손에 들고 있는 건 수건이랑…… 마사지용 오일? 으흠, 그걸 발에 발라 주려는 건가… 음? 발바닥에도? 그, 그렇군……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/10722\/home_5.opus"
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"지휘관, 그…… 수영하기 전에 준비 운동을 제대로 안 한 탓인지 오른발에 쥐가 좀 나서…… 저기, 발 마사지 좀… 부탁할 수 있을까…?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/10722\/login_5.opus"
+        },
+        "실패":null,
+        "우편":null,
+        "임무":null,
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"훗…… 아하하하하하…… 왜, 왜… 아하하, 발바닥…… 아프지 않고, 하하하, 간지러운 거지…?! 거, 거기는 내가 할 테니까… 지휘관, 그, 그만하라니까 하하하하하……!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/10722\/touch_1_5.opus"
+        },
+        "터치2":{
+            "voiceline":"이, 이것도…… 마사지의 일부……?!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/10722\/touch_2_5.opus"
+        },
+        "입수시":{
+            "voiceline":"지휘관도 해변에…? 엄청난 우연이군…… 나는 바다에서 막 올라온 참이다. 수영에 집중했더니 너무 신나게 논 것 같군……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/10722\/get_5.opus"
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "메인1_ex":null,
+        "메인4_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "선호 선물_ex":null,
+        "비선호 선물_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "ASMR 일러":null,
+        "ASMR 음성":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"수영복",
+        "상점 id":71353,
+        "상점 카테고리 id":6,
+        "스킨 태그":"배경",
+        "입수 영상":"O",
+        "재화":780.0,
+        "기간":"한정 (2026\/06\/27)",
+        "진영":"USS",
+        "레어도":"SR",
+        "ex_chat_status":0
+    },
+    {
         "클뜯 id":107229,
         "클뜯 함순이 id":10722,
         "함순이 이름":"인디펜던스",
@@ -66739,7 +66868,7 @@
         "스킨 태그":"X",
         "입수 영상":"X",
         "재화":700.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"USS",
         "레어도":"SR",
         "ex_chat_status":0
@@ -80971,6 +81100,135 @@
         "입수 영상":"X",
         "재화":880.0,
         "기간":"한정 (2026\/04\/12)",
+        "진영":"HMS",
+        "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":201355,
+        "클뜯 함순이 id":20135,
+        "함순이 이름":"재너스",
+        "한글 함순이 + 스킨 이름":"구름 위의 물보라",
+        "영문 함순이 + 스킨 이름":"구름 위의 물보라",
+        "스킨 타입":"Swimsuits",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/201355\/painting.png",
+        "확대 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/201355\/painting_n.png",
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_chibi\/201355.webp",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_icon\/201355.webp",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_qicon\/201355.webp",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/201355.webp",
+        "설명":"괜찮아… 괜찮아, 재너스…! 여기는 안전해… 괜찮으니까…… 으으, 그래도 너무 무서워…… 지, 지휘관님… 꼭 안아도 될…까요?",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"선크림을 발라야 하니까, 역시 끈은 푸는 편이…… 아, 그… 딱히 그런 의도는 아니에요…! 푸는 편이 바르기 편하니까……가 아니라…… 으앗\/\/\/",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/20135\/main_1_5.opus"
+        },
+        "메인2":{
+            "voiceline":"꺄악?! 바, 바람이……! 이러다가 수영복이 날아가 버릴 것 같아요…… 으아, 지휘관님, 잠깐만 잡아주세요……!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/20135\/main_2_5.opus"
+        },
+        "메인3":{
+            "voiceline":"뷰가 좋다…고요? …어, 어떤 풍경을 보신 건지… 재너스에게 알려주시겠어요…?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/20135\/main_3_5.opus"
+        },
+        "전투개시":null,
+        "상세확인":{
+            "voiceline":"으, 으아…… 미리 수영 비결을 일기에 적어두고 몇 번이나 확인했는데…… 전혀 떠올릴 여유가 없었어요…… 흑……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/20135\/detail_5.opus"
+        },
+        "드랍 설명":{
+            "voiceline":"괜찮아… 괜찮아, 재너스…! 여기는 안전해… 괜찮으니까…… 으으, 그래도 너무 무서워…… 지, 지휘관님… 꼭 안아도 될…까요?",
+            "voicelink":null
+        },
+        "의뢰 완료":null,
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"「멋진 곳에서 지휘관님과 하루를 보냈습니다―― 아, 안 돼 재너스! 겨우 함께 수영하자고 약속 받았는데, 결국 지휘관님과 같이 있었던 것만으로 만족해서 수영을 하나도 안 했잖아…… 하지만 지휘관님도 즐거우셨던… 것 같고…?」",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/20135\/feeling5_5.opus"
+        },
+        "선호 선물":null,
+        "비선호 선물":null,
+        "터치3":{
+            "voiceline":"재너스를 달래주시는 건가요…? 네, 네! 재너스, 정신 바짝 차릴게요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/20135\/touch_head_5.opus"
+        },
+        "모항귀환":{
+            "voiceline":"지, 지휘관님! 드디어 돌아오셨네요……! 으으, 지휘관님을 찾으러 가려고 했는데… 역시 무서워서…… 으으……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/20135\/home_5.opus"
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"지휘관님, 역시 재너스…… 혼자 들어가는 건 무서워서…… 지, 지휘관님의 용기를 재너스에게 나누어 주실 수 없을까요…?!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/20135\/login_5.opus"
+        },
+        "실패":null,
+        "우편":null,
+        "임무":null,
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"선크림은 이제 완벽하네요…… 지휘관님, 감사합니다! 에헤헤, 이제 안심하고 수영할 수 있겠어요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/20135\/touch_1_5.opus"
+        },
+        "터치2":{
+            "voiceline":"……저, 저기! 이렇게 지휘관님을 껴안고 있으면…… 전혀 무섭지 않아요…!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/20135\/touch_2_5.opus"
+        },
+        "입수시":{
+            "voiceline":"괜찮아… 괜찮아, 재너스…! 여기는 안전해… 괜찮으니까…… 으으, 그래도 너무 무서워…… 지, 지휘관님… 꼭 안아도 될…까요?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/20135\/get_5.opus"
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "메인1_ex":null,
+        "메인4_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "선호 선물_ex":null,
+        "비선호 선물_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "ASMR 일러":null,
+        "ASMR 음성":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"수영복",
+        "상점 id":71354,
+        "상점 카테고리 id":6,
+        "스킨 태그":"L2D+, 배경",
+        "입수 영상":"O",
+        "재화":1260.0,
+        "기간":"한정 (2026\/06\/27)",
         "진영":"HMS",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -97147,7 +97405,7 @@
         "스킨 태그":"특수배경 (움짤)",
         "입수 영상":"X",
         "재화":900.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"HMS",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -119492,7 +119750,7 @@
         "스킨 태그":"L2D, 배경",
         "입수 영상":"O",
         "재화":1180.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"한정 (2026\/06\/27)",
         "진영":"HMS",
         "레어도":"SSR",
         "ex_chat_status":1
@@ -124890,7 +125148,7 @@
         "스킨 태그":"L2D, 배경",
         "입수 영상":"O",
         "재화":1080.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"한정 (2026\/06\/27)",
         "진영":"HMS",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -125655,7 +125913,7 @@
         "스킨 태그":"L2D, 특수배경 (움짤)",
         "입수 영상":"X",
         "재화":1200.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"HMS",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -128123,7 +128381,7 @@
         },
         "전투개시":null,
         "상세확인":{
-            "voiceline":"지휘관…… 미유키의 이 차림이 좋아? 아, 으음… 떡을 만들려고 이 차림으로 한 건데…… 지, 지휘관 마음에 들면…… 더 떡을 많이 만들어 줄게……\/\/\/",
+            "voiceline":"지휘관…… 미유키가 이렇게 입으니까 좋아? 아, 으음… 떡을 만들려고 이런 옷을 입은 건데…… 지, 지휘관 마음에 들면…… 떡을 더 많이 만들어 줄게……\/\/\/",
             "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30104\/detail_3.opus"
         },
         "드랍 설명":{
@@ -157704,7 +157962,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":780.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"IJN",
         "레어도":"SR",
         "ex_chat_status":0
@@ -172470,6 +172728,213 @@
         "ex_chat_status":0
     },
     {
+        "클뜯 id":303210,
+        "클뜯 함순이 id":30321,
+        "함순이 이름":"꼬마 운젠",
+        "한글 함순이 + 스킨 이름":"꼬마 운젠",
+        "영문 함순이 + 스킨 이름":"꼬마 운젠",
+        "스킨 타입":"Default",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/303210\/painting.png",
+        "확대 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/303210\/painting_n.png",
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_chibi\/303210.webp",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_icon\/303210.webp",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_qicon\/303210.webp",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/303210.webp",
+        "설명":"중순양함 - 운젠",
+        "자기소개":{
+            "voiceline":"중순양함 운젠입니다. 「한 사람 몫을 하는 운젠」은 혼자서도 모항을 유람할 수 있지만, 뭔가 이상한 일이 있다면 바로 지휘관님께 말씀드릴게요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/profile.opus"
+        },
+        "메인1":{
+            "voiceline":"오늘 밤은 운젠 혼자서 「몽향유람」를 하려고 해요.…… 지휘관님, 나중에 상태를 보러 와주실… 거죠…?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/main_1.opus"
+        },
+        "메인2":{
+            "voiceline":"지휘관님, 어제 함께 모항을 유람한 걸 곡으로 완성했어요. 지금 연주해서 들려드릴게요……♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/main_2.opus"
+        },
+        "메인3":{
+            "voiceline":"응? 방금 간식 먹지 않았냐고요……? 지금요? 으음, 지금은 지금의 간식을 먹고 있어요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/main_3.opus"
+        },
+        "전투개시":{
+            "voiceline":"이 앞으론 보내드리지 않겠어요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/warcry.opus"
+        },
+        "상세확인":{
+            "voiceline":"지휘관님, 오늘은 유람 중에 바다의 신의 보물을 발견했어요. 그냥 조개껍데기로밖에는 안 보이지만, 태양빛에 반짝반짝 빛나고 있으니, 어쩌면 우리가 모르는 힘을 품고 있을지도 몰라요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/detail.opus"
+        },
+        "드랍 설명":{
+            "voiceline":"중순양함 - 운젠",
+            "voicelink":null
+        },
+        "의뢰 완료":{
+            "voiceline":"의뢰팀이 돌아왔어요. 유람 중에 있었던 일을 잔뜩 들을 수 있겠네요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/expedition.opus"
+        },
+        "실망":{
+            "voiceline":"지휘관님…… 아니에요. 운젠은 이제 한 사람 몫을 하니까, 혼자서도 어떻게든 할 수 있어요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/feeling1.opus"
+        },
+        "낯섦":{
+            "voiceline":"지휘관님, 운젠이 또 반짝반짝 빛나는 보물을 발견했어요……! 아, 이번에는 빛을 반사하는 유리네요……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/feeling2.opus"
+        },
+        "호감":{
+            "voiceline":"지휘관님, 유람을 하다가 새로운 비경을 찾았어요.…… 지휘관님께만 특별히 안내해 드릴 테니까, 다른 아이한테 알려주시면 안 돼요~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/feeling3.opus"
+        },
+        "기쁨":{
+            "voiceline":"운젠…… 지휘관님 손을 잡은 채로 걸어도 될까요? 무섭다거나 그런 건 아니에요. 그냥… 손을 잡고 있으면 따뜻해서……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/feeling4.opus"
+        },
+        "사랑":{
+            "voiceline":"운젠의 유람 지도에는 지휘관님과의 여행 추억이 가득 기록되어 있답니다. 후후후, 앞으로도 함께 온 세상을 여행하며 지도를 가득 채워나가요~ 약속이니까요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/feeling5.opus"
+        },
+        "선호 선물":{
+            "voiceline":null,
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/present_like.opus"
+        },
+        "비선호 선물":null,
+        "터치3":{
+            "voiceline":"으음…… 귀가 조금 간지럽네요……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/touch_head.opus"
+        },
+        "모항귀환":{
+            "voiceline":"지휘관님, 운젠도 마침 유람에서 막 돌아온 참이랍니다. 나중에 여행에서 일어난 일을 들려드릴게요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/home.opus"
+        },
+        "hp 경고":{
+            "voiceline":"지…… 지지 않을 거예요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/hp.opus"
+        },
+        "로그인":{
+            "voiceline":"모항의 지리는 전부 외웠답니다. 지휘관님, 운젠과 새로운 비경을 찾으러 가지 않으시겠어요?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/login.opus"
+        },
+        "실패":{
+            "voiceline":"난처하네요…… 지휘관님, 운젠을 조금만 도와주실 수 없을까요…?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/lose.opus"
+        },
+        "우편":{
+            "voiceline":"지휘관님, 우편이 와 있어요. 음…… 전설 속 영봉으로 향하는 지도 아닐까요…?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/mail.opus"
+        },
+        "임무":{
+            "voiceline":"지휘관님, 유람 임무가 아직 끝나지 않았어요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/task.opus"
+        },
+        "임무완료":{
+            "voiceline":"임무가 완료됐어요. 희귀한 보물이 잔뜩 손에 들어왔네요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/mission_complete.opus"
+        },
+        "서약":{
+            "voiceline":"지휘관님은 운젠과…… 평생 함께하고 싶으신가요? 물론 좋답니다. 지휘관님의 곁이야말로 운젠에게 있어 유람의 종착점이에요. 에헤헤, 운젠은 지휘관님이… 정말 좋아요!",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/propose.opus"
+        },
+        "스킬":{
+            "voiceline":"물럿거라, 물럿거라――",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/skill.opus"
+        },
+        "터치1":{
+            "voiceline":"지휘관님, 운젠의 손을 꼭 잡아주세요. 이러면 함께 유람 중에도 길을 잃지 않을 거예요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/touch_1.opus"
+        },
+        "터치2":{
+            "voiceline":"지휘관님, 뭐하시는 건가요? 뭔가… 무척 이상한 기분이에요……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/touch_2.opus"
+        },
+        "입수시":{
+            "voiceline":"바람을 쫓고, 구름을 타고, 사방을 유람하리라…… 그런 운젠이지만, 지휘관님 곁으로 스윽하고 유유자적 뛰어들어 왔답니다. 으흠, 운젠과 지휘관님의 인연은 역시 신기하네요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/get.opus"
+        },
+        "강화성공":{
+            "voiceline":"이제 더 멀리 여행할 수 있겠네요~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/upgrade.opus"
+        },
+        "vote":null,
+        "승리":{
+            "voiceline":"이겼어요, 지휘관님. 계속해서 운젠과 비경을 구경하러 가요~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/mvp.opus"
+        },
+        "메인1_ex":null,
+        "메인4_ex":{
+            "voiceline":"운젠의 유람 일기에는 지휘관님과 여행하면서 있었던 일들이 가득 기록되어 있답니다. 여기…… 그리고 여기도…… 에헤헤…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/main_4_ex1100.opus"
+        },
+        "메인5_ex":{
+            "voiceline":"으… 아까 복도를 달리다가 기둥에 부딪히고 말았어요. 지휘관님, 조금 아파요……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/main_5_ex1100.opus"
+        },
+        "메인6_ex":{
+            "voiceline":"운젠, 지휘관님과 여기저기를 유람하고 싶어요…… 응? 업무에 지장이 생기지 않을까 걱정되시나요? 후후후, 모항에서 멀리 떨어져 있더라도 운젠은 서류를 확실하게 보내드릴 수 있답니다♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/main_6_ex1100.opus"
+        },
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":{
+            "voiceline":"지휘관님을 생각하면 운젠의 마음은 포근해지고, 아름다운 선율이 자연스럽게 연주돼요…… 이것이 운젠이 지휘관님을 향한 사랑, 이랍니다♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/feeling5_ex1100.opus"
+        },
+        "선호 선물_ex":null,
+        "비선호 선물_ex":null,
+        "터치3_ex":{
+            "voiceline":"지휘관님, 더 많이 쓰다듬어 주세요.…… 그러면 운젠은 너무 기뻐요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/touch_head_ex1100.opus"
+        },
+        "모항귀환_ex":{
+            "voiceline":"어서 오세요. 과자와 차, 그리고 운젠의 포옹도 전부 만반의 준비를 마쳤답니다. 지휘관님, 처음에는 어떤 걸로 하시겠어요?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/home_ex1100.opus"
+        },
+        "hp 경고_ex":null,
+        "로그인_ex":{
+            "voiceline":"어서 오세요, 지휘관님. 오늘 운젠과 함께 산책하기로 한 약속, 잊지 않으셨죠?♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/login_ex1100.opus"
+        },
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":{
+            "voiceline":"지휘관님, 이제부터는 어디서든 손을 잡아도 괜찮아요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/touch_1_ex1100.opus"
+        },
+        "터치2_ex":{
+            "voiceline":"이, 이제 부끄럽지 않아요…… 그야 지휘관님이 상대니까요……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/30321\/touch_2_ex1100.opus"
+        },
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "ASMR 일러":null,
+        "ASMR 음성":null,
+        "메인7":null,
+        "스킨 타입 - 한글":null,
+        "상점 id":0,
+        "상점 카테고리 id":0,
+        "스킨 태그":"X",
+        "입수 영상":"X",
+        "재화":null,
+        "기간":null,
+        "진영":"IJN",
+        "레어도":"SR",
+        "ex_chat_status":1
+    },
+    {
         "클뜯 id":304010,
         "클뜯 함순이 id":30401,
         "함순이 이름":"콘고",
@@ -180507,7 +180972,7 @@
         "스킨 태그":"쁘띠모션, 배경",
         "입수 영상":"X",
         "재화":980.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"IJN",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -219236,6 +219701,182 @@
         "ex_chat_status":0
     },
     {
+        "클뜯 id":402074,
+        "클뜯 함순이 id":40207,
+        "함순이 이름":"엠덴",
+        "한글 함순이 + 스킨 이름":"물가의 칸초네",
+        "영문 함순이 + 스킨 이름":"물가의 칸초네",
+        "스킨 타입":"Swimsuits",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/402074\/painting.png",
+        "확대 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/402074\/painting_n.png",
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_chibi\/402074.webp",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_icon\/402074.webp",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_qicon\/402074.webp",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/402074.webp",
+        "설명":"빛나는 물보라와 엠덴의 모습에 이끌려 찾아왔나요? 귀여운 인간 씨? 후후후, 당신의 시선도 렌즈의 포커스도 전부 엠덴의 것이랍니다♡――「영광으로 생각하렴, 인간♥」",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"빛이 부드러워졌군요…… 귀여운 인간 씨, 지금이랍니다. 그 렌즈로 엠덴에게 황금빛 옷을 입혀주세요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/main_1_4.opus"
+        },
+        "메인2":{
+            "voiceline":"여기서는 조금 더 앵글을 낮춰서―― 네, 완전히 엠덴을 올려다보도록 해주세요. 「엠덴의 인도에 따르면 완벽한 사진을 찍을 수 있어.」",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/main_2_4.opus"
+        },
+        "메인3":{
+            "voiceline":"「또 멍하니 있네.」 엠덴의 모습에 넋을 잃은 건가요? 아니면 엠덴을 기쁘게 할 촬영 방법을 생각하고 있는 건가요? 후후후, 말은 필요 없답니다. 그 눈에 답이 나와 있으니까요♡",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/main_3_4.opus"
+        },
+        "전투개시":null,
+        "상세확인":{
+            "voiceline":"햇살과 수면, 그리고 엠덴에게 눈을 떼지 못하는 인간 씨…… 「모든 게 의심할 여지 없이 완벽해.」",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/detail_4.opus"
+        },
+        "드랍 설명":{
+            "voiceline":"빛나는 물보라와 엠덴의 모습에 이끌려 찾아왔나요? 귀여운 인간 씨? 후후후, 당신의 시선도 렌즈의 포커스도 전부 엠덴의 것이랍니다♡――「영광으로 생각하렴, 인간♥」",
+            "voicelink":null
+        },
+        "의뢰 완료":null,
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"귀여운 인간 씨, 당신은 이제 엠덴에게서 눈을 뗄 수 없답니다. 당신은 엠덴을 위해 영원히 머무를 운명―― 「엠덴들의 모습에 영원히 사로잡힐 운명이야♥」",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/feeling5_4.opus"
+        },
+        "선호 선물":null,
+        "비선호 선물":null,
+        "터치3":{
+            "voiceline":"「환심을 사려는 걸까, 아니면 위로하려는 걸까?」 엠덴은 어느 쪽이든 상관없답니다♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/touch_head_4.opus"
+        },
+        "모항귀환":{
+            "voiceline":"승리하고 돌아온 포상으로 잠시 놀아드리죠♡ 「수영하기 전에 준비운동은 잊지 말렴♥」",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/home_4.opus"
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"인간 씨는 지금 어떤 엠덴을 찍고 싶나요? 「엠덴들에게 어울리는 사진을 찍으렴.」",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/login_4.opus"
+        },
+        "실패":null,
+        "우편":null,
+        "임무":{
+            "voiceline":"새로운 임무랍니다. 바로 시작하시겠어요? 아니면 엠덴의 사진 촬영을 우선시하겠어요? 「당신이 골라. 엠덴이 만족할 수 있도록.」",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/task_4.opus"
+        },
+        "임무완료":{
+            "voiceline":"임무가 완료되었어요. 보상보다 엠덴은 인간 씨가 찍은 사진이 더 궁금하네요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/mission_complete_4.opus"
+        },
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"엠덴의 포즈를 잡아주고 싶으신가요? 대담한 인간 씨네요♡ 「엠덴을 어떤 각도에서 찍고 싶은지…… 보여주렴♥」",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/touch_1_4.opus"
+        },
+        "터치2":{
+            "voiceline":"이런 대담한 포즈를…… 인간 씨, 특별한 앵글로 찍고 싶으시려는 건가요? 「후후후…… 바라던 대로 찍게 해주지♥」",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/touch_2_4.opus"
+        },
+        "입수시":{
+            "voiceline":"빛나는 물보라와 엠덴의 모습에 이끌려 찾아왔나요? 귀여운 인간 씨? 후후후, 당신의 시선도 렌즈의 포커스도 전부 엠덴의 것이랍니다♡――「영광으로 생각하렴, 인간♥」",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/get_4.opus"
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "메인1_ex":null,
+        "메인4_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "선호 선물_ex":null,
+        "비선호 선물_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "ASMR 일러":null,
+        "ASMR 음성":[
+            {
+                "voiceline":"인간 씨, 엠덴의 귀여운 인간 씨. ……지금 무엇을 그리 고민하고 계시나요? 「엠덴 앞에서 그렇게 멍하니 있고 말이야……」 정말…… 군침이 도네요♡ 「군침이 돌아♥」",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/asmr_001_5.opus"
+            },
+            {
+                "voiceline":"숨을 들이쉬고… 내쉬고… 후우… 하아… 후우… 하아… 「준비 운동 하기 전에 먼저 긴장부터 풀어.」 엠덴이 도와드릴까요? 귀여운 인간 씨, 후후후♡",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/asmr_002_5.opus"
+            },
+            {
+                "voiceline":"인간 씨, 엠덴을 꼭 안아주세요. 수영하기 전의 중요한 신뢰 훈련이랍니다. 「정면에서… 엠덴을 꼭 끌어안아♥」 후후… 읏… 엠덴이 망가져 버릴 것만 같을 정도로… 힘찬 포옹이네요.",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/asmr_003_5.opus"
+            },
+            {
+                "voiceline":"인간 씨의 몸이 엠덴에게 천천히…… 천천히 이끌리고 있네요…… 「엠덴에게 감싸여 있는 감촉…… 너무 기분 좋지?」 이쪽을 보세요…… 지금 엠덴이 당신을 감싸 안고 있답니다. 「괜찮아…… 엠덴은 이쪽에도 있으니까…」",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/asmr_004_5.opus"
+            },
+            {
+                "voiceline":"다음은…… 성실히 노력하고 있는 인간 씨께 포상을 드리겠어요. 「이 달콤한 쾌락을 그 몸으로 똑똑히 맛보렴.」 엠덴이… 듬뿍 예뻐해 드릴게요♡ 「엠덴이… 아낌없이 예뻐해 줄게♥」",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/asmr_005_5.opus"
+            },
+            {
+                "voiceline":"후후후, 그럼 슬슬…… 「말 잘 듣는 지휘관에게 스페셜 코스를 선사할게.」 준비는 되셨나요?♡ 「기대는 하고 있으려나?♡」",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/asmr_006_5.opus"
+            },
+            {
+                "voiceline":"「후후후…… 제법이구나, 귀여운 인간.」 우후후, 엠덴들이 응원해 드릴게요. 힘내라♡… 힘내라♡…… 「엠덴들이 줄 포상을 기대하렴♥」",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/asmr_007_5.opus"
+            },
+            {
+                "voiceline":"「엠덴의 손길… 느껴져?」 엠덴은… 인간 씨의 고동을 느끼고 있답니다. 「이렇게나 두근거리는 건…… 이제 운동을 할 거라 그런 건지, 아니면……」 엠덴들에게 뭘 당할지 기대가 돼서 그런 건가요? 귀여운 인간 씨♡ 「귀여운 인간♥」",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/asmr_008_5.opus"
+            },
+            {
+                "voiceline":"「슬슬 수영하자, 귀여운 인간…… 그전에 엠덴이 몸을 따뜻하게 해줄게.」 조금만 더, 조금만 더 근처로… 엠덴에게 인간 씨의 갈망을 쏟아내세요―― 「그리고 엠덴과 함께……」 빠져들어요♡ 「빠져들자♥」",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/asmr_009_5.opus"
+            },
+            {
+                "voiceline":"준비는 이것으로 충분하답니다. 인간 씨의 특훈 성과를 엠덴들이 확인해도 될까요? 「자… 엠덴에게 몸을 맡길 각오는 됐어?」엠덴에게 모든 것을 맡길 준비는 되셨나요? 선택해 주세요, 인간 씨♡ 「선택해, 인간♥」",
+                "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/40207\/asmr_010_5.opus"
+            }
+        ],
+        "메인7":null,
+        "스킨 타입 - 한글":"수영복",
+        "상점 id":71350,
+        "상점 카테고리 id":6,
+        "스킨 태그":"쁘띠모션, ASMR, 배경",
+        "입수 영상":"O",
+        "재화":1050.0,
+        "기간":"한정 (2026\/06\/27)",
+        "진영":"KMS",
+        "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
         "클뜯 id":402080,
         "클뜯 함순이 id":40208,
         "함순이 이름":"엘빙",
@@ -225967,7 +226608,7 @@
         "스킨 태그":"L2D, 배경",
         "입수 영상":"X",
         "재화":1180.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"KMS",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -227356,7 +227997,7 @@
         "스킨 태그":"L2D, 배경",
         "입수 영상":"O",
         "재화":1180.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"한정 (2026\/06\/27)",
         "진영":"KMS",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -248348,7 +248989,10 @@
             "voiceline":null,
             "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/present_dislike.opus"
         },
-        "터치3":null,
+        "터치3":{
+            "voiceline":"이건… 항의하는 건가?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/touch_head.opus"
+        },
         "모항귀환":{
             "voiceline":"괜찮은 전투였다, 지휘관. 네가 언제 나에게 도전할지 기대 되는군.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/home.opus"
@@ -248407,26 +249051,56 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/mvp.opus"
         },
         "메인1_ex":null,
-        "메인4_ex":null,
-        "메인5_ex":null,
-        "메인6_ex":null,
+        "메인4_ex":{
+            "voiceline":"자, 내가 만족할 때까지 세게 끌어안아. 안 그러면…… 다시 한번 마녀의 「수단」을 맛보게 될 거야.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/main_4_ex1100.opus"
+        },
+        "메인5_ex":{
+            "voiceline":"도망치기는커녕 알아서 먼저 밀착해 오다니…… 어떤 깜짝 선물을 보여줄지 기대되는걸.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/main_5_ex1100.opus"
+        },
+        "메인6_ex":{
+            "voiceline":"네 시선이 나에게 향해 있는 이 느낌, 참 좋더라. ……그래, 「해줬으면 좋겠다」는 게 아니라, 「어서 해라」라는 뜻이야♥",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/main_6_ex1100.opus"
+        },
         "전투개시_ex":null,
-        "상세확인_ex":null,
+        "상세확인_ex":{
+            "voiceline":"평소보다 상냥하다고…? 그럴지도 몰라. 너의 그 표정을 보니 나도 모르게 상냥하게 대해주고 싶어졌거든.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/detail_ex1100.opus"
+        },
         "의뢰 완료_ex":null,
-        "사랑_ex":null,
+        "사랑_ex":{
+            "voiceline":"우리의 영혼, 운명은… 이미 영원한 계약으로 굳건히 묶여 있어. 이제 와서 필사적으로 발버둥 쳐봤자 「사랑」이라는 속박을 한층 더 깊고 단단하게 만들 뿐이야.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/feeling5_ex1100.opus"
+        },
         "선호 선물_ex":null,
         "비선호 선물_ex":null,
-        "터치3_ex":null,
-        "모항귀환_ex":null,
+        "터치3_ex":{
+            "voiceline":"오늘은…… 머리를 쓰다듬어도 우아함을 잃지 않는 마녀로 있어 줄게.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/touch_head_ex1100.opus"
+        },
+        "모항귀환_ex":{
+            "voiceline":"제 시간에 와줬네. 마녀를 기다리게 하지 않은 점은 높이 사 줄게.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/home_ex1100.opus"
+        },
         "hp 경고_ex":null,
-        "로그인_ex":null,
+        "로그인_ex":{
+            "voiceline":"지휘관, 왔구나. ……이 아이는 진작에 네 기척을 눈치채고 있었어. 하지만 이번에는 다른 누군가가 들떠있네.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/login_ex1100.opus"
+        },
         "실패_ex":null,
         "우편_ex":null,
         "임무_ex":null,
         "임무완료_ex":null,
         "스킬_ex":null,
-        "터치1_ex":null,
-        "터치2_ex":null,
+        "터치1_ex":{
+            "voiceline":"마녀의 훈육을 받을 준비는 됐어?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/touch_1_ex1100.opus"
+        },
+        "터치2_ex":{
+            "voiceline":"격렬하게 저항하는 편이 더 행복을 느끼려나…… 서로 시험해 보면 되겠네.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/touch_2_ex1100.opus"
+        },
         "입수시_ex":null,
         "강화성공_ex":null,
         "승리_ex":null,
@@ -248465,7 +249139,7 @@
         "기간":null,
         "진영":"KMS",
         "레어도":"SSR",
-        "ex_chat_status":0
+        "ex_chat_status":1
     },
     {
         "클뜯 id":499061,
@@ -248751,6 +249425,135 @@
         "입수 영상":"X",
         "재화":980.0,
         "기간":"한정 (2026\/04\/12)",
+        "진영":"KMS",
+        "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":499063,
+        "클뜯 함순이 id":49906,
+        "함순이 이름":"아우구스트 폰 파르제팔",
+        "한글 함순이 + 스킨 이름":"위치 스타 랑데부",
+        "영문 함순이 + 스킨 이름":"위치 스타 랑데부",
+        "스킨 타입":"Party Dress",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/499063\/painting.png",
+        "확대 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/499063\/painting_n.png",
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_chibi\/499063.webp",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_icon\/499063.webp",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_qicon\/499063.webp",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/499063.webp",
+        "설명":"마녀의 비밀의 화원에 온 것을 환영해, 나의 사역마. 너를 위한 밤의 연회가 곧 시작될 거야. 자…… 이쪽으로 오렴,",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"잊어버린 거니? 마녀와 춤을 추려면 그에 걸맞은 단계를 밟아야만 해. 아무래도 나의 사역마는 조금 성급한 모양이네.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/main_1_3.opus"
+        },
+        "메인2":{
+            "voiceline":"이 드레스가 아름답다고? 의상 따위보다 훨씬 가치 있는 것에 집중해야 하는 것 아닐까? 후후.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/main_2_3.opus"
+        },
+        "메인3":{
+            "voiceline":"오늘 밤의 네 모습은 참으로 만족스러워. 포상으로 이 댄스를…… 언제 끝낼지는 네가 정하도록 해.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/main_3_3.opus"
+        },
+        "전투개시":null,
+        "상세확인":{
+            "voiceline":"수면은 달빛으로 빛나고, 마지막 파문도 결국은 고요함 속으로 사라졌어. 내 손을 잡고 있으렴. 마녀의 의식이 시작될 거야.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/detail_3.opus"
+        },
+        "드랍 설명":{
+            "voiceline":"마녀의 비밀의 화원에 온 것을 환영해, 나의 사역마. 너를 위한 밤의 연회가 곧 시작될 거야. 자…… 이쪽으로 오렴,",
+            "voicelink":null
+        },
+        "의뢰 완료":null,
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"오늘 밤은 참 잘했어, 나의 사역마. 이 비밀의 화원은 영원히 너를 위해 불을 밝힐 거야. 별과 달이 빛나는 밤이 올 때마다 여기서 너를 기다릴게―― 너무…… 기다리게 하지는 마.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/feeling5_3.opus"
+        },
+        "선호 선물":null,
+        "비선호 선물":null,
+        "터치3":null,
+        "모항귀환":{
+            "voiceline":"돌아올 줄 알고 있었지. 후후후…… 아무리 너라고 해도 마녀의 손아귀에서는 벗어날 수 없으니까.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/home_3.opus"
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"제 시간에 나타났네. 착하구나, 나의 사역마…… 이제 연회의 주인공이 모두 모여서 그런지, 별들도 너를 위해 빛나기 시작하는구나.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/login_3.opus"
+        },
+        "실패":null,
+        "우편":null,
+        "임무":{
+            "voiceline":"임무가 안 끝나면, 의식을 진행하는 것도 불가능해.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/task_3.opus"
+        },
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"조금 더 팔에 힘을 주고, 나를 강하게 끌어안아…… 그래. 잘하네.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/touch_1_3.opus"
+        },
+        "터치2":{
+            "voiceline":"마녀의 화원에서는 뭘 한들 소용없어.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/touch_2_3.opus"
+        },
+        "입수시":{
+            "voiceline":"마녀의 비밀의 화원에 온 것을 환영해, 나의 사역마. 너를 위한 밤의 연회가 곧 시작될 거야. 자…… 이쪽으로 오렴,",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/49906\/get_3.opus"
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "메인1_ex":null,
+        "메인4_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "선호 선물_ex":null,
+        "비선호 선물_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "ASMR 일러":null,
+        "ASMR 음성":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"파티",
+        "상점 id":71355,
+        "상점 카테고리 id":7,
+        "스킨 태그":"L2D+, 특수배경 (움짤)",
+        "입수 영상":"O",
+        "재화":1280.0,
+        "기간":"한정 (2026\/06\/27)",
         "진영":"KMS",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -255206,6 +256009,135 @@
         "ex_chat_status":0
     },
     {
+        "클뜯 id":502013,
+        "클뜯 함순이 id":50201,
+        "함순이 이름":"얏센",
+        "한글 함순이 + 스킨 이름":"부풍에 이는 흰 파도",
+        "영문 함순이 + 스킨 이름":"부풍에 이는 흰 파도",
+        "스킨 타입":"Swimsuits",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/502013\/painting.png",
+        "확대 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/502013\/painting_n.png",
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_chibi\/502013.webp",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_icon\/502013.webp",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_qicon\/502013.webp",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/502013.webp",
+        "설명":"잔잔한 파도 소리, 날아다니는 갈매기, 부드럽게 스치는 바닷바람…… 아…… 겉옷이…… 지휘관님, 너, 너무 빤히 보지는 말아 주세요……",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"지휘관님…… 혹시 괜찮으시다면, 조금만 더 얏센을 봐주시면…… 음, 너무 기쁘겠어요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/502012\/main_1_3.opus"
+        },
+        "메인2":{
+            "voiceline":"조개껍데기가 흩어져 있네요. 찻상의 장식으로 쓸 겸 함께 몇 개 모아보지 않으실래요?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/502012\/main_2_3.opus"
+        },
+        "메인3":{
+            "voiceline":"이렇게 대담한 수영복을 입은 것은 처음이라…… 지휘관님께 보여드릴 마음의 준비가 되지 않았는데, 바닷바람에 겉옷이 흘러내려 버려서…… 그래서… 지휘관님, 어, 어떤가요…?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/502012\/main_3_3.opus"
+        },
+        "전투개시":null,
+        "상세확인":{
+            "voiceline":"수영복을 고를 때 꽤 망설였답니다. 얏센의 좋은 모습을 보여드리려 해도, 지휘관님께서 만족하지 못하시면 어쩌나 싶어서…… 후후후, 하지만 지금 지휘관님을 보고 있으니 아무래도 그저 기우였나 보네요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/502012\/detail_3.opus"
+        },
+        "드랍 설명":{
+            "voiceline":"잔잔한 파도 소리, 날아다니는 갈매기, 부드럽게 스치는 바닷바람…… 아…… 겉옷이…… 지휘관님, 너, 너무 빤히 보지는 말아 주세요……",
+            "voicelink":null
+        },
+        "의뢰 완료":null,
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"「해세산맹」을 말하자면…… 지휘관님은 얏센이 마음을 기대는 봉우리 같은 존재… 얏센 또한 그 봉우리에서 흘러내리는 강물처럼…… 조용히 계속 곁에 머물고만 싶어요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/502012\/feeling5_3.opus"
+        },
+        "선호 선물":null,
+        "비선호 선물":null,
+        "터치3":{
+            "voiceline":"조용히 만물을 적시는 봄비처럼……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/502012\/touch_head_3.opus"
+        },
+        "모항귀환":{
+            "voiceline":"후후후, 바닷바람이 당신을 제 곁으로 인도해 준 것일까요?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/502012\/home_3.opus"
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"얏센, 오늘도 약속대로 왔답니다. 지휘관님, 함께 해변을 산책하지 않으실래요? 전해드리고 싶은 이야기가 아직 잔뜩 있어서……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/502012\/login_3.opus"
+        },
+        "실패":null,
+        "우편":null,
+        "임무":null,
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"겉옷이 흠뻑 젖었으니…… 지휘관님, 너무 만지지 않으시는 편이…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/502012\/touch_1_3.opus"
+        },
+        "터치2":{
+            "voiceline":"꺅…… 일으켜 주시는 건가요? 부, 부드럽게 부탁드릴게요……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/502012\/touch_2_3.opus"
+        },
+        "입수시":{
+            "voiceline":"잔잔한 파도 소리, 날아다니는 갈매기, 부드럽게 스치는 바닷바람…… 아…… 겉옷이…… 지휘관님, 너, 너무 빤히 보지는 말아 주세요……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/502012\/get_3.opus"
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "메인1_ex":null,
+        "메인4_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "선호 선물_ex":null,
+        "비선호 선물_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "ASMR 일러":null,
+        "ASMR 음성":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"수영복",
+        "상점 id":71352,
+        "상점 카테고리 id":6,
+        "스킨 태그":"쁘띠모션, 배경",
+        "입수 영상":"O",
+        "재화":880.0,
+        "기간":"한정 (2026\/06\/27)",
+        "진영":"ROC",
+        "레어도":"SR",
+        "ex_chat_status":0
+    },
+    {
         "클뜯 id":502018,
         "클뜯 함순이 id":50201,
         "함순이 이름":"얏센",
@@ -258433,7 +259365,7 @@
         "스킨 태그":"쁘띠모션, 배경",
         "입수 영상":"O",
         "재화":880.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"한정 (2026\/06\/27)",
         "진영":"ROC",
         "레어도":"SR",
         "ex_chat_status":0
@@ -263797,27 +264729,27 @@
         "설명":"수상기 항공모함—화지아",
         "자기소개":{
             "voiceline":"젠하이와 마찬가지로, 이스트 글림 수상기 항공모함인 화지아입니다. 안타깝게도 갈고 닦은 보검도 뽑지 못하고, 물거품이 되고만… 저였지만… 어두운 이야기는 여기까지 하죠. 지휘관님, 화지아랑 재밌는 거 하자는 약속은 기억하고 계시죠?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/profile.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/profile.opus"
         },
         "메인1":{
             "voiceline":"지휘관님은 평소에 어떻게 노고를 달래시나요? 호화로운 요리라도 드시나요? 아니면 밤새도록 미친듯이 논다던가? 저는… 아뇨, 참고하려구요!",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/main_1.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_1.opus"
         },
         "메인2":{
             "voiceline":"낯선 분과 대화를 나눌 때는 예의를 갖추고 대하는 게 중요하지요. 예의 있게 대해도 대화가 안 통하는 분이 상대라면… 보다 직접적인 방법으로 나갈 수 밖에요♪",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/main_2.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_2.opus"
         },
         "메인3":{
             "voiceline":"마파두부…? 두부를 요리하는 방법만 수백 가지가 있는데, 굳이 매운 맛에 얽매이지 않아도 괜찮겠죠. 게다가 매운 건 저… 쥐약이라…….",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/main_3.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_3.opus"
         },
         "전투개시":{
             "voiceline":"마음껏 두드려 패라, 라는 거죠?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/warcry.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/warcry.opus"
         },
         "상세확인":{
             "voiceline":"그러고 보니, 이글 유니온 파티에 참석하고 싶다고 손을 드니까 다들 신기하게 보던데… 뭐 이상한 점이라도 있었던 걸까요…?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/detail.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/detail.opus"
         },
         "드랍 설명":{
             "voiceline":"수상기 항공모함—화지아",
@@ -263825,27 +264757,27 @@
         },
         "의뢰 완료":{
             "voiceline":"의뢰팀 동료들이 돌아왔네요. 고생했다고 위로해주러 나갈까요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/expedition.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/expedition.opus"
         },
         "실망":{
             "voiceline":"어떤 말을 해도, 하루하루 살아가야 하는 거니까... 대충 내버려 둘게요…….",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/feeling1.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/feeling1.opus"
         },
         "낯섦":{
             "voiceline":"느닷없이 무리에 섞이려고 하면, 아무리 예의 바르게 인사를 건네도 거리를 두게 되죠. 다행스럽게도 여기 마침 소개해드릴 만한 분이… 지휘관님, 발 벗고 나서 주시지 않으시겠어요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/feeling2.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/feeling2.opus"
         },
         "호감":{
             "voiceline":"얼마 전, 동료들과 귀신의 집에 갔었어요……그런데 귀신들보다 동료들이 허둥대는 모습을 보는 게 더 재밌어서… 지휘관님은 귀신이 무서우신가요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/feeling3.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/feeling3.opus"
         },
         "기쁨":{
             "voiceline":"동료들과 시간을 보내면서 깨달았는데, 이 정도로 많은 사람 중에서 두각을 나타내기는 쉽지 않겠네요…. 그렇다면 차라리 도망치는 편이…… 어머? 방금 건 혼잣말이니까 신경 쓰지 마시길. 그것보다 지휘관님, 최근 동료들의 평가에 관심이라도 있으신 건가요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/feeling4.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/feeling4.opus"
         },
         "사랑":{
             "voiceline":"알고 지낸 지도 시간이 꽤 흘렀으니, 화지아가 딱히 '착한 아이'가 아니란 건 이미 눈치채셨겠죠. 뭐, 이게 누구 때문이냐고 하면… 물론 지휘관님 때문이죠. 이렇게 '나쁜 것'을 화지아에게 알려주신 건 다른 누구도 아닌 지휘관님 아니신가요? 후후, 그 책임, 확실히 져 주세요.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/feeling5.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/feeling5.opus"
         },
         "선호 선물":{
             "voiceline":null,
@@ -263855,89 +264787,95 @@
             "voiceline":null,
             "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/present_dislike.opus"
         },
-        "터치3":null,
+        "터치3":{
+            "voiceline":"지휘관님? 이건…… 「착한 아이」에게 주는 포상인가요? 후후후♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_head.opus"
+        },
         "모항귀환":{
             "voiceline":"응? 지휘관님, 방금 어디 가셨었어요? 설마 저 몰래 무슨 재미있는 거라도… 후후, 농담이에요.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/home.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/home.opus"
         },
         "hp 경고":{
             "voiceline":"윽, 잠깐 방심했어요….",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/hp.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/hp.opus"
         },
         "로그인":{
             "voiceline":"지휘관님, 벌써 업무 시간인가요? …조금만 더 땡땡이치는 건 어떠세요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/login.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/login.opus"
         },
         "실패":{
             "voiceline":"이 굴욕은… 언젠가 두 배로 갚아드리죠…!",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/lose.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/lose.opus"
         },
         "우편":{
             "voiceline":"새로운 우편이네요. 그러고 보니, 지휘관님은 평소에 다양한 행사에 초대받거나 하시죠? 괜찮으시면 저도 함께해도 될까요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/mail.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/mail.opus"
         },
         "임무":{
             "voiceline":"임무 중에는 재밌는 것도 있다는 소리를 들은 적이 있어요. 지휘관님만 괜찮으시다면, 다음에는 저도 함께해도 될까요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/task.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/task.opus"
         },
         "임무완료":{
             "voiceline":"임무 완료예요. 즉, 잠깐 동안 쉬어도 괜찮다, 라는 거겠죠?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/mission_complete.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/mission_complete.opus"
         },
         "서약":{
             "voiceline":"지휘관님께 있어서 일등이 되겠다고는 감히 바라지 않아요. 그렇지만 이건 확실히 나눈 약속이니, 만약 도중에 저를 내팽개치신다면, 저… 굉~~장히 화를 낼 거예요. 무슨 일을 저지를지 상상도 못 하실 정도로 화낼 거거든요? 후후후, 그럼~ 앞으로도 잘 부탁드려요. 지휘관님.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/propose.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/propose.opus"
         },
         "스킬":{
             "voiceline":"말이 안 통한다면 실력 행사뿐이죠!",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/skill.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/skill.opus"
         },
         "터치1":{
             "voiceline":"괜찮아요. 지금은 편하게 있어도 아무한테도 들키지 않으니까.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/touch_1.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_1.opus"
         },
         "터치2":{
             "voiceline":"즉, 지금부터는 정당방위를 행사해도 괜찮다, 라는 거겠죠?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/touch_2.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_2.opus"
         },
         "입수시":{
             "voiceline":"지휘관님, 처음 뵙겠습니다. 이스트 글림 소속인 화지아라고 해요. 둘만 있으니까 단도직입적으로 여쭈어보겠는데… 크흠, 여기엔… 그러니까… 두근거리는 재미있는 행사도 있나요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/get.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/get.opus"
         },
         "강화성공":{
             "voiceline":"지휘관님의 배려, 꼭 보답하겠습니다.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/upgrade.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/upgrade.opus"
         },
         "vote":null,
         "승리":{
             "voiceline":"후후, 화지아의 '지아(甲)'는 일등이라는 의미랍니다.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/mvp.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/mvp.opus"
         },
         "메인1_ex":null,
         "메인4_ex":{
             "voiceline":"얍!…… 아, 아무것도 아녜요. 그냥 갑자기 부채로 쳐보고 싶어서요. 아무 이유도 없어요. 사적인 원망 같은 것도 담겨있지 않구요. 그냥 그뿐이예요.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/main_4_ex1100.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_4_ex1100.opus"
         },
         "메인5_ex":null,
         "메인6_ex":null,
         "전투개시_ex":{
             "voiceline":"이곳에서 마음껏 싸울 수 있는 것도 지휘관님이 제게 주신 좋은 기회입니다.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/warcry_ex1100.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/warcry_ex1100.opus"
         },
         "상세확인_ex":null,
         "의뢰 완료_ex":null,
         "사랑_ex":null,
         "선호 선물_ex":null,
         "비선호 선물_ex":null,
-        "터치3_ex":null,
+        "터치3_ex":{
+            "voiceline":"와아, 두근거리네요~♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_head_ex1100.opus"
+        },
         "모항귀환_ex":{
             "voiceline":"그런데 지휘관님, 나가 계신 동안 설마 다른 여자아이랑 꽁냥거린 건 아니시겠죠…… 헤헤, 단지 지휘관님의 반응을 보고 싶어서 농담한 것 뿐이에요.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/home_ex1100.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/home_ex1100.opus"
         },
         "hp 경고_ex":null,
         "로그인_ex":{
             "voiceline":"지휘관님, 오늘은 일이 많지 않아요. 업무가 다 끝나면 뭘 할지 미리 계획해 보는 것도 좋겠는데요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/login_ex1100.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/login_ex1100.opus"
         },
         "실패_ex":null,
         "우편_ex":null,
@@ -263946,22 +264884,22 @@
         "스킬_ex":null,
         "터치1_ex":{
             "voiceline":"그러니까…… 일이 다 끝났으면, 나가서 다른 동료들과 뭔가 해도 되지 않을까요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/touch_1_ex1100.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_1_ex1100.opus"
         },
         "터치2_ex":{
             "voiceline":"응? 지휘관님, 제가 생각했던 것보다 훨씬 더 대담하시네요.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/touch_2_ex1100.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_2_ex1100.opus"
         },
         "입수시_ex":null,
         "강화성공_ex":null,
         "승리_ex":{
             "voiceline":"가장 큰 공신은 지휘관님이어야 맞겠죠.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/mvp_ex1100.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/mvp_ex1100.opus"
         },
         "함대 특수대사":[
             {
                 "voiceline":"['젠하이'] :  수상기 사용법 좀 알려주시겠어요?",
-                "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/link1.opus"
+                "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/link1.opus"
             }
         ],
         "메인4":null,
@@ -264004,20 +264942,20 @@
         "자기소개":null,
         "메인1":{
             "voiceline":"원앙훠궈'는 이름 그대로 커플을 위한 전골……이라는 건 농담입니다. 사실은 취향이 다른 사람들을 위한 반쪽으로 나뉜 냄비랍니다.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/main_1_1.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_1_1.opus"
         },
         "메인2":{
             "voiceline":"하이티엔이 굉장히 매운 빠오즈를 만들었다던데…… 으으, 그 빠오즈에 표시가 되어 있길 바랄 수밖에요…….",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/main_2_1.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_2_1.opus"
         },
         "메인3":{
             "voiceline":"영화 속에서 강시는 분명 뛰면서 이동했었죠. 그러니까 이렇게, 팔짝팔짝! 음, 이거… 좀 이상한 느낌인데요…….",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/main_3_1.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_3_1.opus"
         },
         "전투개시":null,
         "상세확인":{
             "voiceline":"어머? 의상이 좀 지나치게 대담했나요? 그래도 다른 동료들이랑 비교했을 때 튀지 않을 정도로 고른 건데……. 게다가 가끔은 색다른 느낌을 내는 것도 좋지 않을까요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/detail_1.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/detail_1.opus"
         },
         "드랍 설명":{
             "voiceline":"강시 화지아예요. 모쪼록 잘 부탁드… 어머, 지휘관님. 왜 그러시죠? 다들 평소와는 다른 모습을 하고 있길래, 저도 옷을 갈아입고 온 건데…… 좀 이상한가요?",
@@ -264034,12 +264972,12 @@
         "터치3":null,
         "모항귀환":{
             "voiceline":"얍! ……지휘관님을 놀라게 해드리지 못했네요…. 다음엔 푸슌 네처럼 손전등이라도 준비하는 편이 좋으려나요….",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/home_1.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/home_1.opus"
         },
         "hp 경고":null,
         "로그인":{
             "voiceline":"어서 오세요. 동료들이랑 만나서 같이 재밌는 거라도 찾으러 갈까요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/login_1.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/login_1.opus"
         },
         "실패":null,
         "우편":null,
@@ -264049,15 +264987,15 @@
         "스킬":null,
         "터치1":{
             "voiceline":"진짜 강시는 아니라서 손을 차갑게 할 순 없어요.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/touch_1_1.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_1_1.opus"
         },
         "터치2":{
             "voiceline":"부적을 떼면 벌 받으실 텐데요…?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/touch_2_1.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_2_1.opus"
         },
         "입수시":{
             "voiceline":"강시 화지아예요. 모쪼록 잘 부탁드… 어머, 지휘관님. 왜 그러시죠? 다들 평소와는 다른 모습을 하고 있길래, 저도 옷을 갈아입고 온 건데…… 좀 이상한가요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/get_1.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/get_1.opus"
         },
         "강화성공":null,
         "vote":null,
@@ -264111,6 +265049,132 @@
         "ex_chat_status":0
     },
     {
+        "클뜯 id":506022,
+        "클뜯 함순이 id":50602,
+        "함순이 이름":"화지아",
+        "한글 함순이 + 스킨 이름":"옻칠의 광채",
+        "영문 함순이 + 스킨 이름":"옻칠의 광채",
+        "스킨 타입":"Empery'S Fineries",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/506022\/painting.png",
+        "확대 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/506022\/painting_n.png",
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_chibi\/506022.webp",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_icon\/506022.webp",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_qicon\/506022.webp",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/506022.webp",
+        "설명":"아, 지휘관님… 화지아는 지금, 소풍 전 정리를 하고 있답니다. 그러고 보니, 아직 이 칠기 보석함을 보여드린 적이 없었네요. 무엇을 숨기랴, 이 화지아의 소중한 컬렉션이랍니다♪ 자, 지휘관님도 함께 감상해요~",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"칠기의 매력이란, 시간을 들여 스스로의 손으로 매일 관리해 주면 밝고 아름다운 광채를 비축하게 된다는 점…… 사람이나 사물을 대하는 방식 또한 마찬가지… 그렇죠?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_1_2.opus"
+        },
+        "메인2":{
+            "voiceline":"「옻을 구하려 절벽에 올라, 천 그루를 베어도 통은 가득 차지 않네」…… 옻칠을 모으는 것만으로도 무척 고된 일이니, 장인의 심혈이 깃든 칠기는 더욱 소중히 다루어야 해요.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_2_2.opus"
+        },
+        "메인3":{
+            "voiceline":"소풍에 대한 기대감이 큰 것 같다고요? 당연하죠! 지휘관님과 칠기를 감상하기에 딱 좋은 풍경을 찾을 수 있을지도 모르니까요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_3_2.opus"
+        },
+        "전투개시":null,
+        "상세확인":null,
+        "드랍 설명":{
+            "voiceline":"아, 지휘관님… 화지아는 지금, 소풍 전 정리를 하고 있답니다. 그러고 보니, 아직 이 칠기 보석함을 보여드린 적이 없었네요. 무엇을 숨기랴, 이 화지아의 소중한 컬렉션이랍니다♪ 자, 지휘관님도 함께 감상해요~",
+            "voicelink":null
+        },
+        "의뢰 완료":null,
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"「칠기는 수려하여 보석을 담고, 정원은 넓어 봄빛을 가두었네」…… 화지아의 마음도, 「단 하나의 소중한 것」을 위해 비워두었답니다―― 바로 지휘관님을 말하는 거예요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/feeling5_2.opus"
+        },
+        "선호 선물":null,
+        "비선호 선물":null,
+        "터치3":{
+            "voiceline":"으아아아…… 지휘관님은 화지아보다 더 장난꾸러기시네요~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_head_2.opus"
+        },
+        "모항귀환":{
+            "voiceline":"이 의상에는 어떤 액세서리가 어울릴지 고민하던 참이었어요. 지휘관님, 괜찮으시다면 조언을 좀 해주시겠어요?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/home_2.opus"
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"화지아가 소중히 여기는 보물을 알아채다니, 지휘관님도 참, 눈썰미가 있으시네요♪ 네, 백 번 이상의 연마, 그리고 자개 가루와 금박 장식이 있기에 이렇게나 우아하고 그윽한 빛을 머금고 있는 것이랍니다~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/login_2.opus"
+        },
+        "실패":null,
+        "우편":null,
+        "임무":null,
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"지휘관님도 이 칠기의 질감을 느껴보시겠어요? 분명 마음에 드실 거예요♪",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_1_2.opus"
+        },
+        "터치2":{
+            "voiceline":"꺅…… 책상 위의 칠기에 실수로 부딪히지 않도록, 아셨죠?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_2_2.opus"
+        },
+        "입수시":{
+            "voiceline":"아, 지휘관님… 화지아는 지금, 소풍 전 정리를 하고 있답니다. 그러고 보니, 아직 이 칠기 보석함을 보여드린 적이 없었네요. 무엇을 숨기랴, 이 화지아의 소중한 컬렉션이랍니다♪ 자, 지휘관님도 함께 감상해요~",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/get_2.opus"
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "메인1_ex":null,
+        "메인4_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "선호 선물_ex":null,
+        "비선호 선물_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "ASMR 일러":null,
+        "ASMR 음성":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"이스트 글림 스타일",
+        "상점 id":0,
+        "상점 카테고리 id":3,
+        "스킨 태그":"배경",
+        "입수 영상":"X",
+        "재화":null,
+        "기간":null,
+        "진영":"ROC",
+        "레어도":"SR",
+        "ex_chat_status":0
+    },
+    {
         "클뜯 id":506029,
         "클뜯 함순이 id":50602,
         "함순이 이름":"화지아",
@@ -264127,20 +265191,20 @@
         "자기소개":null,
         "메인1":{
             "voiceline":"아, 그렇지. 지휘관님. 찻집을 차릴 기회가 있으면, 꼭 불을 이용한 공연을 해보고 싶어요. 그러면 손님들도 많이 모이겠죠? …네? 그러면 분위기가 엉망이 될 거라고요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/main_1_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_1_9.opus"
         },
         "메인2":{
             "voiceline":"예의 있게 대하고, 성심을 다해 논하는… 화지아의 스타일은 변함이 없어요. 말이 통하지 않더라도, 지금의 저는 얌전히 제 말을 듣게 할 힘을 가지고 있으니까요♪",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/main_2_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_2_9.opus"
         },
         "메인3":{
             "voiceline":"매운 훠궈…말씀인가요? 아하하하… 계속 새로운 것에 도전하는 저도 그건…… 좀 어려울 것 같네요……",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/main_3_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/main_3_9.opus"
         },
         "전투개시":null,
         "상세확인":{
             "voiceline":"그러고 보니 요즘, 파티를 열면 즐겁다는 걸 알았답니다. 모두 모여 기상천외한 아이디어나 의견을 잔뜩 교환할 수 있어서 꽤 신선한 느낌이에요♪",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/detail_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/detail_9.opus"
         },
         "드랍 설명":{
             "voiceline":"자, 지휘관님. 잘 보세요. 이것이 바로 개조를 마친 화지아랍니다. 음… 새로운 모습에 놀라셨나요? 걱정하지 마세요. 저는 변함없이 언제나 당신의 화지아니까요~ ……굳이 변한 점을 들자면, 즐거움에 더욱 솔직해진 정도려나요♪",
@@ -264148,7 +265212,7 @@
         },
         "의뢰 완료":{
             "voiceline":"의뢰팀 동료들이 돌아왔다고요? 저도 모두의 노고를 달랠 준비를 마친 참입니다. 완벽한 타이밍이죠?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/expedition_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/expedition_9.opus"
         },
         "실망":null,
         "낯섦":null,
@@ -264156,49 +265220,49 @@
         "기쁨":null,
         "사랑":{
             "voiceline":"조금 달려졌다고는 해도, 지휘관님은 분명 지금의 화지아도 마음에 들어 하시겠죠? 우후후… 왜냐하면 이렇게 변한 건 모두… 지휘관님의 「가르침」 덕분이니까요♪ 네, 앞으로도 책임지고 저를 돌봐주세요♪",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/feeling5_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/feeling5_9.opus"
         },
         "선호 선물":null,
         "비선호 선물":null,
         "터치3":{
             "voiceline":"어머… 혹시 저… 요즘 너무 얌전하지 않나요? 후후후, 농담입니다.",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/touch_head_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_head_9.opus"
         },
         "모항귀환":{
             "voiceline":"지휘관님, 돌아오셨나요? 마침 재밌을 것 같은 곳을 발견했는데… 괜찮으시면 화지아와 함께 가보시지 않으실래요? 기분도 전환할 겸, 어때요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/home_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/home_9.opus"
         },
         "hp 경고":null,
         "로그인":{
             "voiceline":"지휘관님. 업무가 중요하다는 것은 잘 알지만, 가끔은 설레고 두근거리는… 즐거운 걸 해보지 않을래요…?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/login_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/login_9.opus"
         },
         "실패":null,
         "우편":{
             "voiceline":"새로운 우편이 도착했어요. 관례적인 사무 연락이 아니라, 즐거운 행사의 초대장이면 좋겠는데… 지휘관님, 같이 확인할까요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/mail_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/mail_9.opus"
         },
         "임무":{
             "voiceline":"또 즐거운 임무라도 있었나요? 평소처럼 도울 수 있게 해주세요♪",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/task_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/task_9.opus"
         },
         "임무완료":{
             "voiceline":"어머? 임무가 끝났나요? 후후후, 만약 다음 일정이 없으면, 제가 좋은 제안을 하나 드려도 될까요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/mission_complete_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/mission_complete_9.opus"
         },
         "서약":null,
         "스킬":null,
         "터치1":{
             "voiceline":"음…? 일은 제쳐두고 밖으로 나가고 싶어지셨나요?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/touch_1_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_1_9.opus"
         },
         "터치2":{
             "voiceline":"음? 설마… 저를… 떠보시는 건가요…?",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/touch_2_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/touch_2_9.opus"
         },
         "입수시":{
             "voiceline":"자, 지휘관님. 잘 보세요. 이것이 바로 개조를 마친 화지아랍니다. 음… 새로운 모습에 놀라셨나요? 걱정하지 마세요. 저는 변함없이 언제나 당신의 화지아니까요~ ……굳이 변한 점을 들자면, 즐거움에 더욱 솔직해진 정도려나요♪",
-            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/50602\/get_9.opus"
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/506022\/get_9.opus"
         },
         "강화성공":null,
         "vote":null,
@@ -281357,7 +282421,7 @@
         "스킨 태그":"배경, 쁘띠모션",
         "입수 영상":"X",
         "재화":980.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"SN",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -291102,7 +292166,7 @@
         "스킨 태그":"배경",
         "입수 영상":"X",
         "재화":880.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"상시",
         "진영":"SN",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -293016,7 +294080,7 @@
         "스킨 태그":"배경",
         "입수 영상":"O",
         "재화":880.0,
-        "기간":"한정 (2026\/04\/12)",
+        "기간":"한정 (2026\/06\/27)",
         "진영":"SN",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -307224,7 +308288,10 @@
         },
         "선호 선물":null,
         "비선호 선물":null,
-        "터치3":null,
+        "터치3":{
+            "voiceline":"지휘관, 이것은 그리… 적절한 행동이라 할 수 없겠군……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/touch_head.opus"
+        },
         "모항귀환":{
             "voiceline":"수난이야말로 전사의 상징. 모두, 잘 견뎌주었구나.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/home.opus"
@@ -307283,28 +308350,64 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/mvp.opus"
         },
         "메인1_ex":null,
-        "메인4_ex":null,
-        "메인5_ex":null,
-        "메인6_ex":null,
+        "메인4_ex":{
+            "voiceline":"이 고요함…… 전투 전의 그것과는 달리 맹세의 무게를 상기시켜 주는군. 괴로운 무게가 아니라, 오히려… 안심을 안겨주는 무게다.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/main_4_ex1100.opus"
+        },
+        "메인5_ex":{
+            "voiceline":"뭘 읽고 있느냐고? 원예에 관한 책이다. ……베란다에 아이리스를 심으면 어떨까 싶어서 말이지.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/main_5_ex1100.opus"
+        },
+        "메인6_ex":{
+            "voiceline":"내가 걷는 길은 전투로만 가득 차 있을 줄 알았는데, 지금은 이렇게 너와 평화를 누리고 있군…… 아아, 그 어떤 승리보다도 고귀한 최고의 포상이다.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/main_6_ex1100.opus"
+        },
         "전투개시_ex":null,
-        "상세확인_ex":null,
+        "상세확인_ex":{
+            "voiceline":"잠깐 쉬는 게 어떤가? 정적에 둘러싸인 이곳이라면 생각을 정리하기에…… 함께 평온한 시간을 보내기에 적합하니까.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/detail_ex1100.opus"
+        },
         "의뢰 완료_ex":null,
-        "사랑_ex":null,
+        "사랑_ex":{
+            "voiceline":"너와 보내는 나날은 내게 전례 없는 충실감과 행복감을 가져다 주는군. 아마도…… 이것이 바로 내가 찾아 헤매던 종착지겠지.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/feeling5_ex1100.opus"
+        },
         "선호 선물_ex":null,
         "비선호 선물_ex":null,
-        "터치3_ex":null,
-        "모항귀환_ex":null,
+        "터치3_ex":{
+            "voiceline":"네 손만이 술렁이는 내 마음을 편안하게 해 줘…… 조금만 더 그대로 있어 주지 않겠나?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/touch_head_ex1100.opus"
+        },
+        "모항귀환_ex":{
+            "voiceline":"동료가 무사하다는 건 그 어떤 승리보다도 기쁜 일이지. ……특히 지휘관, 네가 무사하다면 더더욱 말이다.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/home_ex1100.opus"
+        },
         "hp 경고_ex":null,
-        "로그인_ex":null,
+        "로그인_ex":{
+            "voiceline":"네가 돌아보는 모습을 볼 때마다 사명감이 강해져. 오늘의 일정도 부디 함께할 수 있게 해 줘.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/login_ex1100.opus"
+        },
         "실패_ex":null,
         "우편_ex":null,
         "임무_ex":null,
-        "임무완료_ex":null,
+        "임무완료_ex":{
+            "voiceline":"보상을 모두 확인했다. 내게는 무용지물이지만, 네게 만족스러운 미소를 안겼으니 그걸로 충분해.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/mission_complete_ex1100.opus"
+        },
         "스킬_ex":null,
-        "터치1_ex":null,
-        "터치2_ex":null,
+        "터치1_ex":{
+            "voiceline":"그 손길이 어떤 기도보다도 나를 안심시켜 주는군.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/touch_1_ex1100.opus"
+        },
+        "터치2_ex":{
+            "voiceline":"……크흠. 다른 동료들이 보기라도 하면…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/touch_2_ex1100.opus"
+        },
         "입수시_ex":null,
-        "강화성공_ex":null,
+        "강화성공_ex":{
+            "voiceline":"이 힘으로 우리의 맹세를 지키마.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/upgrade_ex1100.opus"
+        },
         "승리_ex":null,
         "함대 특수대사":null,
         "메인4":null,
@@ -307328,7 +308431,7 @@
         "기간":null,
         "진영":"FFNF (FF, iris libre)",
         "레어도":"SSR",
-        "ex_chat_status":0
+        "ex_chat_status":1
     },
     {
         "클뜯 id":899011,
@@ -307578,6 +308681,135 @@
         "입수 영상":"X",
         "재화":900.0,
         "기간":"상시",
+        "진영":"FFNF (FF, iris libre)",
+        "레어도":"SSR",
+        "ex_chat_status":0
+    },
+    {
+        "클뜯 id":899013,
+        "클뜯 함순이 id":89901,
+        "함순이 이름":"생 루이",
+        "한글 함순이 + 스킨 이름":"평온한 시간에 취해",
+        "영문 함순이 + 스킨 이름":"평온한 시간에 취해",
+        "스킨 타입":"Swimsuits",
+        "전체 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/899013\/painting.png",
+        "확대 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/output_expressions\/899013\/painting_n.png",
+        "sd 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_chibi\/899013.webp",
+        "아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_icon\/899013.webp",
+        "쥬스타 아이콘 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_qicon\/899013.webp",
+        "깔끔한 일러":"https:\/\/raw.githubusercontent.com\/JforPlay\/data_for_toy\/main\/skin_shipyard\/899013.webp",
+        "설명":"……지휘관? 어쩌다 이렇게…… 미안하다, 아무래도 내 주량을 착각해 버린 모양이군. 괜찮다, 이 정도로 방심하거나…… 윽…… 그래. 아직, 방심하지 않았다…",
+        "자기소개":null,
+        "메인1":{
+            "voiceline":"전투든 중재든, 모호함이나 눈속임이 허용되지 않는 근엄한 성무지. 하지만 지휘관의 곁에 있으면 그만 긴장이 풀려 버리고 마는군…… 내 고동 소리가 똑똑히 들릴 정도로……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/main_1_3.opus"
+        },
+        "메인2":{
+            "voiceline":"지휘관, 미안하다. 더 이상 술자리에 동참하지 못하는 것을 용서해 다오…… 자유는 타락의 핑계가 아니다. 너를 지킬 수 있도록 정신을 바짝 차려야 해.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/main_2_3.opus"
+        },
+        "메인3":{
+            "voiceline":"연회의 등불은…… 전장의 불꽃보다 따스하게 느껴지는군. 지휘관, 걱정할 필요 없다. 네가 가져다주는 빛이 어떤 건지는 명확히 분간할 수 있으니.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/main_3_3.opus"
+        },
+        "전투개시":null,
+        "상세확인":{
+            "voiceline":"윽…… 몸을 마음대로 움직일 수 없다고 해도, 네 앞에서는 의연하게 행동하고 싶은데…… 윽… 이, 이렇게 누워 있는 모습도…… 용서 받을 수 있을까……?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/detail_3.opus"
+        },
+        "드랍 설명":{
+            "voiceline":"……지휘관? 어쩌다 이렇게…… 미안하다, 아무래도 내 주량을 착각해 버린 모양이군. 괜찮다, 이 정도로 방심하거나…… 윽…… 그래. 아직, 방심하지 않았다…",
+            "voicelink":null
+        },
+        "의뢰 완료":null,
+        "실망":null,
+        "낯섦":null,
+        "호감":null,
+        "기쁨":null,
+        "사랑":{
+            "voiceline":"지휘관, 그 미소…… 평소의 것과 조금 다른 것 같군. 혹시 내 흐트러진 모습을 보았기 때문인가…? …묘한 기분이군. 이 상황이…… 싫게 느껴지지 않다니……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/feeling5_3.opus"
+        },
+        "선호 선물":null,
+        "비선호 선물":null,
+        "터치3":{
+            "voiceline":"후우…… 쿨쿨…… 음? 미안하다. 네가 곁에 있으니 나도 모르게 긴장이 풀려 버린 모양이군.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/touch_head_3.opus"
+        },
+        "모항귀환":{
+            "voiceline":"어서 와라. 무사히 돌아와서 마음이 놓이는군…… 덕분에 나도 충분히 쉬었지. 지금은 컨디션이 괜찮군.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/home_3.opus"
+        },
+        "hp 경고":null,
+        "로그인":{
+            "voiceline":"지휘관, 잔이 비었나? …신경 쓰지 마라. 다소 취기가 돌았을지언정…… 술을 따르는 성무는 잊지 않았으니.",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/login_3.opus"
+        },
+        "실패":null,
+        "우편":null,
+        "임무":null,
+        "임무완료":null,
+        "서약":null,
+        "스킬":null,
+        "터치1":{
+            "voiceline":"지휘관, 내가…… 엄청난 추태를 보여 버린 모양이군……",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/touch_1_3.opus"
+        },
+        "터치2":{
+            "voiceline":"지휘관, 혹시…… 이 맛이 마음에 드는 건가?",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/touch_2_3.opus"
+        },
+        "입수시":{
+            "voiceline":"……지휘관? 어쩌다 이렇게…… 미안하다, 아무래도 내 주량을 착각해 버린 모양이군. 괜찮다, 이 정도로 방심하거나…… 윽…… 그래. 아직, 방심하지 않았다…",
+            "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/89901\/get_3.opus"
+        },
+        "강화성공":null,
+        "vote":null,
+        "승리":null,
+        "메인1_ex":null,
+        "메인4_ex":null,
+        "메인5_ex":null,
+        "메인6_ex":null,
+        "전투개시_ex":null,
+        "상세확인_ex":null,
+        "의뢰 완료_ex":null,
+        "사랑_ex":null,
+        "선호 선물_ex":null,
+        "비선호 선물_ex":null,
+        "터치3_ex":null,
+        "모항귀환_ex":null,
+        "hp 경고_ex":null,
+        "로그인_ex":null,
+        "실패_ex":null,
+        "우편_ex":null,
+        "임무_ex":null,
+        "임무완료_ex":null,
+        "스킬_ex":null,
+        "터치1_ex":null,
+        "터치2_ex":null,
+        "입수시_ex":null,
+        "강화성공_ex":null,
+        "승리_ex":null,
+        "함대 특수대사":null,
+        "메인4":null,
+        "메인7_ex":null,
+        "메인8_ex":null,
+        "메인5":null,
+        "메인6":null,
+        "메인2_ex":null,
+        "메인3_ex":null,
+        "메인9_ex":null,
+        "메인10_ex":null,
+        "ASMR 일러":null,
+        "ASMR 음성":null,
+        "메인7":null,
+        "스킨 타입 - 한글":"수영복",
+        "상점 id":71351,
+        "상점 카테고리 id":6,
+        "스킨 태그":"L2D, 배경",
+        "입수 영상":"O",
+        "재화":1180.0,
+        "기간":"한정 (2026\/06\/27)",
         "진영":"FFNF (FF, iris libre)",
         "레어도":"SSR",
         "ex_chat_status":0
@@ -331212,7 +332444,7 @@
             "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/970212\/touch_2.opus"
         },
         "입수시":{
-            "voiceline":"좋은 아침이에요, 지휘관. 신성 총련 제국의 쾨니히스베르크랍니다. 누나는 말이죠, 하찮은 귀족 직함 따위 아무래도 좋답니다. 그런 것보다 당신을―― 그래, 당신을 완벽하게 이끄는 편이 더 흥미롭답니다.",
+            "voiceline":"좋은 아침이에요, 지휘관. 신성총련제국의 쾨니히스베르크랍니다. 누나는 말이죠, 하찮은 귀족 직함 따위 아무래도 좋답니다. 그런 것보다 당신을―― 그래, 당신을 완벽하게 이끄는 편이 더 흥미롭답니다.",
             "voicelink":"https:\/\/raw.githubusercontent.com\/JforPlay\/audio_for_toy\/main\/voiceline\/970212\/get.opus"
         },
         "강화성공":{

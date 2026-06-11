@@ -10917,6 +10917,16 @@
         ],
         "rarity": "SSR"
     },
+    "30321": {
+        "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/303210.webp",
+        "name": "꼬마 운젠",
+        "nationality": 3,
+        "type": 3,
+        "description": [
+            "이벤트: 꼬마 선인의 보물찾기"
+        ],
+        "rarity": "SR"
+    },
     "30401": {
         "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_icon/304010.webp",
         "name": "콘고",

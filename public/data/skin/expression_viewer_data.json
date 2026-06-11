@@ -679,6 +679,7 @@
         4164,
         2388
       ],
+      "default": "0",
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900415/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900415/painting_face_{faceId}.png"
     },
@@ -701,6 +702,7 @@
         4164,
         2388
       ],
+      "default": "0",
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900415/painting_n.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900415/painting_n_face_{faceId}.png"
     }
@@ -3653,6 +3655,7 @@
         1400,
         1094
       ],
+      "default": "1",
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900206/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900206/painting_face_{faceId}.png"
     },
@@ -4328,6 +4331,7 @@
         2048,
         1312
       ],
+      "default": "0",
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900394/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900394/painting_face_{faceId}.png"
     },
@@ -5648,6 +5652,7 @@
         4484,
         3956
       ],
+      "default": "0",
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900433/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900433/painting_face_{faceId}.png"
     },
@@ -5678,6 +5683,7 @@
         4484,
         3956
       ],
+      "default": "0",
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900433/painting_n.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900433/painting_n_face_{faceId}.png"
     }
@@ -5844,6 +5850,7 @@
         738,
         1024
       ],
+      "default": "0",
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900186/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900186/painting_face_{faceId}.png"
     },
@@ -6665,6 +6672,7 @@
         6298,
         3754
       ],
+      "default": "0",
       "base_url": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900509/painting.png",
       "face_url_template": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/output_expressions/900509/painting_face_{faceId}.png"
     },
