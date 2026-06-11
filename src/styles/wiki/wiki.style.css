@@ -1,0 +1,237 @@
+/**
+ * /wiki — on-site usage guide.
+ * Index: nav-structure card grid. Article: markdown typography.
+ */
+
+/* Page background: global.style.css styles NO body background — every page
+ * paints its own from the theme gradient tokens, or dark mode shows white. */
+body {
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    min-height: 100vh;
+    transition: background 0.3s ease;
+}
+
+.wiki-container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 24px 16px 64px;
+}
+
+/* ===== Index ===== */
+
+.wiki-home-header {
+    text-align: center;
+    margin: 16px 0 32px;
+}
+
+.wiki-home-header h1 {
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.wiki-home-header p {
+    color: var(--text-secondary);
+}
+
+.wiki-section {
+    margin-bottom: 36px;
+}
+
+.wiki-section > h2 {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+.wiki-col > h3 {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin: 16px 0 10px;
+}
+
+.wiki-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 10px;
+}
+
+.wiki-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.wiki-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.wiki-card .material-symbols-outlined {
+    font-size: 22px;
+    color: var(--primary-color);
+}
+
+.wiki-card-name {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.wiki-card-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.wiki-card-home {
+    margin-bottom: 28px;
+}
+
+/* ===== Article ===== */
+
+.wiki-breadcrumb {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.wiki-breadcrumb a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.wiki-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.wiki-article {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 28px 32px;
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+.wiki-article h1 {
+    font-size: 1.6rem;
+    margin-bottom: 14px;
+}
+
+.wiki-article h2 {
+    font-size: 1.15rem;
+    margin: 26px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.wiki-article p {
+    margin: 10px 0;
+}
+
+.wiki-article ul {
+    margin: 10px 0;
+    padding-left: 22px;
+}
+
+.wiki-article li {
+    margin: 6px 0;
+}
+
+.wiki-article blockquote {
+    margin: 12px 0;
+    padding: 10px 16px;
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--primary-color);
+    border-radius: 0 8px 8px 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.wiki-article blockquote p {
+    margin: 2px 0;
+}
+
+.wiki-article img {
+    display: block;
+    max-width: 100%;
+    margin: 16px auto 4px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+/* Caption: the italic line directly under each screenshot */
+.wiki-article img + em,
+.wiki-article p > em:only-child {
+    display: block;
+    text-align: center;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+}
+
+.wiki-article a {
+    color: var(--accent-blue);
+    word-break: break-all;
+}
+
+.wiki-article code {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 0.85em;
+}
+
+/* Prev/next footer nav */
+.wiki-pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.wiki-pager a {
+    flex: 1;
+    max-width: 48%;
+    padding: 12px 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: border-color 0.15s ease;
+}
+
+.wiki-pager a:hover {
+    border-color: var(--primary-color);
+}
+
+.wiki-pager a.next {
+    margin-left: auto;
+    text-align: right;
+}
+
+.wiki-pager .pager-label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+}
+
+@media (max-width: 640px) {
+    .wiki-article {
+        padding: 18px 16px;
+    }
+}

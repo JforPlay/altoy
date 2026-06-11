@@ -42,6 +42,12 @@ test('PAGE_BY_KEY mirrors PAGE_CATALOG', () => {
 
 test('every NAV_STRUCTURE key resolves in the catalog (Layout.astro build-throw, testable here)', () => {
     for (const menu of NAV_STRUCTURE) {
+        // Direct-link entry: { label, key } and no columns (e.g. 설명서/WIKI).
+        if (menu.key) {
+            assert.ok(!menu.columns, `NAV_STRUCTURE entry "${menu.label}" cannot have both key and columns`);
+            assert.ok(PAGE_BY_KEY.has(menu.key), `NAV_STRUCTURE direct link references unknown catalog key "${menu.key}" (entry "${menu.label}")`);
+            continue;
+        }
         for (const column of menu.columns) {
             for (const key of column.keys) {
                 assert.ok(PAGE_BY_KEY.has(key), `NAV_STRUCTURE references unknown catalog key "${key}" (menu "${menu.label}")`);
@@ -53,7 +59,7 @@ test('every NAV_STRUCTURE key resolves in the catalog (Layout.astro build-throw,
 test('nav placement is exactly one menu slot per catalog page', () => {
     // CLAUDE.md: adding a page = a PAGE_CATALOG entry AND its key in NAV_STRUCTURE.
     // If a page is ever intentionally search-only, exempt it here explicitly.
-    const navKeys = NAV_STRUCTURE.flatMap((m) => m.columns.flatMap((c) => c.keys));
+    const navKeys = NAV_STRUCTURE.flatMap((m) => m.key ? [m.key] : m.columns.flatMap((c) => c.keys));
     assert.equal(new Set(navKeys).size, navKeys.length, 'a key appears in NAV_STRUCTURE more than once');
     const missing = PAGE_CATALOG.map((p) => p.key).filter((k) => !navKeys.includes(k));
     assert.deepEqual(missing, [], 'catalog pages missing from the navbar');

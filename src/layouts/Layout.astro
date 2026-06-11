@@ -100,7 +100,20 @@ const csp = `default-src 'self'; script-src ${scriptSrc}; worker-src 'self' blob
                 </button>
 
                 <ul class="nav-menu">
-                    {NAV_STRUCTURE.map((dropdown) => (
+                    {NAV_STRUCTURE.map((dropdown) => {
+                        if (dropdown.key) {
+                            const page = PAGE_BY_KEY.get(dropdown.key);
+                            if (!page) throw new Error(`Layout nav: NAV_STRUCTURE references unknown page key "${dropdown.key}" — add it to PAGE_CATALOG in public/js/pages.catalog.js`);
+                            return (
+                                <li class="nav-item">
+                                    <a href={`${base}/${page.path}`} class="nav-links nav-links-direct">
+                                        <span class="material-symbols-outlined nav-direct-icon">{page.icon}</span>
+                                        {dropdown.label}
+                                    </a>
+                                </li>
+                            );
+                        }
+                        return (
                         <li class="nav-item mega-dropdown">
                             <a href="#" class="nav-links">{dropdown.label}</a>
                             <div class="mega-menu">
@@ -126,7 +139,8 @@ const csp = `default-src 'self'; script-src ${scriptSrc}; worker-src 'self' blob
                                 </div>
                             </div>
                         </li>
-                    ))}
+                        );
+                    })}
                 </ul>
 
                 <div class="menu-icon">

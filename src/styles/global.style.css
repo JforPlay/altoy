@@ -155,6 +155,17 @@ body.dark-mode {
   position: relative;
 }
 
+/* Direct top-level nav link (NAV_STRUCTURE { label, key } entries — no dropdown) */
+.nav-links-direct {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-links-direct .nav-direct-icon {
+  font-size: 18px;
+}
+
 .nav-links:hover {
   background: var(--highlight-soft);
   color: #ffffff;

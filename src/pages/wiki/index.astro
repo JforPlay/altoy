@@ -1,0 +1,56 @@
+---
+/**
+ * /wiki — on-site usage guide index.
+ * Card grid mirrors the navbar mega-menu (NAV_STRUCTURE × PAGE_CATALOG), so a
+ * page registered in the nav automatically appears here; per-page docs live in
+ * src/wiki-content/ (staged from dev/wiki by dev/wiki/build-demo.mjs).
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/wiki/wiki.style.css';
+import { NAV_STRUCTURE, PAGE_BY_KEY } from '../../../public/js/pages.catalog.js';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const slugOf = (key) => key.toLowerCase().replace(/_/g, '-');
+
+// Only link pages that actually have a staged wiki doc.
+const docs = import.meta.glob('../../wiki-content/*.md');
+const hasDoc = (key) => `../../wiki-content/${key}.md` in docs;
+---
+
+<Layout title="ALtoy 위키 — 사용 설명서" {base}>
+    <div class="main-container wiki-container">
+        <header class="wiki-home-header">
+            <h1>ALtoy 사용 설명서</h1>
+            <p>페이지별 주요 기능과 사용법을 모아둔 위키입니다. 궁금한 페이지를 골라보세요.</p>
+        </header>
+
+        <a class="wiki-card wiki-card-home" href={`${base}/wiki/home/`}>
+            <span class="material-symbols-outlined">home</span>
+            <span class="wiki-card-name">메인화면</span>
+            <span class="wiki-card-desc">메뉴바 / 전역 검색(Ctrl+K) / 데이터 동기화 / 이벤트·생일 위젯</span>
+        </a>
+
+        {NAV_STRUCTURE.filter((menu) => menu.columns).map((menu) => (
+            <section class="wiki-section">
+                <h2>{menu.label}</h2>
+                {menu.columns.map((col) => (
+                    <div class="wiki-col">
+                        <h3>{col.title}</h3>
+                        <div class="wiki-grid">
+                            {col.keys.filter(hasDoc).map((key) => {
+                                const page = PAGE_BY_KEY.get(key);
+                                return (
+                                    <a class="wiki-card" href={`${base}/wiki/${slugOf(key)}/`}>
+                                        <span class="material-symbols-outlined">{page.icon}</span>
+                                        <span class="wiki-card-name">{page.name}</span>
+                                        <span class="wiki-card-desc">{page.description}</span>
+                                    </a>
+                                );
+                            })}
+                        </div>
+                    </div>
+                ))}
+            </section>
+        ))}
+    </div>
+</Layout>

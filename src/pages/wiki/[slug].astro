@@ -1,0 +1,68 @@
+---
+/**
+ * /wiki/<slug> — one wiki article per PAGE_CATALOG page (plus HOME).
+ * Markdown is staged into src/wiki-content/ by dev/wiki/build-demo.mjs and
+ * rendered at build time; slug = catalog KEY lowercased with dashes.
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/wiki/wiki.style.css';
+import { NAV_STRUCTURE, PAGE_BY_KEY } from '../../../public/js/pages.catalog.js';
+
+const slugOf = (key) => key.toLowerCase().replace(/_/g, '-');
+
+// Reading order for prev/next: HOME, then mega-menu order. Direct-link nav
+// entries (설명서/WIKI itself) carry no doc, so only column keys participate.
+const ORDER = ['HOME', ...NAV_STRUCTURE.flatMap((m) => m.columns?.flatMap((c) => c.keys) ?? [])];
+
+export async function getStaticPaths() {
+    const docs = import.meta.glob('../../wiki-content/*.md', { eager: true });
+    return Object.entries(docs).map(([file, doc]) => {
+        const key = file.split('/').pop().replace(/\.md$/, '');
+        return {
+            params: { slug: key.toLowerCase().replace(/_/g, '-') },
+            props: { key, doc },
+        };
+    });
+}
+
+const { key, doc } = Astro.props;
+const { Content } = doc;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const page = PAGE_BY_KEY.get(key);
+const title = page ? `위키 — ${page.name}` : '위키 — 메인화면';
+const pageUrl = page ? `${base}/${page.path}` : `${base}/`;
+
+const idx = ORDER.indexOf(key);
+const prevKey = idx > 0 ? ORDER[idx - 1] : null;
+const nextKey = idx >= 0 && idx < ORDER.length - 1 ? ORDER[idx + 1] : null;
+const nameOf = (k) => (k === 'HOME' ? '메인화면' : PAGE_BY_KEY.get(k)?.name ?? k);
+---
+
+<Layout {title} {base}>
+    <div class="main-container wiki-container">
+        <nav class="wiki-breadcrumb">
+            <a href={`${base}/wiki/`}>← 위키 목차</a>
+            <a href={pageUrl}>페이지 바로가기 ↗</a>
+        </nav>
+
+        <article class="wiki-article">
+            <Content />
+        </article>
+
+        <nav class="wiki-pager">
+            {prevKey && (
+                <a href={`${base}/wiki/${slugOf(prevKey)}/`}>
+                    <span class="pager-label">← 이전</span>
+                    {nameOf(prevKey)}
+                </a>
+            )}
+            {nextKey && (
+                <a class="next" href={`${base}/wiki/${slugOf(nextKey)}/`}>
+                    <span class="pager-label">다음 →</span>
+                    {nameOf(nextKey)}
+                </a>
+            )}
+        </nav>
+    </div>
+</Layout>

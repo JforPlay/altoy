@@ -48,6 +48,7 @@ export const PAGE_CATALOG = [
     { key: 'ISLAND',         path: 'island/',         name: '아일랜드 계획 관리', description: '벽타듀 캐릭터, 기술, 퀘스트 관리',                  icon: 'forest',      category: '도구' },
     { key: 'ISLAND_MISC',    path: 'island-misc/',    name: '벽뜌땨 잡동사니',    description: '아일랜드 기타 에셋 모아보기',                       icon: 'collections', category: '도구' },
     { key: 'EVENT_TIMELINE', path: 'event-timeline/', name: '룽섭 일정보기',      description: '과거 룽섭 이벤트 일정들을 검색과 함께 확인',        icon: 'event',       category: '도구' },
+    { key: 'WIKI',           path: 'wiki/',           name: 'ALtoy 위키',         description: '페이지별 주요 기능/사용법 설명서',                  icon: 'help',        category: '도구' },
 
     // ===== Simulators =====
     { key: 'FLEET_SIM',    path: 'simulators/fleet-sim/',    name: '편성 시뮬레이터', description: '함대 편성, 스탯, 장전 시간', icon: 'groups',         category: '시뮬레이터' },
@@ -91,6 +92,11 @@ export const PAGE_BY_KEY = new Map(PAGE_CATALOG.map(page => [page.key, page]));
  * Top-nav layout: how PAGE_CATALOG entries are arranged into the navbar's
  * mega-menus. Each dropdown → ordered columns → ordered catalog `key`s.
  *
+ * Two entry shapes:
+ *  - { label, columns } → mega-menu dropdown (the default)
+ *  - { label, key }     → direct top-level link, no dropdown (e.g. 설명서/WIKI);
+ *                         rendered with the catalog page's icon + label.
+ *
  * Layout.astro renders the nav from this structure, resolving each key against
  * PAGE_CATALOG — so name / path / icon / description stay single-sourced and
  * cannot drift from search. Placing a page in a menu = add its `key` here.
@@ -133,4 +139,5 @@ export const NAV_STRUCTURE = [
             { title: '그 외 컨텐츠', keys: ['BGM_PLAYER', 'BGM_MISC', 'VALENTINE', 'DORM_VIEWER'] },
         ],
     },
+    { label: '설명서', key: 'WIKI' },
 ];
