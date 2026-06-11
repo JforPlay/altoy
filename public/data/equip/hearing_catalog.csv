@@ -1,0 +1,874 @@
+id,name,rarity,type,nation,icon_url
+500,비버즈 휘장,SSR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/500.webp
+520,진주의 눈물,SSR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/520.webp
+540,냥냥펀치,SSR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/540.webp
+560,「닝하이」 수상기,SR,기타,ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/560.webp
+580,91식 철갑탄,SR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/580.webp
+600,1식 철갑탄,SSR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/600.webp
+620,초중량탄 (SHS),SSR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/620.webp
+640,수호의 깃발,UR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/640.webp
+660,100/150호 항공 연료,SR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/660.webp
+680,호밍 비컨,SR,기타,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/680.webp
+700,98식 발포지연장치,SR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/700.webp
+720,약속의 증명,SSR,기타,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/720.webp
+740,FI-282 헬리콥터,SR,헬리콥터 ,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/740.webp
+760,정찰 보고·뉴욕 근해,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/760.webp
+780,기밀 문서·극지 해협,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/780.webp
+800,강화 내압각 설계안,SR,기타,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/800.webp
+820,개척자 휘장,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/820.webp
+840,엘리트 응급 수리(유니온),SSR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/840.webp
+860,워싱턴 해군 조약,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/860.webp
+880,넬슨의 수기 신호,SSR,기타,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/880.webp
+940,작전 보고: AF,SR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/940.webp
+960,FuMO 25,SSR,기타,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/960.webp
+980,기밀 문서·일지 잔본,SR,기타,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/980.webp
+1000,함정 수리설비,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1000.webp
+1020,함정 수리설비,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1000.webp
+1040,함정 수리설비,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1000.webp
+1060,6CRH 철갑탄,SSR,기타,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1060.webp
+1100,대공 레이더,N,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1100.webp
+1120,대공 레이더,R,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1100.webp
+1140,대공 레이더,SR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1100.webp
+1160,고성능 대공 레이더,SSR,기타,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1160.webp
+1200,화기 관제 레이더,N,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1200.webp
+1220,화기 관제 레이더,R,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1200.webp
+1240,화기 관제 레이더,SR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1200.webp
+1260,고성능 사격 제어 레이더,SSR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1260.webp
+1300,방뢰 벌지,N,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1300.webp
+1320,방뢰 벌지,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1300.webp
+1340,방뢰 벌지,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1300.webp
+1400,유압식 캐터펄트,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1400.webp
+1420,유압식 캐터펄트,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1400.webp
+1440,유압식 캐터펄트,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1400.webp
+1500,SG 레이더,R,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1500.webp
+1520,SG 레이더,SR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1500.webp
+1540,SG 레이더,SSR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1500.webp
+1620,전동식 양탄기,N,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1600.webp
+1640,전동식 양탄기,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1600.webp
+1720,유압식 조타장치,N,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1700.webp
+1740,유압식 조타장치,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1700.webp
+1760,강화 유압식 조타장치,SSR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1760.webp
+1800,개량형 보일러,N,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1800.webp
+1820,개량형 보일러,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1800.webp
+1840,개량형 보일러,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1800.webp
+1920,위장 도색,N,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1900.webp
+1940,위장 도색,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1900.webp
+1960,마리니에르 혼,SR,기타,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/1960.webp
+2000,연료 필터,N,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2000.webp
+2020,연료 필터,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2000.webp
+2040,연료 필터,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2000.webp
+2100,외부 연료탱크,N,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2100.webp
+2120,외부 연료탱크,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2100.webp
+2140,외부 연료탱크,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2100.webp
+2200,자동 장전장치,N,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2200.webp
+2220,자동 장전장치,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2200.webp
+2240,자동 장전장치,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2200.webp
+2300,자이로스코프,N,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2300.webp
+2320,자이로스코프,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2300.webp
+2340,자이로스코프,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2300.webp
+2400,응급 수리 장비,N,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2400.webp
+2420,응급 수리 장비,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2400.webp
+2440,응급 수리 장비,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2400.webp
+2520,소화장치,N,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2500.webp
+2540,소화장치,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2500.webp
+2600,93식 산소어뢰,SR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2600.webp
+2620,93식 산소어뢰,SSR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2600.webp
+2640,93식 산소어뢰,UR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2600.webp
+2700,533mm 자기 어뢰,R,기타,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2700.webp
+2720,533mm 자기 어뢰,SR,기타,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2700.webp
+2740,533mm 자기 어뢰,SSR,기타,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2700.webp
+2800,94식 고사 장치,SR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2800.webp
+2900,기본형 소나,N,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2900.webp
+2920,기본형 소나,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2900.webp
+2940,기본형 소나,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/2900.webp
+3000,개량형 소나,R,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3000.webp
+3020,개량형 소나,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3000.webp
+3040,개량형 소나,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3000.webp
+3100,산소 봄베,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3100.webp
+3120,잠수함 스노클,SSR,기타,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3120.webp
+3140,개량형 축전지,SSR,기타,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3140.webp
+3200,VH 장갑 강판,SSR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3200.webp
+3220,VC 장갑 강판,SR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3220.webp
+3300,사신의 인,SSR,기타,ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3300.webp
+3400,"""94식 40cm 포"" 부속",SSR,적재,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3400.webp
+3500,군장 보급(항공),SR,적재,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3500.webp
+3520,군장 보급(중소구경 무기),SR,적재,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3520.webp
+3540,군장 보급(어뢰),SR,적재,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3540.webp
+3560,파손된 연설문,SR,기타,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3560.webp
+3580,해군성 사격 통제 설비,UR,기타,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3580.webp
+3600,사르데냐의 초대장,SR,기타,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3600.webp
+3620,결계 통행 증서,SR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3620.webp
+3640,알비온의 보고서,SR,기타,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3640.webp
+3660,크라운,SSR,기타,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3660.webp
+3680,12파운드 캐논,R,함포(구축),MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3680.webp
+3700,12파운드 캐논,SR,함포(구축),MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3680.webp
+3720,12파운드 롱 캐논,SSR,함포(구축),MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3680.webp
+3740,구형 포환,SR,기타,MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3740.webp
+3760,돛줄 부품,SR,기타,MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3760.webp
+3780,눈 덮인 꿈,SR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3780.webp
+3800,매화 이야기,SSR,기타,ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3800.webp
+3820,E형 수상기,SR,적재,ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3820.webp
+3840,“요정 마법” 포스터,SSR,기타,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3840.webp
+3860,여왕의 스케줄(기밀),SR,기타,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3860.webp
+3880,작전 보고·극지 폭풍,SR,기타,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3880.webp
+3900,「신석 샘플」연구 노트,SR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3900.webp
+3920,오아시스 기압계,SR,기타,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3920.webp
+3940,정예 항공 정비 만쥬,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3940.webp
+3960,박람회 기념 티켓,SR,기타,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3960.webp
+3980,모의 전자 대항전 커맨드,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/3980.webp
+4020,기본형 폭뢰 발사기,N,설비,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4000.webp
+4040,기본형 폭뢰 발사기,R,설비,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4000.webp
+4100,개량형 폭뢰 발사기,N,설비,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4100.webp
+4120,개량형 폭뢰 발사기,R,설비,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4100.webp
+4140,개량형 폭뢰 발사기,SR,설비,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4100.webp
+4200,소드피쉬 Mark.II-ASV,N,초계기 ,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4200.webp
+4220,소드피쉬 Mark.II-ASV,R,초계기 ,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4200.webp
+4240,소드피쉬 Mark.II-ASV,SR,초계기 ,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4200.webp
+4260,페어리 가닛,SSR,초계기 ,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4260.webp
+4300,TBM-3 어벤져,N,초계기 ,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4300.webp
+4320,TBM-3 어벤져,R,초계기 ,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4300.webp
+4340,TBM-3 어벤져,SR,초계기 ,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4300.webp
+4360,TBM 어벤져 (VT-51),SSR,초계기 ,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/4360.webp
+5020,533mm 3연장 어뢰,N,어뢰,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5000.webp
+5040,533mm 3연장 어뢰,R,어뢰,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5000.webp
+5100,533mm 4연장 어뢰,N,어뢰,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5100.webp
+5120,533mm 4연장 어뢰,R,어뢰,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5100.webp
+5140,533mm 4연장 어뢰,SR,어뢰,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5100.webp
+5200,533mm 5연장 어뢰,R,어뢰,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5200.webp
+5220,533mm 5연장 어뢰,SR,어뢰,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5200.webp
+5240,533mm 5연장 어뢰,SSR,어뢰,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5200.webp
+5320,550mm 연장 어뢰,N,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5300.webp
+5340,550mm 연장 어뢰,R,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5300.webp
+5400,550mm 3연장 어뢰 발사관,N,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5400.webp
+5420,550mm 3연장 어뢰 발사관,R,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5400.webp
+5440,550mm 3연장 어뢰,SR,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5400.webp
+5500,잠수함용 550mm 24V 어뢰,N,어뢰(잠수함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5500.webp
+5520,잠수함용 550mm 24V 어뢰,R,어뢰(잠수함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5500.webp
+5540,잠수함용 550mm 24V 어뢰,SR,어뢰(잠수함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5500.webp
+5600,550mm 4연장 어뢰,SR,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5600.webp
+5620,550mm 4연장 어뢰 (탄약 조정),SR,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5620.webp
+5640,550mm 4연장 어뢰改 (탄약 조정),SSR,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5640.webp
+5660,550mm 어뢰 세트 (3연장+2연장),SSR,어뢰,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/5660.webp
+6020,12.7mm 대공 기관총,N,대공포,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/6000.webp
+6040,12.7mm 대공 기관총,R,대공포,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/6000.webp
+6120,100mm 연장 고사포,N,대공포,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/6100.webp
+6140,100mm 연장 고사포,R,대공포,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/6100.webp
+7020,152mm 단장포,N,함포(경순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/7000.webp
+7040,152mm 단장포,R,함포(경순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/7000.webp
+7120,150mm 단장포,N,함포(경순),ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/7100.webp
+7140,150mm 단장포,R,함포(경순),ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/7100.webp
+7200,130mm 단장포,N,함포(구축),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/7200.webp
+7220,130mm 단장포,R,함포(구축),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/7200.webp
+7240,130mm 단장포,SR,함포(구축),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/7200.webp
+7300,시제형 203mm 3연장포,SSR,함포(중순),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/7300.webp
+7320,130mm 부포 Mle 1932,R,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/7320.webp
+7340,잠수함용 203mm 연장포 Mle 1924,R,함포(중순),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/7340.webp
+11020,76mm 단장포,N,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11000.webp
+11040,76mm 단장포,R,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11000.webp
+11060,127mm 단장포 초기형,R,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11060.webp
+11100,127mm 단장포,N,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11100.webp
+11120,127mm 단장포,R,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11100.webp
+11140,127mm 단장포,SR,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11100.webp
+11160,연장포127mm 부포,SR,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11160.webp
+11200,127mm 연장 양용포 Mk12,R,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11200.webp
+11220,127mm 연장 양용포 Mk12,SR,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11200.webp
+11240,127mm 연장 양용포 Mk12,SSR,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11200.webp
+11260,시제형 137mm 연장 양용포 Mk1,SSR,함포(구축),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/11260.webp
+12020,152mm 연장포,N,함포(경순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/12000.webp
+12040,152mm 연장포,R,함포(경순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/12000.webp
+12060,연장 152mm 주포 Mk15,R,함포(경순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/12060.webp
+12100,152mm 3연장포,N,함포(경순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/12100.webp
+12120,152mm 3연장포,R,함포(경순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/12100.webp
+12140,152mm 3연장포,SR,함포(경순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/12100.webp
+12160,3연장 152mm 주포 Mk16,SSR,함포(경순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/12160.webp
+12200,시제형 3연장 152mm 양용포 Mk17,SSR,함포(경순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/12200.webp
+13020,203mm 3연장포,N,함포(중순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/13000.webp
+13040,203mm 3연장포,R,함포(중순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/13000.webp
+13060,3연장 203mm 주포 Mk13,R,함포(중순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/13060.webp
+13080,3연장 203mm 주포 Mk14,SR,함포(중순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/13080.webp
+13100,개량형 203mm 3연장포,N,함포(중순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/13100.webp
+13120,개량형 203mm 3연장포,R,함포(중순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/13100.webp
+13140,개량형 203mm 3연장포,SR,함포(중순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/13100.webp
+13160,3연장 203mm 주포 Mk15,SSR,함포(중순),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/13160.webp
+13180,305mm 3연장포 Mk8,UR,함포 (포켓 전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14000.webp
+14000,305mm 3연장포 Mk8,R,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14000.webp
+14020,305mm 3연장포 Mk8,SR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14000.webp
+14040,305mm 3연장포 Mk8,SSR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14000.webp
+14120,356mm 3연장포,N,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14100.webp
+14140,356mm 3연장포,R,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14100.webp
+14160,시제형 4연장 356mm 주포 MkB,SR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14160.webp
+14180,연장포 406mm 주포 Mk1,R,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14180.webp
+14200,406mm 연장포 Mk5,N,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14200.webp
+14220,406mm 연장포 Mk5,R,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14200.webp
+14240,406mm 연장포 Mk5,SR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14200.webp
+14260,연장포 406mm 주포 Mk8,SR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14260.webp
+14300,406mm 3연장포 Mk6,N,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14300.webp
+14320,406mm 3연장포 Mk6,R,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14300.webp
+14340,406mm 3연장포 Mk6,SR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14300.webp
+14360,시제형 3연장 406mm 주포 MkD,SSR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14360.webp
+14380,3연장 406mm 주포 Mk2,SR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14380.webp
+14400,406mm 3연장포 Mk7,R,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14400.webp
+14420,406mm 3연장포 Mk7,SR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14400.webp
+14440,406mm 3연장포 Mk7,SSR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14400.webp
+14460,406mm 3연장포 Mk7,UR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14400.webp
+14480,시제형 406mm/45 3연장포 MK7,SSR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14480.webp
+14500,시제형 457mm 연장포 Mk A,UR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14500.webp
+14520,시제형 연장 406mm 주포 Mk4,SSR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14520.webp
+14540,시제형 406mm 3연장포 Mk6改,SSR,함포(전함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/14540.webp
+15000,잠수함용 Mark 14 어뢰,N,어뢰(잠수함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15000.webp
+15020,잠수함용 Mark 14 어뢰,R,어뢰(잠수함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15000.webp
+15040,잠수함용 Mark 14 어뢰,SR,어뢰(잠수함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15000.webp
+15060,잠수함용 Mark18 어뢰,SR,어뢰(잠수함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15060.webp
+15100,잠수함용 Mark 16 어뢰,R,어뢰(잠수함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15100.webp
+15120,잠수함용 Mark 16 어뢰,SR,어뢰(잠수함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15100.webp
+15140,잠수함용 Mark 16 어뢰,SSR,어뢰(잠수함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15100.webp
+15160,잠수함용 Mark28 어뢰,SSR,어뢰(잠수함),USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15160.webp
+15200,3연장 533mm 어뢰Mk17,R,어뢰,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15200.webp
+15220,4연장 533mm 어뢰Mk17,SR,어뢰,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15220.webp
+15240,5연장 533mm 어뢰Mk17,SSR,어뢰,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15240.webp
+15300,533mm 어뢰 Mark35 (4연사),SSR,어뢰,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15300.webp
+15500,PBY-5A 카탈리나 수상기,SR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/15500.webp
+16020,20mm 엘리콘 기관포,N,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16000.webp
+16040,20mm 엘리콘 기관포,R,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16000.webp
+16060,76mm 고사포 개조형,SR,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16060.webp
+16080,연장포 76mm RF 화포 Mk27,SSR,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16080.webp
+16100,20mm 연장 엘리콘 기관포,N,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16100.webp
+16120,20mm 연장 엘리콘 기관포,R,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16100.webp
+16140,20mm 연장 엘리콘 기관포,SR,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16100.webp
+16160,4연장 20mm 에리콘 고사포 Mk15,SR,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16160.webp
+16200,28mm 4연장 「시카고 피아노」,N,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16200.webp
+16220,28mm 4연장 「시카고 피아노」,R,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16200.webp
+16240,28mm 4연장 「시카고 피아노」,SR,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16200.webp
+16300,40mm 연장 보포스 기관포,N,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16300.webp
+16320,40mm 연장 보포스 기관포,R,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16300.webp
+16340,40mm 연장 보포스 기관포,SR,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16300.webp
+16400,40mm 4연장 보포스 기관포,R,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16400.webp
+16420,40mm 4연장 보포스 기관포,SR,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16400.webp
+16440,40mm 4연장 보포스 기관포,SSR,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16400.webp
+16460,127mm 연장 양용포 Mk12(시한 신관),SSR,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16460.webp
+16480,76mm 연장 RF포 Mk37,UR,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/16480.webp
+17020,F2A 버팔로,N,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17000.webp
+17040,F2A 버팔로,R,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17000.webp
+17060,F2A 버팔로(타치대),SSR,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17060.webp
+17080,시제형 XF2A-4 버팔로,SR,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17080.webp
+17100,F4F 와일드캣,N,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17100.webp
+17120,F4F 와일드캣,R,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17100.webp
+17140,F4F 와일드캣,SR,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17100.webp
+17200,F4U 콜세어,N,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17200.webp
+17220,F4U 콜세어,R,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17200.webp
+17240,F4U 콜세어,SR,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17200.webp
+17260,F4U 콜세어 (VF-17 졸리로저스),SSR,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17260.webp
+17280,F4U(VBF-94 중대),SSR,폭격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17280.webp
+17300,F6F 헬캣,R,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17300.webp
+17320,F6F 헬캣,SR,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17300.webp
+17340,F6F 헬캣,SSR,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17300.webp
+17360,F7F 타이거캣,SSR,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17360.webp
+17380,F8F 베어캣,SSR,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17380.webp
+17400,XF5F 스카이로켓,SR,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17400.webp
+17420,시제형 XF5U 플라잉 팬케이크,SSR,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17420.webp
+17440,F6F 헬캣(HVAR 탑재형),SSR,전투기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17440.webp
+17460,시제형 F8F 베어캣(수상기),SSR,수상기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/17460.webp
+18020,TBD 데버스테이터,N,뇌격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/18000.webp
+18040,TBD 데버스테이터,R,뇌격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/18000.webp
+18060,TBD데버스테이터(VT-8중대),SSR,뇌격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/18060.webp
+18100,TBF 어벤저,N,뇌격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/18100.webp
+18120,TBF 어벤저,R,뇌격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/18100.webp
+18140,TBF 어벤저,SR,뇌격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/18100.webp
+18180,TBM 어벤져(VT-18중대),SSR,뇌격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/18180.webp
+18220,XTB2D-1 스카이파이렛,SSR,뇌격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/18220.webp
+19020,SBD 돈틀리스,N,폭격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/19000.webp
+19040,SBD 돈틀리스,R,폭격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/19000.webp
+19060,SBD 돈틀리스 (맥클러스키대),SSR,폭격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/19060.webp
+19100,SB2C 헬다이버,N,폭격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/19100.webp
+19120,SB2C 헬다이버,R,폭격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/19100.webp
+19140,SB2C 헬다이버,SR,폭격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/19100.webp
+19160,실험형XSB3C-1,SSR,폭격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/19160.webp
+19200,BTD-1 디스트로이어,R,폭격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/19200.webp
+19220,BTD-1 디스트로이어,SR,폭격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/19200.webp
+19240,BTD-1 디스트로이어,SSR,폭격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/19200.webp
+19300,AD-1 스카이레이더,UR,폭격기,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/19300.webp
+21020,102mm 단장 부포,N,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21000.webp
+21040,102mm 단장 부포,R,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21000.webp
+21120,102mm 연장 부포,N,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21100.webp
+21140,102mm 연장 부포,R,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21100.webp
+21160,연장포102mm 부포 Mark XVI,SR,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21160.webp
+21200,102mm 3연장 부포,N,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21200.webp
+21220,102mm 3연장 부포,R,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21200.webp
+21240,102mm 3연장 부포,SR,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21200.webp
+21320,120mm 단장포,N,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21300.webp
+21340,120mm 단장포,R,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21300.webp
+21400,120mm 연장포,N,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21400.webp
+21420,120mm 연장포,R,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21400.webp
+21440,120mm 연장포,SR,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21400.webp
+21460,연장포120mm 고평양용포 Mark XI,SSR,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21460.webp
+21500,134mm 연장 고사포,N,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21500.webp
+21520,134mm 연장 고사포,R,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21500.webp
+21540,134mm 연장 고사포,SR,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21500.webp
+21600,114mm 연장 양용포 MarkIV,SSR,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21600.webp
+21620,113mm 단장 양용포 Mark IV,SSR,함포(구축),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21620.webp
+22020,152mm 단장포,N,함포(경순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/22000.webp
+22040,152mm 단장포,R,함포(경순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/22000.webp
+22060,연장포152mm 부포,R,함포(경순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/22060.webp
+22100,152mm 연장포,N,함포(경순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/22100.webp
+22120,152mm 연장포,R,함포(경순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/22100.webp
+22140,152mm 연장포,SR,함포(경순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/22100.webp
+22200,152mm 3연장포,N,함포(경순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/22200.webp
+22220,152mm 3연장포,R,함포(경순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/22200.webp
+22240,152mm 3연장포,SR,함포(경순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/22200.webp
+22260,시제형 152mm 3연장포,SSR,함포(경순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/22260.webp
+22280,시제형 4연장 152mm 주포,UR,함포(경순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/22280.webp
+23000,203mm 연장포,N,함포(중순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/23000.webp
+23020,203mm 연장포,R,함포(중순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/23000.webp
+23040,203mm 연장포,SR,함포(중순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/23000.webp
+23100,시제형 234mm 연장포,SSR,함포(중순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/23100.webp
+23120,시제형 234mm 3연장포,UR,함포(중순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/23120.webp
+23200,시제형 3연장 203mm 주포 Mark IX,SSR,함포(중순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/23200.webp
+23220,시제형 203mm 3연장포 Mark X,SSR,함포(중순),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/23220.webp
+24000,356mm 4연장포,R,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24000.webp
+24020,356mm 4연장포,SR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24000.webp
+24040,356mm 4연장포,SSR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24000.webp
+24060,연장포356mm 주포,SR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24060.webp
+24100,381mm 연장포,N,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24100.webp
+24120,381mm 연장포,R,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24100.webp
+24140,381mm 연장포,SR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24100.webp
+24160,시제형 381mm 3연장포,SSR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24160.webp
+24200,406mm 3연장포,R,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24200.webp
+24220,406mm 3연장포,SR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24200.webp
+24240,406mm 3연장포,SSR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24200.webp
+24300,381mm 연장포·改,R,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24300.webp
+24320,381mm 연장포·改,SR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24300.webp
+24340,381mm 연장포·改,SSR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24300.webp
+24400,시제형 406mm 3연장포 Mk.II,UR,함포(전함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/24400.webp
+25000,3연장 533mm 어뢰 Mark IX,R,어뢰,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/25000.webp
+25020,4연장 533mm 어뢰 Mark IX,SR,어뢰,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/25020.webp
+25040,5연장 533mm 어뢰 Mark IX,SSR,어뢰,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/25040.webp
+25100,잠수함용 Mark VIII 어뢰,N,어뢰(잠수함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/25100.webp
+25120,잠수함용 Mark VIII 어뢰,R,어뢰(잠수함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/25100.webp
+25140,잠수함용 Mark VIII 어뢰,SR,어뢰(잠수함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/25100.webp
+25200,잠수함용 Mark 12 어뢰-페리,SSR,어뢰(잠수함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/25200.webp
+25300,잠수함용 Mark 20 S어뢰-페터,SSR,어뢰(잠수함),HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/25300.webp
+25800,대잠 박격포(헷지호그),SSR,설비,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/25800.webp
+26020,40mm 연장 폼폼 포,N,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26000.webp
+26040,40mm 연장 폼폼 포,R,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26000.webp
+26060,연장포40mm 보포스 대공포 Mark I,SR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26060.webp
+26100,40mm 4연장 폼폼 포,N,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26100.webp
+26120,40mm 4연장 폼폼 포,R,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26100.webp
+26140,40mm 4연장 폼폼 포,SR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26100.webp
+26200,40mm 8연장 폼폼 포,R,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26200.webp
+26220,40mm 8연장 폼폼 포,SR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26200.webp
+26240,40mm 8연장 폼폼 포,SSR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26200.webp
+26300,76mm 고사포,N,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26300.webp
+26320,76mm 고사포,R,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26300.webp
+26340,76mm 고사포,SR,대공포,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26300.webp
+26360,20mm 에리콘 고사포 MkII,SR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26360.webp
+26380,20mm 연장 엘리콘 고각포 Mk.V,SR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26380.webp
+26400,102mm 고사포,N,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26400.webp
+26420,102mm 고사포,R,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26400.webp
+26440,102mm 고사포,SR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26400.webp
+26460,120mm 고사포 Mark VIII,SR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26460.webp
+26500,113mm 연장 고사포,R,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26500.webp
+26520,113mm 연장 고사포,SR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26500.webp
+26540,113mm 연장 고사포,SSR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26500.webp
+26600,연장 보포스 40mm 기관포 STAAG,SSR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26600.webp
+26620,40mm 연장 보포스 해즐미어,SSR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26620.webp
+26640,134mm 연장 고각포,SSR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/21500.webp
+26660,6연장 보포스 40mm 대공포,SSR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26660.webp
+26680,134mm 고각연장포(시한 신관),SSR,대공포,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/26680.webp
+27000,시파이어,N,전투기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/27000.webp
+27020,시파이어,R,전투기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/27000.webp
+27040,시파이어,SR,전투기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/27000.webp
+27060,시파이어 FR.47,SSR,전투기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/27060.webp
+27100,시팽,R,전투기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/27100.webp
+27120,시팽,SR,전투기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/27100.webp
+27140,시팽,SSR,전투기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/27100.webp
+27220,씨 글래디에이터,N,전투기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/27200.webp
+27240,씨 글래디에이터,R,전투기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/27200.webp
+27260,허리케인,R,전투기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/27260.webp
+27300,시 퓨리,SSR,전투기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/27300.webp
+27320,시 호넷,SSR,전투기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/27320.webp
+28000,소드피쉬,N,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28000.webp
+28020,소드피쉬,R,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28000.webp
+28040,소드피쉬,SR,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28000.webp
+28060,소드피쉬 (818중대),SSR,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28060.webp
+28100,바라쿠다,R,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28100.webp
+28120,바라쿠다,SR,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28100.webp
+28140,바라쿠다,SSR,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28100.webp
+28200,파이어브랜드,SSR,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28200.webp
+28220,파이어크레스트,SSR,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28220.webp
+28300,페어리 알바코어,N,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28300.webp
+28320,페어리 알바코어,R,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28300.webp
+28340,페어리 알바코어,SR,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28300.webp
+28400,와이번,UR,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28400.webp
+28420,시제형 스피어피쉬,UR,뇌격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/28420.webp
+29020,스쿠아,N,폭격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/29000.webp
+29040,스쿠아,R,폭격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/29000.webp
+29100,풀머,N,폭격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/29100.webp
+29120,풀머,R,폭격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/29100.webp
+29140,풀머,SR,폭격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/29100.webp
+29200,파이어플라이,SSR,폭격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/29200.webp
+29220,페어리 파이어플라이(1771중대),SSR,폭격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/29220.webp
+29300,바라쿠다(831중대),SSR,폭격기,HMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/29300.webp
+30000,305mm 연장포,R,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/30000.webp
+31000,98식 100mm 연장 고사포,R,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31000.webp
+31020,98식 100mm 연장 고사포,SR,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31000.webp
+31040,98식 100mm 연장 고사포,SSR,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31000.webp
+31060,100mm88식 화포,SR,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31060.webp
+31080,100mm 2연장 98식 고각포改,UR,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31080.webp
+31120,120mm 단장포,N,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31100.webp
+31140,120mm 단장포,R,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31100.webp
+31160,11연식 120mm 단장포,R,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31160.webp
+31180,120mm 단장 고각포,SR,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31180.webp
+31200,127mm 연장포,N,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31200.webp
+31220,127mm 연장포,R,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31200.webp
+31240,127mm 연장포,SR,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31200.webp
+31260,127mm 단장 양용포,R,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31260.webp
+31280,127mm 연장포改,SR,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31280.webp
+31300,127mm 연장포 (D형),SSR,함포(구축),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/31300.webp
+32020,140mm 단장포,N,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32000.webp
+32040,140mm 단장포,R,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32000.webp
+32060,152mm 단장포,R,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32060.webp
+32100,140mm 연장포,N,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32100.webp
+32120,140mm 연장포,R,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32100.webp
+32140,140mm 연장포,SR,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32100.webp
+32200,155mm 3연장포,R,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32200.webp
+32220,155mm 3연장포,SR,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32200.webp
+32240,155mm 3연장포,SSR,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32200.webp
+32260,시제형 155mm 3연장포改,SSR,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32260.webp
+32300,152mm 연장포,N,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32300.webp
+32320,152mm 연장포,R,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32300.webp
+32340,152mm 연장포,SR,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32300.webp
+32360,시제형 150mm 3연장 5식 고각포,SSR,함포(경순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/32360.webp
+33000,203mm 연장포,N,함포(중순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/33000.webp
+33020,203mm 연장포,R,함포(중순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/33000.webp
+33040,203mm 연장포,SR,함포(중순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/33000.webp
+33060,시제형 203mm 연장포 (3호),SSR,함포(중순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/33060.webp
+33080,203mm 연장포改,SR,함포(중순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/33080.webp
+33100,시제형 3연장 310mm 포,SSR,함포 (포켓 전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/33100.webp
+33120,시제형 203mm/55 3연장포,UR,함포(중순),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/33120.webp
+34020,356mm 연장포,N,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34000.webp
+34040,356mm 연장포,R,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34000.webp
+34060,356mm 비식 연장포,R,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34060.webp
+34100,410mm 연장포,N,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34100.webp
+34120,410mm 연장포,R,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34100.webp
+34140,410mm 연장포,SR,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34100.webp
+34160,410mm 연장포 (삼식탄),SSR,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34100.webp
+34180,시제형 410mm 3연장포,SSR,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34180.webp
+34200,460mm 3연장포,SR,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34200.webp
+34220,460mm 3연장포,SSR,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34200.webp
+34240,460mm 3연장포,UR,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34200.webp
+34300,410mm 연장포改,SR,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34300.webp
+34320,시제형 410mm 연장포 mod.A,SSR,함포(전함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/34320.webp
+35020,610mm 연장 어뢰,N,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35000.webp
+35040,610mm 연장 어뢰,R,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35000.webp
+35100,610mm 3연장 어뢰,N,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35100.webp
+35120,610mm 3연장 어뢰,R,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35100.webp
+35140,610mm 3연장 어뢰,SR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35100.webp
+35160,3연장 610mm 어뢰改,SR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35160.webp
+35200,610mm 4연장 어뢰,R,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35200.webp
+35220,610mm 4연장 어뢰,SR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35200.webp
+35240,610mm 4연장 어뢰,SSR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35200.webp
+35260,4연장 610mm 어뢰改,SSR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35260.webp
+35300,610mm 5연장 어뢰,SR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35300.webp
+35320,610mm 5연장 어뢰,SSR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35300.webp
+35340,610mm 5연장 어뢰,UR,어뢰,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35300.webp
+35400,잠수함용 92식 중어뢰,N,어뢰(잠수함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35400.webp
+35420,잠수함용 92식 중어뢰,R,어뢰(잠수함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35400.webp
+35440,잠수함용 92식 중어뢰,SR,어뢰(잠수함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35400.webp
+35460,잠수함용 92식 어뢰改,SR,어뢰(잠수함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35460.webp
+35500,잠수함용 95식 산소 어뢰,R,어뢰(잠수함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35500.webp
+35520,잠수함용 95식 산소 어뢰,SR,어뢰(잠수함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35500.webp
+35540,잠수함용 95식 산소 어뢰,SSR,어뢰(잠수함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35500.webp
+35560,잠수함용 96식 산소 어뢰,SSR,어뢰(잠수함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35560.webp
+35580,잠수함용 95식 산소 어뢰改,UR,어뢰(잠수함),IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/35580.webp
+36120,25mm 대공 기관총,N,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36100.webp
+36140,25mm 대공 기관총,R,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36100.webp
+36200,25mm 연장 대공 기관총,N,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36200.webp
+36220,25mm 연장 대공 기관총,R,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36200.webp
+36240,25mm 연장 대공 기관총,SR,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36200.webp
+36300,25mm 3연장 대공 기관총,N,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36300.webp
+36320,25mm 3연장 대공 기관총,R,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36300.webp
+36340,25mm 3연장 대공 기관총,SR,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36300.webp
+36360,96식 25mm 3연장 폭풍피격기포,SSR,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36360.webp
+36400,비식 40mm 연장 기관포,N,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36400.webp
+36420,비식 40mm 연장 기관포,R,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36400.webp
+36440,비식 40mm 연장 기관포,SR,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36400.webp
+36500,76mm 고사포,N,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36500.webp
+36520,76mm 고사포,R,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36500.webp
+36540,76mm 고사포,SR,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36500.webp
+36560,100mm 연장 고사포,SSR,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36560.webp
+36580,80mm 고사포,SR,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36580.webp
+36600,127mm 연장 고사포,N,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36600.webp
+36620,127mm 연장 고사포,R,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36600.webp
+36640,127mm 연장 고사포,SR,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36600.webp
+36660,127mm 연장 고각포改,SSR,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36660.webp
+36700,시제형 5식 40mm 고사기관포,SSR,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36700.webp
+36720,127mm 연장 고각포改(시한 신관),SSR,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36720.webp
+36740,80mm 연장 98식 고각포,SSR,대공포,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/36740.webp
+37020,96식 함상전투기,N,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37000.webp
+37040,96식 함상전투기,R,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37000.webp
+37100,제로센 21형,N,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37100.webp
+37120,제로센 21형,R,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37100.webp
+37140,제로센 21형,SR,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37100.webp
+37160,제로 32모델,SR,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37160.webp
+37200,제로센 52형,R,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37200.webp
+37220,제로센 52형,SR,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37200.webp
+37240,제로센 52형,SSR,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37200.webp
+37300,렛푸,R,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37300.webp
+37320,렛푸,SR,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37300.webp
+37340,렛푸,SSR,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37300.webp
+37400,시덴改二,SSR,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37400.webp
+37420,2식 수상전투기,SR,수상기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37420.webp
+37440,카와니시 N1K 쿄후,SR,수상기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37440.webp
+37460,시제형 시덴改四,SSR,전투기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/37460.webp
+38020,97식 함상뇌격기,N,뇌격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/38000.webp
+38040,97식 함상뇌격기,R,뇌격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/38000.webp
+38060,97식 함상공격기改,R,뇌격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/38060.webp
+38100,텐잔,N,뇌격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/38100.webp
+38120,텐잔,R,뇌격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/38100.webp
+38140,텐잔,SR,뇌격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/38100.webp
+38160,텐잔改,SR,뇌격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/38160.webp
+38200,류세이,R,뇌격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/38200.webp
+38220,류세이,SR,뇌격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/38200.webp
+38240,류세이,SSR,뇌격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/38200.webp
+38260,류세이·改,SSR,뇌격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/38260.webp
+38300,시제형 사이운,SSR,뇌격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/38300.webp
+39000,99식 함상폭격기,N,폭격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39000.webp
+39020,99식 함상폭격기,R,폭격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39000.webp
+39040,99식 함상폭격기,SR,폭격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39000.webp
+39060,99식 함상폭격기改,SR,폭격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39060.webp
+39100,스이세이,R,폭격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39100.webp
+39120,스이세이,SR,폭격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39100.webp
+39140,스이세이,SSR,폭격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39100.webp
+39160,스이세이 12형A,SSR,폭격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39160.webp
+39200,즈이운,N,수상기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39200.webp
+39220,즈이운,R,수상기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39200.webp
+39240,즈이운,SR,수상기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39200.webp
+39300,세이란,SR,수상기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39300.webp
+39320,스이세이 21형,SSR,폭격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39320.webp
+39340,시제 함재형 텐라이,UR,폭격기,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/39340.webp
+41020,127mm 단장포,N,함포(구축),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/41000.webp
+41040,127mm 단장포,R,함포(구축),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/41000.webp
+41060,연장포 127mm KM40 주포,SR,함포(구축),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/41060.webp
+41100,128mm SKC/41 연장 양용포,N,함포(구축),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/41100.webp
+41120,128mm SKC/41 연장 양용포,R,함포(구축),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/41100.webp
+41140,128mm SKC/41 연장 양용포,SR,함포(구축),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/41100.webp
+41160,연장포 128mm SKC41 고평양용포改,SSR,함포(구축),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/41160.webp
+42000,150mm SKC/28 단장포,N,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42000.webp
+42020,150mm SKC/28 단장포,R,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42000.webp
+42040,150mm SKC/28 단장포,SR,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42000.webp
+42060,연장포 SKC28식 150mm 부포,SR,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42060.webp
+42080,시제형 연장 SKC28식 150mm 주포改,SSR,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42080.webp
+42100,150mm SKC/25 3연장포,N,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42100.webp
+42120,150mm SKC/25 3연장포,R,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42100.webp
+42140,150mm SKC/25 3연장포,SR,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42100.webp
+42160,150mm SKC/25 3연장포改,SR,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42160.webp
+42200,150mm TbtsKC/36 연장포,N,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42200.webp
+42220,150mm TbtsKC/36 연장포,R,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42200.webp
+42240,150mm TbtsKC/36 연장포,SR,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42200.webp
+42300,단장 TbtsKC 36식 150mm 주포,N,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42300.webp
+42340,단장 TbtsKC36식 150mm 주포,SR,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42300.webp
+42360,시제형 150mm Tbts KC 42T식 연장포,SSR,함포(경순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/42360.webp
+43000,203mm SKC 연장포,R,함포(중순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/43000.webp
+43020,203mm SKC 연장포,SR,함포(중순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/43000.webp
+43040,203mm SKC 연장포,SSR,함포(중순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/43000.webp
+43060,시제형 203mm SKC 3연장포,SSR,함포(중순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/43060.webp
+43080,2연장 203mm SKC 주포改,SSR,함포(중순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/43080.webp
+43100,283mm SKC/28 3연장포,N,함포 (포켓 전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/43100.webp
+43120,283mm SKC/28 3연장포,R,함포 (포켓 전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/43100.webp
+43140,283mm SKC/28 3연장포,SR,함포 (포켓 전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/43100.webp
+43160,시제형 203mm SKC 3연장포改,UR,함포(중순),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/43160.webp
+44000,283mm SKC/34 3연장포,N,함포(전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/44000.webp
+44020,283mm SKC/34 3연장포,R,함포(전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/44000.webp
+44040,283mm SKC/34 3연장포,SR,함포(전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/44000.webp
+44100,380mm SKC 연장포,R,함포(전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/44100.webp
+44120,380mm SKC 연장포,SR,함포(전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/44100.webp
+44140,380mm SKC 연장포,SSR,함포(전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/44100.webp
+44200,시제형 406mm SKC 연장포,SSR,함포(전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/44200.webp
+44300,시제형 305mm SKC39 3연장포,SSR,함포(전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/44300.webp
+44320,시제형 305mm 4연장포 SKC39,UR,함포(전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/44320.webp
+44400,시제형 3연장 305mm SKC39 주포(대형순양함용),SSR,함포 (포켓 전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/44400.webp
+44420,시제형 283mm/54.5 3연장포 ,SSR,함포 (포켓 전함),HNLMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/44420.webp
+44500,시제형 380mm SKC 3연장포,SSR,함포(전함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/44500.webp
+45000,533mm 3연장 자기 어뢰,N,어뢰,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45000.webp
+45020,533mm 3연장 자기 어뢰,R,어뢰,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45000.webp
+45040,533mm 3연장 자기 어뢰,SR,어뢰,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45000.webp
+45100,533mm 4연장 자기 어뢰,R,어뢰,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45100.webp
+45120,533mm 4연장 자기 어뢰,SR,어뢰,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45100.webp
+45140,533mm 4연장 자기 어뢰,SSR,어뢰,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45100.webp
+45160,533mm 4연장 자기 어뢰改,SSR,어뢰,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45160.webp
+45200,533mm 5연장 자기 어뢰,SR,어뢰,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45200.webp
+45220,533mm 5연장 자기 어뢰,SSR,어뢰,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45200.webp
+45240,533mm 5연장 자기 어뢰,UR,어뢰,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45200.webp
+45300,잠수함용 G7a 어뢰,N,어뢰(잠수함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45300.webp
+45320,잠수함용 G7a 어뢰,R,어뢰(잠수함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45300.webp
+45340,잠수함용 G7a 어뢰,SR,어뢰(잠수함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45300.webp
+45400,잠수함용 G7e 음향 유도 어뢰,R,어뢰(잠수함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45400.webp
+45420,잠수함용 G7e 음향 유도 어뢰,SR,어뢰(잠수함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45400.webp
+45440,잠수함용 G7e 음향 유도 어뢰,SSR,어뢰(잠수함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45400.webp
+45460,잠수함용 G7e 어뢰改,UR,어뢰(잠수함),KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/45460.webp
+46020,20mm 4연장 MG 기관포,N,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46000.webp
+46040,20mm 4연장 MG 기관포,R,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46000.webp
+46060,연장포 88mm SKC32 고사포,SR,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46060.webp
+46120,37mm 기관포,N,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46100.webp
+46140,37mm 기관포,R,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46100.webp
+46200,37mm 연장 기관포,N,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46200.webp
+46220,37mm 연장 기관포,R,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46200.webp
+46240,37mm 연장 기관포,SR,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46200.webp
+46260,연장 37mm Flak M43 기관총,SR,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46260.webp
+46300,105mm SKC 연장 고사포,R,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46300.webp
+46320,105mm SKC 연장 고사포,SR,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46300.webp
+46340,105mm SKC 연장 고사포,SSR,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46300.webp
+46360,연장 105mmSKC 고사포 개조형,SSR,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46360.webp
+46380,105mm SKC 연장 고각포 개수(시한 신관),SSR,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46380.webp
+46400,시제형 4연장 30mm 기관포,SSR,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46400.webp
+46420,시제형 55mm Gerät 58 대공포,SSR,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46420.webp
+46440,40mm Flak28 기관총,SR,대공포,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/46440.webp
+47000,BF-109T 함상전투기,N,전투기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/47000.webp
+47020,BF-109T 함상전투기,R,전투기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/47000.webp
+47040,BF-109T 함상전투기,SR,전투기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/47000.webp
+47060,Ar-197 함상 전투기,R,전투기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/47060.webp
+47080,시제형 함상 FW-190 A-5,SR,전투기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/47080.webp
+47100,Me-155A 함상전투기,R,전투기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/47100.webp
+47120,Me-155A 함상전투기,SR,전투기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/47100.webp
+47140,Me-155A 함상전투기,SSR,전투기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/47100.webp
+47160,시제 함재형 BF-109G,SSR,전투기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/47160.webp
+47180,시제형 FW-190 A-6/R6 (함재기형),SSR,전투기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/47180.webp
+47200,시제형 함상식 FW-190 G-3/R1,SSR,전투기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/47200.webp
+48000,Ar-195 함상 뇌격기,R,뇌격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/48000.webp
+48020,Fi-167 함상 뇌격기,SR,뇌격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/48020.webp
+48040,Ju-87 D-4,SSR,뇌격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/48040.webp
+49000,Ju-87C 급강하폭격기,N,폭격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/49000.webp
+49020,Ju-87C 급강하폭격기,R,폭격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/49000.webp
+49040,Ju-87C 급강하폭격기,SR,폭격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/49000.webp
+49060,He-50b 함상폭격기,R,폭격기,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/49060.webp
+85000,B-13 연장 130mm 주포 B-2LM,R,함포(구축),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85000.webp
+85040,B-13 연장 130mm 주포 B-2LM,SSR,함포(구축),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85000.webp
+85060,연장 100mm대공포 SM-5-1s,R,대공포,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85060.webp
+85120,B-38 3연장 152mm 주포 Mk5,R,함포(경순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85120.webp
+85140,B-38 3연장 152mm 주포 Mk5,SR,함포(경순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85120.webp
+85160,152mm 3연장포 B-38 MK5,SSR,함포(경순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85120.webp
+85180,37mm대공포 70-K,N,대공포,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85180.webp
+85200,37mm대공포 70-K,R,대공포,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85180.webp
+85220,37mm대공포 70-K,SR,대공포,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85180.webp
+85260,B-54 100mm 연장 대공포,R,대공포,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85240.webp
+85280,B-54 100mm 연장 대공포,SR,대공포,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85240.webp
+85300,B-37 3연장 406mm 주포 Mk-1,R,함포(전함),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85300.webp
+85320,B-37 3연장 406mm 주포 Mk-1,SR,함포(전함),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85300.webp
+85340,B-37 3연장 406mm 주포 Mk-1,SSR,함포(전함),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85300.webp
+85360,B-34 100mm 연장 대공포 MZ-14,N,대공포,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85360.webp
+85380,B-34 100mm 연장 대공포 MZ-14,R,대공포,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85360.webp
+85400,B-34 100mm 연장 대공포 MZ-14,SR,대공포,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85360.webp
+85420,3연장 305mm 주포 Model1907,R,함포(전함),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85420.webp
+85440,연장 152mm 주포 Model1892,R,함포(경순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85440.webp
+85460,B-1-P 3연장 180mm 주포 Model1932,R,함포(경순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85460.webp
+85480,B-1-P 3연장 180mm 주포 Model1932,SR,함포(경순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85460.webp
+85500,180mm 3연장포 B-1-P Model 1932,SSR,함포(경순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85460.webp
+85520,B-50 3연장 305mm 주포 Mk-15,SSR,함포 (포켓 전함),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85520.webp
+85540,시제 함재형 Su-2,SSR,폭격기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85540.webp
+85560,시제형 VIT-2(VK-107),SSR,뇌격기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85560.webp
+85580,시제형 3연장 240mm 주포,SSR,함포(중순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85580.webp
+85600,시제형 함상식 La-9,UR,전투기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85600.webp
+85620,시제형 VIT-2(모드 체인지),SSR,뇌격기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85620.webp
+85640,시제형 180mm 3연장포 B-1-P Model1932 개조,SSR,함포(경순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85640.webp
+85660,시제형 Su-6 (함재형),SSR,폭격기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85660.webp
+85680,B-1-K 180mm 단장포,SR,함포(경순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85680.webp
+85700,B-38 152mm 연장포 MK17,SR,함포(경순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85700.webp
+85720,130mm 단장포 Model 1913,R,함포(구축),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85720.webp
+85740,356mm 3연장포 Model 1913,SR,함포(전함),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85740.webp
+85760,R-5,R,폭격기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85760.webp
+85780,LBSh,SR,폭격기,SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85780.webp
+85800,SM-40 시제형 220mm 3연장포,UR,함포(중순),SN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/85800.webp
+89000,랜덤 워드 생성기,SSR,기타,AI,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89000.webp
+89020,표코표코,SSR,기타,AI,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89020.webp
+89040,인텔리젼트 칩,SSR,기타,AI,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89040.webp
+89060,팀 엠블렘,SSR,기타,HOLO,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89060.webp
+89080,게이머의 증명,SSR,기타,HOLO,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89080.webp
+89100,옥수수 등,SSR,기타,HOLO,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89100.webp
+89120,안키모,SSR,기타,HOLO,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89120.webp
+89140,치열의 노래,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89140.webp
+89160,활력의 노래,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89160.webp
+89180,빛나는 노래,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89180.webp
+89200,댄싱 슈즈,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89200.webp
+89220,댄스 스커트,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89220.webp
+89240,각성 구슬,SSR,기타,DOA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89240.webp
+89260,마음의 열쇠,SSR,기타,DOA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89260.webp
+89280,아이돌 팔찌,SSR,기타,IMAS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89280.webp
+89300,배틀 트랙토 맥스,SSR,기타,SSSS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89300.webp
+89320,그리드맨 칼리버,SSR,기타,SSSS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89320.webp
+89340,버스터 보르,SSR,기타,SSSS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89340.webp
+89360,스카이 비터,SSR,기타,SSSS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89360.webp
+89380,다이나믹 캐논,SSR,기타,SSSS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89380.webp
+89400,골드번,SSR,기타,SSSS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89400.webp
+89420,프람,SSR,기타,RYZA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89420.webp
+89440,레헤른,SSR,기타,RYZA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89440.webp
+89460,플래직,SSR,기타,RYZA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89460.webp
+89480,루프트,SSR,기타,RYZA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89480.webp
+89500,엘릭시르제,SSR,기타,RYZA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89500.webp
+89520,신비한 우의,SSR,기타,RYZA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89520.webp
+89540,아포칼립스,SSR,기타,RYZA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89540.webp
+89560,Ｎ／Ａ,SSR,기타,RYZA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89560.webp
+89580,창세의 망치,SSR,기타,RYZA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89580.webp
+89600,버블 탄환,SSR,기타,RYZA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89600.webp
+89620,에너지아니카,SSR,기타,RYZA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89620.webp
+89640,게(영수증 포함),SSR,적재,SSSS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89640.webp
+89660,용 모양 장식품,SSR,적재,SSSS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89660.webp
+89680,시노비의 메달,SSR,기타,SENRAN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89680.webp
+89700,시노비의 닌자복,SSR,기타,SENRAN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89700.webp
+89720,인술 두루마리,SSR,기타,SENRAN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89720.webp
+89740,열정의 μ티켓,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89740.webp
+89760,"""Alizarin"" 응원 타올",SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89760.webp
+89780,"""Cyanidin"" 응원 타올",SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/89780.webp
+90020,130mm 단장포 Mle 1924,N,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50000.webp
+90040,130mm 단장포 Mle 1924,R,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50000.webp
+90100,138.6mm 단장포 Mle 1929,R,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50100.webp
+90120,138.6mm 단장포 Mle 1929,SR,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50100.webp
+90140,138.6mm 단장포 Mle 1929,SSR,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50100.webp
+90160,138.6mm 연장포 Mle 1934,UR,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50160.webp
+90220,152mm 3연장포 Mle 1930,N,함포(경순),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50200.webp
+90240,152mm 3연장포 Mle 1930,R,함포(경순),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50200.webp
+90260,152mm 3연장포 Mle1930 (유탄),SSR,함포(경순),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50200.webp
+90300,330mm 4연장포 Mle 1931,N,함포(전함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50300.webp
+90320,330mm 4연장포 Mle 1931,R,함포(전함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50300.webp
+90340,330mm 4연장포 Mle 1931,SR,함포(전함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50300.webp
+90360,시제형 4연장 330mm 주포 Mle1931(대형순양함용),SSR,함포 (포켓 전함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50360.webp
+90400,380mm 4연장포 Mle 1935,R,함포(전함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50400.webp
+90420,380mm 4연장포 Mle 1935,SR,함포(전함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50400.webp
+90440,380mm 4연장포 Mle 1935,SSR,함포(전함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50400.webp
+90460,340mm 4연장포 Mle1912,R,함포(전함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/90460.webp
+90480,시제형 380mm 3연장포 Mle1935,SSR,함포(전함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50480.webp
+90500,130mm 연장 주포 Mle1935,N,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50500.webp
+90540,130mm 연장포 Mle1935,SR,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50500.webp
+90560,37mm 고사포 Mle1925,R,대공포,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/90560.webp
+90580,37mm 연장 고사포 Mle1933,SR,대공포,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/90580.webp
+90600,2연장 37mm 고사포 Mle1936,SSR,대공포,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50600.webp
+90620,57mm/L60 연장 보포스 대공기관포 Mle1951,UR,대공포,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50620.webp
+90700,138.6mm 단장포 Mle1927,N,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50700.webp
+90720,138.6mm 단장포 Mle1927,R,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50700.webp
+90740,138.6mm 단장포 Mle1927,SR,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50700.webp
+90760,138.6mm 단장포 Mle1923,R,함포(구축),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/90760.webp
+90780,2연장 155mm 주포 Mle1920,R,함포(경순),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50780.webp
+90800,단장 155mm 부포 Mle1920,R,함포(경순),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50800.webp
+90820,GL.2 함재 전투기,R,전투기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50820.webp
+90840,PL.7 함재 뇌격기,R,뇌격기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50840.webp
+90860,2연장 203mm 주포 Mle1931,R,함포(중순),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50860.webp
+90880,2연장 203mm 주포 Mle1931,SR,함포(중순),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50860.webp
+90900,2연장 203mm 주포 Mle1931,SSR,함포(중순),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/50860.webp
+91000,시제형 406mm/50 3연장포,SSR,함포(전함),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51000.webp
+91100,2연장 203mm 주포 Mle1924,N,함포(중순),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51100.webp
+91140,2연장 203mm 주포 Mle1924,SR,함포(중순),FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51100.webp
+91180,FBA 19,R,수상기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51160.webp
+91200,FBA 19,SR,수상기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51160.webp
+91220,D.790,SR,전투기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51220.webp
+91240,BR.810,SSR,뇌격기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51240.webp
+91260,아이리스 천사의 날개,SSR,기타,FR,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51260.webp
+91280,십자 브로치,SR,기타,FR,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51280.webp
+91300,PL.10,R,뇌격기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51300.webp
+91320,V-156-F,SR,폭격기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51320.webp
+91340,LN.401,SSR,폭격기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51340.webp
+91360,Late.299,SR,뇌격기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51360.webp
+91380,LGL.32,R,전투기,FFNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/51380.webp
+95000,381mm 3연장포 Model1934,R,함포(전함),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55000.webp
+95020,381mm 3연장포 Model1934,SR,함포(전함),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55000.webp
+95040,381mm 3연장포 Model1934,SSR,함포(전함),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55000.webp
+95100,90mm 단장 고각포 Model1939,R,대공포,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55100.webp
+95120,90mm 단장 고각포 Model1939,SR,대공포,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55100.webp
+95140,90mm 단장 고각포 Model1939,SSR,대공포,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55100.webp
+95160,시제형 연장 90mm 고각포 Model 1939,SSR,대공포,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55160.webp
+95200,203mm 연장포 Model1927,R,함포(중순),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55200.webp
+95220,203mm 연장포 Model1927,SR,함포(중순),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55200.webp
+95240,203mm 연장포 Model1927,SSR,함포(중순),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55200.webp
+95300,203mm 연장포 Model1924,N,함포(중순),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55300.webp
+95320,203mm 연장포 Model1924,R,함포(중순),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55300.webp
+95340,203mm 연장포 Model1924,SR,함포(중순),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55300.webp
+95400,120mm 연장포 Model1936,N,함포(구축),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55400.webp
+95420,120mm 연장포 Model1936,R,함포(구축),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55400.webp
+95440,120mm 연장포 Model1936,SR,함포(구축),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55400.webp
+95460,120mm 연장포 Model1933,R,함포(구축),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55460.webp
+95480,320mm 3연장포 Model 1934,R,함포(전함),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55480.webp
+95500,37mm 연장 기관포 Model1932,N,대공포,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55500.webp
+95520,37mm 연장 기관포 Model1932,R,대공포,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55500.webp
+95540,37mm 연장 기관포 Model1932,SR,대공포,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55500.webp
+95560,120mm 연장포,N,함포(구축),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55560.webp
+95580,120mm 연장포,SR,함포(구축),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55560.webp
+95600,3연장 152mm 주포 Model 1934,R,함포(경순),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55600.webp
+95640,3연장 152mm 주포 Model 1934,SSR,함포(경순),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55600.webp
+95660,시제형 152mm 3연장포 Model 1936,SSR,함포(경순),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55660.webp
+95700,잠수함용 533mm 어뢰 Si 270,R,어뢰(잠수함),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55700.webp
+95720,G.50 프리치아,N,전투기,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55720.webp
+95740,G.50 프리치아,R,전투기,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55720.webp
+95760,G.50 프리치아,SR,전투기,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55720.webp
+95800,Re.2001 알리에테,N,전투기,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55800.webp
+95820,Re.2001 알리에테,R,전투기,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55800.webp
+95840,Re.2001 알리에테,SR,전투기,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55800.webp
+95900,시제형 3연장 406mm 주포 Model 1940,SSR,함포(전함),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55900.webp
+95920,연장 135mm 주포 Model 1938,R,함포(구축),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55920.webp
+95940,연장 135mm 주포 Model 1938,SR,함포(구축),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55920.webp
+95960,연장 135mm 주포 Model 1938,SSR,함포(구축),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/55920.webp
+96000,SY-1,SSR,미사일,ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/56000.webp
+96020,SY-1갑,SSR,미사일,ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/56020.webp
+96100,시제형 2연장 130mm 주포 Model1936,SSR,함포(구축),ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/56100.webp
+96120,시제형 254mm 3연장포 Model 1939,SSR,함포(중순),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/56120.webp
+96140,305mm 3연장포 Model 1909,R,함포(전함),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/56140.webp
+96160,381mm 연장포 Model 1914,R,함포(전함),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/56160.webp
+96180,13.2mm Breda 연장 대공 기관포,R,대공포,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/56180.webp
+96200,65mm 대공포 Model 1939,SR,대공포,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/56200.webp
+96220,20mm Breda 연장 대공 기관포,SR,대공포,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/56220.webp
+96240,시제형 406mm 3연장포 Model 1940改,UR,함포(전함),RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/56240.webp
+96260,시제형 20mm Scotti 6연장 기관포 Model1941,SSR,대공포,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/56260.webp
+96280,시제형 533mm 4연장 어뢰Si 270,SSR,어뢰,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/56280.webp
+150000,자수 금낭,SR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150000.webp
+150020,템페스타 플래그,SR,기타,MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150020.webp
+150040,구식 중화포,R,함포(구축),MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150040.webp
+150080,구식 중화포,SSR,함포(구축),MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150040.webp
+150100,구식 데미캐넌,R,함포(전함),MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150100.webp
+150140,구식 데미캐넌,SSR,함포(전함),MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150100.webp
+150160,과일 보급품,SR,기타,MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150160.webp
+150180,항해 망원경,SR,기타,MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150180.webp
+150200,별의 바다 B2O 구역 통행증,SR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150200.webp
+150240,환창의 낚싯대,SR,기타,ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150240.webp
+150260,어센션 박스,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150260.webp
+150280,이세계 모험 단말기,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150280.webp
+150300,남겨진 시간의 잔향,SR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150300.webp
+150320,이상한 장치 「D」,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150320.webp
+150340,공동 연습 기념 코인(한정판),SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150340.webp
+150360,운송용 고속 드론,SSR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150360.webp
+150380,귀중품 상자,SSR,기타,MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150380.webp
+150400,포도탄,SR,기타,MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150400.webp
+150420,주류 보급품,SR,기타,MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150420.webp
+150440,보글보글 요리 군,SSR,기타,ToLove,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150440.webp
+150460,매출 상승 머신,SSR,기타,ToLove,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150460.webp
+150480,존재감 제거 스프레이,SSR,기타,ToLove,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150480.webp
+150500,일이 재밌어지는 기계,SSR,기타,ToLove,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150500.webp
+150520,쑥쑥 성장 군,SSR,기타,ToLove,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150520.webp
+150540,오싹오싹 호러 군,SSR,기타,ToLove,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150540.webp
+150560,번쩍번쩍 아우라 군,SSR,기타,ToLove,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150560.webp
+150580,유대의 손수건,SR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150580.webp
+150600,푸보의 완벽한 계획,SR,기타,ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150600.webp
+150620,티아라 프레페리타,SR,기타,RN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150620.webp
+150640,튤리퍼 꽃다발,SR,기타,HNLMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150640.webp
+150660,나의 보물 고래,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150660.webp
+150680,그랑샤인,SSR,기타,YUMIA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150680.webp
+150700,슈피리어 그리모어,SSR,기타,YUMIA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150700.webp
+150720,엔데 미티어,SSR,기타,YUMIA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150720.webp
+150740,패너시어 스피어,SSR,기타,YUMIA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150740.webp
+150760,지옥의 큐브,SSR,기타,YUMIA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150760.webp
+150780,천상의 천구의,SSR,기타,YUMIA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150780.webp
+150800,플라미,SSR,기타,YUMIA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150800.webp
+150820,사쿠라 엠파이어의 초대장,SR,기타,IJN,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150820.webp
+150840,자유 군도 초대장,SR,기타,MOT,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150840.webp
+150860,미카엘,SSR,기타,,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150860.webp
+150880,세피라,SSR,기타,,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150880.webp
+150900,거대 주먹밥,SSR,기타,,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150900.webp
+150920,미스터리 아쿠아,SR,기타,USS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150920.webp
+150940,감독의 각본,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150940.webp
+150960,옥션 초대장,SR,기타,ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150960.webp
+150980,나비와 대나무의 유희,SR,기타,ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/150980.webp
+151000,나비와 매화의 유희,SR,기타,ROC,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/151000.webp
+151020,더 유람자,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/151020.webp
+151040,시스템 지명수배,SR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/151040.webp
+151060,제로 프로토콜 키,SSR,기타,UNIV,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/151060.webp
+151080,치라이 데코 펜,SSR,기타,DOA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/151080.webp
+151100,그라비아 패널,SSR,기타,DOA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/151100.webp
+151120,행복의 클로버,SSR,기타,DOA,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/151120.webp
+151140,심판호 기동키,SR,기타,MNF,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/151140.webp
+151160,선체 개량 설계안,SSR,기타,KMS,https://raw.githubusercontent.com/JforPlay/data_for_toy/main/equips/800.webp

@@ -42,6 +42,7 @@ export const PAGE_CATALOG = [
     // ===== Equipment =====
     { key: 'EQUIP_VIEWER',  path: 'equip/equip-viewer/',  name: '장비 DB',  description: '장비 검색, 상세정보, 비교', icon: 'settings', category: '장비' },
     { key: 'EQUIP_UPGRADE', path: 'equip/equip-upgrade/', name: '장비 연구', description: '기어 랩 연구 트리',         icon: 'science',  category: '장비' },
+    { key: 'EQUIP_HEARING', path: 'equip/equip-hearing/', name: '장비 청문회', description: '장비별 별명-한줄평 모음', icon: 'gavel', category: '장비' },
 
     // ===== Tools / Map / Island =====
     { key: 'MAP_VIEWER',     path: 'map/map-viewer/', name: '해역 정보',          description: '해역 맵, 적 함대, 드롭 정보',                       icon: 'map',         category: '도구' },
@@ -119,8 +120,8 @@ export const NAV_STRUCTURE = [
         label: '정보/도구모음',
         columns: [
             { title: '각종 계산기/도구', keys: ['MAP_VIEWER', 'ISLAND', 'ISLAND_MISC', 'EVENT_TIMELINE'] },
-            { title: '장비 관련', keys: ['EQUIP_VIEWER', 'EQUIP_UPGRADE', 'SKIN_SD', 'EQUIP_SKIN'] },
             { title: '각종 시뮬레이터들', keys: ['FLEET_SIM', 'SIM_WEAPON', 'CROSS_FLEET_BARRAGES', 'SIM_AIRCRAFT'] },
+            { title: '장비 관련', keys: ['EQUIP_VIEWER', 'EQUIP_UPGRADE', 'EQUIP_HEARING', 'SKIN_SD', 'EQUIP_SKIN'] },
         ],
     },
     {

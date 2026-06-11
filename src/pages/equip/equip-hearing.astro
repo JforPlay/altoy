@@ -1,0 +1,51 @@
+---
+/**
+ * 장비 청문회 (equip hearing archive)
+ * Full equip catalog joined with curator-sheet commentary
+ * (data/equip/equip_hearing.json). Read-only; edits happen in the sheet.
+ */
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/equip/equip.hearing.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="장비 청문회" {base}>
+    <div class="hearing-page">
+        <header class="hearing-header">
+            <div class="header-title-container">
+                <span class="material-symbols-outlined">gavel</span>
+                <h1>장비 청문회</h1>
+            </div>
+            <div class="hearing-count" id="hearingCount"></div>
+        </header>
+
+        <div class="hearing-controls">
+            <input type="search" id="hearingSearch" placeholder="장비 이름·별명 검색" autocomplete="off">
+            <!-- default-active chips must stay in sync with the JS rarities Set init -->
+            <div class="rarity-chips-container" id="hearingRarity">
+                <button class="rarity-chip rarity-chip-2" type="button" data-rarity="2">N</button>
+                <button class="rarity-chip rarity-chip-3" type="button" data-rarity="3">R</button>
+                <button class="rarity-chip rarity-chip-4" type="button" data-rarity="4">SR</button>
+                <button class="rarity-chip rarity-chip-5 active" type="button" data-rarity="5">SSR</button>
+                <button class="rarity-chip rarity-chip-6 active" type="button" data-rarity="6">UR</button>
+            </div>
+            <select id="hearingType">
+                <option value="all">전체 종류</option>
+            </select>
+            <select id="hearingWritten">
+                <option value="all">전체</option>
+                <option value="written">작성됨</option>
+                <option value="unwritten">미작성</option>
+            </select>
+            <select id="hearingSort">
+                <option value="default">기본순</option>
+                <option value="rarity">레어도순</option>
+                <option value="type">종류순</option>
+            </select>
+        </div>
+
+        <div class="hearing-list" id="hearingList"></div>
+    </div>
+
+    <script is:inline type="module" src={`${base}/js/equip/equip.hearing.js`}></script>
+</Layout>
