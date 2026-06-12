@@ -59,90 +59,79 @@ test('buildCatalogCsv emits header + one line per equip with resolved icon URL',
 });
 
 // --- mapRows ---
-// Sheet contract: hearing tab headers are literally
-// equip_id, author, 별명, 한줄평, notes — all five required, any order,
-// any extra (convenience VLOOKUP/IMAGE) columns ignored.
+// 청문회-tab contract: pre-populated, one row per equip. Synced headers:
+// 장비id, 별명, plus 한줄평1..N detected dynamically; display columns
+// (이름/아이콘/레어도 …) ignored.
 
-const HEADER = 'equip_id,author,별명,한줄평,notes';
+const HEADER = '장비id,이름,아이콘,레어도,별명,한줄평1,한줄평2,한줄평3';
 
-test('mapRows maps by header name and ignores extra columns', () => {
-    const rows = parseCsv(`이름,${HEADER},아이콘\nX,740,jay,헬리,굿,메모,Y\n`);
+test('mapRows maps by header name, ignores display columns, skips empty 한줄평 cells', () => {
+    const rows = parseCsv(`${HEADER}\n740,FI-282 헬리콥터,X,SSR,헬리,굿,,프롤테카\n`);
     assert.deepEqual(mapRows(rows), [
-        { equipId: '740', author: 'jay', alias: '헬리', review: '굿', notes: '메모' },
+        { equipId: '740', alias: '헬리', reviews: ['굿', '프롤테카'] },
     ]);
 });
 
-test('mapRows drops rows with no content in 별명/한줄평/notes', () => {
-    assert.deepEqual(mapRows(parseCsv(`${HEADER}\n740,jay,,,\n`)), []);
+test('mapRows orders reviews by 한줄평 number even when columns are shuffled', () => {
+    const rows = parseCsv('한줄평2,장비id,별명,한줄평1\nsecond,740,,first\n');
+    assert.deepEqual(mapRows(rows)[0].reviews, ['first', 'second']);
 });
 
-test('mapRows throws on a missing required column', () => {
-    assert.throws(() => mapRows(parseCsv('equip_id,author,별명,한줄평\n')),
-        /missing required column "notes"/);
+test('mapRows drops pre-populated rows with no input', () => {
+    assert.deepEqual(mapRows(parseCsv(`${HEADER}\n740,이름,X,SSR,,,,\n`)), []);
 });
 
-test('mapRows trims values and normalizes newlines in multi-line notes', () => {
-    const rows = parseCsv(`${HEADER}\n740, jay ,"  헬리 ",굿,"l1\r\nl2"\n`);
+test('mapRows throws when 장비id/별명/한줄평1 columns are missing', () => {
+    assert.throws(() => mapRows(parseCsv('장비id,별명\n')), /한줄평/);
+    assert.throws(() => mapRows(parseCsv('별명,한줄평1\n')), /장비id/);
+});
+
+test('mapRows trims, normalizes newlines, and extracts ids from "id — name" composites', () => {
+    const rows = parseCsv('장비id,별명,한줄평1\n"740 — FI-282 헬리콥터","  헬리 ","l1\r\nl2"\n');
     assert.deepEqual(mapRows(rows)[0],
-        { equipId: '740', author: 'jay', alias: '헬리', review: '굿', notes: 'l1\nl2' });
+        { equipId: '740', alias: '헬리', reviews: ['l1\nl2'] });
 });
 
 // --- validateRows ---
 
 const VALID_IDS = new Set(['740', '23120']);
-const mkRow = (over = {}) =>
-    ({ equipId: '740', author: 'jay', alias: '', review: '굿', notes: '', ...over });
+const mkRow = (over = {}) => ({ equipId: '740', alias: '', reviews: ['굿'], ...over });
 
 test('validateRows passes a clean row set', () => {
     assert.deepEqual(validateRows([mkRow()], VALID_IDS).errors, []);
 });
 
-test('validateRows fails unknown equip_id unless allowUnknown', () => {
+test('validateRows fails unknown 장비id unless allowUnknown', () => {
     const rows = [mkRow({ equipId: '99999' })];
-    assert.match(validateRows(rows, VALID_IDS).errors[0], /unknown equip_id/);
+    assert.match(validateRows(rows, VALID_IDS).errors[0], /unknown 장비id/);
     assert.deepEqual(validateRows(rows, VALID_IDS, { allowUnknown: true }).errors, []);
 });
 
-test('validateRows flags non-numeric id, missing author, and duplicate (id, author)', () => {
+test('validateRows flags non-numeric and duplicate 장비id', () => {
     const { errors } = validateRows([
         mkRow({ equipId: 'abc' }),   // non-numeric
-        mkRow({ author: '' }),       // missing author
-        mkRow(), mkRow(),            // duplicate pair
+        mkRow(), mkRow(),            // duplicate id
     ], VALID_IDS);
-    assert.equal(errors.length, 3);
+    assert.equal(errors.length, 2);
 });
 
 // --- buildHearingJson ---
 
-test('buildHearingJson groups comments per equip and merges distinct aliases', () => {
+test('buildHearingJson maps rows directly to entries keyed by id', () => {
     const out = buildHearingJson([
-        { equipId: '740', author: 'jay', alias: '헬기', review: '굿', notes: '' },
-        { equipId: '740', author: 'kim', alias: '헬리콥터', review: '좋음', notes: '메모' },
-        { equipId: '740', author: 'lee', alias: '헬기', review: '', notes: '' }, // alias-only, duplicate alias
+        { equipId: '740', alias: '헬기', reviews: ['굿', '좋음'] },
+        { equipId: '23120', alias: '', reviews: ['강함'] },
     ], '2026-06-11');
     assert.equal(out._meta.synced, '2026-06-11');
-    assert.equal(out._meta.count, 1);
-    assert.equal(out.entries['740'].alias, '헬기 / 헬리콥터');
-    // lee's alias-only row contributes no comment entry
-    assert.deepEqual(out.entries['740'].comments, [
-        { author: 'jay', review: '굿', notes: '' },
-        { author: 'kim', review: '좋음', notes: '메모' },
-    ]);
-});
-
-test('buildHearingJson dedups aliases on raw values, even when an alias contains " / "', () => {
-    const out = buildHearingJson([
-        { equipId: '1', author: 'jay', alias: '', review: 'r1', notes: '' },        // first row has no alias
-        { equipId: '1', author: 'kim', alias: 'A / B', review: 'r2', notes: '' },
-        { equipId: '1', author: 'lee', alias: 'A / B', review: 'r3', notes: '' },   // exact duplicate must not re-append
-    ], '2026-06-11');
-    assert.equal(out.entries['1'].alias, 'A / B');
+    assert.equal(out._meta.count, 2);
+    assert.deepEqual(out.entries['740'], { alias: '헬기', reviews: ['굿', '좋음'] });
+    assert.deepEqual(out.entries['23120'], { alias: '', reviews: ['강함'] });
 });
 
 // --- diffSummary ---
 
 test('diffSummary counts added/changed/removed entries', () => {
-    const prev = { a: { alias: 'x', comments: [] }, b: { alias: 'y', comments: [] } };
-    const next = { a: { alias: 'x2', comments: [] }, c: { alias: 'z', comments: [] } };
+    const prev = { a: { alias: 'x', reviews: [] }, b: { alias: 'y', reviews: [] } };
+    const next = { a: { alias: 'x2', reviews: [] }, c: { alias: 'z', reviews: [] } };
     assert.deepEqual(diffSummary(prev, next), { added: 1, removed: 1, changed: 1 });
 });

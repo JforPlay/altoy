@@ -15,7 +15,7 @@ import { getEquipIconUrl, getRarityBgUrl } from './equip.data.js';
 
 const state = {
     equips: [],     // equip_data_lite entries, original order
-    hearing: {},    // equip id (string) → { alias, comments: [{author, review, notes}] }
+    hearing: {},    // equip id (string) → { alias, reviews: string[] }
     fuse: null,     // Fuse index over {id, name, alias}; null until loaded (substring fallback)
     // rarities: numeric-string codes like equip-viewer (2=N … 6=UR); empty set = show all.
     // SSR+UR default mirrors the pre-set .active chips in the .astro markup — keep in sync.
@@ -138,7 +138,7 @@ function applyFilters() {
     if (type !== 'all') list = list.filter((e) => String(e.type) === type);
     if (written !== 'all') {
         // an entry with only an alias still counts as 작성됨 — any commentary at all
-        // (mirrors _meta.count in equip_hearing.json, which counts entries, not comments)
+        // (mirrors _meta.count in equip_hearing.json, which counts entries, not reviews)
         list = list.filter((e) => Boolean(state.hearing[String(e.id)]) === (written === 'written'));
     }
     if (query) {
@@ -164,7 +164,7 @@ function render() {
 function cardHtml(e) {
     const entry = state.hearing[String(e.id)];
     const iconUrl = getEquipIconUrl(e.icon);
-    const comments = (entry?.comments || []).map(commentHtml).join('');
+    const reviews = (entry?.reviews || []).map(reviewHtml).join('');
     return `
     <article class="hearing-card${entry ? '' : ' is-empty'}">
         <div class="hearing-equip">
@@ -183,19 +183,12 @@ function cardHtml(e) {
             </div>
         </div>
         <div class="hearing-comments">
-            ${comments || '<div class="hearing-no-comment">아직 작성된 한줄평이 없습니다</div>'}
+            ${reviews || '<div class="hearing-no-comment">아직 작성된 한줄평이 없습니다</div>'}
         </div>
     </article>`;
 }
 
-function commentHtml(c) {
-    const notes = c.notes
-        ? `<details class="hearing-notes"><summary>상세</summary>`
-          + `<div class="hearing-notes-body">${escapeHtml(c.notes).replace(/\n/g, '<br>')}</div></details>`
-        : '';
-    return `
-    <div class="hearing-comment">
-        <span class="hearing-author">${escapeHtml(c.author)}</span><span class="hearing-review">${escapeHtml(c.review)}</span>
-        ${notes}
-    </div>`;
+/** One anonymous 한줄평 line (sheet 한줄평N cell; may contain newlines). */
+function reviewHtml(review) {
+    return `<div class="hearing-comment">${escapeHtml(review).replace(/\n/g, '<br>')}</div>`;
 }

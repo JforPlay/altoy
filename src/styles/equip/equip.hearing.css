@@ -205,43 +205,8 @@ body {
 .hearing-comment {
     font-size: 0.9rem;
     line-height: 1.5;
-    overflow-wrap: anywhere;
-}
-
-.hearing-author {
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-right: 0.4rem;
-}
-
-.hearing-author::after {
-    content: '—';
-    margin-left: 0.4rem;
-    color: var(--text-muted);
-}
-
-.hearing-review {
     color: var(--text-primary);
-}
-
-.hearing-notes {
-    margin-top: 0.15rem;
-}
-
-.hearing-notes summary {
-    cursor: pointer;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    user-select: none;
-}
-
-.hearing-notes-body {
-    margin-top: 0.3rem;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    background: var(--overlay-lightest);
-    border-radius: 6px;
+    overflow-wrap: anywhere;
 }
 
 .hearing-no-comment {

@@ -23,8 +23,8 @@ import { DATA_FOR_TOY_BASE } from '../public/js/utils.js';
 
 // Curator config: fill in after creating the sheet (File → Share → anyone
 // with link = viewer). HEARING_GID = the gid= URL param of the hearing tab.
-const SHEET_ID = '';
-const HEARING_GID = '0';
+const SHEET_ID = '1iglCHXqF-HCD8euPDoHsyr0jk_WY7jfnmarH8ryvYT8';
+const HEARING_GID = '1093340261';
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(SCRIPT_DIR, '..');
@@ -100,44 +100,52 @@ export function buildCatalogCsv(liteData) {
 
 // ===== Channel 2: hearing tab → equip_hearing.json =====
 
-/** Hearing tab header → row key. All five are required; extras are ignored. */
-const HEARING_COLUMNS = {
-    equip_id: 'equipId',
-    author: 'author',
-    '별명': 'alias',
-    '한줄평': 'review',
-    notes: 'notes',
-};
+// 청문회-tab header contract: pre-populated, ONE ROW PER EQUIP. Synced columns
+// are matched by header name; display columns (이름/아이콘/레어도 …) are ignored,
+// so editors may add/reorder those freely.
+const ID_HEADER = '장비id';
+const ALIAS_HEADER = '별명';
+const REVIEW_HEADER_RE = /^한줄평(\d+)$/;
 
 /**
- * Map raw CSV rows to row objects by HEADER NAME (not position) so the sheet
- * can host convenience columns and gain future columns without breaking sync.
+ * Map raw CSV rows to row objects by HEADER NAME (not position). 한줄평N review
+ * columns are detected dynamically — adding 한줄평4 to the sheet needs no code
+ * change; reviews keep the N order even if the columns are physically shuffled.
  * Values are trimmed and newline-normalized but otherwise RAW — the page
- * escapes at render time. Rows whose three content fields are all empty are
- * dropped (an editor placed a row but wrote nothing yet).
+ * escapes at render time. Pre-populated rows with no input (no alias, no
+ * review) are dropped, which keeps the output JSON sparse.
  * @param {string[][]} rows - parseCsv output incl. header row
- * @returns {Array<{equipId: string, author: string, alias: string, review: string, notes: string}>}
+ * @returns {Array<{equipId: string, alias: string, reviews: string[]}>}
  */
 export function mapRows(rows) {
     if (!rows.length) throw new Error('hearing CSV is empty (no header row)');
     const header = rows[0].map((h) => h.trim());
-    const indices = {};
-    for (const [name, key] of Object.entries(HEARING_COLUMNS)) {
-        const idx = header.indexOf(name);
-        if (idx === -1) {
-            throw new Error(`hearing CSV missing required column "${name}" (got: ${header.join(', ')})`);
-        }
-        indices[key] = idx;
+    const idIdx = header.indexOf(ID_HEADER);
+    const aliasIdx = header.indexOf(ALIAS_HEADER);
+    const reviewIdxs = header
+        .map((h, i) => { const m = h.match(REVIEW_HEADER_RE); return m ? { n: Number(m[1]), i } : null; })
+        .filter(Boolean)
+        .sort((a, b) => a.n - b.n)
+        .map((r) => r.i);
+    if (idIdx === -1 || aliasIdx === -1 || !reviewIdxs.length) {
+        throw new Error(`hearing CSV must have "${ID_HEADER}", "${ALIAS_HEADER}", and at least one `
+            + `한줄평N column (got: ${header.join(', ')})`);
     }
+    const clean = (v) => (v ?? '').replace(/\r\n?/g, '\n').trim();
     return rows.slice(1)
         .map((cols) => {
-            const row = {};
-            for (const [key, idx] of Object.entries(indices)) {
-                row[key] = (cols[idx] ?? '').replace(/\r\n?/g, '\n').trim();
-            }
+            const row = {
+                equipId: clean(cols[idIdx]),
+                alias: clean(cols[aliasIdx]),
+                reviews: reviewIdxs.map((i) => clean(cols[i])).filter(Boolean),
+            };
+            // An id cell may hold an "id — name" composite; the id is the leading
+            // digits. Values with no digit prefix pass through so validateRows flags them.
+            const idMatch = row.equipId.match(/^\d+/);
+            if (idMatch) row.equipId = idMatch[0];
             return row;
         })
-        .filter((r) => r.alias || r.review || r.notes);
+        .filter((r) => r.alias || r.reviews.length);
 }
 
 /**
@@ -157,47 +165,32 @@ export function validateRows(rows, validIds, { allowUnknown = false } = {}) {
     const unknown = new Set();
     for (const row of rows) {
         if (!/^\d+$/.test(row.equipId)) {
-            errors.push(`invalid equip_id "${row.equipId}" (author: ${row.author || '?'})`);
+            errors.push(`invalid 장비id "${row.equipId}"`);
         } else if (!validIds.has(row.equipId)) {
             unknown.add(row.equipId);
         }
-        if (!row.author) errors.push(`missing author for equip_id ${row.equipId}`);
-        const pair = `${row.equipId} ${row.author}`;
-        if (seen.has(pair)) errors.push(`duplicate (equip_id, author) = (${row.equipId}, ${row.author})`);
-        seen.add(pair);
+        if (seen.has(row.equipId)) errors.push(`duplicate 장비id ${row.equipId}`);
+        seen.add(row.equipId);
     }
     if (unknown.size && !allowUnknown) {
-        errors.push(`unknown equip_id(s) not in equip_data_lite.json: ${[...unknown].join(', ')}`
+        errors.push(`unknown 장비id(s) not in equip_data_lite.json: ${[...unknown].join(', ')}`
             + ' (re-run with --allow-unknown to keep them)');
     }
     return { errors };
 }
 
 /**
- * Group validated rows into the equip_hearing.json shape:
- *   { _meta: {synced, count}, entries: { "<id>": { alias, comments[] } } }
- * 별명 is communal — distinct non-empty RAW values from any author merge with
- * " / " in first-seen order. Dedup is on the raw alias string, never by
- * re-splitting the joined display string, so an alias may itself contain " / "
- * without being broken apart. A row with alias but no review/notes contributes
- * the alias only (no empty comment entry).
+ * Map validated rows into the equip_hearing.json shape:
+ *   { _meta: {synced, count}, entries: { "<id>": { alias, reviews[] } } }
+ * One sheet row per equip (duplicates are validation errors), so this is a
+ * direct mapping — reviews arrive already cleaned and ordered by 한줄평 number.
  * @param {ReturnType<typeof mapRows>} rows
  * @param {string} syncedDate - YYYY-MM-DD
  */
 export function buildHearingJson(rows, syncedDate) {
     const entries = {};
-    const aliasSets = new Map();   // equipId → Set of RAW alias strings (dedup must not re-split the joined display string)
     for (const row of rows) {
-        const entry = entries[row.equipId] ??= { alias: '', comments: [] };
-        if (row.alias) {
-            const set = aliasSets.get(row.equipId) ?? new Set();
-            set.add(row.alias);
-            aliasSets.set(row.equipId, set);
-            entry.alias = [...set].join(' / ');
-        }
-        if (row.review || row.notes) {
-            entry.comments.push({ author: row.author, review: row.review, notes: row.notes });
-        }
+        entries[row.equipId] = { alias: row.alias, reviews: row.reviews };
     }
     return { _meta: { synced: syncedDate, count: Object.keys(entries).length }, entries };
 }
