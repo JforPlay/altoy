@@ -107,6 +107,18 @@ body {
 
 /* ===== Cards ===== */
 
+/* column labels — must mirror .hearing-card's grid template to line up */
+.hearing-list-header {
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) 1fr;
+    gap: 1rem;
+    padding: 0 1rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
 .hearing-list {
     display: flex;
     flex-direction: column;
@@ -128,11 +140,19 @@ body {
     opacity: 0.75;
 }
 
+/* the whole left block is a link to equip-viewer's detail panel (?equip=<id>) */
 .hearing-equip {
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
     min-width: 0;
+    color: inherit;
+    text-decoration: none;
+}
+
+.hearing-equip:hover .hearing-name {
+    color: var(--accent-blue);
+    text-decoration: underline;
 }
 
 .hearing-icon {
@@ -185,10 +205,20 @@ body {
 .hearing-chip.rarity-R   { background: var(--rarity-r);        color: var(--rarity-r-text);   border-color: var(--rarity-r); }
 .hearing-chip.rarity-N   { background: var(--rarity-n);        color: var(--rarity-n-text);   border-color: var(--rarity-n); }
 
+/* community nickname — tinted badge right under the name. NOTE: this page is
+   on the default theme where --primary-color is GRAY; the blue lives in
+   --accent-blue / --primary-alpha-* (user feedback 2026-06-11, twice) */
 .hearing-alias {
-    margin-top: 0.35rem;
-    font-size: 0.85rem;
-    color: var(--primary-color);
+    display: inline-block;
+    width: fit-content;
+    margin-top: 0.3rem;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    background: var(--primary-alpha-10);
+    border: 1px solid var(--primary-alpha-30);
+    border-radius: var(--radius-sm);
     overflow-wrap: anywhere;
 }
 
@@ -217,6 +247,11 @@ body {
 /* ===== Mobile ===== */
 
 @media (max-width: 640px) {
+    /* cards stack to one column — the two-column header no longer lines up */
+    .hearing-list-header {
+        display: none;
+    }
+
     .hearing-card {
         grid-template-columns: 1fr;
         gap: 0.5rem;

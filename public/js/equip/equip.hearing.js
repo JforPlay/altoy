@@ -9,7 +9,7 @@
 
 import {
     requireElements, loadPageData, fetchJSONWithCache, escapeHtml,
-    sanitizeClassToken, ensureFuse, createSearchIndex, debounce,
+    sanitizeClassToken, ensureFuse, createSearchIndex, debounce, resolveUrl,
 } from '../utils.js';
 import { getEquipIconUrl, getRarityBgUrl } from './equip.data.js';
 
@@ -167,21 +167,21 @@ function cardHtml(e) {
     const reviews = (entry?.reviews || []).map(reviewHtml).join('');
     return `
     <article class="hearing-card${entry ? '' : ' is-empty'}">
-        <div class="hearing-equip">
+        <a class="hearing-equip" href="${resolveUrl(`equip/equip-viewer/?equip=${e.id}`)}" title="장비 상세 보기">
             <div class="hearing-icon">
                 <img class="hearing-icon-bg" src="${getRarityBgUrl(e.rarity ?? 2)}" alt="" loading="lazy">
                 ${iconUrl ? `<img class="hearing-icon-img" src="${iconUrl}" alt="${escapeHtml(e.name)}" loading="lazy">` : ''}
             </div>
             <div class="hearing-equip-meta">
                 <div class="hearing-name">${escapeHtml(e.name)}</div>
+                ${entry?.alias ? `<div class="hearing-alias">${escapeHtml(entry.alias)}</div>` : ''}
                 <div class="hearing-chips">
                     <span class="hearing-chip rarity-${sanitizeClassToken(e.rarity_name)}">${escapeHtml(e.rarity_name)}</span>
                     <span class="hearing-chip">${escapeHtml(e.type_name2 || e.type_name || '')}</span>
                     <span class="hearing-chip">${escapeHtml(e.nation_code || '')}</span>
                 </div>
-                ${entry?.alias ? `<div class="hearing-alias">${escapeHtml(entry.alias)}</div>` : ''}
             </div>
-        </div>
+        </a>
         <div class="hearing-comments">
             ${reviews || '<div class="hearing-no-comment">아직 작성된 한줄평이 없습니다</div>'}
         </div>
