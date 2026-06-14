@@ -7,6 +7,7 @@ import Layout from '../../layouts/Layout.astro';
 import '../../styles/equip/equip.style.css';
 import '../../styles/equip/equip.detail.css';
 import '../../styles/equip/equip.compare.css';
+import '../../styles/equip/equip.hearing.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -19,15 +20,42 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <div class="header-title-container">
                         <span class="material-symbols-outlined">settings</span>
                         <h1>장비 DB</h1>
-                    </div>
-                    <div class="stats-container">
-                        <div class="stat-item">
-                            <span class="stat-label">총 장비:</span>
-                            <span class="stat-value" id="totalCount">0</span>
+                        <div class="credits" id="creditsInfo">
+                            <button class="credits-trigger" id="creditsTrigger" type="button"
+                                    aria-label="출처 · Special thanks to" aria-expanded="false" aria-controls="creditsBubble">
+                                <span class="material-symbols-outlined">workspace_premium</span>
+                            </button>
+                            <div class="credits-bubble" id="creditsBubble" role="tooltip">
+                                <p class="credits-title">한줄평 출처 · Special thanks to</p>
+                                <p class="credits-line">
+                                    많은 원본 코멘트 출처 : <a href="https://arca.live/b/azurlane/45593816" target="_blank" rel="noopener noreferrer">장비설명회 ↗</a>
+                                </p>
+                                <p class="credits-line">
+                                    여러 챈 유저들의 재능 기부 : <span class="credits-placeholder">xxx</span>
+                                </p>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-label">표시 중:</span>
-                            <span class="stat-value" id="filteredCount">0</span>
+                    </div>
+                    <div class="header-controls">
+                        <div class="stats-container">
+                            <div class="stat-item">
+                                <span class="stat-label">총 장비:</span>
+                                <span class="stat-value" id="totalCount">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">표시 중:</span>
+                                <span class="stat-value" id="filteredCount">0</span>
+                            </div>
+                        </div>
+                        <div class="view-toggle" id="viewToggle" role="tablist" aria-label="보기 방식">
+                            <button class="view-toggle-btn" type="button" data-view="grid" role="tab" aria-selected="false" title="간략히 — 아이콘 그리드">
+                                <span class="material-symbols-outlined">grid_view</span>
+                                <span class="view-toggle-label">간략히</span>
+                            </button>
+                            <button class="view-toggle-btn active" type="button" data-view="hearing" role="tab" aria-selected="true" title="자세히 — 별명·한줄평">
+                                <span class="material-symbols-outlined">view_agenda</span>
+                                <span class="view-toggle-label">자세히</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -64,7 +92,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                         <button id="sortDirection" class="sort-direction-btn" type="button">내림차순</button>
                     </div>
                 </div>
-                <div class="label-chips-container" id="labelChips"></div>
+                <div class="label-filter" id="labelFilter">
+                    <button class="label-filter-toggle" id="labelFilterToggle" type="button" aria-expanded="false" aria-controls="labelChips">
+                        <span class="material-symbols-outlined">sell</span>
+                        <span>태그 필터</span>
+                        <span class="label-filter-count" id="labelFilterCount" hidden></span>
+                        <span class="material-symbols-outlined label-filter-chevron">expand_more</span>
+                    </button>
+                    <div class="label-chips-container" id="labelChips"></div>
+                </div>
             </header>
             <div id="equipGrid" class="equip-grid"></div>
         </div>

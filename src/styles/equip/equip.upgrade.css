@@ -76,10 +76,12 @@ body {
     border-color: var(--primary-color);
 }
 
+/* accent-blue fill (white-legible in both themes) — NOT --primary-color, which is
+   grayscale on the default theme and turns silver (unreadable w/ #fff) in dark. */
 .cat1-tab.active {
-    background: var(--primary-color);
+    background: var(--accent-blue);
     color: #fff;
-    border-color: var(--primary-color);
+    border-color: var(--accent-blue);
 }
 
 /* ===== Category2 Tabs (Equip Type) ===== */

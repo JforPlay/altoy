@@ -6,12 +6,13 @@
  * Covers: canvas icon compositing, stat rows, weapon/aircraft params, skills, upgrade costs, scrap info.
  */
 
-import { showToast, resolveUrl, DATA_FOR_TOY_BASE } from '../utils.js';
+import { showToast, resolveUrl, DATA_FOR_TOY_BASE, escapeHtml } from '../utils.js';
 import {
     getEquipIconUrl, getRarityBgUrl, getFullEquipData, getLevelStatistics,
     replaceEquipCodes, getBulletTemplate, getSkillData, getWeaponName,
     getFiringPattern, formatLevel, getVisibleLevelCount, AIRCRAFT_TYPES,
-    getMergedAircraftTemplate, getMergedWeaponProperties, getPrimaryWeaponProperty
+    getMergedAircraftTemplate, getMergedWeaponProperties, getPrimaryWeaponProperty,
+    getHearingEntry
 } from './equip.data.js';
 
 /** Ammo type name mapping (matches equip.ammo field / equip_ammo_type_X i18n keys) */
@@ -78,13 +79,14 @@ function renderDetail(equip) {
     const level = equip.levels[state.currentLevel] || equip.levels[0];
     const iconUrl = getEquipIconUrl(equip.icon);
     const maxLevel = getVisibleLevelCount(equip);
+    const hearingEntry = getHearingEntry(equip.id);
 
     let html = `
         <div class="panel-detail-top">
             <div class="panel-detail-icon-wrapper">
                 <canvas id="detailIconCanvas" width="256" height="256"></canvas>
             </div>
-            <div class="panel-detail-name">${equip.name}</div>
+            <div class="panel-detail-name">${equip.name}${hearingEntry?.alias ? `<span class="panel-detail-alias">${escapeHtml(hearingEntry.alias)}</span>` : ''}</div>
             <div class="panel-detail-meta">
                 <span class="equip-type-badge">${equip.type_name2 || equip.type_name}</span>
                 <span class="equip-rarity-badge rarity-${equip.rarity}">${equip.rarity_name}</span>
@@ -99,6 +101,22 @@ function renderDetail(equip) {
             ${AIRCRAFT_TYPES.has(equip.type) ? `<a href="${resolveUrl(`simulators/sim-aircraft?equip=${equip.id}`)}" class="sim-link-btn"><span class="material-symbols-outlined">flight</span> 시뮬레이션</a>` : ''}
         </div>
     `;
+
+    // 한줄평 (장비 청문회) — placed before stats; all reviews shown here
+    if (hearingEntry && (hearingEntry.reviews || []).length > 0) {
+        const reviewsHtml = hearingEntry.reviews
+            .map(r => `<div class="hearing-comment">${escapeHtml(r).replace(/\n/g, '<br>')}</div>`)
+            .join('');
+        html += `
+            <div class="stats-section">
+                <div class="stats-section-title">
+                    <span class="material-symbols-outlined">chat_bubble</span>
+                    한줄평
+                </div>
+                <div class="hearing-detail-comments">${reviewsHtml}</div>
+            </div>
+        `;
+    }
 
     // Level selector
     if (maxLevel > 1) {

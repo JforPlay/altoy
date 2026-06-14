@@ -1,259 +1,243 @@
 @import url('../theme.css');
 
-/* equip.hearing.css — 장비 한줄평 아카이브 page styles */
+/* equip.hearing.css — 청문회 mode of the equipment viewer (view toggle, grid
+   commentary dot, 청문회 card, detail-panel commentary).
+   NOTE: imported by equip-viewer.astro ALONGSIDE equip.style.css, which already
+   paints the body background — do NOT re-declare body background here. */
 
-/* global.style.css paints NO body background — without this the page renders
-   white in dark mode (recurring bug; see CLAUDE.md "Body background is per-page") */
-body {
-    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-    min-height: 100vh;
-}
-
-.hearing-page {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 1.5rem 1rem 3rem;
-}
-
-/* ===== Header ===== */
-
-.hearing-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-}
-
-.hearing-header .header-title-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.hearing-header .header-title-container .material-symbols-outlined {
-    font-size: 1.75rem;
-    color: var(--text-secondary);
-}
-
-.hearing-header h1 {
-    font-size: 1.5rem;
-    margin: 0;
-    color: var(--text-primary);
-}
-
-.hearing-count {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-}
-
-/* ===== Controls ===== */
-
-.hearing-controls {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-}
-
-.hearing-controls input[type="search"] {
-    flex: 1 1 240px;
-    min-width: 0;
-}
-
-.hearing-controls input[type="search"],
-.hearing-controls select {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background: var(--card-bg);
-    color: var(--text-primary);
-    font-size: 0.9rem;
-}
-
-/* Rarity multi-select toggles — same pattern as equip-viewer (equip.style.css) */
-.rarity-chips-container {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.3rem 0.5rem;
+/* ===== View toggle (그리드 / 청문회) ===== */
+.view-toggle {
+    display: inline-flex;
     border: 1px solid var(--input-border);
     border-radius: var(--radius-md);
+    overflow: hidden;
     background: var(--input-bg);
 }
-
-.rarity-chip {
-    padding: 0.2rem 0.5rem;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
+.view-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem 0.7rem;
+    border: none;
     background: transparent;
     color: var(--text-secondary);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
+    transition: all var(--transition-fast);
+    user-select: none;
+}
+.view-toggle-btn .material-symbols-outlined { font-size: 1.1rem; }
+.view-toggle-btn:hover { color: var(--text-primary); }
+/* --primary-color is GRAY (default theme) / SILVER (dark mode), so white text on
+   it is unreadable in dark mode — use --accent-blue for a legible, on-brand
+   active state (user feedback 2026-06-13). */
+.view-toggle-btn.active { background: var(--accent-blue); color: #fff; }
+
+/* compact toggle on small phones so it shares one row with the stats text */
+@media (max-width: 480px) {
+    .view-toggle-btn { padding: 0.4rem 0.5rem; font-size: 0.78rem; }
+    .view-toggle-btn .material-symbols-outlined { font-size: 1rem; }
 }
 
-.rarity-chip:hover {
-    background: var(--section-bg);
-    color: var(--text-primary);
+/* ===== 그리드 mode: commentary marker on compact cards ===== */
+.equip-card { position: relative; }     /* anchor for the dot; relative is layout-neutral on a flex item */
+.equip-hearing-dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--accent-blue);
+    pointer-events: none;
 }
 
-.rarity-chip.active.rarity-chip-6 { background: var(--rarity-ur-light); color: var(--rarity-ur-text); border-color: var(--rarity-ur); }
-.rarity-chip.active.rarity-chip-5 { background: var(--rarity-ssr); color: var(--rarity-ssr-text); border-color: var(--rarity-ssr); }
-.rarity-chip.active.rarity-chip-4 { background: var(--rarity-sr); color: var(--rarity-sr-text); border-color: var(--rarity-sr); }
-.rarity-chip.active.rarity-chip-3 { background: var(--rarity-r); color: var(--rarity-r-text); border-color: var(--rarity-r); }
-.rarity-chip.active.rarity-chip-2 { background: var(--rarity-n); color: var(--rarity-n-text); border-color: var(--rarity-n); }
-
-/* ===== Cards ===== */
-
-/* column labels — must mirror .hearing-card's grid template to line up */
-.hearing-list-header {
+/* ===== 청문회 mode: enriched cards in a responsive grid ===== */
+/* Grid (NOT CSS columns) so cards in the same row share a height — user-requested
+   unified row heights. auto-fill + minmax → 3/2/1 columns by available width;
+   min(22rem,100%) keeps a single card from overflowing below 22rem. */
+.hearing-masonry {
     display: grid;
-    grid-template-columns: minmax(220px, 280px) 1fr;
-    gap: 1rem;
-    padding: 0 1rem;
-    margin-bottom: 0.4rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-}
-
-.hearing-list {
-    display: flex;
-    flex-direction: column;
+    grid-template-columns: repeat(auto-fill, minmax(min(22rem, 100%), 1fr));
     gap: 0.75rem;
 }
 
 .hearing-card {
-    display: grid;
-    grid-template-columns: minmax(220px, 280px) 1fr;
-    gap: 1rem;
-    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.75rem;
     background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 10px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
 }
+.hearing-card:hover { border-color: var(--primary-color); }
 
-/* uncommented equips fade back so commented ones stand out (user-approved design) */
-.hearing-card.is-empty {
-    opacity: 0.75;
-}
-
-/* the whole left block is a link to equip-viewer's detail panel (?equip=<id>) */
-.hearing-equip {
+/* reuse .equip-icon-wrapper / .equip-card-info / .equip-card-meta / .equip-card-stats
+   from equip.style.css; only the header row + name + alias + comments are new */
+.hearing-card-header {
     display: flex;
-    align-items: flex-start;
     gap: 0.75rem;
-    min-width: 0;
-    color: inherit;
-    text-decoration: none;
+    align-items: flex-start;
 }
-
-.hearing-equip:hover .hearing-name {
-    color: var(--accent-blue);
-    text-decoration: underline;
-}
-
-.hearing-icon {
-    position: relative;
-    width: 56px;
-    height: 56px;
-    flex-shrink: 0;
-}
-
-.hearing-icon-bg,
-.hearing-icon-img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.hearing-equip-meta {
-    min-width: 0;
-}
-
-.hearing-name {
+.hearing-card-name {
     font-weight: 600;
     color: var(--text-primary);
     line-height: 1.3;
     overflow-wrap: anywhere;
 }
-
-.hearing-chips {
-    display: flex;
-    gap: 0.3rem;
-    flex-wrap: wrap;
-    margin-top: 0.25rem;
-}
-
-.hearing-chip {
-    font-size: 0.7rem;
-    padding: 0.1rem 0.4rem;
-    border: 1px solid var(--border-color);
-    border-radius: 999px;
-    color: var(--text-secondary);
-    white-space: nowrap;
-}
-
-/* Filled like the viewer's active rarity chips — text-on-transparent was unreadable in dark mode */
-.hearing-chip.rarity-UR  { background: var(--rarity-ur-light); color: var(--rarity-ur-text);  border-color: var(--rarity-ur); }
-.hearing-chip.rarity-SSR { background: var(--rarity-ssr);      color: var(--rarity-ssr-text); border-color: var(--rarity-ssr); }
-.hearing-chip.rarity-SR  { background: var(--rarity-sr);       color: var(--rarity-sr-text);  border-color: var(--rarity-sr); }
-.hearing-chip.rarity-R   { background: var(--rarity-r);        color: var(--rarity-r-text);   border-color: var(--rarity-r); }
-.hearing-chip.rarity-N   { background: var(--rarity-n);        color: var(--rarity-n-text);   border-color: var(--rarity-n); }
-
-/* community nickname — tinted badge right under the name. NOTE: this page is
-   on the default theme where --primary-color is GRAY; the blue lives in
-   --accent-blue / --primary-alpha-* (user feedback 2026-06-11, twice) */
+/* community nickname — tinted pill badge inline next to the name (same line, not
+   its own). --primary-color is GRAY on the default theme; the blue lives in
+   --accent-blue / --primary-alpha-*. */
 .hearing-alias {
     display: inline-block;
-    width: fit-content;
-    margin-top: 0.3rem;
-    padding: 0.1rem 0.5rem;
-    font-size: 0.75rem;
+    margin-left: 0.35rem;
+    padding: 0.05rem 0.4rem;
+    font-size: 0.72rem;
     font-weight: 700;
     color: var(--accent-blue);
     background: var(--primary-alpha-10);
     border: 1px solid var(--primary-alpha-30);
     border-radius: var(--radius-sm);
+    vertical-align: middle;
     overflow-wrap: anywhere;
 }
-
-/* ===== Comments ===== */
-
-.hearing-comments {
+.hearing-card-comments {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
-    justify-content: center;
-    min-width: 0;
 }
-
+/* one 한줄평 bubble — shared by the card and the detail panel */
 .hearing-comment {
     font-size: 0.9rem;
     line-height: 1.5;
     color: var(--text-primary);
     overflow-wrap: anywhere;
+    background: var(--primary-alpha-10);
+    border: 1px solid var(--primary-alpha-30);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.6rem;
+}
+.hearing-more {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent-blue);
 }
 
-.hearing-no-comment {
-    font-size: 0.85rem;
-    color: var(--text-muted);
+/* ===== Detail panel commentary ===== */
+/* nickname badge — same pill treatment as the card alias, inline next to the
+   name (1.1rem centered title; the badge rides alongside it). */
+.panel-detail-alias {
+    display: inline-block;
+    margin-left: 0.4rem;
+    padding: 0.05rem 0.45rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    background: var(--primary-alpha-10);
+    border: 1px solid var(--primary-alpha-30);
+    border-radius: var(--radius-sm);
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+.hearing-detail-comments {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
 }
 
-/* ===== Mobile ===== */
+/* ===== Source / special-thanks credits (ⓘ next to the page title) =====
+   Credits the 한줄평·별명 commentary data this feature renders. Reveal model
+   (user pick 2026-06-13): hover on desktop, tap/click on touch + keyboard.
+   Positioning: the bubble is placed against .header-title-container (NOT the
+   trigger) so its left edge lines up with the page's left padding and can never
+   run off the right edge on a phone. .credits stretches to the title-row height
+   so the cursor travels from the ⓘ down into the bubble with no dead zone; the
+   transparent ::before bridges the small visual gap. */
+.credits {
+    display: inline-flex;
+    align-items: center;
+    align-self: stretch;     /* fill the title row → continuous hover column */
+}
+.credits-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color var(--transition-fast), background var(--transition-fast);
+}
+.credits-trigger .material-symbols-outlined { font-size: 1.2rem; }
+.credits-trigger:hover,
+.credits-trigger:focus-visible {
+    color: var(--accent-blue);
+    background: var(--primary-alpha-10);
+}
 
-@media (max-width: 640px) {
-    /* cards stack to one column — the two-column header no longer lines up */
-    .hearing-list-header {
-        display: none;
-    }
-
-    .hearing-card {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-    }
+.credits-bubble {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    left: 0;
+    z-index: var(--z-dropdown);   /* header popover: below the navbar, above the grid */
+    width: max-content;
+    max-width: min(22rem, calc(100vw - 2rem));   /* clamp so it fits a phone screen */
+    padding: 0.7rem 0.85rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: 0 6px 20px var(--overlay-medium);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.25rem);
+    transition: opacity var(--transition-fast),
+                transform var(--transition-fast),
+                visibility var(--transition-fast);
+}
+/* transparent bridge across the 0.4rem gap so the pointer stays inside .credits
+   while moving from the ⓘ into the bubble (desktop hover) */
+.credits-bubble::before {
+    content: '';
+    position: absolute;
+    top: -0.4rem;
+    left: 0;
+    right: 0;
+    height: 0.4rem;
+}
+.credits:hover .credits-bubble,
+.credits-bubble.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.credits-title {
+    margin: 0 0 0.4rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+.credits-line {
+    margin: 0.25rem 0;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+.credits-line a {
+    color: var(--accent-blue);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.credits-line a:hover { text-decoration: underline; }
+.credits-placeholder {
+    color: var(--text-secondary);
+    font-style: italic;
+    opacity: 0.7;
 }

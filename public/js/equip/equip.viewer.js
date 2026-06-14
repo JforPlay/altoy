@@ -8,7 +8,8 @@
 
 import {
     createSearchIndex, ensureFuse, debounce, getUrlParam, setUrlParams,
-    resolveUrl, showToast, closeModal, lockBodyScroll, unlockBodyScroll
+    resolveUrl, showToast, closeModal, lockBodyScroll, unlockBodyScroll,
+    getStorageItem, setStorageItem
 } from '../utils.js';
 import {
     setup as setupData,
@@ -19,7 +20,8 @@ import {
     loadUpgradeTemplateData, isInUpgradeTree,
     getEquipIconUrl, getRarityBgUrl, getSPWeaponIconUrl, getUniqueTypes, getUniqueNationalities, getUniqueLabels,
     getFullEquipData, getSkillData, loadSPWeaponData, normalizeSPWeapons, getSPWeaponRawData,
-    enrichEquipDataWithReload, SP_RARITY_NAMES
+    enrichEquipDataWithReload, SP_RARITY_NAMES,
+    loadHearingData, getHearingEntry
 } from './equip.data.js';
 import {
     setup as setupDetail,
@@ -32,6 +34,10 @@ import {
     renderCompareModal,
     loadCompareFromUrl
 } from './equip.compare.js';
+import {
+    setup as setupHearingView,
+    renderHearingGrid
+} from './equip.hearing-view.js';
 
 // ===== Application State =====
 const state = {
@@ -43,6 +49,9 @@ const state = {
     weaponPropertyData: null,
     bulletTemplateData: null,
     skillData: null,
+    // Commentary (장비 청문회)
+    hearing: {},
+    viewMode: 'grid',   // 'grid' | 'hearing'
     filteredData: [],
     currentEquip: null,
     currentLevel: 0,
@@ -82,11 +91,19 @@ const typeFilter = document.getElementById('typeFilter');
 const nationalityFilter = document.getElementById('nationalityFilter');
 const rarityChips = document.getElementById('rarityChips');
 const labelChips = document.getElementById('labelChips');
+const labelFilterToggle = document.getElementById('labelFilterToggle');
+const labelFilterCount = document.getElementById('labelFilterCount');
 const sortStat = document.getElementById('sortStat');
 const sortDirection = document.getElementById('sortDirection');
 const loading = document.getElementById('loading');
 const totalCount = document.getElementById('totalCount');
 const filteredCount = document.getElementById('filteredCount');
+const viewToggle = document.getElementById('viewToggle');
+
+// Credits popover (출처 · 특별 감사) — hover is CSS-only; these drive tap/keyboard
+const creditsInfo = document.getElementById('creditsInfo');
+const creditsTrigger = document.getElementById('creditsTrigger');
+const creditsBubble = document.getElementById('creditsBubble');
 
 // Panel elements
 const detailPanel = document.getElementById('detailPanel');
@@ -112,6 +129,7 @@ state.elements = {
 setupData(state);
 setupDetail(state);
 setupCompare(state);
+setupHearingView(state, { onCardClick, sortEquips: sortEquipsInGroup });
 
 // ===== Initialization =====
 
@@ -135,6 +153,7 @@ async function init() {
             loadShipTypeData(),
             loadEquipCodeData(),
             loadSPWeaponData(),
+            loadHearingData(),
         ]);
 
         // SP weapons use a different data source but appear as regular cards in the grid
@@ -158,14 +177,33 @@ async function init() {
         // Enrich lite entries with reload time once both full data and weapon_property are ready
         Promise.all([state.fullEquipDataPromise, wpPromise]).then(() => {
             enrichEquipDataWithReload();
-            renderEquipGrid();
+            renderCurrentView();
         });
 
         loading.style.display = 'none';
 
+        // Fold 별명 + 한줄평 into the search index so nicknames AND comment text match
+        for (const e of state.equipData) {
+            const h = getHearingEntry(e.id);
+            e._alias = h?.alias || '';
+            e._reviews = (h?.reviews || []).join(' ');
+        }
+
+        state.viewMode = resolveInitialViewMode();
+        updateViewToggleUI();
+
         await ensureFuse();
         state.searchIndex = createSearchIndex(state.equipData, {
-            keys: ['name', 'type_name', 'type_name2', 'nation_name', 'nation_code'],
+            // weighted so name/별명 stay primary; 한줄평 text is a secondary match source
+            keys: [
+                { name: 'name', weight: 3 },
+                { name: '_alias', weight: 2 },
+                { name: 'type_name', weight: 1 },
+                { name: 'type_name2', weight: 1 },
+                { name: 'nation_name', weight: 1 },
+                { name: 'nation_code', weight: 1 },
+                { name: '_reviews', weight: 0.5 },
+            ],
             threshold: 0.3,
         });
 
@@ -246,18 +284,29 @@ function setupEventListeners() {
             state.activeLabels.add(label);
             chip.classList.add('active');
         }
+        updateLabelFilterCount();
         filterEquipment();
     });
+
+    // Tag-filter collapse toggle (folds the chip tray; badge keeps active count visible)
+    if (labelFilterToggle) {
+        labelFilterToggle.addEventListener('click', () => {
+            const wrap = labelFilterToggle.closest('.label-filter');
+            if (!wrap) return;
+            const open = wrap.classList.toggle('open');
+            labelFilterToggle.setAttribute('aria-expanded', String(open));
+        });
+    }
 
     // Sort controls
     sortStat.addEventListener('change', () => {
         state.sortStat = sortStat.value;
-        renderEquipGrid();
+        renderCurrentView();
     });
     sortDirection.addEventListener('click', () => {
         state.sortDirection = state.sortDirection === 'desc' ? 'asc' : 'desc';
         sortDirection.textContent = state.sortDirection === 'desc' ? '내림차순' : '오름차순';
-        if (state.sortStat) renderEquipGrid();
+        if (state.sortStat) renderCurrentView();
     });
 
     // Detail panel close
@@ -281,13 +330,42 @@ function setupEventListeners() {
     // ESC key for panel
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            if (state.compareMode) {
+            if (creditsBubble && creditsBubble.classList.contains('open')) {
+                creditsBubble.classList.remove('open');
+                creditsTrigger.setAttribute('aria-expanded', 'false');
+            } else if (state.compareMode) {
                 exitCompareMode();
             } else if (detailPanel.classList.contains('open')) {
                 closeDetailPanel();
             }
         }
     });
+
+    // View-mode toggle
+    if (viewToggle) {
+        viewToggle.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-view]');
+            if (!btn) return;
+            const mode = btn.dataset.view;
+            if (mode !== state.viewMode) setViewMode(mode);
+        });
+    }
+
+    // Credits popover: tap/click (touch + keyboard Enter/Space) toggles it;
+    // desktop hover is handled in CSS. Click-outside closes it.
+    if (creditsTrigger && creditsBubble && creditsInfo) {
+        creditsTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const open = creditsBubble.classList.toggle('open');
+            creditsTrigger.setAttribute('aria-expanded', String(open));
+        });
+        document.addEventListener('click', (e) => {
+            if (creditsBubble.classList.contains('open') && !creditsInfo.contains(e.target)) {
+                creditsBubble.classList.remove('open');
+                creditsTrigger.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
 }
 
 // ===== Filtering =====
@@ -317,7 +395,7 @@ function filterEquipment() {
         return matchType && matchNation && matchRarity && matchLabels;
     });
 
-    renderEquipGrid();
+    renderCurrentView();
     updateFilterStats();
 }
 
@@ -334,7 +412,46 @@ function searchEquipment(searchTerm) {
         equip.type_name2,
         equip.nation_name,
         equip.nation_code,
+        equip._alias,
+        equip._reviews,
     ].some(value => String(value || '').toLowerCase().includes(needle)));
+}
+
+// ===== View Mode (그리드 / 청문회) =====
+
+/** Resolve the initial mode: ?view= URL param → stored pref → 'hearing' (default). */
+function resolveInitialViewMode() {
+    const urlView = getUrlParam('view');
+    if (urlView === 'hearing' || urlView === 'grid') return urlView;
+    // 청문회 is the default view; only an explicit stored 'grid' pref opts out.
+    return getStorageItem('equip-view-mode') === 'grid' ? 'grid' : 'hearing';
+}
+
+/** Dispatch to the active renderer. */
+function renderCurrentView() {
+    if (state.viewMode === 'hearing') renderHearingGrid();
+    else renderEquipGrid();
+}
+
+/** Reflect state.viewMode on the toggle buttons. */
+function updateViewToggleUI() {
+    if (!viewToggle) return;
+    for (const btn of viewToggle.querySelectorAll('[data-view]')) {
+        const active = btn.dataset.view === state.viewMode;
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    }
+}
+
+/** Switch mode from a user toggle: persist, sync URL, re-render. */
+function setViewMode(mode) {
+    if (mode !== 'grid' && mode !== 'hearing') return;
+    state.viewMode = mode;
+    setStorageItem('equip-view-mode', mode);
+    setUrlParams({ view: mode === 'grid' ? 'grid' : null }, { replace: true });
+    updateViewToggleUI();
+    renderCurrentView();
+    updateFilterStats();
 }
 
 // ===== Rendering =====
@@ -385,6 +502,7 @@ function sortEquipsInGroup(equips) {
  * are built with icon, rarity badge, stats, and click handlers.
  */
 function renderEquipGrid() {
+    equipGrid.classList.remove('mode-hearing');
     if (state.filteredData.length === 0) {
         equipGrid.innerHTML = '<div class="empty-state">장비를 찾을 수 없습니다.</div>';
         return;
@@ -428,6 +546,7 @@ function renderEquipGrid() {
                 card.dataset.compareGroup = equip.compare_group;
             }
 
+            const hasHearing = !!getHearingEntry(equip.id);
             const iconUrl = equip._isSPWeapon ? getSPWeaponIconUrl(equip.icon) : getEquipIconUrl(equip.icon);
             const bgUrl = getRarityBgUrl(equip.rarity);
 
@@ -458,6 +577,7 @@ function renderEquipGrid() {
                     </div>
                     ${statsHtml ? `<div class="equip-card-stats">${statsHtml}</div>` : ''}
                 </div>
+                ${hasHearing ? '<span class="equip-hearing-dot material-symbols-outlined" title="한줄평 있음">chat_bubble</span>' : ''}
             `;
 
             card.addEventListener('click', () => {
@@ -481,9 +601,23 @@ function renderEquipGrid() {
     }
 }
 
+/** Reflect the active-label count on the (possibly collapsed) tag-filter toggle badge. */
+function updateLabelFilterCount() {
+    if (!labelFilterCount) return;
+    const n = state.activeLabels.size;
+    labelFilterCount.textContent = n;
+    labelFilterCount.hidden = n === 0;
+}
+
 function updateFilterStats() {
     if (totalCount) totalCount.textContent = state.equipData.length;
-    if (filteredCount) filteredCount.textContent = state.filteredData.length;
+    if (!filteredCount) return;
+    if (state.viewMode === 'hearing') {
+        filteredCount.textContent = state.filteredData
+            .filter(e => !e._isSPWeapon && getHearingEntry(e.id)).length;
+    } else {
+        filteredCount.textContent = state.filteredData.length;
+    }
 }
 
 // ===== Card Click Handler =====
@@ -673,6 +807,15 @@ function enterCompareMode(firstEquip) {
 
     closeDetailPanel();
 
+    // Compare picks the second card from the icon grid; ensure we're in 그리드.
+    if (state.viewMode !== 'grid') {
+        state.viewMode = 'grid';
+        updateViewToggleUI();
+        setUrlParams({ view: 'grid' }, { replace: true });
+        renderEquipGrid();
+        updateFilterStats();
+    }
+
     compareModeText.textContent = `"${firstEquip.name}" 과(와) 비교할 장비를 선택하세요`;
     compareModeBar.style.display = 'flex';
 
@@ -756,6 +899,12 @@ async function selectCompareSecondItem(equipId) {
  * browser back/forward navigation.
  */
 function handleRoute() {
+    const viewParam = getUrlParam('view');
+    if (viewParam === 'hearing' || viewParam === 'grid') {
+        state.viewMode = viewParam;
+        updateViewToggleUI();
+    }
+
     const equipParam = getUrlParam('equip');
     const compareParam = getUrlParam('compare');
 
@@ -769,7 +918,7 @@ function handleRoute() {
     }
 
     mainView.style.display = 'block';
-    renderEquipGrid();
+    renderCurrentView();
     updateFilterStats();
 }
 

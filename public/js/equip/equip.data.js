@@ -48,6 +48,25 @@ export async function loadStatisticsData() {
     return null;
 }
 
+/**
+ * Load curator commentary (별명/한줄평) keyed by equip id (string) into
+ * state.hearing. Soft-fail: missing commentary must never blank the equip list.
+ */
+export async function loadHearingData() {
+    try {
+        const data = await fetchJSONWithCache('data/equip/equip_hearing.json', { maxAge: 86400000 });
+        state.hearing = data?.entries || {};
+    } catch (error) {
+        console.warn('Failed to load hearing data:', error);
+        state.hearing = {};
+    }
+}
+
+/** Commentary entry { alias, reviews:string[] } for an equip id, or null. */
+export function getHearingEntry(id) {
+    return state.hearing?.[String(id)] || null;
+}
+
 // Mapping data — blocking at init (small files, needed for initial render)
 
 export async function loadEquipTypeData() {

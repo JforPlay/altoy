@@ -237,7 +237,7 @@
 
 .sim-link-btn:hover {
     color: #fff;
-    background: var(--primary-color);
+    background: var(--accent-blue);   /* stable hue; --primary-color goes silver in dark → #fff unreadable */
 }
 
 .sim-link-btn .material-symbols-outlined {
