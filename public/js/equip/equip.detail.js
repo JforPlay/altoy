@@ -435,25 +435,25 @@ function renderWeaponParamsRows(wp) {
 
 /**
  * Render the weapon parameters section for the current level.
- * Multi-weapon entries show grouped headers (name from weapon_name.json or "무기 N").
+ * Every weapon shows a grouped header with its name (from weapon_name.json).
+ * Multi-weapon entries fall back to a positional "무기 N" label; a single
+ * unnamed weapon gets no header (the positional label would be meaningless).
  */
 function renderWeaponParams(equip, level) {
     const weapons = getMergedWeaponProperties(equip, level);
     if (!weapons.length) return '';
 
+    const single = weapons.length === 1;
     let allRows = '';
-    if (weapons.length === 1) {
-        allRows = renderWeaponParamsRows(weapons[0]);
-    } else {
-        for (let i = 0; i < weapons.length; i++) {
-            const wpRows = renderWeaponParamsRows(weapons[i]);
-            if (wpRows) {
-                const wName = getWeaponName(weapons[i]._weaponId);
-                const header = wName || `무기 ${i + 1}`;
-                allRows += `<tr><th colspan="2" class="weapon-group-header">${header}</th></tr>`;
-                allRows += wpRows;
-            }
+    for (let i = 0; i < weapons.length; i++) {
+        const wpRows = renderWeaponParamsRows(weapons[i]);
+        if (!wpRows) continue;
+        const wName = getWeaponName(weapons[i]._weaponId);
+        const header = wName || (single ? '' : `무기 ${i + 1}`);
+        if (header) {
+            allRows += `<tr><th colspan="2" class="weapon-group-header">${escapeHtml(header)}</th></tr>`;
         }
+        allRows += wpRows;
     }
 
     if (!allRows) return '';
