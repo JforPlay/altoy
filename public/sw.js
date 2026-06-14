@@ -8,7 +8,7 @@
 // See CLAUDE.md "Cache & Data Versioning" for the bump rules.
 // ============================================
 
-const CACHE_VERSION = '1.33.2';
+const CACHE_VERSION = '1.33.3';
 const STATIC_CACHE = `altoy-static-${CACHE_VERSION}`;
 const DATA_CACHE = `altoy-data-${CACHE_VERSION}`;
 
@@ -48,7 +48,10 @@ self.addEventListener('activate', (event) => {
 
 // Fetch strategy:
 // - Data files (JSON): Stale-while-revalidate (serve cached, update in background)
-// - JS/CSS: Stale-while-revalidate (serve cached, update in background)
+// - JS/CSS: Network-first (fetch fresh, fall back to cache offline) — so a
+//   DATA_VERSION/CACHE_VERSION bump takes effect on the NEXT load instead of
+//   needing the stale-while-revalidate double-reload. utils.js is the version
+//   oracle for the IndexedDB data cache, so it must not be served stale.
 // - Images/fonts: Cache first, fallback to network (content-addressed, rarely change)
 // - External resources: Network only (don't cache CDN/GitHub raw)
 self.addEventListener('fetch', (event) => {
@@ -66,9 +69,9 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // JS/CSS: stale-while-revalidate (ensures updates propagate on next visit)
+    // JS/CSS: network-first (fresh on next load; cache is the offline fallback)
     if (url.pathname.match(/\.(js|css)$/)) {
-        event.respondWith(staleWhileRevalidate(event.request, STATIC_CACHE));
+        event.respondWith(networkFirst(event.request, STATIC_CACHE));
         return;
     }
 
@@ -95,6 +98,25 @@ async function cacheFirst(request, cacheName) {
         return response;
     } catch (e) {
         return new Response('Offline', { status: 503 });
+    }
+}
+
+/**
+ * Network-first: fetch fresh from the network (with `cache: 'no-cache'` so the
+ * browser revalidates against the origin instead of honoring GitHub Pages'
+ * fixed max-age), update the cache, and fall back to the cached copy only when
+ * the network is unavailable. Keeps offline support while guaranteeing a
+ * version bump is live on the next load.
+ */
+async function networkFirst(request, cacheName) {
+    const cache = await caches.open(cacheName);
+    try {
+        const response = await fetch(request, { cache: 'no-cache' });
+        if (response.ok) cache.put(request, response.clone());
+        return response;
+    } catch (e) {
+        const cached = await cache.match(request);
+        return cached || new Response('Offline', { status: 503 });
     }
 }
 
