@@ -12,6 +12,10 @@
  * decoded base is cached per container so an expression switch only redraws.
  */
 import { hideElement, showElement, createImgElement, createIcon, lockBodyScroll, unlockBodyScroll, downloadImage, sanitizeFilename, DATA_VERSION, DATA_FOR_TOY_BASE } from '../utils.js';
+// Canonical, game-faithful no-expression face picker (manifest `default` → '0' →
+// numerically-smallest). Single source of truth shared with the story viewer; do
+// NOT reintroduce a local `faces[0]` heuristic — the faces array is in atlas order.
+import { pickFaceCandidates } from '../expression-face.js';
 
 // Cap the composite canvas — some paintings are 100+ megapixels (e.g. 이404
 // 317020 is 11830×10224). A canvas that large overflows browser decode/canvas
@@ -182,8 +186,6 @@ function renderImageGallery(skin, container, skinName = '') {
     const skinId = skin['클뜯 id'];
     const captionFor = (label) => skinName ? `${skinName} - ${label}` : label;
 
-    const getDefaultFace = (faces) => (faces && faces.includes('0') ? '0' : (faces ? faces[0] : '0'));
-
     let manifestData = null;
     let baseDir = '';
 
@@ -194,7 +196,9 @@ function renderImageGallery(skin, container, skinName = '') {
         }
     }
 
-    const mainDefaultFace = manifestData ? getDefaultFace(manifestData.faces) : null;
+    // Default = the game's no-expression face (manifest `default` → '0' → smallest),
+    // NOT faces[0] (atlas order → arbitrary expression). pickFaceCandidates(_, null)[0].
+    const mainDefaultFace = manifestData ? (pickFaceCandidates(manifestData, null)[0] || null) : null;
 
     // Top Banner (Full Art)
     if (manifestData && manifestData.faces && manifestData.faces.length > 0) {
@@ -229,7 +233,7 @@ function renderImageGallery(skin, container, skinName = '') {
 
     if (hasZoomedExpressionArt) {
         const baseImageUrl = expUrl(`${baseDir}/painting_n.png`);
-        const zoomDefaultFace = (mainDefaultFace && zoomedManifest.faces.includes(mainDefaultFace)) ? mainDefaultFace : getDefaultFace(zoomedManifest.faces);
+        const zoomDefaultFace = (mainDefaultFace && zoomedManifest.faces.includes(mainDefaultFace)) ? mainDefaultFace : (pickFaceCandidates(zoomedManifest, null)[0] || zoomedManifest.faces[0]);
         const defaultFaceUrl = expUrl(`${baseDir}/painting_n_face_${zoomDefaultFace}.png`);
 
         const overlayNode = buildOverlayContainer({
@@ -508,6 +512,60 @@ async function composeOverlay(wrapper) {
     }
 }
 
+/**
+ * Composite a skin's base painting + its no-expression DEFAULT face into a PNG data
+ * URL, for consumers that show the full art as a plain <img> (e.g. the skin-list
+ * lightbox) and so can't host the detail viewer's interactive <canvas>. Reuses the
+ * same base-decode + box/size placement as composeOverlay. The face is resolved via
+ * the shared, game-faithful candidate chain (manifest `default` → '0' → smallest),
+ * trying each until one loads — same scheme as the story viewer. Returns null when
+ * there's nothing to composite (no faces) or a load/encode fails, so the caller can
+ * fall back to a plain URL.
+ * @param {number|string} skinId
+ * @param {{faces:string[], default?:string, box:number[], size:number[]}} manifestEntry
+ * @returns {Promise<string|null>} PNG data URL, or null
+ */
+async function composeDefaultPainting(skinId, manifestEntry) {
+    const candidates = pickFaceCandidates(manifestEntry, null);
+    if (candidates.length === 0) return null;
+    const baseDir = `${DATA_FOR_TOY_BASE}/output_expressions/${skinId}`;
+
+    try {
+        const baseCanvas = await buildBaseCanvas(expUrl(`${baseDir}/painting.png`));
+
+        // Resolve the face, falling through the candidate chain until one loads
+        // (a candidate can 404 against a stale manifest).
+        let face = null;
+        for (const faceId of candidates) {
+            try {
+                face = await loadImage(expUrl(`${baseDir}/painting_face_${faceId}.png`));
+                break;
+            } catch (_) { /* try next candidate */ }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = baseCanvas.width;
+        canvas.height = baseCanvas.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(baseCanvas, 0, 0);
+
+        const { box, size } = manifestEntry;
+        if (face && box && size) {
+            const [bx, by, bw, bh] = box;
+            const [sw, sh] = size;
+            // box is in manifest-size space; scale it into the (capped) canvas.
+            const sx = canvas.width / sw;
+            const sy = canvas.height / sh;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(face, bx * sx, by * sy, bw * sx, bh * sy);
+        }
+        return canvas.toDataURL('image/png');
+    } catch (e) {
+        console.warn('composeDefaultPainting failed', e);
+        return null;
+    }
+}
+
 function addImageErrorHandlers(container) {
     // Overlay base images are <canvas> (failures handled in composeOverlay), so
     // this only covers plain gallery <img>s; a broken expression thumb is non-fatal.
@@ -526,11 +584,13 @@ function addImageErrorHandlers(container) {
 window.SkinExpression = {
     init,
     setManifest,
-    renderImageGallery
+    renderImageGallery,
+    composeDefaultPainting
 };
 
 export {
     init,
     setManifest,
-    renderImageGallery
+    renderImageGallery,
+    composeDefaultPainting
 };

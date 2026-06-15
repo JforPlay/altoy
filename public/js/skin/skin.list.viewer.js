@@ -10,6 +10,7 @@ import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl
     createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, syncedStorage } from '../utils.js';
 import { loadReleaseDates } from './skin.data.js';
 import { formatReleaseDate, releaseSortKey } from './skin.dates.js';
+import { composeDefaultPainting } from './skin.expression.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // ===== DOM Element References =====
@@ -640,11 +641,25 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ===== Lightbox =====
+    // Expression manifest (skinId → {faces, box, size}) is ~1MB, so it's lazy-loaded
+    // on first lightbox open rather than at page init, then IndexedDB-cached.
+    let expressionManifestPromise = null;
+    function loadExpressionManifest() {
+        if (!expressionManifestPromise) {
+            expressionManifestPromise = fetchJSONWithCache('data/skin/expression_manifest.json')
+                .catch(err => {
+                    console.warn('Expression manifest load failed', err);
+                    return {};
+                });
+        }
+        return expressionManifestPromise;
+    }
+
     const Lightbox = {
         _generation: 0,
         _errorHandler: null,
 
-        open(skin) {
+        async open(skin) {
             // Remove stale error handler from previous open
             if (this._errorHandler) {
                 DOM.popup.image.removeEventListener('error', this._errorHandler);
@@ -653,8 +668,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             this._generation++;
             const gen = this._generation;
+            const skinId = skin['클뜯 id'];
             const shipyardUrl = skin['깔끔한 일러'] || '';
-            const fullUrl = shipyardUrl ? shipyardUrl.replace('/shipyard.png', '/painting.png') : IMG_FALLBACKS.CARD;
+            // Full painting lives at output_expressions/<id>/painting.png; the card thumb is
+            // skin_shipyard/<id>.webp (since the 2026-05 skin-images migration). Derive one from
+            // the other. Skins without a painting 404 → handled by the fallback chain below.
+            const paintingUrl = shipyardUrl
+                ? shipyardUrl.replace(/\/skin_shipyard\/(\d+)\.webp$/, '/output_expressions/$1/painting.png')
+                : IMG_FALLBACKS.CARD;
             const asmrUrl = skin['ASMR 일러'] || '';
 
             DOM.popup.image.src = '';
@@ -675,6 +696,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (gen === this._generation) DOM.popup.image.classList.remove('loading');
             }, { once: true });
 
+            // painting.png has a transparent face hole — composite the skin's default
+            // expression onto it (same machinery as the detail viewer). The manifest is
+            // lazy-loaded on first open. Falls through to the plain-URL path below when the
+            // skin has no expression entry or compositing fails.
+            const manifest = await loadExpressionManifest();
+            if (gen !== this._generation) return; // superseded by a newer open()
+            const manifestEntry = manifest[skinId];
+            if (manifestEntry) {
+                const composited = await composeDefaultPainting(skinId, manifestEntry);
+                if (gen !== this._generation) return;
+                if (composited) {
+                    DOM.popup.image.src = composited;
+                    return;
+                }
+            }
+
+            // No expression overlay (or it failed): show the plain painting, falling
+            // back to the ASMR/shipyard art if it 404s.
             const fallbacks = [asmrUrl, shipyardUrl].filter(Boolean);
             const handleError = () => {
                 if (gen !== this._generation) return;
@@ -689,10 +728,13 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             this._errorHandler = handleError;
             DOM.popup.image.addEventListener('error', handleError, { once: true });
-            DOM.popup.image.src = fullUrl;
+            DOM.popup.image.src = paintingUrl;
         },
 
         close() {
+            // Bump generation so any in-flight composite from open() aborts on its
+            // gen guard instead of painting into the now-closed popup.
+            this._generation++;
             DOM.popup.overlay.classList.remove('visible');
             DOM.popup.overlay.setAttribute('aria-hidden', 'true');
             unlockBodyScroll();

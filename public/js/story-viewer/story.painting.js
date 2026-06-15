@@ -23,6 +23,8 @@
  * off ctx and touches no DOM.
  */
 
+import { pickFaceCandidates } from '../expression-face.js';
+
 // =========================================================================
 // Expression manifest lookup
 // =========================================================================
@@ -278,52 +280,8 @@ function getBaseCanvas(url) {
     return promise;
 }
 
-/**
- * Face-id candidates for a painting, in game-priority order:
- *   1. the step's expression — sprite name == script value, 1:1, no
- *      remapping (dialoguestoryplayer.lua :866 uses the raw value as the
- *      paintingface atlas sprite name);
- *   2. the manifest's `default` — ship_skin_expression[painting].default,
- *      the game's no-expression face (non-empty for ~106 paintings;
- *      pipeline TODO: not yet baked into expression_manifest.json — this
- *      lights up when it lands);
- *   3. '0', then the numerically smallest face — web-only fallback. The
- *      game HIDES the face layer when a step has no expression and the
- *      painting has no config default (the in-game base has the face
- *      baked in), but every EXTRACTED base has the face region cut out
- *      (verified: alpha=0 across the face box even for paintings whose
- *      in-game base is complete), so the viewer must always composite
- *      something; the lowest face id is the most neutral stand-in.
- * Candidates are filtered to faces that actually exist in the manifest,
- * so no fetch is wasted on known-missing face files. Pure — node-testable.
- */
-export function pickFaceCandidates(expressionData, expression) {
-    const faces = (expressionData?.faces || []).map(String);
-    if (!faces.length) return [];
-
-    const chain = [];
-    if (expression !== undefined && expression !== null) chain.push(String(expression));
-    if (typeof expressionData.default === 'string' && expressionData.default !== '') {
-        chain.push(expressionData.default);
-    }
-    chain.push('0');
-    const numeric = faces
-        .filter(f => !Number.isNaN(Number(f)))
-        .sort((x, y) => Number(x) - Number(y));
-    if (numeric.length) chain.push(numeric[0]);
-
-    const seen = new Set();
-    const out = [];
-    for (const c of chain) {
-        if (faces.includes(c) && !seen.has(c)) {
-            seen.add(c);
-            out.push(c);
-        }
-    }
-    // Last resort (e.g. all-non-numeric face names): first listed face.
-    if (!out.length) out.push(faces[0]);
-    return out;
-}
+// pickFaceCandidates lives in ../expression-face.js now (shared with the skin pages);
+// imported at the top of this file.
 
 /**
  * Resolve the dialog-portrait face URL for a speaker's expression data and

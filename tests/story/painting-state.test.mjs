@@ -11,7 +11,8 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { computePaintingStateAt, pickFaceCandidates, resolvePortraitFaceUrl } from '../../public/js/story-viewer/story.painting.js';
+import { computePaintingStateAt, resolvePortraitFaceUrl } from '../../public/js/story-viewer/story.painting.js';
+import { pickFaceCandidates } from '../../public/js/expression-face.js';
 
 const MANIFEST = {
     '101': { faces: ['0', '1'], box: [1, 2, 3, 4], size: [100, 200] },
