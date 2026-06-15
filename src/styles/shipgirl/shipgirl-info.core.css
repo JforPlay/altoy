@@ -25,7 +25,8 @@ body {
   padding: 1.25rem;
 }
 
-/* Header */
+/* Header — bare rule still backs the detail-view header (.detail-view-header has
+   no background of its own). */
 header {
   background: var(--card-bg);
   padding: 1.25rem;
@@ -33,6 +34,17 @@ header {
   margin-bottom: 1.875rem;
   box-shadow: 0 4px 6px var(--shadow-color);
   transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Main-view header is a boxless toolbar title row that scrolls away; the sticky
+   surface is the .filter-rail below it. Scoped to #mainView so the detail-view
+   header keeps its card box (above). */
+#mainView > header {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0;
 }
 
 /* Header Top - Title and Stats on same line */
@@ -64,48 +76,168 @@ header h1 {
   margin-left: 0.5rem;
 }
 
-/* Search Container */
-.search-container {
+/* ===== Filter rail — sticky toolbar ==========================================
+   The rail pins just below the global navbar as the roster scrolls. At rest it's
+   a boxless minimal row under the title; once it sticks (.stuck, toggled in JS)
+   a frosted backdrop + hairline fade in so it reads as a floating glass toolbar
+   over the cards (never orphaned once the title scrolls away). It lives as a
+   SIBLING of #shipgirls (not inside <header>) so the sticky holds across the
+   whole gallery. --rail-top is set to the live navbar height in JS; the 64px
+   fallback matches the project's sticky-subheader convention. */
+.filter-rail {
+  position: sticky;
+  top: var(--rail-top, var(--navbar-height, 64px));
+  z-index: var(--z-sticky);
   display: flex;
-  gap: 0.625rem;
+  gap: 0.6rem;
   align-items: center;
-  margin-bottom: 1.25rem;
   flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--border-color);
+  background: transparent;
+  transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+/* Stuck: frosted bar spanning exactly the content column — its edges line up with
+   the card grid (no negative-margin overhang). Opacity is higher than the cards'
+   chips so controls/text stay clearly legible over scrolling art. */
+.filter-rail.stuck {
+  border-top-color: transparent;
+  /* Spill the frosted bar slightly past the card grid so its sides don't slice
+     across the cards (which read as "cut off"). The negative margin + equal
+     padding cancel, so the controls don't shift. */
+  margin-left: -1rem;
+  margin-right: -1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0 0 0.9rem 0.9rem;
+  background: color-mix(in srgb, var(--card-bg) 86%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  box-shadow: 0 6px 18px var(--shadow-color), inset 0 -1px 0 var(--border-color);
+}
+/* Promote control text to full strength once frosted (it's intentionally faint
+   at rest as part of the minimal look). Skip the active toggle/view buttons —
+   they carry #fff on an accent-blue fill. */
+.filter-rail.stuck #rarityFilter,
+.filter-rail.stuck #shipTypeFilter,
+.filter-rail.stuck #nationalityFilter,
+.filter-rail.stuck #constructionFilter,
+.filter-rail.stuck .filter-toggle-btn:not([aria-pressed="true"]),
+.filter-rail.stuck .view-toggle-btn:not(.active) {
+  color: var(--text-primary);
+}
+/* dark page → add a top rim-light so the glass edge reads as defined
+   (mirrors the cards' dark-mode inset hairline) */
+body.dark-mode .filter-rail.stuck {
+  box-shadow: 0 6px 18px var(--shadow-color), inset 0 -1px 0 var(--border-color),
+              inset 0 1px 0 rgba(255, 255, 255, 0.09);
+}
+/* no backdrop-filter support → fall back to a near-opaque surface so the
+   controls stay legible over scrolling cards */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .filter-rail.stuck { background: color-mix(in srgb, var(--card-bg) 96%, transparent); }
+}
+
+/* Search as a leading-magnifier pill — minimal underline, accent on focus */
+.search-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 14rem;
+  padding: 0.45rem 0.2rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: border-color 0.18s ease;
+}
+.search-pill:focus-within {
+  border-bottom-color: var(--accent-blue);
+}
+.search-pill .search-pill-icon {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  flex-shrink: 0;
 }
 
 #searchInput {
   flex: 1;
-  min-width: 12.5rem;
-  padding: 0.625rem;
-  border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
-  background-color: var(--item-bg);
-  color: var(--text-color);
+  min-width: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
   font-size: 1em;
 }
-
-#searchInput:focus,
-#rarityFilter:focus,
-#shipTypeFilter:focus,
-#nationalityFilter:focus,
-.control-group select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+#searchInput::placeholder {
+  color: var(--text-muted);
+}
+/* Backstop: if the browser still autofills, don't let it paint a solid box over
+   the transparent pill (autocomplete is also turned off on the input markup). */
+#searchInput:-webkit-autofill,
+#searchInput:-webkit-autofill:hover,
+#searchInput:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-primary);
+  -webkit-box-shadow: 0 0 0 1000px var(--card-bg) inset;
+  caret-color: var(--text-primary);
 }
 
+/* .control-group select lives in the detail-view stat controls (controls.css);
+   keep a focus ring here for parity with the rail selects. */
+.control-group select:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}
+
+/* Rail filter selects — borderless until hover, custom chevron, so the native
+   OS dropdown chrome doesn't clash with the minimal/frosted toolbar. */
 #rarityFilter,
 #shipTypeFilter,
 #nationalityFilter,
 #constructionFilter {
-  padding: 0.625rem 0.9375rem;
-  border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
-  background-color: var(--item-bg);
-  color: var(--text-color);
-  font-size: 1em;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 0.7rem;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  color: var(--text-secondary);
+  font-size: 0.95em;
+  font-weight: 600;
   cursor: pointer;
-  min-width: 7.5rem;
+  min-width: 6.5rem;
+  transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+#rarityFilter:hover,
+#shipTypeFilter:hover,
+#nationalityFilter:hover,
+#constructionFilter:hover,
+#rarityFilter:focus-visible,
+#shipTypeFilter:focus-visible,
+#nationalityFilter:focus-visible,
+#constructionFilter:focus-visible {
+  outline: none;
+  border-color: var(--border-color);
+  background-color: var(--item-bg);
+  color: var(--text-primary);
+}
+#rarityFilter:focus-visible,
+#shipTypeFilter:focus-visible,
+#nationalityFilter:focus-visible,
+#constructionFilter:focus-visible {
+  border-color: var(--accent-blue);
+}
+/* options render with OS/page colors — keep the dropdown list readable since the
+   closed select is transparent */
+#rarityFilter option,
+#shipTypeFilter option,
+#nationalityFilter option,
+#constructionFilter option {
+  background: var(--popover-bg);
+  color: var(--text-primary);
 }
 
 /* Retrofit filter — single boolean toggle, sized to match neighboring selects.
@@ -114,12 +246,13 @@ header h1 {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.625rem 0.9375rem;
+  padding: 0.5rem 0.9rem;
   border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
-  background-color: var(--item-bg);
+  border-radius: 0.7rem;
+  background-color: transparent;
   color: var(--text-secondary);
-  font-size: 1em;
+  font-size: 0.95em;
+  font-weight: 600;
   line-height: 1.2;
   cursor: pointer;
   white-space: nowrap;
@@ -162,9 +295,9 @@ header h1 {
    wrapper padding; sub-buttons inherit the dropdown's vertical padding). */
 .view-toggle {
   display: flex;
-  background: var(--item-bg);
+  background: transparent;
   border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
+  border-radius: 0.7rem;
   overflow: hidden;
 }
 

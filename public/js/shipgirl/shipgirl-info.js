@@ -88,6 +88,10 @@ const loading = document.getElementById('loading');
 // Store DOM elements in state for sub-modules
 state.elements = { mainView, detailView, shipgirls, searchInput, rarityFilter, backButton, loading };
 
+// Set by setupStickyFilterRail(); lets showMainView() re-evaluate the rail's
+// stuck/frosted state after it resets scroll to top.
+let resyncStickyRail = null;
+
 // Initialize sub-modules with shared state reference
 setupData(state);
 setupDetail(state);
@@ -127,6 +131,7 @@ async function init() {
 
         handleRoute();
         setupEventListeners();
+        setupStickyFilterRail();
         window.addEventListener('popstate', handleRoute);
 
         // Warm skill assets after first render. Detail/skill search also await these
@@ -142,6 +147,43 @@ async function init() {
         showToast(error.message || 'Initialization error', 'error');
         console.error('Initialization error:', error);
     }
+}
+
+/**
+ * Sticky filter rail. The rail (#filterRail) is CSS `position: sticky` and pins
+ * just below the global navbar; this wires the two dynamic bits CSS can't do:
+ *   1. set --rail-top to the LIVE navbar height (the navbar is itself sticky), and
+ *   2. toggle `.stuck` the moment the rail reaches the navbar's underside, which
+ *      fades in its frosted backdrop (it stays transparent/minimal until then).
+ * Purely visual — no effect on filtering. rAF-throttled, passive listeners.
+ */
+function setupStickyFilterRail() {
+    const rail = document.getElementById('filterRail');
+    if (!rail) return;
+    const navbar = document.querySelector('.navbar');
+
+    const applyTop = () => {
+        const h = navbar ? navbar.offsetHeight : 0;
+        rail.style.setProperty('--rail-top', `${h}px`);
+        return h;
+    };
+    let navH = applyTop();
+
+    let ticking = false;
+    const sync = () => {
+        ticking = false;
+        if (!rail.offsetParent) return; // hidden (detail view open) — leave state as-is
+        rail.classList.toggle('stuck', rail.getBoundingClientRect().top <= navH + 1);
+    };
+    resyncStickyRail = sync;
+
+    window.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(sync);
+    }, { passive: true });
+    window.addEventListener('resize', () => { navH = applyTop(); sync(); }, { passive: true });
+    sync();
 }
 
 // ===== Event Listeners =====
@@ -527,6 +569,9 @@ function showMainView() {
 
     // Reset scroll position to top
     window.scrollTo(0, 0);
+
+    // Re-evaluate the sticky rail's frosted state now that scroll is back at top.
+    resyncStickyRail?.();
 }
 
 function navigatePrevNext(direction) {
