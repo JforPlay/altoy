@@ -174,11 +174,8 @@
     flex-shrink: 0;
 }
 
-.search-rarity-UR { color: var(--rarity-ur); }
-.search-rarity-SSR { color: #e8a320; }
-.search-rarity-SR { color: #b066d4; }
-.search-rarity-R { color: #3c9be8; }
-.search-rarity-N { color: var(--text-muted); }
+/* Ship/blueprint name rarity colour now comes from the shared `.rarity-text`
+   accent (rarity.css, imported by map-viewer.astro). */
 
 .search-result-maps {
     display: flex;

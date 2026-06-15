@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const infoItem = document.createElement('div');
             infoItem.className = 'info-item';
             const raritySpan = document.createElement('span');
-            raritySpan.className = `rarity-text rarity-${ship.rarity}`;
+            raritySpan.className = `rarity-badge rarity-${ship.rarity}`;
             raritySpan.textContent = ship.rarity;
             infoItem.appendChild(raritySpan);
             infoSection.appendChild(infoItem);

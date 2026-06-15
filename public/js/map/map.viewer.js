@@ -481,7 +481,7 @@ function renderShipSearchResults(query, body) {
         const textWrap = document.createElement('div');
         const nameLink = document.createElement('a');
         nameLink.href = infoUrl;
-        nameLink.className = `search-result-name search-rarity-${ship.rarity}`;
+        nameLink.className = `search-result-name rarity-text rarity-${ship.rarity}`;
         nameLink.textContent = ship.name;
         const rarity = document.createElement('span');
         rarity.className = 'search-result-rarity';
@@ -562,7 +562,7 @@ function renderBlueprintSearchResults(query, body) {
     for (const bp of results) {
         const iconUrl = bp.icon ? `${DATA_FOR_TOY_BASE}/${bp.icon.replace(/^Props\//, 'props/').replace(/^Equips\//, 'equips/')}.webp` : '';
         const rarityName = BP_RARITY_MAP[bp.rarity] || 'N';
-        const rarityClass = `search-rarity-${rarityName}`;
+        const rarityClass = `rarity-text rarity-${rarityName}`;
         const bgClass = `search-bp-rarity-${bp.rarity}`;
         const item = document.createElement('div');
         item.className = 'search-result-item';

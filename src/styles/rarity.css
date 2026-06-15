@@ -1,42 +1,73 @@
 /* =========================================================================
-   rarity.css — shared letter-grade rarity badge
-   `.rarity-badge` base + `.rarity-N…UR` color modifiers + the UR rainbow
-   shimmer. Driven by the markup `<span class="rarity-badge rarity-SSR">SSR</span>`
-   and consumed on shipgirl-info (detail / skill-search / maps). Colors come from
-   the global `--rarity-*` tokens in theme.css — this is the reusable component
-   layer on top of those tokens.
+   rarity.css — shared letter-grade rarity system (N · R · SR · SSR · UR)
 
-   Opt-in per page, NOT global-imported: some pages deliberately scope their own
-   `.rarity-*` rules (e.g. shipgirl-tracker scopes to `.info-section` so the
-   modifiers don't style filter chips) and island uses a separate numeric
-   `.rarity-1…5` system. A blanket global import would regress those, so pages
-   that want this badge import it explicitly.
+   TWO layers, both built on the global `--rarity-*` tokens in theme.css:
+
+   1. Palette  — `.rarity-N…UR` set `--r` (fill) + `--r-text` (paired text) and
+      nothing else. Treatment-agnostic and harmless on non-badge elements (a
+      filter chip that happens to carry `.rarity-SSR` just gets an unused var),
+      so the old `.info-section`-scoping workaround is no longer needed: colour
+      only lands where a treatment class below reads `--r`.
+
+   2. Treatments — drop one onto an element that also carries a `.rarity-X`:
+        .rarity-badge    full solid chip (UR = rainbow gradient)
+        .rarity-tint     full chip, faded fill + coloured text
+        .rarity-text     accent only — paints `color` (e.g. a name link)
+        .rarity-outline  accent only — paints `border-color`
+
+   Markup: `<span class="rarity-badge rarity-SSR">SSR</span>`,
+           `<a class="search-name rarity-text rarity-UR">…</a>`.
+
+   OPT-IN per page, never global-imported. Pages import it explicitly because a
+   blanket import would collide with the separate NUMERIC `.rarity-1…6` systems
+   (island, equipment) that reuse the same class stem. The colour SOURCE
+   (`--rarity-*` in theme.css) is global; this COMPONENT layer is opt-in. Global
+   UI that needs rarity colour but can't take the opt-in dependency
+   (e.g. global-search, loaded on every page) references the tokens directly.
    ========================================================================= */
 
+/* ── 1. palette: per-grade colour vars (no visual on their own) ────────────
+   --r       fill (chip background)         --r-text  text paired with that fill
+   --r-fg    rarity as foreground/accent (readable on a card surface)          */
+.rarity-N   { --r: var(--rarity-n);   --r-text: var(--rarity-n-text);   --r-fg: var(--rarity-n-fg); }
+.rarity-R   { --r: var(--rarity-r);   --r-text: var(--rarity-r-text);   --r-fg: var(--rarity-r-fg); }
+.rarity-SR  { --r: var(--rarity-sr);  --r-text: var(--rarity-sr-text);  --r-fg: var(--rarity-sr-fg); }
+.rarity-SSR { --r: var(--rarity-ssr); --r-text: var(--rarity-ssr-text); --r-fg: var(--rarity-ssr-fg); }
+.rarity-UR  { --r: var(--rarity-ur);  --r-text: var(--rarity-ur-text);  --r-fg: var(--rarity-ur-fg); }
+
+/* ── 2a. solid chip ───────────────────────────────────────────────────────── */
 .rarity-badge {
   padding: 0.1875rem 0.5rem;
   border-radius: 0.75rem;
   font-size: 0.7em;
   font-weight: bold;
-  color: white;
+  background-color: var(--r);
+  color: var(--r-text);
 }
-
-.rarity-N { background-color: var(--rarity-n); }
-.rarity-R { background-color: var(--rarity-r); }
-.rarity-SR { background-color: var(--rarity-sr); }
-.rarity-SSR {
-  background-color: var(--rarity-ssr);
-  color: var(--rarity-ssr-text);
-}
-.rarity-UR {
+/* UR overrides the flat fill with the animated rainbow */
+.rarity-badge.rarity-UR {
   background: var(--rarity-ur-bg);
   background-size: 200% 200%;
-  color: #4a4a4a;
+  color: var(--rarity-ur-text);
   animation: rainbow 4s ease infinite;
 }
 
+/* ── 2b. tinted chip: faded fill + coloured text ─────────────────────────── */
+.rarity-tint {
+  padding: 0.1875rem 0.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.7em;
+  font-weight: bold;
+  background: color-mix(in srgb, var(--r) 20%, transparent);
+  color: var(--r-fg);
+}
+
+/* ── 2c. accents: paint a single property on an existing element ──────────── */
+.rarity-text    { color: var(--r-fg); }
+.rarity-outline { border-color: var(--r-fg); }
+
 @keyframes rainbow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }

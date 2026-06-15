@@ -304,35 +304,15 @@
   vertical-align: middle;
 }
 
-.global-search-rarity.rarity-UR {
-  background: rgba(207, 181, 59, 0.2);
-  color: #cfb53b;
-}
-
-.global-search-rarity.rarity-DR {
-  background: rgba(207, 181, 59, 0.2);
-  color: #cfb53b;
-}
-
-.global-search-rarity.rarity-SSR {
-  background: rgba(255, 165, 0, 0.2);
-  color: #ffa500;
-}
-
-.global-search-rarity.rarity-SR {
-  background: rgba(163, 120, 224, 0.2);
-  color: #a378e0;
-}
-
-.global-search-rarity.rarity-R {
-  background: rgba(100, 149, 237, 0.2);
-  color: #6495ed;
-}
-
-.global-search-rarity.rarity-N {
-  background: rgba(160, 160, 160, 0.2);
-  color: #a0a0a0;
-}
+/* Tinted treatment (faded fill + foreground rarity colour), sourced from the
+   theme.css tokens. global-search loads on every page via global.style.css, so
+   it references the tokens directly rather than the opt-in rarity.css component
+   (which mirrors this same pattern as `.rarity-tint`). */
+.global-search-rarity.rarity-UR  { background: color-mix(in srgb, var(--rarity-ur)  20%, transparent); color: var(--rarity-ur-fg); }
+.global-search-rarity.rarity-SSR { background: color-mix(in srgb, var(--rarity-ssr) 20%, transparent); color: var(--rarity-ssr-fg); }
+.global-search-rarity.rarity-SR  { background: color-mix(in srgb, var(--rarity-sr)  20%, transparent); color: var(--rarity-sr-fg); }
+.global-search-rarity.rarity-R   { background: color-mix(in srgb, var(--rarity-r)   20%, transparent); color: var(--rarity-r-fg); }
+.global-search-rarity.rarity-N   { background: color-mix(in srgb, var(--rarity-n)   20%, transparent); color: var(--rarity-n-fg); }
 
 /* Ship sub-links */
 .global-search-ship-links {

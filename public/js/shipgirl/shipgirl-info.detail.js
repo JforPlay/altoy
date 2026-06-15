@@ -172,55 +172,63 @@ function renderDetailHeader(ship, nationalityInfo) {
         );
     }
 
+    // 진영 tile leads with the faction flag image when available; the other tiles
+    // use Font Awesome glyphs (matching the main-page header's icon language).
+    const nationalityIcon = nationalityInfo.image
+        ? `<span class="info-tile-icon"><img src="${nationalityInfo.image}" alt="${nationalityInfo.code}"></span>`
+        : `<span class="info-tile-icon"><i class="fas fa-flag" aria-hidden="true"></i></span>`;
+    const nationalityText = `${nationalityInfo.name}${nationalityInfo.code ? ` (${nationalityInfo.code})` : ''}`;
+
     return `
         <div class="detail-header">
             <div class="detail-image">
                 ${createImg(ship.shipyard, ship.name, { fallback: IMG_FALLBACKS.DETAIL })}
             </div>
             <div class="detail-basic-info">
-                <h2 class="detail-title">
-                    ${ship.name}
-                    ${hasRetrofit ? '<span class="retrofit-available-badge">개조 가능</span>' : ''}
-                </h2>
-                <div class="skin-link-container">
-                        <a href="${resolveUrl(`skin/skin-detail-viewer/?character=${encodeURIComponent(ship.name)}&skin=${encodeURIComponent(ship.name)}`)}" class="skin-viewer-button">
-                            <i class="fas fa-palette" aria-hidden="true"></i> 스킨/대사 보러가기
-                        </a>
+                <div class="detail-header-top">
+                    <h2 class="detail-title">
+                        ${ship.name}
+                        <span class="rarity-badge rarity-${ship.rarity}">${ship.rarity}</span>
+                        ${hasRetrofit ? '<span class="retrofit-available-badge">개조 가능</span>' : ''}
+                    </h2>
+                    <a href="${resolveUrl(`skin/skin-detail-viewer/?character=${encodeURIComponent(ship.name)}&skin=${encodeURIComponent(ship.name)}`)}" class="skin-viewer-button">
+                        <i class="fas fa-palette" aria-hidden="true"></i> 스킨/대사 보러가기
+                    </a>
+                </div>
+                <div class="info-tiles">
+                    <div class="info-tile">
+                        <span class="info-tile-icon"><i class="fas fa-anchor" aria-hidden="true"></i></span>
+                        <span class="info-tile-meta">
+                            <span class="info-tile-label">함종</span>
+                            <span class="info-tile-value">${getShipType(ship.type)}</span>
+                        </span>
                     </div>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <div class="info-label">등급</div>
-                        <div class="info-value">
-                            <span class="rarity-badge rarity-${ship.rarity}">${ship.rarity}</span>
-                        </div>
+                    <div class="info-tile">
+                        <span class="info-tile-icon"><i class="fas fa-shield-alt" aria-hidden="true"></i></span>
+                        <span class="info-tile-meta">
+                            <span class="info-tile-label">장갑</span>
+                            <span class="info-tile-value">${ARMOR_TYPES[ship.armor] || `장갑 ${ship.armor}`}</span>
+                        </span>
                     </div>
-                    <div class="info-item">
-                        <div class="info-label">그룹 ID</div>
-                        <div class="info-value">${ship.gid}</div>
+                    <div class="info-tile">
+                        ${nationalityIcon}
+                        <span class="info-tile-meta">
+                            <span class="info-tile-label">진영</span>
+                            <span class="info-tile-value">${nationalityText}</span>
+                        </span>
                     </div>
-                    <div class="info-item">
-                        <div class="info-label">함종</div>
-                        <div class="info-value">${getShipType(ship.type)}</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">장갑</div>
-                        <div class="info-value">${ARMOR_TYPES[ship.armor] || `장갑 ${ship.armor}`}</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">진영</div>
-                        <div class="info-value">
-                            ${nationalityInfo.image ? `<img src="${nationalityInfo.image}" alt="${nationalityInfo.code}" style="height: 24px; vertical-align: middle; margin-right: 5px;">` : ''}
-                            ${nationalityInfo.name}${nationalityInfo.code ? ` (${nationalityInfo.code})` : ''}
-                        </div>
+                    <div class="info-tile">
+                        <span class="info-tile-icon"><i class="fas fa-hashtag" aria-hidden="true"></i></span>
+                        <span class="info-tile-meta">
+                            <span class="info-tile-label">그룹 ID</span>
+                            <span class="info-tile-value">${ship.gid}</span>
+                        </span>
                     </div>
                 </div>
-                ${ship.description && ship.description.length > 0 ? `
-                    <div style="margin-top: 20px;">
-                        <strong>드랍 정보:</strong>
-                        <p style="margin-top: 10px;">${ship.description.join(', ')}</p>
-                    </div>
-                ` : ''}
-                <div style="margin-top: 20px;">
+                <div class="detail-drop-row">
+                    ${ship.description && ship.description.length > 0 ? `
+                        <p class="detail-drop-info"><strong>드랍 정보:</strong> <span class="drop-sources">${ship.description.join(', ')}</span></p>
+                    ` : ''}
                     <button class="view-maps-btn" data-action="show-maps" data-ship-name="${ship.name}">
                         <i class="fas fa-map-marked-alt"></i> 드랍 지역 보기
                     </button>
@@ -438,18 +446,27 @@ function renderSpWeaponSection(ship) {
                     ${createImg(iconUrl, spWeapon.name, { className: 'sp-weapon-icon', fallback: IMG_FALLBACKS.DEFAULT })}
                 </div>
                 <div class="sp-weapon-details">
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <div class="info-label">이름</div>
-                            <div class="info-value">${spWeapon.name}</div>
+                    <div class="info-tiles">
+                        <div class="info-tile info-tile--wide">
+                            <span class="info-tile-icon"><i class="fas fa-tag" aria-hidden="true"></i></span>
+                            <span class="info-tile-meta">
+                                <span class="info-tile-label">이름</span>
+                                <span class="info-tile-value">${spWeapon.name}</span>
+                            </span>
                         </div>
-                        <div class="info-item">
-                            <div class="info-label">속성 1</div>
-                            <div class="info-value">${getAttrKoreanName(spWeapon.attribute_1)}</div>
+                        <div class="info-tile">
+                            <span class="info-tile-icon"><i class="fas fa-bolt" aria-hidden="true"></i></span>
+                            <span class="info-tile-meta">
+                                <span class="info-tile-label">속성 1</span>
+                                <span class="info-tile-value">${getAttrKoreanName(spWeapon.attribute_1)}</span>
+                            </span>
                         </div>
-                        <div class="info-item">
-                            <div class="info-label">속성 2</div>
-                            <div class="info-value">${getAttrKoreanName(spWeapon.attribute_2)}</div>
+                        <div class="info-tile">
+                            <span class="info-tile-icon"><i class="fas fa-bolt" aria-hidden="true"></i></span>
+                            <span class="info-tile-meta">
+                                <span class="info-tile-label">속성 2</span>
+                                <span class="info-tile-value">${getAttrKoreanName(spWeapon.attribute_2)}</span>
+                            </span>
                         </div>
                     </div>
                 </div>

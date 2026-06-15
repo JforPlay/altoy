@@ -118,6 +118,17 @@
   --rarity-n:         #b0bec5;
   --rarity-n-text:    #37474f;
 
+  /* Rarity FOREGROUND colours — readable as text/accent on a card surface.
+     The fills above are tuned as backgrounds (SSR/N are too pale for text), so
+     accent treatments (rarity.css `.rarity-text`/`.rarity-tint`, name links,
+     borders) read from these instead. Lazily resolved, so the var() ones track
+     dark mode automatically; defined once here for both themes. */
+  --rarity-ur-fg:     var(--rarity-ur);   /* pink — legible both modes */
+  --rarity-ssr-fg:    #e8a320;            /* amber — the yellow fill is too light as text */
+  --rarity-sr-fg:     var(--rarity-sr);
+  --rarity-r-fg:      var(--rarity-r);
+  --rarity-n-fg:      var(--text-muted);
+
   /* Primary color alpha variants */
   --primary-alpha-10: rgba(0, 113, 235, 0.1);
   --primary-alpha-15: rgba(0, 113, 235, 0.15);

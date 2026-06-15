@@ -343,7 +343,7 @@ export function renderMapInfo(chapter, targetEl) {
         html += '<div class="ship-drop-grid">';
         for (const ship of shipDrops) {
             const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}`);
-            html += `<a href="${infoUrl}" class="ship-drop-card ship-drop-rarity-${ship.rarity}" title="${ship.name}${ship.bossOnly ? ' (보스 한정)' : ''}">`;
+            html += `<a href="${infoUrl}" class="ship-drop-card rarity-${ship.rarity}" title="${ship.name}${ship.bossOnly ? ' (보스 한정)' : ''}">`;
             const iconSrc = ship.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
             if (iconSrc) {
                 html += `<img class="ship-drop-portrait" src="${iconSrc}" alt="${ship.name}" loading="lazy" data-onfail="hide">`;
@@ -509,7 +509,7 @@ export function renderArchiveInfo(chapter, targetEl) {
             const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}`);
             const iconSrc = ship.shipyard ? ship.shipyard.replace('shipyard.png', 'icon.png') : '';
             const title = ship.name + (drop.type === 1 ? ' (보스 한정)' : '') + (drop.pity ? ' (확정)' : '');
-            extra += `<a href="${infoUrl}" class="ship-drop-card ship-drop-rarity-${ship.rarity}" title="${title}">`;
+            extra += `<a href="${infoUrl}" class="ship-drop-card rarity-${ship.rarity}" title="${title}">`;
             if (iconSrc) extra += `<img class="ship-drop-portrait" src="${iconSrc}" alt="${ship.name}" loading="lazy" data-onfail="hide">`;
             extra += `<div class="ship-drop-name">${ship.name}</div>`;
             if (drop.type === 1) extra += `<span class="ship-drop-boss">보스</span>`;

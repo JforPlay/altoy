@@ -458,18 +458,20 @@
     font-weight: 600;
 }
 
-/* Ship drop rarity border accent */
-.ship-drop-rarity-SSR { border-color: #e8a32066; }
-.ship-drop-rarity-SR { border-color: #b066d466; }
-.ship-drop-rarity-UR { border-color: var(--rarity-ur); }
-.ship-drop-rarity-SSR:hover { border-color: #e8a320; }
-.ship-drop-rarity-SR:hover { border-color: #b066d4; }
-.ship-drop-rarity-UR:hover { border-color: var(--rarity-ur); }
+/* Ship drop rarity accent — only SSR/SR/UR are highlighted; colour is the
+   shared rarity foreground (rarity.css sets `--r-fg` from the card's
+   `.rarity-X`). Resting border is a faded accent that solidifies on hover. */
+.ship-drop-card.rarity-SSR,
+.ship-drop-card.rarity-SR,
+.ship-drop-card.rarity-UR { border-color: color-mix(in srgb, var(--r-fg) 40%, transparent); }
 
-/* Ship drop name rarity colors */
-.ship-drop-rarity-SSR .ship-drop-name { color: #e8a320; }
-.ship-drop-rarity-SR .ship-drop-name { color: #b066d4; }
-.ship-drop-rarity-UR .ship-drop-name { color: var(--rarity-ur); }
+.ship-drop-card.rarity-SSR:hover,
+.ship-drop-card.rarity-SR:hover,
+.ship-drop-card.rarity-UR:hover { border-color: var(--r-fg); }
+
+.ship-drop-card.rarity-SSR .ship-drop-name,
+.ship-drop-card.rarity-SR .ship-drop-name,
+.ship-drop-card.rarity-UR .ship-drop-name { color: var(--r-fg); }
 
 /* Empty detail state */
 .detail-empty {

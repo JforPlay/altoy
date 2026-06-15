@@ -60,52 +60,8 @@
   height: 18px;
 }
 
-.rarity-text {
-  font-weight: bold;
-  padding: 2px 6px;
-  border-radius: 8px;
-  font-size: 0.7rem;
-}
-
-/* ===== Rarity Colors ===== */
-
-/* Rarity styles - ONLY for shipgirl card badges, NOT for filters */
-.info-section .rarity-N {
-  background-color: var(--rarity-n);
-}
-
-.info-section .rarity-R {
-  background-color: var(--rarity-r);
-}
-
-.info-section .rarity-SR {
-  background-color: var(--rarity-sr);
-}
-
-.info-section .rarity-SSR {
-  background-color: var(--rarity-ssr);
-  color: var(--rarity-ssr-text);
-}
-
-.info-section .rarity-UR {
-  background: var(--rarity-ur-bg);
-  background-size: 200% 200%;
-  color: var(--rarity-ur-text);
-  text-shadow: none;
-  animation: rainbow 4s ease infinite;
-}
-
-@keyframes rainbow {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
+/* Rarity badge + its colours now come from the shared rarity.css
+   (`.rarity-badge` + `.rarity-N…UR`); imported by shipgirl-tracker.astro. */
 
 /* ===== Description Section ===== */
 .description-section {

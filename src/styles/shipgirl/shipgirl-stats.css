@@ -447,6 +447,8 @@ body {
     width: 100%;
 }
 
+/* Colour comes from the shared palette (rarity.css `--r`/`--r-text`); this
+   class only owns its bespoke pill box. */
 .rarity-tag {
     display: inline-flex;
     align-items: center;
@@ -456,13 +458,9 @@ body {
     font-weight: 700;
     border-radius: 2rem;
     white-space: nowrap;
+    background: var(--r);
+    color: var(--r-text);
 }
-
-.rarity-tag.rarity-UR  { background: var(--rarity-ur);  color: var(--rarity-ur-text); }
-.rarity-tag.rarity-SSR { background: var(--rarity-ssr); color: var(--rarity-ssr-text); }
-.rarity-tag.rarity-SR  { background: var(--rarity-sr);  color: var(--rarity-sr-text); }
-.rarity-tag.rarity-R   { background: var(--rarity-r);   color: var(--rarity-r-text); }
-.rarity-tag.rarity-N   { background: var(--rarity-n);   color: var(--rarity-n-text); }
 
 /* -- Threshold Filters -- */
 .threshold-section {
@@ -699,6 +697,7 @@ body {
     border: 1px solid var(--border-color);
 }
 
+/* Colour from the shared palette (rarity.css); box is bespoke. */
 .table-rarity {
     display: inline-block;
     padding: 0.15rem 0.5rem;
@@ -707,13 +706,9 @@ body {
     border-radius: 2rem;
     white-space: nowrap;
     line-height: 1.4;
+    background: var(--r);
+    color: var(--r-text);
 }
-
-.table-rarity.rarity-UR  { background: var(--rarity-ur);  color: var(--rarity-ur-text); }
-.table-rarity.rarity-SSR { background: var(--rarity-ssr); color: var(--rarity-ssr-text); }
-.table-rarity.rarity-SR  { background: var(--rarity-sr);  color: var(--rarity-sr-text); }
-.table-rarity.rarity-R   { background: var(--rarity-r);   color: var(--rarity-r-text); }
-.table-rarity.rarity-N   { background: var(--rarity-n);   color: var(--rarity-n-text); }
 
 .stat-cell {
     text-align: right;
