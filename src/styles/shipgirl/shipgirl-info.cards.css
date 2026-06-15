@@ -83,13 +83,15 @@
   position: absolute;
   inset: 0;
   z-index: 1;
+  /* Carry the dark band higher (the name sits near the top of the text block, so the
+     old 0.22@40% stop left bright names hard to read against light art). */
   background: linear-gradient(to top,
-    rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.68) 18%, rgba(0, 0, 0, 0.22) 40%, transparent 56%);
+    rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.78) 22%, rgba(0, 0, 0, 0.46) 44%, rgba(0, 0, 0, 0.14) 60%, transparent 74%);
 }
 body.dark-mode .shipgirl-card .scrim {
   /* cooler than pure black so the bottom band isn't a dead void on the dark page */
   background: linear-gradient(to top,
-    rgba(7, 9, 14, 0.92) 0%, rgba(7, 9, 14, 0.7) 18%, rgba(7, 9, 14, 0.24) 40%, transparent 56%);
+    rgba(7, 9, 14, 0.94) 0%, rgba(7, 9, 14, 0.8) 22%, rgba(7, 9, 14, 0.48) 44%, rgba(7, 9, 14, 0.16) 60%, transparent 74%);
 }
 
 /* top-left construction chips — bright frosted, legible on any art / theme */

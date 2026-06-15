@@ -395,16 +395,15 @@ function createGridCard(ship) {
     if (ship.heavy) badges += '<span class="gbadge">중형</span>';
     if (ship.special) badges += '<span class="gbadge">특형</span>';
 
-    // Always-visible detail rows: 함종·진영, then 건조 / 드랍 when present.
+    // Always-visible detail rows: 함종·진영, then 드랍 when present.
+    // 건조 timer is intentionally omitted in grid mode — it lives on the detail page now,
+    // which caps each card at 3 text rows (name + 함종·진영 + 드랍).
     const typeName = escapeHtml(shipTypeInfo.type_name);
     const natName = escapeHtml(nationalityInfo.name);
     const typeCell = hasValidIcon
         ? `<img src="${shipTypeInfo.icon}" alt="${typeName}">${typeName}`
         : typeName;
     let rows = `<div class="drow">${typeCell}<span class="sep">·</span>${natName}</div>`;
-    if (ship.timer) {
-        rows += `<div class="drow"><i class="fas fa-hammer"></i>건조 ${escapeHtml(formatTimer(ship.timer))}</div>`;
-    }
     const compactMaps = getCompactMapDisplay(ship.maps);
     if (compactMaps) {
         rows += `<div class="drow"><i class="fas fa-map-marker-alt"></i>드랍 ${escapeHtml(compactMaps)}</div>`;
