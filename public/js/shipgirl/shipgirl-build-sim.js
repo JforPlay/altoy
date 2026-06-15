@@ -396,17 +396,24 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
         const poolSelector = document.querySelector('.pool-selector');
         poolSelector.replaceChildren();
 
-        // Create groups
-        const standardGroup = document.createElement('div');
-        standardGroup.className = 'pool-group';
-        
-        const limitedGroup = document.createElement('div');
-        limitedGroup.className = 'pool-group';
-        
+        // Row 1: limited pickup banners first, then the standard pools.
+        const primaryGroup = document.createElement('div');
+        primaryGroup.className = 'pool-group';
+
+        // Row 2: despair pools, kept on their own separate row.
         const despairGroup = document.createElement('div');
         despairGroup.className = 'pool-group';
 
-        // Static pool buttons (standard)
+        // Pickup pool buttons (dynamically from data) — shown first
+        if (state.pickupData) {
+            Object.entries(state.pickupData).forEach(([pickupPoolId, poolConfig]) => {
+                const poolIdNumber = poolConfig.poolId;
+                const btn = createPoolButton(pickupPoolId, '⭐', `한정 건조 #${poolIdNumber}`, false);
+                primaryGroup.appendChild(btn);
+            });
+        }
+
+        // Static pool buttons (standard) — after the pickup banners
         const staticPools = [
             { pool: '1', icon: '💧', name: '소형함 건조' },
             { pool: '2', icon: '⚓', name: '중형함 건조' },
@@ -415,17 +422,8 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
 
         staticPools.forEach(({ pool, icon, name }) => {
             const btn = createPoolButton(pool, icon, name, false);
-            standardGroup.appendChild(btn);
+            primaryGroup.appendChild(btn);
         });
-
-        // Pickup pool buttons (dynamically from data)
-        if (state.pickupData) {
-            Object.entries(state.pickupData).forEach(([pickupPoolId, poolConfig]) => {
-                const poolIdNumber = poolConfig.poolId;
-                const btn = createPoolButton(pickupPoolId, '⭐', `한정 건조 #${poolIdNumber}`, false);
-                limitedGroup.appendChild(btn);
-            });
-        }
 
         // Despair pool buttons
         const despairPools = [
@@ -439,9 +437,8 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
             despairGroup.appendChild(btn);
         });
 
-        // Append groups to pool selector
-        poolSelector.appendChild(standardGroup);
-        poolSelector.appendChild(limitedGroup);
+        // Append groups: primary row (limited + standard), then despair row
+        poolSelector.appendChild(primaryGroup);
         poolSelector.appendChild(despairGroup);
 
         // Activate first pickup pool by default
@@ -1098,14 +1095,18 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
         // Clear canvas
         ctx.clearRect(0, 0, currentWidth, currentHeight);
 
-        // Get theme colors (check both data-theme and dark-mode class)
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
-            document.body.classList.contains('dark-mode');
-        const textColor = isDark ? '#f8f9fa' : '#212529';
-        const gridColor = isDark ? '#495057' : '#dee2e6';
-        const gridColorLight = isDark ? '#3d3d3d' : '#f1f3f5';
-        const lineColor = '#667eea';
-        const highlightColor = '#ff6b6b';
+        // Pull the palette from theme.css (resolved via getComputedStyle) so the
+        // canvas tracks light/dark and the global tokens like the rest of the page.
+        const isDark = document.body.classList.contains('dark-mode');
+        const css = getComputedStyle(document.body);
+        const readVar = (name, fallback) => css.getPropertyValue(name).trim() || fallback;
+        const textColor = readVar('--text-primary', '#2a2a2a');
+        const gridColor = readVar('--border-color', '#d4d4d4');
+        const gridColorLight = isDark
+            ? readVar('--highlight-soft', 'rgba(255, 255, 255, 0.1)')
+            : readVar('--overlay-light', 'rgba(0, 0, 0, 0.1)');
+        const lineColor = readVar('--accent-blue', '#0071eb');
+        const highlightColor = readVar('--rarity-ur', '#e91e8c');
 
         // Draw minor grid lines (every 10%)
         ctx.strokeStyle = gridColorLight;
@@ -1217,8 +1218,8 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
         ctx.closePath();
 
         const gradient = ctx.createLinearGradient(0, padding.top, 0, padding.top + chartHeight);
-        gradient.addColorStop(0, 'rgba(102, 126, 234, 0.3)');
-        gradient.addColorStop(1, 'rgba(102, 126, 234, 0.05)');
+        gradient.addColorStop(0, readVar('--primary-alpha-30', 'rgba(0, 113, 235, 0.3)'));
+        gradient.addColorStop(1, readVar('--primary-alpha-10', 'rgba(0, 113, 235, 0.1)'));
         ctx.fillStyle = gradient;
         ctx.fill();
 
