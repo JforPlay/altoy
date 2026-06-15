@@ -1,311 +1,306 @@
-/* ===== Grid Layout ===== */
+/* =========================================================================
+   shipgirl-info.cards.css — 함순이 grid (gallery) + list view cards
+   Gallery = default grid: full-bleed shipyard art + low gradient scrim +
+   frosted construction chips + rarity chip + always-visible detail rows
+   (함종·진영, 건조, 드랍). List view = flush-left full-art thumb + name/meta +
+   right cluster (info / build badges / rarity chip).
 
+   Specificity discipline: ONLY the card ROOT is mode-scoped
+   (`.shipgirl-grid:not(.list-view) .shipgirl-card` vs `…list-view .shipgirl-card`)
+   because `.shipgirl-card` is shared between modes and the geometry differs.
+   Inner elements are scoped by a SINGLE class (`.shipgirl-card .art`) or are
+   uniquely named (`.gbadge`, `.lthumb`), keeping base specificity low so state /
+   rarity overrides (`.shipgirl-card.ur .rchip`, (0,3,0)) win without escalation.
+   Gallery and list never share inner class names, so no `:not()` guard is needed
+   on inner rules.
+
+   Tokens come from theme.css (rarity / accent / shadow / surface). The scrim
+   gradient is written inline with a body.dark-mode override (no new token).
+   The shared `.rarity-badge` letter-grade system now lives in rarity.css.
+   ========================================================================= */
+
+/* ===== Grid container ===== */
 .shipgirl-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(7.8125rem, 1fr));
-  gap: 0.9375rem;
+  /* min 10.75rem (172px) → ~7 columns at the ~1360px (#app) content width */
+  grid-template-columns: repeat(auto-fill, minmax(10.75rem, 1fr));
+  /* roomier row gap, same column gap → keeps the ~7-column density */
+  gap: 1.5rem 1rem;
 }
 
-.shipgirl-card {
-  background: var(--card-bg);
-  border-radius: 0.5rem;
+/* ===== Card root — geometry differs by mode, so these two stay mode-scoped ===== */
+.shipgirl-grid:not(.list-view) .shipgirl-card {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 0.95rem;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
-  box-shadow: 0 2px 8px var(--shadow-color);
-  border: 1px solid var(--border-color);
+  isolation: isolate;
+  background: #1c1c22;
+  box-shadow: 0 4px 14px var(--shadow-color);
+  transition: transform 0.32s cubic-bezier(.2, .7, .3, 1), box-shadow 0.32s;
 }
-
-.shipgirl-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 20px var(--shadow-hover);
-  border-color: var(--primary-color);
-}
-
-.shipgirl-image {
-  width: 100%;
-  height: 9.375rem;
-  object-fit: cover;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-bottom: 2px solid var(--border-color);
-  display: block;
-}
-
-.shipgirl-info {
-  padding: 0.75rem;
-  background: var(--item-bg);
-}
-
-.shipgirl-name {
-  font-size: 0.9em;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-  transition: color 0.3s;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.shipgirl-meta {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.375rem;
-}
-
-.nationality-code {
-  font-size: 0.7em;
-  color: var(--text-secondary);
-  font-weight: bold;
-  transition: color 0.3s;
-}
-
-.ship-type-icon {
-  height: 0.875rem;
-  width: 0.875rem;
-  flex-shrink: 0;
-  object-fit: contain;
-}
-
-.ship-type-text {
-  font-size: 0.7em;
-  color: var(--text-secondary);
-  transition: color 0.3s;
-}
-
-.rarity-badge {
-  padding: 0.1875rem 0.5rem;
-  border-radius: 0.75rem;
-  font-size: 0.7em;
-  font-weight: bold;
-  color: white;
-}
-
-/* ===== Rarity Colors ===== */
-
-.rarity-N {
-  background-color: var(--rarity-n);
-}
-.rarity-R {
-  background-color: var(--rarity-r);
-}
-.rarity-SR {
-  background-color: var(--rarity-sr);
-}
-.rarity-SSR {
-  background-color: var(--rarity-ssr);
-  color: var(--rarity-ssr-text);
-}
-.rarity-UR {
-  background: var(--rarity-ur-bg);
-  background-size: 200% 200%;
-  color: #4a4a4a;
-  animation: rainbow 4s ease infinite;
-}
-
-@keyframes rainbow {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* ===== List View ===== */
-
-.shipgirl-grid.list-view {
-  grid-template-columns: 1fr;
-  gap: 0.625rem;
-}
-
 .shipgirl-grid.list-view .shipgirl-card {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  gap: 0.85rem;
+  padding-right: 0.9rem;
+  min-height: 76px;
+  overflow: hidden;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.7rem;
+  box-shadow: 0 1px 3px var(--shadow-color);
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s;
 }
 
-.shipgirl-grid.list-view .shipgirl-image {
-  width: 5rem;
-  height: 5rem;
-  flex-shrink: 0;
-  border-bottom: none;
-  border-right: 2px solid var(--border-color);
-}
+/* per-card rarity color (read by the gallery .rchip + list .lrchip + hover glow).
+   Declared on the bare `.shipgirl-card` so the per-rarity override (0,2,0) beats
+   the default (0,1,0); both sit below the inner-element rules that read --r. */
+.shipgirl-card     { --r: var(--rarity-n); }
+.shipgirl-card.n   { --r: var(--rarity-n); }
+.shipgirl-card.r   { --r: var(--rarity-r); }
+.shipgirl-card.sr  { --r: var(--rarity-sr); }
+.shipgirl-card.ssr { --r: var(--rarity-ssr); }
+.shipgirl-card.ur  { --r: var(--rarity-ur); }
 
-.shipgirl-grid.list-view .shipgirl-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* ===== Gallery inner elements (single-class scope) ===== */
+/* full-bleed art */
+.shipgirl-card .art {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  padding: 0.9375rem;
-  gap: 0.9375rem;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  transition: transform 0.5s cubic-bezier(.2, .7, .3, 1);
 }
 
-.shipgirl-grid.list-view .left-info {
+/* gradient scrim — concentrated low so it only darkens behind the text */
+.shipgirl-card .scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top,
+    rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.68) 18%, rgba(0, 0, 0, 0.22) 40%, transparent 56%);
+}
+body.dark-mode .shipgirl-card .scrim {
+  /* cooler than pure black so the bottom band isn't a dead void on the dark page */
+  background: linear-gradient(to top,
+    rgba(7, 9, 14, 0.92) 0%, rgba(7, 9, 14, 0.7) 18%, rgba(7, 9, 14, 0.24) 40%, transparent 56%);
+}
+
+/* top-left construction chips — bright frosted, legible on any art / theme */
+.shipgirl-card .badges {
+  position: absolute;
+  top: 0.55rem;
+  left: 0.55rem;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: flex-start;
+}
+.gbadge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.42rem;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1f2430;
+  -webkit-backdrop-filter: blur(8px) saturate(1.3);
+  backdrop-filter: blur(8px) saturate(1.3);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+.gbadge.limited { background: #e7463b; color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+
+/* top-right rarity chip */
+.shipgirl-card .rchip {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  z-index: 4;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  padding: 0.22rem 0.62rem;
+  border-radius: 0.45rem;
+  color: #1a1a1a;
+  background: var(--r);
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.42);
+}
+/* (0,3,0) beats the .shipgirl-card .rchip base (0,2,0) → UR gets the light pink */
+.shipgirl-card.ur .rchip { color: var(--rarity-ur-text); background: var(--rarity-ur-light); }
+
+/* bottom-anchored name + detail block on the art */
+.shipgirl-card .meta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: 0.7rem 0.75rem 0.75rem;
+}
+.shipgirl-card .gname {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+  letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.shipgirl-card .detail {
+  margin-top: 0.4rem;
+  display: grid;
+  gap: 0.26rem;
+  overflow: hidden;
+}
+.shipgirl-card .drow {
   display: flex;
   align-items: center;
-  gap: 0.375rem;
-  flex: 1;
+  gap: 0.4rem;
   min-width: 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+  white-space: nowrap;
+}
+.shipgirl-card .drow img {
+  height: 15px;
+  width: 15px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+  flex-shrink: 0;
+}
+.shipgirl-card .drow i {
+  width: 14px;
+  text-align: center;
+  opacity: 0.88;
+  flex-shrink: 0;
+}
+.shipgirl-card .drow .sep { opacity: 0.5; }
+
+/* ===== Gallery hover (root box-shadow is mode-scoped; art zoom is inner) ===== */
+.shipgirl-grid:not(.list-view) .shipgirl-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 16px 34px var(--shadow-hover),
+              0 0 0 1px color-mix(in srgb, var(--r) 30%, transparent),
+              0 10px 30px color-mix(in srgb, var(--r) 45%, transparent);
+}
+.shipgirl-card:hover .art { transform: scale(1.07); }
+
+/* ===== Gallery dark-mode card definition (root, mode-scoped) =====
+   neutral hairline + top rim-light so the scrim bottom reads as a defined edge
+   against the near-black page (not a smudge) */
+body.dark-mode .shipgirl-grid:not(.list-view) .shipgirl-card {
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+body.dark-mode .shipgirl-grid:not(.list-view) .shipgirl-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.13);
+}
+body.dark-mode .shipgirl-grid:not(.list-view) .shipgirl-card:hover {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6),
+              inset 0 0 0 1px color-mix(in srgb, var(--r) 38%, rgba(255, 255, 255, 0.08)),
+              0 12px 32px color-mix(in srgb, var(--r) 42%, transparent);
 }
 
-.shipgirl-grid.list-view .shipgirl-name {
-  font-size: 1.1em;
+/* ===== List view ===== */
+.shipgirl-grid.list-view {
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+}
+.shipgirl-grid.list-view .shipgirl-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--shadow-hover);
+}
+/* flush-left, full-height 3:4 art panel (left corners clipped by the row radius) */
+.lthumb {
+  align-self: stretch;
+  width: 57px;
+  flex-shrink: 0;
+  background: #1c1c22;
+}
+.lthumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+.lname-block {
+  min-width: 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.lname {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  flex-shrink: 1;
-  min-width: 5rem;
 }
-
-.shipgirl-grid.list-view .construction-badge {
-  font-size: 0.7em;
-  padding: 0.1875rem 0.4375rem;
-  flex-shrink: 0;
-}
-
-.shipgirl-grid.list-view .timer-badge {
-  width: auto;
-  margin-top: 0;
-  flex-shrink: 0;
-  font-size: 0.7em;
-  padding: 0.1875rem 0.4375rem;
-}
-
-.shipgirl-grid.list-view .maps-badge {
-  width: auto;
-  margin-top: 0;
-  flex-shrink: 0;
-  font-size: 0.7em;
-  padding: 0.1875rem 0.4375rem;
-}
-
-.shipgirl-grid.list-view .shipgirl-meta {
+.lmeta {
   display: flex;
-  gap: 0.5rem;
-  flex-shrink: 0;
-}
-
-.shipgirl-grid.list-view .nationality-code {
-  font-size: 0.85em;
-}
-
-.shipgirl-grid.list-view .ship-type-icon {
-  height: 1.125rem;
-}
-
-.shipgirl-grid.list-view .ship-type-text {
-  font-size: 0.85em;
-}
-
-.shipgirl-grid.list-view .rarity-badge {
-  padding: 0.3125rem 0.75rem;
-  font-size: 0.85em;
-}
-
-.shipgirl-grid.list-view .shipgirl-info {
-  flex-wrap: nowrap;
-}
-
-/* ===== Badges (Construction / Timer / Maps) ===== */
-
-.construction-badges-overlay {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  z-index: 10;
-  align-items: flex-end;
-}
-
-.construction-badge {
-  display: inline-block;
-  padding: 0.1875rem 0.5rem;
-  background: rgba(74, 74, 74, 0.9);
-  color: white;
-  font-size: 0.7em;
-  font-weight: bold;
-  border-radius: 0.25rem;
-  text-transform: uppercase;
-  box-shadow: 0 2px 4px var(--overlay-medium);
-}
-
-body.dark-mode .construction-badge {
-  background: rgba(192, 192, 192, 0.9);
-  color: #1a1a1a;
-}
-
-.construction-badge.limited-badge {
-  background: #ff6b6b;
-  color: white;
-}
-
-body.dark-mode .construction-badge.limited-badge {
-  background: #d65454;
-  color: white;
-}
-
-/* Timer Badge */
-
-.timer-badge {
-  display: block;
-  margin-top: 0.375rem;
-  padding: 0.25rem 0.5rem;
-  background: var(--section-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 0.25rem;
-  font-size: 0.75em;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.76rem;
   color: var(--text-secondary);
-  font-weight: 500;
-  text-align: center;
-  width: 100%;
+  white-space: nowrap;
 }
-
-/* Maps Badge */
-
-.maps-badge {
-  display: block;
-  margin-top: 0.375rem;
-  padding: 0.25rem 0.5rem;
-  background: linear-gradient(135deg, rgba(100, 150, 255, 0.15), rgba(100, 150, 255, 0.08));
-  border: 1px solid rgba(100, 150, 255, 0.3);
-  border-radius: 0.25rem;
-  font-size: 0.75em;
-  color: #4a90ff;
-  font-weight: 500;
-  text-align: center;
-  width: 100%;
-  cursor: help;
-  transition: all 0.2s;
+.lmeta img { width: 14px; height: 14px; flex-shrink: 0; }
+.lmeta .sep { opacity: 0.5; }
+.lspacer { flex: 1 1 1rem; }
+.lright {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
-
-.maps-badge i {
-  margin-right: 0.25rem;
-  font-size: 0.9em;
+.linfo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
 }
-
-.maps-badge:hover {
-  background: linear-gradient(135deg, rgba(100, 150, 255, 0.25), rgba(100, 150, 255, 0.15));
+.linfo i { opacity: 0.8; }
+.lbadge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.18rem 0.5rem;
+  border-radius: 0.4rem;
+  white-space: nowrap;
+  background: color-mix(in srgb, var(--text-secondary) 16%, transparent);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
-
-body.dark-mode .maps-badge {
-  background: linear-gradient(135deg, rgba(100, 150, 255, 0.12), rgba(100, 150, 255, 0.06));
-  border-color: rgba(100, 150, 255, 0.25);
-  color: #6ba3ff;
+.lbadge.limited { background: #e7463b; color: #fff; border-color: transparent; }
+.lrchip {
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 0.2rem 0.55rem;
+  border-radius: 0.45rem;
+  color: #1a1a1a;
+  background: var(--r);
+  box-shadow: 0 1px 3px var(--shadow-color);
 }
-
-body.dark-mode .maps-badge:hover {
-  background: linear-gradient(135deg, rgba(100, 150, 255, 0.2), rgba(100, 150, 255, 0.12));
-}
-
-/* Shipgirl card positioning anchor for badges */
-.shipgirl-card {
-  position: relative;
-}
+/* (0,3,0) beats the .lrchip base (0,1,0) → UR gets the light pink */
+.shipgirl-card.ur .lrchip { color: var(--rarity-ur-text); background: var(--rarity-ur-light); }

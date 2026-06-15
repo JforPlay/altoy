@@ -343,44 +343,40 @@ function createGridCard(ship) {
         type_name: `함종 ${ship.type}`,
         icon: ''
     };
-
     const hasValidIcon = shipTypeInfo.icon && shipTypeInfo.icon !== 'undefined';
+    const rarityClass = String(ship.rarity || '').toLowerCase();
 
-    // Construction badges for overlay
-    let constructionBadges = '';
-    if (ship.limited) {
-        constructionBadges += '<span class="construction-badge limited-badge">★ 한정</span>';
-    }
-    if (ship.light) {
-        constructionBadges += '<span class="construction-badge">소형</span>';
-    }
-    if (ship.heavy) {
-        constructionBadges += '<span class="construction-badge">중형</span>';
-    }
-    if (ship.special) {
-        constructionBadges += '<span class="construction-badge">특형</span>';
-    }
+    // Construction chips (top-left). 한정 first, then build-pool flags.
+    let badges = '';
+    if (ship.limited) badges += '<span class="gbadge limited">★ 한정</span>';
+    if (ship.light) badges += '<span class="gbadge">소형</span>';
+    if (ship.heavy) badges += '<span class="gbadge">중형</span>';
+    if (ship.special) badges += '<span class="gbadge">특형</span>';
 
-    const timerDisplay = ship.timer ? `<span class="timer-badge">${formatTimer(ship.timer)}</span>` : '';
+    // Always-visible detail rows: 함종·진영, then 건조 / 드랍 when present.
+    const typeName = escapeHtml(shipTypeInfo.type_name);
+    const natName = escapeHtml(nationalityInfo.name);
+    const typeCell = hasValidIcon
+        ? `<img src="${shipTypeInfo.icon}" alt="${typeName}">${typeName}`
+        : typeName;
+    let rows = `<div class="drow">${typeCell}<span class="sep">·</span>${natName}</div>`;
+    if (ship.timer) {
+        rows += `<div class="drow"><i class="fas fa-hammer"></i>건조 ${escapeHtml(formatTimer(ship.timer))}</div>`;
+    }
     const compactMaps = getCompactMapDisplay(ship.maps);
-    const mapsDisplay = compactMaps ? `<span class="maps-badge" title="드랍 지역: ${compactMaps}"><i class="fas fa-map-marker-alt"></i> ${compactMaps}</span>` : '';
+    if (compactMaps) {
+        rows += `<div class="drow"><i class="fas fa-map-marker-alt"></i>드랍 ${escapeHtml(compactMaps)}</div>`;
+    }
 
     return `
-        <div class="shipgirl-card" data-ship-name="${escapeHtml(ship.name)}">
-            ${createImg(ship.shipyard || '', ship.name || '알 수 없음', { className: 'shipgirl-image', fallback: IMG_FALLBACKS.CARD })}
-            ${constructionBadges ? `<div class="construction-badges-overlay">${constructionBadges}</div>` : ''}
-            <div class="shipgirl-info">
-                <div class="shipgirl-name">${ship.name || '이름 없음'}</div>
-                <div class="shipgirl-meta">
-                    <span class="nationality-code" title="${nationalityInfo.name}">${nationalityInfo.code || nationalityInfo.name}</span>
-                    ${hasValidIcon ?
-            `<img src="${shipTypeInfo.icon}" alt="${shipTypeInfo.type_name}" class="ship-type-icon" title="${shipTypeInfo.type_name}">` :
-            `<span class="ship-type-text">${shipTypeInfo.type_name}</span>`
-        }
-                    <span class="rarity-badge rarity-${ship.rarity}">${ship.rarity}</span>
-                </div>
-                ${timerDisplay}
-                ${mapsDisplay}
+        <div class="shipgirl-card ${rarityClass}" data-ship-name="${escapeHtml(ship.name)}">
+            ${createImg(ship.shipyard || '', ship.name || '알 수 없음', { className: 'art', fallback: IMG_FALLBACKS.CARD })}
+            <div class="scrim"></div>
+            ${badges ? `<div class="badges">${badges}</div>` : ''}
+            <span class="rchip">${escapeHtml(ship.rarity || '')}</span>
+            <div class="meta">
+                <div class="gname">${escapeHtml(ship.name || '이름 없음')}</div>
+                <div class="detail">${rows}</div>
             </div>
         </div>
     `;
@@ -396,46 +392,43 @@ function createListCard(ship) {
         type_name: `함종 ${ship.type}`,
         icon: ''
     };
-
     const hasValidIcon = shipTypeInfo.icon && shipTypeInfo.icon !== 'undefined';
+    const rarityClass = String(ship.rarity || '').toLowerCase();
+    const typeName = escapeHtml(shipTypeInfo.type_name);
+    const natName = escapeHtml(nationalityInfo.name);
+    const typeCell = hasValidIcon
+        ? `<img src="${shipTypeInfo.icon}" alt="${typeName}">${typeName}`
+        : typeName;
 
-    // Construction badges for inline display
-    let constructionBadges = '';
-    if (ship.limited) {
-        constructionBadges += '<span class="construction-badge limited-badge">★ 한정</span>';
-    }
-    if (ship.light) {
-        constructionBadges += '<span class="construction-badge">소형</span>';
-    }
-    if (ship.heavy) {
-        constructionBadges += '<span class="construction-badge">중형</span>';
-    }
-    if (ship.special) {
-        constructionBadges += '<span class="construction-badge">특형</span>';
-    }
+    // Right-cluster construction badges.
+    let badges = '';
+    if (ship.limited) badges += '<span class="lbadge limited">★ 한정</span>';
+    if (ship.light) badges += '<span class="lbadge">소형</span>';
+    if (ship.heavy) badges += '<span class="lbadge">중형</span>';
+    if (ship.special) badges += '<span class="lbadge">특형</span>';
 
-    const timerDisplay = ship.timer ? `<span class="timer-badge">${formatTimer(ship.timer)}</span>` : '';
+    // Right-cluster 건조 / 드랍 info.
+    let info = '';
+    if (ship.timer) {
+        info += `<span class="linfo"><i class="fas fa-hammer"></i>건조 ${escapeHtml(formatTimer(ship.timer))}</span>`;
+    }
     const compactMaps = getCompactMapDisplay(ship.maps);
-    const mapsDisplay = compactMaps ? `<span class="maps-badge" title="드랍 지역: ${compactMaps}"><i class="fas fa-map-marker-alt"></i> ${compactMaps}</span>` : '';
+    if (compactMaps) {
+        info += `<span class="linfo"><i class="fas fa-map-marker-alt"></i>드랍 ${escapeHtml(compactMaps)}</span>`;
+    }
 
     return `
-        <div class="shipgirl-card" data-ship-name="${escapeHtml(ship.name)}">
-            ${createImg(ship.shipyard || '', ship.name || '알 수 없음', { className: 'shipgirl-image', fallback: IMG_FALLBACKS.CARD })}
-            <div class="shipgirl-info">
-                <div class="left-info">
-                    <div class="shipgirl-name">${ship.name || '이름 없음'}</div>
-                    ${constructionBadges}
-                    ${timerDisplay}
-                    ${mapsDisplay}
-                </div>
-                <div class="shipgirl-meta">
-                    <span class="nationality-code" title="${nationalityInfo.name}">${nationalityInfo.code || nationalityInfo.name}</span>
-                    ${hasValidIcon ?
-            `<img src="${shipTypeInfo.icon}" alt="${shipTypeInfo.type_name}" class="ship-type-icon" title="${shipTypeInfo.type_name}">` :
-            `<span class="ship-type-text">${shipTypeInfo.type_name}</span>`
-        }
-                    <span class="rarity-badge rarity-${ship.rarity}">${ship.rarity}</span>
-                </div>
+        <div class="shipgirl-card ${rarityClass}" data-ship-name="${escapeHtml(ship.name)}">
+            <div class="lthumb">${createImg(ship.shipyard || '', ship.name || '알 수 없음', { fallback: IMG_FALLBACKS.CARD })}</div>
+            <div class="lname-block">
+                <div class="lname">${escapeHtml(ship.name || '이름 없음')}</div>
+                <div class="lmeta">${typeCell}<span class="sep">·</span>${natName}</div>
+            </div>
+            <div class="lspacer"></div>
+            <div class="lright">
+                ${info}
+                ${badges}
+                <span class="lrchip">${escapeHtml(ship.rarity || '')}</span>
             </div>
         </div>
     `;

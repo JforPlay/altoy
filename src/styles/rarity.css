@@ -1,0 +1,42 @@
+/* =========================================================================
+   rarity.css — shared letter-grade rarity badge
+   `.rarity-badge` base + `.rarity-N…UR` color modifiers + the UR rainbow
+   shimmer. Driven by the markup `<span class="rarity-badge rarity-SSR">SSR</span>`
+   and consumed on shipgirl-info (detail / skill-search / maps). Colors come from
+   the global `--rarity-*` tokens in theme.css — this is the reusable component
+   layer on top of those tokens.
+
+   Opt-in per page, NOT global-imported: some pages deliberately scope their own
+   `.rarity-*` rules (e.g. shipgirl-tracker scopes to `.info-section` so the
+   modifiers don't style filter chips) and island uses a separate numeric
+   `.rarity-1…5` system. A blanket global import would regress those, so pages
+   that want this badge import it explicitly.
+   ========================================================================= */
+
+.rarity-badge {
+  padding: 0.1875rem 0.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.7em;
+  font-weight: bold;
+  color: white;
+}
+
+.rarity-N { background-color: var(--rarity-n); }
+.rarity-R { background-color: var(--rarity-r); }
+.rarity-SR { background-color: var(--rarity-sr); }
+.rarity-SSR {
+  background-color: var(--rarity-ssr);
+  color: var(--rarity-ssr-text);
+}
+.rarity-UR {
+  background: var(--rarity-ur-bg);
+  background-size: 200% 200%;
+  color: #4a4a4a;
+  animation: rainbow 4s ease infinite;
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

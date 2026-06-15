@@ -183,9 +183,11 @@ header h1 {
   background: var(--input-border);
 }
 
+/* --primary-color is grayscale (silver in dark mode); --accent-blue stays legible
+   with #fff text in both themes (matches .filter-toggle-btn[aria-pressed="true"]). */
 .view-toggle-btn.active {
-  background: var(--primary-color);
-  color: white;
+  background: var(--accent-blue);
+  color: #fff;
 }
 
 /* ===== Construction-specific Styles ===== */
@@ -249,21 +251,23 @@ header h1 {
 }
 
 .skin-viewer-button {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.625rem 1.25rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--accent-blue);
+  color: #fff;
   text-decoration: none;
   border-radius: 0.5rem;
   font-weight: 500;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 3px var(--shadow-color);
 }
 
 .skin-viewer-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  box-shadow: 0 4px 12px var(--shadow-hover);
+  filter: brightness(0.93);
 }
 
 .skin-viewer-button:active {

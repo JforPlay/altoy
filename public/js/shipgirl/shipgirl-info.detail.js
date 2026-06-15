@@ -184,7 +184,7 @@ function renderDetailHeader(ship, nationalityInfo) {
                 </h2>
                 <div class="skin-link-container">
                         <a href="${resolveUrl(`skin/skin-detail-viewer/?character=${encodeURIComponent(ship.name)}&skin=${encodeURIComponent(ship.name)}`)}" class="skin-viewer-button">
-                            🎨 스킨/대사 보러가기
+                            <i class="fas fa-palette" aria-hidden="true"></i> 스킨/대사 보러가기
                         </a>
                     </div>
                 <div class="info-grid">
