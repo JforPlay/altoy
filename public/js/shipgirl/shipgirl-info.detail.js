@@ -43,6 +43,19 @@ const LIMIT_BREAK_NAMES = ['기본', '한계돌파 1', '한계돌파 2', '한계
 
 const UNAFFECTED_STATS = ['speed', 'luck'];
 
+/**
+ * Format a construction timer string ("HH:MM:SS") for display, dropping a
+ * redundant leading "00:" hour so sub-hour builds read as "MM:SS"
+ * (e.g. "00:23:00" → "23:00", "01:05:00" → "1:05:00"). Returns '' when absent.
+ */
+function formatBuildTime(timer) {
+    if (!timer || typeof timer !== 'string' || timer === '00:00:00') return '';
+    const parts = timer.split(':');
+    if (parts.length !== 3) return timer;
+    const [hh, mm, ss] = parts;
+    return hh === '00' ? `${mm}:${ss}` : `${Number(hh)}:${mm}:${ss}`;
+}
+
 // ===== State Reference =====
 let state;
 
@@ -179,6 +192,8 @@ function renderDetailHeader(ship, nationalityInfo) {
         : `<span class="info-tile-icon"><i class="fas fa-flag" aria-hidden="true"></i></span>`;
     const nationalityText = `${nationalityInfo.name}${nationalityInfo.code ? ` (${nationalityInfo.code})` : ''}`;
 
+    const buildTime = formatBuildTime(ship.timer);
+
     return `
         <div class="detail-header">
             <div class="detail-image">
@@ -224,6 +239,15 @@ function renderDetailHeader(ship, nationalityInfo) {
                             <span class="info-tile-value">${ship.gid}</span>
                         </span>
                     </div>
+                    ${buildTime ? `
+                    <div class="info-tile">
+                        <span class="info-tile-icon"><i class="fas fa-clock" aria-hidden="true"></i></span>
+                        <span class="info-tile-meta">
+                            <span class="info-tile-label">건조 시간</span>
+                            <span class="info-tile-value">${buildTime}</span>
+                        </span>
+                    </div>
+                    ` : ''}
                 </div>
                 <div class="detail-drop-row">
                     ${ship.description && ship.description.length > 0 ? `

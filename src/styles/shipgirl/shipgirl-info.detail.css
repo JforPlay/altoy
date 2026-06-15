@@ -90,7 +90,7 @@ body.dark-mode .back-button:hover:not(:disabled) {
 }
 
 .detail-image img {
-  max-width: 11rem;
+  max-width: 12.5rem;
   width: 100%;
   aspect-ratio: 3 / 4;
   border-radius: 0.625rem;
