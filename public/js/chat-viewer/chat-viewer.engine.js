@@ -379,8 +379,11 @@ export class ChatViewerEngine {
             // Guest characters may have an @username from the ship group ID source
             if (this.shipGroupIdData && script.ship_group) {
                 const idEntry = this.shipGroupIdData[script.ship_group];
-                if (idEntry && idEntry.name) {
-                    speakerUsername = idEntry.name;
+                // Accept the local flat handle map ({id:"handle"}) and the raw
+                // template shape ({id:{name:"handle"}}) interchangeably.
+                const handle = typeof idEntry === 'string' ? idEntry : idEntry?.name;
+                if (handle) {
+                    speakerUsername = handle;
                 }
             }
         } else if (script.ship_group === currentStoryInfo.ship_group) {

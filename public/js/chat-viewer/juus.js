@@ -24,8 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     new ChatViewerEngine({
         dataUrl: 'data/chat-viewer/juus_chat_data.json',
-        // External source for @username handles shown beside character names.
-        shipGroupIdUrl: 'https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/CN/ShareCfg/activity_ins_ship_group_template.json',
+        // @username handles beside character names. Local KR map built by
+        // juustagram_process from activity_ins_ship_group_template (covers all
+        // chat speakers) — replaces the old live CN AzurLaneData repo fetch.
+        shipGroupIdUrl: 'data/juustagram_usernames.json',
         groupChatIcons: GROUP_CHAT_ICONS,
         defaultDelay: 1300,
         initialDelay: 100
