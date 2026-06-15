@@ -22,6 +22,7 @@ import {
     downloadImage,
     sanitizeFilename
 } from '../utils.js';
+import { pickFaceCandidates } from '../expression-face.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const state = {
@@ -251,10 +252,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderViewer();
     }
 
+    // Game-faithful default face for the current painting type. Shares the
+    // chain (manifest `default` → '0' → numerically-smallest) with the story
+    // viewer and skin pages via expression-face.js — never the arbitrary
+    // atlas-order `faces[0]`, which is wrong for ~77% of paintings here.
     function getDefaultFace(item) {
         const data = item[state.currentPaintingType];
-        if (!data || !data.faces || data.faces.length === 0) return null;
-        return data.faces.includes('0') ? '0' : data.faces[0];
+        return pickFaceCandidates(data, null)[0] || null;
     }
 
     /**
