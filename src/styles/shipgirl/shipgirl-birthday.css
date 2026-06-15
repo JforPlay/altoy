@@ -9,39 +9,36 @@
 
 @import url('../theme.css');
 
-/* Theme variables with sensible defaults.  These values are overridden by
-   global.style.css via the dark-mode class on body. */
-:root {
-  --calendar-bg: #ffffff;
-  --calendar-alt-bg: #f7f8fa;
-  --calendar-border: #e0e0e0;
-  --calendar-text: #242424;
-  --calendar-muted: #6e6e6e;
-  --calendar-primary: #2563eb;
-  --calendar-accent: #9333ea;
-  --calendar-event-bg: rgba(37, 99, 235, 0.1);
-  --calendar-event-border: #2563eb;
-  --calendar-page-bg: #f0f2f5;
-  --calendar-shadow: rgba(0, 0, 0, 0.1);
+/* Calendar palette — aliased onto the shared theme.css tokens so the page tracks
+   the global light/dark scheme (matching 함순이 DB) instead of a bespoke
+   blue/purple set. Declared on `body` (NOT :root) on purpose: theme.css puts its
+   dark overrides on `body.dark-mode`, so a var() indirection must resolve on the
+   body element to see them — aliasing on :root (the <html> parent) would always
+   read the light values and leave the calendar white in dark mode. The neutrals
+   flip automatically, so no separate dark block is needed here. Primary + accent
+   collapse to the single --accent-blue (a stable hue that stays legible under the
+   #fff fills, per the project's primary-fill contrast rule). */
+body {
+  --calendar-bg: var(--card-bg);
+  --calendar-alt-bg: var(--section-bg);
+  --calendar-border: var(--border-color);
+  --calendar-text: var(--text-primary);
+  --calendar-muted: var(--text-secondary);
+  --calendar-primary: var(--accent-blue);
+  --calendar-accent: var(--accent-blue);
+  --calendar-event-bg: var(--primary-alpha-10);
+  --calendar-event-border: var(--accent-blue);
+  --calendar-shadow: var(--shadow-color);
 }
 
-body.dark-mode {
-  --calendar-bg: #1b1f2a;
-  --calendar-alt-bg: #232836;
-  --calendar-border: #2d3346;
-  --calendar-text: #e0e6f1;
-  --calendar-muted: #a0a6b7;
-  --calendar-primary: #4f8cff;
-  --calendar-accent: #8c6dff;
-  --calendar-event-bg: rgba(79, 140, 255, 0.1);
-  --calendar-event-border: #4f8cff;
-  --calendar-page-bg: #0f1419;
-  --calendar-shadow: rgba(0, 0, 0, 0.3);
-}
-
-/* Page background styling */
+/* Page background — global gradient (every page paints its own; global styles
+   paint none, else the page renders white in dark mode). */
 body.calendar-page {
-  background: var(--calendar-page-bg);
+  background: linear-gradient(
+    135deg,
+    var(--bg-gradient-start) 0%,
+    var(--bg-gradient-end) 100%
+  );
   min-height: 100vh;
 }
 
@@ -81,9 +78,9 @@ body.calendar-page {
 }
 
 .error-message {
-  background: rgba(220, 38, 38, 0.1);
-  color: #dc2626;
-  border: 1px solid rgba(220, 38, 38, 0.3);
+  background: var(--danger-alpha-10);
+  color: var(--danger-color);
+  border: 1px solid var(--danger-alpha-25);
 }
 
 .error-message-compact {
@@ -284,7 +281,7 @@ body.calendar-page {
   right: 1.5rem;
   bottom: 5rem;
   z-index: 999;
-  background: linear-gradient(135deg, var(--calendar-primary), var(--calendar-accent));
+  background: var(--calendar-primary);
   color: white;
   border: none;
   width: 4.5rem;
@@ -797,15 +794,15 @@ body.calendar-page {
 /* Badges for metadata (used in Day view) */
 .badges { display: flex; flex-wrap: wrap; gap: .35rem; }
 .badge {
-  font-size: .72rem; padding: .22rem .45rem; border-radius: 999px;
+  font-size: .72rem; padding: .22rem .45rem; border-radius: var(--radius-sm);
   border: 1px solid var(--calendar-border); background: var(--calendar-alt-bg);
   color: var(--calendar-muted);
 }
-.badge[data-rarity="UR"] { color: #ff7ad9; border-color: #ff7ad9; }
-.badge[data-rarity="SSR"] { color: #ffbf47; border-color: #ffbf47; }
-.badge[data-rarity="SR"] { color: var(--rarity-sr); border-color: var(--rarity-sr); }
-.badge[data-rarity="R"]  { color: #7ad1ff; border-color: #7ad1ff; }
-.badge[data-rarity="N"]  { color: #c0c8d8; border-color: #c0c8d8; }
+.badge[data-rarity="UR"]  { color: var(--rarity-ur);     border-color: var(--rarity-ur); }
+.badge[data-rarity="SSR"] { color: var(--rarity-ssr-fg); border-color: var(--rarity-ssr); }
+.badge[data-rarity="SR"]  { color: var(--rarity-sr);     border-color: var(--rarity-sr); }
+.badge[data-rarity="R"]   { color: var(--rarity-r);      border-color: var(--rarity-r); }
+.badge[data-rarity="N"]   { color: var(--rarity-n-fg);   border-color: var(--rarity-n); }
 
 /* Day view layout */
 .day-view { display: grid; grid-template-columns: 1fr minmax(260px, 320px); gap: 1rem; }
