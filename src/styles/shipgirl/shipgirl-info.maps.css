@@ -158,30 +158,40 @@ body.dark-mode .map-type-boss .map-type-badge {
   border: 1px solid var(--border-color);
 }
 
-/* View Maps Button */
+/* View Maps Button — minimal secondary action mirroring the main-page
+   .map-browser-btn (outline, 0.7rem radius, accent-blue icon + hover border).
+   Uses --section-bg so it reads against the card-bg detail header. */
 .view-maps-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 500;
+  padding: 0.5rem 1rem;
+  background: var(--section-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.7rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 0.25rem 0.5rem var(--overlay-light);
+  transition: border-color 0.18s ease, background-color 0.18s ease,
+              transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .view-maps-btn:hover {
-  transform: translateY(-0.125rem);
-  box-shadow: 0 0.375rem 0.75rem rgba(0, 0, 0, 0.15);
+  border-color: var(--accent-blue);
+  background: var(--item-bg);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .view-maps-btn:active {
   transform: translateY(0);
+}
+
+.view-maps-btn i {
+  color: var(--accent-blue);
 }
 
 /* Mobile responsiveness for maps modal */

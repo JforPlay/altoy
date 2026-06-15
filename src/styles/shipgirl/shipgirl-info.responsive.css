@@ -9,6 +9,20 @@
     grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
   }
 
+  /* Declutter small gallery cards. The stacked 함종·진영 / 건조 / 드랍 rows
+     pushed the name up off the bottom scrim and onto bright art, where the white
+     text turned unreadable. On phones the gallery shows identity only — name +
+     rarity chip + build chips — and the name sits cleanly in the scrim. Full
+     detail is one tap away (or switch to ☰ list view, which keeps every row). */
+  .shipgirl-grid:not(.list-view) .shipgirl-card .detail {
+    display: none;
+  }
+
+  /* With the detail gone, give the name a touch more room to breathe. */
+  .shipgirl-grid:not(.list-view) .shipgirl-card .meta {
+    padding-bottom: 0.85rem;
+  }
+
   .shipgirl-grid.list-view .shipgirl-card {
     gap: 0.6rem;
     padding-right: 0.6rem;
@@ -26,10 +40,25 @@
 
   .detail-header {
     flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  /* Center a size-capped portrait. Full-width made the img's aspect-ratio
+     height (≈4/3 × width) overflow its flex item and collide with the info
+     block below — the classic aspect-ratio-in-a-flex-column overflow. */
+  .detail-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .detail-image img {
-    max-width: 100%;
+    max-width: 14rem;
+  }
+
+  .detail-basic-info {
+    width: 100%;
+    min-width: 0;
   }
 
   .sp-weapon-header {
@@ -61,21 +90,55 @@
     font-size: 2em;
   }
 
-  .stats-container {
-    width: 100%;
-    flex-direction: column;
-    gap: 0.625rem;
-  }
-
+  /* 스킬 검색 / 드랍 지역 / counter share ONE row on phones (was stacked).
+     Buttons flex to fill; the counter stacks its two lines so it stays a narrow
+     block on the right. */
   .header-stats-row {
     width: 100%;
-    flex-direction: column;
-    gap: 0.75rem;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 0.45rem;
   }
 
-  .map-browser-btn {
-    width: 100%;
-    padding: 0.75rem 1rem;
+  .header-stats-row .map-browser-btn {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    gap: 0.4rem;
+    padding: 0.3rem 0.45rem;
+  }
+
+  .header-stats-row .map-browser-btn i {
+    font-size: 0.95rem;
+  }
+
+  .header-stats-row .map-browser-btn span {
+    font-size: 0.85rem;
+  }
+
+  /* Wider counter; tighter internals so the 2-line block (and, via stretch, the
+     buttons beside it) sits lower in height. */
+  .stats-container {
+    flex: 0 0 8.5rem;
+    width: auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.04rem;
+    padding: 0.28rem 0.7rem;
+    line-height: 1.15;
+  }
+
+  .stats-container .stat-item {
+    gap: 0.3rem;
+  }
+
+  .stats-container .stat-label {
+    font-size: 0.75em;
+  }
+
+  .stats-container .stat-value {
+    font-size: 0.92em;
   }
 
 }

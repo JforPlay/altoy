@@ -192,19 +192,6 @@
   min-width: 15.625rem;
 }
 
-.sp-weapon-section .info-item {
-  background: var(--section-bg);
-  border-left-color: var(--primary-color);
-}
-
-.sp-weapon-section .info-label {
-  color: var(--text-secondary);
-}
-
-.sp-weapon-section .info-value {
-  color: var(--text-primary);
-}
-
 .sp-weapon-skills {
   margin-top: 1.25rem;
 }

@@ -387,12 +387,16 @@ body.dark-mode .filter-rail.stuck {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.625rem 1.25rem;
+  padding: 0.5rem 1rem;
   background: var(--accent-blue);
   color: #fff;
   text-decoration: none;
-  border-radius: 0.5rem;
-  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: 0.7rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
   transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 1px 3px var(--shadow-color);
 }

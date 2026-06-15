@@ -90,7 +90,7 @@ body.dark-mode .back-button:hover:not(:disabled) {
 }
 
 .detail-image img {
-  max-width: 20rem;
+  max-width: 11rem;
   width: 100%;
   aspect-ratio: 3 / 4;
   border-radius: 0.625rem;
@@ -107,42 +107,130 @@ body.dark-mode .back-button:hover:not(:disabled) {
 .detail-title {
   font-size: 1.6em;
   color: var(--primary-color);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-/* ===== Info Grid ===== */
+/* ===== Header top row — title/badges on the left, 스킨/대사 on the right ===== */
+.detail-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+  flex-wrap: wrap;
+}
 
-.info-grid {
+/* ===== Info tiles — a clean 2-up grid of icon + label/value rows. No
+   surrounding box: rows sit directly on the card and are set off by a single
+   hairline (mirrors the minimal main-page header). Shared by the header and the
+   특수 장비 section so both read the same. */
+.info-tiles {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(8.125rem, 1fr));
-  gap: 0.625rem;
-  margin: 0.9375rem 0;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem 1.25rem;
+  margin: 0;
 }
 
-.info-item {
-  background: var(--section-bg);
-  padding: 0.625rem;
-  border-radius: 0.375rem;
-  border-left: 3px solid var(--primary-color);
-  transition: background 0.3s, border-color 0.3s;
-  box-shadow: 0 2px 4px var(--shadow-color);
+/* Header context: the title row gets the same underline as other container
+   headers (.section-title → 2px var(--primary-color)). */
+.detail-basic-info .info-tiles {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 2px solid var(--primary-color);
 }
 
-.info-label {
-  font-size: 0.8em;
+.info-tile {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+/* Span the full row — used by the 특수 장비 이름 field. */
+.info-tile--wide {
+  grid-column: 1 / -1;
+}
+
+.info-tile-icon {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.5rem;
+  background: var(--item-bg);
+  color: var(--accent-blue);
+  font-size: 1rem;
+  overflow: hidden;
+}
+
+.info-tile-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0.2rem;
+}
+
+.info-tile-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;
+}
+
+.info-tile-label {
+  font-size: 0.72rem;
   color: var(--text-secondary);
-  margin-bottom: 0.25rem;
-  transition: color 0.3s;
 }
 
-.info-value {
-  font-size: 1em;
-  font-weight: bold;
+.info-tile-value {
+  font-size: 0.92rem;
+  font-weight: 600;
   color: var(--text-primary);
-  transition: color 0.3s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Narrow phones: one tile per row so long 진영 names don't get clipped. */
+@media (max-width: 30rem) {
+  .info-tiles {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Drop row — 드랍 정보 text on the left, 드랍 지역 button on the right ===== */
+.detail-drop-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.detail-drop-info {
+  flex: 1 1 16rem;
+  min-width: 0;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.detail-drop-info strong {
+  color: var(--text-primary);
+}
+
+.detail-drop-info .drop-sources {
+  color: var(--text-secondary);
+}
+
+/* Keep the button right-aligned even when there's no drop text to push it over. */
+.detail-drop-row .view-maps-btn {
+  margin-left: auto;
 }
 
 /* ===== Unified Section Style ===== */
@@ -246,7 +334,7 @@ body.dark-mode .back-button:hover:not(:disabled) {
   padding: 0.625rem 0.75rem;
   background: var(--section-bg);
   border-radius: 0.5rem;
-  border-left: 3px solid var(--primary-color);
+  border: 1px solid var(--border-color);
   font-size: 0.8125rem;
 }
 
