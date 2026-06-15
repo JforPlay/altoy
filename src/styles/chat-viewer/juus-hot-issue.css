@@ -1,70 +1,227 @@
 /* ============================================================================
    JUUS HOT ISSUE - 쥬쥬 핫 이슈 (Official Account Posts)
+   Inline feed: each post fully expanded (image + body + authored comments +
+   commander options). Tokens come from chat-viewer.common.css.
    ============================================================================ */
 
 .hot-issue-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--spacing-md, 1rem);
-  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg, 1.5rem);
+  max-width: 760px;
   margin: 0 auto;
   padding: var(--spacing-md, 1rem);
 }
 
+/* --- Card shell --- */
 .hot-issue-card {
   background: var(--bg-secondary);
   border: 1px solid var(--chat-border);
-  border-radius: var(--radius-lg, 0.75rem);
-  overflow: hidden;
-  transition: transform var(--transition-fast, 0.15s) ease,
-    box-shadow var(--transition-fast, 0.15s) ease;
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 6px var(--shadow-light);
 }
 
-.hot-issue-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.1));
+/* --- Header (account + id) --- */
+.hi-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.875rem;
+  margin-bottom: 0.875rem;
+  border-bottom: 1px solid var(--chat-border);
 }
 
-.hot-issue-card-image {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  display: block;
-  background: var(--bg-tertiary);
+.hi-account {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
 }
 
-.hot-issue-card-image-placeholder {
-  width: 100%;
-  aspect-ratio: 16 / 9;
+.hi-account-badge {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
   background: var(--bg-tertiary);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.hi-account-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hi-account-name {
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.hi-time {
+  font-size: 0.75rem;
   color: var(--text-muted);
-  font-size: 0.875rem;
 }
 
-.hot-issue-card-body {
-  padding: var(--spacing-sm, 0.75rem) var(--spacing-md, 1rem);
-}
-
-.hot-issue-card-id {
-  display: inline-block;
+.hi-id {
+  flex-shrink: 0;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--accent-primary);
+  color: var(--chat-text-secondary);
   background: var(--bg-tertiary);
   padding: 0.125rem 0.5rem;
   border-radius: var(--radius-sm, 0.25rem);
-  margin-bottom: 0.375rem;
 }
 
-.hot-issue-card-title {
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: var(--chat-text);
+/* --- Title + body --- */
+.hi-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.125rem;
+  font-weight: 700;
   line-height: 1.4;
-  margin: 0;
+  color: var(--text-heading);
+}
+
+.hi-message {
+  margin: 0 0 1.25rem 0;
+  line-height: 1.6;
+  color: var(--chat-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* --- Section titles (댓글 / 지휘관 답글) --- */
+.hi-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--chat-border);
+}
+
+.hi-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--chat-text-secondary);
+  background: var(--bg-tertiary);
+  padding: 0.0625rem 0.4375rem;
+  border-radius: var(--radius-sm, 0.25rem);
+}
+
+/* --- Comment threads --- */
+.hi-comments {
+  margin-bottom: 1.25rem;
+}
+
+.hi-thread {
+  padding-left: 0.875rem;
+  border-left: 2px solid var(--chat-border);
+}
+
+.hi-thread + .hi-thread {
+  margin-top: 1rem;
+}
+
+.hi-comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.hi-comment + .hi-comment {
+  margin-top: 0.625rem;
+}
+
+.hi-comment-reply {
+  margin-left: 1.5rem;
+}
+
+.hi-comment-icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--bg-tertiary);
+  flex-shrink: 0;
+}
+
+.hi-comment-body {
+  line-height: 1.5;
+  min-width: 0;
+}
+
+.hi-comment-name {
+  font-weight: 600;
+  color: var(--text-heading);
+  margin-right: 0.25rem;
+}
+
+.hi-comment-username {
+  font-weight: 400;
+  color: var(--chat-text-secondary);
+  margin-right: 0.375rem;
+}
+
+.hi-comment-text {
+  color: var(--chat-text);
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+/* --- Commander options --- */
+.hi-options {
+  margin-top: 0.25rem;
+}
+
+.hi-option + .hi-option {
+  margin-top: 1rem;
+}
+
+.hi-option-q {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  margin-bottom: 0.625rem;
+  background: rgba(88, 101, 242, 0.1);
+  border: 1px solid rgba(88, 101, 242, 0.35);
+  border-radius: 0.5rem;
+}
+
+.hi-option-label {
+  flex-shrink: 0;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--accent-primary);
+  padding: 0.125rem 0.4375rem;
+  border-radius: var(--radius-sm, 0.25rem);
+}
+
+.hi-option-text {
+  font-weight: 600;
+  color: var(--chat-text);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* Reaction comments under an option share .hi-comment styling but indent. */
+.hi-option .hi-comment {
+  margin-left: 0.875rem;
+}
+
+.hi-option .hi-comment + .hi-comment {
+  margin-top: 0.5rem;
 }
 
 .hot-issue-empty {
@@ -77,7 +234,15 @@
 /* --- Responsive --- */
 @media (max-width: 640px) {
   .hot-issue-grid {
-    grid-template-columns: 1fr;
     padding: var(--spacing-sm, 0.75rem);
+    gap: 1rem;
+  }
+
+  .hot-issue-card {
+    padding: 1rem;
+  }
+
+  .hi-comment-reply {
+    margin-left: 1rem;
   }
 }

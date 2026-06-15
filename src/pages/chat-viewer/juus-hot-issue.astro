@@ -1,7 +1,10 @@
 ---
 /**
  * Juus Hot Issue Viewer (쥬쥬 핫 이슈)
- * Displays official account / news-style posts from Juustagram (type=2 entries).
+ * Official account / news-style posts from Juustagram (type=2 entries), each
+ * rendered fully inline as a feed card: headline + body, the authored
+ * discussion thread, and the commander reply options with shipgirl reactions.
+ * Data is generated purely from KR lua2json; these posts are text-only.
  */
 import Layout from '../../layouts/Layout.astro';
 import '../../styles/chat-viewer/chat-viewer.common.css';
