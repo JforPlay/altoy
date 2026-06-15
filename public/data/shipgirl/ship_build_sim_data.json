@@ -20,6 +20,11 @@
             "rarity": "N",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101070.webp"
         },
+        "101081": {
+            "name": "모리",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101080.webp"
+        },
         "101091": {
             "name": "플레처",
             "rarity": "R",
@@ -89,6 +94,11 @@
             "name": "브리스톨",
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101490.webp"
+        },
+        "101501": {
+            "name": "허먼Ⅱ",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/101500.webp"
         },
         "102011": {
             "name": "오마하",
@@ -169,6 +179,11 @@
             "name": "보이시",
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/102290.webp"
+        },
+        "112011": {
+            "name": "베스탈",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/112010.webp"
         },
         "201011": {
             "name": "아마존",
@@ -325,6 +340,11 @@
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/202320.webp"
         },
+        "206021": {
+            "name": "아거스",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/206020.webp"
+        },
         "301011": {
             "name": "후부키",
             "rarity": "SR",
@@ -465,20 +485,25 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/302230.webp"
         },
+        "312011": {
+            "name": "아카시",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/312010.webp"
+        },
         "401021": {
             "name": "Z2",
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401020.webp"
         },
+        "401161": {
+            "name": "Z16",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401160.webp"
+        },
         "401191": {
             "name": "Z19",
             "rarity": "R",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401190.webp"
-        },
-        "401231": {
-            "name": "Z23",
-            "rarity": "SR",
-            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/401230.webp"
         },
         "402011": {
             "name": "쾨니히스베르크",
@@ -494,6 +519,11 @@
             "name": "쾰른",
             "rarity": "N",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402030.webp"
+        },
+        "402041": {
+            "name": "라이프치히",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402040.webp"
         },
         "402051": {
             "name": "뉘른베르크",
@@ -525,6 +555,11 @@
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501060.webp"
         },
+        "501081": {
+            "name": "창펑",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/501080.webp"
+        },
         "502011": {
             "name": "얏센",
             "rarity": "SR",
@@ -534,6 +569,21 @@
             "name": "지안",
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/502090.webp"
+        },
+        "502101": {
+            "name": "하이롱",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/502100.webp"
+        },
+        "502121": {
+            "name": "하이처우",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/502120.webp"
+        },
+        "503021": {
+            "name": "장우",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/503020.webp"
         },
         "601031": {
             "name": "빈첸초 조베르티",
@@ -564,6 +614,11 @@
             "name": "알프레도 오리아니",
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/601080.webp"
+        },
+        "601101": {
+            "name": "아틸리오 레골로",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/601100.webp"
         },
         "602011": {
             "name": "두카 델리 아브루치",
@@ -670,6 +725,11 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/901130.webp"
         },
+        "902021": {
+            "name": "마르세예즈",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/902020.webp"
+        },
         "9600031": {
             "name": "골든 하인드",
             "rarity": "SSR",
@@ -677,6 +737,16 @@
         }
     },
     "2": {
+        "102011": {
+            "name": "오마하",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/102010.webp"
+        },
+        "102021": {
+            "name": "롤리",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/102020.webp"
+        },
         "103011": {
             "name": "펜사콜라",
             "rarity": "N",
@@ -707,6 +777,11 @@
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/103070.webp"
         },
+        "103111": {
+            "name": "위치타",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/103110.webp"
+        },
         "103141": {
             "name": "샌프란시스코",
             "rarity": "SSR",
@@ -716,6 +791,11 @@
             "name": "브레머튼",
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/103240.webp"
+        },
+        "103261": {
+            "name": "노샘프턴Ⅱ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/103260.webp"
         },
         "105011": {
             "name": "네바다",
@@ -752,6 +832,16 @@
             "rarity": "UR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/105170.webp"
         },
+        "107101": {
+            "name": "요크타운Ⅱ",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107100.webp"
+        },
+        "202011": {
+            "name": "리엔더",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/202010.webp"
+        },
         "203011": {
             "name": "런던",
             "rarity": "SR",
@@ -777,15 +867,15 @@
             "rarity": "R",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/203050.webp"
         },
+        "203061": {
+            "name": "도셋셔",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/203060.webp"
+        },
         "203071": {
             "name": "요크",
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/203070.webp"
-        },
-        "203081": {
-            "name": "엑세터",
-            "rarity": "SR",
-            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/203080.webp"
         },
         "203091": {
             "name": "서식스",
@@ -827,11 +917,6 @@
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/205030.webp"
         },
-        "205041": {
-            "name": "로드니",
-            "rarity": "SR",
-            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/205040.webp"
-        },
         "205091": {
             "name": "하우",
             "rarity": "SSR",
@@ -851,6 +936,16 @@
             "name": "뱅가드",
             "rarity": "UR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/205130.webp"
+        },
+        "205141": {
+            "name": "로열 오크",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/205140.webp"
+        },
+        "207071": {
+            "name": "임플래커블",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/207070.webp"
         },
         "213011": {
             "name": "에레버스",
@@ -947,6 +1042,31 @@
             "rarity": "UR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/307080.webp"
         },
+        "402011": {
+            "name": "쾨니히스베르크",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402010.webp"
+        },
+        "402021": {
+            "name": "카를스루에",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402020.webp"
+        },
+        "402031": {
+            "name": "쾰른",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402030.webp"
+        },
+        "402041": {
+            "name": "라이프치히",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402040.webp"
+        },
+        "403021": {
+            "name": "블뤼허",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/403020.webp"
+        },
         "403031": {
             "name": "프린츠 오이겐",
             "rarity": "SSR",
@@ -982,10 +1102,20 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/404040.webp"
         },
+        "404051": {
+            "name": "브륀힐드",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/404050.webp"
+        },
         "405031": {
             "name": "울리히 폰 후텐",
             "rarity": "UR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/405030.webp"
+        },
+        "503011": {
+            "name": "지엔우",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/503010.webp"
         },
         "504011": {
             "name": "환창",
@@ -1002,6 +1132,11 @@
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/603050.webp"
         },
+        "603061": {
+            "name": "고리치아",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/603060.webp"
+        },
         "605011": {
             "name": "비토리오 베네토",
             "rarity": "SSR",
@@ -1011,6 +1146,11 @@
             "name": "로마",
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/605030.webp"
+        },
+        "605071": {
+            "name": "안드레아 도리아",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/605070.webp"
         },
         "703011": {
             "name": "탈린",
@@ -1064,6 +1204,16 @@
         }
     },
     "3": {
+        "102011": {
+            "name": "오마하",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/102010.webp"
+        },
+        "102021": {
+            "name": "롤리",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/102020.webp"
+        },
         "103011": {
             "name": "펜사콜라",
             "rarity": "N",
@@ -1093,6 +1243,11 @@
             "name": "인디애나폴리스",
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/103070.webp"
+        },
+        "103111": {
+            "name": "위치타",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/103110.webp"
         },
         "105171": {
             "name": "뉴저지",
@@ -1149,10 +1304,20 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107090.webp"
         },
+        "107101": {
+            "name": "요크타운Ⅱ",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107100.webp"
+        },
         "107111": {
             "name": "인트레피드",
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107110.webp"
+        },
+        "107121": {
+            "name": "호넷Ⅱ",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/107120.webp"
         },
         "107141": {
             "name": "타이콘데로가",
@@ -1189,6 +1354,16 @@
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/112010.webp"
         },
+        "202011": {
+            "name": "리엔더",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/202010.webp"
+        },
+        "202331": {
+            "name": "스킬라",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/202330.webp"
+        },
         "203011": {
             "name": "런던",
             "rarity": "SR",
@@ -1213,6 +1388,11 @@
             "name": "노포크",
             "rarity": "R",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/203050.webp"
+        },
+        "203061": {
+            "name": "도셋셔",
+            "rarity": "SR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/203060.webp"
         },
         "205131": {
             "name": "뱅가드",
@@ -1269,6 +1449,11 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/207040.webp"
         },
+        "207071": {
+            "name": "임플래커블",
+            "rarity": "UR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/207070.webp"
+        },
         "207091": {
             "name": "꼬마 일러스트리어스",
             "rarity": "SR",
@@ -1288,6 +1473,11 @@
             "name": "무사시",
             "rarity": "UR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/305100.webp"
+        },
+        "306041": {
+            "name": "즈이호",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/306040.webp"
         },
         "306081": {
             "name": "치토세",
@@ -1349,6 +1539,11 @@
             "rarity": "SSR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/308060.webp"
         },
+        "312011": {
+            "name": "아카시",
+            "rarity": "SSR",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/312010.webp"
+        },
         "317011": {
             "name": "이13",
             "rarity": "SSR",
@@ -1358,6 +1553,26 @@
             "name": "카시노",
             "rarity": "SR",
             "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/319010.webp"
+        },
+        "402011": {
+            "name": "쾨니히스베르크",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402010.webp"
+        },
+        "402021": {
+            "name": "카를스루에",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402020.webp"
+        },
+        "402031": {
+            "name": "쾰른",
+            "rarity": "N",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402030.webp"
+        },
+        "402041": {
+            "name": "라이프치히",
+            "rarity": "R",
+            "icon": "https://raw.githubusercontent.com/JforPlay/data_for_toy/main/skin_shipyard/402040.webp"
         },
         "405031": {
             "name": "울리히 폰 후텐",
