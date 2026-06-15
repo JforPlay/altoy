@@ -44,16 +44,15 @@ const LIMIT_BREAK_NAMES = ['기본', '한계돌파 1', '한계돌파 2', '한계
 const UNAFFECTED_STATS = ['speed', 'luck'];
 
 /**
- * Format a construction timer string ("HH:MM:SS") for display, dropping a
- * redundant leading "00:" hour so sub-hour builds read as "MM:SS"
- * (e.g. "00:23:00" → "23:00", "01:05:00" → "1:05:00"). Returns '' when absent.
+ * Format a construction timer string ("HH:MM:SS") for display, always keeping
+ * the full hour:minute:second form with zero-padded fields so every build reads
+ * consistently (e.g. "00:23:00", "01:05:00"). Returns '' when absent.
  */
 function formatBuildTime(timer) {
     if (!timer || typeof timer !== 'string' || timer === '00:00:00') return '';
     const parts = timer.split(':');
     if (parts.length !== 3) return timer;
-    const [hh, mm, ss] = parts;
-    return hh === '00' ? `${mm}:${ss}` : `${Number(hh)}:${mm}:${ss}`;
+    return parts.map((p) => String(p).padStart(2, '0')).join(':');
 }
 
 // ===== State Reference =====
