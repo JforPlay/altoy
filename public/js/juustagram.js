@@ -6,7 +6,6 @@
  */
 
 import {
-    fetchJSON,
     fetchJSONWithCache,
     createImgElement,
     IMG_FALLBACKS,
@@ -36,7 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let fullPostsData = null;        // Full detailed post data
     let fullPostsPromise = null;     // Shared full-data request
     let shipgirlDataMap = {};        // Shipgirl metadata (names, icons) from ship_group_data.json
-    let shipgroupTemplateMap = {};   // Template data for usernames from external API
+    let shipgroupTemplateMap = {};   // ship_group → "@handle" source name (local juustagram_usernames.json)
+    let shipGroupAliasMap = {};      // collab/offset ins ship_group id → real gid (local ship_group_aliases.json)
     let lazyImageObserver = null;
     let displayRequestId = 0;
     let currentPostId = null;
@@ -65,21 +65,31 @@ document.addEventListener('DOMContentLoaded', () => {
     Promise.all([
         fetchJSONWithCache('data/juustagram_lite.json'),
         fetchJSONWithCache('data/ship_group_data.json'),
-        // External GitHub fetch stays uncached — small, optional, and the silent
-        // failure path already returns {} so the page renders without it.
-        fetchJSON('https://raw.githubusercontent.com/AzurLaneTools/AzurLaneData/main/CN/ShareCfg/activity_ins_ship_group_template.json')
+        // @username handles (ship_group → @handle), baked locally by
+        // juustagram_process from KR lua2json — no longer a runtime repo fetch.
+        // Optional: the silent failure path returns {} so the page still renders.
+        fetchJSONWithCache('data/juustagram_usernames.json')
             .catch((error) => {
-                console.warn('Optional Juustagram username template data failed to load:', error);
+                console.warn('Optional Juustagram username data failed to load:', error);
+                return {};
+            }),
+        // Collab cameos / offset-id authors (e.g. 10993 Tsukushi, 30187 Wakatsuki)
+        // whose ins ship_group id isn't a ship_group_data key — maps to the real
+        // gid so name+icon resolve instead of "Unknown ID". Optional like above.
+        fetchJSONWithCache('data/ship_group_aliases.json')
+            .catch((error) => {
+                console.warn('Optional Juustagram ship_group alias data failed to load:', error);
                 return {};
             }),
     ])
-        .then(([posts, shipgirlData, templateData]) => {
+        .then(([posts, shipgirlData, templateData, aliasData]) => {
             if (!isRecord(posts)) throw new Error('Invalid Juustagram lite data');
             if (!isRecord(shipgirlData)) throw new Error('Invalid shipgirl data');
 
             postsData = posts;
             shipgirlDataMap = shipgirlData;
             shipgroupTemplateMap = isRecord(templateData) ? templateData : {};
+            shipGroupAliasMap = isRecord(aliasData) ? aliasData : {};
 
             // Start full-data loading before the first selected post renders.
             fullPostsPromise = loadFullPosts();
@@ -159,15 +169,17 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {{name: string, icon: string, username: string}}
      */
     function getShipgirlData(id) {
-        const shipData = shipgirlDataMap[id];
-        const templateData = shipgroupTemplateMap[id];
+        // Collab cameos / offset-id authors key their metadata under a different
+        // gid than their ins ship_group id — resolve through the alias first.
+        const shipData = shipgirlDataMap[id] || shipgirlDataMap[shipGroupAliasMap[id]];
+        const handle = shipgroupTemplateMap[id];   // flat ship_group → "@handle" source name
 
         if (shipData) {
             const name = String(shipData.name || `ID ${id}`).trim();
             return {
                 name,
                 icon: shipData.icon || placeholderIcon,
-                username: templateData ? `@${templateData.name}` : '',
+                username: handle ? `@${handle}` : '',
             };
         }
 
