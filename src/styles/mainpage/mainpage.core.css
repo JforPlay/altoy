@@ -5,7 +5,7 @@
    ===================================================== */
 
 /* Light mode defaults + constants */
-:root {
+body.mainpage {
   /* Color Palette (mode-independent constants) */
   --primary: #0071eb;
   --primary-dark: #0056b3;
@@ -46,7 +46,7 @@
 }
 
 /* Dark Theme */
-body.dark-mode {
+body.mainpage.dark-mode {
   --bg-gradient-start: #000000;
   --bg-gradient-mid: #141414;
   --bg-gradient-end: #0a0a0a;
@@ -80,7 +80,7 @@ body.dark-mode {
    GLOBAL STYLES
    ===================================================== */
 
-body {
+body.mainpage {
   background: linear-gradient(
     180deg,
     var(--bg-gradient-start) 0%,
