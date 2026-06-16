@@ -13,7 +13,7 @@
 /* Base body styling */
 body {
   font-family: Arial, sans-serif;
-  background-color: var(--section-bg);
+  background: var(--section-bg);
   color: var(--text-primary);
   margin: 0;
   padding: 0;

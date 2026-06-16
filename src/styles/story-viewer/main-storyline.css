@@ -24,7 +24,7 @@ body.dark-mode {
 /* General Body Styles */
 body {
   font-family: "Noto Sans KR", "Roboto", sans-serif;
-  background-color: var(--bg-color);
+  background: var(--bg-color);
   color: var(--text-color);
   margin: 0;
   padding: 0;

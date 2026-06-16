@@ -3,11 +3,7 @@
  * Index: nav-structure card grid. Article: markdown typography.
  */
 
-/* Page background: global.style.css styles NO body background — every page
- * paints its own from the theme gradient tokens, or dark mode shows white. */
 body {
-    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-    min-height: 100vh;
     transition: background 0.3s ease;
 }
 

@@ -16,10 +16,8 @@
 body {
   font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto,
     "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
   color: var(--text-primary);
   line-height: 1.6;
-  min-height: 100vh;
 }
 
 /* --- Page Header --- */

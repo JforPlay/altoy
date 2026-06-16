@@ -8,9 +8,7 @@
 
 /* -- Body -- */
 body {
-    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
     color: var(--text-primary);
-    min-height: 100vh;
     transition: background var(--transition-base), color var(--transition-base);
 }
 
