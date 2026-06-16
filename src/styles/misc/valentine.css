@@ -70,11 +70,9 @@ body.dark-mode .search-box input {
 
 .search-box input:focus {
   border-color: var(--val-accent);
-  box-shadow: 0 0 0 3px rgba(209, 77, 106, 0.1);
-}
-
-body.dark-mode .search-box input:focus {
-  box-shadow: 0 0 0 3px rgba(232, 88, 122, 0.2);
+  /* Valentine keeps its pink hue (the one focus-ring exception). --val-accent-light
+     already flips light↔dark, so this needs no separate dark-mode override. */
+  box-shadow: 0 0 0 3px var(--val-accent-light);
 }
 
 .shipgirl-count {

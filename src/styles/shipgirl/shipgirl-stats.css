@@ -195,7 +195,7 @@ body {
 .filter-search:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--primary-alpha-10);
+    box-shadow: var(--focus-ring);
 }
 
 .filter-search::placeholder {
@@ -219,7 +219,7 @@ body {
 .filter-select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--primary-alpha-10);
+    box-shadow: var(--focus-ring);
 }
 
 .filter-select-sm {
@@ -511,7 +511,7 @@ body {
 .threshold-input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--primary-alpha-10);
+    box-shadow: var(--focus-ring);
 }
 
 /* -- Table Section -- */

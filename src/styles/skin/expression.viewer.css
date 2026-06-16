@@ -76,7 +76,7 @@
 .dropdown-container input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 113, 235, 0.1);
+    box-shadow: var(--focus-ring);
 }
 
 .dropdown-container input::placeholder {
@@ -770,10 +770,6 @@ body.dark-mode .image-display {
 
 body.dark-mode .dropdown-container input {
     background-color: var(--bg-input);
-}
-
-body.dark-mode .dropdown-container input:focus {
-    box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.2);
 }
 
 body.dark-mode .dropdown-content {

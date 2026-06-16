@@ -52,12 +52,12 @@
 .goal-select-dropdown:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px var(--primary-alpha-10);
+  box-shadow: var(--focus-ring);
 }
 
 .goal-select-dropdown:active,
 .goal-select-dropdown:focus-within {
-  box-shadow: 0 0 0 3px var(--primary-alpha-10);
+  box-shadow: var(--focus-ring);
 }
 
 /* Dropdown options styling */

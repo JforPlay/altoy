@@ -137,3 +137,43 @@ test('status: a migrated page dropped its old local loading rule (map-viewer)', 
     // now falls back to the default block display. RED before migration (flex).
     expect(await probeStyle(page, 'map-loading', 'display')).toBe('block');
 });
+
+// --- Wave-1 focus-ring unification: canonical --focus-ring applied -------------
+// theme.css defines `body { --focus-ring: 0 0 0 3px var(--primary-alpha-15) }`,
+// loaded site-wide via Layout. Inject a probe whose box-shadow consumes the token
+// and read the resolved color: it must be the canonical blue ring (α0.15), flip
+// light↔dark via --primary-alpha-15, and be identical on accent-theme pages
+// (accent does not redefine --primary-alpha-*). Proves the canonical is in force.
+const probeFocusRing = (page) =>
+    page.evaluate(() => {
+        const el = document.createElement('div');
+        el.style.boxShadow = 'var(--focus-ring)';
+        document.body.appendChild(el);
+        const value = getComputedStyle(el).boxShadow;
+        el.remove();
+        return value;
+    });
+
+test('focus-ring: canonical blue ring resolves in light mode (shipgirl-stats)', async ({ page }) => {
+    await page.addInitScript(() => { localStorage.setItem('theme', 'light'); });
+    await page.goto(pathFor('shipgirl-stats'), { waitUntil: 'load' });
+    const ring = await probeFocusRing(page);
+    expect(ring, `expected light blue ring, got: ${ring}`).toContain('0, 113, 235'); // accent-blue light
+    expect(ring).toContain('3px'); // canonical spread
+});
+
+test('focus-ring: auto-adapts to dark mode (shipgirl-stats, default dark)', async ({ page }) => {
+    await page.goto(pathFor('shipgirl-stats'), { waitUntil: 'load' }); // site defaults to dark
+    const ring = await probeFocusRing(page);
+    expect(ring, `expected dark blurple ring, got: ${ring}`).toContain('114, 137, 218'); // accent-blue dark
+    expect(ring).toContain('3px');
+});
+
+test('focus-ring: identical on an accent-theme page (expression-viewer, light)', async ({ page }) => {
+    await page.addInitScript(() => { localStorage.setItem('theme', 'light'); });
+    await page.goto(pathFor('expression-viewer'), { waitUntil: 'load' });
+    const ring = await probeFocusRing(page);
+    // Accent theme does NOT override --primary-alpha-*, so the ring is the same blue.
+    expect(ring, `expected same blue ring on accent page, got: ${ring}`).toContain('0, 113, 235');
+    expect(ring).toContain('3px');
+});

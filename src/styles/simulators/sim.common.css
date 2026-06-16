@@ -846,7 +846,7 @@ body.dark-mode {
 
 .choices.is-focused .choices__inner {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px var(--primary-alpha-15);
+  box-shadow: var(--focus-ring);
 }
 
 .choices__list--dropdown,
@@ -980,7 +980,7 @@ body.dark-mode {
 .search-input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px var(--primary-alpha-15);
+  box-shadow: var(--focus-ring);
 }
 
 .ship-grid {
@@ -1029,7 +1029,7 @@ body.dark-mode {
 .ship-grid-item:focus-visible {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px var(--primary-alpha-15);
+  box-shadow: var(--focus-ring);
 }
 
 /* ===== RESPONSIVE ===== */

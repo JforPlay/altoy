@@ -49,7 +49,7 @@ body {
 .bgm-misc-search:focus {
     outline: none;
     border-color: var(--accent-blue);
-    box-shadow: 0 0 0 3px var(--primary-alpha-20);
+    box-shadow: var(--focus-ring);
 }
 
 .bgm-misc-search::placeholder {

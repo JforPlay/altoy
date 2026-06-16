@@ -875,7 +875,7 @@ body.dark-mode .popup-header {
 .dropdown-container input:focus {
   outline: none;
   border-color: var(--accent-blue);
-  box-shadow: 0 0 0 3px var(--primary-alpha-20);
+  box-shadow: var(--focus-ring);
   transform: translateY(-1px);
 }
 

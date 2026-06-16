@@ -264,7 +264,7 @@ body.dark-mode .filter-rail.stuck {
 .filter-toggle-btn:focus-visible {
   outline: none;
   border-color: var(--accent-blue);
-  box-shadow: 0 0 0 3px var(--primary-alpha-20);
+  box-shadow: var(--focus-ring);
 }
 
 /* `--primary-color` is too low-contrast in dark mode (#c0c0c0 light gray);

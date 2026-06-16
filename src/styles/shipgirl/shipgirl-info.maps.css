@@ -257,7 +257,7 @@ body.dark-mode .map-type-boss .map-type-badge {
 .map-browser-btn:focus-visible {
   outline: none;
   border-color: var(--accent-blue);
-  box-shadow: 0 0 0 3px var(--primary-alpha-20);
+  box-shadow: var(--focus-ring);
 }
 
 .map-browser-btn i {

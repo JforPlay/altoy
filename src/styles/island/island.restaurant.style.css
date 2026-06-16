@@ -359,7 +359,7 @@
 .attribute-select:focus {
     outline: none;
     border-color: var(--island-accent);
-    box-shadow: 0 0 0 3px rgba(var(--island-accent-rgb), 0.1);
+    box-shadow: var(--focus-ring);
 }
 
 .attribute-select:disabled {

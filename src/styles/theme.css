@@ -167,6 +167,21 @@
   --z-max: 9999;        /* tooltips / never-occluded top layer */
 }
 
+/* --- Focus ring — canonical input/control focus affordance (CSS unification Wave 1) ---
+   Used as `box-shadow: var(--focus-ring)` on any :focus / :focus-visible rule.
+   Declared on `body` (NOT :root) on purpose: the var() resolves at computed-value
+   time on the body element, so it picks up body.dark-mode's --primary-alpha-15
+   override automatically. Declaring it on :root (the <html> element) would freeze
+   the light value, since the dark overrides live on <body>. Built on
+   --primary-alpha-* so the ring is identical on default + accent pages (accent
+   does not redefine those tokens) and auto-adapts to dark mode. theme.css is
+   loaded site-wide via Layout → global.style.css, so the token resolves on every
+   page. The one hue exception is valentine's pink ring (uses its own
+   --val-accent-light token directly); loadingbg keeps its standalone indigo. */
+body {
+  --focus-ring: 0 0 0 3px var(--primary-alpha-15);
+}
+
 /* --- Dark Mode --- */
 body.dark-mode {
   /* Background */

@@ -131,7 +131,7 @@ body {
 .st-search-input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px var(--primary-alpha-10);
+  box-shadow: var(--focus-ring);
 }
 
 .st-search-input::placeholder {
