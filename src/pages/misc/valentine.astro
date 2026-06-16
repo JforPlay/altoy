@@ -12,7 +12,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="valentine-container">
         <div class="shipgirl-panel" aria-label="Shipgirl list">
             <div class="search-box">
-                <input type="search" id="search" placeholder="Search name..." autocomplete="off" aria-label="Search shipgirl names">
+                <input type="search" id="search" placeholder="함순이 이름으로 검색..." autocomplete="off" aria-label="Search shipgirl names">
             </div>
             <div class="shipgirl-count" id="shipgirl-count" aria-live="polite"></div>
             <div class="shipgirl-list scroll-styled" id="shipgirl-list" aria-label="Shipgirls with valentine letters"></div>
@@ -20,12 +20,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div class="letter-panel" aria-live="polite">
             <div class="letter-header" id="letter-header">
                 <div class="letter-header-placeholder">?</div>
-                <span class="letter-header-name">Select a shipgirl</span>
+                <span class="letter-header-name">옆에서 함순이 선택해서 보기</span>
             </div>
             <div class="year-tabs" id="year-tabs" role="tablist" aria-label="Valentine letter year"></div>
             <div class="letter-empty" id="letter-placeholder">
                 <span class="material-symbols-outlined" aria-hidden="true">mail</span>
-                <p>Select a shipgirl from the list to view valentine letters.</p>
+                <p>발렌타인 편지를 보고싶은 함순이를 선택해주세요</p>
             </div>
             <div class="letter-content-wrapper scroll-styled hidden" id="letter-content-wrapper">
                 <div class="letter-card" id="letter-card">

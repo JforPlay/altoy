@@ -41,7 +41,7 @@ export const PAGE_CATALOG = [
 
     // ===== Equipment =====
     { key: 'EQUIP_VIEWER',  path: 'equip/equip-viewer/',  name: '장비 DB',  description: '장비 검색·상세·비교·한줄평(청문회)', icon: 'settings', category: '장비' },
-    { key: 'EQUIP_UPGRADE', path: 'equip/equip-upgrade/', name: '장비 연구', description: '기어 랩 연구 트리',         icon: 'science',  category: '장비' },
+    { key: 'EQUIP_UPGRADE', path: 'equip/equip-upgrade/', name: '장비 연구', description: '장비 개발 연구 트리',         icon: 'science',  category: '장비' },
 
     // ===== Tools / Map / Island =====
     { key: 'MAP_VIEWER',     path: 'map/map-viewer/', name: '해역 정보',          description: '해역 맵, 적 함대, 드롭 정보',                       icon: 'map',         category: '도구' },
