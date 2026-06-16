@@ -52,6 +52,39 @@
     pointer-events: none;
 }
 
+/* ===== 청문회 mode: guidance note (always visible above the grid) =====
+   Explains why some equips are hidden in this mode + a casual usage tip.
+   Sibling ABOVE #equipGrid (not inside it — renderHearingGrid clears the grid);
+   toggled with the view mode in equip.viewer.js. */
+.hearing-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--primary-alpha-10);
+    border: 1px solid var(--primary-alpha-30);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.55;
+}
+.hearing-note-icon {
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+    font-size: 1.25rem;
+    color: var(--accent-blue);
+}
+.hearing-note-text { display: flex; flex-direction: column; gap: 0.3rem; }
+.hearing-note-text p { margin: 0; overflow-wrap: anywhere; }
+.hearing-note-text strong { color: var(--accent-blue); font-weight: 700; }
+/* rarity slang accents (흰딱/파딱/보딱 = N/R/SR). Reference the global
+   --rarity-*-fg tokens directly — this page doesn't opt into rarity.css, and the
+   -fg variants are tuned to read on a card surface in both light & dark. */
+.hearing-note .r-n  { color: var(--rarity-n-fg);  font-weight: 700; }
+.hearing-note .r-r  { color: var(--rarity-r-fg);  font-weight: 700; }
+.hearing-note .r-sr { color: var(--rarity-sr-fg); font-weight: 700; }
+
 /* ===== 청문회 mode: enriched cards in a responsive grid ===== */
 /* Grid (NOT CSS columns) so cards in the same row share a height — user-requested
    unified row heights. auto-fill + minmax → 3/2/1 columns by available width;
@@ -120,6 +153,12 @@
     border-radius: var(--radius-sm);
     padding: 0.5rem 0.6rem;
 }
+/* Each real \n in a 한줄평 is its own line block (renderHearingComment); the gap
+   applies ONLY between adjacent line blocks, so a long line that soft-wraps to
+   the card width stays tight while actual line breaks get breathing room
+   (user feedback 2026-06-15). */
+.hearing-comment .hearing-line { display: block; }
+.hearing-comment .hearing-line + .hearing-line { margin-top: 0.5em; }
 .hearing-more {
     font-size: 0.8rem;
     font-weight: 600;
@@ -171,14 +210,14 @@
     border: none;
     border-radius: var(--radius-full);
     background: transparent;
-    color: var(--text-secondary);
+    color: var(--accent-blue);   /* blue ⓘ button, matching shipgirl-info etc. */
     cursor: pointer;
     transition: color var(--transition-fast), background var(--transition-fast);
 }
-.credits-trigger .material-symbols-outlined { font-size: 1.2rem; }
+.credits-trigger i { font-size: 1.15rem; }
 .credits-trigger:hover,
 .credits-trigger:focus-visible {
-    color: var(--accent-blue);
+    color: #8ea1e1;   /* same lighter-blue hover as the global .info-button */
     background: var(--primary-alpha-10);
 }
 

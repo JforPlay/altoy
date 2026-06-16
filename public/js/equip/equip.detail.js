@@ -14,6 +14,7 @@ import {
     getMergedAircraftTemplate, getMergedWeaponProperties, getPrimaryWeaponProperty,
     getHearingEntry
 } from './equip.data.js';
+import { renderHearingComment } from './equip.hearing-view.js';
 
 /** Ammo type name mapping (matches equip.ammo field / equip_ammo_type_X i18n keys) */
 const AMMO_TYPE_NAMES = {
@@ -105,7 +106,7 @@ function renderDetail(equip) {
     // 한줄평 (장비 청문회) — placed before stats; all reviews shown here
     if (hearingEntry && (hearingEntry.reviews || []).length > 0) {
         const reviewsHtml = hearingEntry.reviews
-            .map(r => `<div class="hearing-comment">${escapeHtml(r).replace(/\n/g, '<br>')}</div>`)
+            .map(r => `<div class="hearing-comment">${renderHearingComment(r)}</div>`)
             .join('');
         html += `
             <div class="stats-section">

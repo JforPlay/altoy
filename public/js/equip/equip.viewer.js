@@ -9,7 +9,7 @@
 import {
     createSearchIndex, ensureFuse, debounce, getUrlParam, setUrlParams,
     resolveUrl, showToast, closeModal, lockBodyScroll, unlockBodyScroll,
-    getStorageItem, setStorageItem
+    showElement, hideElement
 } from '../utils.js';
 import {
     setup as setupData,
@@ -99,6 +99,7 @@ const loading = document.getElementById('loading');
 const totalCount = document.getElementById('totalCount');
 const filteredCount = document.getElementById('filteredCount');
 const viewToggle = document.getElementById('viewToggle');
+const hearingNote = document.getElementById('hearingNote');
 
 // Credits popover (출처 · 특별 감사) — hover is CSS-only; these drive tap/keyboard
 const creditsInfo = document.getElementById('creditsInfo');
@@ -419,18 +420,29 @@ function searchEquipment(searchTerm) {
 
 // ===== View Mode (그리드 / 청문회) =====
 
-/** Resolve the initial mode: ?view= URL param → stored pref → 'hearing' (default). */
+/**
+ * Resolve the initial mode: ?view= URL param → 'hearing' (default).
+ * View choice is intentionally NOT persisted (no localStorage) — each fresh
+ * window opens on the 청문회 default unless an explicit ?view= says otherwise.
+ */
 function resolveInitialViewMode() {
     const urlView = getUrlParam('view');
     if (urlView === 'hearing' || urlView === 'grid') return urlView;
-    // 청문회 is the default view; only an explicit stored 'grid' pref opts out.
-    return getStorageItem('equip-view-mode') === 'grid' ? 'grid' : 'hearing';
+    return 'hearing';
 }
 
 /** Dispatch to the active renderer. */
 function renderCurrentView() {
+    updateHearingNote();
     if (state.viewMode === 'hearing') renderHearingGrid();
     else renderEquipGrid();
+}
+
+/** The 청문회 guidance note is only relevant in 자세히 mode — hide it in 그리드. */
+function updateHearingNote() {
+    if (!hearingNote) return;
+    if (state.viewMode === 'hearing') showElement(hearingNote);
+    else hideElement(hearingNote);
 }
 
 /** Reflect state.viewMode on the toggle buttons. */
@@ -443,11 +455,11 @@ function updateViewToggleUI() {
     }
 }
 
-/** Switch mode from a user toggle: persist, sync URL, re-render. */
+/** Switch mode from a user toggle: sync URL + re-render. View choice is NOT
+ *  persisted across sessions (no localStorage) — only reflected in the URL. */
 function setViewMode(mode) {
     if (mode !== 'grid' && mode !== 'hearing') return;
     state.viewMode = mode;
-    setStorageItem('equip-view-mode', mode);
     setUrlParams({ view: mode === 'grid' ? 'grid' : null }, { replace: true });
     updateViewToggleUI();
     renderCurrentView();

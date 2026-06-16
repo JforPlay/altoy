@@ -21,6 +21,20 @@ export function setup(stateRef, context) {
 }
 
 /**
+ * Render one 한줄평 string into the inner HTML of a `.hearing-comment` bubble.
+ * Each REAL line break (\n) becomes its own `.hearing-line` block, so the
+ * inter-line gap (CSS) applies ONLY between actual lines — a long line that
+ * soft-wraps to fit the card width stays tight. Each line is escaped.
+ * Shared by the card (buildHearingCard) and the detail panel (equip.detail.js).
+ */
+export function renderHearingComment(text) {
+    return String(text || '')
+        .split('\n')
+        .map(line => `<span class="hearing-line">${escapeHtml(line)}</span>`)
+        .join('');
+}
+
+/**
  * Render the 청문회 grid into #equipGrid: commented, non-SP entries from
  * state.filteredData, grouped by type, each type group a masonry block.
  * Cards within a group honor the active sort (via ctx.sortEquips) so the sort
@@ -105,7 +119,7 @@ function buildHearingCard(equip) {
             </div>
         </div>
         <div class="hearing-card-comments">
-            ${first ? `<div class="hearing-comment">${escapeHtml(first).replace(/\n/g, '<br>')}</div>` : ''}
+            ${first ? `<div class="hearing-comment">${renderHearingComment(first)}</div>` : ''}
             ${moreCount > 0 ? `<div class="hearing-more">+${moreCount} 한줄평 더 ▸</div>` : ''}
         </div>`;
 
