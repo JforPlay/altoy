@@ -427,25 +427,6 @@ body.dark-mode #track-list li.playing .track-button {
   text-align: center;
 }
 
-/* Scrollbar styling */
-.track-list-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.track-list-container::-webkit-scrollbar-track {
-  background: var(--scrollbar-track);
-  border-radius: 4px;
-}
-
-.track-list-container::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
-  border-radius: 4px;
-  transition: background 0.2s;
-}
-
-.track-list-container::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover);
-}
 
 /* ==========================================================================
    5. AUDIO VISUALIZER & CONTROLS

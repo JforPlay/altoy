@@ -266,27 +266,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-color) transparent;
     scrollbar-gutter: stable;
-}
-
-.character-grid::-webkit-scrollbar {
-    width: 6px;
-}
-
-.character-grid::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.character-grid::-webkit-scrollbar-thumb {
-    background-color: var(--border-color);
-    border-radius: var(--radius-full);
-    transition: background-color var(--transition-fast);
-}
-
-.character-grid::-webkit-scrollbar-thumb:hover {
-    background-color: var(--text-secondary);
 }
 
 /* Character Card - Two-row layout for better name visibility */

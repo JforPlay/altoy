@@ -15,7 +15,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <input type="search" id="search" placeholder="Search name..." autocomplete="off" aria-label="Search shipgirl names">
             </div>
             <div class="shipgirl-count" id="shipgirl-count" aria-live="polite"></div>
-            <div class="shipgirl-list" id="shipgirl-list" aria-label="Shipgirls with valentine letters"></div>
+            <div class="shipgirl-list scroll-styled" id="shipgirl-list" aria-label="Shipgirls with valentine letters"></div>
         </div>
         <div class="letter-panel" aria-live="polite">
             <div class="letter-header" id="letter-header">
@@ -27,7 +27,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <span class="material-symbols-outlined" aria-hidden="true">mail</span>
                 <p>Select a shipgirl from the list to view valentine letters.</p>
             </div>
-            <div class="letter-content-wrapper hidden" id="letter-content-wrapper">
+            <div class="letter-content-wrapper scroll-styled hidden" id="letter-content-wrapper">
                 <div class="letter-card" id="letter-card">
                     <span class="letter-year-label" id="letter-year-label"></span>
                     <div class="letter-text" id="letter-text"></div>

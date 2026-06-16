@@ -96,19 +96,6 @@ body.dark-mode .search-box input:focus {
   gap: 2px;
 }
 
-.shipgirl-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.shipgirl-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.shipgirl-list::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 3px;
-}
-
 .shipgirl-item {
   display: flex;
   align-items: center;
@@ -277,19 +264,6 @@ body.dark-mode .shipgirl-item.active {
 
 body.dark-mode .letter-content-wrapper {
   background: var(--bg-tertiary);
-}
-
-.letter-content-wrapper::-webkit-scrollbar {
-  width: 6px;
-}
-
-.letter-content-wrapper::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.letter-content-wrapper::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 3px;
 }
 
 .letter-card {

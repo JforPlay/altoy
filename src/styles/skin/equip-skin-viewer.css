@@ -59,26 +59,6 @@
     flex-direction: column;
     gap: 2px;
     padding-right: 4px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-color) transparent;
-}
-
-.esv-theme-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.esv-theme-list::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.esv-theme-list::-webkit-scrollbar-thumb {
-    background-color: var(--border-color);
-    border-radius: var(--radius-full);
-    transition: background-color var(--transition-fast);
-}
-
-.esv-theme-list::-webkit-scrollbar-thumb:hover {
-    background-color: var(--text-secondary);
 }
 
 .esv-theme-item {

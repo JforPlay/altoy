@@ -160,23 +160,6 @@ body {
   scroll-behavior: smooth;
 }
 
-/* Scrollbar styling for character grid */
-#character-selection-section .character-grid::-webkit-scrollbar {
-  width: 8px;
-}
-
-#character-selection-section .character-grid::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-#character-selection-section .character-grid::-webkit-scrollbar-thumb {
-  background-color: var(--chat-border);
-  border-radius: 0.625rem;
-}
-
-#character-selection-section .character-grid::-webkit-scrollbar-thumb:hover {
-  background-color: var(--text-muted);
-}
 
 #character-selection-section h2,
 #character-selection-section h3 {
@@ -501,23 +484,6 @@ body.dark-mode .flavor-text-box {
   overscroll-behavior: contain;
 }
 
-/* Modern scrollbar styling */
-.story-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.story-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.story-container::-webkit-scrollbar-thumb {
-  background-color: var(--chat-border);
-  border-radius: 0.625rem;
-}
-
-.story-container::-webkit-scrollbar-thumb:hover {
-  background-color: var(--text-muted);
-}
 
 /* Character message wrapper with portrait */
 .character-line-wrapper {

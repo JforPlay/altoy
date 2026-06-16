@@ -450,20 +450,3 @@
     overscroll-behavior: contain;
 }
 
-/* Custom scrollbar for search results */
-.map-search-results::-webkit-scrollbar {
-    width: 6px;
-}
-
-.map-search-results::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.map-search-results::-webkit-scrollbar-thumb {
-    background: var(--overlay-light);
-    border-radius: 3px;
-}
-
-.map-search-results::-webkit-scrollbar-thumb:hover {
-    background: var(--overlay-medium);
-}

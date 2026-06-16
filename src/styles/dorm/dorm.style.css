@@ -65,25 +65,6 @@ body.dorm-page .scroll-to-top {
     flex: 1;
     overflow-y: auto;
     padding: var(--spacing-sm);
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-color) transparent;
-}
-
-.theme-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.theme-list::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.theme-list::-webkit-scrollbar-thumb {
-    background-color: var(--border-color);
-    border-radius: var(--radius-full);
-}
-
-.theme-list::-webkit-scrollbar-thumb:hover {
-    background-color: var(--text-secondary);
 }
 
 /* ===== Theme Accordion ===== */

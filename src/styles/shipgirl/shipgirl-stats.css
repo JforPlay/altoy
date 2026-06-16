@@ -584,21 +584,6 @@ body {
 .table-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-color) transparent;
-}
-
-.table-wrapper::-webkit-scrollbar {
-    height: 5px;
-}
-
-.table-wrapper::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 3px;
 }
 
 /* -- Table Styles -- */
@@ -944,21 +929,6 @@ body {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-color) transparent;
-}
-
-.compare-modal-inner::-webkit-scrollbar {
-    width: 6px;
-}
-
-.compare-modal-inner::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.compare-modal-inner::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 3px;
 }
 
 .compare-modal-header {

@@ -137,25 +137,6 @@ body.dark-mode .patch-notes-content ul {
   flex-direction: column;
   gap: 0.5rem;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary-alpha-20) transparent;
-}
-
-.birthday-list::-webkit-scrollbar {
-  width: 4px;
-}
-
-.birthday-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.birthday-list::-webkit-scrollbar-thumb {
-  background: var(--primary-alpha-20);
-  border-radius: var(--radius-full);
-}
-
-.birthday-list::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-alpha-30);
 }
 
 .birthday-loading {

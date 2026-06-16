@@ -146,15 +146,6 @@
   padding: 0.5rem;
 }
 
-.global-search-results::-webkit-scrollbar {
-  width: 6px;
-}
-
-.global-search-results::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 3px;
-}
-
 /* Section labels */
 .global-search-section {
   padding: 0.375rem 0.5rem;
@@ -459,10 +450,6 @@ body.dark-mode .global-search-close {
 body.dark-mode .global-search-close:hover {
   color: #ffffff;
   background: var(--highlight-soft);
-}
-
-body.dark-mode .global-search-results::-webkit-scrollbar-thumb {
-  background: var(--surface-border);
 }
 
 body.dark-mode .global-search-section {

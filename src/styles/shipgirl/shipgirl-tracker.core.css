@@ -289,25 +289,6 @@ body {
   overflow-y: auto;
   border: 1px solid var(--border-color);
   width: 100%;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color) transparent;
-}
-
-.st-modal-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.st-modal-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.st-modal-content::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 3px;
-}
-
-.st-modal-content::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
 }
 
 .st-modal-lg {

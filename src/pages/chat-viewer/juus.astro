@@ -19,7 +19,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 1. 캐릭터/그룹 선택
                 <span class="selected-character-display" id="selected-character-name"></span>
             </h3>
-            <div id="character-selector-grid" class="character-grid juus">
+            <div id="character-selector-grid" class="character-grid juus scroll-styled">
                  <p class="loading-message">캐릭터 정보 불러오는 중...</p>
             </div>
         </section>
@@ -38,7 +38,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <button id="restart-button" class="restart-button">다시 재생하기</button>
             </div>
 
-            <div class="story-container" id="story-container"></div>
+            <div class="story-container scroll-styled" id="story-container"></div>
             <div class="options-container juus" id="options-container"></div>
         </section>
     </main>
