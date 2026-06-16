@@ -7,7 +7,7 @@
 import {
     debounce, getUrlParam, setUrlParams,
     showElement, hideElement, showToast, createSearchIndex, ensureFuse,
-    createImgElement, IMG_FALLBACKS, setupFpsDisplay
+    createImgElement, IMG_FALLBACKS, setupFpsDisplay, renderStatus
 } from '../utils.js';
 import { EquipSkinData } from './equip-skin.data.js';
 import { EquipSkinPreview } from './equip-skin.preview.js';
@@ -90,13 +90,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         container.replaceChildren(card);
     }
 
-    function renderEmpty(container, message) {
-        const empty = document.createElement('div');
-        empty.className = 'esv-empty-state';
-        empty.textContent = message;
-        container.replaceChildren(empty);
-    }
-
     function setPressed(button, isPressed) {
         button.classList.toggle('active', isPressed);
         button.setAttribute('aria-pressed', String(isPressed));
@@ -138,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderThemeList(themes) {
         if (!themes.length) {
-            renderEmpty(themeList, '검색 결과가 없습니다.');
+            renderStatus(themeList, '검색 결과가 없습니다.', 'empty', { compact: true });
             return;
         }
 

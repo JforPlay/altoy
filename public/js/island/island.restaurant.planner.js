@@ -296,7 +296,7 @@ function refreshPlannerBuilder() {
 function renderPlannerBuilder() {
     const restaurantIds = getRestaurantIds();
     if (restaurantIds.length === 0) {
-        return '<div class="empty-state"><p>레스토랑 데이터가 없습니다.</p></div>';
+        return '<div class="page-status page-status-empty"><span class="material-symbols-outlined page-status-icon">inbox</span><p class="page-status-msg">레스토랑 데이터가 없습니다.</p></div>';
     }
 
     return restaurantIds.map(renderPlannerRestaurantCard).join('');
@@ -1082,7 +1082,7 @@ function renderPlannerResultsContent() {
         return a.localeCompare(b);
     });
 
-    const groupHtml = locations.length === 0 ? '<div class="planner-empty-state"><p>데이터를 불러오는 중입니다...</p></div>' : locations.map(location => `
+    const groupHtml = locations.length === 0 ? '<div class="page-status page-status-loading"><div class="spinner"></div><p class="page-status-msg">데이터를 불러오는 중입니다...</p></div>' : locations.map(location => `
         <div class="planner-result-group-card">
             <div class="group-header">
                 <span class="material-symbols-outlined">map</span>
@@ -1114,7 +1114,7 @@ function renderPlannerResultsContent() {
 function renderSelectionSummary(selectionSummary) {
     const restaurantIds = Object.keys(selectionSummary);
     if (restaurantIds.length === 0) {
-        return '<div class="planner-empty-state"><p>선택된 메뉴가 없습니다.</p></div>';
+        return '<div class="page-status page-status-empty"><span class="material-symbols-outlined page-status-icon">inbox</span><p class="page-status-msg">선택된 메뉴가 없습니다.</p></div>';
     }
 
     return `

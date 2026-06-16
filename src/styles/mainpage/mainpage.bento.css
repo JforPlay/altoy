@@ -139,16 +139,6 @@ body.dark-mode .patch-notes-content ul {
   overflow-y: auto;
 }
 
-.birthday-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 2rem;
-  color: var(--text-secondary);
-  font-size: 0.9em;
-}
-
 .birthday-item {
   display: flex;
   align-items: center;
@@ -214,23 +204,6 @@ body.dark-mode .patch-notes-content ul {
 .birthday-item-rarity[data-rarity="N"] {
   background: var(--rarity-n);
   color: var(--rarity-n-text);
-}
-
-.birthday-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 1.5rem;
-  color: var(--text-secondary);
-  font-size: 0.85em;
-  text-align: center;
-}
-
-.birthday-empty .material-symbols-outlined {
-  font-size: 2em;
-  opacity: 0.5;
 }
 
 .birthday-footer {

@@ -10,6 +10,7 @@ import {
     debounce,
     fetchJSONWithCache,
     normalizeRomanNumerals,
+    renderStatus,
     resolveUrl
 } from './utils.js';
 
@@ -101,7 +102,7 @@ async function loadData() {
         renderState(
             '데이터를 불러올 수 없습니다',
             '파일 경로를 확인해주세요: data/kr_event_timeline.json, data/ship_group_data.json',
-            'fas fa-triangle-exclamation'
+            'error'
         );
         eventCount.textContent = '총 0개 이벤트';
         console.error('Error loading data:', error);
@@ -230,7 +231,7 @@ function displayEvents() {
     eventList.setAttribute('aria-busy', 'false');
 
     if (filteredEvents.length === 0) {
-        renderState('검색 결과가 없습니다', '다른 검색어나 필터를 시도해보세요.', 'fas fa-magnifying-glass');
+        renderState('검색 결과가 없습니다', '다른 검색어나 필터를 시도해보세요.', 'empty');
         return;
     }
 
@@ -435,20 +436,19 @@ function getSafeExternalUrl(rawUrl) {
     }
 }
 
-function renderState(title, message, iconClass) {
-    const state = document.createElement('div');
-    state.className = 'no-results';
-    if (iconClass) state.appendChild(createIcon(iconClass));
-
-    const heading = document.createElement('h2');
-    heading.textContent = title;
-    state.appendChild(heading);
-
-    const body = document.createElement('p');
-    body.textContent = message;
-    state.appendChild(body);
-
-    eventList.replaceChildren(state);
+/**
+ * Render an empty/error state into the event list using the canonical
+ * .page-status component (status.css). `title` is the primary message line;
+ * `detail` is appended as a secondary muted line.
+ */
+function renderState(title, detail, type = 'empty') {
+    const status = renderStatus(eventList, title, type);
+    if (status && detail) {
+        const body = document.createElement('p');
+        body.className = 'page-status-msg';
+        body.textContent = detail;
+        status.appendChild(body);
+    }
 }
 
 // Info popup and scroll-to-top are handled globally by global.script.js

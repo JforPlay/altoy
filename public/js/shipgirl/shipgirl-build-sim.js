@@ -5,7 +5,7 @@
  * Build stats (total pulls, rarity counts, resources spent) are persisted to localStorage.
  */
 
-import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem, createImgElement, createMaterialIcon, debounce, showToast, openModal, closeModal, DATA_FOR_TOY_BASE, RARITY_ORDER, RARITY_TIERS_DESC, sanitizeClassToken, onThemeChange } from '../utils.js';
+import { fetchJSON, fetchJSONWithCache, resolveUrl, getStorageItem, setStorageItem, createImgElement, createMaterialIcon, debounce, showToast, openModal, closeModal, DATA_FOR_TOY_BASE, RARITY_ORDER, RARITY_TIERS_DESC, sanitizeClassToken, onThemeChange, renderStatus } from '../utils.js';
 import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cumulativeChance, formatPercent } from './build-sim.probability.js';
 (function () {
     'use strict';
@@ -164,11 +164,12 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
         status.hidden = false;
     }
 
-    function createEmptyMessage(message) {
-        const empty = document.createElement('p');
-        empty.className = 'build-sim-empty';
-        empty.textContent = message;
-        return empty;
+    // Render a canonical status into a CSS-grid container, spanning all columns
+    // so it stays centered (the grid otherwise places it in the first track).
+    function renderGridStatus(container, message, type = 'empty') {
+        const status = renderStatus(container, message, type, { compact: true });
+        if (status) status.style.gridColumn = '1 / -1';
+        return status;
     }
 
     // ===== Initialization =====
@@ -513,7 +514,7 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
         const currentRarity = state.modalState.currentRarityTab;
 
         if (!basePool || !state.originalPoolData[basePool]) {
-            grid.replaceChildren(createEmptyMessage('로딩 중...'));
+            renderGridStatus(grid, '로딩 중...', 'loading');
             return;
         }
 
@@ -523,7 +524,7 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
             .map(([id, ship]) => ({ id, ...ship }));
 
         if (ships.length === 0) {
-            grid.replaceChildren(createEmptyMessage(`${currentRarity} 함순이가 없습니다.`));
+            renderGridStatus(grid, `${currentRarity} 함순이가 없습니다.`);
             return;
         }
 
@@ -1941,7 +1942,7 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
 
         // Render ships
         if (filteredShips.length === 0) {
-            grid.appendChild(createEmptyMessage('조건에 맞는 함순이가 없습니다.'));
+            renderGridStatus(grid, '조건에 맞는 함순이가 없습니다.');
         } else {
             filteredShips.forEach(([id, ship]) => {
                 renderShipCard({ id, ...ship }, grid);

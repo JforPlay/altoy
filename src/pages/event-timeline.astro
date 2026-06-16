@@ -92,7 +92,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
 
         <div id="eventList" class="event-list" role="region" aria-label="이벤트 목록" aria-busy="true">
-            <div class="loading">데이터를 불러오는 중...</div>
+            <div class="page-status page-status-loading">
+                <div class="spinner"></div>
+                <p class="page-status-msg">데이터를 불러오는 중...</p>
+            </div>
         </div>
     </main>
 

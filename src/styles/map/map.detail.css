@@ -472,11 +472,3 @@
 .ship-drop-card.rarity-SSR .ship-drop-name,
 .ship-drop-card.rarity-SR .ship-drop-name,
 .ship-drop-card.rarity-UR .ship-drop-name { color: var(--r-fg); }
-
-/* Empty detail state */
-.detail-empty {
-    color: var(--text-dim);
-    font-size: var(--map-font-base);
-    text-align: center;
-    padding: var(--spacing-lg);
-}

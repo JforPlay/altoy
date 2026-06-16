@@ -6,7 +6,7 @@
  * Registers as window.ResourceModule.
  */
 
-import { fetchJSON, formatTime, openModal, closeModal, setupModal, DATA_FOR_TOY_BASE } from '../utils.js';
+import { fetchJSON, formatTime, openModal, closeModal, setupModal, renderStatus, DATA_FOR_TOY_BASE } from '../utils.js';
 import {
     CONSTANTS,
     setup as setupTree,
@@ -414,12 +414,14 @@ function showDependencyModal(title, recipes, direction, sourceRecipe) {
     modalTitle.textContent = title;
 
     if (recipes.length === 0) {
-        modalContent.innerHTML = `
-            <div class="modal-empty-state">
-                <span class="material-symbols-outlined">search_off</span>
-                <p>${direction === 'upstream' ? '이 레시피는 재료가 필요 없거나, 재료를 생산하는 레시피가 없습니다.' : '이 레시피의 생산물을 사용하는 레시피가 없습니다.'}</p>
-            </div>
-        `;
+        renderStatus(
+            modalContent,
+            direction === 'upstream'
+                ? '이 레시피는 재료가 필요 없거나, 재료를 생산하는 레시피가 없습니다.'
+                : '이 레시피의 생산물을 사용하는 레시피가 없습니다.',
+            'empty',
+            { icon: 'search_off' }
+        );
     } else {
         // Group recipes by item
         const groupedByItem = {};

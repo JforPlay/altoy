@@ -355,24 +355,6 @@ body.dark-mode .filter-rail.stuck {
   font-weight: bold;
 }
 
-/* Loading and Error */
-.loading {
-  text-align: center;
-  padding: 3.125rem;
-  font-size: 1.5em;
-  color: var(--text-primary);
-  transition: color 0.3s;
-}
-
-.error {
-  background: #ff6b6b;
-  color: white;
-  padding: 1.25rem;
-  border-radius: 0.75rem;
-  margin: 1.25rem 0;
-  text-align: center;
-}
-
 /* Skin Link Section */
 .skin-link-container {
   margin-top: 0.9375rem;

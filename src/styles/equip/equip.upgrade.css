@@ -743,13 +743,8 @@ body.dark-mode .tree-arrow {
     font-size: 1.125rem;
 }
 
-/* Loading */
-.equip-upgrade-page .loading {
-    text-align: center;
-    padding: 2rem;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-}
+/* Loading state uses the canonical .page-status component
+   (src/styles/components/status.css, loaded globally). */
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {

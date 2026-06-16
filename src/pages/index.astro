@@ -179,9 +179,9 @@ const hrefs = {
                 </div>
                 <div class="bento-card birthday-card">
                     <div class="birthday-list scroll-styled" id="birthdayList">
-                        <div class="birthday-loading">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            로딩 중...
+                        <div class="page-status page-status-loading page-status--compact">
+                            <div class="spinner"></div>
+                            <p class="page-status-msg">로딩 중...</p>
                         </div>
                     </div>
                     <div class="card-footer birthday-footer">
@@ -200,8 +200,10 @@ const hrefs = {
                         진행 중인 이벤트
                     </h2>
                     <div class="event-carousel-loading">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        로딩 중...
+                        <div class="page-status page-status-loading page-status--compact">
+                            <div class="spinner"></div>
+                            <p class="page-status-msg">로딩 중...</p>
+                        </div>
                     </div>
                 </div>
                 <div class="event-carousel">

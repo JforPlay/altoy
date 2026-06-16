@@ -159,12 +159,6 @@ body.dark-mode .skill-view-btn.active {
   gap: 0.5rem;
 }
 
-.skill-search-empty {
-  padding: 2rem;
-  text-align: center;
-  color: var(--text-muted, var(--text-secondary));
-}
-
 /* ===== Skill-Centric Result Card ===== */
 .skill-result-card {
   padding: 0.75rem 1rem;

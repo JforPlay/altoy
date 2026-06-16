@@ -230,27 +230,9 @@ body {
   gap: 0.9375rem;
 }
 
-/* Loading/Error States */
-.character-grid.loading,
-.character-grid.error {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 9.375rem;
-  gap: 0.9375rem;
-}
-
-.loading-message {
-  text-align: center;
-  color: var(--chat-text-secondary);
-  transition: color var(--animation-duration) ease;
-}
-
-.loading-message.error {
-  color: var(--accent-danger);
-}
-
+/* Loading / empty / error states use the canonical .page-status component
+   (src/styles/components/status.css, loaded globally) — emitted by the page JS
+   or written as static markup, never re-styled here. */
 
 /* ============================================================================
    CHARACTER CARDS

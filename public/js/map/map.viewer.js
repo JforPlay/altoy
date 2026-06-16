@@ -6,7 +6,7 @@
  * Covers: tab switching, sidebar rendering, map selection, node overlay, search modal (ship + blueprint).
  */
 
-import { getUrlParam, setUrlParams, showElement, hideElement, openModal, closeModal, setupModal, resolveUrl, debounce, createMaterialIcon, DATA_FOR_TOY_BASE, RARITY_ORDER } from '../utils.js';
+import { getUrlParam, setUrlParams, showElement, hideElement, openModal, closeModal, setupModal, resolveUrl, debounce, createMaterialIcon, DATA_FOR_TOY_BASE, RARITY_ORDER, renderStatus } from '../utils.js';
 
 import { setup as setupData, loadLiteData, loadFullData, loadShipInfo, loadWorldTargetData, getWorldTargets, getChapterGroup } from './map.data.js';
 import { setup as setupGrid, renderGrid, renderLegend, renderWorldGrid } from './map.grid.js';
@@ -65,11 +65,8 @@ function cacheDom() {
     searchModalInput = document.getElementById('searchModalInput');
 }
 
-function renderMessage(container, message, className = 'detail-empty') {
-    const empty = document.createElement('div');
-    empty.className = className;
-    empty.textContent = message;
-    container.replaceChildren(empty);
+function renderMessage(container, message, type = 'empty') {
+    renderStatus(container, message, type, { compact: true });
 }
 
 function getMapKey(category, item) {
@@ -256,7 +253,7 @@ async function selectMap(mapId) {
 
     const chapter = state.fullData?.[mapId];
     if (!chapter) {
-        mapEmpty.textContent = '해역 데이터를 찾을 수 없습니다.';
+        renderStatus(mapEmpty, '해역 데이터를 찾을 수 없습니다.', 'empty');
         showElement(mapEmpty);
         hideElement(mapContent);
         return;
@@ -365,7 +362,7 @@ function switchTab(tab) {
         hideElement(mapContent);
         hideElement(mapLoading);
         closeNodeOverlay();
-        mapEmpty.textContent = '좌측에서 해역을 선택하세요';
+        renderStatus(mapEmpty, '좌측에서 해역을 선택하세요', 'empty');
         setUrlParams({ tab: nextTab, map: null, compare: null }, { replace: true });
     }
 }
@@ -421,7 +418,7 @@ function renderSearchResults(query) {
  */
 function renderShipSearchResults(query, body) {
     if (!state.shipInfo) {
-        renderMessage(body, '데이터 로딩 중...');
+        renderMessage(body, '데이터 로딩 중...', 'loading');
         return;
     }
 
@@ -518,7 +515,7 @@ function renderShipSearchResults(query, body) {
  */
 function renderBlueprintSearchResults(query, body) {
     if (!state.fullData) {
-        renderMessage(body, '데이터 로딩 중...');
+        renderMessage(body, '데이터 로딩 중...', 'loading');
         return;
     }
 
@@ -633,7 +630,7 @@ async function init() {
     } catch (error) {
         console.error('Failed to load map list:', error);
         hideElement(mapLoading);
-        mapEmpty.textContent = '해역 목록을 불러오지 못했습니다.';
+        renderStatus(mapEmpty, '해역 목록을 불러오지 못했습니다.', 'error');
         showElement(mapEmpty);
         return;
     } finally {

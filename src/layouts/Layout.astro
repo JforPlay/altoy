@@ -22,6 +22,9 @@ const {
 // Import global styles
 import '../styles/global.style.css';
 import '../styles/sync/sync.css';
+// Canonical state component (loading/empty/error) — @imports spinner.css, so
+// both are available site-wide without per-page imports.
+import '../styles/components/status.css';
 import { NAV_STRUCTURE, PAGE_BY_KEY } from '../../public/js/pages.catalog.js';
 
 // CSP — Astro dev server injects inline HMR/toolbar scripts, so we loosen
@@ -172,7 +175,10 @@ const csp = `default-src 'self'; script-src ${scriptSrc}; worker-src 'self' blob
                 </button>
             </div>
             <div id="global-search-results" class="global-search-results scroll-styled">
-                <div class="global-search-empty">검색어를 입력하세요</div>
+                <div class="page-status page-status-empty page-status--compact">
+                    <span class="material-symbols-outlined page-status-icon">search</span>
+                    <p class="page-status-msg">검색어를 입력하세요</p>
+                </div>
             </div>
             <div class="global-search-footer">
                 <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> 이동</span>

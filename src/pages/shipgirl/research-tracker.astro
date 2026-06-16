@@ -67,11 +67,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <aside class="rt-sidebar">
                 <nav class="rt-tabs" id="faction-tabs" aria-label="진영 선택"></nav>
                 <div class="rt-sidebar-body" id="sidebar-content">
-                    <div class="rt-loading">데이터를 불러오는 중...</div>
+                    <div class="page-status page-status-loading">
+                        <div class="spinner"></div>
+                        <p class="page-status-msg">데이터를 불러오는 중...</p>
+                    </div>
                 </div>
             </aside>
             <section class="rt-right" id="right-pane" aria-label="함순이 목록">
-                <div class="rt-loading">데이터를 불러오는 중...</div>
+                <div class="page-status page-status-loading">
+                    <div class="spinner"></div>
+                    <p class="page-status-msg">데이터를 불러오는 중...</p>
+                </div>
             </section>
         </div>
     </div>

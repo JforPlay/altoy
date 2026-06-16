@@ -6,7 +6,6 @@
 import Layout from '../../layouts/Layout.astro';
 import Modal from '../../components/Modal.astro';
 import '../../styles/story-viewer/main-storyline.css';
-import '../../styles/components/spinner.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -18,9 +17,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 
 <Layout title="벽람 메인스 타임라인" {base}>
-    <div id="loading-overlay" class="loading-overlay">
+    <div id="loading-overlay" class="page-status page-status-loading page-status--overlay">
         <div class="spinner"></div>
-        <p>타임라인 로딩 중...</p>
+        <p class="page-status-msg">타임라인 로딩 중...</p>
     </div>
     <div class="main-container">
         <header class="timeline-header">

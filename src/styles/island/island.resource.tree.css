@@ -351,9 +351,4 @@
     border-left: 1px solid var(--highlight-soft);
 }
 
-/* Empty state styling now in island.style.css (unified) */
-
-/* Modal-specific empty state override */
-.modal-empty-state {
-    min-height: 400px;
-}
+/* Loading / empty / error states use the global `.page-status` component. */

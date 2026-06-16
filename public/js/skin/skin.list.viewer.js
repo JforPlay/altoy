@@ -7,7 +7,7 @@
  */
 import { debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams, resolveUrl, normalizeRomanNumerals, createSearchIndex, ensureFuse,
     openModal, closeModal, setupModal, showToast, toggleElement, IMG_FALLBACKS,
-    createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, syncedStorage } from '../utils.js';
+    createIcon, createGemIconImg, lockBodyScroll, unlockBodyScroll, syncedStorage, renderStatus } from '../utils.js';
 import { loadReleaseDates } from './skin.data.js';
 import { formatReleaseDate, releaseSortKey } from './skin.dates.js';
 import { composeDefaultPainting } from './skin.expression.js';
@@ -287,21 +287,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return line;
     }
 
-    function createEmptyState(iconClass, message, hintFragment) {
-        const empty = document.createElement('div');
-        empty.className = 'cart-empty';
-
-        empty.appendChild(createIcon(iconClass));
-
-        const messageEl = document.createElement('p');
-        messageEl.textContent = message;
-
+    // Empty state for the cart / owned-showcase modal bodies. Uses the canonical
+    // .page-status component (renderStatus), then appends the action hint as a
+    // second message line so it inherits the same styling.
+    function createEmptyState(container, message, hintFragment) {
+        const status = renderStatus(container, message, 'empty');
+        if (!status) return;
         const hint = document.createElement('p');
-        hint.className = 'cart-empty-hint';
+        hint.className = 'page-status-msg';
         hint.append(...hintFragment);
-
-        empty.append(messageEl, hint);
-        return empty;
+        status.appendChild(hint);
     }
 
     function createIconButton(className, iconClass, title) {
@@ -765,15 +760,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const wantedSkins = allSkins.filter(s => collection.wanted.has(s['클뜯 id']));
 
             if (wantedSkins.length === 0) {
-                DOM.cart.body.replaceChildren(createEmptyState(
-                    'fas fa-shopping-cart',
+                createEmptyState(
+                    DOM.cart.body,
                     '찜한 스킨이 없습니다',
                     [
                         document.createTextNode('스킨 카드의 '),
                         createIcon('fas fa-heart'),
                         document.createTextNode(' 버튼으로 찜해보세요!')
                     ]
-                ));
+                );
                 DOM.cart.footer.style.display = 'none';
                 return;
             }
@@ -1017,15 +1012,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const ownedSkins = allSkins.filter(s => collection.owned.has(s['클뜯 id']));
 
             if (ownedSkins.length === 0) {
-                DOM.owned.body.replaceChildren(createEmptyState(
-                    'fas fa-shirt',
+                createEmptyState(
+                    DOM.owned.body,
                     '보유 스킨이 없습니다',
                     [
                         document.createTextNode('스킨 카드의 '),
                         createIcon('fas fa-check'),
                         document.createTextNode(' 버튼으로 보유 표시해보세요!')
                     ]
-                ));
+                );
                 DOM.owned.footer.style.display = 'none';
                 return;
             }
@@ -1404,10 +1399,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const showLoadingState = () => {
         isLoading = true;
         allSkinContainers.forEach(container => {
-            const message = document.createElement('p');
-            message.className = 'loading-message';
-            message.textContent = '데이터 불러오는 중...';
-            container.replaceChildren(message);
+            renderStatus(container, '데이터 불러오는 중...', 'loading');
         });
     };
 
@@ -1415,14 +1407,12 @@ document.addEventListener('DOMContentLoaded', () => {
         isLoading = false;
         const msg = error.message || 'Unknown error';
         allSkinContainers.forEach(container => {
-            const p = document.createElement('p');
-            p.className = 'error-message';
-            p.textContent = '데이터를 불러오는데 실패했습니다.';
-            p.appendChild(document.createElement('br'));
+            const status = renderStatus(container, '데이터를 불러오는데 실패했습니다.', 'error');
+            if (!status) return;
             const small = document.createElement('small');
+            small.className = 'page-status-msg';
             small.textContent = msg;
-            p.appendChild(small);
-            container.replaceChildren(p);
+            status.appendChild(small);
         });
         console.error("Failed to load data:", error);
     };

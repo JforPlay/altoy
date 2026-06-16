@@ -7,7 +7,7 @@
  * State is shared via a ref passed to setup() from shipgirl-info.js.
  */
 
-import { showToast, openModal, closeModal, setupModal, IMG_FALLBACKS, RARITY_ORDER } from '../utils.js';
+import { showToast, openModal, closeModal, setupModal, IMG_FALLBACKS, RARITY_ORDER, renderStatus } from '../utils.js';
 
 'use strict';
 
@@ -120,11 +120,7 @@ function renderMaps(mapsData, searchTerm = '') {
     });
 
     if (mapsByArea.length === 0) {
-        mapsContent.innerHTML = `
-            <div class="maps-empty">
-                ${searchTerm ? '검색 결과가 없습니다.' : '드랍 가능한 지역이 없습니다.'}
-            </div>
-        `;
+        renderStatus(mapsContent, searchTerm ? '검색 결과가 없습니다.' : '드랍 가능한 지역이 없습니다.', 'empty');
         return;
     }
 
@@ -405,7 +401,7 @@ function renderMapBrowserContent() {
     });
 
     if (filteredData.length === 0) {
-        content.innerHTML = '<div class="maps-empty">해당 조건에 맞는 함순이가 없습니다.</div>';
+        renderStatus(content, '해당 조건에 맞는 함순이가 없습니다.', 'empty');
         return;
     }
 

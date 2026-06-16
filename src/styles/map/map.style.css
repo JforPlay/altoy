@@ -317,24 +317,15 @@
     box-shadow: var(--shadow-md);
 }
 
-/* -- Loading -- */
-.map-loading {
+/* -- Center placeholder (hosts the canonical .page-status empty/error state,
+   stretching it to fill the center panel so the message sits centered). -- */
+.map-center-placeholder {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-xl);
-    color: var(--text-muted);
-    font-size: var(--map-font-base);
+    flex: 1;
 }
 
-/* -- Empty State -- */
-.map-empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.map-center-placeholder > .page-status {
     flex: 1;
-    color: var(--text-dim);
-    font-size: var(--map-font-base);
 }
 
 /* -- Search Modal -- */

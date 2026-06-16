@@ -6,7 +6,7 @@
  * a visible-count indicator, and Fuse.js search with highlight. Uses a
  * MutationObserver to wire checkboxes whenever the engine re-renders the grid.
  */
-import { getStorageItem, setStorageItem, createSearchIndex, ensureFuse, makeKeyboardActivatable, DATA_FOR_TOY_BASE, dataForToyUrl } from '../utils.js';
+import { getStorageItem, setStorageItem, createSearchIndex, ensureFuse, makeKeyboardActivatable, renderStatus, DATA_FOR_TOY_BASE, dataForToyUrl } from '../utils.js';
 
 const COMPLETION_STORAGE_KEY = 'secretaryStoryCompletion';
 
@@ -372,10 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
             searchResults.appendChild(a);
           });
         } else {
-          const none = document.createElement('div');
-          none.className = 'no-results';
-          none.textContent = 'No results found';
-          searchResults.appendChild(none);
+          renderStatus(searchResults, 'No results found', 'empty', { compact: true });
         }
       } else {
         searchResults.style.display = 'none';

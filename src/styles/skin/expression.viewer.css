@@ -189,21 +189,8 @@
     border-radius: var(--radius-sm);
 }
 
-.dropdown-content .no-results {
-    padding: var(--spacing-md);
-    text-align: center;
-    color: var(--text-dim);
-}
-
-/* --- Loading State --- */
-.loading-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: calc(var(--spacing-xl) * 2);
-    color: var(--text-muted);
-}
+/* Loading / empty / error states use the canonical .page-status component
+   (components/status.css, loaded globally) via renderStatus or static markup. */
 
 /* --- Main Content Layout (Master-Detail) --- */
 .main-content {
@@ -563,51 +550,8 @@
     max-height: none;
 }
 
-/* No Data State */
-.no-data-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-xl);
-    color: var(--text-dim);
-    text-align: center;
-}
-
-.load-error-state,
-.empty-list-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-lg);
-    color: var(--text-dim);
-    text-align: center;
-}
-
-.load-error-state i,
-.empty-list-state i {
-    font-size: 2rem;
-    color: var(--danger-color);
-    opacity: 0.8;
-}
-
-.empty-list-state i {
-    color: var(--text-dim);
-}
-
-.message-detail {
-    margin: 0;
-    font-size: 0.875rem;
-    overflow-wrap: anywhere;
-}
-
-.no-data-state i {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-md);
-    opacity: 0.5;
-}
+/* Empty / error states for this page use the canonical .page-status component
+   (components/status.css, loaded globally) via renderStatus — no page rule needed. */
 
 /* --- Lightbox Modal --- */
 .lightbox-modal {

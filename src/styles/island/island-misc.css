@@ -325,31 +325,8 @@ body {
   text-overflow: ellipsis;
 }
 
-/* ==========================================================================
-   LOADING STATE - Match island loading pattern
-   ========================================================================== */
-
-.island-misc-loading {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 3rem 1.5rem;
-  color: var(--island-text-tertiary);
-}
-
-.island-misc-error {
-  color: var(--island-danger, #ef4444);
-}
-
-.island-misc-empty {
-  color: var(--island-text-secondary);
-}
-
-/* Layout + island accent only — base look from components/spinner.css */
-.island-misc-loading .spinner {
-  --spinner-track: var(--island-accent-light);
-  --spinner-color: var(--island-accent);
-  margin: 0 auto var(--island-spacing-md);
-}
+/* Loading / empty / error states use the global `.page-status` component
+   (src/styles/components/status.css), rendered via renderStatus(). */
 
 /* ==========================================================================
    RESPONSIVE

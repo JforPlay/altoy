@@ -224,12 +224,7 @@
   margin-top: 0.5rem;
 }
 
-.hot-issue-empty {
-  text-align: center;
-  color: var(--text-muted);
-  padding: 3rem 1rem;
-  font-size: 0.9375rem;
-}
+/* Empty state uses the canonical .page-status component (status.css). */
 
 /* --- Responsive --- */
 @media (max-width: 640px) {

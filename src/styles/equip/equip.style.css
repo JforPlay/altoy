@@ -472,22 +472,8 @@ body {
     color: var(--text-primary);
 }
 
-/* ===== Loading ===== */
-.loading {
-    display: none;
-    text-align: center;
-    padding: 3rem;
-    color: var(--text-secondary);
-    font-size: 1rem;
-}
-
-/* ===== Empty State ===== */
-.empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 3rem;
-    color: var(--text-secondary);
-}
+/* Loading + empty states use the canonical .page-status component
+   (src/styles/components/status.css, loaded globally). */
 
 /* ===== Compare Mode Card States ===== */
 .equip-card.compare-ineligible {

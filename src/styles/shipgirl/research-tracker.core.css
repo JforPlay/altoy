@@ -100,19 +100,8 @@
   min-height: 400px;
 }
 
-.rt-loading,
-.rt-error,
-.rt-empty,
-.rt-placeholder {
-  padding: var(--spacing-md);
-  text-align: center;
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-}
-
-.rt-error {
-  color: var(--danger-color);
-}
+/* Loading / empty / error states use the canonical .page-status component
+   (src/styles/components/status.css, loaded globally). */
 
 /* --- Page background (inherit project-wide gradient) --- */
 

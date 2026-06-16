@@ -5,7 +5,7 @@
  * and search. Registers itself as window.CharacterModule for access by island.engine.js.
  */
 
-import { fetchJSON, createImg, ensureFuse, DATA_FOR_TOY_BASE } from '../utils.js';
+import { fetchJSON, createImg, ensureFuse, renderStatus, DATA_FOR_TOY_BASE } from '../utils.js';
 
 // ===== State =====
 const state = {
@@ -185,12 +185,7 @@ function renderCharacterList(characters = null) {
     const charList = characters || Object.values(state.characters);
 
     if (charList.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <span class="material-symbols-outlined">person_off</span>
-                <p>캐릭터를 찾을 수 없습니다</p>
-            </div>
-        `;
+        renderStatus(container, '캐릭터를 찾을 수 없습니다', 'empty', { icon: 'person_off' });
         return;
     }
 
@@ -264,13 +259,7 @@ function renderCharacterDetail() {
 
     const char = state.characters[state.selectedCharacterId];
     if (!char) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <span class="material-symbols-outlined">person_search</span>
-                <h3>캐릭터를 선택하세요</h3>
-                <p>목록에서 캐릭터를 선택하여 상세 정보를 확인하세요.</p>
-            </div>
-        `;
+        renderStatus(container, '목록에서 캐릭터를 선택하여 상세 정보를 확인하세요.', 'empty', { icon: 'person_search' });
         return;
     }
 

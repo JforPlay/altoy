@@ -4,7 +4,7 @@
  * and fleet summary (tech bonuses + passive skills).
  */
 
-import { showElement, hideElement, IMG_FALLBACKS, resolveUrl, escapeHtml } from '../utils.js';
+import { showElement, hideElement, IMG_FALLBACKS, resolveUrl, escapeHtml, renderStatus } from '../utils.js';
 import { getShipByGid, getEquipById, getEquipIconUrl, getRarityBgUrl, getShipPortraitUrl, getSlotName, getSPWeaponIconUrl, getDedicatedSPWeapon } from './fleet-sim.data.js';
 import {
     DISPLAY_STATS,
@@ -808,7 +808,7 @@ export async function renderDamagePanel(container) {
     const myToken = ++_renderToken;   // a newer render will supersede this one
 
     // Show brief loading state
-    container.innerHTML = '<div class="dmg-panel dmg-panel--loading"><span>계산 중...</span></div>';
+    renderStatus(container, '계산 중...', 'loading', { compact: true });
 
     // Resolve active preset result + L/M/H compare strip in parallel
     let result, compareResults;

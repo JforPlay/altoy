@@ -972,15 +972,6 @@
   font-size: 28px;
 }
 
-/* Empty state in picker */
-.picker-empty {
-  grid-column: 1 / -1;
-  text-align: center;
-  color: var(--text-muted);
-  padding: var(--spacing-xl);
-  font-size: 0.85rem;
-}
-
 /* ===== SAVE/LOAD MODAL ===== */
 
 #saveLoadModal .c-modal-dialog {
@@ -1102,42 +1093,7 @@
   color: #fff;
 }
 
-.save-empty-msg {
-  text-align: center;
-  color: var(--text-muted);
-  padding: var(--spacing-lg);
-  font-size: 0.85rem;
-}
-
-/* ===== LOADING OVERLAY ===== */
-
-.loading-overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--overlay-heavy);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: var(--z-modal);
-  backdrop-filter: blur(4px);
-}
-
-.loading-overlay.hidden {
-  display: none;
-}
-
-.loading-spinner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.loading-text {
-  font-size: 0.9rem;
-  color: #fff;
-  font-weight: 500;
-}
+/* Loading overlay → canonical .page-status--overlay (components/status.css) */
 
 
 /* ===== RESPONSIVE ===== */

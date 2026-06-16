@@ -419,13 +419,7 @@ body.dark-mode #track-list li.playing .track-button {
   font-weight: 600;
 }
 
-.track-empty {
-  padding: 16px 20px;
-  border: 1px dashed var(--border-color);
-  border-radius: 12px;
-  color: var(--text-muted);
-  text-align: center;
-}
+/* Empty track list uses the canonical .page-status component (status.css). */
 
 
 /* ==========================================================================

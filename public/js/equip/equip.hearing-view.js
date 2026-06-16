@@ -8,7 +8,7 @@
  * Part of the equip viewer module group; shares state via setup(stateRef, ctx).
  */
 
-import { escapeHtml } from '../utils.js';
+import { escapeHtml, renderStatus } from '../utils.js';
 import { getEquipIconUrl, getRarityBgUrl, getHearingEntry } from './equip.data.js';
 
 let state;
@@ -48,7 +48,7 @@ export function renderHearingGrid() {
     const visible = state.filteredData.filter(e => !e._isSPWeapon && getHearingEntry(e.id));
 
     if (visible.length === 0) {
-        grid.innerHTML = '<div class="empty-state">표시할 한줄평이 없습니다.</div>';
+        renderStatus(grid, '표시할 한줄평이 없습니다.', 'empty');
         return;
     }
 

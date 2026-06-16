@@ -5,7 +5,7 @@
  * The visualizer is purely cosmetic (sine-wave animation) and does not use Web Audio API analysis.
  */
 
-import { IMG_FALLBACKS, createImgElement, debounce, fetchJSON, makeKeyboardActivatable, requireElements, DATA_FOR_TOY_BASE } from '../utils.js';
+import { IMG_FALLBACKS, createImgElement, debounce, fetchJSON, makeKeyboardActivatable, renderStatus, requireElements, DATA_FOR_TOY_BASE } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const albumListEl = document.getElementById('album-list');
@@ -196,10 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setStatus(album.album_name || 'Unknown Album');
 
         if (tracks.length === 0) {
-            const emptyItem = document.createElement('li');
-            emptyItem.className = 'track-empty';
-            emptyItem.textContent = 'No tracks found for this album.';
-            trackListEl.appendChild(emptyItem);
+            // Canonical empty state (status.css).
+            renderStatus(trackListEl, 'No tracks found for this album.', 'empty');
             return;
         }
 

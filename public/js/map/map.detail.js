@@ -6,7 +6,7 @@
  * calcClearEstimate is also exported and used by map.compare.js for the compare table.
  */
 
-import { showElement, hideElement, resolveUrl, getItemIconUrl } from '../utils.js';
+import { showElement, hideElement, resolveUrl, getItemIconUrl, renderStatus } from '../utils.js';
 import { getShipDropsForChapter, getShipInfo, getShipInfoByGid } from './map.data.js';
 
 let state;
@@ -600,7 +600,7 @@ export function renderNodeDetail(attachType, chapter, targetEl, titleEl) {
     if (titleEl) titleEl.textContent = title;
 
     if (fleets.length === 0) {
-        targetEl.innerHTML = '<div class="detail-empty">함대 정보 없음</div>';
+        renderStatus(targetEl, '함대 정보 없음', 'empty', { compact: true });
         return;
     }
 

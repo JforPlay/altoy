@@ -6,7 +6,7 @@
  * Registers as window.RestaurantModule.
  */
 
-import { fetchJSON, showElement, hideElement, formatTime, getStorageItem, setStorageItem, DATA_FOR_TOY_BASE, dataForToyUrl } from '../utils.js';
+import { fetchJSON, showElement, hideElement, formatTime, getStorageItem, setStorageItem, renderStatus, DATA_FOR_TOY_BASE, dataForToyUrl } from '../utils.js';
 import {
     RANK_COEFFICIENTS, RANK_NAMES, ATTRIBUTE_NAMES, ATTRIBUTE_RANK_VALUES,
     EVENT_BONUSES,
@@ -593,13 +593,13 @@ function renderMenuList() {
     const restaurantId = state.selectedRestaurant;
     const restaurant = state.restaurants[restaurantId];
     if (!restaurant) {
-        container.innerHTML = `<div class="empty-state"><span class="material-symbols-outlined">restaurant_menu</span><h3>레스토랑을 선택하세요</h3></div>`;
+        renderStatus(container, '레스토랑을 선택하세요', 'empty', { icon: 'restaurant_menu' });
         return;
     }
 
     const menus = restaurant.item_id || [];
     if (menus.length === 0) {
-        container.innerHTML = `<div class="empty-state"><span class="material-symbols-outlined">no_meals</span><h3>메뉴가 없습니다</h3></div>`;
+        renderStatus(container, '메뉴가 없습니다', 'empty', { icon: 'no_meals' });
         return;
     }
 

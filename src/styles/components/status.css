@@ -1,0 +1,109 @@
+/**
+ * Status — the ONE canonical loading / empty / error state component.
+ * (CSS unification Wave 1.) Rendered by renderStatus() / loadPageData() in
+ * utils.js, or written as static markup. Every state is a leading visual + a
+ * message: a .spinner for loading, a Material-symbols icon for empty/error.
+ * All colors come from theme.css tokens, so it adapts to default/accent/dark.
+ * Loaded GLOBALLY via Layout.astro (no per-page import needed).
+ *
+ * Canonical markup:
+ *   <div class="page-status page-status-loading">
+ *     <div class="spinner"></div>
+ *     <p class="page-status-msg">불러오는 중...</p>
+ *   </div>
+ *   <div class="page-status page-status-empty">
+ *     <span class="material-symbols-outlined page-status-icon">inbox</span>
+ *     <p class="page-status-msg">결과가 없습니다.</p>
+ *   </div>
+ *
+ * Modifiers (size/position variants of the ONE component — never page forks):
+ *   .page-status--overlay  full-screen fixed blocking loader (page-init)
+ *   .page-status--compact  small icon + tight padding (dropdown / in-button / tight panel)
+ */
+
+@import './spinner.css';
+
+.page-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm, 0.5rem);
+  margin: 0 auto;
+  padding: var(--spacing-lg, 1.5rem) var(--spacing-md, 1rem);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Hide on both the [hidden] attribute and the .hidden class (utils.js
+   hideElement/toggleElement toggle the class). Compound selector beats the
+   base .page-status display:flex regardless of bundle source order. */
+.page-status[hidden],
+.page-status.hidden {
+  display: none;
+}
+
+/* Leading visual. (The spinner is its own element from spinner.css.) */
+.page-status-icon {
+  font-size: 2.75rem;
+  line-height: 1;
+  opacity: 0.55;
+}
+
+/* Message text. */
+.page-status-msg {
+  margin: 0;
+}
+
+/* Per-state color — the icon inherits the state color. */
+.page-status-loading { color: var(--text-muted); }
+.page-status-empty { color: var(--text-muted); }
+.page-status-error { color: var(--danger-color); }
+.page-status-error .page-status-icon { opacity: 0.8; }
+.page-status-success { color: var(--success-color); }
+
+/* Retry button appended by loadPageData() inside a .page-status-error.
+   Uses --accent-blue (stable hue) + #fff, not a --primary-color fill, which
+   goes silver in dark on default-theme pages (CLAUDE.md contrast rule). */
+.page-status-retry {
+  margin-top: var(--spacing-sm, 0.5rem);
+  padding: 0.4rem 1.1rem;
+  border: none;
+  border-radius: var(--radius-md, 0.5rem);
+  background: var(--accent-blue);
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.page-status-retry:hover {
+  filter: brightness(1.1);
+}
+
+/* --- Modifiers ----------------------------------------------------------- */
+
+/* Full-screen blocking loader (page-init overlays). */
+.page-status--overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  background: var(--overlay-heavy);
+  backdrop-filter: blur(4px);
+}
+
+/* Compact inline state — dropdown "no results", in-button, tight panels. */
+.page-status--compact {
+  padding: var(--spacing-sm, 0.5rem) var(--spacing-md, 1rem);
+  font-size: 0.85rem;
+}
+
+.page-status--compact .page-status-icon {
+  font-size: 1.5rem;
+}
+
+.page-status--compact .spinner {
+  --spinner-size: 1.25rem;
+  --spinner-thickness: 2px;
+}

@@ -7,7 +7,7 @@
  * ship type, nationality), threshold filters, and compare mode event wiring.
  */
 
-import { debounce, hideElement, showToast, setupScrollToTop, toggleElement, onThemeChange } from '../utils.js';
+import { debounce, hideElement, showToast, setupScrollToTop, toggleElement, onThemeChange, renderStatus } from '../utils.js';
 import { setup as setupData, loadAllData, PRIMARY_STATS, getSkinTypeList, classifyGimmick, recomputeSkinStats } from './shipgirl-stats.data.js';
 import { setup as setupDashboard, renderShipDashboard, renderSkinDashboard, renderTopStatChart, destroyAllCharts } from './shipgirl-stats.dashboard.js';
 import { setup as setupTable, renderShipTable, renderSkinTable } from './shipgirl-stats.table.js';
@@ -70,8 +70,8 @@ async function init() {
 function showPageStatus(message) {
     const status = document.getElementById('statsPageStatus');
     if (!status) return;
-    status.textContent = message;
     status.hidden = false;
+    renderStatus(status, message, 'error');
 }
 
 // ===== Filter Dropdowns =====

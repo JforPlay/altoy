@@ -279,39 +279,8 @@ body {
     align-items: start;
 }
 
-/* ==========================================================================
-   8. SHARED STATES (Loading, Empty, Placeholder)
-   ========================================================================== */
-
-.loading-state,
-.empty-state,
-.placeholder-content {
-    text-align: center;
-    padding: 3rem 1.5rem;
-    color: var(--island-text-tertiary);
-}
-
-.loading-state .material-symbols-outlined,
-.empty-state .material-symbols-outlined,
-.placeholder-content .material-symbols-outlined {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    opacity: 0.5;
-    display: block;
-}
-
-.loading-state p,
-.empty-state p,
-.placeholder-content p {
-    margin: 0;
-    font-size: 0.9375rem;
-}
-
-.empty-state h3 {
-    color: var(--island-text-secondary);
-    font-size: 1.5rem;
-    margin: 1rem 0 0.5rem 0;
-}
+/* Loading / empty / error states use the global `.page-status` component
+   (src/styles/components/status.css) — no island-specific status CSS here. */
 
 /* ==========================================================================
    9. DETAIL SECTIONS (Shared Structure)
@@ -395,23 +364,6 @@ body {
 
 .help-tooltip strong {
     color: var(--island-accent);
-}
-
-/* ==========================================================================
-   10. PLACEHOLDER CONTENT
-   ========================================================================== */
-
-.placeholder-content {
-    background: var(--island-surface);
-    border-radius: 12px;
-    padding: 4rem 2rem;
-    box-shadow: var(--island-shadow-md);
-}
-
-.placeholder-content h2 {
-    font-size: 2rem;
-    color: var(--island-text-primary);
-    margin: 1rem 0;
 }
 
 /* ==========================================================================

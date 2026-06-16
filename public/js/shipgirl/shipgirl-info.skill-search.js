@@ -11,7 +11,7 @@ import {
     loadSkillToIconId,
     loadSkillDataTemplate
 } from './shipgirl-info.data.js';
-import { openModal, closeModal, createSearchIndex, ensureFuse, debounce, escapeHtml } from '../utils.js';
+import { openModal, closeModal, createSearchIndex, ensureFuse, debounce, escapeHtml, renderStatus } from '../utils.js';
 
 'use strict';
 
@@ -581,16 +581,24 @@ function applyFilters() {
             const info = state.shipTypeData[filters.shipType];
             metaParts.push(`함종: ${info ? info.type_name : filters.shipType}`);
         }
-        const queryLine = filters.query ? `검색어: <strong>${filters.query}</strong>` : '';
-        const tagsLine = activeTagsFlat.length ? `활성 필터: ${activeTagsFlat.join(' ')}` : '';
-        const metaLine = metaParts.length ? metaParts.join(' · ') : '';
+        const queryLine = filters.query ? `검색어: <strong>${escapeHtml(filters.query)}</strong>` : '';
+        const tagsLine = activeTagsFlat.length ? `활성 필터: ${escapeHtml(activeTagsFlat.join(' '))}` : '';
+        const metaLine = metaParts.length ? escapeHtml(metaParts.join(' · ')) : '';
         const hint = [queryLine, tagsLine, metaLine].filter(Boolean).join('<br>');
 
-        listEl.innerHTML = `<div class="skill-search-empty">
-            <div>검색 결과 없음</div>
-            ${hint ? `<div class="skill-search-empty-hint">${hint}</div>` : ''}
-            <div class="skill-search-empty-hint">필터를 일부 해제하거나 검색어를 바꿔보세요.</div>
-        </div>`;
+        const status = renderStatus(listEl, '검색 결과 없음', 'empty', { compact: true });
+        if (status) {
+            if (hint) {
+                const hintEl = document.createElement('div');
+                hintEl.className = 'skill-search-empty-hint';
+                hintEl.innerHTML = hint;
+                status.appendChild(hintEl);
+            }
+            const tip = document.createElement('div');
+            tip.className = 'skill-search-empty-hint';
+            tip.textContent = '필터를 일부 해제하거나 검색어를 바꿔보세요.';
+            status.appendChild(tip);
+        }
         return;
     }
 

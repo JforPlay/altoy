@@ -37,7 +37,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <!-- Equip info panel -->
         <div class="upgrade-info-panel" id="upgradeInfo"></div>
 
-        <div id="loading" class="loading">로딩 중...</div>
+        <div id="loading" class="page-status page-status-loading">
+            <div class="spinner"></div>
+            <p class="page-status-msg">로딩 중...</p>
+        </div>
     </div>
 
     <!-- Material Filter Modal -->

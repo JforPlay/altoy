@@ -6,7 +6,7 @@
  * Used by skin.poll.js via createVirtualScroll(). Part of the skin module group.
  */
 
-import { throttle } from '../utils.js';
+import { throttle, renderStatus } from '../utils.js';
 
 // ===== Constants =====
 
@@ -109,7 +109,7 @@ export function createVirtualScroll({ container, renderCard, buffer = 10 }) {
         const children = Array.from(container.children);
         for (const child of children) {
             if (child !== topSpacer && child !== bottomSpacer &&
-                !child.classList.contains('no-results')) {
+                !child.classList.contains('page-status')) {
                 container.removeChild(child);
             }
         }
@@ -155,8 +155,8 @@ export function createVirtualScroll({ container, renderCard, buffer = 10 }) {
         ensureSpacers();
         clearCards();
 
-        // Remove any "no results" element
-        const noResults = container.querySelector('.no-results');
+        // Remove any "no results" status element
+        const noResults = container.querySelector('.page-status');
         if (noResults) noResults.remove();
 
         const totalRows = Math.ceil(items.length / columns);
@@ -197,11 +197,7 @@ export function createVirtualScroll({ container, renderCard, buffer = 10 }) {
      * Show the empty-state message and clear spacers.
      */
     function showNoResults() {
-        container.replaceChildren();
-        const msg = document.createElement('div');
-        msg.className = 'no-results';
-        msg.textContent = '표시할 스킨이 없습니다.';
-        container.appendChild(msg);
+        renderStatus(container, '표시할 스킨이 없습니다.', 'empty');
         renderedRange = { start: 0, end: 0 };
     }
 

@@ -5,7 +5,7 @@
  * and sets up keyboard/swipe/touch navigation between ship detail views.
  */
 
-import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorageItem, setStorageItem, setupModal, debounce, escapeHtml } from '../utils.js';
+import { createImg, getUrlParam, IMG_FALLBACKS, showToast, resolveUrl, getStorageItem, setStorageItem, setupModal, debounce, escapeHtml, showElement, hideElement } from '../utils.js';
 import {
     setup as setupData,
     loadData, loadNationalityData, loadAttrTypeData,
@@ -107,7 +107,7 @@ setupRetrofit(state);
  */
 async function init() {
     try {
-        loading.style.display = 'block';
+        showElement(loading);
 
         // Prevent browser from restoring scroll position
         if ('scrollRestoration' in history) {
@@ -121,7 +121,7 @@ async function init() {
             loadShipTypeData(),
             loadEquipTypeData()
         ]);
-        loading.style.display = 'none';
+        hideElement(loading);
 
         // Populate filter options BEFORE setting up event listeners
         populateFilterOptions();
@@ -143,7 +143,7 @@ async function init() {
             setTimeout(loadSkillAssets, 0);
         }
     } catch (error) {
-        loading.style.display = 'none';
+        hideElement(loading);
         showToast(error.message || 'Initialization error', 'error');
         console.error('Initialization error:', error);
     }

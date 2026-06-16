@@ -9,7 +9,7 @@
 import {
     createSearchIndex, ensureFuse, debounce, getUrlParam, setUrlParams,
     resolveUrl, showToast, closeModal, lockBodyScroll, unlockBodyScroll,
-    showElement, hideElement
+    showElement, hideElement, renderStatus
 } from '../utils.js';
 import {
     setup as setupData,
@@ -516,7 +516,7 @@ function sortEquipsInGroup(equips) {
 function renderEquipGrid() {
     equipGrid.classList.remove('mode-hearing');
     if (state.filteredData.length === 0) {
-        equipGrid.innerHTML = '<div class="empty-state">장비를 찾을 수 없습니다.</div>';
+        renderStatus(equipGrid, '장비를 찾을 수 없습니다.', 'empty');
         return;
     }
 

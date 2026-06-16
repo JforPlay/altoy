@@ -10,12 +10,10 @@
 
 /* Page-specific variable extensions */
 :root {
-  --loading-text: #4a4a4a;
   --stats-text: #3a3a3a;
 }
 
 body.dark-mode {
-  --loading-text: #c0c0c0;
   --stats-text: #d0d0d0;
 }
 
@@ -433,42 +431,9 @@ select:focus {
   opacity: 1;
 }
 
-/* ===== States (Loading / Empty) ===== */
-
-.loading {
-  text-align: center;
-  padding: 2.5rem;
-  color: var(--loading-text);
-  font-size: 1.125rem;
-  transition: color 0.3s ease;
-}
-
-.no-results {
-  text-align: center;
-  padding: 2.5rem;
-  background: var(--card-bg);
-  border-radius: 0.9375rem;
-  box-shadow: 0 0.3125rem 1.25rem var(--shadow-color);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-}
-
-.no-results i {
-  display: block;
-  color: var(--primary-color);
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.no-results h2 {
-  color: var(--primary-color);
-  margin-bottom: 0.625rem;
-  transition: color 0.3s ease;
-}
-
-.no-results p {
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
-}
+/* Loading / empty / error states use the canonical .page-status component
+   (src/styles/components/status.css, loaded globally) — emitted by the page JS
+   or written as static markup, never re-styled here. */
 
 .event-link-btn {
   display: inline-flex;

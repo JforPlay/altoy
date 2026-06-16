@@ -65,13 +65,6 @@
   gap: 1.25rem;
 }
 
-.maps-empty {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--text-secondary);
-  font-size: 1.1rem;
-}
-
 .map-area-group {
   background: var(--section-bg);
   border-radius: 0.75rem;

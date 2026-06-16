@@ -120,3 +120,20 @@ test('spinner: canonical .spin icon-utility reaches island', async ({ page }) =>
     await page.goto(pathFor('island/'), { waitUntil: 'load' });
     expect(await probeStyle(page, 'spin', 'animationName')).toBe('spin');
 });
+
+// --- Wave-1 status unification: canonical .page-status applied -----------------
+// status.css is imported globally via Layout.astro, so the canonical state
+// component must resolve on ANY page without a per-page import.
+
+test('status: canonical .page-status is delivered globally (homepage)', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    expect(await probeStyle(page, 'page-status', 'display')).toBe('flex');
+    expect(await probeStyle(page, 'page-status', 'flexDirection')).toBe('column');
+});
+
+test('status: a migrated page dropped its old local loading rule (map-viewer)', async ({ page }) => {
+    await page.goto(pathFor('map-viewer'), { waitUntil: 'load' });
+    // .map-loading was deleted (→ canonical .page-status); an injected element
+    // now falls back to the default block display. RED before migration (flex).
+    expect(await probeStyle(page, 'map-loading', 'display')).toBe('block');
+});

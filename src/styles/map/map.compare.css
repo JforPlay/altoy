@@ -210,11 +210,3 @@
     color: #ef4444;
     font-size: 0.65rem;
 }
-
-/* Empty state in search */
-.search-result-item .detail-empty,
-.map-search-results .detail-empty {
-    padding: var(--spacing-lg);
-    text-align: center;
-    color: var(--text-dim);
-}

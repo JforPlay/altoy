@@ -7,7 +7,7 @@
  * The storage event keeps both pages in sync across tabs without circular triggering.
  */
 
-import { fetchJSONWithCache, createImg, IMG_FALLBACKS, createSearchIndex, ensureFuse, debounce, syncedStorage, RARITY_ORDER as rarityOrder } from '../utils.js';
+import { fetchJSONWithCache, createImg, IMG_FALLBACKS, createSearchIndex, ensureFuse, debounce, syncedStorage, RARITY_ORDER as rarityOrder, renderStatus } from '../utils.js';
 import { ShipgirlTrackerUtils } from './shipgirl-tracker-utils.js';
 
 const { parseProgress } = ShipgirlTrackerUtils;
@@ -211,9 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function showLoadError() {
-        const message = '<p class="rt-error">데이터를 불러오는 데 실패했습니다.</p>';
-        sidebarBody.innerHTML = message;
-        rightPane.innerHTML = message;
+        renderStatus(sidebarBody, '데이터를 불러오는 데 실패했습니다.', 'error');
+        renderStatus(rightPane, '데이터를 불러오는 데 실패했습니다.', 'error');
     }
 
     /**
@@ -521,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!query || query.length < 1) return;
             const matches = index.search(query).slice(0, 8);
             if (matches.length === 0) {
-                results.innerHTML = '<div class="rt-quickadd-empty">일치하는 함순이가 없습니다.</div>';
+                renderStatus(results, '일치하는 함순이가 없습니다.', 'empty', { compact: true });
                 return;
             }
             for (const { item } of matches) {
@@ -606,7 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rightPane.innerHTML = '';
         const natId = getNationalityIdByName(factionName);
         if (natId === null) {
-            rightPane.innerHTML = '<p class="rt-error">진영 정보를 찾을 수 없습니다.</p>';
+            renderStatus(rightPane, '진영 정보를 찾을 수 없습니다.', 'error');
             return;
         }
 
@@ -763,7 +762,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (ships.length === 0) {
-            section.innerHTML = '<p class="rt-empty">이 진영에 해당하는 개발함이 없습니다.</p>';
+            renderStatus(section, '이 진영에 해당하는 개발함이 없습니다.', 'empty', { compact: true });
             return section;
         }
 
@@ -870,14 +869,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!section.querySelector('.rt-group')) {
-            section.innerHTML = '<p class="rt-empty">표시할 상시 획득 함순이가 없습니다.</p>';
+            renderStatus(section, '표시할 상시 획득 함순이가 없습니다.', 'empty', { compact: true });
             return section;
         }
 
-        const filterEmpty = document.createElement('p');
-        filterEmpty.className = 'rt-empty rt-filter-empty';
+        // Filter-empty notice: a canonical status element kept as a sibling of the
+        // groups and toggled via the .rt-filter-empty hook in applyFilters().
+        // Built off-DOM by renderStatus, then tagged + hidden before append so it
+        // coexists with the rendered groups instead of replacing them.
+        const filterEmptyHost = document.createElement('div');
+        const filterEmpty = renderStatus(filterEmptyHost, '현재 필터와 일치하는 함순이가 없습니다.', 'empty', { compact: true });
+        filterEmpty.classList.add('rt-filter-empty');
         filterEmpty.hidden = true;
-        filterEmpty.textContent = '현재 필터와 일치하는 함순이가 없습니다.';
         section.appendChild(filterEmpty);
 
         return section;

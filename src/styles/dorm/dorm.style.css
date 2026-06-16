@@ -236,16 +236,6 @@ body.dorm-page .scroll-to-top {
     font-style: italic;
 }
 
-.theme-empty-state {
-    margin: var(--spacing-sm);
-    padding: var(--spacing-md);
-    border: 1px dashed var(--border-color);
-    border-radius: var(--radius-md);
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    text-align: center;
-}
-
 /* ===== Rarity Colors / States ===== */
 .furniture-icon-wrapper[data-rarity="4"] {
     border-color: var(--rarity-ssr);

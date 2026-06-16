@@ -263,21 +263,6 @@
   font-size: 1.2em;
 }
 
-.event-carousel-loading {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--text-secondary);
-  font-size: 0.9em;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
-.event-carousel-loading.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
 .event-carousel {
   position: relative;
   width: 100%;
@@ -420,27 +405,4 @@
 
 .event-indicator:hover {
   background: rgba(255, 255, 255, 0.7);
-}
-
-/* Empty State */
-.event-carousel-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: var(--text-secondary);
-  padding: 2rem;
-  text-align: center;
-}
-
-.event-carousel-empty i {
-  font-size: 3em;
-  margin-bottom: 1rem;
-  opacity: 0.5;
-}
-
-.event-carousel-empty p {
-  font-size: 1.1em;
-  margin: 0;
 }

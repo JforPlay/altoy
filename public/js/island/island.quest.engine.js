@@ -4,7 +4,7 @@
  * and provides a filterable list with a detail panel. Registers as window.QuestModule.
  */
 
-import { fetchJSON } from '../utils.js';
+import { fetchJSON, renderStatus } from '../utils.js';
 
 'use strict';
 
@@ -305,13 +305,7 @@ function renderQuestList(quests) {
     if (!container) return;
 
     if (quests.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <span class="material-symbols-outlined">search_off</span>
-                <h3>퀘스트를 찾을 수 없습니다</h3>
-                <p>검색 조건을 변경하거나 필터를 재설정하세요.</p>
-            </div>
-        `;
+        renderStatus(container, '검색 조건을 변경하거나 필터를 재설정하세요.', 'empty', { icon: 'search_off' });
         return;
     }
 

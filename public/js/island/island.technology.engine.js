@@ -6,7 +6,7 @@
  * Registers as window.TechnologyModule.
  */
 
-import { fetchJSON, formatTime, getStorageItem, setStorageItem, ensureFuse, DATA_FOR_TOY_BASE } from '../utils.js';
+import { fetchJSON, formatTime, getStorageItem, setStorageItem, ensureFuse, renderStatus, DATA_FOR_TOY_BASE } from '../utils.js';
 
 // ===== State =====
 const state = {
@@ -369,12 +369,7 @@ function renderTechnologyTree() {
     const techs = getFilteredTechnologies();
 
     if (techs.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <span class="material-symbols-outlined">device_hub</span>
-                <p>기술을 찾을 수 없습니다</p>
-            </div>
-        `;
+        renderStatus(container, '기술을 찾을 수 없습니다', 'empty', { icon: 'device_hub' });
         return;
     }
 

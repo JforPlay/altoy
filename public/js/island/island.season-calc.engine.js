@@ -5,7 +5,7 @@
  * and pt-per-minute using the resource module's dependency trees. Registers as window.SeasonCalcModule.
  */
 
-import { fetchJSON, getStorageItem, setStorageItem, DATA_FOR_TOY_BASE } from '../utils.js';
+import { fetchJSON, getStorageItem, setStorageItem, renderStatus, DATA_FOR_TOY_BASE } from '../utils.js';
 import { renderSeasonBadge, findCurrentSeasonId, getSeasonThematicName } from './island.season-map.js';
 
 'use strict';
@@ -289,12 +289,7 @@ function renderSeasonPass() {
     if (!container) return;
 
     if (!state.seasonData) {
-        container.innerHTML = `
-            <div class="season-pass-unavailable">
-                <span class="material-symbols-outlined">error</span>
-                <p>시즌 패스 데이터를 불러올 수 없습니다</p>
-            </div>
-        `;
+        renderStatus(container, '시즌 패스 데이터를 불러올 수 없습니다', 'error');
         return;
     }
 
@@ -555,12 +550,11 @@ function renderItemGrid() {
         `;
     }).join('');
 
-    container.innerHTML = itemCards || `
-        <div class="calc-empty-state">
-            <span class="material-symbols-outlined">inventory_2</span>
-            <p>포인트 아이템을 찾을 수 없습니다</p>
-        </div>
-    `;
+    if (itemCards) {
+        container.innerHTML = itemCards;
+    } else {
+        renderStatus(container, '포인트 아이템을 찾을 수 없습니다', 'empty', { icon: 'inventory_2' });
+    }
 }
 
 function renderTotalDisplay() {

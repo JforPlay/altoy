@@ -5,7 +5,7 @@
  * and URL-persisted view/date state.
  */
 
-import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex, ensureFuse, getUrlParam, setUrlParams, debounce, createImgElement, createMaterialIcon, sanitizeClassToken } from '../utils.js';
+import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchIndex, ensureFuse, getUrlParam, setUrlParams, debounce, createImgElement, createMaterialIcon, sanitizeClassToken, renderStatus } from '../utils.js';
 
 (() => {
     /**
@@ -47,12 +47,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     if (!calendarContainer || !upcomingList || !calendarTitle || !viewButtons.length || !searchInput || !searchDropdown || !sidebarToggle || !upcomingPanel) {
         console.error('필수 DOM 요소를 찾지 못했습니다. 초기화 중단.');
         const container = document.querySelector('.birthday-container');
-        if (container) {
-            const error = document.createElement('div');
-            error.className = 'error-message';
-            error.textContent = '오류: 캘린더 초기화에 실패했습니다. 페이지를 새로고침해 주세요.';
-            container.replaceChildren(error);
-        }
+        renderStatus(container, '오류: 캘린더 초기화에 실패했습니다. 페이지를 새로고침해 주세요.', 'error');
         return;
     }
 
@@ -92,17 +87,6 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         return img;
     }
 
-    function createLoadingMessage(message, compact = false) {
-        const loading = document.createElement('div');
-        loading.className = 'loading-message';
-        if (compact) loading.classList.add('loading-message-compact');
-
-        const spinner = document.createElement('span');
-        spinner.className = 'spinner spinner--sm';
-        loading.append(spinner, document.createTextNode(message));
-        return loading;
-    }
-
     function createNavButton(action, iconName, label, extraClass = '') {
         const button = document.createElement('button');
         button.type = 'button';
@@ -134,8 +118,8 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     }
 
     function loadData() {
-        calendarContainer.replaceChildren(createLoadingMessage('생일 데이터를 불러오는 중...'));
-        upcomingList.replaceChildren(createLoadingMessage('불러오는 중...', true));
+        renderStatus(calendarContainer, '생일 데이터를 불러오는 중...', 'loading');
+        renderStatus(upcomingList, '불러오는 중...', 'loading', { compact: true });
         const cached = getCachedData();
         if (cached) { processData(cached); return; }
 
@@ -148,32 +132,22 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     }
 
     function renderLoadError(err) {
-        const error = document.createElement('div');
-        error.className = 'error-message';
+        const status = renderStatus(calendarContainer, '생일 데이터 로드 실패', 'error');
+        if (status) {
+            const detail = document.createElement('p');
+            detail.className = 'page-status-msg';
+            detail.textContent = err?.message || '알 수 없는 오류가 발생했습니다.';
+            status.appendChild(detail);
 
-        const title = document.createElement('p');
-        const strong = document.createElement('strong');
-        strong.textContent = '생일 데이터 로드 실패';
-        title.appendChild(strong);
+            const retry = document.createElement('button');
+            retry.type = 'button';
+            retry.className = 'page-status-retry';
+            retry.textContent = '다시 시도';
+            retry.addEventListener('click', loadData);
+            status.appendChild(retry);
+        }
 
-        const detail = document.createElement('p');
-        detail.textContent = err?.message || '알 수 없는 오류가 발생했습니다.';
-
-        const retryWrap = document.createElement('p');
-        const retry = document.createElement('button');
-        retry.type = 'button';
-        retry.className = 'retry-btn';
-        retry.textContent = '다시 시도';
-        retry.addEventListener('click', loadData);
-        retryWrap.appendChild(retry);
-
-        error.append(title, detail, retryWrap);
-        calendarContainer.replaceChildren(error);
-
-        const upcomingError = document.createElement('div');
-        upcomingError.className = 'error-message error-message-compact';
-        upcomingError.textContent = '로드 실패';
-        upcomingList.replaceChildren(upcomingError);
+        renderStatus(upcomingList, '로드 실패', 'error', { compact: true });
     }
 
     /**

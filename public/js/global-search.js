@@ -16,6 +16,7 @@ import {
     createMaterialIcon,
     lockBodyScroll,
     unlockBodyScroll,
+    renderStatus,
 } from './utils.js';
 import { LINKS } from './global.script.js';
 import { PAGE_CATALOG } from './pages.catalog.js';
@@ -142,10 +143,8 @@ function onClose() {
 }
 
 function renderEmptyMessage(message) {
-    const empty = document.createElement('div');
-    empty.className = 'global-search-empty';
-    empty.textContent = message;
-    resultsContainer.replaceChildren(empty);
+    // Canonical compact empty state (status.css); the modal is a tight panel.
+    renderStatus(resultsContainer, message, 'empty', { compact: true });
 }
 
 // ===== Ship Data Loading =====
@@ -262,10 +261,9 @@ function handleSearch() {
 }
 
 function createShipLoadingRow() {
-    const row = document.createElement('div');
-    row.className = 'global-search-loading';
-    row.textContent = '함순이 검색 준비 중...';
-    return row;
+    // Canonical compact loading state (status.css). renderStatus inserts into a
+    // host and returns the element; re-parent it onto the results fragment.
+    return renderStatus(document.createElement('div'), '함순이 검색 준비 중...', 'loading', { compact: true });
 }
 
 function createSectionHeader(label) {

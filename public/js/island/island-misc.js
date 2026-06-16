@@ -5,7 +5,7 @@
  * an image gallery with a lightbox. Part of the island module group.
  */
 
-import { fetchJSONWithCache, openModal, setupModal } from '../utils.js';
+import { fetchJSONWithCache, openModal, setupModal, renderStatus } from '../utils.js';
 
 // ===== Configuration =====
 const GITHUB_REPO = 'JforPlay/data_for_toy';
@@ -81,7 +81,7 @@ function renderSection(category, images) {
     gallery.innerHTML = '';
 
     if (images.length === 0) {
-        renderSectionStatus(gallery, '표시할 이미지가 없습니다.', 'island-misc-empty');
+        renderStatus(gallery, '표시할 이미지가 없습니다.', 'empty');
         return;
     }
 
@@ -120,43 +120,14 @@ function showSectionLoading(category) {
     const section = document.querySelector(`.island-misc-section[data-category="${category}"]`);
     if (!section) return;
     const gallery = section.querySelector('.island-misc-gallery');
-    gallery.innerHTML = '';
-
-    const status = document.createElement('div');
-    status.className = 'island-misc-loading';
-    status.setAttribute('role', 'status');
-
-    const spinner = document.createElement('div');
-    spinner.className = 'spinner';
-    spinner.setAttribute('aria-hidden', 'true');
-
-    const text = document.createElement('p');
-    text.textContent = '로딩 중...';
-
-    status.appendChild(spinner);
-    status.appendChild(text);
-    gallery.appendChild(status);
+    renderStatus(gallery, '로딩 중...', 'loading');
 }
 
 function showSectionError(category, message) {
     const section = document.querySelector(`.island-misc-section[data-category="${category}"]`);
     if (!section) return;
     const gallery = section.querySelector('.island-misc-gallery');
-    renderSectionStatus(gallery, `오류: ${message}`, 'island-misc-error');
-}
-
-function renderSectionStatus(gallery, message, className = '') {
-    gallery.innerHTML = '';
-
-    const status = document.createElement('div');
-    status.className = ['island-misc-loading', className].filter(Boolean).join(' ');
-    status.setAttribute('role', className === 'island-misc-error' ? 'alert' : 'status');
-
-    const text = document.createElement('p');
-    text.textContent = message;
-
-    status.appendChild(text);
-    gallery.appendChild(status);
+    renderStatus(gallery, `오류: ${message}`, 'error');
 }
 
 // ===== Lightbox =====

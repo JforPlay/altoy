@@ -4,7 +4,7 @@
  * Both support fuzzy search (Fuse.js) and filter chips (type, rarity, nationality).
  */
 
-import { createSearchIndex, ensureFuse, debounce, setupModal, openModal, closeModal, IMG_FALLBACKS, RARITY_TIERS_DESC as RARITY_ORDER } from '../utils.js';
+import { createSearchIndex, ensureFuse, debounce, setupModal, openModal, closeModal, IMG_FALLBACKS, RARITY_TIERS_DESC as RARITY_ORDER, renderStatus } from '../utils.js';
 import {
     getShipByGid,
     getShipsByPosition,
@@ -766,11 +766,9 @@ function _filterByQuery(items, query) {
 }
 
 function _renderEmptyState(container, message) {
-    const empty = document.createElement('div');
-    empty.className = 'picker-empty';
-    empty.textContent = message;
-    container.innerHTML = '';
-    container.appendChild(empty);
+    // Picker containers are CSS grids — span all columns so the status stays centered.
+    const status = renderStatus(container, message, 'empty', { compact: true });
+    if (status) status.style.gridColumn = '1 / -1';
 }
 
 function _createPickerName(text) {

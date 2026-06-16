@@ -16,6 +16,7 @@ import {
     createImgElement,
     requireElements,
     loadPageData,
+    renderStatus,
 } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -62,10 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderEmpty(message) {
-        const p = document.createElement('p');
-        p.className = 'hot-issue-empty';
-        p.textContent = message;
-        grid.replaceChildren(p);
+        renderStatus(grid, message, 'empty');
     }
 
     /**

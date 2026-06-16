@@ -1277,64 +1277,9 @@ body.dark-mode .tooltip-toggle-button:hover {
 }
 
 /* ==========================================================================
-   12. PAGE STATUS / EMPTY / ERROR / LOADING MESSAGES
-   ==========================================================================
-
-   Shared style for status messages emitted by `renderStatus()` from utils.js.
-   The base class is `.page-status`; each variant adds `.page-status-<type>`.
-   Pages can override (e.g. `.gallery-container .page-status { ... }`) when
-   they need positioning specific to their layout.
-
-   Usage:
-   <div id="container" aria-live="polite"></div>
-   <script>renderStatus(container, 'Loading…', 'loading')</script>
+   12. PAGE STATUS / EMPTY / ERROR / LOADING — moved to components/status.css
+   (the canonical state component, loaded globally via Layout.astro).
    ========================================================================== */
-
-.page-status {
-  margin: 0 auto;
-  padding: var(--spacing-md, 1rem) var(--spacing-md, 1rem);
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.5;
-  text-align: center;
-}
-
-.page-status[hidden] {
-  display: none;
-}
-
-.page-status-error {
-  color: var(--danger-color);
-}
-
-.page-status-empty {
-  color: var(--text-muted);
-}
-
-.page-status-loading {
-  color: var(--text-muted);
-}
-
-.page-status-success {
-  color: var(--success-color);
-}
-
-/* Retry button appended by loadPageData() inside a .page-status-error */
-.page-status-retry {
-  display: block;
-  margin: var(--spacing-sm, 0.5rem) auto 0;
-  padding: 0.4rem 1.1rem;
-  border: none;
-  border-radius: var(--radius-md, 0.5rem);
-  background: var(--primary-color);
-  color: #fff;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.page-status-retry:hover {
-  filter: brightness(1.1);
-}
 
 /* --- Mobile Responsive (Global Components) ---
    Adjustments for utility components on mobile devices */

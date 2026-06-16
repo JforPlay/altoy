@@ -11,7 +11,7 @@
 import {
   debounce, fetchJSONWithCache, getAllUrlParams, setUrlParams,
   getStorageItem, setStorageItem, showToast, createSearchIndex, ensureFuse,
-  lockBodyScroll, unlockBodyScroll
+  lockBodyScroll, unlockBodyScroll, renderStatus
 } from '../utils.js';
 import { createVirtualScroll } from './skin.poll.virtual-scroll.js';
 
@@ -791,10 +791,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     leaderboardContent.replaceChildren();
 
     if (!leaderboardData || leaderboardData.length === 0) {
-      const empty = document.createElement('p');
-      empty.className = 'leaderboard-empty';
-      empty.textContent = '리더보드에 표시할 스킨이 아직 없습니다. (최소 10표 필요)';
-      leaderboardContent.appendChild(empty);
+      renderStatus(leaderboardContent, '리더보드에 표시할 스킨이 아직 없습니다. (최소 10표 필요)', 'empty');
       return;
     }
 
@@ -1208,10 +1205,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const populateDropdown = (dropdownEl, results, onSelectCallback) => {
     dropdownEl.replaceChildren();
     if (results.length === 0) {
-      const noResults = document.createElement('div');
-      noResults.className = 'no-results';
-      noResults.textContent = '검색 결과가 없습니다';
-      dropdownEl.appendChild(noResults);
+      renderStatus(dropdownEl, '검색 결과가 없습니다', 'empty', { compact: true });
       return;
     }
 

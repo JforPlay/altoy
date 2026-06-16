@@ -8,7 +8,7 @@
  * categories. Delegates actual script playback to the shared StoryViewer engine
  * (story-viewer.engine.js) by patching its loadData and returnToMemorySelection.
  */
-import { fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, makeKeyboardActivatable, createMaterialIcon, DATA_FOR_TOY_BASE } from '../utils.js';
+import { fetchJSON, getUrlParam, setUrlParams, hideElement, showElement, toggleElement, makeKeyboardActivatable, createMaterialIcon, renderStatus, DATA_FOR_TOY_BASE } from '../utils.js';
 
 /**
  * Create a tab-based story viewer instance for a child story page.
@@ -110,16 +110,14 @@ function createTabStoryViewer(config) {
 
         /** Show a loading indicator while data is being fetched. */
         showLoadingState() {
-            this.elements.memoriesGrid.textContent = '';
-            const loading = document.createElement('div');
-            loading.className = 'loading';
-            loading.textContent = '데이터 로딩 중...';
-            this.elements.memoriesGrid.appendChild(loading);
+            // Canonical .page-status loading state (status.css).
+            renderStatus(this.elements.memoriesGrid, '데이터 로딩 중...', 'loading');
         },
 
         hideLoadingState() {
-            const loadingElements = document.querySelectorAll('.loading');
-            loadingElements.forEach(el => el.remove());
+            // Remove only the canonical loading status; populated grids replace
+            // their own content, but the error path leaves this in place.
+            document.querySelectorAll('.page-status-loading').forEach(el => el.remove());
         },
 
         /**

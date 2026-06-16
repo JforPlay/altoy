@@ -5,7 +5,7 @@
  * that provides the data URL, timing, group chat icons, and optional type-4 handler.
  * Renders a character selector grid, story dropdown, and auto-advancing message bubbles.
  */
-import { fetchJSON, showElement, createImgElement, DATA_FOR_TOY_BASE } from '../utils.js';
+import { fetchJSON, showElement, createImgElement, renderStatus, DATA_FOR_TOY_BASE } from '../utils.js';
 
 const PLACEHOLDER_ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23e0e0e0'/%3E%3C/svg%3E";
 
@@ -14,12 +14,8 @@ function clearElement(element) {
 }
 
 function appendLoadingMessage(container, message, isError = false) {
-    if (!container) return;
-    clearElement(container);
-    const p = document.createElement('p');
-    p.className = `loading-message${isError ? ' error' : ''}`;
-    p.textContent = message;
-    container.appendChild(p);
+    // Canonical .page-status state (status.css): error vs empty.
+    renderStatus(container, message, isError ? 'error' : 'empty');
 }
 
 export class ChatViewerEngine {

@@ -14,6 +14,7 @@ import {
     getStorageItem,
     setStorageItem,
     createMaterialIcon,
+    renderStatus,
 } from '../utils.js';
 
 import {
@@ -800,11 +801,7 @@ function _getSaveShipNames(savedShips) {
 }
 
 function _renderSaveEmptyState(listEl) {
-    const empty = document.createElement('p');
-    empty.className = 'save-empty-msg';
-    empty.textContent = '저장된 편성이 없습니다.';
-    listEl.innerHTML = '';
-    listEl.appendChild(empty);
+    renderStatus(listEl, '저장된 편성이 없습니다.', 'empty', { compact: true });
 }
 
 function _createSaveActionButton(className, saveIndex, iconName, label) {

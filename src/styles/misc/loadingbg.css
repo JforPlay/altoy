@@ -344,31 +344,13 @@ body {
   font-size: 1rem;
 }
 
-/* ===== Loading State / Spinner ===== */
-
-.loading {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 100;
-  color: var(--text);
-}
-
-.loading.hidden {
-  display: none;
-}
+/* ===== Loading State ===== */
+/* #loading → canonical .page-status--overlay (components/status.css) */
 
 .loading-detail {
   margin-top: 0.5rem;
   color: var(--text-muted);
   font-size: 0.9rem;
-}
-
-/* Layout only — visual comes from components/spinner.css */
-.loading .spinner {
-  margin: 0 auto 1rem;
 }
 
 /* ===== Responsive / Media Queries ===== */

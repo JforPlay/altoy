@@ -53,59 +53,6 @@ body.calendar-page {
   color: var(--calendar-text);
 }
 
-/* Loading and error states */
-.loading-message,
-.error-message {
-  text-align: center;
-  padding: 3rem 2rem;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  margin: 2rem auto;
-  max-width: 500px;
-}
-
-.loading-message {
-  background: var(--calendar-alt-bg);
-  color: var(--calendar-primary);
-  border: 1px solid var(--calendar-border);
-}
-
-.loading-message-compact {
-  margin: 0;
-  padding: 1rem;
-  max-width: none;
-  font-size: 0.9rem;
-}
-
-.error-message {
-  background: var(--danger-alpha-10);
-  color: var(--danger-color);
-  border: 1px solid var(--danger-alpha-25);
-}
-
-.error-message-compact {
-  margin: 0;
-  padding: 1rem;
-  max-width: none;
-  font-size: 0.9rem;
-}
-
-.retry-btn {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--calendar-border);
-  border-radius: 8px;
-  background: var(--calendar-bg);
-  color: var(--calendar-text);
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.retry-btn:hover {
-  border-color: var(--calendar-primary);
-  background: var(--calendar-event-bg);
-}
-
 /* Controls for switching views */
 .calendar-controls {
   display: flex;
@@ -876,11 +823,6 @@ body.calendar-page {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-
-  .loading-spinner {
-    animation: none;
-    border-top-color: var(--calendar-border);
   }
 
   .upcoming-item:hover {

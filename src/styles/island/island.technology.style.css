@@ -921,28 +921,6 @@
 /* Scrollbar styling now in island.style.css (unified) */
 
 /* ==========================================================================
-   10. EMPTY STATES
-   ========================================================================== */
-
-.tech-detail .empty-state {
-    padding: 4rem 2rem;
-}
-
-.tech-detail .empty-state .material-symbols-outlined {
-    font-size: 5rem;
-    opacity: 0.3;
-}
-
-.tech-detail .empty-state h3 {
-    font-size: 1.25rem;
-    margin: 1rem 0 0.5rem 0;
-}
-
-.tech-detail .empty-state p {
-    font-size: 0.875rem;
-}
-
-/* ==========================================================================
    11. RESPONSIVE DESIGN
    ========================================================================== */
 

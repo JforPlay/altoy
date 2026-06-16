@@ -1319,36 +1319,63 @@ function requireElements(elements, contextLabel = 'Page') {
     return false;
 }
 
+// Default leading icon per status type (loading uses the .spinner instead).
+const STATUS_ICONS = { empty: 'inbox', error: 'error', success: 'check_circle' };
+
 /**
- * Render a status/empty/error message into a container, replacing its children
- * with a single `<p>` element. Pass an empty `message` to clear without inserting.
- * The status element is given `class="page-status page-status-{type}"` so pages
- * can style each state via theme tokens. Container should have `aria-live` set
- * if its updates need to be announced.
+ * Render a status/empty/error/loading state into a container, replacing its
+ * children with the canonical `.page-status` component (components/status.css):
+ * a leading visual + a `.page-status-msg` text line. The visual is a `.spinner`
+ * for `loading`, otherwise a Material-symbols icon (empty → inbox, error →
+ * error, success → check_circle; override via `options.icon`, suppress with
+ * `options.icon = ''`). Pass an empty `message` to clear without inserting.
+ * Give the container `aria-live` if its updates need to be announced.
  *
- * Used by pages that surface "no results", "loading", or "load failed" inside
- * the gallery container itself. Pages with a separate inline status banner can
- * keep updating that element directly — this helper is for the replace-children
- * pattern.
+ * This is the ONE site-wide status renderer — pages must not hand-roll their
+ * own loading/empty/error markup or CSS.
  *
  * @param {HTMLElement|null} container - Container to fill
  * @param {string} message - Text to display (empty string clears)
  * @param {'info'|'success'|'error'|'empty'|'loading'} [type='info']
  * @param {Object} [options]
- * @param {string} [options.tag='p'] - Element tag for the status node
- * @param {string} [options.className='page-status'] - Base class (variant suffix is auto-appended)
- * @returns {HTMLElement|null} The created status element, or null if nothing was rendered
+ * @param {string} [options.className='page-status'] - Base class (variant suffix auto-appended)
+ * @param {string} [options.icon] - Material-symbols glyph override ('' suppresses the icon)
+ * @param {boolean} [options.compact=false] - Add the --compact modifier (small icon, tight padding)
+ * @returns {HTMLElement|null} The created `.page-status` element, or null if nothing was rendered
  */
 function renderStatus(container, message, type = 'info', options = {}) {
-    const { tag = 'p', className = 'page-status' } = options;
+    const { className = 'page-status', icon, compact = false } = options;
     if (!container) return null;
     if (!message) {
         container.replaceChildren();
         return null;
     }
-    const status = document.createElement(tag);
+    const status = document.createElement('div');
     status.className = type ? `${className} ${className}-${type}` : className;
-    status.textContent = message;
+    if (compact) status.classList.add(`${className}--compact`);
+    status.setAttribute('role', 'status');
+
+    // Leading visual: a spinner for loading; otherwise a Material icon.
+    if (type === 'loading') {
+        const spinner = document.createElement('div');
+        spinner.className = 'spinner';
+        status.appendChild(spinner);
+    } else {
+        const glyph = icon !== undefined ? icon : STATUS_ICONS[type];
+        if (glyph) {
+            const iconEl = document.createElement('span');
+            iconEl.className = 'material-symbols-outlined page-status-icon';
+            iconEl.textContent = glyph;
+            iconEl.setAttribute('aria-hidden', 'true');
+            status.appendChild(iconEl);
+        }
+    }
+
+    const msg = document.createElement('p');
+    msg.className = `${className}-msg`;
+    msg.textContent = message;
+    status.appendChild(msg);
+
     container.replaceChildren(status);
     return status;
 }

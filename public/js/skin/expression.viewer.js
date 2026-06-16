@@ -20,7 +20,8 @@ import {
     setupModal,
     openModal,
     downloadImage,
-    sanitizeFilename
+    sanitizeFilename,
+    renderStatus
 } from '../utils.js';
 import { pickFaceCandidates } from '../expression-face.js';
 
@@ -77,12 +78,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         } catch (error) {
             console.error('Initialization failed:', error);
-            elements.loadingState.replaceChildren(createMessageState({
-                iconClass: 'fas fa-exclamation-triangle',
-                message: '데이터 로딩 실패',
-                detail: error.message,
-                className: 'load-error-state'
-            }));
+            const status = renderStatus(elements.loadingState, '데이터 로딩 실패', 'error');
+            if (status && error.message) {
+                const detail = document.createElement('p');
+                detail.className = 'page-status-msg';
+                detail.textContent = error.message;
+                status.appendChild(detail);
+            }
         }
     }
 
@@ -159,10 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         elements.searchDropdown.replaceChildren();
 
         if (results.length === 0) {
-            const noResults = document.createElement('div');
-            noResults.className = 'no-results';
-            noResults.textContent = '검색 결과가 없습니다';
-            elements.searchDropdown.appendChild(noResults);
+            renderStatus(elements.searchDropdown, '검색 결과가 없습니다', 'empty', { compact: true });
             return;
         }
 
@@ -194,11 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         elements.characterGrid.replaceChildren();
 
         if (data.length === 0) {
-            elements.characterGrid.appendChild(createMessageState({
-                iconClass: 'fas fa-search',
-                message: '검색 결과가 없습니다',
-                className: 'empty-list-state'
-            }));
+            renderStatus(elements.characterGrid, '검색 결과가 없습니다', 'empty');
             return;
         }
 
@@ -274,11 +269,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const currentData = item[state.currentPaintingType];
 
         if (!currentData) {
-            elements.viewerPanel.replaceChildren(createMessageState({
-                iconClass: 'fas fa-image-slash',
-                message: '선택한 일러스트 타입이 없습니다.',
-                className: 'no-data-state'
-            }));
+            renderStatus(elements.viewerPanel, '선택한 일러스트 타입이 없습니다.', 'empty');
             return;
         }
 
@@ -378,11 +369,7 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     function renderImageWithOverlay(data) {
         if (!data) {
-            return createMessageState({
-                iconClass: 'fas fa-image-slash',
-                message: '이미지 없음',
-                className: 'no-data-state'
-            });
+            return createStatusElement('이미지 없음', 'empty');
         }
 
         const baseUrl = data.base_url;
@@ -399,11 +386,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         baseImage.alt = '일러스트';
         baseImage.crossOrigin = 'anonymous';
         baseImage.addEventListener('error', () => {
-            container.replaceWith(createMessageState({
-                iconClass: 'fas fa-image-slash',
-                message: '이미지를 불러올 수 없습니다.',
-                className: 'no-data-state'
-            }));
+            container.replaceWith(createStatusElement('이미지를 불러올 수 없습니다.', 'empty'));
         }, { once: true });
 
         const faceOverlay = document.createElement('img');
@@ -577,25 +560,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         return button;
     }
 
-    function createMessageState({ iconClass, message, detail = '', className }) {
-        const wrapper = document.createElement('div');
-        wrapper.className = className;
-
-        const icon = document.createElement('i');
-        icon.className = iconClass;
-        icon.setAttribute('aria-hidden', 'true');
-
-        const messageEl = document.createElement('p');
-        messageEl.textContent = message;
-        wrapper.append(icon, messageEl);
-
-        if (detail) {
-            const detailEl = document.createElement('p');
-            detailEl.className = 'message-detail';
-            detailEl.textContent = detail;
-            wrapper.appendChild(detailEl);
-        }
-
-        return wrapper;
+    // Build a detached canonical .page-status element (components/status.css) for
+    // call sites that need to insert/return it themselves (e.g. replaceWith or as
+    // a return value), rather than rendering straight into a container.
+    function createStatusElement(message, type) {
+        const holder = document.createElement('div');
+        renderStatus(holder, message, type);
+        return holder.firstElementChild;
     }
 });

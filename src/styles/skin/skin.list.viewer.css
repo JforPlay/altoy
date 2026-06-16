@@ -456,22 +456,10 @@
 }
 
 /* --- Loading & Error Messages --- */
-.loading-message,
-.error-message {
-  text-align: center;
-  padding: 2rem;
-}
-
-.loading-message {
-  color: var(--text-secondary);
-}
-
-.error-message {
-  color: var(--danger-color);
-}
-
-.error-message small {
-  color: var(--text-muted);
+/* Section grids show loading/error/empty via the canonical .page-status
+   (components/status.css); only the grid-span is page-specific. */
+.skin-list-container .page-status {
+  grid-column: 1 / -1;
 }
 
 /* =================================================================
@@ -804,28 +792,8 @@
   padding: 1rem 1.25rem;
 }
 
-/* Cart empty state */
-.cart-empty {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--text-muted);
-}
-
-.cart-empty i {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  opacity: 0.3;
-}
-
-.cart-empty p {
-  margin: 0.5rem 0;
-  font-size: 1rem;
-}
-
-.cart-empty-hint {
-  font-size: 0.85rem !important;
-  color: var(--text-dim);
-}
+/* Cart / owned-showcase empty state uses the canonical .page-status component
+   (components/status.css) via renderStatus — no page-specific rule needed. */
 
 /* Cart groups */
 .cart-group {

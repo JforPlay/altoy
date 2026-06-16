@@ -32,13 +32,6 @@
   box-shadow: var(--shadow-sm);
 }
 
-.dmg-panel--loading {
-  align-items: center;
-  color: var(--text-muted);
-  font-size: 0.9em;
-  padding: var(--spacing-md);
-}
-
 /* ===== Panel header ===== */
 
 .dmg-panel-header {

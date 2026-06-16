@@ -72,14 +72,6 @@ body {
     box-shadow: var(--shadow-md);
 }
 
-.build-sim-empty {
-    grid-column: 1 / -1;
-    margin: 0;
-    padding: 1rem;
-    color: var(--text-secondary);
-    text-align: center;
-}
-
 /* ===== Pool Selector ===== */
 
 /* Two stacked rows: the primary row (limited banners + standard pools) and the

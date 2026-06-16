@@ -48,8 +48,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
             <!-- Center: Map View -->
             <main class="map-center" id="mapCenter">
-                <div class="map-empty" id="mapEmpty">
-                    <span>좌측에서 해역을 선택하세요</span>
+                <div class="map-center-placeholder" id="mapEmpty">
+                    <div class="page-status page-status-empty">
+                        <span class="material-symbols-outlined page-status-icon">inbox</span>
+                        <p class="page-status-msg">좌측에서 해역을 선택하세요</p>
+                    </div>
                 </div>
                 <div id="mapContent" class="hidden">
                     <!-- Map Zone -->
@@ -80,7 +83,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     </div>
                 </div>
 
-                <div class="map-loading hidden" id="mapLoading">로딩 중...</div>
+                <div class="page-status page-status-loading hidden" id="mapLoading">
+                    <div class="spinner"></div>
+                    <p class="page-status-msg">로딩 중...</p>
+                </div>
             </main>
         </div>
 

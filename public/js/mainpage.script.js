@@ -6,15 +6,14 @@
  */
 
 import {
-    createIcon,
     createImgElement,
-    createMaterialIcon,
     DATA_FOR_TOY_BASE,
     getBasePath,
     hideElement,
     getStorageItem,
     setStorageItem,
-    fetchJSONWithCache
+    fetchJSONWithCache,
+    renderStatus
 } from './utils.js';
 
 // ===== Shared Carousel Utilities =====
@@ -346,15 +345,7 @@ const EventCarousel = (function () {
         const indicatorsContainer = document.querySelector('.event-carousel-indicators');
 
         if (track) {
-            const empty = document.createElement('div');
-            empty.className = 'event-carousel-empty';
-            empty.appendChild(createIcon('fas fa-calendar-xmark'));
-
-            const message = document.createElement('p');
-            message.textContent = '진행중인 이벤트가 없습니다';
-            empty.appendChild(message);
-
-            track.replaceChildren(empty);
+            renderStatus(track, '진행중인 이벤트가 없습니다', 'empty', { icon: 'event_busy' });
             track.style.transform = '';
         }
 
@@ -492,9 +483,9 @@ const EventCarousel = (function () {
 
         } catch (error) {
             console.error('[Event Carousel] Error loading banners:', error);
-            if (loadingIndicator) {
-                loadingIndicator.textContent = '이벤트 배너를 불러올 수 없습니다';
-            }
+            // Repurpose the header loading slot into a compact error status
+            // (renderStatus replaces the spinner markup, keeping it canonical).
+            renderStatus(loadingIndicator, '이벤트 배너를 불러올 수 없습니다', 'error', { compact: true });
             showEmptyState();
         }
     }
@@ -606,16 +597,8 @@ const BirthdaySection = (function () {
         return a;
     }
 
-    function renderBirthdayEmpty(iconName, messageText) {
-        const empty = document.createElement('div');
-        empty.className = 'birthday-empty';
-        empty.appendChild(createMaterialIcon(iconName));
-
-        const message = document.createElement('span');
-        message.textContent = messageText;
-        empty.appendChild(message);
-
-        birthdayList.replaceChildren(empty);
+    function renderBirthdayEmpty(messageText, type = 'empty', icon) {
+        renderStatus(birthdayList, messageText, type, icon ? { icon, compact: true } : { compact: true });
     }
 
     async function init() {
@@ -655,12 +638,12 @@ const BirthdaySection = (function () {
                     });
                     birthdayList.appendChild(frag);
                 } else {
-                    renderBirthdayEmpty('sentiment_dissatisfied', '생일 데이터를 찾을 수 없습니다');
+                    renderBirthdayEmpty('생일 데이터를 찾을 수 없습니다', 'empty', 'sentiment_dissatisfied');
                 }
             }
         } catch (err) {
             console.error('[Birthday] Error loading data:', err);
-            renderBirthdayEmpty('error', '생일 데이터를 불러올 수 없습니다');
+            renderBirthdayEmpty('생일 데이터를 불러올 수 없습니다', 'error');
         }
     }
 

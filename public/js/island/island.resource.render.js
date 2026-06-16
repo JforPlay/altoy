@@ -5,7 +5,7 @@
  * forest modal. State is shared via setup() called from island.resource.engine.js.
  */
 
-import { formatTime, DATA_FOR_TOY_BASE } from '../utils.js';
+import { formatTime, renderStatus, DATA_FOR_TOY_BASE } from '../utils.js';
 import { renderSeasonBadge } from './island.season-map.js';
 import {
     CONSTANTS, findRecipeById, findRecipeCategoryById,
@@ -86,12 +86,7 @@ export function renderRecipeList() {
         : categoryRecipes;
 
     if (filteredRecipes.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <span class="material-symbols-outlined">search_off</span>
-                <p>검색 결과가 없습니다</p>
-            </div>
-        `;
+        renderStatus(container, '검색 결과가 없습니다', 'empty', { icon: 'search_off' });
         return;
     }
 
@@ -915,9 +910,9 @@ export function renderSeasonalDependencyTree(recipe) {
         ` : ''}
 
         ${producedByRecipes.length === 0 && usedInRecipes.length === 0 ? `
-            <div class="empty-state">
-                <span class="material-symbols-outlined">inventory</span>
-                <p>이 아이템과 연결된 레시피가 없습니다.</p>
+            <div class="page-status page-status-empty">
+                <span class="material-symbols-outlined page-status-icon">inventory</span>
+                <p class="page-status-msg">이 아이템과 연결된 레시피가 없습니다.</p>
             </div>
         ` : ''}
     `;
@@ -1136,28 +1131,12 @@ export function renderTreeNodesWithConnectors(nodes, depth, direction) {
 
 export function renderEmptyDetail() {
     const container = document.getElementById('recipe-detail');
-    if (!container) return;
-
-    container.innerHTML = `
-        <div class="empty-state">
-            <span class="material-symbols-outlined">restaurant</span>
-            <h3>레시피를 선택하세요</h3>
-            <p>레시피를 선택하여 재료, 생산 시간 및 연관 레시피를 확인하세요.</p>
-        </div>
-    `;
+    renderStatus(container, '레시피를 선택하여 재료, 생산 시간 및 연관 레시피를 확인하세요.', 'empty', { icon: 'restaurant' });
 }
 
 export function renderEmptyChain() {
     const container = document.getElementById('dependency-chain');
-    if (!container) return;
-
-    container.innerHTML = `
-        <div class="empty-state">
-            <span class="material-symbols-outlined">account_tree</span>
-            <h3>레시피를 선택하세요</h3>
-            <p>레시피를 선택하면 자동으로 전체 의존성 트리가 표시됩니다.</p>
-        </div>
-    `;
+    renderStatus(container, '레시피를 선택하면 자동으로 전체 의존성 트리가 표시됩니다.', 'empty', { icon: 'account_tree' });
 }
 
 /**

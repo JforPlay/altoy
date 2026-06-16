@@ -10,7 +10,7 @@ import {
     fetchJSON, fetchJSONWithCache, debounce, getUrlParam, setUrlParams,
     getStorageItem, setStorageItem, setupScrollToTop,
     openModal, closeModal, setupModal, resolveUrl,
-    getItemIconUrl, escapeHtml
+    getItemIconUrl, escapeHtml, renderStatus
 } from '../utils.js';
 import { getEquipIconUrl, getRarityBgUrl } from './equip.data.js';
 
@@ -73,7 +73,7 @@ async function init() {
         buildCategories();
         setupListeners();
     } catch (err) {
-        if (loadingEl) loadingEl.textContent = '데이터 로딩 실패. 새로고침 해주세요.';
+        renderStatus(loadingEl, '데이터 로딩 실패. 새로고침 해주세요.', 'error');
         console.error('Failed to initialize:', err);
         return;
     }
