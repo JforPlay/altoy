@@ -5,7 +5,7 @@
 
 /* --- CSS Variables & Theme System --- */
 /* Light mode defaults */
-:root {
+body.chat-viewer {
   --bg-primary: #f5f5f5;
   --bg-secondary: #ffffff;
   --bg-tertiary: #f0f0f0;
@@ -36,7 +36,7 @@
 }
 
 /* Dark mode overrides */
-body.dark-mode {
+body.chat-viewer.dark-mode {
   --bg-primary: #36393f;
   --bg-secondary: #2f3136;
   --bg-tertiary: #292b2f;
