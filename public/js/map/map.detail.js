@@ -180,7 +180,7 @@ export function renderMapInfo(chapter, targetEl) {
     }
 
     if (chapter.has_loop) {
-        html += '<div class="loop-badge">🔄 주회 가능</div>';
+        html += '<div class="loop-badge badge badge--info">🔄 주회 가능</div>';
     }
 
     html += '</div></div>'; // close info-card-body + info-card
@@ -349,7 +349,7 @@ export function renderMapInfo(chapter, targetEl) {
                 html += `<img class="ship-drop-portrait" src="${iconSrc}" alt="${ship.name}" loading="lazy" data-onfail="hide">`;
             }
             html += `<div class="ship-drop-name">${ship.name}</div>`;
-            if (ship.bossOnly) html += `<span class="ship-drop-boss">보스</span>`;
+            if (ship.bossOnly) html += `<span class="ship-drop-boss badge badge--danger">보스</span>`;
             html += '</a>';
         }
         html += '</div></div></div>';
@@ -512,7 +512,7 @@ export function renderArchiveInfo(chapter, targetEl) {
             extra += `<a href="${infoUrl}" class="ship-drop-card rarity-${ship.rarity}" title="${title}">`;
             if (iconSrc) extra += `<img class="ship-drop-portrait" src="${iconSrc}" alt="${ship.name}" loading="lazy" data-onfail="hide">`;
             extra += `<div class="ship-drop-name">${ship.name}</div>`;
-            if (drop.type === 1) extra += `<span class="ship-drop-boss">보스</span>`;
+            if (drop.type === 1) extra += `<span class="ship-drop-boss badge badge--danger">보스</span>`;
             extra += '</a>';
         }
         extra += '</div></div></div>';
@@ -535,7 +535,7 @@ export function renderExplorationInfo(chapter, targets, targetEl) {
             html += `<div class="condition-row${hiddenClass}">`;
             html += `<span style="font-weight:600;min-width:4.5rem">${target.target_name}</span> `;
             html += `<span>${target.target_desc}</span>`;
-            if (target.hidden) html += ` <span class="condition-hidden-badge">숨겨진 조건</span>`;
+            if (target.hidden) html += ` <span class="badge badge--neutral">숨겨진 조건</span>`;
             html += '</div>';
         }
         html += '</div></div>';

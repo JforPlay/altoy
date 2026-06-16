@@ -307,10 +307,10 @@ export function renderRecipeHeader(recipe, data) {
             <div class="recipe-title-section">
                 <h3>${recipe.name || item.name}</h3>
                 <div class="recipe-meta-badges">
-                    <span class="recipe-category">${category}</span>
-                    <span class="stat-badge exp">⚡ ${recipe.ship_exp} EXP</span>
-                    <span class="stat-badge stamina">🔋 ${recipe.stamina_cost} Stamina</span>
-                    <span class="stat-badge points">🎯 ${item.pt_num} pt</span>
+                    <span class="badge recipe-category">${category}</span>
+                    <span class="badge badge--neutral stat-badge exp">⚡ ${recipe.ship_exp} EXP</span>
+                    <span class="badge badge--neutral stat-badge stamina">🔋 ${recipe.stamina_cost} Stamina</span>
+                    <span class="badge badge--neutral stat-badge points">🎯 ${item.pt_num} pt</span>
                     ${renderSeasonBadge(recipe.item_id)}
                 </div>
             </div>
@@ -776,8 +776,8 @@ export function renderSeasonalItemDetail(recipe, container) {
             <div class="recipe-title-section">
                 <h3>${item.name}</h3>
                 <div class="recipe-meta-badges">
-                    <span class="recipe-category">시즌템 (Seasonal)</span>
-                    <span class="stat-badge rarity-${item.rarity || 1}">★ ${item.rarity || 1}</span>
+                    <span class="badge recipe-category">시즌템 (Seasonal)</span>
+                    <span class="badge badge--neutral stat-badge rarity-${item.rarity || 1}">★ ${item.rarity || 1}</span>
                     ${renderSeasonBadge(itemId)}
                 </div>
                 <p class="item-description">${item.desc || '시즌 한정 아이템입니다.'}</p>
@@ -1007,11 +1007,11 @@ export function renderDependencyTree(recipe) {
                 관련된 제조법들 (수동 생산)
             </h3>
             <div class="tree-stats">
-                <span class="stat-badge-sm upstream">
+                <span class="badge badge--neutral stat-badge-sm upstream">
                     <span class="material-symbols-outlined">arrow_upward</span>
                     ${upstreamStats.count - 1}
                 </span>
-                <span class="stat-badge-sm downstream">
+                <span class="badge badge--neutral stat-badge-sm downstream">
                     <span class="material-symbols-outlined">arrow_downward</span>
                     ${downstreamStats.count - 1}
                 </span>
@@ -1079,7 +1079,7 @@ export function renderTreeNodesWithConnectors(nodes, depth, direction) {
                         </div>
                         <div class="tree-node-info">
                             <div class="tree-node-name">
-                                <span class="shop-badge">🛒 Shop</span>
+                                <span class="badge badge--warning shop-badge">🛒 Shop</span>
                                 ${item.name} (×${node.quantity})
                             </div>
                             <div class="tree-node-meta shop-cost">

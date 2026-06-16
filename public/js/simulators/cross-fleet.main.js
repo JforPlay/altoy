@@ -97,7 +97,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const facTd = td(r.faction);
         const typeTd = document.createElement('td');
         const badge = document.createElement('span');
-        badge.className = `cf-badge cf-badge-${r.type}`;
+        // Canonical .badge: barrage = informational (--info), buff = generic (--neutral).
+        badge.className = `badge badge--${r.type === 'barrage' ? 'info' : 'neutral'}`;
         badge.textContent = r.type === 'barrage' ? '탄막' : '버프';
         typeTd.appendChild(badge);
         const rtTd = td(r.retrofit ? '✓' : '');

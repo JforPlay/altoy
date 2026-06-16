@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         header.appendChild(account);
 
-        appendText(header, 'span', 'hi-id', `#${post.id}`);
+        appendText(header, 'span', 'badge badge--neutral hi-id', `#${post.id}`);
         return header;
     }
 
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         heading.className = 'hi-section-title';
         heading.textContent = '💬 댓글';
         const count = document.createElement('span');
-        count.className = 'hi-count';
+        count.className = 'badge badge--neutral hi-count';
         count.textContent = String(discussions.length);
         heading.appendChild(count);
         section.appendChild(heading);
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const question = document.createElement('div');
             question.className = 'hi-option-q';
-            appendText(question, 'span', 'hi-option-label', '지휘관');
+            appendText(question, 'span', 'badge hi-option-label', '지휘관');
             appendText(question, 'span', 'hi-option-text', lineBreaks(option.text));
             block.appendChild(question);
 

@@ -259,16 +259,14 @@
   line-height: 1.5;
 }
 
+/* Brand-gradient exception: adopts the canonical .badge base SHAPE
+   (components/badge.css) — emitted as `badge navi-card-badge` etc. — but keeps
+   its purple child-story gradient fill. Only color + the card spacing are local. */
 .navi-card-badge,
 .tb-card-badge,
 .lora-card-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
   background: linear-gradient(135deg, var(--child-story-primary), var(--child-story-secondary));
   color: white;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: 12px;
   margin-top: 0.75rem;
 }
 
@@ -319,15 +317,12 @@
   vertical-align: middle;
 }
 
+/* Brand-gradient exception: adopts the canonical .badge base SHAPE
+   (components/badge.css) — emitted as `badge polaroid-group-badge` — keeping its
+   purple gradient fill, brand glow, and letter-spacing flourish. */
 .polaroid-group-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.25rem 0.6rem;
   background: linear-gradient(135deg, var(--child-story-primary), var(--child-story-secondary));
   color: white;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: 12px;
   box-shadow: 0 2px 6px rgba(var(--child-story-primary-rgb), 0.3);
   letter-spacing: 0.02rem; /* 0.3px */
 }

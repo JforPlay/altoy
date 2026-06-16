@@ -1177,7 +1177,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (skin.isSold) {
                 const badge = document.createElement('div');
-                badge.className = 'new-badge';
+                badge.className = 'badge badge--success new-badge';
                 badge.textContent = '판매중';
                 imageWrapper.appendChild(badge);
             }
@@ -1210,7 +1210,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (skinOnlyName) {
                 const charChip = document.createElement('div');
-                charChip.className = 'char-name-chip';
+                charChip.className = 'badge badge--info char-name-chip';
                 charChip.title = charName;
                 charChip.textContent = charName;
                 skinInfo.appendChild(charChip);

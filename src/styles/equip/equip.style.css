@@ -241,17 +241,7 @@ body {
 
 .label-filter-toggle .material-symbols-outlined { font-size: 1.1rem; }
 
-/* active-filter count badge — rectangular, accent-blue (legible in both themes) */
-.label-filter-count {
-    min-width: 1.2rem;
-    padding: 0.05rem 0.35rem;
-    border-radius: var(--radius-sm);
-    background: var(--accent-blue);
-    color: #fff;
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-align: center;
-}
+/* Active-filter count → canonical round .badge--count (accent-blue, components/badge.css). */
 
 .label-filter-chevron { transition: transform var(--transition-fast); }
 .label-filter.open .label-filter-chevron { transform: rotate(180deg); }
@@ -421,14 +411,8 @@ body {
     flex-wrap: wrap;
 }
 
-.equip-type-badge {
-    font-size: 0.7rem;
-    padding: 0.125rem 0.375rem;
-    border-radius: var(--radius-sm);
-    background: var(--section-bg);
-    color: var(--text-secondary);
-    white-space: nowrap;
-}
+/* Type/level metadata badges migrated to the shared .badge .badge--neutral
+   component (src/styles/components/badge.css). */
 
 .equip-rarity-badge {
     font-size: 0.7rem;

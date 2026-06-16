@@ -669,7 +669,7 @@ function createSkillTreeNode(tech, x, y, externalDeps = null, currentTechs = [])
                 <img src="${DATA_FOR_TOY_BASE}/island/islandtechnology/${tech.tech_icon}.webp" alt="${tech.tech_name}" />
             </div>
             <div class="node-name">
-                <span class="node-level-badge">Lv.${tech.island_level}</span>
+                <span class="badge badge--neutral node-level-badge">Lv.${tech.island_level}</span>
                 ${tech.tech_name}
             </div>
         </div>
@@ -714,7 +714,7 @@ function createTechCard(tech, currentTechs = []) {
             </div>
             <div class="tech-card-content">
                 <h4 class="tech-card-name">
-                    <span class="node-level-badge">Lv.${tech.island_level}</span>
+                    <span class="badge badge--neutral node-level-badge">Lv.${tech.island_level}</span>
                     ${tech.tech_name}
                 </h4>
             </div>
@@ -819,10 +819,10 @@ function renderTechnologyDetail(tech) {
                 <div class="tech-detail-title">
                     <h2>${tech.tech_name}</h2>
                     <div class="tech-detail-meta">
-                        <span class="tech-category-badge" style="background-color: ${category.color}20; color: ${category.color};">
+                        <span class="badge tech-category-badge" style="background-color: ${category.color}20; color: ${category.color};">
                             ${category.name}
                         </span>
-                        <span class="tech-level-badge">Island Lv.${tech.island_level}</span>
+                        <span class="badge badge--neutral tech-level-badge">Island Lv.${tech.island_level}</span>
                     </div>
                 </div>
             </div>
@@ -896,7 +896,7 @@ function renderRequirements(tech) {
             }
 
             // Add quest badge to make it clear this is a quest
-            categoryBadge = `<span class="requirement-quest-badge">퀘스트</span>`;
+            categoryBadge = `<span class="badge requirement-quest-badge">퀘스트</span>`;
         } else if (type === 3) { // Tech requirement
             const reqTech = state.technologies[id];
             if (reqTech) {
@@ -905,7 +905,7 @@ function renderRequirements(tech) {
                 // Check if it's from a different category
                 if (reqTech.tech_belong !== tech.tech_belong) {
                     const reqCategory = CATEGORIES[reqTech.tech_belong];
-                    categoryBadge = `<span class="requirement-category-badge" style="background-color: ${reqCategory.color}20; color: ${reqCategory.color};">${reqCategory.name}</span>`;
+                    categoryBadge = `<span class="badge requirement-category-badge" style="background-color: ${reqCategory.color}20; color: ${reqCategory.color};">${reqCategory.name}</span>`;
                 }
             }
         }

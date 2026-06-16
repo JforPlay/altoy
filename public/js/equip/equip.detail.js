@@ -89,7 +89,7 @@ function renderDetail(equip) {
             </div>
             <div class="panel-detail-name">${equip.name}${hearingEntry?.alias ? `<span class="panel-detail-alias">${escapeHtml(hearingEntry.alias)}</span>` : ''}</div>
             <div class="panel-detail-meta">
-                <span class="equip-type-badge">${equip.type_name2 || equip.type_name}</span>
+                <span class="badge badge--neutral">${equip.type_name2 || equip.type_name}</span>
                 <span class="equip-rarity-badge rarity-${equip.rarity}">${equip.rarity_name}</span>
                 ${equip.nation_name ? `<span class="panel-detail-nation-badge">
                     ${equip.nation_image ? `<img src="${equip.nation_image}" alt="${equip.nation_name}">` : ''}
@@ -97,7 +97,7 @@ function renderDetail(equip) {
                 </span>` : ''}
             </div>
             ${equip.speciality && equip.speciality !== '없음' ? `<div class="panel-detail-speciality">특성: ${replaceEquipCodes(equip.speciality)}</div>` : ''}
-            ${equip.label && equip.label.length > 0 ? `<div class="panel-detail-labels">${equip.label.map(l => `<span class="panel-detail-label-tag">${l}</span>`).join('')}</div>` : ''}
+            ${equip.label && equip.label.length > 0 ? `<div class="panel-detail-labels">${equip.label.map(l => `<span class="badge badge--neutral">${l}</span>`).join('')}</div>` : ''}
             ${equip.descrip ? `<div class="panel-detail-descrip">${equip.descrip}</div>` : ''}
             ${AIRCRAFT_TYPES.has(equip.type) ? `<a href="${resolveUrl(`simulators/sim-aircraft?equip=${equip.id}`)}" class="sim-link-btn"><span class="material-symbols-outlined">flight</span> 시뮬레이션</a>` : ''}
         </div>

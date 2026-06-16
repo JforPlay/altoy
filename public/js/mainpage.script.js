@@ -274,7 +274,7 @@ const EventCarousel = (function () {
         overlay.className = 'event-banner-overlay';
 
         const typeSpan = document.createElement('span');
-        typeSpan.className = 'event-banner-type';
+        typeSpan.className = 'badge event-banner-type';
         typeSpan.textContent = typeNames[banner.type] || '이벤트';
 
         const dateDiv = document.createElement('div');

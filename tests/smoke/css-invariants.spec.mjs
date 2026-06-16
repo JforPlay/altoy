@@ -177,3 +177,30 @@ test('focus-ring: identical on an accent-theme page (expression-viewer, light)',
     expect(ring, `expected same blue ring on accent page, got: ${ring}`).toContain('0, 113, 235');
     expect(ring).toContain('3px');
 });
+
+// --- Wave-1 badge unification: canonical .badge applied ------------------------
+// badge.css is imported globally via Layout.astro, so the canonical display badge
+// must resolve on ANY page without a per-page import. Injecting a bare `.badge`
+// proves the rectangular base (--radius-sm = 4px) is in force everywhere — RED
+// before migration (no global badge component → display:block, radius 0px) and on
+// pages that had a local OVAL `.badge` (event-timeline was 1.25rem).
+
+test('badge: canonical rectangular .badge is delivered globally (homepage)', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    expect(await probeStyle(page, 'badge', 'display')).toBe('inline-flex');
+    // --radius-sm = 0.25rem = 4px; never the old 1.25rem/999px pill.
+    expect(await probeStyle(page, 'badge', 'borderRadius')).toBe('4px');
+});
+
+test('badge: a previously-oval page now resolves the rectangular canonical (event-timeline)', async ({ page }) => {
+    await page.goto(pathFor('event-timeline'), { waitUntil: 'load' });
+    // RED before migration: event-timeline's local `.badge` was border-radius 1.25rem (20px).
+    expect(await probeStyle(page, 'badge', 'borderRadius')).toBe('4px');
+});
+
+test('badge: --count bubble is accent-blue, not a red alert (homepage, light)', async ({ page }) => {
+    await page.addInitScript(() => { localStorage.setItem('theme', 'light'); });
+    await page.goto('./', { waitUntil: 'load' });
+    const bg = await probeStyle(page, 'badge badge--count', 'backgroundColor');
+    expect(bg, `expected accent-blue count, got: ${bg}`).toBe('rgb(0, 113, 235)');
+});

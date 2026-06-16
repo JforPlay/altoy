@@ -147,39 +147,25 @@
     flex-wrap: wrap;
 }
 
+/* `.recipe-category` = `.badge` + brand accent fill exception. */
 .recipe-category {
-    display: inline-flex;
-    align-items: center;
     background: var(--island-accent);
     color: #ffffff;
-    padding: 0.375rem 0.875rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.stat-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.625rem;
-    background: var(--island-bg);
-    border: 1px solid var(--island-border);
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--island-text-secondary);
-}
-
+/* `.stat-badge` migrated to `.badge.badge--neutral` (CSS unification Wave 1).
+   `.exp` / `.stamina` are colored-outline variants of the same chip. */
 .stat-badge.exp {
-    border-color: var(--island-warning);
+    border: 1px solid var(--island-warning);
+    background: transparent;
     color: var(--island-warning);
 }
 
 .stat-badge.stamina {
-    border-color: var(--island-stamina);
+    border: 1px solid var(--island-stamina);
+    background: transparent;
     color: var(--island-stamina);
 }
 

@@ -65,30 +65,6 @@
   color: var(--text-secondary);
 }
 
-.retrofit-badge {
-  display: inline-block;
-  background: #4caf50;
-  color: white;
-  padding: 0.125rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75em;
-  font-weight: bold;
-  vertical-align: middle;
-}
-
-.retrofit-available-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: #4caf50;
-  color: white;
-  padding: 0.25rem 0.625rem;
-  border-radius: 0.375rem;
-  font-size: 0.5em;
-  font-weight: bold;
-  vertical-align: middle;
-}
-
 /* ===== Retrofit Bonus Section ===== */
 
 .retrofit-bonus-section {
@@ -218,12 +194,9 @@
   transform: translateX(0.25rem);
 }
 
+/* Shape + info colours come from `.badge.badge--info` (components/badge.css);
+   only the inline left gap is page-local. */
 .weapon-badge {
-  background-color: #4a90e2;
-  color: white;
-  padding: 0.125rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75em;
   margin-left: 0.5rem;
 }
 

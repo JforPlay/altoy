@@ -720,18 +720,20 @@ body.calendar-page {
 .event-icon { border: 1px solid var(--calendar-event-border); border-radius: 4px; }
 .events { will-change: contents; } /* small perf hint */
 
-/* Badges for metadata (used in Day view) */
+/* Badges for metadata (used in Day view). Shape comes from the shared `.badge`
+   base (components/badge.css); type/faction use `.badge--neutral`. The rarity
+   badge keeps its own outlined-by-rarity look (a separate rarity component) —
+   scoped to `.rarity-badge` so it no longer redefines the global `.badge`. */
 .badges { display: flex; flex-wrap: wrap; gap: .35rem; }
-.badge {
-  font-size: .72rem; padding: .22rem .45rem; border-radius: var(--radius-sm);
-  border: 1px solid var(--calendar-border); background: var(--calendar-alt-bg);
+.rarity-badge {
+  border: 1px solid var(--calendar-border);
   color: var(--calendar-muted);
 }
-.badge[data-rarity="UR"]  { color: var(--rarity-ur);     border-color: var(--rarity-ur); }
-.badge[data-rarity="SSR"] { color: var(--rarity-ssr-fg); border-color: var(--rarity-ssr); }
-.badge[data-rarity="SR"]  { color: var(--rarity-sr);     border-color: var(--rarity-sr); }
-.badge[data-rarity="R"]   { color: var(--rarity-r);      border-color: var(--rarity-r); }
-.badge[data-rarity="N"]   { color: var(--rarity-n-fg);   border-color: var(--rarity-n); }
+.rarity-badge[data-rarity="UR"]  { color: var(--rarity-ur);     border-color: var(--rarity-ur); }
+.rarity-badge[data-rarity="SSR"] { color: var(--rarity-ssr-fg); border-color: var(--rarity-ssr); }
+.rarity-badge[data-rarity="SR"]  { color: var(--rarity-sr);     border-color: var(--rarity-sr); }
+.rarity-badge[data-rarity="R"]   { color: var(--rarity-r);      border-color: var(--rarity-r); }
+.rarity-badge[data-rarity="N"]   { color: var(--rarity-n-fg);   border-color: var(--rarity-n); }
 
 /* Day view layout */
 .day-view { display: grid; grid-template-columns: 1fr minmax(260px, 320px); gap: 1rem; }

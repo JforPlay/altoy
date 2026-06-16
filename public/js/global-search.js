@@ -299,7 +299,7 @@ function createPageResult(page) {
     text.append(name, desc);
 
     const badge = document.createElement('span');
-    badge.className = 'global-search-item-badge';
+    badge.className = 'badge badge--neutral global-search-item-badge';
     badge.textContent = page.category;
 
     link.append(iconWrap, text, badge);

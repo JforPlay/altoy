@@ -140,23 +140,14 @@ body::before {
   position: relative;
 }
 
-/* Filter Badge */
-.filter-badge {
+/* Filter count bubble migrated to the canonical .badge--count component
+   (components/badge.css) — the round red number bubble. Only the corner
+   placement over the filter button is page-specific. Visibility is toggled via
+   the global .hidden utility (showElement/hideElement), so no local rule needed. */
+#filter-badge {
   position: absolute;
   top: -0.5rem;
   right: -0.5rem;
-  background-color: var(--accent-color);
-  color: white;
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 0.15rem 0.4rem;
-  border-radius: 50%;
-  min-width: 1.2rem;
-  text-align: center;
-}
-
-.filter-badge.hidden {
-  display: none;
 }
 
 .filter-panel {

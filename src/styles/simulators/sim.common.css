@@ -681,15 +681,11 @@
   font-family: monospace;
 }
 
-/* Ammo type badge */
+/* Ammo type badge — canonical .badge base SHAPE + a color-only local rule:
+   the fill is a dynamic, non-semantic functional color set inline by JS
+   (var(--ammo-color-N) / a rarity color via .style.background), so it keeps
+   #fff text here rather than routing through a semantic --badge modifier. */
 .ammo-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 10px;
-  border-radius: var(--radius-sm);
-  font-size: 0.75rem;
-  font-weight: 600;
   color: #fff;
 }
 

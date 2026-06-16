@@ -203,7 +203,7 @@ function renderDetailHeader(ship, nationalityInfo) {
                     <h2 class="detail-title">
                         ${ship.name}
                         <span class="rarity-badge rarity-${ship.rarity}">${ship.rarity}</span>
-                        ${hasRetrofit ? '<span class="retrofit-available-badge">개조 가능</span>' : ''}
+                        ${hasRetrofit ? '<span class="retrofit-available-badge badge badge--success">개조 가능</span>' : ''}
                     </h2>
                     <a href="${resolveUrl(`skin/skin-detail-viewer/?character=${encodeURIComponent(ship.name)}&skin=${encodeURIComponent(ship.name)}`)}" class="skin-viewer-button">
                         <i class="fas fa-palette" aria-hidden="true"></i> 스킨/대사 보러가기
@@ -432,8 +432,8 @@ function renderSkillSection(ship) {
                                 <div class="skill-title">
                                     <div>
                                         <strong>${skillInfo.name}</strong>
-                                        ${skill.isRetrofit ? '<span class="retrofit-badge">개조</span>' : ''}
-                                        ${isWeaponSkill ? '<span class="weapon-badge">무기 시뮬레이터</span>' : ''}
+                                        ${skill.isRetrofit ? '<span class="retrofit-badge badge badge--success">개조</span>' : ''}
+                                        ${isWeaponSkill ? '<span class="weapon-badge badge badge--info">무기 시뮬레이터</span>' : ''}
                                     </div>
                                     <span class="skill-id">ID: ${skill.id}</span>
                                 </div>
@@ -516,7 +516,7 @@ function renderSpWeaponSection(ship) {
                                         <div class="skill-title">
                                             <div>
                                                 <strong>${skillInfo.name}</strong>
-                                                ${isWeaponSkill ? '<span class="weapon-badge">무기 시뮬레이터</span>' : ''}
+                                                ${isWeaponSkill ? '<span class="weapon-badge badge badge--info">무기 시뮬레이터</span>' : ''}
                                                 </div>
                                             <span class="skill-id">ID: ${skillId}</span>
                                         </div>

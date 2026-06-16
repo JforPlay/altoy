@@ -154,9 +154,11 @@ export function getItemSeason(itemId) {
 export function renderSeasonBadge(itemId) {
     const season = getItemSeason(itemId);
     if (!season) return '';
-    const cls = season.isCurrent ? 'season-badge--current' : 'season-badge--past';
+    const cls = season.isCurrent
+        ? 'badge--success season-badge--current'
+        : 'badge--neutral season-badge--past';
     const status = season.isCurrent ? '진행중' : '종료';
-    return `<span class="season-badge ${cls}"><span class="season-badge__dot"></span>${season.label} · ${status}</span>`;
+    return `<span class="badge season-badge ${cls}"><span class="season-badge__dot"></span>${season.label} · ${status}</span>`;
 }
 
 /**

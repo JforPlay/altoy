@@ -303,23 +303,9 @@
     flex-shrink: 0;
 }
 
-.badge {
-    font-size: 0.625rem;
-    padding: 0.15rem 0.35rem;
-    border-radius: var(--radius-sm);
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.badge.has-painting {
-    background: var(--primary-color);
-    color: white;
-}
-
-.badge.has-zoomed {
-    background: var(--accent-color);
-    color: white;
-}
+/* Painting-type presence tags (기본 / 확대) migrated to the canonical .badge
+   component (components/badge.css) — emitted as `badge badge--info` /
+   `badge badge--neutral` by expression.viewer.js. */
 
 /* --- Viewer Panel --- */
 .viewer-panel {

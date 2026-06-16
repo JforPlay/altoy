@@ -161,7 +161,9 @@
     margin-bottom: 0.5rem;
 }
 
-.panel-detail-meta .equip-type-badge {
+/* Slightly larger type badge inside the detail panel (the type badge migrated to
+   the shared .badge .badge--neutral component). */
+.panel-detail-meta .badge {
     font-size: 0.75rem;
     padding: 0.15rem 0.4rem;
 }
@@ -198,14 +200,8 @@
     margin-bottom: 0.5rem;
 }
 
-.panel-detail-label-tag {
-    padding: 0.1rem 0.4rem;
-    border-radius: var(--radius-full);
-    background: var(--section-bg);
-    color: var(--text-secondary);
-    font-size: 0.7rem;
-    border: 1px solid var(--border-color);
-}
+/* Label tags migrated to the shared .badge .badge--neutral component
+   (was a radius-full pill — now rectangular per the no-oval-chips rule). */
 
 .panel-detail-descrip {
     font-size: 0.8rem;

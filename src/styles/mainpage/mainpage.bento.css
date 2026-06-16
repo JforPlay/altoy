@@ -423,17 +423,14 @@ body.dark-mode .card-meta {
   border: 1px solid var(--card-border);
 }
 
+/* "외부" label: canonical .badge base + .badge--info color (markup:
+   `badge badge--info external-badge`); this rule keeps ONLY the absolute
+   corner placement + its boxed border (no shape/font re-declared). */
 .external-badge {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
-  background: var(--external-badge-bg);
   border: 1px solid var(--external-badge-border);
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.7em;
-  color: var(--primary);
-  font-weight: 600;
   z-index: 10;
   pointer-events: none;
 }

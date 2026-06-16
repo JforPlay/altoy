@@ -68,14 +68,10 @@
   color: var(--text-muted);
 }
 
+/* Post-id tag migrated to the canonical .badge component (badge badge--neutral);
+   only the flex-shrink is page-specific. */
 .hi-id {
   flex-shrink: 0;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--chat-text-secondary);
-  background: var(--bg-tertiary);
-  padding: 0.125rem 0.5rem;
-  border-radius: var(--radius-sm, 0.25rem);
 }
 
 /* --- Title + body --- */
@@ -108,14 +104,8 @@
   border-bottom: 1px solid var(--chat-border);
 }
 
-.hi-count {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--chat-text-secondary);
-  background: var(--bg-tertiary);
-  padding: 0.0625rem 0.4375rem;
-  border-radius: var(--radius-sm, 0.25rem);
-}
+/* Comment-count tag migrated to the canonical .badge component
+   (badge badge--neutral) — no page-specific rule needed. */
 
 /* --- Comment threads --- */
 .hi-comments {
@@ -198,14 +188,12 @@
   border-radius: 0.5rem;
 }
 
+/* Brand exception: the 지휘관 label adopts the canonical .badge base SHAPE
+   (badge hi-option-label) but keeps the chat-viewer blurple identity fill. */
 .hi-option-label {
   flex-shrink: 0;
-  font-size: 0.6875rem;
-  font-weight: 700;
   color: #fff;
   background: var(--accent-primary);
-  padding: 0.125rem 0.4375rem;
-  border-radius: var(--radius-sm, 0.25rem);
 }
 
 .hi-option-text {

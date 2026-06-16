@@ -585,7 +585,7 @@ function renderEquipGrid() {
                     <div class="equip-card-meta">
                         <span class="equip-rarity-badge rarity-${equip.rarity}">${equip.rarity_name}</span>
                         ${equip.nation_code ? `<span class="equip-nation-code">${equip.nation_code}</span>` : ''}
-                        ${equip.level_count > 1 ? `<span class="equip-type-badge">+${equip.level_count - 1}</span>` : ''}
+                        ${equip.level_count > 1 ? `<span class="badge badge--neutral">+${equip.level_count - 1}</span>` : ''}
                     </div>
                     ${statsHtml ? `<div class="equip-card-stats">${statsHtml}</div>` : ''}
                 </div>
@@ -761,9 +761,9 @@ function openSPWeaponDetail(spId) {
             </div>
             <div class="panel-detail-name">${spWeapon.name}</div>
             <div class="panel-detail-meta">
-                <span class="equip-type-badge">특수 장비</span>
+                <span class="badge badge--neutral">특수 장비</span>
                 <span class="equip-rarity-badge rarity-${SP_RARITY_TO_EQUIP_CLASS[spWeapon.rarity] || ''}">${rarityName}</span>
-                <span class="equip-type-badge">${uniqueLabel}</span>
+                <span class="badge badge--neutral">${uniqueLabel}</span>
             </div>
         </div>
         <div class="stats-section">

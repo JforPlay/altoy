@@ -314,7 +314,7 @@ function renderQuestList(quests) {
         return `
             <div class="quest-card" data-quest-id="${quest.id}">
                 <div class="quest-card-header">
-                    <div class="quest-type-badge" style="background-color: ${typeColor}">
+                    <div class="badge quest-type-badge" style="background-color: ${typeColor}">
                         <span class="material-symbols-outlined">${QUEST_TYPE_ICONS[quest.type] || 'task'}</span>
                         <span>${QUEST_TYPES[quest.type] || `타입 ${quest.type}`}</span>
                     </div>
@@ -324,7 +324,7 @@ function renderQuestList(quests) {
                 <p class="quest-desc">${quest.task_desc || '설명 없음'}</p>
                 <div class="quest-card-footer">
                     <span class="quest-id">ID: ${quest.id}</span>
-                    ${quest.unlock_time !== 'always' ? `<span class="quest-unlock-time">${quest.unlock_time}</span>` : ''}
+                    ${quest.unlock_time !== 'always' ? `<span class="badge badge--warning quest-unlock-time">${quest.unlock_time}</span>` : ''}
                 </div>
             </div>
         `;
@@ -377,7 +377,7 @@ function renderQuestDetail(quest) {
 
     const html = `
         <div class="quest-detail-header">
-            <div class="quest-detail-type" style="background-color: ${typeColor}">
+            <div class="badge quest-detail-type" style="background-color: ${typeColor}">
                 <span class="material-symbols-outlined">${QUEST_TYPE_ICONS[quest.type] || 'task'}</span>
                 <span>${QUEST_TYPES[quest.type] || `타입 ${quest.type}`}</span>
             </div>

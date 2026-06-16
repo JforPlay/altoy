@@ -1837,7 +1837,7 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
 
         if ((ship.isPickup || ship.isCustom) && ship.pickupRate) {
             const pickupBadge = document.createElement('div');
-            pickupBadge.className = 'pickup-badge';
+            pickupBadge.className = 'pickup-badge badge badge--warning';
             pickupBadge.textContent = `픽업 ${ship.pickupRate}%`;
             card.appendChild(pickupBadge);
         }

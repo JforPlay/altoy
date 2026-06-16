@@ -214,14 +214,11 @@ select:focus {
   flex-wrap: wrap;
 }
 
-.badge {
-  padding: 0.3125rem 0.75rem;
-  border-radius: 1.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
+/* Event-type badges use the canonical .badge base (components/badge.css, loaded
+   globally) for the RECTANGULAR shape (was an oval 1.25rem radius — fixed).
+   These are brand-gradient EXCEPTIONS: they keep only their gradient fill +
+   white text; shape/size/weight all come from .badge. Emitted as
+   `badge badge-category` etc. by event-timeline.js createBadge(). */
 .badge-category {
   background: linear-gradient(
     135deg,

@@ -454,7 +454,7 @@ function createTabStoryViewer(config) {
 
             if (badgeText) {
                 const badge = document.createElement('span');
-                badge.className = `${this.config.type}-card-badge`;
+                badge.className = `badge ${this.config.type}-card-badge`;
                 badge.textContent = badgeText;
                 content.appendChild(badge);
             }
@@ -539,7 +539,7 @@ function createTabStoryViewer(config) {
             icon.textContent = 'star';
             stage.append(icon, document.createTextNode(` ${polaroid.stage?.join(', ') || 'N/A'}`));
             const group = document.createElement('span');
-            group.className = 'polaroid-group-badge';
+            group.className = 'badge polaroid-group-badge';
             group.textContent = `그룹 ${polaroid.group || 1}`;
             footer.append(stage, group);
             content.appendChild(footer);

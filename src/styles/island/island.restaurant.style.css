@@ -310,11 +310,9 @@
     color: var(--island-accent);
 }
 
+/* Gold-only: brand gradient exception — keeps its fill + the layout helper,
+   adopts the shared `.badge` base shape. */
 .gold-only-badge {
-    font-size: 0.65rem;
-    padding: 0.2rem 0.5rem;
-    border-radius: var(--island-radius-sm);
-    font-weight: 700;
     background: linear-gradient(135deg, #ffd700, #ffed4e);
     color: #1a1d23;
     margin-left: auto;
@@ -692,18 +690,7 @@
     font-size: var(--island-icon-sm);
 }
 
-.current-badge {
-    font-size: 0.65rem;
-    padding: 0.15rem 0.4rem;
-    border-radius: var(--island-radius-sm);
-    font-weight: 700;
-    margin-left: var(--island-gap-xs);
-}
-
-.current-badge {
-    background: var(--island-accent);
-    color: #ffffff;
-}
+/* `.current-badge` migrated to `.badge.badge--success` (CSS unification Wave 1). */
 
 .rank-sell-price {
     font-size: var(--island-text-sm);

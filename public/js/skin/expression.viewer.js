@@ -216,8 +216,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const badges = document.createElement('div');
             badges.className = 'card-badges';
-            if (hasPainting) badges.appendChild(createBadge('has-painting', '기본'));
-            if (hasZoomed) badges.appendChild(createBadge('has-zoomed', '확대'));
+            if (hasPainting) badges.appendChild(createBadge('badge--info', '기본'));
+            if (hasZoomed) badges.appendChild(createBadge('badge--neutral', '확대'));
 
             const name = document.createElement('span');
             name.className = 'card-name';

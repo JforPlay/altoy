@@ -40,9 +40,8 @@
 .cf-row-selected { background: var(--primary-alpha-20); }
 .cf-col-trigger { max-width: 360px; font-size: 0.8rem; color: var(--text-muted); }
 
-.cf-badge { padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
-.cf-badge-barrage { background: var(--primary-alpha-20); color: var(--primary-color); }
-.cf-badge-buff { background: var(--overlay-medium); color: var(--text-muted); }
+/* .cf-badge (type label) → canonical .badge; barrage = --info, buff = --neutral.
+   Migrated to fix the no-oval violation (was border-radius: 999px). */
 
 .cf-render-btn, .cf-info-link { white-space: nowrap; }
 .cf-info-link { color: var(--primary-color); text-decoration: none; }

@@ -284,7 +284,7 @@ function buildWeaponCard(weapon, weaponInfo, index, showNumber, dataStores) {
     const card = createElement('div', 'weapon-card');
     const header = createElement('div', 'weapon-card-header');
     const title = createElement('div', 'weapon-card-title', showNumber ? `무기 ${index}` : '무기 정보');
-    const ammoBadge = createElement('span', 'ammo-badge', ammoName);
+    const ammoBadge = createElement('span', 'badge ammo-badge', ammoName);
     ammoBadge.style.background = `var(--ammo-color-${ammoType})`;
     title.append(document.createTextNode(' '), ammoBadge);
     header.append(title, createElement('span', 'weapon-card-id', weaponInfo.weaponId));

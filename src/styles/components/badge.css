@@ -1,0 +1,72 @@
+/**
+ * Badge — the ONE canonical display badge component. (CSS unification Wave 1.)
+ * A small, RECTANGULAR, NON-interactive status / type / count label.
+ * Interactive filter-chips are a SEPARATE component (Wave 2) — do not migrate
+ * `cursor:pointer` toggle chips here.
+ *
+ * All colors are theme.css tokens → auto default / accent / dark. The base is
+ * rectangular (--radius-sm) per the no-oval-chips rule; round is allowed ONLY
+ * for the .badge--count dot (the rule's avatars/dots exception).
+ * Loaded GLOBALLY via Layout.astro (no per-page import needed).
+ *
+ * Canonical markup:
+ *   <span class="badge badge--success">진화</span>
+ *   <span class="badge badge--count">3</span>
+ *
+ * Modifiers (semantic color variants of the ONE component — never page forks):
+ *   .badge--neutral  metadata / generic tag (tint bg + secondary text)   [default look]
+ *   .badge--info     informational (tint bg + accent-blue text)
+ *   .badge--success  positive / available (solid green + white)
+ *   .badge--danger   limited / locked / warning-negative (solid red + white)
+ *   .badge--warning  caution / external dep (solid amber + dark text)
+ *   .badge--count    round number bubble (the ONE allowed round badge)
+ *
+ * Exceptions that keep their own color but adopt this base SHAPE: brand/gradient
+ * event-timeline badges, story/quest brand badges. Rarity tiers route through
+ * rarity.css; map node-type colors stay local (they are circular indicators).
+ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Neutral / metadata — the default look (tint bg + secondary text). */
+.badge--neutral {
+  background: var(--overlay-lighter);
+  color: var(--text-secondary);
+}
+
+/* Info — TINT (alpha bg + colored text → contrast-safe in both themes). */
+.badge--info {
+  background: var(--primary-alpha-15);
+  color: var(--accent-blue);
+}
+
+/* Solid status fills — stable-hue tokens + fixed text (obeys the fill⇄text
+   contrast rule: NEVER a --primary-color fill carrying fixed light text). */
+.badge--success { background: var(--success-color); color: #fff; }
+.badge--danger  { background: var(--danger-color);  color: #fff; }
+.badge--warning { background: var(--warning-color);  color: #1a1d23; } /* dark text on amber */
+
+/* Count bubble — the ONE allowed round badge (dot / number, no label text).
+   accent-blue (NOT a red danger fill): the real consumers are filter / result
+   counts, which read as informational, not alerts — and accent-blue + #fff is
+   the contrast-safe stable-hue fill in both themes. */
+.badge--count {
+  border-radius: var(--radius-full);
+  min-width: 1.3rem;
+  height: 1.3rem;
+  padding: 0 0.35rem;
+  justify-content: center;
+  background: var(--accent-blue);
+  color: #fff;
+  font-size: 0.7rem;
+}

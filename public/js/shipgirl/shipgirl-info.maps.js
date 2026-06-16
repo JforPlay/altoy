@@ -134,7 +134,7 @@ function renderMaps(mapsData, searchTerm = '') {
                 ${maps.map(mapData => `
                     <div class="map-item ${getMapTypeClass(mapData.type)}">
                         <span class="map-name">${area}-${mapData.map}</span>
-                        <span class="map-type-badge">${getMapTypeName(mapData.type)}</span>
+                        <span class="badge map-type-badge">${getMapTypeName(mapData.type)}</span>
                     </div>
                 `).join('')}
             </div>
@@ -421,7 +421,7 @@ function renderMapBrowserContent() {
         <div class="map-browser-section">
             <div class="map-browser-header">
                 <span class="map-browser-map-name">${data.mapName}</span>
-                <span class="map-type-badge ${getMapTypeClass(data.type)}">${getMapTypeName(data.type)}</span>
+                <span class="badge map-type-badge ${getMapTypeClass(data.type)}">${getMapTypeName(data.type)}</span>
                 <span class="map-browser-count">${data.ships.length}척</span>
             </div>
             <div class="map-browser-ships">

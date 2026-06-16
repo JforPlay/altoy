@@ -525,7 +525,7 @@ function renderShipgirlSelector(shipgirlNum, containerId, attrState) {
             <div class="shipgirl-selector-label">
                 <span class="material-symbols-outlined">person</span>
                 <span>판매 함순이 ${shipgirlNum}</span>
-                ${isShipgirl2 ? '<span class="gold-only-badge">골드 이상</span>' : ''}
+                ${isShipgirl2 ? '<span class="badge gold-only-badge">골드 이상</span>' : ''}
             </div>
             <div class="shipgirl-attributes">
                 <div class="attribute-selector">
@@ -741,7 +741,7 @@ function createMenuCard(itemId, formulaId, restaurantId) {
                                 <div class="rank-label" style="color: ${RANK_COLORS[data.rank]}">
                                     <span class="material-symbols-outlined">grade</span>
                                     ${RANK_NAMES[data.rank]}
-                                    ${isCurrent ? '<span class="current-badge">현재</span>' : ''}
+                                    ${isCurrent ? '<span class="badge badge--success">현재</span>' : ''}
                                 </div>
                                 <div class="rank-sell-price">${data.finalSellPrice.toLocaleString()}</div>
                                 <div class="rank-profit profit-${profitClass}">

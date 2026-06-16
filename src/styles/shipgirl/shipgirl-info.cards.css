@@ -105,11 +105,12 @@ body.dark-mode .shipgirl-card .scrim {
   gap: 0.3rem;
   align-items: flex-start;
 }
+/* Construction-pool chips. Shape comes from the shared `.badge` base
+   (components/badge.css); the frosted fill is a page-local CONTEXT treatment
+   (must stay legible over arbitrary full-bleed art), so only colour/blur/shadow
+   live here — not padding/radius/font. `.limited` keeps its red override here
+   (rather than `.badge--danger`) so it still wins by specificity over `.gbadge`. */
 .gbadge {
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.42rem;
   background: rgba(255, 255, 255, 0.92);
   color: #1f2430;
   -webkit-backdrop-filter: blur(8px) saturate(1.3);
@@ -284,12 +285,9 @@ body.dark-mode .shipgirl-grid:not(.list-view) .shipgirl-card:hover {
   white-space: nowrap;
 }
 .linfo i { opacity: 0.8; }
+/* List-view construction-pool chips. Shape from `.badge`; tint + `.limited`
+   red override stay page-local (same specificity reasoning as `.gbadge`). */
 .lbadge {
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 0.18rem 0.5rem;
-  border-radius: 0.4rem;
-  white-space: nowrap;
   background: color-mix(in srgb, var(--text-secondary) 16%, transparent);
   color: var(--text-primary);
   border: 1px solid var(--border-color);

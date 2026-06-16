@@ -390,10 +390,10 @@ function createGridCard(ship) {
 
     // Construction chips (top-left). 한정 first, then build-pool flags.
     let badges = '';
-    if (ship.limited) badges += '<span class="gbadge limited">★ 한정</span>';
-    if (ship.light) badges += '<span class="gbadge">소형</span>';
-    if (ship.heavy) badges += '<span class="gbadge">중형</span>';
-    if (ship.special) badges += '<span class="gbadge">특형</span>';
+    if (ship.limited) badges += '<span class="badge gbadge limited">★ 한정</span>';
+    if (ship.light) badges += '<span class="badge gbadge">소형</span>';
+    if (ship.heavy) badges += '<span class="badge gbadge">중형</span>';
+    if (ship.special) badges += '<span class="badge gbadge">특형</span>';
 
     // Always-visible detail rows: 함종·진영, then 드랍 when present.
     // 건조 timer is intentionally omitted in grid mode — it lives on the detail page now,
@@ -443,10 +443,10 @@ function createListCard(ship) {
 
     // Right-cluster construction badges.
     let badges = '';
-    if (ship.limited) badges += '<span class="lbadge limited">★ 한정</span>';
-    if (ship.light) badges += '<span class="lbadge">소형</span>';
-    if (ship.heavy) badges += '<span class="lbadge">중형</span>';
-    if (ship.special) badges += '<span class="lbadge">특형</span>';
+    if (ship.limited) badges += '<span class="badge lbadge limited">★ 한정</span>';
+    if (ship.light) badges += '<span class="badge lbadge">소형</span>';
+    if (ship.heavy) badges += '<span class="badge lbadge">중형</span>';
+    if (ship.special) badges += '<span class="badge lbadge">특형</span>';
 
     // Right-cluster 건조 / 드랍 info.
     let info = '';

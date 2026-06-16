@@ -46,30 +46,21 @@
     gap: 0.5rem;
 }
 
-.stat-badge-sm {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.5rem;
-    background: var(--island-bg);
-    border: 1px solid var(--island-border);
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--island-text-secondary);
-}
-
+/* `.stat-badge-sm` migrated to `.badge.badge--neutral` (CSS unification Wave 1).
+   `.upstream` / `.downstream` are colored-outline variants of the same chip. */
 .stat-badge-sm .material-symbols-outlined {
     font-size: 0.875rem;
 }
 
 .stat-badge-sm.upstream {
-    border-color: var(--island-stamina);
+    border: 1px solid var(--island-stamina);
+    background: transparent;
     color: var(--island-stamina);
 }
 
 .stat-badge-sm.downstream {
-    border-color: #e67e22;
+    border: 1px solid #e67e22;
+    background: transparent;
     color: #e67e22;
 }
 

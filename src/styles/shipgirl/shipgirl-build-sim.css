@@ -502,16 +502,12 @@ section h3 {
     box-shadow: 0 0 25px color-mix(in srgb, var(--warning-color) 55%, transparent);
 }
 
+/* Shape + amber fill come from `.badge.badge--warning` (components/badge.css);
+   only the absolute corner-pin positioning is page-local. */
 .pickup-badge {
     position: absolute;
     top: -8px;
     right: -8px;
-    background: var(--warning-color);
-    color: #000;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 0.25rem 0.5rem;
-    border-radius: 12px;
     box-shadow: 0 2px 8px var(--overlay-strong);
     z-index: 10;
 }

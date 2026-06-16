@@ -87,15 +87,12 @@
   opacity: 1;
 }
 
+/* Brand-gradient slide badge: adopts the canonical .badge rectangular base
+   (markup: `badge slide-badge`); keeps only its brand gradient fill + slide
+   spacing/shadow here (color-only exception, no shape re-declared). */
 .slide-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
   background: linear-gradient(135deg, var(--primary), var(--accent));
-  padding: 0.4rem 1rem;
-  border-radius: 1.25rem;
-  font-size: 0.85em;
-  font-weight: 600;
+  color: #fff;
   margin-bottom: 0.8rem;
   box-shadow: 0 0.25rem 0.75rem rgba(0, 113, 235, 0.4);
 }
@@ -320,13 +317,12 @@
   transform: translateY(0);
 }
 
+/* Brand event-type label: adopts the canonical .badge rectangular base
+   (markup: `badge event-banner-type`); keeps only its brand fill + spacing
+   here (color-only exception, no shape re-declared). */
 .event-banner-type {
-  display: inline-block;
   background: var(--primary);
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
-  font-size: 0.75em;
-  font-weight: 600;
+  color: #fff;
   margin-bottom: 0.5rem;
 }
 

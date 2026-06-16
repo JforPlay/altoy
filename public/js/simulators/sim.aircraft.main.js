@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         sub.textContent = `${equipLite.type_name} · ${equipLite.nation_name || ''}`;
         headerText.append(name, sub);
         const rarity = document.createElement('span');
-        rarity.className = 'ammo-badge aircraft-rarity-badge';
+        rarity.className = 'badge ammo-badge aircraft-rarity-badge';
         rarity.style.background = rarityColor;
         rarity.textContent = equipLite.rarity_name;
         header.append(headerText, rarity);
