@@ -1,84 +1,13 @@
-@import url('../theme.css');
-
 /* =================================================================
-   MODERN COMMON STYLES - Shared across all skin pages
-   Used by: skin-detail-viewer, skin-list-viewer, skin-poll
+   SKIN COMMON UI — shared across the SKIN pages only
+   (skin list / detail / poll / expression viewers).
+   Base elements + the .card component now live in ../common.css
+   (imported by every page BEFORE this file); theme tokens come from
+   theme.css via ../common.css. Keep ONLY skin-specific UI here:
+   filters, clear/reset buttons, loading skeletons, gem icon, lightbox.
+   The accent palette these pages use is `body[data-theme="accent"]`
+   in theme.css; pages opt in via `theme="accent"` on Layout.astro.
    ================================================================= */
-
-/* --- Design tokens live in theme.css ---
-   The blue/Discord "accent" palette + roomier spacing these pages use is now
-   defined as `body[data-theme="accent"]` in theme.css (the single token
-   source). These pages opt in via `theme="accent"` on Layout.astro. */
-
-/* --- Global Styles --- */
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: var(--bg-primary);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--text-secondary);
-  margin: 0;
-  line-height: 1.6;
-}
-
-.main-container {
-  max-width: 75rem;
-  margin: auto;
-  padding: var(--spacing-lg);
-}
-
-/* --- Typography --- */
-h1 {
-  color: var(--text-primary);
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  margin: 0 0 var(--spacing-lg) 0;
-  line-height: 1.2;
-}
-
-h2 {
-  color: var(--text-primary);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.0125em;
-  margin: 0 0 var(--spacing-md) 0;
-  line-height: 1.3;
-}
-
-h3 {
-  color: var(--text-primary);
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin: 0 0 var(--spacing-sm) 0;
-}
-
-label {
-  font-weight: bold;
-  color: var(--text-primary);
-}
-
-/* --- Card Component --- */
-.card {
-  background: linear-gradient(
-    135deg,
-    var(--bg-elevated) 0%,
-    var(--bg-tertiary) 100%
-  );
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  padding: var(--spacing-lg);
-  transition: transform var(--transition-base),
-    box-shadow var(--transition-base);
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-}
 
 /* --- Filter Container (shared by list and poll) --- */
 .filter-container {
@@ -335,18 +264,6 @@ label {
 
 /* --- Responsive Styles --- */
 @media (max-width: 768px) {
-  .main-container {
-    padding: var(--spacing-md);
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  h2 {
-    font-size: 1.25rem;
-  }
-
   /* Filter toggle shows on mobile */
   .filter-toggle-btn {
     display: block;
@@ -378,18 +295,6 @@ label {
 }
 
 @media (max-width: 480px) {
-  h1 {
-    font-size: 1.125rem;
-  }
-
-  h2 {
-    font-size: 1rem;
-  }
-
-  .card {
-    padding: var(--spacing-md);
-  }
-
   .gem-icon {
     width: 1.25rem;
     height: 1.25rem;
@@ -399,14 +304,6 @@ label {
 /* =================================================================
    DARK MODE - COMPONENT OVERRIDES
    ================================================================= */
-
-body.dark-mode .card {
-  background: linear-gradient(
-    135deg,
-    var(--bg-secondary) 0%,
-    var(--bg-elevated) 100%
-  );
-}
 
 body.dark-mode .filter-container {
   background-color: var(--bg-secondary);

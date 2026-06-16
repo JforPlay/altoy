@@ -52,3 +52,45 @@ test('mainpage keeps its scoped glass --card-bg after token scoping', async ({ p
     expect(await bodyVar(page, '--card-bg')).toContain('255, 255, 255, 0.6');
     expect(await bodyBgImage(page)).toContain('gradient'); // its own 3-stop gradient
 });
+
+// --- A7: skin.common.css decoupling sentinels -------------------------------
+// Inject a probe element carrying a class, read a distinctive computed prop,
+// then remove it. This proves whether a CSS RULE is DELIVERED to a page's
+// bundle, independent of whether the page renders such an element at runtime.
+const probeStyle = (page, className, prop) =>
+    page.evaluate(({ className, prop }) => {
+        const el = document.createElement('div');
+        el.className = className;
+        document.body.appendChild(el);
+        const value = getComputedStyle(el)[prop];
+        el.remove();
+        return value;
+    }, { className, prop });
+
+// THE decoupling invariant. RED before the refactor (sim-weapon imports
+// skin.common.css, which sets .filter-container { display: flex }); GREEN after
+// (sim-weapon imports common.css only; sim.common.css has no .filter-container).
+test('A7: sim-weapon no longer receives the skin-only .filter-container rule', async ({ page }) => {
+    await page.goto(pathFor('sim-weapon'), { waitUntil: 'load' });
+    expect(await probeStyle(page, 'filter-container', 'display')).toBe('block');
+});
+
+// Base layer still reaches a non-skin importer: .main-container is defined only
+// by common.css among sim-weapon's imports (sim.common.css does not set it).
+test('A7: sim-weapon still receives the shared base layer (common.css)', async ({ page }) => {
+    await page.goto(pathFor('sim-weapon'), { waitUntil: 'load' });
+    expect(await probeStyle(page, 'main-container', 'maxWidth')).toBe('1200px'); // 75rem
+});
+
+// .card relocated into common.css and still reaches a skin page (skin-detail
+// does NOT import sim.common.css, so common.css's gradient .card wins).
+test('A7: skin-detail-viewer keeps the shared .card (now in common.css)', async ({ page }) => {
+    await page.goto(pathFor('skin-detail-viewer'), { waitUntil: 'load' });
+    expect(await probeStyle(page, 'card', 'backgroundImage')).toContain('gradient');
+});
+
+// Skin-only UI still reaches skin pages (skin.list.viewer overrides radius, not display).
+test('A7: skin-list-viewer keeps the skin-only .filter-container rule', async ({ page }) => {
+    await page.goto(pathFor('skin-list-viewer'), { waitUntil: 'load' });
+    expect(await probeStyle(page, 'filter-container', 'display')).toBe('flex');
+});
