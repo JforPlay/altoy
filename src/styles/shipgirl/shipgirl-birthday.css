@@ -106,24 +106,6 @@ body.calendar-page {
   background: var(--calendar-event-bg);
 }
 
-.loading-spinner {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid var(--calendar-border);
-  border-top-color: var(--calendar-primary);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-right: 0.5rem;
-  vertical-align: middle;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /* Controls for switching views */
 .calendar-controls {
   display: flex;

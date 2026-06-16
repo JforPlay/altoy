@@ -205,19 +205,6 @@
     color: var(--text-muted);
 }
 
-.spinner {
-    width: 48px;
-    height: 48px;
-    border: 4px solid var(--bg-tertiary);
-    border-top-color: var(--primary-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
 /* --- Main Content Layout (Master-Detail) --- */
 .main-content {
     display: grid;

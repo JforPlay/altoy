@@ -98,7 +98,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         if (compact) loading.classList.add('loading-message-compact');
 
         const spinner = document.createElement('span');
-        spinner.className = 'loading-spinner';
+        spinner.className = 'spinner spinner--sm';
         loading.append(spinner, document.createTextNode(message));
         return loading;
     }

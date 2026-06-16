@@ -20,9 +20,9 @@
     font-variant-numeric: tabular-nums;
 }
 .sync-nav-icon.syncing .material-symbols-outlined {
-    animation: spin 1s linear infinite;
+    animation: sync-spin 1s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes sync-spin { to { transform: rotate(360deg); } }
 
 /* Popover panel — rendered as a child of <body> (NOT inside the navbar) so
    the navbar's backdrop-filter can't affect its background. Position is

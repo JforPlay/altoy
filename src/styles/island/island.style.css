@@ -307,19 +307,6 @@ body {
     font-size: 0.9375rem;
 }
 
-.rotating {
-    animation: rotate 1.5s linear infinite;
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 .empty-state h3 {
     color: var(--island-text-secondary);
     font-size: 1.5rem;

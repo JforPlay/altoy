@@ -31,19 +31,6 @@ body {
     font-size: 1rem;
 }
 
-.spinner {
-    width: 2.5rem;
-    height: 2.5rem;
-    border: 3px solid var(--border-color);
-    border-top-color: var(--primary-color);
-    border-radius: var(--radius-full);
-    animation: stats-spin 0.7s linear infinite;
-}
-
-@keyframes stats-spin {
-    to { transform: rotate(360deg); }
-}
-
 .stats-page-status {
     margin: var(--spacing-lg) auto;
     padding: var(--spacing-md);

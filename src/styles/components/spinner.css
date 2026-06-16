@@ -1,0 +1,40 @@
+/**
+ * Spinner — canonical loading-spinner component (CSS unification Wave 1).
+ *
+ * One border-circle spinner element (.spinner), one icon-rotation utility
+ * (.spin), and THE single @keyframes spin in the codebase. Structure is
+ * canonical; all colors come from theme.css tokens, so the spinner auto-adapts
+ * to the default/accent themes and dark mode. Imported per-page by consumers.
+ *
+ * Override per call-site only when functionally required, via the CSS vars:
+ *   --spinner-size · --spinner-thickness · --spinner-track · --spinner-color · --spinner-speed
+ */
+
+/* The ONE rotation keyframe. (Outliers comic-spin/refresh-spin/sync-spin are renamed.) */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Border-circle spinner — its own element (a <div>). */
+.spinner {
+  display: block;
+  width: var(--spinner-size, 2.5rem);
+  height: var(--spinner-size, 2.5rem);
+  border: var(--spinner-thickness, 3px) solid var(--spinner-track, var(--border-color));
+  border-top-color: var(--spinner-color, var(--primary-color));
+  border-radius: var(--radius-full);
+  animation: spin var(--spinner-speed, 0.8s) linear infinite;
+}
+
+/* Small inline variant — beside text / inside a button (sits inline next to copy). */
+.spinner--sm {
+  --spinner-size: 1.25rem;
+  --spinner-thickness: 2px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Rotation utility — apply to an existing glyph (Material Symbols / FontAwesome). */
+.spin {
+  animation: spin var(--spinner-speed, 1s) linear infinite;
+}

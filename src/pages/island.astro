@@ -6,6 +6,7 @@
 import Layout from '../layouts/Layout.astro';
 
 import '../styles/island/island.style.css';
+import '../styles/components/spinner.css';
 import '../styles/island/island.character.style.css';
 import '../styles/island/island.technology.style.css';
 import '../styles/island/island.quest.style.css';
@@ -73,7 +74,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div class="content-layout">
                     <aside class="character-list scroll-styled" id="character-list">
                         <div class="loading-state">
-                            <span class="material-symbols-outlined rotating">progress_activity</span>
+                            <span class="material-symbols-outlined spin">progress_activity</span>
                             <p>함순이 불러오는 중...</p>
                         </div>
                     </aside>
@@ -91,7 +92,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <section class="tab-content" id="tab-technology">
                 <div class="tech-category-filter" id="tech-category-filter">
                     <div class="loading-state">
-                        <span class="material-symbols-outlined rotating">progress_activity</span>
+                        <span class="material-symbols-outlined spin">progress_activity</span>
                         <p>기술 데이터를 불러오는 중...</p>
                     </div>
                 </div>
@@ -99,7 +100,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div class="tech-layout">
                     <div class="tech-tree-container scroll-styled" id="tech-tree-container">
                         <div class="loading-state">
-                            <span class="material-symbols-outlined rotating">progress_activity</span>
+                            <span class="material-symbols-outlined spin">progress_activity</span>
                             <p>기술 트리를 불러오는 중...</p>
                         </div>
                     </div>
@@ -128,7 +129,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
                 <div class="quest-type-filter" id="quest-type-filter">
                     <div class="loading-state">
-                        <span class="material-symbols-outlined rotating">progress_activity</span>
+                        <span class="material-symbols-outlined spin">progress_activity</span>
                         <p>퀘스트 데이터를 불러오는 중...</p>
                     </div>
                 </div>
@@ -136,7 +137,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div class="quest-layout">
                     <aside class="quest-list scroll-styled" id="quest-list">
                         <div class="loading-state">
-                            <span class="material-symbols-outlined rotating">progress_activity</span>
+                            <span class="material-symbols-outlined spin">progress_activity</span>
                             <p>퀘스트를 불러오는 중...</p>
                         </div>
                     </aside>
@@ -154,7 +155,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <section class="tab-content" id="tab-resources">
                 <div class="resource-category-filter" id="resource-category-filter">
                     <div class="loading-state">
-                        <span class="material-symbols-outlined rotating">progress_activity</span>
+                        <span class="material-symbols-outlined spin">progress_activity</span>
                         <p>레시피 데이터를 불러오는 중...</p>
                     </div>
                 </div>
@@ -162,7 +163,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div class="resource-layout">
                     <aside class="recipe-list scroll-styled" id="recipe-list">
                         <div class="loading-state">
-                            <span class="material-symbols-outlined rotating">progress_activity</span>
+                            <span class="material-symbols-outlined spin">progress_activity</span>
                             <p>레시피를 불러오는 중...</p>
                         </div>
                     </aside>
@@ -189,7 +190,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div class="restaurant-tabs-container">
                     <div class="restaurant-tabs" id="restaurant-tabs">
                         <div class="loading-state">
-                            <span class="material-symbols-outlined rotating">progress_activity</span>
+                            <span class="material-symbols-outlined spin">progress_activity</span>
                             <p>레스토랑을 불러오는 중...</p>
                         </div>
                     </div>
@@ -199,7 +200,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <div class="rank-selector-container">
                         <div id="rank-selector">
                             <div class="loading-state">
-                                <span class="material-symbols-outlined rotating">progress_activity</span>
+                                <span class="material-symbols-outlined spin">progress_activity</span>
                                 <p>등급을 불러오는 중...</p>
                             </div>
                         </div>
@@ -208,7 +209,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <div class="event-toggles-container">
                         <div id="event-toggles">
                             <div class="loading-state">
-                                <span class="material-symbols-outlined rotating">progress_activity</span>
+                                <span class="material-symbols-outlined spin">progress_activity</span>
                                 <p>이벤트를 불러오는 중...</p>
                             </div>
                         </div>
@@ -217,7 +218,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <div class="shipgirl-selector-container">
                         <div id="shipgirl-1-selector">
                             <div class="loading-state">
-                                <span class="material-symbols-outlined rotating">progress_activity</span>
+                                <span class="material-symbols-outlined spin">progress_activity</span>
                                 <p>함순이를 불러오는 중...</p>
                             </div>
                         </div>
@@ -226,7 +227,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <div class="shipgirl-selector-container">
                         <div id="shipgirl-2-selector">
                             <div class="loading-state">
-                                <span class="material-symbols-outlined rotating">progress_activity</span>
+                                <span class="material-symbols-outlined spin">progress_activity</span>
                                 <p>함순이를 불러오는 중...</p>
                             </div>
                         </div>
@@ -236,7 +237,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div class="restaurant-menu-container">
                     <div class="restaurant-menu-list" id="restaurant-menu-list">
                         <div class="loading-state">
-                            <span class="material-symbols-outlined rotating">progress_activity</span>
+                            <span class="material-symbols-outlined spin">progress_activity</span>
                             <p>메뉴를 불러오는 중...</p>
                         </div>
                     </div>
@@ -248,21 +249,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <section class="tab-content" id="tab-season-calc">
                 <div id="season-calc-pass">
                     <div class="loading-state">
-                        <span class="material-symbols-outlined rotating">progress_activity</span>
+                        <span class="material-symbols-outlined spin">progress_activity</span>
                         <p>시즌 패스를 불러오는 중...</p>
                     </div>
                 </div>
 
                 <div id="season-calc-total">
                     <div class="loading-state">
-                        <span class="material-symbols-outlined rotating">progress_activity</span>
+                        <span class="material-symbols-outlined spin">progress_activity</span>
                         <p>총합 계산 중...</p>
                     </div>
                 </div>
 
                 <div id="season-calc-controls">
                     <div class="loading-state">
-                        <span class="material-symbols-outlined rotating">progress_activity</span>
+                        <span class="material-symbols-outlined spin">progress_activity</span>
                         <p>계산기를 불러오는 중...</p>
                     </div>
                 </div>
@@ -270,7 +271,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <div class="season-calc-layout">
                     <div class="season-calc-grid" id="season-calc-grid">
                         <div class="loading-state">
-                            <span class="material-symbols-outlined rotating">progress_activity</span>
+                            <span class="material-symbols-outlined spin">progress_activity</span>
                             <p>아이템을 불러오는 중...</p>
                         </div>
                     </div>

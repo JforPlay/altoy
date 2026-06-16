@@ -48,8 +48,10 @@ test('mainpage keeps its scoped glass --card-bg after token scoping', async ({ p
     // Force light via localStorage so the light-value assertion is deterministic.
     await page.addInitScript(() => { localStorage.setItem('theme', 'light'); });
     await page.goto('./', { waitUntil: 'load' }); // '/altoy/' homepage, as pages.spec.mjs does
-    // Glass card token from mainpage.core.css (light): rgba(255, 255, 255, 0.6)
-    expect(await bodyVar(page, '--card-bg')).toContain('255, 255, 255, 0.6');
+    // Glass card token from mainpage.core.css (light): rgba(255, 255, 255, 0.6).
+    // CSS minification may strip the leading zero (0.6 -> .6), so normalize before asserting.
+    const cardBg = (await bodyVar(page, '--card-bg')).replace(/\b0(\.\d)/g, '$1');
+    expect(cardBg).toContain('255, 255, 255, .6');
     expect(await bodyBgImage(page)).toContain('gradient'); // its own 3-stop gradient
 });
 
@@ -93,4 +95,28 @@ test('A7: skin-detail-viewer keeps the shared .card (now in common.css)', async 
 test('A7: skin-list-viewer keeps the skin-only .filter-container rule', async ({ page }) => {
     await page.goto(pathFor('skin-list-viewer'), { waitUntil: 'load' });
     expect(await probeStyle(page, 'filter-container', 'display')).toBe('flex');
+});
+
+// --- Wave-1 spinner unification: canonical-applied probes ---------------------
+// probeStyle injects <div class="<cls>"> and reads a computed prop. After
+// migration the canonical spinner.css is delivered to each page and its local
+// spinner CSS is deleted, so the injected element resolves to the canonical
+// animation. RED before migration (local stats-spin / 1s / no .spin rule).
+
+test('spinner: canonical .spinner reaches a default-theme page (shipgirl-stats)', async ({ page }) => {
+    await page.goto(pathFor('shipgirl-stats'), { waitUntil: 'load' });
+    expect(await probeStyle(page, 'spinner', 'animationName')).toBe('spin');
+    expect(await probeStyle(page, 'spinner', 'animationDuration')).toBe('0.8s');
+});
+
+test('spinner: canonical .spinner reaches an accent-theme page (expression-viewer)', async ({ page }) => {
+    await page.goto(pathFor('expression-viewer'), { waitUntil: 'load' });
+    expect(await probeStyle(page, 'spinner', 'animationName')).toBe('spin');
+    // RED before migration: expression's local .spinner uses 1s; canonical is 0.8s.
+    expect(await probeStyle(page, 'spinner', 'animationDuration')).toBe('0.8s');
+});
+
+test('spinner: canonical .spin icon-utility reaches island', async ({ page }) => {
+    await page.goto(pathFor('island/'), { waitUntil: 'load' });
+    expect(await probeStyle(page, 'spin', 'animationName')).toBe('spin');
 });

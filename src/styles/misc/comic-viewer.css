@@ -202,7 +202,7 @@ body.dark-mode .gallery-item:hover {
   border-radius: 50%;
   width: 30px;
   height: 30px;
-  animation: spin 1s linear infinite;
+  animation: comic-spin 1s linear infinite;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -221,7 +221,7 @@ body.dark-mode .loader {
 }
 
 /* Spinner animation */
-@keyframes spin {
+@keyframes comic-spin {
   0% {
     transform: translate(-50%, -50%) rotate(0deg);
   }

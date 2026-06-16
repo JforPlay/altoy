@@ -72,13 +72,8 @@ body::before {
   pointer-events: none;
 }
 
-.loading-spinner {
-  width: 60px;
-  height: 60px;
-  border: 4px solid var(--border-color);
-  border-top: 4px solid var(--accent-color);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+/* Layout only — visual comes from components/spinner.css */
+.loading-overlay .spinner {
   margin-bottom: 1rem;
 }
 
@@ -88,14 +83,6 @@ body::before {
   font-weight: 500;
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
 
 .main-container {
   display: flex;
