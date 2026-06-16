@@ -277,7 +277,7 @@ function renderQuestFilter() {
             <span class="dropdown-text">전체 퀘스트</span>
             <span class="material-symbols-outlined dropdown-arrow">expand_more</span>
         </button>
-        <div class="quest-type-menu" id="quest-type-menu">
+        <div class="quest-type-menu scroll-styled" id="quest-type-menu">
             ${types.map(type => {
                 const count = type === 'all'
                     ? state.allQuests.length

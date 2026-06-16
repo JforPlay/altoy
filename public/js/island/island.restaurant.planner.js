@@ -1088,7 +1088,7 @@ function renderPlannerResultsContent() {
                 <span class="material-symbols-outlined">map</span>
                 <span>${location}</span>
             </div>
-            <div class="planner-ingredient-grid compact">
+            <div class="planner-ingredient-grid compact scroll-styled">
                 ${masterGroups[location].map(item => {
         const qty = calculatedQuantities[item.id] || 0;
         const isActive = qty > 0;

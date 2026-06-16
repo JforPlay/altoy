@@ -623,15 +623,6 @@
     padding-right: 0.5rem;
 }
 
-/* Custom scrollbar for dark theme modal */
-.planner-ingredient-grid::-webkit-scrollbar-thumb {
-    background-color: var(--highlight-medium);
-}
-
-.planner-ingredient-grid::-webkit-scrollbar-track {
-    background-color: var(--planner-surface);
-}
-
 .ingredient-card {
     background: var(--planner-surface);
     border: 1px solid var(--highlight-soft);

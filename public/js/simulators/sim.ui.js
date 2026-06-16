@@ -205,6 +205,8 @@ function populateChoicesOrSelect(selectEl, choiceGroups, options = {}) {
         }
     } else {
         instance = new Choices(selectEl, { choices: choiceGroups, ...choicesConfig });
+        // Apply the shared scrollbar utility to the library-generated dropdown list.
+        instance.dropdown.element.classList.add('scroll-styled');
     }
 
     if (firstValue !== null && firstValue !== undefined) {

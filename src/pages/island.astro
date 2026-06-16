@@ -71,7 +71,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </div>
 
                 <div class="content-layout">
-                    <aside class="character-list" id="character-list">
+                    <aside class="character-list scroll-styled" id="character-list">
                         <div class="loading-state">
                             <span class="material-symbols-outlined rotating">progress_activity</span>
                             <p>함순이 불러오는 중...</p>
@@ -97,7 +97,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </div>
 
                 <div class="tech-layout">
-                    <div class="tech-tree-container" id="tech-tree-container">
+                    <div class="tech-tree-container scroll-styled" id="tech-tree-container">
                         <div class="loading-state">
                             <span class="material-symbols-outlined rotating">progress_activity</span>
                             <p>기술 트리를 불러오는 중...</p>
@@ -109,7 +109,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     </div>
                 </div>
 
-                <aside class="tech-detail" id="tech-detail">
+                <aside class="tech-detail scroll-styled" id="tech-detail">
                     <div class="empty-state">
                         <span class="material-symbols-outlined">developer_board</span>
                         <h3>기술을 선택하세요</h3>
@@ -134,7 +134,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </div>
 
                 <div class="quest-layout">
-                    <aside class="quest-list" id="quest-list">
+                    <aside class="quest-list scroll-styled" id="quest-list">
                         <div class="loading-state">
                             <span class="material-symbols-outlined rotating">progress_activity</span>
                             <p>퀘스트를 불러오는 중...</p>
@@ -160,7 +160,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </div>
 
                 <div class="resource-layout">
-                    <aside class="recipe-list" id="recipe-list">
+                    <aside class="recipe-list scroll-styled" id="recipe-list">
                         <div class="loading-state">
                             <span class="material-symbols-outlined rotating">progress_activity</span>
                             <p>레시피를 불러오는 중...</p>
@@ -175,7 +175,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                         </div>
                     </main>
 
-                    <aside class="dependency-chain" id="dependency-chain">
+                    <aside class="dependency-chain scroll-styled" id="dependency-chain">
                         <div class="empty-state">
                             <span class="material-symbols-outlined">account_tree</span>
                             <h3>레시피 체인</h3>
@@ -288,7 +288,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
-            <div class="modal-content" id="modal-content"></div>
+            <div class="modal-content scroll-styled" id="modal-content"></div>
         </div>
     </div>
 
@@ -304,7 +304,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
-            <div class="modal-content" id="planner-modal-content"></div>
+            <div class="modal-content scroll-styled" id="planner-modal-content"></div>
         </div>
     </div>
 
@@ -320,7 +320,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
-            <div class="modal-content">
+            <div class="modal-content scroll-styled">
                 <p id="confirm-message" class="confirm-message">진행하시겠습니까?</p>
                 <div class="confirm-actions">
                     <button id="confirm-btn-cancel" class="planner-btn reset" type="button">취소</button>

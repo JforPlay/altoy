@@ -860,27 +860,6 @@ body.dark-mode {
   max-height: min(60vh, 420px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color) transparent;
-}
-
-.choices__list--dropdown::-webkit-scrollbar,
-.choices__list[aria-expanded]::-webkit-scrollbar {
-  width: 6px;
-}
-.choices__list--dropdown::-webkit-scrollbar-track,
-.choices__list[aria-expanded]::-webkit-scrollbar-track {
-  background: transparent;
-}
-.choices__list--dropdown::-webkit-scrollbar-thumb,
-.choices__list[aria-expanded]::-webkit-scrollbar-thumb {
-  background-color: var(--border-color);
-  border-radius: var(--radius-full);
-  transition: background-color var(--transition-fast);
-}
-.choices__list--dropdown::-webkit-scrollbar-thumb:hover,
-.choices__list[aria-expanded]::-webkit-scrollbar-thumb:hover {
-  background-color: var(--text-secondary);
 }
 
 .choices__list--dropdown .choices__item--selectable.is-highlighted,
@@ -1012,26 +991,6 @@ body.dark-mode {
   max-height: 50vh;
   padding-right: var(--spacing-xs);
   overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-color) transparent;
-}
-
-.ship-grid::-webkit-scrollbar {
-  width: 10px;
-}
-.ship-grid::-webkit-scrollbar-track {
-  background: transparent;
-}
-.ship-grid::-webkit-scrollbar-thumb {
-  /* 2px transparent border + padding-box clip leaves the thumb floating inside the gutter */
-  background-color: var(--border-color);
-  border: 2px solid transparent;
-  background-clip: padding-box;
-  border-radius: var(--radius-full);
-  transition: background-color var(--transition-fast);
-}
-.ship-grid::-webkit-scrollbar-thumb:hover {
-  background-color: var(--text-secondary);
 }
 
 .ship-grid-item {

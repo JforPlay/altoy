@@ -489,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createPostDetail(post) {
         const fragment = document.createDocumentFragment();
         const postContent = document.createElement('div');
-        postContent.className = 'post-content';
+        postContent.className = 'post-content scroll-styled';
 
         const authorData = getShipgirlData(post.ship_group);
         const header = document.createElement('div');
