@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     function chip(label, set, value) {
         const b = document.createElement('button');
-        b.type = 'button'; b.className = 'cf-chip'; b.textContent = label;
+        b.type = 'button'; b.className = 'chip'; b.textContent = label;
         b.addEventListener('click', () => {
             if (set.has(value)) { set.delete(value); b.classList.remove('active'); }
             else { set.add(value); b.classList.add('active'); }

@@ -18,10 +18,6 @@
 }
 
 .cf-filters { display: flex; flex-direction: column; gap: 0.5rem; margin: var(--spacing-md) 0 0.75rem; }
-.cf-chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.cf-chip { padding: 0.2rem 0.7rem; border-radius: 999px; border: 1px solid var(--border-color); background: transparent; cursor: pointer; font-size: 0.8rem; color: inherit; }
-.cf-chip:hover { border-color: var(--primary-color); }
-.cf-chip.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
 
 .cf-table-wrap { overflow-x: auto; }
 .cf-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
@@ -39,9 +35,6 @@
 .cf-row-buff { opacity: 0.85; }
 .cf-row-selected { background: var(--primary-alpha-20); }
 .cf-col-trigger { max-width: 360px; font-size: 0.8rem; color: var(--text-muted); }
-
-/* .cf-badge (type label) → canonical .badge; barrage = --info, buff = --neutral.
-   Migrated to fix the no-oval violation (was border-radius: 999px). */
 
 .cf-render-btn, .cf-info-link { white-space: nowrap; }
 .cf-info-link { color: var(--primary-color); text-decoration: none; }
