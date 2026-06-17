@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const info = nationalityMap[natId];
         if (!info) return; // skip unknown nationality IDs
         const chip = makeChip({
-          extraClass: 'chip-faction',
+          extraClass: 'chip--icon',
           ariaLabel: info.name || info.code || `faction ${natId}`,
           title: info.name || info.code || '',
           dataAttr: { name: 'data-faction', value: natId },
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const unknown = Array.from(rarities).filter((r) => !RARITY_ORDER.includes(r));
       [...known, ...unknown].forEach((rarity) => {
         const chip = makeChip({
-          extraClass: 'chip-rarity',
+          extraClass: '',
           ariaLabel: rarity,
           dataAttr: { name: 'data-rarity', value: rarity },
           children: [(() => {
