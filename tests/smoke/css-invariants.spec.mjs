@@ -91,10 +91,11 @@ test('A7: skin-detail-viewer keeps the shared .card (now in common.css)', async 
     expect(await probeStyle(page, 'card', 'backgroundImage')).toContain('gradient');
 });
 
-// Skin-only UI still reaches skin pages (skin.list.viewer overrides radius, not display).
+// Skin-only UI still reaches skin pages. After Task 6, display:flex comes from
+// .filter-bar (canonical); .filter-container adds the box. Probe both classes.
 test('A7: skin-list-viewer keeps the skin-only .filter-container rule', async ({ page }) => {
     await page.goto(pathFor('skin-list-viewer'), { waitUntil: 'load' });
-    expect(await probeStyle(page, 'filter-container', 'display')).toBe('flex');
+    expect(await probeStyle(page, 'filter-bar filter-container', 'display')).toBe('flex');
 });
 
 // --- Wave-1 spinner unification: canonical-applied probes ---------------------

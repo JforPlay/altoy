@@ -9,12 +9,14 @@
    in theme.css; pages opt in via `theme="accent"` on Layout.astro.
    ================================================================= */
 
-/* --- Filter Container (shared by list and poll) --- */
+/* --- Filter Container (shared by list and poll) ---
+   .filter-bar (global component) supplies display:flex/flex-wrap/align-items:center/gap.
+   Local overrides: skin's box surface, centered justification, gap token, and
+   align-items:stretch to preserve the old CSS-default equal-height .filter-group columns. */
 .filter-container {
-  display: flex;
-  flex-wrap: wrap;
+  --filter-bar-gap: var(--spacing-lg);
   justify-content: center;
-  gap: var(--spacing-lg);
+  align-items: stretch;
   padding: var(--spacing-lg);
   background-color: var(--bg-elevated);
   border-radius: var(--radius-md);
