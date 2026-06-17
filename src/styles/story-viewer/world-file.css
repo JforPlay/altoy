@@ -200,22 +200,10 @@ header h1 {
 /* ======================================= */
 /* Font Size Controls                      */
 /* ======================================= */
-#font-controls button {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1px solid var(--border-color);
-  background-color: #f0f0f0;
-  color: var(--text-color);
+/* Font +/- stepper = canonical `.btn-group` of `.btn .btn-icon` (square,
+   rectangular, themed, joined). Only the larger +/- glyph stays local. */
+#font-controls .btn {
   font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  line-height: 1;
-  margin: 0 2px;
-}
-
-#font-controls button:hover {
-  background-color: #e0e0e0;
 }
 
 /* ======================================= */
@@ -224,16 +212,6 @@ header h1 {
 body.dark-mode #content-container {
   background-color: var(--bg-color);
   color: var(--text-color);
-}
-
-body.dark-mode #font-controls button {
-  background-color: var(--input-bg);
-  border-color: var(--border-color);
-  color: var(--text-color);
-}
-
-body.dark-mode #font-controls button:hover {
-  background-color: #444;
 }
 
 body.dark-mode .content-paragraph {

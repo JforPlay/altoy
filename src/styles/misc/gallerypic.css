@@ -110,20 +110,17 @@
   box-shadow: var(--shadow-xl);
 }
 
+/* Close = canonical `.btn .btn-close` (square, rectangular --radius-md, focus
+   ring). Local keeps only the corner positioning + a solid dark scrim so the X
+   stays legible over arbitrary gallery images, and the oversized × glyph. */
 .gallery-modal-close {
   position: absolute;
   top: -2.75rem;
   right: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  border: 0;
-  border-radius: 50%;
   background: rgba(15, 23, 42, 0.8);
   color: #fff;
   font-size: 2rem;
   line-height: 1;
-  cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .gallery-modal-close:hover {

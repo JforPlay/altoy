@@ -301,10 +301,9 @@ body {
   box-shadow: var(--card-hover-shadow);
 }
 
-.grid-card:focus-visible,
-.story-nav-btn:focus-visible,
-.nav-button:focus-visible,
-.option-button:focus-visible {
+/* Card keeps its bespoke focus outline; the .btn-based nav/story/option buttons
+   now get the canonical --focus-ring from button.css. */
+.grid-card:focus-visible {
   outline: 3px solid var(--accent-color);
   outline-offset: 3px;
 }
@@ -850,17 +849,17 @@ body {
   z-index: 10;
 }
 
+/* Story-choice button (EXCEPTION): adopts the `.btn` base shape (inline-flex,
+   focus-ring) but keeps its full-width card-bg story-choice look + big touch
+   target as a scoped brand rule — not re-forked as a base button variant. */
 .option-button {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   color: var(--text-color);
   padding: 0.75rem 1.5rem;
   border-radius: 0.3rem;
-  cursor: pointer;
   font-size: 1rem;
   width: 100%;
-  text-align: center;
-  transition: background-color 0.2s;
 }
 
 .option-button:hover {
@@ -884,33 +883,13 @@ body {
   gap: 2rem;
 }
 
-.nav-button,
-.story-nav-btn {
-  background-color: color-mix(in srgb, var(--card-bg) 85%, var(--text-color));
-  border: 1.5px solid color-mix(in srgb, var(--border-color) 70%, var(--text-color));
-  color: var(--text-color);
-  padding: 0.5rem 1rem;
-  border-radius: 0.3rem;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  font-size: 1rem;
-  text-decoration: none;
-  font-family: "Noto Sans KR", "Roboto", sans-serif;
-  opacity: 0.85;
-}
-
+/* Nav / story-nav / auto-play buttons now use the canonical `.btn .btn-secondary`
+   (text) or `.btn .btn-icon` (the bare-arrow .back-button). Shape, color, hover
+   and :disabled all come from button.css. Only the slight lift on hover is kept
+   as a story-viewer flourish. */
 .nav-button:hover,
 .story-nav-btn:hover {
-  background-color: var(--border-color);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px var(--overlay-medium);
-  opacity: 1;
-}
-
-.story-nav-btn:disabled {
-  background-color: var(--border-color);
-  color: var(--subtitle-color);
-  cursor: not-allowed;
 }
 
 /* Branch-end hint: shown when the player has reached the end of a
@@ -932,24 +911,8 @@ body {
   text-align: center;
 }
 
-/* Auto-play toggle: when active, tint with the accent-blue so it's clear the
-   story is advancing on a timer. Using accent-blue (not --primary-color)
-   avoids the dark-mode contrast problem where --primary-color resolves to
-   a light silver (#c0c0c0) that washes out against white text and makes
-   the button look disabled or hidden. */
-.auto-play-btn.active {
-  background-color: var(--accent-blue);
-  border-color: var(--accent-blue);
-  color: #fff;
-  opacity: 1;
-}
-
-.auto-play-btn.active:hover {
-  background-color: var(--accent-blue);
-  border-color: var(--accent-blue);
-  color: #fff;
-  opacity: 0.9;
-}
+/* Auto-play toggle active state = canonical `.btn.is-active` (accent-blue + #fff,
+   contrast-safe in both themes). The engine toggles `.is-active` on the button. */
 
 /* --- Audio Player --- */
 .audio-player-container {
@@ -1028,16 +991,13 @@ body {
   animation-delay: 0.4s;
 }
 
-/* Audio controls */
+/* Audio controls = canonical `.btn .btn-icon`. Local keeps only the oversized
+   transport glyph (bigger than the canonical 1.2em) and a transparent,
+   borderless fit inside the pill-shaped player. */
 .audio-btn {
-  background: none;
-  border: none;
+  background: transparent;
+  border-color: transparent;
   color: var(--text-color);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem;
 }
 
 .audio-btn .material-symbols-outlined {
@@ -1136,15 +1096,12 @@ body {
   border-radius: 4px;
 }
 
+/* Modal close = canonical `.btn .btn-close`; only the absolute positioning in
+   the modal corner stays local (per the button-component contract). */
 .close-modal-btn {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--subtitle-color);
 }
 
 .full-script-content,

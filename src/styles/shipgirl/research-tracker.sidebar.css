@@ -298,20 +298,8 @@
   color: var(--text-secondary);
 }
 
-.rt-quickadd-add {
-  background: var(--primary-color);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-xs);
-  padding: 3px 8px;
-  font-size: 0.7rem;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.rt-quickadd-add:hover {
-  opacity: 0.9;
-}
+/* .rt-quickadd-add uses the canonical `.btn .btn-primary .btn-sm`
+   (accent-blue fill — fixes the old --primary-color + #fff silver-in-dark bug). */
 
 
 .rt-quickadd-empty {

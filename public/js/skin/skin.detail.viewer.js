@@ -435,7 +435,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function createPlayButton(src) {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = 'play-voice-btn';
+        button.className = 'btn btn-icon play-voice-btn';
         button.setAttribute('aria-label', src ? '대사 재생' : '대사 음성 없음');
         if (src) {
             button.dataset.src = src;

@@ -45,11 +45,11 @@ const coinIconUrl = dataForToyUrl('props/gold.webp');
                             <label for="pickup-rate">픽업 확률 (%):</label>
                             <input type="number" id="pickup-rate" class="pickup-rate-input" min="0" max="100" step="0.01" value="2.0" placeholder="2.0">
                         </div>
-                        <button type="button" class="add-ship-btn" id="add-ship-btn" disabled>
+                        <button type="button" class="btn btn-primary add-ship-btn" id="add-ship-btn" disabled>
                             <span class="material-symbols-outlined">add_circle</span>
                             <span>추가</span>
                         </button>
-                        <button type="button" class="reset-pool-btn" id="reset-pool-btn">
+                        <button type="button" class="btn btn-danger reset-pool-btn" id="reset-pool-btn">
                             <span class="material-symbols-outlined">refresh</span>
                             <span>풀 초기화</span>
                         </button>
@@ -125,15 +125,15 @@ const coinIconUrl = dataForToyUrl('props/gold.webp');
             <h2>건조 시뮬레이터</h2>
             <div class="simulator-controls">
                 <button type="button" class="sim-btn primary-btn" id="build-one">
-                    <span class="btn-icon">🎲</span>
+                    <span class="sim-btn-emoji">🎲</span>
                     <span>1회 건조</span>
                 </button>
                 <button type="button" class="sim-btn secondary-btn" id="build-ten">
-                    <span class="btn-icon">🎲</span>
+                    <span class="sim-btn-emoji">🎲</span>
                     <span>10회 건조</span>
                 </button>
                 <button type="button" class="sim-btn tertiary-btn" id="reset-stats">
-                    <span class="btn-icon">🔄</span>
+                    <span class="sim-btn-emoji">🔄</span>
                     <span>통계 초기화</span>
                 </button>
             </div>
@@ -172,7 +172,7 @@ const coinIconUrl = dataForToyUrl('props/gold.webp');
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="despair-modal-title">절망 건조 픽업 함순이 선택</h2>
-                <button type="button" class="modal-close" id="modal-close" aria-label="닫기"><span class="material-symbols-outlined">close</span></button>
+                <button type="button" class="btn btn-close modal-close" id="modal-close" aria-label="닫기"><span class="material-symbols-outlined">close</span></button>
             </div>
             <div class="modal-body">
                 <div class="selection-info">
@@ -190,8 +190,8 @@ const coinIconUrl = dataForToyUrl('props/gold.webp');
                 <div class="modal-ship-grid" id="modal-ship-grid"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="modal-btn cancel-btn" id="modal-cancel">취소</button>
-                <button type="button" class="modal-btn confirm-btn" id="modal-confirm" disabled>확인</button>
+                <button type="button" class="btn btn-secondary modal-btn cancel-btn" id="modal-cancel">취소</button>
+                <button type="button" class="btn btn-primary modal-btn confirm-btn" id="modal-confirm" disabled>확인</button>
             </div>
         </div>
     </div>

@@ -411,6 +411,8 @@
   left: 0;
 }
 
+/* EXCEPTION: adopts the `.btn` base shape (inline-flex, focus-ring); keeps the
+   child-story gradient brand + big touch target + the icon-flip hover locally. */
 .flip-polaroid-btn {
   display: flex;
   align-items: center;

@@ -65,18 +65,18 @@ function renderPopoverBody() {
     popover.innerHTML = `
         <h3>Google Drive 동기화</h3>
         ${signedIn ? '' : `<p>내 Google Drive를 이용해 기기 간 진행도를 동기화합니다. 숨겨진 앱 폴더에 작은 파일 하나만 저장됩니다.</p>`}
-        <button class="sync-action" ${btnDisabled}>${btnLabel}</button>
+        <button class="btn btn-primary btn-block sync-action" ${btnDisabled}>${btnLabel}</button>
         ${signedIn ? `
             <div class="sync-meta">
                 마지막 동기화: ${formatRelative(lastAt)}
             </div>
-            <button class="sync-unlink">Google 계정 연결 해제</button>
+            <button class="btn btn-danger btn-sm sync-unlink">Google 계정 연결 해제</button>
         ` : ''}
         <div class="sync-divider"></div>
         <div class="sync-section-label">수동 백업</div>
         <div class="sync-manual-buttons">
-            <button class="sync-secondary sync-export">📥 내보내기</button>
-            <button class="sync-secondary sync-import">📤 불러오기</button>
+            <button class="btn btn-secondary sync-secondary sync-export">📥 내보내기</button>
+            <button class="btn btn-secondary sync-secondary sync-import">📤 불러오기</button>
         </div>
     `;
     popover.querySelector('.sync-action')?.addEventListener('click', onSyncClick);
@@ -163,9 +163,9 @@ function renderConflictModal(localData, cloudData, cloudModifiedTime) {
             </div>
         </div>
         <div class="sync-conflict-actions">
-            <button data-choice="cancel">취소</button>
-            <button data-choice="keep-cloud">클라우드 유지 (다운로드)</button>
-            <button class="primary" data-choice="keep-local">로컬 유지 (업로드)</button>
+            <button class="btn btn-secondary" data-choice="cancel">취소</button>
+            <button class="btn btn-secondary" data-choice="keep-cloud">클라우드 유지 (다운로드)</button>
+            <button class="btn btn-primary" data-choice="keep-local">로컬 유지 (업로드)</button>
         </div>
     `;
     modal.querySelectorAll('[data-choice]').forEach(btn => {
@@ -351,7 +351,7 @@ export function mountSyncUI() {
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>동기화 충돌</h2>
-                    <button class="modal-close" aria-label="닫기">&times;</button>
+                    <button class="btn btn-close modal-close" aria-label="닫기">&times;</button>
                 </div>
                 <div class="modal-body"></div>
             </div>

@@ -1119,7 +1119,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this._groupMode = mode;
             DOM.owned.toggleBtns.forEach(btn => {
                 const isActive = btn.dataset.group === mode;
-                btn.classList.toggle('active', isActive);
+                btn.classList.toggle('is-active', isActive);
                 btn.setAttribute('aria-pressed', String(isActive));
             });
             this.render();

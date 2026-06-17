@@ -137,9 +137,7 @@
 }
 
 .slide-cta:focus-visible,
-.carousel-nav:focus-visible,
 .indicator:focus-visible,
-.event-carousel-nav:focus-visible,
 .event-indicator:focus-visible {
   outline: 3px solid var(--primary-light);
   outline-offset: 3px;
@@ -154,8 +152,11 @@
   transform: translateX(4px);
 }
 
-/* Carousel Navigation */
-.carousel-nav {
+/* Carousel Navigation — adopts .btn .btn-icon base; keeps its circular glass
+   photo-overlay look + absolute positioning as the real functional difference.
+   Parent-scoped so the glass bg/border/round shape reliably win over .btn-icon
+   regardless of CSS bundle order. */
+.hero-carousel .carousel-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -166,16 +167,11 @@
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
   z-index: 200;
   box-shadow: 0 0.25rem 0.75rem var(--overlay-heavy);
 }
 
-.carousel-nav:hover {
+.hero-carousel .carousel-nav:hover {
   background: rgba(0, 113, 235, 0.9);
   border-color: var(--primary);
   transform: translateY(-50%) scale(1.15);
@@ -331,8 +327,10 @@
   opacity: 0.9;
 }
 
-/* Event Carousel Navigation */
-.event-carousel-nav {
+/* Event Carousel Navigation — adopts .btn .btn-icon base; keeps its circular
+   glass photo-overlay look + absolute positioning as the real difference.
+   Parent-scoped so the glass styling reliably wins over .btn-icon. */
+.event-carousel .event-carousel-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -343,16 +341,11 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
   z-index: 100;
   opacity: 0.8;
 }
 
-.event-carousel-nav:hover {
+.event-carousel .event-carousel-nav:hover {
   background: rgba(0, 113, 235, 0.9);
   border-color: var(--primary);
   transform: translateY(-50%) scale(1.1);

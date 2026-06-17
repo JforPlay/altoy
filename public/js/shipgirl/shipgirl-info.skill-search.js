@@ -240,9 +240,9 @@ function renderShell() {
     return `
         <div class="skill-search-toolbar">
             <input type="text" id="skillSearchInput" class="skill-search-input" placeholder="이름/설명 검색...">
-            <div class="skill-search-view-toggle">
-                <button type="button" class="skill-view-btn active" data-view="skill">스킬별</button>
-                <button type="button" class="skill-view-btn" data-view="ship">함순이별</button>
+            <div class="skill-search-view-toggle btn-group">
+                <button type="button" class="btn btn-outline skill-view-btn is-active" data-view="skill">스킬별</button>
+                <button type="button" class="btn btn-outline skill-view-btn" data-view="ship">함순이별</button>
             </div>
         </div>
         <div class="skill-ship-filter-rows">
@@ -291,8 +291,8 @@ function wireControls() {
     document.querySelectorAll('.skill-view-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             filters.view = btn.dataset.view;
-            document.querySelectorAll('.skill-view-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            document.querySelectorAll('.skill-view-btn').forEach(b => b.classList.remove('is-active'));
+            btn.classList.add('is-active');
             applyFilters();
         });
     });

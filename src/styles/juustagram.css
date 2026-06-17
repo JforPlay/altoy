@@ -157,30 +157,7 @@ body > header {
     outline-offset: -2px;
 }
 
-#clear-filters-btn {
-    padding: 8px 15px;
-    background-color: var(--button-bg);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.2s, transform 0.1s;
-}
-
-#clear-filters-btn:hover {
-    background-color: var(--button-hover-bg);
-}
-
-/* Modern focus and active states */
-#clear-filters-btn:focus-visible {
-    outline: 2px solid var(--accent-border);
-    outline-offset: 2px;
-}
-
-#clear-filters-btn:active {
-    transform: scale(0.98);
-}
+/* 필터 초기화: canonical .btn .btn-secondary (no local button rules). */
 
 /* ===== Main Layout ===== */
 

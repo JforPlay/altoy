@@ -535,7 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     ${isPinned
                         ? '<span class="rt-quickadd-pinned">목록에 있음</span>'
-                        : `<button class="rt-quickadd-add" data-gid="${item.gid}">+ 추가</button>`}
+                        : `<button class="btn btn-primary btn-sm rt-quickadd-add" data-gid="${item.gid}">+ 추가</button>`}
                 `;
                 results.appendChild(row);
             }

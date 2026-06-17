@@ -57,6 +57,9 @@
         font-size: 0.8rem;
     }
 
+    /* Mobile FAB. Uses --accent-blue (stable hue) + #fff — NOT --primary-color,
+       which is grayscale/silver in dark mode and would be unreadable under white.
+       Rectangular --radius-md per the no-pill rule for command buttons. */
     .mobile-panel-toggle {
         display: flex;
         position: fixed;
@@ -67,10 +70,10 @@
         height: 44px;
         align-items: center;
         justify-content: center;
-        background: var(--primary-color);
-        color: white;
+        background: var(--accent-blue);
+        color: #fff;
         border: none;
-        border-radius: var(--radius-full);
+        border-radius: var(--radius-md);
         box-shadow: var(--shadow-md);
         cursor: pointer;
     }

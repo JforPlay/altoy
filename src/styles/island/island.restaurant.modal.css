@@ -170,25 +170,7 @@
     font-size: 1.5rem;
 }
 
-.menu-modal-header .modal-close-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: var(--island-radius-sm);
-    border: 1px solid var(--island-border);
-    background: var(--island-bg);
-    color: var(--island-text-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.menu-modal-header .modal-close-btn:hover {
-    background: var(--island-danger);
-    border-color: var(--island-danger);
-    color: #fff;
-}
+/* Restaurant menu/copy modal close buttons migrated to canonical .btn.btn-close. */
 
 .menu-modal-body {
     display: flex;
@@ -541,15 +523,6 @@
     color: var(--planner-text);
 }
 
-.planner-modal-container .modal-close-btn {
-    color: #ccc;
-}
-
-.planner-modal-container .modal-close-btn:hover {
-    background: var(--planner-surface-hover);
-    color: #fff;
-}
-
 /* Planner Meal Summary */
 .planner-meal-summary {
     margin-bottom: var(--island-spacing-lg);
@@ -697,15 +670,6 @@
     color: var(--island-warning);
 }
 
-.confirm-modal-container .modal-close-btn {
-    color: #ccc;
-}
-
-.confirm-modal-container .modal-close-btn:hover {
-    background: var(--planner-surface-hover);
-    color: #fff;
-}
-
 .confirm-message {
     font-size: 1.1rem;
     text-align: center;
@@ -720,7 +684,8 @@
     margin-top: 1.5rem;
 }
 
-.confirm-actions .planner-btn {
+/* Confirm dialog buttons migrated to canonical .btn (.btn-secondary/.btn-primary);
+   keep equal min-width so the 취소/확인 pair stays balanced. */
+.confirm-actions .btn {
     min-width: 100px;
-    justify-content: center;
 }

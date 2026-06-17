@@ -99,12 +99,7 @@
     border-radius: var(--radius-sm);
 }
 
-.btn-secondary.active,
-.btn-icon.active {
-    background: var(--primary-color);
-    color: #fff;
-    border-color: var(--primary-color);
-}
+/* Loop/pause/speed active states use canonical .is-active (button.css). */
 
 /* ===== Skin Info Bar ===== */
 .esv-skin-info {
@@ -155,7 +150,7 @@
 .esv-type-chip {
     font-size: 0.6875rem;
     padding: 0.125rem 0.5rem;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-sm); /* rectangular chip — never --radius-full (no oval chips) */
     background: var(--primary-alpha-10);
     color: var(--primary-color);
 }

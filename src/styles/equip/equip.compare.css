@@ -47,29 +47,7 @@
     color: var(--primary-color);
 }
 
-.compare-mode-cancel {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.375rem 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    background: transparent;
-    color: var(--text-secondary);
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-}
-
-.compare-mode-cancel:hover {
-    background: var(--danger-color);
-    color: #fff;
-    border-color: var(--danger-color);
-}
-
-.compare-mode-cancel .material-symbols-outlined {
-    font-size: 0.9rem;
-}
+/* Exit-compare = canonical .btn.btn-secondary (button.css); no local shape needed. */
 
 /* ===== Compare Modal Overlay ===== */
 .equip-compare-modal {
@@ -112,23 +90,12 @@
     color: var(--text-primary);
 }
 
+/* Modal close = canonical .btn.btn-close (button.css). Only the fixed square
+   footprint stays local. */
 .compare-modal-close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 2rem;
     height: 2rem;
-    border: none;
-    border-radius: var(--radius-md);
-    background: transparent;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-}
-
-.compare-modal-close:hover {
-    background: var(--section-bg);
-    color: var(--text-primary);
+    padding: 0;
 }
 
 /* ===== Modal Body ===== */

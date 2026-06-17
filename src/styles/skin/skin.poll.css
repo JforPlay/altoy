@@ -184,10 +184,10 @@ body.dark-mode .data-age-indicator {
   box-shadow: 0 2px 0.5rem rgba(39, 174, 96, 0.2);
 }
 
+/* .close-image-popup-btn now gets the canonical --focus-ring via .btn:focus-visible. */
 .refresh-button-compact:focus-visible,
 .leaderboard-toggle:focus-visible,
-.poll-image-button:focus-visible,
-.close-image-popup-btn:focus-visible {
+.poll-image-button:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
   outline-offset: 2px;
 }
@@ -308,22 +308,21 @@ body.dark-mode .popup-skin-info {
   color: var(--text-muted);
 }
 
+/* Base shape from .btn.btn-close (components/button.css); only the popup corner
+   placement + oversized "×" glyph + readable text-shadow + danger-tinted hover
+   stay local. */
 .close-image-popup-btn {
   position: absolute;
   top: -2.5rem;
   right: 0;
-  background: none;
-  border: none;
   font-size: 3em;
   color: var(--text-primary);
-  cursor: pointer;
-  line-height: 1;
-  transition: color var(--transition-fast), transform var(--transition-fast);
-  text-shadow: 0 2px 0.5rem rgba(0, 0, 0, 0.8);
+  text-shadow: 0 2px 0.5rem var(--overlay-opaque);
 }
 
 .close-image-popup-btn:hover {
-  color: #ff6b6b;
+  color: var(--danger-color);
+  background: transparent;
   transform: scale(1.1);
 }
 

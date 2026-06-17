@@ -189,7 +189,7 @@ function renderPagination(elementId, currentPage, totalPages, tableType) {
     };
 
     const prevBtn = document.createElement('button');
-    prevBtn.className = 'pagination-btn page-prev';
+    prevBtn.className = 'btn btn-secondary btn-sm pagination-btn page-prev';
     prevBtn.textContent = '‹';
     prevBtn.disabled = currentPage === 1;
     prevBtn.addEventListener('click', () => { if (currentPage > 1) goToPage(currentPage - 1); });
@@ -204,7 +204,7 @@ function renderPagination(elementId, currentPage, totalPages, tableType) {
             fragment.appendChild(ellipsis);
         } else {
             const btn = document.createElement('button');
-            btn.className = 'pagination-btn' + (num === currentPage ? ' active' : '');
+            btn.className = 'btn btn-secondary btn-sm pagination-btn' + (num === currentPage ? ' is-active' : '');
             btn.textContent = String(num);
             btn.addEventListener('click', () => goToPage(num));
             fragment.appendChild(btn);
@@ -212,7 +212,7 @@ function renderPagination(elementId, currentPage, totalPages, tableType) {
     });
 
     const nextBtn = document.createElement('button');
-    nextBtn.className = 'pagination-btn page-next';
+    nextBtn.className = 'btn btn-secondary btn-sm pagination-btn page-next';
     nextBtn.textContent = '›';
     nextBtn.disabled = currentPage === totalPages;
     nextBtn.addEventListener('click', () => { if (currentPage < totalPages) goToPage(currentPage + 1); });

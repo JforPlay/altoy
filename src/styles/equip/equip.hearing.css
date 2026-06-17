@@ -5,39 +5,14 @@
    NOTE: imported by equip-viewer.astro ALONGSIDE equip.style.css, which already
    paints the body background — do NOT re-declare body background here. */
 
-/* ===== View toggle (그리드 / 청문회) ===== */
-.view-toggle {
-    display: inline-flex;
-    border: 1px solid var(--input-border);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    background: var(--input-bg);
-}
-.view-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.5rem 0.7rem;
-    border: none;
-    background: transparent;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    user-select: none;
-}
-.view-toggle-btn .material-symbols-outlined { font-size: 1.1rem; }
-.view-toggle-btn:hover { color: var(--text-primary); }
-/* --primary-color is GRAY (default theme) / SILVER (dark mode), so white text on
-   it is unreadable in dark mode — use --accent-blue for a legible, on-brand
-   active state (user feedback 2026-06-13). */
-.view-toggle-btn.active { background: var(--accent-blue); color: #fff; }
-
-/* compact toggle on small phones so it shares one row with the stats text */
+/* ===== View toggle (그리드 / 청문회) =====
+   Canonical bordered segmented control: .btn-group + .btn.btn-outline members;
+   active member = .is-active (filled --accent-blue, contrast-safe in both themes)
+   — see components/button.css. Only the small-phone compact sizing remains local
+   (retunes the --btn-* knobs). */
 @media (max-width: 480px) {
-    .view-toggle-btn { padding: 0.4rem 0.5rem; font-size: 0.78rem; }
-    .view-toggle-btn .material-symbols-outlined { font-size: 1rem; }
+    .view-toggle .view-toggle-btn { --btn-pad-y: 0.4rem; --btn-pad-x: 0.5rem; --btn-font-size: 0.78rem; }
+    .view-toggle .view-toggle-btn .material-symbols-outlined { font-size: 1rem; }
 }
 
 /* ===== 그리드 mode: commentary marker on compact cards ===== */

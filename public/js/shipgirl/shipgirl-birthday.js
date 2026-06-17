@@ -90,7 +90,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     function createNavButton(action, iconName, label, extraClass = '') {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = extraClass ? `nav-btn ${extraClass}` : 'nav-btn';
+        button.className = extraClass ? `btn btn-ghost nav-btn ${extraClass}` : 'btn btn-ghost nav-btn';
         button.dataset.action = action;
         button.setAttribute('aria-label', label);
         button.appendChild(createMaterialIcon(iconName));
@@ -421,12 +421,12 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
     function updateActiveButtons() {
         document.querySelectorAll('.view-toggle').forEach(btn => {
             const isActive = btn.dataset.view === state.currentView;
-            btn.classList.toggle('active', isActive);
+            btn.classList.toggle('is-active', isActive);
             btn.setAttribute('aria-pressed', String(isActive));
         });
         if (dayToggleBtn) {
             const isDay = state.currentView === 'day';
-            dayToggleBtn.classList.toggle('active', isDay);
+            dayToggleBtn.classList.toggle('is-active', isDay);
             dayToggleBtn.setAttribute('aria-pressed', String(isDay));
         }
     }
@@ -850,7 +850,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         const controls = document.querySelector('.calendar-controls');
         if (controls && !document.querySelector('.view-toggle[data-view="day"]')) {
             dayToggleBtn = document.createElement('button');
-            dayToggleBtn.className = 'view-toggle';
+            dayToggleBtn.className = 'btn btn-secondary view-toggle';
             dayToggleBtn.type = 'button';
             dayToggleBtn.dataset.view = 'day';
             dayToggleBtn.title = '일간 보기';
@@ -867,7 +867,7 @@ import { fetchJSON, resolveUrl, getStorageItem, setStorageItem, createSearchInde
         if (controls && !document.getElementById('todayBtn')) {
             todayBtn = document.createElement('button');
             todayBtn.type = 'button';
-            todayBtn.className = 'today-btn';
+            todayBtn.className = 'btn btn-secondary today-btn';
             todayBtn.id = 'todayBtn';
             todayBtn.title = '오늘로 이동';
             todayBtn.append(createMaterialIcon('calendar_today'), document.createTextNode(' 오늘'));

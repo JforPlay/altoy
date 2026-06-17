@@ -226,12 +226,12 @@ function renderPlannerModal() {
             </div>
         </div>
         <div class="planner-modal-actions">
-            <button id="planner-reset-btn" class="planner-btn reset">
+            <button id="planner-reset-btn" class="btn btn-secondary">
                 <span class="material-symbols-outlined">restart_alt</span>
                 초기화
             </button>
             <div class="planner-actions-spacer"></div>
-            <button id="planner-calc-btn" class="planner-btn calculate">
+            <button id="planner-calc-btn" class="btn btn-primary">
                 <span class="material-symbols-outlined">calculate</span>
                 재료 계산
             </button>
@@ -264,7 +264,7 @@ export function renderPlannerMainView() {
             <div class="planner-builder-section" id="planner-builder">
                 ${builderHTML}
                 <div class="planner-actions-bar">
-                    <button id="planner-reset-btn" class="planner-btn reset">
+                    <button id="planner-reset-btn" class="btn btn-secondary">
                         <span class="material-symbols-outlined">restart_alt</span>
                         초기화
                     </button>
@@ -355,11 +355,11 @@ function renderPlannerRestaurantCard(restaurantId) {
                     <div class="global-qty-wrapper">
                          <span class="qty-label">생산 수량</span>
                          <div class="qty-control-group">
-                             <button class="qty-btn qty-btn-minus" data-restaurant-id="${restaurantId}" data-delta="-1">
+                             <button class="btn btn-icon qty-btn qty-btn-minus" data-restaurant-id="${restaurantId}" data-delta="-1">
                                  <span class="material-symbols-outlined">remove</span>
                              </button>
                              <input type="number" class="planner-global-input modern" data-restaurant-id="${restaurantId}" min="0" max="999" value="${plan.globalCount}">
-                             <button class="qty-btn qty-btn-plus" data-restaurant-id="${restaurantId}" data-delta="1">
+                             <button class="btn btn-icon qty-btn qty-btn-plus" data-restaurant-id="${restaurantId}" data-delta="1">
                                  <span class="material-symbols-outlined">add</span>
                              </button>
                          </div>
@@ -383,16 +383,16 @@ function renderPlannerRestaurantCard(restaurantId) {
                         ${presetVisuals}
                     </div>
                     <div class="planner-preset-actions">
-                        <button class="preset-action-btn save" data-action="save" data-restaurant-id="${restaurantId}" title="선택한 슬롯에 저장">
+                        <button class="btn btn-icon preset-action-btn save" data-action="save" data-restaurant-id="${restaurantId}" title="선택한 슬롯에 저장">
                             <span class="material-symbols-outlined">download</span>
                         </button>
-                        <button class="preset-action-btn load" data-action="load" data-restaurant-id="${restaurantId}" title="선택한 슬롯 불러오기">
+                        <button class="btn btn-icon preset-action-btn load" data-action="load" data-restaurant-id="${restaurantId}" title="선택한 슬롯 불러오기">
                             <span class="material-symbols-outlined">upload</span>
                         </button>
-                        <button class="preset-action-btn copy" data-action="copy" data-restaurant-id="${restaurantId}" title="다른 슬롯에서 복사">
+                        <button class="btn btn-icon preset-action-btn copy" data-action="copy" data-restaurant-id="${restaurantId}" title="다른 슬롯에서 복사">
                             <span class="material-symbols-outlined">content_copy</span>
                         </button>
-                        <button class="preset-action-btn clear" data-action="clear" data-restaurant-id="${restaurantId}" title="선택한 슬롯 비우기">
+                        <button class="btn btn-icon preset-action-btn clear" data-action="clear" data-restaurant-id="${restaurantId}" title="선택한 슬롯 비우기">
                             <span class="material-symbols-outlined">delete</span>
                         </button>
                     </div>
@@ -455,7 +455,7 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
                         <span class="material-symbols-outlined">restaurant</span>
                         ${restaurant.name} - 메뉴 선택
                     </h3>
-                    <button class="modal-close-btn" data-action="close-menu-modal">
+                    <button class="btn btn-close" data-action="close-menu-modal">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>
@@ -832,7 +832,7 @@ function openCopyPresetModal(restaurantId, targetPresetIndex) {
                         <span class="material-symbols-outlined">content_copy</span>
                         프리셋 복사
                     </h3>
-                    <button class="modal-close-btn" data-action="close-copy-modal">
+                    <button class="btn btn-close" data-action="close-copy-modal">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>

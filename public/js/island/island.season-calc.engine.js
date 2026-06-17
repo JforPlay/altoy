@@ -275,7 +275,7 @@ function renderControls() {
                 </select>
             </div>
             <div class="calc-actions">
-                <button class="calc-clear-btn" id="calc-clear-all">
+                <button class="btn btn-danger calc-clear-btn" id="calc-clear-all">
                     <span class="material-symbols-outlined">delete_sweep</span>
                     전체 초기화
                 </button>
@@ -530,7 +530,7 @@ function renderItemGrid() {
                     </div>
                 </div>
                 <div class="calc-item-actions-row">
-                    <button class="calc-view-recipe-btn" data-item-id="${item.id}" title="자원 탭에서 보기">
+                    <button class="btn btn-secondary calc-view-recipe-btn" data-item-id="${item.id}" title="자원 탭에서 보기">
                         <span class="material-symbols-outlined">open_in_new</span>
                         레시피
                     </button>

@@ -90,8 +90,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         container.replaceChildren(card);
     }
 
-    function setPressed(button, isPressed) {
-        button.classList.toggle('active', isPressed);
+    // Canonical command buttons (loop/pause/speed) use .is-active (button.css);
+    // selection list/grid items (theme/skin) keep their local .active styling.
+    function setPressed(button, isPressed, activeClass = 'is-active') {
+        button.classList.toggle(activeClass, isPressed);
         button.setAttribute('aria-pressed', String(isPressed));
     }
 
@@ -118,14 +120,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     function updateThemeActiveState() {
         themeList.querySelectorAll('.esv-theme-item').forEach(el => {
             const isActive = Number(el.dataset.themeId) === activeThemeId;
-            setPressed(el, isActive);
+            setPressed(el, isActive, 'active');
         });
     }
 
     function updateSkinActiveState() {
         skinGridContainer.querySelectorAll('.esv-skin-card').forEach(el => {
             const isActive = Number(el.dataset.skinId) === activeSkinId;
-            setPressed(el, isActive);
+            setPressed(el, isActive, 'active');
         });
     }
 

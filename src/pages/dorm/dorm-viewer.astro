@@ -41,15 +41,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <!-- Toolbar -->
             <div id="dormToolbar" class="dorm-toolbar">
                 <div class="toolbar-actions">
-                    <button id="btnRotate" class="toolbar-btn" type="button" disabled title="회전 (R)" aria-label="선택한 가구 회전">
+                    <button id="btnRotate" class="btn btn-secondary toolbar-btn" type="button" disabled title="회전 (R)" aria-label="선택한 가구 회전">
                         <span class="material-symbols-outlined" aria-hidden="true">rotate_right</span>
                         <span class="btn-label">회전</span>
                     </button>
-                    <button id="btnDelete" class="toolbar-btn" type="button" disabled title="삭제 (Del)" aria-label="선택한 가구 삭제">
+                    <button id="btnDelete" class="btn btn-secondary toolbar-btn" type="button" disabled title="삭제 (Del)" aria-label="선택한 가구 삭제">
                         <span class="material-symbols-outlined" aria-hidden="true">delete</span>
                         <span class="btn-label">삭제</span>
                     </button>
-                    <button id="btnClear" class="toolbar-btn toolbar-btn--danger" type="button" title="전체 삭제">
+                    <button id="btnClear" class="btn btn-secondary toolbar-btn toolbar-btn--danger" type="button" title="전체 삭제">
                         <span class="material-symbols-outlined" aria-hidden="true">delete_sweep</span>
                         <span class="btn-label">전체 삭제</span>
                     </button>
@@ -68,8 +68,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <div id="canvasContainer" class="canvas-container">
                 <canvas id="dormCanvas" role="img" aria-label="숙소 가구 배치 캔버스"></canvas>
                 <div class="zoom-controls">
-                    <button id="btnZoomIn" class="zoom-btn" type="button" title="확대" aria-label="확대">+</button>
-                    <button id="btnZoomOut" class="zoom-btn" type="button" title="축소" aria-label="축소">&minus;</button>
+                    <button id="btnZoomIn" class="btn btn-icon zoom-btn" type="button" title="확대" aria-label="확대">+</button>
+                    <button id="btnZoomOut" class="btn btn-icon zoom-btn" type="button" title="축소" aria-label="축소">&minus;</button>
                 </div>
                 <div id="canvasLoading" class="canvas-loading" role="status" aria-live="polite">
                     <div class="page-status page-status-loading">

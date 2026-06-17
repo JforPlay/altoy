@@ -97,30 +97,7 @@
     gap: 0.75rem;
 }
 
-.calc-clear-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.625rem 1rem;
-    background: var(--island-bg);
-    border: 2px solid var(--island-border);
-    border-radius: 8px;
-    color: var(--island-text-secondary);
-    font-size: 0.9375rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--island-transition);
-}
-
-.calc-clear-btn:hover {
-    border-color: var(--island-danger);
-    color: var(--island-danger);
-    background: rgba(231, 76, 60, 0.05);
-}
-
-.calc-clear-btn .material-symbols-outlined {
-    font-size: 1.125rem;
-}
+/* .calc-clear-btn migrated to canonical .btn.btn-danger. */
 
 /* ==========================================================================
    3. TOTAL DISPLAY (PROMINENT)
@@ -367,31 +344,9 @@
     gap: 0.5rem;
 }
 
-.calc-view-recipe-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-    padding: 0.5rem 0.75rem;
-    background: var(--island-bg);
-    border: 2px solid var(--island-border);
-    border-radius: 8px;
-    color: var(--island-text-secondary);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--island-transition);
-    flex: 1;
-}
-
-.calc-view-recipe-btn:hover {
-    border-color: var(--island-accent);
-    color: var(--island-accent);
-    background: var(--island-accent-light);
-}
-
-.calc-view-recipe-btn .material-symbols-outlined {
-    font-size: 1rem;
-}
+/* .calc-view-recipe-btn migrated to canonical .btn.btn-secondary;
+   keeps flex:1 so it fills the actions row. */
+.calc-view-recipe-btn { flex: 1; }
 
 /* Input Row */
 .calc-item-input-row {
@@ -533,8 +488,7 @@
    ========================================================================== */
 
 .calc-quantity-input:focus-visible,
-.calc-sort-select:focus-visible,
-.calc-clear-btn:focus-visible {
+.calc-sort-select:focus-visible {
     outline: 2px solid var(--island-accent);
     outline-offset: 2px;
 }

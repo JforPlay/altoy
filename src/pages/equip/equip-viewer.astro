@@ -47,12 +47,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                                 <span class="stat-value" id="filteredCount">0</span>
                             </div>
                         </div>
-                        <div class="view-toggle" id="viewToggle" role="tablist" aria-label="보기 방식">
-                            <button class="view-toggle-btn" type="button" data-view="grid" role="tab" aria-selected="false" title="간략히 — 아이콘 그리드">
+                        <div class="view-toggle btn-group" id="viewToggle" role="tablist" aria-label="보기 방식">
+                            <button class="view-toggle-btn btn btn-outline" type="button" data-view="grid" role="tab" aria-selected="false" title="간략히 — 아이콘 그리드">
                                 <span class="material-symbols-outlined">grid_view</span>
                                 <span class="view-toggle-label">간략히</span>
                             </button>
-                            <button class="view-toggle-btn active" type="button" data-view="hearing" role="tab" aria-selected="true" title="자세히 — 별명·한줄평">
+                            <button class="view-toggle-btn btn btn-outline is-active" type="button" data-view="hearing" role="tab" aria-selected="true" title="자세히 — 별명·한줄평">
                                 <span class="material-symbols-outlined">view_agenda</span>
                                 <span class="view-toggle-label">자세히</span>
                             </button>
@@ -123,21 +123,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <aside id="detailPanel" class="equip-detail-panel">
             <div class="equip-detail-panel-header">
                 <span class="panel-title">장비 상세</span>
-                <button id="detailPanelClose" class="panel-close-btn" type="button">
+                <button id="detailPanelClose" class="panel-close-btn btn btn-close" type="button">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
             <div id="detailPanelContent" class="equip-detail-panel-body"></div>
             <div class="equip-detail-panel-footer">
-                <a id="detailResearchLink" class="detail-action-btn" href="#" style="display:none; text-decoration:none;">
+                <a id="detailResearchLink" class="detail-action-btn btn btn-secondary" href="#" style="display:none;">
                     <span class="material-symbols-outlined">science</span>
                     연구 트리
                 </a>
-                <button id="detailCompareBtn" class="detail-action-btn" type="button">
+                <button id="detailCompareBtn" class="detail-action-btn btn btn-secondary" type="button">
                     <span class="material-symbols-outlined">compare_arrows</span>
                     비교하기
                 </button>
-                <button id="detailDownloadBtn" class="detail-action-btn" type="button">
+                <button id="detailDownloadBtn" class="detail-action-btn btn btn-secondary" type="button">
                     <span class="material-symbols-outlined">download</span>
                     아이콘 저장
                 </button>
@@ -150,7 +150,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <span class="material-symbols-outlined">compare_arrows</span>
                 <span id="compareModeText">비교할 장비를 선택하세요</span>
             </div>
-            <button id="compareModeCancel" class="compare-mode-cancel" type="button">
+            <button id="compareModeCancel" class="compare-mode-cancel btn btn-secondary" type="button">
                 <span class="material-symbols-outlined">close</span>
                 취소
             </button>
@@ -161,7 +161,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <div class="equip-compare-modal-content">
                 <div class="compare-modal-header">
                     <span class="compare-modal-title">장비 비교</span>
-                    <button class="modal-close compare-modal-close" type="button">
+                    <button class="modal-close compare-modal-close btn btn-close" type="button">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>

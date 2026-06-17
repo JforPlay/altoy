@@ -33,24 +33,12 @@
     gap: 4px;
 }
 
+/* Zoom +/- = canonical `.btn .btn-icon` (square, rectangular, themed). Local
+   keeps only the over-canvas floating affordance (drop shadow) and the larger
+   +/- glyph. */
 .zoom-btn {
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    color: var(--text-primary);
     font-size: 1.2rem;
-    cursor: pointer;
-    transition: background var(--transition-fast);
     box-shadow: var(--shadow-sm);
-}
-
-.zoom-btn:hover {
-    background: var(--section-bg);
 }
 
 /* ── Loading overlay ──

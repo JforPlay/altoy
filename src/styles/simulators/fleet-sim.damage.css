@@ -85,34 +85,8 @@
   font-variant: small-caps;
 }
 
-/* ===== Adapt buttons ===== */
-
-.dmg-adapt-row {
-  display: flex;
-  gap: var(--spacing-xs);
-  flex-wrap: wrap;
-}
-
-.dmg-adapt-btn {
-  padding: 2px var(--spacing-sm);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  background: var(--section-bg);
-  cursor: pointer;
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  transition: border-color var(--transition-fast), background var(--transition-fast);
-}
-
-.dmg-adapt-btn:hover {
-  border-color: var(--accent-blue);
-}
-
-.dmg-adapt-btn.active {
-  border-color: var(--accent-blue);
-  background: var(--primary-alpha-15);
-  color: var(--text-primary);
-}
+/* ===== Adapt buttons → canonical .btn-group + .is-active (button.css) ===== */
+/* .dmg-adapt-row carries .btn-group in markup, which owns layout + segment joins. */
 
 /* ===== Editable enemy-profile fields ===== */
 
@@ -274,13 +248,12 @@
 /* ===== Dark mode overrides ===== */
 /* (tokens already handle most of it; only override where tokens don't flip) */
 
-body.dark-mode .dmg-armor-chip,
-body.dark-mode .dmg-adapt-btn {
+/* .dmg-armor-chip = deferred Wave-2 chip (kept); .dmg-adapt-btn now canonical .btn. */
+body.dark-mode .dmg-armor-chip {
   background: var(--bg-secondary);
 }
 
-body.dark-mode .dmg-armor-chip.active,
-body.dark-mode .dmg-adapt-btn.active {
+body.dark-mode .dmg-armor-chip.active {
   background: var(--primary-alpha-20);
 }
 

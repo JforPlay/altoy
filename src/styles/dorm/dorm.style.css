@@ -252,7 +252,6 @@ body.dorm-page .scroll-to-top {
 
 .theme-header:focus-visible,
 .furniture-icon-wrapper:focus-visible,
-.toolbar-btn:focus-visible,
 .zoom-btn:focus-visible,
 .mobile-panel-toggle:focus-visible {
     outline: 2px solid var(--input-focus);
@@ -282,34 +281,10 @@ body.dorm-page .scroll-to-top {
     gap: var(--spacing-xs);
 }
 
-.toolbar-btn {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    background: var(--section-bg);
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: background var(--transition-fast), opacity var(--transition-fast);
-}
-
-.toolbar-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-.toolbar-btn:not(:disabled):hover {
-    background: var(--input-bg);
-}
-
-.toolbar-btn .material-symbols-outlined {
-    font-size: 18px;
-}
-
-.toolbar-btn--danger {
+/* Toolbar buttons use the canonical `.btn .btn-secondary`; only the danger
+   text tint stays local (specificity bumped past `.btn-secondary`'s color so
+   it wins regardless of stylesheet order). */
+.btn.toolbar-btn--danger {
     color: var(--danger-color);
 }
 

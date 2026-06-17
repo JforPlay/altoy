@@ -109,57 +109,25 @@ body {
   margin-bottom: 8px;
 }
 
-.container button {
-  background: var(--sd-accent-gradient);
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 8px;
-  transition: transform var(--transition-base);
-}
-
-.container button:hover:not(:disabled) {
-  transform: translateY(-2px);
-}
-
-.container button:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--primary-color) 35%, transparent);
-  outline-offset: 2px;
-}
-
-.container button:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.container button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
+/* Command buttons (display-mode / play / pause / reset) migrated to canonical
+   .btn variants (button.css). Selection-list buttons keep their local rule below. */
 
 .container .button-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  margin-top: 8px;
 }
 
-.container #displayModeBtns button {
-  background: var(--border-color);
-  color: var(--text-secondary);
-}
-
-.container #displayModeBtns button.active {
-  background: var(--sd-accent-gradient);
-  color: white;
-}
-
+/* Display-mode is a full-width segmented .btn-group: 3 equal-width members. */
 .container #displayModeBtns {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.container #displayModeBtns .btn {
+  flex: 1;
 }
 
 .container .animation-list,
@@ -194,6 +162,12 @@ body {
 .container .skin-item:hover {
   background: var(--bg-primary);
   transform: none;
+}
+
+.container .animation-item:focus-visible,
+.container .skin-item:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
 .container .animation-item.active,
@@ -300,11 +274,6 @@ body.dark-mode select {
 
 body.dark-mode .range-value {
   color: var(--text-muted);
-}
-
-body.dark-mode #displayModeBtns button {
-  background: var(--border-color);
-  color: var(--text-secondary);
 }
 
 body.dark-mode .animation-list,

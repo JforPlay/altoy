@@ -44,35 +44,14 @@
   box-shadow: var(--focus-ring);
 }
 
-.skill-search-view-toggle {
-  display: flex;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.skill-view-btn {
-  background: transparent;
-  border: none;
-  padding: 0.45rem 0.9rem;
-  cursor: pointer;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
-
-.skill-view-btn.active {
-  background: var(--primary-color);
-  color: #fff;
-}
-
-body.dark-mode .skill-view-btn.active {
-  color: var(--card-bg);
-}
-
-.skill-view-btn:not(.active):hover {
-  background: var(--highlight-subtle);
-  color: var(--text-primary);
+/* View toggle (스킬별 / 함순이별) = `.btn-group` of `.btn .btn-outline` with
+   `.is-active` on the selected one (accent-blue fill, contrast-safe in both
+   themes) — all from components/button.css. The compact toolbar sizing stays
+   local; the wrapper no longer needs its own border (the group joins them). */
+.skill-search-view-toggle .skill-view-btn {
+  --btn-pad-y: 0.45rem;
+  --btn-pad-x: 0.9rem;
+  --btn-font-size: 0.9rem;
 }
 
 /* ===== Chip Rows ===== */

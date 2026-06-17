@@ -408,6 +408,9 @@ body.dark-mode .flavor-text-box {
   transition: color var(--animation-duration) ease;
 }
 
+/* EXCEPTION: adopts the `.btn` base shape (inline-flex, focus-ring) but keeps
+   the chat-viewer danger identity (--accent-danger fill) + fixed 3rem height as
+   a scoped brand rule — not re-forked as a base button variant. */
 .restart-button {
   background-color: var(--accent-danger);
   color: #ffffff;
@@ -416,8 +419,6 @@ body.dark-mode .flavor-text-box {
   padding: 0.75rem 1.125rem;
   font-size: 0.9em;
   font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
   height: 3rem;
 }
 
@@ -571,6 +572,9 @@ body.dark-mode .flavor-text-box {
   border-top: 1px solid var(--chat-border);
 }
 
+/* EXCEPTION: adopts the `.btn` base shape (inline-flex, focus-ring) but keeps
+   the chat-viewer blurple identity (--accent-primary fill), right-aligned
+   chat-bubble look + big touch target as a scoped brand rule. */
 .choice-button {
   background-color: var(--accent-primary);
   color: #ffffff;
@@ -578,9 +582,8 @@ body.dark-mode .flavor-text-box {
   border-radius: 0.3125rem;
   padding: 0.75rem 1.125rem;
   font-size: 1em;
-  cursor: pointer;
   text-align: right;
-  transition: background-color 0.2s, transform 0.1s;
+  justify-content: flex-end;
   max-width: 80%;
 }
 

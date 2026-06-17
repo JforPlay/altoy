@@ -362,7 +362,7 @@ function createEventLink(rawUrl) {
     link.href = url;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.className = 'event-link-btn';
+    link.className = 'btn btn-outline btn-sm event-link-btn';
     link.appendChild(createIcon('fas fa-arrow-up-right-from-square'));
     link.append('상세보기');
     return link;

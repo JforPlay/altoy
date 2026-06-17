@@ -11,15 +11,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <Layout title="함순이 생일" bodyClass="calendar-page" {base}>
     <main class="birthday-container">
         <div class="calendar-controls">
-            <button type="button" class="view-toggle active" data-view="year" title="연간 보기" aria-label="연간 보기로 전환" aria-pressed="true">
+            <button type="button" class="btn btn-secondary view-toggle is-active" data-view="year" title="연간 보기" aria-label="연간 보기로 전환" aria-pressed="true">
                 <span class="material-symbols-outlined">calendar_month</span>
                 연간
             </button>
-            <button type="button" class="view-toggle" data-view="month" title="월간 보기" aria-label="월간 보기로 전환" aria-pressed="false">
+            <button type="button" class="btn btn-secondary view-toggle" data-view="month" title="월간 보기" aria-label="월간 보기로 전환" aria-pressed="false">
                 <span class="material-symbols-outlined">view_agenda</span>
                 월간
             </button>
-            <button type="button" class="view-toggle" data-view="week" title="주간 보기" aria-label="주간 보기로 전환" aria-pressed="false">
+            <button type="button" class="btn btn-secondary view-toggle" data-view="week" title="주간 보기" aria-label="주간 보기로 전환" aria-pressed="false">
                 <span class="material-symbols-outlined">view_week</span>
                 주간
             </button>
@@ -44,7 +44,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <aside class="upcoming-panel" id="upcomingPanel" aria-label="다가오는 생일 사이드바">
             <div class="upcoming-panel-header">
                 <h2>다가오는 생일</h2>
-                <button type="button" class="sidebar-close" id="sidebarClose" aria-label="사이드바 닫기">
+                <button type="button" class="btn btn-close sidebar-close" id="sidebarClose" aria-label="사이드바 닫기">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>

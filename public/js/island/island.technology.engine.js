@@ -1063,7 +1063,7 @@ function renderResourceTotals(techs) {
         : '모든 기술이 완료되었습니다!';
 
     const toggleBtnHtml = `
-        <button class="resource-totals-mode-toggle island-btn">
+        <button class="btn btn-secondary resource-totals-mode-toggle">
             <span class="material-symbols-outlined">${toggleIcon}</span>
             ${toggleLabel}
         </button>`;

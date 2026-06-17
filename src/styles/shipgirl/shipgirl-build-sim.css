@@ -90,40 +90,10 @@ body {
     gap: 0.5rem;
 }
 
-/* Chip toggles fill their cell (all equal width), centered icon + label. A
-   recessed --section-bg fill (the panel is --card-bg) gives them definition
-   instead of bare outlines; muted at rest, accent-blue when active. Rectangular
-   --radius-md per the no-oval-chips rule. */
-.pool-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.45rem;
-    padding: 0.5rem 0.85rem;
-    background: var(--section-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: background var(--transition-fast), border-color var(--transition-fast),
-                color var(--transition-fast), box-shadow var(--transition-fast);
-    font-size: 0.85rem;
-    line-height: 1.2;
-    color: var(--text-secondary);
-    white-space: nowrap;
-}
-
-.pool-btn:hover {
-    border-color: var(--accent-blue);
-    color: var(--text-primary);
-    background: var(--bg-secondary);
-}
-
-.pool-btn.active {
-    background: var(--accent-blue);
-    border-color: var(--accent-blue);
-    color: #fff;
-    box-shadow: 0 1px 3px var(--shadow-color);
-}
+/* Pool toggles are `.btn .btn-secondary` (canonical) + `.is-active` for the
+   selected pool (accent-blue fill); they stretch to fill each grid cell.
+   Only the segmented-selector layout (grid placement + glyph/label boxes) stays
+   local — the button shape/color/active state come from components/button.css. */
 
 /* Pin emoji glyphs to a fixed box so chips align regardless of glyph width */
 .pool-icon {
@@ -434,7 +404,9 @@ section h3 {
     transform: translateY(0);
 }
 
-.btn-icon {
+/* Emoji glyph inside the (hidden) sim buttons — renamed off `.btn-icon` so it
+   no longer shadows the canonical icon-button class from components/button.css. */
+.sim-btn-emoji {
     font-size: 1.25rem;
 }
 
@@ -781,43 +753,13 @@ section h3 {
     border-color: var(--accent-blue);
 }
 
+/* 추가 = `.btn .btn-primary`, 풀 초기화 = `.btn .btn-danger` (components/button.css);
+   sized a touch taller to line up with the adder inputs. */
 .add-ship-btn,
 .reset-pool-btn {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.2s ease;
-    color: white;
-}
-
-.add-ship-btn {
-    background: var(--accent-blue);
-}
-
-.add-ship-btn:disabled {
-    background: var(--bg-secondary);
-    color: var(--text-secondary);
-    cursor: not-allowed;
-}
-
-.add-ship-btn:not(:disabled):hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.reset-pool-btn {
-    background: var(--danger-color);
-}
-
-.reset-pool-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    --btn-pad-y: 0.75rem;
+    --btn-pad-x: 1.5rem;
+    --btn-font-size: 1rem;
 }
 
 .added-ships-list {
@@ -1074,22 +1016,8 @@ section h3 {
     color: var(--text-primary);
 }
 
-.modal-close {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s ease;
-    color: var(--text-primary);
-}
-
-.modal-close:hover {
-    background: var(--bg-secondary);
-}
+/* Modal close = `.btn .btn-close` (components/button.css); no local rule needed
+   (it sits in the header flex row, not absolutely positioned). */
 
 .modal-body {
     padding: 2rem;
@@ -1258,40 +1186,10 @@ section h3 {
     border-top: 2px solid var(--border-color);
 }
 
+/* 취소 = `.btn .btn-secondary`, 확인 = `.btn .btn-primary` (components/button.css).
+   Only the footer-split layout (each button fills half the footer) stays local. */
 .modal-btn {
     flex: 1;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.cancel-btn {
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-}
-
-.cancel-btn:hover {
-    background: var(--border-color);
-}
-
-.confirm-btn {
-    background: var(--accent-blue);
-    color: white;
-}
-
-.confirm-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.confirm-btn:disabled {
-    background: var(--bg-secondary);
-    color: var(--text-secondary);
-    cursor: not-allowed;
 }
 
 /* ===== Responsive / Media Queries ===== */

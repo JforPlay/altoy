@@ -391,12 +391,10 @@
   border-radius: 2px;
 }
 
-.clear-btn {
+/* Clear-all button uses the canonical .btn.btn-danger; only the 3rem height
+   (to align with the search input + sort select in the same row) stays local. */
+#clear-all-btn {
   height: 3rem;
-}
-
-.clear-btn i {
-  margin-right: 0.3125rem;
 }
 
 /* --- Sort Select --- */
@@ -541,21 +539,19 @@
   transform: translateY(-1px);
 }
 
+/* Base shape from .btn.btn-close (components/button.css); only the lightbox
+   corner placement + oversized "×" glyph + danger-tinted hover stay local. */
 .close-image-popup-btn {
   position: absolute;
   top: -2.5rem;
   right: 0;
-  background: none;
-  border: none;
   font-size: 2.5em;
   color: var(--text-primary);
-  cursor: pointer;
-  line-height: 1;
-  transition: color var(--transition-fast), transform var(--transition-fast);
 }
 
 .close-image-popup-btn:hover {
   color: var(--danger-color);
+  background: transparent;
   transform: scale(1.1);
 }
 
@@ -649,32 +645,8 @@
   border-bottom: 1px solid var(--border-color);
 }
 
-/* --- Owned Group Toggle --- */
-.owned-group-toggle {
-  display: flex;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-}
-
-.owned-toggle-btn {
-  padding: 0.3rem 0.625rem;
-  font-size: 0.75rem;
-  border: none;
-  background: var(--bg-secondary);
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
-
-.owned-toggle-btn:not(:last-child) {
-  border-right: 1px solid var(--border-color);
-}
-
-.owned-toggle-btn.active {
-  background: var(--primary-color);
-  color: #fff;
-}
+/* Owned group toggle migrated to the canonical .btn-group + .btn.btn-secondary.btn-sm
+   segmented control, active member via .is-active (components/button.css). */
 
 /* =================================================================
    CART MODAL
@@ -727,49 +699,21 @@
   gap: 0.5rem;
 }
 
-.cart-action-btn {
-  padding: 0.375rem 0.75rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-color);
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
-
-.cart-action-btn:hover {
-  background: var(--bg-tertiary);
-}
-
-.cart-buyall-btn {
+/* Cart header actions migrated to .btn.btn-secondary.btn-sm + .btn.btn-close
+   (components/button.css). Only the buyall "success/green" intent stays local
+   as a real color difference (overrides the neutral secondary fill). The .btn
+   compound selector guarantees this wins over .btn-secondary regardless of
+   stylesheet order. */
+.btn.cart-buyall-btn {
   color: var(--success-color);
   border-color: var(--success-color);
 }
 
-.cart-buyall-btn:hover {
+.btn.cart-buyall-btn:hover {
   background: var(--success-color);
+  border-color: var(--success-color);
   color: #fff;
-}
-
-.cart-close-btn {
-  width: 2rem;
-  height: 2rem;
-  border-radius: var(--radius-sm);
-  border: none;
-  background: none;
-  color: var(--text-muted);
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color var(--transition-fast), background var(--transition-fast);
-}
-
-.cart-close-btn:hover {
-  color: var(--text-primary);
-  background: var(--bg-tertiary);
+  filter: none;
 }
 
 .cart-body {
@@ -1029,7 +973,7 @@
     width: 100%;
   }
 
-  .clear-btn {
+  #clear-all-btn {
     width: 100%;
   }
 
@@ -1261,15 +1205,6 @@ body.dark-mode .cart-item:hover {
   background: var(--bg-secondary);
 }
 
-body.dark-mode .cart-action-btn {
-  background: var(--bg-input);
-  border-color: var(--bg-secondary);
-}
-
-body.dark-mode .cart-action-btn:hover {
-  background: var(--bg-secondary);
-}
-
 body.dark-mode .cart-buyall-btn {
   border-color: var(--success-color);
 }
@@ -1289,12 +1224,4 @@ body.dark-mode .popup-skin-info {
   background-color: var(--bg-secondary);
   border: none;
   box-shadow: none;
-}
-
-body.dark-mode .owned-toggle-btn {
-  background: var(--bg-input);
-}
-
-body.dark-mode .owned-toggle-btn.active {
-  background: var(--primary-color);
 }

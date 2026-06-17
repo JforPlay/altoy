@@ -64,37 +64,10 @@ body.dark-mode h1 {
    BUTTONS
    ============================================ */
 
-/* Sort button */
+/* Sort button — canonical .btn.btn-secondary (shape/color/hover/disabled/dark);
+   only the header spacing stays local. */
 #sort-button {
   margin-top: 10px;
-  padding: 8px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  background-color: var(--section-bg);
-  cursor: pointer;
-  transition: background-color 0.2s, border-color var(--transition-slow), color var(--transition-slow);
-}
-
-/* Sort button hover */
-#sort-button:hover {
-  background-color: var(--border-color);
-}
-
-#sort-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-/* Sort button - Dark Mode */
-body.dark-mode #sort-button {
-  background-color: var(--card-bg);
-  border-color: var(--border-color);
-  color: var(--text-primary);
-}
-
-/* Sort button hover - Dark Mode */
-body.dark-mode #sort-button:hover {
-  background-color: var(--surface-elevated);
 }
 
 /* ============================================
@@ -156,7 +129,6 @@ body.dark-mode .gallery-item {
 }
 
 .gallery-item:focus-visible,
-#sort-button:focus-visible,
 .close-button:focus-visible {
   outline: 3px solid var(--accent-blue);
   outline-offset: 3px;

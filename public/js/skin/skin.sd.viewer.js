@@ -564,7 +564,7 @@ function setDisplayMode(mode) {
 
     displayModeButtons.forEach(btn => {
         const isActive = btn.id === activeButtonId;
-        btn.classList.toggle('active', isActive);
+        btn.classList.toggle('is-active', isActive); // canonical .btn-group active (button.css)
         btn.setAttribute('aria-pressed', String(isActive));
     });
 

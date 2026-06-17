@@ -99,7 +99,7 @@ function renderDetail(equip) {
             ${equip.speciality && equip.speciality !== '없음' ? `<div class="panel-detail-speciality">특성: ${replaceEquipCodes(equip.speciality)}</div>` : ''}
             ${equip.label && equip.label.length > 0 ? `<div class="panel-detail-labels">${equip.label.map(l => `<span class="badge badge--neutral">${l}</span>`).join('')}</div>` : ''}
             ${equip.descrip ? `<div class="panel-detail-descrip">${equip.descrip}</div>` : ''}
-            ${AIRCRAFT_TYPES.has(equip.type) ? `<a href="${resolveUrl(`simulators/sim-aircraft?equip=${equip.id}`)}" class="sim-link-btn"><span class="material-symbols-outlined">flight</span> 시뮬레이션</a>` : ''}
+            ${AIRCRAFT_TYPES.has(equip.type) ? `<a href="${resolveUrl(`simulators/sim-aircraft?equip=${equip.id}`)}" class="sim-link-btn btn btn-outline btn-sm"><span class="material-symbols-outlined">flight</span> 시뮬레이션</a>` : ''}
         </div>
     `;
 

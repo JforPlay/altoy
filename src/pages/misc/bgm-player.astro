@@ -10,13 +10,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <Layout title="BGM Player" {base}>
     <div class="bgm-player">
         <div class="album-carousel-container">
-            <button class="nav-btn prev-btn" id="prev-btn" type="button" aria-label="Previous album">
+            <button class="btn btn-icon btn-lg nav-btn prev-btn" id="prev-btn" type="button" aria-label="Previous album">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                     <path d="M15 18l-6-6 6-6" />
                 </svg>
             </button>
             <div class="album-list" id="album-list" aria-label="Album carousel"></div>
-            <button class="nav-btn next-btn" id="next-btn" type="button" aria-label="Next album">
+            <button class="btn btn-icon btn-lg nav-btn next-btn" id="next-btn" type="button" aria-label="Next album">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                     <path d="M9 18l6-6-6-6" />
                 </svg>

@@ -205,6 +205,24 @@ test('badge: --count bubble is accent-blue, not a red alert (homepage, light)', 
     expect(bg, `expected accent-blue count, got: ${bg}`).toBe('rgb(0, 113, 235)');
 });
 
+test('badge: the hidden attribute still hides a badge (homepage)', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    // Regression: the author `display:inline-flex` on .badge beats the UA
+    // [hidden]{display:none} rule, so a count bubble toggled via el.hidden (e.g.
+    // equip-viewer's 0-count tag filter) leaked an empty circle. .badge[hidden]
+    // restores it. probeStyle can't set attributes, so inline the element.
+    const display = await page.evaluate(() => {
+        const el = document.createElement('span');
+        el.className = 'badge badge--count';
+        el.hidden = true;
+        document.body.appendChild(el);
+        const v = getComputedStyle(el).display;
+        el.remove();
+        return v;
+    });
+    expect(display, `a hidden badge must not render, got: ${display}`).toBe('none');
+});
+
 // --- Wave-1 card-hover unification: canonical lift token applied ---------------
 // theme.css defines `body { --card-lift: -2px; --card-hover-shadow: var(--shadow-lg) }`
 // and components/card.css (global via Layout) maps .card-hover:hover to the tokens;
@@ -249,4 +267,57 @@ test('card-hover: canonical lift is identical on an accent-theme page (expressio
     await page.goto(pathFor('expression-viewer'), { waitUntil: 'load' });
     // Accent theme does not redefine --card-lift, so the lift is the same -2px.
     expect(await probeCardHoverLift(page)).toBe('matrix(1, 0, 0, 1, 0, -2)');
+});
+
+// --- Wave-1 button unification: canonical .btn applied ------------------------
+// button.css is imported globally via Layout.astro, so the canonical button must
+// resolve on ANY page without a per-page import. The FILLED states use a stable
+// hue (--accent-blue), never the grayscale --primary-color — injecting
+// `.btn .btn-primary` and reading the background proves global delivery AND the
+// contrast-safe fill AND that the global layer wins over page CSS. RED before
+// migration: no global .btn (display:block) and the old sim base filled
+// --primary-color (= silver #4a4a4a on the default light theme).
+
+test('button: canonical .btn is delivered globally (homepage)', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    expect(await probeStyle(page, 'btn', 'display')).toBe('inline-flex');
+});
+
+test('button: .btn-primary fills accent-blue on a default-theme page (shipgirl-stats, light)', async ({ page }) => {
+    await page.addInitScript(() => { localStorage.setItem('theme', 'light'); });
+    await page.goto(pathFor('shipgirl-stats'), { waitUntil: 'load' });
+    const bg = await probeStyle(page, 'btn btn-primary', 'backgroundColor');
+    // accent-blue light = #0071eb; NEVER the grayscale --primary-color (#4a4a4a).
+    expect(bg, `expected accent-blue primary, got: ${bg}`).toBe('rgb(0, 113, 235)');
+});
+
+test('button: .btn-primary auto-adapts to dark (shipgirl-stats, default dark)', async ({ page }) => {
+    await page.goto(pathFor('shipgirl-stats'), { waitUntil: 'load' }); // site defaults to dark
+    const bg = await probeStyle(page, 'btn btn-primary', 'backgroundColor');
+    expect(bg, `expected dark accent-blue, got: ${bg}`).toBe('rgb(114, 137, 218)'); // #7289da
+});
+
+test('button: segmented .btn.is-active fills accent-blue on an accent page (expression-viewer, light)', async ({ page }) => {
+    await page.addInitScript(() => { localStorage.setItem('theme', 'light'); });
+    await page.goto(pathFor('expression-viewer'), { waitUntil: 'load' });
+    const bg = await probeStyle(page, 'btn is-active', 'backgroundColor');
+    // Accent theme inherits --accent-blue from :root → same blue as default.
+    expect(bg, `expected accent-blue active, got: ${bg}`).toBe('rgb(0, 113, 235)');
+});
+
+test('button: .btn-close is borderless (homepage)', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    // Distinguishes .btn-close from bordered .btn-icon: transparent border resolves
+    // to rgba(0, 0, 0, 0). The base .btn supplies `border: 1px solid transparent`.
+    expect(await probeStyle(page, 'btn btn-close', 'borderTopColor')).toBe('rgba(0, 0, 0, 0)');
+});
+
+test('button: a segmented .btn-secondary carries a visible fill (sim-weapon, light)', async ({ page }) => {
+    await page.addInitScript(() => { localStorage.setItem('theme', 'light'); });
+    await page.goto(pathFor('sim-weapon'), { waitUntil: 'load' });
+    // Regression: speed/pagination segments were bare .btn (transparent) → invisible
+    // until selected. The neutral segment look comes from .btn-secondary, which must
+    // resolve to a real surface (--bg-elevated), never the transparent base.
+    const bg = await probeStyle(page, 'btn btn-secondary', 'backgroundColor');
+    expect(bg, `expected a visible segment surface, got: ${bg}`).not.toBe('rgba(0, 0, 0, 0)');
 });

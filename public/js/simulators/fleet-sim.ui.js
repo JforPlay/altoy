@@ -294,10 +294,10 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
                     </div>
                     <div class="config-group">
                         <span class="config-label">Lv.</span>
-                        <div class="level-stepper">
-                            <button class="stepper-btn" data-action="step-level" data-slot="${slotIndex}" data-dir="-1">−</button>
+                        <div class="level-stepper btn-group">
+                            <button class="btn btn-icon btn-sm stepper-btn" data-action="step-level" data-slot="${slotIndex}" data-dir="-1">−</button>
                             <span class="stepper-value" data-action="edit-level" data-slot="${slotIndex}">${level}</span>
-                            <button class="stepper-btn" data-action="step-level" data-slot="${slotIndex}" data-dir="1">+</button>
+                            <button class="btn btn-icon btn-sm stepper-btn" data-action="step-level" data-slot="${slotIndex}" data-dir="1">+</button>
                         </div>
                     </div>
                 </div>
@@ -314,7 +314,7 @@ function _buildIdentityHTML(slotIndex, ship, slotConfig) {
                 </div>
             </div>
             <div class="ship-card-actions">
-                <button class="btn-icon" data-action="remove-ship" data-slot="${slotIndex}" title="제거">
+                <button class="btn btn-close" data-action="remove-ship" data-slot="${slotIndex}" title="제거">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
@@ -846,10 +846,10 @@ export async function renderDamagePanel(container) {
         return `<button class="dmg-armor-chip${active}" data-action="dmg-armor" data-armor="${k}">${escapeHtml(preset.name)}<span class="dmg-armor-class">${escapeHtml(preset.shipClass)}</span></button>`;
     }).join('');
 
-    // Adapt buttons
+    // Adapt buttons — segmented .btn-group (single-active mode switch)
     const adaptLabels = { base: '기본', noAdapt: '무적응', full: '완전적응' };
     const adaptBtns = ['base', 'noAdapt', 'full'].map((a) =>
-        `<button class="dmg-adapt-btn${a === tgt.adapt ? ' active' : ''}" data-action="dmg-adapt" data-adapt="${a}">${adaptLabels[a] || a}</button>`
+        `<button class="btn btn-secondary btn-sm dmg-adapt-btn${a === tgt.adapt ? ' is-active' : ''}" data-action="dmg-adapt" data-adapt="${a}">${adaptLabels[a] || a}</button>`
     ).join('');
 
     // Editable enemy overrides
@@ -889,7 +889,7 @@ export async function renderDamagePanel(container) {
                 <span class="dmg-panel-title">피해 계산 (90초)</span>
             </div>
             <div class="dmg-target-row">${chips}</div>
-            <div class="dmg-adapt-row">${adaptBtns}</div>
+            <div class="dmg-adapt-row btn-group">${adaptBtns}</div>
             <div class="dmg-edit-row">${editRow}</div>
             <div class="dmg-ship-list">${perShipRows}</div>
             <div class="dmg-fleet-total">

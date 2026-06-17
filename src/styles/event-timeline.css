@@ -99,7 +99,6 @@ h1 {
 .info-button:focus-visible,
 .close-popup-btn:focus-visible,
 select:focus-visible,
-.event-link-btn:focus-visible,
 .shipgirl-icon-link:focus-visible {
   outline: 3px solid var(--input-focus);
   outline-offset: 3px;
@@ -432,22 +431,9 @@ select:focus {
    (src/styles/components/status.css, loaded globally) — emitted by the page JS
    or written as static markup, never re-styled here. */
 
+/* Detail link: canonical .btn .btn-outline .btn-sm; only card spacing kept. */
 .event-link-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.375rem 0.75rem;
-  background: var(--accent-blue);
-  color: white;
-  text-decoration: none;
-  border-radius: 0.25rem;
-  font-size: 0.85em;
-  transition: background 0.2s;
   margin-left: 0.5rem;
-}
-
-.event-link-btn:hover {
-  background: #0056b3;
 }
 
 .shipgirl-icon-link {

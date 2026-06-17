@@ -81,10 +81,17 @@ function registerDefaultBattleEntities(simEngine, elements, options = {}) {
 function setupSpeedControls(simEngine, buttons = document.querySelectorAll('.speed-btn')) {
     const speedButtons = Array.from(buttons);
 
+    // Segmented .btn-group active member: toggle the canonical .is-active
+    // (not the shared setPressed's .active, which the deferred filter bar still uses).
+    function setSpeedActive(button, isActive) {
+        button.classList.toggle('is-active', isActive);
+        button.setAttribute('aria-pressed', String(isActive));
+    }
+
     function activate(button) {
         const speed = parseFloat(button.dataset.speed);
         for (const speedButton of speedButtons) {
-            setPressed(speedButton, speedButton === button);
+            setSpeedActive(speedButton, speedButton === button);
         }
         if (Number.isFinite(speed)) {
             simEngine.bulletEngine.gSpeed = speed;
@@ -93,7 +100,7 @@ function setupSpeedControls(simEngine, buttons = document.querySelectorAll('.spe
 
     for (const button of speedButtons) {
         button.type = 'button';
-        setPressed(button, button.classList.contains('active'));
+        setSpeedActive(button, button.classList.contains('is-active'));
         button.addEventListener('click', () => activate(button));
     }
 }
@@ -111,7 +118,7 @@ function setupPauseButton(simEngine, pauseButton) {
     }
 
     function getActiveSpeed() {
-        const active = document.querySelector('.speed-btn.active');
+        const active = document.querySelector('.speed-btn.is-active');
         return active ? parseFloat(active.dataset.speed) || SIM_DEFAULT_SPEED : SIM_DEFAULT_SPEED;
     }
 
@@ -148,7 +155,8 @@ function renderLevelToggle(container, label, isActive, onClick) {
         return null;
     }
 
-    const button = createElement('button', isActive ? 'level-10' : '', label);
+    // Canonical .btn-secondary toggle; .is-active renders the filled (max-level) state.
+    const button = createElement('button', `btn btn-secondary${isActive ? ' is-active' : ''}`, label);
     button.id = 'level-toggle';
     button.type = 'button';
     button.setAttribute('aria-pressed', String(isActive));

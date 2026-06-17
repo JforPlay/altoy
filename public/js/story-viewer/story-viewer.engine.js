@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const btn = document.createElement('button');
             btn.id = 'auto-play-btn';
-            btn.className = 'story-nav-btn auto-play-btn';
+            btn.className = 'btn btn-secondary story-nav-btn auto-play-btn';
             btn.type = 'button';
             btn.title = '자동 재생 (A)';
             navArrows.insertBefore(btn, navArrows.firstChild);
@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!btn) return;
             const label = ['자동', '자동 (느림)', '자동 (보통)', '자동 (빠름)'][this.autoPlaySpeed] || '자동';
             btn.textContent = label;
-            btn.classList.toggle('active', this.autoPlaySpeed > 0);
+            btn.classList.toggle('is-active', this.autoPlaySpeed > 0);
             btn.setAttribute('aria-pressed', String(this.autoPlaySpeed > 0));
         },
 
@@ -1142,7 +1142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (hasOptions) {
                 line.options.forEach(opt => {
                     const button = document.createElement('button');
-                    button.className = 'option-button';
+                    button.className = 'btn option-button';
                     button.type = 'button';
                     button.textContent = opt.content.replace(/<.*?>/g, '');
                     button.addEventListener('click', (e) => {

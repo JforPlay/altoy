@@ -24,11 +24,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <button class="map-tab" data-tab="archive" type="button" aria-pressed="false">작전 문서</button>
             <button class="map-tab" data-tab="world" type="button" aria-pressed="false">대형 작전</button>
             <div class="map-tabs-spacer"></div>
-            <button class="map-search-btn" id="searchShipBtn" title="함순이 드랍 검색" type="button">
+            <button class="btn btn-ghost btn-sm map-search-btn" id="searchShipBtn" title="함순이 드랍 검색" type="button">
                 <span class="material-symbols-outlined map-btn-icon">directions_boat</span>
                 함순이 검색
             </button>
-            <button class="map-search-btn" id="searchBlueprintBtn" title="설계도 드랍 검색" type="button">
+            <button class="btn btn-ghost btn-sm map-search-btn" id="searchBlueprintBtn" title="설계도 드랍 검색" type="button">
                 <span class="material-symbols-outlined map-btn-icon">description</span>
                 설계도 검색
             </button>
@@ -62,7 +62,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                                 <div class="map-header-title" id="mapTitle"></div>
                                 <div class="map-header-sub" id="mapSubtitle"></div>
                             </div>
-                            <button class="map-compare-btn" id="compareBtn" type="button">
+                            <button class="btn btn-primary btn-sm map-compare-btn" id="compareBtn" type="button">
                                 <span class="material-symbols-outlined map-btn-icon-sm">compare_arrows</span>
                                 비교하기
                             </button>
@@ -94,7 +94,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div class="map-node-overlay" id="nodeOverlay" role="dialog" aria-hidden="true" aria-labelledby="nodeOverlayTitle">
             <div class="map-node-overlay-header">
                 <span class="map-node-overlay-title" id="nodeOverlayTitle"></span>
-                <button class="map-node-overlay-close" id="nodeOverlayClose" type="button" aria-label="닫기">
+                <button class="btn btn-close map-node-overlay-close" id="nodeOverlayClose" type="button" aria-label="닫기">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
@@ -105,7 +105,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div id="compareBar" class="map-compare-bar hidden">
             <span class="material-symbols-outlined">compare_arrows</span>
             <span id="compareBarText">비교할 해역을 선택하세요</span>
-            <button id="compareCancelBtn" class="map-compare-cancel" type="button">
+            <button id="compareCancelBtn" class="btn btn-outline btn-sm map-compare-cancel" type="button">
                 <span class="material-symbols-outlined map-btn-icon-sm">close</span>
                 취소
             </button>
@@ -118,7 +118,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <span class="material-symbols-outlined map-search-header-icon">compare_arrows</span>
                     <span class="map-search-title">해역 비교</span>
                     <div class="map-search-header-spacer"></div>
-                    <button class="map-search-close" id="compareModalClose" type="button" aria-label="닫기">
+                    <button class="btn btn-close map-search-close" id="compareModalClose" type="button" aria-label="닫기">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>
@@ -133,7 +133,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <span class="material-symbols-outlined map-search-header-icon" id="searchModalIcon">directions_boat</span>
                     <span class="map-search-title" id="searchModalTitle">검색</span>
                     <div class="map-search-header-spacer"></div>
-                    <button class="map-search-close" id="searchModalClose" type="button" aria-label="닫기">
+                    <button class="btn btn-close map-search-close" id="searchModalClose" type="button" aria-label="닫기">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>

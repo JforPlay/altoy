@@ -42,22 +42,8 @@
 .sync-popover.open { display: block; }
 .sync-popover h3 { margin: 0 0 var(--spacing-sm); font-size: 0.95rem; }
 .sync-popover p { margin: var(--spacing-xs) 0; font-size: 0.85rem; color: var(--text-secondary); }
-.sync-popover .sync-action {
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    /* --accent-blue from theme.css stays blue on every page; --primary-color
-       is overridden to gray/silver in places. */
-    background: var(--accent-blue);
-    color: white;
-    border: none;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    font-size: 0.9rem;
-    margin-top: var(--spacing-xs);
-    transition: background var(--transition-fast);
-}
-.sync-popover .sync-action:hover:not([disabled]) { filter: brightness(1.1); }
-.sync-popover .sync-action[disabled] { background: var(--surface-border); color: var(--text-muted); cursor: not-allowed; }
+/* Primary CTA: canonical .btn .btn-primary .btn-block; only top spacing kept. */
+.sync-popover .sync-action { margin-top: var(--spacing-xs); }
 .sync-popover .sync-meta {
     margin-top: var(--spacing-sm);
     padding-top: var(--spacing-sm);
@@ -65,17 +51,8 @@
     font-size: 0.8rem;
     color: var(--text-muted);
 }
-.sync-popover .sync-unlink {
-    margin-top: var(--spacing-sm);
-    padding: var(--spacing-xs) var(--spacing-sm);
-    background: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-muted);
-    border-radius: var(--radius-sm);
-    font-size: 0.8rem;
-    cursor: pointer;
-}
-.sync-popover .sync-unlink:hover { color: var(--danger-color); border-color: var(--danger-color); }
+/* Unlink: canonical .btn .btn-danger .btn-sm (destructive); only top spacing kept. */
+.sync-popover .sync-unlink { margin-top: var(--spacing-sm); }
 
 /* Manual backup section (export / import — works without Google Drive) */
 .sync-popover .sync-divider {
@@ -94,20 +71,7 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xs);
 }
-.sync-popover .sync-secondary {
-    padding: var(--spacing-sm);
-    background: transparent;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    color: var(--text-primary);
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-}
-.sync-popover .sync-secondary:hover {
-    background: var(--highlight-subtle);
-    border-color: var(--accent-blue);
-}
+/* Export / import: canonical .btn .btn-secondary (grid cells span full width). */
 
 /* Conflict modal — shell (scoped to this modal so we don't affect other .modal usage) */
 #sync-conflict-modal.modal {
@@ -143,16 +107,9 @@
     margin: 0;
     font-size: 1.1rem;
 }
-#sync-conflict-modal .modal-close {
-    background: transparent;
-    border: none;
-    font-size: 1.5rem;
-    color: var(--text-muted);
-    cursor: pointer;
-    padding: 0 var(--spacing-xs);
-    line-height: 1;
-}
-#sync-conflict-modal .modal-close:hover { color: var(--danger-color); }
+/* Modal close: canonical .btn .btn-close (square); positioning comes from the
+   header's flex layout, glyph size kept large. */
+#sync-conflict-modal .modal-close { font-size: 1.5rem; }
 #sync-conflict-modal .modal-body p { margin: 0 0 var(--spacing-sm); font-size: 0.9rem; }
 
 /* Conflict modal — inner content */
@@ -184,28 +141,14 @@
     font-size: 0.85rem;
     color: var(--text-secondary);
 }
+/* Conflict actions: canonical .btn variants per button (.btn-secondary / the
+   keep-local CTA is .btn-primary) — no local button rules. */
 .sync-conflict-actions {
     display: flex;
     gap: var(--spacing-sm);
     justify-content: flex-end;
     flex-wrap: wrap;
 }
-.sync-conflict-actions button {
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    font-size: 0.9rem;
-    border: 1px solid var(--border-color);
-    background: var(--card-bg);
-    color: var(--text-primary);
-    transition: all var(--transition-fast);
-}
-.sync-conflict-actions button.primary {
-    background: var(--accent-blue);
-    color: white;
-    border-color: var(--accent-blue);
-}
-.sync-conflict-actions button:hover { filter: brightness(1.1); }
 
 @media (max-width: 600px) {
     .sync-conflict-grid { grid-template-columns: 1fr; }

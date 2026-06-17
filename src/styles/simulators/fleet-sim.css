@@ -197,29 +197,16 @@
   color: var(--text-muted);
 }
 
-/* Remove/swap button */
+/* Remove/swap button — canonical .btn-close (borderless X); only the destructive
+   danger-red hover is a genuine local difference (default .btn-close hover is neutral). */
 .ship-card-actions {
   display: flex;
   gap: 2px;
 }
 
-.ship-card-actions .btn-icon {
-  padding: 4px;
-  background: transparent;
-  border: none;
-  color: var(--text-dim);
-  cursor: pointer;
-  border-radius: var(--radius-sm);
-  transition: color var(--transition-fast), background var(--transition-fast);
-}
-
-.ship-card-actions .btn-icon:hover {
+.ship-card-actions .btn-close:hover {
   color: var(--danger-color);
   background: var(--primary-alpha-10);
-}
-
-.ship-card-actions .btn-icon .material-symbols-outlined {
-  font-size: 18px;
 }
 
 /* ===== RELOAD BAR (replaces old config row position) ===== */
@@ -248,40 +235,11 @@
   white-space: nowrap;
 }
 
-/* Level stepper (Task 3) */
+/* Level stepper (Task 3) — buttons are canonical .btn-icon inside a .btn-group
+   (button.css owns their shape/color/joins); .level-stepper just aligns the
+   middle value span vertically with the grouped +/- buttons. */
 .level-stepper {
-  display: inline-flex;
   align-items: center;
-  border: 1px solid var(--input-border);
-  border-radius: var(--radius-sm);
-  background: var(--input-bg);
-  overflow: hidden;
-}
-
-.level-stepper .stepper-btn {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: transparent;
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 700;
-  font-family: inherit;
-  padding: 0;
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
-
-.level-stepper .stepper-btn:hover {
-  background: var(--primary-alpha-15);
-  color: var(--primary-color);
-}
-
-.level-stepper .stepper-btn:active {
-  background: var(--primary-alpha-20);
 }
 
 .level-stepper .stepper-value {
@@ -1064,34 +1022,11 @@
   color: var(--text-muted);
 }
 
+/* Slot action buttons are emitted as canonical .btn .btn-sm .btn-primary (불러오기)
+   / .btn-danger (삭제) by _createSaveActionButton — button.css owns their styling. */
 .save-slot-actions {
   display: flex;
   gap: 4px;
-}
-
-.save-slot-actions button {
-  padding: 4px 8px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  border: 1px solid var(--border-color);
-  background: var(--input-bg);
-  color: var(--text-secondary);
-  transition: all var(--transition-fast);
-  font-family: inherit;
-}
-
-.save-slot-actions .load-btn:hover {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  color: #fff;
-}
-
-.save-slot-actions .delete-btn:hover {
-  background: var(--danger-color);
-  border-color: var(--danger-color);
-  color: #fff;
 }
 
 /* Loading overlay → canonical .page-status--overlay (components/status.css) */

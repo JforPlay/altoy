@@ -447,7 +447,7 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
         if (firstPickupPool) {
             const firstBtn = poolSelector.querySelector(`[data-pool="${firstPickupPool}"]`);
             if (firstBtn) {
-                firstBtn.classList.add('active');
+                firstBtn.classList.add('is-active');
                 firstBtn.setAttribute('aria-pressed', 'true');
             }
         }
@@ -457,7 +457,7 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
     function createPoolButton(pool, icon, name, isPickup = false, basePool = null) {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'pool-btn';
+        btn.className = 'btn btn-secondary pool-btn';
         btn.dataset.pool = pool;
         btn.setAttribute('aria-pressed', 'false');
         
@@ -636,7 +636,7 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
 
         // Update UI
         document.querySelectorAll('.pool-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.pool === despairPoolId);
+            btn.classList.toggle('is-active', btn.dataset.pool === despairPoolId);
             btn.setAttribute('aria-pressed', String(btn.dataset.pool === despairPoolId));
         });
 
@@ -832,7 +832,7 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
 
         // Update button states
         document.querySelectorAll('.pool-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.pool === poolId);
+            btn.classList.toggle('is-active', btn.dataset.pool === poolId);
             btn.setAttribute('aria-pressed', String(btn.dataset.pool === poolId));
         });
 

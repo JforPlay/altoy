@@ -178,7 +178,7 @@ function buildSeasonalItemsCategory() {
 
 function setupEventListeners() {
     // Recipe-dependency modal close button + backdrop + ESC
-    setupModal('dependency-modal', { closeButtonSelector: '.modal-close-btn', restoreFocus: true });
+    setupModal('dependency-modal', { closeButtonSelector: '.btn-close', restoreFocus: true });
 
     // Category select
     const categorySelect = document.getElementById('recipe-category-select');
@@ -464,7 +464,7 @@ function showDependencyModal(title, recipes, direction, sourceRecipe) {
                                                 <span class="modal-recipe-category">${categoryNames[findRecipeCategoryById(recipe.id)] || '알 수 없음'}</span>
                                             </div>
                                         </div>
-                                        <button class="modal-select-btn" data-action="select-modal-recipe" data-recipe-id="${recipe.id}">
+                                        <button class="btn btn-primary modal-select-btn" data-action="select-modal-recipe" data-recipe-id="${recipe.id}">
                                             <span class="material-symbols-outlined">arrow_forward</span>
                                         </button>
                                     </div>

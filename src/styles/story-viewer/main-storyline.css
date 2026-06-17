@@ -389,6 +389,9 @@ body::before {
 /* Modal shell (overlay/dialog/close button) comes from components/Modal.astro;
    only the slotted content below is styled here. */
 
+/* EXCEPTION: adopts the `.btn` base shape (inline-flex, focus-ring); keeps the
+   blue --accent-color story-CTA fill + size as a scoped brand rule. --accent-color
+   here is a true blue (not grayscale), so white text stays legible in both themes. */
 .chapter-button {
   background-color: var(--accent-color);
   color: white;
@@ -396,7 +399,6 @@ body::before {
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   font-size: 1rem;
-  cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 

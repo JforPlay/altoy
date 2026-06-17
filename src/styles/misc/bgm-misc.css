@@ -280,21 +280,14 @@ body:has(.bgm-misc-player-bar:not([hidden])) .scroll-to-top {
     flex-shrink: 0;
 }
 
+/* Player controls = canonical `.btn .btn-icon` (square via aspect-ratio + neutral
+   color from button.css). Local rule keeps only the borderless/transparent
+   toolbar look + a slightly roomier tap target than the default icon padding. */
 .bgm-misc-pbtn {
+    --btn-pad-y: 0.5625rem; /* ~2.25rem footprint, matches the player-bar rhythm */
     background: transparent;
-    border: none;
+    border-color: transparent;
     color: var(--text-primary);
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 50%;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    transition: background var(--transition-fast, 150ms ease),
-                color var(--transition-fast, 150ms ease),
-                transform var(--transition-fast, 150ms ease);
 }
 
 .bgm-misc-pbtn svg {
@@ -321,17 +314,15 @@ body:has(.bgm-misc-player-bar:not([hidden])) .scroll-to-top {
 
 .bgm-misc-pbtn:hover:not(:disabled) {
     background: var(--primary-alpha-10);
+    border-color: transparent;
 }
 
 .bgm-misc-pbtn:active:not(:disabled) {
     transform: scale(0.92);
 }
 
-.bgm-misc-pbtn:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-}
-
+/* Main play/pause = brand FAB: keep the blurple→accent gradient + larger size
+   (a deliberate emphasis flourish). Shape/disabled still come from `.btn`. */
 .bgm-misc-pbtn-main {
     background: linear-gradient(135deg, var(--primary-color), var(--accent-blue));
     color: white;
@@ -341,10 +332,13 @@ body:has(.bgm-misc-player-bar:not([hidden])) .scroll-to-top {
 }
 
 .bgm-misc-pbtn-main:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-blue));
     transform: scale(1.05);
     box-shadow: var(--shadow-md);
 }
 
+/* Toggle on-state = subtle non-fill accent (allowed: --primary-color on a
+   non-filled control). Independent toggles, so not a segmented .btn-group. */
 .bgm-misc-toggle {
     color: var(--text-secondary);
     position: relative;
@@ -419,21 +413,7 @@ body:has(.bgm-misc-player-bar:not([hidden])) .scroll-to-top {
     background: var(--bg-secondary);
 }
 
-.bgm-misc-clear-btn {
-    background: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    padding: 0.25rem 0.75rem;
-    border-radius: var(--radius-md, 0.5rem);
-    cursor: pointer;
-    font-size: 0.8125rem;
-    transition: all var(--transition-fast, 150ms ease);
-}
-
-.bgm-misc-clear-btn:hover {
-    background: var(--primary-alpha-10);
-    color: var(--text-primary);
-}
+/* 지우기 = canonical `.btn .btn-danger .btn-sm` (filled red destructive). */
 
 .bgm-misc-queue-list {
     list-style: none;

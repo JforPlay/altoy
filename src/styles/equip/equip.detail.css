@@ -59,23 +59,12 @@
     color: var(--text-primary);
 }
 
+/* Header close = canonical .btn.btn-close (button.css). Only the fixed square
+   footprint stays local (the canonical close is padding-sized). */
 .panel-close-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 2rem;
     height: 2rem;
-    border: none;
-    border-radius: var(--radius-md);
-    background: transparent;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-}
-
-.panel-close-btn:hover {
-    background: var(--section-bg);
-    color: var(--text-primary);
+    padding: 0;
 }
 
 /* ===== Panel Body (Scrollable) ===== */
@@ -95,29 +84,10 @@
     flex-shrink: 0;
 }
 
+/* Footer actions = canonical .btn.btn-secondary (button.css). Only the equal-width
+   footer stretch stays local — the canonical button is inline-flex, not flex:1. */
 .detail-action-btn {
     flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.375rem;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    background: var(--card-bg);
-    color: var(--text-primary);
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-}
-
-.detail-action-btn:hover {
-    background: var(--section-bg);
-    border-color: var(--primary-color);
-}
-
-.detail-action-btn .material-symbols-outlined {
-    font-size: 1.1rem;
 }
 
 /* ===== Compact Detail Content (inside panel) ===== */
@@ -214,31 +184,10 @@
     text-align: left;
 }
 
-/* ===== Sim Link Button ===== */
-.sim-link-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    margin-top: 0.5rem;
-    padding: 0.35rem 0.75rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    background: var(--primary-alpha-10);
-    border: 1px solid var(--primary-alpha-20);
-    border-radius: var(--radius-full);
-    text-decoration: none;
-    transition: all var(--transition-fast);
-}
-
-.sim-link-btn:hover {
-    color: #fff;
-    background: var(--accent-blue);   /* stable hue; --primary-color goes silver in dark → #fff unreadable */
-}
-
-.sim-link-btn .material-symbols-outlined {
-    font-size: 1rem;
-}
+/* Sim-link = canonical .btn.btn-outline.btn-sm (button.css). The old bespoke rule
+   (a --radius-full pill) is gone — buttons are rectangular; only the top margin
+   separating it from the meta above stays local. */
+.sim-link-btn { margin-top: 0.5rem; }
 
 /* ===== Panel Level Selector ===== */
 .level-selector-section {

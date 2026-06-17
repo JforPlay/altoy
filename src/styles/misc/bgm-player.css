@@ -251,44 +251,30 @@ body {
   }
 }
 
-/* Carousel Navigation Buttons */
+/* Carousel Navigation Buttons — canonical .btn.btn-icon.btn-lg provides shape;
+   only the floating position + translucent glass overlay stay local (they sit
+   over album art, so they need the blur/translucency the bordered icon lacks). */
 .nav-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 56px;
-  height: 56px;
   background: var(--bgm-overlay-medium);
   backdrop-filter: blur(10px);
-  border: 1px solid var(--bgm-overlay-heavy);
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  transition: all 0.3s ease;
+  border-color: var(--bgm-overlay-heavy);
   color: var(--text-primary);
+  z-index: 10;
 }
 
 .nav-btn:hover:not(:disabled) {
   background: var(--bgm-overlay-heavy);
+  border-color: var(--bgm-overlay-heavy);
+  color: var(--text-primary);
   transform: translateY(-50%) scale(1.1);
   box-shadow: 0 10px 30px var(--shadow-color);
 }
 
-.nav-btn:focus-visible {
-  outline: 3px solid var(--accent-color);
-  outline-offset: 3px;
-}
-
 .nav-btn:active:not(:disabled) {
   transform: translateY(-50%) scale(0.95);
-}
-
-.nav-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
 }
 
 .nav-btn svg {
@@ -582,8 +568,7 @@ body.dark-mode #track-list li.playing .track-button {
   }
 
   .nav-btn {
-    width: 40px;
-    height: 40px;
+    --btn-pad-y: 0.5rem; /* shrink the square via the padding knob, not width/height */
   }
 
   .nav-btn svg {

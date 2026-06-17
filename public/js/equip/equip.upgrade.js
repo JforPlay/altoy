@@ -320,7 +320,7 @@ function renderEquipInfo(equipId) {
                     ${equip ? `<span class="info-rarity rarity-${equip.rarity}">${safeRarityName}</span>` : ''}
                 </div>
             </div>
-            <a class="info-link-btn" href="${resolveUrl(`equip/equip-viewer?equip=${equipId}`)}" title="장비 DB에서 보기">
+            <a class="info-link-btn btn btn-close" href="${resolveUrl(`equip/equip-viewer?equip=${equipId}`)}" title="장비 DB에서 보기">
                 <span class="material-symbols-outlined">open_in_new</span>
             </a>
         </div>
@@ -529,7 +529,7 @@ function renderMatEquipList(propId) {
 
     // Back button
     const backBtn = document.createElement('button');
-    backBtn.className = 'mat-modal-back';
+    backBtn.className = 'mat-modal-back btn btn-ghost btn-sm';
     backBtn.innerHTML = `<span class="material-symbols-outlined">arrow_back</span> 재료 목록으로`;
     backBtn.addEventListener('click', renderMatBrowseList);
     fragment.appendChild(backBtn);

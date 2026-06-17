@@ -342,13 +342,13 @@ function renderLevelCalculator(char) {
                     <div class="enhancement-selector">
                         <label class="enhancement-label">강화 단계</label>
                         <div class="enhancement-buttons">
-                            <button class="enhancement-btn ${state.selectedEnhancement === 0 ? 'active' : ''}" data-enhancement="0">
+                            <button class="btn btn-secondary enhancement-btn ${state.selectedEnhancement === 0 ? 'is-active' : ''}" data-enhancement="0">
                                 강화 X
                             </button>
-                            <button class="enhancement-btn ${state.selectedEnhancement === 1 ? 'active' : ''}" data-enhancement="1">
+                            <button class="btn btn-secondary enhancement-btn ${state.selectedEnhancement === 1 ? 'is-active' : ''}" data-enhancement="1">
                                 1차 강화
                             </button>
-                            <button class="enhancement-btn ${state.selectedEnhancement === 2 ? 'active' : ''}" data-enhancement="2">
+                            <button class="btn btn-secondary enhancement-btn ${state.selectedEnhancement === 2 ? 'is-active' : ''}" data-enhancement="2">
                                 2차 강화
                             </button>
                         </div>
@@ -687,7 +687,7 @@ function updateEnhancementDisplay() {
     const enhancementButtons = document.querySelectorAll('.enhancement-btn');
     enhancementButtons.forEach(btn => {
         const enhancement = parseInt(btn.dataset.enhancement);
-        btn.classList.toggle('active', enhancement === state.selectedEnhancement);
+        btn.classList.toggle('is-active', enhancement === state.selectedEnhancement);
     });
 }
 
@@ -747,7 +747,7 @@ function renderSkillSection(char) {
             const level = index + 1;
             const isActive = level === state.selectedSkillLevel;
             return `
-                <button class="skill-level-btn ${isActive ? 'active' : ''}" data-skill-level="${level}">
+                <button class="btn btn-secondary skill-level-btn ${isActive ? 'is-active' : ''}" data-skill-level="${level}">
                     ${level}
                 </button>
             `;
@@ -801,7 +801,7 @@ function updateSkillDisplay(char) {
     // Update active button
     const buttons = document.querySelectorAll('.skill-level-btn');
     buttons.forEach((button, index) => {
-        button.classList.toggle('active', (index + 1) === state.selectedSkillLevel);
+        button.classList.toggle('is-active', (index + 1) === state.selectedSkillLevel);
     });
 
     // Update skill level display

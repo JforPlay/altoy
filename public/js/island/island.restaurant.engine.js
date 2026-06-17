@@ -756,7 +756,7 @@ function createMenuCard(itemId, formulaId, restaurantId) {
                 </div>
             </details>
             <div class="menu-actions">
-                <button class="menu-action-btn view-recipe-btn" type="button" data-formula-id="${formulaId}">
+                <button class="btn btn-secondary view-recipe-btn" type="button" data-formula-id="${formulaId}">
                     <span class="material-symbols-outlined">menu_book</span>
                     레시피 보기
                 </button>

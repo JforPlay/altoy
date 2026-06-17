@@ -38,6 +38,12 @@
   white-space: nowrap;
 }
 
+/* Respect the `hidden` attribute. The `display` above is an AUTHOR rule, so it
+   beats the UA `[hidden]{display:none}` rule — without this a badge toggled via
+   `el.hidden` (e.g. the 0-count filter bubble on equip-viewer) would still paint
+   as an empty .badge--count circle. */
+.badge[hidden] { display: none; }
+
 /* Neutral / metadata — the default look (tint bg + secondary text). */
 .badge--neutral {
   background: var(--overlay-lighter);

@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (r.type === 'barrage') {
             const btn = document.createElement('button');
             btn.type = 'button';
-            btn.className = 'btn btn-secondary cf-render-btn';
+            btn.className = 'btn btn-primary cf-render-btn';
             btn.textContent = '▶ 시뮬레이션';
             btn.addEventListener('click', () => selectRow(r, tr));
             actTd.appendChild(btn);

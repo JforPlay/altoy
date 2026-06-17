@@ -510,7 +510,7 @@ export class ChatViewerEngine {
         options.forEach(option => {
             const button = document.createElement('button');
             button.type = 'button';
-            button.classList.add('choice-button');
+            button.classList.add('btn', 'choice-button');
             button.textContent = option.content;
             button.addEventListener('click', () => this.handleChoice(option.flag, option.content));
             this.optionsContainer.appendChild(button);

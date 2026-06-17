@@ -77,10 +77,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             <div class="story-background"></div>
             <div id="painting-layer" class="painting-layer"></div>
             <header id="story-header" class="story-header">
-                <button id="back-to-tabs" class="nav-button back-button">&#x2190;</button>
+                <button id="back-to-tabs" class="btn btn-icon nav-button back-button">&#x2190;</button>
                 <h2 id="story-title"></h2>
                 <div id="progress-indicator" class="progress-indicator"></div>
-                <button id="view-script-btn" class="nav-button" title="View Full Script">
+                <button id="view-script-btn" class="btn btn-secondary nav-button" title="View Full Script">
                     <span class="material-symbols-outlined">menu_book</span>
                     전체 대사보기
                 </button>
@@ -101,7 +101,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
             <div class="bottom-bar-container">
                 <div id="audio-player-container" class="audio-player-container hidden">
-                    <button id="play-pause-btn" class="audio-btn"><span class="material-symbols-outlined">play_arrow</span></button>
+                    <button id="play-pause-btn" class="btn btn-icon audio-btn"><span class="material-symbols-outlined">play_arrow</span></button>
                     <div class="waveform-container">
                         <div class="waveform-bar"></div>
                         <div class="waveform-bar"></div>
@@ -111,15 +111,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     </div>
                     <span id="bgm-name" class="bgm-name"></span>
                     <div class="volume-control">
-                        <button id="mute-btn" class="audio-btn"><span class="material-symbols-outlined">volume_up</span></button>
+                        <button id="mute-btn" class="btn btn-icon audio-btn"><span class="material-symbols-outlined">volume_up</span></button>
                         <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.01">
                     </div>
                 </div>
                 <div class="story-nav-arrows">
-                    <button id="prev-line-btn" class="story-nav-btn">&#x2190; 이전</button>
-                    <button id="next-line-btn" class="story-nav-btn">다음 →</button>
-                    <button id="next-story-btn" class="story-nav-btn hidden">다음 스토리 보기 →</button>
-                    <button id="return-btn" class="story-nav-btn hidden">돌아가기</button>
+                    <button id="prev-line-btn" class="btn btn-secondary story-nav-btn">&#x2190; 이전</button>
+                    <button id="next-line-btn" class="btn btn-secondary story-nav-btn">다음 →</button>
+                    <button id="next-story-btn" class="btn btn-secondary story-nav-btn hidden">다음 스토리 보기 →</button>
+                    <button id="return-btn" class="btn btn-secondary story-nav-btn hidden">돌아가기</button>
                 </div>
                 <div class="bottom-bar-spacer"></div>
             </div>
@@ -128,7 +128,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <div id="polaroid-modal" class="modal-overlay hidden">
         <div class="polaroid-modal-content">
-            <button id="close-polaroid-modal" class="close-modal-btn" title="Close">
+            <button id="close-polaroid-modal" class="btn btn-close close-modal-btn" title="Close">
                 <span class="material-symbols-outlined">close</span>
             </button>
             <div id="polaroid-detail" class="polaroid-detail">
@@ -136,7 +136,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                     <img id="polaroid-img-front" class="polaroid-img" alt="Polaroid Front">
                     <img id="polaroid-img-back" class="polaroid-img hidden" alt="Polaroid Back">
                 </div>
-                <button id="flip-polaroid-btn" class="flip-polaroid-btn">
+                <button id="flip-polaroid-btn" class="btn flip-polaroid-btn">
                     <span class="material-symbols-outlined">flip</span>
                     뒤집기
                 </button>
@@ -147,7 +147,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <div id="script-modal-overlay" class="modal-overlay hidden">
         <div class="modal-content">
-            <button id="close-modal-btn" class="close-modal-btn" title="Close">
+            <button id="close-modal-btn" class="btn btn-close close-modal-btn" title="Close">
                 <span class="material-symbols-outlined">close</span>
             </button>
             <div id="full-script-content" class="full-script-content"></div>

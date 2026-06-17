@@ -450,7 +450,7 @@ function updateViewToggleUI() {
     if (!viewToggle) return;
     for (const btn of viewToggle.querySelectorAll('[data-view]')) {
         const active = btn.dataset.view === state.viewMode;
-        btn.classList.toggle('active', active);
+        btn.classList.toggle('is-active', active);   // canonical .btn-group active member (button.css)
         btn.setAttribute('aria-selected', active ? 'true' : 'false');
     }
 }

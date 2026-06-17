@@ -70,34 +70,16 @@ body.calendar-page {
   border: 1px solid var(--calendar-border);
 }
 
-.calendar-controls .view-toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 1.2rem;
-  border: 1px solid var(--calendar-border);
-  background: var(--calendar-alt-bg);
-  color: var(--calendar-text);
-  border-radius: 8px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, outline-offset 0.2s ease;
-}
-
-.calendar-controls .view-toggle:hover {
-  background: var(--calendar-event-bg);
-  border-color: var(--calendar-event-border);
-}
-
-.calendar-controls .view-toggle:focus-visible {
-  outline: 2px solid var(--calendar-primary);
-  outline-offset: 2px;
-}
-
-.calendar-controls .view-toggle.active {
-  background: var(--calendar-primary);
-  color: #fff;
-  border-color: var(--calendar-primary);
+/* View toggles (연간/월간/주간/일간) + 오늘 = `.btn .btn-secondary` (오늘) and
+   `.btn .btn-secondary` view toggles with `.is-active` on the current view
+   (accent-blue fill) — all from components/button.css. They stay gapped flex
+   children of the controls bar (intentionally not a joined .btn-group), so only
+   the larger calendar sizing is local. */
+.calendar-controls .view-toggle,
+.calendar-controls .today-btn {
+  --btn-pad-y: 0.7rem;
+  --btn-pad-x: 1.2rem;
+  --btn-font-size: 1.1rem;
 }
 
 .calendar-controls .dropdown-container {
@@ -281,22 +263,13 @@ body.calendar-page {
   color: var(--calendar-primary);
 }
 
+/* Sidebar close = `.btn .btn-close` (components/button.css); only the larger
+   glyph + the playful rotate-on-hover stay local. */
 .sidebar-close {
-  background: transparent;
-  border: none;
-  color: var(--calendar-text);
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
   font-size: 1.5rem;
 }
 
 .sidebar-close:hover {
-  background: var(--calendar-event-bg);
   color: var(--calendar-primary);
   transform: rotate(90deg);
 }
@@ -387,24 +360,13 @@ body.calendar-page {
   border-radius: 8px;
 }
 
+/* Nav chevrons = `.btn .btn-ghost` (components/button.css); only the accent
+   chevron color + compact sizing stay local. */
 .year-view-header .nav-btn {
-  cursor: pointer;
-  border: none;
-  background: transparent;
   color: var(--calendar-primary);
-  font-size: 1.2rem;
-  padding: 0.25rem;
-  border-radius: 4px;
-  transition: background 0.2s ease;
-}
-
-.year-view-header .nav-btn:hover {
-  background: var(--calendar-event-bg);
-}
-
-.year-view-header .nav-btn:focus-visible {
-  outline: 2px solid var(--calendar-primary);
-  outline-offset: 2px;
+  --btn-pad-y: 0.25rem;
+  --btn-pad-x: 0.25rem;
+  --btn-font-size: 1.2rem;
 }
 
 .year-view-header h3 {
@@ -593,23 +555,10 @@ body.calendar-page {
 }
 
 .month-view-header .nav-btn {
-  cursor: pointer;
-  border: none;
-  background: transparent;
   color: var(--calendar-primary);
-  font-size: 1.2rem;
-  padding: 0.25rem;
-  border-radius: 4px;
-  transition: background 0.2s ease;
-}
-
-.month-view-header .nav-btn:hover {
-  background: var(--calendar-event-bg);
-}
-
-.month-view-header .nav-btn:focus-visible {
-  outline: 2px solid var(--calendar-primary);
-  outline-offset: 2px;
+  --btn-pad-y: 0.25rem;
+  --btn-pad-x: 0.25rem;
+  --btn-font-size: 1.2rem;
 }
 
 .month-view-header h3 {
@@ -662,23 +611,10 @@ body.calendar-page {
 }
 
 .week-view-header .nav-btn {
-  cursor: pointer;
-  border: none;
-  background: transparent;
   color: var(--calendar-primary);
-  font-size: 1.2rem;
-  padding: 0.25rem;
-  border-radius: 4px;
-  transition: background 0.2s ease;
-}
-
-.week-view-header .nav-btn:hover {
-  background: var(--calendar-event-bg);
-}
-
-.week-view-header .nav-btn:focus-visible {
-  outline: 2px solid var(--calendar-primary);
-  outline-offset: 2px;
+  --btn-pad-y: 0.25rem;
+  --btn-pad-x: 0.25rem;
+  --btn-font-size: 1.2rem;
 }
 
 .week-view-header h3 {
@@ -703,18 +639,7 @@ body.calendar-page {
   margin-top: 32px;
 }
 
-/* Today button + day toggle */
-.today-btn {
-  display: inline-flex; align-items: center; gap: .4rem;
-  padding: .5rem .75rem; border-radius: 8px;
-  border: 1px solid var(--calendar-border);
-  background: var(--calendar-alt-bg);
-  color: var(--calendar-text);
-  cursor: pointer;
-  transition: transform .15s ease, background .2s ease, border-color .2s ease;
-  font-size: 1rem;
-}
-.today-btn:hover { transform: translateY(-1px); }
+/* Today button = `.btn .btn-secondary` (sized with the view toggles above). */
 
 /* Slightly larger chips/avatars (if present) */
 .event-icon { border: 1px solid var(--calendar-event-border); border-radius: 4px; }

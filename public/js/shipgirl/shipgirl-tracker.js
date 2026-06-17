@@ -1317,10 +1317,11 @@ document.addEventListener('DOMContentLoaded', () => {
         bulkCheckActions.forEach(action => {
             const btn = document.createElement('button');
             btn.textContent = action.label;
-            btn.className = 'bulk-check-btn';
-            if (action.state === false) {
-                btn.classList.add('bulk-deselect-btn');
-            }
+            // Check actions = neutral .btn-secondary; the "모두 체크 해제" (deselect)
+            // action is destructive → .btn-danger. Both keep the bulk-* hook classes.
+            btn.className = action.state === false
+                ? 'btn btn-danger bulk-check-btn bulk-deselect-btn'
+                : 'btn btn-secondary bulk-check-btn';
             btn.onclick = () => {
                 const message = `주의)) '${action.label}' 작업을 실행하시겠습니까? 필터링 적용된 목록의 함순이들에게 일괄적용됩니다.`;
                 showConfirmationModal(message, () => bulkCheck(action.type, action.state));
@@ -1334,7 +1335,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Reset button ---
         const resetButton = document.createElement('button');
         resetButton.id = 'reset-filters-btn';
-        resetButton.className = 'st-reset-btn';
+        resetButton.className = 'btn btn-danger btn-block st-reset-btn';
         resetButton.textContent = '필터 초기화';
         resetButton.addEventListener('click', resetFilters);
         drawerBody.appendChild(resetButton);

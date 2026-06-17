@@ -33,21 +33,9 @@
     font-size: 1.2rem;
 }
 
-.map-compare-cancel {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.625rem;
-    background: none;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    color: var(--text-muted);
-    font-size: var(--map-font-sm);
-    cursor: pointer;
-    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
-}
-
-.map-compare-cancel:hover {
+/* Cancel: canonical .btn .btn-outline .btn-sm; keeps a danger-tinted hover as
+   the real signal (it aborts compare mode). #app-scoped to win over .btn-outline:hover. */
+#app .map-compare-cancel:hover {
     background: var(--danger-color);
     color: #fff;
     border-color: var(--danger-color);

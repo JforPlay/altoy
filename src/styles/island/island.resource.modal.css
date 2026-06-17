@@ -87,30 +87,7 @@
     filter: drop-shadow(0 2px 4px var(--overlay-medium));
 }
 
-.modal-close-btn {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, var(--island-danger) 0%, var(--island-danger-hover) 100%);
-    border: 2px solid var(--highlight-soft);
-    border-radius: 50%;
-    color: #ffffff;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
-}
-
-.modal-close-btn:hover {
-    background: linear-gradient(135deg, var(--island-danger-hover) 0%, #a93226 100%);
-    transform: scale(1.1) rotate(90deg);
-    box-shadow: 0 6px 16px rgba(231, 76, 60, 0.5);
-}
-
-.modal-close-btn .material-symbols-outlined {
-    font-size: 1.375rem;
-}
+/* Dependency-modal close migrated to canonical .btn.btn-close (borderless X). */
 
 .modal-content {
     flex: 1;
@@ -250,29 +227,10 @@
     font-weight: 600;
 }
 
-.modal-select-btn {
-    width: 36px;
-    height: 36px;
-    flex-shrink: 0;
-    background: var(--island-accent);
-    border: none;
-    border-radius: 50%;
-    color: #ffffff;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--island-transition);
-}
-
-.modal-select-btn:hover {
-    background: var(--island-accent-hover);
-    transform: scale(1.1);
-}
-
-.modal-select-btn .material-symbols-outlined {
-    font-size: 1.25rem;
-}
+/* .modal-select-btn migrated to canonical .btn.btn-primary;
+   keeps flex-shrink:0 so it doesn't squash in the recipe row
+   (positioning override lives in island.resource.responsive.css). */
+.modal-select-btn { flex-shrink: 0; }
 
 /* Modal Source Info */
 .modal-source-info {

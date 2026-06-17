@@ -22,7 +22,7 @@
     font-size: 0.95em;
   }
 
-  .carousel-nav {
+  .hero-carousel .carousel-nav {
     width: 44px;
     height: 44px;
   }
@@ -161,7 +161,7 @@
     font-size: 0.85em;
   }
 
-  .carousel-nav {
+  .hero-carousel .carousel-nav {
     width: 40px;
     height: 40px;
     background: var(--overlay-opaque);
@@ -270,7 +270,7 @@
     font-size: 0.8em;
   }
 
-  .carousel-nav {
+  .hero-carousel .carousel-nav {
     width: 36px;
     height: 36px;
   }
@@ -319,7 +319,7 @@
     font-size: 1.2em;
   }
 
-  .event-carousel-nav {
+  .event-carousel .event-carousel-nav {
     width: 36px;
     height: 36px;
   }

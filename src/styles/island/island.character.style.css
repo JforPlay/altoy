@@ -363,31 +363,7 @@
     gap: 0.5rem;
 }
 
-.enhancement-btn {
-    padding: 0.75rem 1rem;
-    background: var(--island-surface);
-    border: 2px solid var(--island-border);
-    border-radius: 8px;
-    color: var(--island-text-secondary);
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--island-transition);
-    white-space: nowrap;
-}
-
-.enhancement-btn:hover {
-    background: var(--island-surface-hover);
-    border-color: var(--island-accent);
-    color: var(--island-accent);
-}
-
-.enhancement-btn.active {
-    background: var(--island-accent);
-    border-color: var(--island-accent);
-    color: #ffffff;
-    box-shadow: var(--island-shadow-sm);
-}
+/* .enhancement-btn migrated to canonical .btn.btn-secondary + .is-active. */
 
 /* Enhancement Bonus Display */
 .enhancement-bonus {
@@ -654,30 +630,9 @@
     gap: 0.5rem;
 }
 
-.skill-level-btn {
-    padding: 0.5rem;
-    background: var(--island-surface);
-    border: 2px solid var(--island-border);
-    border-radius: 6px;
-    color: var(--island-text-secondary);
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--island-transition);
-}
-
-.skill-level-btn:hover {
-    background: var(--island-surface-hover);
-    border-color: var(--island-accent);
-    color: var(--island-accent);
-}
-
-.skill-level-btn.active {
-    background: var(--island-accent);
-    border-color: var(--island-accent);
-    color: #ffffff;
-    box-shadow: var(--island-shadow-sm);
-}
+/* .skill-level-btn migrated to canonical .btn.btn-secondary + .is-active.
+   It keeps --btn-pad-x:0.5rem so 10 level buttons fit the grid. */
+.skill-level-btn { --btn-pad-x: 0.5rem; }
 
 /* Skill Material */
 .skill-material {
