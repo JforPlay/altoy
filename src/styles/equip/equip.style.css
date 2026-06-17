@@ -185,30 +185,19 @@ body {
     background: var(--input-bg);
 }
 
-.rarity-chip {
-    padding: 0.2rem 0.5rem;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
-    background: transparent;
-    color: var(--text-secondary);
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    user-select: none;
-    line-height: 1;
-}
-
-.rarity-chip:hover {
-    background: var(--section-bg);
-    color: var(--text-primary);
-}
-
-.rarity-chip.active.rarity-chip-6 { background: var(--rarity-ur-light); color: var(--rarity-ur-text); border-color: var(--rarity-ur); }
-.rarity-chip.active.rarity-chip-5 { background: var(--rarity-ssr); color: var(--rarity-ssr-text); border-color: var(--rarity-ssr); }
-.rarity-chip.active.rarity-chip-4 { background: var(--rarity-sr); color: var(--rarity-sr-text); border-color: var(--rarity-sr); }
-.rarity-chip.active.rarity-chip-3 { background: var(--rarity-r); color: var(--rarity-r-text); border-color: var(--rarity-r); }
-.rarity-chip.active.rarity-chip-2 { background: var(--rarity-n); color: var(--rarity-n-text); border-color: var(--rarity-n); }
+/* Rarity tier hook map — injects per-tier tokens into the canonical .chip active state.
+   Active fill: solid rarity color (matches other rarity-chip consumers, e.g. secretary-story Task 3).
+   Resting state: canonical .chip defaults (--input-bg bg / --border-color border).
+   Deliberate deltas vs old local rules — noted for review:
+     · UR (rarity-chip-6) resting: was transparent bg + transparent border → now --input-bg / --border-color.
+     · UR (rarity-chip-6) active: was --rarity-ur-light bg + --rarity-ur border → now solid --rarity-ur
+       (intentional unification with secretary-story Task 3 solid UR treatment).
+     · All chips resting: were transparent bg → now --input-bg (canonical). */
+.chip.rarity-chip-6 { --chip-accent: var(--rarity-ur);  --chip-accent-text: var(--rarity-ur-text); }
+.chip.rarity-chip-5 { --chip-accent: var(--rarity-ssr); --chip-accent-text: var(--rarity-ssr-text); }
+.chip.rarity-chip-4 { --chip-accent: var(--rarity-sr);  --chip-accent-text: var(--rarity-sr-text); }
+.chip.rarity-chip-3 { --chip-accent: var(--rarity-r);   --chip-accent-text: var(--rarity-r-text); }
+.chip.rarity-chip-2 { --chip-accent: var(--rarity-n);   --chip-accent-text: var(--rarity-n-text); }
 
 /* ===== Label Tag Filter (collapsible) ===== */
 /* Collapsed by default to keep the (long) tag list out of the way; the toggle
@@ -255,33 +244,8 @@ body {
 }
 .label-filter.open .label-chips-container { display: flex; }
 
-/* RECTANGULAR chip — radius-sm, NEVER radius-full/pill (user preference: no oval chips). */
-.label-chip {
-    padding: 0.25rem 0.625rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    background: var(--surface-card);
-    color: var(--text-secondary);
-    font-size: 0.75rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    user-select: none;
-}
-
-.label-chip:hover {
-    border-color: var(--primary-color);
-    color: var(--text-primary);
-}
-
-/* active fill uses --accent-blue (stable hue, white-legible in BOTH themes).
-   NOT --primary-color: it's grayscale on the default theme → silver in dark mode,
-   where white text is unreadable (the recurring contrast bug). */
-.label-chip.active {
-    background: var(--accent-blue);
-    color: #fff;
-    border-color: var(--accent-blue);
-}
+/* Label chips use canonical .chip (no local overrides needed:
+   canonical .chip.active already fills with --accent-blue + #fff, matching the old .label-chip.active). */
 
 /* ===== Equipment Grid ===== */
 .equip-grid {
@@ -535,10 +499,5 @@ body {
 
     .label-chips-container {
         gap: 0.25rem;
-    }
-
-    .label-chip {
-        font-size: 0.7rem;
-        padding: 0.2rem 0.5rem;
     }
 }

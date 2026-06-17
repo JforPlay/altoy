@@ -238,7 +238,7 @@ function populateFilters() {
 
     const labels = getUniqueLabels();
     labelChips.innerHTML = labels.map(l =>
-        `<button class="label-chip" data-label="${l}">${l}</button>`
+        `<button class="chip" data-label="${l}">${l}</button>`
     ).join('');
 
     updateFilterStats();
@@ -260,7 +260,7 @@ function setupEventListeners() {
 
     // Rarity chip toggles
     rarityChips.addEventListener('click', (e) => {
-        const chip = e.target.closest('.rarity-chip');
+        const chip = e.target.closest('.chip[data-rarity]');
         if (!chip) return;
         const rarity = chip.dataset.rarity;
         if (state.activeRarities.has(rarity)) {
@@ -275,7 +275,7 @@ function setupEventListeners() {
 
     // Label chip toggles
     labelChips.addEventListener('click', (e) => {
-        const chip = e.target.closest('.label-chip');
+        const chip = e.target.closest('.chip');
         if (!chip) return;
         const label = chip.dataset.label;
         if (state.activeLabels.has(label)) {
