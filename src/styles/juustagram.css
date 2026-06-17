@@ -65,17 +65,15 @@ body > header {
 
 /* ===== Filters ===== */
 
+/* Local overrides on top of .filter-bar + .filter-bar--card (global).
+   Canonical supplies: display:flex, flex-wrap, gap, bg, padding, border-radius, box-shadow.
+   padding delta: old 15px → canonical --spacing-md 1rem (16px), 1px — accepted.
+   border-radius: old 8px = --radius-md 0.5rem (8px) — exact match. */
 .filters-container {
+    --filter-bar-gap: 20px;       /* preserve original gap */
+    align-items: flex-end;        /* label+select bottom-align; canonical is center */
     max-width: 1400px;
-    margin: 0 auto 20px auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: flex-end;
-    background-color: var(--card-bg);
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px var(--shadow-color);
+    margin: 0 auto 20px;
     box-sizing: border-box;
 }
 
