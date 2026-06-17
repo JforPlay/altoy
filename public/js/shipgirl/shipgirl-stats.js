@@ -510,7 +510,7 @@ function setupChipGroup(containerId, attr, selectedSet, onChange) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    const chips = [...container.querySelectorAll('.rarity-chip')];
+    const chips = [...container.querySelectorAll('.chip')];
     const allChip = chips.find(c => !c.dataset[attr]);
     const catChips = chips.filter(c => c.dataset[attr]);
 
@@ -528,7 +528,7 @@ function setupChipGroup(containerId, attr, selectedSet, onChange) {
     }
 
     container.addEventListener('click', (e) => {
-        const chip = e.target.closest('.rarity-chip');
+        const chip = e.target.closest('.chip');
         if (!chip || !container.contains(chip)) return;
 
         const value = chip.dataset[attr];

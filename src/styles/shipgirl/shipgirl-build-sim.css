@@ -875,14 +875,7 @@ section h3 {
     margin-bottom: 1.5rem;
 }
 
-.filter-group {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.filter-group label {
+.filter-bar label {
     font-weight: 600;
     color: var(--text-primary);
 }
@@ -1208,7 +1201,7 @@ section h3 {
         width: 120px;
     }
 
-    .filter-group {
+    .pool-filters .filter-bar {
         flex-direction: column;
         align-items: flex-start;
     }

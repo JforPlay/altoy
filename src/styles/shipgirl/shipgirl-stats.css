@@ -244,45 +244,14 @@ body {
     align-items: center;
 }
 
-.rarity-chip {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.3rem 0.75rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    border-radius: 2rem;
-    border: 1.5px solid var(--border-color);
-    background: var(--section-bg);
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: background var(--transition-fast), color var(--transition-fast),
-                border-color var(--transition-fast), box-shadow var(--transition-fast);
-    user-select: none;
-}
-
-.rarity-chip:hover {
-    border-color: var(--primary-color);
-    color: var(--text-primary);
-}
-
-.rarity-chip.active {
-    color: #ffffff;
-    border-color: transparent;
-    box-shadow: var(--shadow-sm);
-}
-
-.rarity-chip[data-rarity=""].active  { background: var(--primary-color); }
-.rarity-chip[data-rarity="UR"].active  { background: var(--rarity-ur);  color: var(--rarity-ur-text); }
-.rarity-chip[data-rarity="SSR"].active { background: var(--rarity-ssr); color: var(--rarity-ssr-text); }
-.rarity-chip[data-rarity="SR"].active  { background: var(--rarity-sr);  color: var(--rarity-sr-text); }
-.rarity-chip[data-rarity="R"].active   { background: var(--rarity-r);   color: var(--rarity-r-text); }
-.rarity-chip[data-rarity="N"].active   { background: var(--rarity-n);   color: var(--rarity-n-text); }
-
-/* Gimmick chips reuse .rarity-chip; they have no rarity color, so give the
-   active state the default primary fill. */
-.rarity-chip[data-gimmick].active {
-    background: var(--primary-color);
-}
+/* Rarity tier chip active-fill overrides — feed rarity tokens into the canonical
+   --chip-accent / --chip-accent-text hooks from chip.css. "전체" (data-rarity="")
+   and gimmick chips fall back to the default --accent-blue. */
+.chip[data-rarity="UR"]  { --chip-accent: var(--rarity-ur);  --chip-accent-text: var(--rarity-ur-text); }
+.chip[data-rarity="SSR"] { --chip-accent: var(--rarity-ssr); --chip-accent-text: var(--rarity-ssr-text); }
+.chip[data-rarity="SR"]  { --chip-accent: var(--rarity-sr);  --chip-accent-text: var(--rarity-sr-text); }
+.chip[data-rarity="R"]   { --chip-accent: var(--rarity-r);   --chip-accent-text: var(--rarity-r-text); }
+.chip[data-rarity="N"]   { --chip-accent: var(--rarity-n);   --chip-accent-text: var(--rarity-n-text); }
 
 /* -- Dashboard -- */
 .dashboard-section {
@@ -994,10 +963,6 @@ body.dark-mode .tab-toggle {
     background: var(--highlight-subtle);
 }
 
-body.dark-mode .rarity-chip:not(.active) {
-    background: var(--highlight-subtle);
-}
-
 body.dark-mode .summary-stat {
     background: var(--highlight-subtle);
 }
@@ -1016,14 +981,6 @@ body.dark-mode .expand-cols-btn:not(.active):hover {
 
 /* Dark text on light --primary-color (#b0b0b0) backgrounds */
 body.dark-mode .tab-toggle-btn.active {
-    color: #1a1a1a;
-}
-
-body.dark-mode .rarity-chip[data-rarity=""].active {
-    color: #1a1a1a;
-}
-
-body.dark-mode .rarity-chip[data-gimmick].active {
     color: #1a1a1a;
 }
 
@@ -1109,7 +1066,7 @@ body.dark-mode .filter-search {
         font-size: 0.8rem;
     }
 
-    .rarity-chip {
+    .rarity-chips .chip {
         padding: 0.25rem 0.625rem;
         font-size: 0.75rem;
     }
