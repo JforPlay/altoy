@@ -12,17 +12,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <Layout title="함순이 스킨/대사보기 (Modern UI)" theme="accent" {base}>
     <div class="main-container">
-        <header class="controls-header">
-            <div class="title-wrapper">
-                <h1 class="page-title">함순이 스킨 / 대사보기</h1>
-                <button id="info-button" class="info-button" aria-label="도움말 보기" type="button">
-                    <i class="fas fa-info-circle"></i>
-                </button>
-                <button id="random-skin-btn" class="random-skin-btn" title="랜덤 스킨 구경가기" aria-label="랜덤 스킨 구경가기" aria-expanded="false" aria-controls="random-skin-modal" type="button">
-                    <i class="fas fa-dice"></i>
-                    <span>랜덤 스킨 구경가기</span>
-                </button>
-            </div>
+        <header class="controls-header page-header page-header--center">
+            <h1 class="page-title page-header-title">함순이 스킨 / 대사보기</h1>
+            <button id="info-button" class="info-button" aria-label="도움말 보기" type="button">
+                <i class="fas fa-info-circle"></i>
+            </button>
+            <button id="random-skin-btn" class="random-skin-btn" title="랜덤 스킨 구경가기" aria-label="랜덤 스킨 구경가기" aria-expanded="false" aria-controls="random-skin-modal" type="button">
+                <i class="fas fa-dice"></i>
+                <span>랜덤 스킨 구경가기</span>
+            </button>
 
             <div id="info-popup" class="info-popup" role="dialog" aria-labelledby="popup-title" aria-hidden="true">
                 <div class="info-popup-content">

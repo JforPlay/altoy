@@ -21,19 +21,13 @@ body {
 
 /* -- Header -- */
 .stats-header {
-    text-align: center;
+    /* centering now from page-header--center; gap hook for the title row */
+    --page-header-gap: var(--spacing-md);
     padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
-}
-
-.stats-header-title {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-md);
 }
 
 .stats-header-title > .material-symbols-outlined {
     font-size: 2rem;
-    color: var(--primary-color);
 }
 
 .stats-header-title h1 {
@@ -45,8 +39,6 @@ body {
 }
 
 .stats-subtitle {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
     margin: 0;
 }
 

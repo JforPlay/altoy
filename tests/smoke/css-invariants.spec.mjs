@@ -413,3 +413,37 @@ test('section-title: a real consumer adopts the canonical class (equip-viewer)',
     // class added the underline now comes from the global section-title base.
     expect(probe.borderBottomWidth).toBe('2px');
 });
+
+// --- page-header (Wave 2) ----------------------------------------------------
+// Canonical .page-header-title (flex icon+title row) + container modifiers ship
+// globally via Layout. Prove DELIVERY (base reaches an arbitrary page) and that a
+// real emitted consumer adopts the row class. RED before migration: no global
+// .page-header-title (display:block); the equip header used .header-title-container only.
+
+test('page-header: canonical title row is delivered globally (homepage)', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    expect(await probeStyle(page, 'page-header-title', 'display')).toBe('flex');
+    expect(await probeStyle(page, 'page-header-title', 'alignItems')).toBe('center');
+});
+
+test('page-header: --boxed modifier carries the card surface (homepage, light)', async ({ page }) => {
+    await page.addInitScript(() => { localStorage.setItem('theme', 'light'); });
+    await page.goto('./', { waitUntil: 'load' });
+    // --boxed must resolve a real card surface (not the transparent default container).
+    const bg = await probeStyle(page, 'page-header page-header--boxed', 'backgroundColor');
+    expect(bg, `expected a card surface, got: ${bg}`).not.toBe('rgba(0, 0, 0, 0)');
+});
+
+test('page-header: a real consumer adopts the canonical row class (equip-viewer)', async ({ page }) => {
+    await page.goto(pathFor('equip-viewer'), { waitUntil: 'load' });
+    await page.waitForSelector('.header-title-container', { timeout: 15_000 });
+    const probe = await page.evaluate(() => {
+        const el = document.querySelector('.header-title-container');
+        if (!el) return null;
+        const cs = getComputedStyle(el);
+        return { hasClass: el.classList.contains('page-header-title'), display: cs.display };
+    });
+    expect(probe, 'no .header-title-container on equip-viewer').not.toBeNull();
+    expect(probe.hasClass, 'equip header row must carry the canonical page-header-title class').toBe(true);
+    expect(probe.display).toBe('flex');
+});

@@ -20,7 +20,7 @@
 @media (max-width: 768px) {
   /* Page header */
   .st-page-header {
-    padding: 1rem;
+    --page-header-pad: 1rem;
   }
 
   .st-page-header .header-top {

@@ -4,24 +4,17 @@
    ================================================================= */
 
 /* --- Header & Page Title (Detail Viewer Specific) --- */
+/* centering now from .page-header--center; margin-bottom kept local. */
 .controls-header {
-  text-align: center;
   margin-bottom: var(--spacing-xl);
 }
 
-.title-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
-}
+/* .title-wrapper removed — centering handled by .page-header--center. */
 
+/* flex row now from .page-header-title; flex-wrap + margin kept local.
+   gap: 1rem (--spacing-md) differs from the default 0.75rem — set via hook. */
 .page-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--spacing-md);
+  --page-header-gap: var(--spacing-md);
   flex-wrap: wrap;
   margin: 0;
 }
@@ -747,14 +740,9 @@
 
 /* --- Responsive Styles --- */
 @media (max-width: 768px) {
-  /* Keep title and info button on same line */
-  .title-wrapper {
-    flex-wrap: nowrap;
-    gap: var(--spacing-sm);
-  }
-
+  /* .title-wrapper removed — no mobile override needed. */
+  /* page-header-title flex is already row; keep responsive font-size only. */
   .page-title {
-    flex-direction: row;
     font-size: 1.25rem;
   }
 

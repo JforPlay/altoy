@@ -32,20 +32,15 @@ body {
 /* ===== Header ===== */
 
 /* Title row mirrors shipgirl-info: boxless left-aligned icon + h1 in the flat
-   grayscale --primary-color (theme.css), not the page's purple gradient. */
-.page-header {
-    margin-bottom: 1.75rem;
-}
+   grayscale --primary-color (theme.css), not the page's purple gradient.
+   Flex row + gap now from page-header-title canonical; gap hook overrides default. */
 
 .header-title-container {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
+    --page-header-gap: 0.55rem;
 }
 
 .header-title-container .material-symbols-outlined {
     font-size: 1.5rem;
-    color: var(--primary-color);
 }
 
 .page-header h1 {
@@ -54,9 +49,7 @@ body {
     font-size: 1.5rem;
 }
 
-.subtitle {
-    color: var(--text-secondary);
-    font-size: 0.85rem;
+.page-header-subtitle {
     margin: 0.3rem 0 0;
 }
 

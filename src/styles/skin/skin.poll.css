@@ -5,17 +5,19 @@
 
 /* --- Page Header --- */
 .page-header {
-  text-align: center;
+  /* center + bottom rule now from .page-header--center/--bordered; keep the page's
+     own outer margins, horizontal padding, and the 2px --bg-input rule via hooks. */
   margin: 2.5rem 0 1.875rem 0;
-  padding: 0 1.25rem 1.25rem 1.25rem;
-  border-bottom: 2px solid var(--bg-input);
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  --page-header-border-pb: 1.25rem;
+  --page-header-border-w: 2px;
+  --page-header-border-color: var(--bg-input);
 }
 
 .page-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.625rem;
+  /* flex row now from .page-header-title; keep tighter gap + the heading's bottom gap. */
+  --page-header-gap: 0.625rem;
   margin: 0 0 0.9375rem 0;
 }
 
@@ -689,9 +691,9 @@ body.dark-mode .poll-box:hover {
 
   .page-header {
     margin-top: 1.25rem;
-    padding-bottom: 0.9375rem;
     padding-left: 0.625rem;
     padding-right: 0.625rem;
+    --page-header-border-pb: 0.9375rem;  /* bottom-rule pad via the --bordered hook, not a direct re-declare */
   }
 
   .page-title {

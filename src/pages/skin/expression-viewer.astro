@@ -12,13 +12,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <Layout title="표정 일러스트 뷰어" theme="accent" {base}>
     <div class="main-container">
-        <header class="controls-header">
-            <div class="title-wrapper">
-                <h1 class="page-title">표정 일러스트 뷰어</h1>
-                <button id="info-button" class="info-button" aria-label="도움말 보기" type="button">
-                    <i class="fas fa-info-circle"></i>
-                </button>
-            </div>
+        <header class="controls-header page-header page-header--center">
+            <h1 class="page-title page-header-title">표정 일러스트 뷰어</h1>
+            <button id="info-button" class="info-button" aria-label="도움말 보기" type="button">
+                <i class="fas fa-info-circle"></i>
+            </button>
 
             <div id="info-popup" class="info-popup" role="dialog" aria-labelledby="popup-title" aria-hidden="true">
                 <div class="info-popup-content">

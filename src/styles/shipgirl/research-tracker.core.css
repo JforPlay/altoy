@@ -14,12 +14,10 @@
 /* --- Header (matches shipgirl-tracker .st-page-header shape) --- */
 
 .rt-header {
-  background: var(--card-bg);
-  padding: 1.25rem;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  margin-bottom: var(--spacing-md);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  /* boxed chrome now from page-header--boxed; hooks set page-specific values */
+  --page-header-pad: 1.25rem;
+  --page-header-shadow: var(--shadow-md);
+  --page-header-mb: var(--spacing-md);
 }
 
 .rt-header-top {
@@ -28,15 +26,8 @@
   gap: 0.25rem;
 }
 
-.rt-header-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
 .rt-header-icon {
   font-size: 2rem;
-  color: var(--primary-color);
 }
 
 .rt-header h1 {
@@ -46,8 +37,6 @@
 }
 
 .rt-subtitle {
-  color: var(--text-secondary);
-  font-size: 0.875rem;
   margin: 0;
 }
 

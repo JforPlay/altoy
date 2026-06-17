@@ -19,12 +19,6 @@
   border: 1px solid var(--border-color);
 }
 
-.sim-header .header-title-container {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
 .sim-header h1 {
   font-size: 1.5rem;
   font-weight: 700;
@@ -34,7 +28,7 @@
 
 .sim-header .header-icon {
   font-size: 1.75rem;
-  color: var(--primary-color);
+  /* color now from .page-header-title .material-symbols-outlined via --page-header-accent */
 }
 
 .sim-page .page-title .material-symbols-outlined {

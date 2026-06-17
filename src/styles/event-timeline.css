@@ -33,23 +33,15 @@ body {
   margin-top: 1.875rem;
 }
 
-header {
-  background: var(--card-bg);
-  padding: 1.875rem;
-  border-radius: 0.9375rem;
-  box-shadow: 0 0.625rem 1.875rem var(--shadow-color);
-  margin-bottom: 1.875rem;
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+/* Page header hooks — boxed chrome comes from .page-header--boxed (global).
+   1.875rem pad ≠ default var(--spacing-md) var(--spacing-lg); custom shadow +
+   margin-bottom preserved via hooks so per-page values win regardless of bundle order. */
+.page-header {
+  --page-header-pad: 1.875rem;
+  --page-header-shadow: 0 0.625rem 1.875rem var(--shadow-color);
+  --page-header-mb: 1.875rem;
 }
 
-h1 {
-  color: var(--primary-color);
-  margin-bottom: 1.5625rem;
-  text-align: center;
-  font-size: 2.5em;
-  text-shadow: 2px 2px 4px var(--shadow-color);
-  transition: color 0.3s ease;
-}
 
 /* ===== Header / Search / Filters ===== */
 
@@ -448,16 +440,21 @@ select:focus {
 
 /* ===== Page Title ===== */
 
+/* Flex centering + alignment come from .page-header--center .page-header-title (global).
+   gap 0.625rem ≠ default 0.75rem → set via hook. margin-bottom for spacing below title row. */
 .page-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.625rem;
+  --page-header-gap: 0.625rem;
   margin-bottom: 1.25rem;
 }
 
+/* Per-page title font-size + color; centering comes from --center text-align.
+   text-shadow and transition are page-specific visual details. */
 .page-title h1 {
   margin: 0;
+  font-size: 2.5em;
+  color: var(--primary-color);
+  text-shadow: 2px 2px 4px var(--shadow-color);
+  transition: color 0.3s ease;
 }
 
 /* Info button styling - extends global.style.css .info-button */
@@ -478,11 +475,11 @@ select:focus {
     margin-top: 1.25rem;
   }
 
-  header {
-    padding: 1.25rem;
+  .page-header {
+    --page-header-pad: 1.25rem;
   }
 
-  h1 {
+  .page-title h1 {
     font-size: 1.8em;
   }
 

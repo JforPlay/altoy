@@ -27,7 +27,7 @@
   }
 
   .rt-header {
-    padding: 0.875rem;
+    --page-header-pad: 0.875rem;
   }
 
   .rt-header h1 {

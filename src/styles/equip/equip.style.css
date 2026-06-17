@@ -31,15 +31,15 @@ body {
 }
 
 .header-title-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    /* structure (flex/align/gap) now from the global .page-header-title; keep the
+       page's tighter gap + secondary-icon accent via hooks, and the popover context. */
     position: relative;   /* positioning context for the credits popover (equip.hearing.css) */
+    --page-header-gap: 0.5rem;
+    --page-header-accent: var(--text-secondary);
 }
 
 .header-title-container .material-symbols-outlined {
     font-size: 1.75rem;
-    color: var(--text-secondary);
 }
 
 .header-title-container h1 {

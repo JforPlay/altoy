@@ -1,0 +1,89 @@
+/* ==========================================================================
+   page-header — canonical top-of-page title block        (CSS unify · Wave 2)
+   --------------------------------------------------------------------------
+   One shared skeleton for the "icon + <h1> (+ subtitle)" block at the TOP of a
+   page — the ~16 copies scattered as .header-title-container / .page-title /
+   .stats-header-title / .rt-header-title, in containers .page-header /
+   .sim-header / .st-page-header / .rt-header / .equip-header / event-timeline
+   <header>.
+
+   NOT for the story-viewer sticky nav toolbar (.viewer-header / .header-title)
+   — that's a separate subsystem, intentionally untouched.
+
+   Imported globally from Layout.astro — DO NOT re-import per page.
+
+   The canonical owns STRUCTURE (flex row, gap, spacing, card chrome, centering);
+   each page keeps its COLOR identity (icon accent) + title font-size via the
+   hooks below. Set the per-page value through a hook (NOT by re-declaring the
+   property) so it wins regardless of CSS bundle order — same rule grid.css /
+   section-title.css use.
+
+       --page-header-accent        icon color              (default --primary-color)
+       --page-header-gap           icon <-> title gap      (default .75rem)
+       --page-header-mb            container margin-bottom (default 1.75rem)
+       --page-header-pad           --boxed padding         (default var(--spacing-md) var(--spacing-lg))
+       --page-header-shadow        --boxed shadow          (default --shadow-sm)
+       --page-header-border-pb     --bordered padding-bot  (default 1rem)
+       --page-header-border-w      --bordered rule width   (default 1px)
+       --page-header-border-color  --bordered rule color   (default --border-color)
+       --page-header-subtitle-fs   subtitle font-size      (default .85rem)
+
+   Title font-size + title color are intentionally NOT set on the base — each
+   page keeps its own (1.5rem build-sim, 1.75rem stats, 2.5em event-timeline;
+   build-sim/event-timeline color the h1 --primary-color) as plain rules. Icon
+   font-size also stays per-page (it legitimately varies 1.5–2rem by page weight).
+   ========================================================================== */
+
+/* Container — vertical rhythm only by default. */
+.page-header {
+  margin-bottom: var(--page-header-mb, 1.75rem);
+}
+
+/* Centered variant — centers the block + its title row (skin search, stats,
+   skin-detail/expression, event-timeline). flex-wrap lets long centered rows wrap. */
+.page-header--center {
+  text-align: center;
+}
+.page-header--center .page-header-title {
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Boxed variant — the card-chrome header (trackers, event-timeline). */
+.page-header--boxed {
+  background: var(--card-bg);
+  padding: var(--page-header-pad, var(--spacing-md) var(--spacing-lg));
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--page-header-shadow, var(--shadow-sm));
+  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Bordered variant — centered heading with a bottom rule (skin search pages). */
+.page-header--bordered {
+  padding-bottom: var(--page-header-border-pb, 1rem);
+  border-bottom: var(--page-header-border-w, 1px) solid
+                 var(--page-header-border-color, var(--border-color));
+}
+
+/* Title row — icon + <h1>. THE ~16-copy dedup. Works whether the class is on a
+   wrapper div (<span icon> + <h1>) or on the <h1> itself (skin pages). */
+.page-header-title {
+  display: flex;
+  align-items: center;
+  gap: var(--page-header-gap, 0.75rem);
+  margin: 0;
+}
+.page-header-title h1 {
+  margin: 0;
+}
+.page-header-title .material-symbols-outlined {
+  color: var(--page-header-accent, var(--primary-color));
+}
+
+/* Subtitle — muted secondary line. */
+.page-header-subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-secondary);
+  font-size: var(--page-header-subtitle-fs, 0.85rem);
+}

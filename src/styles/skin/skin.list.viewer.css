@@ -4,17 +4,9 @@
    ================================================================= */
 
 /* --- Page Header (List Viewer Specific) --- */
-.page-header {
-  text-align: center;
-}
-
+/* center + border-bottom now from .page-header--center/--bordered (defaults match exactly). */
 .page-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.625rem;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 1rem;
+  /* flex centering now from .page-header-title + .page-header--center */
   margin-bottom: 1.25rem;
 }
 
