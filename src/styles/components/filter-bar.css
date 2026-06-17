@@ -1,0 +1,17 @@
+/* =========================================================================
+   filter-bar.css — the row/container that lays out filter chips & controls.
+   Base = bare flex row. --card adds the boxed surface (usable standalone as a
+   panel wrapper). Token-only. Per-page responsive collapse stays local.
+   ========================================================================= */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--filter-bar-gap, 0.5rem);
+}
+.filter-bar--card {
+  background: var(--card-bg);
+  padding: var(--spacing-md, 1rem);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}

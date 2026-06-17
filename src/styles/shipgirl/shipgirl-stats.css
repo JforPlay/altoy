@@ -119,11 +119,14 @@ body {
 }
 
 /* -- Filter Bar -- */
-.filter-bar {
-    background: var(--card-bg);
+/* .filter-bar (flex row) and .filter-bar--card (boxed surface) are now the
+   canonical shared components from components/filter-bar.css (global via Layout).
+   .stats-filter-card adds the local overrides that differ from the canonical
+   card surface: --radius-lg, explicit border, gap hook, and margin. */
+.stats-filter-card {
+    --filter-bar-gap: var(--spacing-md);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    padding: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
     box-shadow: var(--shadow-sm);
     transition: background var(--transition-fast), box-shadow var(--transition-fast);
@@ -135,12 +138,9 @@ body {
     gap: var(--spacing-sm);
 }
 
-.filter-row {
-    display: flex;
-    flex-wrap: wrap;
+/* Inner .filter-bar rows: centered justify (bespoke to this page). */
+.filter-bar-inner .filter-bar {
     justify-content: center;
-    align-items: center;
-    gap: var(--spacing-md);
 }
 
 /* Summary strip merged into the top of the filter card */
@@ -970,7 +970,7 @@ body {
 }
 
 /* -- Dark Mode -- */
-body.dark-mode .filter-bar {
+body.dark-mode .filter-bar--card {
     box-shadow: var(--shadow-md);
 }
 

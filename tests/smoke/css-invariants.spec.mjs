@@ -447,3 +447,26 @@ test('page-header: a real consumer adopts the canonical row class (equip-viewer)
     expect(probe.hasClass, 'equip header row must carry the canonical page-header-title class').toBe(true);
     expect(probe.display).toBe('flex');
 });
+
+// --- Wave-2 chip + filter-bar unification (Task 1) ---------------------------
+// chip.css and filter-bar.css are imported globally via Layout.astro. These
+// prove DELIVERY (the rules reach an arbitrary page) and the key invariants:
+// chip is RECTANGULAR (no pill radius), active fill = accent-blue (contrast rule),
+// filter-bar is a flex row that wraps. Light mode is seeded via localStorage so
+// the --accent-blue assertion hits the deterministic light value (#0071eb).
+
+test('chip canonical: rectangular + accent-blue active fill', async ({ page }) => {
+    await page.addInitScript(() => { localStorage.setItem('theme', 'light'); });
+    await page.goto('./', { waitUntil: 'load' }); // any page — chip.css is global
+    const radius = await probeStyle(page, 'chip', 'border-radius');
+    expect(radius, `chip must be rectangular, got: ${radius}`).not.toMatch(/9999?px|1\.25rem|50%/);
+    const activeBg = await probeStyle(page, 'chip active', 'background-color');
+    // accent-blue light = #0071eb = rgb(0, 113, 235). Never --primary-color (silver in dark).
+    expect(activeBg, `chip.active must fill accent-blue, got: ${activeBg}`).toBe('rgb(0, 113, 235)');
+});
+
+test('filter-bar canonical: flex row that wraps', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    expect(await probeStyle(page, 'filter-bar', 'display')).toBe('flex');
+    expect(await probeStyle(page, 'filter-bar', 'flex-wrap')).toBe('wrap');
+});

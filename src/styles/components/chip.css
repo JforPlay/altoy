@@ -1,0 +1,47 @@
+/* =========================================================================
+   chip.css — interactive filter / toggle chip (Wave 2 shared component).
+   Rectangular, token-only. Active fill = --accent-blue + #fff (contrast rule);
+   override per-chip via --chip-accent / --chip-accent-text. Rarity tier colors
+   come from rarity.css palette vars (--r/--r-text) via .chip--rarity — never
+   hardcoded here. Display-only "chips" (map-stat/ship-type/prop/armor) are NOT
+   this component; they are labels.
+   ========================================================================= */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);          /* RECTANGULAR — never --radius-full */
+  background: var(--input-bg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+              color 0.15s ease, opacity 0.15s ease, transform 0.1s ease;
+}
+.chip:hover {
+  border-color: var(--accent-blue);
+  color: var(--text-primary);
+}
+.chip:active { transform: scale(0.97); }
+.chip.active {
+  background: var(--chip-accent, var(--accent-blue));
+  color: var(--chip-accent-text, #fff);
+  border-color: var(--chip-accent, var(--accent-blue));
+}
+/* Toggled via el.hidden anywhere? author this so an author display: doesn't beat [hidden]. */
+.chip[hidden] { display: none; }
+
+/* Faction / icon chip: flag image + label */
+.chip--icon img { width: 1.1rem; height: 1.1rem; object-fit: contain; display: block; }
+
+/* Rarity chip: tier color via rarity.css palette (pair with .rarity-N…UR).
+   When active, the chip fills with the tier color + its paired text. */
+.chip--rarity { --chip-accent: var(--r); --chip-accent-text: var(--r-text); }
+
+/* Opt-in: a group where un-selected chips read as "filter off". */
+.chip-group--dim-idle .chip:not(.active) { opacity: 0.55; }
