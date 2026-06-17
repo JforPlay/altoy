@@ -904,13 +904,7 @@
 }
 
 .share-section-title {
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--text-primary);
-  margin-bottom: 0.625rem;
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
+  /* compact label structure from .section-title + --sm; keep the wrap. */
   flex-wrap: wrap;
 }
 

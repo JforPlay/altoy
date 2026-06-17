@@ -956,7 +956,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Summary
             const summaryTitle = document.createElement('div');
-            summaryTitle.className = 'share-section-title';
+            summaryTitle.className = 'share-section-title section-title section-title--sm';
             summaryTitle.append(
                 createIcon('fas fa-heart'),
                 document.createTextNode(` ${wantedSkins.length}개 — `),
@@ -1039,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 section.className = 'share-section';
 
                 const title = document.createElement('div');
-                title.className = 'share-section-title';
+                title.className = 'share-section-title section-title section-title--sm';
                 title.textContent = `${groupName} (${skins.length}개)`;
                 section.appendChild(title);
 

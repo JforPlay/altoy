@@ -536,7 +536,7 @@ function renderEquipGrid() {
         const section = document.createElement('div');
         section.className = 'equip-type-section';
         section.innerHTML = `
-            <div class="type-section-header">
+            <div class="type-section-header section-title">
                 <h2>${typeName}</h2>
                 <span class="type-section-count">(${equips.length})</span>
             </div>
@@ -707,7 +707,7 @@ function openSPWeaponDetail(spId) {
         ).join('');
         levelsHTML = `
             <div class="stats-section">
-                <div class="stats-section-title">
+                <div class="stats-section-title section-title section-title--sm">
                     <span class="material-symbols-outlined">upgrade</span>
                     강화 단계
                 </div>
@@ -741,7 +741,7 @@ function openSPWeaponDetail(spId) {
         if (skillRows.length > 0) {
             skillHTML = `
                 <div class="stats-section">
-                    <div class="stats-section-title">
+                    <div class="stats-section-title section-title section-title--sm">
                         <span class="material-symbols-outlined">auto_awesome</span>
                         스킬
                     </div>
@@ -767,7 +767,7 @@ function openSPWeaponDetail(spId) {
             </div>
         </div>
         <div class="stats-section">
-            <div class="stats-section-title">
+            <div class="stats-section-title section-title section-title--sm">
                 <span class="material-symbols-outlined">bar_chart</span>
                 스탯 (최대 강화)
             </div>

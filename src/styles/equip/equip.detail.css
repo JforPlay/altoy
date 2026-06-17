@@ -259,16 +259,6 @@
     margin-bottom: 0.75rem;
 }
 
-.stats-section-title {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-}
-
 .stats-section-title .material-symbols-outlined {
     font-size: 1rem;
     color: var(--text-secondary);

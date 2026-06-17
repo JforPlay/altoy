@@ -110,7 +110,7 @@ function renderDetail(equip) {
             .join('');
         html += `
             <div class="stats-section">
-                <div class="stats-section-title">
+                <div class="stats-section-title section-title section-title--sm">
                     <span class="material-symbols-outlined">chat_bubble</span>
                     한줄평
                 </div>
@@ -137,7 +137,7 @@ function renderDetail(equip) {
     if (equip.attr_info && equip.attr_info.length > 0) {
         html += `
             <div class="stats-section">
-                <div class="stats-section-title">
+                <div class="stats-section-title section-title section-title--sm">
                     <span class="material-symbols-outlined">bar_chart</span>
                     스탯
                 </div>
@@ -158,7 +158,7 @@ function renderDetail(equip) {
         if (ammoName) weaponRows += `<tr><th>탄종</th><td>${ammoName}</td></tr>`;
         html += `
             <div class="stats-section">
-                <div class="stats-section-title">
+                <div class="stats-section-title section-title section-title--sm">
                     <span class="material-symbols-outlined">target</span>
                     무기 정보
                 </div>
@@ -184,7 +184,7 @@ function renderDetail(equip) {
     if ((equip.part_main && equip.part_main.length > 0) || (equip.part_sub && equip.part_sub.length > 0)) {
         html += `
             <div class="ship-types-section">
-                <div class="stats-section-title">
+                <div class="stats-section-title section-title section-title--sm">
                     <span class="material-symbols-outlined">directions_boat</span>
                     장착 가능 함종
                 </div>
@@ -222,7 +222,7 @@ function renderDetail(equip) {
     if (maxLevel > 1) {
         html += `
             <div class="upgrade-section">
-                <div class="stats-section-title">
+                <div class="stats-section-title section-title section-title--sm">
                     <span class="material-symbols-outlined">upgrade</span>
                     강화 비용
                 </div>
@@ -246,7 +246,7 @@ function renderDetail(equip) {
     if (level.scrap_gold || (level.scrap_items && level.scrap_items.length > 0)) {
         html += `
             <div class="stats-section">
-                <div class="stats-section-title">
+                <div class="stats-section-title section-title section-title--sm">
                     <span class="material-symbols-outlined">recycling</span>
                     해체 보상
                 </div>
@@ -345,7 +345,7 @@ function renderAircraftParams(equip, level) {
 
     return `
         <div class="stats-section">
-            <div class="stats-section-title">
+            <div class="stats-section-title section-title section-title--sm">
                 <span class="material-symbols-outlined">flight</span>
                 기체 파라미터
             </div>
@@ -461,7 +461,7 @@ function renderWeaponParams(equip, level) {
 
     return `
         <div class="stats-section">
-            <div class="stats-section-title">
+            <div class="stats-section-title section-title section-title--sm">
                 <span class="material-symbols-outlined">tune</span>
                 장비 파라미터
             </div>
@@ -499,7 +499,7 @@ function renderSkillSection(level) {
 
     return `
         <div class="stats-section">
-            <div class="stats-section-title">
+            <div class="stats-section-title section-title section-title--sm">
                 <span class="material-symbols-outlined">auto_awesome</span>
                 스킬
             </div>

@@ -65,7 +65,7 @@ export function renderHearingGrid() {
         const section = document.createElement('div');
         section.className = 'equip-type-section';
         section.innerHTML = `
-            <div class="type-section-header">
+            <div class="type-section-header section-title">
                 <h2>${escapeHtml(typeName)}</h2>
                 <span class="type-section-count">(${equips.length})</span>
             </div>`;

@@ -116,12 +116,11 @@
 /* ===== Stats Section ===== */
 
 .section-title {
+  /* Structure now from the global section-title.css base; shipgirl keeps its
+     silver --primary-color accent + larger heading size via the hooks. */
+  --section-title-accent: var(--primary-color);
+  --section-title-color: var(--primary-color);
   font-size: 1.3em;
-  margin-bottom: 0.75rem;
-  color: var(--primary-color);
-  border-bottom: 2px solid var(--primary-color);
-  padding-bottom: 0.5rem;
-  transition: color 0.3s, border-color 0.3s;
 }
 
 .section-title .tooltip-toggle-button {

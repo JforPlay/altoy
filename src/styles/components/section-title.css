@@ -1,0 +1,53 @@
+/* ==========================================================================
+   section-title — canonical section / panel heading        (CSS unify · Wave 2)
+   --------------------------------------------------------------------------
+   One shared heading skeleton for the "flex row + bottom rule" section titles
+   scattered across pages (shipgirl 스탯 headers, equip type-group headers,
+   island planner headers, chat 댓글/답글 headers), plus a borderless compact
+   variant for small inline panel labels (equip detail/upgrade, skin cart).
+
+   Imported globally from Layout.astro — DO NOT re-import per page.
+
+   Design: the canonical owns the STRUCTURE (flex, gap, bottom rule, spacing,
+   weight); each page keeps its own COLOR identity via the var hooks below.
+   Set the per-page value through a hook (NOT by re-declaring the property) so
+   it wins regardless of CSS bundle order — the same robustness rule grid.css
+   uses for --grid-min / --grid-gap.
+
+       --section-title-accent   border-bottom color   (default --border-color)
+       --section-title-color    text color            (default --text-primary)
+       --section-title-gap      icon↔text gap         (default --spacing-sm)
+       --section-title-mb       margin-bottom         (default --spacing-md / sm)
+       --section-title-pb       padding-bottom        (default --spacing-sm)
+       --section-title-border-w underline thickness   (default 2px)
+       --section-title-fs       compact font-size     (--sm only, default .85rem)
+
+   font-size is intentionally NOT set on the base — each page keeps its own
+   (1.3em shipgirl, 1.1rem island, 1rem chat …) as a plain declaration; it
+   never conflicts because the base leaves it unset.
+
+   Higher-specificity / page-scoped rules still win (e.g. `.foo .section-title`).
+   ========================================================================== */
+
+/* Base — underline section heading: flex row (icon + text) + bottom rule. */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--section-title-gap, var(--spacing-sm));
+  margin-bottom: var(--section-title-mb, var(--spacing-md));
+  padding-bottom: var(--section-title-pb, var(--spacing-sm));
+  border-bottom: var(--section-title-border-w, 2px) solid var(--section-title-accent, var(--border-color));
+  color: var(--section-title-color, var(--text-primary));
+  font-weight: 700;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+/* Compact label — small inline panel/section label, no underline.
+   Pair with .section-title: `class="section-title section-title--sm"`. */
+.section-title--sm {
+  margin-bottom: var(--section-title-mb, var(--spacing-sm));
+  padding-bottom: 0;
+  border-bottom: 0;
+  font-size: var(--section-title-fs, 0.85rem);
+  font-weight: 600;
+}

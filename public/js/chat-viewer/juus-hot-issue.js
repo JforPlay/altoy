@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         section.className = 'hi-comments';
 
         const heading = document.createElement('h3');
-        heading.className = 'hi-section-title';
+        heading.className = 'hi-section-title section-title';
         heading.textContent = '💬 댓글';
         const count = document.createElement('span');
         count.className = 'badge badge--neutral hi-count';
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const section = document.createElement('section');
         section.className = 'hi-options';
 
-        appendText(section, 'h3', 'hi-section-title', '지휘관 답글');
+        appendText(section, 'h3', 'hi-section-title section-title', '지휘관 답글');
 
         options.forEach((option) => {
             if (!isRecord(option)) return;

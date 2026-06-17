@@ -1106,7 +1106,7 @@ function renderPlannerResultsContent() {
     `).join('');
 
     return `
-        <h4 class="planner-section-title">필요 원자재</h4>
+        <h4 class="planner-section-title section-title">필요 원자재</h4>
         ${groupHtml}
     `;
 }

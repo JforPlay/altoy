@@ -576,13 +576,10 @@
     margin-right: 0.5rem;
 }
 
-.planner-section-title {
-    margin: 0 0 1rem 0;
-    color: var(--island-accent);
-    font-size: 1rem;
-    border-bottom: 1px solid var(--highlight-soft);
-    padding-bottom: 0.5rem;
-}
+/* .planner-section-title is styled by the global .section-title base +
+   island.restaurant.planner.css hooks (CSS unify · Wave 2). The dead duplicate
+   that lived here (overridden by planner.css's later import) was removed so it
+   no longer competes with the base's hook-resolved border/color. */
 
 .planner-ingredient-grid {
     display: grid;

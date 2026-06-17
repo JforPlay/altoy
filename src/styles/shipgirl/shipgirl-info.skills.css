@@ -132,11 +132,8 @@
   background: var(--card-bg);
   border: 2px solid var(--primary-color);
 }
-
-.sp-weapon-section .section-title {
-  color: var(--primary-color);
-  border-bottom-color: var(--primary-color);
-}
+/* (.sp-weapon-section .section-title accent now inherited from the shipgirl
+   .section-title hooks in shipgirl-info.controls.css — was redundant primary.) */
 
 .sp-weapon-header {
   display: flex;

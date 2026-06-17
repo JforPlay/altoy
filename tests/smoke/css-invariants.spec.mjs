@@ -370,3 +370,46 @@ test('grid: a --fit consumer carries the auto-fit modifier (shipgirl-build-sim)'
     expect(probe.hasFit, 'sparse grid must carry card-grid--fit').toBe(true);
     expect(probe.display).toBe('grid');
 });
+
+// --- section-title (Wave 2) --------------------------------------------------
+// Canonical .section-title (flex row + 2px bottom rule) + .section-title--sm
+// (borderless compact label) ship globally via Layout. These prove DELIVERY (the
+// base reaches an arbitrary page) and that a real emitted consumer adopts it.
+// RED before migration: no global .section-title (display:block, no border); the
+// equip type header had its own local flex+border rule, not the canonical class.
+
+test('section-title: canonical base is delivered globally (homepage)', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    expect(await probeStyle(page, 'section-title', 'display')).toBe('flex');
+    expect(await probeStyle(page, 'section-title', 'borderBottomWidth')).toBe('2px');
+    expect(await probeStyle(page, 'section-title', 'borderBottomStyle')).toBe('solid');
+});
+
+test('section-title: the --sm variant drops the underline (homepage)', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    // Compact label keeps the base flex row but loses the rule and goes 600.
+    expect(await probeStyle(page, 'section-title section-title--sm', 'display')).toBe('flex');
+    expect(await probeStyle(page, 'section-title section-title--sm', 'borderBottomStyle')).toBe('none');
+    expect(await probeStyle(page, 'section-title section-title--sm', 'fontWeight')).toBe('600');
+});
+
+test('section-title: a real consumer adopts the canonical class (equip-viewer)', async ({ page }) => {
+    await page.goto(pathFor('equip-viewer'), { waitUntil: 'load' });
+    await page.waitForSelector('.type-section-header', { timeout: 15_000 });
+    const probe = await page.evaluate(() => {
+        const el = document.querySelector('.type-section-header');
+        if (!el) return null;
+        const cs = getComputedStyle(el);
+        return {
+            hasClass: el.classList.contains('section-title'),
+            display: cs.display,
+            borderBottomWidth: cs.borderBottomWidth,
+        };
+    });
+    expect(probe, 'no .type-section-header found on equip-viewer').not.toBeNull();
+    expect(probe.hasClass, 'type header must carry the canonical section-title class').toBe(true);
+    expect(probe.display).toBe('flex');
+    // RED before migration: equip's 2px rule lived in equip.style.css; with the
+    // class added the underline now comes from the global section-title base.
+    expect(probe.borderBottomWidth).toBe('2px');
+});

@@ -301,12 +301,9 @@ body {
 }
 
 .type-section-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    /* underline + flex + spacing from the global .section-title base;
+       keep only the page-specific top padding. */
     padding: 0.5rem 0;
-    border-bottom: 2px solid var(--border-color);
-    margin-bottom: 0.75rem;
 }
 
 .type-section-header h2 {

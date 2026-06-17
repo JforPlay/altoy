@@ -93,15 +93,12 @@
 
 /* --- Section titles (댓글 / 지휘관 답글) --- */
 .hi-section-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0 0 1rem 0;
+  /* structure from the global .section-title base; keep chat's accent + the
+     zeroed top margin (these are h3 headings) + heading size. */
+  --section-title-accent: var(--chat-border);
+  --section-title-color: var(--text-heading);
+  margin-top: 0;
   font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-heading);
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--chat-border);
 }
 
 /* Comment-count tag migrated to the canonical .badge component

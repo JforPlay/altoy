@@ -335,7 +335,7 @@ function renderEquipInfo(equipId) {
 
         html += `
             <div class="info-upgrade">
-                <div class="info-section-title">
+                <div class="info-section-title section-title section-title--sm">
                     <span class="material-symbols-outlined" style="font-size: 1rem;">science</span>
                     연구 비용
                 </div>

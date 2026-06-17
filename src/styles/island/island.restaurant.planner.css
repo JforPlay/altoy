@@ -499,15 +499,15 @@
 }
 
 .planner-section-title {
-    margin: var(--island-spacing-lg) 0 var(--island-spacing-md) 0;
-    color: var(--island-text-primary);
+    /* structure from the global .section-title base; island keeps its own
+       accent + spacing scale via the hooks, plus the heading size + top margin. */
+    --section-title-accent: var(--island-border);
+    --section-title-color: var(--island-text-primary);
+    --section-title-gap: var(--island-gap-sm);
+    --section-title-mb: var(--island-spacing-md);
+    --section-title-pb: var(--island-spacing-sm);
+    margin-top: var(--island-spacing-lg);
     font-size: 1.1rem;
-    font-weight: 700;
-    border-bottom: 2px solid var(--island-border);
-    padding-bottom: var(--island-spacing-sm);
-    display: flex;
-    align-items: center;
-    gap: var(--island-gap-sm);
 }
 
 .planner-section-title::before {

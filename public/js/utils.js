@@ -23,7 +23,7 @@ import { syncedStorage } from './synced-storage.js';
  * Must stay in sync with public/sw.js CACHE_VERSION. Bumping just one
  * leaves the other cache stale on first visit. See CLAUDE.md "Cache & Data Versioning".
  */
-const DATA_VERSION = '1.36.5';
+const DATA_VERSION = '1.36.6';
 
 /**
  * localStorage keys that participate in Google Drive sync.
