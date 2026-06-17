@@ -462,8 +462,17 @@ test('chip canonical: rectangular + accent-blue active fill', async ({ page }) =
     const radius = await probeStyle(page, 'chip', 'border-radius');
     expect(radius, `chip must be rectangular, got: ${radius}`).not.toMatch(/9999?px|1\.25rem|50%/);
     const activeBg = await probeStyle(page, 'chip active', 'background-color');
-    // accent-blue light = #0071eb = rgb(0, 113, 235). Never --primary-color (silver in dark).
-    expect(activeBg, `chip.active must fill accent-blue, got: ${activeBg}`).toBe('rgb(0, 113, 235)');
+    // Resolve --accent-blue via a probe element (background-color normalises the token
+    // to rgb(...) just like activeBg, so both sides share the same representation).
+    const accentBlue = await page.evaluate(() => {
+        const el = document.createElement('div');
+        el.style.backgroundColor = 'var(--accent-blue)';
+        document.body.appendChild(el);
+        const value = getComputedStyle(el).backgroundColor;
+        el.remove();
+        return value;
+    });
+    expect(activeBg, `chip.active must fill accent-blue, got: ${activeBg}`).toBe(accentBlue);
 });
 
 test('filter-bar canonical: flex row that wraps', async ({ page }) => {

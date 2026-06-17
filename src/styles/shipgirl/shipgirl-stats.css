@@ -939,7 +939,7 @@ body {
 }
 
 /* -- Dark Mode -- */
-body.dark-mode .filter-bar--card {
+body.dark-mode .stats-filter-card {
     box-shadow: var(--shadow-md);
 }
 

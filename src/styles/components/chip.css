@@ -1,10 +1,11 @@
 /* =========================================================================
    chip.css — interactive filter / toggle chip (Wave 2 shared component).
    Rectangular, token-only. Active fill = --accent-blue + #fff (contrast rule);
-   override per-chip via --chip-accent / --chip-accent-text. Rarity tier colors
-   come from rarity.css palette vars (--r/--r-text) via .chip--rarity — never
-   hardcoded here. Display-only "chips" (map-stat/ship-type/prop/armor) are NOT
-   this component; they are labels.
+   override per-chip via --chip-accent / --chip-accent-text. Rarity chips:
+   consumers set --chip-accent/--chip-accent-text from theme.css --rarity-*
+   tokens, keyed by their own data-rarity/numeric scheme (see secretary-story /
+   equip / shipgirl-stats). Display-only "chips" (map-stat/ship-type/prop/armor)
+   are NOT this component; they are labels.
    ========================================================================= */
 .chip {
   display: inline-flex;
@@ -38,10 +39,6 @@
 
 /* Faction / icon chip: flag image + label */
 .chip--icon img { width: 1.1rem; height: 1.1rem; object-fit: contain; display: block; }
-
-/* Rarity chip: tier color via rarity.css palette (pair with .rarity-N…UR).
-   When active, the chip fills with the tier color + its paired text. */
-.chip--rarity { --chip-accent: var(--r); --chip-accent-text: var(--r-text); }
 
 /* Opt-in: a group where un-selected chips read as "filter off". */
 .chip-group--dim-idle .chip:not(.active) { opacity: 0.55; }
