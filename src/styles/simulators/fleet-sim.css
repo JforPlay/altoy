@@ -778,10 +778,7 @@
 }
 
 .filter-row {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  flex-wrap: wrap;
+  --filter-bar-gap: var(--spacing-sm);
 }
 
 .filter-label {

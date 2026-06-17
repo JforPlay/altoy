@@ -101,10 +101,7 @@ select:focus-visible,
 }
 
 .filter-container {
-  display: flex;
-  gap: 0.9375rem;
-  flex-wrap: wrap;
-  align-items: center;
+  --filter-bar-gap: 0.9375rem;
 }
 
 select {

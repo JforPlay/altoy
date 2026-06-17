@@ -116,15 +116,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <Modal id="shipPickerModal" title="함순이 선택">
         <input type="text" id="ship-picker-search" class="picker-search-input" placeholder="함순이 이름 검색..." autocomplete="off" />
         <div class="picker-filters">
-            <div class="filter-row">
+            <div class="filter-bar filter-row">
                 <label class="filter-label">함종</label>
                 <div id="ship-type-filters" class="filter-chips"></div>
             </div>
-            <div class="filter-row">
+            <div class="filter-bar filter-row">
                 <label class="filter-label">레어도</label>
                 <div id="ship-rarity-filters" class="filter-chips"></div>
             </div>
-            <div class="filter-row">
+            <div class="filter-bar filter-row">
                 <label class="filter-label">진영</label>
                 <div id="ship-nation-filters" class="filter-chips"></div>
             </div>
@@ -136,7 +136,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <Modal id="equipPickerModal" title="장비 선택">
         <input type="text" id="equip-picker-search" class="picker-search-input" placeholder="장비 이름 검색..." autocomplete="off" />
         <div class="picker-filters">
-            <div class="filter-row">
+            <div class="filter-bar filter-row">
                 <label class="filter-label">레어도</label>
                 <div id="equip-rarity-filters" class="filter-chips"></div>
             </div>

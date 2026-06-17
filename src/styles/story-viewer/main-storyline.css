@@ -163,10 +163,7 @@ body::before {
   border-radius: 0.5rem;
   box-shadow: 0 0.5rem 1.5rem rgba(44, 62, 80, 0.2);
   padding: 1rem;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 0.5rem 1rem;
+  gap: 0.5rem 1rem; /* two-value gap: row 0.5rem, col 1rem — not expressible via --filter-bar-gap */
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.3s ease, transform 0.3s ease;
