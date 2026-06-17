@@ -863,9 +863,8 @@ body.dark-mode {
 }
 
 .ship-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: var(--spacing-xs);
+  --grid-min: 120px;
+  --grid-gap: var(--spacing-xs);
   overflow-y: auto;
   max-height: 50vh;
   padding-right: var(--spacing-xs);

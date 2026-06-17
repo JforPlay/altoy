@@ -875,7 +875,7 @@ function renderSkinSection(char) {
                 <span class="material-symbols-outlined">checkroom</span>
                 캐릭터 스킨
             </h3>
-            <div class="skin-gallery">
+            <div class="skin-gallery card-grid">
                 ${skinCards}
             </div>
         </div>

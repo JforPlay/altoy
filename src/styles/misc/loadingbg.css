@@ -146,9 +146,8 @@ body {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 2rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+  --grid-min: 300px;
+  --grid-gap: var(--spacing-lg);
 }
 
 .gallery-item {
@@ -359,7 +358,7 @@ body {
 
 @media (max-width: 768px) {
   .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    --grid-min: 200px;
   }
 
   .title {

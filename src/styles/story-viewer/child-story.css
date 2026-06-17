@@ -177,9 +177,8 @@
 .navi-grid-container,
 .tb-grid-container,
 .lora-grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr)); /* 280px */
-  gap: 1.5rem;
+  --grid-min: 17.5rem; /* 280px */
+  --grid-gap: var(--spacing-lg);
   padding: 2rem;
   max-width: 87.5rem; /* 1400px */
   margin: 0 auto;
@@ -189,8 +188,8 @@
   .navi-grid-container,
   .tb-grid-container,
   .lora-grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); /* 240px */
-    gap: 1rem;
+    --grid-min: 15rem; /* 240px */
+    --grid-gap: var(--spacing-md);
     padding: 1rem;
   }
 }
@@ -333,12 +332,12 @@
    ======================================== */
 
 #photos-grid {
-  grid-template-columns: repeat(auto-fill, minmax(8.75rem, 1fr)); /* 140px */
+  --grid-min: 8.75rem; /* 140px */
 }
 
 @media (max-width: 768px) {
   #photos-grid {
-    grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr)); /* 120px */
+    --grid-min: 7.5rem; /* 120px */
   }
 }
 
@@ -460,9 +459,8 @@
 }
 
 .polaroid-info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr)); /* 200px */
-  gap: 1.5rem;
+  --grid-min: 12.5rem; /* 200px */
+  --grid-gap: var(--spacing-lg);
 }
 
 .polaroid-info-item {

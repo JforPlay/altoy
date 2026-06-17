@@ -383,9 +383,8 @@
 }
 
 .restaurant-menu-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: var(--island-spacing-md);
+    --grid-min: 400px;
+    --grid-gap: var(--island-spacing-md);
 }
 
 /* ==========================================================================
@@ -799,7 +798,7 @@
     }
 
     .restaurant-menu-list {
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        --grid-min: 350px;
     }
 
     .rank-comparison-row {

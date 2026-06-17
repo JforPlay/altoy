@@ -268,9 +268,8 @@
 }
 
 .menu-modal-options {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: var(--island-gap-sm);
+    --grid-min: 200px;
+    --grid-gap: var(--island-gap-sm);
 }
 
 .menu-option-item {
@@ -425,9 +424,8 @@
 }
 
 .copy-preset-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: var(--island-spacing-md);
+    --grid-min: 100px;
+    --grid-gap: var(--island-spacing-md);
     padding: var(--island-spacing-sm);
 }
 
@@ -541,9 +539,8 @@
 }
 
 .planner-meal-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: var(--island-spacing-md);
+    --grid-min: 200px;
+    --grid-gap: var(--island-spacing-md);
 }
 
 .planner-restaurant-group {

@@ -79,11 +79,9 @@ main {
   padding-top: var(--navbar-height, 80px);
 }
 
-/* Gallery grid container */
+/* Gallery grid container (uses global .card-grid) */
 .gallery-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 15px;
+  --grid-min: 200px;
   padding: 20px;
 }
 

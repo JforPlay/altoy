@@ -340,7 +340,7 @@ export function renderMapInfo(chapter, targetEl) {
         html += '<div class="info-card full-width">';
         html += '<div class="info-card-header"><div class="info-card-icon info-card-icon--ship"><span class="material-symbols-outlined">sailing</span></div><div class="info-card-label">함순이 드랍</div></div>';
         html += '<div class="info-card-body">';
-        html += '<div class="ship-drop-grid">';
+        html += '<div class="ship-drop-grid card-grid">';
         for (const ship of shipDrops) {
             const infoUrl = resolveUrl(`shipgirl/shipgirl-info/?ship=${encodeURIComponent(ship.name)}`);
             html += `<a href="${infoUrl}" class="ship-drop-card rarity-${ship.rarity}" title="${ship.name}${ship.bossOnly ? ' (보스 한정)' : ''}">`;
@@ -502,7 +502,7 @@ export function renderArchiveInfo(chapter, targetEl) {
     if (archiveDrops && archiveDrops.length > 0) {
         extra += '<div class="info-card full-width">';
         extra += '<div class="info-card-header"><div class="info-card-icon info-card-icon--ship"><span class="material-symbols-outlined">sailing</span></div><div class="info-card-label">함순이 드랍</div></div>';
-        extra += '<div class="info-card-body"><div class="ship-drop-grid">';
+        extra += '<div class="info-card-body"><div class="ship-drop-grid card-grid">';
         for (const drop of archiveDrops) {
             const ship = getShipInfo(drop.id);
             if (!ship) continue;

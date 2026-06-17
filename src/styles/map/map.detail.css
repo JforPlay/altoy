@@ -357,11 +357,10 @@
 .drop-sub-rarity-5 .drop-sub-icon { background: rgba(239, 68, 68, 0.13); }
 .drop-sub-rarity-5 { border-left-color: var(--rarity-ur); }
 
-/* Ship drop grid */
+/* Ship drop grid (uses global .card-grid) */
 .ship-drop-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
-    gap: var(--spacing-sm);
+    --grid-min: 4rem;
+    --grid-gap: var(--spacing-sm);
 }
 
 .ship-drop-card {

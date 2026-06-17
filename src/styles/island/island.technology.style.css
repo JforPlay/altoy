@@ -362,9 +362,8 @@
    ========================================================================== */
 
 .tech-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
+    --grid-min: 280px;
+    --grid-gap: var(--island-spacing-md);
 }
 
 .tech-card {
@@ -842,9 +841,8 @@
 
 /* Resource Grid */
 .resource-totals-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
+    --grid-min: 200px;
+    --grid-gap: var(--island-spacing-md);
 }
 
 .resource-total-item {
@@ -906,7 +904,7 @@
 
 @media (max-width: 1200px) {
     .resource-totals-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        --grid-min: 180px;
     }
 
     .tech-detail {
@@ -957,7 +955,7 @@
     }
 
     .tech-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        --grid-min: 240px;
     }
 
     .resource-totals-header {

@@ -21,11 +21,10 @@
 
 /* ===== Grid container ===== */
 .shipgirl-grid {
-  display: grid;
   /* min 10.75rem (172px) → ~7 columns at the ~1360px (#app) content width */
-  grid-template-columns: repeat(auto-fill, minmax(10.75rem, 1fr));
+  --grid-min: 10.75rem;
   /* roomier row gap, same column gap → keeps the ~7-column density */
-  gap: 1.5rem 1rem;
+  --grid-gap: var(--spacing-lg) var(--spacing-md);
 }
 
 /* ===== Card root — geometry differs by mode, so these two stay mode-scoped ===== */

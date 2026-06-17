@@ -278,9 +278,8 @@
 
 /* ===== Ship-Centric View ===== */
 .skill-search-results-ship {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
-  gap: 0.5rem;
+  --grid-min: 22rem;
+  --grid-gap: var(--spacing-sm);
 }
 
 /* Sentinel must span the full row inside the ship-grid layout. */

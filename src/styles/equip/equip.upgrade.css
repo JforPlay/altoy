@@ -535,9 +535,8 @@ body.dark-mode .tree-arrow {
 
 /* Material browse list (all materials grid) */
 .mat-browse-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0.5rem;
+    --grid-min: 200px;
+    --grid-gap: var(--spacing-sm);
 }
 
 .mat-browse-item {
@@ -588,9 +587,8 @@ body.dark-mode .tree-arrow {
 
 /* Required-by equipment grid */
 .mat-equip-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 0.5rem;
+    --grid-min: 260px;
+    --grid-gap: var(--spacing-sm);
 }
 
 .mat-equip-card {
@@ -734,11 +732,11 @@ body.dark-mode .tree-arrow {
     }
 
     .mat-browse-grid {
-        grid-template-columns: 1fr;
+        --grid-min: 100%;
     }
 
     .mat-equip-grid {
-        grid-template-columns: 1fr;
+        --grid-min: 100%;
     }
 
     .mat-modal {

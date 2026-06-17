@@ -1,0 +1,34 @@
+/* =================================================================
+   RESPONSIVE GRID — canonical auto-fill card/cell grid (CSS unification Wave 2)
+   ---------------------------------------------------------------------
+   Apply `.card-grid` to any container that should lay its children out as a
+   responsive grid of equal-width tracks. The shared repeat() formula lives
+   here once; each consumer supplies only what differs:
+     --grid-min : the track min-width (REQUIRED per consumer; e.g. 200px, 8.75rem,
+                  min(22rem,100%), clamp(80px,10vw,120px) — any valid length).
+     --grid-gap : the gap (OPTIONAL; defaults to --spacing-md = 1rem). Accepts a
+                  single value or a two-value "row col" gap, on --spacing-* tokens
+                  so it auto-follows default/accent/dark spacing.
+
+   Responsive: override --grid-min (and/or --grid-gap) inside the consumer's own
+   @media block — no need to restate grid-template-columns.
+
+   Sparse grids that should STRETCH their items to fill the row use auto-fit via
+   the .card-grid--fit modifier (auto-fill keeps empty phantom tracks; auto-fit
+   collapses them — a behavioral choice kept per consumer, not unified).
+
+   A higher-specificity consumer rule (e.g. `.shipgirl-grid.list-view`) still wins
+   for mode switches; this global component loads before page CSS so a page's own
+   --grid-min and mode overrides both apply.
+
+   Loaded globally via Layout.astro — no per-page import needed.
+   ================================================================= */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-min, 200px), 1fr));
+  gap: var(--grid-gap, var(--spacing-md));
+}
+
+.card-grid--fit {
+  grid-template-columns: repeat(auto-fit, minmax(var(--grid-min, 200px), 1fr));
+}

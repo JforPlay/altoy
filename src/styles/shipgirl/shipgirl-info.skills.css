@@ -85,9 +85,8 @@
 /* auto-fit + a small min track lets the (≤6) bonus stats sit in a single row on
    desktop while still wrapping on narrow phones. */
 .retrofit-bonus-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
-  gap: 0.3rem;
+  --grid-min: 5rem;
+  --grid-gap: var(--spacing-xs);
 }
 
 .retrofit-bonus-item {

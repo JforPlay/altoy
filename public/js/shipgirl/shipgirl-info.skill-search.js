@@ -609,7 +609,7 @@ function applyFilters() {
     } else {
         const ships = projectToShips(results);
         if (countEl) countEl.textContent = `결과 ${ships.length}개 (함순이)`;
-        listEl.className = 'skill-search-results skill-search-results-ship';
+        listEl.className = 'skill-search-results skill-search-results-ship card-grid';
         renderBatchedResults(ships, listEl, renderShipCard);
     }
 }

@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const grid = document.createElement('div');
-        grid.className = 'esv-skin-grid';
+        grid.className = 'esv-skin-grid card-grid';
 
         const fragment = document.createDocumentFragment();
         for (const skin of skins) {

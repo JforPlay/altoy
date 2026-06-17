@@ -191,9 +191,8 @@
    ========================================================================== */
 
 .season-calc-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 0.875rem;
+    --grid-min: 280px;
+    --grid-gap: 0.875rem;
 }
 
 .calc-item-card {
@@ -403,7 +402,7 @@
 
 @media (max-width: 1200px) {
     .season-calc-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        --grid-min: 280px;
     }
 
     .calc-total-card {
@@ -617,9 +616,8 @@
 }
 
 .season-pass-tiers {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
-    gap: 0.5rem;
+    --grid-min: 85px;
+    --grid-gap: var(--island-gap-sm);
 }
 
 .season-tier {

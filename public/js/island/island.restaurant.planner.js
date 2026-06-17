@@ -480,7 +480,7 @@ export function openMenuSelectionModal(restaurantId, initialSlotIndex = 0) {
                     <div class="menu-modal-current-slot">
                         현재 선택 중: <strong>슬롯 ${initialSlotIndex + 1}</strong>
                     </div>
-                    <div class="menu-modal-options">
+                    <div class="menu-modal-options card-grid">
                         <div class="menu-option-item" data-formula-id="">
                             <div class="menu-option-icon empty-icon">
                                 <span class="material-symbols-outlined">close</span>
@@ -838,7 +838,7 @@ function openCopyPresetModal(restaurantId, targetPresetIndex) {
                 </div>
                 <div class="menu-modal-body">
                     <p class="copy-preset-description">${restaurant.name} - 슬롯 ${targetPresetIndex}로 복사할 프리셋을 선택하세요</p>
-                    <div class="copy-preset-grid">
+                    <div class="copy-preset-grid card-grid card-grid--fit">
                         ${presetOptions}
                     </div>
                 </div>
@@ -1120,7 +1120,7 @@ function renderSelectionSummary(selectionSummary) {
     return `
         <div class="planner-meal-summary">
             <h4>선택한 메뉴</h4>
-            <div class="planner-meal-list">
+            <div class="planner-meal-list card-grid">
                 ${restaurantIds.map(restaurantId => {
         const restaurantName = state.restaurants[restaurantId]?.name || `Restaurant ${restaurantId}`;
         const menus = selectionSummary[restaurantId];

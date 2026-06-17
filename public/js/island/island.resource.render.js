@@ -926,7 +926,7 @@ export function renderMaterialList(materials) {
     }
 
     return `
-        <div class="material-list">
+        <div class="material-list card-grid">
             ${materials.map(([itemId, quantity]) => {
         const item = window.IslandEngine.getItemInfo(itemId);
         return `

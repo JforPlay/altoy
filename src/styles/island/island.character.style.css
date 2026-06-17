@@ -732,9 +732,8 @@
    ========================================================================== */
 
 .skin-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
+    --grid-min: 200px;
+    --grid-gap: var(--island-spacing-md);
 }
 
 .skin-card {
@@ -817,7 +816,7 @@
     }
 
     .skin-gallery {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        --grid-min: 150px;
     }
 
     .skill-level-buttons {

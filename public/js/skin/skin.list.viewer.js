@@ -967,7 +967,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Grid
             const grid = document.createElement('div');
-            grid.className = 'share-grid';
+            grid.className = 'share-grid card-grid';
             for (const skin of wantedSkins) {
                 const item = document.createElement('div');
                 item.className = 'share-item';
@@ -1044,7 +1044,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 section.appendChild(title);
 
                 const grid = document.createElement('div');
-                grid.className = 'share-grid';
+                grid.className = 'share-grid card-grid';
 
                 for (const skin of skins) {
                     const item = document.createElement('div');

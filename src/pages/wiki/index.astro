@@ -36,7 +36,7 @@ const hasDoc = (key) => `../../wiki-content/${key}.md` in docs;
                 {menu.columns.map((col) => (
                     <div class="wiki-col">
                         <h3>{col.title}</h3>
-                        <div class="wiki-grid">
+                        <div class="wiki-grid card-grid">
                             {col.keys.filter(hasDoc).map((key) => {
                                 const page = PAGE_BY_KEY.get(key);
                                 return (

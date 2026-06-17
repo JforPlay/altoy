@@ -259,7 +259,7 @@ function renderDetailHeader(ship, nationalityInfo) {
                 ${hasRetrofit && Object.keys(retrofitBonuses).length > 0 ? `
                     <div class="retrofit-bonus-section">
                         <h4 class="retrofit-bonus-title">개조 보너스</h4>
-                        <div class="retrofit-bonus-grid">
+                        <div class="retrofit-bonus-grid card-grid card-grid--fit">
                             ${Object.entries(retrofitBonuses).map(([stat, value]) => `
                                 <div class="retrofit-bonus-item">
                                     <span class="bonus-stat">${getAttrKoreanName(stat) || stat}:</span>
@@ -318,7 +318,7 @@ function renderStatsSection(ship, limitBreakOptions) {
                     <p class="tooltip-note">※ ⌊ ⌋는 소수점 버림을 의미합니다</p>
                 </div>
             </div>
-            <div class="stats-grid" id="statsGrid"></div>
+            <div class="stats-grid card-grid card-grid--fit" id="statsGrid"></div>
             <div class="stat-controls">
                 <div class="control-row">
                     <div class="control-group">

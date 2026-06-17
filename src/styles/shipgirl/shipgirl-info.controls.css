@@ -130,10 +130,9 @@
 }
 
 .stats-grid {
-  display: grid;
   /* MODIFIED: Reduced minmax width and gap to make it more compact */
-  grid-template-columns: repeat(auto-fit, minmax(8.75rem, 1fr));
-  gap: 0.5rem;
+  --grid-min: 8.75rem;
+  --grid-gap: var(--spacing-sm);
 }
 
 .stats-grid .stat-item {

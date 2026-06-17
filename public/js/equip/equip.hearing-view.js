@@ -72,7 +72,7 @@ export function renderHearingGrid() {
         fragment.appendChild(section);
 
         const masonry = document.createElement('div');
-        masonry.className = 'hearing-masonry';
+        masonry.className = 'card-grid hearing-masonry';
         const sorted = ctx.sortEquips ? ctx.sortEquips(equips) : equips;
         for (const equip of sorted) {
             masonry.appendChild(buildHearingCard(equip));

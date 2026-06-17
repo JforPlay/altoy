@@ -87,9 +87,8 @@
 }
 
 .map-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
-  gap: 0.75rem;
+  --grid-min: 9rem;
+  --grid-gap: 0.75rem;
 }
 
 .map-item {
@@ -196,8 +195,8 @@ body.dark-mode .map-type-boss .map-type-badge {
   }
 
   .map-list {
-    grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
-    gap: 0.5rem;
+    --grid-min: 7rem;
+    --grid-gap: var(--spacing-sm);
   }
 
   .map-item {
@@ -362,9 +361,7 @@ body.dark-mode .map-type-boss .map-type-badge {
 }
 
 .map-browser-ships {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
-  gap: 1rem;
+  --grid-min: 6rem;
 }
 
 .map-browser-ship-card {
@@ -442,8 +439,8 @@ body.dark-mode .map-type-boss .map-type-badge {
   }
 
   .map-browser-ships {
-    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
-    gap: 0.75rem;
+    --grid-min: 8rem;
+    --grid-gap: 0.75rem;
   }
 
   .map-browser-ship-image {

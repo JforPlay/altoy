@@ -281,7 +281,7 @@ function setupEventListeners() {
     if (gridViewBtn && listViewBtn) {
         gridViewBtn.addEventListener('click', () => {
             state.viewMode = 'grid';
-            shipgirls.className = 'shipgirl-grid';
+            shipgirls.className = 'shipgirl-grid card-grid';
             gridViewBtn.classList.add('active');
             listViewBtn.classList.remove('active');
             setStorageItem('shipgirl-view-mode', 'grid');
@@ -290,7 +290,7 @@ function setupEventListeners() {
 
         listViewBtn.addEventListener('click', () => {
             state.viewMode = 'list';
-            shipgirls.className = 'shipgirl-grid list-view';
+            shipgirls.className = 'shipgirl-grid list-view card-grid';
             listViewBtn.classList.add('active');
             gridViewBtn.classList.remove('active');
             setStorageItem('shipgirl-view-mode', 'list');

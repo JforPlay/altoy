@@ -728,7 +728,7 @@ function createTabStoryViewer(config) {
             title.textContent = polaroid.title || 'Untitled';
 
             const grid = document.createElement('div');
-            grid.className = 'polaroid-info-grid';
+            grid.className = 'polaroid-info-grid card-grid card-grid--fit';
 
             const appendInfoItem = (iconName, label, value, full = false) => {
                 const item = document.createElement('div');

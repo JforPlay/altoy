@@ -832,9 +832,8 @@
 
 /* Picker item grid */
 .picker-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: var(--spacing-xs);
+  --grid-min: 100px;
+  --grid-gap: var(--spacing-xs);
   overflow-y: auto;
   flex: 1;
   min-height: 0;
@@ -1082,7 +1081,7 @@
   .picker-grid {
     max-height: none;
     flex: 1;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    --grid-min: 80px;
   }
 
   #saveLoadModal .c-modal-dialog {

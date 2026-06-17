@@ -20,9 +20,7 @@
 
 /* --- Skin List Grid --- */
 .skin-list-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(8.75rem, 1fr));
-  gap: 0.9375rem;
+  --grid-min: 8.75rem;
 }
 
 .chunk-sentinel {
@@ -921,9 +919,8 @@
 }
 
 .share-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
-  gap: 0.5rem;
+  --grid-min: 5rem;
+  --grid-gap: var(--spacing-sm);
 }
 
 .share-item {
@@ -1115,7 +1112,7 @@
   }
 
   .share-grid {
-    grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
+    --grid-min: 4rem;
   }
 
   .share-item img {

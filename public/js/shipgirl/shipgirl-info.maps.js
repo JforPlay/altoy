@@ -130,7 +130,7 @@ function renderMaps(mapsData, searchTerm = '') {
             <div class="map-area-header">
                 <span class="map-area-number">${areaName}</span>
             </div>
-            <div class="map-list">
+            <div class="map-list card-grid">
                 ${maps.map(mapData => `
                     <div class="map-item ${getMapTypeClass(mapData.type)}">
                         <span class="map-name">${area}-${mapData.map}</span>
@@ -424,7 +424,7 @@ function renderMapBrowserContent() {
                 <span class="badge map-type-badge ${getMapTypeClass(data.type)}">${getMapTypeName(data.type)}</span>
                 <span class="map-browser-count">${data.ships.length}척</span>
             </div>
-            <div class="map-browser-ships">
+            <div class="map-browser-ships card-grid">
                 ${data.ships.map(ship => createMapBrowserShipCard(ship)).join('')}
             </div>
         </div>

@@ -210,9 +210,8 @@
  * viewport widths the grid falls back to 1 column automatically, so the cramped
  * "between desktop 2-col and mobile 1-col" state disappears without a breakpoint. */
 .rt-ship-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 4px 8px;
+  --grid-min: 360px;
+  --grid-gap: var(--spacing-xs) var(--spacing-sm);
 }
 
 /* --- Ship row ---

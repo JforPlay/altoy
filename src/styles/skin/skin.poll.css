@@ -423,9 +423,7 @@ body.dark-mode .popup-skin-info {
 
 /* --- Poll Container & Cards --- */
 .poll-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(11.25rem, 1fr));
-  gap: 0.9375rem;
+  --grid-min: 11.25rem;
   padding: 0 1.25rem 1.25rem 1.25rem;
 }
 

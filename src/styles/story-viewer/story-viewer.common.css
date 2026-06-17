@@ -233,9 +233,8 @@ body {
 
 /* --- Card Grid Container --- */
 .story-grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
-  gap: 1.5rem;
+  --grid-min: 17.5rem;
+  --grid-gap: var(--spacing-lg);
   padding: 2rem;
   max-width: 100rem;
   margin: 0 auto;

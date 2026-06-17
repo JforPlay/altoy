@@ -321,3 +321,52 @@ test('button: a segmented .btn-secondary carries a visible fill (sim-weapon, lig
     const bg = await probeStyle(page, 'btn btn-secondary', 'backgroundColor');
     expect(bg, `expected a visible segment surface, got: ${bg}`).not.toBe('rgba(0, 0, 0, 0)');
 });
+
+// --- Wave-2 grid unification: canonical .card-grid applied --------------------
+// grid.css is imported globally via Layout.astro. The canonical responsive grid
+// is parameterized by per-consumer --grid-min/--grid-gap hooks; a bare injected
+// .card-grid falls back to display:grid + gap var(--spacing-md). Assert global
+// delivery, then prove a REAL migrated consumer carries the class AND resolves
+// the var-hook (its local display:grid/grid-template-columns/gap were deleted).
+// RED before migration: no global .card-grid (display:block); the consumer had
+// no card-grid class and no --grid-min custom property.
+
+test('grid: canonical .card-grid is delivered globally (homepage)', async ({ page }) => {
+    await page.goto('./', { waitUntil: 'load' });
+    expect(await probeStyle(page, 'card-grid', 'display')).toBe('grid');
+    // Default --grid-gap is var(--spacing-md) = 1rem = 16px (theme-stable on default pages).
+    expect(await probeStyle(page, 'card-grid', 'rowGap')).toBe('16px');
+});
+
+test('grid: a real consumer resolves the canonical var-hook (shipgirl-info)', async ({ page }) => {
+    await page.goto(pathFor('shipgirl-info'), { waitUntil: 'load' });
+    const probe = await page.evaluate(() => {
+        const el = document.querySelector('.shipgirl-grid');
+        if (!el) return null;
+        const cs = getComputedStyle(el);
+        return {
+            hasClass: el.classList.contains('card-grid'),
+            display: cs.display,
+            gridMin: cs.getPropertyValue('--grid-min').trim(),
+        };
+    });
+    expect(probe, 'no .shipgirl-grid container found').not.toBeNull();
+    expect(probe.hasClass, 'container must carry the canonical card-grid class').toBe(true);
+    expect(probe.display).toBe('grid');
+    // RED before migration: the local rule baked the min-width into
+    // grid-template-columns and set no --grid-min (responsive value, so assert
+    // it's a real length rather than an exact rem to stay viewport-tolerant).
+    expect(probe.gridMin, `expected a --grid-min length, got: "${probe.gridMin}"`).toMatch(/\d/);
+});
+
+test('grid: a --fit consumer carries the auto-fit modifier (shipgirl-build-sim)', async ({ page }) => {
+    await page.goto(pathFor('shipgirl-build-sim'), { waitUntil: 'load' });
+    const probe = await page.evaluate(() => {
+        const el = document.querySelector('.stats-grid');
+        if (!el) return null;
+        return { hasFit: el.classList.contains('card-grid--fit'), display: getComputedStyle(el).display };
+    });
+    expect(probe, 'no .stats-grid container found').not.toBeNull();
+    expect(probe.hasFit, 'sparse grid must carry card-grid--fit').toBe(true);
+    expect(probe.display).toBe('grid');
+});

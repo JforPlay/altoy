@@ -391,7 +391,7 @@ function renderSeasonPass() {
                     <div class="season-pass-progress-text">${totalPoints.toLocaleString()} / ${targets[targets.length - 1].toLocaleString()} pt</div>
                 </div>
             </div>
-            <div class="season-pass-tiers">
+            <div class="season-pass-tiers card-grid">
                 ${tiersHtml}
             </div>
         </div>

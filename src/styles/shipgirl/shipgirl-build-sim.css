@@ -85,9 +85,8 @@ body {
 }
 
 .pool-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-    gap: 0.5rem;
+    --grid-min: 190px;
+    --grid-gap: var(--spacing-sm);
 }
 
 /* Pool toggles are `.btn .btn-secondary` (canonical) + `.is-active` for the
@@ -520,9 +519,7 @@ section h3 {
 /* ===== Build Statistics ===== */
 
 .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
+    --grid-min: 150px;
 }
 
 .stat-card {
@@ -556,9 +553,7 @@ section h3 {
 /* ===== Resource Statistics ===== */
 
 .resource-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    --grid-min: 200px;
     margin-top: 1.5rem;
 }
 
@@ -941,9 +936,8 @@ section h3 {
 /* ===== Ship Grid (Pool Browser) ===== */
 
 .ship-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 0.75rem;
+    --grid-min: 100px;
+    --grid-gap: 0.75rem;
     margin-bottom: 1rem;
 }
 
@@ -1085,9 +1079,7 @@ section h3 {
 }
 
 .modal-ship-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 1rem;
+    --grid-min: 120px;
     min-height: 300px;
 }
 
@@ -1216,7 +1208,7 @@ section h3 {
     }
 
     .ship-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        --grid-min: 120px;
     }
 
     .ship-card {
@@ -1235,7 +1227,7 @@ section h3 {
 
 @media (max-width: 480px) {
     .ship-grid {
-        grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+        --grid-min: 85px;
     }
 
     .ship-grid .ship-card {

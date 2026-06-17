@@ -174,10 +174,9 @@ body > header {
 .gallery-container {
     flex: 1;
     min-width: 300px;
-    display: grid;
-    /* Modern CSS: Responsive grid without media queries */
-    grid-template-columns: repeat(auto-fill, minmax(clamp(80px, 10vw, 120px), 1fr));
-    gap: 10px;
+    /* Responsive grid via global .card-grid */
+    --grid-min: clamp(80px, 10vw, 120px);
+    --grid-gap: var(--spacing-sm);
     height: calc(100vh - 185px);
     overflow-y: auto;
     background-color: var(--card-bg);

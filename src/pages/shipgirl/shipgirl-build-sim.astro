@@ -74,7 +74,7 @@ const coinIconUrl = dataForToyUrl('props/gold.webp');
                     </div>
                 </div>
 
-                <div class="ship-grid" id="ship-grid"></div>
+                <div class="ship-grid card-grid" id="ship-grid"></div>
                 <div class="ship-count">총 <span id="ship-count">0</span>척</div>
             </div>
         </section>
@@ -144,7 +144,7 @@ const coinIconUrl = dataForToyUrl('props/gold.webp');
 
             <div class="build-statistics">
                 <h3>건조 통계</h3>
-                <div class="stats-grid">
+                <div class="stats-grid card-grid card-grid--fit">
                     <div class="stat-card"><span class="stat-label">총 건조 횟수</span><span class="stat-value" id="stat-total">0</span></div>
                     <div class="stat-card ur-stat"><span class="stat-label">UR</span><span class="stat-value" id="stat-ur">0</span></div>
                     <div class="stat-card ssr-stat"><span class="stat-label">SSR</span><span class="stat-value" id="stat-ssr">0</span></div>
@@ -154,7 +154,7 @@ const coinIconUrl = dataForToyUrl('props/gold.webp');
                 </div>
 
                 <h3>소모 자원</h3>
-                <div class="resource-stats">
+                <div class="resource-stats card-grid card-grid--fit">
                     <div class="resource-card">
                         <img src={cubeIconUrl} alt="큐브" class="resource-icon">
                         <div class="resource-info"><span class="resource-label">큐브</span><span class="resource-value" id="stat-cubes">0</span></div>
@@ -187,7 +187,7 @@ const coinIconUrl = dataForToyUrl('props/gold.webp');
                     <button type="button" class="rarity-tab" data-rarity="SSR" aria-pressed="false">SSR</button>
                     <button type="button" class="rarity-tab" data-rarity="SR" aria-pressed="false">SR</button>
                 </div>
-                <div class="modal-ship-grid" id="modal-ship-grid"></div>
+                <div class="modal-ship-grid card-grid" id="modal-ship-grid"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary modal-btn cancel-btn" id="modal-cancel">취소</button>

@@ -6,7 +6,7 @@
 
   .shipgirl-grid {
     /* portrait gallery cards: ~2 columns on small phones, ~3 on larger */
-    grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+    --grid-min: 7.5rem;
   }
 
   /* Declutter small gallery cards. The stacked 함종·진영 / 건조 / 드랍 rows

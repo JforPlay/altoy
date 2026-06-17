@@ -65,9 +65,8 @@
    unified row heights. auto-fill + minmax → 3/2/1 columns by available width;
    min(22rem,100%) keeps a single card from overflowing below 22rem. */
 .hearing-masonry {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(22rem, 100%), 1fr));
-    gap: 0.75rem;
+    --grid-min: min(22rem, 100%);
+    --grid-gap: 0.75rem;
 }
 
 .hearing-card {

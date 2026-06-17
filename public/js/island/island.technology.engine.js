@@ -405,7 +405,7 @@ function renderCategoryGroupedView(techs, container) {
                         ${category.name}
                         <span class="tech-count">${categoryTechs.length}</span>
                     </h3>
-                    <div class="tech-grid">
+                    <div class="tech-grid card-grid">
                         ${categoryTechs.map(tech => createTechCard(tech, categoryTechs)).join('')}
                     </div>
                 </div>
@@ -1102,7 +1102,7 @@ function renderResourceTotals(techs) {
                     </div>
                 </div>
             </div>
-            <div class="resource-totals-grid">
+            <div class="resource-totals-grid card-grid">
                 ${resourceEntries.map(([resourceId, amount]) => {
         const resourceName = state.resourceData[resourceId]?.name || `Resource #${resourceId}`;
         const resourceIcon = state.resourceData[resourceId]?.icon || 'help';

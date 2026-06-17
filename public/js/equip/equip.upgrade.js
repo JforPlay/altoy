@@ -473,7 +473,7 @@ function renderMatBrowseList() {
 
     const fragment = document.createDocumentFragment();
     const grid = document.createElement('div');
-    grid.className = 'mat-browse-grid';
+    grid.className = 'card-grid mat-browse-grid';
 
     for (const propId of sortedIds) {
         const name = getItemName(propId);
@@ -536,7 +536,7 @@ function renderMatEquipList(propId) {
 
     // Equipment grid
     const grid = document.createElement('div');
-    grid.className = 'mat-equip-grid';
+    grid.className = 'card-grid mat-equip-grid';
 
     for (const eq of equips) {
         const iconUrl = getEquipIconUrl(eq.icon);

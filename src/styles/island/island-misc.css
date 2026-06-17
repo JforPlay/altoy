@@ -119,9 +119,8 @@ body {
    ========================================================================== */
 
 .island-misc-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: var(--island-spacing-sm);
+  --grid-min: 100px;
+  --grid-gap: var(--island-spacing-sm);
   padding: 0 var(--island-spacing-lg) var(--island-spacing-lg);
 }
 
@@ -343,8 +342,8 @@ body {
   }
 
   .island-misc-gallery {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: var(--island-spacing-xs);
+    --grid-min: 80px;
+    --grid-gap: var(--island-spacing-xs);
   }
 
   .island-misc-container {
@@ -364,7 +363,7 @@ body {
   }
 
   .island-misc-gallery {
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    --grid-min: 70px;
   }
 
   .island-misc-lightbox .lightbox-prev,

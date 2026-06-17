@@ -18,7 +18,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <input type="text" id="search-bar" placeholder="이벤트 이름으로 검색...">
             </div>
         </header>
-        <main id="event-grid" class="story-grid-container"></main>
+        <main id="event-grid" class="story-grid-container card-grid card-grid--fit"></main>
     </div>
 
     <div id="memory-selection-view" class="hidden">
@@ -29,7 +29,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div class="flavor-text-box">
             <p>스토리 재생시 브금 자동재생에 주의하세요</p>
         </div>
-        <main id="memory-grid" class="story-grid-container"></main>
+        <main id="memory-grid" class="story-grid-container card-grid"></main>
     </div>
 
     <div id="story-viewer-view" class="hidden">

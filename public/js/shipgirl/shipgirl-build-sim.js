@@ -399,11 +399,11 @@ import { buildPoolProbabilities, applyDespairUrPickup, regularShipSingleProb, cu
 
         // Row 1: limited pickup banners first, then the standard pools.
         const primaryGroup = document.createElement('div');
-        primaryGroup.className = 'pool-group';
+        primaryGroup.className = 'pool-group card-grid';
 
         // Row 2: despair pools, kept on their own separate row.
         const despairGroup = document.createElement('div');
-        despairGroup.className = 'pool-group';
+        despairGroup.className = 'pool-group card-grid';
 
         // Pickup pool buttons (dynamically from data) — shown first
         if (state.pickupData) {

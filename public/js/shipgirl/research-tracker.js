@@ -919,7 +919,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const body = document.createElement('div');
         body.className = 'rt-group-body';
         const grid = document.createElement('div');
-        grid.className = 'rt-ship-grid';
+        grid.className = 'rt-ship-grid card-grid';
         for (const ship of groupShips) {
             grid.appendChild(createShipRow(ship));
         }

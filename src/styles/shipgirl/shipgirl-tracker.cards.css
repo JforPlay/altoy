@@ -1,8 +1,7 @@
 /* ===== Ship Card Grid ===== */
 #ship-list-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 12px;
+  --grid-min: 180px;
+  --grid-gap: 12px;
   padding: 1rem;
 }
 
