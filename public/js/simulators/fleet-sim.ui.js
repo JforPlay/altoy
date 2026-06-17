@@ -843,7 +843,7 @@ export async function renderDamagePanel(container) {
     const chips = ['light', 'medium', 'heavy'].map((k) => {
         const preset = ARMOR_PRESETS[k];
         const active = k === tgt.presetKey ? ' active' : '';
-        return `<button class="dmg-armor-chip${active}" data-action="dmg-armor" data-armor="${k}">${escapeHtml(preset.name)}<span class="dmg-armor-class">${escapeHtml(preset.shipClass)}</span></button>`;
+        return `<button class="chip${active}" data-action="dmg-armor" data-armor="${k}">${escapeHtml(preset.name)}<span class="dmg-armor-class">${escapeHtml(preset.shipClass)}</span></button>`;
     }).join('');
 
     // Adapt buttons — segmented .btn-group (single-active mode switch)

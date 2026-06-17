@@ -46,7 +46,7 @@
   color: var(--text-primary);
 }
 
-/* ===== Armor preset chips ===== */
+/* ===== Armor preset chips — use canonical .chip (chip.css) ===== */
 
 .dmg-target-row {
   display: flex;
@@ -54,30 +54,7 @@
   flex-wrap: wrap;
 }
 
-.dmg-armor-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  background: var(--section-bg);
-  cursor: pointer;
-  color: var(--text-primary);
-  font-size: 0.875rem;
-  transition: border-color var(--transition-fast), background var(--transition-fast);
-}
-
-.dmg-armor-chip:hover {
-  border-color: var(--accent-blue);
-  background: var(--primary-alpha-10);
-}
-
-.dmg-armor-chip.active {
-  border-color: var(--accent-blue);
-  background: var(--primary-alpha-20);
-  color: var(--text-primary);
-}
+/* .dmg-armor-chip removed; emitter now uses .chip (canonical active = --accent-blue fill). */
 
 .dmg-armor-class {
   font-size: 0.75em;
@@ -247,15 +224,6 @@
 
 /* ===== Dark mode overrides ===== */
 /* (tokens already handle most of it; only override where tokens don't flip) */
-
-/* .dmg-armor-chip = deferred Wave-2 chip (kept); .dmg-adapt-btn now canonical .btn. */
-body.dark-mode .dmg-armor-chip {
-  background: var(--bg-secondary);
-}
-
-body.dark-mode .dmg-armor-chip.active {
-  background: var(--primary-alpha-20);
-}
 
 /* ===== Equipment efficiency badge (under weapon-slot icons, slots 0-2) ===== */
 
